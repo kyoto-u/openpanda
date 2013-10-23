@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/TotalScoresBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/TotalScoresBean.java $
  * $Id: TotalScoresBean.java 92420 2011-04-28 20:14:57Z ktsao@stanford.edu $
  ***********************************************************************************
  *

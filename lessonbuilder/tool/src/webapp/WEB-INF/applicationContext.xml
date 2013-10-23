@@ -67,6 +67,7 @@ simplePageBean.hasReleaseDate,
 simplePageBean.height,
 simplePageBean.hidePage,
 simplePageBean.importCc,
+simplePageBean.importtop,
 simplePageBean.isMultimedia,
 simplePageBean.isWebsite,
 simplePageBean.itemId,
@@ -130,10 +131,12 @@ simplePageBean.selectPage
   </bean>
   
   <bean id="org.sakaiproject.lessonbuildertool.service.GroupPermissionsService"
-	class="org.sakaiproject.lessonbuildertool.service.GroupPermissionsService">
+	class="org.sakaiproject.lessonbuildertool.service.GroupPermissionsService"
+	init-method="init">
     <property name="forumEntity" ref="org.sakaiproject.lessonbuildertool.service.ForumEntity"/>
     <property name="quizEntity" ref="org.sakaiproject.lessonbuildertool.service.SamigoEntity"/>
     <property name="assignmentEntity" ref="org.sakaiproject.lessonbuildertool.service.AssignmentEntity"/>
+    <property name="bltiEntity" ref="org.sakaiproject.lessonbuildertool.service.BltiEntity"/>
   </bean>
 
   <bean id="org.sakaiproject.lessonbuildertool.service.JForumEntity"
@@ -215,7 +218,8 @@ simplePageBean.selectPage
 
   </bean>
 
-  <bean class="org.sakaiproject.lessonbuildertool.service.LessonBuilderAccessService"
+  <bean id="org.sakaiproject.lessonbuildertool.service.LessonBuilderAccessService"
+	class="org.sakaiproject.lessonbuildertool.service.LessonBuilderAccessService"
         init-method="init"
         destroy-method="destroy"
         singleton="true">
@@ -258,6 +262,69 @@ simplePageBean.selectPage
     	</map>
     	</constructor-arg>
     	</bean>
+
+ 	<bean id="org.sakaiproject.lessonbuildertool.ccexport.CCExport"
+	      class="org.sakaiproject.lessonbuildertool.ccexport.CCExport">
+	  <property name="contentHostingService"><ref bean="org.sakaiproject.content.api.ContentHostingService"/></property>
+	  <property name="samigoExport"><ref bean="org.sakaiproject.lessonbuildertool.ccexport.SamigoExport"/></property>
+	  <property name="assignmentExport"><ref bean="org.sakaiproject.lessonbuildertool.ccexport.AssignmentExport"/></property>
+	  <property name="forumsExport"><ref bean="org.sakaiproject.lessonbuildertool.ccexport.ForumsExport"/></property>
+	  <property name="bltiExport"><ref bean="org.sakaiproject.lessonbuildertool.ccexport.BltiExport"/></property>
+	  <property name="messageLocator" ref="messageLocator"/>
+	  <property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+	</bean>
+
+ 	<bean id="org.sakaiproject.lessonbuildertool.ccexport.SamigoExport"
+	      class="org.sakaiproject.lessonbuildertool.ccexport.SamigoExport"
+              init-method="init"
+              destroy-method="destroy">
+	  
+	  <property name="publishedAssessmentFacadeQueries"><ref bean="PublishedAssessmentFacadeQueries" /></property>
+	  <property name="questionPoolFacadeQueries"><ref bean="QuestionPoolFacadeQueries" /></property>
+	  <property name="messageLocator" ref="messageLocator"/>
+	  <property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+	</bean>
+
+ 	<bean id="org.sakaiproject.lessonbuildertool.ccexport.AssignmentExport"
+	      class="org.sakaiproject.lessonbuildertool.ccexport.AssignmentExport"
+              init-method="init"
+              destroy-method="destroy">
+	  <property name="messageLocator" ref="messageLocator"/>
+	  <property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+	</bean>
+
+ 	<bean id="org.sakaiproject.lessonbuildertool.ccexport.ForumsExport"
+	      class="org.sakaiproject.lessonbuildertool.ccexport.ForumsExport"
+              init-method="init"
+              destroy-method="destroy">
+	  <property name="messageLocator" ref="messageLocator"/>
+	  <property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+	</bean>
+
+ 	<bean id="org.sakaiproject.lessonbuildertool.ccexport.JForumExport"
+	      class="org.sakaiproject.lessonbuildertool.ccexport.JForumExport"
+              init-method="init"
+              destroy-method="destroy">
+	  <property name="messageLocator" ref="messageLocator"/>
+	  <property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+	  <property name="prev" ref="org.sakaiproject.lessonbuildertool.ccexport.ForumsExport" />
+	</bean>
+
+
+ 	<bean id="org.sakaiproject.lessonbuildertool.ccexport.BltiExport"
+	      class="org.sakaiproject.lessonbuildertool.ccexport.BltiExport"
+              init-method="init"
+              destroy-method="destroy">
+	  <property name="messageLocator" ref="messageLocator"/>
+	  <property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+	</bean>
+
+	<bean parent="viewParamsRegistrarParent">
+          <property name="viewID" value="exportCc" />
+          <property name="viewParamsClass"
+		    value="org.sakaiproject.lessonbuildertool.tool.view.ExportCCViewParameters" />
+	</bean>
+
 
 
  </beans>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/contrib/rsmart/dbrefactor/chat/chat-impl/impl/src/java/org/sakaiproject/chat/impl/ChatServiceSqlMySql.java $
- * $Id: ChatServiceSqlMySql.java 3560 2007-02-19 22:08:01Z jbush@rsmart.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/event/impl/ClusterEventTrackingServiceSqlMySql.java $
+ * $Id: ClusterEventTrackingServiceSqlMySql.java 127978 2013-07-30 19:51:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation

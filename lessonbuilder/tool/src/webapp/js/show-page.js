@@ -131,6 +131,14 @@ $(function() {
 			draggable: false
 		});
 	
+		$('#export-cc-dialog').dialog({
+			autoOpen: false,
+			width: 600,
+			modal: false,
+			resizable: false,
+			draggable: false
+		});
+
 		$('#comments-dialog').dialog({
 			autoOpen: false,
 			width: 600,
@@ -191,6 +199,33 @@ $(function() {
 			return false;
 		});
 		
+		$('#export-cc').click(function(){
+			closeDropdown();
+			var position =  $(this).position();
+			$("#export-cc-dialog").dialog("option", "position", [position.left, position.top]);
+			oldloc = $(".dropdown a");
+			$('#export-cc-dialog').dialog('open');
+			checksize($('#export-cc-dialog'));
+			return false;
+		});
+
+		$('#export-cc-submit').click(function(){
+			// jquery click doesn't actually click, so get the js object and do a native click call
+                        if ($('#export-cc-v11').attr('checked') == 'checked') {
+                            $("#export-cc-link").attr('href', $("#export-cc-link").attr('href').replace(/version=[0-9.]*/, "version=1.1"));
+                        } else {
+                            $("#export-cc-link").attr('href', $("#export-cc-link").attr('href').replace(/version=[0-9.]*/, "version=1.2"));
+                        }
+                        if ($('#export-cc-bank').attr('checked') == 'checked') {
+                            $("#export-cc-link").attr('href', $("#export-cc-link").attr('href').replace(/bank=[01]/, "bank=1"));
+                        } else {
+                            $("#export-cc-link").attr('href', $("#export-cc-link").attr('href').replace(/bank=[01]/, "bank=0"));
+                        }
+			$("#export-cc-link").get(0).click();
+			closeExportCcDialog();
+			return false;
+		    });
+
 		$('#import-cc-submit').click(function() {
 			// prevent double clicks
 			if (!importccactive)
@@ -252,6 +287,7 @@ $(function() {
 			$("#add-multimedia-dialog").dialog("option", "width", outerWidth-10);
 			$("#edit-title-dialog").dialog("option", "width", outerWidth-10);
 			$("#import-cc-dialog").dialog("option", "width", outerWidth-10);
+			$("#export-cc-dialog").dialog("option", "width", outerWidth-10);
 			$("#new-page-dialog").dialog("option", "width", outerWidth-10);
 			$("#remove-page-dialog").dialog("option", "width", outerWidth-10);
 			$("#youtube-dialog").dialog("option", "width", outerWidth-10);
@@ -1043,6 +1079,7 @@ $(function() {
 				$('#youtube-dialog').dialog('isOpen') ||
 				$('#movie-dialog').dialog('isOpen') ||
 				$('#import-cc-dialog').dialog('isOpen') ||
+				$('#export-cc-dialog').dialog('isOpen') ||
 				$('#comments-dialog').dialog('isOpen') ||
 				$('#student-dialog').dialog('isOpen'))) {
 					unhideMultimedia();
@@ -1170,6 +1207,30 @@ $(function() {
 			out: removeHighlight
 	};
 
+	// where html5 might work we have an html5 player followed by the ususal object or embed
+	// check the dom to see if it will actually work. If so use html5 with other stuff inside it
+	// otherwise remove html5
+	//
+	// you'd hope that the html5 player would call what's inside if it can't work, but
+	// in firefox it give the user an error without trying. Hence the code below that actually
+	// checks. Let's hope it doesn't lie. Unfortunately many of the players say "maybe."
+	// We just can't win.
+
+	$(".html5video").each(function(index) {
+             var html5 = $(this);
+	     var source = html5.children().first();
+	     var html5ok = false;
+	     try {
+		 html5ok = !!html5[0].canPlayType(source.attr('type'));
+	     } catch (err) {
+	     }
+	     if (html5ok) {
+		 html5.next().remove();
+		 html5.show();
+	     } else {
+		 html5.remove();
+	     }
+            });
 
 	$("li.dropdown").hoverIntent(megaConfig);
 	$("#dropDownDiv").hide();
@@ -1217,6 +1278,11 @@ function closeNewPageDialog() {
 
 function closeImportCcDialog() {
 	$('#import-cc-dialog').dialog('close');
+	oldloc.focus();
+}
+
+function closeExportCcDialog() {
+	$('#export-cc-dialog').dialog('close');
 	oldloc.focus();
 }
 

@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EventRegistryServiceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EventRegistryServiceImpl.java $
  * $Id: EventRegistryServiceImpl.java 101440 2011-12-06 07:29:54Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

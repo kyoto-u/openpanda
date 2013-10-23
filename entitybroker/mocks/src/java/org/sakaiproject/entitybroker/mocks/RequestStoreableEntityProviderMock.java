@@ -1,6 +1,6 @@
 /**
  * $Id: RequestStoreableEntityProviderMock.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/mocks/src/java/org/sakaiproject/entitybroker/mocks/RequestStoreableEntityProviderMock.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/mocks/src/java/org/sakaiproject/entitybroker/mocks/RequestStoreableEntityProviderMock.java $
  * RESTfulEntityProviderMock.java - entity-broker - Apr 9, 2008 10:31:13 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

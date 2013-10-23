@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.2/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/model/DateBean.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.3/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/model/DateBean.java $
  * $Id: DateBean.java 101653 2011-12-12 21:07:13Z aaronz@vt.edu $
  ***********************************************************************************
  *

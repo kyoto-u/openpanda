@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.2/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
- * $Id: BaseAssignmentService.java 118579 2013-01-22 16:56:33Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
+ * $Id: BaseAssignmentService.java 127894 2013-07-29 14:34:57Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -403,8 +403,21 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	 */
 	protected boolean unlockCheckWithGroups(String lock, String resource, Assignment assignment)
 	{
-		Collection groupIds = assignment.getGroups();
+		// SAK-23755 addons:
+		// super user should be allowed
+		if (SecurityService.isSuperUser())
+			return true;
+	
+		// all.groups permission should apply down to group level
+		String context = assignment.getContext();
+		String userId = SessionManager.getCurrentSessionUserId();
+		if (allowAllGroups(context) && AuthzGroupService.isAllowed(userId,lock, SiteService.siteReference(context)))
+		{
+			return true;
+		}
 		
+		// group level users
+		Collection groupIds = assignment.getGroups();
 		if(groupIds != null && groupIds.size() > 0)
 		{
 			Iterator i = groupIds.iterator();
@@ -412,8 +425,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			{
 				String groupId = (String) i.next();
 				boolean isAllowed
-					= AuthzGroupService.isAllowed(
-							SessionManager.getCurrentSessionUserId(),lock,groupId);
+					= AuthzGroupService.isAllowed(userId,lock,groupId);
 				
 				if(isAllowed) return true;
 			}
@@ -1140,78 +1152,96 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		}
 		else
 		{
+			List assignments = getUnfilteredAssignments(context);
+
 			if (userId == null)
 			{
 				userId = SessionManager.getCurrentSessionUserId();
 			}
-			List assignments = new ArrayList();
-	
-			if ((m_caching) && (m_assignmentCache != null) && (!m_assignmentCache.disabled()))
-			{
-				// if the cache is complete, use it
-				if (m_assignmentCache.isComplete())
-				{
-					assignments = m_assignmentCache.getAll();
-					// TODO: filter by context
-				}
-	
-				// otherwise get all the assignments from storage
-				else
-				{
-					// Note: while we are getting from storage, storage might change. These can be processed
-					// after we get the storage entries, and put them in the cache, and mark the cache complete.
-					// -ggolden
-					synchronized (m_assignmentCache)
-					{
-						// if we were waiting and it's now complete...
-						if (m_assignmentCache.isComplete())
-						{
-							assignments = m_assignmentCache.getAll();
-							return assignments;
-						}
-	
-						// save up any events to the cache until we get past this load
-						m_assignmentCache.holdEvents();
-	
-						assignments = m_assignmentStorage.getAll(context);
-	
-						// update the cache, and mark it complete
-						for (int i = 0; i < assignments.size(); i++)
-						{
-							Assignment assignment = (Assignment) assignments.get(i);
-							m_assignmentCache.put(assignment.getReference(), assignment);
-						}
-	
-						m_assignmentCache.setComplete();
-						// TODO: not reall, just for context
-	
-						// now we are complete, process any cached events
-						m_assignmentCache.processEvents();
-					}
-				}
-			}
-	
-			else
-			{
-				// // if we have done this already in this thread, use that
-				// assignments = (List) CurrentService.getInThread(context+".assignment.assignments");
-				// if (assignments == null)
-				// {
-				assignments = m_assignmentStorage.getAll(context);
-				//				
-				// // "cache" the assignments in the current service in case they are needed again in this thread...
-				// if (assignments != null)
-				// {
-				// CurrentService.setInThread(context+".assignment.assignments", assignments);
-				// }
-				// }
-			}
-			
+
 			// check for the site and group permissions of these assignments as well as visibility (release time, etc.)
 			rv = getAccessibleAssignments(assignments, context, userId);
 		}
 
 		return rv;
+	}
+
+	/**
+	 * Access all assignment objects for a site without considering user permissions.
+	 * This should be used with care; almost all scenarios should use {@link getAssignments(String)}
+	 * or {@link getAssignments(String, String)}, which do enforce permissions and visibility.
+	 *
+	 * TODO: Decide whether or not this should be exposed as part of the public API.
+	 *
+	 * @return A list of Assignment objects.
+	 *
+	 */
+	protected List getUnfilteredAssignments(String context)
+	{
+		List assignments = new ArrayList();
+
+		if ((m_caching) && (m_assignmentCache != null) && (!m_assignmentCache.disabled()))
+		{
+			// if the cache is complete, use it
+			if (m_assignmentCache.isComplete())
+			{
+				assignments = m_assignmentCache.getAll();
+				// TODO: filter by context
+			}
+
+			// otherwise get all the assignments from storage
+			else
+			{
+				// Note: while we are getting from storage, storage might change. These can be processed
+				// after we get the storage entries, and put them in the cache, and mark the cache complete.
+				// -ggolden
+				synchronized (m_assignmentCache)
+				{
+					// if we were waiting and it's now complete...
+					if (m_assignmentCache.isComplete())
+					{
+						assignments = m_assignmentCache.getAll();
+						return assignments;
+					}
+
+					// save up any events to the cache until we get past this load
+					m_assignmentCache.holdEvents();
+
+					assignments = m_assignmentStorage.getAll(context);
+
+					// update the cache, and mark it complete
+					for (int i = 0; i < assignments.size(); i++)
+					{
+						Assignment assignment = (Assignment) assignments.get(i);
+						m_assignmentCache.put(assignment.getReference(), assignment);
+					}
+
+					m_assignmentCache.setComplete();
+					// TODO: not reall, just for context
+
+					// now we are complete, process any cached events
+					m_assignmentCache.processEvents();
+				}
+			}
+		}
+
+		else
+		{
+			// // if we have done this already in this thread, use that
+			// assignments = (List) CurrentService.getInThread(context+".assignment.assignments");
+			// if (assignments == null)
+			// {
+			assignments = m_assignmentStorage.getAll(context);
+			//
+			// // "cache" the assignments in the current service in case they are needed again in this thread...
+			// if (assignments != null)
+			// {
+			// CurrentService.setInThread(context+".assignment.assignments", assignments);
+			// }
+			// }
+		}
+
+		return assignments;
 	}
 
 	/**

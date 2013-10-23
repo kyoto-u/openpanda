@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/AuthZGroupCollectionBean.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/AuthZGroupCollectionBean.java $
  * $Id: AuthZGroupCollectionBean.java 9108 2006-05-08 14:30:57Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
  * $Id: FormattedText.java 122360 2013-04-08 15:58:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

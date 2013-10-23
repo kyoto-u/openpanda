@@ -1,6 +1,6 @@
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.2/matrix/api/src/java/org/theospi/portfolio/matrix/model/ScaffoldingCell.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.3/matrix/api/src/java/org/theospi/portfolio/matrix/model/ScaffoldingCell.java $
 * $Id: ScaffoldingCell.java 73575 2010-02-16 20:55:30Z botimer@umich.edu $
 ***********************************************************************************
 *

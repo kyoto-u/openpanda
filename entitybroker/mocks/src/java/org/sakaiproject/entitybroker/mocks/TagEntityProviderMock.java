@@ -1,6 +1,6 @@
 /**
  * $Id: TagEntityProviderMock.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/mocks/src/java/org/sakaiproject/entitybroker/mocks/TagEntityProviderMock.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/mocks/src/java/org/sakaiproject/entitybroker/mocks/TagEntityProviderMock.java $
  * TagEntityProviderMock.java - entity-broker - Aug 8, 2008 1:54:21 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

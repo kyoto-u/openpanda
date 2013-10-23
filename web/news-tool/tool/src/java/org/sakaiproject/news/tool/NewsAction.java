@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.2/news-tool/tool/src/java/org/sakaiproject/news/tool/NewsAction.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.3/news-tool/tool/src/java/org/sakaiproject/news/tool/NewsAction.java $
  * $Id: NewsAction.java 121667 2013-03-22 20:38:10Z arwhyte@umich.edu $
  ***********************************************************************************
  *

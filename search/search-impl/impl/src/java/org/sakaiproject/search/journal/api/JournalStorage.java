@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/journal/api/JournalStorage.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/journal/api/JournalStorage.java $
  * $Id: JournalStorage.java 95581 2011-07-25 15:06:10Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

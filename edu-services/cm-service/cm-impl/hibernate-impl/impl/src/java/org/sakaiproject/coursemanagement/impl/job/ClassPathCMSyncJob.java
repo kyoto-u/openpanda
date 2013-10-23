@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.2/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/job/ClassPathCMSyncJob.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.3/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/job/ClassPathCMSyncJob.java $
  * $Id: ClassPathCMSyncJob.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

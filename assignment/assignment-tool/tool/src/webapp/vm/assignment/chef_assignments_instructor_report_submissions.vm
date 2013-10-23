@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_report_submissions.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_report_submissions.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructory_report_submissions.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_report_submissions.vm,v 1.6 2005/06/03 15:38:27 gsilver.umich.edu Exp $ -->
 <div class="portletBody">
@@ -41,7 +41,7 @@
 		<h3>
 		$!tlang.getString('gen.grarep')
 	</h3>
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div class="clear"></div>#end
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
 	#if ($!submissions.size() == 0)
 		<p class="instruction">
 			$tlang.getString("gen.theare2")
@@ -118,7 +118,7 @@
 				#end
 			</div>
 		</div>	
-		#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div class="clear"></div>#end
+		#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
 		<form name="reportForm" action="#toolForm("AssignmentAction")" method="post">
 			#if ($submissions.size()==0)
 				<p class="instruction">

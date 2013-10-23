@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
  * $Id: BasicCitationService.java 118326 2013-01-14 18:29:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

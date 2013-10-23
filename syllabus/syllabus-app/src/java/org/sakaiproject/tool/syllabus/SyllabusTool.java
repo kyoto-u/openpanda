@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.2/syllabus-app/src/java/org/sakaiproject/tool/syllabus/SyllabusTool.java $
- * $Id: SyllabusTool.java 121813 2013-03-27 00:08:31Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.3/syllabus-app/src/java/org/sakaiproject/tool/syllabus/SyllabusTool.java $
+ * $Id: SyllabusTool.java 125641 2013-06-11 22:15:41Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -722,10 +722,14 @@ public class SyllabusTool
         if(entry.getEntry().getAsset()!=null)
         {
         	StringBuilder alertMsg = new StringBuilder();
-        	String errorMsg= null;
+        	String cleanedText = null;
     		try
     		{
-    			errorMsg =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+    			cleanedText  =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+    			if (cleanedText != null)
+    			{
+        			entry.getEntry().setAsset(cleanedText);
+    			}
     			if (alertMsg.length() > 0)
     			{
     			  evilTagMsg =alertMsg.toString();
@@ -735,7 +739,7 @@ public class SyllabusTool
     		 }
     		catch (Exception e)
     		{
-    			logger.warn(this + " " + errorMsg,e);
+    			logger.warn(this + " " + cleanedText, e);
     		}
         }
         if (entry.justCreated == true)
@@ -796,10 +800,14 @@ public class SyllabusTool
         if(entry.getEntry().getAsset()!=null)
         {
         	StringBuilder alertMsg = new StringBuilder();
-        	String errorMsg= null;
+        	String cleanedText = null;
         	try
     		{
-    			errorMsg =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+    			cleanedText  =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+    			if (cleanedText != null)
+    			{
+					entry.getEntry().setAsset(cleanedText);
+				}
     			if (alertMsg.length() > 0)
     			{
 					evilTagMsg =alertMsg.toString();
@@ -809,7 +817,7 @@ public class SyllabusTool
     		 }
     		catch (Exception e)
     		{
-    			logger.warn(this + " " + errorMsg,e);
+    			logger.warn(this + " " + cleanedText, e);
     		}
         }
         if (entry.justCreated == true)
@@ -980,10 +988,14 @@ public class SyllabusTool
         if(entry.getEntry().getAsset()!=null)
         {
         	StringBuilder alertMsg = new StringBuilder();
-        	String errorMsg= null;
+        	String cleanedText = null;
         	try
     		{
-    			errorMsg =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+    			cleanedText  =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+    			if (cleanedText != null) 
+    			{
+					entry.getEntry().setAsset(cleanedText);
+				}
     			if (alertMsg.length() > 0)
     			{
 					evilTagMsg =alertMsg.toString();
@@ -993,7 +1005,7 @@ public class SyllabusTool
     		 }
     		catch (Exception e)
     		{
-    			logger.warn(this + " " + errorMsg,e);
+    			logger.warn(this + " " + cleanedText, e);
     		}
         }
         if (entry.justCreated == false)
@@ -1057,10 +1069,14 @@ public class SyllabusTool
         if(entry.getEntry().getAsset()!=null)
         {
         	StringBuilder alertMsg = new StringBuilder();
-        	String errorMsg= null;
+        	String cleanedText = null;
         	try
     		{
-    			errorMsg =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+				cleanedText  =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+				if (cleanedText != null)
+				{
+					entry.getEntry().setAsset(cleanedText);
+				}
     			if (alertMsg.length() > 0)
     			{
 					evilTagMsg =alertMsg.toString();
@@ -1070,7 +1086,7 @@ public class SyllabusTool
     		 }
     		catch (Exception e)
     		{
-    			logger.warn(this + " " + errorMsg,e);
+    			logger.warn(this + " " + cleanedText, e);
     		}
         }
         if (entry.justCreated == false)
@@ -1175,10 +1191,14 @@ public class SyllabusTool
     if(entry.getEntry().getAsset()!=null)
     {
     	StringBuilder alertMsg = new StringBuilder();
-    	String errorMsg= null;
+    	String cleanedText = null;
     	try
 		{
-			errorMsg =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+			cleanedText  =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+			if (cleanedText != null)
+			{
+				entry.getEntry().setAsset(cleanedText);
+			}
 			if (alertMsg.length() > 0)
 			{
 				evilTagMsg =alertMsg.toString();
@@ -1188,7 +1208,7 @@ public class SyllabusTool
 		 }
 		catch (Exception e)
 		{
-			logger.warn(this + " " + errorMsg,e);
+			logger.warn(this + " " + cleanedText, e);
 		}
     } 
       return "preview";
@@ -1217,10 +1237,14 @@ public class SyllabusTool
     if(entry.getEntry().getAsset()!=null)
     {
     	StringBuilder alertMsg = new StringBuilder();
-    	String errorMsg= null;
+    	String cleanedText = null;
     	try
 		{
-			errorMsg =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+			cleanedText  =  FormattedText.processFormattedText(entry.getEntry().getAsset(), alertMsg);
+			if (cleanedText != null)
+			{
+				entry.getEntry().setAsset(cleanedText);
+			}
 			if (alertMsg.length() > 0)
 			{
 				evilTagMsg =alertMsg.toString();
@@ -1230,7 +1254,7 @@ public class SyllabusTool
 		 }
 		catch (Exception e)
 		{
-			logger.warn(this + " " + errorMsg,e);
+			logger.warn(this + " " + cleanedText, e);
 		}
     }      
       return "read_preview";

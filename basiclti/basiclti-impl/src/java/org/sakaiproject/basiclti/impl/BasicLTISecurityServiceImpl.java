@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-impl/src/java/org/sakaiproject/basiclti/impl/BasicLTISecurityServiceImpl.java $
- * $Id: BasicLTISecurityServiceImpl.java 120423 2013-02-24 01:36:55Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-impl/src/java/org/sakaiproject/basiclti/impl/BasicLTISecurityServiceImpl.java $
+ * $Id: BasicLTISecurityServiceImpl.java 128165 2013-08-04 00:14:49Z csev@umich.edu $
  * 
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -315,9 +315,11 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 									   ltiService.filterContent(content, tool);
 								   }
 							   }
-							   String splash = (String) tool.get("splash");
+							   String splash = null;
+							   if ( tool != null ) splash = (String) tool.get("splash");
 							   String splashParm = req.getParameter("splash");
-							   String siteId = (String) tool.get(LTIService.LTI_SITE_ID);
+							   String siteId = null;
+							   if ( tool != null ) siteId = (String) tool.get(LTIService.LTI_SITE_ID);
 							   if ( splashParm == null && splash != null && splash.trim().length() > 1 )
 							   {
 									// XSS Note: Administrator-created tools can put HTML in the splash.

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/import-impl/src/java/org/sakaiproject/importer/impl/importables/AssessmentQuestion.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-impl/src/java/org/sakaiproject/importer/impl/importables/AssessmentQuestion.java $
  * $Id: AssessmentQuestion.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

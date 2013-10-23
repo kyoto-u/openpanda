@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/journal/api/JournalManager.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/journal/api/JournalManager.java $
  * $Id: JournalManager.java 70943 2010-01-06 09:42:49Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

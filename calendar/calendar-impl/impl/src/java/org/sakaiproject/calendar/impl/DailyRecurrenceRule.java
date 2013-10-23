@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/DailyRecurrenceRule.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/DailyRecurrenceRule.java $
  * $Id: DailyRecurrenceRule.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

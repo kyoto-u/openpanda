@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/StudentScoreUpdateListener.java $
- * $Id: StudentScoreUpdateListener.java 113421 2012-09-21 21:42:26Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/StudentScoreUpdateListener.java $
+ * $Id: StudentScoreUpdateListener.java 127394 2013-07-19 03:16:01Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -65,7 +65,7 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Rachel Gollub
- * @version $Id: StudentScoreUpdateListener.java 113421 2012-09-21 21:42:26Z ottenhoff@longsight.com $
+ * @version $Id: StudentScoreUpdateListener.java 127394 2013-07-19 03:16:01Z ktsao@stanford.edu $
  */
 
 public class StudentScoreUpdateListener
@@ -138,6 +138,18 @@ public class StudentScoreUpdateListener
             gradingarray = question.getItemGradingDataArray();
           }
 
+          int fibFinNumCorrect  = 0;
+          if (question.getItemData().getTypeId().equals(Long.valueOf(8)) || question.getItemData().getTypeId().equals(Long.valueOf(11))) {
+        	  Iterator itemGradingIter = gradingarray.iterator();
+        	  while (itemGradingIter.hasNext()){
+        		  Object obj = itemGradingIter.next();
+        		  ItemGradingData data = (ItemGradingData) obj;
+        		  if (Boolean.TRUE.equals(data.getIsCorrect())) {
+        			  fibFinNumCorrect++;
+        		  }
+        	  }
+          }
+          
           log.debug("****3a Gradingarray length2 = " + gradingarray.size());
           log.debug("****3b set points = " + question.getExactPoints() + ", comments to " + question.getGradingComment());
           Iterator iter3 = gradingarray.iterator();
@@ -152,7 +164,16 @@ public class StudentScoreUpdateListener
               data.setSubmittedDate(null);
               data.setAgentId(bean.getStudentId());
             }
-            float newAutoScore = (question.getExactPoints() / (float) gradingarray.size());
+            
+            float newAutoScore = 0;            
+            if ((question.getItemData().getTypeId().equals(Long.valueOf(8)) || question.getItemData().getTypeId().equals(Long.valueOf(11))) && fibFinNumCorrect != 0) {
+            	if (Boolean.TRUE.equals(data.getIsCorrect())) {
+            		newAutoScore = (question.getExactPoints() / (float) fibFinNumCorrect);
+            	}
+            }
+            else {
+          	  newAutoScore = (question.getExactPoints() / (float) gradingarray.size());
+            }
             float oldAutoScore = 0;
             if (data.getAutoScore() !=null) {
               oldAutoScore=data.getAutoScore().floatValue();

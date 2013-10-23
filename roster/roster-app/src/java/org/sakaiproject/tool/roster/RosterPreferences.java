@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.2/roster-app/src/java/org/sakaiproject/tool/roster/RosterPreferences.java $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.3/roster-app/src/java/org/sakaiproject/tool/roster/RosterPreferences.java $
  * $Id: RosterPreferences.java 114413 2012-10-16 15:13:37Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

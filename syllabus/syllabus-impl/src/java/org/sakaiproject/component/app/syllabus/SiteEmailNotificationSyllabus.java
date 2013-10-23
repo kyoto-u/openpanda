@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.2/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SiteEmailNotificationSyllabus.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.3/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SiteEmailNotificationSyllabus.java $
  * $Id: SiteEmailNotificationSyllabus.java 95080 2011-07-13 14:06:36Z gjthomas@iupui.edu $
  ***********************************************************************************
  *

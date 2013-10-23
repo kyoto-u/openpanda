@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.2/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementActionState.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.3/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementActionState.java $
  * $Id: AnnouncementActionState.java 109814 2012-06-28 15:20:46Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

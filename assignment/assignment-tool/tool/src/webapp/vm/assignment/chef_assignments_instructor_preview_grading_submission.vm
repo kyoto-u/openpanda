@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_preview_grading_submission.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_preview_grading_submission.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start:  chef_assignments_instructor_preview_grading_submission.vm -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_preview_grading_submission.vm,v 1.5 2005/05/16 02:26:05 zqian.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
@@ -39,7 +39,7 @@
 		#end
 	</ul>
 		<h3>$tlang.getString("gen.pre") $tlang.getString("gen.instrcomment") 	$tlang.getString("gen.to") 				$tlang.getString("gen.openquote")$validator.escapeHtml($assignment.title)$tlang.getString("gen.closequote")</h3>
-		#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div class="clear"></div>#end		
+		#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end		
 		<form action="#toolForm("AssignmentAction")" method="post" >   
 			<table class="itemSummary">
 				<tr>

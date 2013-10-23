@@ -1283,6 +1283,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
     String studentanswer = "";
     boolean matchresult = false;
     float totalScore = (float) 0;
+    data.setIsCorrect(Boolean.FALSE);
     
     if (data.getPublishedAnswerId() == null) {
     	return totalScore;
@@ -1345,12 +1346,12 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 
             if (!alreadyused) {
               totalScore += ((AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId())).getScore().floatValue();
+              data.setIsCorrect(Boolean.TRUE);
             }
 
             // SAK-3005: quit if answer is correct, e.g. if you answered A for {a|A}, you already scored
             break;
           }
-      
      }
     }
     return totalScore;
@@ -1438,10 +1439,12 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
   
   public float getFINScore(ItemGradingIfc data,  ItemDataIfc itemdata, HashMap publishedAnswerHash) throws FinFormatException
   {
+	  data.setIsCorrect(Boolean.FALSE);
 	  float totalScore = (float) 0;
 	  boolean matchresult = getFINResult(data, itemdata, publishedAnswerHash);
 	  if (matchresult){
 		  totalScore += ((AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId())).getScore().floatValue();
+		  data.setIsCorrect(Boolean.TRUE);
 	  }	
 	  return totalScore;
 	  

@@ -1,6 +1,6 @@
 /**
  * $Id: EntityBrokerRESTServiceManager.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBrokerRESTServiceManager.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBrokerRESTServiceManager.java $
  * TestManager.java - entity-broker - Jul 23, 2008 6:27:29 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

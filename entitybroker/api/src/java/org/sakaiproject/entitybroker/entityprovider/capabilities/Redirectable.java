@@ -1,6 +1,6 @@
 /**
  * $Id: Redirectable.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/Redirectable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/Redirectable.java $
  * URLconfigurable.java - entity-broker - Jul 29, 2008 2:11:58 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

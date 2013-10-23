@@ -16,7 +16,7 @@
         id number(19,0) not null,
         itemId varchar2(255) not null,
         groupId varchar2(255) not null,
-        groups varchar2(500),
+        groups clob,
         primary key (id)
     );
 
@@ -28,7 +28,7 @@
         sakaiId varchar2(250),
         name varchar2(100),
         html clob,
-        description varchar2(500),
+        description clob,
         height varchar2(8),
         width varchar2(8),
         alt varchar2(500),
@@ -40,7 +40,7 @@
         subrequirement number(1,0),
         requirementText varchar2(20),
         sameWindow number(1,0),
-        groups varchar2(500),
+        groups clob,
         anonymous number(1,0),
         showComments number(1,0),
         forcedCommentsAnonymous number(1,0),

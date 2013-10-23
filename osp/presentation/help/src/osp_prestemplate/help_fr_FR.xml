@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="portfolio_templates_overview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>portfolio_templates_overview_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modèles de portfolio : Généralités</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/portfolio_templates_overview_fr_FR.html</value>
+      </property>
+      <property name="defaultForTool">
+      	<value>osp.presTemplate</value>
+      </property>
+   </bean>
+   <bean id="tpttatrt"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>tpttatrt_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Outils Ressources</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/tpttatrt_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="preparing_to_create_a_template"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>preparing_to_create_a_template_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Préparation à la création d'un modèle</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/preparing_to_create_a_template_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="creating_a_template"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>creating_a_template_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Création d'un modèle</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/creating_a_template_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="publishing_a_template"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>publishing_a_template_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Publication d'un modèle</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/publishing_a_template_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="changing_a_template"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_a_template_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modification d'un modèle</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/changing_a_template_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="copying_a_template"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>copying_a_template_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Copie d'un modèle</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/copying_a_template_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="exporting_and_importing_a_template"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>exporting_and_importing_a_template_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Exportation et importation</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/exporting_and_importing_a_template_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="deleting_a_template"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>deleting_a_template_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Suppression d'un modèle</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/deleting_a_template_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="cpftptt"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>cpftptt_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modification des permissions</value>
+      </property>
+      <property name="location">
+         <value>/osp_prestemplate/cpftptt_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean" id="ospPortfolioTemplateCategory">
+               <property name="name">
+                 <value>Modèles de portfolios</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="portfolio_templates_overview"/>
+                     <ref bean="tpttatrt"/>
+                     <ref bean="preparing_to_create_a_template"/>
+                     <ref bean="creating_a_template"/>
+                     <ref bean="publishing_a_template"/>
+                     <ref bean="changing_a_template"/>
+                     <ref bean="copying_a_template"/>
+                     <ref bean="exporting_and_importing_a_template"/>
+                     <ref bean="deleting_a_template"/>
+                     <ref bean="cpftptt"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

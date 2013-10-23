@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.2/site-manage-api/api/src/java/org/sakaiproject/sitemanage/api/SectionField.java $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.3/site-manage-api/api/src/java/org/sakaiproject/sitemanage/api/SectionField.java $
  * $Id: SectionField.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

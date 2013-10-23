@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-impl/src/java/org/sakaiproject/lti/impl/BaseLTIService.java $
- * $Id: BaseLTIService.java 119499 2013-02-05 05:43:39Z zqian@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-impl/src/java/org/sakaiproject/lti/impl/BaseLTIService.java $
+ * $Id: BaseLTIService.java 127241 2013-07-18 16:17:45Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -265,7 +265,7 @@ public abstract class BaseLTIService implements LTIService {
 	 */
 	protected String[] getContentModelDao(Map<String, Object> tool, String siteId, boolean isMaintainRole) {
 		String[] retval = foorm.filterForm(tool, CONTENT_MODEL);
-		if (!isAdmin(siteId)) retval = foorm.filterForm(null, retval, null, ".*:role=admin.*");
+		if (!isAdmin(siteId, isMaintainRole)) retval = foorm.filterForm(null, retval, null, ".*:role=admin.*");
 		return retval;
 	}
 
@@ -352,11 +352,15 @@ public abstract class BaseLTIService implements LTIService {
 	}
 
 	protected boolean isAdmin(String siteId) {
+		return isAdmin(siteId,isMaintain(siteId));
+	}
+
+	protected boolean isAdmin(String siteId, boolean isMaintainRole) {
 		if ( siteId == null ) {
 			throw new java.lang.RuntimeException("isAdmin() requires non-null siteId");
 		}
 		if (!ADMIN_SITE.equals(siteId) ) return false;
-		return isMaintain(siteId);
+		return isMaintainRole;
 	}
 
 	/**
@@ -865,7 +869,7 @@ public abstract class BaseLTIService implements LTIService {
 
 		String siteStr = (String) content.get(LTI_SITE_ID);
 		// only admin can remve content from other site
-		if ( ! siteId.equals(siteStr) && !isAdmin() ) {
+		if ( ! siteId.equals(siteStr) && !isAdmin(siteId, isMaintainRole) ) {
 			return rb.getString("error.placement.not.found");
 		}
 

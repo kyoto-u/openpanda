@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/tool/impl/MyNonPortableSession.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/tool/impl/MyNonPortableSession.java $
  * $Id: MyNonPortableSession.java 59307 2009-03-30 16:10:16Z arwhyte@umich.edu $
  **********************************************************************************
  *

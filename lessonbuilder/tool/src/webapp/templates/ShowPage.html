@@ -43,7 +43,6 @@ function resizeiframe(id) {
 <!-- <script type="text/javascript" src="$context/js/jquery-1.4.2.min.js"></script> -->
 <script type="text/javascript" src="$context/js/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="$context/js/jquery-ui-1.8.17.custom.min.js"></script>
-<script type="text/javascript" src="../js/simple-page.js" rsf:id="scr=rewrite-url"></script>
 <script type="text/javascript" src="$context/js/hoverIntent.js"></script>
 <script type="text/javascript" src="$context/js/show-page.js"></script>
 <script type="text/javascript" src="$context/js/gradingAjax.js"></script>
@@ -73,9 +72,9 @@ function resizeiframe(id) {
 		</div>
 
 		<div rsf:id="crumbdiv" class="fullwidth breadcrumbs" role="navigation">
-                  <a href="#" rsf:id="resetbutton2"><img rsf:id="resetimage2" src="/library/skin/default/images/reload.gif" style="float:left; margin-right:4px;margin-top:2px"/></a>
+                  <a href="#" rsf:id="resetbutton2"><img rsf:id="resetimage2" style="float:left; margin-right:4px;margin-top:2px"/></a>
 		  <span rsf:id="crumb:"><a href="#" rsf:id="crumb-link"></a><span rsf:id="crumb-follow"></span></span>
-                  <a href="#" rsf:id="helpbutton2" target="_blank"><img rsf:id="helpimage2" src="/library/skin/default/images/help.gif" style="float:right;margin-left:4px;margin-top:2px"/><span rsf:id="helpnewwindow2" class="offscreen"></span> </a>
+                  <a href="#" rsf:id="helpbutton2" target="_blank"><img rsf:id="helpimage2" style="float:right;margin-left:4px;margin-top:2px"/><span rsf:id="helpnewwindow2" class="offscreen"></span> </a>
 		</div>
 
 		
@@ -173,6 +172,9 @@ function resizeiframe(id) {
 		    <br />
 		    <a href="#" role="menuitem" rsf:id="import-cc" id="import-cc"><span rsf:id="msg=simplepage.import_cc_button"></span></a>
 		    <span rsf:id="msg=simplepage.importcc-descrip"></span>
+		    <br />
+		    <a href="#" role="menuitem" rsf:id="export-cc" id="export-cc"><span rsf:id="msg=simplepage.export_cc"></span></a>
+		    <span rsf:id="msg=simplepage.exportcc-descrip"></span>
 		    <br />
 		  </span>
 		  
@@ -319,10 +321,18 @@ function resizeiframe(id) {
 
 					<td rsf:id="movie-td" class="edit-col"><div><a href="#" class="usebutton edit-movie" onclick="return false" rsf:id="edit-movie"></a></div></td>
 
+
 					<td rsf:id="movieSpan" class="hideOnDialog"><div>
 					    <div rsf:id="item-group-titles5" class="item-group-titles"></div>
+ 					    <video rsf:id="h5video" controls="controls" class="html5video" style="display:none">
+ 					      <source rsf:id="h5source" />
+ 					    </video>
+ 					    <audio rsf:id="h5audio" controls="controls" class="html5video" style="display:none">
+ 					      <source rsf:id="h5asource" />
+ 					    </audio>
 					    <embed rsf:id="movieEmbed" autoplay="false" autostart="false" scale="aspect" />
-					    <object rsf:id="movieObject"><param name="src" rsf:id="movieURLInject" /><param name="FlashVars" rsf:id="flashvars"/><param name="autoplay" value="false"/><param name="autostart" value="false"/><param name="scale" value="aspect"/>
+					    <object rsf:id="movieObject"><param name="src" rsf:id="movieURLInject" /><param name="FlashVars" rsf:id="flashvars"/><param name="autoplay" value="false"/><param name="autostart" value="false"/><param name="scale" value="aspect"/><param name="showControls" value="true" />
+ 					      <param rsf:id="wmode" name="wmode" value="opaque"/>
 					      <p rsf:id="noplugin-p"></p><br rsf:id="noplugin-br"/><a href="#" rsf:id="noplugin" target="_blank"></a>
 					      <embed rsf:id="mp4-embed" autoplay="false" autostart="false" scale="aspect" />
 					      <object rsf:id="mp4-object"><param name="src" rsf:id="mp4-inject" /><param name="autoplay" value="false"/><param name="autostart" value="false"/><param name="scale" value="aspect"/>
@@ -787,6 +797,9 @@ function resizeiframe(id) {
 					    <input type="file" name="mm-file" id="cc-file" style="width:95%" class="edit-multimedia-input" /><br />
 					  </p>
 
+					  <input type="checkbox" id="import-toplevel" rsf:id="import-toplevel" />
+					  <label for="import-toplevel"><span rsf:id="msg=simplepage.import-toplevel-label"></span></label><br />
+
 					  <p rsf:id="quizmsg" style="margin-bottom:0px"></p>
 					  <input type="hidden" name="quiztool" rsf:id="quiztool" />
 					  <span rsf:id="quiztools"/>
@@ -821,6 +834,30 @@ function resizeiframe(id) {
 					  <p>
 					    <input class="bold" type="submit" id="import-cc-submit" rsf:id="import-cc-submit" />
 					    <input type="submit" rsf:id="mm-cancel" onclick="closeImportCcDialog(); return false" />
+					  </p>
+					  <p class="hideOnDialog" id="loading" rsf:id="msg=simplepage.loading">
+					  </p>
+
+
+					</div>
+				</form>
+			</div>
+
+			<div id="export-cc-dialog" rsf:id="export-cc-dialog">
+				<form action="#" rsf:id="export-cc-form" method="post" enctype="multipart/form-data">
+					<div class="border">					
+					  <p class="required">
+					    <input type="checkbox" id="export-cc-v11" rsf:id="export-cc-v11"/>
+					    <label rsf:id="msg=simplepage.exportcc-use11" for="export-cc-v11" id="export-cc-v11-label">Use v1.1</label> <br />
+					  </p>
+					  <p class="required">
+					    <input type="checkbox" id="export-cc-bank" rsf:id="export-cc-bank"/>
+					    <label rsf:id="msg=simplepage.exportcc-includebank" for="export-cc-bank" id="export-cc-bank-label">Include bank</label> <br />
+					  </p>
+					  <a href="#" style="display:none" rsf:id="export-cc-link" id="export-cc-link"></a>
+					  <p>
+					    <input class="bold" type="submit" id="export-cc-submit" rsf:id="export-cc-submit" />
+					    <input type="submit" rsf:id="export-cc-cancel" onclick="closeExportCcDialog(); return false" />
 					  </p>
 					  <p class="hideOnDialog" id="loading" rsf:id="msg=simplepage.loading">
 					  </p>
@@ -1169,8 +1206,5 @@ function resizeiframe(id) {
 		<script type="text/javascript" src="$context/js/periodicalupdater.js"></script>
 		<script type="text/javascript" src="$context/js/comments.js"></script>
 	</div>
-	<script type="text/javascript" language="JavaScript">
-		spiffyUp();	
-	</script>
 </body>
 </html>

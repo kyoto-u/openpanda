@@ -3420,5 +3420,13 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
         public List getItemGradingAttachmentList() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
+
+	public Boolean getIsCorrect() {
+	    throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public void setIsCorrect(Boolean isCorrect) {
+	    throw new UnsupportedOperationException("Not supported yet.");
+        }
     }
 }

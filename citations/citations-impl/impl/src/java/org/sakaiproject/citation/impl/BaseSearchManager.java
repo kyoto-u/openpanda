@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseSearchManager.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseSearchManager.java $
  * $Id: BaseSearchManager.java 117702 2012-12-14 14:30:43Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

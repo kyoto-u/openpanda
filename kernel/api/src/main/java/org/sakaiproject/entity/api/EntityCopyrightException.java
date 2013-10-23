@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/entity/api/EntityCopyrightException.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/entity/api/EntityCopyrightException.java $
  * $Id: EntityCopyrightException.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
  ***********************************************************************************
  *

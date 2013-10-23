@@ -92,8 +92,7 @@ ri
         allow(sp, "allowlori")
 ) { %>
 <form method="post" action="<%=launchURL.toString()%>">
-<!-- If key and secret are final, then either xml or launch final means no launch change by the user -->
-<% if ( ( allow(sp,"launch") && allow(sp,"xml") ) || allow(sp,"key") || allow(sp,"secret") ) { %>
+<% if ( allow(sp,"launch") || allow(sp,"xml") || allow(sp,"key") || allow(sp,"secret") ) { %>
 
 <h3><%=rb.getString("required.information") %></h3>
 <% if ( allow(sp,"launch") && allow(sp,"xml") ) { %>
@@ -174,7 +173,7 @@ if ( document.getElementById("UISwitcher") ) switchui();
 
 <% } %>
 
-<% if ( allowOutcomes && allow(sp,"gradable") ) { %>
+<% if ( allowOutcomes && allow(sp,"allowoutcomes") ) { %>
 <h3><%=rb.getString("gradable.information") %></h3>
 <p  class="shorttext" style="clear:none;">
 <label for="imsti.newassignment"><%=rb.getString("gradable.newassignment") %></label>
@@ -184,7 +183,7 @@ if ( document.getElementById("UISwitcher") ) switchui();
 
 <% } %>
 
-<% if ( allowOutcomes && allow(sp,"gradable") && assignments != null ) { %>
+<% if ( allowOutcomes && allow(sp,"allowoutcomes") && assignments != null ) { %>
 <p  class="shorttext" style="clear:none;">
 <%=rb.getString("gradable.title") %>
 <select name="imsti.assignment">

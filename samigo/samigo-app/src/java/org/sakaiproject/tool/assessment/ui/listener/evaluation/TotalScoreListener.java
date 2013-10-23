@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreListener.java $
- * $Id: TotalScoreListener.java 93497 2011-06-03 23:25:34Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreListener.java $
+ * $Id: TotalScoreListener.java 127215 2013-07-18 14:29:30Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -83,7 +83,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: TotalScoreListener.java 93497 2011-06-03 23:25:34Z ktsao@stanford.edu $
+ * @version $Id: TotalScoreListener.java 127215 2013-07-18 14:29:30Z ottenhoff@longsight.com $
  */
 
 public class TotalScoreListener
@@ -183,7 +183,7 @@ public class TotalScoreListener
     questionbean.setTypeId("0");   // if setting "", QuestionScoreBean.getTypeId will default to 1. Thus setting it to 0. 
     questionbean.setMaxScore("");
     questionbean.setDeliveryItem(new ArrayList());
-    questionbean.setSelectedSARationaleView(QuestionScoresBean.SHOW_SA_RATIONALE_RESPONSES_POPUP);
+    questionbean.setSelectedSARationaleView(QuestionScoresBean.SHOW_SA_RATIONALE_RESPONSES_INLINE);
     
     // if comes from scores link in author index (means to view the score of a different assessment)
     // we reset the following values for paging (for audio, displays 5 records; for others, display all)

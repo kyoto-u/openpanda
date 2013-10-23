@@ -1,6 +1,6 @@
 /*
  * *********************************************************************************
- *  $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.2/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/DeleteStructuredArtifactDefinitionController.java $
+ *  $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.3/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/DeleteStructuredArtifactDefinitionController.java $
  *  $Id: DeleteStructuredArtifactDefinitionController.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  * **********************************************************************************
  *

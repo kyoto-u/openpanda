@@ -1,6 +1,6 @@
 /**
  * $Id: Owner.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/Owner.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/Owner.java $
  * EntityMember.java - entity-broker - Aug 15, 2008 2:02:20 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

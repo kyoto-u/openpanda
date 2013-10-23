@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-api/api/src/java/org/sakaiproject/calendar/api/Calendar.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-api/api/src/java/org/sakaiproject/calendar/api/Calendar.java $
  * $Id: Calendar.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**
  * $Id: EntityRESTProviderBase.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/rest/src/java/org/sakaiproject/entitybroker/rest/EntityRESTProviderBase.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/rest/src/java/org/sakaiproject/entitybroker/rest/EntityRESTProviderBase.java $
  * EntityRESTProviderBase.java - entity-broker - Jan 14, 2009 12:54:57 AM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

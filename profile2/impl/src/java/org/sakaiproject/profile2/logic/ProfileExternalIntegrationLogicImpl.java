@@ -15,7 +15,7 @@ import org.sakaiproject.profile2.util.ProfileUtils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.http.AccessToken;
+import twitter4j.auth.AccessToken;
 
 /**
  * Implementation of ProfileExternalIntegrationLogic API
@@ -89,7 +89,10 @@ public class ProfileExternalIntegrationLogicImpl implements ProfileExternalInteg
 			AccessToken accessToken = new AccessToken(token, secret);
 			
 			//setup
-			Twitter twitter = new TwitterFactory().getOAuthAuthorizedInstance(config.get("key"), config.get("secret"), accessToken);
+			TwitterFactory factory = new TwitterFactory();
+			Twitter twitter = factory.getInstance();
+			twitter.setOAuthConsumer(config.get("key"), config.get("secret"));
+			twitter.setOAuthAccessToken(accessToken);
 			
 			//check
 			try {
@@ -141,7 +144,10 @@ public class ProfileExternalIntegrationLogicImpl implements ProfileExternalInteg
 				AccessToken accessToken = new AccessToken(userToken, userSecret);
 				
 				//setup
-				Twitter twitter = new TwitterFactory().getOAuthAuthorizedInstance(config.get("key"), config.get("secret"), accessToken);
+				TwitterFactory factory = new TwitterFactory();
+				Twitter twitter = factory.getInstance();
+				twitter.setOAuthConsumer(config.get("key"), config.get("secret"));
+				twitter.setOAuthAccessToken(accessToken);
 				
 				try {
 					twitter.updateStatus(message);

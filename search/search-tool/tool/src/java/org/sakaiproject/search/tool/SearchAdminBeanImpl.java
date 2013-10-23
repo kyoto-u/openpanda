@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchAdminBeanImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchAdminBeanImpl.java $
  * $Id: SearchAdminBeanImpl.java 74629 2010-03-15 14:51:52Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

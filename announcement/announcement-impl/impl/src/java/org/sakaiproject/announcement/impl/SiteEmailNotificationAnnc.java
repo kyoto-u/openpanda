@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.2/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/SiteEmailNotificationAnnc.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.3/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/SiteEmailNotificationAnnc.java $
  * $Id: SiteEmailNotificationAnnc.java 122893 2013-04-17 13:06:11Z arwhyte@umich.edu $
  ***********************************************************************************
  *

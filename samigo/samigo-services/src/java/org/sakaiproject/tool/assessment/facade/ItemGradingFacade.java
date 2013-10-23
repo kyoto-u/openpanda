@@ -65,6 +65,7 @@ private Long itemGradingId;
   private Boolean review;
   private Integer attemptsRemaining;
   private Set itemGradingAttachmentSet;
+  private Boolean isCorrect;
   
   public ItemGradingFacade() {
   }
@@ -211,5 +212,16 @@ private Long itemGradingId;
 		  }
 	  }
 	  return list;
+  }
+
+  public Boolean getIsCorrect() {
+      if (isCorrect == null) {
+	  isCorrect = Boolean.FALSE;
+      }
+      return isCorrect;
+  }
+     
+  public void setIsCorrect(Boolean isCorrect) {
+      this.isCorrect = isCorrect;
   }
 }

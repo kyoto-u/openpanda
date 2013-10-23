@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.2/web-portlet/src/java/org/sakaiproject/portlets/PortletIFrame.java $
- * $Id: PortletIFrame.java 121337 2013-03-16 18:54:31Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.3/web-portlet/src/java/org/sakaiproject/portlets/PortletIFrame.java $
+ * $Id: PortletIFrame.java 127107 2013-07-17 15:21:31Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005-2013 The Sakai Foundation.
@@ -26,6 +26,7 @@ import java.lang.Integer;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.File;
 
 import java.net.URL;
 import java.net.URLEncoder;
@@ -945,21 +946,19 @@ public class PortletIFrame extends GenericPortlet {
 
         Locale locale = new ResourceLoader().getLocale();
 
-/* TODO: Make this work
         if (locale != null){
             // check if localized file exists for current language/locale/variant
             String localizedFile = doc + "_" + locale.toString() + ext;
-            String filePath = getServletConfig().getServletContext().getRealPath( ".."+localizedFile );
+            String filePath = getPortletConfig().getPortletContext().getRealPath(".."+localizedFile);
             if ( (new File(filePath)).exists() )
                 return localizedFile;
 
             // otherwise, check if localized file exists for current language
             localizedFile = doc + "_" + locale.getLanguage() + ext;
-            filePath = getServletConfig().getServletContext().getRealPath( ".."+localizedFile );
+            filePath = getPortletConfig().getPortletContext().getRealPath(".."+localizedFile);
             if ( (new File(filePath)).exists() )
                 return localizedFile;
         }
-*/
         return filename;
     }
 

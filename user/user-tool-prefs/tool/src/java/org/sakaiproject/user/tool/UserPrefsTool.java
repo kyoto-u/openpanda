@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.2/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
- * $Id: UserPrefsTool.java 123052 2013-04-19 19:16:59Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.3/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
+ * $Id: UserPrefsTool.java 127145 2013-07-17 17:40:04Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -1722,6 +1722,9 @@ public class UserPrefsTool
 		//Save the preference in the session also      
 		ResourceLoader rl = new ResourceLoader();
 		Locale loc = rl.setContextLocale(null);		
+
+		// reset notification items with the locale
+		initRegisteredNotificationItems();
 
 		locUpdated = true; // set for display of text massage
 		return "locale";

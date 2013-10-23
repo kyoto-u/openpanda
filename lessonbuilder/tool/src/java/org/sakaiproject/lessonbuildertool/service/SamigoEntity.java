@@ -574,7 +574,16 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 	if (grading == null)
 	    return null;
 
-	return new LessonSubmission(grading.getFinalScore());
+	return new LessonSubmission(toDouble(grading.getFinalScore()));
+    }
+
+    public Double toDouble(Object f) {
+        if (f instanceof Double)
+            return (Double)f;
+        else if (f instanceof Float)
+            return ((Float)f).doubleValue();
+        else
+            return null;
     }
 
 // we can do this for real, but the API will cause us to get all the submissions in full, not just a count.
@@ -907,6 +916,10 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 	    }
 	}
 	return null;
+    }
+
+    public String getSiteId() {
+	return publishedAssessmentFacadeQueries.getPublishedAssessmentSiteId(Long.toString(id));
     }
 
 }

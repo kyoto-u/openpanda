@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.2/cm-service/cm-impl/integration-test/src/test/org/sakaiproject/coursemanagement/impl/CmIntegrationTest.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.3/cm-service/cm-impl/integration-test/src/test/org/sakaiproject/coursemanagement/impl/CmIntegrationTest.java $
  * $Id: CmIntegrationTest.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

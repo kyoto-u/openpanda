@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCWebLinkTranslator.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCWebLinkTranslator.java $
  * $Id: CCWebLinkTranslator.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

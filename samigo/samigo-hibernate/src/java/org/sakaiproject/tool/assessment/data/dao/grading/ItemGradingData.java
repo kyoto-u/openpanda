@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/grading/ItemGradingData.java $
- * $Id: ItemGradingData.java 62919 2009-05-26 19:08:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/grading/ItemGradingData.java $
+ * $Id: ItemGradingData.java 128514 2013-08-15 14:43:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -68,6 +68,7 @@ public class ItemGradingData
   // these two properties are used by audio question in Samigo 2.2
   private Integer attemptsRemaining;
   private String lastDuration;
+  private Boolean isCorrect;
   private ArrayList mediaArray;
   private Set itemGradingAttachmentSet;
   
@@ -218,6 +219,14 @@ public class ItemGradingData
   }
   public void setLastDuration(String lastDuration) {
     this.lastDuration = lastDuration;
+  }
+    
+  public Boolean getIsCorrect() {
+    return isCorrect;
+  }
+
+  public void setIsCorrect(Boolean isCorrect) {
+    this.isCorrect = isCorrect;
   }
 
   public ArrayList getMediaArray(){

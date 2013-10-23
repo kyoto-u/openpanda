@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-api/src/java/org/sakaiproject/sitestats/api/event/EventRegistryService.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-api/src/java/org/sakaiproject/sitestats/api/event/EventRegistryService.java $
  * $Id: EventRegistryService.java 96802 2011-08-11 12:57:41Z steve.swinsburg@gmail.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

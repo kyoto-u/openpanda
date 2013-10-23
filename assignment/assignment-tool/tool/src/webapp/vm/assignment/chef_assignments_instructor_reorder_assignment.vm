@@ -1,9 +1,9 @@
-<!-- $Id: chef_assignments_instructor_reorder_assignment.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_reorder_assignment.vm 127204 2013-07-18 13:11:16Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_reorder_assignment.vm  -->
 ##<!-- $Header: Exp $ -->
 ## Assignments - reorder view
 <script type="text/javascript"
-  src="/library/js/fluid-latest/InfusionAll.js"></script>
+  src="/library/js/fluid/1.4/MyInfusion.js"></script>
 
 	<script type="text/javascript" src="/library/js/reorderer.js"></script>
 
@@ -61,7 +61,7 @@
 		#end
 	</ul>
 	#end
-	#if ($alertMessage)<div class="alertMessage" style="width:80%  !important">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div style="display:block;clear:both"></div>#end
+	#if ($alertMessage)<div class="alertMessage" style="width:80%  !important">$tlang.getString("gen.alert") $alertMessage</div><div style="display:block;clear:both"></div>#end
 	
 	<form name="reorderForm" id="reorderForm" action="#toolForm("AssignmentAction")" method="post" onsubmit="return true;">
 		<input name="assignmentSize" id="assignmentSize" value="$assignmentsize" type="hidden" />

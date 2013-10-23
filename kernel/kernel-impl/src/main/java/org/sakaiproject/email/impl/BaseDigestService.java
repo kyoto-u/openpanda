@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/email/impl/BaseDigestService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/email/impl/BaseDigestService.java $
  * $Id: BaseDigestService.java 76914 2010-05-01 10:21:05Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

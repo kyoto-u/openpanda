@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_view_assignment.vm 94881 2011-07-08 14:22:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_student_view_assignment.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start: check_assignments_student_view_assignment.vm -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm,v 1.2 2005/05/19 19:39:49 gsilver.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
@@ -15,7 +15,7 @@
 		<h3>
 		$tlang.getString("viewassig.viewass1") 	
 	</h3>
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div class="clear"></div>#end
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
 		#if (!$hideAssignmentFlag)
 		<p class="discTria">
 			 $tlang.getString("gen.settfor") "$validator.escapeHtml($assignment.title)"

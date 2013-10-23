@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/CalendarBean.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/CalendarBean.java $
  * $Id: CalendarBean.java 110619 2012-07-23 14:22:54Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

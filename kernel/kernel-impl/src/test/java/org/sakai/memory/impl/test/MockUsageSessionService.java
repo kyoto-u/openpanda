@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockUsageSessionService.java $
- * $Id: MockUsageSessionService.java 122224 2013-04-04 21:50:53Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockUsageSessionService.java $
+ * $Id: MockUsageSessionService.java 126049 2013-06-20 18:06:33Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -21,7 +21,6 @@
 
 package org.sakai.memory.impl.test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -212,9 +211,5 @@ public class MockUsageSessionService implements UsageSessionService
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-    public List<UsageSession> getSessionsByUserId(String userId) {
-        return new ArrayList<UsageSession>(0);
-    }
-
+	
 }

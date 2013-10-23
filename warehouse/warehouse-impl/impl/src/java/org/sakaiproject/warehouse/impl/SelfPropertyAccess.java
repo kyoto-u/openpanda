@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/warehouse/tags/sakai-2.9.2/warehouse-impl/impl/src/java/org/sakaiproject/warehouse/impl/SelfPropertyAccess.java $
+* $URL: https://source.sakaiproject.org/svn/warehouse/tags/sakai-2.9.3/warehouse-impl/impl/src/java/org/sakaiproject/warehouse/impl/SelfPropertyAccess.java $
 * $Id: SelfPropertyAccess.java 59691 2009-04-03 23:46:45Z arwhyte@umich.edu $
 ***********************************************************************************
 *

@@ -1,6 +1,6 @@
 /**
  * $Id: ReflectUtilTest.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/utils/src/test/org/sakaiproject/entitybroker/util/reflect/ReflectUtilTest.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/utils/src/test/org/sakaiproject/entitybroker/util/reflect/ReflectUtilTest.java $
  * ReflectUtilTest.java - entity-broker - Apr 13, 2008 8:26:39 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

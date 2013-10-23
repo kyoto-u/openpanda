@@ -1,6 +1,6 @@
 /**
  * $Id: HttpClientWrapper.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/utils/src/java/org/sakaiproject/entitybroker/util/http/HttpClientWrapper.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/utils/src/java/org/sakaiproject/entitybroker/util/http/HttpClientWrapper.java $
  * HttpClientWrapper.java - entity-broker - Jan 7, 2009 4:29:17 PM - azeckoski
  ***********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

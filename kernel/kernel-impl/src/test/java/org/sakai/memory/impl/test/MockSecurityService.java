@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockSecurityService.java $
- * $Id: MockSecurityService.java 122224 2013-04-04 21:50:53Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockSecurityService.java $
+ * $Id: MockSecurityService.java 126049 2013-06-20 18:06:33Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
-import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.user.api.User;
 
 /**
@@ -157,8 +156,5 @@ public class MockSecurityService implements SecurityService
 		return null;
 	}
 
-    public Session clearUserEffectiveRolesBySession(String sessionId) {
-        return null;
-    }
 
 }

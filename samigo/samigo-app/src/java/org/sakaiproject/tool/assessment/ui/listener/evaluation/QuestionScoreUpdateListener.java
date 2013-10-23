@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreUpdateListener.java $
- * $Id: QuestionScoreUpdateListener.java 113421 2012-09-21 21:42:26Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreUpdateListener.java $
+ * $Id: QuestionScoreUpdateListener.java 127394 2013-07-19 03:16:01Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -60,7 +60,7 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: QuestionScoreUpdateListener.java 113421 2012-09-21 21:42:26Z ottenhoff@longsight.com $
+ * @version $Id: QuestionScoreUpdateListener.java 127394 2013-07-19 03:16:01Z ktsao@stanford.edu $
  */
 
 public class QuestionScoreUpdateListener
@@ -125,6 +125,19 @@ public class QuestionScoreUpdateListener
           (ar.getAssessmentGradingId() + ":" + itemId);
         if (datas == null)
           datas = new ArrayList();
+        
+        int fibFinNumCorrect  = 0;
+        if (bean.getTypeId().equals("8") || bean.getTypeId().equals("11")) {        
+        	Iterator iter1 = datas.iterator();
+        	while (iter1.hasNext()){
+        		Object obj = iter1.next();
+        		ItemGradingData data = (ItemGradingData) obj;
+        		if (data.getIsCorrect() != null && data.getIsCorrect().booleanValue()) {
+        			fibFinNumCorrect++;
+        		}
+        	}
+        }
+        
         Iterator iter2 = datas.iterator();
         while (iter2.hasNext()){
           Object obj = iter2.next();
@@ -132,7 +145,15 @@ public class QuestionScoreUpdateListener
           ItemGradingData data = (ItemGradingData) obj;
 
           // check if there is differnce in score, if so, update. Otherwise, do nothing
-          float newAutoScore = (Float.valueOf(ar.getTotalAutoScore())).floatValue() / (float) datas.size();
+          float newAutoScore = 0;
+          if ((bean.getTypeId().equals("8") || bean.getTypeId().equals("11")) && fibFinNumCorrect != 0) {
+        	  if (Boolean.TRUE.equals(data.getIsCorrect())) {
+        		  newAutoScore = (Float.valueOf(ar.getTotalAutoScore())).floatValue() / (float) fibFinNumCorrect;
+        	  }
+          }
+          else {
+        	  newAutoScore = (Float.valueOf(ar.getTotalAutoScore())).floatValue() / (float) datas.size();
+          }
           String newComments = TextFormat.convertPlaintextToFormattedTextNoHighUnicode(log, ar.getComments());
           ar.setComments(newComments);
           if (newComments!=null) {

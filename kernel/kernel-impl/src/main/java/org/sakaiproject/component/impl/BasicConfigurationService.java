@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/component/impl/BasicConfigurationService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/component/impl/BasicConfigurationService.java $
  * $Id: BasicConfigurationService.java 122992 2013-04-18 17:35:55Z azeckoski@unicon.net $
  ***********************************************************************************
  *

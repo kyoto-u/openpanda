@@ -804,4 +804,24 @@ public interface SakaiProxy {
 	 * @return
 	 */
 	public boolean isLoggedIn();
+	
+	/**
+	 * Is the profile2.profile.fields.enabled flag set in sakai.properties? 
+	 * If not set, defaults to true.
+	 * 
+	 * <p>This setting controls the display of the profile fields.
+	 * 
+	 * @return true or false. 
+	 */
+	public boolean isProfileFieldsEnabled();
+	
+	/**
+	 * Is the profile2.profile.status.enabled flag set in sakai.properties? 
+	 * If not set, defaults to true.
+	 * 
+	 * <p>This setting controls the display of the profile status section.
+	 * 
+	 * @return true or false. 
+	 */
+	public boolean isProfileStatusEnabled();
 }

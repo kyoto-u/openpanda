@@ -7,8 +7,8 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
- * $Id: publishAssessment.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
+ * $Id: publishAssessment.jsp 127220 2013-07-18 14:47:46Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -117,8 +117,12 @@
           <f:selectItems value="#{publishRepublishNotification.notificationLevelChoices}" />
           <f:valueChangeListener type="org.sakaiproject.tool.assessment.ui.listener.author.PublishRepublishNotificationListener" />
     </h:selectOneMenu>
-	<h:panelGroup rendered="#{not empty assessmentSettings.dueDate && calendarServiceHelper.calendarExistsForSite}">
+	<h:panelGroup rendered="#{author.isEditPendingAssessmentFlow && not empty assessmentSettings.dueDate && calendarServiceHelper.calendarExistsForSite}">
 		<h:selectBooleanCheckbox id="calendarDueDate" value="true"/>
+		<h:outputText value="#{assessmentSettingsMessages.calendarDueDate} #{calendarServiceHelper.calendarTitle}" escape="false"/>
+	</h:panelGroup>
+	<h:panelGroup rendered="#{!author.isEditPendingAssessmentFlow && not empty publishedSettings.dueDate && calendarServiceHelper.calendarExistsForSite}">
+		<h:selectBooleanCheckbox id="calendarDueDate2" value="true"/>
 		<h:outputText value="#{assessmentSettingsMessages.calendarDueDate} #{calendarServiceHelper.calendarTitle}" escape="false"/>
 	</h:panelGroup>
 </h:panelGrid>

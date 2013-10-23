@@ -78,46 +78,32 @@ The default is false before Sakai 2.9.2, true starting with 2.9.2.
 BUILDING
 
 To build, the normal Sakai maven commands will work. However you'll
-probably need to edit pom.xml to change versions. The main pom.xml
-file in this directory is all you should have to change. pom files
-in other directories take their information from this one.
+probably need to edit pom.xml to change versions.
 
-You'll need to change two things;
+You'll need to change 2 things, and consider a third:
 
 1) Near the top, in the <parent> declaration, the version
 should match your version of Sakai. Currently it is
-2.9-SNAPHOT. For 2.8 you'd use 2.8.0, 2.8.1, etc.
+2.10-SNAPHOT. For 2.8 you'd use 2.8.0, 2.8.1, etc.
 
 2) Look for the <profile> declaration. There are two
-profiles. The default is set for 2.9 and later. If you're
-building for 2.7 or 2.8, move the <activation> lines
+profiles. The default is set for 2.9. You'll want to
+choose the profile for your version of Sakai. Move the
+<activiation> lines
 
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
 
-from the profile saying <id>default</id> down to the second profile,
-with <id>sakai-2.8</id> So it would read
-
-            <id>sakai-2.8</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+to the appropriate profile.
 
 You can also use this sakai-2.8 profile with 2.7.
 
-Then for the profile you're using (either default or 2.8), set the
-appropriate version numbers for the components we use. You can look at
-pom.xml in your "master" directory to see the version numbers for
-entitybroker, assignment, msgcntr, and samigo. Normally assignment,
-msgcntr and samigo will match the version of Sakai, although that
-may not always be true. entitybroker has separate version numbering.
+3) If you want support for several contrib tools, (Assignment2, and
+partial support for YAFT and Mneme), activate the "optional"
+profile in tool/pom.xml.
 
-Other than that, the properties can be left as is. In particular,
-don't change the version of RSF. We depend upon a newer version than
-the rest of Sakai.
-
-DATABASE SETUP
+DATABSASE SETUP
 
 If you run with auto.ddl set, Lesson Builder will create the
 necessary tables. Otherwise BEFORE YOU DEPLOY IT, please
@@ -478,35 +464,49 @@ Without the property, Lesson Builder will call the
 Samigo main page when you ask to edit an assessment.
 
 
-FLV PLAYER
+VIDEO PLAYERS
 
-Lesson Builder comes with two FLV players. The default is the Adobe
-Strobe player. This has a BSD license, so it is safe for anyone to use.
-The only problem is that it depends upon Flash 10. Alternatively, you
-can use the JW FLV player. It should work back to Flash 8 (although not
-if the content is H.264, which requires Flash 9). However it is licensed
-with a CC non-commercial license. It is not clear who can use that.
-If you're hosted by a commercial organization, you should check with
-JW before using this.
+Aside from Youtube (which uses a special player), Lessons handles
+video with three different approaches
 
-Strobe player: http://www.osmf.org/strobe_mediaplayback.html
-JW player: http://www.longtailvideo.com/players/
+* the HTML5 video and audio tag
+* the Strobe player, from Adobe
+* the normal OBJECT and EMBED tags
 
-To enable the JW player, put the following in sakai.properties:
+We normally try them in that order. That is, if the MIME type is
+one that HTML5 might be able to handle, we ask the browser whether
+its HTML video player handles this MIME type. If so, we use HTML5.
 
-lessonbuilder.usejwplayer=true
+If that fails (or if the HTML5 player isn't recognized, despite the
+browser claiming it is), and if the MIME type is one that Srobe might
+handle, we try the Strobe player.
 
-I have also tried the OSFlv player. It's distributed under the GPL.
-Aside from controversies involving the GPL, it doesn't do progressive
-download, and the progress bar doesn't work for all users.
+If that fails, we use a normal OBJECT or EMBED tag, allowing the browser
+to pick a player.
 
-By default, Lesson Builder will use this player for MIME types
-video/mp4 and video/x-m4v. However the players can handle additional
-types. If you want to customize the list, you can set
-lessonbuilder.mp4.types in sakai.properties to a comma-separated list
-of MIME types, e.g.
+Unforunately this approach is less than foolproof. The API for HTML5
+lets us ask whether the player can handle the MIME type, but several
+browsers response "maybe". Hence we only try for types we think should
+work. That is currently MP4, webm, and ogg for video and MP3, ogg and
+WAV for audio. The list may be configured in sakai.properties
 
-lessonbuilder.mp4.types=video/mp4,video/x-m4v
+lessonbuilder.html5.types=video/mp4,video/m4v,video/webm,video/ogg,audio/mpeg,audio/ogg,audio/wav
+
+Similarly, we only try Strobe for things we think will likely work.
+Currently
+
+lessonbuilder.mp4.types=video/mp4,video/m4v,audio/mpeg
+
+plus Flash (video/x-flv). In fact, Strobe claims to handle MOV files
+as well, but it seems safer to let Quicktime handle that. This does
+require users to have quicktime installed. If you want to let Strobe
+handle Quicktime files, add their MIME types to lessonbuilder.mp4.types.
+
+For further information on Strobe, see
+http://www.osmf.org/strobe_mediaplayback.html
+
+Support for JW Player, present in previous versions, has been
+removed for licensing reasons.
 
 
 OPTIONS FOR MULTIMEDIA SUPPORT
@@ -538,7 +538,7 @@ type. However if a URL is added, and for some reason we can't connect
 to the server to look at it, we fall back to a check based on file
 extension. The following extensions will be displayed with OBJECT:
 
-  mp4,mov,m2v,3gp,wmv,mp3,swf,wav
+  mp4,mov,m2v,3gp,3g2,avi,m4v,mpg,rm,vob,wmv,mp3,swf,wav,aif,m4a,mid,mpa,ra,wma
 
 Everything else will use IFRAME. You can change the list in
 sakai.properties, e.g.

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/MonthWeek.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/MonthWeek.java $
  * $Id: MonthWeek.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

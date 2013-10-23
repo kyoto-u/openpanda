@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.2/glossary/api/src/java/org/theospi/portfolio/help/model/GlossaryDescription.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.3/glossary/api/src/java/org/theospi/portfolio/help/model/GlossaryDescription.java $
 * $Id: GlossaryDescription.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
 ***********************************************************************************
 *

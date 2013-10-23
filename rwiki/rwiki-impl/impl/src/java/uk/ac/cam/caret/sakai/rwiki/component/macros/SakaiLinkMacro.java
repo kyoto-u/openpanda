@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SakaiLinkMacro.java $
- * $Id: SakaiLinkMacro.java 29047 2007-04-18 07:40:45Z ian@caret.cam.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SakaiLinkMacro.java $
+ * $Id: SakaiLinkMacro.java 127747 2013-07-25 16:10:58Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -24,6 +24,9 @@ package uk.ac.cam.caret.sakai.rwiki.component.macros;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.radeox.api.engine.ImageRenderEngine;
 import org.radeox.api.engine.RenderEngine;
 import org.radeox.api.macro.MacroParameter;
@@ -42,6 +45,7 @@ import uk.ac.cam.caret.sakai.rwiki.component.radeox.service.impl.SpecializedRend
 public class SakaiLinkMacro extends BaseLocaleMacro
 {
 
+	private static Log log = LogFactory.getLog(SakaiLinkMacro.class);
 
 	public String[] getParamDescription()
 	{
@@ -113,6 +117,13 @@ public class SakaiLinkMacro extends BaseLocaleMacro
 			
 			url = context.convertLink(url);
 			
+
+			// SAK-20449 XSS protection
+			if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("ftp://") &&
+				!url.startsWith("mailto:")) {
+				log.warn("RWiki URL (" + url + ") looks invalid so we're removing it from the display.");
+				url = "";
+			}
 
 			writer.write("<a href=\"" + url + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			if (!"none".equals(target)) //$NON-NLS-1$

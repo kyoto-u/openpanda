@@ -1,6 +1,6 @@
 /**
  * $Id: MockDirectServlet.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/rest/src/test/org/sakaiproject/entitybroker/rest/jetty/MockDirectServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/rest/src/test/org/sakaiproject/entitybroker/rest/jetty/MockDirectServlet.java $
  * TestDirectServlet.java - entity-broker - Jan 2, 2009 4:46:11 PM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

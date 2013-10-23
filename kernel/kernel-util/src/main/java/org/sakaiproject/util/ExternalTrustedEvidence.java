@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-util/src/main/java/org/sakaiproject/util/ExternalTrustedEvidence.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-util/src/main/java/org/sakaiproject/util/ExternalTrustedEvidence.java $
  * $Id: ExternalTrustedEvidence.java 77182 2010-05-06 16:06:00Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

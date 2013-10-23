@@ -1,6 +1,6 @@
 /**
  * $Id: EntityActionsManagerTest.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/rest/src/test/org/sakaiproject/entitybroker/rest/EntityActionsManagerTest.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/rest/src/test/org/sakaiproject/entitybroker/rest/EntityActionsManagerTest.java $
  * EntityActionsManagerTest.java - entity-broker - Jul 27, 2008 6:10:15 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

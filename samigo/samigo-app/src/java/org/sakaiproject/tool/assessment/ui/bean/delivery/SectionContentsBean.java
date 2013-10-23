@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SectionContentsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SectionContentsBean.java $
  * $Id: SectionContentsBean.java 106373 2012-03-29 18:07:09Z ktsao@stanford.edu $
  ***********************************************************************************
  *

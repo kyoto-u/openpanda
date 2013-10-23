@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-api/api/src/java/org/sakaiproject/citation/api/CitationCollection.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-api/api/src/java/org/sakaiproject/citation/api/CitationCollection.java $
  * $Id: CitationCollection.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

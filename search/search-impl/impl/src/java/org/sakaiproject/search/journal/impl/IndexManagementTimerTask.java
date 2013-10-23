@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/IndexManagementTimerTask.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/IndexManagementTimerTask.java $
  * $Id: IndexManagementTimerTask.java 71220 2010-01-09 12:11:05Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

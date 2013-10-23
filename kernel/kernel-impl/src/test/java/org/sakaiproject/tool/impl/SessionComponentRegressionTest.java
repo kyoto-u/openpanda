@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/test/java/org/sakaiproject/tool/impl/SessionComponentRegressionTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/test/java/org/sakaiproject/tool/impl/SessionComponentRegressionTest.java $
  * $Id: SessionComponentRegressionTest.java 66380 2009-09-09 13:09:43Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

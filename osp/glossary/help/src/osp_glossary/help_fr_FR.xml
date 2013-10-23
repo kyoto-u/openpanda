@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="glossaryOverview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>glossary_overview_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Glossaire : Généralités</value>
+      </property>
+      <property name="location">
+         <value>/osp_glossary/glossary_overview_fr_FR.html</value>
+      </property>
+      <property name="defaultForTool">
+      	<value>osp.glossary</value>
+      </property>
+   </bean>
+   <bean id="addGlossaryTerm"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>addglossterm_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Ajout d'un terme de glossaire</value>
+      </property>
+      <property name="location">
+         <value>/osp_glossary/adding_a_glossary_term_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="changeGlossaryTerm"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changlossterm_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modification d'un terme du glossaire</value>
+      </property>
+      <property name="location">
+         <value>/osp_glossary/changing_a_glossary_term_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="deleteGlossaryTerm"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>delglossterm_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Suppression d'un terme du glossaire</value>
+      </property>
+      <property name="location">
+         <value>/osp_glossary/deleting_a_glossary_term_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="publishGlossaryTerm"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>pubglosstermglob_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Publication globale d'un terme du glossaire</value>
+      </property>
+      <property name="location">
+         <value>/osp_glossary/publishing_a_glossary_term_globally_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="exImportGlossary"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>eximportgloss_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Exportation et importation d'un terme du glossaire</value>
+      </property>
+      <property name="location">
+         <value>/osp_glossary/exporting_and_importing_a_glossary_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="changePermsGlossary"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changpermsgloss_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modification des permissions</value>
+      </property>
+      <property name="location">
+         <value>/osp_glossary/changing_permissions_for_the_glossary_tool_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean"
+                  id="ospGlossaryCategory">
+               <property name="name">
+                  <value>Glossaire</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="glossaryOverview"/>
+                     <ref bean="addGlossaryTerm"/>
+                     <ref bean="changeGlossaryTerm"/>
+                     <ref bean="deleteGlossaryTerm"/>
+                     <ref bean="publishGlossaryTerm"/>
+                     <ref bean="exImportGlossary"/>
+                     <ref bean="changePermsGlossary"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

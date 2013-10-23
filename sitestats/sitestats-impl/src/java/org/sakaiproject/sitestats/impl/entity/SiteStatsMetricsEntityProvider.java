@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/entity/SiteStatsMetricsEntityProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/entity/SiteStatsMetricsEntityProvider.java $
  * $Id: SiteStatsMetricsEntityProvider.java 72240 2009-12-15 12:50:35Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

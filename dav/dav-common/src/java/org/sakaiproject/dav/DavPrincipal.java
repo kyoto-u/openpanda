@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-2.9.2/dav-common/src/java/org/sakaiproject/dav/DavPrincipal.java $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-2.9.3/dav-common/src/java/org/sakaiproject/dav/DavPrincipal.java $
  * $Id: DavPrincipal.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

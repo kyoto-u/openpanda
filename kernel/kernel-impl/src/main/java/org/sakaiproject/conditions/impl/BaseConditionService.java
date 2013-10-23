@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/conditions/impl/BaseConditionService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/conditions/impl/BaseConditionService.java $
  * $Id: BaseConditionService.java 93233 2011-05-24 19:04:44Z zach@aeroplanesoftware.com $
  ***********************************************************************************
  *

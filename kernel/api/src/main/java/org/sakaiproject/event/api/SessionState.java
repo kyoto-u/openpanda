@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/event/api/SessionState.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/event/api/SessionState.java $
  * $Id: SessionState.java 66305 2009-09-06 10:14:27Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/TikaContentDigester.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/TikaContentDigester.java $
  * $Id: TikaContentDigester.java 100726 2011-11-15 14:22:43Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

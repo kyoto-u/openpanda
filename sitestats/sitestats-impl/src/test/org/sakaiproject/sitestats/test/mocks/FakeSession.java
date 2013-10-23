@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeSession.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeSession.java $
  * $Id: FakeSession.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

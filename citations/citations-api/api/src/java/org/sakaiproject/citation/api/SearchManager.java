@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-api/api/src/java/org/sakaiproject/citation/api/SearchManager.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-api/api/src/java/org/sakaiproject/citation/api/SearchManager.java $
  * $Id: SearchManager.java 98468 2011-09-21 02:49:36Z jimeng@umich.edu $
  ***********************************************************************************
  *

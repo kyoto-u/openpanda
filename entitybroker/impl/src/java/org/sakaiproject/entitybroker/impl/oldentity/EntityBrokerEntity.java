@@ -1,6 +1,6 @@
 /**
  * $Id: EntityBrokerEntity.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/impl/src/java/org/sakaiproject/entitybroker/impl/oldentity/EntityBrokerEntity.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/impl/src/java/org/sakaiproject/entitybroker/impl/oldentity/EntityBrokerEntity.java $
  * EBlogic.java - entity-broker - Apr 15, 2008 4:29:18 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-blis/src/java/org/sakaiproject/blti/ServiceServlet.java $
- * $Id: ServiceServlet.java 120423 2013-02-24 01:36:55Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-blis/src/java/org/sakaiproject/blti/ServiceServlet.java $
+ * $Id: ServiceServlet.java 128210 2013-08-06 15:27:57Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -72,6 +72,7 @@ import org.sakaiproject.event.cover.UsageSessionService;
 import org.sakaiproject.id.cover.IdManager;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.api.Session;
@@ -792,9 +793,15 @@ public class ServiceServlet extends HttpServlet {
             if ( pox == null ) {
                 output = IMSPOXRequest.getFatalResponse(msg);
             } else {
-                output = pox.getResponseFailure(msg, null);
+		String body = null;
+		String operation = pox.getOperation();
+		if ( operation != null ) {
+			body = "<"+operation.replace("Request", "Response")+"/>";
+		}
+                output = pox.getResponseFailure(msg, null, body);
             }
 			out.println(output);
+			M_log.debug(output);
 		}
 
 
@@ -998,19 +1005,52 @@ public class ServiceServlet extends HttpServlet {
 				return;
 			}
 
+			// First make sure that we have Lessons in the site
+			SitePage lessonsPage = null;
+			ToolConfiguration lessonsConfig = null;
+			try {
+				Site site = SiteService.getSite(siteId);
+				for (SitePage page : (List<SitePage>)site.getPages()) {
+					for(ToolConfiguration tool : (List<ToolConfiguration>) page.getTools()) {
+						String tid = tool.getToolId();
+						if ( "sakai.lessonbuildertool".equals(tid) ) {
+							lessonsPage = page;
+							lessonsConfig = tool;
+							break;
+						}
+					}
+				}
+			} catch (IdUnusedException ex) {
+				doErrorXML(request, response, pox, "outcomes.notools", "sourcedid", null);
+				M_log.warn("Could not scan site for Lessons tool.");
+				return;
+			}
+
+			if ( lessonsConfig == null ) {
+				M_log.warn("Could not find sakai.lessonbulder in site="+siteId);
+				doErrorXML(request, response, pox, "outcomes.nolessons", "sourcedid", null);
+				return;
+			}
+
+			// Now lets find the structure within Lessons
 			List<Long> structureList = new ArrayList<Long>();
 
-		    List<SimplePageItem> sitePages = LessonsFacade.findItemsInSite(context_id);
-            List<Map<String,Object>> structureMap = iteratePagesXML(sitePages,structureList,0);
+			List<SimplePageItem> sitePages = LessonsFacade.findItemsInSite(context_id);
+			List<Map<String,Object>> structureMap = iteratePagesXML(sitePages,structureList,0);
 
-			response.setContentType("application/xml");
-			String output = pox.getResponseUnsupported("No Lessons content found in site");
-			if ( structureMap.size() > 0 ) {
-				Map<String,Object> theMap = new TreeMap<String,Object>();
-				theMap.put("/getCourseStructureResponse/resources/resource",structureMap);
-				String theXml = XMLMap.getXMLFragment(theMap, true);
-				output = pox.getResponseSuccess("processCourseStructureXml", theXml);
+			if ( structureMap.size() < 1 ) {
+				Map<String,Object> cMap = new TreeMap<String,Object>();
+				cMap.put("/folderId","0");
+				cMap.put("/title",lessonsPage.getTitle());
+				cMap.put("/description",lessonsPage.getTitle());
+				cMap.put("/type","folder");
+				structureMap.add(cMap);
 			}
+
+			Map<String,Object> theMap = new TreeMap<String,Object>();
+			theMap.put("/getCourseStructureResponse/resources/resource",structureMap);
+			String theXml = XMLMap.getXMLFragment(theMap, true);
+			String output = pox.getResponseSuccess("processCourseStructureXml", theXml);
 
 			PrintWriter out = response.getWriter();
 			out.println(output);
@@ -1052,6 +1092,36 @@ public class ServiceServlet extends HttpServlet {
 				}
 			}
 
+			// No pages in Lessons yet... 
+			// If we can find the Lessons tool, lets add its first page. 
+			if ( thePage == null ) {
+				M_log.debug("Creating top page...");
+				SitePage lessonsPage = null;
+				ToolConfiguration lessonsConfig = null;
+				try {
+					Site site = SiteService.getSite(siteId);
+					for (SitePage page : (List<SitePage>)site.getPages()) {
+						for(ToolConfiguration tool : (List<ToolConfiguration>) page.getTools()) {
+							String tid = tool.getToolId();
+							if ( "sakai.lessonbuildertool".equals(tid) ) {
+								lessonsPage = page;
+								lessonsConfig = tool;
+								break;
+							}
+						}
+					}
+				} catch (IdUnusedException ex) {
+					M_log.warn("Could not load site.");
+				}
+				if ( lessonsConfig == null ) {
+					M_log.warn("Could not find sakai.lessonbulder in site="+siteId);
+				} else {
+					String title = lessonsPage.getTitle();
+					String toolId = lessonsConfig.getPageId();
+					thePage = LessonsFacade.addFirstPage(siteId, toolId, title);
+				}
+			}
+
 			if ( thePage == null ) {
 				doErrorXML(request, response, pox, "lessons.page.notfound", 
 					"Unable to find page in structure at "+folderId, null);
@@ -1084,13 +1154,23 @@ public class ServiceServlet extends HttpServlet {
             List<Map<String,String>> resultList = new ArrayList<Map<String,String>>();
 
 			recursivelyAddResourcesXML(context_id, thePage, nl, seq, resultList);
+			// One success means overall status is a success
+			boolean success = false;
+			for ( Map<String,String> result : resultList ) {
+				if ( "success".equals(result.get("/status")) ) success = true;
+			}
 
             Map<String,Object> theMap = new TreeMap<String,Object>();
             theMap.put("/addCourseResourcesResponse/resources/resource",resultList);
             String theXml = XMLMap.getXMLFragment(theMap, true);
 
 			response.setContentType("application/xml");
-			String output = pox.getResponseSuccess("Items Added",theXml);
+			String output = null;
+			if ( success ) {
+				output = pox.getResponseSuccess("Items Added",theXml);
+			} else {
+				output = pox.getResponseFailure("Items were not added", null);
+			}
 
 			PrintWriter out = response.getWriter();
 			out.println(output);
@@ -1319,16 +1399,18 @@ public class ServiceServlet extends HttpServlet {
 				if ( isRead ) {
 					theGrade = g.getAssignmentScoreString(siteId, assignment, user_id);
 					String sGrade = "";
-					dGrade = new Double(theGrade);
-					dGrade = dGrade / assignmentObject.getPoints();
-					if ( dGrade != 0.0 ) sGrade = dGrade.toString();
+					if ( theGrade != null && theGrade.length() > 0 ) {
+						dGrade = new Double(theGrade);
+						dGrade = dGrade / assignmentObject.getPoints();
+						sGrade = dGrade.toString();
+					}
 					theMap.put("/readResultResponse/result/sourcedId", sourced_id);
 					theMap.put("/readResultResponse/result/resultScore/textString", sGrade);
 					theMap.put("/readResultResponse/result/resultScore/language", "en");
 					message = "Result read";
 				} else if ( isDelete ) { 
 					// It would be nice to empty it out but we can't
-					g.setAssignmentScore(siteId, assignment, user_id, new Double(0.0), "External Outcome");
+					g.setAssignmentScore(siteId, assignment, user_id, null, "External Outcome");
 					M_log.info("Delete Score site=" + siteId + " assignment="+ assignment + " user_id=" + user_id);
 					theMap.put("/deleteResultResponse", "");
 					message = "Result deleted";

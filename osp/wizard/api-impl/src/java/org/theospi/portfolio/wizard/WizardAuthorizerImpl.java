@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.2/wizard/api-impl/src/java/org/theospi/portfolio/wizard/WizardAuthorizerImpl.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.3/wizard/api-impl/src/java/org/theospi/portfolio/wizard/WizardAuthorizerImpl.java $
 * $Id: WizardAuthorizerImpl.java 85378 2010-11-23 17:35:53Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

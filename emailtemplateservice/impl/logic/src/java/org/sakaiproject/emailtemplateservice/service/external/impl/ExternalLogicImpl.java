@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.2/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/external/impl/ExternalLogicImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.3/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/external/impl/ExternalLogicImpl.java $
  * $Id: ExternalLogicImpl.java 77505 2010-05-17 10:00:42Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

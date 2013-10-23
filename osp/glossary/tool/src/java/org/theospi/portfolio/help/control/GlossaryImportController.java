@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.2/glossary/tool/src/java/org/theospi/portfolio/help/control/GlossaryImportController.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.3/glossary/tool/src/java/org/theospi/portfolio/help/control/GlossaryImportController.java $
 * $Id: GlossaryImportController.java 85378 2010-11-23 17:35:53Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.2/api/src/java/org/sakaiproject/emailtemplateservice/model/RenderedTemplate.java $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.3/api/src/java/org/sakaiproject/emailtemplateservice/model/RenderedTemplate.java $
  * $Id: RenderedTemplate.java 79120 2010-07-07 07:52:30Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

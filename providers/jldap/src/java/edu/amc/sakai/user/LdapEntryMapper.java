@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/jldap/src/java/edu/amc/sakai/user/LdapEntryMapper.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/jldap/src/java/edu/amc/sakai/user/LdapEntryMapper.java $
  * $Id: LdapEntryMapper.java 61856 2009-05-05 17:53:41Z dmccallum@unicon.net $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-util/src/java/org/imsglobal/basiclti/XMLMap.java $
- * $Id: XMLMap.java 121298 2013-03-16 14:05:44Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-util/src/java/org/imsglobal/basiclti/XMLMap.java $
+ * $Id: XMLMap.java 128165 2013-08-04 00:14:49Z csev@umich.edu $
  **********************************************************************************
  *
  * Copyright (c) 2009 IMS GLobal Learning Consortium, Inc.
@@ -558,7 +558,7 @@ public class XMLMap {
 					Object listObj = listIter.next();
 					doDebug(d,"Processing List element@"+newPos+" "+listObj.getClass().getName());
 					if ( listObj instanceof String ) {
-						storeInDom(document, parentNode, key, (String) obj, newPos, d);
+						storeInDom(document, parentNode, key, (String) listObj, newPos, d);
 						newPos++;
 					} if ( listObj instanceof Map ) {
 						Map subMap = (Map) listObj;
@@ -759,7 +759,7 @@ public class XMLMap {
 			tf.transform (new javax.xml.transform.dom.DOMSource (node),
 					new javax.xml.transform.stream.StreamResult (baStream));
 			return baStream.toString();
-		} catch (Exception e)  {
+		} catch (javax.xml.transform.TransformerException e)  {
 			return null;
 		}
 	}

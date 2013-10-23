@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-tool/tool/src/java/org/sakaiproject/search/tool/api/SearchBeanFactory.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-tool/tool/src/java/org/sakaiproject/search/tool/api/SearchBeanFactory.java $
  * $Id: SearchBeanFactory.java 59685 2009-04-03 23:36:24Z arwhyte@umich.edu $
  ***********************************************************************************
  *

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="matrices_overview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>matrices_overview_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Matrices : Généralités</value>
+      </property>
+      <property name="location">
+         <value>/osp_matrix/matrices_overview_fr_FR.html</value>
+      </property>
+      <property name="defaultForTool">
+         <value>osp.matrix</value>
+      </property>
+   </bean>
+   <bean id="designing_a_matrix"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>designing_a_matrix_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Conception d'une matrice</value>
+      </property>
+      <property name="location">
+         <value>/osp_matrix/designing_a_matrix_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="creating_a_matrix"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>creating_a_matrix_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Création d'une matrice</value>
+      </property>
+      <property name="location">
+         <value>/osp_matrix/creating_a_matrix_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="exporting_and_importing_a_matrix"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>exporting_and_importing_a_matrix_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Exportation et importation</value>
+      </property>
+      <property name="location">
+         <value>/osp_matrix/exporting_and_importing_a_matrix_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="changing_a_matrix"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_a_matrix_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modification d'une matrice</value>
+      </property>
+      <property name="location">
+         <value>/osp_matrix/changing_a_matrix_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="providing_formative_feedback_on_a_matrix"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>providing_formative_feedback_on_a_matrix_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Ajout d'une rétroaction formative dans une cellule de la matrice</value>
+      </property>
+      <property name="location">
+         <value>/osp_matrix/providing_formative_feedback_on_a_matrix_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="changing_permissions_for_the_matrices_tool"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_permissions_for_the_matrices_tool_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modification des permissions</value>
+      </property>
+      <property name="location">
+         <value>/osp_matrix/changing_permissions_for_the_matrices_tool_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="fspcam"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>fspcam_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Remplissage d'une matrice</value>
+      </property>
+      <property name="location">
+         <value>/osp_matrix/fspcam_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean"
+                  id="matricesCategory">
+               <property name="name">
+                  <value>Matrices</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="matrices_overview"/>
+                     <ref bean="designing_a_matrix"/>
+                     <ref bean="creating_a_matrix"/>
+                     <ref bean="exporting_and_importing_a_matrix"/>
+                     <ref bean="changing_a_matrix"/>
+                     <ref bean="providing_formative_feedback_on_a_matrix"/>
+                     <ref bean="changing_permissions_for_the_matrices_tool"/>
+                     <ref bean="fspcam"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

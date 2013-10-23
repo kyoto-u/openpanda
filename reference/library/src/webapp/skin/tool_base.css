@@ -728,7 +728,9 @@ hr.itemSeparator{
 	font-weight: normal;
 	float: left;
 }
-
+#attachForm .shorttext label, #attachForm .filepicker  label{
+	min-width: 19.5em;
+}
 
 .shorttext input[type="text"]{
 	padding: .1em .3em;

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/component-manager/src/main/java/org/sakaiproject/component/cover/ComponentManager.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/component-manager/src/main/java/org/sakaiproject/component/cover/ComponentManager.java $
  * $Id: ComponentManager.java 75437 2010-03-30 13:12:30Z aaronz@vt.edu $
  ***********************************************************************************
  *

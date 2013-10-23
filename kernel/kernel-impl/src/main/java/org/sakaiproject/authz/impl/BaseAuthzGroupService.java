@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
- * $Id: BaseAuthzGroupService.java 115363 2012-10-31 16:02:29Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
+ * $Id: BaseAuthzGroupService.java 127152 2013-07-17 18:13:24Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -1092,17 +1092,30 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 	public boolean parseEntityReference(String reference, Reference ref)
 	{
 		// for azGroup access
-		if (reference.startsWith(REFERENCE_ROOT))
+		String id = extractEntityId(reference);
+		if (id != null)
 		{
-			// the azGroup id may have separators - we use everything after "/realm/"
-			String id = reference.substring(REFERENCE_ROOT.length() + 1, reference.length());
-
 			ref.set(APPLICATION_ID, null, id, null, null);
-
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get the realm ID from a reference string. 
+	 * @param reference The reference to a realm. eg<code>/realm//site/mercury</code>
+	 * @return The ID of the realm or <code>null</code> if it's not a realm reference.
+	 */
+	protected String extractEntityId(String reference)
+	{
+		if (reference.startsWith(REFERENCE_ROOT) && REFERENCE_ROOT.length() + 1 <= reference.length())
+		{
+			// the azGroup id may have separators - we use everything after "/realm/"
+			String id = reference.substring(REFERENCE_ROOT.length() + 1, reference.length());
+			return id;
+		}
+		return null;
 	}
 
 	/**

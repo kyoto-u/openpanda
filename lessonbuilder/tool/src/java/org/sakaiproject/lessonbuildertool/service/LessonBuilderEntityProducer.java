@@ -28,6 +28,7 @@ package org.sakaiproject.lessonbuildertool.service;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -210,6 +211,14 @@ public class LessonBuilderEntityProducer extends AbstractEntityProvider
 	  servers.add(serverName);
       if (serverId != null)
 	  servers.add(serverId);
+      try {
+	  String hostName = InetAddress.getLocalHost().getHostName();
+	  servers.add(hostName);
+	  hostName = InetAddress.getLocalHost().getCanonicalHostName();
+	  servers.add(hostName);
+      } catch (Exception ignore) {
+      }
+      servers.add("localhost");
       // if neither is defined we're in trouble;
       if (servers.size() == 0)
 	  System.out.println("LessonBuilderEntityProducer ERROR: neither servername nor serverid defined in sakai.properties");
@@ -703,26 +712,6 @@ public class LessonBuilderEntityProducer extends AbstractEntityProvider
 		   if (s != null && !s.equals("null"))
 		       item.setAltPoints(Integer.valueOf(s));
 
-		   s = itemElement.getAttribute("gradebookId");
-		   if (s != null && !s.equals("null") && !s.equals("")) {
-			   String title = item.getGradebookTitle();
-			   if(title == null || title.equals("null") || title.equals("")) {
-				   title = s;
-			   }
-			   gradebookIfc.addExternalAssessment(siteId, s, null, title, Double.valueOf(itemElement.getAttribute("gradebookPoints")), null, "Lesson Builder");
-			   item.setGradebookId(s);
-		   }
-		   
-		   s = itemElement.getAttribute("altGradebook");
-		   if (s != null && !s.equals("null") && !s.equals("")) {
-			   String title = item.getAltGradebookTitle();
-			   if(title == null || title.equals("null") || title.equals("")) {
-				   title = s;
-			   }
-			   gradebookIfc.addExternalAssessment(siteId, s, null, title, Double.valueOf(itemElement.getAttribute("altPoints")), null, "Lesson Builder");
-			   item.setAltGradebook(s);
-		   }
-		   
 		   // save objectid for dummy items so we can do mapping; alt isn't otherwise used for these items
 		   if (type == SimplePageItem.ASSIGNMENT || type == SimplePageItem.ASSESSMENT || type == SimplePageItem.FORUM) {
 		       item.setAlt(itemElement.getAttribute("objectid"));
@@ -761,7 +750,59 @@ public class LessonBuilderEntityProducer extends AbstractEntityProvider
 		   simplePageToolDao.quickSaveItem(item);
 		   itemMap.put(itemId, item.getId());
 
-		   // this needs item id, so it has to be done here
+		   boolean needupdate = false;
+
+		   // these need the item number, so do after save
+		   s = itemElement.getAttribute("gradebookId");
+		   if (s != null && !s.equals("null") && !s.equals("")) {
+		       // update item number in both gradebook id and title
+			   String title = item.getGradebookTitle();
+			   if(title == null || title.equals("null") || title.equals("")) {
+				   title = s;
+			   }
+			   // update gb id
+			   int ii = s.lastIndexOf(":");
+			   s = s.substring(0, ii+1) + item.getId();
+			   // update title
+			   // can't do this, because Gradebook 2 will create items with the original name.
+			   // the plan is to use user-defined names so we avoid this whole problem.
+			   if (false) {
+			       ii = title.lastIndexOf(":");
+			       title = title.substring(0, ii+1) + item.getId() + ")";
+			   }
+
+			   gradebookIfc.addExternalAssessment(siteId, s, null, title, Double.valueOf(itemElement.getAttribute("gradebookPoints")), null, "Lesson Builder");
+			   needupdate = true;
+			   item.setGradebookId(s);
+		   }
+		   
+		   s = itemElement.getAttribute("altGradebook");
+		   if (s != null && !s.equals("null") && !s.equals("")) {
+		       // update item number in both gradebook id and title
+			   String title = item.getAltGradebookTitle();
+			   if(title == null || title.equals("null") || title.equals("")) {
+				   title = s;
+			   }
+			   // update gb id
+			   int ii = s.lastIndexOf(":");
+			   s = s.substring(0, ii+1) + item.getId();
+			   // update title
+			   // can't do this, because Gradebook 2 will create items with the original name.
+			   // the plan is to use user-defined names so we avoid this whole problem.
+			   if (false) {
+			       ii = title.lastIndexOf(":");
+			       title = title.substring(0, ii+1) + item.getId() + ")";
+			   }			       
+			   gradebookIfc.addExternalAssessment(siteId, s, null, title, Double.valueOf(itemElement.getAttribute("altPoints")), null, "Lesson Builder");
+			   needupdate = true;
+			   item.setAltGradebook(s);
+		   }
+
+		   // have to save again, I believe
+		   if (needupdate)
+		       simplePageToolDao.quickUpdate(item);
+
+		   // these needs item id, so it has to be done here
 		   // save item ID to object id. This will allow references to be fixed up.
 		   // object id identifies the Sakai object in the old site. The fixup will
 		   // find the object in the new site and fix up the item. Hence we need
@@ -1456,7 +1497,12 @@ public class LessonBuilderEntityProducer extends AbstractEntityProvider
 	    } else if ("http".equals(uri.getScheme())
 		|| "https".equals(uri.getScheme())) {
 		if (uri.getHost() != null) {
-		    if (uri.getHost().equals(context.getOldServer())) {
+		    // oldserver is the server that this archive is coming from
+		    // oldserver null means it's a local copy, e.g. duplicate site
+		    // for null we match URL against all of our server names
+		    String oldServer = context.getOldServer();
+		    if (oldServer == null && servers.contains(uri.getHost()) ||
+			uri.getHost().equals(oldServer)) {
 			// Drop the protocol and the host.
 			uri = new URI(null, null, null, -1, uri.getPath(),
 				      uri.getQuery(), uri.getFragment());
@@ -1622,7 +1668,7 @@ public class LessonBuilderEntityProducer extends AbstractEntityProvider
 
 		toolSession.removeAttribute("lessonbuilder.errors");
 
-		parser.parse(new PrintHandler(simplePageBean, cartridgeLoader, simplePageToolDao, quizEntity, forumEntity, bltiEntity, assignmentEntity));
+		parser.parse(new PrintHandler(simplePageBean, cartridgeLoader, simplePageToolDao, quizEntity, forumEntity, bltiEntity, assignmentEntity, false));
 		
 		List <String> errors = simplePageBean.errMessages();
 		if (errors == null)

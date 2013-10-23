@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="styles_overview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>styles_overview_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Styles: Généralités</value>
+      </property>
+      <property name="location">
+         <value>/osp_style/styles_overview_fr_FR.html</value>
+      </property>
+      <property name="defaultForTool">
+         <value>osp.style</value>
+      </property>
+   </bean>
+   <bean id="adding_a_style"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>adding_a_style_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Ajout d'un style</value>
+      </property>
+      <property name="location">
+         <value>/osp_style/adding_a_style_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="changing_a_style"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_a_style_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modification d'un style</value>
+      </property>
+      <property name="location">
+         <value>/osp_style/changing_a_style_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="deleting_a_style"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>deleting_a_style_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Suppression d'un style</value>
+      </property>
+      <property name="location">
+         <value>/osp_style/deleting_a_style_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="requesting_that_a_style_be_published_globally"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>requesting_that_a_style_be_published_globally_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Requête pour qu'un style soit publié globalement</value>
+      </property>
+      <property name="location">
+         <value>/osp_style/requesting_that_a_style_be_published_globally_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="publishing_a_style_globally"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>publishing_a_style_globally_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Publication globale d'un style</value>
+      </property>
+      <property name="location">
+         <value>/osp_style/publishing_a_style_globally_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="changing_permissions_for_using_the_styles_tool"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_permissions_for_using_the_styles_tool_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modifier les autorisations</value>
+      </property>
+      <property name="location">
+         <value>/osp_style/changing_permissions_for_using_the_styles_tool_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean"
+                  id="stylesCategory">
+               <property name="name">
+                  <value>Styles</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="styles_overview"/>
+                     <ref bean="adding_a_style"/>
+                     <ref bean="changing_a_style"/>
+                     <ref bean="deleting_a_style"/>
+                     <ref bean="requesting_that_a_style_be_published_globally"/>
+                     <ref bean="publishing_a_style_globally"/>
+                     <ref bean="changing_permissions_for_using_the_styles_tool"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

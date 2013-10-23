@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.2/help-component/src/java/org/sakaiproject/component/app/help/DefaultGlossary.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.3/help-component/src/java/org/sakaiproject/component/app/help/DefaultGlossary.java $
  * $Id: DefaultGlossary.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

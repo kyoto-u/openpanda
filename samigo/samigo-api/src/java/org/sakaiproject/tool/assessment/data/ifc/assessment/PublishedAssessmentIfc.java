@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/PublishedAssessmentIfc.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/PublishedAssessmentIfc.java $
  * $Id: PublishedAssessmentIfc.java 65883 2009-08-17 18:44:33Z ktsao@stanford.edu $
  ***********************************************************************************
  *

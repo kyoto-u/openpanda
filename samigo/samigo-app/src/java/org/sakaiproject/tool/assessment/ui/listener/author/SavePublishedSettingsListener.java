@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
  * $Id: SavePublishedSettingsListener.java 104274 2012-02-01 00:21:47Z ktsao@stanford.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/util/ServerCookie.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/util/ServerCookie.java $
  * $Id: ServerCookie.java 86300 2010-12-11 09:54:14Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

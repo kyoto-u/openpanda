@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseManagementGroupProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseManagementGroupProvider.java $
  * $Id: CourseManagementGroupProvider.java 87276 2011-01-14 08:59:58Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

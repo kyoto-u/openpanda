@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.2/mailarchive-tool/tool/src/java/org/sakaiproject/mailarchive/tool/MailboxAction.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-tool/tool/src/java/org/sakaiproject/mailarchive/tool/MailboxAction.java $
  * $Id: MailboxAction.java 106617 2012-04-09 13:40:00Z matthew@longsight.com $
  ***********************************************************************************
  *

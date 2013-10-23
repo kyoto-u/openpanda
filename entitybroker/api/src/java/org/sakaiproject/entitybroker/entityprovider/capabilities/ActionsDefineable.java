@@ -1,6 +1,6 @@
 /**
  * $Id: ActionsDefineable.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/ActionsDefineable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/ActionsDefineable.java $
  * ActionsExecutable.java - entity-broker - Jul 25, 2008 2:46:26 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

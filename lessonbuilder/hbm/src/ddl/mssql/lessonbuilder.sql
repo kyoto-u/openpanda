@@ -16,7 +16,7 @@
         id numeric(19,0) identity not null,
         itemId varchar(255) not null,
         groupId varchar(255) not null,
-        groups varchar(500) null,
+        groups text null,
         primary key (id)
     );
 
@@ -28,7 +28,7 @@
         sakaiId varchar(250) null,
         name varchar(100) null,
         html text null,
-        description varchar(500) null,
+        description text null,
         height varchar(8) null,
         width varchar(8) null,
         alt varchar(500) null,
@@ -40,7 +40,7 @@
         subrequirement tinyint null,
         requirementText varchar(20) null,
         sameWindow tinyint null,
-        groups varchar(500) null,
+        groups text null,
         anonymous tinyint null,
         showComments tinyint null,
         forcedCommentsAnonymous tinyint null,

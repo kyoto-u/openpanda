@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-osid/xserver/src/java/org/sakaibrary/xserver/RegexUtility.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-osid/xserver/src/java/org/sakaibrary/xserver/RegexUtility.java $
  * $Id: RegexUtility.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

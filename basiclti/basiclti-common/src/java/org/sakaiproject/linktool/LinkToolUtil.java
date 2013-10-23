@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-common/src/java/org/sakaiproject/linktool/LinkToolUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-common/src/java/org/sakaiproject/linktool/LinkToolUtil.java $
  * $Id: LinkToolUtil.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

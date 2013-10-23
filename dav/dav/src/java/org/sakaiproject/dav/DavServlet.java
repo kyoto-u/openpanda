@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-2.9.2/dav/src/java/org/sakaiproject/dav/DavServlet.java $
- * $Id: DavServlet.java 124874 2013-05-22 20:52:35Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-2.9.3/dav/src/java/org/sakaiproject/dav/DavServlet.java $
+ * $Id: DavServlet.java 128412 2013-08-12 19:25:54Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -2171,8 +2171,7 @@ public class DavServlet extends HttpServlet
 
 		if (!exists)
 		{
-			// We're not exactly sure why, but SC_BAD_REQUEST (not SC_NOT_FOUND) resolves a session clearing problem resulting in inflated open session counts
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "/dav" + path);
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "/dav" + path);
 			return;
 		}
 

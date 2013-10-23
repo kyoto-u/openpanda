@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/DefaultSiteViewImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/DefaultSiteViewImpl.java $
  * $Id: DefaultSiteViewImpl.java 121980 2013-03-30 13:23:06Z arwhyte@umich.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/jldap-mock/src/test/edu/amc/sakai/user/UserEditStubTest.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/jldap-mock/src/test/edu/amc/sakai/user/UserEditStubTest.java $
  * $Id: UserEditStubTest.java 61859 2009-05-05 17:58:22Z dmccallum@unicon.net $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.2/cm-service/cm-impl/hibernate-impl/impl/src/test/org/sakaiproject/coursemanagement/test/CourseManagementAdministrationTest.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.3/cm-service/cm-impl/hibernate-impl/impl/src/test/org/sakaiproject/coursemanagement/test/CourseManagementAdministrationTest.java $
  * $Id: CourseManagementAdministrationTest.java 67139 2009-10-04 09:54:02Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

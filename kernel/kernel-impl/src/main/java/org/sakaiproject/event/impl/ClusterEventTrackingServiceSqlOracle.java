@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/contrib/rsmart/dbrefactor/chat/chat-impl/impl/src/java/org/sakaiproject/chat/impl/ChatServiceSqlOracle.java $
- * $Id: ChatServiceSqlOracle.java 3560 2007-02-19 22:08:01Z jbush@rsmart.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/event/impl/ClusterEventTrackingServiceSqlOracle.java $
+ * $Id: ClusterEventTrackingServiceSqlOracle.java 127978 2013-07-30 19:51:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -45,8 +45,10 @@ public class ClusterEventTrackingServiceSqlOracle extends ClusterEventTrackingSe
     */
 	public String getEventSql()
 	{
-		// this now has Oracle specific hint to improve performance with large tables -ggolden
-		return "select /*+ FIRST_ROWS */ EVENT_ID,EVENT_DATE,EVENT,REF,SAKAI_EVENT.SESSION_ID,EVENT_CODE,CONTEXT,SESSION_SERVER "
-				+ "from   SAKAI_EVENT,SAKAI_SESSION " + "where  (SAKAI_EVENT.SESSION_ID = SAKAI_SESSION.SESSION_ID(+)) and (EVENT_ID > ?)";
+	    // this now has Oracle specific hint to improve performance with large tables -ggolden
+	    return "select /*+ FIRST_ROWS */ SAKAI_EVENT.EVENT_ID,SAKAI_EVENT.EVENT_DATE,SAKAI_EVENT.EVENT,SAKAI_EVENT.REF,SAKAI_EVENT.SESSION_ID,SAKAI_EVENT.EVENT_CODE,SAKAI_EVENT.CONTEXT,SAKAI_SESSION.SESSION_SERVER "
+	        + "from SAKAI_EVENT "
+	        + "left join SAKAI_SESSION ON SAKAI_EVENT.SESSION_ID = SAKAI_SESSION.SESSION_ID "
+	        + "where (SAKAI_EVENT.EVENT_ID > ?)";
 	}
 }

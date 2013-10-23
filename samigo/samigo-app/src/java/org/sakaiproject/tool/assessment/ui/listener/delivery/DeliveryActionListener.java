@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/DeliveryActionListener.java $
- * $Id: DeliveryActionListener.java 114111 2012-10-08 23:28:24Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/DeliveryActionListener.java $
+ * $Id: DeliveryActionListener.java 128514 2013-08-15 14:43:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -97,7 +97,7 @@ import org.sakaiproject.util.ResourceLoader;
  * <p>Purpose:  this module creates the lists of published assessments for the select index
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: DeliveryActionListener.java 114111 2012-10-08 23:28:24Z ktsao@stanford.edu $
+ * @version $Id: DeliveryActionListener.java 128514 2013-08-15 14:43:49Z ottenhoff@longsight.com $
  */
 
 public class DeliveryActionListener
@@ -1514,11 +1514,11 @@ public class DeliveryActionListener
     }
     else if (item.getTypeId().equals(TypeIfc.FILL_IN_BLANK)) // fill in the blank
     {
-      populateFib(item, itemBean);
+      populateFib(item, itemBean, publishedAnswerHash);
     }
     else if (item.getTypeId().equals(TypeIfc.FILL_IN_NUMERIC)) //numeric response
     {
-      populateFin(item, itemBean);
+      populateFin(item, itemBean, publishedAnswerHash);
     }
     else if (item.getTypeId().equals(TypeIfc.ESSAY_QUESTION)) 
     {
@@ -1623,7 +1623,7 @@ public class DeliveryActionListener
     bean.setAnswers(newAnswers); // Change the answers to just text
   }
 
-  public void populateFib(ItemDataIfc item, ItemContentsBean bean)
+  public void populateFib(ItemDataIfc item, ItemContentsBean bean, HashMap<Long, AnswerIfc> publishedAnswerHash)
   {
     // Only one text in FIB
     ItemTextIfc text = (ItemTextIfc) item.getItemTextArraySorted().toArray()[0];
@@ -1659,28 +1659,23 @@ public class DeliveryActionListener
           {
             fbean.setItemGradingData(data);
             fbean.setResponse(FormattedText.convertFormattedTextToPlaintext(data.getAnswerText()));
-            fbean.setIsCorrect(false);
             if (answer.getText() == null)
             {
               answer.setText("");
             }
-            StringTokenizer st2 = new StringTokenizer(answer.getText(), "|");
-            while (st2.hasMoreTokens())
-            {
-              String nextT = st2.nextToken();
-              log.debug("nextT = " + nextT);
-//  mark answer as correct if autoscore > 0
- 
-/*
-              if (data.getAnswerText() != null &&
-                  data.getAnswerText().equalsIgnoreCase(nextT))
-*/
-              if (data.getAutoScore() != null &&
-                  data.getAutoScore().floatValue() > 0.0)
-              {
-                fbean.setIsCorrect(true);
-              }
-// need to check if case sensitive, mutual exclusive.
+            
+            if (data.getIsCorrect() == null) {
+            	GradingService gs = new GradingService();
+            	HashMap<Long, Set<String>> fibmap = new HashMap<Long, Set<String>>();
+            	fbean.setIsCorrect(gs.getFIBResult(data, fibmap, item, publishedAnswerHash));
+            }
+            else {
+            	if (data.getIsCorrect().booleanValue()) {
+            		fbean.setIsCorrect(true);
+            	}
+            	else {
+            		fbean.setIsCorrect(false);
+            	}
             }
           }
         }
@@ -1778,7 +1773,7 @@ public class DeliveryActionListener
   } 
   */
    
-  public void populateFin(ItemDataIfc item, ItemContentsBean bean)
+  public void populateFin(ItemDataIfc item, ItemContentsBean bean, HashMap<Long, AnswerIfc> publishedAnswerHash)
   {
     // Only one text in FIN
     ItemTextIfc text = (ItemTextIfc) item.getItemTextArraySorted().toArray()[0];
@@ -1819,28 +1814,23 @@ public class DeliveryActionListener
         	  
             fbean.setItemGradingData(data);
             fbean.setResponse(FormattedText.convertFormattedTextToPlaintext(data.getAnswerText()));
-            fbean.setIsCorrect(false);
             if (answer.getText() == null)
             {
               answer.setText("");
             }
-            StringTokenizer st2 = new StringTokenizer(answer.getText(), "|");
-            while (st2.hasMoreTokens())
-            {
-              String nextT = st2.nextToken();
-              log.debug("nextT = " + nextT);
-//  mark answer as correct if autoscore > 0
- 
-/*
-              if (data.getAnswerText() != null &&
-                  data.getAnswerText().equalsIgnoreCase(nextT))
-*/
-              if (data.getAutoScore() != null &&
-                  data.getAutoScore().floatValue() > 0.0)
-               {
-                fbean.setIsCorrect(true);
-              }
-// need to check if case sensitive, mutual exclusive.
+            
+            if (data.getIsCorrect() == null) {
+            	GradingService gs = new GradingService();
+            	HashMap<Long, Set<String>> fibmap = new HashMap<Long, Set<String>>();
+            	fbean.setIsCorrect(gs.getFINResult(data, item, publishedAnswerHash));
+            }
+            else {
+            	if (data.getIsCorrect().booleanValue()) {
+            		fbean.setIsCorrect(true);
+            	}
+            	else {
+            		fbean.setIsCorrect(false);
+            	}
             }
           }
         }

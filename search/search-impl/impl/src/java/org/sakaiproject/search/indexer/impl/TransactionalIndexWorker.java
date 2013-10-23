@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/TransactionalIndexWorker.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/TransactionalIndexWorker.java $
  * $Id: TransactionalIndexWorker.java 118569 2013-01-22 16:38:35Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

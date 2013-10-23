@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-api/src/java/org/sakaiproject/sitestats/api/SitePresence.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-api/src/java/org/sakaiproject/sitestats/api/SitePresence.java $
  * $Id: SitePresence.java 78188 2010-06-01 16:11:14Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

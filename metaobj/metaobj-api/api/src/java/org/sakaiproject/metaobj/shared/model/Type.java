@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.2/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/model/Type.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.3/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/model/Type.java $
  * $Id: Type.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
  ***********************************************************************************
  *

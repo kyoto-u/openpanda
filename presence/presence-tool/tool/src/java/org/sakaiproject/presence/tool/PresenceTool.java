@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.2/presence-tool/tool/src/java/org/sakaiproject/presence/tool/PresenceTool.java $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.3/presence-tool/tool/src/java/org/sakaiproject/presence/tool/PresenceTool.java $
  * $Id: PresenceTool.java 82328 2010-09-16 20:23:52Z csev@umich.edu $
  ***********************************************************************************
  *

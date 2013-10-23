@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUser.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUser.java $
  * $Id: FakeUser.java 81277 2010-08-14 11:04:52Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

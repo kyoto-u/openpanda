@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_options.vm 94881 2011-07-08 14:22:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_options.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_options.vm  -->
 <script type="text/javascript"  src="/sakai-assignment-tool/js/assignments.js"></script>
 <script type="text/javascript">
@@ -8,7 +8,7 @@
 	<h3>
 		$tlang.getString("options")
 	</h3>
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div class="clear"></div>#end	
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end	
 	<form action="#toolForm("$action")" method="post" name="optionsForm">
 		<h4>
 			$tlang.getString("options_instruction") 

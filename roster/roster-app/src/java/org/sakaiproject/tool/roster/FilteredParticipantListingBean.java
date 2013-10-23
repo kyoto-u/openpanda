@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.2/roster-app/src/java/org/sakaiproject/tool/roster/FilteredParticipantListingBean.java $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.3/roster-app/src/java/org/sakaiproject/tool/roster/FilteredParticipantListingBean.java $
  * $Id: FilteredParticipantListingBean.java 112291 2012-09-11 17:47:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

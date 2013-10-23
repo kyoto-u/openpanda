@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/edu-person-api/src/java/org/sakaiproject/api/common/edu/person/SakaiPerson.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/edu-person-api/src/java/org/sakaiproject/api/common/edu/person/SakaiPerson.java $
  * $Id: SakaiPerson.java 100187 2011-10-27 00:29:34Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

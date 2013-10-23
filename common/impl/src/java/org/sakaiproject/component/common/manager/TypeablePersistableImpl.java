@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/impl/src/java/org/sakaiproject/component/common/manager/TypeablePersistableImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/impl/src/java/org/sakaiproject/component/common/manager/TypeablePersistableImpl.java $
  * $Id: TypeablePersistableImpl.java 96488 2011-08-05 23:43:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *

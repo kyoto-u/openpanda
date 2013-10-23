@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.2/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/SectionDecorator.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.3/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/SectionDecorator.java $
  * $Id: SectionDecorator.java 99053 2011-10-07 11:54:52Z bkirschn@umich.edu $
  ***********************************************************************************
  *

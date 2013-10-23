@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.2/impl/logic/src/java/org/sakaiproject/emailtemplateservice/dao/impl/EmailTemplateServiceDaoImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.3/impl/logic/src/java/org/sakaiproject/emailtemplateservice/dao/impl/EmailTemplateServiceDaoImpl.java $
  * $Id: EmailTemplateServiceDaoImpl.java 52893 2008-09-29 16:16:30Z bkirschn@umich.edu $
  ***********************************************************************************
  *

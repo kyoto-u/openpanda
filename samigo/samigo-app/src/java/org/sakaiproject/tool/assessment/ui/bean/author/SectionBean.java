@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/SectionBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/SectionBean.java $
  * $Id: SectionBean.java 113410 2012-09-21 20:49:23Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

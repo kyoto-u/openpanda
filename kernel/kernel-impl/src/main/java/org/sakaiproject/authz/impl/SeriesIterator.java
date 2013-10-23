@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SeriesIterator.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SeriesIterator.java $
  * $Id: SeriesIterator.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
  ***********************************************************************************
  *

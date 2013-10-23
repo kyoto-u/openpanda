@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.2/news-api/api/src/java/org/sakaiproject/news/api/NewsChannel.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.3/news-api/api/src/java/org/sakaiproject/news/api/NewsChannel.java $
  * $Id: NewsChannel.java 97330 2011-08-23 21:49:34Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *

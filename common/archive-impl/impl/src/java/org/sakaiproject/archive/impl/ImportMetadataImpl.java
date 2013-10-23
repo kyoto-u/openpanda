@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/archive-impl/impl/src/java/org/sakaiproject/archive/impl/ImportMetadataImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/archive-impl/impl/src/java/org/sakaiproject/archive/impl/ImportMetadataImpl.java $
  * $Id: ImportMetadataImpl.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

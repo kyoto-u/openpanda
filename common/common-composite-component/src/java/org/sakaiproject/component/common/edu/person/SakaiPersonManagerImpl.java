@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/common-composite-component/src/java/org/sakaiproject/component/common/edu/person/SakaiPersonManagerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/common-composite-component/src/java/org/sakaiproject/component/common/edu/person/SakaiPersonManagerImpl.java $
  * $Id: SakaiPersonManagerImpl.java 100187 2011-10-27 00:29:34Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

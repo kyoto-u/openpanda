@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SpanMacro.java $
- * $Id: SpanMacro.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SpanMacro.java $
+ * $Id: SpanMacro.java 127747 2013-07-25 16:10:58Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -86,8 +86,9 @@ public class SpanMacro extends BaseMacro
 		writer.write("<span"); //$NON-NLS-1$
 		if (cssClass != null && !"".equals(cssClass)) //$NON-NLS-1$
 		{
+			cssClass = cssClass.replaceAll("[^A-Za-z0-9]", "");
 			writer.write(" class='"); //$NON-NLS-1$
-			writer.write(cssClass.replaceAll("'", "&apos;")); //$NON-NLS-1$ //$NON-NLS-2$
+			writer.write(cssClass); //$NON-NLS-1$ //$NON-NLS-2$
 			writer.write('\'');
 		}
 		if (id != null && !"".equals(id)) //$NON-NLS-1$

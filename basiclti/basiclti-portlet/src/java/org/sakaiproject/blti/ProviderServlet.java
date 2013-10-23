@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-portlet/src/java/org/sakaiproject/blti/ProviderServlet.java $
- * $Id: ProviderServlet.java 120370 2013-02-21 21:47:33Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-portlet/src/java/org/sakaiproject/blti/ProviderServlet.java $
+ * $Id: ProviderServlet.java 127874 2013-07-28 12:23:39Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -434,7 +434,7 @@ public class ProviderServlet extends HttpServlet {
           }
           // store modified tool_id back in payload
           payload.put("tool_id", tool_id);
-          final String allowedToolsConfig = ServerConfigurationService.getString("basiclti.provider.allowedtools", null);
+          final String allowedToolsConfig = ServerConfigurationService.getString("basiclti.provider.allowedtools", "");
 
           final String[] allowedTools = allowedToolsConfig.split(":");
           final List<String> allowedToolsList = Arrays.asList(allowedTools);

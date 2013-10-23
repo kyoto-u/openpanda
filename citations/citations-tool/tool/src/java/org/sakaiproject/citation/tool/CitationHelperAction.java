@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-tool/tool/src/java/org/sakaiproject/citation/tool/CitationHelperAction.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-tool/tool/src/java/org/sakaiproject/citation/tool/CitationHelperAction.java $
  * $Id: CitationHelperAction.java 95835 2011-07-28 17:08:00Z jimeng@umich.edu $
  ***********************************************************************************
  *

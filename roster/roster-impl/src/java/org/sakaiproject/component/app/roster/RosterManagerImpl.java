@@ -358,14 +358,21 @@ public abstract class RosterManagerImpl implements RosterManager {
     
     private Comparator<Group> sortGroups() {
     	Comparator<Group> groupComparator = new Comparator<Group>() {
+    		Collator r_collator;
+    		{
+    			r_collator = Collator.getInstance();
+    			try
+    			{
+    				r_collator = new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+    			}
+    			catch(ParseException e)
+    			{
+    				log.warn(this + " Cannot init RuleBasedCollator. Will use the default Collator instead.", e);
+    			}
+    		}
 			public int compare(Group one, Group another)
 			{
-				try{
-					RuleBasedCollator r_collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
-					return r_collator.compare(one.getTitle(),another.getTitle());
-				}catch(ParseException e){
-					return Collator.getInstance().compare(one.getTitle(),another.getTitle());
-				}
+				return r_collator.compare(one.getTitle(),another.getTitle());
 			}
     	};
         return groupComparator;

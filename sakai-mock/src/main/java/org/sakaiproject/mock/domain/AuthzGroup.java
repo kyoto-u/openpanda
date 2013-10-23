@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.2/src/main/java/org/sakaiproject/mock/domain/AuthzGroup.java $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.3/src/main/java/org/sakaiproject/mock/domain/AuthzGroup.java $
  * $Id: AuthzGroup.java 81274 2010-08-14 09:24:44Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

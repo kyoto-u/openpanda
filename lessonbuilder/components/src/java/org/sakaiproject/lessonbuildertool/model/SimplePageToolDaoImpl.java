@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,6 +54,8 @@ import org.sakaiproject.lessonbuildertool.SimplePageLogEntry;
 import org.sakaiproject.lessonbuildertool.SimplePageLogEntryImpl;
 import org.sakaiproject.lessonbuildertool.SimpleStudentPage;
 import org.sakaiproject.lessonbuildertool.SimpleStudentPageImpl;
+import org.sakaiproject.lessonbuildertool.SimplePageProperty;
+import org.sakaiproject.lessonbuildertool.SimplePagePropertyImpl;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.springframework.dao.DataAccessException;
@@ -137,6 +141,10 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		return list;
 	}
 
+	public void flush() {
+	    getHibernateTemplate().flush();
+	}
+
 	public List<SimplePageItem> findItemsInSite(String siteId) {
 	    Object [] fields = new Object[1];
 	    fields[0] = siteId;
@@ -169,6 +177,21 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 	    return result;
 	}
 
+	public List<SimplePageItem> findTextItemsInSite(String siteId) {
+	    Object [] fields = new Object[1];
+	    fields[0] = siteId;
+	    List<String> ids = SqlService.dbRead("select b.id from lesson_builder_pages a,lesson_builder_items b where a.siteId = ? and a.pageId = b.pageId and b.type = 5", fields, null);
+
+	    List<SimplePageItem> result = new ArrayList<SimplePageItem>();
+	    
+	    if (result != null) {
+		for (String id: ids) {
+		    SimplePageItem i = findItem(new Long(id));
+		    result.add(i);
+		}
+	    }
+	    return result;
+	}
 
     public PageData findMostRecentlyVisitedPage(final String userId, final String toolId) {
     	Object [] fields = new Object[4];
@@ -212,6 +235,28 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		}
 	}
 	
+	public SimplePageProperty findProperty(String attribute) {
+	    
+		DetachedCriteria d = DetachedCriteria.forClass(SimplePageProperty.class).add(Restrictions.eq("attribute", attribute));
+		
+		List<SimplePageProperty> list = null;
+		try {
+		    list = getHibernateTemplate().findByCriteria(d);
+		} catch (org.hibernate.ObjectNotFoundException e) {
+		    return null;
+		}
+
+		if (list != null && list.size() > 0) {
+			return list.get(0);
+		} else {
+			return null;
+		}
+	}
+
+        public SimplePageProperty makeProperty(String attribute, String value) {
+	    return new SimplePagePropertyImpl(attribute, value);
+	}
+
 	public List<SimplePageComment> findComments(long commentWidgetId) {
 		DetachedCriteria d = DetachedCriteria.forClass(SimplePageComment.class).add(Restrictions.eq("itemId", commentWidgetId));
 		List<SimplePageComment> list = getHibernateTemplate().findByCriteria(d);
@@ -723,9 +768,9 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 	}
 
 
-    public SimplePageGroup makeGroup(String itemId, String groupId, String groups) {
-		return new SimplePageGroupImpl(itemId, groupId, groups);
-    }
+	public SimplePageGroup makeGroup(String itemId, String groupId, String groups, String siteId) {
+		return new SimplePageGroupImpl(itemId, groupId, groups, siteId);
+	}
 
 
 	public SimplePageLogEntry makeLogEntry(String userId, long itemId, Long studentPageId) {
@@ -782,4 +827,27 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 			}
 		}
 	}
+
+	public List<SimplePageItem>findGradebookItems(final String gradebookUid) {
+
+	    String hql = "select item from org.sakaiproject.lessonbuildertool.SimplePageItem item, org.sakaiproject.lessonbuildertool.SimplePage page where item.pageId = page.pageId and page.siteId = :site and (item.gradebookId is not null or item.altGradebook is not null)";
+	    return getHibernateTemplate().findByNamedParam(hql, "site", gradebookUid);
+	}
+
+	// items in lesson_builder_groups for specified site, map of itemId to groups
+	public Map<String,String> getExternalAssigns(String siteId) {
+
+	    DetachedCriteria d = DetachedCriteria.forClass(SimplePageGroup.class)
+		.add(Restrictions.eq("siteId", siteId));
+
+	    List<SimplePageGroup> list = getHibernateTemplate().findByCriteria(d);
+
+	    Map<String,String>ret = new HashMap<String,String>();	
+	    for (SimplePageGroup group: list)
+		ret.put(group.getItemId(), group.getGroups());
+
+	    return ret;
+	    
+	}
+
 }

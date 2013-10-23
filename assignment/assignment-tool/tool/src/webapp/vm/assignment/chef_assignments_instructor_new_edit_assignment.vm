@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_new_edit_assignment.vm 122959 2013-04-18 13:23:01Z gsilver@umich.edu $ -->
+<!-- $Id: chef_assignments_instructor_new_edit_assignment.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_new_edit_assignment.vm  -->
 ##<!-- $Header: Exp $ -->
 ## Assignments - Instructor new Assignment view
@@ -143,7 +143,7 @@ $(document).ready(function() {
 	</p>
 	#if ($alertMessage)
 		<div class="alertMessage" style="width:80%  !important">
-			$tlang.getString("gen.alert") 		$validator.escapeHtml($alertMessage)
+			$tlang.getString("gen.alert") 		$alertMessage
 		</div>
 		<div style="display:block;clear:both">
 		</div>

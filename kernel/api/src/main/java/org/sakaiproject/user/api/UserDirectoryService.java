@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/user/api/UserDirectoryService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/user/api/UserDirectoryService.java $
  * $Id: UserDirectoryService.java 95733 2011-07-27 14:28:36Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

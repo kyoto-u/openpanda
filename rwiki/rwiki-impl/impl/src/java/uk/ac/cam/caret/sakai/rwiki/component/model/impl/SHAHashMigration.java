@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/model/impl/SHAHashMigration.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/model/impl/SHAHashMigration.java $
  * $Id: SHAHashMigration.java 9644 2006-05-18 11:21:28Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

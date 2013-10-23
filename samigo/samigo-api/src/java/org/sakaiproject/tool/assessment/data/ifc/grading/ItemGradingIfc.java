@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/grading/ItemGradingIfc.java $
- * $Id: ItemGradingIfc.java 62919 2009-05-26 19:08:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/grading/ItemGradingIfc.java $
+ * $Id: ItemGradingIfc.java 127394 2013-07-19 03:16:01Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -129,4 +129,7 @@ public interface ItemGradingIfc
 
   public List getItemGradingAttachmentList();
 
+  public Boolean getIsCorrect();
+
+    public void setIsCorrect(Boolean isCorrect);
 }

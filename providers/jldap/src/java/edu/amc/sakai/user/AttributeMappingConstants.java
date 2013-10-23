@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/jldap/src/java/edu/amc/sakai/user/AttributeMappingConstants.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/jldap/src/java/edu/amc/sakai/user/AttributeMappingConstants.java $
  * $Id: AttributeMappingConstants.java 75816 2010-04-08 01:33:07Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

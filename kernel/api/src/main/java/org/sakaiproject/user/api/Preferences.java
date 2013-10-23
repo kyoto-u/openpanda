@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/user/api/Preferences.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/user/api/Preferences.java $
  * $Id: Preferences.java 89389 2011-03-08 07:18:22Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_view_grade.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_student_view_grade.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_student_view_grade.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm,v 1.2 2005/05/19 19:39:49 gsilver.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
@@ -39,7 +39,7 @@
 			#end
 		</h3>
 
-		#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div>#end
+		#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div>#end
 		#set($submitTime=false)
 		#set($submitTime=$submission.getTimeSubmitted())
 		#set($returnTime=false)

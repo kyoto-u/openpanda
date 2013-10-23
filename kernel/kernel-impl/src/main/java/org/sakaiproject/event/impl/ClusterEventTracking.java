@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/event/impl/ClusterEventTracking.java $
- * $Id: ClusterEventTracking.java 98741 2011-09-29 09:38:40Z matthew.buckett@oucs.ox.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/event/impl/ClusterEventTracking.java $
+ * $Id: ClusterEventTracking.java 127978 2013-07-30 19:51:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
@@ -39,7 +40,6 @@ import org.sakaiproject.db.api.SqlReader;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.NotificationService;
-import org.sakaiproject.util.StringUtil;
 
 /**
  * <p>
@@ -545,21 +545,14 @@ public abstract class ClusterEventTracking extends BaseEventTrackingService impl
 
 				if (M_log.isDebugEnabled()) M_log.debug("checking for events > " + m_lastEventSeq);
 				// check the db for new events
-				// Note: the events may not all have sessions, so to get them we need an outer join.
-				// TODO: switch to a "view" read once that's established, for now, a join -ggolden
+				// We do a left join which gets us records from non-sessions also (SESSION_SERVER may be null when non-session events are returned)
 				String statement = clusterEventTrackingServiceSql.getEventSql();
-
-				// we might want a left join, which would get us records from non-sessions, which the above mysql code does NOT give -ggolden
-				// select e.EVENT_ID,e.EVENT_DATE,e.EVENT,e.REF,e.SESSION_ID,e.EVENT_CODE,s.SESSION_SERVER
-				// from SAKAI_EVENT e
-				// left join SAKAI_SESSION s on (e.SESSION_ID = s.SESSION_ID)
-				// where EVENT_ID > 0
 
 				// send in the last seq number parameter
 				Object[] fields = new Object[1];
 				fields[0] = Long.valueOf(m_lastEventSeq);
 
-				List events = sqlService().dbRead(statement, fields, new SqlReader()
+				List<?> events = sqlService().dbRead(statement, fields, new SqlReader()
 				{
 					public Object readSqlResultRecord(ResultSet result)
 					{
@@ -573,7 +566,7 @@ public abstract class ClusterEventTracking extends BaseEventTrackingService impl
 							String session = result.getString(5);
 							String code = result.getString(6);
 							String context = result.getString(7);
-							String eventSessionServerId = result.getString(8);
+							String eventSessionServerId = result.getString(8); // may be null
 
 							// for each one (really, for the last one), update the last event seen seq number
 							if (id > m_lastEventSeq)
@@ -581,17 +574,21 @@ public abstract class ClusterEventTracking extends BaseEventTrackingService impl
 								m_lastEventSeq = id;
 							}
 
-							boolean nonSessionEvent = session.startsWith("~");
+							boolean nonSessionEvent = (eventSessionServerId == null || session.startsWith("~"));
 							String userId = null;
 							boolean skipIt = false;
 
 							if (nonSessionEvent)
 							{
-								String[] parts = StringUtil.split(session, "~");
-								userId = parts[2];
+								String[] parts = StringUtils.split(session, "~");
+								if (parts.length > 1) {
+								    userId = parts[1];
+								}
 
 								// we skip this event if it came from our server
-								skipIt = serverId.equals(parts[1]);
+								if (parts.length > 0) {
+								    skipIt = serverId.equals(parts[0]);
+								}
 							}
 
 							// for session events, if the event is from this server instance,

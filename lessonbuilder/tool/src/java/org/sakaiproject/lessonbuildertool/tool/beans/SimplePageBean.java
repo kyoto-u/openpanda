@@ -85,6 +85,7 @@ import org.sakaiproject.lessonbuildertool.cc.CartridgeLoader;
 import org.sakaiproject.lessonbuildertool.cc.Parser;
 import org.sakaiproject.lessonbuildertool.cc.PrintHandler;
 import org.sakaiproject.lessonbuildertool.cc.ZipLoader;
+import org.sakaiproject.lessonbuildertool.ccexport.CCExport;
 import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
 import org.sakaiproject.lessonbuildertool.service.BltiInterface;
 import org.sakaiproject.lessonbuildertool.service.GradebookIfc;
@@ -259,6 +260,7 @@ public class SimplePageBean {
 	private String quiztool = null;
 	private String topictool = null;
 	private String assigntool = null;
+        private boolean importtop = false;
 	
 	private Integer editPrivs = null;
 	private String currentSiteId = null;
@@ -537,6 +539,10 @@ public class SimplePageBean {
 		this.hasReleaseDate = hasReleaseDate;
 	}
 
+        public void setImporttop(boolean i) {
+	    this.importtop = i;
+	}
+
     // gets called for non-checked boxes also, but q will be null
 	public void setQuiztool(String q) {
 	    if (q != null)
@@ -761,10 +767,10 @@ public class SimplePageBean {
 				filterSpec = filterHtml;
 			    // no, default to LOW. That will allow embedding but not Javascript
 			    if (filterSpec == null) // should never be null. unspeciifed should give ""
-				filter = FILTER_LOW;
+				filter = FILTER_DEFAULT;
 			    // old specifications
 			    else if (filterSpec.equalsIgnoreCase("true"))
-				filter = FILTER_LOW; // old value of true produced the same result as missing
+				filter = FILTER_HIGH; // old value of true produced the same result as missing
 			    else if (filterSpec.equalsIgnoreCase("false"))			    
 				filter = FILTER_NONE;
 			    // new ones
@@ -778,7 +784,7 @@ public class SimplePageBean {
 				filter = FILTER_NONE;
 			    // unspecified
 			    else
-				filter = FILTER_LOW;
+				filter = FILTER_DEFAULT;
 			}			    
 			if (filter.equals(FILTER_NONE)) {
 			    html = FormattedText.processHtmlDocument(contents, error);
@@ -1212,7 +1218,7 @@ public class SimplePageBean {
 		return tool.getTitle();
 	}
 
-	private Site getCurrentSite() {
+	public Site getCurrentSite() {
 		if (currentSite != null) // cached value
 			return currentSite;
 		
@@ -2196,7 +2202,7 @@ public class SimplePageBean {
 					    String groups = getItemGroupString (i, lessonEntity, true);
 					    ourGroupName = "Access: " + getNameOfSakaiItem(i);
 					    String groupId = GroupPermissionsService.makeGroup(getCurrentPage().getSiteId(), ourGroupName);
-					    saveItem(simplePageToolDao.makeGroup(i.getSakaiId(), groupId, groups));
+					    saveItem(simplePageToolDao.makeGroup(i.getSakaiId(), groupId, groups, getCurrentPage().getSiteId()));
 
 					    // update the tool access control to point to our access control group
 					    
@@ -3953,8 +3959,8 @@ public class SimplePageBean {
 				completeCache.put(itemId, true);
 				return true;
 			} else {
-				Float grade = submission.getGrade();
-			    if (grade >= Float.valueOf(item.getRequirementText())) {
+				Double grade = submission.getGrade();
+			    if (grade >= Double.valueOf(item.getRequirementText())) {
 			    	completeCache.put(itemId, true);
 			    	return true;
 			    } else {
@@ -4296,7 +4302,13 @@ public class SimplePageBean {
 
        private String getYoutubeKeyFromUrl(String URL) {
 	   // 	see if it has a Youtube ID
-	   if (URL.startsWith("http://www.youtube.com/") || URL.startsWith("http://youtube.com/")) {
+	   int offset = 0;
+	   if (URL.startsWith("http:"))
+	       offset = 5;
+	   else if (URL.startsWith("https:"))
+	       offset = 6;
+
+	   if (URL.startsWith("//www.youtube.com/", offset) || URL.startsWith("//youtube.com/", offset)) {
 	       Matcher match = YOUTUBE_PATTERN.matcher(URL);
 	       if (match.find()) {
 		   return normalizeParams(match.group(1));
@@ -4305,7 +4317,7 @@ public class SimplePageBean {
 	       if (match.find()) {
 		   return normalizeParams(match.group(1));
 	       }
-	   }else if(URL.startsWith("http://youtu.be/")) {
+	   }else if(URL.startsWith("//youtu.be/", offset)) {
 	       Matcher match = SHORT_YOUTUBE_PATTERN.matcher(URL);
 	       if(match.find()) {
 		   return normalizeParams(match.group(1));
@@ -4847,7 +4859,7 @@ public class SimplePageBean {
 			    topicobject = q;
 		    }
 
-		    parser.parse(new PrintHandler(this, cartridgeLoader, simplePageToolDao, quizobject, topicobject, bltiEntity, assignobject));
+		    parser.parse(new PrintHandler(this, cartridgeLoader, simplePageToolDao, quizobject, topicobject, bltiEntity, assignobject, importtop));
 		    setTopRefresh();
 		} catch (Exception e) {
 		    setErrKey("simplepage.cc-error", "");

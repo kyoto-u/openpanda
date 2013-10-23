@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.2/mailarchive-james/james/src/java/org/sakaiproject/james/JamesServlet.java $
- * $Id: JamesServlet.java 92897 2011-05-17 13:29:42Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-james/james/src/java/org/sakaiproject/james/JamesServlet.java $
+ * $Id: JamesServlet.java 127752 2013-07-25 16:24:27Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -34,6 +34,8 @@ import java.util.HashMap;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -149,6 +151,11 @@ public class JamesServlet extends HttpServlet
 		super.destroy();
 	}
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // do not return anything - SAK-23222
+    }
+    
 	protected static String getLogDirectory()
 	{
 		String logDir = StringUtils.trimToNull(ServerConfigurationService.getString("smtp.logdir"));

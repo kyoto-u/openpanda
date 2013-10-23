@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_list_assignments.vm 118333 2013-01-14 18:38:03Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_list_assignments.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_list_assignments.vm  -->
 ##<!-- $Header: Exp $ -->
 ## Assignments - list view
@@ -72,7 +72,7 @@ function allowClick(object)
 		#end
 	</ul>
 	#end
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div class="clear"></div>#end
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
 	<h3>
 		$!tlang.getString('lisofass1')
 	</h3>

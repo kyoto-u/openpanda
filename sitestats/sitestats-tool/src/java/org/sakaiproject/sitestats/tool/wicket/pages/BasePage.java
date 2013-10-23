@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/BasePage.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/BasePage.java $
  * $Id: BasePage.java 122716 2013-04-12 20:28:14Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

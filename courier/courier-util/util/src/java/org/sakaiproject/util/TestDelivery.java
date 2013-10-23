@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.2/courier-util/util/src/java/org/sakaiproject/util/TestDelivery.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.3/courier-util/util/src/java/org/sakaiproject/util/TestDelivery.java $
  * $Id: TestDelivery.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

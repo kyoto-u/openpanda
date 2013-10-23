@@ -144,9 +144,11 @@ public class ViewProfile extends BasePage {
 		}
 		
 		/*STATUS PANEL */
-		ProfileStatusRenderer status = new ProfileStatusRenderer("status", userUuid, privacy, null, "tiny");
-		status.setOutputMarkupId(true);
-		add(status);
+		if(sakaiProxy.isProfileStatusEnabled()) {
+			add(new ProfileStatusRenderer("status", userUuid, privacy, null, "tiny"));
+		} else {
+			add(new EmptyPanel("status"));
+		}
 		
 		/* TABS */
 		List<ITab> tabs = new ArrayList<ITab>();
@@ -174,18 +176,20 @@ public class ViewProfile extends BasePage {
 		
 		Cookie tabCookie = getWebRequestCycle().getWebRequest().getCookie(ProfileConstants.TAB_COOKIE);
 		
-		tabs.add(new AbstractTab(new ResourceModel("link.tab.profile")) {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Panel getPanel(String panelId) {
-
-				setTabCookie(ProfileConstants.TAB_INDEX_PROFILE);
-				return new ViewProfilePanel(panelId, userUuid, currentUserId,
-						privacy, friend);
-			}
-		});
+		if (sakaiProxy.isProfileFieldsEnabled()) {
+			tabs.add(new AbstractTab(new ResourceModel("link.tab.profile")) {
+	
+				private static final long serialVersionUID = 1L;
+	
+				@Override
+				public Panel getPanel(String panelId) {
+	
+					setTabCookie(ProfileConstants.TAB_INDEX_PROFILE);
+					return new ViewProfilePanel(panelId, userUuid, currentUserId,
+							privacy, friend);
+				}
+			});
+		}
 		
 		if (true == sakaiProxy.isWallEnabledGlobally()) {
 			
@@ -207,10 +211,15 @@ public class ViewProfile extends BasePage {
 			}
 		}
 		
+		
 		if (null != tab) {
 			tabbedPanel.setSelectedTab(Integer.parseInt(tab));
 		} else if (null != tabCookie) {
-			tabbedPanel.setSelectedTab(Integer.parseInt(tabCookie.getValue()));
+			try {
+				tabbedPanel.setSelectedTab(Integer.parseInt(tabCookie.getValue()));
+			} catch (IndexOutOfBoundsException e) {
+				//do nothing. This will be thrown if the cookie contains a value > the number of tabs but thats ok.
+			}
 		}
 		
 		add(tabbedPanel);

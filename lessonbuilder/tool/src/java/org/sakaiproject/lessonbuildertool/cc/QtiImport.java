@@ -140,6 +140,10 @@ public class QtiImport {
 	    NodeList varequal=((Element)itemnode).getElementsByTagName("varequal");
 	    if (varequal != null && varequal.item(0) != null)
 		return "Fill In the Blank";
+	    NodeList varsubstring=((Element)itemnode).getElementsByTagName("varsubstring");
+	    if (varsubstring != null && varsubstring.item(0) != null)
+		return "Fill In the Blank";
+
 	}
 	
 	return "Short Answers/Essay";
@@ -172,9 +176,12 @@ public class QtiImport {
     }
 
     String appString(String s1, String s2) {
-	if (s1 != null && !s1.equals(""))
-	    return s1 + "<br/>" + s2;
-	else
+	if (s1 != null && !s1.equals("")) {
+	    if (s2 != null && !s2.equals(""))
+		return s1 + "<br/>" + s2;
+	    else 
+		return s1;
+	} else
 	    return s2;
     }
 
@@ -200,6 +207,12 @@ public class QtiImport {
 	    child = child.getNextSibling();
 	}
 	return child;
+    }
+
+    Node getNextElement(Node node) {
+	while (node != null && node.getNodeType() != Node.ELEMENT_NODE)
+	    node = node.getNextSibling();
+	return node;
     }
 
     // at least in 2.3, Samigo is unable to import MATIMAGE, despite the
@@ -672,7 +685,7 @@ public class QtiImport {
 	    if (child != null) {
 		String tagName = child.getNodeName();
 
-		if (tagName.equalsIgnoreCase("flow_mat")) {
+		if (tagName.equalsIgnoreCase("flow_mat") || tagName.equalsIgnoreCase("material")) {
 		    feedback = appString(feedback, feedtext);
 		} else if (tagName.equalsIgnoreCase("solution")) {
 		    model = appString(model, feedtext);
@@ -684,7 +697,6 @@ public class QtiImport {
 
 	if (debug) System.err.println("feedback " + feedback);
 	if (debug) System.err.println("model " + model);
-
 
 	doHeader();
 	out.print("<item ident=\""+ident+"\"");
@@ -756,10 +768,13 @@ public class QtiImport {
 	String question = null;
 	List<Shortans> answers = new ArrayList<Shortans>();
 	// there are only two possible answers, Samigo only supports correct/incorrect
+	// except that essay has only general
 	String icfeedback = null;
 	String cfeedback = null;
+	String gfeedback = null;
 	List<String> cident = new ArrayList<String>();
 	List<String> icident = new ArrayList<String>();
+	List<String> gident = new ArrayList<String>();
 
 	boolean casesens = false; // case sensitive
 	Double score = 0.0;
@@ -809,10 +824,23 @@ public class QtiImport {
 	question = getMatText(material);
 
 	// flag pattern match questions as needing review.
-	if (isPattern)
-            question = bean.getMessageLocator().getMessage("simplepage.import_cc_pattern") + " " + question;
+	// no longer. we actually implement them correctly
+	//	if (isPattern)
+	//            question = bean.getMessageLocator().getMessage("simplepage.import_cc_pattern") + " " + question;
 
 	if (debug) System.err.println("question: " + question);
+
+	// the full Qti spec has multiple material and response_str, alternating. 
+	// So roses are {} and violets are {} also
+	//   is shown as
+	// material: roses are
+	// response_str
+	// material: and violets are
+	// response_str
+	// also
+	// However the CC profile only allows one material and response_str.
+
+	// thus this loop is unnecessary, but for the moment I'm leaving it
 
 	Node response = getFirstByName(presentation, "response_str");
 	while (response != null) {
@@ -870,7 +898,7 @@ public class QtiImport {
 	    String contin = getAttribute(respcondl, "continue");
 	    Node conditionvar = getFirstByName(respcondl, "conditionvar");
 
-	    if (contin.equalsIgnoreCase("Yes")) { // general feedback
+	    if (contin.equalsIgnoreCase("Yes") && getFirstByName(conditionvar, "other") != null) { // general feedback
 		Node disfeedback = getFirstByName(respcondl, "displayfeedback");
 		while (disfeedback != null) {
 		    String feedstring = getAttribute(disfeedback, "linkrefid");
@@ -890,7 +918,7 @@ public class QtiImport {
 		}
 	    } else if (conditionvar != null) {
 		// if there's an <or>, use it
-		// now check for both varequal and varsubset
+		// now check for both varequal and varsubstring
 		Node varequal = getFirstByName(conditionvar, "varequal");
 		while (varequal != null) {
 		    String vtext = getNodeText(varequal);
@@ -915,7 +943,7 @@ public class QtiImport {
 		}
 
 		// and varsubset
-		Node varsubset = getFirstByName(conditionvar, "varsubset");
+		Node varsubset = getFirstByName(conditionvar, "varsubstring");
 		while (varsubset != null) {
 		    String vtext = getNodeText(varsubset);
 		    String vident = getAttribute(varsubset, "respident");
@@ -959,6 +987,14 @@ public class QtiImport {
 			    casesens = true;
 		    }
 		    varregexp = getNextByName(varregexp, "var_extension");
+		}
+		// correct feedback
+		Node disfeedback = getFirstByName(respcondl, "displayfeedback");
+		while (disfeedback != null) {
+		    String feedstring = getAttribute(disfeedback, "linkrefid");
+		    if (feedstring != null && feedstring.length() > 0)
+			cident.add(feedstring);
+		    disfeedback = getNextByName(disfeedback, "displayfeedback");			
 		}
 	    }
 	    respcondl = getNextByName(respcondl, "respcondition");
@@ -1020,15 +1056,27 @@ public class QtiImport {
 	out.println("    <flow class=\"Block\">");
 	out.println("    <flow class=\"Block\">");
 	out.println("      <material>");
-	out.println("        <mattext charset=\"ascii-us\" texttype=\"text/html\" xml:space=\"default\"><![CDATA[" + question + "<p> 1. ]]></mattext>");
+
+	// there's an issue here. The restricted CC profile is unable to handle a blank in the middle
+	// of the question. So the samples all put ___ in the question to show where the real blank is.
+	// Samigo will then insert a box at the end of the question. I originally thought it would be
+	// nice to put that on a separate line. The probelm is that if we then do a CC export, we've added
+	// junk that wasn't in the original, so repeated export and import keeps adding things. It seems
+	// like it's safest to leave the text alone.
+	
+	//out.println("        <mattext charset=\"ascii-us\" texttype=\"text/html\" xml:space=\"default\"><![CDATA[" + question + "<p> 1. ]]></mattext>");
+	out.println("        <mattext charset=\"ascii-us\" texttype=\"text/html\" xml:space=\"default\"><![CDATA[" + question + "]]></mattext>");
 	out.println("      </material>");
 	
+// following should not be needed with CC profile
+// if it is actually needed we need to save the original text
 	for (int i = 2; i <= answers.size(); i++) {
 	    out.println("      <material>");
 	    out.println("        <mattext charset=\"ascii-us\" texttype=\"text/html\" xml:space=\"default\"><![CDATA[<p> "+i+". ]]></mattext>");
 	    out.println("      </material>");
 	}
 
+//  this loop should happen only once.
 	for (Shortans ans: answers) {
 	    String rident = ans.rident;
 	    if (ident == null)
@@ -1201,12 +1249,13 @@ public class QtiImport {
 	    return false;
 	}
 	
+	int numcorrect = 0;
 	while (respcondl != null) {
 	    String rctitle = getAttribute(respcondl, "title");
 	    String contin = getAttribute(respcondl, "continue");
 	    Node conditionvar = getFirstByName(respcondl, "conditionvar");
 
-	    if (contin.equalsIgnoreCase("Yes")) { // general feedback
+	    if (contin.equalsIgnoreCase("Yes") && getFirstByName(conditionvar, "other") != null) { // general feedback
 		Node disfeedback = getFirstByName(respcondl, "displayfeedback");
 		while (disfeedback != null) {
 		    String feedstring = getAttribute(disfeedback, "linkrefid");
@@ -1223,8 +1272,19 @@ public class QtiImport {
 		    disfeedback = getNextByName(disfeedback, "displayfeedback");			
 		}
 	    } else if (conditionvar != null)  { // normal alternative. can't do much if no conditionvar
-		Node varequal = getFirstByName(conditionvar, "varequal");
-		if (varequal != null) {
+		// in this profile, the only possibilities are a simple varequal, an <or> of varequals, or an <and> of varequal and <not> varequal.
+		Node firsttest = getNextElement(conditionvar.getFirstChild());
+		Node varequal = null;
+		if (firsttest.getNodeName().equals("varequal"))
+		    varequal = firsttest;  // just one varequal. use it
+		else if (firsttest.getNodeName().equals("or"))
+		    varequal = getNextElement(firsttest.getFirstChild());   // or, use all of its children
+		else if (firsttest.getNodeName().equals("and")) {
+		    varequal = firsttest.getFirstChild();   // and, has both varequal and not under it. 
+		    if (!varequal.getNodeName().equals("varequal"))
+			varequal = getNextByName(varequal,"varequal");  // first next must be a <not>, find first varequal
+		}
+		while (varequal != null) {
 		    String vtext = getNodeText(varequal);
 		    // don't use the respident because there's only one variable
 		    Mcans answer = null;
@@ -1257,17 +1317,28 @@ public class QtiImport {
 			&& getAttribute(setvar, "varname").equalsIgnoreCase("score")
 			&& "100".equals(getNodeText(setvar))) {
 			answer.correct = true;
+			numcorrect++;
 		    }
-
 		    // look for answer specific feedback
+		    // yes this is inside the varequal loop. if more than one answer is
+		    // being tested need to give this feedback to them all
 		    Node disfeedback = getFirstByName(respcondl, "displayfeedback");
+		    // correct actually goes in answewr-specific. The only way I see to 
+		    // distinguish is the label. Yuck.
 		    while (disfeedback != null) {
 			String feedstring = getAttribute(disfeedback, "linkrefid");
-			if (feedstring != null)
+			if (feedstring != null && feedstring.equals("correct_fb")) {
+			    // do this only once
+			    if (numcorrect == 1)
+				cident.add(feedstring);
+			} else if (feedstring != null)
 			    answer.fbident.add(feedstring);
 			disfeedback = getNextByName(disfeedback, "displayfeedback");			
 		    }
+
+		    varequal = getNextByName(varequal, "varequal");		    
 		}
+
 	    }
 	    respcondl = getNextByName(respcondl, "respcondition");
 	}
@@ -1289,6 +1360,8 @@ public class QtiImport {
 		feedback = appString(feedback, feedtext);
 	    if (icident.contains(fident))
 		icfeedback = appString(icfeedback, feedtext);
+	    if (cident.contains(fident))
+		cfeedback = appString(icfeedback, feedtext);
 	    
 	    for (Mcans ans: answers) {
 		if (ans.fbident.contains(fident)){
@@ -1298,9 +1371,9 @@ public class QtiImport {
 			else
 			    icfeedback = appString(icfeedback, feedtext);
 		    } else {
-			ans.feedback = appString(ans.feedback, feedtext);
 			if (!feedtext.trim().equals(""))
 			    haveanswerfeedback = true;
+			ans.feedback = appString(ans.feedback, feedtext);
 		    }
 		}
 	    }
@@ -1322,6 +1395,8 @@ public class QtiImport {
 	    out.println("        <fieldentry>True False</fieldentry>");
 	else if (rcardinality != null && rcardinality.toLowerCase().equals("multiple"))
 	    out.println("        <fieldentry>Multiple Correct Answer</fieldentry>");
+	else if (numcorrect > 1)
+	    out.println("        <fieldentry>Multiple Correct Single Selection</fieldentry>");	    
 	else
 	    out.println("        <fieldentry>Multiple Choice</fieldentry>");
 	out.println("      </qtimetadatafield>");
@@ -1388,9 +1463,11 @@ public class QtiImport {
 	    if (ans.correct)
 		out.println("      <setvar action=\"Add\" varname=\"SCORE\">" + score + "</setvar>");
 	    out.println("      <displayfeedback feedbacktype=\"Response\" linkrefid=\""+(ans.correct?"Correct":"Incorrect")+"\"></displayfeedback>");
-	    if (haveanswerfeedback)
+	    if (haveanswerfeedback) {
 		out.println("     <displayfeedback feedbacktype=\"Response\" linkrefid=\"AnswerFeedback\"><![CDATA["+(ans.feedback!=null?ans.feedback:"")+"]]></displayfeedback>");
-		
+		// this is what the QTI spec would call for, but above seems to be what samigo wants
+		// out.println("     <displayfeedback feedbacktype=\"Response\" linkrefid=\""+ans.newident+"1\"></displayfeedback>");
+	    }
 	    out.println("    </respcondition>");
 	}
 	out.println("  </resprocessing>");
@@ -1415,6 +1492,21 @@ public class QtiImport {
 	    out.println("    </flow_mat>");
 	    out.println("  </itemfeedback>");
 	}
+	if (false) {
+	    // this is what we'd expect from QTI, but Samigo doesn't seem to want it
+	if (haveanswerfeedback) {
+	    for (Mcans ans:answers) {
+		out.println("  <itemfeedback ident=\""+ans.newident+"1\" view=\"All\">");
+		out.println("    <flow_mat class=\"Block\">");
+		out.println("      <material>");
+		out.println("      <mattext charset=\"ascii-us\" texttype=\"text/html\" xml:space=\"default\"><![CDATA["+ans.feedback+"]]></mattext>");
+		out.println("      </material>");
+		out.println("    </flow_mat>");
+		out.println("  </itemfeedback>");
+	    }
+	}
+	}
+
 	out.println("</item>");
 
 	return true;

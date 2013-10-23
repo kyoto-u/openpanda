@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedItemText.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedItemText.java $
  * $Id: PublishedItemText.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
  ***********************************************************************************
  *

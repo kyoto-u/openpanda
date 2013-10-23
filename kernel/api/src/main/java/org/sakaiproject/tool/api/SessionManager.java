@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/tool/api/SessionManager.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/tool/api/SessionManager.java $
  * $Id: SessionManager.java 74021 2010-02-25 11:39:49Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

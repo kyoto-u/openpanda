@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.2/portal-api/api/src/java/org/sakaiproject/portal/api/PortletApplicationDescriptor.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-api/api/src/java/org/sakaiproject/portal/api/PortletApplicationDescriptor.java $
  * $Id: PortletApplicationDescriptor.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

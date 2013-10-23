@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/sample/src/java/org/sakaiproject/provider/user/SampleUserDirectoryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/sample/src/java/org/sakaiproject/provider/user/SampleUserDirectoryProvider.java $
  * $Id: SampleUserDirectoryProvider.java 80979 2010-08-09 11:07:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

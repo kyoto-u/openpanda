@@ -8,7 +8,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: authorSettings.jsp 122152 2013-04-03 19:58:10Z ottenhoff@longsight.com $
+* $Id: authorSettings.jsp 127214 2013-07-18 14:28:14Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -463,7 +463,7 @@ function setBlockDivs()
   </samigo:hideDivision>
 
   <!-- *** HIGH SECURITY *** -->
-<h:panelGroup rendered="#{assessmentSettings.valueMap.ipAccessType_isInstructorEditable==true or assessmentSettings.valueMap.passwordRequired_isInstructorEditable==true} or publishedSettings.valueMap.lockedBrowser_isInstructorEditable==true" >
+<h:panelGroup rendered="#{assessmentSettings.valueMap.ipAccessType_isInstructorEditable==true or assessmentSettings.valueMap.passwordRequired_isInstructorEditable==true or publishedSettings.valueMap.lockedBrowser_isInstructorEditable==true}" >
   <samigo:hideDivision title="#{assessmentSettingsMessages.heading_high_security}">
     <f:verbatim><div class="tier2"></f:verbatim>
     <h:panelGrid border="0" columns="2"

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-tool/tool/src/webapp/scripts/ajaxpopup.js $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/webapp/scripts/ajaxpopup.js $
  * $Id: ajaxpopup.js 74432 2010-03-08 17:05:13Z gsilver@umich.edu $
  ***********************************************************************************
  *

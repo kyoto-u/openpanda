@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.2/messageforums-app/src/java/org/sakaiproject/tool/messageforums/AuthzGroupComparator.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.3/messageforums-app/src/java/org/sakaiproject/tool/messageforums/AuthzGroupComparator.java $
  * $Id: AuthzGroupComparator.java 89079 2011-02-25 08:10:59Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

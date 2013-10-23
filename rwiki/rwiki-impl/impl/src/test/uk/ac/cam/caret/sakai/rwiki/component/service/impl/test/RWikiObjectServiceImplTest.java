@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-impl/impl/src/test/uk/ac/cam/caret/sakai/rwiki/component/service/impl/test/RWikiObjectServiceImplTest.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-impl/impl/src/test/uk/ac/cam/caret/sakai/rwiki/component/service/impl/test/RWikiObjectServiceImplTest.java $
  * $Id: RWikiObjectServiceImplTest.java 64001 2009-06-23 14:16:02Z savithap@umich.edu $
  ***********************************************************************************
  *

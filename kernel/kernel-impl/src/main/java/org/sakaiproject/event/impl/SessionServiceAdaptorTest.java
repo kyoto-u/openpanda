@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/event/impl/SessionServiceAdaptorTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/event/impl/SessionServiceAdaptorTest.java $
  * $Id: SessionServiceAdaptorTest.java 62002 2009-05-07 18:27:46Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

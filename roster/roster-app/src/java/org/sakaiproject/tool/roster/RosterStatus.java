@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.2/roster-app/src/java/org/sakaiproject/tool/roster/RosterStatus.java $
- * $Id: RosterStatus.java 105573 2012-03-06 19:39:54Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.3/roster-app/src/java/org/sakaiproject/tool/roster/RosterStatus.java $
+ * $Id: RosterStatus.java 127130 2013-07-17 16:46:34Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -42,6 +42,17 @@ public class RosterStatus extends BaseRosterPageBean {
 
 	static {
 		enrollmentStatusComparator = new Comparator<Participant>() {
+			Collator r_collator;
+    		{
+    			r_collator = Collator.getInstance();
+    			try
+    			{
+    				r_collator = new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+    			}
+    			catch(ParseException e)
+    			{
+    			}
+    		}
 			public int compare(Participant one, Participant another) {
 				EnrolledParticipant p1 = (EnrolledParticipant)one;
 				EnrolledParticipant p2 = (EnrolledParticipant)another;
@@ -57,18 +68,25 @@ public class RosterStatus extends BaseRosterPageBean {
 					return BaseRosterPageBean.sortNameComparator.compare(one, another);
 				}
 				int comparison = 0;
-				try{
-					RuleBasedCollator r_collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
-					comparison = r_collator.compare(p1.getEnrollmentStatus(), p2.getEnrollmentStatus());
-				}catch(ParseException e){
-					comparison = Collator.getInstance().compare(p1.getEnrollmentStatus(), p2.getEnrollmentStatus());
-				}
+				comparison = r_collator.compare(p1.getEnrollmentStatus(), p2.getEnrollmentStatus());
+
 				return comparison == 0 ? BaseRosterPageBean.sortNameComparator.compare(one,
 						another) : comparison;
 			}
 		};
 
 		enrollmentCreditsComparator = new Comparator<Participant>() {
+			Collator r_collator;
+    		{
+    			r_collator = Collator.getInstance();
+    			try
+    			{
+    				r_collator = new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+    			}
+    			catch(ParseException e)
+    			{
+    			}
+    		}
 			public int compare(Participant one, Participant another) {
 				EnrolledParticipant p1 = (EnrolledParticipant)one;
 				EnrolledParticipant p2 = (EnrolledParticipant)another;
@@ -85,12 +103,8 @@ public class RosterStatus extends BaseRosterPageBean {
 					return BaseRosterPageBean.sortNameComparator.compare(one, another);
 				}
 				int comparison = 0;
-				try{
-					RuleBasedCollator r_collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
-					comparison = r_collator.compare(p1.getEnrollmentCredits(), p2.getEnrollmentCredits());
-				}catch(ParseException e){
-					comparison = Collator.getInstance().compare(p1.getEnrollmentCredits(), p2.getEnrollmentCredits());
-				}
+				comparison = r_collator.compare(p1.getEnrollmentCredits(), p2.getEnrollmentCredits());
+				
 				return comparison == 0 ? BaseRosterPageBean.sortNameComparator.compare(one,
 						another) : comparison;
 			}

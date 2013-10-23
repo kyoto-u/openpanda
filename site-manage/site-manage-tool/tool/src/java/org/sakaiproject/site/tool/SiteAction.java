@@ -1,7 +1,7 @@
 /**********************************************************************************
 
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.2/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
- * $Id: SiteAction.java 123003 2013-04-18 18:23:33Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.3/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
+ * $Id: SiteAction.java 127227 2013-07-18 15:10:21Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -149,6 +149,9 @@ import org.sakaiproject.util.Web;
  * </p>
  */
 public class SiteAction extends PagedResourceActionII {
+	// SAK-23491 add template_used property
+	private static final String TEMPLATE_USED = "template_used";
+	
 	/** Our log (commons). */
 	private static Log M_log = LogFactory.getLog(SiteAction.class);
 	
@@ -6256,6 +6259,7 @@ public class SiteAction extends PagedResourceActionII {
 			state.setAttribute(STATE_TEMPLATE_INDEX, params
 					.getString("continue"));
 		}
+		resetVisitedTemplateListToIndex(state, (String) state.getAttribute(STATE_TEMPLATE_INDEX));
 
 		// refresh the whole page
 		scheduleTopRefresh();
@@ -9641,6 +9645,12 @@ public class SiteAction extends PagedResourceActionII {
 						siteInfo.site_contact_name);
 				rp.addProperty(Site.PROP_SITE_CONTACT_EMAIL,
 						siteInfo.site_contact_email);
+				
+				// SAK-23491 add template_used property
+				if (templateSite != null) {
+					// if the site was created from template
+					rp.addProperty(TEMPLATE_USED, templateSite.getId());
+				}
 
 				state.setAttribute(STATE_SITE_INSTANCE_ID, site.getId());
 
@@ -10843,8 +10853,8 @@ public class SiteAction extends PagedResourceActionII {
 					edit.setTitle(siteInfo.title);
 					edit.setPublished(true);
 					edit.setPubView(false);
-					//edit.setType(templateId);
-					// ResourcePropertiesEdit rpe = edit.getPropertiesEdit();
+					// SAK-23491 add template_used property
+					edit.getPropertiesEdit().addProperty(TEMPLATE_USED, templateId);
 					try {
 						SiteService.save(edit);
 					} catch (Exception e) {

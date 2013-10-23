@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/ConcurrentSearchIndexBuilderWorkerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/ConcurrentSearchIndexBuilderWorkerImpl.java $
  * $Id: ConcurrentSearchIndexBuilderWorkerImpl.java 102142 2011-12-19 10:58:54Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

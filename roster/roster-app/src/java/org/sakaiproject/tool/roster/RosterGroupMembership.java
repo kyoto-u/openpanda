@@ -156,14 +156,22 @@ public class RosterGroupMembership extends BaseRosterPageBean {
 	
 	private Comparator<GroupedParticipants> sortByGroup() {
     	Comparator<GroupedParticipants> groupComparator = new Comparator<GroupedParticipants>() {
+    		Collator r_collator;
+    		{
+    			r_collator = Collator.getInstance();
+    			try
+    			{
+    				r_collator = new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+    			}
+    			catch(ParseException e)
+    			{
+    				log.warn(this + " Cannot init RuleBasedCollator. Will use the default Collator instead.", e);
+    			}
+    		}
+			
 			public int compare(GroupedParticipants one, GroupedParticipants another)
 			{
-				try{
-					RuleBasedCollator r_collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
-					return r_collator.compare(one.getGroupTitle(), another.getGroupTitle());
-				}catch(ParseException e){
-					return Collator.getInstance().compare(one.getGroupTitle(), another.getGroupTitle());
-				}
+				return r_collator.compare(one.getGroupTitle(), another.getGroupTitle());
 			}
     	};
         return groupComparator;

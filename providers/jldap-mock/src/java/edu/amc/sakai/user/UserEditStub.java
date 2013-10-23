@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/jldap-mock/src/java/edu/amc/sakai/user/UserEditStub.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/jldap-mock/src/java/edu/amc/sakai/user/UserEditStub.java $
  * $Id: UserEditStub.java 81290 2010-08-14 14:45:43Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

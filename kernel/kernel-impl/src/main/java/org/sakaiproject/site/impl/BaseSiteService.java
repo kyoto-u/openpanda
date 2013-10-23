@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/site/impl/BaseSiteService.java $
- * $Id: BaseSiteService.java 124895 2013-05-23 16:10:02Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/site/impl/BaseSiteService.java $
+ * $Id: BaseSiteService.java 125728 2013-06-13 16:57:33Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -1448,7 +1448,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			{
 			}
 
-			rv = "\"" + userName + "'s site\" " + rv;
+			rv = "\"" + rb.getFormattedMessage("sitdis.usr", new Object[]{userName}) + "\" " + rv;
 		}
 
 		else
@@ -1928,15 +1928,16 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		// double check that it's mine
 		if (!APPLICATION_ID.equals(ref.getType())) return null;
 
-		String rv = "Site: " + ref.getReference();
+		String rv = rb.getFormattedMessage("entdsc.sit", new Object[]{ref.getReference()});
 
 		try
 		{
 			Site site = getSite(ref.getId());
-			rv = "Site: " + site.getTitle() + " (" + site.getId() + ")" + " Created: "
-					+ site.getCreatedTime().toStringLocalFull() + " by " + site.getCreatedBy().getDisplayName() + " ("
-					+ site.getCreatedBy().getDisplayId() + ") "
-					+ StringUtil.limit((site.getDescription() == null ? "" : site.getDescription()), 30);
+			rv = rb.getFormattedMessage("entdsc.sit_usr", new Object[]{
+					site.getTitle() + " (" + site.getId() + ")",
+					site.getCreatedTime().toStringLocalFull(),
+					site.getCreatedBy().getDisplayName() + " (" + site.getCreatedBy().getDisplayId() + ")",
+					StringUtil.limit((site.getDescription() == null ? "" : site.getDescription()), 30)});
 		}
 		catch (IdUnusedException e)
 		{

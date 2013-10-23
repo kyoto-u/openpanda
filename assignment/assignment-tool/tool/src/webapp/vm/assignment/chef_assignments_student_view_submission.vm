@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_view_submission.vm 104471 2012-02-07 16:35:32Z zqian@umich.edu $ -->
+<!-- $Id: chef_assignments_student_view_submission.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_student_view_submission.vm  -->
 #parse("/vm/assignment/assignment_macros.vm")
 <script type="text/javascript" src="/library/js/jquery.js"></script>
@@ -80,7 +80,7 @@ function submitform(id)
 		<div class="alertMessage">$tlang.getString("stuviewsubm.theclodat")</div><div class="clear"></div>
 	#end
 	#if ($!canSubmit)
-		#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div class="clear"></div>#end
+		#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
 		#if ($!submission && $timeSubmitted)
 			## if there is a submitted submission
 			## get the properies

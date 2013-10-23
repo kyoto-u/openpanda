@@ -1,5 +1,5 @@
 /*
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-tool/src/webapp/script/prefs.js $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-tool/src/webapp/script/prefs.js $
  * $Id: prefs.js 72181 2009-09-28 11:28:47Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

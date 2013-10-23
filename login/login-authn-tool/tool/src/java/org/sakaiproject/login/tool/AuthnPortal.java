@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/login/tags/sakai-2.9.2/login-authn-tool/tool/src/java/org/sakaiproject/login/tool/AuthnPortal.java $
+ * $URL: https://source.sakaiproject.org/svn/login/tags/sakai-2.9.3/login-authn-tool/tool/src/java/org/sakaiproject/login/tool/AuthnPortal.java $
  * $Id: AuthnPortal.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

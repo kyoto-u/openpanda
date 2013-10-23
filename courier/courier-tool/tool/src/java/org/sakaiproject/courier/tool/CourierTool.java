@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.2/courier-tool/tool/src/java/org/sakaiproject/courier/tool/CourierTool.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.3/courier-tool/tool/src/java/org/sakaiproject/courier/tool/CourierTool.java $
  * $Id: CourierTool.java 101763 2011-12-14 19:43:07Z botimer@umich.edu $
  ***********************************************************************************
  *

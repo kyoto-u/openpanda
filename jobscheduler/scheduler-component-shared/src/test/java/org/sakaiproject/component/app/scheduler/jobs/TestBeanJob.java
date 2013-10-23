@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jobscheduler/tags/scheduler-2.9.2/scheduler-component-shared/src/test/java/org/sakaiproject/component/app/scheduler/jobs/TestBeanJob.java $
+* $URL: https://source.sakaiproject.org/svn/jobscheduler/tags/scheduler-2.9.3/scheduler-component-shared/src/test/java/org/sakaiproject/component/app/scheduler/jobs/TestBeanJob.java $
 * $Id: TestBeanJob.java 83923 2010-10-29 17:07:57Z duffy@rsmart.com $
 ***********************************************************************************
 *

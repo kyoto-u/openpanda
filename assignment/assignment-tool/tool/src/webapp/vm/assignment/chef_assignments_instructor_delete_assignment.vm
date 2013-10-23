@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_delete_assignment.vm 94881 2011-07-08 14:22:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_delete_assignment.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_delete_assignment.vm  -->
 <div class="portletBody">
 	<h3>
@@ -10,7 +10,7 @@
 	</h3>
 
 		#if ($alertMessage)
-			<div class="alertMessage">  $tlang.getString("gen.alert")  $validator.escapeHtml($alertMessage)</div><div class="clear"></div>
+			<div class="alertMessage">  $tlang.getString("gen.alert")  $alertMessage</div><div class="clear"></div>
 		#else
 			<div class="alertMessage">
 				$confirmMessage

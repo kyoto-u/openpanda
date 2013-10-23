@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_uploadAll.vm 104696 2012-02-14 19:54:28Z zqian@umich.edu $ -->
+<!-- $Id: chef_assignments_instructor_uploadAll.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_uploadALL.vm  -->
 ## showing the page for preparing upload zip file
 <script language="JavaScript" type="text/JavaScript">
@@ -74,7 +74,7 @@
 		$tlang.getString('uploadall.title')
 	#end
 	</h3>
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div>#end
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div>#end
 	<p class="instruction">
 		#if ($!download)
 			$tlang.getString('downloadall.instruction')

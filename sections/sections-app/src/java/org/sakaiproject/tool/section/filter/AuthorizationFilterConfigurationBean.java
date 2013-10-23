@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.2/sections-app/src/java/org/sakaiproject/tool/section/filter/AuthorizationFilterConfigurationBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.3/sections-app/src/java/org/sakaiproject/tool/section/filter/AuthorizationFilterConfigurationBean.java $
  * $Id: AuthorizationFilterConfigurationBean.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

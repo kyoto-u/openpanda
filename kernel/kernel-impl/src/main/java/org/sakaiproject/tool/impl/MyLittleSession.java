@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/tool/impl/MyLittleSession.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/tool/impl/MyLittleSession.java $
  * $Id: MyLittleSession.java 74708 2010-03-16 19:38:33Z david.horwitz@uct.ac.za $
  **********************************************************************************
  *

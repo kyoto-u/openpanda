@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
  * $Id: BaseCalendarService.java 123594 2013-05-03 17:54:41Z arwhyte@umich.edu $
  ***********************************************************************************
  *

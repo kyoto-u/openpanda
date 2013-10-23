@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/component-manager/src/main/java/org/sakaiproject/component/locales/SakaiLocales.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/component-manager/src/main/java/org/sakaiproject/component/locales/SakaiLocales.java $
  * $Id: SakaiLocales.java 122965 2013-04-18 15:02:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

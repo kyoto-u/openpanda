@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>2.9.2</version>
+        <version>2.9.3</version>
 		<relativePath>../master/pom.xml</relativePath>
     </parent>
     
     <name>Sakai Entity Broker</name>
     <groupId>org.sakaiproject</groupId>
     <artifactId>entitybroker</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.3</version>
     <packaging>pom</packaging>
     
     <organization>
@@ -243,9 +243,9 @@
     
     <!-- define source code repository location -->
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2</developerConnection>
-        <url>https://source.sakaiproject.org/viewsvn/entitybroker/tags/entitybroker-1.5.2</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3</developerConnection>
+        <url>https://source.sakaiproject.org/viewsvn/entitybroker/tags/entitybroker-1.5.3</url>
     </scm>
     
     <dependencyManagement>

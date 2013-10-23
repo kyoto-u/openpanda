@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/type-api/src/java/org/sakaiproject/api/common/type/Type.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/type-api/src/java/org/sakaiproject/api/common/type/Type.java $
  * $Id: Type.java 89105 2011-02-26 07:44:58Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

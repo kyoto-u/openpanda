@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeServerConfigurationService.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeServerConfigurationService.java $
  * $Id: FakeServerConfigurationService.java 122984 2013-04-18 16:19:47Z arwhyte@umich.edu $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

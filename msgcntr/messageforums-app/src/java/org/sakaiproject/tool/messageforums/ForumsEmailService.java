@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.2/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.3/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
  * $Id: ForumsEmailService.java 122251 2013-04-05 12:14:03Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

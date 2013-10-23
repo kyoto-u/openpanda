@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
- * $Id: SakaiBLTIUtil.java 120424 2013-02-24 02:02:51Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
+ * $Id: SakaiBLTIUtil.java 127586 2013-07-23 14:46:56Z csev@umich.edu $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -241,7 +241,7 @@ public class SakaiBLTIUtil {
 		String theRole = "Learner";
 		if ( SecurityService.isSuperUser() )
 		{
-			theRole = "Instructor,Administrator";
+			theRole = "Instructor,Administrator,urn:lti:instrole:ims/lis/Administrator,urn:lti:sysrole:ims/lis/Administrator";
 		}
 		else if ( SiteService.allowUpdateSite(context) ) 
 		{
@@ -449,7 +449,7 @@ public class SakaiBLTIUtil {
 		String sakaiVersion = ServerConfigurationService.getString("version.sakai","2");
 		setProperty(props,"ext_lms", "sakai-"+sakaiVersion);  
 		setProperty(props,BasicLTIConstants.TOOL_CONSUMER_INFO_PRODUCT_FAMILY_CODE, 
-			sakaiVersion);  
+			"sakai");  
 		setProperty(props,BasicLTIConstants.TOOL_CONSUMER_INFO_VERSION, sakaiVersion);  
 
 		// We pass this along in the Sakai world - it might

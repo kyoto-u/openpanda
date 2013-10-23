@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/content/impl/LockManagerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/content/impl/LockManagerImpl.java $
  * $Id: LockManagerImpl.java 84737 2010-11-15 08:57:23Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

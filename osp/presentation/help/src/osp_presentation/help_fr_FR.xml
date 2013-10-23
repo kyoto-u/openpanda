@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="portfolios_overview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>portfolios_overview_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Portfolios : Généralités</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/portfolios_overview_fr_FR.html</value>
+      </property>
+      <property name="defaultForTool">
+         <value>osp.presentation</value>
+      </property>
+   </bean>
+   <bean id="planning_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>planning_a_portfolio_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Préparation d'un portfolio</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/planning_a_portfolio_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="accessing_the_portfolios_tool"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>accessing_the_portfolios_tool_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Accès à l'outil de portfolios</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/accessing_the_portfolios_tool_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="creating_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>creating_a_portfolio_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Création d'un portfolio</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/creating_a_portfolio_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="creating_a_portfolio_based_on_your_own_design"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>creating_a_portfolio_based_on_your_own_design_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Conception de votre propre portfolio</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/creating_a_portfolio_based_on_your_own_design_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="using_a_template_to_create_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>using_a_template_to_create_a_portfolio_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Création d'un portfolio basé sur un modèle</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/using_a_template_to_create_a_portfolio_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="changing_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_a_portfolio_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modification d'un portfolio</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/changing_a_portfolio_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="publishing_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>publishing_a_portfolio_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Publication d'un portfolio</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/publishing_a_portfolio_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="deap"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>deap_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Téléchargement (Export) d'un portfolio</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/deap_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="deleting_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>deleting_a_portfolio_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Suppression d'un portfolio</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/deleting_a_portfolio_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="viewing_a_portfolio_and_its_comments"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>viewing_a_portfolio_and_its_comments_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Consultation d'un portfolio et de ses commentaires</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/viewing_a_portfolio_and_its_comments_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="leaving_a_comment"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>leaving_a_comment_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Laisser un commentaire</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/leaving_a_comment_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="managing_comments_on_your_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>managing_comments_on_your_portfolio_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Gestion des commentaires sur votre portfolio</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/managing_comments_on_your_portfolio_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="viewing_comments_on_all_of_your_portfolios"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>viewing_comments_on_all_of_your_portfolios_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Consultation des commentaires de tous vos portfolios</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/viewing_comments_on_all_of_your_portfolios_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="viewing_your_comments_on_portfolios"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>viewing_your_comments_on_portfolios_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Consultation de vos commentaires sur les portfolios</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/viewing_your_comments_on_portfolios_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="seeing_who_has_viewed_your_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>seeing_who_has_viewed_your_portfolio_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Qui a regardé votre portfolio ? </value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/seeing_who_has_viewed_your_portfolio_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="changing_permissions_for_the_portfolios_tool"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_permissions_for_the_portfolios_tool_fr_FR</value>
+      </property>
+      <property name="name">
+         <value>Modification des permissions</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/changing_permissions_for_the_portfolios_tool_fr_FR.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean" id="ospPortfolioCategory">
+               <property name="name">
+                 <value>Portfolios</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="portfolios_overview"/>
+                     <ref bean="planning_a_portfolio"/>
+                     <ref bean="accessing_the_portfolios_tool"/>
+                     <ref bean="creating_a_portfolio"/>
+                     <ref bean="creating_a_portfolio_based_on_your_own_design"/>
+                     <ref bean="using_a_template_to_create_a_portfolio"/>
+                     <ref bean="changing_a_portfolio"/>
+                     <ref bean="publishing_a_portfolio"/>
+                     <ref bean="deap"/>
+                     <ref bean="deleting_a_portfolio"/>
+                     <ref bean="viewing_a_portfolio_and_its_comments"/>
+                     <ref bean="leaving_a_comment"/>
+                     <ref bean="managing_comments_on_your_portfolio"/>
+                     <ref bean="viewing_comments_on_all_of_your_portfolios"/>
+                     <ref bean="viewing_your_comments_on_portfolios"/>
+                     <ref bean="seeing_who_has_viewed_your_portfolio"/>
+                     <ref bean="changing_permissions_for_the_portfolios_tool"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

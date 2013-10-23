@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.2/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/SectionCategory.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.3/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/SectionCategory.java $
  * $Id: SectionCategory.java 84221 2010-11-03 12:47:45Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

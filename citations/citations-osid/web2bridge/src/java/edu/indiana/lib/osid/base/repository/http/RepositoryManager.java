@@ -8,7 +8,7 @@ import edu.indiana.lib.twinpeaks.util.*;
 
 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/base/repository/http/RepositoryManager.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/base/repository/http/RepositoryManager.java $
  * $Id: RepositoryManager.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  **********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-util/src/main/java/org/sakaiproject/util/EnumerationIterator.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-util/src/main/java/org/sakaiproject/util/EnumerationIterator.java $
  * $Id: EnumerationIterator.java 101696 2011-12-13 14:44:36Z aaronz@vt.edu $
  ***********************************************************************************
  *

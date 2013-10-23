@@ -24,6 +24,7 @@
 package org.sakaiproject.lessonbuildertool.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.sakaiproject.lessonbuildertool.SimplePage;
 import org.sakaiproject.lessonbuildertool.SimplePageComment;
@@ -31,6 +32,7 @@ import org.sakaiproject.lessonbuildertool.SimplePageGroup;
 import org.sakaiproject.lessonbuildertool.SimplePageItem;
 import org.sakaiproject.lessonbuildertool.SimplePageLogEntry;
 import org.sakaiproject.lessonbuildertool.SimpleStudentPage;
+import org.sakaiproject.lessonbuildertool.SimplePageProperty;
 
 public interface SimplePageToolDao {
 
@@ -43,6 +45,9 @@ public interface SimplePageToolDao {
     // can edit pages in current site. Make sure that the page you are going to
     // edit is actually part of the current site.
 	public boolean canEditPage();
+
+    // session flush
+	public void flush();
 
     // returns a list of all items on the page, ordered by sequence number
 	public List<SimplePageItem> findItemsOnPage(long pageId);
@@ -67,8 +72,14 @@ public interface SimplePageToolDao {
 
 	public List<SimplePageItem> findDummyItemsInSite(String siteId);
 
+	public List<SimplePageItem> findTextItemsInSite(String siteId);
+
 	public SimplePageItem findItem(long id);
 	
+	public SimplePageProperty findProperty(String attribute);
+
+	public SimplePageProperty makeProperty(String attribute, String value);
+
 	public List<SimplePageComment> findComments(long commentWidgetId);
 	
 	public List<SimplePageComment> findCommentsOnItems(List<Long> commentItemIds);
@@ -173,7 +184,7 @@ public interface SimplePageToolDao {
 
     public SimplePageItem makeItem(long pageId, int sequence, int type, String sakaiId, String name);
 
-    public SimplePageGroup makeGroup(String itemId, String groupId, String groups);
+    public SimplePageGroup makeGroup(String itemId, String groupId, String groups, String siteId);
 
     public SimplePageLogEntry makeLogEntry(String userId, long itemId, Long studentPageId);
     
@@ -182,5 +193,11 @@ public interface SimplePageToolDao {
     public SimpleStudentPage makeStudentPage(long itemId, long pageId, String title, String author, boolean groupOwned);
     
     public SimplePageItem copyItem(SimplePageItem old);
+
+    public List<SimplePageItem>findGradebookItems(String gradebookUid);
+
+    // items in lesson_builder_groups for specified site, map of itemId to groups
+    public Map<String,String> getExternalAssigns(String siteId);
+
 
 }

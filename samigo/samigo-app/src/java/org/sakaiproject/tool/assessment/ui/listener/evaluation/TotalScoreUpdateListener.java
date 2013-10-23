@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreUpdateListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreUpdateListener.java $
  * $Id: TotalScoreUpdateListener.java 113420 2012-09-21 21:34:06Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

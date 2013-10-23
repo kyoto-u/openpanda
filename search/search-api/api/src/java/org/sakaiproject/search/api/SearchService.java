@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-api/api/src/java/org/sakaiproject/search/api/SearchService.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-api/api/src/java/org/sakaiproject/search/api/SearchService.java $
  * $Id: SearchService.java 118572 2013-01-22 16:42:42Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

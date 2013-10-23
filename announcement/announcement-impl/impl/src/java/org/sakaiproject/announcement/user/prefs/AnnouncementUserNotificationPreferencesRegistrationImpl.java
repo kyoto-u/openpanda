@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.2/announcement-impl/impl/src/java/org/sakaiproject/announcement/user/prefs/AnnouncementUserNotificationPreferencesRegistrationImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.3/announcement-impl/impl/src/java/org/sakaiproject/announcement/user/prefs/AnnouncementUserNotificationPreferencesRegistrationImpl.java $
  * $Id: AnnouncementUserNotificationPreferencesRegistrationImpl.java 82737 2010-09-24 13:52:32Z chmaurer@iupui.edu $
  ***********************************************************************************
  *

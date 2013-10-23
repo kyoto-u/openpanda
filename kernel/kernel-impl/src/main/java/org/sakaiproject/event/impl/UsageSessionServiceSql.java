@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/event/impl/UsageSessionServiceSql.java $
- * $Id: UsageSessionServiceSql.java 122224 2013-04-04 21:50:53Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/event/impl/UsageSessionServiceSql.java $
+ * $Id: UsageSessionServiceSql.java 126049 2013-06-20 18:06:33Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -47,11 +47,6 @@ public interface UsageSessionServiceSql
 	 * returns the sql statement which retrieves all the active sakai sessions from the sakai_session table based on a join column and criteria.
 	 */
 	String getSakaiSessionSql3(String alias, String joinAlias, String joinTable, String joinColumn, String joinCriteria);
-
-	/**
-	 * return the sql statement which retrieves all the open sakai sessions belong to one certain user.
-	 */
-	String getSakaiSessionSql4();
 
 	/**
 	 * returns the sql statement which updates a sakai session in the sakai_session table for a given session id.

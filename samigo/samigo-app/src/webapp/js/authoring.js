@@ -125,6 +125,12 @@ switchPartialCredit(fieldname,prevCorrectBtn);
 }
 
 function switchPartialCredit(newCorrect,oldCorrect){
+   var pInput = document.getElementById('itemForm:mcchoices:0:partialCredit');
+   if(typeof(pInput) == 'undefined' || pInput == null){
+      // partial credit function is disabled
+      return;
+   }	
+   
    var toggleDiv=document.getElementById('partialCredit_toggle');
    if( typeof(toggleDiv) == 'undefined' ||toggleDiv == null){
       return;
@@ -135,7 +141,7 @@ function switchPartialCredit(newCorrect,oldCorrect){
              var position= oldCorrect.split(":");
              var  prevcorrId="itemForm:mcchoices:"+position[2]+":partialCredit";
              var pInput= document.getElementById(prevcorrId);
-             pInput.valueOf().value=0;
+             pInput.value=0;
              pInput.style.borderStyle = "solid double";
              pInput.style.borderColor="red";
 			 pInput.disabled=false;
@@ -148,7 +154,7 @@ function switchPartialCredit(newCorrect,oldCorrect){
          position= newCorrect.split(":");
          var currCorrId="itemForm:mcchoices:"+position[2]+":partialCredit";
          var correctPInput= document.getElementById(currCorrId);
-         correctPInput.valueOf().value=100;
+         correctPInput.value=100;
 		 correctPInput.disabled=true;
   }
 }
@@ -171,6 +177,12 @@ function resetInsertAnswerSelectMenus(){
 }
 
 function disablePartialCreditField(){
+ var pInput = document.getElementById('itemForm:mcchoices:0:partialCredit');
+ if(typeof(pInput) == 'undefined' || pInput == null){
+    // partial credit function is disabled
+    return;
+ }
+ 
  var inputs= document.getElementsByTagName("INPUT");
 
  for (var i = 0; i < inputs.length; i++) {
@@ -180,7 +192,7 @@ function disablePartialCreditField(){
           var subElement= radiobtn.name.split(":");
           var currCorrId="itemForm:mcchoices:"+subElement[2]+":partialCredit";
 		  var correctPInput= document.getElementById(currCorrId);
-		  correctPInput.valueOf().value=100;
+		  correctPInput.value=100;
           correctPInput.disabled=true;
        }   
     }

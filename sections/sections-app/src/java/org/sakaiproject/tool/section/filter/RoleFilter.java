@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.2/sections-app/src/java/org/sakaiproject/tool/section/filter/RoleFilter.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.3/sections-app/src/java/org/sakaiproject/tool/section/filter/RoleFilter.java $
  * $Id: RoleFilter.java 93246 2011-05-25 11:32:14Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**
  * $Id: VersionConstants.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/utils/src/java/org/sakaiproject/entitybroker/util/VersionConstants.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/utils/src/java/org/sakaiproject/entitybroker/util/VersionConstants.java $
  * VersionConstants.java - entity-broker - Jul 29, 2008 5:07:58 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

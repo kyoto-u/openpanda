@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.2/src/main/java/org/sakaiproject/mock/service/UserDirectoryService.java $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.3/src/main/java/org/sakaiproject/mock/service/UserDirectoryService.java $
  * $Id: UserDirectoryService.java 75562 2010-04-01 13:42:36Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

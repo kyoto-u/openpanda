@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/profile/tags/profile-2.9.2/profile-app/src/java/org/sakaiproject/jsf/profile/ProfileDisplayHTMLRender.java $
+ * $URL: https://source.sakaiproject.org/svn/profile/tags/profile-2.9.3/profile-app/src/java/org/sakaiproject/jsf/profile/ProfileDisplayHTMLRender.java $
  * $Id: ProfileDisplayHTMLRender.java 59681 2009-04-03 23:29:54Z arwhyte@umich.edu $
  ***********************************************************************************
  *

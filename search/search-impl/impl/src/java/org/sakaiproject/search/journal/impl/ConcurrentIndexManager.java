@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/ConcurrentIndexManager.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/ConcurrentIndexManager.java $
  * $Id: ConcurrentIndexManager.java 75433 2010-03-30 12:28:10Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

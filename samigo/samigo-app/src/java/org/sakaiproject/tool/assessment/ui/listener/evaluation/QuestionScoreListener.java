@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
@@ -243,8 +244,7 @@ public class QuestionScoreListener implements ActionListener,
 			if (bean.getSelectedSARationaleView() == null) {
 				// if bean.showSARationaleInLine is null, then set inline to be
 				// the default
-				bean
-						.setSelectedSARationaleView(QuestionScoresBean.SHOW_SA_RATIONALE_RESPONSES_POPUP);
+				bean.setSelectedSARationaleView(QuestionScoresBean.SHOW_SA_RATIONALE_RESPONSES_INLINE);
 			}
 
 			if ("true".equalsIgnoreCase(totalBean.getAnonymous())) {
@@ -513,6 +513,7 @@ public class QuestionScoreListener implements ActionListener,
 
 				Iterator iter2 = answerList.iterator();
 				ArrayList itemGradingAttachmentList = new ArrayList();
+				HashMap<Long, Set<String>> fibmap = new HashMap<Long, Set<String>>();
 				while (iter2.hasNext()) {
 					ItemGradingData gdata = (ItemGradingData) iter2.next();
 					results.setItemGrading(gdata);
@@ -659,25 +660,40 @@ public class QuestionScoreListener implements ActionListener,
 
 					//SAM-755-"checkmark" indicates right, add "X" to indicate wrong
 					if (gdataAnswer != null) {
+						String checkmarkGif = "<img src='/samigo-app/images/delivery/checkmark.gif'>";
+						String crossmarkGif = "<img src='/samigo-app/images/crossmark.gif'>";
+						
 						if (bean.getTypeId().equals("8") || bean.getTypeId().equals("11")) {
-							//need to do something here for fill in the blanks
-							if(gdataAnswer.getScore() > 0){
-								//if score is 0, there is no way to tell if user got the correct answer
-								//by using "autoscore"... wish there was a better way to tell if its correct or not
-								Float autoscore = gdata.getAutoScore();
-								if (!(Float.valueOf(0)).equals(autoscore)) {
-									answerText = "<img src='/samigo-app/images/delivery/checkmark.gif'>" + answerText;
-								}else if(Float.valueOf(0).equals(autoscore)){
-									answerText = "<img src='/samigo-app/images/crossmark.gif'>" + answerText;
+							if (gdata.getIsCorrect() == null) {
+								boolean result = false;
+								if (bean.getTypeId().equals("8")) {
+									result = delegate.getFIBResult(gdata, fibmap, item, publishedAnswerHash);
 								}
-							}
-						}
+								else {
+									result = delegate.getFINResult(gdata, item, publishedAnswerHash);
+								}
+
+								if (result) {
+									answerText = checkmarkGif + answerText;
+								} else {
+									answerText = crossmarkGif + answerText;
+								}
+						    }
+						    else {
+								if (gdata.getIsCorrect().booleanValue()) {
+									answerText = checkmarkGif + answerText;
+								}
+								else {
+									answerText = crossmarkGif + answerText;
+								}
+						    }
+						}							
 						else if(!bean.getTypeId().equals("3")){
 							if((gdataAnswer.getIsCorrect() != null && gdataAnswer.getIsCorrect()) || 
 									(gdataAnswer.getPartialCredit() != null && gdataAnswer.getPartialCredit() > 0)){
-								answerText = "<img src='/samigo-app/images/delivery/checkmark.gif'>" + answerText;
+								answerText = checkmarkGif + answerText;
 							}else if(gdataAnswer.getIsCorrect() != null && !gdataAnswer.getIsCorrect()){
-								answerText = "<img src='/samigo-app/images/crossmark.gif'>" + answerText;
+								answerText = crossmarkGif + answerText;
 							}
 						}
 					}

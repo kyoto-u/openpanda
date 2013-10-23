@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/conversion/SAXSerializableResourceAccess.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/conversion/SAXSerializableResourceAccess.java $
  * $Id: SAXSerializableResourceAccess.java 113356 2012-09-21 18:41:16Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

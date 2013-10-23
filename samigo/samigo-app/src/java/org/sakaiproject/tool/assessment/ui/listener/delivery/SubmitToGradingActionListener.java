@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/SubmitToGradingActionListener.java $
- * $Id: SubmitToGradingActionListener.java 123551 2013-05-02 23:15:41Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/SubmitToGradingActionListener.java $
+ * $Id: SubmitToGradingActionListener.java 128449 2013-08-13 20:04:09Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -526,6 +526,8 @@ public class SubmitToGradingActionListener implements ActionListener {
 			} else { // itemGrading from new set doesn't exist, add to set in
 				// this case
 				// log.debug("**** SubmitToGrading: need add new item");
+			        //a new item should always have the grading ID set to null
+			        newItem.setItemGradingId(null);
 				newItem.setAgentId(adata.getAgentId());
 				updateItemGradingSet.add(newItem);
 			}

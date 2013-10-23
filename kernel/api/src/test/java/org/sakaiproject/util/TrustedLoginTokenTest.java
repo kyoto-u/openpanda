@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/test/java/org/sakaiproject/util/TrustedLoginTokenTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/test/java/org/sakaiproject/util/TrustedLoginTokenTest.java $
  * $Id: TrustedLoginTokenTest.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
  ***********************************************************************************
  *

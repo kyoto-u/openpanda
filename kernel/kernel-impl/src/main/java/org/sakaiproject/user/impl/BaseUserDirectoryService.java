@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
  * $Id: BaseUserDirectoryService.java 118591 2013-01-22 20:34:14Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

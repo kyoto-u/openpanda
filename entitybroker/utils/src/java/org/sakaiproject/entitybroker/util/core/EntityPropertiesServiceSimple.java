@@ -1,6 +1,6 @@
 /**
  * $Id: EntityPropertiesServiceSimple.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/utils/src/java/org/sakaiproject/entitybroker/util/core/EntityPropertiesServiceSimple.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/utils/src/java/org/sakaiproject/entitybroker/util/core/EntityPropertiesServiceSimple.java $
  * EntityPropertiesSimple.java - entity-broker - Jan 13, 2009 7:42:36 PM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

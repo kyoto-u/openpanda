@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.2/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/user/prefs/MailArchiveUserNotificationPreferencesRegistrationImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/user/prefs/MailArchiveUserNotificationPreferencesRegistrationImpl.java $
  * $Id: MailArchiveUserNotificationPreferencesRegistrationImpl.java 82737 2010-09-24 13:52:32Z chmaurer@iupui.edu $
  ***********************************************************************************
  *

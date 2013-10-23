@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.2/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/RosterBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.3/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/RosterBean.java $
  * $Id: RosterBean.java 99001 2011-10-05 21:39:37Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/component-manager/src/main/java/org/sakaiproject/component/api/ComponentManager.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/component-manager/src/main/java/org/sakaiproject/component/api/ComponentManager.java $
  * $Id: ComponentManager.java 66281 2009-09-04 08:35:26Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/RenderBean.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/RenderBean.java $
  * $Id: RenderBean.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

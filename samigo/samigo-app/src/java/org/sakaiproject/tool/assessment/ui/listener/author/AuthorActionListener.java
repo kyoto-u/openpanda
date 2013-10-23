@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
- * $Id: AuthorActionListener.java 107981 2012-05-09 22:07:33Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
+ * $Id: AuthorActionListener.java 127581 2013-07-23 13:54:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -70,14 +70,15 @@ import org.sakaiproject.util.ResourceLoader;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: AuthorActionListener.java 107981 2012-05-09 22:07:33Z ktsao@stanford.edu $
+ * @version $Id: AuthorActionListener.java 127581 2013-07-23 13:54:11Z ottenhoff@longsight.com $
  */
 
 public class AuthorActionListener
     implements ActionListener
 {
   private static Log log = LogFactory.getLog(AuthorActionListener.class);
-  private HashMap hm = new HashMap();
+  private HashMap<String, ArrayList<String>> groupUsersIdMap = new HashMap<String, ArrayList<String>>();
+  private ArrayList<String> siteUsersIdList = new ArrayList<String>();
   private String display_dateFormat= ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","output_data_picker_w_sec");
   private SimpleDateFormat displayFormat = new SimpleDateFormat(display_dateFormat, new ResourceLoader().getLocale());
   private TimeUtil tu = new TimeUtil();
@@ -163,15 +164,10 @@ public class AuthorActionListener
 	  try {
 		  Site site = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
 		  Set siteStudentRoles = site.getRolesIsAllowed(SectionAwareness.STUDENT_MARKER);
-		  ArrayList siteUsersIdList = new ArrayList();
 		  if(siteStudentRoles != null && !siteStudentRoles.isEmpty()) {
 			  for(Iterator iter = siteStudentRoles.iterator(); iter.hasNext();) {
 				  String role = (String) iter.next();
 				  siteUsersIdList.addAll(site.getUsersHasRole(role));
-			  }
-			  if (siteUsersIdList.size() != 0) {
-				  String siteId = site.getId();
-				  hm.put(siteId, siteUsersIdList);
 			  }
 		  }
 		  
@@ -181,7 +177,7 @@ public class AuthorActionListener
 		  while (iter.hasNext()) {
 			  Group group = (Group) iter.next();
 			  Set groupStudentRoles = group.getRolesIsAllowed(SectionAwareness.STUDENT_MARKER);
-			  ArrayList groupUsersIdList = new ArrayList();
+			  ArrayList<String> groupUsersIdList = new ArrayList<String>();
 			  if(groupStudentRoles != null && !groupStudentRoles.isEmpty()) {
 				  for(Iterator iter2 = groupStudentRoles.iterator(); iter2.hasNext();) {
 					  String role = (String) iter2.next();
@@ -189,7 +185,7 @@ public class AuthorActionListener
 				  }
 				  if (groupUsersIdList.size() != 0) {
 					  String groupId = group.getId();
-					  hm.put(groupId, groupUsersIdList);
+					  groupUsersIdMap.put(groupId, groupUsersIdList);
 				  }
 			  }
 		  }
@@ -291,7 +287,7 @@ public class AuthorActionListener
 		  maxSubmissionsAllowed = f.getSubmissionsAllowed().intValue();
 	  }
 	  
-	  ArrayList userIdList = new ArrayList();
+	  ArrayList<String> userIdList = new ArrayList<String>();
 	  if (f.getReleaseTo() != null && !("").equals(f.getReleaseTo())) {
 		  if (f.getReleaseTo().indexOf("Anonymous Users") >= 0) {
 			  if (submissionCountHash != null) {
@@ -319,13 +315,15 @@ public class AuthorActionListener
 				  publishedAssessmentSettingsBean.setAssessmentId(f.getPublishedAssessmentId());
 				  String [] groupsAuthorized = publishedAssessmentSettingsBean.getGroupsAuthorized();
 				  for (int i = 0; i < groupsAuthorized.length; i++) {
-					  if (hm.get(groupsAuthorized[i]) != null) {
-						  userIdList.addAll((ArrayList) hm.get(groupsAuthorized[i]));
+					  if (groupUsersIdMap.get(groupsAuthorized[i]) != null) {
+						  for (String userId : groupUsersIdMap.get(groupsAuthorized[i])) {
+							  userIdList.add(userId);
+						  }
 					  }
 				  }
 			  }
 			  else {
-				  userIdList = (ArrayList) hm.get(AgentFacade.getCurrentSiteId());
+				  userIdList = siteUsersIdList;
 			  }
 			  
 			  int submittedCounts = 0;

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseOfferingRoleResolver.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseOfferingRoleResolver.java $
  * $Id: CourseOfferingRoleResolver.java 83968 2010-11-01 11:36:21Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

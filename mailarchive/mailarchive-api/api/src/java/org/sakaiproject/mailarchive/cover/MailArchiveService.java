@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.2/mailarchive-api/api/src/java/org/sakaiproject/mailarchive/cover/MailArchiveService.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-api/api/src/java/org/sakaiproject/mailarchive/cover/MailArchiveService.java $
  * $Id: MailArchiveService.java 70889 2010-01-04 16:40:35Z jonespm@umich.edu $
  ***********************************************************************************
  *

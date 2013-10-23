@@ -1,6 +1,6 @@
 /**
  * $Id: EntityBroker.java 74838 2010-03-19 18:07:58Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/EntityBroker.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/api/src/java/org/sakaiproject/entitybroker/EntityBroker.java $
  * AutoRegister.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008 The Sakai Foundation

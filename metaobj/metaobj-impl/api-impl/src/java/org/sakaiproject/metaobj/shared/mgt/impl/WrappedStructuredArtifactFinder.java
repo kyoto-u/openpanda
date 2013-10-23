@@ -1,5 +1,5 @@
 /*******************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.2/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/impl/WrappedStructuredArtifactFinder.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.3/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/impl/WrappedStructuredArtifactFinder.java $
  * $Id: WrappedStructuredArtifactFinder.java 63496 2009-06-10 14:32:19Z bkirschn@umich.edu $
  * **********************************************************************************
  *

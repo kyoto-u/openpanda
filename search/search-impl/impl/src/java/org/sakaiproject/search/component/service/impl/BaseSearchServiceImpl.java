@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/BaseSearchServiceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/BaseSearchServiceImpl.java $
  * $Id: BaseSearchServiceImpl.java 118570 2013-01-22 16:39:59Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

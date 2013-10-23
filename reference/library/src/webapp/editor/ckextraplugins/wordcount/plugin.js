@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/reference/tags/sakai-2.9.2/library/src/webapp/editor/ckextraplugins/wordcount/plugin.js $
+ * $URL: https://source.sakaiproject.org/svn/reference/tags/sakai-2.9.3/library/src/webapp/editor/ckextraplugins/wordcount/plugin.js $
  * $Id: plugin.js 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

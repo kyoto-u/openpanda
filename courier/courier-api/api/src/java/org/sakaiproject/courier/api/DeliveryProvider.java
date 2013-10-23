@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.2/courier-api/api/src/java/org/sakaiproject/courier/api/DeliveryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.3/courier-api/api/src/java/org/sakaiproject/courier/api/DeliveryProvider.java $
  * $Id: DeliveryProvider.java 89423 2011-03-08 15:27:35Z bkirschn@umich.edu $
  ***********************************************************************************
  *

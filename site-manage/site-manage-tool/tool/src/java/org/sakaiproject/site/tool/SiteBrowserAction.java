@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.2/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteBrowserAction.java $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.3/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteBrowserAction.java $
  * $Id: SiteBrowserAction.java 121817 2013-03-27 00:52:43Z arwhyte@umich.edu $
  ***********************************************************************************
  *

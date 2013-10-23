@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/component-manager/src/main/java/org/sakaiproject/component/cover/ServerConfigurationService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/component-manager/src/main/java/org/sakaiproject/component/cover/ServerConfigurationService.java $
  * $Id: ServerConfigurationService.java 61014 2009-04-23 16:58:05Z arwhyte@umich.edu $
  ***********************************************************************************
  *

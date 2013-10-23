@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/SchemaNames.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/SchemaNames.java $
  * $Id: SchemaNames.java 20994 2007-02-04 21:00:24Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

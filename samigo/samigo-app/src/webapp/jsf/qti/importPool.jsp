@@ -9,7 +9,7 @@
 
 <!-- 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/webapp/jsf/qti/importPool.jsp $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/webapp/jsf/qti/importPool.jsp $
  * $Id: importPool.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *

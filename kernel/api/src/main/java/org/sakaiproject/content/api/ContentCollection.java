@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/content/api/ContentCollection.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/content/api/ContentCollection.java $
  * $Id: ContentCollection.java 96667 2011-08-09 08:31:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -16,7 +16,7 @@
         id bigint not null,
         itemId varchar(255) not null,
         groupId varchar(255) not null,
-        groups varchar(500),
+        groups clob(255),
         primary key (id)
     );
 
@@ -28,7 +28,7 @@
         sakaiId varchar(250),
         name varchar(100),
         html clob(200000),
-        description varchar(500),
+        description clob(255),
         height varchar(8),
         width varchar(8),
         alt varchar(500),
@@ -40,7 +40,7 @@
         subrequirement smallint,
         requirementText varchar(20),
         sameWindow smallint,
-        groups varchar(500),
+        groups clob(255),
         anonymous smallint,
         showComments smallint,
         forcedCommentsAnonymous smallint,

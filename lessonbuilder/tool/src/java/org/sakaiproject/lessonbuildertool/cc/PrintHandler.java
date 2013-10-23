@@ -70,6 +70,7 @@ import org.sakaiproject.content.cover.ContentTypeImageService;
 import org.sakaiproject.lessonbuildertool.SimplePage;
 import org.sakaiproject.lessonbuildertool.SimplePageItem;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean;
+import org.sakaiproject.lessonbuildertool.service.GroupPermissionsService;
 import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
 import org.sakaiproject.content.api.ContentCollectionEdit;
 import org.sakaiproject.content.api.ContentCollection;
@@ -155,16 +156,17 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
   private LessonEntity assigntool = null;
   private Set<String>roles = null;
   boolean usesRole = false;
-  boolean usesMentor = false;
   boolean usesPatternMatch = false;
   boolean usesCurriculum = false;
+  boolean importtop = false;
+  Integer assignmentNumber = 1;
 
     // this is the CC file name for all files added
   private Set<String> filesAdded = new HashSet<String>();
     // this is the CC file name (of the XML file) -> Sakaiid for non-file items
   private Map<String,String> itemsAdded = new HashMap<String,String>();
 
-  public PrintHandler(SimplePageBean bean, CartridgeLoader utils, SimplePageToolDao dao, LessonEntity q, LessonEntity l, LessonEntity b, LessonEntity a) {
+  public PrintHandler(SimplePageBean bean, CartridgeLoader utils, SimplePageToolDao dao, LessonEntity q, LessonEntity l, LessonEntity b, LessonEntity a, boolean itop) {
       super();
       this.utils = utils;
       this.simplePageBean = bean;
@@ -174,6 +176,7 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
       this.topictool = l;
       this.bltitool = b;
       this.assigntool = a;
+      this.importtop = itop;
   }
 
   public void setAssessmentDetails(String the_ident, String the_title) {
@@ -237,6 +240,16 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	  return null;
       }
 
+      if (importtop) {
+	  try {
+	      ContentCollection top = ContentHostingService.getCollection(ContentHostingService.getSiteCollection(siteId));
+	      return top;
+	  } catch (Exception e) {
+	      simplePageBean.setErrKey("simplepage.create.resource.failed",name + " " +e);
+	      return null;
+	  }
+      }
+
       if (name == null) 
 	  name = "Common Cartridge";
       if (name.trim().length() == 0) 
@@ -284,7 +297,7 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	  }
       }
       if (collection == null) {
-	  simplePageBean.setErrKey("simplepage.resource100: ", name);
+	  simplePageBean.setErrKey("simplepage.resource100", name);
 	  return null;
       }
       return collection;
@@ -298,7 +311,17 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	  return null;
   }
 
-  public void setCCItemXml(Element the_xml, Element resource, AbstractParser parser, CartridgeLoader loader) {
+  public String getGroupForRole(String role) {
+      // if group already exists, this will return the existing one
+      try {
+	  return GroupPermissionsService.makeGroup(siteId, role);
+      } catch (Exception e) {
+	  System.err.println("Unable to create group " + role);
+	  return null;
+      }
+  }
+
+  public void setCCItemXml(Element the_xml, Element resource, AbstractParser parser, CartridgeLoader loader, boolean nopage) {
       if (all)
 	  System.err.println("\nadd item to page " + pages.get(pages.size()-1).getTitle() +
 			 " xml: "+the_xml + 
@@ -310,29 +333,33 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
       boolean isBank = type.equals(CC_QUESTION_BANK0) || type.equals(CC_QUESTION_BANK1) || type.equals(CC_QUESTION_BANK2);
 
       boolean hide = false;
+      List<String>roles = new ArrayList<String>();
       Iterator mdroles = resource.getDescendants(new ElementFilter("intendedEndUserRole", ns.lom_ns()));
       if (mdroles != null) {
-	  if (mdroles.hasNext()) // if there are any roles, assume hidden unless learner role
-	      hide = true; 
 	  while (mdroles.hasNext()) {
 	      Element role = (Element)mdroles.next();
-	      if ("Learner".equals(role.getChildText("value",  ns.lom_ns())))
-		  hide = false; // all other roles hide the item
-	      else
+	      if (!"Learner".equals(role.getChildText("value",  ns.lom_ns()))) {
 		  usesRole = true;
-	      if ("Mentor".equals(role.getChildText("value",  ns.lom_ns())))
-		  usesMentor = true;
+	      }
+	      if ("Mentor".equals(role.getChildText("value",  ns.lom_ns()))) {
+		  roles.add(getGroupForRole("Mentor"));
+	      }
+	      if ("Instructor".equals(role.getChildText("value",  ns.lom_ns()))) {
+		  roles.add(getGroupForRole("Instructor"));
+	      }
 	  }
       }	  
+      if (nopage)
+	  hide = true;
 
       // for question banks we don't need a current page, as we don't put banks on a page
-      if (pages.size() == 0 && !isBank)
+      if (pages.size() == 0 && !isBank && !nopage)
 	  startCCFolder(null);
 
       int top = pages.size()-1;
-      SimplePage page = isBank ? null : pages.get(top);
+      SimplePage page = (isBank || nopage) ? null : pages.get(top);
 
-      Integer seq = isBank? 0 : sequences.get(top);
+      Integer seq = (isBank || nopage) ? 0 : sequences.get(top);
       String title = null;
       if (the_xml == null)
 	  title = "Question Pool";
@@ -357,20 +384,45 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 		  else if (intendedUse.equals("syllabus"))
 		      item.setDescription(simplePageBean.getMessageLocator().getMessage("simplepage.import_cc_syllabus"));
 		  else if (assigntool != null && intendedUse.equals("assignment")) {
-		      AssignmentInterface a = (AssignmentInterface) assigntool;
-		      // file hasn't been written yet to contenthosting. A2 requires it to be there
-		      addFile(resource.getAttributeValue(HREF));
-		      String assignmentId = a.importObject(title, sakaiId, mime); // sakaiid for assignment
-		      if (assignmentId!= null) {
-			 item = simplePageToolDao.makeItem(page.getPageId(), seq, SimplePageItem.ASSIGNMENT, assignmentId, title);
-			 sakaiId = assignmentId;
+		      String fileName = getFileName(resource);
+		      if (itemsAdded.get(fileName) == null) {
+			  // itemsAdded.put(fileName, SimplePageItem.DUMMY); // don't add the same test more than once
+			  AssignmentInterface a = (AssignmentInterface) assigntool;
+			  // file hasn't been written yet to contenthosting. A2 requires it to be there
+			  addFile(resource.getAttributeValue(HREF));
+			  String assignmentId = a.importObject(title, sakaiId, mime); // sakaiid for assignment
+			  if (assignmentId!= null) {
+			      item = simplePageToolDao.makeItem(page.getPageId(), seq, SimplePageItem.ASSIGNMENT, assignmentId, title);
+			      sakaiId = assignmentId;
+			  }
 		      }
 		  }
 	      }
 	      simplePageBean.saveItem(item);
+	      if (roles.size() > 0) {  // has to be written already or we can't set groups
+		  // file hasn't been written yet to contenthosting. setitemgroups requires it to be there
+		  addFile(resource.getAttributeValue(HREF));
+		  simplePageBean.setItemGroups(item, roles.toArray(new String[0]));
+	      }
 	      sequences.set(top, seq+1);
-	  }
-	  else if (type.equals(CC_WEBLINK0) || type.equals(CC_WEBLINK1) || type.equals(CC_WEBLINK2)){
+	  } else if (type.equals(CC_WEBCONTENT)) { // i.e. hidden. if it's an assignment have to load it
+	      String intendedUse = resource.getAttributeValue(INTENDEDUSE);
+	      if (assigntool != null && intendedUse != null && intendedUse.equals("assignment")) {
+		  String fileName = getFileName(resource);
+		  if (itemsAdded.get(fileName) == null) {
+		      itemsAdded.put(fileName, SimplePageItem.DUMMY); // don't add the same test more than once
+		      String sakaiId = baseName + resource.getAttributeValue(HREF);
+		      String extension = Validator.getFileExtension(sakaiId);
+		      String mime = ContentTypeImageService.getContentType(extension);
+		      AssignmentInterface a = (AssignmentInterface) assigntool;
+		      // file hasn't been written yet to contenthosting. A2 requires it to be there
+		      addFile(resource.getAttributeValue(HREF));
+		      // in this case there's no item to take a title from
+		      String atitle = simplePageBean.getMessageLocator().getMessage("simplepage.importcc-assigntitle").replace("{}", (assignmentNumber++).toString());
+		      String assignmentId = a.importObject(atitle, sakaiId, mime); // sakaiid for assignment
+		  }
+	      }
+	  } else if (type.equals(CC_WEBLINK0) || type.equals(CC_WEBLINK1) || type.equals(CC_WEBLINK2)){
 	      String filename = getFileName(resource);
 	      Element linkXml =  parser.getXML(loader, filename);
 	      Namespace linkNs = ns.link_ns();
@@ -399,6 +451,8 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 		  item.setHtml(simplePageBean.getTypeOfUrl(url));  // checks the web site to see what it actually is
 		  item.setSameWindow(true);
 		  simplePageBean.saveItem(item);
+		  if (roles.size() > 0)
+		      simplePageBean.setItemGroups(item, roles.toArray(new String[0]));
 		  sequences.set(top, seq+1);
 	      }
 	      
@@ -407,6 +461,8 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	      Element topicXml =  parser.getXML(loader, filename);
 	      Namespace topicNs = ns.topic_ns();
 	      String topicTitle = topicXml.getChildText(TITLE, topicNs);
+	      if (topicTitle == null)
+		  topicTitle = simplePageBean.getMessageLocator().getMessage("simplepage.cc-defaulttopic");
 	      String text = topicXml.getChildText(TEXT, topicNs);
 	      boolean texthtml = false;
 	      if (text != null) {
@@ -416,12 +472,17 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 		      texthtml = true;
 	      }
 
-	      // I'm going to assume that URLs in the CC files are legal, but if
-	      // I add to them I nneed to URLencode what I add
 	      String base = baseUrl + filename;
 	      int slash = base.lastIndexOf("/");
 	      if (slash >= 0)
 		  base = base.substring(0, slash+1); // include trailing slash
+
+	      if (texthtml) {
+		  text =  text.replaceAll("\\$IMS-CC-FILEBASE\\$", base);
+	      }
+
+	      // I'm going to assume that URLs in the CC files are legal, but if
+	      // I add to them I nneed to URLencode what I add
 
 	      Element attachmentlist = topicXml.getChild(ATTACHMENTS, topicNs);
 	      List<Element>attachments = new ArrayList<Element>();
@@ -432,6 +493,9 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 		  attachmentHrefs.add(a.getAttributeValue(HREF));
 
 	      ForumInterface f = (ForumInterface)topictool;
+
+	      if (nopage)
+		  title = simplePageBean.getMessageLocator().getMessage("simplepage.cc-defaultforum");
 
 	      // System.out.println("about to call forum import base " + base);
 	      // title is for the cartridge. That will be used as the forum
@@ -448,6 +512,8 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 		  // System.out.println("about to add formum item");
 		  SimplePageItem item = simplePageToolDao.makeItem(page.getPageId(), seq, SimplePageItem.FORUM, sakaiId, title);
 		  simplePageBean.saveItem(item);
+		  if (roles.size() > 0)
+		      simplePageBean.setItemGroups(item, roles.toArray(new String[0]));
 		  sequences.set(top, seq+1);
 		  // System.out.println("finished with forum item");
 	      }
@@ -506,7 +572,7 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 
 		  } catch (Exception e) {
 		      System.out.println("CC import error creating or parsing QTI file " + fileName + " " +  e);
-		      simplePageBean.setErrKey("simplepage.resource100", e.toString());
+		      simplePageBean.setErrKey("simplepage.create.object.failed", e.toString());
 		  }
 
 		  inputStream.close();
@@ -518,12 +584,15 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	      if (!isBank && !hide) {
 		  SimplePageItem item = simplePageToolDao.makeItem(page.getPageId(), seq, SimplePageItem.ASSESSMENT, (sakaiId == null ? SimplePageItem.DUMMY : sakaiId), title);
 		  simplePageBean.saveItem(item);
+		  if (roles.size() > 0)
+		      simplePageBean.setItemGroups(item, roles.toArray(new String[0]));
 		  sequences.set(top, seq+1);
 	      }
 
 	  } else if (type.equals(CC_QUESTION_BANK0) || type.equals(CC_QUESTION_BANK1))
-	      ;
-	  else if (type.equals(CC_BLTI0) || type.equals(CC_BLTI1)) { 
+	      ; // handled elsewhere
+	  // current code seems to assume that BLTI tool is part of the page so skip if no page
+	  else if (!nopage && (type.equals(CC_BLTI0) || type.equals(CC_BLTI1))) { 
 	      String filename = getFileName(resource);
 	      Element ltiXml =  parser.getXML(loader, filename);
 	      XMLOutputter outputter = new XMLOutputter();
@@ -564,11 +633,15 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 			SimplePageItem item = simplePageToolDao.makeItem(page.getPageId(), seq, SimplePageItem.BLTI, sakaiId, title);
 			item.setHeight(""); // default depends upon format, so it's supplied at runtime
 			simplePageBean.saveItem(item);
+			if (roles.size() > 0)
+			    simplePageBean.setItemGroups(item, roles.toArray(new String[0]));
 			sequences.set(top, seq+1);
 		    } else {
 			System.out.println("LTI Import Failed..");
 		    }
 		}
+	  } else if (type.equals(CC_WEBCONTENT) && hide) {
+	      // handled elsewhere
 	  } else
 	      System.err.println("implemented type: " + resource.getAttributeValue(TYPE));
       } catch (Exception e) {
@@ -612,10 +685,10 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
       if (all)
 	  System.err.println("end manifest");
       if (usesRole)
-	  simplePageBean.setErrKey("simplepage.cc-uses-role", 
-	     (usesMentor ? simplePageBean.getMessageLocator().getMessage("simplepage.cc-uses-mentor") : null));
-      if (usesPatternMatch)
-	  simplePageBean.setErrKey("simplepage.import_cc_usespattern", null);
+	  simplePageBean.setErrKey("simplepage.cc-uses-role", null);
+      // the pattern match is restricted enough that we can actually do it
+      // if (usesPatternMatch)
+      //  simplePageBean.setErrKey("simplepage.import_cc_usespattern", null);
       if (usesCurriculum)
 	  simplePageBean.setErrKey("simplepage.cc-uses-curriculum", null);
 
@@ -656,7 +729,8 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	  return;
 
       InputStream infile = null;
-      try {
+      for (int tries = 1; tries < 3; tries++) {
+        try {
 	  infile = utils.getFile(the_file_id);
 	  String name = the_file_id;
 	  int slash = the_file_id.lastIndexOf("/");
@@ -676,9 +750,23 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	  ContentHostingService.commitResource(edit, NotificationService.NOTI_NONE);
 	  filesAdded.add(the_file_id);
 
-      } catch (Exception e) {
+        } catch (IdUsedException e) {
+	  // remove existing if we are importing whole site.
+	  // otherwise this is an error (and should be impossible, as this is a new directory)
+	  if (importtop && tries == 1) {
+	      try {
+		  ContentHostingService.removeResource(baseName + the_file_id);
+		  continue;
+	      } catch (Exception e1) {
+	      }
+	  }
 	  simplePageBean.setErrKey("simplepage.create.resource.failed", e + ": " + the_file_id);
 	  System.out.println("CC loader: unable to get file " + the_file_id + " error: " + e);
+        } catch (Exception e) {
+	  simplePageBean.setErrKey("simplepage.create.resource.failed", e + ": " + the_file_id);
+	  System.out.println("CC loader: unable to get file " + the_file_id + " error: " + e);
+        }
+        break;  // if we get to the end, no need to retry; really a goto would be clearer
       }
   }
 
@@ -814,6 +902,7 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
       if (all)
 	  System.err.println("manifest md xml: "+the_md);    
       // NOTE: need to handle languages
+      if (the_md != null) {
       Element general = the_md.getChild(GENERAL, ns.lomimscc_ns());
       if (general != null) {
 	  Element tnode = general.getChild(TITLE, ns.lomimscc_ns());
@@ -826,11 +915,11 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	  }
 
       }
+      }
       if (title == null || title.equals(""))
 	  title = "Cartridge";
       if ("".equals(description))
 	  description = null;
-
       ContentCollection baseCollection = makeBaseFolder(title);
       baseName = baseCollection.getId();
       baseUrl = baseCollection.getUrl();

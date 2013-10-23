@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.2/api/src/java/org/sakaiproject/poll/logic/ExternalLogic.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.3/api/src/java/org/sakaiproject/poll/logic/ExternalLogic.java $
  * $Id: ExternalLogic.java 94048 2011-06-24 09:33:53Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

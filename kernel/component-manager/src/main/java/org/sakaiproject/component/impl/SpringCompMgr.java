@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/component-manager/src/main/java/org/sakaiproject/component/impl/SpringCompMgr.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/component-manager/src/main/java/org/sakaiproject/component/impl/SpringCompMgr.java $
  * $Id: SpringCompMgr.java 101726 2011-12-13 22:32:57Z aaronz@vt.edu $
  ***********************************************************************************
  *

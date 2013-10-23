@@ -359,7 +359,7 @@ function showToolMenu(e, xOffset){
         var pos = jqObj.offset();
         var maxToolsInt = parseInt($('#maxToolsInt').text());
         var maxToolsText = $('#maxToolsAnchor').text();
-        var goToSite = '<li class=\"otherSiteTool\"><span><a role=\"menuitem\" class=\"icon-sakai-see-all-tools\" href=\"' + portal.portalPath + '/site/' + id + '\" title=\"' + maxToolsText + '\">' + maxToolsText + '</a></span></li>';
+        var goToSite = '<li class=\"otherSiteTool\"><span><a role=\"menuitem\" class=\"icon-sakai-see-all-tools\" href=\"' + portal.portalPath + '/site/' + classId + '\" title=\"' + maxToolsText + '\">' + maxToolsText + '</a></span></li>';
         jQuery.getJSON(siteURL, function(data){
             $.each(data, function(i, item){
                 if (i <= maxToolsInt) {
@@ -563,7 +563,7 @@ var setupSiteNav = function(){
         }
         else {
             var navsubmenu = "<ul class=\"nav-submenu subnav\" role=\"menu\" style=\"display:block\">";
-            var siteId = jqObjDrop.attr('data').replace(/!/g, '\\!').replace(/~/g, '\\~');
+            var siteId = jqObjDrop.attr('data');
             var maxToolsInt = parseInt($('#maxToolsInt').text());
             var maxToolsText = $('#maxToolsAnchor').text();
             var goToSite = '<li class=\"submenuitem\"><span><a role=\"menuitem\" class=\"icon-sakai-see-all-tools\" href=\"' + portal.portalPath + '/site/' + siteId + '\" title=\"' + maxToolsText + '\">' + maxToolsText + '</a></span></li>';

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/HistogramQuestionScoresBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/HistogramQuestionScoresBean.java $
  * $Id: HistogramQuestionScoresBean.java 122151 2013-04-03 19:56:54Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
