@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.3/impl/src/java/org/sakaiproject/poll/logic/impl/ExternalLogicImpl.java $
- * $Id: ExternalLogicImpl.java 113877 2012-10-02 07:14:49Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.0/impl/src/java/org/sakaiproject/poll/logic/impl/ExternalLogicImpl.java $
+ * $Id: ExternalLogicImpl.java 309907 2014-05-29 19:22:35Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,6 +49,7 @@ import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.email.api.EmailService;
 import org.sakaiproject.emailtemplateservice.model.EmailTemplate;
 import org.sakaiproject.emailtemplateservice.model.RenderedTemplate;
@@ -56,11 +57,19 @@ import org.sakaiproject.emailtemplateservice.service.EmailTemplateService;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
+import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.EventTrackingService;
+import org.sakaiproject.event.api.LearningResourceStoreService;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Actor;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Object;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Statement;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb.SAKAI_VERB;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.poll.logic.ExternalLogic;
 import org.sakaiproject.poll.logic.PollListManager;
 import org.sakaiproject.poll.model.PollRolePerms;
+import org.sakaiproject.poll.model.Vote;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.time.api.TimeService;
@@ -119,6 +128,11 @@ public class ExternalLogicImpl implements ExternalLogic {
     private EmailTemplateService emailTemplateService;
     public void setEmailTemplateService(EmailTemplateService emailTemplateService) {
     	this.emailTemplateService = emailTemplateService;
+    }
+
+    private ArrayList<String> emailTemplates;
+    public void setEmailTemplates(ArrayList<String> emailTemplates) {
+    	this.emailTemplates = emailTemplates;
     }
     
     private EventTrackingService eventTrackingService;
@@ -227,10 +241,8 @@ public class ExternalLogicImpl implements ExternalLogic {
     public void init() {
     	log.info("init()");
     	
-    	//TODO this should be set by injection
-    	List<String> templates = new ArrayList<String>();
-    	templates.add(FILE_NOTIFY_DELETED_OPTION_TEMPLATE);
-    	emailTemplateService.processEmailTemplates(templates);
+    	// this is set by injection
+    	emailTemplateService.processEmailTemplates(emailTemplates);
     }
     
     public List<String> getSitesForUser(String userId, String permission) {
@@ -458,6 +470,7 @@ public class ExternalLogicImpl implements ExternalLogic {
 				replacementValues.put("localSakaiName",
 						developerHelperService.getConfigurationSetting("ui.service", "Sakai"));
 				replacementValues.put("recipientFirstName",user.getFirstName());
+				replacementValues.put("recipientDisplayName", user.getDisplayName());
 				replacementValues.put("pollQuestion", pollQuestion);
 				replacementValues.put("siteTitle", siteTitle); 
 
@@ -490,6 +503,9 @@ public class ExternalLogicImpl implements ExternalLogic {
 		return serverConfigurationService.getBoolean("poll.results.chart.enabled", false);
 	}
 	
+	public boolean isShowPublicAccess() {
+		return serverConfigurationService.getBoolean("poll.allow.public.access", false);
+	}
 	
 	public boolean isMobileBrowser() {
 		Session session = sessionManager.getCurrentSession();
@@ -514,5 +530,56 @@ public class ExternalLogicImpl implements ExternalLogic {
 		List<String> ret = Arrays.asList(perms);
 		return ret;
 	}
-	
+
+    private LRS_Statement getStatementForUserVotedInPoll(LRS_Actor student, String text, Vote vote) {
+        String url = serverConfigurationService.getPortalUrl();
+        LRS_Verb verb = new LRS_Verb(SAKAI_VERB.interacted);
+        LRS_Object lrsObject = new LRS_Object(url + "/poll", "voted-in-poll");
+        HashMap<String, String> nameMap = new HashMap<String, String>();
+        nameMap.put("en-US", "User voted in a poll");
+        lrsObject.setActivityName(nameMap);
+        HashMap<String, String> descMap = new HashMap<String, String>();
+        descMap.put("en-US", "User voted in a poll with text:" + text + "; their vote was option: " + vote.getPollOption());
+        lrsObject.setDescription(descMap);
+        return new LRS_Statement(student, verb, lrsObject);
+    }
+
+    private LRS_Statement getStatementForUserEditPoll(LRS_Actor student, String text, boolean newPoll) {
+        String url = serverConfigurationService.getPortalUrl();
+        LRS_Verb verb = new LRS_Verb(SAKAI_VERB.interacted);
+        LRS_Object lrsObject = new LRS_Object(url + "/poll", newPoll ? "new-poll" : "updated-poll");
+        HashMap<String, String> nameMap = new HashMap<String, String>();
+        nameMap.put("en-US", "User " + (newPoll ? "created" : "updated") + " a poll");
+        lrsObject.setActivityName(nameMap);
+        HashMap<String, String> descMap = new HashMap<String, String>();
+        descMap.put("en-US", "User " + (newPoll ? "created" : "updated") + " a poll with text:" + text);
+        lrsObject.setDescription(descMap);
+        return new LRS_Statement(student, verb, lrsObject);
+    }
+
+    /**
+     * @see org.sakaiproject.poll.logic.ExternalLogic#registerStatement(java.lang.String, org.sakaiproject.poll.model.Vote)
+     */
+    @Override
+    public void registerStatement(String pollText, Vote vote) {
+        LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+                .get("org.sakaiproject.event.api.LearningResourceStoreService");
+        if (null != lrss) {
+            Event event = eventTrackingService.newEvent("poll", "vote", true);
+            lrss.registerStatement(getStatementForUserVotedInPoll(lrss.getEventActor(event), pollText, vote), "polls");
+        }
+    }
+
+    /**
+     * @see org.sakaiproject.poll.logic.ExternalLogic#registerStatement(java.lang.String, boolean)
+     */
+    @Override
+    public void registerStatement(String pollText, boolean newPoll) {
+        LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+                .get("org.sakaiproject.event.api.LearningResourceStoreService");
+        if (null != lrss) {
+            Event event = eventTrackingService.newEvent("poll", "edit poll", true);
+            lrss.registerStatement(getStatementForUserEditPoll(lrss.getEventActor(event), pollText, newPoll), "polls");
+        }
+    }
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: AuthzSectionsImpl.java 89126 2011-02-27 16:10:05Z david.horwitz@uct.ac.za $
+* $Id: AuthzSectionsImpl.java 129684 2013-09-12 21:50:43Z matthew@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@
 package org.sakaiproject.tool.gradebook.facades.sections;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -280,6 +281,8 @@ public class AuthzSectionsImpl implements Authz {
 				}
 			}
 		}
+		
+    	Collections.sort(viewableSections);
 		
 		return viewableSections;
 

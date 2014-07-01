@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/history.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/history.jsp $
  * $Id: history.jsp 74045 2010-02-26 15:26:56Z savithap@umich.edu $
  ***********************************************************************************
  *

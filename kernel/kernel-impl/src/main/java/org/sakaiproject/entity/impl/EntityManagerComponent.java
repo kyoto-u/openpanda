@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/entity/impl/EntityManagerComponent.java $
- * $Id: EntityManagerComponent.java 76914 2010-05-01 10:21:05Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/entity/impl/EntityManagerComponent.java $
+ * $Id: EntityManagerComponent.java 122028 2013-04-01 19:49:35Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,6 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.EntityProducer;
 import org.sakaiproject.entity.api.Reference;
+import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.util.Validator;
 
 /**
@@ -160,6 +161,8 @@ public class EntityManagerComponent implements EntityManager
 	private int nparse = 0;
 
 	private long total;
+
+	private UserDirectoryService userDirectoryService;
 
 	/***************************************************************************
 	 * Constructors, Dependencies and their setter methods
@@ -471,5 +474,13 @@ public class EntityManagerComponent implements EntityManager
 			}
 		}
 		return null;
+	}
+
+	public UserDirectoryService getUserDirectoryService() {
+		return userDirectoryService;
+	}
+
+	public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
+		this.userDirectoryService = userDirectoryService;
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages.panels;
 
 
@@ -22,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -38,9 +38,9 @@ import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.logic.ProfileWallLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.UserProfile;
+import org.sakaiproject.profile2.tool.components.CKEditorTextArea;
 import org.sakaiproject.profile2.util.ProfileConstants;
 
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 public class MyInterestsEdit extends Panel {
 	
@@ -96,6 +96,8 @@ public class MyInterestsEdit extends Panel {
 		WebMarkupContainer booksContainer = new WebMarkupContainer("booksContainer");
 		booksContainer.add(new Label("booksLabel", new ResourceModel("profile.favourite.books")));
 		TextArea favouriteBooks = new TextArea("favouriteBooks", new PropertyModel(userProfile, "favouriteBooks"));
+		favouriteBooks.setMarkupId("favouritebooksinput");
+		favouriteBooks.setOutputMarkupId(true);
 		booksContainer.add(favouriteBooks);
 		form.add(booksContainer);
 		
@@ -103,6 +105,8 @@ public class MyInterestsEdit extends Panel {
 		WebMarkupContainer tvContainer = new WebMarkupContainer("tvContainer");
 		tvContainer.add(new Label("tvLabel", new ResourceModel("profile.favourite.tv")));
 		TextArea favouriteTvShows = new TextArea("favouriteTvShows", new PropertyModel(userProfile, "favouriteTvShows"));
+		favouriteTvShows.setMarkupId("favouritetvinput");
+		favouriteTvShows.setOutputMarkupId(true);
 		tvContainer.add(favouriteTvShows);
 		form.add(tvContainer);
 		
@@ -110,6 +114,8 @@ public class MyInterestsEdit extends Panel {
 		WebMarkupContainer moviesContainer = new WebMarkupContainer("moviesContainer");
 		moviesContainer.add(new Label("moviesLabel", new ResourceModel("profile.favourite.movies")));
 		TextArea favouriteMovies = new TextArea("favouriteMovies", new PropertyModel(userProfile, "favouriteMovies"));
+		favouriteMovies.setMarkupId("favouritemoviesinput");
+		favouriteMovies.setOutputMarkupId(true);
 		moviesContainer.add(favouriteMovies);
 		form.add(moviesContainer);
 		
@@ -117,6 +123,8 @@ public class MyInterestsEdit extends Panel {
 		WebMarkupContainer quotesContainer = new WebMarkupContainer("quotesContainer");
 		quotesContainer.add(new Label("quotesLabel", new ResourceModel("profile.favourite.quotes")));
 		TextArea favouriteQuotes = new TextArea("favouriteQuotes", new PropertyModel(userProfile, "favouriteQuotes"));
+		favouriteQuotes.setMarkupId("favouritequotesinput");
+		favouriteQuotes.setOutputMarkupId(true);
 		quotesContainer.add(favouriteQuotes);
 		form.add(quotesContainer);
 		
@@ -155,8 +163,12 @@ public class MyInterestsEdit extends Panel {
 					target.addComponent(formFeedback);
 				}
             }
+			
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator() {
+				return CKEditorTextArea.getAjaxCallDecoratedToUpdateElementForAllEditorsOnPage();
+			}
 		};
-		submitButton.add(new TinyMceAjaxSubmitModifier());
 		form.add(submitButton);
 		
         

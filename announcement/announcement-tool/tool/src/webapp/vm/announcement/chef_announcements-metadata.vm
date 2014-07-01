@@ -1,6 +1,6 @@
 <!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/announcement/chef_announcements-metadata.vm,v 1.7 2005/05/15 17:02:52 gsilver.umich.edu Exp $ -->
 
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 	function change_parent_url(url)
 	{
@@ -40,7 +40,7 @@
 	<h3>
 		$tlang.getString("meta.title")
 	</h3>	
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
+	#if ($alertMessage)<div class="alertMessage">$tlang.getFormattedMessage("gen.alert.message", $alertMessage)</div><div class="clear"></div>#end
 	<table cellspacing="0" class="itemSummary">
 		<tr>
 			<th>$tlang.getString("gen.subject")</th>
@@ -62,23 +62,19 @@
 			</td>
 		</tr>
 		
+		#if($releaseDate)
 		<tr>
-			<th>$tlang.getString("gen.releasedate")</th>
-			#if($releaseDate)
-				<td>$releaseDate.toStringLocalFull()</td>
-			#else
-				<td></td>
-		#end
+			<th>$tlang.getString("gen.releasedate")</th>			
+			<td>$releaseDate.toStringLocalFull()</td>
 		</tr>
+		#end
 		
+		#if($retractDate)
 		<tr>
-			<th>$tlang.getString("gen.retractdate")</th>
-			#if($retractDate)
-				<td>$retractDate.toStringLocalFull()</td>
-			#else
-				<td></td>
-		#end
+			<th>$tlang.getString("gen.retractdate")</th>			
+			<td>$retractDate.toStringLocalFull()</td>
 		</tr>
+		#end
 
 		#if ($!range)
 			<tr>

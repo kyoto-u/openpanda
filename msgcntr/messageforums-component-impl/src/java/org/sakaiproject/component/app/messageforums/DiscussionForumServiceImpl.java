@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -71,6 +71,7 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.cover.LinkMigrationHelper;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -409,6 +410,8 @@ public class DiscussionForumServiceImpl  implements DiscussionForumService, Enti
         public Map<String, String> transferCopyEntitiesRefMigrator(String fromContext, String toContext, List resourceIds)
 	{
 		Map<String, String> transversalMap = new HashMap<String, String>();
+		
+		boolean importOpenCloseDates = ServerConfigurationService.getBoolean("msgcntr.forums.import.openCloseDates", true);
 		try 
 		{
 			LOG.debug("transfer copy mc items by transferCopyEntities");
@@ -439,6 +442,12 @@ public class DiscussionForumServiceImpl  implements DiscussionForumService, Enti
 						newForum.setModerated(fromForum.getModerated());
 						newForum.setPostFirst(fromForum.getPostFirst());
 						newForum.setAutoMarkThreadsRead(fromForum.getAutoMarkThreadsRead());
+						if(importOpenCloseDates){
+							newForum.setOpenDate(fromForum.getOpenDate());
+							newForum.setCloseDate(fromForum.getCloseDate());
+							newForum.setAvailability(fromForum.getAvailability());
+							newForum.setAvailabilityRestricted(fromForum.getAvailabilityRestricted());
+						}
 
 						// set the forum order. any existing forums will be first
 						// if the "from" forum has a 0 sort index, there is no sort order
@@ -536,6 +545,12 @@ public class DiscussionForumServiceImpl  implements DiscussionForumService, Enti
 								newTopic.setPostFirst(fromTopic.getPostFirst());
 								newTopic.setSortIndex(fromTopic.getSortIndex());
 								newTopic.setAutoMarkThreadsRead(fromTopic.getAutoMarkThreadsRead());
+								if(importOpenCloseDates){
+									newTopic.setOpenDate(fromTopic.getOpenDate());
+									newTopic.setCloseDate(fromTopic.getCloseDate());
+									newTopic.setAvailability(fromTopic.getAvailability());
+									newTopic.setAvailabilityRestricted(fromTopic.getAvailabilityRestricted());
+								}
 
 								// Get/set the topic's permissions
 								Set topicMembershipItemSet = fromTopic.getMembershipItemSet();
@@ -1335,17 +1350,8 @@ public class DiscussionForumServiceImpl  implements DiscussionForumService, Enti
 	
 	private String replaceAllRefs(String msgBody, Set<Entry<String, String>> entrySet){
 		if(msgBody != null){
-			boolean updated = false;
-			Iterator<Entry<String, String>> entryItr = entrySet.iterator();
-			while(entryItr.hasNext()) {
-				Entry<String, String> entry = (Entry<String, String>) entryItr.next();
-				String fromContextRef = entry.getKey();
-				if(msgBody.contains(fromContextRef)){									
-					msgBody = msgBody.replace(fromContextRef, entry.getValue());
-					updated = true;
-				}								
-			}
-		}	
+			msgBody = LinkMigrationHelper.migrateAllLinks(entrySet, msgBody);
+			}	
 		return msgBody;		
 	}
 

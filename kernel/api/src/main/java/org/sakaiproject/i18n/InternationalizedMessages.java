@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/i18n/InternationalizedMessages.java $
- * $Id: InternationalizedMessages.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/i18n/InternationalizedMessages.java $
+ * $Id: InternationalizedMessages.java 105821 2012-03-15 17:45:26Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +44,7 @@ public interface InternationalizedMessages extends Map
 	 *        parameters to format and insert according to above pattern
 	 * @return formatted message
 	 */
-	String getFormattedMessage(String key, Object[] args);
+	String getFormattedMessage(String key, Object... args);
 
 	/**
 	 * Return user's prefered locale

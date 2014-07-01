@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/AssessmentAccessControlIfc.java $
- * $Id: AssessmentAccessControlIfc.java 97412 2011-08-25 16:29:29Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/AssessmentAccessControlIfc.java $
+ * $Id: AssessmentAccessControlIfc.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,8 +64,7 @@ public interface AssessmentAccessControlIfc
   // lateHandling
   public static Integer ACCEPT_LATE_SUBMISSION = Integer.valueOf(1);
   public static Integer NOT_ACCEPT_LATE_SUBMISSION = Integer.valueOf(2);
-  
-  // gopalrc - group release
+  // group release
   public static String RELEASE_TO_SELECTED_GROUPS = "Selected Groups";
 
   Long getId();

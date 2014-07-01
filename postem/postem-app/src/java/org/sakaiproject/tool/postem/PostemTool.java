@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-2.9.3/postem-app/src/java/org/sakaiproject/tool/postem/PostemTool.java $
- * $Id: PostemTool.java 104735 2012-02-15 20:59:49Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-10.0/postem-app/src/java/org/sakaiproject/tool/postem/PostemTool.java $
+ * $Id: PostemTool.java 307525 2014-03-26 23:00:30Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,7 @@
 
 package org.sakaiproject.tool.postem;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,13 +31,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -50,22 +51,32 @@ import org.sakaiproject.api.app.postem.data.StudentGrades;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.cover.AuthzGroupService;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
+import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.content.api.ContentResource;
+import org.sakaiproject.content.api.FilePickerHelper;
 
+import org.sakaiproject.entity.api.Reference;
+import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.entity.cover.EntityManager;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.exception.ServerOverloadException;
+import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.api.Placement;
+import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.ResourceLoader;
+
+import org.sakaiproject.user.api.User;
 
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 
 public class PostemTool {
-	protected GradebookManager gradebookManager;
 	
-	// protected Logger logger = Logger.getLogger(PostemTool.class);
-
+	protected GradebookManager gradebookManager;
 	protected ArrayList gradebooks;
 
 	protected Gradebook currentGradebook;
@@ -111,8 +122,6 @@ public class PostemTool {
 	private static final String COMMA_DELIM_STR = "comma";
 	private static final String TAB_DELIM_STR = "tab";
 
-	protected Logger logger = null;
-	
 	protected StudentGrades currentStudent;
 
 	// protected String release = "yes";
@@ -126,12 +135,10 @@ public class PostemTool {
 	public static final String messageBundle = "org.sakaiproject.tool.postem.bundle.Messages";
 	public ResourceLoader msgs = new ResourceLoader(messageBundle);
 
+	private ContentHostingService contentHostingService;
+
 	private static final Log LOG = LogFactory.getLog(PostemTool.class);
 	
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-
 	public int getColumn() {
 		return column;
 	}
@@ -218,6 +225,10 @@ public class PostemTool {
 
 	public void setGradebookManager(GradebookManager gradebookManager) {
 		this.gradebookManager = gradebookManager;
+	}
+
+	public void setContentHostingService(ContentHostingService contentHostingService) {
+		this.contentHostingService = contentHostingService;
 	}
 
 	public UIData getGradebookTable() {
@@ -455,6 +466,11 @@ public class PostemTool {
 		 * if(new Boolean(true).equals(currentGradebook.getReleased())) {
 		 * this.release = "Yes"; } else { this.release = "No"; }
 		 */
+		
+		if (currentGradebook.getFileReference() != null) {
+			attachment = EntityManager.newReference(contentHostingService.getReference(currentGradebook.getFileReference()));
+		}
+
 		this.csv = null;
 		this.newTemplate = null;
 		this.delimiter = COMMA_DELIM_STR;
@@ -530,7 +546,8 @@ public class PostemTool {
 			return "create_gradebook";
 		}
 		
-		if (this.csv == null || this.csv.trim().length() == 0){
+		Reference attachment = getAttachmentReference();
+		if (attachment == null){			
 			return "create_gradebook";
 		}
 		
@@ -539,7 +556,7 @@ public class PostemTool {
 			return "create_gradebook";
 		}
 
-		if (this.csv != null && this.csv.trim().length() > 0) {
+		if (attachment != null) {
 			// logger.info("*** Non-Empty CSV!");
 			try {
 				
@@ -548,6 +565,25 @@ public class PostemTool {
 					csv_delim = CSV.TAB_DELIM;
 				}
 				
+				//Read the data
+				
+				ContentResource cr = contentHostingService.getResource(attachment.getId());
+				//Check the type
+				if (ResourceProperties.TYPE_URL.equalsIgnoreCase(cr.getContentType())) {
+					//Going to need to read from a stream
+					String csvURL = new String(cr.getContent());
+					//Load the URL
+					csv = URLConnectionReader.getText(csvURL); 
+					if (LOG.isDebugEnabled()) {
+						LOG.debug(csv);
+					}
+				}
+				else {
+					csv = new String(cr.getContent());
+					if (LOG.isDebugEnabled()) {
+						LOG.debug(csv);
+					}
+				}
 				CSV grades = new CSV(csv, withHeader, csv_delim);
 				
 				if (withHeader == true) {
@@ -633,6 +669,26 @@ public class PostemTool {
 				PostemTool.populateMessage(FacesMessage.SEVERITY_ERROR, exception
 						.getMessage(), new Object[] {});
 				return "create_gradebook";
+			} catch (IdUnusedException e) {
+				PostemTool.populateMessage(FacesMessage.SEVERITY_ERROR, e
+						.getMessage(), new Object[] {});
+				return "create_gradebook";
+			} catch (TypeException e) {
+				PostemTool.populateMessage(FacesMessage.SEVERITY_ERROR, e
+						.getMessage(), new Object[] {});
+				return "create_gradebook";
+			} catch (PermissionException e) {
+				PostemTool.populateMessage(FacesMessage.SEVERITY_ERROR, e
+						.getMessage(), new Object[] {});
+				return "create_gradebook";
+			} catch (ServerOverloadException e) {
+				PostemTool.populateMessage(FacesMessage.SEVERITY_ERROR, e
+						.getMessage(), new Object[] {});
+				return "create_gradebook";
+			} catch (IOException e) {
+				PostemTool.populateMessage(FacesMessage.SEVERITY_ERROR, e
+						.getMessage(), new Object[] {});
+				return "create_gradebook";
 			}
 		} else if (this.csv != null) {
 			// logger.info("**** Non Null Empty CSV!");
@@ -697,6 +753,7 @@ public class PostemTool {
 		this.userId = SessionManager.getCurrentSessionUserId();
 		currentGradebook.setLastUpdated(new Timestamp(new Date().getTime()));
 		currentGradebook.setLastUpdater(this.userId);
+		currentGradebook.setFileReference(attachment.getId());
 		gradebookManager.saveGradebook(currentGradebook);
 
 		this.currentGradebook = null;
@@ -899,6 +956,13 @@ public class PostemTool {
 	}
 
 	private Boolean editable;
+
+	private List filePickerList;
+
+	private String currentRediredUrl;
+
+	private Reference attachment;
+
 	public boolean isEditable() {
 		if (editable == null) {
 			editable = checkAccess();
@@ -996,10 +1060,15 @@ public class PostemTool {
 			row++;
 			String usr = (String) studentIter.next();
 			
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("usernamesValid : username=" + usr);
+				LOG.debug("usernamesValid : siteMembers" + siteMembers);
+			}
 			if (usr == null || usr.equals("")) {
+
 				usersAreValid = false;
 				blankRows.add(new Integer(row));
-			} else if(siteMembers == null || (siteMembers != null && !siteMembers.contains(getUserId(usr)))) {
+			} else if(siteMembers == null || (siteMembers != null && !siteMembers.contains(getUserDefined(usr)))) {
 				  usersAreValid = false;
 				  invalidUsernames.add(usr);
 			}	
@@ -1066,14 +1135,37 @@ public class PostemTool {
 		return placement.getContext();
 	}
 	
-	private String getUserId(String usr)
+	//Returns getUser and getUserByEid on the input string
+	//@return Either the id of the user, or the same string if not defined
+	private String getUserDefined(String usr)
 	{
+		//Set the original user id
+		String userId = usr;
+		User userinfo;
 		try	{
-			return UserDirectoryService.getUserId(usr);
+			userinfo = UserDirectoryService.getUser(usr);
+			userId = userinfo.getId();
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("getUserDefined: username for " + usr + " is " + userId);
+			}
+			return userId;
 		} 
 		catch (UserNotDefinedException e) {
-			return usr;
+			try
+			{
+				// try with the user eid
+				userinfo = UserDirectoryService.getUserByEid(usr);
+				userId = userinfo.getId();
+			}
+			catch (UserNotDefinedException ee)
+			{
+				//This is mostly expected behavior, don't need to notify about it, the UI can handle it
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("getUserDefined: User Not Defined" + userId);
+				}
+			}
 		}
+		return userId;
 	}
 	
 	private List getSiteMembers() {
@@ -1088,4 +1180,73 @@ public class PostemTool {
 		
 		return siteMembers;
 	}
+	
+	  public String processAddAttachRedirect()
+	  {
+	    try
+	    {
+	      filePickerList = EntityManager.newReferenceList();
+	      ToolSession currentToolSession = SessionManager.getCurrentToolSession();
+	      currentToolSession.setAttribute("filepicker.attach_cardinality",FilePickerHelper.CARDINALITY_SINGLE);	      
+	      currentToolSession.setAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS, filePickerList);
+	      ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+	      context.redirect("sakai.filepicker.helper/tool");
+	      return null;
+}
+	    catch(Exception e)
+	    {
+	      LOG.error(this + ".processAddAttachRedirect - " + e);
+	      e.printStackTrace();
+	      return null;
+	    }
+	  }
+
+	  public String getCurrentRediredUrl()
+	  {
+	    return currentRediredUrl;
+	  }
+
+	  public void setCurrentRediredUrl(String currentRediredUrl)
+	  {
+	    this.currentRediredUrl = currentRediredUrl;
+	  }
+
+	  public Reference getAttachmentReference()
+	  {
+	    ToolSession session = SessionManager.getCurrentToolSession();
+	    if (session.getAttribute(FilePickerHelper.FILE_PICKER_CANCEL) == null &&
+	        session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null)
+	    {
+	      List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+	      Reference ref = null;
+
+	      if (refs.size() == 1)
+	      {
+	        ref = (Reference) refs.get(0);
+            attachment=ref;
+	        }
+	      }
+	    session.removeAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+	    session.removeAttribute(FilePickerHelper.FILE_PICKER_CANCEL);
+	    if(filePickerList != null)
+	      filePickerList.clear();
+
+	    return attachment;
+	  }
+	  
+	  public String getAttachmentTitle () {
+		  return getReferenceTitle(getAttachmentReference());
+	  }
+	  
+	  public void setAttachment(Reference attachment)
+	  {
+	    this.attachment = attachment;
+	  }
+
+	  public String getReferenceTitle (Reference ref) {
+		  if (ref != null && ref.getProperties() != null) {
+			  return (String) ref.getProperties().getProperty(ref.getProperties().getNamePropDisplayName());
+}
+		  return null;
+	  }
 }

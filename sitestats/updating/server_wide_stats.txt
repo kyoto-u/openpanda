@@ -15,17 +15,14 @@ Using both of these we can recreate the original intent of the server wide stats
 don't have the issue with retaining historical data.
 
 The data is still retrieved via the Sakai SqlService and for 2.3 is only implemented with MySQL however as of 2.4, Oracle is now supported.
-Edit: Oracle support has been merged to 2.3 and is available in 2.3.2.
 
 ######################
-Enabling this feature:
+Disabling this feature:
 ######################
 
-Server Wide stats are disabled by default. Enable them via:
-serverWideStatsEnabled@org.sakaiproject.sitestats.api.StatsManager=true
+Server Wide stats are enabled by default. Disable them via:
+serverWideStatsEnabled@org.sakaiproject.sitestats.api.StatsManager=false
 in sakai.properties
-
-Then in the Admin version of the tool you get an additional option to run reports.
 
 ###############
 Historical data

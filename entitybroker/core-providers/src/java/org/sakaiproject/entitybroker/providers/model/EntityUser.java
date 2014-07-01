@@ -1,6 +1,6 @@
 /**
- * $Id: EntityUser.java 51727 2008-09-03 09:00:03Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/trunk/impl/src/java/org/sakaiproject/entitybroker/providers/EntityUser.java $
+ * $Id: EntityUser.java 130611 2013-10-18 14:17:53Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/EntityUser.java $
  * EntityUser.java - entity-broker - Jun 28, 2008 5:24:57 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -231,14 +231,14 @@ public class EntityUser implements User {
         if (user != null) {
             return user.getCreatedDate();
         }
-        throw new UnsupportedOperationException();
+        return new Date(lastModified);
     }
 
     public String getDisplayId() {
         if (user != null) {
             return user.getDisplayId();
         }
-        throw new UnsupportedOperationException();
+        return eid;
     }
 
     public User getModifiedBy() {
@@ -259,7 +259,7 @@ public class EntityUser implements User {
         if (user != null) {
             return user.getModifiedDate();
         }
-        throw new UnsupportedOperationException();
+        return new Date(lastModified);
     }
     
     public String getSortName() {

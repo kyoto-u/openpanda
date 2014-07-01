@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,6 +51,7 @@ import org.sakaiproject.api.app.messageforums.MembershipManager;
 import org.sakaiproject.api.app.messageforums.Message;
 import org.sakaiproject.api.app.messageforums.MessageForumsMessageManager;
 import org.sakaiproject.api.app.messageforums.Topic;
+import org.sakaiproject.api.app.messageforums.UserStatistics;
 import org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager;
 import org.sakaiproject.api.app.messageforums.ui.UIPermissionsManager;
 import org.sakaiproject.authz.api.Member;
@@ -59,13 +60,12 @@ import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.service.gradebook.shared.Assignment;
+import org.sakaiproject.service.gradebook.shared.GradeDefinition;
+import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
-import org.sakaiproject.service.gradebook.shared.Assignment;
-import org.sakaiproject.service.gradebook.shared.CommentDefinition;
-import org.sakaiproject.service.gradebook.shared.GradeDefinition;
-import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.api.User;
@@ -170,137 +170,6 @@ public class MessageForumStatisticsBean {
 		}
 	}
 	/* === End DecoratedCompiledMessageStatistics === */
-	
-	public class DecoratedCompiledUserStatistics {
-		private String siteName;
-		private String siteId;
-		private String siteUser;
-		private String siteUserId;
-		private String forumTitle;
-		private String topicTitle;
-		private Date forumDate;
-		private String forumSubject;
-		private String message;
-		private String msgId;
-		private String topicId;
-		private Boolean msgDeleted;
-		private String forumId;
-		private List decoAttachmentsList;
-	
-		
-		public String getSiteName(){
-			return this.siteName;
-		}
-		
-		public void setSiteName(String newValue){
-			this.siteName = newValue;
-		}
-		
-		public String getSiteId(){
-			return this.siteId;
-		}
-		
-		public void setSiteId(String newValue){
-			this.siteId = newValue;
-		}
-		
-		public String getSiteUser(){
-			return this.siteUser;
-		}
-		
-		public void setSiteUser(String newValue){
-			this.siteUser = newValue;
-		}
-		
-		public String getSiteUserId(){
-			return this.siteUserId;
-		}
-		
-		public void setSiteUserId(String newValue){
-			this.siteUserId = newValue;
-		}
-		
-		public String getForumTitle(){
-			return this.forumTitle;
-		}
-		
-		public void setForumTitle(String newValue){
-			this.forumTitle = newValue;
-		}
-		
-		public Date getForumDate(){
-			return forumDate;
-		}
-		
-		public void setForumDate(Date newValue){
-			this.forumDate = newValue;
-		}
-		
-		public String getForumSubject(){
-			return forumSubject;
-		}
-		
-		public void setForumSubject(String newValue){
-			this.forumSubject = newValue;
-		}
-
-		public String getTopicTitle() {
-			return topicTitle;
-		}
-
-		public void setTopicTitle(String topicTitle) {
-			this.topicTitle = topicTitle;
-		}
-
-		public String getMessage() {
-			return message;
-		}
-
-		public void setMessage(String message) {
-			this.message = message;
-		}
-
-		public String getMsgId() {
-			return msgId;
-		}
-
-		public void setMsgId(String msgId) {
-			this.msgId = msgId;
-		}
-
-		public String getTopicId() {
-			return topicId;
-		}
-
-		public void setTopicId(String topicId) {
-			this.topicId = topicId;
-		}
-
-		public Boolean getMsgDeleted() {
-			return msgDeleted;
-		}
-
-		public void setMsgDeleted(Boolean msgDeleted) {
-			this.msgDeleted = msgDeleted;
-		}
-
-		public String getForumId() {
-			return forumId;
-		}
-
-		public void setForumId(String forumId) {
-			this.forumId = forumId;
-		}
-
-		public List getDecoAttachmentsList() {
-			return decoAttachmentsList;
-		}
-
-		public void setDecoAttachmentsList(List decoAttachmentsList) {
-			this.decoAttachmentsList = decoAttachmentsList;
-		}
-	}
-	/* === End DecoratedCompiledUserStatistics == */
 	
 	public class DecoratedGradebookAssignment{
 		private String userUuid;
@@ -432,7 +301,7 @@ public class MessageForumStatisticsBean {
 	
 	/** Decorated Bean to store stats for user **/
 	public DecoratedCompiledMessageStatistics userInfo = null;
-	public DecoratedCompiledUserStatistics userAuthoredInfo = null;
+	public UserStatistics userAuthoredInfo = null;
 	
 	private Map courseMemberMap;
 	protected boolean ascending = true;
@@ -550,12 +419,16 @@ public class MessageForumStatisticsBean {
  	private boolean gradebookItemChosen = false;
  	private String selAssignName;
  	private String gbItemPointsPossible;
+ 	private boolean gradeByPoints;
+ 	private boolean gradeByPercent;
+ 	private boolean gradeByLetter;
  	private List<DecoratedCompiledMessageStatistics> gradeStatistics = null;
  	private static final String NO_ASSGN = "cdfm_no_assign_for_grade";
  	private static final String ALERT = "cdfm_alert";
  	private static final String GRADE_SUCCESSFUL = "cdfm_grade_successful";
  	private static final String GRADE_GREATER_ZERO = "cdfm_grade_greater_than_zero";
  	private static final String GRADE_DECIMAL_WARN = "cdfm_grade_decimal_warn";
+ 	private static final String GRADE_INVALID_GENERIC = "cdfm_grade_invalid_warn";
 
 	
 	public Map getCourseMemberMap(){
@@ -699,38 +572,21 @@ public class MessageForumStatisticsBean {
 	Map<String, List> userAuthoredStatisticsCache = new HashMap<String, List>();
 	public List getUserAuthoredStatistics(){
 		if(!userAuthoredStatisticsCache.containsKey(selectedSiteUserId)){
-			final List<DecoratedCompiledUserStatistics> statistics = new ArrayList<DecoratedCompiledUserStatistics>();
+			final List<UserStatistics> statistics = new ArrayList<UserStatistics>();
 
-			List<Message> messages;
 			if((selectedAllTopicsTopicId == null || "".equals(selectedAllTopicsTopicId))
 					&& (selectedAllTopicsForumId != null && !"".equals(selectedAllTopicsForumId))){
-				messages = messageManager.findAuthoredMessagesForStudentByForumId(selectedSiteUserId, Long.parseLong(selectedAllTopicsForumId));
+				statistics.addAll(messageManager.findAuthoredStatsForStudentByForumId(selectedSiteUserId, Long.parseLong(selectedAllTopicsForumId)));
 			}else if(selectedAllTopicsTopicId != null && !"".equals(selectedAllTopicsTopicId)){
-				messages = messageManager.findAuthoredMessagesForStudentByTopicId(selectedSiteUserId, Long.parseLong(selectedAllTopicsTopicId));
+				statistics.addAll(messageManager.findAuthoredStatsForStudentByTopicId(selectedSiteUserId, Long.parseLong(selectedAllTopicsTopicId)));
 			}else{
-				messages = messageManager.findAuthoredMessagesForStudent(selectedSiteUserId);	
+				statistics.addAll(messageManager.findAuthoredStatsForStudent(selectedSiteUserId));
 			}
-			if (messages != null){
-				for (Message msg: messages) {
-					userAuthoredInfo = new DecoratedCompiledUserStatistics();
-					userAuthoredInfo.setSiteUserId(selectedSiteUserId);
-					userAuthoredInfo.setForumTitle(msg.getTopic().getOpenForum().getTitle());
-					userAuthoredInfo.setTopicTitle(msg.getTopic().getTitle());
-					userAuthoredInfo.setForumDate(msg.getCreated());
-					userAuthoredInfo.setForumSubject(msg.getTitle());
-					userAuthoredInfo.setMsgId(Long.toString(msg.getId()));
-					userAuthoredInfo.setTopicId(Long.toString(msg.getTopic().getId()));
-					userAuthoredInfo.setForumId(Long.toString(msg.getTopic().getOpenForum().getId()));
-					userAuthoredInfo.setMessage(msg.getBody());
-					statistics.add(userAuthoredInfo);
-				}
-
-				sortStatisticsByUser(statistics);
-			}
+			sortStatisticsByUser(statistics);
 			userAuthoredStatisticsCache.put(selectedSiteUserId, statistics);
 		} else {
 		    // sort the statistics
-		    List<DecoratedCompiledUserStatistics> statistics = userAuthoredStatisticsCache.get(selectedSiteUserId);
+		    List<UserStatistics> statistics = userAuthoredStatisticsCache.get(selectedSiteUserId);
 		    sortStatisticsByUser(statistics);
 		    userAuthoredStatisticsCache.put(selectedSiteUserId, statistics);
 		}
@@ -925,7 +781,7 @@ public class MessageForumStatisticsBean {
 	}
 		
 	public List getUserAuthoredStatistics2(){
-		final List<DecoratedCompiledUserStatistics> statistics = new ArrayList<DecoratedCompiledUserStatistics>();
+		final List<UserStatistics> statistics = new ArrayList<UserStatistics>();
 
 		List<Message> messages;
 		if((selectedAllTopicsTopicId == null || "".equals(selectedAllTopicsTopicId))
@@ -934,7 +790,7 @@ public class MessageForumStatisticsBean {
 		}else if(selectedAllTopicsTopicId != null && !"".equals(selectedAllTopicsTopicId)){
 			messages = messageManager.findAuthoredMessagesForStudentByTopicId(selectedSiteUserId, Long.parseLong(selectedAllTopicsTopicId));
 		}else{
-			messages = messageManager.findAuthoredMessagesForStudent(selectedSiteUserId);	
+			messages = messageManager.findAuthoredMessagesForStudent(selectedSiteUserId);
 		}
 		 
 		if (messages == null) return statistics;
@@ -951,7 +807,7 @@ public class MessageForumStatisticsBean {
 				}
 			}
 			
-			userAuthoredInfo = new DecoratedCompiledUserStatistics();
+			userAuthoredInfo = new UserStatistics();
 			userAuthoredInfo.setSiteUserId(selectedSiteUserId);
 			userAuthoredInfo.setForumTitle(msg.getTopic().getOpenForum().getTitle());
 			userAuthoredInfo.setTopicTitle(msg.getTopic().getTitle());
@@ -999,7 +855,7 @@ public class MessageForumStatisticsBean {
 						decoAttachList.add(decoAttach);
 					}
 				}							
-				userAuthoredInfo = new DecoratedCompiledUserStatistics();
+				userAuthoredInfo = new UserStatistics();
 				userAuthoredInfo.setSiteUserId(selectedSiteUserId);
 				userAuthoredInfo.setForumTitle(d.getTitle());
 				userAuthoredInfo.setTopicTitle(t.getTitle());
@@ -1025,36 +881,25 @@ public class MessageForumStatisticsBean {
 	Map<String, List> userReadStatisticsCache = new HashMap<String, List>();
 	public List getUserReadStatistics(){
 		if(!userReadStatisticsCache.containsKey(selectedSiteUserId)){
-			final List<DecoratedCompiledUserStatistics> statistics = new ArrayList();
+			final List<UserStatistics> statistics = new ArrayList();
 
 			List<Message> messages;
 
 			if((selectedAllTopicsTopicId == null || "".equals(selectedAllTopicsTopicId))
 					&& (selectedAllTopicsForumId != null && !"".equals(selectedAllTopicsForumId))){
-				messages = messageManager.findReadMessagesForStudentByForumId(selectedSiteUserId, Long.parseLong(selectedAllTopicsForumId));
+				statistics.addAll(messageManager.findReadStatsForStudentByForumId(selectedSiteUserId, Long.parseLong(selectedAllTopicsForumId)));
 			}else if(selectedAllTopicsTopicId != null && !"".equals(selectedAllTopicsTopicId)){
-				messages = messageManager.findReadMessagesForStudentByTopicId(selectedSiteUserId, Long.parseLong(selectedAllTopicsTopicId));
+				statistics.addAll(messageManager.findReadStatsForStudentByTopicId(selectedSiteUserId, Long.parseLong(selectedAllTopicsTopicId)));
 			}else{
-				messages = messageManager.findReadMessagesForStudent(selectedSiteUserId);	
+				statistics.addAll(messageManager.findReadStatsForStudent(selectedSiteUserId));	
 			}
-			if (messages != null){
-				for (Message msg: messages) {
-					userAuthoredInfo = new DecoratedCompiledUserStatistics();
-					userAuthoredInfo.setSiteUserId(selectedSiteUserId);
-					userAuthoredInfo.setForumTitle(msg.getTopic().getOpenForum().getTitle());
-					userAuthoredInfo.setTopicTitle(msg.getTopic().getTitle());
-					userAuthoredInfo.setForumDate(msg.getCreated());
-					userAuthoredInfo.setForumSubject(msg.getTitle());
-					statistics.add(userAuthoredInfo);
-				}
 
-				sortStatisticsByUser2(statistics);
-			}
+			sortStatisticsByUser2(statistics);	
 
 			userReadStatisticsCache.put(selectedSiteUserId, statistics);
 		} else {
 		    // sort the statistics
-		    List<DecoratedCompiledUserStatistics> statistics = userReadStatisticsCache.get(selectedSiteUserId);
+		    List<UserStatistics> statistics = userReadStatisticsCache.get(selectedSiteUserId);
 		    sortStatisticsByUser2(statistics);
 		    userReadStatisticsCache.put(selectedSiteUserId, statistics);
 		}
@@ -1688,32 +1533,32 @@ public class MessageForumStatisticsBean {
 		
 		forumTitleComparatorAsc = new Comparator(){
 			public int compare(Object item, Object anotherItem){
-				String title1 = ((DecoratedCompiledUserStatistics) item).getForumTitle().toUpperCase();
-				String title2 = ((DecoratedCompiledUserStatistics) anotherItem).getForumTitle().toUpperCase();
+				String title1 = ((UserStatistics) item).getForumTitle().toUpperCase();
+				String title2 = ((UserStatistics) anotherItem).getForumTitle().toUpperCase();
 				return title1.compareTo(title2);
 			}
 		};
 		
 		topicTitleComparatorAsc = new Comparator(){
 			public int compare(Object item, Object anotherItem){
-				String title1 = ((DecoratedCompiledUserStatistics) item).getTopicTitle().toUpperCase();
-				String title2 = ((DecoratedCompiledUserStatistics) anotherItem).getTopicTitle().toUpperCase();
+				String title1 = ((UserStatistics) item).getTopicTitle().toUpperCase();
+				String title2 = ((UserStatistics) anotherItem).getTopicTitle().toUpperCase();
 				return title1.compareTo(title2);
 			}
 		};
 		
 		forumDateComparatorAsc = new Comparator(){
 			public int compare(Object item, Object anotherItem){
-				Date date1 = ((DecoratedCompiledUserStatistics) item).getForumDate();
-				Date date2 = ((DecoratedCompiledUserStatistics) anotherItem).getForumDate();
+				Date date1 = ((UserStatistics) item).getForumDate();
+				Date date2 = ((UserStatistics) anotherItem).getForumDate();
 				return date1.compareTo(date2);
 			}
 		};
 		
 		forumSubjectComparatorAsc = new Comparator(){
 			public int compare(Object item, Object anotherItem){
-				String subject1 = ((DecoratedCompiledUserStatistics) item).getForumSubject().toUpperCase();
-				String subject2 = ((DecoratedCompiledUserStatistics) anotherItem).getForumSubject().toUpperCase();
+				String subject1 = ((UserStatistics) item).getForumSubject().toUpperCase();
+				String subject2 = ((UserStatistics) anotherItem).getForumSubject().toUpperCase();
 				return subject1.compareTo(subject2);
 			}
 		};
@@ -1788,40 +1633,40 @@ public class MessageForumStatisticsBean {
 		
 		dateComparaterDesc = new Comparator(){
 			public int compare(Object item, Object anotherItem){
-				Date date1 = ((DecoratedCompiledUserStatistics) item).getForumDate();
-				Date date2 = ((DecoratedCompiledUserStatistics) anotherItem).getForumDate();
+				Date date1 = ((UserStatistics) item).getForumDate();
+				Date date2 = ((UserStatistics) anotherItem).getForumDate();
 				return date2.compareTo(date1);
 			}
 		};
 		
 		forumTitleComparatorDesc = new Comparator(){
 			public int compare(Object item, Object anotherItem){
-				String title1 = ((DecoratedCompiledUserStatistics) item).getForumTitle().toUpperCase();
-				String title2 = ((DecoratedCompiledUserStatistics) anotherItem).getForumTitle().toUpperCase();
+				String title1 = ((UserStatistics) item).getForumTitle().toUpperCase();
+				String title2 = ((UserStatistics) anotherItem).getForumTitle().toUpperCase();
 				return title2.compareTo(title1);
 			}
 		};
 		
 		topicTitleComparatorDesc = new Comparator(){
 			public int compare(Object item, Object anotherItem){
-				String title1 = ((DecoratedCompiledUserStatistics) item).getTopicTitle().toUpperCase();
-				String title2 = ((DecoratedCompiledUserStatistics) anotherItem).getTopicTitle().toUpperCase();
+				String title1 = ((UserStatistics) item).getTopicTitle().toUpperCase();
+				String title2 = ((UserStatistics) anotherItem).getTopicTitle().toUpperCase();
 				return title2.compareTo(title1);
 			}
 		};
 		
 		forumDateComparatorDesc = new Comparator(){
 			public int compare(Object item, Object anotherItem){
-				Date date1 = ((DecoratedCompiledUserStatistics) item).getForumDate();
-				Date date2 = ((DecoratedCompiledUserStatistics) anotherItem).getForumDate();
+				Date date1 = ((UserStatistics) item).getForumDate();
+				Date date2 = ((UserStatistics) anotherItem).getForumDate();
 				return date2.compareTo(date1);
 			}
 		};
 		
 		forumSubjectComparatorDesc = new Comparator(){
 			public int compare(Object item, Object anotherItem){
-				String subject1 = ((DecoratedCompiledUserStatistics) item).getForumSubject().toUpperCase();
-				String subject2 = ((DecoratedCompiledUserStatistics) anotherItem).getForumSubject().toUpperCase();
+				String subject1 = ((UserStatistics) item).getForumSubject().toUpperCase();
+				String subject2 = ((UserStatistics) anotherItem).getForumSubject().toUpperCase();
 				return subject2.compareTo(subject1);
 			}
 		};
@@ -2498,6 +2343,21 @@ public class MessageForumStatisticsBean {
 
 			GradebookService gradebookService = getGradebookService();
 			if (gradebookService == null) return returnVal;
+			
+			int gradeEntryType = gradebookService.getGradeEntryType(gradebookUid);
+			if (gradeEntryType == GradebookService.GRADE_TYPE_LETTER) {
+			    gradeByLetter = true;
+			    gradeByPoints = false;
+			    gradeByPercent = false;
+			} else if (gradeEntryType == GradebookService.GRADE_TYPE_PERCENTAGE) {
+			    gradeByPercent = true;
+			    gradeByPoints = false;
+			    gradeByLetter = false;
+			} else {
+			    gradeByPoints = true;
+			    gradeByPercent = false;
+			    gradeByLetter = false;
+			}        
 
 			Assignment assignment = gradebookService.getAssignment(gradebookUid, selAssignName);
 			if(assignment != null){
@@ -2511,7 +2371,7 @@ public class MessageForumStatisticsBean {
 					String studentUuid = gradeDef.getStudentUid();		  
 					DecoratedGradebookAssignment gradeAssignment = new DecoratedGradebookAssignment();
 					gradeAssignment.setAllowedToGrade(true);						
-					gradeAssignment.setScore(gradebookService.getAssignmentScoreString(gradebookUid, selAssignName, studentUuid));
+					gradeAssignment.setScore(gradeDef.getGrade());
 					gradeAssignment.setComment(gradeDef.getGradeComment());
 					gradeAssignment.setName(selAssignName);
 					gradeAssignment.setPointsPossible(gbItemPointsPossible);						
@@ -2553,6 +2413,18 @@ public class MessageForumStatisticsBean {
 		this.gbItemPointsPossible = gbItemPointsPossible;
 	}
 	
+	public boolean isGradeByPoints() {
+	    return gradeByPoints;
+	}
+	
+	public boolean isGradeByPercent() {
+	    return gradeByPercent;
+	}
+	
+	public boolean isGradeByLetter() {
+	    return gradeByLetter;
+	}
+	
 	public String proccessActionSubmitGrades(){
 		GradebookService gradebookService = getGradebookService();
 		if (gradebookService == null) {
@@ -2575,23 +2447,25 @@ public class MessageForumStatisticsBean {
 				String selectedAssignName = ((SelectItem)assignments.get((Integer.valueOf(selectedAssign)).intValue())).getLabel();
 				String gradebookUuid = ToolManager.getCurrentPlacement().getContext();
 				
+				List<GradeDefinition> gradeInfoToSave = new ArrayList<GradeDefinition>();
 				for (DecoratedCompiledMessageStatistics gradeStatistic : gradeStatistics) {
 					if(gradeStatistic.getGradebookAssignment() != null && gradeStatistic.getGradebookAssignment().isAllowedToGrade()){
 						//ignore empty grades                                                                                  
 		                                if(gradeStatistic.getGradebookAssignment().getScore() != null &&
                 		                        !"".equals(gradeStatistic.getGradebookAssignment().getScore())){
 
-							gradebookService.setAssignmentScore(gradebookUuid,  
-									selectedAssignName, gradeStatistic.getGradebookAssignment().getUserUuid(), Double.valueOf(gradeStatistic.getGradebookAssignment().getScore()), "");
-							if (gradeStatistic.getGradebookAssignment().getComment() != null 
-									&& gradeStatistic.getGradebookAssignment().getComment().trim().length() > 0)
-							{
-								gradebookService.setAssignmentScoreComment(gradebookUuid,  
-										selectedAssignName, gradeStatistic.getGradebookAssignment().getUserUuid(), gradeStatistic.getGradebookAssignment().getComment());
-							}
+		                                    GradeDefinition gradeDef = new GradeDefinition();
+		                                    gradeDef.setStudentUid(gradeStatistic.getGradebookAssignment().getUserUuid());
+		                                    gradeDef.setGrade(gradeStatistic.getGradebookAssignment().getScore());
+		                                    gradeDef.setGradeComment(gradeStatistic.getGradebookAssignment().getComment());
+		                                    
+		                                    gradeInfoToSave.add(gradeDef);
+
 						}
 					}
 				}
+				
+				gradebookService.saveGradesAndComments(gradebookUuid, gradebookService.getAssignment(gradebookUuid, selectedAssignName).getId(), gradeInfoToSave);
 
 				setSuccessMessage(getResourceBundleString(GRADE_SUCCESSFUL));
 			} 
@@ -2639,24 +2513,51 @@ public class MessageForumStatisticsBean {
 	private boolean validateGradeInput(){
 		boolean validated = true;
 
+		Map<String, String> studentIdToGradeMap = new HashMap<String, String>();
 		for (DecoratedCompiledMessageStatistics gradeStatistic : gradeStatistics) {
 			if(gradeStatistic.getGradebookAssignment() != null && gradeStatistic.getGradebookAssignment().isAllowedToGrade()){
 				//ignore empty grades
                                 if(gradeStatistic.getGradebookAssignment().getScore() != null &&
                                         !"".equals(gradeStatistic.getGradebookAssignment().getScore())){
-					if(!isNumber(gradeStatistic.getGradebookAssignment().getScore()))
-					{
-						setErrorMessage(getResourceBundleString(GRADE_GREATER_ZERO));
-						return false;
-					}
-					else if(!isFewerDigit(gradeStatistic.getGradebookAssignment().getScore()))
-					{
-						setErrorMessage(getResourceBundleString(GRADE_DECIMAL_WARN));
-						return false;
-					}
+                                    studentIdToGradeMap.put(gradeStatistic.getGradebookAssignment().getUserUuid(), gradeStatistic.getGradebookAssignment().getScore());
+					
 				}
 			}
 		}
+		
+		GradebookService gradebookService = getGradebookService();
+		String gradebookUid = ToolManager.getCurrentPlacement().getContext();
+		List<String> studentsWithInvalidGrades = gradebookService.identifyStudentsWithInvalidGrades(
+		        gradebookUid, studentIdToGradeMap);
+		
+		if (studentsWithInvalidGrades != null && !studentsWithInvalidGrades.isEmpty()) {
+		    // let's see if we can give the user additional information. Otherwise,
+		    // just use the generic error message
+		    if (gradebookService.getGradeEntryType(gradebookUid) == GradebookService.GRADE_TYPE_LETTER) {
+		        setErrorMessage(getResourceBundleString(GRADE_INVALID_GENERIC));
+		        return false;
+		    }
+		    
+		    for (String studentId : studentsWithInvalidGrades) {
+		        String grade = studentIdToGradeMap.get(studentId);
+		        
+		        if(!isNumber(grade))
+	                {
+	                        setErrorMessage(getResourceBundleString(GRADE_GREATER_ZERO));
+	                        return false;
+	                }
+	                else if(!isFewerDigit(grade))
+	                {
+	                        setErrorMessage(getResourceBundleString(GRADE_DECIMAL_WARN));
+	                        return false;
+	                }
+		    }
+		    
+		    // if we made it this far, just use the generic message
+		    setErrorMessage(getResourceBundleString(GRADE_INVALID_GENERIC));
+                    return false;
+		}
+		
 		return validated;
 	}
 	

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/shared/PersonBean.java $
+ * $Id: PersonBean.java 130512 2013-10-15 23:46:40Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -83,6 +83,11 @@ private static Log log = LogFactory.getLog(PersonBean.class);
   public String getEid()
   {
     return AgentFacade.getEid();
+  }
+
+  public String getDisplayId()
+  {
+      return AgentFacade.getDisplayId();
   }
 
   public void setAnonymousId(String anonymousId)

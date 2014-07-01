@@ -80,6 +80,12 @@
             class="org.sakaiproject.util.impl.FormattedTextImpl"
             init-method="init" singleton="true">
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
     </bean>
 
+             
+     <bean id="org.sakaiproject.util.api.LinkMigrationHelper"
+             class="org.sakaiproject.util.impl.LinkMigrationHelperImpl"
+             init-method="init" singleton="true" />
+             
 </beans>

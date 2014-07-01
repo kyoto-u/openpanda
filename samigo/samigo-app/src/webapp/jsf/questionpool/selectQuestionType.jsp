@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: selectQuestionType.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+<!-- $Id: selectQuestionType.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
 <%--
 ***********************************************************************************
 *
@@ -55,7 +55,7 @@
 </h:panelGrid>
 
 <p class="act">
-<h:commandButton type="submit"  action="#{itemauthor.doit}" value="#{authorMessages.button_save}" styleClass="active">
+<h:commandButton type="submit"  action="#{itemauthor.doit}" value="#{commonMessages.action_save}" styleClass="active">
    <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.StartCreateItemListener" />
    <f:param name="poolId" value="#{questionpool.currentPool.id}"/>

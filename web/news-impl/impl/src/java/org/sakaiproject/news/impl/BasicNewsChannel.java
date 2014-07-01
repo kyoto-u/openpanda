@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.3/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsChannel.java $
- * $Id: BasicNewsChannel.java 117284 2012-12-06 14:05:35Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.0/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsChannel.java $
+ * $Id: BasicNewsChannel.java 115829 2012-11-07 13:07:22Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

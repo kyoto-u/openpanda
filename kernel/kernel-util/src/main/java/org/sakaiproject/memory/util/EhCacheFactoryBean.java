@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-util/src/main/java/org/sakaiproject/memory/util/EhCacheFactoryBean.java $
- * $Id: EhCacheFactoryBean.java 120187 2013-02-18 12:11:46Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-util/src/main/java/org/sakaiproject/memory/util/EhCacheFactoryBean.java $
+ * $Id: EhCacheFactoryBean.java 309199 2014-05-06 15:36:14Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2012 Sakai Foundation
@@ -60,31 +60,25 @@
 
 package org.sakaiproject.memory.util;
 
-import java.io.IOException;
-import java.util.Set;
-
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.bootstrap.BootstrapCacheLoader;
-import net.sf.ehcache.constructs.blocking.BlockingCache;
-import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
-import net.sf.ehcache.constructs.blocking.SelfPopulatingCache;
-import net.sf.ehcache.constructs.blocking.UpdatingCacheEntryFactory;
-import net.sf.ehcache.constructs.blocking.UpdatingSelfPopulatingCache;
+import net.sf.ehcache.constructs.blocking.*;
 import net.sf.ehcache.event.CacheEventListener;
 import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
-import org.sakaiproject.component.cover.ComponentManager;
-import org.sakaiproject.component.api.ServerConfigurationService;
+import java.io.IOException;
+import java.util.Set;
 
 /**
  * {@link FactoryBean} that creates a named EHCache {@link net.sf.ehcache.Cache} instance
@@ -107,6 +101,8 @@ import org.sakaiproject.component.api.ServerConfigurationService;
  * @see #setCacheManager
  * @see EhCacheManagerFactoryBean
  * @see net.sf.ehcache.Cache
+ *
+ * @deprecated since Sakai 2.9, do not use this anymore (use the sakai config settings instead), this will be removed in 11
  */
 public class EhCacheFactoryBean implements FactoryBean, BeanNameAware, InitializingBean {
 
@@ -379,6 +375,18 @@ public class EhCacheFactoryBean implements FactoryBean, BeanNameAware, Initializ
 				logger.debug("Creating new EHCache cache region '" + this.cacheName + "'");
 			}
 			rawCache = createCache();
+            // Not look for any custom configuration.
+            // Check for old configuration properties.
+            if(serverConfigurationService.getString(this.cacheName) == null) {
+                logger.warn("Old cache configuration "+ this.cacheName+ " must be changed to memory."+ this.cacheName);
+            }
+            String config = serverConfigurationService.getString("memory."+ this.cacheName);
+            if (config != null && config.length() > 0) {
+                logger.debug("Found configuration for cache: "+ this.cacheName+ " of: "+ config);
+                new CacheInitializer().configure(config).initialize(
+                        rawCache.getCacheConfiguration());
+            }
+
 			this.cacheManager.addCache(rawCache);
 		}
 		boolean override = false;

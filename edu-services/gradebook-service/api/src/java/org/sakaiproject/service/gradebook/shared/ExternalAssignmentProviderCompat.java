@@ -1,6 +1,6 @@
 /**********************************************************************************
  *
- * $Id: ExternalAssignmentProviderCompat.java 127788 2013-07-25 18:51:54Z ottenhoff@longsight.com $
+ * $Id: ExternalAssignmentProviderCompat.java 126908 2013-07-11 02:37:39Z nbotimer@unicon.net $
  *
  ***********************************************************************************
  *

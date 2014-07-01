@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-impl/src/java/org/sakaiproject/importer/impl/IMSFileParser.java $
- * $Id: IMSFileParser.java 118449 2013-01-17 21:03:19Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-impl/src/java/org/sakaiproject/importer/impl/IMSFileParser.java $
+ * $Id: IMSFileParser.java 118267 2013-01-10 22:29:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -98,7 +98,7 @@ public abstract class IMSFileParser extends ZipFileParser {
 		this.translatorMap = translatorMap;	
 	}
 	
-	public boolean isValidArchive(byte[] fileData) {
+	public boolean isValidArchive(InputStream fileData) {
 		if (super.isValidArchive(fileData)) {
 			if (!fileExistsInArchive("/imsmanifest.xml", fileData)) 
 				return false;
@@ -207,7 +207,9 @@ public abstract class IMSFileParser extends ZipFileParser {
 				if (node.getParentNode().getChildNodes().getLength() > 1) {
 					file.setDescription("");
 				} else file.setDescription(resourceHelper.getDescription(node.getParentNode()));
-				file.setFileBytes(fileHelper.getFileBytesForNode(node, contextPath));
+				//Takes too much memory just pass file
+				//file.setFileBytes(fileHelper.getFileBytesForNode(node, contextPath));
+				file.setInputStream(fileHelper.getInputStreamForNode(node,contextPath));
 				file.setDestinationResourcePath(fileHelper.getFilePathForNode(node, contextPath));
 				file.setContentType(this.mimeTypes.getContentType(fileName));
 				file.setTitle(fileHelper.getTitle(node));
@@ -310,9 +312,17 @@ public abstract class IMSFileParser extends ZipFileParser {
 	
 	protected abstract class FileHelper implements ManifestFile {
 		
+		//This should be avoided
 		public byte[] getFileBytesForNode(Node node, String contextPath) throws IOException {
 			String filePath = getFilePathForNode(node, contextPath);
 			return getBytesFromFile(new File(pathToData + "/" + filePath));
+		}
+		
+		
+		public InputStream getInputStreamForNode(Node node, String contextPath) throws IOException{
+			String filePath = getFilePathForNode(node,contextPath);
+			InputStream is = new FileInputStream(filePath);
+			return is;
 		}
 		
 		public String getFilePathForNode(Node node, String contextPath) {

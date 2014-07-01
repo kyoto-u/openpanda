@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/DbAssignmentService.java $
- * $Id: DbAssignmentService.java 105581 2012-03-06 19:57:01Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/DbAssignmentService.java $
+ * $Id: DbAssignmentService.java 308538 2014-04-23 20:28:33Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,16 +38,12 @@ import org.sakaiproject.assignment.api.AssignmentSubmission;
 import org.sakaiproject.assignment.api.AssignmentSubmissionEdit;
 import org.sakaiproject.assignment.cover.AssignmentService;
 import org.sakaiproject.authz.api.Member;
-import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.db.api.SqlReader;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.entity.api.Entity;
-import org.sakaiproject.exception.IdInvalidException;
-import org.sakaiproject.exception.IdUnusedException;
-import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.util.BaseDbSingleStorage;
 import org.sakaiproject.util.Xml;
 import org.w3c.dom.Document;
@@ -215,7 +211,7 @@ public class DbAssignmentService extends BaseAssignmentService
 	 * 
 	 * @return The new storage object for Assignments.
 	 */
-	protected AssignmentStorage newAssignmentStorage()
+	public AssignmentStorage newAssignmentStorage()
 	{
 		return new DbCachedAssignmentStorage(new AssignmentStorageUser());
 
@@ -226,7 +222,7 @@ public class DbAssignmentService extends BaseAssignmentService
 	 * 
 	 * @return The new storage object for AssignmentContents.
 	 */
-	protected AssignmentContentStorage newContentStorage()
+	public AssignmentContentStorage newContentStorage()
 	{
 		return new DbCachedAssignmentContentStorage(new AssignmentContentStorageUser());
 
@@ -489,6 +485,13 @@ public class DbAssignmentService extends BaseAssignmentService
 				site = SiteService.getSite(a.getContext());
 				List l = super.getSelectedResourcesWhere(sqlWhere);
 				
+				if (a.isGroup()) {
+                                    for (Object o : l) {
+                                        AssignmentSubmission assignmentSubmission = (AssignmentSubmission)o;
+                                        Group _gg = site.getGroup(assignmentSubmission.getSubmitterId());
+                                        if (_gg != null) count++;
+                                    }
+				} else {
 				// check whether the submitter is an active member of the site
 				for (Object o : l) {
 					AssignmentSubmission assignmentSubmission = (AssignmentSubmission)o;
@@ -526,6 +529,10 @@ public class DbAssignmentService extends BaseAssignmentService
 						}
 					}
 				}
+				}
+			} catch (Exception e)
+			{
+				M_log.warn(this + ".getSubmissionsCountWhere(): assignmentRef=" + assignmentRef + " " + e.getMessage());
 			} catch (Throwable t) {
 				M_log.warn(this + ".getSubmissionsCountWhere(): ", t);
 				throw new IllegalArgumentException(t);

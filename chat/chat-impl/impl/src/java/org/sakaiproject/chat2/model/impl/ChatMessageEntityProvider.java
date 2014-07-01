@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.3/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatMessageEntityProvider.java $
-* $Id: ChatMessageEntityProvider.java 113382 2012-09-21 19:18:36Z ottenhoff@longsight.com $
+* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.0/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatMessageEntityProvider.java $
+* $Id: ChatMessageEntityProvider.java 112500 2012-09-17 14:31:56Z david.horwitz@uct.ac.za $
 ***********************************************************************************
 *
  * Copyright (c) 2007, 2008 The Sakai Foundation

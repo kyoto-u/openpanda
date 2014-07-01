@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.3/help-component-shared/src/java/org/sakaiproject/component/app/help/model/ResourceBean.java $
- * $Id: ResourceBean.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.0/help-component-shared/src/java/org/sakaiproject/component/app/help/model/ResourceBean.java $
+ * $Id: ResourceBean.java 106357 2012-03-28 23:18:54Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -31,7 +31,7 @@ import org.sakaiproject.api.app.help.Resource;
 
 /**
  * resource bean
- * @version $Id: ResourceBean.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * @version $Id: ResourceBean.java 106357 2012-03-28 23:18:54Z matthew.buckett@oucs.ox.ac.uk $
  */
 public class ResourceBean implements Resource, Comparable<ResourceBean>
 {

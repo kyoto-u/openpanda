@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.sakaiproject.samigo</groupId>
         <artifactId>samigo</artifactId>
-        <version>2.9.3</version>
+        <version>10.0</version>
     </parent>
 
     <name>Sakai Samigo Services (samigo-services)</name>
@@ -46,13 +46,10 @@
         <dependency>
             <groupId>org.sakaiproject.calendar</groupId>
             <artifactId>sakai-calendar-api</artifactId>
-            <version>${sakai.calendar.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.entitybroker</groupId>
             <artifactId>entitybroker-api</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.edu-services.gradebook</groupId>
@@ -98,11 +95,44 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <!-- needed by hibernate unit tests -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.opensymphony.quartz</groupId>
@@ -113,6 +143,35 @@
             <groupId>org.sakaiproject.jsf</groupId>
             <artifactId>jsf-app</artifactId>
         </dependency>
+        <!-- Unit test dependencies -->
+        <dependency>
+        	<groupId>org.springframework</groupId>
+        	<artifactId>spring-test</artifactId>
+        	<scope>test</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.springframework</groupId>
+        	<artifactId>spring-jdbc</artifactId>
+        	<scope>test</scope>
+        </dependency>
+   		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
     </dependencies>
 
     <build>
@@ -130,5 +189,17 @@
                 </includes>
             </resource>
         </resources>
+         <testSourceDirectory>src/test</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test</directory>
+                <includes>
+                    <include>hibernate-test.xml</include>
+                    <include>hibernate.properties</include>
+                    <include>spring-hibernate.xml</include>
+                </includes>
+            </testResource>
+            <!--includes:  include: **/*Test.java -->
+        </testResources>
     </build>
 </project>

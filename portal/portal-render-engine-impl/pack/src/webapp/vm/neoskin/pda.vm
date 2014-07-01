@@ -27,7 +27,7 @@
     <meta http-equiv="Content-Language" content="$!{locale}" />
 #end
 ${sakai_html_head_css}
-	 <link href="${pageSkinRepo}/${pageSkin}/pda.css" type="text/css" rel="stylesheet" media="all" /> 
+	 <link href="${pageSkinRepo}/${pageSkin}/pda.css$!{portalCDNQuery}" type="text/css" rel="stylesheet" media="all" /> 
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta name="viewport" content="width=device-width, user-scalable=yes,  initial-scale=1.0, maximum-scale=1.0"/>
   	<link rel="apple-touch-icon" href="${pageSkinRepo}/${pageSkin}/images/pda-ico.png"/>      
@@ -36,8 +36,8 @@ ${sakai_html_head_css}
 ## portalscripts.js seems to only apply to the main portal and the dhthml "More" capability
 ## It depends on jquery - so we either have to include both jquery and portalscripts or neither
 ## and since we don't use any of this in pda.vm - we don't include either one
-   <script type="text/javascript" language="JavaScript" src="${pageScriptPath}jquery-latest.min.js"></script>
-## <script type="text/javascript" language="JavaScript" src="/portal/scripts/portalscripts.js"></script>
+   <script type="text/javascript" src="${pageScriptPath}jquery-latest.min.js$!{portalCDNQuery}"></script>
+## <script type="text/javascript" src="/portal/scripts/portalscripts.js"></script>
 ## These may someday be needed for styleable - if so - move them into styleable below
 #if ( ${bufferedResponse} && ${responseHead} ) 
 <!-- Head material from Tool (will include title and headscripts) -->
@@ -45,13 +45,42 @@ ${responseHead}
 <!-- End of Head material from Tool -->
 #else 
     <title>${pageTitle}</title>
-     <script type="text/javascript" language="JavaScript" src="${pageScriptPath}headscripts.js"></script>
+     <script type="text/javascript" src="${pageScriptPath}headscripts.js$!{portalCDNQuery}"></script>
 #end
+<script type="text/javascript">
+    var portal = {
+        "chat": {
+            "enabled": $!{neoChat},
+            "pollInterval": $!{portalChatPollInterval},
+            "video": {}
+        },
+        "loggedIn": $!{loggedIn},
+        "portalPath": "$!{portalPath}",
+        "loggedOutUrl": "$!{loggedOutUrl}",
+        "siteId": "$!{siteId}",
+        "siteTitle": "$!{siteTitle}",
+        "shortDescription": "$!{shortDescription}",
+        "locale": "$!{locale}",
+        "user": {
+            "id": "$!{userId}",
+            "eid": "$!{userEid}"
+        },
+        "timeoutDialog": {
+            "enabled": $!{timeoutDialogEnabled},
+            "seconds": $!{timeoutDialogWarningSeconds}
+        },
+        "toggle": {
+            "allowauto": $!{portal_allow_auto_minimize},
+            "tools": $!{portal_allow_minimize_tools},
+            "sitenav": $!{portal_allow_minimize_navigation}
+        }
+    };
+</script>
 
 </head>
 <body class="portalBodyPDA">
 #if ( $pageTop )
-	<script type="text/javascript" language="JavaScript">
+	<script type="text/javascript">
 	var sakaiPortalWindow = "";
 	</script>
 #end
@@ -120,7 +149,7 @@ ${responseHead}
 	  <li class="helpLink"><span><a accesskey="h" href="${currentPlacement.toolJSR168Help}" title="${rloader.sit_help}">?</a></span></li>		
     #else
 	  ## need to get string from bundle
-	  <li class="helpLink"><span><a accesskey="h" href="${currentPlacement.toolHelpActionUrl}" title="${rloader.sit_help}" target="_blank" onclick="openWindow('${currentPlacement.toolHelpActionUrl}', 'Help','resizable=yes,toolbar=no,scrollbars=yes,menubar=yes,width=800,height=600'); return false">?</a></span></li>
+	  <li class="helpLink"><span><a accesskey="h" href="${currentPlacement.toolHelpActionUrl}" title="${rloader.sit_help}" target="_blank" onclick="openWindow('${currentPlacement.toolHelpActionUrl}', 'Help','resizable=yes,toolbar=no,scrollbars=yes,menubar=yes,width=1024,height=768'); return false">?</a></span></li>
     #end
   #end
 #end
@@ -130,7 +159,17 @@ ${responseHead}
   #if ( $loggedIn ) 
     <li class="logoutLink"><span><a href="${portalTopUrl}?force.logout=yes">$rloader.getString("pda_logout")</a></span></li>
   #else
-    <li class="loginLink"><span><a href="${portalTopUrl}?force.login=yes">$rloader.getString("pda_login")</a></span></li>
+
+    <!-- xportal -->
+    <li class="loginLink">
+       <div> 
+           <span><a href="${portalTopUrl}?force.login=yes">$rloader.getString("pda_login")</a></span>
+           #if (${loginHasLogInOutUrl2})
+           </li><li class="loginLink"><span><a href="${loginLogInOutUrl2Pda}" title="${loginMessage2}">${loginMessage2}</a></span>
+           #end
+       </div> 
+    </li>
+
   #end
   <!-- End Mobile Small Display -->
 #else
@@ -147,8 +186,15 @@ ${responseHead}
 			## need to get string from bundle
 	    <li class="logoutLink"><span><a href="${portalTopUrl}?force.logout=yes">$rloader.getString("pda_logout")</a></span></li>
 	  #else
-			## need to get string from bundle
-	    <li class="loginLink"><span><a href="${portalTopUrl}?force.login=yes">$rloader.getString("pda_login")</a></span></li>
+       <!-- xportal -->
+       <li class="loginLink">
+       <div>
+           <span><a href="${portalTopUrl}?force.login=yes">$rloader.getString("pda_login")</a></span>
+           #if (${loginHasLogInOutUrl2})
+           </li><li class="loginLink"><span><a href="${loginLogInOutUrl2Pda}" title="${loginMessage2}">${loginMessage2}</a></span>
+           #end
+           </div> 
+        </li>
 	  #end
   </li>
 #end
@@ -187,19 +233,28 @@ ${responseBody}
 	<nav>
     <ul id="pda-portlet-page-menu"> 
     #foreach ( $page in $currentSite.sitePages.pageNavTools ) 
+      ## This must be a tool popup - so we treat it as a popup
+      #if ($page.toolpopup) 
+        <li class="${page.menuClass}-item">
+          <span><a href="${page.toolrefUrl}?sakai.popup=yes" title="${page.toolTitle}"  class=""
+			onclick="window.open('${page.toolpopupurl}');"
+			><span class="toolMenuIcon ${page.menuClass}"> </span>${page.toolTitle}</a></span>
+        </li>
+      #else 
       #if ($page.isPage)
-        ## This must be a popup - so we treat it as a popup
+        ## This must be a page popup - so we treat it as a popup
         <li class="${page.menuClass}-item">
         	<span>
-				<a href="javascript:;" onclick="window.open('${page.pagePopupUrl}${page.pageId}','${page.jsPageTitle}','resizable=yes,toolbar=no,scrollbars=yes, width=800,height=600')"  class="${page.menuClass}">
-    	        	${page.pageTitle}
+				<a href="javascript:;" onclick="window.open('${page.pagePopupUrl}${page.pageId}','${page.jsPageTitle}','resizable=yes,toolbar=no,scrollbars=yes, width=1024,height=768')"  class="">
+    	        	<span class="toolMenuIcon ${page.menuClass}"> </span>${page.pageTitle}
         		</a>
         	</span>
         </li>
       #else
         <li class="${page.menuClass}-item">
-          <span><a href="${page.toolrefUrl}" title="${page.toolTitle}"  class="${page.menuClass}">${page.toolTitle}</a></span>
+          <span><a href="${page.toolrefUrl}" title="${page.toolTitle}"  class=""><span class="toolMenuIcon ${page.menuClass}"> </span>${page.toolTitle}</a></span>
         </li>
+      #end
       #end
     #end
     #if ( $subSites )
@@ -248,7 +303,7 @@ ${responseBody}
 #if ($currentSite )
 #if ( ! ${mobileSmallDisplay} ) 
     #if (${currentSite.sitePages.pageNavShowPresenceLoggedIn})
-	<script type="text/javascript" language="JavaScript">
+	<script type="text/javascript">
 		$(document).ready(function(){
 			$('#usersPresentLink').click(function(e){
 				e.preventDefault();
@@ -266,6 +321,8 @@ ${responseBody}
     #end
 #end
 #end
+
+#parse("/vm/neoskin/includeAnalytics.vm")
 
 <footer id="pda-footer">
 <div id="switch-link-w">	

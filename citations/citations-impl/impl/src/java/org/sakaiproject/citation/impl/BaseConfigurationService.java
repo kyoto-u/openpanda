@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,39 +21,23 @@
 
 package org.sakaiproject.citation.impl;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Vector;
-
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -64,19 +48,15 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.sakaiproject.authz.api.SecurityAdvisor;
-import org.sakaiproject.authz.api.SecurityAdvisor.SecurityAdvice;
 import org.sakaiproject.authz.cover.SecurityService;
-import org.sakaiproject.citation.util.api.OsidConfigurationException;
 import org.sakaiproject.citation.api.ConfigurationService;
 import org.sakaiproject.citation.api.SiteOsidConfiguration;
-
+import org.sakaiproject.citation.util.api.OsidConfigurationException;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.entity.api.ContextObserver;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.event.api.Event;
@@ -90,24 +70,34 @@ import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.SiteService;
-import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.thoughtworks.xstream.XStream;
+
+import edu.indiana.lib.twinpeaks.util.DomException;
 
 /**
  *
  */
 public class BaseConfigurationService implements ConfigurationService, Observer
 {
+
   private static Log m_log = LogFactory.getLog(BaseConfigurationService.class);
 
   /**
    * Locale that will be used if user's locale is not available. 
    */
   private static final String SERVER_DEFAULT_LOCALE = Locale.ENGLISH.getLanguage();
+  
+  public static final String DEFAULT_SECONDS_BETWEEN_SAVECITE_REFRESHES = "5";
+  public static final int MAXIMUM_SECONDS_BETWEEN_SAVECITE_REFRESHES = 30;
+  public static final String PARAM_SECONDS_BETWEEN_SAVECITE_REFRESHES = "secondsBetweenSaveciteRefreshes";
 
   /*
    * All the following properties will be set by Spring using components.xml
@@ -179,7 +169,7 @@ public class BaseConfigurationService implements ConfigurationService, Observer
    * 
    */
   protected Map<String, List<Map<String, String>>> saveciteClients = new HashMap<String, List<Map<String,String>>>();
-  
+
   /*
    * Interface methods
    */
@@ -438,9 +428,10 @@ public class BaseConfigurationService implements ConfigurationService, Observer
     }
     catch (NumberFormatException exception)
     {
-      m_log.debug("Maximum searchable database exception: "
+      if(m_log.isDebugEnabled()) {
+        m_log.debug("Maximum searchable database exception: "
               +   exception.toString());
-
+      }
       searchableDbs = SEARCHABLE_DATABASES;
     }
     finally
@@ -741,6 +732,7 @@ public class BaseConfigurationService implements ConfigurationService, Observer
       saveParameter(document, parameterMap, "metasearch-username");
       saveParameter(document, parameterMap, "metasearch-password");
       saveParameter(document, parameterMap, "metasearch-baseurl");
+      saveParameter(document, parameterMap, "metasearch-enabled");
 
       saveParameter(document, parameterMap, "openurl-label");
       saveParameter(document, parameterMap, "openurl-resolveraddress");
@@ -755,6 +747,8 @@ public class BaseConfigurationService implements ConfigurationService, Observer
 
       saveParameter(document, parameterMap, "config-id");               // obsolete?
       saveParameter(document, parameterMap, "database-xml");            // obsolete?
+      
+      saveParameter(document, parameterMap, PARAM_SECONDS_BETWEEN_SAVECITE_REFRESHES);
       
       saveServletClientMappings(document);
 
@@ -1432,6 +1426,7 @@ public class BaseConfigurationService implements ConfigurationService, Observer
    * @param saveciteClients the saveciteClients to set
    */
   public void setSaveciteClients(Map<String, List<Map<String,String>>> saveciteClients) {
+	m_log.info("saveciteClients updated");
 	this.saveciteClients = saveciteClients;
 	if(m_log.isDebugEnabled()) {
 		if(this.saveciteClients == null) {
@@ -1584,7 +1579,7 @@ public Collection<String> getAllCategoryXml()
       }
       catch (IdUnusedException e)
       {
-        m_log.info("Citations configuration XML is missing ("
+        m_log.warn("Citations configuration XML is missing ("
               +    configFileRef
               +    "); Citations ConfigurationService will watch for its creation");
       }
@@ -1731,5 +1726,32 @@ public Collection<String> getAllCategoryXml()
       url = m_externalSearchUrl;
     }
     return url;
+  }
+  
+  /*
+   * (non-Javadoc)
+   * @see org.sakaiproject.citation.api.ConfigurationService#getSecondsBetweenSaveciteRefreshes()
+   */
+  public String getSecondsBetweenSaveciteRefreshes() {
+	  String secondsBetweenRefreshes = this.getConfigurationParameter(PARAM_SECONDS_BETWEEN_SAVECITE_REFRESHES);
+	  if(secondsBetweenRefreshes == null) {
+		// no stored value for secondsBetweenRefreshes; use default
+		  secondsBetweenRefreshes = DEFAULT_SECONDS_BETWEEN_SAVECITE_REFRESHES;
+	  } else {
+		  try {
+			  int num = Integer.parseInt(secondsBetweenRefreshes);
+			  if(num < 1) {
+				  // stored value of secondsBetweenRefreshes is too small; use default
+				  secondsBetweenRefreshes = DEFAULT_SECONDS_BETWEEN_SAVECITE_REFRESHES;
+			  } else if(num > MAXIMUM_SECONDS_BETWEEN_SAVECITE_REFRESHES) {
+				  // stored value of secondsBetweenRefreshes is too big; use max
+				  secondsBetweenRefreshes = Integer.toString(MAXIMUM_SECONDS_BETWEEN_SAVECITE_REFRESHES);
+			  }
+		  } catch(NumberFormatException e) {
+			  // stored value of secondsBetweenRefreshes is not a number; use default
+			  secondsBetweenRefreshes = DEFAULT_SECONDS_BETWEEN_SAVECITE_REFRESHES;
+		  }
+	  }
+	  return secondsBetweenRefreshes ;
   }
 }

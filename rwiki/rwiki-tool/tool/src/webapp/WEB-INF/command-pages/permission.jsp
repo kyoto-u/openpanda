@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/permission.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/permission.jsp $
  * $Id: permission.jsp 20412 2007-01-18 14:58:56Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

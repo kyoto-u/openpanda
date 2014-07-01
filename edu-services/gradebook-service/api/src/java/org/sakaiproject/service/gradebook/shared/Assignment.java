@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.3/gradebook-service/api/src/java/org/sakaiproject/service/gradebook/shared/Assignment.java $
- * $Id: Assignment.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.0/gradebook-service/api/src/java/org/sakaiproject/service/gradebook/shared/Assignment.java $
+ * $Id: Assignment.java 129393 2013-09-06 04:24:35Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,6 +43,9 @@ public class Assignment implements Serializable {
     private String categoryName;
     private Double weight;
     private boolean ungraded;
+    private boolean extraCredit;
+    //Needed for transfer
+    private boolean categoryExtraCredit;
     
 
     public Assignment() {
@@ -179,5 +182,25 @@ public class Assignment implements Serializable {
 	{
 		this.ungraded = ungraded;
 	}
+	
+	//Extra credit columns
+	public void setExtraCredit(boolean extraCredit) {
+		this.extraCredit = extraCredit;
+	}
 
+	public boolean isExtraCredit() {
+		return extraCredit;
+	}
+
+	public boolean getExtraCredit() {
+		return isExtraCredit();
+	}
+	
+	//Needed for cateogry transfer
+	public void setCategoryExtraCredit(boolean categoryExtraCredit) {
+		this.categoryExtraCredit = categoryExtraCredit;
+	}
+	public boolean isCategoryExtraCredit() {
+		return categoryExtraCredit;
+	}
 }

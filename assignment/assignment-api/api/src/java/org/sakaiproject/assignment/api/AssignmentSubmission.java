@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
- * $Id: AssignmentSubmission.java 98449 2011-09-20 21:28:59Z zqian@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
+ * $Id: AssignmentSubmission.java 133971 2014-01-31 16:53:55Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,6 +64,19 @@ public interface AssignmentSubmission extends Entity
 	 */
 	public String getAssignmentId();
 
+	/**
+         * Submitter ID is the Sakai Group ID or User ID that created the submission.
+         * @return The GROUP or USER id who submitted this assignement
+         */
+        public String getSubmitterId();
+        /**
+         * Used to record submission history for group submissions.
+         * @return The LIST of submission log entries.
+         */
+        public List getSubmissionLog();
+        public List getGrades();
+        public String getGradeForUser(String id);
+        
 	/**
 	 * Access the list of Users who submitted this response to the Assignment.
 	 * 
@@ -162,6 +175,12 @@ public interface AssignmentSubmission extends Entity
 	 */
 	public boolean getGraded();
 
+	/**
+	 * Get the grader id (this can be used to track between auto grades or instructor grades)
+	 * 
+	 * @return
+	 */
+	public String getGradedBy();
 	/**
 	 * Get whether the grade has been released.
 	 * 

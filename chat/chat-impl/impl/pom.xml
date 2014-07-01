@@ -4,9 +4,10 @@
   <parent>
     <artifactId>chat-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
+
   <name>sakai-chat-impl</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>sakai-chat-impl</artifactId>
@@ -19,6 +20,7 @@
   <properties>
     <deploy.target />
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
@@ -30,11 +32,19 @@
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate</artifactId>
+      <artifactId>hibernate-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
@@ -61,10 +71,6 @@
       <artifactId>entitybroker-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject.message</groupId>
-      <artifactId>sakai-message-impl</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.sakaiproject.courier</groupId>
       <artifactId>sakai-courier-api</artifactId>
     </dependency>
@@ -73,9 +79,12 @@
       <artifactId>sakai-courier-util</artifactId>
     </dependency>
     <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
     </dependency>
   </dependencies>
   <build>

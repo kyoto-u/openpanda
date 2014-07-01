@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/index/impl/FSIndexStorage.java $
- * $Id: FSIndexStorage.java 70879 2010-01-04 13:04:36Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/index/impl/FSIndexStorage.java $
+ * $Id: FSIndexStorage.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,7 +77,7 @@ public class FSIndexStorage extends BaseIndexStorage
 			log.debug("Indexing in " + f.getAbsolutePath());
 		}
 
-		if (IndexReader.isLocked(searchIndexDirectory))
+		if (IndexWriter.isLocked(FSDirectory.open(f)))
 		{
 			// this could be dangerous, I am assuming that
 			// the locking mechanism implemented here is
@@ -85,19 +85,21 @@ public class FSIndexStorage extends BaseIndexStorage
 			// already prevents multiple modifiers.
 			// A more
 
-			IndexReader.unlock(FSDirectory.getDirectory(searchIndexDirectory, true));
+			IndexWriter.unlock(FSDirectory.open(f));
 			log.warn("Unlocked Lucene Directory for update, hope this is Ok");
 		}
 	}
 
 	public IndexReader getIndexReader() throws IOException
 	{
-		return IndexReader.open(searchIndexDirectory);
+		File f = new File(searchIndexDirectory);
+		return IndexReader.open(FSDirectory.open(f), true);
 	}
 
 	public IndexWriter getIndexWriter(boolean create) throws IOException
 	{
-		return new IndexWriter(searchIndexDirectory, getAnalyzer(), create);
+		File f = new File(searchIndexDirectory);
+		return new IndexWriter(FSDirectory.open(f), getAnalyzer(), create, IndexWriter.MaxFieldLength.UNLIMITED);
 	}
 
 	public void doPostIndexUpdate() throws IOException
@@ -128,8 +130,9 @@ public class FSIndexStorage extends BaseIndexStorage
 					log.warn("getIdexSearch couldn't create directory " + indexDirectoryFile.getPath());
 				}
 			}
-
-			indexSearcher = new IndexSearcher(searchIndexDirectory);
+			
+			File f = new File(searchIndexDirectory);
+			indexSearcher = new IndexSearcher(FSDirectory.open(f), false);
 			if (indexSearcher == null)
 			{
 				log.warn("No search Index exists at this time");
@@ -149,7 +152,8 @@ public class FSIndexStorage extends BaseIndexStorage
 					+ " Search Index which has become corrupted ", e);
 			if (doIndexRecovery())
 			{
-				indexSearcher = new IndexSearcher(searchIndexDirectory);
+				File f = new File(searchIndexDirectory);
+				indexSearcher = new IndexSearcher(FSDirectory.open(f), false);
 			}
 		}
 		catch (IOException e)
@@ -158,7 +162,8 @@ public class FSIndexStorage extends BaseIndexStorage
 					+ "Search Index which has become corrupted", e);
 			if (doIndexRecovery())
 			{
-				indexSearcher = new IndexSearcher(searchIndexDirectory);
+				Directory dir = FSDirectory.open(new File(searchIndexDirectory));
+				indexSearcher = new IndexSearcher(dir, false);
 			}
 		}
 		return indexSearcher;
@@ -172,7 +177,7 @@ public class FSIndexStorage extends BaseIndexStorage
 			Document doc = new Document();
 			String message = "Index Recovery performed on " + (new Date()).toString();
 			doc.add(new Field(SearchService.FIELD_CONTENTS, message, Field.Store.NO,
-					Field.Index.TOKENIZED));
+					Field.Index.ANALYZED));
 			iw.addDocument(doc);
 			iw.close();
 			log.error("Sucess fully recoverd From a corrupted index, "
@@ -184,7 +189,14 @@ public class FSIndexStorage extends BaseIndexStorage
 
 	public boolean indexExists()
 	{
-		return IndexReader.indexExists(searchIndexDirectory);
+		Directory dir;
+		try {
+			dir = FSDirectory.open(new File(searchIndexDirectory));
+			return IndexReader.indexExists(dir);
+		} catch (IOException e) {
+			return false;
+		}
+		
 	}
 
 	/**

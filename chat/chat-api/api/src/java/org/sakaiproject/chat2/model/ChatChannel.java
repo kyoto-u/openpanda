@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.3/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatChannel.java $
- * $Id: ChatChannel.java 100608 2011-11-09 22:16:05Z jbush@rsmart.com $
+ * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.0/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatChannel.java $
+ * $Id: ChatChannel.java 129909 2013-09-23 19:30:28Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -55,8 +55,10 @@ public class ChatChannel implements Entity {
    private boolean enableUserOverride = true;
    private Set<ChatMessage> messages = new HashSet<ChatMessage>();
    private String migratedChannelId;
-   
-   
+   private Date startDate;
+   private Date endDate;
+
+
    public ChatChannel() {
    }
 
@@ -131,6 +133,18 @@ public class ChatChannel implements Entity {
    }
    public void setEnableUserOverride(boolean enableUserOverride) {
       this.enableUserOverride = enableUserOverride;
+   }
+   public Date getStartDate() {
+       return startDate;
+   }
+   public void setStartDate(Date startDate) {
+       this.startDate = startDate;
+   }
+   public Date getEndDate() {
+       return endDate;
+   }
+   public void setEndDate(Date endDate) {
+       this.endDate = endDate;
    }
 
    /**

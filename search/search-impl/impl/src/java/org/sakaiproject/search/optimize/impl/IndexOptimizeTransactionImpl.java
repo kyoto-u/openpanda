@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/optimize/impl/IndexOptimizeTransactionImpl.java $
- * $Id: IndexOptimizeTransactionImpl.java 59685 2009-04-03 23:36:24Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/optimize/impl/IndexOptimizeTransactionImpl.java $
+ * $Id: IndexOptimizeTransactionImpl.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.store.FSDirectory;
 import org.sakaiproject.search.journal.impl.JournalSettings;
 import org.sakaiproject.search.optimize.api.IndexOptimizeTransaction;
 import org.sakaiproject.search.transaction.api.IndexTransaction;
@@ -48,12 +49,12 @@ public class IndexOptimizeTransactionImpl extends IndexTransactionImpl implement
 	private static final Log log = LogFactory.getLog(IndexOptimizeTransactionImpl.class);
 
 	/**
-	 * The temporary idnex writer
+	 * The temporary index writer
 	 */
 	private IndexWriter indexWriter;
 
 	/**
-	 * A temporta index directory to build the merge item
+	 * A temporary index directory to build the merge item
 	 */
 	private File tempIndex;
 
@@ -91,6 +92,7 @@ public class IndexOptimizeTransactionImpl extends IndexTransactionImpl implement
 		{
 			if (indexWriter != null)
 			{
+				indexWriter.commit();
 				indexWriter.close();
 			}
 			indexWriter = null;
@@ -116,6 +118,7 @@ public class IndexOptimizeTransactionImpl extends IndexTransactionImpl implement
 	{
 		try
 		{
+			indexWriter.commit();
 			indexWriter.close();
 			indexWriter = null;
 			FileUtils.deleteAll(tempIndex);
@@ -154,8 +157,8 @@ public class IndexOptimizeTransactionImpl extends IndexTransactionImpl implement
 			{
 				tempIndex = ((OptimizeIndexManager) manager)
 						.getTemporarySegment(transactionId);
-				indexWriter = new IndexWriter(tempIndex, ((OptimizeIndexManager) manager)
-						.getAnalyzer(), true);
+				indexWriter = new IndexWriter(FSDirectory.open(tempIndex), ((OptimizeIndexManager) manager)
+						.getAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
 				indexWriter.setUseCompoundFile(true);
 				// indexWriter.setInfoStream(System.out);
 				indexWriter.setMaxMergeDocs(journalSettings.getLocalMaxMergeDocs());

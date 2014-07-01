@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages.panels;
 
 import org.apache.commons.lang.StringUtils;
@@ -152,6 +151,8 @@ public class ChangeProfilePictureUrl extends Panel{
 		
 		//upload
 		TextField urlField = new TextField("urlField", new PropertyModel(stringModel, "string"));
+		urlField.setMarkupId("pictureurl");
+		urlField.setOutputMarkupId(true);
 		urlField.setRequired(true);
 		urlField.add(new UrlValidator(new String[]{"http", "https"}, UrlValidator.ALLOW_2_SLASHES));
 		form.add(urlField);

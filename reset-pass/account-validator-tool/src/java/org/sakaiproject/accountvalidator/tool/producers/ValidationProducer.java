@@ -1,6 +1,6 @@
 /**
- * $Id: ValidationProducer.java 118574 2013-01-22 16:45:50Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.3/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/producers/ValidationProducer.java $
+ * $Id: ValidationProducer.java 308859 2014-04-26 00:12:26Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.0/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/producers/ValidationProducer.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,14 +42,17 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
+import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIELBinding;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
+import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
+import uk.org.ponder.rsf.components.UIVerbatim;
 import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -57,12 +60,15 @@ import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.RawViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
+import uk.org.ponder.springutil.SpringMessageLocator;
 
 public class ValidationProducer implements ViewComponentProducer,
 ViewParamsReporter, ActionResultInterceptor {
 
 	private static Log log = LogFactory.getLog(ValidationProducer.class);
 	public static final String VIEW_ID = "validate";
+
+	private static final String MAX_PASSWORD_RESET_MINUTES = "accountValidator.maxPasswordResetMinutes";
 
 	public String getViewID() {
 		return VIEW_ID;
@@ -105,6 +111,12 @@ ViewParamsReporter, ActionResultInterceptor {
 			DeveloperHelperService developerHelperService) {
 		this.developerHelperService = developerHelperService;
 	}
+	
+	private SpringMessageLocator messageLocator;
+	public void setSpringMessageLocator(SpringMessageLocator messageLocator) {
+		this.messageLocator = messageLocator;
+	}
+	
 
 	String portalurl = "http://localhost:8080/portal";
 	public void init() {
@@ -126,6 +138,7 @@ ViewParamsReporter, ActionResultInterceptor {
 			}
 			log.debug("getting token: " + vvp.tokenId);
 			va = validationLogic.getVaLidationAcountBytoken(vvp.tokenId);
+
 			if (va == null) {
 				Object[] args = new Object[]{ vvp.tokenId};
 				tml.addMessage(new TargettedMessage("msg.noSuchValidation", args, TargettedMessage.SEVERITY_ERROR));
@@ -139,13 +152,79 @@ ViewParamsReporter, ActionResultInterceptor {
 				tml.addMessage(new TargettedMessage("msg.expiredValidation", args, TargettedMessage.SEVERITY_ERROR));
 				return;
 			}
+			else
+			{
+				/*
+				* If we're dealing with password resets, they should go quickly. If it takes longer than
+				* accountValidator.maxPasswordResetMinutes, it could be an intruder who stumbled upon the validation
+				* token from an intercepted email, and we should stop them.
+				* Note that there already exists a quartz job to expire the validation tokens, but using a quartz job
+				* means that tokens would only be invalidated when the job runs. So here we check in real-time
+				* */
+				//Only do this check if accountValidator.maxPasswordResetMinutes is configured correctly
+				String strMinutes = serverConfigurationService.getString(MAX_PASSWORD_RESET_MINUTES);
+				if (strMinutes != null && !"".equals(strMinutes))
+				{
+					if (va.getStatus() != null)
+					{
+						if (va.getAccountStatus().equals(ValidationAccount.ACCOUNT_STATUS_PASSWORD_RESET))
+						{
+							try
+							{
+								//get the time limit and convert to millis
+								long maxMillis = Long.parseLong(strMinutes);
+								maxMillis*=60*1000;
+
+								//the time when the validation token was sent to the email server
+								long sentTime = va.getValidationSent().getTime();
+
+								if (System.currentTimeMillis() - sentTime > maxMillis)
+								{
+									//it's been too long, so invalidate the token and stop the user
+									va.setStatus(ValidationAccount.STATUS_EXPIRED);
+
+									Object[] args = new Object[] {vvp.tokenId};
+									tml.addMessage(new TargettedMessage("msg.expiredValidation", args, TargettedMessage.SEVERITY_ERROR));
+									return;
+								}
+							}
+							catch (NumberFormatException nfe)
+							{
+								log.warn("accountValidator.maxPasswordResetMinutes is not configured correctly");
+							}
+						}
+					}
+				}
+			}
 		} else {
 			//with no VP we need to exit
 			tml.addMessage(new TargettedMessage("msg.noCode", new Object[]{}, TargettedMessage.SEVERITY_ERROR));
 			return;
 		}
 
-		
+		if (!serverConfigurationService.getBoolean("accountValidator.sendLegacyLinks", false))
+		{
+			//This could be an old link stored in an email. 
+			//If there's any way to automatically redirect to the desired page, please implement that instead.
+			//TODO: Building the URL is somewhat duplicated in ValidationLogicImpl. It would be good to reduce this duplication
+			Integer accountStatus = va.getAccountStatus();
+			String statusMessage = "msg.acceptInvitation";
+			String page = "newUser";
+			if (accountStatus != null)
+			{
+				if (accountStatus.equals(ValidationAccount.ACCOUNT_STATUS_PASSWORD_RESET))
+				{
+					page = "passwordReset";
+					statusMessage = "msg.resetPassword";
+				}
+			}
+			String serverUrl = serverConfigurationService.getServerUrl();
+			String url = serverUrl + "/accountvalidator/faces/" + page + "?tokenId=" + va.getValidationToken();
+			String[] args = new String[]{serverConfigurationService.getString("ui.service", "Sakai")};
+			statusMessage = messageLocator.getMessage(statusMessage, args);
+			UILink.make(tofill, "redirectLink", statusMessage, url);
+			return;
+		}
 
 		try {
 			User u = userDirectoryService.getUser(EntityReference.getIdFromRef(va.getUserId()));
@@ -169,6 +248,7 @@ ViewParamsReporter, ActionResultInterceptor {
 				isReset = true;
 			}
 			
+            UIMessage.make(tofill, "validate.or", "validate.or", args);
 			if (!isReset) {
 				UIMessage.make(tofill, "welcome1", "validate.welcome1", args);
 				UIMessage.make(tofill, "welcome", "validate.welcome", args);
@@ -239,6 +319,21 @@ ViewParamsReporter, ActionResultInterceptor {
 				log.debug("this is a new account render the second password box");
 				UIBranchContainer row2 = UIBranchContainer.make(detailsForm, "passrow2:");
 				UIInput.make(row2, "password2", otp + ".password2");
+			}
+			// If we have some terms get the user to accept them.
+			if (!"".equals(serverConfigurationService.getString("account-validator.terms"))) {
+				String url = serverConfigurationService.getString("account-validator.terms");
+				UIBranchContainer termsRow = UIBranchContainer.make(detailsForm, "termsrow:");
+
+				UIBoundBoolean.make(termsRow, "terms", otp+ ".terms");
+				// If someone wants to re-write this to be RSF like great, but this works.
+				// Although it doesn't escape the bundle strings.
+				String terms = messageLocator.getMessage("terms", new Object[]{
+						"<a href='"+ url+ "' target='_new'>"+
+						messageLocator.getMessage("terms.link")+
+						"</a>"
+				});
+				UIVerbatim.make(termsRow, "termsLabel", terms);
 			}
 			
 			

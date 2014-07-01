@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-tool/tool/src/java/org/sakaiproject/mailarchive/tool/MailboxAction.java $
- * $Id: MailboxAction.java 106617 2012-04-09 13:40:00Z matthew@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.0/mailarchive-tool/tool/src/java/org/sakaiproject/mailarchive/tool/MailboxAction.java $
+ * $Id: MailboxAction.java 131929 2013-11-25 17:56:30Z dsobiera@indiana.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,6 +48,7 @@ import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.InUseException;
 import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.javax.Filter;
 import org.sakaiproject.javax.Order;
 import org.sakaiproject.javax.PagingPosition;
@@ -178,9 +179,15 @@ public class MailboxAction extends PagedResourceActionII
         	try
 		{
 			MailArchiveChannel channel = MailArchiveService.getMailArchiveChannel((String) state.getAttribute(STATE_CHANNEL_REF));
-			int cCount = channel.getCount((Filter) getSearchFilter(search, 0, 0));
 
-			lastCount = Integer.valueOf(cCount);
+			int cCount = 0;
+			if(search == null) {
+			    cCount = channel.getCount();
+			} else {
+                cCount = channel.getCount((Filter) getSearchFilter(search, 0, 0));
+			}
+
+			lastCount = new Integer(cCount);
 			state.setAttribute(STATE_COUNT, lastCount);
 			state.setAttribute(STATE_COUNT_SEARCH, search);
 			return cCount;
@@ -539,6 +546,7 @@ public class MailboxAction extends PagedResourceActionII
 					String email = user.getEmail();
 					context.put("validFrom", email);
 				}
+				context.put(STATE_OPTION_SENDTO, channel.getSendToList());
 			}
 		}
 		catch (IdUnusedException e)
@@ -960,6 +968,9 @@ public class MailboxAction extends PagedResourceActionII
 							AliasService.setAlias(alias, channel.getReference());
 						}
 					}
+          catch (IdInvalidException iie) {
+              addAlert(state, rb.getString("theemaali4"));
+          }
 					catch (Exception any)
 					{
 						addAlert(state, rb.getString("theemaali2"));

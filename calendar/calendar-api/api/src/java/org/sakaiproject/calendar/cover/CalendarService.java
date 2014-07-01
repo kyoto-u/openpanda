@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-api/api/src/java/org/sakaiproject/calendar/cover/CalendarService.java $
- * $Id: CalendarService.java 99972 2011-10-19 15:14:43Z zqian@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-api/api/src/java/org/sakaiproject/calendar/cover/CalendarService.java $
+ * $Id: CalendarService.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -132,15 +132,6 @@ public class CalendarService
 			return;
 
 		service.setExportEnabled(param0, param1);
-	}
-                                       
-	public static java.util.List getCalendars()
-	{
-		org.sakaiproject.calendar.api.CalendarService service = getInstance();
-		if (service == null)
-			return null;
-
-		return service.getCalendars();
 	}
 
 	public static org.sakaiproject.calendar.api.CalendarEdit addCalendar(java.lang.String param0) throws org.sakaiproject.exception.IdUsedException, org.sakaiproject.exception.IdInvalidException, org.sakaiproject.exception.PermissionException
@@ -331,6 +322,25 @@ public class CalendarService
 
 		return service.archive(param0, param1, param2, param3, param4);
 	}
+	
+	public static java.lang.String calendarOpaqueUrlReference(org.sakaiproject.entity.api.Reference param0)
+	{
+		org.sakaiproject.calendar.api.CalendarService service = getInstance();
+		if (service == null)
+			return null;
+		
+		return service.calendarOpaqueUrlReference(param0);
+}
+
+	public static boolean allowSubscribeThisCalendar(java.lang.String param0)
+	{
+		org.sakaiproject.calendar.api.CalendarService service = getInstance();
+		if (service == null)
+			return false;
+
+		return service.allowSubscribeThisCalendar(param0);
+	}
+
 }
 
 

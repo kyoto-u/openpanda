@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SectionContentsBean.java $
- * $Id: SectionContentsBean.java 106373 2012-03-29 18:07:09Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SectionContentsBean.java $
+ * $Id: SectionContentsBean.java 133376 2014-01-17 15:49:38Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,8 +24,11 @@
 package org.sakaiproject.tool.assessment.ui.bean.delivery;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -64,8 +67,8 @@ public class SectionContentsBean
   private java.util.ArrayList itemContents;
   private String sectionId;
   private String number;
-  private float maxPoints;
-  private float points;
+  private double maxPoints;
+  private double points;
   private int questions;
   private int numbering;
   private String numParts;
@@ -122,7 +125,7 @@ public class SectionContentsBean
    *
    * @return the points
    */
-  public float getPoints()
+  public double getPoints()
   {
     return points;
   }
@@ -131,7 +134,7 @@ public class SectionContentsBean
    * Points earned thus far for part.
    * @param points
    */
-  public void setPoints(float points)
+  public void setPoints(double points)
   {
     this.points = points;
   }
@@ -168,12 +171,12 @@ public class SectionContentsBean
    * Total points the part is worth.
    * @return max total points for part
    */
-  public float getMaxPoints()
+  public double getMaxPoints()
   {
     return maxPoints;
   }
 
-  public float getRoundedMaxPoints()
+  public double getRoundedMaxPoints()
   {
     // only show 2 decimal places 
     
@@ -184,7 +187,7 @@ public class SectionContentsBean
    * Total points the part is worth.
    * @param maxPoints points the part is worth.
    */
-  public void setMaxPoints(float maxPoints)
+  public void setMaxPoints(double maxPoints)
   {
     this.maxPoints = maxPoints;
   }
@@ -431,9 +434,21 @@ public class SectionContentsBean
           if(randomDrawDate != null && !"".equals(randomDrawDate)){
 
         	  try{
-        		  //The Date Time is in ISO format
-        		  DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-        		  DateTime drawDate = fmt.parseDateTime(randomDrawDate);
+
+        		// bjones86 - SAM-1604
+				DateTime drawDate;
+				DateTimeFormatter fmt = ISODateTimeFormat.dateTime();	//The Date Time is in ISO format
+				try {
+					drawDate = fmt.parseDateTime(randomDrawDate);
+				} catch(Exception ex) {
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
+					Date date = df.parse(randomDrawDate);
+					if(date == null) {
+						throw new IllegalArgumentException();
+					}
+					drawDate = new DateTime(date);
+				}
+        		  
         		  //We need the locale to localize the output string
         		  Locale loc = new ResourceLoader().getLocale();
         		  String drawDateString = DateTimeFormat.fullDate().withLocale(loc).print(drawDate);
@@ -631,10 +646,11 @@ public class SectionContentsBean
     return pointsDisplayString;
   }
 
-  public static float roundTo2Decimals(float points)
+  public static double roundTo2Decimals(double points)
   {
-    int tmp = Math.round(points * 100.0f);
-    points = (float) tmp / 100.0f;
+    Double dTmp = points * 100.0d;
+    int tmp = dTmp.intValue();
+    points = (double) tmp / 100.0d;
     return points;
   }
 

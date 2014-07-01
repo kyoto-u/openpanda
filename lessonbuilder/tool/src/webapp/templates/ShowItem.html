@@ -4,6 +4,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE"/>
+<style rsf:id="iconstyle" type="text/css">
+</style>
 <script rsf:id="scr=portal-matter" type="text/javascript" language="JavaScript" src="/library/js/headscripts.js"></script>
 <link rsf:id="scr=portal-matter" href="/library/skin/tool_base.css" type="text/css" rel="stylesheet" media="all" />
 <link rsf:id="scr=portal-matter" href="/library/skin/default/tool.css" type="text/css" rel="stylesheet" media="all" />
@@ -91,11 +93,21 @@ $(function() {
 		
 		<br rsf:id="breakAfterWarnings" />
 
-                <div role="navigation" class="neoPortletTitleWrap">
-                  <a href="#" rsf:id="resetbutton2"><img rsf:id="resetimage2" src="/library/skin/default/images/reload.gif" style="float:left;margin-right:4px;margin-top:2px"/></a>
-                  <span rsf:id="crumb:"><a href="#" rsf:id="crumb-link"></a><span rsf:id="crumb-follow"></span></span><span class="returnheader nextprev"><a href="#" class="usebutton nextprev" rsf:id="return"></a> </span> <span rsf:id="returnwarning" class="returnwarning"></span><span class="returnheader nextprev"> <a href="#" rsf:id="prev" class="usebutton nextprev">prev</a> <a href="#" rsf:id="next" class="usebutton nextprev">next</a></span>
-                  <a href="#" rsf:id="helpbutton2" target="_blank"><img rsf:id="helpimage2" src="/library/skin/default/images/help.gif" style="float:right;margin-left:4px;margin-top:2px"/><span rsf:id="helpnewwindow2" class="offscreen"></span> </a>
-		</div>
+        <div role="navigation" class="neoPortletTitleWrap">
+            <div class="portletTitle">
+                <div class="title">
+                    <a href="#" rsf:id="resetbutton2" class="reload"><img rsf:id="resetimage2" src="/library/image/transparent.gif"/></a>
+                    <span rsf:id="crumb:"><a href="#" rsf:id="crumb-link"></a><span rsf:id="crumb-follow"></span></span>
+                    <span class="returnheader nextprev"><a href="#" class="usebutton nextprev" rsf:id="return"></a></span>
+                    <span rsf:id="returnwarning" class="returnwarning"></span>
+                </div>
+                <div class="action">
+                    
+                    <span class="returnheader nextprev"><a href="#" rsf:id="prev" class="usebutton nextprev">prev</a><a href="#" rsf:id="next" class="usebutton nextprev">next</a></span>
+                    <a href="#" rsf:id="helpbutton2" target="_blank" class="help"><img rsf:id="helpimage2" src="/library/image/transparent.gif" /><span rsf:id="helpnewwindow2" class="offscreen"></span></a>
+                </div>
+            </div>
+        </div>
 
 		<iframe rsf:id="iframe1" role="main"
 			name="iframe1"

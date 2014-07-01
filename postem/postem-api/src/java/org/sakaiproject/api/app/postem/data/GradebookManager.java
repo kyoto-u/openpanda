@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-2.9.3/postem-api/src/java/org/sakaiproject/api/app/postem/data/GradebookManager.java $
- * $Id: GradebookManager.java 59680 2009-04-03 23:28:39Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-10.0/postem-api/src/java/org/sakaiproject/api/app/postem/data/GradebookManager.java $
+ * $Id: GradebookManager.java 125618 2013-06-11 16:41:26Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ import java.util.SortedSet;
 
 public interface GradebookManager {
 	public Gradebook createGradebook(String title, String creator,
-			String context, List headings, SortedSet students, Template template);
+			String context, List headings, SortedSet students, Template template, String fileReference);
 
 	public Gradebook createEmptyGradebook(String creator, String context);
 
@@ -51,7 +51,7 @@ public interface GradebookManager {
 	public void updateGrades(Gradebook gradebook, List headings,
 			SortedSet students);
 
-	public void updateTemplate(Gradebook gradebook, String template);
+	public void updateTemplate(Gradebook gradebook, String template, String fileReference);
 
 	public void deleteGradebook(final Gradebook gradebook);
 

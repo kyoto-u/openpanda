@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/authz/api/AuthzGroupService.java $
- * $Id: AuthzGroupService.java 101392 2011-12-05 15:07:25Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/authz/api/AuthzGroupService.java $
+ * $Id: AuthzGroupService.java 133031 2014-01-06 20:27:07Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,6 +66,8 @@ public interface AuthzGroupService extends EntityProducer
 	/** Name for the event of unjoining an AuthzGroup. */
 	static final String SECURE_UNJOIN_AUTHZ_GROUP = "realm.unjoin";
 
+	/** Name for the event of viewing all AuthzGroups. */
+	static final String SECURE_VIEW_ALL_AUTHZ_GROUPS = "realm.view.all";
 	
 	/** Name for the event of updating ones own relationship in an AuthzGroup. */
 	static final String SECURE_UPDATE_OWN_AUTHZ_GROUP = "realm.upd.own";
@@ -91,6 +93,7 @@ public interface AuthzGroupService extends EntityProducer
 
 	/**
 	 * Access a list of AuthzGroups which contain a specified userid
+	 * NOTE: This call is backed by a cache.
 	 * 
 	 * @param authzGroupIds
 	 *        AuthzGroup selection criteria (list of AuthzGroup ids)
@@ -462,4 +465,33 @@ public interface AuthzGroupService extends EntityProducer
      */
     public Collection<String> getAuthzUsersInGroups(Set<String> groupIds);
 
+    /**
+     * Registers a AuthzGroupAdvisor with the AuthzGroupService. Each advisor will be
+     * called during save(AuthzGroup).
+     * 
+     * @param advisor The AuthzGroupAdvisor to add 
+     */
+    public void addAuthzGroupAdvisor(AuthzGroupAdvisor advisor);
+    
+    /**
+     * Removes an AuthzGroupAdvisor
+     * 
+     * @param advisor The AuthzGroupAdvisor to remove
+     * @return Whether a AuthzGroupAdvisor was previously registered and hence removed
+     */
+    public boolean removeAuthzGroupAdvisor(AuthzGroupAdvisor advisor);
+    
+    /**
+     * List of the current AuthzGroupAdvisors registered with the AuthzGroupService
+     * 
+     * @return List containing the currently registered AuthzGroupAdvisors
+     */
+    public List<AuthzGroupAdvisor> getAuthzGroupAdvisors();
+
+    /**
+     * Set of all maintain roles
+     *
+     * @return String Set containing all maintain roles.
+     */
+    public Set<String> getMaintainRoles();
 }

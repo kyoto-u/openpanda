@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/validator/FinQuestionValidator.java $
+ * $Id: FinQuestionValidator.java 112201 2012-09-07 08:51:04Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -124,7 +124,7 @@ public class FinQuestionValidator implements Validator {
 		boolean isReal = true;
 		try {
 			// Number has decimal format? If no, Exception is throw
-			BigDecimal decimal = new BigDecimal(value);
+			new BigDecimal(value);
 			
 		} catch (Exception e) {
 			isReal = false;

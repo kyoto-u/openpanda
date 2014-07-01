@@ -1,6 +1,6 @@
 /**
- * $Id: ActionsEntityProviderMock.java 76274 2010-04-16 16:02:23Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/mocks/src/java/org/sakaiproject/entitybroker/mocks/ActionsEntityProviderMock.java $
+ * $Id: ActionsEntityProviderMock.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/mocks/src/java/org/sakaiproject/entitybroker/mocks/ActionsEntityProviderMock.java $
  * RESTfulEntityProviderMock.java - entity-broker - Apr 9, 2008 10:31:13 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

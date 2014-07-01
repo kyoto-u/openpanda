@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/authz/tags/sakai-2.9.3/authz-tool/tool/src/java/org/sakaiproject/authz/tool/RealmsAction.java $
- * $Id: RealmsAction.java 94263 2011-06-30 16:15:36Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/authz/tags/sakai-10.0/authz-tool/tool/src/java/org/sakaiproject/authz/tool/RealmsAction.java $
+ * $Id: RealmsAction.java 307323 2014-03-20 20:15:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,12 +21,18 @@
 
 package org.sakaiproject.authz.tool;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzPermissionException;
 import org.sakaiproject.authz.api.GroupAlreadyDefinedException;
@@ -48,11 +54,18 @@ import org.sakaiproject.cheftool.api.MenuItem;
 import org.sakaiproject.cheftool.menu.MenuEntry;
 import org.sakaiproject.cheftool.menu.MenuImpl;
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.javax.PagingPosition;
+import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
+import org.sakaiproject.userauditservice.api.UserAuditRegistration;
+import org.sakaiproject.userauditservice.api.UserAuditService;
 import org.sakaiproject.util.ResourceLoader;
 
 /**
@@ -68,6 +81,11 @@ public class RealmsAction extends PagedResourceActionII
 
 	private org.sakaiproject.authz.api.GroupProvider groupProvider = (org.sakaiproject.authz.api.GroupProvider) ComponentManager
 	.get(org.sakaiproject.authz.api.GroupProvider.class);
+	
+	private static UserAuditRegistration userAuditRegistration = (UserAuditRegistration) ComponentManager.get("org.sakaiproject.userauditservice.api.UserAuditRegistration.sitemanage");
+	private static UserAuditService userAuditService = (UserAuditService) ComponentManager.get(UserAuditService.class);
+	
+	private static Log M_log = LogFactory.getLog(RealmsAction.class);
 
 	/**
 	 * {@inheritDoc}
@@ -122,8 +140,8 @@ public class RealmsAction extends PagedResourceActionII
 	{
 		context.put("tlang", rb);
 
-		// if not logged in as the super user, we won't do anything
-		if (!SecurityService.isSuperUser())
+		// if not allowed, we won't do anything
+		if (!isAccessAllowed())
 		{
 			return (String) getContext(rundata).get("template") + "_noaccess";
 		}
@@ -174,6 +192,14 @@ public class RealmsAction extends PagedResourceActionII
 		{
 			template = buildEditUserContext(state, context);
 		}
+		else if ("view".equals(mode))
+		{
+			template = buildViewContext(state, context);
+		}
+		else if ("viewRole".equals(mode))
+		{
+			template = buildViewRoleContext(state, context);
+		}
 
 		else
 		{
@@ -222,6 +248,9 @@ public class RealmsAction extends PagedResourceActionII
 		{
 			context.put(Menu.CONTEXT_MENU, bar);
 		}
+		
+		context.put("viewAllowed", isAccessAllowed());
+
 
 		// inform the observing courier that we just updated the page...
 		// if there are pending requests to do so they can be cleared
@@ -283,6 +312,31 @@ public class RealmsAction extends PagedResourceActionII
 		context.put(Menu.CONTEXT_MENU, bar);
 
 		return "_edit";
+
+	} // buildEditContext
+	
+	/**
+	 * Build the context for the view realm mode.
+	 */
+	private String buildViewContext(SessionState state, Context context)
+	{
+		// get the realm to edit
+		AuthzGroup realm = (AuthzGroup) state.getAttribute("realm");
+		context.put("realm", realm);
+
+		// get the roles defined in the realm
+		List roles = new Vector();
+		roles.addAll(realm.getRoles());
+		Collections.sort(roles);
+		context.put("roles", roles);
+
+		// get a list of the users who have individual grants in the realm
+		List grants = new Vector();
+		grants.addAll(realm.getMembers());
+		Collections.sort(grants);
+		context.put("grants", grants);
+
+		return "_view";
 
 	} // buildEditContext
 
@@ -374,12 +428,43 @@ public class RealmsAction extends PagedResourceActionII
 		// build the menu
 		Menu bar = new MenuImpl();
 		bar.add(new MenuEntry(rb.getString("realm.removerol"), null, true, MenuItem.CHECKED_NA, "doRemove_role"));
-		bar.add(new MenuEntry(rb.getString("realm.copyrol"), null, true, MenuItem.CHECKED_NA, "doSaveas_role", "role-form"));
+		bar.add(new MenuEntry(rb.getString("realm.copyrol"), null, true, MenuItem.CHECKED_NA, "doSaveas_role"));
 		context.put(Menu.CONTEXT_MENU, bar);
 
 		return "_edit_role";
 
 	} // buildEditRoleContext
+	
+	/**
+	 * Build the context for the view role mode.
+	 */
+	private String buildViewRoleContext(SessionState state, Context context)
+	{
+
+		// get the realm
+		AuthzGroup realm = (AuthzGroup) state.getAttribute("realm");
+		context.put("realm", realm);
+
+		// get the role
+		Role role = (Role) state.getAttribute("role");
+		context.put("role", role);
+
+		// get all functions
+		List allFunctions = FunctionManager.getRegisteredFunctions();
+		Collections.sort(allFunctions);
+		context.put("allLocks", allFunctions);
+
+		// get all roles
+		List allRoles = new Vector();
+		if (realm != null)
+			allRoles.addAll(realm.getRoles());
+		Collections.sort(allRoles);
+		context.put("allRoles", allRoles);
+
+		return "_view_role";
+
+	} // buildViewRoleContext
+
 
 	/**
 	 * Build the context for the new user grant mode.
@@ -627,6 +712,13 @@ public class RealmsAction extends PagedResourceActionII
 			try
 			{
 				AuthzGroupService.save(realm);
+				// Grab the list from session state and save it, if appropriate
+				List<String[]> userAuditList = (List<String[]>) state.getAttribute("userAuditList");
+				if (userAuditList!=null && !userAuditList.isEmpty())
+				{
+					userAuditRegistration.addToUserAuditing(userAuditList);
+					state.removeAttribute("userAuditList");
+				}
 			}
 			catch (GroupNotDefinedException e)
 			{
@@ -767,6 +859,63 @@ public class RealmsAction extends PagedResourceActionII
 		state.setAttribute("mode", "edit");
 
 	} // doCancel_remove
+	
+	/**
+	 * Handle a request to view a realm.
+	 */
+	public void doView(RunData data, Context context)
+	{
+		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+		
+		String id = data.getParameters().getString("id");
+
+		// get the realm
+		try
+		{
+			AuthzGroup realm = AuthzGroupService.getAuthzGroup(id);
+			state.setAttribute("realm", realm);
+
+			state.setAttribute("mode", "view");
+
+			// disable auto-updates while in view mode
+			disableObservers(state);
+		}
+		catch (GroupNotDefinedException e)
+		{
+			Log.warn("chef", "RealmsAction.doView: realm not found: " + id);
+
+			addAlert(state, rb.getFormattedMessage("realm.notfound", new Object[]{id}));
+			state.removeAttribute("mode");
+
+			// make sure auto-updates are enabled
+			enableObserver(state);
+		}
+
+	} // doView
+	
+	/**
+	 * View a role.
+	 */
+	public void doView_role(RunData data, Context context)
+	{
+		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+
+		// read the form - if rejected, leave things as they are
+		if (!readRealmForm(data, state)) return;
+
+		state.setAttribute("mode", "viewRole");
+
+		String id = data.getParameters().getString("target");
+
+		// get the role
+		AuthzGroup realm = (AuthzGroup) state.getAttribute("realm");
+		if (realm != null)
+		{
+			Role role = realm.getRole(id);
+			state.setAttribute("role", role);
+		}
+
+	} // doView_role
 
 	/**
 	 * Read the realm form and update the realm in state.
@@ -1002,6 +1151,14 @@ public class RealmsAction extends PagedResourceActionII
 
 		// we are setting for either a new role or this role
 		Role role = (Role) state.getAttribute("role");
+
+		//Read the locks if they're null and the role is not null to avoid passing them around
+		if (locks == null && role != null) {
+			Collection realms = new ArrayList<String>(Arrays.asList(realm.getId()));
+			List <String> newlocks = new ArrayList(AuthzGroupService.getAllowedFunctions(role.getId(), realms));
+			locks = newlocks.toArray(new String[0]);
+		}
+
 		if (realm != null && role == null)
 		{
 			// read the form
@@ -1033,11 +1190,22 @@ public class RealmsAction extends PagedResourceActionII
 		// clear out the role
 		role.disallowAll();
 
+		String descriptionString = StringUtils.trimToNull(data.getParameters().getString("description"));
+		String providerOnlyString = StringUtils.trimToNull(data.getParameters().getString("providerOnly"));
+		
+		//Role can't be null at this point
+		if (descriptionString == null) {
+			descriptionString = role.getDescription();
+		}
+		
+		if (providerOnlyString == null) {
+			providerOnlyString = String.valueOf(role.isProviderOnly());
+		}
+
 		// description
-		role.setDescription(StringUtils.trimToNull(data.getParameters().getString("description")));
+		role.setDescription(StringUtils.trimToNull(descriptionString));
 
 		// providerOnly
-		String providerOnlyString = (StringUtils.trimToNull(data.getParameters().getString("providerOnly")));
 		role.setProviderOnly("true".equals(providerOnlyString));		
 
 		// for each lock set, give it to the role
@@ -1150,8 +1318,14 @@ public class RealmsAction extends PagedResourceActionII
 		
 		if (realm != null && user != null)
 		{
+			// Need to grab the role before removing the user from the realm
+			String roleId = realm.getUserRole(user.getId()).getId();
+			
 			// clear out this user's settings
 			realm.removeMember(user.getId());
+			
+			// user auditing
+			addToAuditLogList(state, realm, user.getEid(), roleId);
 	
 			// done with the user
 			state.removeAttribute("user");
@@ -1256,6 +1430,9 @@ public class RealmsAction extends PagedResourceActionII
 			{
 				// TODO: active, provided
 				realm.addMember(user.getId(), roles, status, false);
+				
+				// user auditing
+				addToAuditLogList(state, realm, user.getEid(), roles);
 			}
 		}
 
@@ -1278,7 +1455,79 @@ public class RealmsAction extends PagedResourceActionII
 		state.removeAttribute("allLocks");
 		state.removeAttribute("roles");
 		state.removeAttribute("locks");
+		state.removeAttribute("userAuditList");
 
 	} // cleanState
+	
+	/**
+	 * Check if the current user is allowed to access the tool
+	 * 
+	 * Super users are allowed, as well as people with the AuthzGroupService.SECURE_VIEW_ALL_AUTHZ_GROUPS permission.
+	 */
+	private boolean isAccessAllowed() {
+		if(SecurityService.isSuperUser()) {
+			return true;
+		}
+		String siteId = ToolManager.getCurrentPlacement().getContext();
+		String siteRef = siteId;
+		if(siteId != null && !siteId.startsWith(SiteService.REFERENCE_ROOT)) {
+			siteRef = SiteService.REFERENCE_ROOT + Entity.SEPARATOR + siteId;
+		}
+		
+		String userId = SessionManager.getCurrentSessionUserId();
+		
+		if(SecurityService.unlock(userId, AuthzGroupService.SECURE_VIEW_ALL_AUTHZ_GROUPS, siteRef)) {
+			M_log.debug("Granting view access to Realms tool for userId: " + userId);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private List<String[]> retrieveAuditLogList(SessionState state)
+	{
+		// user auditing
+		List<String[]> userAuditList = (List<String[]>) state.getAttribute("userAuditList");
+		if (userAuditList!=null && !userAuditList.isEmpty())
+		{
+			state.removeAttribute("userAuditList");
+		}
+		else
+		{
+			userAuditList = new ArrayList<String[]>();
+		}
+		
+		return userAuditList;
+	}
+	
+	private void addToAuditLogList(SessionState state, AuthzGroup realm, String userEid, String userRole)
+	{
+		List<String[]> userAuditList = retrieveAuditLogList(state);
+		
+		String realmId = realm.getId();
+		String siteId = "";
+		String fullReferenceRoot = SiteService.REFERENCE_ROOT + Entity.SEPARATOR;
+		if (realmId.startsWith(fullReferenceRoot))
+		{
+			siteId = realmId.substring(fullReferenceRoot.length());
+		}
+		else
+		{
+			// this will likely never happen, but adding it in as a backup
+			siteId = realmId;
+		}
+		String newOrExistingUser = (String) state.getAttribute("newUser");
+		String userAuditAction = userAuditService.USER_AUDIT_ACTION_UPDATE;
+		
+		// if this using the Grant As functionality, it will be a new user being added
+		if (newOrExistingUser!=null && "true".equals(newOrExistingUser))
+		{
+			userAuditAction = userAuditService.USER_AUDIT_ACTION_ADD;
+		}
+		String[] userAuditString = {siteId,userEid,userRole,userAuditAction,userAuditRegistration.getDatabaseSourceKey(),UserDirectoryService.getCurrentUser().getEid()};
+		userAuditList.add(userAuditString);
+		
+		state.setAttribute("userAuditList", userAuditList);
+	}
 
 } // RealmsAction

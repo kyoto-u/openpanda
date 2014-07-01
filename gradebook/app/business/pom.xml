@@ -4,7 +4,7 @@
   <parent>
     <artifactId>sakai-gradebook-app</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>org.sakaiproject</groupId>
@@ -20,16 +20,20 @@
       <artifactId>servlet-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache-core</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate</artifactId>
+      <artifactId>hibernate-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
@@ -89,9 +93,8 @@
 <!-- Please contact the gradebook development team before removing these -->
 <!-- Uncomment as necessary to run tests, or to generate new db schemas -->
     <dependency>
-      <groupId>hsqldb</groupId>
+      <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>1.7.3.0</version>
     </dependency>
 <!-- Since none of these JDBC libraries will be used except in standalone test -->
 <!-- builds, we specify the '_g' Oracle JAR to obtain more debugging information. -->
@@ -136,16 +139,6 @@
       <version>3.0</version>
     </dependency>
     <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
-      <version>1.2.2</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-pool</groupId>
-      <artifactId>commons-pool</artifactId>
-      <version>1.2</version>
-    </dependency>
-    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>${sakai.commons.lang.version}</version>
@@ -168,7 +161,7 @@
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
+      <version>${sakai.commons-logging.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -211,12 +204,10 @@
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
-      <version>1.1.2</version>
     </dependency>
     <dependency>
       <groupId>taglibs</groupId>
@@ -225,10 +216,8 @@
     </dependency>
 <!--javax.servletservlet-api${sakai.servletapi.version}-->
     <dependency>
-      <groupId>javax.servlet</groupId>
+      <groupId>javax.servlet.jsp</groupId>
       <artifactId>jsp-api</artifactId>
-      <version>2.0</version>
-<!--properties:  war.bundle: false -->
     </dependency>
 <!-- Sakai tag library -->
     <dependency>

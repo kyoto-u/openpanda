@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/util/BeanSort.java $
- * $Id: BeanSort.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/util/BeanSort.java $
+ * $Id: BeanSort.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,7 +29,7 @@ import java.util.Collection;
  * DOCUMENTATION PENDING
  *
  * @author $author$
- * @version $Id: BeanSort.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * @version $Id: BeanSort.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  */
 public class BeanSort
 {
@@ -39,6 +39,7 @@ public class BeanSort
   private boolean string = true;
   private boolean numeric = false;
   private boolean date = false;
+  private boolean ipAddress = false;
 
   /**
    * The only public constructor.  Requires a valid property name for a a Java
@@ -127,12 +128,16 @@ public class BeanSort
     	  bsc = new BeanIntegerComparator(property);
       }
       else {
-    	  bsc = new BeanFloatComparator(property);
+    	  bsc = new BeanDoubleComparator(property);
       }
     }
     else if(date)
     {
       bsc = new BeanDateComparator(property);
+    }
+    else if (ipAddress)
+    {
+       bsc = new BeanIPComparator(property);
     }
 
     return bsc;
@@ -146,6 +151,7 @@ public class BeanSort
     string = true;
     numeric = false;
     date = false;
+    ipAddress = false;
   }
 
   /**
@@ -156,6 +162,7 @@ public class BeanSort
     string = false;
     numeric = true;
     date = false;
+       ipAddress = false;
   }
 
   /**
@@ -167,5 +174,14 @@ public class BeanSort
       string = false;
       numeric = false;
       date = true;
+      ipAddress = false;
+    }
+    
+    public void toIPAddressSort()
+    {
+       string = false;
+       numeric = false;
+       date = false;
+       ipAddress = true;
     }
 }

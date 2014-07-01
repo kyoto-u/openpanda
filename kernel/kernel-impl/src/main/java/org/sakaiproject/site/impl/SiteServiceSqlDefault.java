@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -560,7 +560,7 @@ public class SiteServiceSqlDefault implements SiteServiceSql
 	 */
 	public String getSitesWhereSoftlyDeletedOnlySql()
 	{
-		return "SAKAI_SITE.IS_SOFTLY_DELETED = '1'";
+		return "SAKAI_SITE.IS_SOFTLY_DELETED = '1' and ";
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.3/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/impl/EmailTemplateServiceImpl.java $
- * $Id: EmailTemplateServiceImpl.java 114116 2012-10-09 10:53:35Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/sakai-10.0/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/impl/EmailTemplateServiceImpl.java $
+ * $Id: EmailTemplateServiceImpl.java 308843 2014-04-25 20:22:49Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright 2006, 2007 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License. 
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software 
  * distributed under the License is distributed on an "AS IS" BASIS, 
@@ -42,7 +42,6 @@ import org.apache.commons.lang.LocaleUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.email.api.EmailService;
 import org.sakaiproject.emailtemplateservice.dao.impl.EmailTemplateServiceDao;
@@ -198,8 +197,8 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
       ret.setRenderedSubject(this.processText(ret.getSubject(), replacementValues, key));
       ret.setRenderedMessage(this.processText(ret.getMessage(), replacementValues, key));
-      //HTML component might be null
-      if (ret.getHtmlMessage() != null)
+      //HTML component is optional, so might be null or empty
+      if (ret.getHtmlMessage() != null && !ret.getHtmlMessage().trim().isEmpty())
     	  ret.setRenderedHtmlMessage(this.processText(ret.getHtmlMessage(), replacementValues, key));
       return ret;
    }
@@ -234,11 +233,10 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 	   }
 	   
 	   String locale = template.getLocale(); 
-	   if (locale == null || locale.trim().length() == 0) {
+	   if (StringUtils.isBlank(locale)) {
 		   //For backward compatibility set it to default
 		   template.setLocale(EmailTemplate.DEFAULT_LOCALE);
 	   } 
-	   
 	   
       //update the modified date
       template.setLastModified(new Date());
@@ -306,7 +304,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
       }
       /*NoN user fields */
       rv.put(LOCAL_SAKAI_NAME, serverConfigurationService.getString("ui.service", "Sakai"));
-      rv.put(LOCAL_SAKAI_SUPPORT_MAIL,serverConfigurationService.getString("support.email","help@"+ serverConfigurationService.getServerUrl()));
+      rv.put(LOCAL_SAKAI_SUPPORT_MAIL,serverConfigurationService.getString("support.email", "support@"+ serverConfigurationService.getServerName()));
       rv.put(LOCAL_SAKAI_URL,serverConfigurationService.getServerUrl());
 
       

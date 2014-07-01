@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: RequireLocalAccountLegacyAuthenticationTest.java 86666 2010-12-23 23:29:53Z aaronz@vt.edu $
+* $Id: RequireLocalAccountLegacyAuthenticationTest.java 309199 2014-05-06 15:36:14Z enietzel@anisakai.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,15 +22,12 @@
 
 package org.sakaiproject.user.impl.test;
 
-import java.util.Collection;
-
 import junit.extensions.TestSetup;
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.test.SakaiKernelTestBase;
 import org.sakaiproject.thread_local.api.ThreadLocalManager;
 import org.sakaiproject.user.api.User;
@@ -38,6 +35,8 @@ import org.sakaiproject.user.api.UserDirectoryProvider;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserEdit;
 import org.sakaiproject.user.impl.DbUserService;
+
+import java.util.Collection;
 
 /**
  * Some institutions want to have an authentication-only service that authenticates
@@ -52,20 +51,18 @@ import org.sakaiproject.user.impl.DbUserService;
  */
 public class RequireLocalAccountLegacyAuthenticationTest extends SakaiKernelTestBase {
 	private static Log log = LogFactory.getLog(RequireLocalAccountLegacyAuthenticationTest.class);
-	
-	private UserDirectoryService userDirectoryService;
 	private static TestProvider userDirectoryProvider;
-
-	// This service is only used to clear out various caches to make sure
-	// we're fetching from the DB.
-	private ThreadLocalManager threadLocalManager;
-	
 	private static String LOCALLY_STORED_EID = "locallystoreduser";
 	private static String LOCALLY_STORED_PWD = "locallystoreduser-pwd";
 	private static String LOCALLY_STORED_EMAIL = "locallystoreduser@somewhere.edu";
 	private static String PROVIDED_EID = "provideduser";
 	private static String PROVIDED_PWD = "provideduser-pwd";
 	private static String PROVIDED_EMAIL = "provideduser@somewhere.edu";
+	private UserDirectoryService userDirectoryService;
+	// This service is only used to clear out various caches to make sure
+	// we're fetching from the DB.
+	private ThreadLocalManager threadLocalManager;
+	private EventTrackingService eventTrackingService;
 	
 	/**
 	 * A complete integration test run is a lot of overhead to take on for
@@ -110,39 +107,37 @@ public class RequireLocalAccountLegacyAuthenticationTest extends SakaiKernelTest
 		log.debug("Setting up UserDirectoryServiceIntegrationTest");		
 		userDirectoryService = (UserDirectoryService)getService(UserDirectoryService.class.getName());
 		threadLocalManager = (ThreadLocalManager)getService(ThreadLocalManager.class.getName());
+		eventTrackingService = (EventTrackingService)getService(EventTrackingService.class);
 	}
 
-	public void testWithProvidedUserNotAllowed() throws Exception {
+	public void testWithProvidedUserRequired() throws Exception {
 		userDirectoryProvider.setRequireLocalAccount(true);
 		
 		User user = userDirectoryService.authenticate(LOCALLY_STORED_EID, LOCALLY_STORED_PWD);
-		Assert.assertTrue(user.getEmail().equals(LOCALLY_STORED_EMAIL));
+		assertTrue(user.getEmail().equals(LOCALLY_STORED_EMAIL));
 		clearUserFromServiceCaches(user.getId());
 		user = userDirectoryService.authenticate(PROVIDED_EID, PROVIDED_PWD);
-		Assert.assertTrue(user == null);
+		assertTrue(user == null);
 	}
 	
-	public void testWithProvidedUserAllowed() throws Exception {
+	public void testWithProvidedUserGood() throws Exception {
 		userDirectoryProvider.setRequireLocalAccount(false);
 		
 		User user = userDirectoryService.authenticate(LOCALLY_STORED_EID, LOCALLY_STORED_PWD);
-		Assert.assertTrue(user.getEmail().equals(LOCALLY_STORED_EMAIL));
+		assertTrue(user.getEmail().equals(LOCALLY_STORED_EMAIL));
 		clearUserFromServiceCaches(user.getId());
 		user = userDirectoryService.authenticate(PROVIDED_EID, PROVIDED_PWD);
-		Assert.assertTrue(user.getEmail().equals(PROVIDED_EMAIL));
+		assertTrue(user.getEmail().equals(PROVIDED_EMAIL));
 		clearUserFromServiceCaches(user.getId());
 	}
 
-	/**
-	 * WARNING: There seems to be NO easy way to reset the UserDirectoryService MemoryService-managed
-	 * cache, and so the only way currently to test for real DB storage is to have this line
-	 * in the "sakai.properties" file used for the test:
-	 *   cacheMinutes@org.sakaiproject.user.api.UserDirectoryService=0
-	 */
-	private void clearUserFromServiceCaches(String userId) {
-		((DbUserService)userDirectoryService).getIdEidCache().removeAll();
+	private void clearUserFromServiceCaches(String userId) throws SecurityException {
+		((DbUserService)userDirectoryService).getIdEidCache().clear();
 		String ref = "/user/" + userId;
 		threadLocalManager.set(ref, null);
+		// Clear all caches, as it's a test its easier todo this than
+		// set up thread to be a super user which is needed for the MemoryService.resetCachers()
+		eventTrackingService.post(eventTrackingService.newEvent("memory.reset", "", true));
 	}
 
 	public static class TestProvider implements UserDirectoryProvider {
@@ -173,7 +168,7 @@ public class RequireLocalAccountLegacyAuthenticationTest extends SakaiKernelTest
 			}
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public void getUsers(Collection users) {
 		}
 

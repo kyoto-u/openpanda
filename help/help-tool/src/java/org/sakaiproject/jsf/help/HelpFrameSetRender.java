@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.3/help-tool/src/java/org/sakaiproject/jsf/help/HelpFrameSetRender.java $
- * $Id: HelpFrameSetRender.java 117701 2012-12-14 14:29:21Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.0/help-tool/src/java/org/sakaiproject/jsf/help/HelpFrameSetRender.java $
+ * $Id: HelpFrameSetRender.java 308823 2014-04-25 19:26:52Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -49,7 +49,7 @@ import org.sakaiproject.util.ResourceLoader;
 
 /**
  * render help frame set 
- * @version $Id: HelpFrameSetRender.java 117701 2012-12-14 14:29:21Z ottenhoff@longsight.com $
+ * @version $Id: HelpFrameSetRender.java 308823 2014-04-25 19:26:52Z enietzel@anisakai.com $
  */
 public class HelpFrameSetRender extends Renderer
 {
@@ -101,7 +101,7 @@ public class HelpFrameSetRender extends Renderer
     
     writer.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" \"http://www.w3.org/TR/html4/frameset.dtd\">\n");
     writer.write("<html><head><title>" + helpWindowTitle + "</title></head>\n");
-    writer.write("<FRAMESET cols=\"30%, 70%\"><FRAMESET rows=\"250, 350\">");
+    writer.write("<FRAMESET cols=\"20%, 80%\"><FRAMESET rows=\"150, 450\">");
     writer.write("<FRAME src=\"" + searchToolUrl + "\" name=\"search\">");
     writer.write("<FRAME src=\"" + tocToolUrl + "\" name=\"toc\">");
     writer.write("</FRAMESET>\n");

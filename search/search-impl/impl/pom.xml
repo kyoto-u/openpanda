@@ -4,7 +4,7 @@
   <parent>
     <artifactId>search</artifactId>
     <groupId>org.sakaiproject.search</groupId>
-    <version>1.4.3</version>
+    <version>10.0</version><!-- ProjectVersion -->
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>search-impl</name>
@@ -14,29 +14,9 @@
 
     <profiles>
         <profile>
-            <id>1.5</id>
-            <activation>
-                <jdk>1.5</jdk>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.sakaiproject.search</groupId>
-                    <artifactId>search-test-1.5</artifactId>
-                    <version>${project.version}</version>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-            <properties>
-                <deploy.target />
-                <maven.test.jvmargs />
-                <poi.version>3.8</poi.version>
-                <lucene.version>2.9.4</lucene.version>
-                <bouncycastle.artifact.version>jdk15</bouncycastle.artifact.version>
-            </properties>
-        </profile>
-        <profile>
             <id>1.6</id>
             <activation>
+                <activeByDefault>true</activeByDefault>
                 <jdk>1.6</jdk>
             </activation>
             <dependencies>
@@ -49,7 +29,7 @@
             </dependencies>
             <properties>
                 <maven.test.jvmargs />
-                <poi.version>3.8</poi.version>
+                <poi.version>3.9</poi.version>
                 <lucene.version>2.9.4</lucene.version>
                 <bouncycastle.artifact.version>jdk16</bouncycastle.artifact.version>
             </properties>
@@ -57,19 +37,19 @@
         <profile>
             <id>1.7</id>
             <activation>
-                <jdk>1.7</jdk>
+                <jdk>[1.7,)</jdk>
             </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.sakaiproject.search</groupId>
-                    <artifactId>search-test-1.6</artifactId>
+                    <artifactId>search-test-1.7</artifactId>
                     <version>${project.version}</version>
                     <scope>test</scope>
                 </dependency>
             </dependencies>
             <properties>
                 <maven.test.jvmargs />
-                <poi.version>3.7</poi.version>
+                <poi.version>3.9</poi.version>
                 <lucene.version>2.9.4</lucene.version>
                 <bouncycastle.artifact.version>jdk16</bouncycastle.artifact.version>
             </properties>
@@ -140,11 +120,19 @@
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate</artifactId>
+      <artifactId>hibernate-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
@@ -162,18 +150,15 @@
       <groupId>org.sakaiproject.search</groupId>
       <artifactId>search-api</artifactId>
       <type>jar</type>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.search</groupId>
       <artifactId>search-model</artifactId>
-      <version>${project.version}</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.search</groupId>
       <artifactId>search-util</artifactId>
-      <version>${project.version}</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -206,7 +191,6 @@
     <dependency>
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>
-      <version>1.2.2</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -278,9 +262,14 @@
     transaction sequence code, hence derby
     -->
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
-      <version>10.8.1.2</version>
+      <version>10.8.2.2</version>
       <type>jar</type>
       <scope>test</scope>
     </dependency>

@@ -9,8 +9,8 @@
 
 <!-- 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/webapp/jsf/qti/importPool.jsp $
- * $Id: importPool.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/webapp/jsf/qti/importPool.jsp $
+ * $Id: importPool.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation

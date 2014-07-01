@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-impl/src/java/org/sakaiproject/util/foorm/Foorm.java $
- * $Id: Foorm.java 128457 2013-08-14 03:59:38Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/basiclti-impl/src/java/org/sakaiproject/util/foorm/Foorm.java $
+ * $Id: Foorm.java 307887 2014-04-07 16:17:24Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2011 The Sakai Foundation
@@ -28,6 +28,7 @@ import java.util.SortedMap;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import java.lang.Number;
 import java.sql.ResultSetMetaData;
 
 /**
@@ -432,8 +433,6 @@ public class Foorm {
 		sb.append(getI18N(label, loader));
 		sb.append("</h4>\n");
 		int val = 0;
-		if (value != null && value instanceof Integer)
-			val = ((Integer) value).intValue();
 		if (value != null && value instanceof Number)
 			val = ((Number) value).intValue();
 		if (value != null && value instanceof String) {
@@ -1027,7 +1026,6 @@ public class Foorm {
 				continue;
 
 			Object dataField = getField(parms, field);
-			// System.out.println("field="+field+" data="+dataField);
 			String sdf = null;
 			if (dataField instanceof String)
 				sdf = (String) dataField;
@@ -1066,9 +1064,9 @@ public class Foorm {
 				if (dataField == null) {
 					if (dataMap != null)
 						dataMap.put(field, null);
-				} else if (dataField instanceof Integer) {
-					if (dataMap != null)
-						dataMap.put(field, dataField);
+				} else if (dataField instanceof Number) {
+						if (dataMap != null)
+						    dataMap.put(field, ((Number) dataField).intValue());
 				} else {
 					try {
 						Integer ival = new Integer(sdf);
@@ -1159,6 +1157,27 @@ public class Foorm {
 	 * @return
 	 */
 	public String formSelect(String[] fieldinfo) {
+		return formSelect(null, fieldinfo, false);
+	}
+
+	/**
+	 * 
+	 * @param tableName
+	 * @param fieldinfo
+	 * @return
+	 */
+	public String formSelect(String tableName, String[] fieldinfo) {
+		return formSelect(tableName, fieldinfo, true);
+	}
+
+	/**
+	 * 
+	 * @param tableName
+	 * @param fieldinfo
+	 * @param doAS
+	 * @return
+	 */
+	public String formSelect(String tableName, String[] fieldinfo, boolean doAS) {
 		StringBuffer fields = new StringBuffer();
 		for (String line : fieldinfo) {
 			Properties info = parseFormString(line);
@@ -1173,7 +1192,15 @@ public class Foorm {
 			if (fields.length() > 0) {
 				fields.append(", ");
 			}
+			if ( tableName != null ) {
+				fields.append(tableName);
+				fields.append(".");
+			}
 			fields.append(field);
+			if ( doAS && tableName != null ) {
+				fields.append(" AS ");
+				fields.append(field);
+			}
 		}
 		return fields.toString();
 	}
@@ -1290,18 +1317,30 @@ public class Foorm {
 				throw new IllegalArgumentException(
 						"All model elements must include field name and type");
 			}
+			// always allow autodate fields
+			if ("autodate".equals(type))
+			{
+				ret.add(line);
+			}
+			// always allow the SITE_ID field
+			else if ("SITE_ID".equals(field))
+			{
+				ret.add(line);
+			}
 			// We always assume radio and checkbox may be allowed
-			if ("radio".equals(type) || "checkbox".equals(type) ) {
+			else if ("radio".equals(type) || "checkbox".equals(type) ) {
 				// Field = Always Off (0), Always On (1), or Delegate(2)
 				int value = getInt(getField(controlRow, field));
 				if ( value == 2 || ! isFieldSet(controlRow, field) ) ret.add(line);
-			//  For allowed fields, allow = 0ff (0) or On (1)
-			} else if ("true".equals(allowed) ) {
-				int value = getInt(getField(controlRow, "allow" + field));
-				if ( value == 1 || ! isFieldSet(controlRow, field) ) ret.add(line);
+			// When there is an allow field in the control row, check it
+			} else if ( isFieldSet(controlRow, "allow" + field) && ! "false".equals(allowed) ) {
+				Object allowRow = getField(controlRow, "allow" + field);
+				int value = getInt(allowRow);
+				if ( value == 1 ) ret.add(line);
 			} else {
 				ret.add(line);
 			}
+
 		}
 		return ret.toArray(new String[ret.size()]);
 	}
@@ -1384,6 +1423,16 @@ public class Foorm {
 		return "    " + field + " " + schema;
 	}
 
+	public String getFormField(String [] formDefinition, String fieldName)
+	{
+		for (String formField : formDefinition) {
+			Properties info = parseFormString(formField);
+			String field = info.getProperty("field", null);
+			if ( fieldName.equals(field) ) return formField;
+		}
+		return null;
+	}
+
 	/**
 	 * 
 	 * @param table
@@ -1446,7 +1495,7 @@ public class Foorm {
 				if ( ! NUMBER_TYPE.equals(sqlType) ) logger.severe(field+" must be Integer and Auto Increment");
 			} else if ("autodate".equals(type)) {
 			} else if ("url".equals(type) || "text".equals(type) || "textarea".equals(type)) {
-				if ( "oracle.sql.CLOB".equals(sqlType) ) continue;  // CLOBS large enough :)
+				if ( "oracle.sql.CLOB".equals(sqlType) || "oracle.jdbc.OracleClob".equals(sqlType) ) continue;  // CLOBS large enough :)
 				if ( ! STRING_TYPE.equals(sqlType)) {
 					logger.severe(field+" must be String field");
 					continue;
@@ -1527,11 +1576,9 @@ public class Foorm {
 	// to simplify casting
 	public static String getSuperType(String className)
 	{
-		// System.out.println("Incoming="+className);
 		try {
 			Class c = Class.forName(className);
 			while ( c != null ) {
-				// System.out.println("NNN="+c.getName());
 				if ( STRING_TYPE.equals(c.getName()) ) return STRING_TYPE;
 				if ( NUMBER_TYPE.equals(c.getName()) ) return NUMBER_TYPE;
 				c = c.getSuperclass();
@@ -1609,8 +1656,8 @@ public class Foorm {
 		} else if ("oracle".equals(vendor)) {
 			if (startRec > endRec)
 				return null;
-			String retval = "select * from ( select a.*, ROWNUM rnum from ( " + sqlIn
-				+ " ) a where rownum <= " + (endRec + 1) + " ) where rnum >= " + (startRec + 1);
+			String retval = "select * from ( select a.*, ROWNUM foorm_rnum from ( " + sqlIn
+				+ " ) a where ROWNUM <= " + (endRec + 1) + " ) where foorm_rnum >= " + (startRec + 1);
 			return retval;
 		} else { // MySql for sure
 			if (startRec > endRec)

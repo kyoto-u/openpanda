@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,17 +28,22 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.sakaiproject.springframework.orm.hibernate.AdditionalHibernateMappings;
-import org.sakaiproject.springframework.orm.hibernate.cover.VendorHbmTransformer;
+import org.sakaiproject.springframework.orm.hibernate.VendorHbmTransformer;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-public class AdditionalHibernateMappingsImpl implements AdditionalHibernateMappings, Comparable
+public class AdditionalHibernateMappingsImpl implements AdditionalHibernateMappings, Comparable, ApplicationContextAware
 {
 	protected final transient Log logger = LogFactory.getLog(getClass());
 
 	private Resource[] mappingLocations;
 
 	private Integer sortOrder = Integer.valueOf(Integer.MAX_VALUE);
+
+	private static VendorHbmTransformer vendorHbmTrasformer;
 
     public void setMappingResources(String[] mappingResources)
 	{
@@ -59,8 +64,17 @@ public class AdditionalHibernateMappingsImpl implements AdditionalHibernateMappi
 		for (int i = 0; i < this.mappingLocations.length; i++)
 		{
 			try {
-            logger.info("Loading hbm: " + mappingLocations[i]);
-            config.addInputStream(VendorHbmTransformer.getTransformedMapping(this.mappingLocations[i].getInputStream()));
+				logger.info("Loading hbm: " + mappingLocations[i]);
+				if (config == null) {
+					logger.warn("config is null!");
+					return;
+				}
+				if (vendorHbmTrasformer == null) {
+					logger.warn("vendor is null!");
+					return;
+				}
+
+				config.addInputStream(vendorHbmTrasformer.getTransformedMapping(this.mappingLocations[i].getInputStream()));
 			} catch (MappingException me) {
 				throw new MappingException("Failed to load "+ this.mappingLocations[i], me);
 			}
@@ -80,6 +94,14 @@ public class AdditionalHibernateMappingsImpl implements AdditionalHibernateMappi
 	public void setSortOrder(Integer sortOrder)
 	{
 		this.sortOrder = sortOrder;
+	}
+
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		// We do this so that we don't have to start the Sakai component manager.
+		vendorHbmTrasformer = (VendorHbmTransformer) applicationContext
+				.getBean(org.sakaiproject.springframework.orm.hibernate.VendorHbmTransformer.class
+						.getName());
 	}
 
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/services/qti/QTIService.java $
- * $Id: QTIService.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-cp/src/java/org/sakaiproject/tool/assessment/contentpackaging/ManifestGenerator.java $
+ * $Id: ManifestGenerator.java 110693 2012-07-24 23:27:54Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,8 @@
 package org.sakaiproject.tool.assessment.contentpackaging;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -66,7 +68,7 @@ import org.sakaiproject.content.api.ContentHostingService;
  * Copyright: Copyright (c) 2007 Sakai
  * </p>
  * 
- * @version $Id: ManifestGenerator 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * @version $Id: ManifestGenerator.java 110693 2012-07-24 23:27:54Z ktsao@stanford.edu $
  */
 
 public class ManifestGenerator {
@@ -334,6 +336,13 @@ public class ManifestGenerator {
 						src = splittedString[i].substring(srcStartIndex + 5,
 								srcEndIndex);
 						
+						try {
+							src = URLDecoder.decode(src, "UTF-8");
+						} catch (UnsupportedEncodingException e) {
+							log.error(e.getMessage());
+							e.printStackTrace();
+						}
+							
 						if (src.indexOf(siteCollection) > -1) {
 							resourceId = src.replace(prependString, "");
 							content = contentHostingService.getResource(resourceId).getContent();

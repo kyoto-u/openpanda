@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -67,6 +67,8 @@ public interface PrivateMessageManager {
     
     public void markMessageAsUnreadForUser(final PrivateMessage message);
     public void markMessageAsUnreadForUser(final PrivateMessage message, final String contextId);
+    
+    public void markMessageAsRepliedForUser(final PrivateMessage message);
     
     public List getMessagesByType(final String typeUuid, final String orderField,
         final String order);

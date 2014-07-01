@@ -9,7 +9,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-$Id: gradeStudentResult.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+$Id: gradeStudentResult.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -48,7 +48,7 @@ $Id: gradeStudentResult.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
     <samigo:script path="/jsf/widget/hideDivision/hideDivision.js" />
 
       </head>
-  <body onload="hideUnhideAllDivsExceptFirst('none');;<%= request.getAttribute("html.body.onload") %>">
+  <body onload="<%= request.getAttribute("html.body.onload") %>">
 <!-- $Id:  -->
 <!-- content... -->
 <script type="text/javascript">
@@ -76,34 +76,35 @@ function toPoint(id)
     <h:outputText value="#{studentScores.studentName}" rendered="#{totalScores.anonymous eq 'false'}"/>
     <h:outputText value="#{evaluationMessages.submission_id}#{deliveryMessages.column} #{studentScores.assessmentGradingId}" rendered="#{totalScores.anonymous eq 'true'}"/>
   </h3>
-  <p class="navViewAction">
+  <h:outputText value="<ul class='navIntraTool actionToolbar' role='menu'>" escape="false"/>
+   <h:outputText value="<li role='menuitem'><span>" escape="false"/>
     <h:commandLink title="#{evaluationMessages.t_submissionStatus}" action="submissionStatus" immediate="true">
       <h:outputText value="#{evaluationMessages.sub_status}" />
       <f:param name="allSubmissions" value="true"/>
       <f:actionListener
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.SubmissionStatusListener" />
     </h:commandLink>
-    <h:outputText value=" #{evaluationMessages.separator} " />
+    <h:outputText value="</span><li role='menuitem'><span>" escape="false"/>
     <h:commandLink title="#{evaluationMessages.t_totalScores}" action="totalScores" immediate="true">
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.ResetTotalScoreListener" />
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
       <h:outputText value="#{commonMessages.total_scores}" />
     </h:commandLink>
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne ''}"  />
+    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne ''}" />
     <h:commandLink title="#{evaluationMessages.t_questionScores}" action="questionScores" immediate="true"
       rendered="#{totalScores.firstItem ne ''}" >
       <h:outputText value="#{evaluationMessages.q_view}" />
       <f:actionListener
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScoreListener" />
     </h:commandLink>
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}"  />
+    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" /> 
     <h:commandLink title="#{evaluationMessages.t_histogram}" action="histogramScores" immediate="true"
       rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" >
       <h:outputText value="#{evaluationMessages.stat_view}" />
       <f:actionListener
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.HistogramListener" />
     </h:commandLink>
-  </p>
+   <h:outputText value="</span></li></ul>" escape="false"/>
 
   <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
 
@@ -146,7 +147,7 @@ function toPoint(id)
 
 
 <div class="tier2">
-  <h:dataTable value="#{delivery.pageContents.partsContents}" var="part">
+  <h:dataTable value="#{delivery.pageContents.partsContents}" var="part" width="100%" border="0">
     <h:column>
       <f:verbatim><h4 class="tier1"></f:verbatim>
       <h:outputText value="#{deliveryMessages.p} #{part.number} #{deliveryMessages.of} #{part.numParts}" />
@@ -161,7 +162,7 @@ function toPoint(id)
       <f:verbatim></div></f:verbatim>
 
       <h:dataTable value="#{part.itemContents}" columnClasses="tier2"
-          var="question" border="0">
+          var="question" border="0" width="100%">
         <h:column>
           <h:outputText value="<a name=\"" escape="false" />
           <h:outputText value="#{part.number}_#{question.number}\"></a>"
@@ -212,6 +213,12 @@ function toPoint(id)
               </f:subview>
             </h:panelGroup>
 
+            <h:panelGroup rendered="#{question.itemData.typeId == 15}"><!-- // CALCULATED_QUESTION -->
+              <f:subview id="deliverCalculatedQuestion">
+                <%@ include file="/jsf/delivery/item/deliverCalculatedQuestion.jsp" %>
+              </f:subview>
+            </h:panelGroup>
+
             <h:panelGroup
               rendered="#{question.itemData.typeId == 1 || question.itemData.typeId == 12 || question.itemData.typeId == 3}">
               <f:subview id="deliverMultipleChoiceSingleCorrect">
@@ -236,6 +243,13 @@ function toPoint(id)
                 <%@ include file="/jsf/delivery/item/deliverTrueFalse.jsp" %>
               </f:subview>
             </h:panelGroup>
+            
+            <h:panelGroup rendered="#{question.itemData.typeId == 14}">
+              <f:subview id="deliverExtendedMatchingItems">
+                <%@ include file="/jsf/delivery/item/deliverExtendedMatchingItems.jsp" %>
+              </f:subview>
+            </h:panelGroup>
+            
             <h:panelGroup rendered="#{question.itemData.typeId == 13}">
               <f:subview id="deliverMatrixChoicesSurvey">
                 <%@ include file="/jsf/delivery/item/deliverMatrixChoicesSurvey.jsp" %>

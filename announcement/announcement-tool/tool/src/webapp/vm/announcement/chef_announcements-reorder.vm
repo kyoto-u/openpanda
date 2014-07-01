@@ -16,13 +16,12 @@
 	#end
 	<h3>$tlang.getString("reorder.title")</h3>
  	
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
+	#if ($alertMessage)<div class="alertMessage">$tlang.getFormattedMessage("gen.alert.message", $alertMessage)</div><div class="clear"></div>#end
 	<div class="navPanel">
 			<span class="instruction">
 				$tlang.getString('reorder.instruction.general')
 				<span id="inputFieldMessage" style="display:none">$tlang.getString('reorder.instruction.input')</span>
 				<span id="inputKbdMessage" class="skip">$tlang.getString('reorder.instruction.general.hidden')</span>
-				$tlang.getString('reorder.instruction.special')
 			</span>
 			<br /><br />
 	</div> ##end navPanel

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/webapp/scripts/asyncload.js $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/webapp/scripts/asyncload.js $
  * $Id: asyncload.js 34198 2007-08-21 11:15:17Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

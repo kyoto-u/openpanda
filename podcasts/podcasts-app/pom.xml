@@ -4,7 +4,7 @@
   <parent>
     <artifactId>podcasts-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>sakai-podcasts</name>
@@ -23,7 +23,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
+      <artifactId>spring-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
@@ -54,6 +54,35 @@
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-dav-common</artifactId>
     </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+    </dependency> 
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.entitybroker</groupId>
+      <artifactId>entitybroker-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.entitybroker</groupId>
+      <artifactId>entitybroker-utils</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    
   </dependencies>
 <!-- needed so it will compile the java files,
 		process the properties bundles,

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.3/syllabus-hbm/src/java/org/sakaiproject/component/app/syllabus/SyllabusDataImpl.java $
- * $Id: SyllabusDataImpl.java 59687 2009-04-03 23:44:40Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.0/syllabus-hbm/src/java/org/sakaiproject/component/app/syllabus/SyllabusDataImpl.java $
+ * $Id: SyllabusDataImpl.java 122076 2013-04-02 19:35:27Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@
  **********************************************************************************/
 package org.sakaiproject.component.app.syllabus;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -47,6 +48,11 @@ public class SyllabusDataImpl implements SyllabusData, Comparable
   private String status;
   private String emailNotification;
   private Set attachments = new TreeSet();
+  private Date startDate;
+  private Date endDate;
+  private Boolean linkCalendar = Boolean.FALSE;
+  private String calendarEventIdStartDate;
+  private String calendarEventIdEndDate;
   
   /**
    * @return Returns the emailNotification.
@@ -246,5 +252,49 @@ public class SyllabusDataImpl implements SyllabusData, Comparable
   public int compareTo(Object obj)
   {
     return this.position.compareTo(((SyllabusData) obj).getPosition());  
+  }
+  @Override
+  public Date getStartDate() {
+	  return startDate;
+  }
+  @Override
+  public void setStartDate(Date startDate) {
+	  this.startDate = startDate;
+  }
+  @Override
+  public Date getEndDate() {
+	  return endDate;
+  }
+  @Override
+  public void setEndDate(Date endDate) {
+	  this.endDate = endDate;
+  }
+  @Override
+  public Boolean getLinkCalendar() {
+	  return isLinkCalendar();
+  }
+  @Override
+  public Boolean isLinkCalendar() {
+	  if(linkCalendar == null){
+		  linkCalendar = Boolean.FALSE;
+	  }
+	  return linkCalendar;
+  }
+  @Override
+  public void setLinkCalendar(Boolean linkCalendar) {
+	  this.linkCalendar = linkCalendar;
+  }
+
+  public String getCalendarEventIdStartDate() {
+	  return calendarEventIdStartDate;
+  }
+  public void setCalendarEventIdStartDate(String calendarEventIdStartDate) {
+	  this.calendarEventIdStartDate = calendarEventIdStartDate;
+  }
+  public String getCalendarEventIdEndDate() {
+	  return calendarEventIdEndDate;
+  }
+  public void setCalendarEventIdEndDate(String calendarEventIdEndDate) {
+	  this.calendarEventIdEndDate = calendarEventIdEndDate;
   }
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/component/impl/BasicConfigurationService.java $
- * $Id: BasicConfigurationService.java 122992 2013-04-18 17:35:55Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/component/impl/BasicConfigurationService.java $
+ * $Id: BasicConfigurationService.java 309232 2014-05-06 20:01:53Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,6 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -94,6 +95,15 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
     /** loaded tool orders - map keyed by category of List of tool id strings. */
     private Map m_toolOrders = new HashMap();
 
+
+    private Map m_toolGroups = new HashMap<String,List>(); // Map = [group1,{tool1,tool2,tool3}],[group2,{tool2,tool4}],[group3,{tool1,tool5}]
+
+    private Map m_toolGroupCategories = new HashMap<String,List>(); // Map = [course,{group1, group2,group3}],[project,{group1, group3, group4}],[portfolio,{group4}]
+
+    private Map m_toolGroupRequired = new HashMap<String,List>();
+
+    private Map m_toolGroupSelected = new HashMap<String,List>();
+
     /** required tools - map keyed by category of List of tool id strings. */
     private Map m_toolsRequired = new HashMap();
 
@@ -118,12 +128,12 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
      *********************************************************************************************************************************************************************************************************************************************************/
 
     /**
-     * @return the ThreadLocalManager collaborator.
+     * the ThreadLocalManager collaborator.
      */
     private ThreadLocalManager threadLocalManager;
 
     /**
-     * @return the SessionManager collaborator.
+     * the SessionManager collaborator.
      */
     private SessionManager sessionManager;
 
@@ -151,7 +161,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
     private ApplicationContext applicationContext;
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-    };
+    }
 
     /**
      * Final initialization, once all dependencies are set.
@@ -162,10 +172,10 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
         this.rawProperties = sakaiProperties.getRawProperties();
 
         // populate the security keys set
-        this.secureConfigurationKeys.add("password@javax.sql.BaseDataSource");
         String securedKeys = getRawProperty("config.secured.key.names");
         if (securedKeys != null) {
             String[] keys = securedKeys.split(",");
+            //noinspection ForLoopReplaceableByForEach
             for (int i = 0; i < keys.length; i++) {
                 String key = StringUtils.trimToNull(keys[i]);
                 if (key != null) {
@@ -174,6 +184,8 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
             }
         }
         M_log.info("Configured "+this.secureConfigurationKeys.size()+" secured key names: "+this.secureConfigurationKeys);
+	// always add "password@javax.sql.BaseDataSource"
+        this.secureConfigurationKeys.add("password@javax.sql.BaseDataSource");
 
         // load up some things that are not part of the config but are used by it
         this.addConfigItem(new ConfigItemImpl("sakai.home", this.getSakaiHomePath()), "SCS");
@@ -183,8 +195,15 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
         // put all the properties into the configuration map
         Map<String, Properties> allSakaiProps = sakaiProperties.getSeparateProperties();
         for (Entry<String, Properties> entry : allSakaiProps.entrySet()) {
+        	// all properties from security.properties should be secured
+        	if ("security.properties".equalsIgnoreCase(entry.getKey())) {
+        		for (String securedKey : entry.getValue().stringPropertyNames()) {
+					this.secureConfigurationKeys.add(securedKey);
+				}
+        	}
             this.addProperties(entry.getValue(), entry.getKey());
         }
+        M_log.info("Configured "+this.secureConfigurationKeys.size()+" secured keys from all sources");
         M_log.info("Loaded "+configurationItems.size()+" config items from all initial sources");
 
         if (this.getBoolean("config.dereference.on.load.initial", true)) {
@@ -231,6 +250,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
         // load in the tool order, if specified, from the sakai home area
         if (toolOrderFile != null)
         {
+            boolean useToolGroups = getConfig("config.sitemanage.useToolGroup", false);
             File f = new File(toolOrderFile);
             if (f.exists())
             {
@@ -238,7 +258,10 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
                 try
                 {
                     fis = new FileInputStream(f);
-                    loadToolOrder(fis);
+                    if ( ! useToolGroups )  // default, legacy toolOrder.xml format
+                       loadToolOrder(fis);
+                    else                    // optional format with tool groups
+                       loadToolGroups(fis); 
                 }
                 catch (Exception t)
                 {
@@ -259,7 +282,10 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
                 // start with the distributed defaults from the classpath
                 try
                 {
-                    loadToolOrder(defaultToolOrderResource.getInputStream());
+                    if ( ! useToolGroups )  // default, legacy toolOrder.xml format
+                       loadToolOrder(defaultToolOrderResource.getInputStream());
+                    else                    // optional format with tool groups
+                       loadToolGroups(defaultToolOrderResource.getInputStream());
                 }
                 catch (Exception t)
                 {
@@ -378,6 +404,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
         //set in sakai.properties
         String rv = getConfig("portalPath", "/portal"); //(String) properties.get("portalPath");
 
+        @SuppressWarnings("UnnecessaryLocalVariable")
         String portalUrl = getServerUrl() + rv;
 
         return portalUrl;
@@ -513,6 +540,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
                 value = StringUtils.trimToNull(ci.getValue().toString());
             } else {
                 // if the default value is set then we will return that instead
+                //noinspection StatementWithEmptyBody
                 if (ci.getDefaultValue() != null) {
                     value = StringUtils.trimToNull(ci.getDefaultValue().toString());
                 } else {
@@ -634,8 +662,11 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
     public String[] getStrings(String name) {
         String[] rv = null;
         // get the count
-        int count = getInt(name + ".count", 0);
-        if (count > 0) {
+        int count = getInt(name + ".count", -1);
+        if (count == 0) {
+            // zero count means empty array
+            rv = new String[0];
+        } else if (count > 0) {
             rv = new String[count];
             for (int i = 1; i <= count; i++)
             {
@@ -672,7 +703,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
     {
         String value = getString(name);
 
-        if (value.length() == 0) return dflt;
+        if (StringUtils.isEmpty(value)) return dflt;
 
         return Integer.parseInt(value);
     }
@@ -684,10 +715,45 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
     {
         String value = getString(name);
 
-        if (value.length() == 0) return dflt;
+        if (StringUtils.isEmpty(value)) return dflt;
 
-        return Boolean.valueOf(value).booleanValue();
+        return Boolean.valueOf(value);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List getToolGroup(String groupName) 
+    {
+    	if (groupName != null)
+    	{
+    		List groups = (List) m_toolGroups.get(groupName);
+    		if (groups != null)
+    		{
+    			M_log.debug("getToolGroup: " + groups.toString());
+    			return groups;
+    		}
+    	}
+    	return new Vector();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List getCategoryGroups(String category) 
+    {
+    	if (category != null)
+    	{
+    		List groups = (List) m_toolGroupCategories.get(category);
+    		if (groups != null)
+    		{
+    			M_log.debug("getCategoryGroups: " + groups.toString());
+    			return groups;
+    		}
+    	}
+    	return new Vector();
+    }
+
 
     /**
      * {@inheritDoc}
@@ -791,6 +857,115 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
         return new HashMap();
     }
 
+    /*
+     * Load tools by group, from toolOrder.xml file with optional groups defined
+     */
+    private void loadToolGroups(InputStream in)
+    {
+       Document doc = Xml.readDocumentFromStream(in);
+       Element root = doc.getDocumentElement();
+       if (!root.getTagName().equals("toolGroups"))
+       {
+           M_log.info("loadToolGroups: invalid root element (expecting \"toolGroups\"): " + root.getTagName());
+           return;
+       }
+ 
+       NodeList groupNodes = root.getElementsByTagName("group");
+       if (groupNodes != null) {
+           for (int k = 0; k < groupNodes.getLength(); k++) {
+              Node g_node = groupNodes.item(k);
+              if (g_node.getNodeType() != Node.ELEMENT_NODE) continue;
+              Element g_element = (Element) g_node;
+              String groupName = StringUtils.trimToNull(g_element.getAttribute("name"));
+              //
+              if ((groupName != null) ) {
+                 // group of this name already in map?
+                 List groupList = (List) m_toolGroups.get(groupName);
+                 if (groupList == null) {
+                    groupList = new Vector();
+                    m_toolGroups.put(groupName, groupList);
+                 }
+                 // add tools
+                 NodeList tools = g_element.getElementsByTagName("tool");
+                 final int toolCount = tools.getLength();
+                 for (int j = 0; j < toolCount; j++) {
+                    Element toolElement = (Element) tools.item(j);
+                    // add this tool
+                    String toolId = toolElement.getAttribute("id");
+                    groupList.add(toolId);
+                    String req = StringUtils.trimToNull(toolElement.getAttribute("required"));
+                    if ((req != null) && (Boolean.TRUE.toString().equalsIgnoreCase(req)))
+                    {
+                       List reqList = (List) m_toolGroupRequired.get(groupName);
+                       if (reqList==null) {
+                          reqList = new ArrayList<String>();
+                          m_toolGroupRequired.put(groupName,reqList);
+                       }
+                       reqList.add(toolId);
+                    }
+                    String sel = StringUtils.trimToNull(toolElement.getAttribute("selected"));
+                    if ((sel != null) && (Boolean.TRUE.toString().equalsIgnoreCase(sel)))
+                    {
+                       List selList = (List) m_toolGroupSelected.get(groupName);
+                       if (selList==null) {
+                          selList = new ArrayList<String>();
+                          m_toolGroupSelected.put(groupName,selList);
+                       }
+                       selList.add(toolId);
+                    }
+                 }
+                 // add group to category(s)
+                 String groupCategories = StringUtils.trimToNull(g_element.getAttribute("category"));
+                 if (groupCategories != null) {
+                     List<String> list = new ArrayList<String>(Arrays.asList(groupCategories.split(",")));
+                     //noinspection ForLoopReplaceableByForEach
+                     for(Iterator<String> itr = list.iterator(); itr.hasNext();) {
+                       String catName = itr.next();
+                       List groupCategoryList = (List) m_toolGroupCategories.get(catName);
+                       if (groupCategoryList==null) {
+                          groupCategoryList = new ArrayList();
+                          m_toolGroupCategories.put(catName,groupCategoryList);
+                       }
+                       groupCategoryList.add(groupName);
+                    }
+                 }
+              }
+           }
+        }
+     }
+ 
+    /*
+     * Returns true if selected tool is contained in pre-initialized list of selected items
+     * @parms toolId id of the selected tool
+     */
+    public boolean toolGroupIsSelected(String groupName, String toolId) 
+    {
+        List selList = (List) m_toolGroupRequired.get(groupName);
+        if (selList == null) {
+            return false;
+        } 
+        else {
+            int result =  selList.indexOf(toolId);
+            return result >= 0;
+        }
+    }
+
+    /*
+     * Returns true if selected tool is contained in pre-initialized list of required items
+     * @parms toolId id of the selected tool
+     */
+    public boolean toolGroupIsRequired(String groupName, String toolId) 
+    {
+        List reqList = (List) m_toolGroupRequired.get(groupName);
+        if (reqList == null) {
+            return false;
+        } 
+        else {
+            int result = reqList.indexOf(toolId);
+             return result >= 0;
+        }
+    }
+
     /**
      * Load this single file as a registration file, loading tools and locks.
      * 
@@ -866,7 +1041,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
             }
         }
     }
-
+    
     private void processCategory(Element element, List order, List required,
             List defaultTools, List<String> toolCategories,
             Map<String, List<String>> toolCategoryMappings, 
@@ -942,6 +1117,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
         localesSet.add(Locale.getDefault());
         if (!ArrayUtils.isEmpty(locales)) {
             // convert from strings to Locales
+            //noinspection ForLoopReplaceableByForEach
             for (int i = 0; i < locales.length; i++) {
                 localesSet.add(getLocaleFromString(locales[i]));
             }
@@ -967,13 +1143,14 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
          *        (obj1 charge is less than, equal to, or greater than the obj2 charge)
          */
         public int compare(Locale localeOne, Locale localeTwo) {
-            String displayNameOne = localeOne.getDisplayName();
-            String displayNameTwo = localeTwo.getDisplayName();
+            String displayNameOne = localeOne.getDisplayName(localeOne).toLowerCase();
+            String displayNameTwo = localeTwo.getDisplayName(localeTwo).toLowerCase();
             return displayNameOne.compareTo(displayNameTwo);
         }
 
         @Override
         public boolean equals(Object obj) {
+            //noinspection SimplifiableIfStatement
             if (obj instanceof LocaleComparator) {
                 return super.equals(obj);
             } else {
@@ -1097,6 +1274,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
                     if (listener != null) {
                         try {
                             ConfigItem rvci = listener.changing(currentCI, configItem);
+                            //noinspection StatementWithEmptyBody
                             if (rvci == null) {
                                 // continue
                             } else if (rvci instanceof BlockingConfigItem) {
@@ -1119,11 +1297,13 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
 
             if (!haltProcessing) {
                 // update the config item
+                boolean changed = false;
                 if (currentCI != null) {
                     // update it
                     if (!SOURCE_GET_STRINGS.equals(source)) {
                         // only update if the source is not the getStrings() method
                         currentCI.changed(configItem.getValue(), source);
+                        changed = true;
                         if (!currentCI.isRegistered() && configItem.isRegistered()) {
                             // need to force items which are not yet registered to be registered
                             currentCI.registered = true;
@@ -1138,22 +1318,25 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
                     }
                     configurationItems.put(configItem.getName(), configItem);
                     ci = configItem;
+                    changed = true;
                 }
 
-                // notify the after listeners
-                if (this.listeners != null && !this.listeners.isEmpty()) {
-                    for (Entry<String, WeakReference<ConfigurationListener>> entry : this.listeners.entrySet()) {
-                        // check if any listener refs are no longer valid
-                        ConfigurationListener listener = entry.getValue().get();
-                        if (listener != null) {
-                            try {
-                                listener.changed(ci, currentCI);
-                            } catch (Exception e) {
-                                M_log.warn("Exception when calling listener ("+listener+"): "+e);
+                // notify the after listeners (only if something changed)
+                if (changed) {
+                    if (this.listeners != null && !this.listeners.isEmpty()) {
+                        for (Entry<String, WeakReference<ConfigurationListener>> entry : this.listeners.entrySet()) {
+                            // check if any listener refs are no longer valid
+                            ConfigurationListener listener = entry.getValue().get();
+                            if (listener != null) {
+                                try {
+                                    listener.changed(ci, currentCI);
+                                } catch (Exception e) {
+                                    M_log.warn("Exception when calling listener ("+listener+"): "+e);
+                                }
+                            } else {
+                                // cleanup bad listener ref
+                                this.listeners.remove(entry.getKey());
                             }
-                        } else {
-                            // cleanup bad listener ref
-                            this.listeners.remove(entry.getKey());
                         }
                     }
                 }
@@ -1183,7 +1366,10 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
             } else {
                 // update the access log
                 ci.requested();
-                if (defaultValue != null) {
+                // https://jira.sakaiproject.org/browse/KNL-1130 - assume string has no default in cases where it is "" or null
+                if (ServerConfigurationService.TYPE_STRING.equals(ci.type)) {
+                    ci.defaulted = !(defaultValue == null || "".equals(defaultValue));
+                } else if (defaultValue != null) {
                     ci.defaulted = true;
                 }
                 if (!ci.isRegistered()) {
@@ -1199,7 +1385,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
      * @see org.sakaiproject.component.api.ServerConfigurationService#getConfig(java.lang.String, java.lang.Object)
      */
     public <T> T getConfig(String name, T defaultValue) {
-        T returnValue = defaultValue;
+        T returnValue;
         Object value = null;
         ConfigItem ci = configurationItems.get(name);
         if (ci != null && ci.getValue() != null) {
@@ -1216,7 +1402,7 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
                 int intValue = this.getInt(name, num);
                 returnValue = (T) Integer.valueOf(intValue);
             } else if (defaultValue instanceof Boolean) {
-                boolean bool = ((Boolean) defaultValue).booleanValue();
+                boolean bool = (Boolean) defaultValue;
                 boolean boolValue = this.getBoolean(name, bool);
                 returnValue = (T) Boolean.valueOf(boolValue);
             } else if (defaultValue instanceof String) {

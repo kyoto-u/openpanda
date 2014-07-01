@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.3/tool/src/java/org/sakaiproject/cheftool/menu/MenuEntry.java $
- * $Id: MenuEntry.java 116679 2012-11-21 16:27:45Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/sakai-10.0/tool/src/java/org/sakaiproject/cheftool/menu/MenuEntry.java $
+ * $Id: MenuEntry.java 110974 2012-08-01 23:15:56Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

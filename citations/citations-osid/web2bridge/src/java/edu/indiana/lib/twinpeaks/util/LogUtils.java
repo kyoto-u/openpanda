@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -97,9 +97,9 @@ public class LogUtils {
 
 		Log log = LogUtils.getLog(LogUtils.class);
 
-		log.debug("Debug");
-		log.error("Error");
-		log.warn("Warn");
-		log.info("Info");
+		//		log.debug("Debug");
+		//		log.error("Error");
+		//		log.warn("Warn");
+		//		log.info("Info");
 	}
 }

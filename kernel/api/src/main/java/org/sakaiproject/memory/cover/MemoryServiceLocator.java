@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/memory/cover/MemoryServiceLocator.java $
- * $Id: MemoryServiceLocator.java 74613 2010-03-15 08:12:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/memory/cover/MemoryServiceLocator.java $
+ * $Id: MemoryServiceLocator.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,8 +28,8 @@ import org.sakaiproject.component.cover.ComponentManager;
  * MemoryService is a static Cover for the {@link org.sakaiproject.memory.api.MemoryService MemoryService}; see that interface for usage details.
  * </p>
  * 
- * @deprecated Static covers should not be used in favour of injection or lookup
- * via the component manager. This cover will be removed in a later version of the Kernel
+ * NOTE: Static covers should not be used in favour of injection or lookup via the component manager.
+ * This cover should NEVER be used in the Kernel (only by tools outside the kernel)
  */
 public class MemoryServiceLocator
 {
@@ -42,18 +42,20 @@ public class MemoryServiceLocator
 	 */
 	public static org.sakaiproject.memory.api.MemoryService getInstance()
 	{
+		org.sakaiproject.memory.api.MemoryService memoryService;
 		if (ComponentManager.CACHE_COMPONENTS)
 		{
 			if (m_instance == null)
 				m_instance = (org.sakaiproject.memory.api.MemoryService) ComponentManager
 						.get(org.sakaiproject.memory.api.MemoryService.class);
-			return m_instance;
+			memoryService = m_instance;
 		}
 		else
 		{
-			return (org.sakaiproject.memory.api.MemoryService) ComponentManager
+			memoryService = (org.sakaiproject.memory.api.MemoryService) ComponentManager
 					.get(org.sakaiproject.memory.api.MemoryService.class);
 		}
+		return memoryService;
 	}
 
 }

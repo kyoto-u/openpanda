@@ -23,6 +23,12 @@
 
 package org.sakaiproject.lessonbuildertool;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.json.simple.JSONObject;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
+
 /**
  * This is a single item on a simple page.
  * 
@@ -32,6 +38,9 @@ package org.sakaiproject.lessonbuildertool;
  * write "", Oracle will read it as null, but our code expects it to come back as "".
  * Note that this code is called both to construct new items in our code and by hibernate
  * to build an object when reading from the database.
+ * 
+ * NOTE: Please don't add any more fields to this class.  Instead, take a look at
+ * the SimplePageItemAttribute system we have set up.
  *
  * @author jeney
  * 
@@ -48,6 +57,9 @@ public class SimplePageItemImpl implements SimplePageItem  {
 	public static final int FORUM = 8;
 	public static final int COMMENTS = 9;
 	public static final int STUDENT_CONTENT = 10;
+	public static final int QUESTION = 11;
+    public static final int BLTI = 12;
+    public static final int PEEREVAL = 13;
 
     // must agree with definition in hbm file
 	public static final int MAXNAME = 100;
@@ -91,9 +103,23 @@ public class SimplePageItemImpl implements SimplePageItem  {
 	private String altGradebook;
 	private Integer altPoints;
 	private String altGradebookTitle;
+	private boolean groupOwned = false;
+	private String ownerGroups = null;
 	
-	public SimplePageItemImpl() {
+	private boolean showPeerEval = false;
+	
+	/* All future fields should be added as attributes instead of
+	 * additional columns. This is actually a JSONObject, but we can't
+	 * refer to that here. In practice values are normally strings but
+	 * can be JSON objects.
+	 */
+	private Map<String, Object> attributes;
+	
+        private static SimplePageToolDao simplePageToolDao = null;
 
+	public SimplePageItemImpl() {
+		if (simplePageToolDao != null)
+		    attributes = simplePageToolDao.newJSONObject();
 	}
 
 	public SimplePageItemImpl(long id, long pageId, int sequence, int type, String sakaiId, String name) {
@@ -117,6 +143,10 @@ public class SimplePageItemImpl implements SimplePageItem  {
 		required = false;
 		requirementText = "";
 		sameWindow = false;  // old entries have to default to off
+		groupOwned = false;
+		ownerGroups = "";
+		if (simplePageToolDao != null)
+		    attributes = simplePageToolDao.newJSONObject();
 	}
 
 	public SimplePageItemImpl(long pageId, int sequence, int type, String sakaiId, String name) {
@@ -139,6 +169,10 @@ public class SimplePageItemImpl implements SimplePageItem  {
 		required = false;
 		requirementText = "";
 		sameWindow = false;  // old entries have to default to off
+		groupOwned = false;
+		ownerGroups = "";
+		if (simplePageToolDao != null)
+		    attributes = simplePageToolDao.newJSONObject();
 	}
 
 	private String maxlength(String s, int maxlen) {
@@ -470,7 +504,85 @@ public class SimplePageItemImpl implements SimplePageItem  {
 		this.altGradebookTitle = gradebookTitle;
 	}
     
-    public String getAltGradebookTitle() {
-    	return altGradebookTitle;
-    }
+	public String getAltGradebookTitle() {
+	    return altGradebookTitle;
+	}
+
+	public boolean isGroupOwned() {
+	    return groupOwned;
+	}
+
+	public void setGroupOwned(Boolean o) {
+	    if(o == null)
+		o = false;
+	    groupOwned = o;
+	}
+
+	public String getOwnerGroups() {
+	    return ownerGroups;
+	}
+
+	public void setOwnerGroups(String s) {
+	    ownerGroups = s;
+	}
+	
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+	
+	public void setAttributes(Map<String, Object> map) {
+		attributes = map;
+	}
+
+	/* This is the getter I want everyone else to use for attributes. */
+	public String getAttribute(String attr) {
+	    return (String)attributes.get(attr);
+	}
+	
+	public void setAttribute(String attr, String value) {
+	    attributes.put(attr, value);
+	}
+
+	public Object getJsonAttribute(String attr) {
+		return attributes.get(attr);
+	}
+	
+        public void setJsonAttribute(String attr, Object value) {
+		attributes.put(attr, value);
+	}
+
+    // JSON operations are put through the Dao because this code is in shared, and we have no way
+    // to add the JSON jar file to shared. This has to be in shared so other people can use it.
+    // setting simplePageToolDao has a possible race condition, but it's very unlikely, and even if
+    // it happens, both threads will be setting the same value.
+
+        public String getAttributeString() {
+	    if (attributes != null)
+		return attributes.toString();
+	    else
+		return null;
+	}
+
+        public void setAttributeString(String s) {
+	    if (simplePageToolDao == null)
+		return;
+	    if (s == null || s.equals(""))
+		attributes = simplePageToolDao.newJSONObject();
+	    else
+		attributes = simplePageToolDao.JSONParse(s);
+	}
+
+	public static void setSimplePageToolDao(SimplePageToolDao dao) {
+	    simplePageToolDao = dao;
+	}
+	
+	public void setShowPeerEval(Boolean review){
+		this.showPeerEval= review !=null? review:false;
+	}
+	public Boolean getShowPeerEval(){
+		return new Boolean(showPeerEval);
+	}
+	
+
 }
+

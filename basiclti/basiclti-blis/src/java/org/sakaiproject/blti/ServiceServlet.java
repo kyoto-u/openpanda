@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-blis/src/java/org/sakaiproject/blti/ServiceServlet.java $
- * $Id: ServiceServlet.java 128210 2013-08-06 15:27:57Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/basiclti-blis/src/java/org/sakaiproject/blti/ServiceServlet.java $
+ * $Id: ServiceServlet.java 134451 2014-02-12 18:56:18Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -65,8 +65,6 @@ import org.apache.commons.logging.LogFactory;
 import org.imsglobal.basiclti.BasicLTIUtil;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.Role;
-import org.sakaiproject.authz.api.SecurityAdvisor;
-import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.cover.UsageSessionService;
 import org.sakaiproject.id.cover.IdManager;
@@ -86,15 +84,6 @@ import org.sakaiproject.basiclti.util.SakaiBLTIUtil;
 import org.imsglobal.basiclti.BasicLTIConstants;
 import org.sakaiproject.basiclti.util.ShaUtil;
 import org.sakaiproject.util.FormattedText;
-
-import org.sakaiproject.service.gradebook.shared.AssignmentHasIllegalPointsException;
-import org.sakaiproject.service.gradebook.shared.CategoryDefinition;
-import org.sakaiproject.service.gradebook.shared.GradebookService;
-import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
-import org.sakaiproject.service.gradebook.shared.ConflictingAssignmentNameException;
-import org.sakaiproject.service.gradebook.shared.ConflictingExternalIdException;
-import org.sakaiproject.service.gradebook.shared.GradebookNotFoundException;
-import org.sakaiproject.service.gradebook.shared.Assignment;
 
 import org.sakaiproject.lessonbuildertool.SimplePageItem;
 
@@ -170,26 +159,6 @@ public class ServiceServlet extends HttpServlet {
 		"</div></body>\n" + 
 		"</html>\n";
 
-	/**
-	 * Setup a security advisor.
-	 */
-	public void pushAdvisor() {
-		// setup a security advisor
-		SecurityService.pushAdvisor(new SecurityAdvisor() {
-				public SecurityAdvice isAllowed(String userId, String function,
-					String reference) {
-				return SecurityAdvice.ALLOWED;
-				}
-				});
-	}
-
-	/**
-	 * Remove our security advisor.
-	 */
-	public void popAdvisor() {
-		SecurityService.popAdvisor();
-	}
-
 	public void doError(HttpServletRequest request,HttpServletResponse response, 
 			Map<String, Object> theMap, String s, String message, Exception e) 
 		throws java.io.IOException 
@@ -205,6 +174,7 @@ public class ServiceServlet extends HttpServlet {
 			String theXml = XMLMap.getXML(theMap, true);
 			PrintWriter out = response.getWriter();
 			out.println(theXml);
+			M_log.info("doError="+theXml);
 		}
 
 	@Override
@@ -304,15 +274,15 @@ public class ServiceServlet extends HttpServlet {
 			M_log.debug("Basic LTI Service request from IP=" + ipAddress);
 
 			String allowOutcomes = ServerConfigurationService.getString(
-					SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, null);
+					SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED_DEFAULT);
 			if ( ! "true".equals(allowOutcomes) ) allowOutcomes = null;
 
 			String allowSettings = ServerConfigurationService.getString(
-					SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED, null);
+					SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED, SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED_DEFAULT);
 			if ( ! "true".equals(allowSettings) ) allowSettings = null;
 
 			String allowRoster = ServerConfigurationService.getString(
-					SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED, null);
+					SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED, SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED_DEFAULT);
 			if ( ! "true".equals(allowRoster) ) allowRoster = null;
 
 			if (allowOutcomes == null && allowSettings == null && allowRoster == null ) {
@@ -360,6 +330,12 @@ public class ServiceServlet extends HttpServlet {
 				return;
 			}
 
+			// Perform the Outcomee first because we use the SakaiBLTIUtil code for this
+			if ( "basicoutcome".equals(message_type) ) {
+				processOutcome(request, response, lti_message_type, sourcedid, theMap);
+				return;
+			}
+
 			// No point continuing without a sourcedid
 			if(BasicLTIUtil.isBlank(sourcedid)) {
 				doError(request, response, theMap, "outcomes.missing", "sourcedid", null);
@@ -375,18 +351,6 @@ public class ServiceServlet extends HttpServlet {
 			String oauth_consumer_key = request.getParameter("oauth_consumer_key");
 			if(BasicLTIUtil.isBlank(oauth_consumer_key)) {
 				doError(request, response, theMap, "outcomes.missing", "oauth_consumer_key", null);
-				return;
-			}
-
-			// Sadly not supported easily using the Gradebook API - may have to dig
-			// deeper later
-			if ( BasicLTIUtil.equals(lti_message_type, "basic-lis-deleteresult") ) {
-				theMap.put("/message_response/statusinfo/codemajor", "Unsupported");
-				theMap.put("/message_response/statusinfo/severity", "Error");
-				theMap.put("/message_response/statusinfo/codeminor", "cannotdelete");
-				String theXml = XMLMap.getXML(theMap, true);
-				PrintWriter out = response.getWriter();
-				out.println(theXml);
 				return;
 			}
 
@@ -424,7 +388,7 @@ public class ServiceServlet extends HttpServlet {
 			M_log.debug("user_id="+user_id);
 			M_log.debug("placement_id="+placement_id);
 
-			Properties pitch = getPropertiesFromPlacement(placement_id);
+			Properties pitch = SakaiBLTIUtil.getPropertiesFromPlacement(placement_id, ltiService);
 			if ( pitch == null ) {
 				M_log.debug("Error retrieving result_sourcedid information");
 				doError(request, response, theMap, "outcomes.sourcedid", "sourcedid", null);
@@ -451,7 +415,8 @@ public class ServiceServlet extends HttpServlet {
 			oauth_secret = SakaiBLTIUtil.decryptSecret(oauth_secret);
 			M_log.debug("oauth_secret (decrypted): "+oauth_secret);
 
-			OAuthMessage oam = OAuthServlet.getMessage(request, null);
+			String URL = SakaiBLTIUtil.getOurServletPath(request);
+			OAuthMessage oam = OAuthServlet.getMessage(request, URL);
 			OAuthValidator oav = new SimpleOAuthValidator();
 			OAuthConsumer cons = new OAuthConsumer("about:blank#OAuth+CallBack+NotUsed", oauth_consumer_key,oauth_secret, null);
 
@@ -506,8 +471,6 @@ public class ServiceServlet extends HttpServlet {
 			}
 
 			// Perform the message-specific handling
-			if ( "basicoutcome".equals(message_type) ) processOutcome(request, response, lti_message_type, site, siteId, placement_id, pitch, user_id, theMap);
-
 			if ( "toolsetting".equals(message_type) ) processSetting(request, response, lti_message_type, site, siteId, placement_id, pitch, user_id, theMap);
 
 			if ( "roster".equals(message_type) ) processRoster(request, response, lti_message_type, site, siteId, placement_id, pitch, user_id, theMap);
@@ -528,17 +491,22 @@ public class ServiceServlet extends HttpServlet {
 				return;
 			}
 
-			pushAdvisor();
+			SakaiBLTIUtil.pushAdvisor();
 			boolean success = false;
 			try { 
 				if ( "basic-lti-loadsetting".equals(lti_message_type) ) {
-					setting = pitch.getProperty(LTIService.LTI_SETTINGS);
+					setting = pitch.getProperty(LTIService.LTI_SETTINGS_EXT);
+					// Remove this after the DB conversion for SAK-25621 is completed
+					// It is harmless until LTI 2.0 starts to get heavy use.
+					if ( setting == null ) {
+						setting = pitch.getProperty(LTIService.LTI_SETTINGS);
+					}
 					if ( setting != null ) {
 						theMap.put("/message_response/setting/value", setting);
 					}
 					success = true;
 				} else {
-					if ( isPlacement(placement_id) ) {
+					if ( SakaiBLTIUtil.isPlacement(placement_id) ) {
 						ToolConfiguration placement = SiteService.findTool(placement_id);
 						if ( "basic-lti-savesetting".equals(lti_message_type) ) {
 							setting = request.getParameter("setting");
@@ -571,17 +539,17 @@ public class ServiceServlet extends HttpServlet {
 									doError(request, response, theMap, "setting.empty", "", null);
 								} else {
 									if ( setting.length() > 8096) setting = setting.substring(0,8096);
-									content.put(LTIService.LTI_SETTINGS,setting);
+									content.put(LTIService.LTI_SETTINGS_EXT,setting);
 									success = true;
 								}
 							} else if ( "basic-lti-deletesetting".equals(lti_message_type) ) {
-								content.put(LTIService.LTI_SETTINGS,null);
+								content.put(LTIService.LTI_SETTINGS_EXT,null);
 								success = true;
 							}
 							if ( success ) {
 								Object result = ltiService.updateContentDao(contentKey,content, siteId);
 								if ( result instanceof String ) {
-									M_log.warn("Setting update failed");
+									M_log.warn("Setting update failed: "+result);
 									doError(request, response, theMap, "setting.fail", "", null);
 									success = false;
 								}
@@ -592,7 +560,7 @@ public class ServiceServlet extends HttpServlet {
 			} catch (Exception e) {
 				doError(request, response, theMap, "setting.fail", "", e);
 			} finally {
-				popAdvisor();
+				SakaiBLTIUtil.popAdvisor();
 			}
 
 			if ( ! success ) return;
@@ -606,93 +574,49 @@ public class ServiceServlet extends HttpServlet {
 		}
 
 	protected void processOutcome(HttpServletRequest request, HttpServletResponse response, 
-			String lti_message_type, 
-			Site site, String siteId, String placement_id, Properties pitch,
-			String user_id,  Map<String, Object> theMap)
+			String lti_message_type, String sourcedid, Map<String, Object> theMap)
 		throws java.io.IOException
 		{
-			// Make sure the user exists in the site
-			boolean userExistsInSite = false;
-			try {
-				Member member = site.getMember(user_id);
-				if(member != null ) userExistsInSite = true;
-			} catch (Exception e) {
-				M_log.warn(e.getLocalizedMessage() + " siteId="+siteId, e);
-				doError(request, response, theMap, "outcome.site.membership", "", e);
-				return;
-			}
-
-			// Make sure the placement is configured to receive grades
-			String assignment = pitch.getProperty("assignment");
-			M_log.debug("ASSN="+assignment);
-			if ( assignment == null ) {
-				doError(request, response, theMap, "outcome.no.assignment", "", null);
-				return;
-			}
-
-			// Look up the assignment so we can find the max points
-			GradebookService g = (GradebookService)  ComponentManager
-				.get("org.sakaiproject.service.gradebook.GradebookService");
-
-			pushAdvisor();
-			Assignment assignmentObject = getOrMakeAssignment(assignment, siteId, g);
-			popAdvisor();
-
-			if ( assignmentObject == null ) {
-				doError(request, response, theMap, "outcome.no.assignment", "", null);
-				return;
-			}
-
 			// Things look good - time to process the grade
 			boolean isRead = BasicLTIUtil.equals(lti_message_type, "basic-lis-readresult");
+			boolean isDelete = BasicLTIUtil.equals(lti_message_type, "basic-lis-deleteresult");
 
 			String result_resultscore_textstring = request.getParameter("result_resultscore_textstring");
+			String result_resultdata_text = request.getParameter("result_resultdata_text");
 
 			if(BasicLTIUtil.isBlank(result_resultscore_textstring) && ! isRead ) {
 				doError(request, response, theMap, "outcomes.missing", "result_resultscore_textstring", null);
 				return;
 			}
 
-			// We don't need to retrieve the assignments and check if it 
-			// is a valid column because if the column is wrong, we 
-			// will get an exception below
-
-			// Lets store or retrieve the grade using the securityadvisor
-			Session sess = SessionManager.getCurrentSession();
 			String theGrade = null;
-			pushAdvisor();
 			boolean success = false;
+			Object retval = null;
 
 			try {
-				// Indicate "who" is setting this grade - needs to be a real user account
-				String gb_user_id = ServerConfigurationService.getString(
-						"basiclti.outcomes.userid", "admin");
-				String gb_user_eid = ServerConfigurationService.getString(
-						"basiclti.outcomes.usereid", gb_user_id);
-				sess.setUserId(gb_user_id);
-				sess.setUserEid(gb_user_eid);
 				Double dGrade;
 				if ( isRead ) {
-					theGrade = g.getAssignmentScoreString(siteId, assignment, user_id);
-					dGrade = new Double(theGrade);
-					dGrade = dGrade / assignmentObject.getPoints();
+					retval = SakaiBLTIUtil.getGrade(sourcedid, request, ltiService);
+					if ( ! (retval instanceof Map) ) {
+						doError(request, response, theMap, "outcome.fail", (String) retval, null);
+						return;
+					}
+					Map grade = (Map) retval;
+					dGrade = (Double) grade.get("grade");
 					theMap.put("/message_response/result/resultscore/textstring", dGrade.toString());
+					theMap.put("/message_response/result/resultdata/text", (String) grade.get("comment"));
+                } else if ( isDelete ) {
+                    retval = SakaiBLTIUtil.deleteGrade(sourcedid, request, ltiService);
 				} else { 
 					dGrade = new Double(result_resultscore_textstring);
-					dGrade = dGrade * assignmentObject.getPoints();
-					g.setAssignmentScore(siteId, assignment, user_id, dGrade, "External Outcome");
-					M_log.info("Stored Score=" + siteId + " assignment="+ assignment + " user_id=" + user_id + 
-						" score="+ result_resultscore_textstring);
+					retval = SakaiBLTIUtil.setGrade(sourcedid, request, ltiService, dGrade, result_resultdata_text);
 				}
 				success = true;
 				theMap.put("/message_response/statusinfo/codemajor", "Success");
 				theMap.put("/message_response/statusinfo/severity", "Status");
 				theMap.put("/message_response/statusinfo/codeminor", "fullsuccess");
 			} catch (Exception e) {
-				doError(request, response, theMap, "outcome.grade.fail", "siteId="+siteId, e);
-			} finally {
-				sess.invalidate(); // Make sure to leave no traces
-				popAdvisor();
+				doError(request, response, theMap, "outcome.grade.fail", "", e);
 			}
 
 			if ( ! success ) return;
@@ -719,12 +643,12 @@ public class ServiceServlet extends HttpServlet {
 			String releaseEmail = pitch.getProperty(LTIService.LTI_SENDEMAILADDR);
 			String assignment = pitch.getProperty("assignment");
 			String allowOutcomes = ServerConfigurationService.getString(
-					SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, null);
+					SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED_DEFAULT);
 			if ( ! "true".equals(allowOutcomes) ) allowOutcomes = null;
 
 			String maintainRole = site.getMaintainRole();
 
-			pushAdvisor();
+			SakaiBLTIUtil.pushAdvisor();
 			boolean success = false;
 			try { 
 				List<Map<String,String>> lm = new ArrayList<Map<String,String>>();
@@ -764,7 +688,7 @@ public class ServiceServlet extends HttpServlet {
 			} catch (Exception e) {
 				doError(request, response, theMap, "memberships.fail", "", e);
 			} finally {
-				popAdvisor();
+				SakaiBLTIUtil.popAdvisor();
 			}
 
 			if ( ! success ) return;
@@ -775,6 +699,7 @@ public class ServiceServlet extends HttpServlet {
 			String theXml = XMLMap.getXML(theMap, true);
 			PrintWriter out = response.getWriter();
 			out.println(theXml);
+			M_log.debug(theXml);
 		}
 
 	/* IMS POX XML versions of this service */
@@ -793,11 +718,11 @@ public class ServiceServlet extends HttpServlet {
             if ( pox == null ) {
                 output = IMSPOXRequest.getFatalResponse(msg);
             } else {
-		String body = null;
-		String operation = pox.getOperation();
-		if ( operation != null ) {
-			body = "<"+operation.replace("Request", "Response")+"/>";
-		}
+				String body = null;
+				String operation = pox.getOperation();
+				if ( operation != null ) {
+					body = "<"+operation.replace("Request", "Response")+"/>";
+				}
                 output = pox.getResponseFailure(msg, null, body);
             }
 			out.println(output);
@@ -825,11 +750,11 @@ public class ServiceServlet extends HttpServlet {
 			M_log.debug("LTI POX Service request from IP=" + ipAddress);
 
 			String allowOutcomes = ServerConfigurationService.getString(
-					SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, null);
+					SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED_DEFAULT);
 			if ( ! "true".equals(allowOutcomes) ) allowOutcomes = null;
 
 			String allowLori = ServerConfigurationService.getString(
-					SakaiBLTIUtil.BASICLTI_LORI_ENABLED, null);
+					SakaiBLTIUtil.BASICLTI_LORI_ENABLED, SakaiBLTIUtil.BASICLTI_LORI_ENABLED_DEFAULT);
 			if ( ! "true".equals(allowLori) ) allowLori = null;
 
 			if (allowOutcomes == null && allowLori == null ) {
@@ -875,6 +800,12 @@ public class ServiceServlet extends HttpServlet {
 				return;
 			}
 
+			// Handle the outcomes here using the new SakaiBLTIUtil code
+			if ( allowOutcomes != null && "basicoutcome".equals(message_type) ) {
+				processOutcomeXml(request, response, lti_message_type, sourcedid, pox);
+				return;
+			}
+
 			// Truncate this to the maximum length to insure no cruft at the end
 			if ( sourcedid.length() > 2048) sourcedid = sourcedid.substring(0,2048);
 
@@ -901,7 +832,7 @@ public class ServiceServlet extends HttpServlet {
 
 			// Send a more generic message back to the caller
 			if ( placement_id == null || user_id == null ) {
-				doErrorXML(request, response, pox, "outcomes.sourcedid", "sourcedid", null);
+				doErrorXML(request, response, pox, "outcomes.sourcedid", "missing user_id or placement_id", null);
 				return;
 			}
 
@@ -909,10 +840,10 @@ public class ServiceServlet extends HttpServlet {
 			M_log.debug("user_id="+user_id);
 			M_log.debug("placement_id="+placement_id);
 
-			Properties pitch = getPropertiesFromPlacement(placement_id);
+			Properties pitch = SakaiBLTIUtil.getPropertiesFromPlacement(placement_id, ltiService);
 			if ( pitch == null ) {
 				M_log.debug("Error retrieving result_sourcedid information");
-				doError(request, response, null, "outcomes.sourcedid", "sourcedid", null);
+				doErrorXML(request, response, pox, "outcomes.sourcedid", "sourcedid", null);
 				return;
 			}
 	
@@ -926,7 +857,7 @@ public class ServiceServlet extends HttpServlet {
 
 			// Send a more generic message back to the caller
 			if (  site == null ) {
-				doError(request, response, null, "outcomes.sourcedid", "sourcedid", null);
+				doErrorXML(request, response, pox, "outcomes.sourcedid", "sourcedid", null);
 				return;
 			}
 
@@ -937,7 +868,8 @@ public class ServiceServlet extends HttpServlet {
 			oauth_secret = SakaiBLTIUtil.decryptSecret(oauth_secret);
 			M_log.debug("oauth_secret (decrypted): "+oauth_secret);
 
-			pox.validateRequest(oauth_consumer_key, oauth_secret, request);
+			String URL = SakaiBLTIUtil.getOurServletPath(request);
+			pox.validateRequest(oauth_consumer_key, oauth_secret, request, URL);
 			if ( ! pox.valid ) {
 				if (pox.base_string != null) {
 					M_log.warn(pox.base_string);
@@ -977,9 +909,8 @@ public class ServiceServlet extends HttpServlet {
 
 			String placementLori = pitch.getProperty("allowlori");
 
-			if ( allowOutcomes != null && "basicoutcome".equals(message_type) ) {
-				processOutcomeXml(request, response, lti_message_type, site, siteId, pitch, user_id, pox);
-			} else if ( allowLori != null && "on".equals(placementLori) && "getstructure".equals(message_type) ) {
+			// Outcomes handled above
+			if ( allowLori != null && "on".equals(placementLori) && "getstructure".equals(message_type) ) {
 				processCourseStructureXml(request, response, lti_message_type, siteId, pox);
 			} else if ( allowLori != null && "on".equals(placementLori) && "addstructure".equals(message_type) ) {
 				processAddResourceXML(request, response, lti_message_type, siteId, pox);
@@ -1322,50 +1253,18 @@ public class ServiceServlet extends HttpServlet {
 	}
 
 	protected void processOutcomeXml(HttpServletRequest request, HttpServletResponse response, 
-			String lti_message_type, 
-			Site site, String siteId, Properties pitch,
-			String user_id, IMSPOXRequest pox)
+			String lti_message_type, String sourcedid, IMSPOXRequest pox)
 		throws java.io.IOException
 		{
-			// Make sure the user exists in the site
-			boolean userExistsInSite = false;
-			try {
-				Member member = site.getMember(user_id);
-				if(member != null ) userExistsInSite = true;
-			} catch (Exception e) {
-				M_log.warn(e.getLocalizedMessage() + " siteId="+siteId, e);
-				doErrorXML(request, response, pox, "outcome.site.membership", "", e);
-				return;
-			}
-
-			// Make sure the placement is configured to receive grades
-			String assignment = pitch.getProperty("assignment");
-			M_log.debug("ASSN="+assignment);
-			if ( assignment == null ) {
-				doErrorXML(request, response, pox, "outcome.no.assignment", "", null);
-				return;
-			}
-
-			// Look up the assignment so we can find the max points
-			GradebookService g = (GradebookService)  ComponentManager
-				.get("org.sakaiproject.service.gradebook.GradebookService");
-
-			pushAdvisor();
-			Assignment assignmentObject = getOrMakeAssignment(assignment, siteId, g);
-			popAdvisor();
-
-			if ( assignmentObject == null ) {
-				doErrorXML(request, response, pox, "outcome.no.assignment", "", null);
-				return;
-			}
-
 			// Things look good - time to process the grade
 			boolean isRead = BasicLTIUtil.equals(lti_message_type, "readResultRequest");
 			boolean isDelete = BasicLTIUtil.equals(lti_message_type, "deleteResultRequest");
 
 			Map<String,String> bodyMap = pox.getBodyMap();
 			String result_resultscore_textstring = bodyMap.get("/resultRecord/result/resultScore/textString");
+			String result_resultdata_text = bodyMap.get("/resultRecord/result/resultData/text");
 			String sourced_id = bodyMap.get("/resultRecord/result/sourcedId");
+			// System.out.println("comment="+result_resultdata_text);
 			// System.out.println("grade="+result_resultscore_textstring);
 
 			if(BasicLTIUtil.isBlank(result_resultscore_textstring) && ! isRead && ! isDelete ) {
@@ -1375,43 +1274,37 @@ public class ServiceServlet extends HttpServlet {
 
 			// Lets return an XML Response
 			Map<String,Object> theMap = new TreeMap<String,Object>();
-
-			// We don't need to retrieve the assignments and check if it 
-			// is a valid column because if the column is wrong, we 
-			// will get an exception below
-
-			// Lets store or retrieve the grade using the securityadvisor
-			Session sess = SessionManager.getCurrentSession();
 			String theGrade = null;
-			pushAdvisor();
 			boolean success = false;
 			String message = null;
+			Object retval = null;
 
 			try {
-				// Indicate "who" is setting this grade - needs to be a real user account
-				String gb_user_id = ServerConfigurationService.getString(
-						"basiclti.outcomes.userid", "admin");
-				String gb_user_eid = ServerConfigurationService.getString(
-						"basiclti.outcomes.usereid", gb_user_id);
-				sess.setUserId(gb_user_id);
-				sess.setUserEid(gb_user_eid);
 				Double dGrade;
 				if ( isRead ) {
-					theGrade = g.getAssignmentScoreString(siteId, assignment, user_id);
+					retval = SakaiBLTIUtil.getGrade(sourcedid, request, ltiService);
+					if ( ! (retval instanceof Map) ) {
+						doErrorXML(request, response, pox, "outcomes.fail", (String) retval, null);
+						return;
+					}
+					Map grade = (Map) retval;
 					String sGrade = "";
-					if ( theGrade != null && theGrade.length() > 0 ) {
-						dGrade = new Double(theGrade);
-						dGrade = dGrade / assignmentObject.getPoints();
+					dGrade = (Double) grade.get("grade");
+					if ( dGrade != null ) {
 						sGrade = dGrade.toString();
 					}
+
 					theMap.put("/readResultResponse/result/sourcedId", sourced_id);
 					theMap.put("/readResultResponse/result/resultScore/textString", sGrade);
 					theMap.put("/readResultResponse/result/resultScore/language", "en");
+					theMap.put("/readResultResponse/result/resultData/text", (String) grade.get("comment"));
 					message = "Result read";
 				} else if ( isDelete ) { 
-					// It would be nice to empty it out but we can't
-					g.setAssignmentScore(siteId, assignment, user_id, null, "External Outcome");
-					M_log.info("Delete Score site=" + siteId + " assignment="+ assignment + " user_id=" + user_id);
+					retval = SakaiBLTIUtil.deleteGrade(sourcedid, request, ltiService);
+					if ( retval instanceof String ) {
+						doErrorXML(request, response, pox, "outcomes.fail", (String) retval, null);
+						return;
+					}
 					theMap.put("/deleteResultResponse", "");
 					message = "Result deleted";
 				} else { 
@@ -1419,19 +1312,19 @@ public class ServiceServlet extends HttpServlet {
 					if ( dGrade < 0.0 || dGrade > 1.0 ) {
 						throw new Exception("Grade out of range");
 					}
-					dGrade = dGrade * assignmentObject.getPoints();
-					g.setAssignmentScore(siteId, assignment, user_id, dGrade, "External Outcome");
-
-					M_log.info("Stored Score=" + siteId + " assignment="+ assignment + " user_id=" + user_id + " score="+ result_resultscore_textstring);
+					dGrade = new Double(result_resultscore_textstring);
+					retval = SakaiBLTIUtil.setGrade(sourcedid, request, ltiService, dGrade, result_resultdata_text);
+					if ( retval instanceof String ) {
+						doErrorXML(request, response, pox, "outcomes.fail", (String) retval, null);
+						return;
+					}
 					theMap.put("/replaceResultResponse", "");
 					message = "Result replaced";
 				}
+
 				success = true;
 			} catch (Exception e) {
-				doErrorXML(request, response, pox, "outcome.grade.fail", e.getMessage()+" siteId="+siteId, e);
-			} finally {
-				sess.invalidate(); // Make sure to leave no traces
-				popAdvisor();
+				doErrorXML(request, response, pox, "outcome.grade.fail", e.getMessage(), e);
 			}
 
 			if ( !success ) return;
@@ -1444,169 +1337,9 @@ public class ServiceServlet extends HttpServlet {
 			response.setContentType("application/xml");
 			PrintWriter out = response.getWriter();
 			out.println(output);
+			M_log.debug(output);
 		}
 
-		public Assignment getOrMakeAssignment(String assignment, String siteId, GradebookService g )
-		{
-			Assignment assignmentObject = null;
-
-			try {
-				List gradebookAssignments = g.getAssignments(siteId);
-				for (Iterator i=gradebookAssignments.iterator(); i.hasNext();) {
-					Assignment gAssignment = (Assignment) i.next();
-					if ( gAssignment.isExternallyMaintained() ) continue;
-					if ( assignment.equals(gAssignment.getName()) ) { 
-						assignmentObject = gAssignment;
-						break;
-					}
-				}
-			} catch (Exception e) {
-				assignmentObject = null; // Just to make double sure
-			}
-
-			// Attempt to add assignment to grade book
-			if ( assignmentObject == null && g.isGradebookDefined(siteId) ) {
-				try {
-					assignmentObject = new Assignment();
-					assignmentObject.setPoints(Double.valueOf(100));
-					assignmentObject.setExternallyMaintained(false);
-					assignmentObject.setName(assignment);
-					assignmentObject.setReleased(true);
-					assignmentObject.setUngraded(false);
-					g.addAssignment(siteId, assignmentObject);
-					M_log.info("Added assignment: "+assignment);
-				}
-				catch (ConflictingAssignmentNameException e) {
-					M_log.warn("ConflictingAssignmentNameException while adding assignment" + e.getMessage());
-					assignmentObject = null; // Just to make double sure
-				}
-				catch (Exception e) {
-					M_log.warn("GradebookNotFoundException (may be because GradeBook has not yet been added to the Site) " + e.getMessage());
-					M_log.warn(this + ":addGradeItem " + e.getMessage());
-				}
-			}
-			return assignmentObject;
-		}
-
-	// Extract the necessary properties from a placement
-	protected Properties getPropertiesFromPlacement(String placement_id)
-	{
-		// These are the fields from a placement - they are not an exact match
-		// for the fields in tool/content
-		String [] fieldList = { "key", LTIService.LTI_SECRET, LTIService.LTI_PLACEMENTSECRET, 
-				LTIService.LTI_OLDPLACEMENTSECRET, LTIService.LTI_ALLOWSETTINGS, 
-				"assignment", LTIService.LTI_ALLOWROSTER, "releasename", "releaseemail", 
-				"toolsetting", "allowlori"};
-
-		Properties retval = new Properties();
-
-		String siteId = null;
-		if ( isPlacement(placement_id) ) {
-			ToolConfiguration placement = null;
-			Properties config = null;
-			try {
-				placement = SiteService.findTool(placement_id);
-				config = placement.getConfig();
-				siteId = placement.getSiteId();
-			} catch (Exception e) {
-				M_log.debug("Error getPropertiesFromPlacement: "+e.getLocalizedMessage(), e);
-				return null;
-			}
-			retval.setProperty("placementId",placement_id);
-			retval.setProperty(LTIService.LTI_SITE_ID,siteId);
-			for ( String field : fieldList ) {
-				String value = SakaiBLTIUtil.toNull(SakaiBLTIUtil.getCorrectProperty(config,field, placement));
-				if ( field.equals("toolsetting") ) {
-                    value = config.getProperty("toolsetting", null);
-					field = LTIService.LTI_SETTINGS;
-				}
-				if ( value == null ) continue;
-				if ( field.equals("releasename") ) field = LTIService.LTI_SENDNAME;
-				if ( field.equals("releaseemail") ) field = LTIService.LTI_SENDEMAILADDR;
-				if ( field.equals("key") ) field = LTIService.LTI_CONSUMERKEY;
-				retval.setProperty(field, value);
-			}
-		} else { // Get information from content item
-			Map<String,Object> content = null;
-			Map<String,Object> tool = null;
-
-			String contentStr = placement_id.substring(8);
-			Long contentKey = foorm.getLongKey(contentStr);
-			if ( contentKey < 0 ) return null;
-
-			// Leave off the siteId - bypass all checking - because we need to 
-			// finde the siteId from the content item
-			content = ltiService.getContentDao(contentKey);
-			if ( content == null ) return null;
-			siteId = (String) content.get(LTIService.LTI_SITE_ID);
-			if ( siteId == null ) return null;
-
-			retval.setProperty("contentKey",contentStr);
-			retval.setProperty(LTIService.LTI_SITE_ID,siteId);
-
-			Long toolKey = foorm.getLongKey(content.get(LTIService.LTI_TOOL_ID));
-			if ( toolKey < 0 ) return null;
-			tool = ltiService.getToolDao(toolKey, siteId);
-			if ( tool == null ) return null;
-
-			// Adjust the content items based on the tool items
-			if ( tool != null || content != null )
-			{
-				ltiService.filterContent(content, tool);
-			}
-
-			for (String formInput : LTIService.TOOL_MODEL) {
-				Properties info = foorm.parseFormString(formInput);
-				String field = info.getProperty("field", null);
-				String type = info.getProperty("type", null);
-				Object o = tool.get(field);
-				if ( o instanceof String ) {
-					retval.setProperty(field,(String) o);
-					continue;
-				}
-				if ( "checkbox".equals(type) ) {
-					int check = getInt(o);
-					if ( check == 1 ) {	
-						retval.setProperty(field,"on");
-					} else {
-						retval.setProperty(field,"off");
-					}
-				}
-			}
-
-			for (String formInput : LTIService.CONTENT_MODEL) {
-				Properties info = foorm.parseFormString(formInput);
-				String field = info.getProperty("field", null);
-				String type = info.getProperty("type", null);
-				Object o = content.get(field);
-				if ( o instanceof String ) {
-					retval.setProperty(field,(String) o);
-					continue;
-				}
-				if ( "checkbox".equals(type) ) {
-					int check = getInt(o);
-					if ( check == 1 ) {	
-						retval.setProperty(field,"on");
-					} else {
-						retval.setProperty(field,"off");
-					}
-				}
-			}
-			retval.setProperty("assignment",(String)content.get("title"));
-		}
-		return retval;
-	}
-
-	boolean isPlacement(String placement_id) {
-		if ( placement_id == null ) return false;
-		return ! (placement_id.startsWith("content:") && placement_id.length() > 8) ;
-	}
-
-	// Convienence
-    public static int getInt(Object o)
-    {
-		return FoormUtil.getInt(o);
-    }
 
 	public void destroy() {
 

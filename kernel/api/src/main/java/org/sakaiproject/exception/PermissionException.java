@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/exception/PermissionException.java $
- * $Id: PermissionException.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/exception/PermissionException.java $
+ * $Id: PermissionException.java 306163 2014-02-18 23:09:09Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ package org.sakaiproject.exception;
  * PermissionException indicates an invalid unlock attempt by a user for a lock and a resource.
  * </p>
  */
-public class PermissionException extends Exception
+public class PermissionException extends SakaiException
 {
 	/** The id of the user. */
 	private String m_user = null;
@@ -54,9 +54,6 @@ public class PermissionException extends Exception
 		return m_lock;
 	}
 
-	/** The resource id. */
-	private String m_resource = null;
-
 	/**
 	 * Access the resource id.
 	 * 
@@ -64,7 +61,7 @@ public class PermissionException extends Exception
 	 */
 	public String getResource()
 	{
-		return m_resource;
+		return getId();
 	}
 
 	/**
@@ -79,13 +76,18 @@ public class PermissionException extends Exception
 	 */
 	public PermissionException(String user, String lock, String resource)
 	{
+		super(resource);
 		m_user = user;
 		m_lock = lock;
-		m_resource = resource;
 	}
 
-	public String toString()
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getMessage()
 	{
-		return super.toString() + " user=" + m_user + " lock=" + m_lock + " resource=" + m_resource;
-	}
+		return "user=" + m_user + " lock=" + m_lock + " resource=" + getResource();
+}
+
 }

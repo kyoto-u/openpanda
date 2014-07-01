@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/content/api/ContentCollection.java $
- * $Id: ContentCollection.java 96667 2011-08-09 08:31:57Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/content/api/ContentCollection.java $
+ * $Id: ContentCollection.java 306037 2014-02-17 16:51:13Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,7 @@ import org.sakaiproject.time.api.Time;
 * <p>ContentCollection is the core interface for a Collection object in the GenericContentHostingService.</p>
 * <p>A Collection has a list of internal members, each a resource id.</p>
 *
-* @version $Revision: 96667 $
+* @version $Revision: 306037 $
 */
 public interface ContentCollection
 	extends ContentEntity
@@ -46,7 +46,7 @@ public interface ContentCollection
 	* ContentCollection objects.
 	* @return a List of the full objects of the members of the collection.
 	*/
-	public List getMemberResources();
+	public List<ContentEntity> getMemberResources();
 
 	/**
 	* Access the size of all the resource body bytes within this collection in Kbytes.

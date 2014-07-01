@@ -19,24 +19,23 @@ limitations under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
-    <relativePath>../pom.xml</relativePath>
+    <artifactId>master</artifactId>
+    <version>10.0</version>
+    <relativePath>../master/pom.xml</relativePath>
   </parent>
   <groupId>org.sakaiproject</groupId>
   <artifactId>rwiki-base</artifactId>
-  <version>2.9.3</version>
+  <version>10.0</version>
   <name>Sakai RWiki Project</name>
   <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.9.x</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.9.x</developerConnection>
-    <url>https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.9.x</url>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/rwiki/trunk</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/rwiki/trunk</developerConnection>
+    <url>https://source.sakaiproject.org/svn/rwiki/trunk</url>
   </scm>
   <packaging>pom</packaging>
   <modules>
     <module>rwiki-api/api</module>
-    <module>rwiki-help</module>
     <module>rwiki-impl/impl</module>
     <module>rwiki-integration-test</module>
     <module>rwiki-model</module>
@@ -62,37 +61,37 @@ limitations under the License.
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-radeox</artifactId>
-        <version>2.9.3</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-rwiki-model</artifactId>
-        <version>2.9.3</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-rwiki-util</artifactId>
-        <version>2.9.3</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-rwiki-diff</artifactId>
-        <version>2.9.3</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-search-util</artifactId>
-        <version>2.9.3</version>
+        <version>${sakai.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-rwiki-impl</artifactId>
-        <version>2.9.3</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
     </dependencies>

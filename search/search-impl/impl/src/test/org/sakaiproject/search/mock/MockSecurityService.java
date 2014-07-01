@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/test/org/sakaiproject/search/mock/MockSecurityService.java $
- * $Id: MockSecurityService.java 126049 2013-06-20 18:06:33Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/test/org/sakaiproject/search/mock/MockSecurityService.java $
+ * $Id: MockSecurityService.java 126062 2013-06-20 21:32:44Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmPublishAssessmentListener.java $
- * $Id: ConfirmPublishAssessmentListener.java 107866 2012-05-04 20:51:28Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmPublishAssessmentListener.java $
+ * $Id: ConfirmPublishAssessmentListener.java 308129 2014-04-11 18:34:01Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,6 +36,7 @@ import javax.faces.event.ActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
@@ -61,7 +62,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: ConfirmPublishAssessmentListener.java 107866 2012-05-04 20:51:28Z ktsao@stanford.edu $
+ * @version $Id: ConfirmPublishAssessmentListener.java 308129 2014-04-11 18:34:01Z ktsao@stanford.edu $
  */
 
 public class ConfirmPublishAssessmentListener
@@ -181,7 +182,7 @@ public class ConfirmPublishAssessmentListener
 
     if (!isFromActionSelect) {
     	if (assessmentSettings.getReleaseTo().equals(AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS)) {
-    		String[] groupsAuthorized = assessmentSettings.getGroupsAuthorizedToSave(); //getGroupsAuthorized();
+    		String[] groupsAuthorized = assessmentSettings.getGroupsAuthorized(); //getGroupsAuthorized();
     		if (groupsAuthorized == null || groupsAuthorized.length == 0) {
     			String releaseGroupError = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","choose_one_group");
     			context.addMessage(null,new FacesMessage(releaseGroupError));
@@ -301,10 +302,10 @@ public class ConfirmPublishAssessmentListener
 	}
 
     //#2b - check if gradebook exist, if so, if assessment title already exists in GB
-    GradebookService g = null;
+    GradebookExternalAssessmentService g = null;
     if (integrated){
-      g = (GradebookService) SpringBeanLocator.getInstance().
-            getBean("org.sakaiproject.service.gradebook.GradebookService");
+      g = (GradebookExternalAssessmentService) SpringBeanLocator.getInstance().
+            getBean("org.sakaiproject.service.gradebook.GradebookExternalAssessmentService");
     }
     String toGradebook = assessmentSettings.getToDefaultGradebook();
     try{

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveFileParser.java $
- * $Id: SakaiArchiveFileParser.java 118449 2013-01-17 21:03:19Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveFileParser.java $
+ * $Id: SakaiArchiveFileParser.java 118267 2013-01-10 22:29:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,7 +58,7 @@ public class SakaiArchiveFileParser extends ZipFileParser {
 	
 	protected Document importMappings;
 	
-	public boolean isValidArchive(byte[] fileData) {
+	public boolean isValidArchive(InputStream fileData) {
 		if (super.isValidArchive(fileData)) {
 			if (!fileExistsInArchive("/import_mappings.xml", fileData)) 
 				return false;
@@ -108,7 +108,7 @@ public class SakaiArchiveFileParser extends ZipFileParser {
 		return new SakaiArchiveFileParser();
 	}
 	
-	public ImportDataSource parse(byte[] fileData, String unArchiveLocation) {
+	public ImportDataSource parse(InputStream fileData, String unArchiveLocation) {
 		this.localArchiveLocation = unzipArchive(fileData, unArchiveLocation);
 		this.pathToData = unArchiveLocation + "/" + localArchiveLocation;
 		awakeFromUnzip(pathToData);

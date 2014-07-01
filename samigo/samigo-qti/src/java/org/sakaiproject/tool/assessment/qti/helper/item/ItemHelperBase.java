@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/helper/item/ItemHelperBase.java $
- * $Id: ItemHelperBase.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/item/ItemHelperBase.java $
+ * $Id: ItemHelperBase.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,6 +61,8 @@ public abstract class ItemHelperBase
   protected static final long ITEM_TF = TypeIfc.TRUE_FALSE.longValue();
   protected static final long ITEM_MATCHING = TypeIfc.MATCHING.longValue();
   protected static final long ITEM_MXSURVEY = TypeIfc.MATRIX_CHOICES_SURVEY.longValue();
+  protected static final long ITEM_CALCQ = TypeIfc.CALCULATED_QUESTION.longValue(); // CALCULATED_QUESTION
+  protected static final long ITEM_EMI = TypeIfc.EXTENDED_MATCHING_ITEMS.longValue();
 
   /**
    * We will have a versioned AuthoringXml in subclasses.
@@ -260,9 +262,18 @@ public abstract class ItemHelperBase
     {
       template = AuthoringXml.ITEM_MATCHING;
     }
+    else if (ITEM_EMI == typeId)
+    {
+      template = AuthoringXml.ITEM_EMI;
+    }
     else if (ITEM_MXSURVEY == typeId)
     {
       template = AuthoringXml.ITEM_MXSURVEY;
+    }
+    // CALCULATED_QUESTION
+    else if (ITEM_CALCQ == typeId)
+    {
+      template = AuthoringXml.ITEM_CALCQ;
     }
 
     log.debug("typeId: " + typeId);

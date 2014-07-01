@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentContent.java $
- * $Id: AssignmentContent.java 97668 2011-08-29 19:25:48Z zqian@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentContent.java $
+ * $Id: AssignmentContent.java 129976 2013-09-25 20:48:37Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -208,5 +208,49 @@ public interface AssignmentContent extends Entity, AttachmentContainer
 
 	public boolean isCheckInstitution();
 
+	public boolean getHideDueDate();
+
 	public void setCheckInstitution(boolean m_checkInstitution);
+	
+	public boolean isExcludeBibliographic();
+
+	public void setExcludeBibliographic(boolean m_excludeBibliographic);
+	
+	public boolean isExcludeQuoted();
+
+	public void setExcludeQuoted(boolean m_excludeQuoted);
+	
+	/**
+	 * Exclude type options:
+	 * 0 none
+	 * 1 word count
+	 * 2 percentage
+	 * @return
+	 */
+	 
+	public int getExcludeType();
+	
+	/**
+	 * Exclude type options:
+	 * 0 none
+	 * 1 word count
+	 * 2 percentage
+	 * 
+	 * @param m_excludeType
+	 */
+	public void setExcludeType(int m_excludeType);
+	
+	/**
+	 * if word count: 1-? (max integer)
+	 * if percentage: 0-100 
+	 * @return
+	 */
+	public int getExcludeValue();
+	
+	/**
+	 * if word count: 1-? (max integer)
+	 * if percentage: 0-100
+	 * @param m_excludeValue
+	 */
+	public void setExcludeValue(int m_excludeValue);
 }

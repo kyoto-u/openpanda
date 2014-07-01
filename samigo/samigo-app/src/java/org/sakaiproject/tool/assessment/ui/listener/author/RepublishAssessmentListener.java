@@ -5,14 +5,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
@@ -20,11 +21,11 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedEvaluationM
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentBaseIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.GradebookFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
+import org.sakaiproject.tool.assessment.integration.helper.ifc.CalendarServiceHelper;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.services.PersistenceService;
@@ -35,9 +36,7 @@ import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.PublishRepublishNotificationBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.PublishedAssessmentSettingsBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
-import org.sakaiproject.tool.assessment.integration.helper.ifc.CalendarServiceHelper;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.tool.assessment.ui.bean.author.PublishRepublishNotificationBean;
 
 public class RepublishAssessmentListener implements ActionListener {
 
@@ -126,10 +125,10 @@ public class RepublishAssessmentListener implements ActionListener {
 				if (!currentAgent.equals(adata.getAgentId())){
 					if (adata.getForGrade().booleanValue()) {
 						adata.setForGrade(Boolean.FALSE);
-						adata.setStatus(AssessmentGradingIfc.ASSESSMENT_UPDATED_NEED_RESUBMIT);
+						adata.setStatus(AssessmentGradingData.ASSESSMENT_UPDATED_NEED_RESUBMIT);
 					}
 					else {
-						adata.setStatus(AssessmentGradingIfc.ASSESSMENT_UPDATED);
+						adata.setStatus(AssessmentGradingData.ASSESSMENT_UPDATED);
 					}
 					currentAgent = adata.getAgentId();
 				}
@@ -148,10 +147,10 @@ public class RepublishAssessmentListener implements ActionListener {
 		// a. if Gradebook does not exists, do nothing
 		// b. if Gradebook exists, just call removeExternal first to clean up all data. And call addExternal to create
 		// a new record. At the end, populate the scores by calling updateExternalAssessmentScores
-		GradebookService g = null;
+		GradebookExternalAssessmentService g = null;
 		if (integrated) {
-			g = (GradebookService) SpringBeanLocator.getInstance().getBean(
-					"org.sakaiproject.service.gradebook.GradebookService");
+			g = (GradebookExternalAssessmentService) SpringBeanLocator.getInstance().getBean(
+					"org.sakaiproject.service.gradebook.GradebookExternalAssessmentService");
 		}
 
 		if (gbsHelper.gradebookExists(GradebookFacade.getGradebookUId(), g)) { 
@@ -199,7 +198,7 @@ public class RepublishAssessmentListener implements ActionListener {
 								if(ag.getStatus() ==5) {
 									ag.setFinalScore(ag.getFinalScore());
 								} else {
-									Float averageScore = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
+									Double averageScore = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
 									getAverageSubmittedAssessmentGrading(Long.valueOf(assessment.getPublishedAssessmentId()), ag.getAgentId());
 									ag.setFinalScore(averageScore);
 								}	

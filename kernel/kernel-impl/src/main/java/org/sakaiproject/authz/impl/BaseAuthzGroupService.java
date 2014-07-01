@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
- * $Id: BaseAuthzGroupService.java 127152 2013-07-17 18:13:24Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
+ * $Id: BaseAuthzGroupService.java 309209 2014-05-06 16:01:08Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,38 +21,12 @@
 
 package org.sakaiproject.authz.impl;
 
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.Vector;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.authz.api.AuthzGroup;
-import org.sakaiproject.authz.api.AuthzGroupService;
-import org.sakaiproject.authz.api.AuthzPermissionException;
-import org.sakaiproject.authz.api.FunctionManager;
-import org.sakaiproject.authz.api.GroupAlreadyDefinedException;
-import org.sakaiproject.authz.api.GroupFullException;
-import org.sakaiproject.authz.api.GroupIdInvalidException;
-import org.sakaiproject.authz.api.GroupNotDefinedException;
-import org.sakaiproject.authz.api.GroupProvider;
-import org.sakaiproject.authz.api.Role;
-import org.sakaiproject.authz.api.RoleAlreadyDefinedException;
-import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.authz.api.*;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
-import org.sakaiproject.entity.api.Edit;
-import org.sakaiproject.entity.api.Entity;
-import org.sakaiproject.entity.api.EntityManager;
-import org.sakaiproject.entity.api.HttpAccess;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.entity.api.*;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.javax.PagingPosition;
@@ -62,9 +36,10 @@ import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.util.StorageUser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.*;
 
 /**
  * <p>
@@ -74,7 +49,7 @@ import org.w3c.dom.Element;
  * To support the public view feature, an AuthzGroup named TEMPLATE_PUBVIEW must exist, with a role named ROLE_PUBVIEW - all the abilities in this role become the public view abilities for any resource.
  * </p>
  */
-public abstract class BaseAuthzGroupService implements AuthzGroupService, StorageUser
+public abstract class BaseAuthzGroupService implements AuthzGroupService
 {
 	/** Our logger. */
 	private static Log M_log = LogFactory.getLog(BaseAuthzGroupService.class);
@@ -88,11 +63,9 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 	/** A provider of additional Abilities for a userId. */
 	protected GroupProvider m_provider = null;
 
-	
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Abstractions, etc.
 	 *********************************************************************************************************************************************************************************************************************************************************/
-
 	
 	/**
 	 * Construct storage for this service.
@@ -249,8 +222,9 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 	 */
 	protected abstract UserDirectoryService userDirectoryService();
 
+	protected List<AuthzGroupAdvisor> authzGroupAdvisors;
 	
-	private SiteService siteService;
+	protected SiteService siteService;
 	public void setSiteService(SiteService siteService) {
 		this.siteService = siteService;
 	}
@@ -265,6 +239,8 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 	 */
 	public void init()
 	{
+		authzGroupAdvisors = new ArrayList<AuthzGroupAdvisor>();
+		
 		try
 		{
 			m_relativeAccessPoint = REFERENCE_ROOT;
@@ -281,6 +257,7 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 			functionManager().registerFunction(SECURE_REMOVE_AUTHZ_GROUP);
 			functionManager().registerFunction(SECURE_UPDATE_AUTHZ_GROUP);
 			functionManager().registerFunction(SECURE_UPDATE_OWN_AUTHZ_GROUP);
+			functionManager().registerFunction(SECURE_VIEW_ALL_AUTHZ_GROUPS);
 
 			// if no provider was set, see if we can find one
 			if (m_provider == null)
@@ -612,16 +589,42 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 		// update the properties
 		addLiveUpdateProperties((BaseAuthzGroup) azGroup);
 
+		// allow any advisors to make last minute changes 
+		for (AuthzGroupAdvisor authzGroupAdvisor : authzGroupAdvisors) {
+			authzGroupAdvisor.update(azGroup);
+		}
 		// complete the azGroup
 		m_storage.save(azGroup);
 
 		// track it
 		String event = ((BaseAuthzGroup) azGroup).getEvent();
 		if (event == null) event = SECURE_UPDATE_AUTHZ_GROUP;
+        // KNL-1230 handle changes to authzgroups by processing caching changes
+        if (SECURE_UPDATE_AUTHZ_GROUP.equals(event)) {
+            // we only care about update events here
+            try {
+                HashSet<String> roles = null;
+                HashSet<String> permissions = null;
+                Set<DbAuthzGroupService.DbStorage.RoleAndFunction> lastChangedPerms = ((BaseAuthzGroup) azGroup).m_lastChangedRlFn;
+                if (lastChangedPerms != null && !lastChangedPerms.isEmpty()) {
+                    roles = new HashSet<String>();
+                    permissions = new HashSet<String>(lastChangedPerms.size());
+                    for (DbAuthzGroupService.DbStorage.RoleAndFunction rf : lastChangedPerms) {
+                        permissions.add(rf.function);
+                        roles.add(rf.role);
+                    }
+                    M_log.info("Changed permissions for roles (" + roles + ") in " + azGroup.getId() + ": " + permissions);
+                }
+                ((SakaiSecurity) securityService()).notifyRealmChanged(azGroup.getId(), roles, permissions);
+            } catch (Exception e) {
+                M_log.warn("Failure while trying to notify SS about realm changes for AZG(" + azGroup.getId() + "): " + e, e);
+            }
+        } // End KNL-1230
 		eventTrackingService().post(eventTrackingService().newEvent(event, azGroup.getReference(), true));
 
 		// close the azGroup object
 		((BaseAuthzGroup) azGroup).closeEdit();
+        ((BaseAuthzGroup) azGroup).m_lastChangedRlFn = null; // cleanup
 
 		// update the db with latest provider, and site security with the latest changes, using the updated azGroup
 		BaseAuthzGroup updatedRealm = (BaseAuthzGroup) m_storage.get(azGroup.getId());
@@ -641,6 +644,11 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 		 // update the properties (sets last modified time and modified-by)
         addLiveUpdateProperties((BaseAuthzGroup) azGroup);
 
+		// allow any advisors to make last minute changes 
+		for (AuthzGroupAdvisor authzGroupAdvisor : authzGroupAdvisors) {
+			authzGroupAdvisor.groupUpdate(azGroup, userId, roleId);
+		}
+		
 		// add user to the azGroup
 		m_storage.addNewUser(azGroup, userId, roleId, maxSize);
 
@@ -672,6 +680,10 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 		 // update the properties (sets last modified time and modified-by)
         addLiveUpdateProperties((BaseAuthzGroup) azGroup);
 
+		// allow any advisors to make last minute changes 
+		for (AuthzGroupAdvisor authzGroupAdvisor : authzGroupAdvisors) {
+			authzGroupAdvisor.groupUpdate(azGroup, userId, azGroup.getMember(userId).getRole().getId());
+		}
 		// remove user from the azGroup
 		m_storage.removeUser(azGroup, userId);
 
@@ -812,6 +824,16 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 		// check security (throws if not permitted)
 		unlock(SECURE_REMOVE_AUTHZ_GROUP, azGroup.getReference());
 
+		// allow any advisors to make last minute changes 
+		for (AuthzGroupAdvisor authzGroupAdvisor : authzGroupAdvisors) {
+			authzGroupAdvisor.remove(azGroup);
+		}
+        // KNL-1230 handle removal of authzgroups by processing caching changes
+        try {
+            ((SakaiSecurity) securityService()).notifyRealmRemoved(azGroup.getId());
+        } catch (Exception e) {
+            M_log.warn("Failure while trying to notify SS about realm removal for AZG(" + azGroup.getId() + "): " + e, e);
+        } // End KNL-1230
 		// complete the azGroup
 		m_storage.remove(azGroup);
 
@@ -839,20 +861,7 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 			return;
 		}
 
-		// check security (throws if not permitted)
-		unlock(SECURE_REMOVE_AUTHZ_GROUP, authzGroupReference(azGroupId));
-
-		// complete the azGroup
-		m_storage.remove(azGroup);
-
-		// track it
-		eventTrackingService().post(eventTrackingService().newEvent(SECURE_REMOVE_AUTHZ_GROUP, azGroup.getReference(), true));
-
-		// close the azGroup object
-		((BaseAuthzGroup) azGroup).closeEdit();
-
-		// clear any site security based on this (if a site) azGroup
-		removeSiteSecurity(azGroup);
+		removeAuthzGroup(azGroup);
 	}
 
 	/**
@@ -1478,224 +1487,15 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 		 *        The azGroup to refresh.
 		 */
 		void refreshAuthzGroup(BaseAuthzGroup azGroup);
+
+        /**
+         * Retrieve all maintain roles
+         *
+         * @return a String Set of all maintain roles
+         */
+        public Set<String> getMaintainRoles();
 	}
 
-	/**********************************************************************************************************************************************************************************************************************************************************
-	 * StorageUser implementation (no container)
-	 *********************************************************************************************************************************************************************************************************************************************************/
-
-	/**
-	 * Construct a new continer given just an id.
-	 * 
-	 * @param id
-	 *        The id for the new object.
-	 * @return The new containe Resource.
-	 */
-	public Entity newContainer(String ref)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new container resource, from an XML element.
-	 * 
-	 * @param element
-	 *        The XML.
-	 * @return The new container resource.
-	 */
-	public Entity newContainer(Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new container resource, as a copy of another
-	 * 
-	 * @param other
-	 *        The other contianer to copy.
-	 * @return The new container resource.
-	 */
-	public Entity newContainer(Entity other)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new rsource given just an id.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param id
-	 *        The id for the new object.
-	 * @param others
-	 *        (options) array of objects to load into the Resource's fields.
-	 * @return The new resource.
-	 */
-	public Entity newResource(Entity container, String id, Object[] others)
-	{
-		return new BaseAuthzGroup(this,id);
-	}
-
-	/**
-	 * Construct a new resource, from an XML element.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param element
-	 *        The XML.
-	 * @return The new resource from the XML.
-	 */
-	public Entity newResource(Entity container, Element element)
-	{
-		return new BaseAuthzGroup(this,element);
-	}
-
-	/**
-	 * Construct a new resource from another resource of the same type.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param other
-	 *        The other resource.
-	 * @return The new resource as a copy of the other.
-	 */
-	public Entity newResource(Entity container, Entity other)
-	{
-		return new BaseAuthzGroup(this,(AuthzGroup) other);
-	}
-
-	/**
-	 * Construct a new continer given just an id.
-	 * 
-	 * @param id
-	 *        The id for the new object.
-	 * @return The new containe Resource.
-	 */
-	public Edit newContainerEdit(String ref)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new container resource, from an XML element.
-	 * 
-	 * @param element
-	 *        The XML.
-	 * @return The new container resource.
-	 */
-	public Edit newContainerEdit(Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new container resource, as a copy of another
-	 * 
-	 * @param other
-	 *        The other contianer to copy.
-	 * @return The new container resource.
-	 */
-	public Edit newContainerEdit(Entity other)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new rsource given just an id.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param id
-	 *        The id for the new object.
-	 * @param others
-	 *        (options) array of objects to load into the Resource's fields.
-	 * @return The new resource.
-	 */
-	public Edit newResourceEdit(Entity container, String id, Object[] others)
-	{
-		BaseAuthzGroup e = new BaseAuthzGroup(this,id);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * Construct a new resource, from an XML element.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param element
-	 *        The XML.
-	 * @return The new resource from the XML.
-	 */
-	public Edit newResourceEdit(Entity container, Element element)
-	{
-		BaseAuthzGroup e = new BaseAuthzGroup(this,element);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * Construct a new resource from another resource of the same type.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param other
-	 *        The other resource.
-	 * @return The new resource as a copy of the other.
-	 */
-	public Edit newResourceEdit(Entity container, Entity other)
-	{
-		BaseAuthzGroup e = new BaseAuthzGroup(this,(AuthzGroup) other);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * Collect the fields that need to be stored outside the XML (for the resource).
-	 * 
-	 * @return An array of field values to store in the record outside the XML (for the resource).
-	 */
-	public Object[] storageFields(Entity r)
-	{
-		return null;
-	}
-
-	/**
-	 * Check if this resource is in draft mode.
-	 * 
-	 * @param r
-	 *        The resource.
-	 * @return true if the resource is in draft mode, false if not.
-	 */
-	public boolean isDraft(Entity r)
-	{
-		return false;
-	}
-
-	/**
-	 * Access the resource owner user id.
-	 * 
-	 * @param r
-	 *        The resource.
-	 * @return The resource owner user id.
-	 */
-	public String getOwnerId(Entity r)
-	{
-		return null;
-	}
-
-	/**
-	 * Access the resource date.
-	 * 
-	 * @param r
-	 *        The resource.
-	 * @return The resource date.
-	 */
-	public Time getDate(Entity r)
-	{
-		return null;
-	}
-	
 	public class ProviderMap implements Map
 	{
 		protected Map m_wrapper = null;
@@ -1787,4 +1587,28 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 			return m_wrapper.values();
 		}		
 	}
+
+	@Override
+	public void addAuthzGroupAdvisor(AuthzGroupAdvisor advisor) {
+		if (advisor != null) {
+			authzGroupAdvisors.add(advisor);
+		}
+	}
+
+	@Override
+	public boolean removeAuthzGroupAdvisor(AuthzGroupAdvisor advisor) {
+		if (advisor != null) {
+			return authzGroupAdvisors.remove(advisor);
+		}
+		return false;
+	}
+
+	@Override
+	public List<AuthzGroupAdvisor> getAuthzGroupAdvisors() {
+		return Collections.unmodifiableList(authzGroupAdvisors);
+	}
+
+    public Set getMaintainRoles(){
+        return m_storage.getMaintainRoles();
+    }
 }

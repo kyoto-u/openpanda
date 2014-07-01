@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.3/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatManager.java $
- * $Id: ChatManager.java 100608 2011-11-09 22:16:05Z jbush@rsmart.com $
+ * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.0/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatManager.java $
+ * $Id: ChatManager.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

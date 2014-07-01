@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/BaseFOPSerializer.java $
- * $Id: BaseFOPSerializer.java 121322 2013-03-16 18:01:06Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/BaseFOPSerializer.java $
+ * $Id: BaseFOPSerializer.java 109558 2012-06-25 11:50:49Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   
-<!-- $Id: removePool.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+<!-- $Id: removePool.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -45,7 +45,7 @@
      </h:panelGroup>
      <div class="tier1">
        <h3><h:outputText value="#{questionPoolMessages.p_names}"/></h3>
-       <h:dataTable id ="table" value="#{questionpool.poolsToDelete}"
+       <h:dataTable id="table" value="#{questionpool.poolsToDelete}"
     var="pool" >
  	 <h:column>
 		<h:outputText styleClass="bold" escape="false" value="#{pool.displayName}"/>

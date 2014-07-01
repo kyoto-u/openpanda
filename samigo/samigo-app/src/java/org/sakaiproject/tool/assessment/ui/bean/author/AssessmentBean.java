@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AssessmentBean.java $
- * $Id: AssessmentBean.java 92360 2011-04-27 17:48:56Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AssessmentBean.java $
+ * $Id: AssessmentBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,9 @@
 package org.sakaiproject.tool.assessment.ui.bean.author;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -36,10 +38,13 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
+import org.sakaiproject.tool.assessment.facade.PublishedSectionFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
+import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.services.shared.TypeService;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.ItemContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.SectionContentsBean;
+import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 
 /**
  * @author rshastri
@@ -58,12 +63,12 @@ public class AssessmentBean  implements Serializable {
   private String assessmentId;
   private String title;
   // ArrayList of SectionContentsBean
-  private ArrayList sections = new ArrayList(); // this contains list of SectionFacde
+  private List<SectionContentsBean> sections = new ArrayList<SectionContentsBean>(); // this contains list of SectionFacde
   private ArrayList sectionList = new ArrayList(); // this contains list of javax.faces.model.SelectItem
   private ArrayList otherSectionList = new ArrayList(); // contains SectionItem of section except the current section
   private ArrayList partNumbers = new ArrayList();
   private int questionSize=0;
-  private float totalScore=0;
+  private double totalScore=0;
   private String newQuestionTypeId;
   private String firstSectionId;
   private boolean hasRandomDrawPart;
@@ -94,10 +99,10 @@ public class AssessmentBean  implements Serializable {
       this.title = assessment.getTitle();
 
       // work out the question side & total point
-      this.sections = new ArrayList();
-      ArrayList sectionArray = assessment.getSectionArraySorted();
+      this.sections = new ArrayList<SectionContentsBean>();
+      List<? extends SectionDataIfc> sectionArray = assessment.getSectionArraySorted();
       for (int i=0; i<sectionArray.size(); i++){
-        SectionDataIfc section = (SectionDataIfc)sectionArray.get(i);
+        SectionDataIfc section = sectionArray.get(i);
         SectionContentsBean sectionBean = new SectionContentsBean(section);
         this.sections.add(sectionBean);
       }
@@ -127,7 +132,7 @@ public class AssessmentBean  implements Serializable {
     this.title = title;
   }
 
-  public ArrayList getSections() {
+  public List<SectionContentsBean> getSections() {
     return sections;
   }
 
@@ -154,6 +159,9 @@ public class AssessmentBean  implements Serializable {
    this.questionSize = 0;
    this.totalScore = 0;
    int randomPartCount = 0;
+
+   AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
+   
    for(int i=0;i<this.sections.size();i++){
       SectionContentsBean sectionBean = (SectionContentsBean) sections.get(i);
       ArrayList items = sectionBean.getItemContents();
@@ -172,7 +180,7 @@ public class AssessmentBean  implements Serializable {
       for (int j=0; j<itemsInThisSection; j++){
           ItemContentsBean item = (ItemContentsBean)items.get(j);
           if (item.getItemData().getScore()!=null){
-            this.totalScore += item.getItemData().getScore().floatValue();
+            this.totalScore += item.getItemData().getScore().doubleValue();
           }
       }
     }
@@ -181,7 +189,7 @@ public class AssessmentBean  implements Serializable {
     }
     else {
 	setHasRandomDrawPart(false);
-    }
+    }    
   }
 
   public int updateRandomPoolQuestions(String sectionId){
@@ -201,11 +209,11 @@ public class AssessmentBean  implements Serializable {
 	  return AssessmentService.UPDATE_SUCCESS;
   }
 
-  public float getTotalScore() {
+  public double getTotalScore() {
     return this.totalScore;
   }
   
-  public void setTotalScore(float totalScore) {
+  public void setTotalScore(double totalScore) {
 	  this.totalScore = totalScore;
   }
 
@@ -235,12 +243,12 @@ public class AssessmentBean  implements Serializable {
    * This set a list of SelectItem (sectionId, title) for selection box
    * @param list
    */
-  public void setSectionList(ArrayList list){
+  public void setSectionList(List<? extends SectionDataIfc> list){
     //this.assessmentTemplateIter = new AssessmentTemplateIteratorFacade(list);
     this.sectionList = new ArrayList();
     try{
       for (int i=0; i<list.size();i++){
-        SectionDataIfc f = (SectionDataIfc) list.get(i);
+        SectionDataIfc f = list.get(i);
         // sorry, cannot do f.getAssessmentTemplateId() 'cos such call requires
         // "data" which we do not have in this case. The template list parsed
         // to this method contains merely assesmentBaseId (in this case is the templateId)

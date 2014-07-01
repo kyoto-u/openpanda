@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookManager.java 95099 2011-07-13 15:41:59Z holladay@longsight.com $
+* $Id: GradebookManager.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -330,10 +330,11 @@ public interface GradebookManager {
      * @param dueDate The due date for the assignment (optional)
      * @param isNotCounted True if the assignment should not count towards the final course grade (optional)
      * @param isReleased  True if the assignment should be release/ or visble to students
+     * @param isExtraCredit True if the assignment is for extra credit
      * @return The ID of the new assignment
      */
 
-    public Long createAssignment(Long gradebookId, String name, Double points, Date dueDate, Boolean isNotCounted, Boolean isReleased)
+    public Long createAssignment(Long gradebookId, String name, Double points, Date dueDate, Boolean isNotCounted, Boolean isReleased, Boolean isExtraCredit)
             throws ConflictingAssignmentNameException, StaleObjectModificationException;
 
 
@@ -443,10 +444,11 @@ public interface GradebookManager {
      * @param dueDate The due date for the assignment (optional)
      * @param isNotCounted True if the assignment should not count towards the final course grade (optional)
      * @param isReleased  True if the assignment should be release/ or visble to students
+     * @param isExtraCredit True if the assignment is for extra credit
      * @return The ID of the new assignment
      * @throws ConflictingAssignmentNameException StaleObjectModificationException IllegalArgumentException
      */
-    public Long createAssignmentForCategory(Long gradebookId, Long categoryId, String name, Double points, Date dueDate, Boolean isNotCounted, Boolean isReleased)
+    public Long createAssignmentForCategory(Long gradebookId, Long categoryId, String name, Double points, Date dueDate, Boolean isNotCounted, Boolean isReleased, Boolean isExtraCredit)
     throws ConflictingAssignmentNameException, StaleObjectModificationException, IllegalArgumentException;
 
     /**method to get all assignments for a category

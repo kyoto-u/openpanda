@@ -5,7 +5,7 @@
   <parent>
     <artifactId>osp-base</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>osp-matrix</name>
@@ -21,7 +21,6 @@
     <module>api-impl</module>
     <module>component</module>
     <module>tool</module>
-    <module>help</module>
   </modules>
   <build>
     <resources />
@@ -31,41 +30,13 @@
       <dependency>
         <groupId>org.sakaiproject.osp</groupId>
         <artifactId>osp-matrix-impl</artifactId>
-        <version>2.9.3</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.jsf</groupId>
-        <artifactId>jsf-tool</artifactId>
-        <version>${sakai.jsf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.jsf</groupId>
-        <artifactId>jsf-app</artifactId>
-        <version>${sakai.jsf.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.osp</groupId>
         <artifactId>osp-depend-jsf-widgets-sun</artifactId>
-        <version>2.9.3</version>
+        <version>${project.version}</version>
         <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.jsf</groupId>
-        <artifactId>jsf-widgets-sun-depend</artifactId>
-        <version>${sakai.jsf.version}</version>
-        <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.sitemanage</groupId>
-        <artifactId>sakai-siteassociation-api</artifactId>
-        <version>2.9.3</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.sakaiproject.taggable</groupId>
-          <artifactId>sakai-taggable-api</artifactId>
-          <version>${sakai.taggable.version}</version>
-          <scope>provided</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

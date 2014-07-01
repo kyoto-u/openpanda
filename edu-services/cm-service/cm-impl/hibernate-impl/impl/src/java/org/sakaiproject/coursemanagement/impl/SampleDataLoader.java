@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.3/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/SampleDataLoader.java $
- * $Id: SampleDataLoader.java 98974 2011-10-05 09:41:28Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.0/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/SampleDataLoader.java $
+ * $Id: SampleDataLoader.java 132202 2013-12-04 16:21:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -439,6 +439,21 @@ public class SampleDataLoader implements BeanFactoryAware {
 		}
 		cmAdmin.addOrUpdateSectionMembership("instructor", "I", secEid, "section_leader");
 		cmAdmin.addOrUpdateSectionMembership("admin", "I", secEid, "section_leader");
+
+		//SAK-25394 add ta's for testing purposes
+		int sectionNum = Integer.parseInt(secEidPrefix.substring("Discussion ".length(),"Discussion ".length()+1));
+		switch (sectionNum) {
+			case 1: cmAdmin.addOrUpdateSectionMembership("ta1", "GSI", secEid, "section_leader"); break;
+			case 2: cmAdmin.addOrUpdateSectionMembership("ta2", "GSI", secEid, "section_leader"); break;
+			case 3: cmAdmin.addOrUpdateSectionMembership("ta3", "GSI", secEid, "section_leader"); break;
+			case 4: cmAdmin.addOrUpdateSectionMembership("ta", "GSI", secEid, "section_leader");
+					cmAdmin.addOrUpdateSectionMembership("ta1", "GSI", secEid, "section_leader");
+					break;
+			case 5: cmAdmin.addOrUpdateSectionMembership("ta", "GSI", secEid, "section_leader");
+					cmAdmin.addOrUpdateSectionMembership("ta2", "GSI", secEid, "section_leader");
+					break;
+			default: cmAdmin.addOrUpdateSectionMembership("ta", "GSI", secEid, "section_leader"); break;
+		}
 
 		Set<Meeting> meetings = new HashSet<Meeting>();
 		Meeting mtg = cmAdmin.newSectionMeeting(secEid, location, startTime, endTime, null);

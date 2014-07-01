@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/MenuBean.java $
- * $Id: MenuBean.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/MenuBean.java $
+ * $Id: MenuBean.java 133363 2014-01-17 11:31:13Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,9 +21,14 @@
 package org.sakaiproject.tool.summarycalendar.ui;
 
 import java.io.Serializable;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
 
 public class MenuBean implements Serializable {
 	private static final long	serialVersionUID	= 8092527674632095783L;
+
+	private transient ServerConfigurationService serverConfigurationService =
+			(ServerConfigurationService) ComponentManager.get(ServerConfigurationService.class.getName());
 
 	public String processCalendar(){
 		return "calendar";
@@ -31,5 +36,13 @@ public class MenuBean implements Serializable {
 
 	public String processPreferences(){
 		return "prefs";
+	}
+
+	public String processSubscribe(){
+		return "subscribe";
+	}
+
+	public boolean isSubscribeEnabled() {
+		return serverConfigurationService.getBoolean("ical.opaqueurl.subscribe",false);
 	}
 }

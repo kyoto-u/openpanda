@@ -3,7 +3,7 @@
   <title>Sakai Setting API</title>
 </head>
 <body style="font-family:sans-serif; background-color: pink">
-<p><b>Sakai Setting API</b></p>
+<p><b>Sakai Setting API Extension</b></p>
 <p>
 This setting allows an External Tool to 
 store up to 4K of data  within the tool placement in Sakai to be included on every launch.
@@ -69,7 +69,7 @@ $url = $_REQUEST['url'];
 $data = array(
   'lti_message_type' => $message,
   'id' => $_REQUEST['id'],
-  'setting' => $_REQUEST['setting']);
+  'setting' => stripslashes($_REQUEST['setting']));
 
 $oauth_consumer_key = $_REQUEST['key'];
 
@@ -84,11 +84,11 @@ foreach($newdata as $key => $value ) {
     print "$key=$value (".mb_detect_encoding($value).")\n";
 }
 
-global $last_base_string;
+global $LastOAuthBodyBaseString;
 echo "\nBase String:\n</pre><p>\n";
-echo $last_base_string;
+echo $LastOAuthBodyBaseString;
 echo "\n</p>\n<pre>\n";
-$retval = do_post_request($url, http_build_query($newdata));
+$retval = do_body_request($url, "POST", http_build_query($newdata));
 
 $retval = str_replace("<","&lt;",$retval);
 $retval = str_replace(">","&gt;",$retval);

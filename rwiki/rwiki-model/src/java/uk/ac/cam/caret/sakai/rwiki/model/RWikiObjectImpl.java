@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiObjectImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiObjectImpl.java $
  * $Id: RWikiObjectImpl.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

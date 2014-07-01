@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-servlet/servlet/src/java/org/sakaiproject/citation/servlet/CitationServlet.java $
- * $Id: CitationServlet.java 98468 2011-09-21 02:49:36Z jimeng@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-servlet/servlet/src/java/org/sakaiproject/citation/servlet/CitationServlet.java $
+ * $Id: CitationServlet.java 111745 2012-08-22 18:51:08Z jimeng@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
@@ -41,7 +42,7 @@ import org.sakaiproject.citation.api.Citation;
 import org.sakaiproject.citation.api.CitationCollection;
 import org.sakaiproject.citation.api.CitationService;
 import org.sakaiproject.citation.api.Schema;
-import org.sakaiproject.citation.cover.ConfigurationService;
+import org.sakaiproject.citation.api.ConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
@@ -76,6 +77,7 @@ public class CitationServlet extends VmServlet
 	 * 
 	 */
 	public static final String SERVLET_TEMPLATE = "/vm/servlet.vm";
+	public static final String COMPACT_TEMPLATE = "/vm/compact.vm";
 //	private String collectionTitle = null;
 	
 	/** Our log (commons). */
@@ -89,9 +91,11 @@ public class CitationServlet extends VmServlet
 
 	protected BasicAuth basicAuth = null;
 
-	private ContentHostingService contentService;
+	protected ContentHostingService contentService;
 
-	private CitationService citationService;
+	protected CitationService citationService;
+	
+	protected ConfigurationService configurationService;
 
 	protected enum Status
 	{
@@ -147,6 +151,7 @@ public class CitationServlet extends VmServlet
 		// get services from ComponentManager
 		contentService = (ContentHostingService) ComponentManager.get("org.sakaiproject.content.api.ContentHostingService");
 		citationService = (CitationService) ComponentManager.get("org.sakaiproject.citation.api.CitationService");
+		configurationService = (ConfigurationService) ComponentManager.get("org.sakaiproject.citation.api.ConfigurationService");
 	}
 
 //	/**
@@ -172,6 +177,9 @@ public class CitationServlet extends VmServlet
 	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
+		if(M_log.isDebugEnabled()) {
+			M_log.debug("doGet() "  + req.getMethod());
+		}
 		// process any login that might be present
 		basicAuth.doLogin(req);
 		
@@ -193,6 +201,8 @@ public class CitationServlet extends VmServlet
 				ParameterParser paramParser = (ParameterParser) req
 					.getAttribute(ATTR_PARAMS);
 				resource = findResource(paramParser, option);
+				String resourceUuid = this.contentService.getUuid(resource.getId());
+				setVmReference("resourceId", resourceUuid, req);
        
 				boolean fromGoogle = false;
 				Citation citation = findOpenURLVersion01(paramParser);
@@ -218,20 +228,26 @@ public class CitationServlet extends VmServlet
 			} catch (PermissionException e) {
 				setVmReference("error", rb.getString("error.permission"), req);
 			}
+			
+			setVmReference("openUrlLabel", configurationService.getSiteConfigOpenUrlLabel(), req);
+			setVmReference("titleProperty", Schema.TITLE, req);
+			// validator
+			setVmReference("xilator", new Validator(), req);
+
 			// Set near end so we always have something
 			setVmReference( "titleArgs",  new String[]{ getCollectionTitle(resource) }, req );
 			// return the servlet template
-			includeVm( SERVLET_TEMPLATE, req, res );
+			includeVm( COMPACT_TEMPLATE, req, res );
 
 		}
 	}
-
+	
 	/**
 	 * Looks for an OpenURL citation in the request.
 	 * @param req
 	 * @return
 	 */
-	private Citation findOpenUrlCitation(HttpServletRequest req) {
+	protected Citation findOpenUrlCitation(HttpServletRequest req) {
 		Citation citation = citationService.addCitation(req);
 		return citation;
 	}
@@ -269,7 +285,76 @@ public class CitationServlet extends VmServlet
 		}
 	}
 
-
+	public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		if(M_log.isDebugEnabled()) {
+			M_log.debug("doDelete() "  + req.getMethod());
+		}
+		// process any login that might be present
+		basicAuth.doLogin(req);
+		
+		// catch the login helper posts
+		String option = req.getPathInfo();
+		String[] parts = option.split("/");
+		
+		if ((parts.length == 2) && ((parts[1].equals("login")))) {
+			doLogin(req, res, null);
+		} else if(parts.length < 3) {
+			res.sendError(HttpServletResponse.SC_BAD_REQUEST, rb.getString("savesite.delete.missing_params"));
+			return;
+		} else {
+			
+			String citationId = parts[2];
+			String resourceUuid = parts[1];
+			
+			if(M_log.isDebugEnabled()) {
+				M_log.debug("doDelete() citationId == " + citationId + "  resourceUuid == " + resourceUuid);
+			}
+			
+			if(resourceUuid == null || resourceUuid.trim().equals("") || citationId == null || citationId.trim().equals("")) {
+				res.sendError(HttpServletResponse.SC_BAD_REQUEST, rb.getString("savesite.delete.missing_params"));
+				return;
+			}
+			
+			String resourceId = contentService.resolveUuid(resourceUuid);
+			if(resourceId == null) {
+				res.sendError(HttpServletResponse.SC_NOT_FOUND, rb.getString("savecite.delete.invalid_uuid"));
+				return;
+			}
+			
+			if(! citationService.allowReviseCitationList(resourceId)) {
+				res.sendError(HttpServletResponse.SC_FORBIDDEN, "savecite.delete.not_permitted");
+				return;
+			}
+			
+			try {
+				ContentResource resource = this.contentService.getResource(resourceId);
+				
+				String citationCollectionId = new String(resource.getContent());
+				if(citationCollectionId == null || citationCollectionId.trim().equals("")) {
+					res.sendError(HttpServletResponse.SC_CONFLICT, rb.getString("savecite.delete.invalid_uuid"));
+					return;
+				}
+				
+				CitationCollection collection = this.citationService.getCollection(citationCollectionId );
+				
+				Citation item = collection.getCitation(citationId);
+				
+				collection.remove(item);
+				this.citationService.save(collection);
+				
+				M_log.debug("doDelete() SUCCESS");
+				
+			} catch (IdUnusedException e) {
+				res.sendError(HttpServletResponse.SC_NOT_FOUND, rb.getString("savecite.delete.invalid_uuid"));
+			} catch (TypeException e) {
+				res.sendError(HttpServletResponse.SC_CONFLICT, rb.getString("savecite.delete.invalid_uuid"));
+			} catch (PermissionException e) {
+				res.sendError(HttpServletResponse.SC_FORBIDDEN, "savecite.delete.not_permitted");
+			} catch (ServerOverloadException e) {
+				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, rb.getString("savecite.delete.internal"));
+			}
+		}
+	}
 
       public ContentResource findResource(ParameterParser params, String option) throws PermissionException, IdUnusedException {
 		// get the path info
@@ -281,34 +366,39 @@ public class CitationServlet extends VmServlet
 //			sendError( res, HttpServletResponse.SC_SERVICE_UNAVAILABLE );
 //		}
 
-		String collectionTitle = null;
-		
 		// parse the request path
 		String[] parts = option.split("/");
 		String resourceUuid = parts[1];
 		
 		String resourceId = contentService.resolveUuid(resourceUuid);
 
+		if (resourceId == null) {
+			throw new IdUnusedException(resourceUuid);
+		} 
+		
+		// revise permission granted
+		if (!citationService.allowReviseCitationList(resourceId)) {
+			// revise permission denied
+			throw new PermissionException(null, null, null);
+		}
+		
 		ContentResource resource = null;
-		if (resourceId != null) {
-			// revise permission granted
-			if (!citationService.allowReviseCitationList(resourceId)) {
-				// revise permission denied
-				throw new PermissionException(null, null, null);
-			}
-			try {
-				resource = contentService.getResource(resourceId);
-				return resource;
-			} catch (TypeException e) {
-				// Ignore.
+		try {
+			resource = contentService.getResource(resourceId);
+			
+		} catch (TypeException e) {
+			// Ignore.
+			if(M_log.isDebugEnabled()) {
+				M_log.debug("TypeException in findResource() " + e.getMessage());
 			}
 		}
-		throw new IdUnusedException(resourceUuid);
+		return resource;
 	}
+		
 
 	public void addCitation(ContentResource resource, Citation citation) throws IdUnusedException, ServerOverloadException {
-		String collectionId = new String(resource.getContent());
-		CitationCollection collection = citationService.getCollection(collectionId);
+		String citationCollectionId = new String(resource.getContent());
+		CitationCollection collection = citationService.getCollection(citationCollectionId);
 
 		collection.add(citation);
 		citationService.save(collection);
@@ -326,13 +416,39 @@ public class CitationServlet extends VmServlet
 	}
 
 
+	public Citation findOpenURLVersion01(ParameterParser params) {
+		String genre = params.getString("genre");
+		String[] authors = params.getStrings("au");
+		String title = params.getString("title");
+		String atitle = params.getString("atitle");
+		String volume = params.getString("volume");
+		String issue = params.getString("issue");
+		String pages = params.getString("pages");
+		String publisher = params.getString("publisher");
+		String date = params.getString("date");
+		String id = params.getString("id");
+
+		HashMap map = new HashMap();
+		map.put("genre", genre);
+		map.put("au", authors);
+		map.put("title", title);
+		map.put("atitle", atitle);
+		map.put("volume", volume);
+		map.put("issue", issue);
+		map.put("pages", pages);
+		map.put("publisher", publisher);
+		map.put("date", date);
+		map.put("id", id);
+		return findOpenURLVersion01(map);
+	}
+
 	/**
 	 * Try and extract a Citation from the request.
 	 *
 	 * @param req  HttpServletRequest object with the client request
 	 * @param res  HttpServletResponse object back to the client
 	 */
-	public Citation findOpenURLVersion01(ParameterParser params) {
+	public Citation findOpenURLVersion01(Map params) {
 
 		// http://localhost:8080/savecite/71b84348-5962-4e0e-aa49-4ce5824ed84f
 		// ?sakai.session.key=nada&sid=google&genre=book&au=Siever,+E.&au=Figgins,+S.&au=Love,+R.&au=Robbins,+A.
@@ -344,16 +460,16 @@ public class CitationServlet extends VmServlet
 		// http://localhost:8080/savecite/71b84348-5962-4e0e-aa49-4ce5824ed84f?sakai.session.key=nada&sid=google&genre=article&au=Elsworth,+JD&au=Glover,+V.&au=Reynolds,+GP&au=Sandler,+M.&au=Lees,+AJ&au=Phuapradit,+P.&au=Shaw,+KM&au=Stern,+GM&au=Kumar,+P.&atitle=Deprenyl+administration+in+man:+a+selective+monoamine+oxidase+B+inhibitor+without+the+%E2%80%98cheese+effect%E2%80%99&title=Psychopharmacology&volume=57&issue=1&pages=33-38&date=1978&publisher=Springer
 		// http://oxfordsfx.hosted.exlibrisgroup.com/oxford?sid=google&auinit=JD&aulast=Elsworth&atitle=Deprenyl+administration+in+man:+a+selective+monoamine+oxidase+B+inhibitor+without+the+%E2%80%98cheese+effect%E2%80%99&id=doi:10.1007/BF00426954&title=Psychopharmacology&volume=57&issue=1&date=1978&spage=33&issn=0033-3158
 
-		String genre = params.getString("genre");
-		String[] authors = params.getStrings("au");
-		String title = params.getString("title");
-		String atitle = params.getString("atitle");
-		String volume = params.getString("volume");
-		String issue = params.getString("issue");
-		String pages = params.getString("pages");
-		String publisher = params.getString("publisher");
-		String date = params.getString("date");
-		String id = params.getString("id");
+		String genre = (String) params.get("genre");
+		String[] authors = (String[]) params.get("au");
+		String title = (String) params.get("title");
+		String atitle = (String) params.get("atitle");
+		String volume = (String) params.get("volume");
+		String issue = (String) params.get("issue");
+		String pages = (String) params.get("pages");
+		String publisher = (String) params.get("publisher");
+		String date = (String) params.get("date");
+		String id = (String) params.get("id");
 
 		// do we have enough info for a meaningful citation?
 		if ((title == null || title.trim().equals(""))
@@ -435,7 +551,7 @@ public class CitationServlet extends VmServlet
 	/**
 	 * Setup the request/response ready for Velocity.
 	 */
-	private void setupResponse(HttpServletRequest req, HttpServletResponse res) {
+	protected void setupResponse(HttpServletRequest req, HttpServletResponse res) {
 		// the context wraps our real vm attribute set
 		ResourceProperties props = new org.sakaiproject.util.BaseResourceProperties();
 		setVmReference("props", props, req);
@@ -448,7 +564,7 @@ public class CitationServlet extends VmServlet
 		
 		if(client != null && ! client.trim().equals("")) {
 			Locale locale = rb.getLocale();
-			List<Map<String,String>> clientMaps = ConfigurationService.getSaveciteClientsForLocale(locale);
+			List<Map<String,String>> clientMaps = configurationService.getSaveciteClientsForLocale(locale);
 			for(Map<String,String> clientMap : clientMaps) {
 				String clientId = clientMap.get("id");
 				if(clientId == null || clientId.trim().equals("")) {

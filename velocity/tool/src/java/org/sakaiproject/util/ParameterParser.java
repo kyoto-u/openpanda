@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.3/tool/src/java/org/sakaiproject/util/ParameterParser.java $
- * $Id: ParameterParser.java 94951 2011-07-10 06:18:52Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/sakai-10.0/tool/src/java/org/sakaiproject/util/ParameterParser.java $
+ * $Id: ParameterParser.java 123549 2013-05-02 23:07:36Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@
 package org.sakaiproject.util;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -236,11 +237,11 @@ public class ParameterParser
 			org.apache.commons.fileupload.FileItem item = (org.apache.commons.fileupload.FileItem) o;
 			try
             {
-	            return new FileItem(item.getName(), item.getContentType(), item.getInputStream());
+	            return new FileItem(Normalizer.normalize(item.getName(), Normalizer.Form.NFC), item.getContentType(), item.getInputStream());
             }
             catch (IOException e)
             {
-            	return new FileItem(item.getName(), item.getContentType(), item.get());
+            	return new FileItem(Normalizer.normalize(item.getName(), Normalizer.Form.NFC), item.getContentType(), item.get());
             }
 		}
 

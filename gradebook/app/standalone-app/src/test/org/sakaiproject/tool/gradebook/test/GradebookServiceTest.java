@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookServiceTest.java 95099 2011-07-13 15:41:59Z holladay@longsight.com $
+* $Id: GradebookServiceTest.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -78,7 +78,7 @@ public class GradebookServiceTest extends GradebookTestBase {
 
         // Add an internal assignment
         Long gbId = gradebook.getId();
-        asn_1Id = gradebookManager.createAssignment(gbId, ASN_1, new Double(10), null, Boolean.FALSE,Boolean.FALSE);
+        asn_1Id = gradebookManager.createAssignment(gbId, ASN_1, new Double(10), null, Boolean.FALSE,Boolean.FALSE,Boolean.FALSE);
 
         // Add a score for the internal assignment
         List assignments = gradebookManager.getAssignments(gbId);

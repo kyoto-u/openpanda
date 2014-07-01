@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.sakaiproject.sitestats</groupId>
         <artifactId>sitestats</artifactId>
-        <version>2.3.6</version><!-- sitestats.version -->
+        <version>10.0</version><!-- sitestats.version -->
     </parent>
 
     <!-- Packaging -->
@@ -40,7 +40,6 @@
         <dependency>
             <groupId>org.sakaiproject.sitestats</groupId>
             <artifactId>sitestats-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.sitestats</groupId>
@@ -68,17 +67,39 @@
         <!-- Spring & Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
+            <artifactId>hibernate-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <!-- needed by hibernate unit tests -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
         </dependency>
 
         <!-- Apache Commons -->
         <dependency>
             <groupId>commons-pool</groupId>
             <artifactId>commons-pool</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
@@ -138,13 +159,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -152,7 +178,13 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- <dependency> <groupId>com.oracle</groupId> <artifactId>ojdbc14</artifactId> 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <!-- Stuck at 4.4 https://jira.springsource.org/browse/SPR-5145 -->
+            <version>4.11</version>
+        </dependency>
+        <!-- <dependency> <groupId>com.oracle</groupId> <artifactId>ojdbc14</artifactId>
             <scope>test</scope> </dependency> -->
         <dependency>
             <groupId>dom4j</groupId>
@@ -185,8 +217,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymockclassextension</artifactId>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -208,14 +241,36 @@
 
         <dependency>
             <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
-        
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
     </dependencies>
+    <build>
+
+        <resources>
+            <resource>
+                <directory>src/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <excludes>
+                    <exclude>**/web.xml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/bundle</directory>
+            </resource>
+        </resources>
+    </build>
 
     <profiles>
         <profile>
@@ -257,12 +312,6 @@
                             <include>**/*.properties</include>
                         </includes>
                     </testResource>
-                    <testResource>
-                        <directory>${basedir}/../sitestats-pack/src/webapp/WEB-INF</directory>
-                        <includes>
-                            <include>hbm-db.xml</include>
-                        </includes>
-                    </testResource>
                 </testResources>
             </build>
         </profile>
@@ -274,17 +323,6 @@
             </properties>
 
             <build>
-                <resources>
-                    <resource>
-                        <directory>src/java</directory>
-                        <includes>
-                            <include>**/*.xml</include>
-                        </includes>
-                        <excludes>
-                            <exclude>**/web.xml</exclude>
-                        </excludes>
-                    </resource>
-                </resources>
 
                 <!-- Unit testing -->
                 <plugins>
@@ -306,12 +344,6 @@
                         <includes>
                             <include>**/*.xml</include>
                             <include>**/*.properties</include>
-                        </includes>
-                    </testResource>
-                    <testResource>
-                        <directory>${basedir}/../sitestats-pack/src/webapp/WEB-INF</directory>
-                        <includes>
-                            <include>hbm-db.xml</include>
                         </includes>
                     </testResource>
                 </testResources>

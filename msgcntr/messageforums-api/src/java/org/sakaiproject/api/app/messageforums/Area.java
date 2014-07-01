@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,6 +25,22 @@ import java.util.List;
 import java.util.Set;
 
 public interface Area extends MutableEntity {
+    
+    /**
+     * setting for {@link #sendToEmail}. A copy of message is never sent
+     * to recipients' email addresses
+     */
+    public static final int EMAIL_COPY_NEVER = 0;
+    /**
+     * setting for {@link #sendToEmail}. Sender is given the option of sending
+     * a copy of message to email addresses 
+     */
+    public static final int EMAIL_COPY_OPTIONAL = 1;
+    /**
+     * setting for {@link #sendToEmail}. A copy of message is always sent
+     * to recipients' email addresses
+     */
+    public static final int EMAIL_COPY_ALWAYS = 2;
 
     public void setVersion(Integer version);
 
@@ -44,9 +60,33 @@ public interface Area extends MutableEntity {
 
     public void setEnabled(Boolean enabled);
     
+    /**
+     * {@link Deprecated} This option was replaced by sendToEmail via MSGCNTR-708. DO NOT USE.
+     * @return
+     */
     public Boolean getSendEmailOut();
     
+    /**
+     * {@link Deprecated} This option was replaced by sendToEmail via MSGCNTR-708. DO NOT USE.
+     * @param sendEmailOut
+     */
     public void setSendEmailOut(Boolean sendEmailOut);
+    
+    /**
+     * 
+     * @return the site-level setting for sending a copy of the message to recipients'
+     * email addresses. This may be {@link #EMAIL_COPY_NEVER}, #{@link #EMAIL_COPY_OPTIONAL},
+     * {@link #EMAIL_COPY_ALWAYS}
+     */
+    public int getSendToEmail();
+    
+    /**
+     * set the site-level setting for sending a copy of the message to recipients'
+     * email addresses. This may be {@link #EMAIL_COPY_NEVER}, #{@link #EMAIL_COPY_OPTIONAL},
+     * {@link #EMAIL_COPY_ALWAYS}
+     * @param sendToEmail
+     */
+    public void setSendToEmail(int sendToEmail);
 
     public List getOpenForums();
     

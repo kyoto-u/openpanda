@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -281,5 +281,12 @@ public interface ConfigurationService
    * @return
    */
   public List<Map<String, String>> getSaveciteClientsForLocale(Locale locale);
+  
+  /**
+   * Access the current setting for the number of seconds between AJAX requests to check for updates 
+   * of the main window during a session searching for citations in a savecite client window.
+   * @return the number of seconds between requests.
+   */
+  public String getSecondsBetweenSaveciteRefreshes();
 
 }

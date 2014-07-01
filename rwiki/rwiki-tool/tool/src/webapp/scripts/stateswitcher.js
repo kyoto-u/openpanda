@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/webapp/scripts/stateswitcher.js $
- * $Id: stateswitcher.js 67378 2009-10-08 15:52:19Z gsilver@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/webapp/scripts/stateswitcher.js $
+ * $Id: stateswitcher.js 120427 2013-02-24 05:41:46Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -577,6 +577,15 @@ function previewContent(contentId,previewId,pageVersionId,realmId,pageNameId,url
 
 function divReplaceCallback(responsestring) {
 	previewDiv.innerHTML = responsestring;
+	
+        if (typeof jsMath != 'undefined') {
+            // re-check whether math equation exists and load jsMath 
+            // require jsMath 3.3c or newer
+            jsMath.Autoload.ReCheck();
+            // restrict jsMath to process new content for efficiency
+            jsMath.ProcessBeforeShowing(previewDiv);
+        }
+	
 	sizeFrameAfterAjax(previewDiv);
 }
 

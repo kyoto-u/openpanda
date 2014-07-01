@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/test/org/sakaiproject/search/indexer/impl/test/TDataSource.java $
- * $Id: TDataSource.java 95581 2011-07-25 15:06:10Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/test/org/sakaiproject/search/indexer/impl/test/TDataSource.java $
+ * $Id: TDataSource.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,11 +38,12 @@ import org.apache.commons.dbcp.cpdsadapter.DriverAdapterCPDS;
 import org.apache.commons.dbcp.datasources.SharedPoolDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopDocs;
 import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.jdbc.WrappingConnection;
 import org.sakaiproject.search.jdbc.WrappingDataSource;
@@ -314,22 +315,32 @@ public class TDataSource
 			{
 				TermQuery tq = new TermQuery(new Term(SearchService.FIELD_REFERENCE, sbi
 						.getName()));
-				Hits h = indexSearcher.search(tq);
+				
+				TopDocs topDocs = indexSearcher.search(tq, 1000000);
 				if (sbi.getSearchaction().equals(SearchBuilderItem.ACTION_ADD))
 				{
 					log.info("====== ADD CHECKING =====");
-					if (h.length() != 1)
+					if (topDocs.totalHits != 1)
 					{
-						log.error("Didnt find " + sbi.getName() + " got " + h.length());
+						log.error("Didnt find " + sbi.getName() + " got " + topDocs.totalHits);
 						errors++;
 					}
 					else
 					{
-						Document doc = h.doc(0);
-						String value = doc.get(SearchService.FIELD_REFERENCE);
+						Document doc = indexSearcher.doc(topDocs.scoreDocs[0].doc); 
+						byte[] binValue = doc.getBinaryValue(SearchService.FIELD_REFERENCE);
+						String value = null;
+						if (binValue == null)
+						{
+							log.warn("Binary Value not found!");
+							value = doc.get(SearchService.FIELD_REFERENCE);
+						} else {
+							value = CompressionTools.decompressString(binValue);
+						}
+						
 						if (!sbi.getName().equals(value))
 						{
-							log.error("Ids Dont Match ");
+							log.error("Ids Dont Match " + sbi.getName() + ":" + value);
 							errors++;
 						}
 						else
@@ -341,10 +352,10 @@ public class TDataSource
 				else
 				{
 					log.info("====== DELETE CHECKING =====");
-					if (h.length() != 0)
+					if (topDocs.totalHits != 0)
 					{
-						Document doc = h.doc(0);
-						String value = doc.get(SearchService.FIELD_REFERENCE);
+						Document doc = indexSearcher.doc(0);
+						String value = CompressionTools.decompressString(doc.getBinaryValue(SearchService.FIELD_REFERENCE));
 						log.error("Found " + sbi.getName() + " when should have not  "
 								+ value + " "
 								+ SearchBuilderItem.actions[sbi.getSearchaction()] + " "
@@ -363,7 +374,7 @@ public class TDataSource
 		}
 		catch (Exception ex)
 		{
-			log.error("Searchng Exception ", ex);
+			log.error("Searching Exception ", ex);
 			return -1;
 		}
 	}

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/JournaledFSIndexStorage.java $
- * $Id: JournaledFSIndexStorage.java 83743 2010-10-25 15:04:23Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/JournaledFSIndexStorage.java $
+ * $Id: JournaledFSIndexStorage.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -290,7 +290,10 @@ public class JournaledFSIndexStorage implements JournaledIndex, IndexStorageProv
 				{
 					try
 					{
-						rs.close();
+						if (rs != null)
+						{
+							rs.close();
+						}
 					}
 					catch (Exception ex)
 					{
@@ -1144,7 +1147,10 @@ public class JournaledFSIndexStorage implements JournaledIndex, IndexStorageProv
 			{
 				try
 				{
-					connection.rollback();
+					if (connection != null)
+					{
+						connection.rollback();
+					}
 				}
 				catch (Exception ex2)
 				{

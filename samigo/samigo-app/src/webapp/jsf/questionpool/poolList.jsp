@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  
-<!-- $Id: poolList.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+<!-- $Id: poolList.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
 <%--
 ***********************************************************************************
 *
@@ -78,6 +78,13 @@
 
         <h:outputText value="#{questionPoolMessages.qps}"/>
 
+<f:verbatim></span></li>
+
+<li role="menuitem" ><span></f:verbatim>
+    <h:commandLink id="evnetLogLink" accesskey="#{generalMessages.a_log}" title="#{generalMessages.t_eventLog}" action="eventLog" immediate="true" rendered="#{authorization.adminQuestionPool}">
+      <h:outputText value="#{generalMessages.eventLog}" />
+      <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.EventLogListener" />
+    </h:commandLink>
 <f:verbatim></span></li>
 </ul></f:verbatim>
 

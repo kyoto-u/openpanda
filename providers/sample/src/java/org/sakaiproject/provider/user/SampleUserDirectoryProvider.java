@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/sample/src/java/org/sakaiproject/provider/user/SampleUserDirectoryProvider.java $
- * $Id: SampleUserDirectoryProvider.java 80979 2010-08-09 11:07:46Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/sample/src/java/org/sakaiproject/provider/user/SampleUserDirectoryProvider.java $
+ * $Id: SampleUserDirectoryProvider.java 132202 2013-12-04 16:21:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -124,6 +124,15 @@ public class SampleUserDirectoryProvider implements UserDirectoryProvider, Users
 			m_info.put("instructor2", new Info("instructor2", "The", "Instructor2", "instructor2@local.host"));
 			m_info.put("da1", new Info("da1", "Dept", "Admin", "da1@local.host"));
 			m_info.put("ta", new Info("ta", "The", "Teaching-Assistant", "ta@local.host"));
+
+			//SAK-25394 more ta's for testing purposes
+			m_info.put("ta1", new Info("ta1", "The", "Teaching-Assistant1", "ta1@local.host"));
+			m_info.put("ta2", new Info("ta2", "The", "Teaching-Assistant2", "ta2@local.host"));
+			m_info.put("ta3", new Info("ta2", "The", "Teaching-Assistant3", "ta3@local.host"));
+
+			//SAK-25267 used for integration with uPortal
+			m_info.put("student", new Info("student", "The", "Student", "student@local.host"));
+			m_info.put("faculty", new Info("faculty", "The", "Faculty", "faculty@local.host"));
 
 			M_log.info("init()");
 		}

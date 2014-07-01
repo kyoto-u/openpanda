@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
- * $Id: SavePublishedSettingsListener.java 104274 2012-02-01 00:21:47Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
+ * $Id: SavePublishedSettingsListener.java 133525 2014-01-22 00:26:29Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,6 +40,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
@@ -83,7 +84,7 @@ import org.sakaiproject.tool.assessment.ui.bean.author.PublishRepublishNotificat
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: SavePublishedSettingsListener.java 104274 2012-02-01 00:21:47Z ktsao@stanford.edu $
+ * @version $Id: SavePublishedSettingsListener.java 133525 2014-01-22 00:26:29Z ktsao@stanford.edu $
  */
 
 public class SavePublishedSettingsListener
@@ -530,14 +531,31 @@ implements ActionListener
 
 		control.setFeedbackDate(assessmentSettings.getFeedbackDate());
 		// Feedback Components Students Can See
-		feedback.setShowStudentResponse(Boolean.valueOf(assessmentSettings.getShowStudentResponse()));
-		feedback.setShowCorrectResponse(Boolean.valueOf(assessmentSettings.getShowCorrectResponse()));
-		feedback.setShowStudentScore(Boolean.valueOf(assessmentSettings.getShowStudentScore()));
-		feedback.setShowStudentQuestionScore(Boolean.valueOf(assessmentSettings.getShowStudentQuestionScore()));
-		feedback.setShowQuestionLevelFeedback(Boolean.valueOf(assessmentSettings.getShowQuestionLevelFeedback()));
-		feedback.setShowSelectionLevelFeedback(Boolean.valueOf(assessmentSettings.getShowSelectionLevelFeedback()));
-		feedback.setShowGraderComments(Boolean.valueOf(assessmentSettings.getShowGraderComments()));
-		feedback.setShowStatistics(Boolean.valueOf(assessmentSettings.getShowStatistics()));
+		// if 'No feedback' (it corresponds to value 3) is selected, 
+		// all components are unchecked
+		 if (feedback.getFeedbackDelivery().equals(new Integer("3")))
+		    {
+		    	feedback.setShowQuestionText(false);
+				feedback.setShowStudentResponse(false);
+				feedback.setShowCorrectResponse(false);
+				feedback.setShowStudentScore(false);
+				feedback.setShowStudentQuestionScore(false);
+				feedback.setShowQuestionLevelFeedback(false);
+				feedback.setShowSelectionLevelFeedback(false);
+				feedback.setShowGraderComments(false);
+				feedback.setShowStatistics(false);
+		    }
+		    else {
+		    		feedback.setShowQuestionText(Boolean.valueOf(assessmentSettings.getShowQuestionText()));
+		    		feedback.setShowStudentResponse(Boolean.valueOf(assessmentSettings.getShowStudentResponse()));
+		    		feedback.setShowCorrectResponse(Boolean.valueOf(assessmentSettings.getShowCorrectResponse()));
+		    		feedback.setShowStudentScore(Boolean.valueOf(assessmentSettings.getShowStudentScore()));
+		    		feedback.setShowStudentQuestionScore(Boolean.valueOf(assessmentSettings.getShowStudentQuestionScore()));
+		    		feedback.setShowQuestionLevelFeedback(Boolean.valueOf(assessmentSettings.getShowQuestionLevelFeedback()));
+		    		feedback.setShowSelectionLevelFeedback(Boolean.valueOf(assessmentSettings.getShowSelectionLevelFeedback()));
+		    		feedback.setShowGraderComments(Boolean.valueOf(assessmentSettings.getShowGraderComments()));
+		    		feedback.setShowStatistics(Boolean.valueOf(assessmentSettings.getShowStatistics()));
+		    }
 		assessment.setAssessmentFeedback(feedback);
 
 		// set Grading
@@ -583,7 +601,7 @@ implements ActionListener
 		boolean gbError = false;
 
 		if (assessmentSettings.getToDefaultGradebook() != null && assessmentSettings.getToDefaultGradebook().equals("1")) {
-			if (assessment.getTotalScore().floatValue() <= 0) {
+			if (assessment.getTotalScore().doubleValue() <= 0) {
 				String gb_err = (String) ContextUtil.getLocalizedString(
 						"org.sakaiproject.tool.assessment.bundle.AuthorMessages","gradebook_exception_min_points");
 				context.addMessage(null, new FacesMessage(gb_err));
@@ -599,11 +617,11 @@ implements ActionListener
 		// b. if Gradebook exists, just call addExternal and removeExternal and swallow any exception. The
 		//    exception are indication that the assessment is already in the Gradebook or there is nothing
 		//    to remove.
-		GradebookService g = null;
+		GradebookExternalAssessmentService g = null;
 		if (integrated)
 		{
-			g = (GradebookService) SpringBeanLocator.getInstance().
-			getBean("org.sakaiproject.service.gradebook.GradebookService");
+			g = (GradebookExternalAssessmentService) SpringBeanLocator.getInstance().
+			getBean("org.sakaiproject.service.gradebook.GradebookExternalAssessmentService");
 		}
 
 		if (gbsHelper.gradebookExists(GradebookFacade.getGradebookUId(), g)){ // => something to do
@@ -691,7 +709,7 @@ implements ActionListener
 									if(ag.getStatus() ==5) {
 										ag.setFinalScore(ag.getFinalScore());
 									} else {
-										Float averageScore = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
+										Double averageScore = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
 										getAverageSubmittedAssessmentGrading(Long.valueOf(assessment.getPublishedAssessmentId()), ag.getAgentId());
 										ag.setFinalScore(averageScore);
 									}

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/PublishedAssessmentBeanie.java $
- * $Id: PublishedAssessmentBeanie.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/PublishedAssessmentBeanie.java $
+ * $Id: PublishedAssessmentBeanie.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -55,7 +55,7 @@ public class PublishedAssessmentBeanie
   private ArrayList sections = new ArrayList();
   private ArrayList partNumbers = new ArrayList();
   private int questionSize=0;
-  private float totalScore=0;
+  private double totalScore=0;
   private String newQuestionTypeId;
 
   /*
@@ -140,13 +140,13 @@ public class PublishedAssessmentBeanie
       for (int j=0; j<items.size();j++){
         ItemContentsBean item = (ItemContentsBean)items.get(j);
         if (item.getItemData().getScore()!=null){
-          this.totalScore += item.getItemData().getScore().floatValue();
+          this.totalScore += item.getItemData().getScore().doubleValue();
         }
       }
     }
   }
 
-  public float getTotalScore() {
+  public double getTotalScore() {
     return this.totalScore;
   }
 

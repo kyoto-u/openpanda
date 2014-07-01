@@ -45,6 +45,7 @@ import org.sakaiproject.lessonbuildertool.SimplePageItem;
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.localeutil.LocaleGetter;                                                                                          
 import uk.org.ponder.rsf.components.UIBranchContainer;
+import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIELBinding;
@@ -113,6 +114,8 @@ public class EditPageProducer implements ViewComponentProducer, NavigationCaseRe
 
 		Collection<String> groups = null;
 
+        boolean isPrerequisite = false;
+
 		if (itemId != null && itemId != -1) {
 			SimplePageItem i = simplePageBean.findItem(itemId);
 			if (i.getPageId() != page.getPageId()) {
@@ -124,6 +127,8 @@ public class EditPageProducer implements ViewComponentProducer, NavigationCaseRe
 			} catch (IdUnusedException exc) {
 			    // should be impossible for text item; underlying object missing
 			}
+
+            isPrerequisite = i.isPrerequisite();
 		}
 
 		if (simplePageBean.canEditPage()) {
@@ -143,8 +148,12 @@ public class EditPageProducer implements ViewComponentProducer, NavigationCaseRe
 
 			richTextEvolver.evolveTextInput(instructions);
 
-			if (page.getOwner() == null)
-			    showPageProducer.createGroupList(form, groups);
+			if (page.getOwner() == null) {
+			    // these options don't apply on student pages
+			    showPageProducer.createGroupList(form, groups, "", "#{simplePageBean.selectedGroups}");
+			    UIOutput.make(form, "prerequisite-block");
+			    UIBoundBoolean.make(form, "question-prerequisite", "#{simplePageBean.prerequisite}",isPrerequisite);
+			}
 
 			UICommand.make(form, "save", messageLocator.getMessage("simplepage.save_message"), "#{simplePageBean.submit}").decorate(new UITooltipDecorator(messageLocator.getMessage("simplepage.save_message")));
 

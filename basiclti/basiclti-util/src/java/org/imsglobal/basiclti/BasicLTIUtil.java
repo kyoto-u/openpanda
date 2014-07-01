@@ -1,6 +1,6 @@
 /*
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-util/src/java/org/imsglobal/basiclti/BasicLTIUtil.java $
- * $Id: BasicLTIUtil.java 120379 2013-02-21 23:51:30Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/basiclti-util/src/java/org/imsglobal/basiclti/BasicLTIUtil.java $
+ * $Id: BasicLTIUtil.java 133995 2014-02-02 22:06:40Z csev@umich.edu $
  *
  * Copyright (c) 2008 IMS GLobal Learning Consortium
  *
@@ -20,26 +20,35 @@
 package org.imsglobal.basiclti;
 
 import static org.imsglobal.basiclti.BasicLTIConstants.CUSTOM_PREFIX;
+import static org.imsglobal.basiclti.BasicLTIConstants.EXTENSION_PREFIX;
 import static org.imsglobal.basiclti.BasicLTIConstants.LTI_MESSAGE_TYPE;
 import static org.imsglobal.basiclti.BasicLTIConstants.LTI_VERSION;
+import static org.imsglobal.basiclti.BasicLTIConstants.OAUTH_PREFIX;
 import static org.imsglobal.basiclti.BasicLTIConstants.TOOL_CONSUMER_INSTANCE_CONTACT_EMAIL;
 import static org.imsglobal.basiclti.BasicLTIConstants.TOOL_CONSUMER_INSTANCE_DESCRIPTION;
 import static org.imsglobal.basiclti.BasicLTIConstants.TOOL_CONSUMER_INSTANCE_GUID;
 import static org.imsglobal.basiclti.BasicLTIConstants.TOOL_CONSUMER_INSTANCE_NAME;
 import static org.imsglobal.basiclti.BasicLTIConstants.TOOL_CONSUMER_INSTANCE_URL;
 
-import net.oauth.OAuthAccessor;
-import net.oauth.OAuthConsumer;
-import net.oauth.OAuthMessage;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+
+import net.oauth.OAuthAccessor;
+import net.oauth.OAuthConsumer;
+import net.oauth.OAuthMessage;
+import net.oauth.OAuthValidator;
+import net.oauth.SimpleOAuthValidator;
+import net.oauth.server.OAuthServlet;
+import net.oauth.signature.OAuthSignatureMethod;
 
 /* Leave out until we have JTidy 0.8 in the repository 
  import org.w3c.tidy.Tidy;
@@ -47,7 +56,7 @@ import java.util.regex.Pattern;
  */
 
 /**
- * Some Utility code for IMS Basic LTI
+ * Some Utility code for IMS LTI
  * http://www.anyexample.com/programming/java
  * /java_simple_class_to_compute_sha_1_hash.xml
  * <p>
@@ -59,10 +68,10 @@ import java.util.regex.Pattern;
  *   &lt;title&gt;generated&nbsp;by&nbsp;tp+user&lt;/title&gt;
  *   &lt;description&gt;generated&nbsp;by&nbsp;tp+user&lt;/description&gt;
  *   &lt;custom&gt;
- *     &lt;parameter&nbsp;key=&quot;keyname&quot;&gt;value&lt;/parameter&gt;
+ *	 &lt;parameter&nbsp;key=&quot;keyname&quot;&gt;value&lt;/parameter&gt;
  *   &lt;/custom&gt;
  *   &lt;extensions&nbsp;platform=&quot;www.lms.com&quot;&gt;
- *     &lt;parameter&nbsp;key=&quot;keyname&quot;&gt;value&lt;/parameter&gt;
+ *	 &lt;parameter&nbsp;key=&quot;keyname&quot;&gt;value&lt;/parameter&gt;
  *   &lt;/extensions&gt;
  *   &lt;launch_url&gt;url&nbsp;to&nbsp;the&nbsp;basiclti&nbsp;launch&nbsp;URL&lt;/launch_url&gt;
  *   &lt;secure_launch_url&gt;url&nbsp;to&nbsp;the&nbsp;basiclti&nbsp;launch&nbsp;URL&lt;/secure_launch_url&gt;
@@ -70,15 +79,15 @@ import java.util.regex.Pattern;
  *   &lt;secure_icon&gt;url&nbsp;to&nbsp;an&nbsp;icon&nbsp;for&nbsp;this&nbsp;tool&nbsp;(optional)&lt;/secure_icon&gt;
  *   &lt;cartridge_icon&nbsp;identifierref=&quot;BLTI001_Icon&quot;/&gt;
  *   &lt;vendor&gt;
- *     &lt;code&gt;vendor.com&lt;/code&gt;
- *     &lt;name&gt;Vendor&nbsp;Name&lt;/name&gt;
- *     &lt;description&gt;
+ *	 &lt;code&gt;vendor.com&lt;/code&gt;
+ *	 &lt;name&gt;Vendor&nbsp;Name&lt;/name&gt;
+ *	 &lt;description&gt;
  * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;is&nbsp;a&nbsp;Grade&nbsp;Book&nbsp;that&nbsp;supports&nbsp;many&nbsp;column&nbsp;types.
  * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/description&gt;
- *     &lt;contact&gt;
- *       &lt;email&gt;support@vendor.com&lt;/email&gt;
- *     &lt;/contact&gt;
- *     &lt;url&gt;http://www.vendor.com/product&lt;/url&gt;
+ *	 &lt;contact&gt;
+ *	   &lt;email&gt;support@vendor.com&lt;/email&gt;
+ *	 &lt;/contact&gt;
+ *	 &lt;url&gt;http://www.vendor.com/product&lt;/url&gt;
  *   &lt;/vendor&gt;
  * &lt;/basic_lti_link&gt;
  * </pre>
@@ -101,6 +110,47 @@ public class BasicLTIUtil {
 		if (verbosePrint)
 			System.out.println(str);
 		M_log.fine(str);
+	}
+
+	// expected_oauth_key can be null - if it is non-null it must match the key in the request
+	public static Object validateMessage(HttpServletRequest request, String URL, 
+		String oauth_secret, String expected_oauth_key)
+	{
+		OAuthMessage oam = OAuthServlet.getMessage(request, URL);
+		String oauth_consumer_key = null;
+		try {
+			oauth_consumer_key = oam.getConsumerKey();
+		} catch (Exception e) {
+			return "Unable to find consumer key in message";
+		}
+
+		if ( expected_oauth_key != null && ! expected_oauth_key.equals(oauth_consumer_key) ) {
+			M_log.warning("BasicLTIUtil.validateMessage Incorrect consumer key="+oauth_consumer_key+
+				" expected key="+expected_oauth_key);
+			return "Incorrect consumer key "+oauth_consumer_key;
+		}
+
+		OAuthValidator oav = new SimpleOAuthValidator();
+		OAuthConsumer cons = new OAuthConsumer("about:blank#OAuth+CallBack+NotUsed", oauth_consumer_key,oauth_secret, null);
+
+		OAuthAccessor acc = new OAuthAccessor(cons);
+
+		String base_string = null;
+		try {
+			base_string = OAuthSignatureMethod.getBaseString(oam);
+		} catch (Exception e) {
+            return "Unable to find base string";
+		}
+
+		try {
+			oav.validateMessage(oam, acc);
+		} catch (Exception e) {
+			if (base_string != null) {
+				return "Failed to validate: "+e.getLocalizedMessage()+"\nBase String\n"+base_string;
+			}
+			return "Failed to validate: "+e.getLocalizedMessage();
+		}
+		return Boolean.TRUE;
 	}
 
 	public static String validateDescriptor(String descriptor) {
@@ -132,7 +182,7 @@ public class BasicLTIUtil {
 	 * performed.
 	 * 
 	 * @param rawProperties
-	 *          A set of properties that will be cleaned.
+	 *		  A set of properties that will be cleaned.
 	 * @return A cleansed version of rawProperties.
 	 */
 	public static Map<String, String> cleanupProperties(
@@ -146,11 +196,11 @@ public class BasicLTIUtil {
 	 * properties per the specified semantics.
 	 * 
 	 * @param rawProperties
-	 *          A set of properties that will be cleaned.
+	 *		  A set of properties that will be cleaned.
 	 * @param blackList
-	 *          An array of {@link String}s which are considered unsafe to be
-	 *          included in launch data. Any matches will be removed from the
-	 *          return.
+	 *		  An array of {@link String}s which are considered unsafe to be
+	 *		  included in launch data. Any matches will be removed from the
+	 *		  return.
 	 * @return A cleansed version of rawProperties.
 	 */
 	public static Map<String, String> cleanupProperties(
@@ -194,8 +244,8 @@ public class BasicLTIUtil {
 	 * 
 	 * @deprecated See {@link #cleanupProperties(Map)}
 	 * @param rawProperties
-	 *          A set of {@link Properties} that will be cleaned. Keys must be of
-	 *          type {@link String}.
+	 *		  A set of {@link Properties} that will be cleaned. Keys must be of
+	 *		  type {@link String}.
 	 * @return A cleansed version of {@link Properties}.
 	 */
 	public static Properties cleanupProperties(final Properties rawProperties) {
@@ -211,15 +261,15 @@ public class BasicLTIUtil {
 	 * 
 	 * @param propertyName
 	 * @return true if propertyName is equal to one of the Strings contained in
-	 *         {@link BasicLTIConstants#validPropertyNames} 
-	 *         or is a custom parameter oe extension parameter ;
-	 *         else return false.
+	 *		 {@link BasicLTIConstants#validPropertyNames} 
+	 *		 or is a custom parameter oe extension parameter ;
+	 *		 else return false.
 	 */
 	public static boolean isSpecifiedPropertyName(final String propertyName) {
 		boolean found = false;
-		if ( propertyName.startsWith(BasicLTIConstants.CUSTOM_PREFIX) ) return true;
-		if ( propertyName.startsWith(BasicLTIConstants.EXTENSION_PREFIX) ) return true;
-		if ( propertyName.startsWith(BasicLTIConstants.OAUTH_PREFIX) ) return true;
+		if ( propertyName.startsWith(CUSTOM_PREFIX) ) return true;
+		if ( propertyName.startsWith(EXTENSION_PREFIX) ) return true;
+		if ( propertyName.startsWith(OAUTH_PREFIX) ) return true;
 		for (String key : BasicLTIConstants.validPropertyNames) {
 			if (key.equals(propertyName)) {
 				found = true;
@@ -258,7 +308,7 @@ public class BasicLTIUtil {
 	 * Add the necessary fields and sign.
 	 * 
 	 * @deprecated See:
-	 *             {@link BasicLTIUtil#signProperties(Map, String, String, String, String, String, String, String, String, String)}
+	 *			 {@link BasicLTIUtil#signProperties(Map, String, String, String, String, String, String, String, String, String)}
 	 * 
 	 * @param postProp
 	 * @param url
@@ -266,11 +316,11 @@ public class BasicLTIUtil {
 	 * @param oauth_consumer_key
 	 * @param oauth_consumer_secret
 	 * @param org_id
-	 *          See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_GUID}
+	 *		  See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_GUID}
 	 * @param org_desc
-	 *          See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_DESCRIPTION}
+	 *		  See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_DESCRIPTION}
 	 * @param org_url
-	 *          See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_URL}
+	 *		  See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_URL}
 	 * @return
 	 */
 	public static Properties signProperties(Properties postProp, String url,
@@ -291,16 +341,16 @@ public class BasicLTIUtil {
 	 * @param oauth_consumer_key
 	 * @param oauth_consumer_secret
 	 * @param tool_consumer_instance_guid
-	 *          See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_GUID}
+	 *		  See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_GUID}
 	 * @param tool_consumer_instance_description
-	 *          See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_DESCRIPTION}
+	 *		  See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_DESCRIPTION}
 	 * @param tool_consumer_instance_url
-	 *          See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_URL}
+	 *		  See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_URL}
 	 * @param tool_consumer_instance_name
-	 *          See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_NAME}
+	 *		  See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_NAME}
 	 * @param tool_consumer_instance_contact_email
-	 *          See:
-	 *          {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_CONTACT_EMAIL}
+	 *		  See:
+	 *		  {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_CONTACT_EMAIL}
 	 * @return
 	 */
 	public static Map<String, String> signProperties(
@@ -311,8 +361,10 @@ public class BasicLTIUtil {
 			String tool_consumer_instance_url, String tool_consumer_instance_name,
 			String tool_consumer_instance_contact_email) {
 		postProp = BasicLTIUtil.cleanupProperties(postProp);
-		postProp.put(LTI_VERSION, "LTI-1p0");
-		postProp.put(LTI_MESSAGE_TYPE, "basic-lti-launch-request");
+
+		if ( postProp.get(LTI_VERSION) == null ) postProp.put(LTI_VERSION, "LTI-1p0");
+		if ( postProp.get(LTI_MESSAGE_TYPE) == null ) postProp.put(LTI_MESSAGE_TYPE, "basic-lti-launch-request");
+
 		// Allow caller to internationalize this for us...
 		if (postProp.get(BASICLTI_SUBMIT) == null) {
 			postProp.put(BASICLTI_SUBMIT, "Launch Endpoint with BasicLTI Data");
@@ -371,17 +423,83 @@ public class BasicLTIUtil {
 	}
 
 	/**
+	 * Check if the properties are properly signed
+	 * 
+	 * @deprecated See:
+	 *			 {@link BasicLTIUtil#checkProperties(Map, String, String, String, String, String, String, String, String, String)}
+	 * 
+	 * @param postProp
+	 * @param url
+	 * @param method
+	 * @param oauth_consumer_key
+	 * @param oauth_consumer_secret
+	 * @return
+	 */
+	public static boolean checkProperties(Properties postProp, String url,
+			String method, String oauth_consumer_key, String oauth_consumer_secret) 
+	{
+
+		return checkProperties( convertToMap(postProp), url, method, 
+				oauth_consumer_key, oauth_consumer_secret);
+	}
+
+	/**
+	 * Check if the fields are properly signed
+	 * 
+	 * @param postProp
+	 * @param url
+	 * @param method
+	 * @param oauth_consumer_key
+	 * @param oauth_consumer_secret
+
+	 * @return
+	 */
+	public static boolean checkProperties(
+			Map<String, String> postProp, String url, String method,
+			String oauth_consumer_key, String oauth_consumer_secret) {
+
+		OAuthMessage oam = new OAuthMessage(method, url, postProp.entrySet());
+		OAuthConsumer cons = new OAuthConsumer("about:blank", oauth_consumer_key,
+				oauth_consumer_secret, null);
+		OAuthValidator oav = new SimpleOAuthValidator();
+
+
+		OAuthAccessor acc = new OAuthAccessor(cons);
+
+		String base_string = null;
+		try {
+			base_string = OAuthSignatureMethod.getBaseString(oam);
+		} catch (Exception e) {
+			M_log.warning(e.getLocalizedMessage());
+			base_string = null;
+			return false;
+		}
+
+		try {
+			oav.validateMessage(oam, acc);
+		} catch (Exception e) {
+			M_log.warning("Provider failed to validate message");
+			M_log.warning(e.getLocalizedMessage());
+			if (base_string != null) {
+				M_log.warning(base_string);
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Create the HTML to render a POST form and then automatically submit it.
 	 * Make sure to call {@link #cleanupProperties(Properties)} before signing.
 	 * 
 	 * @deprecated Moved to {@link #postLaunchHTML(Map, String, boolean)}
 	 * @param cleanProperties
-	 *          Assumes you have called {@link #cleanupProperties(Properties)}
-	 *          beforehand.
+	 *		  Assumes you have called {@link #cleanupProperties(Properties)}
+	 *		  beforehand.
 	 * @param endpoint
-	 *          The LTI launch url.
+	 *		  The LTI launch url.
 	 * @param debug
-	 *          Useful for viewing the HTML before posting to end point.
+	 *		  Useful for viewing the HTML before posting to end point.
 	 * @return the HTML ready for IFRAME src = inclusion.
 	 */
 	public static String postLaunchHTML(final Properties cleanProperties,
@@ -395,12 +513,12 @@ public class BasicLTIUtil {
 	 * Make sure to call {@link #cleanupProperties(Properties)} before signing.
 	 * 
 	 * @param cleanProperties
-	 *          Assumes you have called {@link #cleanupProperties(Properties)}
-	 *          beforehand.
+	 *		  Assumes you have called {@link #cleanupProperties(Properties)}
+	 *		  beforehand.
 	 * @param endpoint
-	 *          The LTI launch url.
+	 *		  The LTI launch url.
 	 * @param debug
-	 *          Useful for viewing the HTML before posting to end point.
+	 *		  Useful for viewing the HTML before posting to end point.
 	 * @return the HTML ready for IFRAME src = inclusion.
 	 */
 	public static String postLaunchHTML(
@@ -447,6 +565,23 @@ public class BasicLTIUtil {
 		}
 		text.append("</form>\n");
 		text.append("</div>\n");
+
+		// Paint the auto-pop up if we are transitioning from https: to http:
+		// and are not already the top frame...
+		text.append("<script type=\"text/javascript\">\n");
+		text.append("if (window.top!=window.self) {\n");
+    		text.append("  theform = document.getElementById('ltiLaunchForm');\n");
+		text.append("  if ( theform && theform.action ) {\n");
+		text.append("   formAction = theform.action;\n");
+		text.append("   ourUrl = window.location.href;\n");
+		text.append("   if ( formAction.indexOf('http://') == 0 && ourUrl.indexOf('https://') == 0 ) {\n");
+		text.append("      theform.target = '_blank';\n");
+		text.append("      window.console && console.log('Launching http from https in new window!');\n");
+		text.append("    }\n");
+		text.append("  }\n");
+		text.append("}\n");
+		text.append("</script>\n");
+
 		// paint debug output
 		if (debug) {
 			text.append("<pre>\n");
@@ -469,17 +604,17 @@ public class BasicLTIUtil {
 			// paint auto submit script
 			text
 				.append(" <script language=\"javascript\"> \n"
-						+ "    document.getElementById(\"ltiLaunchFormSubmitArea\").style.display = \"none\";\n"
-						+ "    nei = document.createElement('input');\n"
-						+ "    nei.setAttribute('type', 'hidden');\n"
-						+ "    nei.setAttribute('name', '"
+						+ "	document.getElementById(\"ltiLaunchFormSubmitArea\").style.display = \"none\";\n"
+						+ "	nei = document.createElement('input');\n"
+						+ "	nei.setAttribute('type', 'hidden');\n"
+						+ "	nei.setAttribute('name', '"
 						+ BASICLTI_SUBMIT
 						+ "');\n"
-						+ "    nei.setAttribute('value', '"
+						+ "	nei.setAttribute('value', '"
 						+ newMap.get(BASICLTI_SUBMIT)
 						+ "');\n"
-						+ "    document.getElementById(\"ltiLaunchForm\").appendChild(nei);\n"
-						+ "    document.ltiLaunchForm.submit(); \n" + " </script> \n");
+						+ "	document.getElementById(\"ltiLaunchForm\").appendChild(nei);\n"
+						+ "	document.ltiLaunchForm.submit(); \n" + " </script> \n");
 		}
 
 		String htmltext = text.toString();
@@ -489,9 +624,9 @@ public class BasicLTIUtil {
 	/**
 	 * @deprecated See: {@link #parseDescriptor(Map, Map, String)}
 	 * @param launch_info
-	 *          Variable is mutated by this method.
+	 *		  Variable is mutated by this method.
 	 * @param postProp
-	 *          Variable is mutated by this method.
+	 *		  Variable is mutated by this method.
 	 * @param descriptor
 	 * @return
 	 */
@@ -547,9 +682,9 @@ public class BasicLTIUtil {
 	/**
 	 * 
 	 * @param launch_info
-	 *          Variable is mutated by this method.
+	 *		  Variable is mutated by this method.
 	 * @param postProp
-	 *          Variable is mutated by this method.
+	 *		  Variable is mutated by this method.
 	 * @param descriptor
 	 * @return
 	 */
@@ -659,7 +794,7 @@ public class BasicLTIUtil {
 	 * into the Map if the value is not null and is not empty.
 	 * 
 	 * @param map
-	 *          Variable is mutated by this method.
+	 *		  Variable is mutated by this method.
 	 * @param key
 	 * @param value
 	 */
@@ -676,15 +811,13 @@ public class BasicLTIUtil {
 	 * 
 	 * @deprecated See: {@link #setProperty(Map, String, String)}
 	 * @param props
-	 *          Variable is mutated by this method.
+	 *		  Variable is mutated by this method.
 	 * @param key
 	 * @param value
 	 */
 	public static void setProperty(Properties props, String key, String value) {
-		if (value == null)
-			return;
-		if (value.trim().length() < 1)
-			return;
+		if (value == null) return;
+		if (value.trim().length() < 1) return;
 		props.setProperty(key, value);
 	}
 
@@ -702,13 +835,46 @@ public class BasicLTIUtil {
 	}
 
 	/**
+	 * Simple utility method deal with a request that has the wrong URL when behind 
+     * a proxy.
+	 * 
+	 * @param request
+     * @param extUrl
+     *   The url that the external world sees us as responding to.  This needs to be
+     *   up to but not including the last slash like and not include any path information
+     *   http://www.sakaiproject.org - although we do compensate for extra stuff at the end.
+	 * @return
+     *   The full path of the request with extUrl in place of whatever the request
+     *   thinks is the current URL.
+	 */
+    static public String getRealPath(String servletUrl, String extUrl)
+    {
+        Pattern pat = Pattern.compile("^https??://[^/]*");
+        // Deal with potential bad extUrl formats
+        Matcher m = pat.matcher(extUrl);
+        if (m.find()) {
+            extUrl = m.group(0);
+        }
+
+        String retval = pat.matcher(servletUrl).replaceFirst(extUrl);
+        return retval;
+    }
+
+	static public String getRealPath(HttpServletRequest request, String extUrl)
+    {
+        String URLstr = request.getRequestURL().toString();
+        String retval = getRealPath(URLstr, extUrl);
+        return retval;
+    }
+
+	/**
 	 * Simple utility method to help with the migration from Properties to
 	 * Map<String, String>.
 	 * 
 	 * @param properties
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static Map<String, String> convertToMap(final Properties properties) {
 			final Map<String, String> map = new HashMap(properties);
 			return map;
@@ -738,15 +904,15 @@ public class BasicLTIUtil {
 	 * </p>
 	 * 
 	 * <pre>
-	 * StringUtils.isBlank(null)      = true
-	 * StringUtils.isBlank("")        = true
-	 * StringUtils.isBlank(" ")       = true
-	 * StringUtils.isBlank("bob")     = false
+	 * StringUtils.isBlank(null)	  = true
+	 * StringUtils.isBlank("")		= true
+	 * StringUtils.isBlank(" ")	   = true
+	 * StringUtils.isBlank("bob")	 = false
 	 * StringUtils.isBlank("  bob  ") = false
 	 * </pre>
 	 * 
 	 * @param str
-	 *          the String to check, may be null
+	 *		  the String to check, may be null
 	 * @return <code>true</code> if the String is null, empty or whitespace
 	 * @since 2.0
 	 */
@@ -769,17 +935,17 @@ public class BasicLTIUtil {
 	 * </p>
 	 * 
 	 * <pre>
-	 * StringUtils.isNotBlank(null)      = false
-	 * StringUtils.isNotBlank("")        = false
-	 * StringUtils.isNotBlank(" ")       = false
-	 * StringUtils.isNotBlank("bob")     = true
+	 * StringUtils.isNotBlank(null)	  = false
+	 * StringUtils.isNotBlank("")		= false
+	 * StringUtils.isNotBlank(" ")	   = false
+	 * StringUtils.isNotBlank("bob")	 = true
 	 * StringUtils.isNotBlank("  bob  ") = true
 	 * </pre>
 	 * 
 	 * @param str
-	 *          the String to check, may be null
+	 *		  the String to check, may be null
 	 * @return <code>true</code> if the String is not empty and not null and not
-	 *         whitespace
+	 *		 whitespace
 	 * @since 2.0
 	 */
 	public static boolean isNotBlank(String str) {
@@ -806,11 +972,11 @@ public class BasicLTIUtil {
 	 * 
 	 * @see java.lang.String#equals(Object)
 	 * @param str1
-	 *          the first String, may be null
+	 *		  the first String, may be null
 	 * @param str2
-	 *          the second String, may be null
+	 *		  the second String, may be null
 	 * @return <code>true</code> if the Strings are equal, case sensitive, or both
-	 *         <code>null</code>
+	 *		 <code>null</code>
 	 */
 	public static boolean equals(String str1, String str2) {
 		return str1 == null ? str2 == null : str1.equals(str2);
@@ -837,11 +1003,11 @@ public class BasicLTIUtil {
 	 * 
 	 * @see java.lang.String#equalsIgnoreCase(String)
 	 * @param str1
-	 *          the first String, may be null
+	 *		  the first String, may be null
 	 * @param str2
-	 *          the second String, may be null
+	 *		  the second String, may be null
 	 * @return <code>true</code> if the Strings are equal, case insensitive, or
-	 *         both <code>null</code>
+	 *		 both <code>null</code>
 	 */
 	public static boolean equalsIgnoreCase(String str1, String str2) {
 		return str1 == null ? str2 == null : str1.equalsIgnoreCase(str2);

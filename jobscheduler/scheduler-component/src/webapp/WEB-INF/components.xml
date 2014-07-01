@@ -37,20 +37,22 @@
 
     <bean id="org.sakaiproject.api.app.scheduler.SchedulerManager"
         class="org.sakaiproject.component.app.scheduler.SchedulerManagerImpl"
-        init-method="init" destroy-method="destroy">        
+        init-method="init" destroy-method="destroy">
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
+        <property name="sqlService" ref="org.sakaiproject.db.api.SqlService"/>
         <property name="qrtzJobs">
-            <set>                
+            <set>
             </set>
         </property>
-        <property name="qrtzPropFile">
-            <value>quartz.properties</value>
-        </property>    
+        <property name="qrtzPropFile" value="quartz.properties"/>
+        <property name="qrtzPropFileSakai" value="sakai.quartz.properties"/>
         <property name="globalTriggerListener">
             <bean class="org.sakaiproject.component.app.scheduler.GlobalTriggerListener">
                 <property name="triggerEventManager">
                     <ref bean="org.sakaiproject.api.app.scheduler.events.TriggerEventManager"/>
                     <!--bean class="org.sakaiproject.component.app.scheduler.events.TriggerEventManagerImpl"/-->
                 </property>
+                <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
             </bean>
         </property>
         <property name="globalTriggerListeners">
@@ -101,6 +103,9 @@
         </property>
         <property name="serverConfigurationService">
         	<ref bean="org.sakaiproject.component.api.ServerConfigurationService"/>
+        </property>
+        <property name="autoDdl">
+            <value>${auto.ddl}</value>
         </property>
     </bean>   
     
@@ -173,5 +178,27 @@
 	      </property>
 	   </bean>
 	   -->
+	   
+	<bean id="org.sakaiproject.component.app.scheduler.jobs.SoftSiteDeletionJob"
+		class="org.sakaiproject.component.app.scheduler.jobs.SoftSiteDeletionJob"
+		init-method="init">
+		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
+		<property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
+		<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
+	</bean>
+
+	<bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.SoftSiteDeletion"
+		class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+		singleton="true" init-method="init">
+		<property name="beanId">
+			<value>org.sakaiproject.component.app.scheduler.jobs.SoftSiteDeletionJob</value>
+		</property>
+		<property name="jobName">
+			<value>Expunge softly deleted sites</value>
+		</property>
+		<property name="schedulerManager">
+			<ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+		</property>
+	</bean>
    
 </beans>

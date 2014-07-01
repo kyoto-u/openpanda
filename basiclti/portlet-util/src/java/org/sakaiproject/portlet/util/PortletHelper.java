@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/portlet-util/src/java/org/sakaiproject/portlet/util/PortletHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/portlet-util/src/java/org/sakaiproject/portlet/util/PortletHelper.java $
  * $Id: PortletHelper.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2005-2009 The Sakai Foundation

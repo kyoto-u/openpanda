@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.3/cm-service/cm-impl/hibernate-impl/impl/src/test/org/sakaiproject/coursemanagement/test/CourseManagementAdministrationTest.java $
- * $Id: CourseManagementAdministrationTest.java 67139 2009-10-04 09:54:02Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.0/cm-service/cm-impl/hibernate-impl/impl/src/test/org/sakaiproject/coursemanagement/test/CourseManagementAdministrationTest.java $
+ * $Id: CourseManagementAdministrationTest.java 123788 2013-05-07 19:06:04Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -527,8 +527,8 @@ public class CourseManagementAdministrationTest extends CourseManagementTestBase
 		cmAdmin.setCurrentAcademicSessions(Arrays.asList(new String[] {"nowTerm", "nextTerm"}));
 		academicSessions = cm.getCurrentAcademicSessions();
 		Assert.assertEquals(2, academicSessions.size());
-		Assert.assertEquals("nowTerm", academicSessions.get(0).getEid());
-		Assert.assertEquals("nextTerm", academicSessions.get(1).getEid());
+		Assert.assertEquals("nextTerm", academicSessions.get(0).getEid());
+		Assert.assertEquals("nowTerm", academicSessions.get(1).getEid());
 	}
 
 }

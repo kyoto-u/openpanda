@@ -20,6 +20,8 @@
 		<title>$tlang.getString( "window.gscholar" )</title>
 		<link href="/library/skin/tool_base.css" type="text/css" rel="stylesheet" media="all" />
 		<link href="/library/skin/default/tool.css" type="text/css" rel="stylesheet" media="all" />
+		<script type="text/javascript" src="/library/js/jquery/1.7.1/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="/savecite/js/savecite.js"></script>
 	</head>
   	<body>
 		<div class="portletBody">
@@ -30,8 +32,15 @@
 						opener.citationsHelperFrame.refreshCitationsHelper();
 					  }
 					</script>
-					
-					#parse( "vm/_citation.vm" )
+					#if( $citations )
+						#foreach($citation in $citations)
+							#parse( "vm/_citation.vm" )
+							<hr />
+						#end
+					#else
+						#parse( "vm/_citation.vm" )
+						<hr />
+					#end
 					
 					<h2>$tlang.getFormattedMessage( "title.gscholar", $titleArgs )</h2>
 					

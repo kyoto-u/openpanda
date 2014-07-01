@@ -1,6 +1,6 @@
 /**
- * $Id: EntityBatchHandler.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBatchHandler.java $
+ * $Id: EntityBatchHandler.java 113499 2012-09-25 01:13:56Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBatchHandler.java $
  * EntityBatchHandler.java - entity-broker - Dec 18, 2008 11:40:39 AM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

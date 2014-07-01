@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-james/james/src/java/org/sakaiproject/james/JamesServlet.java $
- * $Id: JamesServlet.java 127752 2013-07-25 16:24:27Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.0/mailarchive-james/james/src/java/org/sakaiproject/james/JamesServlet.java $
+ * $Id: JamesServlet.java 131945 2013-11-26 02:30:11Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 
+import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -204,6 +205,23 @@ public class JamesServlet extends HttpServlet
 		String dns2 = StringUtils.trimToNull(ServerConfigurationService.getString("smtp.dns.2"));
 		String smtpPort = StringUtils.trimToNull(ServerConfigurationService.getString("smtp.port"));
 		boolean enabled = ServerConfigurationService.getBoolean("smtp.enabled", false);
+		
+		String postmasterAddress = null;
+		String postmasterLocalPart = StringUtils.trimToNull(ServerConfigurationService.getString("smtp.postmaster.address.local-part"));
+		String postmasterDomain = StringUtils.trimToNull(ServerConfigurationService.getString("smtp.postmaster.address.domain"));
+		if (postmasterDomain != null) {
+			if (postmasterLocalPart == null) {
+				postmasterLocalPart = "postmaster";
+			}
+			postmasterAddress = postmasterLocalPart + "@" + postmasterDomain;
+			try {
+				InternetAddress email = new InternetAddress(postmasterAddress);
+				email.validate();
+			} catch(Exception ex) {
+				M_log.warn("init(): '" + postmasterAddress + "' is not valid");
+				postmasterAddress = null;
+			}
+		}
 
 		// check for missing values
 		if(host == null) host = "127.0.0.1";
@@ -231,7 +249,7 @@ public class JamesServlet extends HttpServlet
 		m_phoenixHome = getServletContext().getRealPath(homeRelative);
 
 		try {
-			customizeConfig(host, dns1, dns2, smtpPort, logDir);
+			customizeConfig(host, dns1, dns2, smtpPort, logDir, postmasterAddress);
 		} catch(JamesConfigurationException e) {
 			M_log.error("init(): James could not be configured, aborting");
 			return;
@@ -241,7 +259,7 @@ public class JamesServlet extends HttpServlet
 		m_runner = new JamesRunner();
 	}
 
-	protected void customizeConfig(String host, String dns1, String dns2, String smtpPort, String logDir)
+	protected void customizeConfig(String host, String dns1, String dns2, String smtpPort, String logDir, String postmasterAddress)
 	    throws JamesConfigurationException
 	{
 		String configPath = m_phoenixHome + "/apps/james/SAR-INF/config.xml";
@@ -257,6 +275,10 @@ public class JamesServlet extends HttpServlet
 				M_log.error("init(): James config file " + configPath + "could not be found.");
 				throw new JamesConfigurationException();
 			}
+			
+			if (postmasterAddress == null) {
+				postmasterAddress = "postmaster@" + host;
+			}
 
 			// build a hashmap of node paths and values to set
 			HashMap<String, String> nodeValues = new HashMap<String, String>();
@@ -265,7 +287,7 @@ public class JamesServlet extends HttpServlet
 			nodeValues.put("/config/James/servernames/servername[1]", host);
 			nodeValues.put("/config/dnsserver/servers/server[2]", dns1);
 			nodeValues.put("/config/dnsserver/servers/server[3]", dns2);
-			nodeValues.put("/config/James/postmaster", "postmaster@" + host);
+			nodeValues.put("/config/James/postmaster", postmasterAddress);
 			nodeValues.put("/config/smtpserver/port", smtpPort);
 
 			// loop through the hashmap, setting each value, or failing if one can't be found

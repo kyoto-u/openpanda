@@ -49,12 +49,11 @@ remove the javascript onclick stuff.
       <head><%= request.getAttribute("html.head") %>
       <title> <h:outputText value="#{delivery.assessmentTitle}"/>
       </title>
+      <%@ include file="/jsf/delivery/deliveryjQuery.jsp" %>
       </head>
        <body onload="<%= request.getAttribute("html.body.onload") %>; ">
 
       <h:outputText value="<a name='top'></a>" escape="false" />
- 
- <%@ include file="/jsf/delivery/deliveryjQuery.jsp" %>
  
  <h:outputText value="<div class='portletBody' style='#{delivery.settings.divBgcolor};#{delivery.settings.divBackground}'>" escape="false"/>
 
@@ -89,9 +88,11 @@ function saveTime()
 <h:inputHidden id="formatByPart" value="#{delivery.settings.formatByPart}"/>
 <h:inputHidden id="formatByAssessment" value="#{delivery.settings.formatByAssessment}"/>
 <h:inputHidden id="lastSubmittedDate1" value="#{delivery.assessmentGrading.submittedDate.time}" 
-   rendered ="#{delivery.assessmentGrading.submittedDate!=null}"/>
+   rendered="#{delivery.assessmentGrading.submittedDate!=null}"/>
 <h:inputHidden id="lastSubmittedDate2" value="0"
-   rendered ="#{delivery.assessmentGrading.submittedDate==null}"/>
+   rendered="#{delivery.assessmentGrading.submittedDate==null}"/>
+<h:inputHidden id="hasTimeLimit" value="#{delivery.hasTimeLimit}"/> 
+<h:inputHidden id="showTimeWarning" value="#{delivery.showTimeWarning}"/>   
 
 <!-- HEADING -->
 <h3 style="insColor insBak">
@@ -141,6 +142,11 @@ function saveTime()
              && !delivery.continue}"
 	disabled="#{delivery.actionString=='previewAssessment'}" 
     onclick="disableSubmitForGrade()" onkeypress="" />
+
+    <h:commandButton value="#{deliveryMessages.button_close_window}" type="button" 
+       rendered="#{delivery.actionString=='takeAssessmentViaUrl' && !delivery.anonymousLogin}"
+       style="act" onclick="javascript:window.close();" />
+    
 
   <%-- SUBMIT FOR GRADE FOR LINEAR ACCESS --%>
   <h:commandButton type="submit" value="#{deliveryMessages.button_submit_grading}"

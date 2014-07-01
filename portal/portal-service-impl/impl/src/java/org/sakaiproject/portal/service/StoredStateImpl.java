@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/StoredStateImpl.java $
- * $Id: StoredStateImpl.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/StoredStateImpl.java $
+ * $Id: StoredStateImpl.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -29,7 +29,7 @@ import org.sakaiproject.tool.api.Placement;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 105079 $
  */
 
 public class StoredStateImpl implements StoredState

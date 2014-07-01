@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.sakaiproject.polls</groupId>
         <artifactId>polls</artifactId>
-        <version>1.5.3</version>
+        <version>10.0</version>
     </parent>
     
     <name>Sakai Polls Tool Module (polls-tool)</name>
@@ -30,7 +30,6 @@
      <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>polls-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.entitybroker</groupId>
@@ -39,7 +38,6 @@
         <dependency>
             <groupId>org.sakaiproject.entitybroker</groupId>
             <artifactId>entitybroker-utils</artifactId>
-            <version>${sakai.entitybroker.version}</version>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.kernel</groupId>
@@ -63,12 +61,25 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
 		<dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+		</dependency>
         <!-- RSF dependencies -->
         <dependency>
             <groupId>uk.org.ponder.sakairsf</groupId>

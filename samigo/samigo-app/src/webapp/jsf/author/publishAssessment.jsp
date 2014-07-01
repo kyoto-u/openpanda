@@ -7,8 +7,8 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
- * $Id: publishAssessment.jsp 127220 2013-07-18 14:47:46Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
+ * $Id: publishAssessment.jsp 309448 2014-05-12 22:11:45Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -70,9 +70,10 @@
     <h:outputText value="#{assessmentSettingsMessages.score_discrepancies_note}" rendered="#{publishedSettings.itemNavigation ne '2' || !assessmentBean.hasSubmission}"/> 
     <h:outputText value="#{assessmentSettingsMessages.score_discrepancies_note_non_linear}" rendered="#{publishedSettings.itemNavigation eq '2' && assessmentBean.hasSubmission}"/> 
   <h:panelGroup rendered="#{publishedSettings.itemNavigation eq '2' && assessmentBean.hasSubmission}">
-        <h:selectBooleanCheckbox id="updateMostCurrentSubmissionCheckbox" value="#{publishedSettings.updateMostCurrentSubmission}" />
-        <h:outputText value="#{assessmentSettingsMessages.update_most_current_submission_checkbox}" />
+        <h:selectBooleanCheckbox id="updateMostCurrentSubmissionCheckbox" value="#{publishedSettings.updateMostCurrentSubmission}"  onclick="javascript:showRepublishWarning(this);" />
+        <h:outputText value="#{assessmentSettingsMessages.update_most_current_submission_checkbox}" />		
   </h:panelGroup>
+  <h:outputText id="updateMostCurrentSubmissionCheckboxWarning" rendered="#{publishedSettings.itemNavigation eq '2' && assessmentBean.hasSubmission}" value="#{assessmentSettingsMessages.update_most_current_submission_checkbox_warn}" styleClass="notification" style="visibility:hidden"/>    
 </h:panelGrid>
 </h:panelGrid>
 
@@ -162,7 +163,7 @@
 		
 		<h:outputFormat value=" #{assessmentSettingsMessages.available_group_at}" escape="false" rendered="#{assessmentSettings.releaseTo eq 'Selected Groups'}">
 			<f:param value="#{assessmentSettings.startDateString}" />
-			<f:param value="#{assessmentSettings.releaseToGroupsAsString}" />
+			<f:param value="#{assessmentSettings.releaseToGroupsAsHtml}" />
 			<f:param value="#{assessmentSettings.publishedUrl}" />
 		</h:outputFormat>
 	</h:panelGroup>
@@ -223,7 +224,7 @@
 		
 			<h:outputFormat value=" #{assessmentSettingsMessages.available_group_at}" escape="false" rendered="#{publishedSettings.releaseTo eq 'Selected Groups'}">
 				<f:param value="#{publishedSettings.startDateString}" />
-				<f:param value="#{publishedSettings.releaseToGroupsAsString}" />
+				<f:param value="#{publishedSettings.releaseToGroupsAsHtml}" />
 				<f:param value="#{publishedSettings.publishedUrl}" />
 			</h:outputFormat>
 		</h:panelGroup>
@@ -280,6 +281,12 @@ function toggle(){
     document.forms[0].elements['publishAssessmentForm:publish'].disabled=true;
   }
 }
+
+function showRepublishWarning (obj) {
+	var objwarn = document.getElementById('publishAssessmentForm:updateMostCurrentSubmissionCheckboxWarning');
+	if (obj.checked==true) objwarn.style.visibility = 'visible';
+	else objwarn.style.visibility = 'hidden';
+}  
 
 var entered = 'false';
 function clearText1(){

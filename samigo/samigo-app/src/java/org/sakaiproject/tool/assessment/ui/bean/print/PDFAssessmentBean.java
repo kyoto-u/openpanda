@@ -2,19 +2,17 @@ package org.sakaiproject.tool.assessment.ui.bean.print;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.io.Reader;
 import java.io.IOException;
 import java.io.OutputStream;
-
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
@@ -22,28 +20,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-
-import org.sakaiproject.tool.assessment.data.dao.assessment.ItemAttachment;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAnswer;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentAttachment;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemAttachment;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemText;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionAttachment;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.pdf.HTMLWorker;
-import com.lowagie.text.html.simpleparser.StyleSheet;
-import com.lowagie.text.PageSize;
-
 import org.sakaiproject.tool.assessment.ui.bean.delivery.DeliveryBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.ItemContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.MatchingBean;
@@ -51,10 +37,18 @@ import org.sakaiproject.tool.assessment.ui.bean.print.settings.PrintSettingsBean
 import org.sakaiproject.tool.assessment.ui.listener.delivery.BeginDeliveryActionListener;
 import org.sakaiproject.tool.assessment.ui.listener.delivery.DeliveryActionListener;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
-
 import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.util.ResourceLoader;
 
-import org.sakaiproject.component.cover.ServerConfigurationService;
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.html.simpleparser.StyleSheet;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * 
@@ -70,13 +64,13 @@ public class PDFAssessmentBean implements Serializable {
 
 	private static Log log = LogFactory.getLog(PDFAssessmentBean.class);
 
-	private static ResourceBundle printMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.PrintMessages");
+	private ResourceLoader printMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.PrintMessages");
 
-	private static ResourceBundle authorMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
+	private ResourceLoader authorMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
 
-	private static ResourceBundle deliveryMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+	private ResourceLoader deliveryMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
 
-	private static ResourceBundle commonMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.CommonMessages");
+	private ResourceLoader commonMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.CommonMessages");
 
 	private String intro = "";
 
@@ -155,14 +149,14 @@ public class PDFAssessmentBean implements Serializable {
 				itemContents.setNumber(numberQuestion++);
 
 				// Order answers in order (A, B, C, D)
-				ArrayList question = itemContents.getItemData().getItemTextArraySorted();
+				List question = itemContents.getItemData().getItemTextArraySorted();
 				for (int k=0; k<question.size(); k++) {
 					PublishedItemText itemtext = (PublishedItemText)question.get(k);
 					ArrayList answers = itemtext.getAnswerArray();
 					for (int t=0; t<answers.size(); t++) {
 						PublishedAnswer answer = (PublishedAnswer)answers.get(t);
 						if (answer.getLabel() != null && !answer.getLabel().equals(""))
-							answer.setSequence(new Long(answer.getLabel().charAt(0) - 64));
+							answer.setSequence(Long.valueOf(answer.getLabel().charAt(0) - 64));
 					}
 				}
 			}
@@ -325,7 +319,9 @@ public class PDFAssessmentBean implements Serializable {
 					partIntros.append("</h2>");
 				}
 				partIntros.append("<br />");
-				partIntros.append(section.getDescription());
+				if (section.getDescription() != null) {
+					partIntros.append(section.getDescription());
+				}
 				partIntros.append("<br />");
 
 				
@@ -444,7 +440,7 @@ public class PDFAssessmentBean implements Serializable {
 						item.getItemData().getTypeId().equals(TypeIfc.TRUE_FALSE) ||
 						item.getItemData().getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY)) {
 
-					ArrayList question = item.getItemData().getItemTextArraySorted();
+					List question = item.getItemData().getItemTextArraySorted();
 					for (int k=0; k<question.size(); k++) {
 						PublishedItemText itemtext = (PublishedItemText)question.get(k);
 						ArrayList answers = itemtext.getAnswerArraySorted();
@@ -462,10 +458,16 @@ public class PDFAssessmentBean implements Serializable {
 				}
 				if (item.getItemData().getTypeId().equals(TypeIfc.MATCHING)) {
 					contentBuffer.append("<table cols='20' width='100%'>");
-					ArrayList question = item.getMatchingArray();
+					List question = item.getMatchingArray();
 					for (int k=0; k<question.size(); k++) {
 						MatchingBean matching = (MatchingBean)question.get(k);
-						String answer = (String)item.getAnswers().get(k);
+						
+						// if there are distractors or shared matches, answers will
+						// have fewer answers that matches.
+						String answer = "";
+						if (k < item.getAnswers().size()) {
+							answer = (String)item.getAnswers().get(k);
+						}
 
 						if (matching.getText() == null) break;
 						
@@ -477,6 +479,45 @@ public class PDFAssessmentBean implements Serializable {
 						contentBuffer.append("</td></tr>");
 					}
 
+					contentBuffer.append("</table>");
+				}
+
+				if (item.getItemData().getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS)) {
+					contentBuffer.append("<table cols='20' width='100%'>");
+
+					contentBuffer.append("<tr><td colspan='20'>");
+					contentBuffer.append(item.getItemData().getThemeText());
+					contentBuffer.append("</td></tr>");
+
+					if (item.getItemData().getIsAnswerOptionsSimple()) {
+						List<AnswerIfc> emiAnswerOptions = item.getItemData().getEmiAnswerOptions();
+						for (AnswerIfc answerIfc : emiAnswerOptions) {
+							contentBuffer.append("<tr><td colspan='20'>");
+							contentBuffer.append(answerIfc.getLabel() + ". " + answerIfc.getText());
+							contentBuffer.append("</td></tr>");
+						}
+					}
+
+					if (item.getItemData().getIsAnswerOptionsRich()) {
+						contentBuffer.append("<tr><td colspan='20'>");
+						contentBuffer.append(item.getItemData().getEmiAnswerOptionsRichText());
+						contentBuffer.append("</td></tr>");
+					}
+
+					contentBuffer.append("<tr><td colspan='20'>");
+					contentBuffer.append(item.getItemData().getLeadInText());
+					contentBuffer.append("</td></tr>");
+
+					List<ItemTextIfc> questionAnswerCombinations = item.getItemData().getEmiQuestionAnswerCombinations();
+
+					for (ItemTextIfc itemTextIfc : questionAnswerCombinations) {
+						if (!itemTextIfc.getText().isEmpty()) {
+							contentBuffer.append("<tr><td colspan='20'>");
+							contentBuffer.append(itemTextIfc.getSequence() + ". " + itemTextIfc.getText() + "  ____");
+							contentBuffer.append("</td></tr>");
+						}
+					}
+					contentBuffer.append("<br />");
 					contentBuffer.append("</table>");
 				}
 				if (printSetting.getShowKeys().booleanValue() || printSetting.getShowKeysFeedback().booleanValue()) {
@@ -496,7 +537,7 @@ public class PDFAssessmentBean implements Serializable {
 			pdfPart.setQuestions(pdfItems);
 			pdfPart.setResources(resources);
 			if (resources.size() > 0)
-				pdfPart.setHasResources(new Boolean(true));
+				pdfPart.setHasResources(Boolean.valueOf(true));
 			pdfParts.add(pdfPart);
 
 		}

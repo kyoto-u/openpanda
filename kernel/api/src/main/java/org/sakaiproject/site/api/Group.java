@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/site/api/Group.java $
- * $Id: Group.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/site/api/Group.java $
+ * $Id: Group.java 308857 2014-04-26 00:06:41Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,6 +33,19 @@ import org.sakaiproject.entity.api.Edit;
  */
 public interface Group extends Edit, Serializable, AuthzGroup
 {
+	/** The property to indicate whether the group is created by Worksite Setup or not */
+	static final String GROUP_PROP_WSETUP_CREATED = "group_prop_wsetup_created";
+	/** The property to indicate which joinable set the group is part of **/
+	static final String GROUP_PROP_JOINABLE_SET = "group_prop_joinable_set";
+	/** The property to indicate the max number of users who can join the group **/
+	static final String GROUP_PROP_JOINABLE_SET_MAX = "group_prop_joinable_set_max";
+	/** The property to indicate whether students can preview the list of users in the set before joining **/
+	static final String GROUP_PROP_JOINABLE_SET_PREVIEW = "group_prop_joinable_set_preview";
+	/** The property to indicate whether students can view the list of users in the group after joining **/
+	static final String GROUP_PROP_VIEW_MEMBERS = "group_prop_view_members";
+	/** The property to indicate whether the joinable group is unjoinable or not*/
+	static final String GROUP_PROP_JOINABLE_UNJOINABLE = "group_prop_joinable_unjoinable";
+    
 	/** @return a human readable short title of this group. */
 	String getTitle();
 

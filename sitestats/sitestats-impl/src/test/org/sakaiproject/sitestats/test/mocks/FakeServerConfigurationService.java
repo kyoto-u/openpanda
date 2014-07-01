@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeServerConfigurationService.java $
- * $Id: FakeServerConfigurationService.java 122984 2013-04-18 16:19:47Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeServerConfigurationService.java $
+ * $Id: FakeServerConfigurationService.java 122165 2013-04-03 21:37:23Z azeckoski@unicon.net $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -164,6 +164,44 @@ public class FakeServerConfigurationService implements ServerConfigurationServic
 
 	public String getToolUrl() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * Returns true if selected tool is contained in pre-initialized list of selected items
+	 * @parms toolId id of the selected tool
+	 */
+	public boolean toolGroupIsSelected(String groupName, String toolId) {
+		return false;
+	}
+
+	 /*
+	  * Returns true if selected tool is contained in pre-initialized list of required items
+	  * @parms toolId id of the selected tool
+	  */
+	public boolean toolGroupIsRequired(String groupName, String toolId) {
+		return false;
+	}		
+	
+	/**
+	 * Access the list of groups by category (site type)
+	 * 
+	 * @param category
+	 *			 The tool category
+	 * @return An ordered list of tool ids (String) indicating the desired tool display order, or an empty list if there are none for this category.
+	 */
+	public List getCategoryGroups(String category){		
+		return null;
+	}
+	
+	/**
+	 * Access the list of tools by group
+	 * 
+	 * @param category
+	 *			 The tool category
+	 * @return An unordered list of tool ids (String) in selected group, or an empty list if there are none for this category.
+	 */
+	public List getToolGroup(String category) {
 		return null;
 	}
 

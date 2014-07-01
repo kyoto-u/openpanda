@@ -4,7 +4,7 @@
   <parent>
     <artifactId>osp-common</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>osp-common-tool-lib</artifactId>
@@ -23,6 +23,14 @@
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-kernel-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -73,9 +81,12 @@
       <version>1.7.0</version>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId>
+      <groupId>javax.servlet.jsp</groupId>
       <artifactId>jsp-api</artifactId>
-      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-api/api/src/java/org/sakaiproject/portal/api/PortalSiteHelper.java $
- * $Id: PortalSiteHelper.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-api/api/src/java/org/sakaiproject/portal/api/PortalSiteHelper.java $
+ * $Id: PortalSiteHelper.java 115117 2012-10-25 15:15:30Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -95,6 +95,11 @@ public interface PortalSiteHelper
                         SitePage page, String toolContextPath, String portalPrefix, boolean doPages,
                         boolean resetTools, boolean includeSummary);
 
+	Map convertSiteToMap(HttpServletRequest req, Site s, String prefix,
+			String currentSiteId, String myWorkspaceSiteId, boolean includeSummary,
+			boolean expandSite, boolean resetTools, boolean doPages,
+			String toolContextPath, boolean loggedIn);
+	
 	/**
 	 * Generates a SiteView object from the current request and location
 	 * @param view
@@ -113,5 +118,21 @@ public interface PortalSiteHelper
 	 */
 	public String lookupPageToAlias(String siteId, SitePage page);
 
+	/**
+	 * Check if the site is joinable by the supplied user and the user isn't currently a member
+	 * of the site.
+	 * @param siteId The ID of the site.
+	 * @param userId The ID of the user.
+	 * @return <code>true</code> if the user can join the site.
+	 */
+	public boolean isJoinable(String siteId, String userId);
 
+	/**
+	 * This looks up a site but also checks for any aliases.
+	 * This doesn't do any permission checks.
+	 * @param siteId The siteId/alias to lookup
+	 * @return The site.
+	 * @throws IdUnusedException If the siteId doesn't exist and there isn't an alias for this.
+	 */
+	Site getSite(String siteId) throws IdUnusedException;
 }

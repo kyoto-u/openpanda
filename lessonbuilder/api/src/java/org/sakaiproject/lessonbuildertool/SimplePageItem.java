@@ -23,6 +23,8 @@
 
 package org.sakaiproject.lessonbuildertool;
 
+import java.util.Collection;
+
 /**
  * This is a single item on a simple page.
  * 
@@ -41,7 +43,9 @@ public interface SimplePageItem {
 	public static final int FORUM = 8;
 	public static final int COMMENTS = 9;
 	public static final int STUDENT_CONTENT = 10;
-        public static final int BLTI = 12;
+	public static final int QUESTION = 11;
+    public static final int BLTI = 12;
+    public static final int PEEREVAL = 13;
 
     // sakaiId used for an item copied from another site with no real content
 	public static final String DUMMY = "/dummy";
@@ -175,4 +179,29 @@ public interface SimplePageItem {
     public void setAltGradebookTitle(String gradebookTitle);
     
     public String getAltGradebookTitle();
+
+    public boolean isGroupOwned();
+
+    public void setGroupOwned(Boolean o);
+
+    public String getOwnerGroups();
+
+    public void setOwnerGroups(String s);
+    
+    public String getAttribute(String attr);
+    
+    public void setAttribute(String attr, String value);
+
+    public Object getJsonAttribute(String attr);
+    
+    public void setJsonAttribute(String attr, Object value);
+
+    public String getAttributeString();
+
+    public void setAttributeString(String s);
+    
+    public void setShowPeerEval(Boolean review);
+	
+    public Boolean getShowPeerEval();
+ 
 }

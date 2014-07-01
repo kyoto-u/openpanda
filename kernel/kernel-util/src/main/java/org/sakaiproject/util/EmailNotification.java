@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-util/src/main/java/org/sakaiproject/util/EmailNotification.java $
- * $Id: EmailNotification.java 101657 2011-12-13 00:04:51Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-util/src/main/java/org/sakaiproject/util/EmailNotification.java $
+ * $Id: EmailNotification.java 305999 2014-02-14 18:26:08Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,11 +70,11 @@ import org.w3c.dom.Element;
 @SuppressWarnings({"deprecation","rawtypes","unchecked"})
 public class EmailNotification implements NotificationAction
 {
-	private final String MULTIPART_BOUNDARY = "======sakai-multi-part-boundary======";
-	private final String BOUNDARY_LINE = "\n\n--"+MULTIPART_BOUNDARY+"\n";
-	private final String TERMINATION_LINE = "\n\n--"+MULTIPART_BOUNDARY+"--\n\n";
+	protected final String MULTIPART_BOUNDARY = "======sakai-multi-part-boundary======";
+	protected final String BOUNDARY_LINE = "\n\n--"+MULTIPART_BOUNDARY+"\n";
+	protected final String TERMINATION_LINE = "\n\n--"+MULTIPART_BOUNDARY+"--\n\n";
 
-	private final String MIME_ADVISORY = "This message is for MIME-compliant mail readers.";
+	protected final String MIME_ADVISORY = "This message is for MIME-compliant mail readers.";
 
 	/** The related site id. */
 	protected String m_siteId = null;
@@ -503,8 +503,8 @@ public class EmailNotification implements NotificationAction
 		{
 			if (option == NotificationService.PREF_NONE)
 			{
-				String type = EntityManager.newReference(resourceFilter).getType();
-				if (type != null)
+			    String type = getType(resourceFilter);
+			    if (type != null)
 				{
 					if ("org.sakaiproject.mailarchive.api.MailArchiveService".equals(type))
 					{
@@ -642,7 +642,7 @@ public class EmailNotification implements NotificationAction
 		}
 
 		// try the preference for the resource type service responsibile for resources of this notification
-		String type = EntityManager.newReference(resourceFilter).getType();
+		String type = getType(resourceFilter);
 		if (type != null)
 		{
 			props = prefs.getProperties(NotificationService.PREFS_TYPE + type);
@@ -665,6 +665,16 @@ public class EmailNotification implements NotificationAction
 	}
 
 	/**
+	 * Given a resourceFilter, get the associated type. See {@link org.sakaiproject.entity.impl.ReferenceComponent#getType}
+	 *
+	 * @param resourceFilter the resourceFilter to get the type from
+	 * @return the resourceFilter's type
+	 */
+	protected String getType(String resourceFilter) {
+	    return EntityManager.newReference(resourceFilter).getType();
+	}
+
+    /**
 	 * Find the header line that begins with the header parameter
 	 * 
 	 * @param header

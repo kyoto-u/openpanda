@@ -6,7 +6,7 @@ var isNew=true;
 //var flashPlayer = "/library/editor/ckeditor/plugins/movieplayer/player_flv_maxi.swf";
 var flashPlayer = "/library/editor/ckextraplugins/movieplayer/StrobeMediaPlayback.swf";
 var youtubePlugin = "/library/editor/ckextraplugins/movieplayer/YouTubePlugin.swf";
-var mimeSupported = ['video/mp4','audio/mpeg','application/x-shockwave-flash'];
+var mimeSupported = ['video/mp4','audio/mpeg','application/x-shockwave-flash','video/x-ms-wmv'];
 
 /** Create Movie html */
 
@@ -30,9 +30,14 @@ Movie.prototype.getInnerHTML = function (objectId){
 	if(mimeSupported.contains(this.contentType)) {
 			var addYoutube = "";
 			if(this.url.contains('youtube.com/')) {
-					this.url = this.url.replace(/youtube\.com\/watch\?v=/i, "youtube.com/v/");
-					addYoutube = "&amp;plugin_YouTubePlugin="+youtubePlugin;
+				this.url = this.url.replace(/youtube\.com\/watch\?v=/i, "youtube.com/v/");
+				addYoutube = "&amp;plugin_YouTubePlugin="+youtubePlugin;
 			}
+
+			else if (this.url.contains('youtu.be/')) {
+			    this.url = this.url.replace("/youtu.be/", "youtube.com/v/");
+			    addYoutube = "&amp;plugin_YouTubePlugin="+youtubePlugin;
+		        }
 	
 			// Flash video (FLV)
 			s += '<OBJECT id="movie' + rnd + '" ';
@@ -101,6 +106,23 @@ CKEDITOR.plugins.add( 'movieplayer',
 	 requires : [ 'fakeobjects', 'flash', 'iframedialog' ],
    //http://alfonsoml.blogspot.com/2009/12/plugin-localization-in-ckeditor-vs.html
    lang: ['en','pt'],
+   getPlaceholderCss : function () {
+       return 'img.cke_movieplayer' +
+		    '{' +
+		    'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/placeholder.png' ) + ');' +
+		    'background-position: center center;' +
+		    'background-repeat: no-repeat;' +
+		    'border: 1px solid #a9a9a9;' +
+		    'width: 80px;' +
+		    'height: 80px;' +
+		    '}';
+   },
+   onLoad: function() {
+       //v4
+       if (CKEDITOR.addCss) {
+	   CKEDITOR.addCss(this.getPlaceholderCss());
+       }
+   },
    init: function( editor )
    {
       var command = editor.addCommand( 'movie.cmd', new CKEDITOR.dialogCommand( 'movie.dlg' ) );
@@ -108,25 +130,18 @@ CKEDITOR.plugins.add( 'movieplayer',
 
       editor.ui.addButton( 'Movie',
          {
-         label: editor.lang.MoviePlayerTooltip,
+         label: editor.lang.movieplayer.MoviePlayerTooltip,
          command: 'movie.cmd',
 	 icon:  thispath + 'filmreel.gif'
       });
-			editor.addCss(
-				'img.cke_movieplayer' +
-				'{' +
-					'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/placeholder.png' ) + ');' +
-					'background-position: center center;' +
-					'background-repeat: no-repeat;' +
-					'border: 1px solid #a9a9a9;' +
-					'width: 80px;' +
-					'height: 80px;' +
-				'}'
-				)
+      //v3
+      if (editor.addCss) { 
+	  editor.addCss(this.getPlaceholderCss());
+      }
 	//movie_plugin.js
     CKEDITOR.dialog.add( 'movie.dlg', function( api ) {
             var dialogDef = {
-                title : editor.lang.MoviePlayerDlgTitle, minWidth : 390, minHeight : 230,
+                title : editor.lang.movieplayer.MoviePlayerDlgTitle, minWidth : 390, minHeight : 230,
                 contents : [ {
                         id : 'tab1', label : '', title : '', expand : true, padding : 0,
                         elements : [ {
@@ -158,7 +173,7 @@ CKEDITOR.plugins.add( 'movieplayer',
                 onOk : function() {
                     // Accessing dialog elements:
                     if(tab1doc.getElementById('txtUrl').value.length == 0) {
-                        alert(editor.lang.MoviePlayerNoUrl) ;
+                        alert(editor.lang.movieplayer.MoviePlayerNoUrl) ;
                         return false ;
                     }
                     //TODO: What's this do?

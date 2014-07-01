@@ -2,22 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>base</artifactId>
+        <artifactId>master</artifactId>
         <groupId>org.sakaiproject</groupId>
-        <version>2.9.3</version>
-        <relativePath>../pom.xml</relativePath>
+        <version>10.0</version>
+        <relativePath>../master/pom.xml</relativePath>
     </parent>
+
     <name>Sakai OSP Project</name>
     <groupId>org.sakaiproject.osp</groupId>
     <artifactId>osp-base</artifactId>
+    <version>10.0</version>
     <packaging>pom</packaging>
     
-    <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/osp/branches/sakai-2.9.x</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/osp/branches/sakai-2.9.x</developerConnection>
-        <url>https://source.sakaiproject.org/svn/osp/branches/sakai-2.9.x</url>
-    </scm>
-
     <modules>
         <module>common</module>
         <module>glossary</module>
@@ -29,7 +25,6 @@
         <module>presentation</module>
         <module>warehouse</module>
         <module>wizard</module>
-        <module>xsltcharon</module>
     </modules>
     
     <dependencyManagement>
@@ -37,12 +32,12 @@
             <dependency>
                 <groupId>org.sakaiproject.metaobj</groupId>
                 <artifactId>sakai-metaobj-impl</artifactId>
-                <version>2.9.3</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.metaobj</groupId>
                 <artifactId>sakai-metaobj-tool-lib</artifactId>
-                <version>2.9.3</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.osp</groupId>
@@ -69,59 +64,13 @@
                 <artifactId>jta</artifactId>
                 <version>h2.1.8</version>
             </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.sitemanage</groupId>
-                <artifactId>sakai-site-manage-util</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency> 
-                <groupId>org.sakaiproject.osp</groupId> 
-                <artifactId>osp-depend-jsf-widgets-sun</artifactId> 
-                <version>${project.version}</version> 
-                <type>pom</type> 
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.osp</groupId>
-                <artifactId>osp-common-api</artifactId>
-                <version>${project.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.osp</groupId>
-                <artifactId>osp-glossary-api</artifactId>
-                <version>${project.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.osp</groupId>
-                <artifactId>osp-integration-api</artifactId>
-                <version>${project.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.osp</groupId>
-                <artifactId>osp-matrix-api</artifactId>
-                <version>${project.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.osp</groupId>
-                <artifactId>osp-portal-api</artifactId>
-                <version>${project.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.osp</groupId>
-                <artifactId>osp-presentation-api</artifactId>
-                <version>${project.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.osp</groupId>
-                <artifactId>osp-wizard-api</artifactId>
-                <version>${project.version}</version>
-                <scope>provided</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <scm>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/osp/trunk</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/osp/trunk</developerConnection>
+        <url>https://source.sakaiproject.org/svn/osp/trunk</url>
+    </scm>
+
 </project>

@@ -14,6 +14,11 @@ public interface UserNotificationProvider {
 	 * containing passwords going back to the user who added it.
 	 */
 	public static final String NOTIFY_FROM_CURRENT_USER = "sitemanage.notifyFromCurrentUser";
+	
+	/**
+	 * Entity prefix for sites
+	 */
+	public static final String SITE_REF_PREFIX	= "/site/";
 
 	/**
 	 * Send an email to newly added user informing password
@@ -92,4 +97,12 @@ public interface UserNotificationProvider {
 	 * @param termTitle
 	 */
 	public void notifyCourseRequestRequester(String requestEmail, String supportEmailContent, String termTitle);
+	
+	/**
+	 * Notifies user when the course site import completed
+	 * @param toEmail
+	 * @param siteId
+	 * @param siteTitle
+	 */
+	public void notifySiteImportCompleted(String toEmail, String siteId, String siteTitle);
 }

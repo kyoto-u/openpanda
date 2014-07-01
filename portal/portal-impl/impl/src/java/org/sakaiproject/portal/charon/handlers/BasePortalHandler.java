@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/BasePortalHandler.java $
- * $Id: BasePortalHandler.java 118537 2013-01-21 16:35:17Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/BasePortalHandler.java $
+ * $Id: BasePortalHandler.java 307518 2014-03-26 22:33:18Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -36,6 +36,8 @@ import org.sakaiproject.portal.api.PortalHandlerException;
 import org.sakaiproject.portal.api.PortalRenderContext;
 import org.sakaiproject.portal.api.PortalService;
 import org.sakaiproject.site.api.Site;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.util.ResourceLoader;
 
@@ -44,7 +46,7 @@ import org.sakaiproject.util.ResourceLoader;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 118537 $
+ * @version $Rev: 307518 $
  * 
  */
 public abstract class BasePortalHandler implements PortalHandler
@@ -54,7 +56,10 @@ public abstract class BasePortalHandler implements PortalHandler
 	public BasePortalHandler()
 	{
 		urlFragment = "none";
+		timeService = (TimeService) ComponentManager.get(TimeService.class);
 	}
+
+	private TimeService timeService;
 
 	protected PortalService portalService;
 
@@ -151,48 +156,64 @@ public abstract class BasePortalHandler implements PortalHandler
 			return Locale.getDefault();
 	}
 	
-	private Locale setSiteLanguage(Site site)
+	protected Locale setSiteLanguage(Site site)
 	{
 		ResourceLoader rl = new ResourceLoader();
-				
-		ResourcePropertiesEdit props = site.getPropertiesEdit();
-				
-		String locale_string = props.getProperty("locale_string");
-			
-		if(log.isDebugEnabled()){
-			log.debug("setSiteLanguage - locale_string property: " + locale_string);
+		String locale_string = null;
+		if(site != null)
+		{
+			ResourcePropertiesEdit props = site.getPropertiesEdit();
+
+			locale_string = props.getProperty("locale_string");
+
+			if (log.isDebugEnabled()) {
+				log.debug("setSiteLanguage - locale_string property: " + locale_string);
+			}
 		}
-		
-		Locale loc;
-				
+		Locale loc = null;
 		// if no language was specified when creating the site, set default language to session
 		if(locale_string == null || locale_string == "")
-		{					
+		{
 			if(log.isDebugEnabled()){
 				log.debug("setSiteLanguage - no locale, setting null.");
 			}
-			loc = rl.setContextLocale(null);
 		}
 		
 		// if you have indicated a language when creating the site, set selected language to session
 		else
-		{				
-			Locale locale = getLocaleFromString(locale_string);	
-			
+		{
+			loc = getLocaleFromString(locale_string);
 			if(log.isDebugEnabled()){
-				log.debug("setSiteLanguage - locale: " + locale.toString());
+				log.debug("setSiteLanguage - locale: " + loc.toString());
 			}
-			loc = rl.setContextLocale(locale);			
 		}
 
-        return loc;
+		loc = rl.setContextLocale(loc);
+		return loc;
 	}
 	
 	protected void addLocale(PortalRenderContext rcontext, Site site) {
-		Locale locale = setSiteLanguage(site);	
+		addLocale(rcontext, site, null);
+	}
+
+	protected void addLocale(PortalRenderContext rcontext, Site site, String userId) {
+		Locale prevLocale = null;
+		if (userId != null) {
+			prevLocale = new ResourceLoader().getLocale();
+		}
+
+		Locale locale = setSiteLanguage(site);
 		if(log.isDebugEnabled()) {
 			log.debug("Locale for site " + site.getId() + " = " + locale.toString());
 		}
-        rcontext.put("locale", locale.toString());
+		String localeString = locale.getLanguage();
+		String country = locale.getCountry();
+		if(country.length() > 0) localeString += "-" + country;
+		rcontext.put("locale", localeString);
+
+		if (prevLocale != null && !prevLocale.equals(locale)) {
+			// if the locale was changed, clear the date/time format which was cached in the previous locale
+			timeService.clearLocalTimeZone(userId);
+		}
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.util;
 
 import java.awt.image.BufferedImage;
@@ -21,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -105,19 +105,36 @@ public class ProfileUtils {
 		return "jpg";
 	}
 	
+	
+	public static byte[] scaleImage(byte[] imageData, int maxSize, String mimeType) {
+		InputStream in = null;
+		try {
+			in = new ByteArrayInputStream(imageData);
+			return scaleImage(in, maxSize, mimeType);
+			
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+					log.debug("Image stream closed."); 
+				}
+				catch (IOException e) {
+					log.error("Error closing image stream: ", e); 
+				}
+			}
+		}
+	}
 	/**
 	 * Scale an image so it is fit within a give width and height, whilst maintaining its original proportions 
 	 *
 	 * @param imageData		bytes of the original image
 	 * @param maxSize		maximum dimension in px
 	 */
-	public static byte[] scaleImage(byte[] imageData, int maxSize, String mimeType) {
+	public static byte[] scaleImage(InputStream in, int maxSize, String mimeType) {
 		
-		InputStream in = null;
 		byte[] scaledImageBytes = null;
 		try {
 			//convert original image to inputstream
-			in = new ByteArrayInputStream(imageData);
 			
 			//original buffered image
 			BufferedImage originalImage = ImageIO.read(in);
@@ -136,27 +153,15 @@ public class ProfileUtils {
 			log.error("Scaling image failed.", e);
 		}
 		
-		
-		finally {
-			if (in != null) {
-				try {
-					in.close();
-					log.debug("Image stream closed."); 
-				}
-				catch (IOException e) {
-					log.error("Error closing image stream: ", e); 
-				}
-			}
-		}
-		
 		return scaledImageBytes;
 	}
 	
 	/**
-	 * Convert a Date into a String according to format
+	 * Convert a Date into a String according to format, or, if format
+	 * is set to null, do a current locale based conversion.
 	 *
 	 * @param date			date to convert
-	 * @param format		format in SimpleDateFormat syntax
+	 * @param format		format in SimpleDateFormat syntax. Set to null to force as locale based conversion.
 	 */
 	public static String convertDateToString(Date date, String format) {
 		
@@ -164,11 +169,22 @@ public class ProfileUtils {
 			throw new IllegalArgumentException("Null Argument in Profile.convertDateToString()");	 
 		}
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        String dateStr = dateFormat.format(date);
+        String dateStr = null;
         
-        log.debug("Profile.convertDateToString(): Input date: " + date.toString()); 
-        log.debug("Profile.convertDateToString(): Converted date string: " + dateStr); 
+        if(format != null) {
+        	SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        	dateStr = dateFormat.format(date);
+        } else {
+        	// Since no specific format has been specced, we use the user's locale.
+        	Locale userLocale = (new ResourceLoader()).getLocale();
+        	DateFormat formatter = DateFormat.getDateInstance(DateFormat.MEDIUM, userLocale);
+        	dateStr = formatter.format(date);
+        }
+        
+        if(log.isDebugEnabled()) {
+        	log.debug("Profile.convertDateToString(): Input date: " + date.toString()); 
+        	log.debug("Profile.convertDateToString(): Converted date string: " + dateStr); 
+        }
 
 		return dateStr;
 	}

@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-portlet/src/java/org/sakaiproject/portlets/IMSBLTIPortlet.java $
- * $Id: IMSBLTIPortlet.java 127120 2013-07-17 16:15:30Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/basiclti-portlet/src/java/org/sakaiproject/portlets/IMSBLTIPortlet.java $
+ * $Id: IMSBLTIPortlet.java 133886 2014-01-30 04:09:22Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -50,6 +50,9 @@ import javax.portlet.PortletConfig;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletSession;
 import javax.portlet.ReadOnlyException;
+
+import javax.servlet.ServletRequest;
+import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -111,6 +114,8 @@ public class IMSBLTIPortlet extends GenericPortlet {
 
 	public static final String ISO_8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ssz";
 
+	public final static String CURRENT_HTTP_REQUEST = "org.sakaiproject.util.RequestFilter.http_request";
+
 	public void init(PortletConfig config) throws PortletException {
 		super.init(config);
 
@@ -135,6 +140,7 @@ public class IMSBLTIPortlet extends GenericPortlet {
 		fieldList.add("allowroster");
 		fieldList.add("allowlori");
 		fieldList.add("contentlink");
+		fieldList.add("splash");
 	}
 
 	// Simple Debug Print Mechanism
@@ -162,6 +168,10 @@ public class IMSBLTIPortlet extends GenericPortlet {
 
 			response.setContentType("text/html; charset=UTF-8");
 
+			// Grab that underlying request to get a GET parameter
+			ServletRequest req = (ServletRequest) ThreadLocalManager.get(CURRENT_HTTP_REQUEST);
+			String popupDone = req.getParameter("sakai.popup");
+
 			PrintWriter out = response.getWriter();
 
 			String title = getTitleString(request);
@@ -178,10 +188,11 @@ public class IMSBLTIPortlet extends GenericPortlet {
 			String allowRoster = getSakaiProperty(sakaiProperties,"imsti.allowroster");
 			String allowLORI = getSakaiProperty(sakaiProperties,"imsti.allowlori");
 			String assignment = getSakaiProperty(sakaiProperties,"imsti.assignent");
+			String launch = getSakaiProperty(sakaiProperties,"imsti.launch");
 
 			if ( placementSecret == null && 
 			   ( "on".equals(allowOutcomes) || "on".equals(allowSettings) || 
-			     "on".equals(allowRoster) || "on".equals(allowLORI) ) ) {
+				 "on".equals(allowRoster) || "on".equals(allowLORI) ) ) {
 				String uuid = UUID.randomUUID().toString();
 				Date date = new Date();
 				SimpleDateFormat sdf = new SimpleDateFormat(ISO_8601_FORMAT);
@@ -191,13 +202,27 @@ public class IMSBLTIPortlet extends GenericPortlet {
 				placement.save();
 			}
 
-			// Check to see if out launch will be successful
+			// Check to see if our launch will be successful
 			String[] retval = SakaiBLTIUtil.postLaunchHTML(placement.getId(), rb);
 			if ( retval.length > 1 ) {
 				String iframeUrl = "/access/basiclti/site/"+context+"/"+placement.getId();
 				String frameHeight =  getCorrectProperty(request, "frameheight", null);
 				dPrint("fh="+frameHeight);
 				String newPage =  getCorrectProperty(request, "newpage", null);
+				String serverUrl = ServerConfigurationService.getServerUrl();
+				boolean forcePopup = false;
+				if ( request.isSecure() || ( serverUrl != null && serverUrl.startsWith("https://") ) ) {
+					if ( launch != null && launch.startsWith("http://") ) {
+						forcePopup = true;
+					}
+				}
+
+				// Change "newpage" if forcePopup so the portal will do our pop up next time
+				if ( forcePopup && ! "on".equals(newPage) ) {
+					placement.getPlacementConfig().setProperty("imsti.newpage","on");
+					placement.save();
+				}
+
 				String maximize =  getCorrectProperty(request, "maximize", null);
 				StringBuffer text = new StringBuffer();
 
@@ -205,12 +230,14 @@ public class IMSBLTIPortlet extends GenericPortlet {
 				session.setAttribute("sakai:maximized-url",iframeUrl);
 				dPrint("Setting sakai:maximized-url="+iframeUrl);
 
-				if ( "on".equals(newPage) ) {
+				if ( "on".equals(newPage) || forcePopup ) {
 					String windowOpen = "window.open('"+iframeUrl+"','BasicLTI');"; 			
-					text.append("<p>\n");
-					text.append("<script type=\"text/javascript\">\n");
-					text.append(windowOpen+"\n");
-					text.append("</script>\n");
+					if ( popupDone == null ) {
+						text.append("<p>\n");
+						text.append("<script type=\"text/javascript\">\n");
+						text.append(windowOpen+"\n");
+						text.append("</script>\n");
+					}
 					text.append(rb.getString("new.page.launch"));
 					text.append("<br><a href=\""+iframeUrl+"\" onclick=\""+windowOpen+"\" target=\"BasicLTI\">"+rb.getString("noiframe.press.here")+"</a>");
 					text.append("</p>\n");
@@ -256,6 +283,9 @@ public class IMSBLTIPortlet extends GenericPortlet {
 		for (String element : fieldList) {
 			String propertyName = placement.getToolId() + "." + element;
 			String propValue = ServerConfigurationService.getString(propertyName,null);
+			if ( "splash".equals(element) && propValue == null ) {
+				propValue = ServerConfigurationService.getString(placement.getToolId() + ".overridesplash",null);
+			}
 			if ( propValue != null && propValue.trim().length() > 0 ) {
 				dPrint("Forcing Final = "+propertyName);
 				config.setProperty("final."+element,"true");
@@ -300,16 +330,25 @@ public class IMSBLTIPortlet extends GenericPortlet {
 
 		request.setAttribute("imsti.oldvalues", oldValues);
 
-		String allowSettings = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED, null);
+		String allowSettings = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED, SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED_DEFAULT);
 		request.setAttribute("allowSettings", new Boolean("true".equals(allowSettings)));
-		String allowRoster = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED, null);
+		String allowRoster = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED, SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED_DEFAULT);
 		request.setAttribute("allowRoster", new Boolean("true".equals(allowRoster)));
-		String allowContentLink = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_CONTENTLINK_ENABLED, null);
+		String allowContentLink = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_CONTENTLINK_ENABLED, SakaiBLTIUtil.BASICLTI_CONTENTLINK_ENABLED_DEFAULT);
 		request.setAttribute("allowContentLink", new Boolean("true".equals(allowContentLink)));
 
 		// For outcomes and LORI we check for tools in the site before offering the options
-		String allowOutcomes = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, null);
-		String allowLori = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_LORI_ENABLED, null);
+		String allowOutcomes = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED_DEFAULT);
+		if ( "true".equals(allowOutcomes) ) {
+			String outcomeProp = getCorrectProperty(request, "allowoutcomes", "on");
+			allowOutcomes = "on".equals(outcomeProp) ? "true" : "false";
+		}
+
+		String allowLori = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_LORI_ENABLED, SakaiBLTIUtil.BASICLTI_LORI_ENABLED_DEFAULT);
+		if ( "true".equals(allowLori) ) {
+			String loriProp = getCorrectProperty(request, "allowlori", "on");
+			allowLori = "on".equals(loriProp) ? "true" : "false";
+		}
 
 		boolean foundLessons = false;
 		boolean foundGradebook = false;
@@ -385,7 +424,7 @@ public class IMSBLTIPortlet extends GenericPortlet {
 
 		if ( defaultValue != null ) {
 			// System.out.println("Default "+propName+" ="+defaultValue);
-			return propValue;
+			return defaultValue;
 		}
 		// System.out.println("Fell through "+propName);
 		return null;
@@ -616,10 +655,10 @@ public class IMSBLTIPortlet extends GenericPortlet {
 			String assignment = getFormParameter(request,sakaiProperties,"assignment");
 			String newAssignment = getFormParameter(request,sakaiProperties,"newassignment");
 			String oldPlacementSecret = getSakaiProperty(sakaiProperties,"imsti.placementsecret");
-			String allowOutcomes = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, null);
-			String allowSettings = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED, null);
-			String allowRoster = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED, null);
-			String allowLori = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_LORI_ENABLED, null);
+			String allowOutcomes = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED_DEFAULT);
+			String allowSettings = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED, SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED_DEFAULT);
+			String allowRoster = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED, SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED_DEFAULT);
+			String allowLori = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_LORI_ENABLED, SakaiBLTIUtil.BASICLTI_LORI_ENABLED_DEFAULT);
 
 			if ( "true".equals(allowOutcomes) && newAssignment != null && newAssignment.trim().length() > 1 ) {
 				if ( addGradeBookItem(request, newAssignment) ) {
@@ -686,14 +725,23 @@ public class IMSBLTIPortlet extends GenericPortlet {
 
 			// Update the Page Title (button text)
 			String imsTIPageTitle  = getFormParameter(request,sakaiProperties,"pagetitle");
-			if ( imsTIPageTitle != null && imsTIPageTitle.trim().length() > 0 ) {
+			String prefsPageTitle = prefs.getValue("sakai:imsti.pagetitle", null);
+			imsTIPageTitle = imsTIPageTitle == null ? "" : imsTIPageTitle.trim();
+			prefsPageTitle = prefsPageTitle == null ? "" : prefsPageTitle.trim();
+
+			if ( ! imsTIPageTitle.equals(prefsPageTitle) ) {
 				try {
+					if ( imsTIPageTitle.length() > 99 ) imsTIPageTitle = imsTIPageTitle.substring(0,99);
 					ToolConfiguration toolConfig = SiteService.findTool(placement.getId());
 					Site site = SiteService.getSite(toolConfig.getSiteId());
 					SitePage page = site.getPage(toolConfig.getPageId());
-					if ( imsTIPageTitle.length() > 99 ) imsTIPageTitle = imsTIPageTitle.substring(0,99);
-					page.setTitle(imsTIPageTitle.trim());
-					page.setTitleCustom(true);
+					if ( imsTIPageTitle.length() > 1 ) {
+						page.setTitle(imsTIPageTitle.trim());
+						page.setTitleCustom(true);
+					} else {
+						page.setTitle("");
+						page.setTitleCustom(false);
+					}
 					SiteService.save(site);
 				} catch (Exception e) {
 					setErrorMessage(request, rb.getString("error.page.title"));

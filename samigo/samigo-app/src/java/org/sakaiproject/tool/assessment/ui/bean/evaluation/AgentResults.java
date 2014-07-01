@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/AgentResults.java $
- * $Id: AgentResults.java 76242 2010-04-15 19:30:40Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/AgentResults.java $
+ * $Id: AgentResults.java 130512 2013-10-15 23:46:40Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,6 +61,7 @@ public class AgentResults
   private Long itemGradingId;
   private String agentId;
   private String agentEid;
+  private String agentDisplayId;
   private String firstName;
   private String lastName;
   private String lastInitial;
@@ -91,17 +92,17 @@ public class AgentResults
   private List itemGradingAttachmentList;
   private Integer timeElapsed;
   private int submissionCount=0;
-  private Float scoreSummation=new Float("0");
-  private Float averageScore= new Float("0");
+  private Double scoreSummation=new Double("0");
+  private Double averageScore= new Double("0");
   
   public AgentResults() {
   }
 
-  public Float getScoreSummation(){
+  public Double getScoreSummation(){
 	  return scoreSummation;
   }
 
-  public void setScoreSummation(Float scoreSummation){
+  public void setScoreSummation(Double scoreSummation){
 	  this.scoreSummation= scoreSummation;
   }
 
@@ -470,5 +471,13 @@ public class AgentResults
 	      if (sec > 0) timeElapsedInString = timeElapsedInString + sec + " sec ";
 	    }
 	    return timeElapsedInString;	
-	}	
+	}
+
+    public String getAgentDisplayId() {
+        return agentDisplayId;
+    }
+
+    public void setAgentDisplayId(String agentDisplayId) {
+        this.agentDisplayId = agentDisplayId;
+    }
 }

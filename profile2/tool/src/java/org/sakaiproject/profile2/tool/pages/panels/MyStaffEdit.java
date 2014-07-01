@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages.panels;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -39,14 +39,13 @@ import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.logic.ProfileWallLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.UserProfile;
+import org.sakaiproject.profile2.tool.components.CKEditorConfig;
+import org.sakaiproject.profile2.tool.components.CKEditorTextArea;
 import org.sakaiproject.profile2.tool.components.ComponentVisualErrorBehaviour;
 import org.sakaiproject.profile2.tool.components.FeedbackLabel;
-import org.sakaiproject.profile2.tool.components.TextareaTinyMceSettings;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 public class MyStaffEdit extends Panel {
 	
@@ -103,6 +102,8 @@ public class MyStaffEdit extends Panel {
 		WebMarkupContainer positionContainer = new WebMarkupContainer("positionContainer");
 		positionContainer.add(new Label("positionLabel", new ResourceModel("profile.position")));
 		TextField position = new TextField("position", new PropertyModel(userProfile, "position"));
+		position.setMarkupId("positioninput");
+		position.setOutputMarkupId(true);
 		positionContainer.add(position);
 		form.add(positionContainer);
 		
@@ -110,6 +111,8 @@ public class MyStaffEdit extends Panel {
 		WebMarkupContainer departmentContainer = new WebMarkupContainer("departmentContainer");
 		departmentContainer.add(new Label("departmentLabel", new ResourceModel("profile.department")));
 		TextField department = new TextField("department", new PropertyModel(userProfile, "department"));
+		department.setMarkupId("departmentinput");
+		department.setOutputMarkupId(true);
 		departmentContainer.add(department);
 		form.add(departmentContainer);
 		
@@ -117,6 +120,8 @@ public class MyStaffEdit extends Panel {
 		WebMarkupContainer schoolContainer = new WebMarkupContainer("schoolContainer");
 		schoolContainer.add(new Label("schoolLabel", new ResourceModel("profile.school")));
 		TextField school = new TextField("school", new PropertyModel(userProfile, "school"));
+		school.setMarkupId("schoolinput");
+		school.setOutputMarkupId(true);
 		schoolContainer.add(school);
 		form.add(schoolContainer);
 		
@@ -124,13 +129,18 @@ public class MyStaffEdit extends Panel {
 		WebMarkupContainer roomContainer = new WebMarkupContainer("roomContainer");
 		roomContainer.add(new Label("roomLabel", new ResourceModel("profile.room")));
 		TextField room = new TextField("room", new PropertyModel(userProfile, "room"));
+		room.setMarkupId("roominput");
+		room.setOutputMarkupId(true);
 		roomContainer.add(room);
 		form.add(roomContainer);
 		
 		//staffprofile
 		WebMarkupContainer staffProfileContainer = new WebMarkupContainer("staffProfileContainer");
 		staffProfileContainer.add(new Label("staffProfileLabel", new ResourceModel("profile.staffprofile")));
-		staffProfileContainer.add(new TextArea("staffProfile", new PropertyModel(userProfile, "staffProfile")));
+		TextArea staffProfile = new TextArea("staffProfile", new PropertyModel(userProfile, "staffProfile"));
+		staffProfile.setMarkupId("staffprofileinput");
+		staffProfile.setOutputMarkupId(true);
+		staffProfileContainer.add(staffProfile);
 		form.add(staffProfileContainer);
 		
 		//university profile URL
@@ -153,11 +163,14 @@ public class MyStaffEdit extends Panel {
 				}
 			}
 		};
+		universityProfileUrl.setMarkupId("universityprofileurlinput");
+		universityProfileUrl.setOutputMarkupId(true);
 		universityProfileUrl.add(new UrlValidator());
 		universityProfileUrlContainer.add(universityProfileUrl);
 		
 		final FeedbackLabel universityProfileUrlFeedback = new FeedbackLabel(
 				"universityProfileUrlFeedback", universityProfileUrl);
+		universityProfileUrlFeedback.setMarkupId("universityProfileUrlFeedback");
 		universityProfileUrlFeedback.setOutputMarkupId(true);
 		universityProfileUrlContainer.add(universityProfileUrlFeedback);
 		universityProfileUrl.add(new ComponentVisualErrorBehaviour("onblur",
@@ -185,11 +198,14 @@ public class MyStaffEdit extends Panel {
 				}
 			}
 		};
+		academicProfileUrl.setMarkupId("academicprofileurlinput");
+		academicProfileUrl.setOutputMarkupId(true);
 		academicProfileUrl.add(new UrlValidator());
 		academicProfileUrlContainer.add(academicProfileUrl);
 		
 		final FeedbackLabel academicProfileUrlFeedback = new FeedbackLabel(
 				"academicProfileUrlFeedback", academicProfileUrl);
+		academicProfileUrlFeedback.setMarkupId("academicProfileUrlFeedback");
 		academicProfileUrlFeedback.setOutputMarkupId(true);
 		academicProfileUrlContainer.add(academicProfileUrlFeedback);
 		academicProfileUrl.add(new ComponentVisualErrorBehaviour("onblur",
@@ -200,9 +216,10 @@ public class MyStaffEdit extends Panel {
 		//publications
 		WebMarkupContainer publicationsContainer = new WebMarkupContainer("publicationsContainer");
 		publicationsContainer.add(new Label("publicationsLabel", new ResourceModel("profile.publications")));
-		TextArea publications = new TextArea("publications", new PropertyModel(userProfile, "publications"));
-		
-		publications.add(new TinyMceBehavior(new TextareaTinyMceSettings()));
+		CKEditorTextArea publications = new CKEditorTextArea("publications", new PropertyModel(userProfile, "publications"));
+		publications.setMarkupId("publicationsinput");
+		publications.setEditorConfig(CKEditorConfig.createCkConfig());
+		publications.setOutputMarkupId(true);
 		publicationsContainer.add(publications);
 		
 		form.add(publicationsContainer);
@@ -242,8 +259,12 @@ public class MyStaffEdit extends Panel {
 					target.addComponent(formFeedback);
 				}
             }
+			
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator() {
+				return CKEditorTextArea.getAjaxCallDecoratedToUpdateElementForAllEditorsOnPage();
+			}
 		};
-		submitButton.add(new TinyMceAjaxSubmitModifier());
 		form.add(submitButton);
 		
         

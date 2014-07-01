@@ -337,7 +337,11 @@ public class SamigoExport {
 		    });
 	    }
 
-	    Set<AnswerIfc> answers = textlist.get(0).getAnswerSet();
+	    Set<AnswerIfc> answers = null;
+	    if (textlist.size() > 0)
+		answers = textlist.get(0).getAnswerSet();
+	    else
+		answers = new HashSet<AnswerIfc>();
 	    List<AnswerIfc> answerlist = new ArrayList<AnswerIfc>();
 	    answerlist.addAll(answers);
 
@@ -367,7 +371,9 @@ public class SamigoExport {
 	    } else if (type.equals(TypeIfc.ESSAY_QUESTION)) {
 		profile = "cc.essay.v0p1"; 
 	    } else if (type.equals(TypeIfc.FILL_IN_BLANK) || type.equals(TypeIfc.FILL_IN_NUMERIC) ) {
-		String answerString = answerlist.get(0).getText();
+		String answerString = "";
+		if (answerlist.size() > 0)
+		    answerString = answerlist.get(0).getText();
 		// only limited pattern match is supported. It has to be just one alternative, and
 		// it can only be a substring. I classify anything starting or ending in *, and with one
 		// alternative as pattern match, otherwise FIB, and give error except for the one proper case
@@ -379,6 +385,7 @@ public class SamigoExport {
 
 	    } else {
 		errStream.println(messageLocator.getMessage("simplepage.exportcc-sam-undefinedtype").replace("{1}", title).replace("{2}",assessmentTitle)); 
+		continue;
 	    }		
 	    
 	    //ignore
@@ -396,7 +403,7 @@ public class SamigoExport {
 	    // CC doesn't have survey questoins. We treat them as multiple correct single selection
 	    if (answerlist.size() > 0) {
 		for (AnswerIfc answer: answerlist) {
-		    if (survey || answer.getIsCorrect()) {
+		    if (survey || answer.getIsCorrect() != null && answer.getIsCorrect()) {
 			if (type.equals(TypeIfc.TRUE_FALSE))
 			    correctItem = answer.getText().toLowerCase();
 			else
@@ -413,6 +420,16 @@ public class SamigoExport {
 	    out.println("              <fieldlabel>cc_profile</fieldlabel>");
 	    out.println("              <fieldentry>" + profile + "</fieldentry>");
 	    out.println("            </qtimetadatafield>");
+	    if (type.equals(TypeIfc.ESSAY_QUESTION)) {
+	    out.println("            <qtimetadatafield>");
+	    out.println("              <fieldlabel>qmd_scoringpermitted</fieldlabel>");
+	    out.println("              <fieldentry>Yes</fieldentry>");
+	    out.println("            </qtimetadatafield>");
+	    out.println("            <qtimetadatafield>");
+	    out.println("              <fieldlabel>qmd_computerscored</fieldlabel>");
+	    out.println("              <fieldentry>No</fieldentry>");
+	    out.println("            </qtimetadatafield>");
+	    }
 	    out.println("          </qtimetadata>");
 	    out.println("        </itemmetadata>");
 

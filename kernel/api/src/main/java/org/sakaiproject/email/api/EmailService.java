@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/email/api/EmailService.java $
- * $Id: EmailService.java 79506 2010-07-15 17:16:06Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/email/api/EmailService.java $
+ * $Id: EmailService.java 133314 2014-01-15 19:29:10Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
 import org.sakaiproject.email.api.EmailAddress.RecipientType;
@@ -128,11 +129,13 @@ public interface EmailService
 	/**
 	 * Sends a single message to a set of users.
 	 * 
+	 * @deprecated
 	 * @param message
 	 *            {@link EmailMessage} that contains the parameters to create a message to the
 	 *            specified recipients.
 	 * @throws AddressValidationException
-	 *             If any recipient addresses are found to be invalid. This is checked when
+	 *             If any addresses are found to be invalid that prevent all the messages from being send.
+	 *             Examples are reply-to address and from address.. This is checked when
 	 *             converting to {@link javax.mail.internet.InternetAddress}.
 	 * @throws NoRecipientsException
 	 * @return {@link java.util.List} of recipients that were found to be invalid per to
@@ -140,4 +143,25 @@ public interface EmailService
 	 */
 	List<EmailAddress> send(EmailMessage message) throws AddressValidationException,
 			NoRecipientsException;
+
+	/**
+	 * Sends a single message to a set of users.
+	 * 
+	 * @param message
+	 *            {@link EmailMessage} that contains the parameters to create a message to the
+	 *            specified recipients.
+	 * @param messagingException
+	 *            Whether or not to throw a messaging exception
+	 * @throws AddressValidationException
+	 *             If any addresses are found to be invalid that prevent all the messages from being send.
+	 *             Examples are reply-to address and from address.. This is checked when
+	 *             converting to {@link javax.mail.internet.InternetAddress}.
+	 * @throws NoRecipientsException
+	 * @throws MessagingException
+	 * @return {@link java.util.List} of recipients that were found to be invalid per to
+	 *         {@link javax.mail.internet.InternetAddress}.
+	 */
+
+	List<EmailAddress> send(EmailMessage message, boolean messagingException) throws AddressValidationException,
+			NoRecipientsException, MessagingException;
 }

@@ -4,7 +4,7 @@
   <parent>
     <artifactId>search</artifactId>
     <groupId>org.sakaiproject.search</groupId>
-    <version>1.4.3</version>
+    <version>10.0</version><!-- ProjectVersion -->
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>Sakai Search Project</name>
@@ -15,15 +15,6 @@
   project depending on which JVM is in use.</description>
   <profiles>
   	<profile>
-  	  <id>1.5</id>
-  	  <activation>
-  	    <jdk>1.5</jdk>
-  	  </activation>
-  	  <modules>
-  	    <module>test-1.5</module>
-  	  </modules>
-  	</profile>
-  	<profile>
   	  <id>1.6</id>
   	  <activation>
   	  	<jdk>1.6</jdk>
@@ -32,5 +23,15 @@
   	    <module>test-1.6</module>
   	  </modules>
   	</profile>
+   <profile>
+     <!-- 1.7 and newer -->
+     <id>1.7</id>
+     <activation>
+      <jdk>[1.7,)</jdk>
+     </activation>
+     <modules>
+       <module>test-1.7</module>
+     </modules>
+   </profile>   
   </profiles>
 </project>

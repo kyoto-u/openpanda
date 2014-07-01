@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.3/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsService.java $
- * $Id: BasicNewsService.java 105548 2012-03-06 18:42:10Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.0/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsService.java $
+ * $Id: BasicNewsService.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,17 +21,14 @@
 
 package org.sakaiproject.news.impl;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.Vector;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.entity.api.Entity;
+import org.sakaiproject.entity.api.*;
+import org.sakaiproject.entity.cover.EntityManager;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.javax.Filter;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.MemoryService;
@@ -47,19 +44,9 @@ import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
-import org.sakaiproject.component.cover.ServerConfigurationService;
-import org.sakaiproject.entity.cover.EntityManager;
-import org.sakaiproject.entity.api.Entity;
-import org.sakaiproject.entity.api.EntityTransferrer;
-import org.sakaiproject.entity.api.HttpAccess;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.exception.IdUnusedException;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
+
+import java.util.*;
 
 /**
  * <p>
@@ -235,16 +222,6 @@ public class BasicNewsService implements NewsService, EntityTransferrer
 	{
 		// %%%%%
 		return true;
-	}
-
-	/**
-	 * Retrieves a list of URLs for NewsChannel objects currently indexed by the service.
-	 * 
-	 * @return A list of NewsChannel objects (possibly empty).
-	 */
-	public List getChannels()
-	{
-		return m_storage.getKeys();
 	}
 
 	/**
@@ -451,7 +428,7 @@ public class BasicNewsService implements NewsService, EntityTransferrer
 					+ SiteService.MAIN_CONTAINER + ".\n");
 			
 			// get the default news url
-			String defaultUrl = ServerConfigurationService.getString("news.feedURL");
+			String defaultUrl = ServerConfigurationService.getString("news.feedURL", "http://sakaiproject.org/news-rss-feed");
 			
 			// start with an element with our very own (service) name
 			Element element = doc.createElement(SERVICE_NAME);
@@ -633,7 +610,7 @@ public class BasicNewsService implements NewsService, EntityTransferrer
 			SiteService.save(toSite);
 			ToolSession session = SessionManager.getCurrentToolSession();
 
-			if (session.getAttribute(ATTR_TOP_REFRESH) == null)	
+			if (session != null && session.getAttribute(ATTR_TOP_REFRESH) == null)	
 			{
 				session.setAttribute(ATTR_TOP_REFRESH, Boolean.TRUE);
 			}
@@ -733,7 +710,7 @@ public class BasicNewsService implements NewsService, EntityTransferrer
 				SiteService.save(toSite);
 				ToolSession session = SessionManager.getCurrentToolSession();
 
-				if (session.getAttribute(ATTR_TOP_REFRESH) == null)	
+				if (session != null && session.getAttribute(ATTR_TOP_REFRESH) == null)	
 				{
 					session.setAttribute(ATTR_TOP_REFRESH, Boolean.TRUE);
 				}

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacade.java $
- * $Id: PublishedAssessmentFacade.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacade.java $
+ * $Id: PublishedAssessmentFacade.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -74,7 +75,7 @@ public class PublishedAssessmentFacade
   private EvaluationModelIfc publishedEvaluationModel;
   private AssessmentFeedbackIfc publishedFeedback;
   private Set publishedMetaDataSet;
-  private HashMap publishedMetaDataMap = new HashMap();
+  private Map<String, String> publishedMetaDataMap = new HashMap<String, String>();
   private Set publishedSectionSet;
   private Set publishedSecuredIPAddressSet;
   // the following properties is added for the "Convenient Constructor"
@@ -98,8 +99,6 @@ public class PublishedAssessmentFacade
   private int submittedCount;
   private Date lastNeedResubmitDate;
   private boolean activeStatus;
-  
-  // added by gopalrc Nov 2007
   private String releaseToGroups;
   private ArrayList releaseToGroupsList = new ArrayList();
   private int enrolledStudentCount;
@@ -117,7 +116,6 @@ public class PublishedAssessmentFacade
   }
 
   // constructor that whole min. info, used for listing
-  // amended by gopalrc Nov 2007 to include releaseToGroups
   public PublishedAssessmentFacade(Long id, String title, String releaseTo,
                                  Date startDate, Date dueDate, String releaseToGroups){
 	  this(id, title, releaseTo, startDate, dueDate, releaseToGroups, null, null);
@@ -146,7 +144,7 @@ public class PublishedAssessmentFacade
 	  this.status = status;
 	  this.lastModifiedDate = lastModifiedDate;
 	  this.lastModifiedBy = lastModifiedBy;
-	  this.releaseToGroups = releaseToGroups; // added by gopalrc Nov 2007
+	  this.releaseToGroups = releaseToGroups;
 	  if (releaseToGroups != null && !releaseToGroups.trim().equals("")) {
 		  setReleaseToGroupsList();
 	  }
@@ -692,12 +690,12 @@ public class PublishedAssessmentFacade
     return service.getPublishedAssessmentOwner(this.publishedAssessmentId);
   }
 
-  public Float getTotalScore(){
-    float total = 0;
+  public Double getTotalScore(){
+    double total = 0;
     Iterator iter = this.publishedSectionSet.iterator();
     while (iter.hasNext()){
       SectionDataIfc s = (SectionDataIfc) iter.next();
-      ArrayList list = s.getItemArray();
+      List<ItemDataIfc> list = s.getItemArray();
       Iterator iter2 = null;
       if ((s.getSectionMetaDataByLabel(SectionDataIfc.AUTHOR_TYPE)!=null) && (s.getSectionMetaDataByLabel(SectionDataIfc.AUTHOR_TYPE
 ).equals(SectionDataIfc.RANDOM_DRAW_FROM_QUESTIONPOOL.toString())))
@@ -720,10 +718,10 @@ public class PublishedAssessmentFacade
 
       while (iter2.hasNext()){
         ItemDataIfc item = (ItemDataIfc)iter2.next();
-        total= total + item.getScore().floatValue();
+        total= total + item.getScore().doubleValue();
       }
     }
-    return  Float.valueOf(total);
+    return  Double.valueOf(total);
   }
 
   public PublishedAssessmentFacade clonePublishedAssessment(){
@@ -761,10 +759,6 @@ public class PublishedAssessmentFacade
 	    return (String)this.publishedMetaDataMap.get(HASMETADATAFORQUESTIONS);
   }
 
-  /**
-   * added by gopalrc - Nov 2007
-   * @return
-   */
   public String getReleaseToGroups() {
 	    return this.releaseToGroups;
   }

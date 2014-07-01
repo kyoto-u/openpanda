@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/SearchResultImpl.java $
- * $Id: SearchResultImpl.java 73517 2010-02-15 13:35:25Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/SearchResultImpl.java $
+ * $Id: SearchResultImpl.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.DataFormatException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -35,10 +36,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.search.Hits;
+import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.apache.lucene.search.highlight.QueryScorer;
@@ -63,7 +67,7 @@ public class SearchResultImpl implements SearchResult
 
 	private static Log log = LogFactory.getLog(SearchResultImpl.class);
 
-	private Hits h;
+	private TopDocs topDocs;
 
 	private int index;
 
@@ -81,34 +85,30 @@ public class SearchResultImpl implements SearchResult
 
 	private String url;
 
-	public SearchResultImpl(Hits h, int index, Query query, Analyzer analyzer,
+	public SearchResultImpl(TopDocs topDocs, Document doc, int index, Query query, Analyzer analyzer,
 			SearchIndexBuilder searchIndexBuilder,
 			SearchService searchService) throws IOException
 			{
-		this.h = h;
+		this.topDocs = topDocs;
 		this.index = index;
-		this.doc = h.doc(index);
+		this.doc =  doc;
 		this.query = query;
 		this.analyzer = analyzer;
 		this.searchIndexBuilder = searchIndexBuilder;
 		this.searchService = searchService;
 			}
 
+	
 	public float getScore()
 	{
-		try
-		{
-			return h.score(index);
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException("Cant determine score ", e); //$NON-NLS-1$
-		}
+		ScoreDoc scoreDoc = topDocs.scoreDocs[index];
+		return scoreDoc.score;
+
 	}
 
 	public String getId()
-	{
-		return doc.get(SearchService.FIELD_ID);
+	{ 
+		return getReference();
 	}
 
 	public String[] getFieldNames()
@@ -118,7 +118,7 @@ public class SearchResultImpl implements SearchResult
 			return fieldNames;
 		}
 		HashMap<String, Field> al = new HashMap<String, Field>();
-		List<Field> e = doc.getFields();
+		List<Fieldable> e = doc.getFields();
 		for (int i =0 ; i < e.size(); i++)
 		{
 			Field f = (Field) e.get(i);
@@ -155,17 +155,35 @@ public class SearchResultImpl implements SearchResult
 	public String getUrl()
 	{
 		if (url == null)
-			url = doc.get(SearchService.FIELD_URL);
+			try {
+				url = CompressionTools.decompressString(doc.getBinaryValue(SearchService.FIELD_URL));
+			} catch (DataFormatException e) {
+				url = doc.get(SearchService.FIELD_URL);
+			} 
+			
 		return url;
 	}
 
 	public String getTitle()
 	{
+		try {
+			return CompressionTools.decompressString(doc.getBinaryValue(SearchService.FIELD_TITLE));
+		} catch (DataFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return doc.get(SearchService.FIELD_TITLE);
 	}
 
 	public String getTool()
 	{
+		try {
+			return CompressionTools.decompressString(doc.getBinaryValue(SearchService.FIELD_TOOL));
+		} catch (DataFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return doc.get(SearchService.FIELD_TOOL);
 
 	}
@@ -185,7 +203,7 @@ public class SearchResultImpl implements SearchResult
 			// contents no longer contains the digested contents, so we need to
 			// fetch it from the EntityContentProducer
 
-			String[] references = doc.getValues(SearchService.FIELD_REFERENCE);
+			byte[][] references = doc.getBinaryValues(SearchService.FIELD_REFERENCE);
 			DigestStorageUtil digestStorageUtil = new DigestStorageUtil(searchService);
 			if (references != null && references.length > 0)
 			{
@@ -193,7 +211,7 @@ public class SearchResultImpl implements SearchResult
 				for (int i = 0; i < references.length; i++)
 				{
 					EntityContentProducer sep = searchIndexBuilder
-					.newEntityContentProducer(references[i]);
+					.newEntityContentProducer(CompressionTools.decompressString(references[i]));
 					if ( sep != null ) {
 						//does this ecp store on the FS?
 						if (sep instanceof StoredDigestContentProducer) {
@@ -202,22 +220,22 @@ public class SearchResultImpl implements SearchResult
 								digestCount = "1";
 							}
 							log.debug("This file possibly has FS digests with index of " + digestCount);
-							StringBuilder sb1 = digestStorageUtil.getFileContents(doc.get(SearchService.FIELD_REFERENCE), digestCount);
+							StringBuilder sb1 = digestStorageUtil.getFileContents(CompressionTools.decompressString(doc.getBinaryValue(SearchService.FIELD_REFERENCE)), digestCount);
 							if (sb1.length() > 0) {
 								sb.append(sb1);
 
 							} else {
-								String digest = sep.getContent(references[i]);
+								String digest = sep.getContent(CompressionTools.decompressString(references[i]));
 								sb.append(digest);
 								//we need to save this
-								digestStorageUtil.saveContentToStore(doc.get(SearchService.FIELD_REFERENCE), sb.toString(), 1);
+								digestStorageUtil.saveContentToStore(CompressionTools.decompressString(doc.getBinaryValue(SearchService.FIELD_REFERENCE)), sb.toString(), 1);
 
 							}
 
 
 
 						} else {
-							sb.append(sep.getContent(references[i]));
+							sb.append(CompressionTools.decompressString(references[i]));
 
 						}
 					}
@@ -233,17 +251,28 @@ public class SearchResultImpl implements SearchResult
 			return Messages.getString("SearchResultImpl.2") + e.getMessage(); //$NON-NLS-1$
 		} catch (InvalidTokenOffsetsException e) {
 			return Messages.getString("SearchResultResponseImpl.11") + e.getMessage(); 
+		} catch (DataFormatException e) {
+			e.printStackTrace();
+			return Messages.getString("SearchResultResponseImpl.11") + e.getMessage(); 
 		}
 	}
 
 	public String getReference()
 	{
-		return doc.get(SearchService.FIELD_REFERENCE);
+		try {
+			String ret = CompressionTools.decompressString(doc.getBinaryValue(SearchService.FIELD_REFERENCE));
+			log.debug("returning " + ret);
+			return ret;
+		} catch (DataFormatException e) {
+			return doc.get(SearchService.FIELD_REFERENCE);
+		}
+		
 	}
 
 	public TermFrequency getTerms() throws IOException
 	{
-		return searchService.getTerms(h.id(index));
+		ScoreDoc scoreDoc = topDocs.scoreDocs[index];
+		return searchService.getTerms(scoreDoc.doc);
 	}
 
 	public void toXMLString(StringBuilder sb)
@@ -268,6 +297,12 @@ public class SearchResultImpl implements SearchResult
 	}
 
 	public String getSiteId() {
+		try {
+			return CompressionTools.decompressString(doc.getBinaryValue(SearchService.FIELD_SITEID));
+		} catch (DataFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return doc.get(SearchService.FIELD_SITEID);
 	}
 

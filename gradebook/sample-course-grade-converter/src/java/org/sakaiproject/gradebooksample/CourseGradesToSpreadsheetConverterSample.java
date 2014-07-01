@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: CourseGradesToSpreadsheetConverterSample.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+* $Id: CourseGradesToSpreadsheetConverterSample.java 111275 2012-08-13 18:14:06Z savithap@umich.edu $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,7 +74,7 @@ public class CourseGradesToSpreadsheetConverterSample implements CourseGradesToS
 	 * @see org.sakaiproject.tool.gradebook.CourseGradesToSpreadsheetConverter#getSpreadsheetData(java.util.List,
 	 *      org.sakaiproject.tool.gradebook.CourseGrade, java.util.Map)
 	 */
-	public List<List<Object>> getSpreadsheetData(List<EnrollmentRecord> enrollments, CourseGrade courseGrade, Map<String, CourseGradeRecord> gradesMap) {
+	public List<List<Object>> getSpreadsheetData(List<EnrollmentRecord> enrollments, CourseGrade courseGrade, Map<String, CourseGradeRecord> gradesMap, List<String> fields) {
 		List<List<Object>> spreadsheetData = new ArrayList<List<Object>>();
 
     	// Build column headers.

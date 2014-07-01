@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/CommonCartridgeTest.java $
- * $Id: CommonCartridgeTest.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/CommonCartridgeTest.java $
+ * $Id: CommonCartridgeTest.java 106351 2012-03-28 20:21:21Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ package org.sakaiproject.importer.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,26 +37,26 @@ import junit.framework.TestCase;
 
 public class CommonCartridgeTest extends TestCase {
 	private static ImportFileParser parser;
-	private byte[] archiveData;
+	private InputStream archiveStream;
 	
 	public void setUp() {
 		System.out.println("doing setUp()");
 		try {
 			parser = new CommonCartridgeFileParser();
 			FileInputStream archiveStream = new FileInputStream(new File("/Users/zach/psychology.zip"));
-			archiveData = new byte[archiveStream.available()];
-			archiveStream.read(archiveData,0,archiveStream.available());
-			archiveStream.close();
+//			archiveData = new byte[archiveStream.available()];
+//			archiveStream.read(archiveData,0,archiveStream.available());
+//			archiveStream.close();
 		} catch (IOException e) {
 			
 		}
 	}
 	public void testIsValidArchive() {
-		assertTrue(parser.isValidArchive(archiveData));
+		assertTrue(parser.isValidArchive(archiveStream));
 	}
 	
 	public void testCanGetQti() {
-		ImportDataSource ids = parser.parse(archiveData, "/Users/zach/Desktop/psychology");
+		ImportDataSource ids = parser.parse(archiveStream, "/Users/zach/Desktop/psychology");
 		Collection importables = ids.getItemsForCategories(ids.getItemCategories());
 		int numberOfAssessments = 0;
 		int numberOfWebContent = 0;

@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,26 +21,21 @@
 
 package org.sakaiproject.memory.impl;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import net.sf.ehcache.event.CacheEventListener;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.memory.api.GenericMultiRefCache;
+
+import java.io.Serializable;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * <p>
@@ -51,6 +46,7 @@ import org.sakaiproject.memory.api.GenericMultiRefCache;
  * Manipulation of this map is synchronized. This map is not used for cache access, just when items are added and removed.<br />
  * The cache map itself becomes synchronized when it's manipulated (not when reads occur), so this added sync. for the refs fits the existing pattern.
  * </p>
+ * @deprecated as of Sakai 2.9, this should no longer be used and should be removed in Sakai 11
  */
 public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRefCache,
 		CacheEventListener 
@@ -60,39 +56,6 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 
 	/** Map of reference string -> Collection of cache keys. */
 	protected final ConcurrentMap<String, ConcurrentMap<Object, Object>> m_refsStore = new ConcurrentHashMap<String, ConcurrentMap<Object, Object>>();
-
-	protected class MultiRefCacheEntry extends CacheEntry
-	{
-		/** These are the entity reference strings that this entry is sensitive to. */
-		protected List<Object> m_refs = new CopyOnWriteArrayList<Object>();
-
-		/**
-		 * Construct to cache the payload for the duration.
-		 * 
-		 * @param payload
-		 *        The thing to cache.
-		 * @param duration
-		 *        The time (seconds) to keep this cached.
-		 * @param ref
-		 *        One entity reference that, if changed, will invalidate this entry.
-		 * @param dependRefs
-		 *        References that, if the changed, will invalidate this entry.
-		 */
-		public MultiRefCacheEntry(Object payload, int duration, String ref, Collection<Object> dependRefs)
-		{
-			super(payload, duration);
-			if (ref != null) m_refs.add(ref);
-			if (dependRefs != null) m_refs.addAll(dependRefs);
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public List<Object> getRefs()
-		{
-			return m_refs;
-		}
-	}
 
 	/**
 	 * Construct the Cache - checks for expiration periodically.
@@ -105,8 +68,7 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 
 	}
 
-	
-	public void put(Object key, Object payload, String ref, Collection dependRefs)
+	public void put(String key, Object payload, String ref, Collection dependRefs)
 	{
 		if(M_log.isDebugEnabled())
 		{
@@ -116,7 +78,7 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 		if (disabled()) return;
 		// Durations don't work any more (hence 0 duration).
 		super.put(key, new MultiRefCacheEntry(payload, 0, ref, dependRefs));
-		
+
 		// Why don't we do do this in the notify handler?
 		if (ref != null)
 		{
@@ -130,12 +92,13 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 				addRefCachedKey(dependRef, key);
 			}
 		}
+        if (mrcDebug) logCacheState("put("+key+")");
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public void put(Object key, Object payload, int duration)
+	public void put(String key, Object payload, int duration)
 	{
 		put(key, payload, null, null);
 	}
@@ -143,14 +106,14 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 	/**
 	 * @inheritDoc
 	 */
-	public void put(Object key, Object payload)
+	public void put(String key, Object payload)
 	{
 		put(key, payload, null, null);
 	}
 
 	/**
 	 * Make sure there's an entry in refs for this ref that includes this key.
-	 * 
+	 *
 	 * @param ref
 	 *        The entity reference string.
 	 * @param key
@@ -184,9 +147,9 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 					+ ", Object " + value + ")");
 		if (value == null)
 			return;
-		
+
 		final MultiRefCacheEntry cachedEntry = (MultiRefCacheEntry) value;
-		
+
 		// remove this key from any of the entity references in m_refs that are dependent on this entry
 		for (Iterator iRefs = cachedEntry.getRefs().iterator(); iRefs.hasNext();)
 		{
@@ -203,11 +166,8 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 				}
 			}
 		}
+        if (mrcDebug) logCacheState("cleanEntityReferences("+key+")");
 	}
-
-	/**********************************************************************************************************************************************************************************************************************************************************
-	 * Cacher implementation
-	 *********************************************************************************************************************************************************************************************************************************************************/
 
 	/**
 	 * @inheritDoc
@@ -218,7 +178,7 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 	}
 
 	/**********************************************************************************************************************************************************************************************************************************************************
-	 * Observer implementation
+	 * Cacher implementation
 	 *********************************************************************************************************************************************************************************************************************************************************/
 
 	/**
@@ -245,9 +205,13 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 		continueUpdate(event);
 	}
 
+	/**********************************************************************************************************************************************************************************************************************************************************
+	 * Observer implementation
+	 *********************************************************************************************************************************************************************************************************************************************************/
+
 	/**
 	 * Complete the update, given an event that we know we need to act upon.
-	 * 
+	 *
 	 * @param event
 	 *        The event to process.
 	 */
@@ -267,7 +231,7 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 			for (Iterator<Object> iKeys = keySet.iterator(); iKeys.hasNext();)
 			{
 					Object key = iKeys.next();
-					remove(key);
+					remove(String.valueOf(key));
 
 					if (M_log.isDebugEnabled()) {
 						M_log.debug("Removed from cache: "+ key);
@@ -299,56 +263,56 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 	 * @see org.sakaiproject.memory.impl.MemCache#get(java.lang.Object)
 	 */
 	@Override
-	public Object get(Object key) {
+	public Object get(String key) {
 		MultiRefCacheEntry mrce = (MultiRefCacheEntry) super.get(key);
 		return (mrce != null ? mrce.getPayload(key) : null);
 	}
 
-	//////////////////////////////////////////////////////////////////////
-	//  CacheEventListener methods. Cleanup HashMap of m_refs on eviction.
-	//////////////////////////////////////////////////////////////////////
-
-	public void dispose() 
+	public void dispose()
 	{
 		M_log.debug("dispose()");
 		// may not be necessary...
 		m_refsStore.clear();
 	}
 
-	public void notifyElementEvicted(Ehcache cache, Element element) 
+	//////////////////////////////////////////////////////////////////////
+	//  CacheEventListener methods. Cleanup HashMap of m_refs on eviction.
+	//////////////////////////////////////////////////////////////////////
+
+	public void notifyElementEvicted(Ehcache cache, Element element)
 	{
 		cleanEntityReferences(element.getObjectKey(), element
-				.getObjectValue());
+                .getObjectValue());
 	}
 
-	public void notifyElementExpired(Ehcache cache, Element element) 
+	public void notifyElementExpired(Ehcache cache, Element element)
 	{
 		cleanEntityReferences(element.getObjectKey(), element
-				.getObjectValue());
+                .getObjectValue());
 	}
 
 	public void notifyElementPut(Ehcache cache, Element element)
-			throws CacheException 
+			throws CacheException
 	{
 		// do nothing...
-		
+
 	}
 
 	public void notifyElementRemoved(Ehcache cache, Element element)
-			throws CacheException 
+			throws CacheException
 	{
 		cleanEntityReferences(element.getObjectKey(), element
 				.getObjectValue());
 	}
 
 	public void notifyElementUpdated(Ehcache cache, Element element)
-			throws CacheException 
+			throws CacheException
 	{
 		// do nothing...
-		
+
 	}
 
-	public void notifyRemoveAll(Ehcache cache) 
+	public void notifyRemoveAll(Ehcache cache)
 	{
 		m_refsStore.clear();
 	}
@@ -357,14 +321,107 @@ public class GenericMultiRefCacheImpl extends MemCache implements GenericMultiRe
 	 * @see CacheEventListener#clone()
 	 */
 	@Override
-	public Object clone() throws CloneNotSupportedException 
+	public Object clone() throws CloneNotSupportedException
 	{
 		M_log.debug("clone()");
-		
+
 		// Creates a clone of this listener. This method will only be called by ehcache before a cache is initialized.
 		// This may not be possible for listeners after they have been initialized. Implementations should throw CloneNotSupportedException if they do not support clone.
 		throw new CloneNotSupportedException(
 				"CacheEventListener implementations should throw CloneNotSupportedException if they do not support clone");
 	}
 
+    @Override
+    public Properties getProperties(boolean includeExpensiveDetails) {
+        Properties p = super.getProperties(includeExpensiveDetails);
+        p.put("class", this.getClass().getSimpleName());
+        p.put("refsCount", m_refsStore.size());
+        return p;
+    }
+
+
+    // Added for KNL-1162
+
+	protected class MultiRefCacheEntry extends CacheEntry implements Serializable
+	{
+
+		/**
+		 * The serial version UID
+		 */
+		private static final long serialVersionUID = -4888170965591332845L;
+		/** These are the entity reference strings that this entry is sensitive to. */
+		protected List<Object> m_refs = new CopyOnWriteArrayList<Object>();
+
+		/**
+		 * Construct to cache the payload for the duration.
+		 *
+		 * @param payload
+		 *        The thing to cache.
+		 * @param duration
+		 *        The time (seconds) to keep this cached.
+		 * @param ref
+		 *        One entity reference that, if changed, will invalidate this entry.
+		 * @param dependRefs
+		 *        References that, if the changed, will invalidate this entry.
+		 */
+		public MultiRefCacheEntry(Object payload, int duration, String ref, Collection<Object> dependRefs)
+		{
+			super(payload, duration);
+			if (ref != null) m_refs.add(ref);
+			if (dependRefs != null) m_refs.addAll(dependRefs);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public List<Object> getRefs()
+		{
+			return m_refs;
+		}
+
+        @Override
+        public String toString() {
+            return "MRCE["+this.get()+",refs("+(this.m_refs!=null?this.m_refs.size():"--")+")="+this.m_refs+"]";
+        }
+    }
+
+    // KNL-1230 added to assist with debugging caching issues
+    boolean mrcDebug = false; // always set to false in committed code
+    boolean mrcDebugDetailed = false;
+    void logCacheState(String operator) {
+        if (mrcDebug) {
+            String name = this.cache.getName();
+            StringBuilder refsSB = new StringBuilder();
+            refsSB.append("   * keys(").append(m_refsStore.keySet().size()).append("):").append(m_refsStore.keySet()).append("\n");
+            int countRefs = 0;
+            for (Map.Entry<String, ConcurrentMap<Object, Object>> entry : m_refsStore.entrySet()) {
+                if (entry == null) continue;
+                int count = 0;
+                if (entry.getValue() != null) {
+                   count = entry.getValue().size();
+                }
+                countRefs += count;
+                if (mrcDebugDetailed) {
+                    refsSB.append("   ").append(entry.getKey()).append(" => (").append(count).append(")").append(entry.getValue()).append("\n");
+                }
+            }
+            StringBuilder entriesSB = new StringBuilder();
+            List keys = this.cache.getKeys();
+            entriesSB.append("   * keys(").append(keys.size()).append("):").append(new ArrayList<Object>(keys)).append("\n");
+            Collection<Element> entries = this.cache.getAll(keys).values();
+            int countMaps = 0;
+            for (Element element : entries) {
+                if (element == null) continue;
+                int count = 0;
+                if (element.getObjectValue() != null && element.getObjectValue() instanceof MultiRefCacheEntry) {
+                    count = ((MultiRefCacheEntry)element.getObjectValue()).getRefs().size();
+                }
+                countMaps += count;
+                if (mrcDebugDetailed) {
+                    entriesSB.append("   ").append(element.getObjectKey()).append(" => (").append(count).append(")").append(element.getObjectValue()).append("\n");
+                }
+            }
+            M_log.info("MRC:"+name+":: "+operator+" ::\n  refsStore(Map[key => value],"+m_refsStore.size()+" + "+countRefs+" = "+(m_refsStore.size()+countRefs)+"):\n"+refsSB+"\n  entries(Ehcache[key => payload],"+keys.size()+" + "+countMaps+" = "+(keys.size()+countMaps)+"):\n"+entriesSB);
+        }
+    }
 }

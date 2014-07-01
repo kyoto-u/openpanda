@@ -10,9 +10,22 @@
     <!-- entity providers -->
 	<bean
 		parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
+		class="org.sakaiproject.poll.tool.entityproviders.PollsEntityProvider">
+		<property name="pollListManager"
+			ref="org.sakaiproject.poll.logic.PollListManager" />
+		<property name="pollVoteManager"
+			ref="org.sakaiproject.tool.poll.api.PollVoteManager" />
+		<property name="usageSessionService"
+			ref="org.sakaiproject.event.api.UsageSessionService"/>
+		<property name="userDirectoryService"
+            ref="org.sakaiproject.user.api.UserDirectoryService"/>
+	</bean>
+	
+	<bean
+		parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
 		class="org.sakaiproject.poll.tool.entityproviders.PollEntityProvider">
 		<property name="pollListManager"
-			ref="org.sakaiproject.tool.poll.api.PollListManager" />
+			ref="org.sakaiproject.poll.logic.PollListManager" />
 		<property name="pollVoteManager"
 			ref="org.sakaiproject.tool.poll.api.PollVoteManager" />
 	</bean>
@@ -20,23 +33,26 @@
 		parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
 		class="org.sakaiproject.poll.tool.entityproviders.PollOptionEntityProvider">
 		<property name="pollListManager"
-			ref="org.sakaiproject.tool.poll.api.PollListManager" />
+			ref="org.sakaiproject.poll.logic.PollListManager" />
 	</bean>
 	<bean
 		parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
 		class="org.sakaiproject.poll.tool.entityproviders.PollVoteEntityProvider">
 		<property name="pollListManager"
-			ref="org.sakaiproject.tool.poll.api.PollListManager" />
+			ref="org.sakaiproject.poll.logic.PollListManager" />
 		<property name="pollVoteManager"
 			ref="org.sakaiproject.tool.poll.api.PollVoteManager" />
 		<property name="usageSessionService"
 			ref="org.sakaiproject.event.api.UsageSessionService"/>
+			<property name="userDirectoryService"
+                       ref="org.sakaiproject.user.api.UserDirectoryService"/>
 	</bean>
 	<!--
 		Spring messageSource replaces JSF message-bundle from faces-config.xml
 	-->
 	<bean id="messageSource"
-		class="org.sakaiproject.util.ResourceLoaderMessageSource">
+		class="org.sakaiproject.util.ResourceLoaderMessageSource"
+		depends-on="TLABPostProcessorLoader">
 		<property name="basename"
 			value="classpath:org/sakaiproject/poll/bundle/Messages" />
 		<property name="cacheSeconds" value="10" />
@@ -46,7 +62,7 @@
 		<property name="guard">
 			<bean class="org.sakaiproject.poll.tool.validators.VoteValidator">
 				<property name="pollListManager"
-					ref="org.sakaiproject.tool.poll.api.PollListManager" />
+					ref="org.sakaiproject.poll.logic.PollListManager" />
 				<property name="pollVoteManager"
 					ref="org.sakaiproject.tool.poll.api.PollVoteManager" />
 				<property name="externalLogic" ref="org.sakaiproject.poll.logic.ExternalLogic"/>

@@ -91,6 +91,13 @@ code {
 	border-color: #fff;
 	border-style: solid;
 }
+.portletMainWrap > .portletBody {
+    word-wrap:break-word
+}
+.portletMainWrap > .portletBody img {
+    max-width: 100%;
+    height: auto !important;
+}
 .helpBody {
 	padding: 0 1em 1em 1em
 	} 
@@ -271,7 +278,7 @@ ul.attachList li{
 .listNav div.instruction, .searchNav div.instruction{
 	text-align: center;
 	font-size: .9em;
-    font-family: verdana, arial, helvetica, sans-serif;
+    font-family: verdana, arial, helvetica, sans-serif\0/;
 }
 /*listNav inputs have punct. marks as labels, adding a screen reader only fieldset with the real label makes them usable */
 div.listNav fieldset { 
@@ -805,26 +812,29 @@ placeholder till more standard way of doing it*/
 {
 	color: #999 !important;
 }
+.inactiveBack, .inactiveBack:hover{
+    background:#F7F7F7 !important;
+}
 
 /*external login form formatting*/
-.login{
+.login, .join{
 	margin: 5em auto;
 	border: 1px solid #555;
 	width: auto;
 }
 
-.login th{
+.login th, .join th{
 	background-color: #eee;
 	padding: .5em;
 	border-bottom: 1px solid #555;
 }
 
-.login td.logo{
+.login td.logo, .join td.logo{
 	width: 13em;
 	background:#fff url(../image/sakai.jpg) top left no-repeat
 }
 
-.login td.form{
+.login td.form, .login td.form{
 	padding: .5em;
 }
 
@@ -832,11 +842,11 @@ placeholder till more standard way of doing it*/
 	color: #fff;
 }
 
-.loginform label{
+.loginform label, .joinform label{
 	color: #fff;
 }
 
-.loginform td{
+.loginform td {
 	padding: .3em;
 	color: #fff;
 }
@@ -854,6 +864,11 @@ placeholder till more standard way of doing it*/
 
 .loginform td .loginsubmit {
         color:#09C;
+}
+
+#login-choice {
+	border-spacing: 0;
+	text-align: center;
 }
 
 /*
@@ -1019,6 +1034,9 @@ span.nil a{
 	border:1px solid #ddd;
 	width: 100%;
 }
+#reorder-list li:focus {
+	border:1px solid #555
+}
 #reorder-list li span.grabHandle{
 	display:block;
 	float:left;
@@ -1073,3 +1091,14 @@ span.nil a{
 .fl-ProgEnhance-enhanced,.fl-progEnhance-enhanced{display:none;}
 .fl-offScreen-hidden{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}
 .recentMove { background: #def !important;border:1px solid #7bf !important}
+
+.audioaudio {
+    visibility: hidden\9;
+    visibility: hidden\10;
+}
+
+.audioobject {
+    visibility: hidden;
+    visibility: visible\9;
+    visibility: visible\10;
+}

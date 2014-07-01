@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping
     PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
 
@@ -19,7 +19,7 @@
         
         <version name="lockId" />               
 
-        <property name="asset" type="text">
+        <property name="asset" type="materialized_clob">
             <column name="asset" not-null="false" length="16777215"/>
         </property>
 
@@ -43,8 +43,28 @@
             <column name="emailNotification" length="128" not-null="false"/>
         </property>                        
         
+        <property name="startDate" type="java.util.Date">
+        	<column name="START_DATE"/>
+        </property>
+        
+        <property name="endDate" type="java.util.Date">
+        	<column name="END_DATE"/>
+        </property>
+        
+        <property name="linkCalendar" type="java.lang.Boolean">
+        	<column name="LINK_CALENDAR"/>
+        </property>
+        
+        <property name="calendarEventIdStartDate">
+        	<column name="CALENDAR_EVENT_ID_START" length="99"/>
+        </property>
+        
+        <property name="calendarEventIdEndDate">
+        	<column name="CALENDAR_EVENT_ID_END" length="99"/>
+        </property>
+        
         <set name="attachments" lazy="true" sort="natural"
-             cascade="all-delete-orphan">
+             cascade="all-delete-orphan" batch-size="50">
             <key column="syllabusId"/>                        
             <one-to-many class="org.sakaiproject.component.app.syllabus.SyllabusAttachmentImpl"/>            
         </set>                

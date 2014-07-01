@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-api/api/src/java/org/sakaiproject/assignment/cover/AssignmentService.java $
- * $Id: AssignmentService.java 118333 2013-01-14 18:38:03Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-api/api/src/java/org/sakaiproject/assignment/cover/AssignmentService.java $
+ * $Id: AssignmentService.java 117546 2012-12-11 12:10:24Z a.fish@lancaster.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,8 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
-
+import java.util.Collection;
+import org.sakaiproject.site.api.Group;
 import org.sakaiproject.assignment.api.Assignment;
 import org.sakaiproject.component.cover.ComponentManager;
 
@@ -597,6 +598,17 @@ public class AssignmentService {
 	}
 	
 	public static org.sakaiproject.assignment.api.AssignmentSubmission getSubmission(
+			java.lang.String param0, java.lang.String param1)
+			throws org.sakaiproject.exception.IdUnusedException,
+			org.sakaiproject.exception.PermissionException {
+		org.sakaiproject.assignment.api.AssignmentService service = getInstance();
+		if (service == null)
+			return null;
+
+		return service.getSubmission(param0, param1);
+	}
+                
+	public static org.sakaiproject.assignment.api.AssignmentSubmission getSubmission(
 			java.util.List param0, org.sakaiproject.user.api.User param1) {
 		org.sakaiproject.assignment.api.AssignmentService service = getInstance();
 		if (service == null)
@@ -767,6 +779,14 @@ public class AssignmentService {
 		return service.getAllowGroupAssignments();
 	}
 
+	public static List getSortedGroupUsers(Group _g) {
+		org.sakaiproject.assignment.api.AssignmentService service = getInstance();
+		if (service == null)
+		    return new java.util.ArrayList();
+
+		return service.getSortedGroupUsers(_g);
+	}
+
 	public static boolean getAllowGroupAssignmentsInGradebook() {
 		org.sakaiproject.assignment.api.AssignmentService service = getInstance();
 		if (service == null)
@@ -783,13 +803,19 @@ public class AssignmentService {
 		return service.canSubmit(context, assignment);
 	}
 	
-    public static boolean getAllowSubmitByInstructor() {
-        org.sakaiproject.assignment.api.AssignmentService service = getInstance();
-        if (service == null) {
-            return false;
-        }
-        return service.getAllowSubmitByInstructor();
-    }
+	public static boolean getAllowSubmitByInstructor() {
+	    org.sakaiproject.assignment.api.AssignmentService service = getInstance();
+	    if (service == null) {
+	        return false;
+	    }
+	    return service.getAllowSubmitByInstructor();
+	}
+
+	public static Collection<Group> getSubmitterGroupList(String param0, String param1, String param2, String param3, String param4) {
+	    org.sakaiproject.assignment.api.AssignmentService service = getInstance();
+	    if (service == null) return null;
+	    return service.getSubmitterGroupList(param0, param1, param2, param3, param4);
+	}
 
 	public static List<String> getSubmitterIdList(String param0, String param1, String param2, String param3, String param4) {
 

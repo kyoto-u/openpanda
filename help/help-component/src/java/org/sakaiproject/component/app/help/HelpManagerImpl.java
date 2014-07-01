@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.3/help-component/src/java/org/sakaiproject/component/app/help/HelpManagerImpl.java $
- * $Id: HelpManagerImpl.java 122981 2013-04-18 15:50:04Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.0/help-component/src/java/org/sakaiproject/component/app/help/HelpManagerImpl.java $
+ * $Id: HelpManagerImpl.java 309242 2014-05-06 20:14:38Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -111,7 +110,7 @@ import org.xml.sax.SAXException;
 /**
  * HelpManager provides database and search capabilitites for the Sakai help tool.
  * @author <a href="mailto:jlannan.iupui.edu">Jarrod Lannan</a>
- * @version $Id: HelpManagerImpl.java 122981 2013-04-18 15:50:04Z arwhyte@umich.edu $
+ * @version $Id: HelpManagerImpl.java 309242 2014-05-06 20:14:38Z enietzel@anisakai.com $
  *
  */
 public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
@@ -247,7 +246,9 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 	public void deleteResource(Long resourceId)
 	{
 		Resource resource = getResource(resourceId);
-		if (resource == null) return;
+		if (resource == null) {
+			return;
+		}
 		getHibernateTemplate().delete(resource);
 	}
 
@@ -280,7 +281,9 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 	public void deleteSource(Long sourceId)
 	{
 		Source source = getSource(sourceId);
-		if (source == null) return;
+		if (source == null) {
+			return;
+		}
 		getHibernateTemplate().delete(source);
 	}
 
@@ -313,7 +316,9 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 	public void deleteContext(Long contextId)
 	{
 		Context context = getContext(contextId);
-		if (context == null) return;
+		if (context == null) {
+			return;
+		}
 		getHibernateTemplate().delete(context);
 	}
 
@@ -415,9 +420,7 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 			ScoreDoc[] hits = topDocs.scoreDocs;
 			LOG.debug(hits.length + " total matching documents");
 
-			for (int i = 0; i < hits.length; i++)
-			{
-				ScoreDoc scoreDoc = hits[i];
+			for (ScoreDoc scoreDoc : hits) {
 				Document doc = searcher.doc(scoreDoc.doc);
 				ResourceBean resource = getResourceFromDocument(doc);
 				resource.setScore(scoreDoc.score * 100);
@@ -477,7 +480,7 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 	 * Get entire Collection of Resources.
 	 * @return collection of resources
 	 */
-	protected Collection<Resource> getResources()
+	protected Collection<? extends Resource> getResources()
 	{
 		return getHibernateTemplate().loadAll(ResourceBean.class);
 	}
@@ -932,8 +935,8 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 					// Get all supported locales
 					locales = new ArrayList<String>();
 					Locale[] sl = serverConfigurationService.getSakaiLocales();
-					for (int i = 0; i < sl.length; i++) {
-					    locales.add(sl[i].toString()); // Locale toString should generate en_GB type identifiers
+					for (Locale element : sl) {
+					    locales.add(element.toString()); // Locale toString should generate en_GB type identifiers
 					}
 
 					// Add default locale
@@ -1165,56 +1168,60 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 			classpathUrl = path + "/" + HELP_BASENAME + ".xml";
 			
 			localFile = new File(localHelpPath+classpathUrl);
-			if(localFile.isFile())
+			if(localFile.isFile()) {
 				try {
 					urlResource = localFile.toURI().toURL();
 				} catch (MalformedURLException e) {
 					urlResource = getClass().getResource(classpathUrl);
 				}
-			else 
+			} else {
 				urlResource = getClass().getResource(classpathUrl);
+			}
 		}
 
 		// find localized help file
 		else {
 			classpathUrl = path + "/" + HELP_BASENAME + "_" + locale + ".xml";
 			localFile = new File(localHelpPath+classpathUrl);
-			if(localFile.isFile()) 
+			if(localFile.isFile()) {
 				try {
 					urlResource = localFile.toURI().toURL();
 				} catch (MalformedURLException e) {
 					urlResource = getClass().getResource(classpathUrl);
 				}
-			else 
+			} else {
 				urlResource = getClass().getResource(classpathUrl);
+			}
 
 			// If language/region help file not found, look for language-only help file
 			if ( urlResource == null ) {
 				Locale nextLocale = getLocaleFromString(locale);
 				classpathUrl = path + "/" + HELP_BASENAME + "_" + nextLocale.getLanguage() + ".xml";
 				localFile = new File(localHelpPath+classpathUrl);
-				if(localFile.isFile()) 
+				if(localFile.isFile()) {
 					try {
 						urlResource = localFile.toURI().toURL();
 					} catch (MalformedURLException e) {
 						urlResource = getClass().getResource(classpathUrl);
 					}
-				else 	
+				} else {
 					urlResource = getClass().getResource(classpathUrl);
+				}
 			}
 
 			// If language-only help file not found, look for default help file
 			if ( urlResource == null ) {
 				classpathUrl = path + "/" + HELP_BASENAME + ".xml";
 				localFile = new File(localHelpPath+classpathUrl);
-				if(localFile.isFile()) 
+				if(localFile.isFile()) {
 					try {
 						urlResource = localFile.toURI().toURL();
 					} catch (MalformedURLException e) {
 						urlResource = getClass().getResource(classpathUrl);
 					}
-				else 
+				} else {
 					urlResource = getClass().getResource(classpathUrl);
+				}
 			}
 		}
 
@@ -1263,6 +1270,9 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 
 		// find out what we want to ignore
 		List<String> hideHelp = Arrays.asList(StringUtils.split(serverConfigurationService.getString("help.hide"), ","));
+		if (hideHelp == null) {
+		    hideHelp = new ArrayList<String> ();
+		}
 
 		for (Tool tool : toolSet) {
 			if (tool != null && tool.getId() != null && !hideHelp.contains(tool.getId()))
@@ -1270,8 +1280,9 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 				String[] extraCollections = {};
 				String toolHelpCollections = tool.getRegisteredConfig().getProperty(TOOLCONFIG_HELP_COLLECTIONS);
 
-				if (toolHelpCollections != null)
+				if (toolHelpCollections != null) {
 					extraCollections = StringUtils.split(toolHelpCollections, ",");
+				}
 
 				// Loop throughout the locales list
 				for (String locale : locales)
@@ -1280,9 +1291,8 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 					addToolHelp("/" + tool.getId().toLowerCase().replaceAll("\\.", "_"), locale);
 
 					// Add any other optional collections
-					for (int k = 0; k < extraCollections.length; k++)
-					{
-						addToolHelp("/" + extraCollections[k], locale);
+					for (String extraCollection : extraCollections) {
+						addToolHelp("/" + extraCollection, locale);
 					}	           
 				}
 			}
@@ -1408,8 +1418,9 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 	 */
 	public void registerCorpusDocs(org.w3c.dom.Document doc)
 	{
-		if (doc == null)
+		if (doc == null) {
 			return;
+		}
 
 		List<String> arrayCorpus = new ArrayList<String>();
 

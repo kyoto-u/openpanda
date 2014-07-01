@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/test/java/org/sakai/memory/impl/test/MemoryServiceTest.java $
- * $Id: MemoryServiceTest.java 86666 2010-12-23 23:29:53Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/test/java/org/sakai/memory/impl/test/MemoryServiceTest.java $
+ * $Id: MemoryServiceTest.java 309201 2014-05-06 15:45:40Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,20 +21,18 @@
 
 package org.sakai.memory.impl.test;
 
-import java.util.Random;
-
 import junit.framework.TestCase;
 import net.sf.ehcache.CacheManager;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.event.api.EventTrackingService;
-import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.impl.BasicMemoryService;
+
+import java.util.Random;
 
 /**
  * @author ieb
@@ -45,7 +43,6 @@ public class MemoryServiceTest extends TestCase
 
 	private static Log log = LogFactory.getLog(MemoryServiceTest.class);
 	private EventTrackingService eventTrackingService;
-	private UsageSessionService usageSessionService;
 	private SecurityService securityService;
 	private AuthzGroupService authzGroupService;
 	private BasicMemoryService basicMemoryService;
@@ -70,9 +67,8 @@ public class MemoryServiceTest extends TestCase
 		eventTrackingService = new MockEventTrackingService();
 		securityService = new MockSecurityService();
 		serverConfigurationService = new MockServerConfigurationService();
-		usageSessionService = new MockUsageSessionService();
 		authzGroupService = new MockAuthzGroupService();
-		basicMemoryService = new MockBasicMemoryService(eventTrackingService, securityService, usageSessionService, authzGroupService, serverConfigurationService );
+		basicMemoryService = new MockBasicMemoryService(eventTrackingService, securityService, authzGroupService, serverConfigurationService );
 		cacheManager = new CacheManager(this.getClass().getResourceAsStream("ehcache.xml"));
 		basicMemoryService.setCacheManager(cacheManager);
 	}
@@ -86,27 +82,27 @@ public class MemoryServiceTest extends TestCase
 	}
 	
 	public void testCreate() {
-		Cache cache = basicMemoryService.newCache("org.sakaiproject.alias.api.AliasService.callCache","");
+		Cache cache = basicMemoryService.newCache("org.sakaiproject.alias.api.AliasService.callCache");
 		Random r = new Random();
 		int hit = 0;
 		int miss = 0;
 		for ( int i = 0; i < 10000; i++) {
 			int k = r.nextInt(1000);
-			if ( cache.containsKey(k)) {
-				Object k2 = cache.get(k);
+			if ( cache.containsKey(String.valueOf(k))) {
+				Object k2 = cache.get(String.valueOf(k));
 				hit++;
 				assertNotNull(k2);
 			} else {
-				cache.put(k,k);
+				cache.put(String.valueOf(k),k);
 				miss++;
 			}
 		}
 		log.info("Hits ="+hit+" Misses="+miss);
 	}
 	public void xtestGetLong() {
-		Cache cache = basicMemoryService.newCache("org.sakaiproject.alias.api.AliasService.callCache","");
+		Cache cache = basicMemoryService.newCache("org.sakaiproject.alias.api.AliasService.callCache");
 		for ( int i = 0; i < 100; i++) {
-			cache.put(i, i);
+			cache.put(String.valueOf(i), i);
 		}
 		long endTime = System.currentTimeMillis() + 10*60*1000;
 		long ncount = 0;
@@ -114,14 +110,14 @@ public class MemoryServiceTest extends TestCase
 		while(errors < 100 && System.currentTimeMillis() < endTime ) {
 		for ( int i = 0; i < 100; i++) {
 			ncount++;
-			if ( cache.containsKey(i) ) {
-				if ( cache.get(i) == null ) {
+			if ( cache.containsKey(String.valueOf(i)) ) {
+				if ( cache.get(String.valueOf(i)) == null ) {
 					log.info("Found Null Key for "+i+" after "+ncount+" attempts ");
 					errors++;
 				}
 			} else {
 				log.info("Key missing ");
-				cache.put(i, i);
+				cache.put(String.valueOf(i), i);
 			}
 		}
 		}

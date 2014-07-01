@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/archive-api/src/main/java/org/sakaiproject/importer/api/SakaiArchive.java $
- * $Id: SakaiArchive.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/archive-api/src/main/java/org/sakaiproject/importer/api/SakaiArchive.java $
+ * $Id: SakaiArchive.java 133338 2014-01-16 17:17:12Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,8 +23,10 @@ package org.sakaiproject.importer.api;
 
 import java.util.Collection;
 
+import org.sakaiproject.archive.api.ImportMetadata;
+
 public interface SakaiArchive {
 
-	void buildSourceFolder(Collection fnlList);
+	void buildSourceFolder(Collection<ImportMetadata> fnlList);
 	String getSourceFolder();
 }

@@ -3,6 +3,8 @@ use XML::Parser::PerlSAX;
 use LWP::Simple qw ($ua get);
 use XML::Simple;
 use Data::Dumper;
+use File::Basename;
+my $cwd = dirname(__FILE__);
 
 my %imglist;
 my %doclist;
@@ -36,7 +38,7 @@ sub transform($$$)
   my $out = shift;
   my $xsl = shift;
 
-  system("java -cp /usr/local/sakaihelp/jars/xalan-2.6.0.jar org.apache.xalan.xslt.Process -in $in -out $out -xsl $xsl");
+  system("java -cp $cwd/xalan-2.6.0.jar org.apache.xalan.xslt.Process -in $in -out $out -xsl $xsl");
 }
 
 sub update_svn_collection ($$) 
@@ -46,13 +48,18 @@ sub update_svn_collection ($$)
 
  # Match the pattern */src/*/*.html
 
- my @filelist = glob("$svnrepo/*/src/*/*.html");
+ print "$svnrepo $docrepo\n";
+ my @filelist = glob("$svnrepo/*/*-help/src/*/*.html");
  foreach my $helpfile (@filelist) {
     if ($helpfile =~ /\/([a-z]{4})\.html/) {
         my $fileid = $1;
         if (-s "$docrepo/$fileid.html") {
+        	print "Helpfile for '$fileid' copied from '$docrepo'\n";
                 copy("$docrepo/$fileid.html", $helpfile);
         }
+    }
+    else {
+	print "No match for $helpfile\n";
     }
  }
 

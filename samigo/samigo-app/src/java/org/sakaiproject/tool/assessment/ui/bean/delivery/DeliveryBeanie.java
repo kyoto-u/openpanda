@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/tool/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/DeliveryBean.java $
- * $Id: DeliveryBean.java 9268 2006-05-10 21:27:24Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/DeliveryBeanie.java $
+ * $Id: DeliveryBeanie.java 107781 2012-05-02 17:37:33Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,12 +36,13 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 
 import java.text.SimpleDateFormat;
 import org.sakaiproject.tool.assessment.ui.listener.util.TimeUtil;
+import org.sakaiproject.util.ResourceLoader;
 
 /**
  *
  * @author casong
  * @author esmiley@stanford.edu added agentState
- * $Id: DeliveryBean.java 9268 2006-05-10 21:27:24Z daisyf@stanford.edu $
+ * $Id: DeliveryBeanie.java 107781 2012-05-02 17:37:33Z ktsao@stanford.edu $
  *
  * Used to be org.navigoproject.ui.web.asi.delivery.XmlDeliveryForm.java
  */
@@ -88,7 +89,7 @@ private static Log log = LogFactory.getLog(DeliveryBeanie.class);
    
   private String display_dateFormat= ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","output_date_no_sec");
   //private String display_dateFormat= "yyyy-MMM-dd hh:mm aaa";
-  private SimpleDateFormat displayFormat = new SimpleDateFormat(display_dateFormat);
+  private SimpleDateFormat displayFormat = new SimpleDateFormat(display_dateFormat, new ResourceLoader().getLocale());
   private boolean hasRandomDrawPart;
   private boolean isAssessmentRetractForEdit;
   private boolean hasAssessmentBeenModified;

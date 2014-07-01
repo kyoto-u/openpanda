@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/RenderBean.java $
- * $Id: RenderBean.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/RenderBean.java $
+ * $Id: RenderBean.java 123524 2013-05-02 17:55:46Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -25,6 +25,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
+
+import org.apache.commons.lang.StringUtils;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.event.api.EventTrackingService;
 
 import uk.ac.cam.caret.sakai.rwiki.service.api.RWikiObjectService;
 import uk.ac.cam.caret.sakai.rwiki.service.api.dao.ObjectProxy;
@@ -181,6 +185,14 @@ public class RenderBean
 	 */
 	public String getRenderedPage()
 	{
+	    // SAK-23566 capture the view wiki page events
+	    if (rwo != null && rwo.getName() != null) {
+	        // KNOWN ISSUE: getRenderedPage is also called when editing, there doesn't seem to be a way to tell the difference
+	        EventTrackingService ets = (EventTrackingService) ComponentManager.get(EventTrackingService.class);
+	        if (ets != null) {
+	            ets.post(ets.newEvent("wiki.read", StringUtils.abbreviate(rwo.getName(), 250), false));
+	        }
+	    }
 		return toolRenderService.renderPage(rwo);
 	}
 

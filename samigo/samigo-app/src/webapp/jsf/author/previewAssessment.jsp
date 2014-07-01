@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: previewAssessment.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+* $Id: previewAssessment.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -138,8 +138,16 @@
             <%@ include file="/jsf/author/preview_item/MultipleChoiceMultipleCorrect.jsp" %>
           </h:panelGroup>
 
+		  <h:panelGroup rendered="#{question.itemData.typeId == 14}">
+            <%@ include file="/jsf/author/preview_item/ExtendedMatchingItems.jsp" %>
+          </h:panelGroup>
+
           <h:panelGroup rendered="#{question.itemData.typeId == 13}">
             <%@ include file="/jsf/author/preview_item/MatrixChoicesSurvey.jsp" %>
+          </h:panelGroup>
+
+          <h:panelGroup rendered="#{question.itemData.typeId == 15"><!-- // CALCULATED_QUESTION -->
+            <%@ include file="/jsf/author/preview_item/CalculatedQuestion.jsp" %>
           </h:panelGroup>
 
         </h:panelGrid>

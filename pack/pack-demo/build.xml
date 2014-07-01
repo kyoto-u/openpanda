@@ -30,7 +30,7 @@
 	<target name="unzip" depends="prep" description="Expand Tomcat zip and perform cleanup.">
 	    <echo message="[INFO] Expand the Tomcat zip from the repo into the target." />
 	    <unzip
-	        src="${localRepo}/tomcat/tomcat/tomcat/${sakai.tomcat.version}/tomcat-${sakai.tomcat.version}.zip"
+			src="${localRepo}/org/apache/tomcat/tomcat/${sakai.tomcat.version}/tomcat-${sakai.tomcat.version}.zip"
 	        dest="${basedir}/target/unpack"
 	        overwrite="true" />
 	</target>
@@ -63,12 +63,11 @@
 	        <!-- <arg value="-B" /> -->
 	    	<arg value="-Dmaven.tomcat.home=${basedir}/target/pack" />
 	        <arg value="-Dmaven.test.skip=${sakai.skip.tests}" />
-	
 	        <!-- 
-	        	<arg value="-Dkeystore=${keystore}" /> 
-	            <arg value="-Dalias=${alias}" />
-	            <arg value="-Dstorepass=${storepass}" /> 
-            -->
+                <arg value="-Dkeystore=${keystore}" /> 
+                <arg value="-Dalias=${alias}" />
+                <arg value="-Dstorepass=${storepass}" />
+                -->
 	        <arg value="clean" />
 	        <arg value="install" />
 	        <arg value="sakai:deploy" />
@@ -131,7 +130,7 @@
 	    </copy>
 	
 	    <echo message="[INFO] Add ECL license." />
-	    <copy file="${basedir}/../../ECLv2.txt" tofile="${basedir}/target/pack/ECLv2.txt" overwrite="true" />
+	    <copy file="${basedir}/../../LICENSE" tofile="${basedir}/target/pack/LICENSE" overwrite="true" />
 	
 	    <!-- ? -->
 	    <!-- <copy todir="${basedir}/target/pack"> 

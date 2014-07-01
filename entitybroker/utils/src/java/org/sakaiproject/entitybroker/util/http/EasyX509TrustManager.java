@@ -1,7 +1,7 @@
 /**********************************************************************************
- * $Id: EasyX509TrustManager.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $Revision: 59674 $
- * $Date: 2009-04-04 08:05:58 +0900 (Sat, 04 Apr 2009) $
+ * $Id: EasyX509TrustManager.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
+ * $Revision: 105077 $
+ * $Date: 2012-02-25 07:54:29 +0900 (Sat, 25 Feb 2012) $
  ***********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
  *
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

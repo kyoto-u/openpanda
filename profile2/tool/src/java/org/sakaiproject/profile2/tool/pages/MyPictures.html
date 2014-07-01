@@ -1,6 +1,8 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <!--
 
-    Copyright (c) 2008-2010 The Sakai Foundation
+    Copyright (c) 2008-2012 The Sakai Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +18,6 @@
 
 -->
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"
 	xml:lang="en" lang="en">
@@ -51,7 +52,10 @@
 	<table class="profileContent">
 		<tr>
 			<td></td>
-			<td><div wicket:id="fileFeedback" class="wicket-feedbackpanel-nolist">[fileFeedback]</div></td>
+			<td>
+				<div wicket:id="fileFeedback" class="wicket-feedbackpanel-nolist">[fileFeedback]</div>
+				<div wicket:id="invalidFileTypeMessage" class="gallery-warning-text" style="display: none;">[invalidFileTypeMessage]</div>
+			</td>
 
 		</tr>
 		<tr wicket:id="addPictureContainer">
@@ -74,6 +78,9 @@
 	</div>
 	
 		<script type="text/javascript">
+		
+			// PRFL-451
+    		var suffixPattern = /\.([0-9a-z]+)$/i;
 
 		//init
 		$(document).ready(function(){ 
@@ -91,8 +98,33 @@
 				cluetipClass: 'jtip',
 				arrows: true,
 				hoverIntent: true
-			});	
+			});
 			
+			// PRFL-451. The Wicket multi file upload component adds input tags to this container
+			// for each file chosen. If we bind to it we can check what is being added.
+			$('.add-form-item').bind('DOMNodeInserted', function(e) {
+    			var latestInputTag = $(this).children('input[name*="addPictureContainer:choosePicture"]').first();
+    			if(latestInputTag) {
+    				var suffix = latestInputTag.val().match(suffixPattern)[1];
+    				if(!suffix.match(/jpe?g/i) && !suffix.match(/png/i) && !suffix.match(/gif/i)) {
+    					latestInputTag.remove();
+    					$('#invalidFileTypeMessage').show();
+    				} else {
+    					$('#invalidFileTypeMessage').hide();
+    				}
+    			}
+			});
+			
+			// PRFL-451. The Wicket multi file upload component adds the filename to this container
+			// for each file chosen. If we bind to it we can check what is being added.
+			$('.wicket-mfu-container').bind('DOMNodeInserted', function(e) {
+    			var fileName = e.target.firstChild.nodeValue;
+    			var suffix = fileName.match(suffixPattern)[1];
+    			if(!suffix.match(/jpe?g/i) && !suffix.match(/png/i) && !suffix.match(/gif/i)) {
+    				$(e.target).remove();
+    			}
+    		});
+    		
 		});
 
 	</script>

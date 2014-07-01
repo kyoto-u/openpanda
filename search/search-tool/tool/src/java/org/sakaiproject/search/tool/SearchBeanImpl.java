@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchBeanImpl.java $
- * $Id: SearchBeanImpl.java 118572 2013-01-22 16:42:42Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchBeanImpl.java $
+ * $Id: SearchBeanImpl.java 110962 2012-08-01 14:46:36Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

@@ -1,5 +1,5 @@
 <!--
-* $Id: deliverFileUpload.jsp 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
+* $Id: deliverFileUpload.jsp 271441 2014-02-13 19:31:48Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -20,7 +20,7 @@
 **********************************************************************************/
 --%>
 -->
-<%-- $Id: deliverFileUpload.jsp 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
+<%-- $Id: deliverFileUpload.jsp 271441 2014-02-13 19:31:48Z ktsao@stanford.edu $
 include file for delivering file upload questions
 should be included in file importing DeliveryMessages
 --%>
@@ -43,7 +43,7 @@ should be included in file importing DeliveryMessages
     target="jsf/upload_tmp/assessment#{delivery.assessmentId}/question#{question.itemData.itemId}/#{person.eid}"
     valueChangeListener="#{delivery.addMediaToItemGrading}" />
   <f:verbatim>&nbsp;&nbsp;</f:verbatim>
-  <h:commandButton id="upl" value="#{deliveryMessages.upload}" action="#{delivery.getOutcome}" onclick="showNotif('submitnotif',this.name,'takeAssessmentForm');"/>
+  <h:commandButton id="upl" value="#{deliveryMessages.upload}" action="#{delivery.getOutcome}" onclick="showNotif('submitnotif',this.name,'takeAssessmentForm');disableShowTimeWarning();"/>
 </h:panelGroup>
 <h:outputText escape="false" value="<span id=\"submitnotif\" style=\"visibility:hidden\"> #{deliveryMessages.processing}</span>"/>
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment' 
@@ -69,7 +69,7 @@ should be included in file importing DeliveryMessages
         <h:column>
           <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
           <h:outputLink title="#{deliveryMessages.t_uploadedFile}" value="/samigo-app/servlet/ShowMedia?mediaId=#{media.mediaId}&sam_fileupload_siteId=#{delivery.siteId}" target="new_window">
-             <h:outputText escape="false" value="#{media.filename}" />
+             <h:outputText value="#{media.filename}" />
           </h:outputLink>
         </h:column>
         <h:column>
@@ -128,7 +128,7 @@ should be included in file importing DeliveryMessages
         <h:column>
           <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
           <h:outputLink value="#{attach.location}" target="new_window">
-            <h:outputText escape="false" value="#{attach.filename}" />
+            <h:outputText value="#{attach.filename}" />
           </h:outputLink>
         </h:column>
         <h:column>

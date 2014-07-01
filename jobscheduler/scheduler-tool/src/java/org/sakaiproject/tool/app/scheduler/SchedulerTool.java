@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,6 +34,7 @@ import javax.faces.validator.ValidatorException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.CronTrigger;
+import org.quartz.InterruptableJob;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -60,6 +61,10 @@ public class SchedulerTool
 
   private static final String CRON_CHECK_ASTERISK = "**";
   private static final String CRON_CHECK_QUESTION_MARK = "??";
+  /** The maximum length of a trigger name. */
+  private static final int TRIGGER_NAME_LENGTH_LIMIT = 80;
+  /** The maximum length of a job name. */
+  private static final int JOB_NAME_LENGTH_LIMIT = 80;
 
   private SchedulerManager schedulerManager;
   private String jobName;
@@ -80,7 +85,7 @@ public class SchedulerTool
   private Map<String, String> configurableJobResources;
   private List<ConfigurablePropertyWrapper> configurableJobProperties;
   private JobDetail jobDetail;
-  private ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.scheduler.bundle.Messages");
+  protected ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.scheduler.bundle.Messages");
   private TriggerWrapper triggerWrapper = null;
 
   private TriggerEventManager
@@ -610,6 +615,9 @@ public class SchedulerTool
        
        // create the job and show the list of jobs
       scheduler.addJob(jd, false);
+      jobName = null;
+      // Clear out the form.
+      selectedClass = null;
       processRefreshJobs();
       return "jobs";
     }
@@ -718,6 +726,9 @@ public class SchedulerTool
               return null;
           }
           scheduler.addJob(jd, false);
+          // Clear out the form
+          jobName = null;
+          jobDetail = null;
           processRefreshJobs();
           return "jobs";
       }
@@ -1256,6 +1267,39 @@ public class SchedulerTool
        return "error";
      }
   }
+  
+  public List<JobExecutionContextWrapperBean> getRunningJobs() {
+	  List<JobExecutionContext> currentJobs = new ArrayList<JobExecutionContext>();
+	  List<JobExecutionContextWrapperBean> currentWrappedJobs = new ArrayList<JobExecutionContextWrapperBean>();
+	  Scheduler scheduler = schedulerManager.getScheduler();
+	  if (scheduler == null)
+	  {
+		  LOG.error("Scheduler is down!");
+	  }
+	  else {
+		  try {
+			  currentJobs = scheduler.getCurrentlyExecutingJobs();
+		  } catch (SchedulerException e) {
+			  LOG.warn("Unable to get currently executing jobs");
+		  }
+	  }
+
+	  for (JobExecutionContext jec : currentJobs)
+	  {
+		  JobExecutionContextWrapperBean jobExecutionContextWrapper = new JobExecutionContextWrapperBean(this, jec);
+		  jobExecutionContextWrapper.setIsKillable(isJobKillable(jec.getJobDetail()));
+		  currentWrappedJobs.add(jobExecutionContextWrapper);
+	  }
+
+	  return currentWrappedJobs;
+  }
+  
+  public boolean isJobKillable(JobDetail detail) {
+	  if (InterruptableJob.class.isAssignableFrom(detail.getJobClass())) {
+		  return true;
+	  }
+	  return false;
+  }
 
   public String processRefreshFilteredJobs()
   {
@@ -1285,21 +1329,20 @@ public class SchedulerTool
     }
     return "delete_triggers";
   }
+  
+  public int getJobNameMaxLength() {
+     return JOB_NAME_LENGTH_LIMIT;
+  }
 
   public void validateJobName(FacesContext context, UIComponent component,
-      Object value)
+      Object object)
   {
-    if (value != null)
+    if (object instanceof String)
     {
+      String value = (String)object;
       try
       {
-          if (((String) value).length() > 80) {
-              FacesMessage message = new FacesMessage(rb.getString("too_long_job_name"));
-              message.setSeverity(FacesMessage.SEVERITY_WARN);
-              throw new ValidatorException(message);
-          }
-        JobDetail jd = schedulerManager.getScheduler().getJobDetail(
-            (String) value, Scheduler.DEFAULT_GROUP);
+        JobDetail jd = schedulerManager.getScheduler().getJobDetail(value, Scheduler.DEFAULT_GROUP);
         if (jd != null)
         {
           FacesMessage message = new FacesMessage(rb.getString("existing_job_name"));
@@ -1314,11 +1357,16 @@ public class SchedulerTool
     }
   }
 
+  public int getTriggerNameMaxLength() {
+    return TRIGGER_NAME_LENGTH_LIMIT;
+  }
+
   public void validateTriggerName(FacesContext context, UIComponent component,
-      Object value)
+      Object object)
   {
-    if (value != null)
+    if (object instanceof String)
     {
+      String value = (String)object;
       try
       {
         Trigger trigger = schedulerManager.getScheduler().getTrigger(

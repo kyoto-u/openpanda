@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-api/api/src/java/org/sakaiproject/portal/api/PortalService.java $
- * $Id: PortalService.java 124895 2013-05-23 16:10:02Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-api/api/src/java/org/sakaiproject/portal/api/PortalService.java $
+ * $Id: PortalService.java 132923 2013-12-26 21:35:50Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -35,7 +35,7 @@ import org.sakaiproject.tool.api.Placement;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 124895 $
+ * @version $Rev: 132923 $
  */
 public interface PortalService
 {
@@ -66,6 +66,11 @@ public interface PortalService
 	 * portlet
 	 */
 	public static final String TOOL_PORTLET_NAME = "portlet-name";
+
+	/**
+	 * this is the property in session to keep track of the current portal
+	 */
+	public static final String SAKAI_CONTROLLING_PORTAL = "sakai-controlling-portal";
 
 	/**
 	 * ste the state of the portal reset flag.
@@ -259,6 +264,10 @@ public interface PortalService
 	 * @return
 	 */
 	SiteNeighbourhoodService getSiteNeighbourhoodService();
+   
+	/* optional portal links for portal header (SAK-22912)
+	 */
+	String getPortalLinks();
 	
 	/**
 	 * Bean setter for Content Hosting dependency.

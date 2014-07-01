@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping
     PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
 
@@ -48,6 +48,10 @@
 		<property name="releaseStatistics" type="boolean">
 			<column name="stats" not-null="true" />
 		</property>
+
+        <property name="fileReference" type="string" length="255">
+            <column name="file_reference" not-null="false" />
+        </property>
 
 		<component name="template" class="org.sakaiproject.component.app.postem.data.TemplateImpl">
 			<property name="templateCode" type="string" length="4000" column="template" />

@@ -278,10 +278,10 @@ var instrumentThreads = function(target){
     var threadCount = 0;
     $('#' + target).children('tbody').children('tr').each(function(index){
         //remove "New messages" message if this is the only message in the thread
-        if (($(this).prev('.hierItemBlock').size() === 1) & ($(this).attr('class') !== undefined)) {
+        if (($(this).prev('.hierItemBlock').size() === 1) & ($(this).prop('class') !== undefined)) {
             $(this).prev().find('span.childrenNewThread').remove();
         }
-        if (($(this).next('.hierItemBlock').size() === 1) & ($(this).attr('class') !== undefined)) {
+        if (($(this).next('.hierItemBlock').size() === 1) & ($(this).prop('class') !== undefined)) {
             $(this).find('span.childrenNewThread').remove();
         }
         if ($(this).next().size() === 0) {
@@ -290,7 +290,7 @@ var instrumentThreads = function(target){
         
         //add same class to all messg. in a thread so we can remove the "New messages" message in
         //thread seed after all of the messgs in the thread have been marked as read (in doAjax)
-        if ($(this).attr('class') === "hierItemBlock") {
+        if ($(this).prop('class') === "hierItemBlock") {
             threadCount = threadCount + 1;
         }
         $(this).addClass('thread' + threadCount)
@@ -299,7 +299,7 @@ var instrumentThreads = function(target){
 
 function setupMessageNav(messageType){
 	$('.messagesThreaded tr').each(function(rowIndex){
-		$(this).attr('rowCount',rowIndex)
+		$(this).prop('rowCount',rowIndex)
 		});
     if ($("." + messageType).size() >= 1) {
         if (messageType == "messageNew") {
@@ -325,13 +325,13 @@ function setupMessageNav(messageType){
                 $(this).css({
                     cursor: "pointer"
                 });
-                $(this).attr("title", tonext);
+                $(this).prop("title", tonext);
                 $(this).click(function(){
 					//in message type is "New" find next new by crawling the DOM
 					// (real next one may have been marked as read, so no longer news)
 					if (messageType === 'messageNew') {
 						//var thisIndex = $('tr').index(parentRow);
-						var thisIndex = parseInt($(parentRow).attr('rowCount')) + 1;
+						var thisIndex = parseInt($(parentRow).prop('rowCount')) + 1;
 						// jq1.2 version 
 						//document.location = "#" + $(parentRow).nextAll('.' + messageType + 'Next').eq(0).find('a.messageNewAnchor').attr('name');
 						//jq1.1 version
@@ -351,13 +351,13 @@ function setupMessageNav(messageType){
                 $('#messNavHolder a').click(function(e){
                     //new method to avoid FF4 internal linking behaviours MSGCNTR-544
                     e.preventDefault();
-                    var targetPosPrep=$(this).attr('href').replace('#','');
+                    var targetPosPrep=$(this).prop('href').replace('#','');
                     var targetPos = $('a[name=' + targetPosPrep + ']').position();
                     window.parent.scrollTo(0, targetPos.top);        
                 })
             }
             else {
-                $(this).attr("title", last);
+                $(this).prop("title", last);
             }
         });
     }
@@ -368,7 +368,7 @@ function setupMessageNav(messageType){
 
 
 function doAjax(messageId, topicId, self){
-    $(self).attr('src', '/library/image/sakai/spinner.gif');
+    $(self).prop('src', '/library/image/sakai/spinner.gif');
     $.ajax({
         type: "GET",
         url: document.forms[0].action,
@@ -379,7 +379,7 @@ function doAjax(messageId, topicId, self){
                     var thisRow = $(self).parents('tr');
                     //only do this if in subject only view
                     if ($(self).parent('td').size() === 1) {
-                        var thisTheadClassArr = $(thisRow).attr('class').split(' ');
+                        var thisTheadClassArr = $(thisRow).prop('class').split(' ');
                         var thisThread = thisTheadClassArr[thisTheadClassArr.length - 1];
                         $('.' + thisThread).find('em').text($('.' + thisThread).find('em').text() - 1);
 						//hide "New Messages" in thread seed if all messages have been marked as "read"
@@ -605,22 +605,234 @@ function disable() {
     }
 }
 
+function checkUpdate() {
+    var tables= document.getElementsByTagName("INPUT");
+    for (var i = 0; i < tables.length; i++) {
+        if (tables[i].name.indexOf("removeCheckbox") >=0) {
+            if(tables[i].checked) {
+              abledButton();
+              break;
+            }
+            else disabledButton();
+        }
+    }
+}
+
+function disabledButton() {
+    var inputs= document.getElementsByTagName("INPUT");
+    for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].name.indexOf("delete_submit") >=0) {
+          inputs[i].disabled=true;
+          inputs[i].className='disabled';
+        }
+    }
+}
+
+function abledButton() {
+    var inputs= document.getElementsByTagName("INPUT");
+    for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].name.indexOf("delete_submit") >=0) {
+          inputs[i].disabled=false;
+          inputs[i].className='enabled';
+        }
+    }
+}
+
+function uncheckOthers(field){
+    var type1= document.getElementById("addRank:radiobtnType1");
+    var type2= document.getElementById("addRank:radiobtnType2");
+    var type1div = document.getElementById("type1div");
+    var minpost= document.getElementById("addRank:minpost");  // input field for min. post threshold.
+    fieldname = field.getAttribute("name");
+    var radio1 = type1.getElementsByTagName("INPUT")[0];
+    var radio2 = type2.getElementsByTagName("INPUT")[0];
+    if (fieldname ==radio1.getAttribute("name")){
+            radio2.checked = false;
+            type1div.style.display="block";
+            minpost.disabled=true;
+    } else {
+            radio1.checked = false;
+            minpost.disabled=false;
+            type1div.style.display="none";
+    }
+  
+    var ranktype=  field.getAttribute("value");
+    var inputhidden = document.getElementById("addRank:selectedRankType");
+    inputhidden.setAttribute("value", ranktype);
+}
+
+
+function validate(form){
+    var rankname_missing = false;
+    var ranktype_missing= false;
+    var rankminPost_missing= false;
+    var rankassign_missing= false;
+    
+    // RANK NAME
+    var rankname= document.getElementById("addRank:rankname");
+    if (rankname.value.length < 1) {
+        rankname_missing  = true ;
+    }
+    
+    // RANK TYPE
+    var type1= document.getElementById("addRank:radiobtnType1");
+    var type2= document.getElementById("addRank:radiobtnType2");
+    var type1div = document.getElementById("type1div");
+    var minpost= document.getElementById("addRank:minpost");  // input field for min. post threshold.
+    var radio1 = type1.getElementsByTagName("INPUT")[0];
+    var radio2 = type2.getElementsByTagName("INPUT")[0];
+    var assignToNames = document.getElementById("addRank:aggregate_assign_to_item_ids");
+    if (radio1.checked == true ) {
+        // check if assignTo is filled
+        var peoplecount = $(".sakai-ppkr-to-container").children('div:visible').length;
+        if (peoplecount > 0 ) {
+            rankassign_missing= false ;
+        }
+        else {
+            rankassign_missing= true;
+        }
+    }
+    else if (radio2.checked == true )  {
+        // check min. # of post
+        if (minpost.value > 0) {
+            rankminPost_missing = false;
+        }
+        else
+            rankminPost_missing = true;
+    }
+    else {
+        ranktype_missing= true ;
+    }
+
+    var topAlertDiv= document.getElementById("topAlert");
+    var rankTypeAlertDiv = document.getElementById("rankTypeAlert");
+    var ranknameDiv= document.getElementById("ranknamebox");
+    var minpostDiv= document.getElementById("minpostbox");  // input field for min. post threshold.
+    var assigntoDiv = document.getElementById("assigntobox");  // input field for min. post threshold.
+    
+    // Display red boxes based on errors.   
+    if(topAlertDiv) {
+        if(rankname_missing || ranktype_missing || rankminPost_missing || rankassign_missing ) {
+            topAlertDiv.style.display="block";
+        } else {
+            topAlertDiv.style.display="none";
+        }
+    }
+    
+    if(rankTypeAlertDiv) {
+        if(ranktype_missing) {
+            rankTypeAlertDiv.style.display="block";
+        } else {
+            rankTypeAlertDiv.style.display="none";
+        }
+    }
+    
+    if(ranknameDiv) {
+        if(rankname_missing ) {
+            ranknameDiv.style.border="1px solid #FF5555";
+        } else {
+            ranknameDiv.style.border="";
+        }
+    }
+    
+    if(assigntoDiv) {
+        if(rankassign_missing) {
+            assigntoDiv.style.border="1px solid #FF5555";
+        } else {
+            assigntoDiv.style.border="";
+        }
+    }
+
+    if(minpostDiv) {
+        if(rankminPost_missing) {
+            minpostDiv.style.border="1px solid #FF5555";
+        } else {
+            minpostDiv.style.border="";
+        }
+    }
+
+    var imageErrHidden= document.getElementById("addRank:imageSizeErr_hidden");
+    var imageSizeAlertDiv= document.getElementById("imageSizeAlert");
+    var hiddenattachid= document.getElementsByName("addRank:add_attach.uploadId");  // input field for min. post threshold.
+    var filename =  "";
+    if (hiddenattachid && hiddenattachid[0]) {
+          filename =  hiddenattachid[0].value;
+    }
+    
+    if (rankname_missing || ranktype_missing || rankminPost_missing || rankassign_missing)  {
+        rankname_missing = false;
+        ranktype_missing= false;
+        rankminPost_missing= false;
+        rankassign_missing= false;
+        // hide image error if other validation fails. forumrankbean.imageSizeErr is from the previous upload.
+        if(imageSizeAlertDiv) {
+            imageSizeAlertDiv.style.display = "none";
+        }
+        return false;
+    } else {
+        rankname_missing = false;
+        ranktype_missing= false;
+        rankminPost_missing= false;
+        rankassign_missing= false;
+        if(imageSizeAlertDiv) {
+          if ($.trim(filename)  === "") {
+                // do not display the imageSizeErr if no file is selected to upload
+                imageSizeAlertDiv.style.display = "none";
+            }
+            else {
+                imageSizeAlertDiv.style.display = "block";
+            }
+        }
+    }
+    return true;
+}
+
+function resizeFrameForDialog()
+{
+    if (top.location != self.location) {
+        var frame = parent.document.getElementById(window.name);
+    }
+    if( frame ) {
+        var clientH = document.body.clientHeight + 400;
+        $( frame ).height( clientH );
+    }
+    else {
+        throw( "resizeFrame did not get the frame (using name=" + window.name + ")" );
+    }
+}
+
 // This is the profile display on user's names.
 $(document).ready(function() {			
 	$('.authorProfile').each(function() {
 		$(this).qtip({ 
-			content: {text: '<h:outputText value="#{msgs.loading_wait}" />',
-				url: $(this).attr('href'), title: {	text: '<h:outputText value="#{msgs.cdfm_profile_information}" />',button: '[ X ]' }
+			content: {
+				ajax: {
+					url: $(this).prop('href'),
+					type: 'GET'
+				}
 			},
-			position: {	corner: {target: 'center', tooltip: 'leftMiddle'} },
-			show: { when: 'click', solo: true, effect: {length:0} },
+			position: {	my: 'left center', at: 'top center'},
+			show: { event: 'click', solo: true, effect: {length:0} },
 			hide: { when:'unfocus', fixed:true, delay: 300,  effect: {length:0} },
-			style: { tip: true, border: {color:'#687E9C'}, name: 'light', width: 570 }
+			style: { classes: 'msgcntr-profile-qtip' }
 		});
-		$(this).attr('href', 'javascript:;');
+		$(this).prop('href', 'javascript:;');
 	});
 });	
 
+function resizeFrameForDialog()
+{
+    if (top.location != self.location) {
+        var frame = parent.document.getElementById(window.name);
+    }
+    if( frame ) {
+        var clientH = document.body.clientHeight + 400;
+        $( frame ).height( clientH );
+    }
+    else {
+        throw( "resizeFrame did not get the frame (using name=" + window.name + ")" );
+    }
+}
 
 $(document).ready(function(){
     $('.blockMeOnClick').click(function(e){
@@ -670,7 +882,7 @@ $(document).ready(function(){
                 'height': blockerHeight,
                 'top': pos.top,
                 'left': pos.left,
-                'display': 'block',
+                'display': 'block'
             });
         });
         $buttonContainer.find('.messageProgress').fadeIn('slow')

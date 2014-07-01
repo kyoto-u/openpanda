@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-api/api/src/java/org/sakaiproject/citation/api/CitationHelper.java $
- * $Id: CitationHelper.java 59981 2009-04-11 16:29:26Z jimeng@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-api/api/src/java/org/sakaiproject/citation/api/CitationHelper.java $
+ * $Id: CitationHelper.java 111655 2012-08-20 18:24:26Z jimeng@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,6 +48,7 @@ public interface CitationHelper
 
 	/** The name that identifies a state attribute which carries an identifier fo the current ContentResource object */
 	public static final String RESOURCE_ID = CitationHelper.CITATION_PREFIX + "resource_id";
+	public static final String RESOURCE_UUID = CitationHelper.CITATION_PREFIX + "resource_uuid";
 
 	/** The name that identifies a state attribute which carries an identifier fo the current CitationCollection object */
 	public static final String CITATION_COLLECTION_ID = CITATION_PREFIX + "current_collection_id";

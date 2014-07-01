@@ -1,5 +1,6 @@
 package org.sakaiproject.site.tool.helper.participant.impl;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,14 +21,19 @@ import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.AuthzPermissionException;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Role;
+import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.site.util.Participant;
+import org.sakaiproject.site.util.SiteTypeUtil;
+import org.sakaiproject.site.util.SiteParticipantHelper;
 import org.sakaiproject.sitemanage.api.SiteHelper;
 import org.sakaiproject.sitemanage.api.UserNotificationProvider;
+import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolManager;
@@ -39,6 +45,8 @@ import org.sakaiproject.user.api.UserEdit;
 import org.sakaiproject.user.api.UserIdInvalidException;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserPermissionException;
+import org.sakaiproject.userauditservice.api.UserAuditRegistration;
+import org.sakaiproject.userauditservice.api.UserAuditService;
 
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
@@ -80,6 +88,8 @@ public class SiteAddParticipantHandler {
     public SessionManager sessionManager = null;
     public ServerConfigurationService serverConfigurationService;
     private final String HELPER_ID = "sakai.tool.helper.id";
+    private static UserAuditRegistration userAuditRegistration = (UserAuditRegistration) ComponentManager.get("org.sakaiproject.userauditservice.api.UserAuditRegistration.sitemanage");
+    private static UserAuditService userAuditService = (UserAuditService) ComponentManager.get(UserAuditService.class);
 
     public MessageLocator messageLocator;
     
@@ -95,16 +105,32 @@ public class SiteAddParticipantHandler {
     
     public Site site = null;
     
+	public String csrfToken = null;
+	public String getCsrfToken() {
+		Object sessionAttr = sessionManager.getCurrentSession().getAttribute(UsageSessionService.SAKAI_CSRF_SESSION_ATTRIBUTE);
+		return (sessionAttr!=null)?sessionAttr.toString():"";
+	}
+
 	public String officialAccountParticipant = null;
 	public String getOfficialAccountParticipant() {
 		return officialAccountParticipant;
 	}
-
+	
+	private SecurityService securityService;
+	public void setSecurityService( SecurityService securityService )
+	{
+		this.securityService = securityService;
+	}
+	
 	private UserDirectoryService userDirectoryService;	
 	public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
 		this.userDirectoryService = userDirectoryService;
 	}
 
+	public void setCsrfToken(String csrfToken) {
+		this.csrfToken = csrfToken;
+	}
+	
 	public void setOfficialAccountParticipant(String officialAccountParticipant) {
 		this.officialAccountParticipant = officialAccountParticipant;
 	}
@@ -255,11 +281,9 @@ public class SiteAddParticipantHandler {
             try {    
                 site = siteService.getSite(siteId);
                 realm = authzGroupService.getAuthzGroup(siteService.siteReference(siteId));
-                for(Iterator<Role> i = realm.getRoles().iterator(); i.hasNext();)
-                { 
-                	Role r = (Role) i.next();
-                	roles.add(r);
-                }
+                
+                // bjones86 - SAK-23257
+                roles = SiteParticipantHelper.getAllowedRoles( site.getType(), realm.getRoles() );
             
             } catch (IdUnusedException e) {
                 // The siteId we were given was bogus
@@ -293,15 +317,7 @@ public class SiteAddParticipantHandler {
      */
     public boolean isCourseSite()
     {
-    	boolean rv = false;
-		String courseSiteType = getServerConfigurationString("courseSiteType", "course");
-		if (site == null)
-			init();
-		if (site != null && courseSiteType.equals(site.getType()))
-		{
-			rv = true;
-		}
-		return rv;
+    	return site != null ? SiteTypeUtil.isCourseSite(site.getType()): false;
     }
     
     /**
@@ -338,11 +354,20 @@ public class SiteAddParticipantHandler {
         return "done";
     }
     
+    private boolean validCsrfToken() {
+		return StringUtils.equals(csrfToken, getCsrfToken());
+    }
+    
     /**
      * get role choice and go to difference html page based on that
      * @return
      */
     public String processGetParticipant() {
+    	if (!validCsrfToken()) {
+    		targettedMessageList.addMessage(new TargettedMessage("java.badcsrftoken", null, TargettedMessage.SEVERITY_ERROR));
+    		return "";
+    	}
+
     	// reset errors
     	resetTargettedMessageList();
     	// reset user list
@@ -376,6 +401,11 @@ public class SiteAddParticipantHandler {
      * @return
      */
     public String processSameRoleContinue() {
+    	if (!validCsrfToken()) {
+    		targettedMessageList.addMessage(new TargettedMessage("java.badcsrftoken", null, TargettedMessage.SEVERITY_ERROR));
+    		return null;
+    	}
+
     	targettedMessageList.clear();
     	if (sameRoleChoice == null)
     	{
@@ -427,7 +457,11 @@ public class SiteAddParticipantHandler {
      * @return
      */
     public String processDifferentRoleContinue() {
-	
+    	if (!validCsrfToken()) {
+    		targettedMessageList.addMessage(new TargettedMessage("java.badcsrftoken", null, TargettedMessage.SEVERITY_ERROR));
+    		return null;
+		}
+
 		resetTargettedMessageList();
 		if (!authzGroupService.allowUpdate("/site/" + siteId)) {
 		    Set<String> roles = new HashSet<String>();
@@ -488,7 +522,10 @@ public class SiteAddParticipantHandler {
      * @return
      */
     public String processEmailNotiContinue() {
-
+    	if (!validCsrfToken()) {
+    		targettedMessageList.addMessage(new TargettedMessage("java.badcsrftoken", null, TargettedMessage.SEVERITY_ERROR));
+    		return "";
+    	}
     	resetTargettedMessageList();
         return "continue";
     }
@@ -539,6 +576,10 @@ public class SiteAddParticipantHandler {
 					AuthzGroup realmEdit = authzGroupService.getAuthzGroup(realmId);
 					boolean allowUpdate = authzGroupService.allowUpdate(realmId);
 					Set<String>okRoles = new HashSet<String>();
+					
+					// List used for user auditing
+					List<String[]> userAuditList = new ArrayList<String[]>();
+					
 					for (UserRoleEntry entry: userRoleEntries) {
 						String eId = entry.userEId;
 						String role =entry.role;
@@ -554,6 +595,15 @@ public class SiteAddParticipantHandler {
 						    }
 						    okRoles.add(role);
 						}
+						
+						// SAK-23257 - display an error message if the new role is in the restricted role list
+						String siteType = site.getType();
+						Role r = realmEdit.getRole( role );
+						if( !SiteParticipantHelper.getAllowedRoles( siteType, realm.getRoles() ).contains( r ) )
+						{
+							targettedMessageList.addMessage( new TargettedMessage( "java.roleperm", new Object[] { role }, TargettedMessage.SEVERITY_ERROR ) );
+							continue;
+						}
 
 						try {
 							User user = userDirectoryService.getUserByEid(eId);
@@ -564,6 +614,11 @@ public class SiteAddParticipantHandler {
 										false);
 								addedUserEIds.add(eId);
 								addedUserInfos.add("uid=" + user.getId() + ";role=" + role + ";active=" + statusChoice.equals("active") + ";provided=false");
+								
+								// Add the user to the list for the User Auditing Event Log
+								String currentUserId = userDirectoryService.getUserEid(sessionManager.getCurrentSessionUserId());
+								String[] userAuditString = {site.getId(),eId,role,userAuditService.USER_AUDIT_ACTION_ADD,userAuditRegistration.getDatabaseSourceKey(),currentUserId};
+								userAuditList.add(userAuditString);
 
 								// send notification
 								if (notify) {
@@ -582,6 +637,14 @@ public class SiteAddParticipantHandler {
 
 					try {
 						authzGroupService.save(realmEdit);
+						
+						// do the audit logging - Doing this in one bulk call to the database will cause the actual audit stamp to be off by maybe 1 second at the most
+						// but seems to be a better solution than call this multiple time for every update
+						if (!userAuditList.isEmpty())
+						{
+							userAuditRegistration.addToUserAuditing(userAuditList);
+						}
+						
 						// post event about adding participant
 						EventTrackingService.post(EventTrackingService.newEvent(SiteService.SECURE_UPDATE_SITE_MEMBERSHIP, realmEdit.getId(),false));
 						
@@ -619,7 +682,10 @@ public class SiteAddParticipantHandler {
      * @return
      */
     public String processConfirmContinue() {
-    	
+    	if (!validCsrfToken()) {
+			targettedMessageList.addMessage(new TargettedMessage("java.badcsrftoken", null, TargettedMessage.SEVERITY_ERROR));
+    	}
+
     	List<String> validationUsers = new ArrayList<String>();
     	resetTargettedMessageList();
     	if (site == null)

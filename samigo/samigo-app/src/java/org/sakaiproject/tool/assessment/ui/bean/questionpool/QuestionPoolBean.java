@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/questionpool/QuestionPoolBean.java $
- * $Id: QuestionPoolBean.java 113417 2012-09-21 21:08:11Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/questionpool/QuestionPoolBean.java $
+ * $Id: QuestionPoolBean.java 132097 2013-12-02 19:42:05Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,6 +49,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.struts.upload.FormFile;
 import org.sakaiproject.tool.assessment.business.questionpool.QuestionPoolTreeImpl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemMetaData;
+import org.sakaiproject.tool.assessment.data.dao.questionpool.QuestionPoolData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.questionpool.QuestionPoolDataIfc;
 import org.sakaiproject.tool.assessment.data.model.Tree;
@@ -70,7 +71,7 @@ import org.sakaiproject.event.cover.EventTrackingService;
 /**
  * This holds question pool information.
  *
- * $Id: QuestionPoolBean.java 113417 2012-09-21 21:08:11Z ottenhoff@longsight.com $
+ * $Id: QuestionPoolBean.java 132097 2013-12-02 19:42:05Z ktsao@stanford.edu $
  */
 public class QuestionPoolBean implements Serializable
 {
@@ -91,6 +92,9 @@ public class QuestionPoolBean implements Serializable
   private boolean rootPoolSelected;
   private List poolListSelectItems;
   private List poolsToDelete;
+  
+  private QuestionPoolFacade poolToUnshare;
+  
   private List itemsToDelete;
   private String[] selectedPools;
   private String[] selectedQuestions;
@@ -149,6 +153,7 @@ public class QuestionPoolBean implements Serializable
  private String addOrEdit;
   private String outcome;
   private String outcomeEdit;
+  private String unsharePoolSource; 
   private String deletePoolSource;  // either from poolList.jsp , or from editPool.jsp
   private String addPoolSource;  // either from poolList.jsp , or from editPool.jsp
 
@@ -175,7 +180,7 @@ public class QuestionPoolBean implements Serializable
   {
 //	  if (qpDataModelCopy == null) {
 		  buildTreeCopy();
-		  setQpDataModelByLevelCopy();
+		  setQpDataModelByLevelCopy(getSortCopyPoolProperty(), getSortCopyPoolAscending());
 //	  }
 	  log.debug("getCopyQpools()");
 	  return qpDataModelCopy;
@@ -185,7 +190,7 @@ public class QuestionPoolBean implements Serializable
   {
 //	  if (qpDataModelCopy == null) {
 		  buildTreeCopy();
-		  setQpDataModelByLevelCopy();
+		  setQpDataModelByLevelCopy(getSortMovePoolProperty(), getSortMovePoolAscending());
 //	  }
 	  log.debug("getMoveQpools()");
 	  return qpDataModelCopy;
@@ -231,13 +236,38 @@ public class QuestionPoolBean implements Serializable
 		  }
 		  if (i2 == null && i1 == null) {
 			  return 0;
-		  }		  
+		  }
+		  if (i1.getTitle() == null && i2.getTitle() != null) {
+			  return 1;
+		  }
+		  if (i2.getTitle() == null && i1.getTitle() != null) {
+			  return -1;
+		  }
+		  if (i2.getTitle() == null && i1.getTitle() == null) {
+			  return 0;
+		  }
 		  RuleBasedCollator collator_ini = (RuleBasedCollator)Collator.getInstance();
 		  try {
 			RuleBasedCollator collator= new RuleBasedCollator(collator_ini.getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
 			return collator.compare(i1.getTitle(), i2.getTitle());
 		  } catch (ParseException e) {}
 		  return Collator.getInstance().compare(i1.getTitle(), i2.getTitle());
+	  }
+  }
+
+  class QuestionSizeComparator implements Comparator<QuestionPoolFacade> {
+	  @Override
+	  public int compare(QuestionPoolFacade i1, QuestionPoolFacade i2) {
+		  if (i1 == null && i2 != null) {
+			  return 1;
+		  }
+		  if (i2 == null && i1 != null) {
+			  return -1;
+		  }
+		  if (i2 == null && i1 == null) {
+			  return 0;
+		  }
+		  return i1.getQuestionPoolItems().size() - i2.getQuestionPoolItems().size();
 	  }
   }
 
@@ -252,6 +282,8 @@ public class QuestionPoolBean implements Serializable
 	  // optimize the sort on title, which is the one that is almost always used.
 	  if ("title".equals(sortProperty)) {
 		  Collections.sort(sortedList, new TitleComparator());
+	  } else if ("questionSize".equals(sortProperty)) {
+		  Collections.sort(sortedList, new QuestionSizeComparator());
 	  } else {
 		  if ("lastModified".equals(sortProperty))
 		  {
@@ -384,6 +416,27 @@ public class QuestionPoolBean implements Serializable
 	return itemsToDelete;
   }
 
+  /**
+   * DOCUMENTATION PENDING
+   *
+   * @return DOCUMENTATION PENDING
+   */
+  public void setPoolToUnshare(QuestionPoolFacade qpool)
+  {
+	poolToUnshare = qpool;
+  }
+  
+  
+  /**
+   * DOCUMENTATION PENDING
+   *
+   * @return DOCUMENTATION PENDING
+   */
+  public QuestionPoolFacade getPoolToUnshare()
+  {
+	return this.poolToUnshare;
+  }
+  
   /**
    * DOCUMENTATION PENDING
    *
@@ -1435,7 +1488,7 @@ public String getAddOrEdit()
 	getCheckedPool();
 	buildTreeCopy();
 	setActionType("pool");
-	setQpDataModelByPropertyCopy();
+	setQpDataModelByPropertyCopy(getSortCopyPoolProperty(), getSortCopyPoolAscending());
 	return "copyPool";
   }
 
@@ -1445,7 +1498,7 @@ public String getAddOrEdit()
 	getCheckedPool();
 	buildTreeCopy();
 	setActionType("pool");
-	setQpDataModelByPropertyCopy();
+	setQpDataModelByPropertyCopy(getSortMovePoolProperty(), getSortMovePoolAscending());
 	return "movePool";
   }
 
@@ -1642,8 +1695,34 @@ public String getAddOrEdit()
       throw new RuntimeException(e);
     }
   }
+  
+  // To allow a user to remove a shared pool from the list of pools (previous confirmation)
+  public String startUnsharePool(){
+	
+	 String poolId = ContextUtil.lookupParam("qpid");
 
+	 QuestionPoolService delegate = new QuestionPoolService();
+	 QuestionPoolFacade qPool = delegate.getPool(new Long(poolId), AgentFacade.getAgentString());
+	        
+	 this.setPoolToUnshare(qPool);
+	 return "unsharePool";
+  }
+  
+  // To allow a user to remove a shared pool from the list of pools (post confirmation)
+  public String unsharePool(){
+	  QuestionPoolService delegate = new QuestionPoolService();
+      QuestionPoolFacade qpool = this.getPoolToUnshare();
+      Long poolId= qpool.getQuestionPoolId();
 
+      delegate.removeQuestionPoolAccess(tree, AgentFacade.getAgentString(), poolId, QuestionPoolData.READ_COPY);
+      //Questionpool has been unshared
+      EventTrackingService.post(EventTrackingService.newEvent("sam.questionpool.unshare", "/sam/" +AgentFacade.getCurrentSiteId() + "/unshared poolId=" + poolId, true));
+      
+      buildTree();
+      setQpDataModelByLevel();
+      
+      return "poolList";
+}
 
 
   public String confirmRemovePool(){
@@ -1882,7 +1961,6 @@ String poolId = ContextUtil.lookupParam("qpid");
     this.setSortProperty(sortString);
     this.setSortAscending((Boolean.valueOf(ascending)).booleanValue());
     setQpDataModelByLevel();
-    setQpDataModelByLevelCopy();
     
     return "poolList";
   }
@@ -1893,8 +1971,7 @@ String poolId = ContextUtil.lookupParam("qpid");
     String ascending = ContextUtil.lookupParam("copyPoolAscending");
     this.setSortCopyPoolProperty(sortString);
     this.setSortCopyPoolAscending((Boolean.valueOf(ascending)).booleanValue());
-    setQpDataModelByLevel();
-    setQpDataModelByLevelCopy();
+    setQpDataModelByLevelCopy(getSortCopyPoolProperty(), getSortCopyPoolAscending());
     
     return "copyPool";
   }
@@ -1905,8 +1982,7 @@ String poolId = ContextUtil.lookupParam("qpid");
     String ascending = ContextUtil.lookupParam("movePoolAscending");
     this.setSortMovePoolProperty(sortString);
     this.setSortMovePoolAscending((Boolean.valueOf(ascending)).booleanValue());
-    setQpDataModelByLevel();
-    setQpDataModelByLevelCopy();
+    setQpDataModelByLevelCopy(getSortMovePoolProperty(), getSortMovePoolAscending());
     
     return "movePool";
   }
@@ -2081,8 +2157,7 @@ String poolId = ContextUtil.lookupParam("qpid");
 	}
   
   	public void setQpDataModelByProperty() {
-		tree.sortByProperty(this.getSortCopyPoolProperty(), this
-				.getSortCopyPoolAscending());
+		tree.sortByProperty(this.getSortProperty(), this.getSortAscending());
 
 		Collection objects = tree.getSortedObjects();
 		ListDataModel model = new ListDataModel((List) objects);
@@ -2091,14 +2166,14 @@ String poolId = ContextUtil.lookupParam("qpid");
 		this.qpDataModel = qpDataModel;
 	}
 
-  	public void setQpDataModelByLevelCopy() {
+  	public void setQpDataModelByLevelCopy(String sortProperty, boolean sortAscending) {
   		Collection objects = tree.getSortedObjects();
 
   		// construct the sortedList, pools need to be sorted one level at a time
   		// so the hierachical structure can be maintained. Here, we start from root = 0,
   		if (objects != null) {
   			ArrayList sortedList = sortPoolByLevel(new Long("0"), objects,
-  					getSortProperty(), getSortAscending());
+  					sortProperty, sortAscending);
   			ListDataModel model = new ListDataModel((List) sortedList);
   			QuestionPoolDataModel qpDataModel = new QuestionPoolDataModel(tree,
   					model);
@@ -2106,9 +2181,8 @@ String poolId = ContextUtil.lookupParam("qpid");
   		}
   	}
 
-  	public void setQpDataModelByPropertyCopy() {
-  		tree.sortByProperty(this.getSortCopyPoolProperty(), this
-  				.getSortCopyPoolAscending());
+  	public void setQpDataModelByPropertyCopy(String sortProperty, boolean sortAscending) {
+  		tree.sortByProperty(sortProperty, sortAscending);
 
   		Collection objects = tree.getSortedObjects();
   		ListDataModel model = new ListDataModel((List) objects);

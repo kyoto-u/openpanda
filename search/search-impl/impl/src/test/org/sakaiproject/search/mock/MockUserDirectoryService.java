@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/test/org/sakaiproject/search/mock/MockUserDirectoryService.java $
- * $Id: MockUserDirectoryService.java 75883 2010-04-09 07:49:57Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/test/org/sakaiproject/search/mock/MockUserDirectoryService.java $
+ * $Id: MockUserDirectoryService.java 308855 2014-04-25 23:59:06Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,7 @@ import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.HttpAccess;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.user.api.PasswordPolicyProvider;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserAlreadyDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -439,7 +440,14 @@ public class MockUserDirectoryService implements UserDirectoryService
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	
- 
+
+    public UserDirectoryService.PasswordRating validatePassword(String password, User user) {
+	return UserDirectoryService.PasswordRating.PASSED_DEFAULT;
+    }
+
+	@Override
+	public PasswordPolicyProvider getPasswordPolicy() {
+		return null;
+	}
+
 }

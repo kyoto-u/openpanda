@@ -1,6 +1,6 @@
 /**
- * $Id: EntityEncodingManager.java 114417 2012-10-16 15:16:12Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/rest/src/java/org/sakaiproject/entitybroker/rest/EntityEncodingManager.java $
+ * $Id: EntityEncodingManager.java 306024 2014-02-17 11:34:32Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityEncodingManager.java $
  * EntityEncodingManager.java - entity-broker - Jul 23, 2008 3:25:32 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,6 +54,7 @@ import org.sakaiproject.entitybroker.entityprovider.EntityProviderManager;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityFieldRequired;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.Createable;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.Deleteable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.DepthLimitable;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.InputTranslatable;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.Inputable;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.OutputFormattable;
@@ -775,6 +776,7 @@ public class EntityEncodingManager {
                             entityProps.put(ENTITY_TITLE, entityData.getDisplayTitle());
                         }
                     }
+                    entityProps.putAll(entityData.getEntityProperties());
                 }
             }
             // do the encoding
@@ -856,9 +858,20 @@ public class EntityEncodingManager {
         }
         String encoded = "";
         if (data != null) {
+            int maxDepth = 0;
+            if (name != null) {
+                DepthLimitable provider = (DepthLimitable) entityProviderManager.getProviderByPrefixAndCapability(name, DepthLimitable.class);
+                if (provider != null) {
+                    maxDepth = provider.getMaxDepth();
+                }
+            }
             Transcoder transcoder = getTranscoder(format);
             try {
-                encoded = transcoder.encode(data, name, properties);
+                if (maxDepth == 0) {
+                    encoded = transcoder.encode(data, name, properties);
+                } else {
+                    encoded = transcoder.encode(data, name, properties, maxDepth);
+                }
             } catch (RuntimeException e) {
                 // convert failure to UOE
                 throw new UnsupportedOperationException("Failure encoding data ("+data+") of type ("+data.getClass()+"): " + e.getMessage(), e);

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/site/cover/SiteService.java $
- * $Id: SiteService.java 113287 2012-09-21 15:14:51Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/site/cover/SiteService.java $
+ * $Id: SiteService.java 129462 2013-09-09 18:57:24Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,10 @@
 
 package org.sakaiproject.site.cover;
 
+import java.util.List;
+
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.db.api.SqlReader;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.site.api.Site;
 
@@ -105,6 +108,14 @@ public class SiteService
 	public static java.lang.String PROP_PARENT_ID = org.sakaiproject.site.api.SiteService.PROP_PARENT_ID;
 
 	public static java.lang.String PROP_SHOW_SUBSITES = org.sakaiproject.site.api.SiteService.PROP_SHOW_SUBSITES;
+
+	public static java.lang.String EVENT_SITE_USER_INVALIDATE = org.sakaiproject.site.api.SiteService.EVENT_SITE_USER_INVALIDATE;
+
+	public static java.lang.String EVENT_SITE_VISIT_DENIED = org.sakaiproject.site.api.SiteService.EVENT_SITE_VISIT_DENIED;
+	
+	public static java.lang.String EVENT_SITE_IMPORT_START = org.sakaiproject.site.api.SiteService.EVENT_SITE_IMPORT_START;
+	
+	public static java.lang.String EVENT_SITE_IMPORT_END = org.sakaiproject.site.api.SiteService.EVENT_SITE_IMPORT_END;
 
 	public static boolean allowAccessSite(java.lang.String param0)
 	{
@@ -410,6 +421,22 @@ public class SiteService
 		return service.getSiteTypes();
 	}
 
+	public static List<Site> getUserSites()
+	{
+		org.sakaiproject.site.api.SiteService service = getInstance();
+		if (service == null) return null;
+
+		return service.getUserSites();
+	}
+
+	public static List<Site> getUserSites(boolean requireDescription)
+	{
+		org.sakaiproject.site.api.SiteService service = getInstance();
+		if (service == null) return null;
+
+		return service.getUserSites(requireDescription);
+	}
+
 	public static java.util.List getSites(org.sakaiproject.site.api.SiteService.SelectionType param0, java.lang.Object param1,
 			java.lang.String param2, java.util.Map param3, org.sakaiproject.site.api.SiteService.SortType param4,
 			org.sakaiproject.javax.PagingPosition param5)
@@ -418,6 +445,16 @@ public class SiteService
 		if (service == null) return null;
 
 		return service.getSites(param0, param1, param2, param3, param4, param5);
+	}
+
+	public static java.util.List getSites(org.sakaiproject.site.api.SiteService.SelectionType param0, java.lang.Object param1,
+			java.lang.String param2, java.util.Map param3, org.sakaiproject.site.api.SiteService.SortType param4,
+			org.sakaiproject.javax.PagingPosition param5, boolean param6)
+	{
+		org.sakaiproject.site.api.SiteService service = getInstance();
+		if (service == null) return null;
+
+		return service.getSites(param0, param1, param2, param3, param4, param5, param6);
 	}
 
 	public static int countSites(org.sakaiproject.site.api.SiteService.SelectionType param0, java.lang.Object param1,
@@ -484,5 +521,13 @@ public class SiteService
 		if (service == null) return false;
 
 		return service.allowRoleSwap(param0);
+	}
+	
+	public static java.util.List<String> getSiteTypeStrings(java.lang.String param0)
+	{
+		org.sakaiproject.site.api.SiteService service = getInstance();
+		if (service == null) return null;
+
+		return service.getSiteTypeStrings(param0);
 	}
 }

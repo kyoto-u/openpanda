@@ -1,10 +1,8 @@
 package org.sakaiproject.tool.assessment.facade;
 
 import java.sql.SQLException;
-
 import java.util.Iterator;
 import java.util.List;
-import java.util.HashSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,12 +10,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.sakaiproject.tool.assessment.data.dao.assessment.FavoriteColChoices;
-import org.sakaiproject.tool.assessment.data.dao.assessment.FavoriteColChoicesItem;
-import org.sakaiproject.tool.assessment.data.dao.shared.TypeD;
-
+import org.sakaiproject.tool.assessment.services.PersistenceService;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.sakaiproject.tool.assessment.services.PersistenceService;
 
 
 public class FavoriteColChoicesFacadeQueries extends HibernateDaoSupport 
@@ -49,7 +44,7 @@ public class FavoriteColChoicesFacadeQueries extends HibernateDaoSupport
 					getHibernateTemplate().delete(fChoice);
 				}
 			}
-				int retryCount = PersistenceService.getInstance().getRetryCount().intValue();
+				int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount().intValue();
 				while (retryCount > 0){
 					try {
 
@@ -58,7 +53,7 @@ public class FavoriteColChoicesFacadeQueries extends HibernateDaoSupport
 					}
 					catch (Exception e) {
 						log.warn("problem saving favoriteColChoices: "+e.getMessage());
-						retryCount = PersistenceService.getInstance().retryDeadlock(e, retryCount);
+						retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e, retryCount);
 					}
 				}
 			

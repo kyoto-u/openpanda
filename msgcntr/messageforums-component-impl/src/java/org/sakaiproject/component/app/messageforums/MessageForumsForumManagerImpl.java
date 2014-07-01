@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,6 +53,7 @@ import org.sakaiproject.api.app.messageforums.OpenTopic;
 import org.sakaiproject.api.app.messageforums.PrivateForum;
 import org.sakaiproject.api.app.messageforums.PrivateTopic;
 import org.sakaiproject.api.app.messageforums.Topic;
+import org.sakaiproject.api.app.messageforums.cover.ForumScheduleNotificationCover;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.ActorPermissionsImpl;
@@ -68,6 +69,7 @@ import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.id.api.IdManager;
 import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.api.SessionManager;
@@ -400,6 +402,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
     	HibernateCallback hcb = new HibernateCallback() {
     		public Object doInHibernate(Session session) throws HibernateException, SQLException {
     			Query q = session.getNamedQuery("findTopicAttachments");
+    			q.setCacheable(true);
     			q.setParameter("topic", topicId, Hibernate.LONG);
     			return q.list();
     		}
@@ -913,9 +916,14 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
               }
            }
         }
+        //make sure availability flag is set properly
+        forum.setAvailability(ForumScheduleNotificationCover.makeAvailableHelper(forum.getAvailabilityRestricted(), forum.getOpenDate(), forum.getCloseDate()));
         
         getHibernateTemplate().saveOrUpdate(forum);
-
+        
+        //make sure that any open and close dates are scheduled:
+        ForumScheduleNotificationCover.scheduleAvailability(forum);
+        
         if (logEvent) {
         	if (isNew) {
         		eventTrackingService.post(eventTrackingService.newEvent(DiscussionForumService.EVENT_FORUMS_FORUM_ADD, getEventMessage(forum), false));
@@ -978,6 +986,8 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         if (topic.getPostFirst() == null) {
         	topic.setPostFirst(Boolean.FALSE);
         }
+        //make sure availability is set properly
+        topic.setAvailability(ForumScheduleNotificationCover.makeAvailableHelper(topic.getAvailabilityRestricted(), topic.getOpenDate(), topic.getCloseDate()));
         
         if (topic.getId() == null) {
             
@@ -995,6 +1005,18 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
             
         } else {
             getHibernateTemplate().saveOrUpdate(topic);
+        }
+        //now schedule any jobs that are needed for the open/close dates
+        //this will require having the ID of the topic (if its a new one)
+        if(topic.getId() == null){
+        	Topic topicTmp = getTopicByUuid(topic.getUuid());
+        	if(topicTmp != null){
+        		//set the ID so that the forum scheduler can schedule any needed jobs
+        		topic.setId(topicTmp.getId());
+        	}
+        }
+        if(topic.getId() != null){
+        	ForumScheduleNotificationCover.scheduleAvailability(topic);
         }
 
         LOG.debug("saveDiscussionForumTopic executed with topicId: " + topic.getId());
@@ -1109,6 +1131,11 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         // re-retrieve the forum with the area populated so we don't have to
         // rely on "current context"
         forum = (DiscussionForum)getForumById(true, id);
+        List<Topic> topics = getTopicsByIdWithMessages(id);
+        for (Topic topic : topics) {
+            forum.removeTopic(topic);
+        }
+        
         //Area area = getAreaByContextIdAndTypeId(typeManager.getDiscussionForumType());
         Area area = forum.getArea();
         area.removeDiscussionForum(forum);
@@ -1266,8 +1293,19 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         if (TestUtil.isRunningTests()) {
             return "test-context";
         }
+        String presentSiteId = null;
         Placement placement = ToolManager.getCurrentPlacement();
-        String presentSiteId = placement.getContext();
+        if(placement == null){
+        	//current placement is null.. let's try another approach to getting the site id
+        	if(sessionManager.getCurrentToolSession() != null){
+        		ToolConfiguration toolConfig = SiteService.findTool(sessionManager.getCurrentToolSession().getId());
+        		if(toolConfig != null){
+        			presentSiteId = toolConfig.getSiteId();
+        		}
+        	}
+        }else{
+        	presentSiteId = placement.getContext();
+        }
         return presentSiteId;
     }
 

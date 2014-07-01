@@ -3,11 +3,14 @@
 
 <beans>
 
+   <bean id="org.sakaiproject.content.api.ContentPrintService"
+	class="org.sakaiproject.content.impl.BasicContentPrintService"
+	singleton="true">
+    </bean>
+
     <!-- database beans -->
-    <bean id="org.sakaiproject.content.impl.ContentServiceSqlDb2"       class="org.sakaiproject.content.impl.ContentServiceSqlDb2"     singleton="true"/>
     <bean id="org.sakaiproject.content.impl.ContentServiceSqlDefault"   class="org.sakaiproject.content.impl.ContentServiceSqlDefault" singleton="true"/>
     <bean id="org.sakaiproject.content.impl.ContentServiceSqlHSql"      class="org.sakaiproject.content.impl.ContentServiceSqlHSql"    singleton="true"/>
-    <bean id="org.sakaiproject.content.impl.ContentServiceSqlMsSql"     class="org.sakaiproject.content.impl.ContentServiceSqlMsSql"   singleton="true"/>
     <bean id="org.sakaiproject.content.impl.ContentServiceSqlMySql"     class="org.sakaiproject.content.impl.ContentServiceSqlMySql"   singleton="true"/>
     <bean id="org.sakaiproject.content.impl.ContentServiceSqlOracle"    class="org.sakaiproject.content.impl.ContentServiceSqlOracle"  singleton="true"/>
 
@@ -35,10 +38,12 @@
         <property name="timeService">				<ref bean="org.sakaiproject.time.api.TimeService"/>						</property>
         <property name="sessionManager">			<ref bean="org.sakaiproject.tool.api.SessionManager"/>					</property>
         <property name="toolManager">				<ref bean="org.sakaiproject.tool.api.ToolManager"/>						</property>
-        <property name="userDirectoryService"> 		<ref bean="org.sakaiproject.user.api.UserDirectoryService"/>			</property>	
+        <property name="userDirectoryService"> 		<ref bean="org.sakaiproject.user.api.UserDirectoryService"/>			</property>
+        <property name="collectionAccessFormatter">	<ref bean="org.sakaiproject.content.impl.CollectionAccessFormatter"/>	</property>
         <property name="contentHostingHandlerResolver"><ref bean="org.sakaiproject.content.api.ContentHostingHandlerResolver"/></property>
 		<property name="collectionSerializer"><ref bean="org.sakaiproject.content.api.ContentHostingService.collectionSerializer"/></property>
         <property name="resourceSerializer"><ref bean="org.sakaiproject.content.api.ContentHostingService.resourceSerializer"/></property>
+        <property name="linkMigrationHelper">      <ref bean="org.sakaiproject.util.api.LinkMigrationHelper"/>              </property>
         <!--
         If you want to use the new serializers you have to let them migrate the data, set to true
         so that they can write the new format when they update an item.
@@ -60,10 +65,8 @@
         <property name="useResourceTypeRegistry">   <value>true</value>                         </property>
         <property name="databaseBeans">
            <map>
-              <entry key="db2"    ><ref bean="org.sakaiproject.content.impl.ContentServiceSqlDb2"    /></entry>
               <entry key="default"><ref bean="org.sakaiproject.content.impl.ContentServiceSqlDefault"/></entry>
               <entry key="hsqldb" ><ref bean="org.sakaiproject.content.impl.ContentServiceSqlHSql"   /></entry>
-              <entry key="mssql"  ><ref bean="org.sakaiproject.content.impl.ContentServiceSqlMsSql"  /></entry>
               <entry key="mysql"  ><ref bean="org.sakaiproject.content.impl.ContentServiceSqlMySql"  /></entry>
               <entry key="oracle" ><ref bean="org.sakaiproject.content.impl.ContentServiceSqlOracle" /></entry>
            </map>
@@ -73,12 +76,21 @@
             <ref bean="org.sakaiproject.content.impl.HtmlPageFilter"/>
           </list>
         </property>
-  	</bean>
+    </bean>
+
+    <bean id="org.sakaiproject.content.impl.CollectionAccessFormatter"
+          class="org.sakaiproject.content.impl.CollectionAccessFormatter">
+        <property name="formattedText" ref="org.sakaiproject.util.api.FormattedText"/>
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
+        <property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
+    </bean>
 
 	<bean id="org.sakaiproject.content.api.ContentHostingHandlerResolver"
 			class="org.sakaiproject.content.impl.ContentHostingHandlerResolverImpl"
 			singleton="true">
 	</bean>
+
+
 
 <!--
 	<bean id="uk.ac.cam.caret.ContentHostingHandlerFileSystemImpl.0000"

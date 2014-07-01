@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsManagerImpl.java $
- * $Id: StatsManagerImpl.java 120505 2013-02-27 21:07:10Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsManagerImpl.java $
+ * $Id: StatsManagerImpl.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,6 +41,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.FlushMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -107,7 +108,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 	private Boolean						enableResourceStats						= null;
 	private Boolean						enableSitePresences						= null;
 	private Boolean 				    visitsInfoAvailable						= null;
-	private boolean						enableServerWideStats					= false;
+	private boolean						enableServerWideStats					= true;
 	private boolean						countFilesUsingCHS						= true;
 	private String						chartBackgroundColor					= "white";
 	private boolean						chartIn3D								= true;
@@ -375,7 +376,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 			String event = LOG_APP + '.' + LOG_OBJ_PREFSDATA + '.' + LOG_ACTION_EDIT;
 			if(e.getEvent() != null && e.getEvent().equals(event)) {
 				String siteId = e.getResource().split("/")[2];
-				cachePrefsData.expire(siteId);
+				cachePrefsData.remove(siteId);
 				LOG.debug("Expiring preferences cache for site: "+siteId);
 			}
 		}
@@ -1210,7 +1211,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 			boolean sortAscending,
 			final int maxResults) {
 		
-		final List<String> anonymousEvents = M_ers.getAnonymousEventIds();
+		final Set<String> anonymousEvents = M_ers.getAnonymousEventIds();
 		StatsSqlBuilder sqlBuilder = new StatsSqlBuilder(getDbVendor(),
 				Q_TYPE_EVENT, totalsBy, siteId, 
 				events, anonymousEvents, showAnonymousAccessEvents, null, null, 
@@ -1435,7 +1436,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 			final boolean inverseUserSelection,
 			final List<String> totalsBy) {
 		
-		final List<String> anonymousEvents = M_ers.getAnonymousEventIds();
+		final Set<String> anonymousEvents = M_ers.getAnonymousEventIds();
 		StatsSqlBuilder sqlBuilder = new StatsSqlBuilder(getDbVendor(),
 				Q_TYPE_EVENT, totalsBy,
 				siteId, events, anonymousEvents, showAnonymousAccessEvents, null, null, 
@@ -1509,8 +1510,8 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 			final int maxResults) {
 		
 		StatsSqlBuilder sqlBuilder = new StatsSqlBuilder(getDbVendor(),
-				Q_TYPE_PRESENCE, totalsBy, siteId, 
-				null, null, showAnonymousAccessEvents, null, null, 
+				Q_TYPE_PRESENCE, totalsBy, siteId,
+				(Set<String>)null, null, showAnonymousAccessEvents, null, null, 
 				iDate, fDate, userIds, inverseUserSelection, sortBy, sortAscending);
 		final String hql = sqlBuilder.getHQL();
 		final Map<Integer,Integer> columnMap = sqlBuilder.getHQLColumnMap();
@@ -1646,7 +1647,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 		
 		StatsSqlBuilder sqlBuilder = new StatsSqlBuilder(getDbVendor(),
 				Q_TYPE_PRESENCE, totalsBy,
-				null, null, null, showAnonymousAccessEvents, null, null, 
+				null, (Set<String>)null, null, showAnonymousAccessEvents, null, null, 
 				iDate, fDate, userIds, inverseUserSelection, null, true);
 		final String hql = sqlBuilder.getHQL();
 
@@ -1866,7 +1867,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 		
 		StatsSqlBuilder sqlBuilder = new StatsSqlBuilder(getDbVendor(),
 				Q_TYPE_RESOURCE, totalsBy, 
-				siteId, null, null, showAnonymousAccessEvents, resourceAction, resourceIds, 
+				siteId, (Set<String>)null, null, showAnonymousAccessEvents, resourceAction, resourceIds, 
 				iDate, fDate, userIds, inverseUserSelection, sortBy, sortAscending);
 		final String hql = sqlBuilder.getHQL();
 		final Map<Integer,Integer> columnMap = sqlBuilder.getHQLColumnMap();
@@ -2032,7 +2033,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 
 		StatsSqlBuilder sqlBuilder = new StatsSqlBuilder(getDbVendor(),
 				Q_TYPE_RESOURCE, totalsBy, 
-				siteId, null, null, showAnonymousAccessEvents, resourceAction, resourceIds, 
+				siteId, (Set<String>)null, null, showAnonymousAccessEvents, resourceAction, resourceIds, 
 				iDate, fDate, userIds, inverseUserSelection, null, true);
 		final String hql = sqlBuilder.getHQL();
 
@@ -2098,7 +2099,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 		
 		StatsSqlBuilder sqlBuilder = new StatsSqlBuilder(getDbVendor(),
 				Q_TYPE_VISITSTOTALS, totalsBy, siteId, 
-				null, null, showAnonymousAccessEvents, null, null, 
+				(Set<String>)null, null, showAnonymousAccessEvents, null, null, 
 				iDate, fDate, null, false, sortBy, sortAscending);
 		final String hql = sqlBuilder.getHQL();
 		final Map<Integer,Integer> columnMap = sqlBuilder.getHQLColumnMap();
@@ -2204,7 +2205,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 			final boolean sortAscending, 
 			final int maxResults) {
 		
-		final List<String> anonymousEvents = M_ers.getAnonymousEventIds();
+		final Set<String> anonymousEvents = M_ers.getAnonymousEventIds();
 		StatsSqlBuilder sqlBuilder = new StatsSqlBuilder(getDbVendor(),
 				Q_TYPE_ACTIVITYTOTALS, totalsBy, siteId, 
 				events, anonymousEvents, showAnonymousAccessEvents, null, null, 
@@ -2360,8 +2361,8 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 		private int						queryType;
 		private List<String>			totalsBy;
 		private String					siteId;
-		private List<String>			events;
-		private List<String>			anonymousEvents;
+		private Set<String>				events;
+		private Set<String>				anonymousEvents;
 		private boolean					showAnonymousAccessEvents;
 		private Date					iDate;
 		private Date					fDate;
@@ -2377,8 +2378,8 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 				final int queryType,
 				final List<String> totalsBy,
 				final String siteId,
-				final List<String> events, 
-				final List<String> anonymousEvents,
+				final Set<String> events, 
+				final Set<String> anonymousEvents,
 				final boolean showAnonymousAccessEvents,
 				final String resourceAction,
 				final List<String> resourceIds,
@@ -2416,6 +2417,31 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 			this.inverseUserSelection = inverseUserSelection;
 			this.sortBy = sortBy;
 			this.sortAscending = sortAscending;
+		}
+		
+		/**
+		 * This constructor take older style arguments (List of events) which may
+		 * be null and converts them to a set then passes them through.
+		 */
+		public StatsSqlBuilder(
+				final String dbVendor,
+				final int queryType,
+				final List<String> totalsBy,
+				final String siteId,
+				final List<String> events, 
+				final Set<String> anonymousEvents,
+				final boolean showAnonymousAccessEvents,
+				final String resourceAction,
+				final List<String> resourceIds,
+				final Date iDate, final Date fDate,
+				final List<String> userIds,
+				final boolean inverseUserSelection,
+				final String sortBy, final boolean sortAscending) {
+			this(dbVendor, queryType, totalsBy, siteId, (events == null) ? null
+					: new HashSet<String>(events), anonymousEvents,
+					showAnonymousAccessEvents, resourceAction, resourceIds,
+					iDate, fDate, userIds, inverseUserSelection, sortBy,
+					sortAscending);
 		}
 		
 		public String getHQL() {
@@ -3489,6 +3515,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 			HibernateCallback hcb = new HibernateCallback() {
 				public Object doInHibernate(Session session) throws HibernateException, SQLException {
 					Query q = session.createQuery(hql);
+					q.setFlushMode(FlushMode.NEVER);
 					q.setString("siteid", siteId);
 					if(events != null && events.size() > 0)
 						q.setParameterList("eventlist", events);

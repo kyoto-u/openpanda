@@ -15,7 +15,7 @@
     <parent>
         <artifactId>entitybroker</artifactId>
         <groupId>org.sakaiproject</groupId>
-        <version>1.5.3</version><!--entitybroker.version-->
+        <version>10.0</version><!--entitybroker.version-->
     </parent>
     <dependencies>
         <!-- internal dependencies -->
@@ -27,7 +27,10 @@
             <groupId>org.sakaiproject.entitybroker</groupId>
             <artifactId>entitybroker-utils</artifactId>
         </dependency>
-
+	<dependency>
+            <groupId>org.sakaiproject.common</groupId>
+            <artifactId>sakai-privacy-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.azeckoski</groupId>
             <artifactId>reflectutils</artifactId>
@@ -36,11 +39,19 @@
         <!-- external dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
+        </dependency>
+         <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

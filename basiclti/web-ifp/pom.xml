@@ -4,7 +4,7 @@
     <parent>
         <artifactId>basiclti</artifactId>
         <groupId>org.sakaiproject.basiclti</groupId>
-        <version>2.1.1</version>
+        <version>10.0</version>
     </parent>
   <name>sakai-web-portlet-basiclti</name>
   <groupId>org.sakaiproject.basiclti</groupId>
@@ -55,9 +55,9 @@
     </dependency>
 <!-- velocity and dependencies (logkit, oro, collections) -->
     <dependency>
-      <groupId>velocity</groupId>
+      <groupId>org.apache.velocity</groupId>
       <artifactId>velocity</artifactId>
-      <version>1.3.1</version>
+      <version>${sakai.velocity.version}</version>
     </dependency>
     <dependency>
       <groupId>logkit</groupId>

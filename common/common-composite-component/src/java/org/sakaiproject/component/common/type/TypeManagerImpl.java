@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/common-composite-component/src/java/org/sakaiproject/component/common/type/TypeManagerImpl.java $
- * $Id: TypeManagerImpl.java 96488 2011-08-05 23:43:59Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/common-composite-component/src/java/org/sakaiproject/component/common/type/TypeManagerImpl.java $
+ * $Id: TypeManagerImpl.java 125281 2013-05-31 03:42:46Z nbotimer@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -159,6 +159,7 @@ public class TypeManagerImpl extends HibernateDaoSupport implements TypeManager
 				Query q = session.getNamedQuery(FINDTYPEBYUUID);
 				q.setString(UUID, uuid);
 				q.setCacheable(cacheFindTypeByUuid);
+				q.setCacheRegion(Type.class.getCanonicalName());
 				return q.uniqueResult();
 			}
 		};
@@ -189,6 +190,7 @@ public class TypeManagerImpl extends HibernateDaoSupport implements TypeManager
 				q.setString(DOMAIN, domain);
 				q.setString(KEYWORD, keyword);
 				q.setCacheable(cacheFindTypeByTuple);
+				q.setCacheRegion(Type.class.getCanonicalName());
 				return q.uniqueResult();
 			}
 		};

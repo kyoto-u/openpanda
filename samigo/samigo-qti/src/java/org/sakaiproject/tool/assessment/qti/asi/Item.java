@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/asi/Item.java $
- * $Id: Item.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/asi/Item.java $
+ * $Id: Item.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,19 +23,24 @@
 
 package org.sakaiproject.tool.assessment.qti.asi;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import org.sakaiproject.tool.assessment.data.dao.assessment.AttachmentData;
+import org.sakaiproject.tool.assessment.data.dao.assessment.Answer;
+import org.sakaiproject.tool.assessment.data.dao.assessment.ItemText;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.qti.constants.AuthoringConstantStrings;
 import org.sakaiproject.tool.assessment.qti.constants.QTIConstantStrings;
@@ -48,12 +53,11 @@ import org.sakaiproject.tool.assessment.qti.helper.item.ItemHelperIfc;
  * <p>Organization: Sakai Project</p>
  * @author rshastri
  * @author Ed Smiley esmiley@stanford.edu
- * @version $Id: Item.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * @version $Id: Item.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 public class Item extends ASIBaseClass
 {
   private static Log log = LogFactory.getLog(Item.class);
-  private int qtiVersion;
   private ItemHelperIfc helper;
 
 
@@ -93,7 +97,6 @@ public class Item extends ASIBaseClass
     {
       throw new IllegalArgumentException("Invalid Item QTI version.");
     }
-    this.qtiVersion = qtiVersion;
     switch (qtiVersion)
     {
       case QTIVersion.VERSION_1_2:
@@ -119,14 +122,14 @@ public class Item extends ASIBaseClass
   }
 
   /**
-   * set identity attribute (ident/identioty)
+   * set identity attribute (ident/identity)
    * @param ident the value
    */
 
   public void setIdent(String ident)
   {
     String xpath = basePath;
-    List list = this.selectNodes(xpath);
+    List<?> list = this.selectNodes(xpath);
     if (list.size() > 0)
     {
       Element element = (Element) list.get(0);
@@ -141,7 +144,7 @@ public class Item extends ASIBaseClass
   public void setTitle(String title)
   {
     String xpath = basePath;
-    List list = this.selectNodes(xpath);
+    List<?> list = this.selectNodes(xpath);
     if (list.size() > 0)
     {
       Element element = (Element) list.get(0);
@@ -150,7 +153,7 @@ public class Item extends ASIBaseClass
   }
 
   /**
-   * Update XML from perisistence
+   * Update XML from persistence
    * @param item
    */
   public void update(ItemDataIfc item)
@@ -158,6 +161,7 @@ public class Item extends ASIBaseClass
     if(item == null) {
     	return;
     }
+    
     // metadata
     setFieldentry("ITEM_OBJECTIVE",
       item.getItemMetaDataByLabel(ItemMetaDataIfc.OBJECTIVE ));
@@ -191,7 +195,6 @@ public class Item extends ASIBaseClass
     }
     //  rshastri: SAK-1824
     // item data
-//    ItemHelper helper = new ItemHelper();
     if (!this.isSurvey() && !this.isMXSURVEY()) //surveys are unscored
     {
       helper.addMaxScore(item.getScore(), this);
@@ -205,6 +208,7 @@ public class Item extends ASIBaseClass
     
     if(item !=null && (item.getTypeId().equals(TypeIfc.MULTIPLE_CHOICE) || item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) ||item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION))) {
     	setFieldentry("RANDOMIZE", item.getItemMetaDataByLabel(ItemMetaDataIfc.RANDOMIZE ));
+    	setFieldentry("MCMS_PARTIAL_CREDIT", item.getItemMetaDataByLabel(ItemMetaDataIfc.MCMS_PARTIAL_CREDIT ));
     }
     
     if (this.isMXSURVEY()) {
@@ -215,14 +219,45 @@ public class Item extends ASIBaseClass
     }
     
     String instruction = item.getInstruction();
-    if (this.isMatching() || this.isFIB() || this.isFIN() || this.isMXSURVEY())
+    if (this.isMatching() || this.isFIB() || this.isFIN() || this.isMXSURVEY() || this.isCalculatedQuestion())
     {
       if ( instruction != null)
         {
     	  helper.setItemText(instruction, this);
         }
     }
-    ArrayList itemTexts = item.getItemTextArraySorted();
+    
+    if(this.isEMI()){
+    	helper.setItemLabel(StringEscapeUtils.escapeXml(item.getThemeText()), this);
+		helper.setPresentationLabel(item.getIsAnswerOptionsSimple()?"Simple":"Rich", this);
+		String ident = "EMI" + item.getSequence();
+		helper.setPresentationFlowResponseIdent(ident, this);
+		//set attachments
+		helper.setAttachments(item.getItemAttachmentSet(), this);
+		//set the options
+		if(item.getIsAnswerOptionsSimple()){
+			setItemTexts(Collections.singletonList(
+					item.getItemTextBySequence(ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE)));
+		}else{
+			ItemText it = new ItemText();
+			it.setSequence(ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE);
+			it.setText(item.getEmiAnswerOptionsRichText());
+			Set<AnswerIfc> answerSet = new HashSet<AnswerIfc>();
+			String labels = item.getEmiAnswerOptionLabels();
+			for(int i = 0; i < item.getAnswerOptionsRichCount(); i++){
+				Answer a = new Answer();
+				a.setSequence(Long.valueOf(i));
+				a.setLabel(labels.substring(i, i+1));
+				answerSet.add(a);
+			}
+			it.setAnswerSet(answerSet);
+			setItemTexts(Collections.singletonList((ItemTextIfc)it));
+		}
+		helper.setItemText(item.getLeadInText(), "Leadin", this);
+		setAnswers(item.getEmiQuestionAnswerCombinations());
+    	return;//already setting text and answers, EMI has no feedback.
+    }
+    List<ItemTextIfc> itemTexts = item.getItemTextArraySorted();
 
     setItemTexts(itemTexts);
     if (this.isTrueFalse()) // we know what the answers are (T/F)
@@ -237,7 +272,7 @@ public class Item extends ASIBaseClass
     }
     setFeedback(itemTexts);
   }
-
+  
   /**
    * Set the answer texts for item.
    * @param itemTextList the text(s) for item
@@ -325,7 +360,7 @@ public class Item extends ASIBaseClass
    * Valid for single and multiple texts.
    * @param itemText text to be updated
    */
-  public void setItemTexts(ArrayList itemTextList)
+  public void setItemTexts(List<ItemTextIfc> itemTextList)
   {
     helper.setItemTexts(itemTextList, this);
   }
@@ -393,13 +428,22 @@ public class Item extends ASIBaseClass
     return AuthoringConstantStrings.TF.equals(this.getItemType()) ? true : false;
   }
 
+  public boolean isEMI()
+  {
+	  return AuthoringConstantStrings.EMI.equals(this.getItemType()) ? true : false;
+  }
 
+  // CALCULATED_QUESTION
+  public boolean isCalculatedQuestion()
+  {
+    return AuthoringConstantStrings.CALCQ.equals(this.getItemType()) ? true : false;
+  }
 
   /**
    * Set the answer texts for item.
    * @param itemTextList the text(s) for item
    */
-  public void setAnswers(ArrayList itemTextList)
+  public void setAnswers(List<ItemTextIfc> itemTextList)
   {
     helper.setAnswers(itemTextList, this);
   }
@@ -408,7 +452,7 @@ public class Item extends ASIBaseClass
    * Set the feedback texts for item.
    * @param itemTextList the text(s) for item
    */
-  public void setFeedback(ArrayList itemTextList)
+  public void setFeedback(List<ItemTextIfc> itemTextList)
   {
     helper.setFeedback(itemTextList, this);
   }
@@ -435,14 +479,14 @@ public class Item extends ASIBaseClass
   }
   
   private String getAttachment(ItemDataIfc item) {
-	  Set attachmentSet = (Set) item.getItemAttachmentSet();
+	  Set<ItemAttachmentIfc> attachmentSet = item.getItemAttachmentSet();
    	  if (attachmentSet != null && attachmentSet.size() != 0) { 
-   		Iterator iter = attachmentSet.iterator();
-   		AttachmentData attachmentData = null;
-   		StringBuffer attachment = new StringBuffer();
+   		Iterator<ItemAttachmentIfc> iter = attachmentSet.iterator();
+   		ItemAttachmentIfc attachmentData = null;
+   		StringBuilder attachment = new StringBuilder();
    		while (iter.hasNext())
    		{
-   			attachmentData = (AttachmentData) iter.next();
+   			attachmentData = iter.next();
    			attachment.append(attachmentData.getResourceId().replaceAll(" ", ""));
    			attachment.append("|");
    			attachment.append(attachmentData.getFilename());

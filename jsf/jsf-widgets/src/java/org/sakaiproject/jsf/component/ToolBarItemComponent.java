@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.3/jsf-widgets/src/java/org/sakaiproject/jsf/component/ToolBarItemComponent.java $
-* $Id: ToolBarItemComponent.java 92520 2011-05-03 09:37:24Z david.horwitz@uct.ac.za $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.0/jsf-widgets/src/java/org/sakaiproject/jsf/component/ToolBarItemComponent.java $
+* $Id: ToolBarItemComponent.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

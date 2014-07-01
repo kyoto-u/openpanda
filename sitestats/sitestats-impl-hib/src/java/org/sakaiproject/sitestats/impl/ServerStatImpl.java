@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/ServerStatImpl.java $
- * $Id: ServerStatImpl.java 97032 2011-08-16 13:27:22Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/ServerStatImpl.java $
+ * $Id: ServerStatImpl.java 133719 2014-01-27 11:20:56Z matthew.buckett@it.ox.ac.uk $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,6 +33,19 @@ public class ServerStatImpl implements ServerStat, Serializable {
 	private Date date;
 	private String eventId;
 	private long count;
+
+
+	@Override
+	public int compareTo(ServerStat other) {
+		int val = eventId.compareTo(other.getEventId());
+		if (val != 0) return val;
+		val = date.compareTo(other.getDate());
+		if (val != 0) return val;
+		val = Long.signum(count - other.getCount());
+		if (val != 0) return val;
+		val = Long.signum(id - other.getId());
+		return val;
+	}
 
 	public boolean equals(Object o) {
 		if(o == null) return false;
@@ -112,5 +125,6 @@ public class ServerStatImpl implements ServerStat, Serializable {
 	public void setCount(long count) {
 		this.count = count;
 	}
+
 
 }

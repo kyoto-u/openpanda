@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.theospi.portfolio.guidance.model">
 
    <class name="Guidance" table="osp_guidance" lazy="false" batch-size="10">
@@ -28,7 +28,7 @@
          <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
       </id>
       <property name="type" type="string" column="type" not-null="false"/>
-      <property name="text" type="text" column="text" not-null="false"/>
+      <property name="text" type="materialized_clob" column="text" not-null="false"/>
       <many-to-one name="guidance" column="guidance_id" not-null="true" class="Guidance"/>
 
       <bag name="attachments" cascade="all-delete-orphan" inverse="true" lazy="false">

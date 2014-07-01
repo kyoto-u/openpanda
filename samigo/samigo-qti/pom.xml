@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.sakaiproject.samigo</groupId>
 		<artifactId>samigo</artifactId>
-		<version>2.9.3</version>
+		<version>10.0</version>
 	</parent>
     
 	<name>Sakai Samigo QTI Services (samigo-qti)</name>
@@ -25,7 +25,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring</artifactId>
+			<artifactId>spring-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject.kernel</groupId>
@@ -35,6 +35,11 @@
 			<groupId>org.sakaiproject.kernel</groupId>
 			<artifactId>sakai-component-manager</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.sakaiproject.kernel</groupId>
+            <artifactId>sakai-kernel-util</artifactId>
+            <scope>provided</scope>
+        </dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>samigo-api</artifactId>
@@ -42,6 +47,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>samigo-services</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -69,8 +75,7 @@
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.0.4</version>
-		</dependency>
+       		</dependency>
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
@@ -92,8 +97,24 @@
 			<version>1.0.2</version>
 			<!--properties:  war.bundle: standalone -->
 		</dependency>
+        <dependency>
+            <groupId>OKI</groupId>
+            <artifactId>OkiOSID</artifactId>
+            <version>2.0</version>
+        </dependency>
 	</dependencies>
 	<build>
 		<resources />
+		<testResources>
+			<testResource>
+				<directory>src/test</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
 	</build>
 </project>

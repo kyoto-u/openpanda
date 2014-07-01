@@ -4,13 +4,13 @@
     <parent>
         <groupId>org.sakaiproject.emailtemplateservice</groupId>
         <artifactId>emailtemplateservice</artifactId>
-        <version>0.6.3</version>
+        <version>10.0</version>
     </parent>
 
     <name>Sakai emailtemplateservice Deploy POM</name>
     <groupId>org.sakaiproject.emailtemplateservice</groupId>
     <artifactId>emailtemplateservice-deploy</artifactId>
-    <version>0.6.3</version>
+    <version>10.0</version>
     <packaging>pom</packaging>
     
     <description>emailtemplateservice deploy POM.</description>
@@ -22,7 +22,6 @@
     <inceptionYear>2011</inceptionYear>
 
     <modules>
-        <module>assembly</module>
         <module>shared</module>
     </modules>
     

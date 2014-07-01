@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages;
 
 
@@ -53,6 +52,8 @@ public class MyPreferences extends BasePage{
 	private CheckBox officialImage;
 	private CheckBox gravatarImage;
 	
+	private boolean officialImageEnabled;
+	private boolean gravatarEnabled;
 	
 	public MyPreferences() {
 		
@@ -109,8 +110,14 @@ public class MyPreferences extends BasePage{
 
 		//request emails
 		final RadioGroup<Boolean> emailRequests = new RadioGroup<Boolean>("requestEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "requestEmailEnabled"));
-		emailRequests.add(new Radio<Boolean>("requestsOn", new Model<Boolean>(Boolean.valueOf(true))));
-		emailRequests.add(new Radio<Boolean>("requestsOff", new Model<Boolean>(Boolean.valueOf(false))));
+		Radio requestsOn = new Radio<Boolean>("requestsOn", new Model<Boolean>(Boolean.valueOf(true)));
+		requestsOn.setMarkupId("requestsoninput");
+		requestsOn.setOutputMarkupId(true);
+		emailRequests.add(requestsOn);
+		Radio requestsOff = new Radio<Boolean>("requestsOff", new Model<Boolean>(Boolean.valueOf(false)));
+		requestsOff.setMarkupId("requestsoffinput");
+		requestsOff.setOutputMarkupId(true);
+		emailRequests.add(requestsOff);
 		emailRequests.add(new Label("requestsLabel", new ResourceModel("preferences.email.requests")));
 		form.add(emailRequests);
 		
@@ -124,8 +131,14 @@ public class MyPreferences extends BasePage{
 		
 		//confirm emails
 		final RadioGroup<Boolean> emailConfirms = new RadioGroup<Boolean>("confirmEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "confirmEmailEnabled"));
-		emailConfirms.add(new Radio<Boolean>("confirmsOn", new Model<Boolean>(Boolean.valueOf(true))));
-		emailConfirms.add(new Radio<Boolean>("confirmsOff", new Model<Boolean>(Boolean.valueOf(false))));
+		Radio confirmsOn = new Radio<Boolean>("confirmsOn", new Model<Boolean>(Boolean.valueOf(true)));
+		confirmsOn.setMarkupId("confirmsoninput");
+		confirmsOn.setOutputMarkupId(true);
+		emailConfirms.add(confirmsOn);
+		Radio confirmsOff = new Radio<Boolean>("confirmsOff", new Model<Boolean>(Boolean.valueOf(false)));
+		confirmsOff.setMarkupId("confirmsoffinput");
+		confirmsOff.setOutputMarkupId(true);
+		emailConfirms.add(confirmsOff);
 		emailConfirms.add(new Label("confirmsLabel", new ResourceModel("preferences.email.confirms")));
 		form.add(emailConfirms);
 		
@@ -139,8 +152,14 @@ public class MyPreferences extends BasePage{
 		
 		//new message emails
 		final RadioGroup<Boolean> emailNewMessage = new RadioGroup<Boolean>("messageNewEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "messageNewEmailEnabled"));
-		emailNewMessage.add(new Radio<Boolean>("messageNewOn", new Model<Boolean>(Boolean.valueOf(true))));
-		emailNewMessage.add(new Radio<Boolean>("messageNewOff", new Model<Boolean>(Boolean.valueOf(false))));
+		Radio messageNewOn = new Radio<Boolean>("messageNewOn", new Model<Boolean>(Boolean.valueOf(true)));
+		messageNewOn.setMarkupId("messagenewoninput");
+		messageNewOn.setOutputMarkupId(true);
+		emailNewMessage.add(messageNewOn);
+		Radio messageNewOff = new Radio<Boolean>("messageNewOff", new Model<Boolean>(Boolean.valueOf(false)));
+		messageNewOff.setMarkupId("messagenewoffinput");
+		messageNewOff.setOutputMarkupId(true);
+		emailNewMessage.add(messageNewOff);
 		emailNewMessage.add(new Label("messageNewLabel", new ResourceModel("preferences.email.message.new")));
 		form.add(emailNewMessage);
 		
@@ -152,10 +171,18 @@ public class MyPreferences extends BasePage{
             }
         });
 		
+		emailNewMessage.setVisible(sakaiProxy.isMessagingEnabledGlobally());
+		
 		//message reply emails
 		final RadioGroup<Boolean> emailReplyMessage = new RadioGroup<Boolean>("messageReplyEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "messageReplyEmailEnabled"));
-		emailReplyMessage.add(new Radio<Boolean>("messageReplyOn", new Model<Boolean>(Boolean.valueOf(true))));
-		emailReplyMessage.add(new Radio<Boolean>("messageReplyOff", new Model<Boolean>(Boolean.valueOf(false))));
+		Radio messageReplyOn = new Radio<Boolean>("messageReplyOn", new Model<Boolean>(Boolean.valueOf(true)));
+		messageReplyOn.setMarkupId("messagereplyoninput");
+		messageNewOn.setOutputMarkupId(true);
+		emailReplyMessage.add(messageReplyOn);
+		Radio messageReplyOff = new Radio<Boolean>("messageReplyOff", new Model<Boolean>(Boolean.valueOf(false)));
+		messageReplyOff.setMarkupId("messagereplyoffinput");
+		messageNewOff.setOutputMarkupId(true);
+		emailReplyMessage.add(messageReplyOff);
 		emailReplyMessage.add(new Label("messageReplyLabel", new ResourceModel("preferences.email.message.reply")));
 		form.add(emailReplyMessage);
 		
@@ -167,10 +194,18 @@ public class MyPreferences extends BasePage{
             }
         });
 		
+		emailReplyMessage.setVisible(sakaiProxy.isMessagingEnabledGlobally());
+		
 		// new wall item notification emails
 		final RadioGroup<Boolean> wallItemNew = new RadioGroup<Boolean>("wallItemNewEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "wallItemNewEmailEnabled"));
-		wallItemNew.add(new Radio<Boolean>("wallItemNewOn", new Model<Boolean>(Boolean.valueOf(true))));
-		wallItemNew.add(new Radio<Boolean>("wallItemNewOff", new Model<Boolean>(Boolean.valueOf(false))));
+		Radio wallItemNewOn = new Radio<Boolean>("wallItemNewOn", new Model<Boolean>(Boolean.valueOf(true)));
+		wallItemNewOn.setMarkupId("wallitemnewoninput");
+		wallItemNewOn.setOutputMarkupId(true);
+		wallItemNew.add(wallItemNewOn);
+		Radio wallItemNewOff = new Radio<Boolean>("wallItemNewOff", new Model<Boolean>(Boolean.valueOf(false)));
+		wallItemNewOff.setMarkupId("wallitemnewoffinput");
+		wallItemNewOff.setOutputMarkupId(true);
+		wallItemNew.add(wallItemNewOff);
 		wallItemNew.add(new Label("wallItemNewLabel", new ResourceModel("preferences.email.wall.new")));
 		form.add(wallItemNew);
 		
@@ -184,8 +219,14 @@ public class MyPreferences extends BasePage{
 		
 		// added to new worksite emails
 		final RadioGroup<Boolean> worksiteNew = new RadioGroup<Boolean>("worksiteNewEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "worksiteNewEmailEnabled"));
-		worksiteNew.add(new Radio<Boolean>("worksiteNewOn", new Model<Boolean>(Boolean.valueOf(true))));
-		worksiteNew.add(new Radio<Boolean>("worksiteNewOff", new Model<Boolean>(Boolean.valueOf(false))));
+		Radio worksiteNewOn = new Radio<Boolean>("worksiteNewOn", new Model<Boolean>(Boolean.valueOf(true)));
+		worksiteNewOn.setMarkupId("worksitenewoninput");
+		worksiteNewOn.setOutputMarkupId(true);
+		worksiteNew.add(worksiteNewOn);
+		Radio worksiteNewOff = new Radio<Boolean>("worksiteNewOff", new Model<Boolean>(Boolean.valueOf(false)));
+		worksiteNewOff.setMarkupId("worksitenewoffinput");
+		worksiteNewOff.setOutputMarkupId(true);
+		worksiteNew.add(worksiteNewOff);
 		worksiteNew.add(new Label("worksiteNewLabel", new ResourceModel("preferences.email.worksite.new")));
 		form.add(worksiteNew);
 		
@@ -231,11 +272,15 @@ public class MyPreferences extends BasePage{
 		is.add(new Label("imageSettingsHeading", new ResourceModel("heading.section.image")));
 		is.add(new Label("imageSettingsText", new ResourceModel("preferences.image.message")));
 
+		officialImageEnabled = sakaiProxy.isUsingOfficialImageButAlternateSelectionEnabled();
+		gravatarEnabled = sakaiProxy.isGravatarImageEnabledGlobally();
+
 		//official image
 		//checkbox
 		WebMarkupContainer officialImageContainer = new WebMarkupContainer("officialImageContainer");
 		officialImageContainer.add(new Label("officialImageLabel", new ResourceModel("preferences.image.official")));
 		officialImage = new CheckBox("officialImage", new PropertyModel<Boolean>(preferencesModel, "useOfficialImage"));
+		officialImage.setMarkupId("officialimageinput");
 		officialImage.setOutputMarkupId(true);
 		officialImageContainer.add(officialImage);
 
@@ -246,15 +291,15 @@ public class MyPreferences extends BasePage{
 				
 				//set gravatar to false since we can't have both active
 				gravatarImage.setModelObject(false);
-				target.addComponent(gravatarImage);
-				
+				if(gravatarEnabled) {
+					target.addComponent(gravatarImage);
+				}				
             	target.appendJavascript("$('#" + formFeedbackId + "').fadeOut();");
             }
         });
 		is.add(officialImageContainer);
 		
 		//if using official images but alternate choice isn't allowed, hide this section
-		boolean officialImageEnabled = sakaiProxy.isUsingOfficialImageButAlternateSelectionEnabled();
 		if(!officialImageEnabled) {
 			profilePreferences.setUseOfficialImage(false); //set the model false to clear data as well (doesnt really need to do this but we do it to keep things in sync)
 			officialImageContainer.setVisible(false);
@@ -265,6 +310,8 @@ public class MyPreferences extends BasePage{
 		WebMarkupContainer gravatarContainer = new WebMarkupContainer("gravatarContainer");
 		gravatarContainer.add(new Label("gravatarLabel", new ResourceModel("preferences.image.gravatar")));
 		gravatarImage = new CheckBox("gravatarImage", new PropertyModel<Boolean>(preferencesModel, "useGravatar"));
+		gravatarImage.setMarkupId("gravatarimageinput");
+		gravatarImage.setOutputMarkupId(true);
 		gravatarContainer.add(gravatarImage);
 
 		//updater
@@ -274,15 +321,15 @@ public class MyPreferences extends BasePage{
 				
 				//set gravatar to false since we can't have both active
 				officialImage.setModelObject(false);
-            	target.addComponent(officialImage);
-            	
+				if(officialImageEnabled) {
+					target.addComponent(officialImage);
+				}
             	target.appendJavascript("$('#" + formFeedbackId + "').fadeOut();");
             }
         });
 		is.add(gravatarContainer);
 		
 		//if gravatar's are disabled, hide this section
-		boolean gravatarEnabled = sakaiProxy.isGravatarImageEnabledGlobally();
 		if(!gravatarEnabled) {
 			profilePreferences.setUseGravatar(false); //set the model false to clear data as well (doesnt really need to do this but we do it to keep things in sync)
 			gravatarContainer.setVisible(false);
@@ -308,6 +355,8 @@ public class MyPreferences extends BasePage{
 		WebMarkupContainer kudosContainer = new WebMarkupContainer("kudosContainer");
 		kudosContainer.add(new Label("kudosLabel", new ResourceModel("preferences.widget.kudos")));
 		CheckBox kudosSetting = new CheckBox("kudosSetting", new PropertyModel<Boolean>(preferencesModel, "showKudos"));
+		kudosSetting.setMarkupId("kudosinput");
+		kudosSetting.setOutputMarkupId(true);
 		kudosContainer.add(kudosSetting);
 		//tooltip
 		kudosContainer.add(new IconWithClueTip("kudosToolTip", ProfileConstants.INFO_IMAGE, new ResourceModel("preferences.widget.kudos.tooltip")));
@@ -326,6 +375,8 @@ public class MyPreferences extends BasePage{
 		WebMarkupContainer galleryFeedContainer = new WebMarkupContainer("galleryFeedContainer");
 		galleryFeedContainer.add(new Label("galleryFeedLabel", new ResourceModel("preferences.widget.gallery")));
 		CheckBox galleryFeedSetting = new CheckBox("galleryFeedSetting", new PropertyModel<Boolean>(preferencesModel, "showGalleryFeed"));
+		galleryFeedSetting.setMarkupId("galleryfeedsettinginput");
+		galleryFeedSetting.setOutputMarkupId(true);
 		galleryFeedContainer.add(galleryFeedSetting);
 		//tooltip
 		galleryFeedContainer.add(new IconWithClueTip("galleryFeedToolTip", ProfileConstants.INFO_IMAGE, new ResourceModel("preferences.widget.gallery.tooltip")));
@@ -345,6 +396,8 @@ public class MyPreferences extends BasePage{
 		WebMarkupContainer onlineStatusContainer = new WebMarkupContainer("onlineStatusContainer");
 		onlineStatusContainer.add(new Label("onlineStatusLabel", new ResourceModel("preferences.widget.onlinestatus")));
 		CheckBox onlineStatusSetting = new CheckBox("onlineStatusSetting", new PropertyModel<Boolean>(preferencesModel, "showOnlineStatus"));
+		onlineStatusSetting.setMarkupId("onlinestatussettinginput");
+		onlineStatusSetting.setOutputMarkupId(true);
 		onlineStatusContainer.add(onlineStatusSetting);
 		//tooltip
 		onlineStatusContainer.add(new IconWithClueTip("onlineStatusToolTip", ProfileConstants.INFO_IMAGE, new ResourceModel("preferences.widget.onlinestatus.tooltip")));

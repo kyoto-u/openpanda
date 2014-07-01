@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ItemContentsBean.java $
- * $Id: ItemContentsBean.java 117007 2012-11-29 19:17:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ItemContentsBean.java $
+ * $Id: ItemContentsBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,45 +30,26 @@ import java.util.List;
 import java.util.Set;
 import javax.faces.model.SelectItem;
 
-import javax.faces.model.SelectItem;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.content.api.FilePickerHelper;
-import org.sakaiproject.content.cover.ContentHostingService;
 import org.sakaiproject.event.cover.EventTrackingService;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.exception.IdUnusedException;
-import org.sakaiproject.exception.PermissionException;
-import org.sakaiproject.exception.TypeException;
-import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
+import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingAttachmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.MediaIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.ItemFacade;
-import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
-import org.sakaiproject.tool.assessment.ui.bean.util.Validator;
+import org.sakaiproject.tool.assessment.facade.TypeFacade;
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.services.ItemService;
 import org.sakaiproject.tool.assessment.services.PublishedItemService;
-import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
-import org.sakaiproject.tool.assessment.ui.bean.evaluation.StudentScoresBean;
+import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
+import org.sakaiproject.tool.assessment.ui.bean.util.Validator;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
-import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.tool.assessment.util.AttachmentUtil;
-import org.sakaiproject.tool.cover.SessionManager;
-
+import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 
 /**
@@ -105,37 +86,37 @@ public class ItemContentsBean implements Serializable {
 
 	private String[] responseIds = null;
 
-	private float points;
+	private double points;
 	
-	private float discount;
+	private double discount;
 
-	private float maxPoints;
+	private double maxPoints;
 
 	private int number;
 
-	private ArrayList itemGradingDataArray;
+	private List<ItemGradingData> itemGradingDataArray;
 
-	private ArrayList answers;
+	private List answers;
 
 	private String instruction;
 
 	private String rationale;
 
-	private ArrayList matchingArray;
+	private List matchingArray;
 
-	private ArrayList fibArray;
+	private List fibArray;
 
-	private ArrayList finArray;
+	private List finArray;
 
-	private ArrayList<SelectionBean> selectionArray;
+	private List<SelectionBean> selectionArray;
 
 	private String key;
 
 	private String sequence;
 
-	private ArrayList shuffledAnswers;
+	private List shuffledAnswers;
 
-	private ArrayList mediaArray;
+	private List mediaArray;
 
 	// for audio
 	private Integer duration;
@@ -162,12 +143,17 @@ public class ItemContentsBean implements Serializable {
 	
 	private Long itemGradingIdForFilePicker;
 	
+	private boolean isMultipleItems = false;
+
+    private String themeText;
+    private String leadInText;
+	
 	/* sam-939*/
 	private boolean forceRanking;
 
 	private int relativeWidth;
 
-	private ArrayList matrixArray;
+	private List matrixArray;
 
 	//private String[] columnChoices;
 
@@ -179,7 +165,6 @@ public class ItemContentsBean implements Serializable {
 	private boolean addComment;
 	private String studentComment;
 
-	
 	public ItemContentsBean() {
 	}
 
@@ -194,11 +179,20 @@ public class ItemContentsBean implements Serializable {
 			setNumber(1);
 		}
 	}
+	
+    public boolean getIsMultipleItems() {
+		return this.isMultipleItems;
+	}
+
+	public void setIsMultipleItems(boolean isMultipleItems) {
+		this.isMultipleItems = isMultipleItems;
+	}
 
 	/**
 	 * In the case of an ordinary question, this will obtain the a set of text
 	 * with one element and return it; in FIB return multiple elements separated
 	 * by underscores.
+	 * For calculated question this will return the instruction instead.
 	 * 
 	 * @return text of question
 	 */
@@ -206,7 +200,13 @@ public class ItemContentsBean implements Serializable {
 		String text = "";
 
 		if (itemData != null) {
-			text = itemData.getText();
+			if (itemData.getTypeId().equals(TypeIfc.CALCULATED_QUESTION)) {
+			    // CALCULATED_QUESTION
+				text = this.getInstruction();
+			}
+			else {
+				text = itemData.getText();
+			}
 		}
 
 		return text;
@@ -245,7 +245,7 @@ public class ItemContentsBean implements Serializable {
 	 * 
 	 * @return String representation of the points.
 	 */
-	public float getPoints() {
+	public double getPoints() {
 		return SectionContentsBean.roundTo2Decimals(points);
 	}
 
@@ -254,7 +254,7 @@ public class ItemContentsBean implements Serializable {
 	 * 
 	 * @return String representation of the points.
 	 */
-	public float getExactPoints() {
+	public double getExactPoints() {
 		return points;
 	}
 
@@ -264,7 +264,7 @@ public class ItemContentsBean implements Serializable {
 	 * @param points
 	 *            String representation of the points.
 	 */
-	public void setPoints(float points) {
+	public void setPoints(double points) {
 		this.points = points;
 	}
 
@@ -280,7 +280,7 @@ public class ItemContentsBean implements Serializable {
 	 * @return String representation of the points.
 	 */
 	public String getPointsForEdit() {
-		return Float.toString(getPoints());
+		return Double.toString(getPoints());
 	}
 
 	/**
@@ -293,7 +293,7 @@ public class ItemContentsBean implements Serializable {
 		if (pointsForEdit == null || pointsForEdit.equals("")) {
 			pointsForEdit = "0";
 		}
-		setPoints(Float.parseFloat(pointsForEdit));
+		setPoints(Double.parseDouble(pointsForEdit));
 	}
 	
     /**
@@ -301,7 +301,7 @@ public class ItemContentsBean implements Serializable {
      *
      * @return String representation of the discount.
      */
-    public float getDiscount() {
+    public double getDiscount() {
     	 return SectionContentsBean.roundTo2Decimals(discount);
     }
 
@@ -310,7 +310,7 @@ public class ItemContentsBean implements Serializable {
      *
      * @return String representation of the discount.
      */
-    public float getExactDiscount() {
+    public double getExactDiscount() {
     	return discount;
     }
 
@@ -320,7 +320,7 @@ public class ItemContentsBean implements Serializable {
      * @param discount
      *            String representation of the Discount.
      */
-    public void setDiscount(float discount) {
+    public void setDiscount(double discount) {
     	this.discount = discount;
     }
 
@@ -330,7 +330,7 @@ public class ItemContentsBean implements Serializable {
      * @return String representation of the Discount.
      */
     public String getDiscountForEdit() {
-    	return Float.toString(getDiscount());
+    	return Double.toString(getDiscount());
     }
  
     /**
@@ -343,15 +343,14 @@ public class ItemContentsBean implements Serializable {
     	if (discountForEdit == null || discountForEdit.equals("")) {
     		discountForEdit = "0";
     	}
-    	setDiscount(Float.parseFloat(discountForEdit));
+    	setDiscount(Double.parseDouble(discountForEdit));
     }
 	
 	public boolean getReview() {
 		if (getItemGradingDataArray().isEmpty()) {
 			return false;
 		}
-		ItemGradingData data = (ItemGradingData) getItemGradingDataArray()
-				.toArray()[0];
+		ItemGradingData data = getItemGradingDataArray().get(0);
 		if (data.getReview() == null) {
 			return false;
 		}
@@ -375,15 +374,15 @@ public class ItemContentsBean implements Serializable {
 						.toArray()[0];
 				data.setPublishedItemTextId(itemText.getId());
 			}
-			ArrayList items = new ArrayList();
+			List<ItemGradingData> items = new ArrayList<ItemGradingData>();
 			items.add(data);
 			setItemGradingDataArray(items);
 		}
-		Iterator iter = getItemGradingDataArray().iterator();
+		Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
 		log.debug("setReview():  getItemGradingDataArray size = "
 				+ getItemGradingDataArray().size());
 		while (iter.hasNext()) {
-			ItemGradingData data = (ItemGradingData) iter.next();
+			ItemGradingData data = iter.next();
 			log.debug("setReview():  setreview at the end = " + preview);
 			data.setReview(Boolean.valueOf(preview));
 		}
@@ -395,11 +394,11 @@ public class ItemContentsBean implements Serializable {
 	 * @return
 	 */
 	public boolean isUnanswered() {
-		ArrayList itemgradingdataArray = getItemGradingDataArray();
+		List<ItemGradingData> itemgradingdataArray = getItemGradingDataArray();
 		if (itemgradingdataArray.isEmpty()) {
 			return true;
 		}
-		Iterator iter = itemgradingdataArray.iterator();
+		Iterator<ItemGradingData> iter = itemgradingdataArray.iterator();
 		int itemgradingsize =itemgradingdataArray.size();
 		int publishedanswer_notnull = 0;
 		if (getItemData().getTypeId().equals(TypeIfc.MATCHING)) 
@@ -460,7 +459,7 @@ public class ItemContentsBean implements Serializable {
 	 * 
 	 * @return String representation of the max points.
 	 */
-	public float getMaxPoints() {
+	public double getMaxPoints() {
 		return maxPoints;
 	}
 
@@ -469,7 +468,7 @@ public class ItemContentsBean implements Serializable {
 	 * 
 	 * @return String representation of the max points.
 	 */
-	public float getRoundedMaxPoints() {
+	public double getRoundedMaxPoints() {
 		return SectionContentsBean.roundTo2Decimals(maxPoints);
 	}
 
@@ -479,7 +478,7 @@ public class ItemContentsBean implements Serializable {
 	 * @param maxPoints
 	 *            String representation of the max points available
 	 */
-	public void setMaxPoints(float maxPoints) {
+	public void setMaxPoints(double maxPoints) {
 		this.maxPoints = maxPoints;
 	}
 
@@ -574,18 +573,18 @@ public class ItemContentsBean implements Serializable {
 		return false;
 	}
 
-	public ArrayList getItemGradingDataArray() {
+	public List<ItemGradingData> getItemGradingDataArray() {
 		if (itemGradingDataArray == null) {
 			// log.debug("getReview : getitemgradingdataarray is null, size =0
 			// ");
-			return new ArrayList();
+			return new ArrayList<ItemGradingData>();
 		}
 		// log.debug("getReview: getitemgradingdataarray size " +
 		// itemGradingDataArray.size());
 		return itemGradingDataArray;
 	}
 
-	public void setItemGradingDataArray(ArrayList newArray) {
+	public void setItemGradingDataArray(List<ItemGradingData> newArray) {
 		itemGradingDataArray = newArray;
 	}
 
@@ -619,10 +618,10 @@ public class ItemContentsBean implements Serializable {
     {
       String response = "";
       // String response = responseId;  //For testing
-      Iterator iter = getItemGradingDataArray().iterator();
+      Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
       if (iter.hasNext())
       {
-        ItemGradingData data = (ItemGradingData) iter.next();
+        ItemGradingData data = iter.next();
         if (data.getPublishedAnswerId() != null)
         {
           response = data.getPublishedAnswerId().toString();
@@ -668,28 +667,28 @@ public class ItemContentsBean implements Serializable {
 
 
 		try {
-			Iterator iter = getItemGradingDataArray().iterator();
+			Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
 			if (!iter.hasNext()
 					&& (presponseId == null || presponseId.equals(""))) {
 				return;
 			}
 			ItemGradingData data = null;
 			if (iter.hasNext()) {
-				data = (ItemGradingData) iter.next();
+				data = iter.next();
 			} else {
 				data = new ItemGradingData();
 				data.setPublishedItemId(itemData.getItemId());
 				ItemTextIfc itemText = (ItemTextIfc) itemData.getItemTextSet()
 						.toArray()[0];
 				data.setPublishedItemTextId(itemText.getId());
-				ArrayList items = new ArrayList();
+				List<ItemGradingData> items = new ArrayList<ItemGradingData>();
 				items.add(data);
 				setItemGradingDataArray(items);
 			}
-			iter = ((ItemTextIfc) itemData.getItemTextSet().toArray()[0])
+			Iterator<AnswerIfc> iterA = ((ItemTextIfc) itemData.getItemTextSet().toArray()[0])
 					.getAnswerSet().iterator();
-			while (iter.hasNext()) {
-				AnswerIfc answer = (AnswerIfc) iter.next();
+			while (iterA.hasNext()) {
+				AnswerIfc answer = iterA.next();
 				if (answer.getId().toString().equals(responseId)) {
 					data.setPublishedAnswerId(answer.getId());
 					break;
@@ -721,11 +720,11 @@ public class ItemContentsBean implements Serializable {
            } */
 
       String[] response = new String[getItemGradingDataArray().size()];
-      Iterator iter = getItemGradingDataArray().iterator();
+      Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
       int i = 0;
       while (iter.hasNext())
       {
-        ItemGradingData data = (ItemGradingData) iter.next();
+        ItemGradingData data = iter.next();
         if (data.getPublishedAnswerId() != null)
         {
           response[i++] = data.getPublishedAnswerId().toString();
@@ -746,7 +745,7 @@ public class ItemContentsBean implements Serializable {
 
 	public void setResponseIds(String[] presponseIds) {
 		try {
-			ArrayList newItems = new ArrayList();
+			List<ItemGradingData> newItems = new ArrayList<ItemGradingData>();
 			responseIds = presponseIds;
 			if (getItemGradingDataArray().isEmpty()
 					&& (presponseIds == null || presponseIds.length == 0)) {
@@ -754,9 +753,9 @@ public class ItemContentsBean implements Serializable {
 			}
 			for (int i = 0; i < presponseIds.length; i++) {
 				ItemGradingData data = null;
-				Iterator iter = getItemGradingDataArray().iterator();
+				Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
 				while (iter.hasNext()) {
-					ItemGradingData temp = (ItemGradingData) iter.next();
+					ItemGradingData temp = iter.next();
 					if (temp.getPublishedAnswerId() != null
 							&& temp.getPublishedAnswerId().toString().equals(
 									presponseIds[i])) {
@@ -769,9 +768,9 @@ public class ItemContentsBean implements Serializable {
 					ItemTextIfc itemText = (ItemTextIfc) itemData
 							.getItemTextSet().toArray()[0];
 					data.setPublishedItemTextId(itemText.getId());
-					Iterator iter2 = itemText.getAnswerSet().iterator();
+					Iterator<AnswerIfc> iter2 = itemText.getAnswerSet().iterator();
 					while (iter2.hasNext()) {
-						AnswerIfc answer = (AnswerIfc) iter2.next();
+						AnswerIfc answer = iter2.next();
 						if (answer.getId().toString().equals(presponseIds[i])) {
 							data.setPublishedAnswerId(answer.getId());
 						}
@@ -789,9 +788,9 @@ public class ItemContentsBean implements Serializable {
 		log.debug("itemcontentbean.getResponseText");
 		try {
 			String response = responseText;
-			Iterator iter = getItemGradingDataArray().iterator();
+			Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
 			if (iter.hasNext()) {
-				ItemGradingData data = (ItemGradingData) iter.next();
+				ItemGradingData data = iter.next();
 				response = data.getAnswerText();
 			}
 			return response;
@@ -809,9 +808,9 @@ public class ItemContentsBean implements Serializable {
 		log.debug("itemcontentbean.getResponseText");
 		try {
 			String response = responseText;
-			Iterator iter = getItemGradingDataArray().iterator();
+			Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
 			if (iter.hasNext()) {
-				ItemGradingData data = (ItemGradingData) iter.next();
+				ItemGradingData data = iter.next();
 				response = data.getAnswerText();
 			}
 
@@ -835,21 +834,21 @@ public class ItemContentsBean implements Serializable {
 		log.debug("itemcontentbean.setResponseText");
 		try {
 			responseText = presponseId;
-			Iterator iter = getItemGradingDataArray().iterator();
+			Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
 			if (!iter.hasNext()
 					&& (presponseId == null || presponseId.equals(""))) {
 				return;
 			}
 			ItemGradingData data = null;
 			if (iter.hasNext()) {
-				data = (ItemGradingData) iter.next();
+				data = iter.next();
 			} else {
 				data = new ItemGradingData();
 				data.setPublishedItemId(itemData.getItemId());
 				ItemTextIfc itemText = (ItemTextIfc) itemData.getItemTextSet()
 						.toArray()[0];
 				data.setPublishedItemTextId(itemText.getId());
-				ArrayList items = new ArrayList();
+				List<ItemGradingData> items = new ArrayList<ItemGradingData>();
 				items.add(data);
 				setItemGradingDataArray(items);
 			}
@@ -859,43 +858,43 @@ public class ItemContentsBean implements Serializable {
 		}
 	}
 
-	public ArrayList getMatchingArray() {
+	public List getMatchingArray() {
 		return matchingArray;
 	}
 
-	public void setMatchingArray(ArrayList newArray) {
+	public void setMatchingArray(List newArray) {
 		matchingArray = newArray;
 	}
 
-	public ArrayList getFibArray() {
+	public List getFibArray() {
 		return fibArray;
 	}
 
-	public void setFibArray(ArrayList newArray) {
+	public void setFibArray(List newArray) {
 		fibArray = newArray;
 	}
 
-	public ArrayList getFinArray() {
+	public List getFinArray() {
 		return finArray;
 	}
 
-	public void setFinArray(ArrayList newArray) {
+	public void setFinArray(List newArray) {
 		finArray = newArray;
 	}
 
-	public ArrayList getSelectionArray() {
+	public List getSelectionArray() {
 		return selectionArray;
 	}
 
-	public void setSelectionArray(ArrayList newArray) {
+	public void setSelectionArray(List newArray) {
 		selectionArray = newArray;
 	}
 
-	public ArrayList getMatrixArray() {
+	public List getMatrixArray() {
 		return matrixArray;
 	}
 
-	public void setMatrixArray(ArrayList newArray) {
+	public void setMatrixArray(List newArray) {
 		matrixArray = newArray;
 	}
 
@@ -951,9 +950,9 @@ public class ItemContentsBean implements Serializable {
 	public String getStudentComment() {
 		try {
 			String comment = studentComment;
-			Iterator iter = getItemGradingDataArray().iterator();
+			Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
 			if (iter.hasNext()) {
-				ItemGradingData data = (ItemGradingData) iter.next();
+				ItemGradingData data = iter.next();
 				comment = data.getAnswerText();
 			}
 			return comment;
@@ -966,21 +965,21 @@ public class ItemContentsBean implements Serializable {
 	public void setStudentComment(String param){
 		try {
 			studentComment = param;
-			Iterator iter = getItemGradingDataArray().iterator();
+			Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
 			if (!iter.hasNext()
 					&& (param == null || param.equals(""))) {
 				return;
 			}
 			ItemGradingData data = null;
 			if (iter.hasNext()) {
-				data = (ItemGradingData) iter.next();
+				data = iter.next();
 			} else {
 				data = new ItemGradingData();
 				data.setPublishedItemId(itemData.getItemId());
 				ItemTextIfc itemText = (ItemTextIfc) itemData.getItemTextSet()
 				.toArray()[0];
 				data.setPublishedItemTextId(itemText.getId());
-				ArrayList items = new ArrayList();
+				List<ItemGradingData> items = new ArrayList<ItemGradingData>();
 				items.add(data);
 				setItemGradingDataArray(items);
 			}
@@ -1000,12 +999,12 @@ public class ItemContentsBean implements Serializable {
 		return selectItemParts;
 	}
  
-	public ArrayList getAnswers()
+	public List getAnswers()
 	{
 		return answers;
 	}
 
-	public void setAnswers(ArrayList list) {
+	public void setAnswers(List list) {
 		answers = list;
 	}
 
@@ -1026,13 +1025,13 @@ public class ItemContentsBean implements Serializable {
 			data.setPublishedItemId(itemData.getItemId());
 			ItemTextIfc itemText = (ItemTextIfc) itemData.getItemTextSet().toArray()[0];
 			data.setPublishedItemTextId(itemText.getId());
-			ArrayList items = new ArrayList();
+			List<ItemGradingData> items = new ArrayList<ItemGradingData>();
 			items.add(data);
 			setItemGradingDataArray(items);
-			data = (ItemGradingData) getItemGradingDataArray().toArray()[0];
+			data = getItemGradingDataArray().get(0);
 		}
 		else {
-		    data = (ItemGradingData) getItemGradingDataArray().toArray()[count - 1];
+		    data = getItemGradingDataArray().get(count - 1);
 		}
 		if ( getItemData().getTypeId().toString().equals(TypeIfc.TRUE_FALSE.toString())){
 			// for True false  
@@ -1040,9 +1039,9 @@ public class ItemContentsBean implements Serializable {
 		} 
 		else if ( getItemData().getTypeId().toString().equals(TypeIfc.MULTIPLE_CORRECT.toString())) {
 			//   MCMC, need to update rationale in all  itemgrading records
-			Iterator iter = getItemGradingDataArray().iterator(); 
+			Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator(); 
 			while (iter.hasNext()) { 
-				ItemGradingData mcmcdata = (ItemGradingData) iter.next(); 
+				ItemGradingData mcmcdata = iter.next(); 
 				mcmcdata.setRationale(newRationale);
 			}
 		} 
@@ -1064,7 +1063,7 @@ public class ItemContentsBean implements Serializable {
 				newdata.setPublishedItemTextId(data.getPublishedItemTextId());
 				newdata.setRationale(newRationale);
 				newdata.setPublishedAnswerId(data.getPublishedAnswerId());
-				ArrayList items = getItemGradingDataArray();
+				List<ItemGradingData> items = getItemGradingDataArray();
 				items.add(newdata);
 				setItemGradingDataArray(items);
 			}
@@ -1074,8 +1073,7 @@ public class ItemContentsBean implements Serializable {
 	public String getRationale() {
 		int count = getItemGradingDataArray().size();
 		if (count > 0) {
-			ItemGradingData data = (ItemGradingData) getItemGradingDataArray()
-					.toArray()[count - 1];
+			ItemGradingData data = getItemGradingDataArray().get(count - 1);
 			rationale = FormattedText.convertFormattedTextToPlaintext(data.getRationale());
 		}
 		return Validator.check(rationale, "");
@@ -1084,8 +1082,7 @@ public class ItemContentsBean implements Serializable {
 	public String getRationaleForDisplay() {
 		int count = getItemGradingDataArray().size();
 		if (count > 0) {
-			ItemGradingData data = (ItemGradingData) getItemGradingDataArray()
-					.toArray()[count - 1];
+			ItemGradingData data = getItemGradingDataArray().get(count - 1);
 			if (data.getRationale() != null) {
 				rationale = FormattedText.convertFormattedTextToPlaintext(data.getRationale()).replaceAll("(\r\n|\r)", "<br/>");
 			}
@@ -1109,11 +1106,11 @@ public class ItemContentsBean implements Serializable {
 		sequence = newSequence;
 	}
 
-	public ArrayList getShuffledAnswers() {
+	public List getShuffledAnswers() {
 		return shuffledAnswers;
 	}
 
-	public void setShuffledAnswers(ArrayList newAnswers) {
+	public void setShuffledAnswers(List newAnswers) {
 		shuffledAnswers = newAnswers;
 	}
 
@@ -1147,9 +1144,9 @@ public class ItemContentsBean implements Serializable {
 		ArrayList mediaArray = new ArrayList();
 		ItemGradingData itemGradingData = null;
 		try {
-			Iterator iter = getItemGradingDataArray().iterator();
+			Iterator<ItemGradingData> iter = getItemGradingDataArray().iterator();
 			if (iter.hasNext()) {
-				itemGradingData = (ItemGradingData) iter.next();
+				itemGradingData = iter.next();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1182,8 +1179,8 @@ public class ItemContentsBean implements Serializable {
       maxDurationAllowed = 60;
     }
     for (int i=0; i<mediaList.size(); i++){
-      MediaIfc m = (MediaIfc) mediaList.get(i);
-      float duration = (new Float(m.getDuration())).floatValue();
+      MediaData m = (MediaData) mediaList.get(i);
+      double duration = (new Double(m.getDuration())).doubleValue();
       if (duration > maxDurationAllowed)
         m.setDurationIsOver(true);
       else
@@ -1280,11 +1277,17 @@ public class ItemContentsBean implements Serializable {
     return hasAttachment;
   }
 
-  public Float getUpdatedScore () {
+  public Double getUpdatedScore () {
 	  return itemData.getScore();
   }
 	 
-  public void setUpdatedScore(Float score) {
+  public void setUpdatedScore(Double score) {
+	  //added conditional processing 
+	  if (itemData.getTypeId().equals(TypeFacade.EXTENDED_MATCHING_ITEMS)) {
+		  setUpdatedScoreForEmi(score);
+		  return;
+	  }
+	  
 	  if (!score.equals(itemData.getScore())) {
 		  AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
 		  ItemService itemService = null;
@@ -1303,10 +1306,10 @@ public class ItemContentsBean implements Serializable {
           Iterator iter = itemTextSet.iterator();
           while (iter.hasNext()) {
               ItemTextIfc itemText = (ItemTextIfc) iter.next();
-              Set answerSet = itemText.getAnswerSet();
-              Iterator iter2 = answerSet.iterator();
+              Set<AnswerIfc> answerSet = itemText.getAnswerSet();
+              Iterator<AnswerIfc> iter2 = answerSet.iterator();
               while (iter2.hasNext()) {
-                  AnswerIfc answer = (AnswerIfc)iter2.next();
+                  AnswerIfc answer = iter2.next();
                   log.debug("old value " + answer.getScore() +
                                      "new value " + score);
                   answer.setScore(score);
@@ -1317,7 +1320,57 @@ public class ItemContentsBean implements Serializable {
           itemData.setScore(score);
 	  }
   }
+  
+  public void setUpdatedScoreForEmi(Double score) {
+	  if (!score.equals(itemData.getScore())) {
+		  AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
+		  ItemService itemService = null;
+		  if (author.getIsEditPendingAssessmentFlow()) {
+			  itemService = new ItemService();
+		  }
+		  else {
+			  itemService = new PublishedItemService();
+		  }
+		  
+          ItemFacade item = itemService.getItem(itemData.getItemId(), AgentFacade.getAgentString());
+          item.setScore(score);
 
+   		int answerCombinations = 0;
+		double correctAnswerScore = 0.0;
+
+          ItemDataIfc data = item.getData();
+          Set itemTextSet = data.getItemTextSet();
+          Iterator iter = itemTextSet.iterator();
+          while (iter.hasNext()) {
+              ItemTextIfc itemText = (ItemTextIfc) iter.next();
+              if (!itemText.isEmiQuestionItemText()) continue;
+              answerCombinations++;
+          }
+   		  
+          iter = itemTextSet.iterator();
+          while (iter.hasNext()) {
+              ItemTextIfc itemText = (ItemTextIfc) iter.next();
+              if (!itemText.isEmiQuestionItemText()) continue;
+
+              int requiredOptions = itemText.getRequiredOptionsCount();
+              Double optionScore = item.getScore()/answerCombinations/requiredOptions;
+              Set<AnswerIfc> answerSet = itemText.getAnswerSet();
+              Iterator<AnswerIfc> iter2 = answerSet.iterator();
+              while (iter2.hasNext()) {
+                  AnswerIfc answer = iter2.next();
+                  log.debug("old value " + answer.getScore() +
+                                     "new value " + optionScore);
+                  answer.setScore(optionScore);
+                  answer.setDiscount(optionScore);
+              }
+              EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "itemId=" + itemData.getItemId(), true));
+          }
+          
+          itemService.saveItem(item);
+          itemData.setScore(score);
+	  }
+  }
+  
   public boolean getHasNoMedia() {
 	return getMediaArray().size() < 1;
   }
@@ -1338,7 +1391,7 @@ public class ItemContentsBean implements Serializable {
       {
         ItemContentsBean itemContentsBean = (ItemContentsBean) itemContentsMap.get(itemGradingId);
         if (itemContentsBean != null) {
-        	ItemGradingData itemGradingData = (ItemGradingData) itemContentsBean.getItemGradingDataArray().get(0);
+        	ItemGradingData itemGradingData = itemContentsBean.getItemGradingDataArray().get(0);
         	AttachmentUtil attachmentUtil = new AttachmentUtil();
         	Set itemGradingAttachmentSet = new HashSet();
   		    if (itemGradingAttachmentList != null) {
@@ -1374,7 +1427,26 @@ public class ItemContentsBean implements Serializable {
   {
 	  this.itemGradingIdForFilePicker = itemGradingIdForFilePicker;
   }
+  
+  public String getLeadInText() {
+	if (leadInText == null) {
+		setThemeAndLeadInText();
+	}
+	return leadInText;
+  }
 
+
+  public String getThemeText() {
+	if (themeText == null) {
+		setThemeAndLeadInText();
+	}
+	return themeText;
+  }
+
+  public void setThemeAndLeadInText() {
+	themeText = itemData.getThemeText();
+	leadInText = itemData.getLeadInText();
+  }
   
   public void setIsInvalidFinInput(boolean isInvalidFinInput) {
 	  this.isInvalidFinInput = isInvalidFinInput;

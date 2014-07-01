@@ -13,6 +13,7 @@
 
 <itemData>
   <ident><xsl:value-of select="//item/@ident" /></ident>
+  <label><xsl:value-of select="//item/@label" /></label>
   <title><xsl:value-of select="//item/@title" /></title>
   <duration><xsl:value-of select="//item/duration" /></duration>
   <instruction></instruction>
@@ -20,6 +21,7 @@
   <createdDate></createdDate>
   <lastModifiedBy></lastModifiedBy>
   <lastModifiedDate></lastModifiedDate>
+  <presentationLabel><xsl:value-of select="//item/presentation/@label" /></presentationLabel>
   <score>
     <xsl:value-of
       select="//resprocessing/outcomes/decvar[@varname='SCORE']/@maxvalue"/>
@@ -58,6 +60,33 @@
       <xsl:apply-templates mode="itemRichText" />
     </itemFibText>
   </xsl:for-each>
+  <!-- Calculated Questions - variables -->
+    <xsl:for-each select="//variables/variable/name">
+        <variableNames type="list"><xsl:value-of select="."/></variableNames>
+    </xsl:for-each>
+    <xsl:for-each select="//variables/variable/min">
+        <variableMins type="list"><xsl:value-of select="."/></variableMins>
+    </xsl:for-each>
+    <xsl:for-each select="//variables/variable/max">
+        <variableMaxs type="list"><xsl:value-of select="."/></variableMaxs>
+    </xsl:for-each>
+    <xsl:for-each select="//variables/variable/decimalPlaces">
+        <variableDecimalPlaces type="list"><xsl:value-of select="."/></variableDecimalPlaces>
+    </xsl:for-each>
+  <!-- Calculated Questions - formulas -->
+    <xsl:for-each select="//formulas/formula/name">
+        <formulaNames type="list"><xsl:value-of select="."/></formulaNames>
+    </xsl:for-each>
+    <xsl:for-each select="//formulas/formula/formula">
+        <formulaTexts type="list"><xsl:value-of select="."/></formulaTexts>
+    </xsl:for-each>
+    <xsl:for-each select="//formulas/formula/tolerance">
+        <formulaTolerances type="list"><xsl:value-of select="."/></formulaTolerances>
+    </xsl:for-each>
+    <xsl:for-each select="//formulas/formula/decimalPlaces">
+        <formulaDecimalPlaces type="list"><xsl:value-of select="."/></formulaDecimalPlaces>
+    </xsl:for-each>
+    
   <!-- MATCHING item text, answers-->
   <xsl:for-each select="//presentation//response_grp//material/mattext">
     <xsl:choose>
@@ -76,7 +105,7 @@
         <xsl:for-each select="//respcondition/conditionvar/varequal">
           <xsl:variable name="curr-ident"><xsl:value-of select="." /></xsl:variable>
            <xsl:if test="$src-ident=$curr-ident">
-             <itemMatchIndex type="list"><xsl:value-of select="@index" /></itemMatchIndex>
+             <itemMatchIndex type="list"><xsl:value-of select="../../displayfeedback/@linkrefid" /></itemMatchIndex>
            </xsl:if>
         </xsl:for-each>
       </xsl:when>
@@ -244,6 +273,7 @@
     <itemIntrospect>
       <xsl:choose>
         <xsl:when test=".//render_choice and .//response_grp and .//response_labl[@match_max>1]">Survey Matrix</xsl:when>
+        <xsl:when test=".//variables and ..//formulas">Calculated Question</xsl:when>
         <xsl:when test=".//render_choice and .//response_grp">Matching</xsl:when>
         <xsl:when test=".//resprocessing and .//render_fib">Fill In the Blank</xsl:when>
         <xsl:when test=".//resprocessing and .//render_fin">Numeric Response</xsl:when>

@@ -24,7 +24,7 @@
 	#set($latestYear = $yearSelected + 4)
 	#set($monthSelected = $current_value.month)
 	#set($daySelected = $current_value.day)
-   
+	   
    #chef_dateselectionwidget("${prefix}_year${DOT}${suffix}" "${prefix}_month${DOT}${suffix}" "${prefix}_day${DOT}${suffix}" $earliestYear $latestYear $yearSelected $monthSelected $daySelected $dateFormat "")
 #end
 
@@ -42,7 +42,7 @@
 	#elseif ($hour == 0)
 		#set($hour = 12)
 	#end
-	<label for="${prefix}_hour${DOT}${suffix}">$tlang.getString("dateselectionwidget.hour")</label>
+	<label for="${prefix}_hour${DOT}${suffix}" class="skip">$tlang.getString("dateselectionwidget.hour")</label>
 	<select name="${prefix}_hour${DOT}${suffix}" id="${prefix}_hour${DOT}${suffix}">
 		#if($hour == 1) <option selected="selected" value="1">1</option> #else <option value="1">1</option> #end
 		#if($hour == 2) <option selected="selected" value="2">2</option> #else <option value="2">2</option> #end
@@ -57,7 +57,7 @@
 		#if($hour == 11) <option selected="selected" value="11">11</option> #else <option value="11">11</option> #end
 		#if($hour == 12) <option selected="selected" value="12">12</option> #else <option value="12">12</option> #end
 	</select>
-     <label for="${prefix}_minute${DOT}${suffix}">$tlang.getString("dateselectionwidget.minute")</label>
+     <label for="${prefix}_minute${DOT}${suffix}" class="skip">$tlang.getString("dateselectionwidget.minute")</label>
 
 	<select name="${prefix}_minute${DOT}${suffix}" id="${prefix}_minute${DOT}${suffix}">
 		#if($minute == 0) <option selected="selected" value="0">00</option> #else <option value="0">00</option> #end
@@ -73,12 +73,71 @@
 		#if($minute == 50) <option selected="selected" value="50">50</option> #else <option value="50">50</option> #end
 		#if($minute == 55) <option selected="selected" value="55">55</option> #else <option value="55">55</option> #end
 	</select>
-     <label for="${prefix}_ampm${DOT}${suffix}">$tlang.getString("dateselectionwidget.ampm")</label>
+     <label for="${prefix}_ampm${DOT}${suffix}" class="skip">$tlang.getString("dateselectionwidget.ampm")</label>
 	<select name="${prefix}_ampm${DOT}${suffix}" id="${prefix}_ampm${DOT}${suffix}">
 		#if($timeType =="am") <option selected="selected">am</option> #else <option>am</option> #end
 		#if($timeType =="pm") <option selected="selected">pm</option> #else <option>pm</option> #end
 	</select>
 #end
+#macro(resources_durationSelectionWidget $prefix $suffix $durationValues)
+	
+	#set($durationFirst = $durationValues.get(0))
+	#set($durationFirstQual = $durationValues.get(1))
+	#set($durationSecond = $durationValues.get(2))
+	#set($durationSecondQual = $durationValues.get(3))
+	
+	<select name="${prefix}_first${DOT}${suffix}" id="${prefix}_hour${DOT}${suffix}">
+		#foreach ($f in [0..99])
+			#if($durationFirst == $f) <option selected="selected" value="$f">$f</option> #else <option value="$f">$f</option> #end
+		#end
+	</select>
+	
+	#resources_dropdownSelectionWidget("${prefix}_first_qual${DOT}${suffix}" "duration_widget_qualifiers" $durationFirstQual)
+	
+	<select name="${prefix}_second${DOT}${suffix}" id="${prefix}_minute${DOT}${suffix}">
+		#foreach ($s in [0..99])
+			#if($durationSecond == $s) <option selected="selected" value="$s">$s</option> #else <option value="$s">$s</option> #end
+		#end
+	</select>
+	
+	#resources_dropdownSelectionWidget("${prefix}_second_qual${DOT}${suffix}" "duration_widget_qualifiers" $durationSecondQual)
+	
+#end
+
+## generic dropdown widget builder. Uses the type of the item as the type to look up the properties to use
+#macro(resources_dropdownSelectionWidget $propname $type $current_value)
+	
+	## use the type to look up the props, get the count, then get each one incl label
+	
+	##data goes into types.ptoperties, and is of the form:
+	##dropdown.status.count=2
+	##dropdown.status.1=abc
+	##dropdown.status.1.label=A B C
+	##dropdown.status.2=def
+	##dropdown.status.2.label=DEE EE EFF
+		
+	## allow us to iterate using this string converted to an int
+	#set($count = $tlang.getString("dropdown.${type}.count"))
+	#set($Integer = 0)
+	
+	<select name="${propname}" id="${propname}">
+	
+    	#foreach( $n in [1..$Integer.parseInt($count)] )
+    		
+			#set($value = $tlang.getString("dropdown.${type}.${n}"))
+    		#set($label = $tlang.getString("dropdown.${type}.${n}.label"))
+			
+    		#if($current_value == $value) <option selected="selected" value="$value">$label</option> #else <option value="$value">$label</option> #end
+    
+		#end
+		
+	</select>
+	
+#end
+
+
+
+
 ##
 	<p class="shorttext">
 		<label for="description${DOT}$i">
@@ -267,11 +326,11 @@
 						<tr>
 							<td headers="selected${DOT}$i" style="padding-bottom:0;" style="width:2em">
 								#if($model.isLocal($group) && $model.allowedRemove($group))
-									<input type="checkbox" name="access_groups${DOT}$i" id="access_groups_${group.Id}${DOT}$i" title="$group.title" value="$group.Id" checked="checked" />
+									<input type="checkbox" name="access_groups${DOT}$i" id="access_groups_${group.Id}${DOT}$i" title="$validator.escapeHtml($group.title)" value="$group.Id" checked="checked" />
 								#elseif($model.isLocal($group))
 									<img src="#imageLink("sakai/checkon.gif")" border="0" width="17" height="13" align="top" />
 								#else
-									<input type="checkbox" name="access_groups${DOT}$i" id="access_groups_${group.Id}${DOT}$i" title="$group.title" value="$group.Id" />
+									<input type="checkbox" name="access_groups${DOT}$i" id="access_groups_${group.Id}${DOT}$i" title="$validator.escapeHtml($group.title)" value="$group.Id" />
 								#end
 							</td>
 							<td headers="groupname${DOT}$i" style="padding-bottom:0;" class="checkbox">
@@ -318,6 +377,12 @@
 								$tlang.getString("avail.show1")
 							#end
 						</label>
+						#if($model.isCollection())
+						<input type="radio" name="hidden${DOT}$i" id="hidden_with_accessible_content_true${DOT}$i" value="hidden_with_accessible_content" #if($model.isHiddenWithAccessibleContent())checked="checked" #end/>
+						<label for="hidden_with_accessible_content_true${DOT}$i">
+							$tlang.getString("avail.hide30")
+						</label>
+						#end
 					</td>
 				</tr>
 				<tr>

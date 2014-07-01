@@ -5,7 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface ExternalIntegrationProvider {
+import org.sakaiproject.entitybroker.entityprovider.extension.LearningTrackingProvider;
+
+public interface ExternalIntegrationProvider extends LearningTrackingProvider {
 
     /**
      * The recommended param key to use for sending in session ids in requests
@@ -44,9 +46,9 @@ public interface ExternalIntegrationProvider {
      */
     public String getServerUrl();
 
-	/**
-	 * Gets the entitybroker.maxJSONLevel config string from sakai.properties via ServerConfigurationService. Defaults to 5.
-	 */
+	    /**
+     * Gets the entitybroker.maxJSONLevel config string from sakai.properties via ServerConfigurationService. Defaults to 7.
+     */
     public String getMaxJSONLevel();
 
     /**

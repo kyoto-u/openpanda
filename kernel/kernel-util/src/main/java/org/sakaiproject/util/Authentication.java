@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-util/src/main/java/org/sakaiproject/util/Authentication.java $
- * $Id: Authentication.java 113397 2012-09-21 20:33:28Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-util/src/main/java/org/sakaiproject/util/Authentication.java $
+ * $Id: Authentication.java 105277 2012-02-29 13:40:41Z nbotimer@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

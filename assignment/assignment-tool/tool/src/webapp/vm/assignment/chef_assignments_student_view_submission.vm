@@ -1,9 +1,5 @@
-<!-- $Id: chef_assignments_student_view_submission.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_student_view_submission.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
 <!-- start: chef_assignments_student_view_submission.vm  -->
-#parse("/vm/assignment/assignment_macros.vm")
-<script type="text/javascript" src="/library/js/jquery.js"></script>
-<link href="/sakai-assignment-tool/css/assignment.css" type="text/css" rel="stylesheet" media="all" />
-<script type="text/javascript"  src="/sakai-assignment-tool/js/assignments.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     setupToggleAreas('toggleAnchor', 'toggledContent', false, 'fast');
@@ -121,6 +117,8 @@ function submitform(id)
 					#end
 			#elseif ($submission.getGraded() && ($submission.getGradeReleased() || $returned))
 					$tlang.getString("stuviewsubm.asshasbee2")
+                        #elseif (!$submission.getSubmitted())
+                                        $submission.getStatus()
 			#else
 					<p class="instruction">$tlang.getString("gen.hasbee") $submission.TimeSubmitted.toStringLocalFull()</p>
 					#if ($!timeSubmitted && $!timeSubmitted.after($assignment.DueTime))
@@ -151,6 +149,15 @@ function submitform(id)
 				#elseif ($submissionType==2)
 				 	$tlang.getString("stuviewsubm.assattonly")
 				#end
+				#if($assignment.getAllowPeerAssessment())
+					<div class="highlight">
+						#if($assignment.getPeerAssessmentAnonEval())
+				 			$tlang.getString("stuviewsubm.peerreviewanon")
+						#else
+				 			$tlang.getString("stuviewsubm.peerreview")
+						#end
+					</div>
+				#end
 			</p>	
 		#end
 	#end
@@ -161,7 +168,8 @@ function submitform(id)
 						$tlang.getString("gen.title")
 					</th>
 					<td>
-						$validator.escapeHtml($assignment.getTitle())
+						#assignmentTitleIcon($assignment)
+                                                $validator.escapeHtml($assignment.getTitle())
 						#set ($deleted = false)
 						#set ($deleted = $assignment.getProperties().getProperty($assignment.getProperties().getNamePropAssignmentDeleted()))
 						#if ($!deleted.equalsIgnoreCase("true"))
@@ -173,8 +181,11 @@ function submitform(id)
 					<th>
 						$tlang.getString("gen.due")
 					</th>
+					#set($allowUpdateAssignment=$!service.allowUpdateAssignment($assignment.Reference))
 					<td>
-						$!assignment.getDueTime().toStringLocalFull()
+					#if ($assignment.getContent().getHideDueDate() != "true" || $!allowUpdateAssignment)
+						$!assignment.dueTime.toStringLocalFull()
+					#end
 					</td>
 				</tr>
 				##resubmit number
@@ -246,7 +257,7 @@ function submitform(id)
 							<td class="highlight">
 								<strong>
 									#if ($assignment.getContent().TypeOfGrade != 1)
-										$submission.GradeDisplay
+                                                                               #if($!override)$override#else$submission.GradeDisplay#end
 									#else
 										$tlang.getString("gen.nograd")
 									#end
@@ -298,6 +309,16 @@ function submitform(id)
 							#end
 							</td>
 				
+					</tr>
+				#end
+				#if ($!submission && $!submission.getSubmissionLog().size() > 0)
+					<tr>
+						<th>$tlang.getString("gen.history")</th>
+						<td>
+							#foreach ($entry in $submission.getSubmissionLog())
+								$entry<br>
+							#end
+						</td>
 					</tr>
 				#end
 			</table>
@@ -356,7 +377,13 @@ function submitform(id)
 								#end
 							#end
 							#if ($size == 0)
-								<p class="instruction">$tlang.getString("gen.noatt")</p>
+								<p class="instruction">
+                                                                    #if ($submissionType == 5)
+                                                                        $tlang.getString("gen.noatt.single")
+                                                                    #else
+                                                                        $tlang.getString("gen.noatt")
+                                                                    #end
+                                                                </p>
 							#else
 								#foreach ($attachment in $mAttachments)
 									#set ($props = false)
@@ -400,7 +427,13 @@ function submitform(id)
 								#end
 							#end
 							#if ($size == 0)
-								<p class="instruction">$tlang.getString("gen.noatt")</p>
+								<p class="instruction">
+                                                                #if ($submissionType == 5)
+                                                                    $tlang.getString("gen.noatt.single")
+                                                                #else
+                                                                    $tlang.getString("gen.noatt")
+                                                                #end
+                                                            </p>
 							#else
 								#foreach ($attachment in $aAttachments)
 									#set ($props = false)
@@ -497,7 +530,7 @@ function submitform(id)
 				<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 			</form>
 		#else
-	<form name="addSubmissionForm" id="addSubmissionForm" action="#toolForm("AssignmentAction")" method="post" onsubmit="return true;" enctype="multipart/form-data">
+	<form name="addSubmissionForm" id="addSubmissionForm" action="#toolForm("AssignmentAction")" method="post" onsubmit="return true;" enctype="multipart/form-data" >
 		<input type="hidden" name="eventSubmit_doRead_add_submission_form" value="x" />
 		<input type="hidden" name="option" id="option" value="cancel" />
 		<input type="hidden" name="currentAttachment" value="" />
@@ -506,27 +539,78 @@ function submitform(id)
 			## if a draft submission or the submission has been returned and has not yet submitted
 			## 1- text only; 2-attachment only; 3-text and attachment
 			#set ( $submissionType = $assignment.getContent().getTypeOfSubmission())
+			
+#if ($!assignment.isGroup())
+<h4>$tlang.getString("group.select.represent")</h4>
+		#if ($!groups)
+                    #set ($size = 0)
+                    #set ($listDisplay="block")
+                        #set($aoGroup = $!site.getGroup($!originalGroup))
+                         #if ($aoGroup)
+                         <input type="hidden" name="originalGroup" id="orig-$aoGroup.Id" value="$aoGroup.Id" />
+                         #end
+			<table id="groupTable" style="width:80%;display:$listDisplay" class="listHier lines indnt3" border="0" cellpadding="0" cellspacing="0" summary="$tlang.getString('group.list.summary')">
+					#foreach ($group in $!groups)
+                                                #set ($size = $size + 1)
+						<tr>
+							<td headers="selected" style="width:2em">
+								#if ($!group_size.equals("1"))
+									#set($selected=true)
+								#else
+                                                                	#set($selected=false)
+								        #set($aGroup = $!site.getGroup($!selectedGroup))
+                                                                	#if ($!group.Id == $!aGroup.Id)
+                                                                    		#set($selected = true)
+                                                                	#end
+								#end
+								
+								<input type="radio" name="selectedGroups" id="id-$group.Id" title="$group.Id" value="$group.Id" #if($selected) checked="checked"#end />
+							</td>
+							<td headers="name" class="checkbox" style="white-space:nowrap">
+								<label for="id-$group.Id">
+									$validator.escapeHtml($group.Title)
+								</label>	
+							</td>
+                                                        <td headers="description" width="100%"> ##mozilla does not resize table children dynamically , so set here
+							<span style="font-size: smaller; color: blue;">	
+								#set($gusers = $assignmentService.getSortedGroupUsers($group))
+								#foreach ($user in $gusers)
+									$user.getDisplayName()
+									##$!userDirectoryService.getUser($user).getDisplayName()
+									#if ($velocityCount < $gusers.size()),#end
+								#end
+							</span>	
+
+								#set($description = $group.Description)
+								<div style="font-size: smaller;">$validator.escapeHtml($!description)</div>
+							</td>
+						</tr>
+					#end
+                                        #if ($size == 0)
+                                                <tr><td colspan="2"><span class="highlight">$tlang.getString("group.must.member")</span></td></tr>
+                                        #end
+			</table>
+                #else
+                    <span class="highlight">$tlang.getString("group.must.member")</span>
+		#end
+#end
+
+
+			## We are allowing the instructor to submit as long as assignment is not non-electronic and not deleted
+			#if (!$submissionType != 4 && !$!deleted.equalsIgnoreCase("true") && $!allowAddAssignment && $!allowSubmitByInstructor && $!student) 
+				<h4>$tlang.getString("submitforstudent")</h4>
+				<p class="instruction">
+					$student.getDisplayName()
+					<input type="hidden" name="submit_on_behalf_of" id="submit_on_behalf_of" value="$student.id" />		
+				</p>
+			#end
+
 			#if (($submissionType==1) || ($submissionType==3))
 				#if ($!deleted.equalsIgnoreCase("true"))
 					<h4>$tlang.getString("gen.yousub") </h4>
 					##if the assignment has been deleted, disable the action button
 					$validator.escapeHtmlFormattedText($!value_submission_text)
 				#else
-					#*
-					#if (!$submitted || ($submitted && !$timeSubmitted))
-						## for draft submission
-						#if ($!closeTime && $currentTime.after($closeTime))
-							##disable input for submitted and not returned submission or when later than assignment close date
-							##<h4>$tlang.getString("gen.yousub")</h4>
-							$validator.escapeHtmlFormattedText($!value_submission_text)
-						#else*#
-							#if ($!allowAddAssignment && $!allowSubmitByInstructor && $!student) 
-							<h4>$tlang.getString("submitforstudent")</h4>
-							<p class="instruction">
-								$student.getDisplayName()
-								<input type="hidden" name="submit_on_behalf_of" id="submit_on_behalf_of" value="$student.id" />		
-							</p>
-							#end
 							<h4>$tlang.getString("assignmenttext")</h4>
 							<p class="instruction">
 							#if ($returned)
@@ -590,8 +674,15 @@ function submitform(id)
 				#end	
 				<div class="highlightPanel" style="background:#ffe">
 					<h3 style="margin-top:0;margin-bottom:.5em">
-						$tlang.getString("gen.att")
+						#if ($submissionType == 5)
+							$tlang.getString("gen.att.single")
+						#else
+							$tlang.getString("gen.att")
+						#end
 					</h3>	
+					#if ($assignment.getContent().getAllowReviewService())
+						<p class="instruction"><img alt="$reviewIndicator" title="$reviewIndicator" src="/library/image/silk/rosette.png" /> $reviewIndicator</p>
+					#end
 					#set ($size = 0)
 					#set ($props = false)
 					#foreach ($attachment in $attachments) 
@@ -601,7 +692,13 @@ function submitform(id)
 						#end
 					#end
 					#if ($size == 0)
-						<p class="instruction">$tlang.getString("gen.noatt")</p>
+						<p class="instruction">
+                                                    #if ($submissionType == 5)
+                                                        $tlang.getString("gen.noatt.single")
+                                                    #else
+                                                        $tlang.getString("gen.noatt")
+                                                    #end
+                                                </p>
 					#else
 						<table class="attachList listHier indnt1 centerLines" style="margin-bottom:.5em;margin-top:0; width:auto" summary="$tlang.getString("stuviewsubm.listsummary")">
 							#foreach ($attachment in $attachments) 
@@ -648,11 +745,11 @@ function submitform(id)
 									<table border="0" cellpadding="0" cellspacing="0" class="listHier  centerLines" style="width:auto;margin:0">
 										<tr>
 											<td>
-												<span>$howManySubAtts</span>
+												<span><label for="clonableUpload">$howManySubAtts</label></span>
 											</td>
 											<td>
-												<div id="clonableUpload"> 
-													<input type="file" name="upload" class="upload" id="clonableUpload" onchange="javascript:showNotif('submitnotifxxx','post','addSubmissionForm');document.getElementById('addSubmissionForm').action='#toolLinkParam("AssignmentAction" "doAttachUpload" "")';submitform('addSubmissionForm');""/> 
+												<div id="clonableUploadW"> 
+													<input type="file" name="upload" class="upload" id="clonableUpload" onchange="javascript:showNotif('submitnotifxxx','post','addSubmissionForm');document.getElementById('addSubmissionForm').action='#toolLinkParam("AssignmentAction" "doAttachUpload" "sakai_csrf_token=$validator.escapeUrl($sakai_csrf_token)")';submitform('addSubmissionForm');"/> 
 													<span id="submitnotifxxx" class="messageProgress" style="visibility:hidden">$tlang.getString("processmessage.file")</span>
 												</div>
 											</td>
@@ -687,7 +784,7 @@ function submitform(id)
 						<div class="highlightPanel">
 							<p class="shorttext">
 								<label for="upload">$tlang.getString("att.upl")</label>
-								<input type="file" name="upload" class="upload" id="clonableUpload" onchange="javascript:showNotif('submitnotifxxx','post','addSubmissionForm');document.getElementById('addSubmissionForm').action='#toolLinkParam("AssignmentAction" "doAttachUploadSingle" "")';submitform('addSubmissionForm');"/> 
+								<input type="file" name="upload" class="upload" id="clonableUpload" onchange="javascript:showNotif('submitnotifxxx','post','addSubmissionForm');document.getElementById('addSubmissionForm').action='#toolLinkParam("AssignmentAction" "doAttachUploadSingle" "sakai_csrf_token=$validator.escapeUrl($sakai_csrf_token)")';submitform('addSubmissionForm');"/> 
 								<span id="submitnotifxxx" class="messageProgress" style="visibility:hidden">$tlang.getString("processmessage.file")</span>
 								<input type="hidden" name="submissionFileCount" id="submissionFileCount" value="1"/>
 							</p>	
@@ -763,7 +860,13 @@ function submitform(id)
 							#end
 						#end
 						#if ($size == 0)
-							<p class="instruction">$tlang.getString("gen.noatt")</p>
+							<p class="instruction">
+                                                            #if ($submissionType == 5)
+                                                                $tlang.getString("gen.noatt.single")
+                                                            #else
+                                                                $tlang.getString("gen.noatt")
+                                                            #end
+                                                        </p>
 						#else
 							<ul class="attachList indnt1">
 								#foreach ($attachment in $!prevFeedbackAttachments) 
@@ -871,6 +974,12 @@ function submitform(id)
 								onclick="document.addSubmissionForm.onsubmit();showNotif('submitnotif','save','addSubmissionForm');document.addSubmissionForm.option.value='save'; document.addSubmissionForm.submit(); return false;"
 							/>
 							#end
+							#if ($!linkInvoked)
+
+								<input class="disableme" type="submit" accesskey="x" onClick="window.close();" name="eventSubmit_doConfirm_assignment_submission" value="$tlang.getString("gen.closeexit")" />
+		
+							#else						
+							
 							<input 
 								class="disableme"
 								type="button" 
@@ -880,7 +989,13 @@ function submitform(id)
 								value="$tlang.getString("gen.can")"
 								onclick="document.addSubmissionForm.onsubmit();document.addSubmissionForm.option.value='cancel'; document.addSubmissionForm.submit(); return false;"
 							/>
-							<span class="messageInformation">$tlang.getString("stuviewsubm.submitreminder")</span>
+							#end
+
+                            #if ($submissionType==5)
+                                <span class="messageInformation">$tlang.getString("stuviewsubm.reminder")</span>
+                            #else
+                                <span class="messageInformation">$tlang.getString("stuviewsubm.submitreminder")</span>
+                            #end
 					#end
 				<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 			</div>
@@ -917,7 +1032,11 @@ function submitform(id)
 				 #end
 				#end
 				#if ($size == 0)
-					$tlang.getString("gen.noatt")
+					#if ($submissionType == 5)
+                                            $tlang.getString("gen.noatt.single")
+                                        #else
+                                            $tlang.getString("gen.noatt")
+                                        #end
 				#else
 					<h5>$tlang.getString("gen.stuatt")</h5>
 					<ul class="attachList indnt1">
@@ -997,6 +1116,14 @@ function submitform(id)
 							</div>
 						#end
 					#end
+					
+		#if ($!linkInvoked)
+
+			<input type="submit" accesskey="x" onClick="window.close();" name="eventSubmit_doConfirm_assignment_submission" value="$tlang.getString("gen.closeexit")" class="disableme"/>
+	
+		#else						
+					
+					
 			<p class="act">
 				<input 
 					type="button" 
@@ -1007,6 +1134,7 @@ function submitform(id)
 					onclick="document.addSubmissionForm.onsubmit();document.addSubmissionForm.option.value='cancel'; document.addSubmissionForm.submit(); return false;"
 				/>
 			</p>
+		#end
 		#end
 		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>

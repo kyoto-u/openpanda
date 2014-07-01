@@ -4,9 +4,10 @@
   <parent>
     <artifactId>osp-jsf</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
+
   <name>Sakai OSP JSF Widgets Dependencies for Sun RI</name>
   <groupId>org.sakaiproject.osp</groupId>
   <artifactId>osp-depend-jsf-widgets-sun</artifactId>
@@ -15,6 +16,7 @@
     This pom defines dependencies for a Sun based JSF Widget Set
   </description>
   <packaging>pom</packaging>
+
   <dependencies>
 <!-- Sakai plugin -->
     <dependency>

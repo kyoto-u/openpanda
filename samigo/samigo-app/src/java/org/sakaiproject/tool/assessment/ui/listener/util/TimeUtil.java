@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/util/TimeUtil.java $
- * $Id: TimeUtil.java 115368 2012-10-31 16:08:37Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/util/TimeUtil.java $
+ * $Id: TimeUtil.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,6 @@ import java.util.TimeZone;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.time.cover.TimeService;
-
 /**
  * <p>Description: Time conversion utility class</p>
  */
@@ -52,7 +51,7 @@ public class TimeUtil
 
 
   /**
-  * Convert a String reprepsentation of date and time in the client TimeZone 
+  * Convert a String representation of date and time in the client TimeZone 
   * to Date representation of date and time  in server TimeZone
   * before saving to DB.
   * tz1 is the client timezone,  tz2 is the server timezone
@@ -75,7 +74,7 @@ public class TimeUtil
 
 
   /**
-  * Convert a Date reprepsentation of date and time in the server TimeZone 
+  * Convert a Date representation of date and time in the server TimeZone 
   * to String representation of date and time  in client TimeZone
   * used for display. 
   * tz1 is the client timezone,  tz2 is the server timezone
@@ -119,11 +118,16 @@ public class TimeUtil
 
 
   /**
-  * Convert a Date reprepsentation of date and time to String in the client timezone for display
+  * Convert a Date representation of date and time to String in the client timezone for display
   */
 
   public String getDisplayDateTime(SimpleDateFormat ndf, Date serverDate ){
     String displayDate = "";
+     //we can't format a null date
+    if (serverDate == null) {
+    	return displayDate;
+    }
+    
     try {
       if ((m_client_timezone !=null) && (m_server_timezone!=null) 
 	&& (!m_client_timezone.hasSameRules(m_server_timezone))) {
@@ -136,7 +140,7 @@ public class TimeUtil
       }
     }
     catch (RuntimeException e){
-      log.warn("can not format the Date to a string");
+      log.warn("can not format the Date to a string", e);
     }
     return displayDate;
   }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueries.java $
- * $Id: PublishedAssessmentFacadeQueries.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueries.java $
+ * $Id: PublishedAssessmentFacadeQueries.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.TypeException;
-import org.sakaiproject.service.gradebook.shared.GradebookService;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
@@ -66,6 +66,7 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.ItemData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemFeedback;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemMetaData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemText;
+import org.sakaiproject.tool.assessment.data.dao.assessment.ItemTextAttachment;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAnswer;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAnswerFeedback;
@@ -79,6 +80,7 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemFeedback;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemMetaData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemText;
+import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemTextAttachment;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedMetaData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionAttachment;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionData;
@@ -106,11 +108,11 @@ import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFa
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.PublishingTargetHelper;
 import org.sakaiproject.tool.assessment.osid.shared.impl.IdImpl;
-import org.sakaiproject.tool.assessment.qti.constants.AuthoringConstantStrings;
 import org.sakaiproject.tool.assessment.services.PersistenceService;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.cover.UserDirectoryService;
+import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -392,7 +394,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 					// itemFeedbackSet later
 					item.getTriesAllowed(), item.getPartialCreditFlag());
 			Set publishedItemTextSet = preparePublishedItemTextSet(
-					publishedItem, item.getItemTextSet());
+					publishedItem, item.getItemTextSet(), protocol);
 			Set publishedItemMetaDataSet = preparePublishedItemMetaDataSet(
 					publishedItem, item.getItemMetaDataSet());
 			Set publishedItemFeedbackSet = preparePublishedItemFeedbackSet(
@@ -403,13 +405,16 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			publishedItem.setItemMetaDataSet(publishedItemMetaDataSet);
 			publishedItem.setItemFeedbackSet(publishedItemFeedbackSet);
 			publishedItem.setItemAttachmentSet(publishedItemAttachmentSet);
+			publishedItem.setAnswerOptionsRichCount(item.getAnswerOptionsRichCount());
+			publishedItem.setAnswerOptionsSimpleOrRich(item.getAnswerOptionsSimpleOrRich());
+			
 			h.add(publishedItem);
 		}
 		return h;
 	}
 
 	public Set preparePublishedItemTextSet(PublishedItemData publishedItem,
-			Set itemTextSet) {
+			Set itemTextSet, String protocol) {
 		log.debug("**published item text size = " + itemTextSet.size());
 		HashSet h = new HashSet();
 		Iterator k = itemTextSet.iterator();
@@ -422,6 +427,11 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			Set publishedAnswerSet = preparePublishedAnswerSet(
 					publishedItemText, itemText.getAnswerSet());
 			publishedItemText.setAnswerSet(publishedAnswerSet);
+			
+			Set publishedItemTextAttachmentSet = this.preparePublishedItemTextAttachmentSet(publishedItemText, 
+					itemText.getItemTextAttachmentSet(), protocol);
+			publishedItemText.setItemTextAttachmentSet(publishedItemTextAttachmentSet);
+			publishedItemText.setRequiredOptionsCount(itemText.getRequiredOptionsCount());
 			h.add(publishedItemText);
 		}
 		return h;
@@ -496,6 +506,40 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		return h;
 	}
 
+	public Set preparePublishedItemTextAttachmentSet(
+			PublishedItemText publishedItemText, Set itemTextAttachmentSet,
+			String protocol) {
+		HashSet h = new HashSet();
+		Iterator o = itemTextAttachmentSet.iterator();
+		while (o.hasNext()) {
+			ItemTextAttachment itemTextAttachment = (ItemTextAttachment) o.next();
+			try {
+				// create a copy of the resource
+				AssessmentService service = new AssessmentService();
+				ContentResource cr_copy = service.createCopyOfContentResource(
+						itemTextAttachment.getResourceId(), itemTextAttachment
+								.getFilename());
+				// get relative path
+				String url = getRelativePath(cr_copy.getUrl(), protocol);
+
+				PublishedItemTextAttachment publishedItemTextAttachment = new PublishedItemTextAttachment(
+						null, publishedItemText, cr_copy.getId(), itemTextAttachment
+								.getFilename(), itemTextAttachment.getMimeType(),
+						itemTextAttachment.getFileSize(), itemTextAttachment
+								.getDescription(), url, itemTextAttachment
+								.getIsLink(), itemTextAttachment.getStatus(),
+						itemTextAttachment.getCreatedBy(), itemTextAttachment
+								.getCreatedDate(), itemTextAttachment
+								.getLastModifiedBy(), itemTextAttachment
+								.getLastModifiedDate());
+				h.add(publishedItemTextAttachment);
+			} catch (Exception e) {
+				log.warn(e.getMessage());
+			}
+		}
+		return h;
+	}
+	
 	public String getRelativePath(String url, String protocol) {
 		// replace whitespace with %20
 		url = replaceSpace(url);
@@ -591,7 +635,9 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			PublishedAnswer publishedAnswer = new PublishedAnswer(
 					publishedItemText, answer.getText(), answer.getSequence(),
 					answer.getLabel(), answer.getIsCorrect(),
-					answer.getGrade(), answer.getScore(), answer.getPartialCredit(), answer.getDiscount(), null);
+					answer.getGrade(), answer.getScore(), answer.getPartialCredit(), answer.getDiscount(), 
+					//answer.getCorrectOptionLabels(), 
+					null);
 			Set publishedAnswerFeedbackSet = preparePublishedAnswerFeedbackSet(
 					publishedAnswer, answer.getAnswerFeedbackSet());
 			publishedAnswer.setAnswerFeedbackSet(publishedAnswerFeedbackSet);
@@ -693,10 +739,10 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 
 			boolean integrated = IntegrationContextFactory.getInstance()
 					.isIntegrated();
-			GradebookService g = null;
+			GradebookExternalAssessmentService g = null;
 			if (integrated) {
-				g = (GradebookService) SpringBeanLocator.getInstance().getBean(
-						"org.sakaiproject.service.gradebook.GradebookService");
+				g = (GradebookExternalAssessmentService) SpringBeanLocator.getInstance().getBean(
+						"org.sakaiproject.service.gradebook.GradebookExternalAssessmentService");
 			}
 
 			GradebookServiceHelper gbsHelper = IntegrationContextFactory
@@ -743,7 +789,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 
 	public void createAuthorization(PublishedAssessmentData p) {
-		// conditional processing added by gopalrc Nov 2007
+		// conditional processing
 		if (p.getAssessmentAccessControl().getReleaseTo()!= null 
 				&& p.getAssessmentAccessControl().getReleaseTo()
 				.equals(AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS)) {
@@ -810,7 +856,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 	
 	/**
-	 * added by gopalrc Nov 2007
 	 * Creates Authorizations for Selected Groups
 	 * @param p
 	 */
@@ -837,8 +882,14 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 
 	public PublishedAssessmentData loadPublishedAssessment(Long assessmentId) {
-		return (PublishedAssessmentData) getHibernateTemplate().load(
-				PublishedAssessmentData.class, assessmentId);
+		PublishedAssessmentData ret = null;
+		try {
+			ret = (PublishedAssessmentData) getHibernateTemplate().load(
+					PublishedAssessmentData.class, assessmentId);
+		} catch (DataAccessException e) {
+			log.warn("Error accessing Published Assesment: " + assessmentId + " storage returned: " + e);
+		}
+		return ret;
 	}
 
 	public ArrayList getAllTakeableAssessments(String orderBy,
@@ -932,7 +983,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	public List getNumberOfSubmissionsOfAllAssessmentsByAgent(
 			final String agentId, final String siteId) {
 
-		// modified by gopalrc to take account of group release
 		final ArrayList groupIds = getSiteGroupIdsForSubmittingAgent(agentId, siteId);
 
 		if (groupIds.size() > 0) {
@@ -1100,7 +1150,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 
 	public void deleteAllSecuredIP(PublishedAssessmentIfc assessment) {
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -1119,7 +1169,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 					retryCount = 0;
 			} catch (Exception e) {
 				log.warn("problem deleting ip address: " + e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
@@ -1134,7 +1184,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		else
 			data = (PublishedAssessmentData) assessment;
 
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -1144,7 +1194,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				log
 						.warn("problem save or update assessment: "
 								+ e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 				if (retryCount == 0)
 					throw e;
@@ -1220,7 +1270,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 
 			agent = new AgentFacade(p.getLastModifiedBy());
 			if (agent != null) {
-				lastModifiedBy = agent.getFirstName() + " " + agent.getLastName();
+				lastModifiedBy = agent.getDisplayName();
 			}
 
 			PublishedAssessmentFacade f = new PublishedAssessmentFacade(p
@@ -1299,7 +1349,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 
 			agent = new AgentFacade(p.getLastModifiedBy());
 			if (agent != null) {
-				lastModifiedBy = agent.getFirstName() + " " + agent.getLastName();
+				lastModifiedBy = agent.getDisplayName();
 			}
 			PublishedAssessmentFacade f = new PublishedAssessmentFacade(p
 					.getPublishedAssessmentId(), p.getTitle(),
@@ -1356,7 +1406,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	
 	// added by daisy - please check the logic - I based this on the
 	// getBasicInfoOfAllActiveAssessment
-	// modified by gopalrc - Nov 2007
 	// to include release to selected groups
 	/**
 	 * 
@@ -1497,7 +1546,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 
 			agent = new AgentFacade(p.getLastModifiedBy());
 			if (agent != null) {
-				lastModifiedBy = agent.getFirstName() + " " + agent.getLastName();
+				lastModifiedBy = agent.getDisplayName();
 			}
 
 			PublishedAssessmentFacade f = new PublishedAssessmentFacade(p
@@ -1566,7 +1615,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			// given user.
 			if (!a.getPublishedAssessmentId().equals(current)) {
 				current = a.getPublishedAssessmentId();
-				AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+				AssessmentGradingData f = a;
 				assessmentList.add(f);
 			}
 		}
@@ -1668,7 +1717,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 
 	public void saveOrUpdateMetaData(PublishedMetaData meta) {
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -1676,7 +1725,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				retryCount = 0;
 			} catch (Exception e) {
 				log.warn("problem save or update meta data: " + e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
@@ -2010,7 +2059,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		else
 			data = (PublishedAssessmentData) assessment;
 
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -2019,7 +2068,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			} catch (Exception e) {
 				log.warn("problem removing publishedAssessment: "
 						+ e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
@@ -2080,7 +2129,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 
 	/**
-	 * return an array list of the AssessmentGradingFacade that a user has
+	 * return an array list of the AssessmentGradingData that a user has
 	 * submitted for grade. one per published assessment, when allAssessments is false,
 	 * and all submissions per published assessment when allAssesments is true. 
 	 * If an assessment allows multiple submissions and its grading option is to send highest,
@@ -2096,7 +2145,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	public ArrayList getBasicInfoOfLastOrHighestOrAverageSubmittedAssessmentsByScoringOption(
 			final String agentId, final String siteId, boolean allAssessments) {
 		
-		// modified by gopalrc to take account of group release
+		// take account of group release
 		final ArrayList groupIds = getSiteGroupIdsForCurrentUser(siteId);
 		// sorted by submittedData DESC
 		final String order_last = " order by p.publishedAssessmentId DESC, a.submittedDate DESC";
@@ -2267,7 +2316,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			
 			if (EvaluationModelIfc.LAST_SCORE.equals(scoringOption)) {
 				if (!a.getPublishedAssessmentId().equals(currentid) || allAssessments) {
-					AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+					AssessmentGradingData f = a;
 					if (!a.getPublishedAssessmentId().equals(currentid)) {
 						f.setIsRecorded(true);
 					}
@@ -2312,7 +2361,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			
 			if (multiSubmissionAllowed && (EvaluationModelIfc.HIGHEST_SCORE.equals(scoringOption))) {
 				if (!a.getPublishedAssessmentId().equals(currentid) || allAssessments) {
-					AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+					AssessmentGradingData f = a;
 					if (!a.getPublishedAssessmentId().equals(currentid)) {
 						f.setIsRecorded(true);
 					}
@@ -2322,7 +2371,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			}
 
 			if (EvaluationModelIfc.AVERAGE_SCORE.equals(scoringOption)) {
-				AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+				AssessmentGradingData f = a;
 				assessmentList.add(f);
 			}
 
@@ -2382,7 +2431,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 	  
 	/**
-	 * Modified by gopalrc - Jan 2008
 	 * to take account of difference in obtaining question count
 	 * between randomized and non-randomized questions
 	 */  
@@ -2407,7 +2455,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 
 	/**
-	 * gopalrc - Jan 2008
 	 * @param publishedAssessmentId
 	 * @return
 	 */
@@ -2438,7 +2485,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 
 	/**
-	 * gopalrc - Jan 2008
 	 * @param publishedAssessmentId
 	 * @return
 	 */
@@ -2463,12 +2509,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		return (Integer) list.get(0);
 	}
 	
-	
-	/**
-	 * added by gopalrc - Nov 2007
-	 * @param publishedAssessmentId
-	 * @return
-	 */
 	public Integer getPublishedSectionCount(final Long publishedAssessmentId) {
 		final HibernateCallback hcb = new HibernateCallback() {
 			public Object doInHibernate(Session session)
@@ -2497,12 +2537,12 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 
 	public void updateAssessmentLastModifiedInfo(
 			PublishedAssessmentFacade publishedAssessmentFacade) {
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		AssessmentBaseIfc data = publishedAssessmentFacade.getData();
 		data.setLastModifiedBy(AgentFacade.getAgentString());
 		data.setLastModifiedDate(new Date());
-		retryCount = PersistenceService.getInstance().getRetryCount()
+		retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -2510,14 +2550,14 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				retryCount = 0;
 			} catch (Exception e) {
 				log.warn("problem update assessment: " + e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
 	}
 
 	public void saveOrUpdateSection(SectionFacade section) {
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -2525,7 +2565,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				retryCount = 0;
 			} catch (Exception e) {
 				log.warn("problem save or update section: " + e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
@@ -2535,7 +2575,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		PublishedItemAttachment itemAttachment = (PublishedItemAttachment) getHibernateTemplate()
 				.load(PublishedItemAttachment.class, itemAttachmentId);
 		ItemDataIfc item = itemAttachment.getItem();
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -2548,7 +2588,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				}
 			} catch (Exception e) {
 				log.warn("problem delete itemAttachment: " + e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
@@ -2583,7 +2623,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				SectionDataIfc.AS_LISTED_ON_ASSESSMENT_PAGE.toString());
 
 		sectionSet.add(section);
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -2593,7 +2633,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				log
 						.warn("problem save or update assessment: "
 								+ e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
@@ -2620,7 +2660,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 
 	public void saveOrUpdatePublishedAccessControl(
 			AssessmentAccessControlIfc publishedAccessControl) {
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -2629,7 +2669,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			} catch (Exception e) {
 				log.warn("problem save or update publishedAccessControl data: "
 						+ e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
@@ -2647,13 +2687,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		this.siteService = siteService;
 	}
 	
-	
-	/**
-	 * added by gopalrc - Nov 2007
-`	 * TODO: should perhaps bemoved to SiteService
-	 * @param siteId
-	 * @return
-	 */
 	private ArrayList getSiteGroupIdsForSubmittingAgent(String agentId, String siteId) {
 
 		final ArrayList<String> groupIds = new ArrayList<String>();
@@ -2687,19 +2720,12 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		return groupIds;
 	}
 	
-	/**
-	 * added by gopalrc - Nov 2007
-`	 * TODO: should perhaps bemoved to SiteService
-	 * @param siteId
-	 * @return
-	 */
 	private ArrayList getSiteGroupIdsForCurrentUser(final String siteId) {
 		String currentUserId = UserDirectoryService.getCurrentUser().getId();
 		return getSiteGroupIdsForSubmittingAgent(currentUserId, siteId);
 	}
 		
 	/**
-	 * added by gopalrc November 2007
 	 * 
 	 * @param assessmentId
 	 * @return
@@ -2769,7 +2795,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	
 
 	  /**
-	   * added by gopalrc Nov 2007
 	   * Returns all groups for site
 	   * @return
 	   */
@@ -2780,7 +2805,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 
 	
 	  /**
-	   * added by gopalrc - Jan 2008
 	   * @param publishedAssessmentId
 	   * @return
 	   */
@@ -2868,7 +2892,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				.load(PublishedAssessmentAttachment.class, assessmentAttachmentId);
 		AssessmentIfc assessment = assessmentAttachment.getAssessment();
 		// String resourceId = assessmentAttachment.getResourceId();
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -2883,7 +2907,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			} catch (Exception e) {
 				log.warn("problem delete publishedAssessmentAttachment: "
 						+ e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
@@ -2941,7 +2965,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				.load(PublishedSectionAttachment.class, sectionAttachmentId);
 		SectionDataIfc section = sectionAttachment.getSection();
 		// String resourceId = sectionAttachment.getResourceId();
-		int retryCount = PersistenceService.getInstance().getRetryCount()
+		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount()
 				.intValue();
 		while (retryCount > 0) {
 			try {
@@ -2954,7 +2978,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				}
 			} catch (Exception e) {
 				log.warn("problem delete sectionAttachment: " + e.getMessage());
-				retryCount = PersistenceService.getInstance().retryDeadlock(e,
+				retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e,
 						retryCount);
 			}
 		}
@@ -2991,7 +3015,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	  
 
 	  /**
-	   * return an array list of the AssessmentGradingFacade that a user has
+	   * return an array list of the AssessmentGradingData that a user has
 	   * submitted for grade. one per published assessment. If an assessment
 	   * allows multiple submissions and its grading option is to send highest,
 	   * then return only the submission with highest finalScore. If an assessment
@@ -3118,7 +3142,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 
 			  if (EvaluationModelIfc.LAST_SCORE.equals(scoringOption) && !a.getPublishedAssessmentId().equals(currentid)) {
 				  currentid = a.getPublishedAssessmentId();
-				  AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+				  AssessmentGradingData f = new AssessmentGradingData(a);
 				  assessmentList.add(f);
 			  }
 
@@ -3161,7 +3185,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 					  && (EvaluationModelIfc.HIGHEST_SCORE.equals(scoringOption))
 					  && (!a.getPublishedAssessmentId().equals(currentid))) {
 				  currentid = a.getPublishedAssessmentId();
-				  AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+				  AssessmentGradingData f = new AssessmentGradingData(a);
 				  assessmentList.add(f);
 			  }
 
@@ -3202,7 +3226,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 					  && (!a.getPublishedAssessmentId().equals(currentid))) {
 				  currentid = a.getPublishedAssessmentId();
 
-				  AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+				  AssessmentGradingData f = new AssessmentGradingData(a);
 				  assessmentList.add(f);
 			  }
 
@@ -3214,7 +3238,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	  */
 
 	  /**
-	   * return an array list of the AssessmentGradingFacade that a user has
+	   * return an array list of the AssessmentGradingData that a user has
 	   * submitted for grade. one per published assessment. If an assessment
 	   * allows multiple submissions and its grading option is to send highest,
 	   * then return only the submission with highest finalScore. If an assessment
@@ -3336,7 +3360,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 					  && (!a.getPublishedAssessmentId().equals(currentid)
 							  || allAssessments)) {
 				  currentid = a.getPublishedAssessmentId();
-				  AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+				  AssessmentGradingData f = new AssessmentGradingData(a);
 				  assessmentList.add(f);
 			  }
 
@@ -3377,7 +3401,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 					  && ((!a.getPublishedAssessmentId().equals(currentid))
 							  || allAssessments)) {
 				  currentid = a.getPublishedAssessmentId();
-				  AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+				  AssessmentGradingData f = new AssessmentGradingData(a);
 				  assessmentList.add(f);
 			  }
 		  }
@@ -3412,7 +3436,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 					  (multiSubmissionAllowed)
 					  && (EvaluationModelIfc.AVERAGE_SCORE.equals(scoringOption))&& (!a.getPublishedAssessmentId().equals(currentid)|| allAssessments)) {
 				  currentid = a.getPublishedAssessmentId();
-				  AssessmentGradingFacade f = new AssessmentGradingFacade(a);
+				  AssessmentGradingData f = new AssessmentGradingData(a);
 				  assessmentList.add(f);
 			  }
 		  }

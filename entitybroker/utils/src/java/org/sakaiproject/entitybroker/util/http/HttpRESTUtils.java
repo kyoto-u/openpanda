@@ -1,6 +1,6 @@
 /**
- * $Id: HttpRESTUtils.java 91416 2011-04-06 19:02:46Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/utils/src/java/org/sakaiproject/entitybroker/util/http/HttpRESTUtils.java $
+ * $Id: HttpRESTUtils.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/utils/src/java/org/sakaiproject/entitybroker/util/http/HttpRESTUtils.java $
  * HttpUtils.java - entity-broker - Jul 20, 2008 11:42:19 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

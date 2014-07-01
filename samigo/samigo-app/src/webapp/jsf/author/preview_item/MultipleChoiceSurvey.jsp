@@ -1,4 +1,4 @@
-<%-- $Id: MultipleChoiceSurvey.jsp 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
+<%-- $Id: MultipleChoiceSurvey.jsp 115326 2012-10-30 23:47:00Z ktsao@stanford.edu $
 include file for delivering multiple choice single correct survey questions
 should be included in file importing DeliveryMessages
 --%>

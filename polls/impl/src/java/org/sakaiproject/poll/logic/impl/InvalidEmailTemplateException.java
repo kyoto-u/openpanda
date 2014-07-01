@@ -1,6 +1,6 @@
 /**
- * $Id: InvalidEmailTemplateException.java 77660 2010-05-21 14:28:00Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.3/impl/src/java/org/sakaiproject/poll/logic/impl/InvalidEmailTemplateException.java $
+ * $Id: InvalidEmailTemplateException.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.0/impl/src/java/org/sakaiproject/poll/logic/impl/InvalidEmailTemplateException.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

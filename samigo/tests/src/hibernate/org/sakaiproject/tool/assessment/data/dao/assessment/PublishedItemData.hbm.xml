@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
   "-//Hibernate/Hibernate Mapping DTD//EN"
-  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-lazy="false">
   <class name="org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemData" table="SAM_PUBLISHEDITEM_T">
@@ -38,7 +38,7 @@
       <column name="GRADE" not-null="false" sql-type="varchar(80)" />
     </property>
     <property name="score">
-      <column name="SCORE" not-null="false" sql-type="float" />
+      <column name="SCORE" not-null="false" sql-type="double" />
     </property>
     <property name="hint">
       <column name="HINT" not-null="false" sql-type="varchar(4000)" />
@@ -154,7 +154,7 @@
       <column name="GRADE" not-null="false" sql-type="varchar(80)" />
     </property>
     <property name="score">
-      <column name="SCORE" not-null="false" sql-type="float" />
+      <column name="SCORE" not-null="false" sql-type="double" />
     </property>
     <set name="answerFeedbackSet" table="SAM_PUBLISHEDANSWERFEEDBACK_T" cascade="all" inverse="true" lazy="false">
       <key column="ANSWERID" />

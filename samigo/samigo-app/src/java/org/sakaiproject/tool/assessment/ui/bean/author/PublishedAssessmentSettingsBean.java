@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/PublishedAssessmentSettingsBean.java $
- * $Id: PublishedAssessmentSettingsBean.java 107981 2012-05-09 22:07:33Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/PublishedAssessmentSettingsBean.java $
+ * $Id: PublishedAssessmentSettingsBean.java 309448 2014-05-12 22:11:45Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,6 +60,7 @@ import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.cover.EntityManager;
+import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
@@ -84,7 +85,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.TimeUtil;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.util.ResourceLoader;
-
+import org.sakaiproject.util.FormattedText;
 
 public class PublishedAssessmentSettingsBean
   implements Serializable {
@@ -1303,34 +1304,28 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
   }
 
   public SelectItem[] getPublishingTargets() {
-    HashMap targets = ptHelper.getTargets();
-    Set e = targets.keySet();
-    Iterator iter = e.iterator();
-    // sort the targets
-    String[] titles = new String[targets.size()];
-    while (iter.hasNext()){
-	for (int m = 0; m < e.size(); m++) {
-	    String t = (String)iter.next();
-	    //log.info("target "+m+"="+t);
-	    titles[m] = t;
-	}
-    }
-    Arrays.sort(titles);
-    SelectItem[] target = new SelectItem[targets.size()];
-    for (int i=0; i<titles.length; i++){
-	target[i] = new SelectItem(titles[i]);
-    }
-    /**
-    SelectItem[] target = new SelectItem[targets.size()];
-    while (iter.hasNext()) {
-      for (int i = 0; i < e.size(); i++) {
-        target[i] = new SelectItem( (String) iter.next());
-      }
-    }
-    */
-    return target;
+	  HashMap targets = ptHelper.getTargets();
+	  Set e = targets.keySet();
+	  Iterator iter = e.iterator();
+	  int numSelections = getNumberOfGroupsForSite() > 0 ? 3 : 2;
+	  SelectItem[] target = new SelectItem[numSelections];
+	  ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
+	  while (iter.hasNext()){
+		  String t = (String)iter.next();
+		  if (t.equals("Anonymous Users")) {
+			  target[0] = new SelectItem(t, rb.getString("anonymous_users"));
+		  }
+		  else if (numSelections == 3 && t.equals(AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS)) {
+			  target[2] = new SelectItem(t, rb.getString("selected_groups"));
+		  }
+		  else if (t.equals(AgentFacade.getCurrentSiteName())) {
+			  target[1] = new SelectItem(t, rb.getString("entire_site"));
+		  }
+	  }
+	  return target;
   }
 
+  
   public void setTargetSelected(String[] targetSelected) {
     this.targetSelected = targetSelected;
   }
@@ -1456,7 +1451,6 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
   }
 
 	  /**
-	 * gopalrc Nov 2007
 	 * Returns all groups for site
 	 * @return
 	 */
@@ -1473,22 +1467,16 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 				Iterator groupIter = groups.iterator();
 				while (groupIter.hasNext()) {
 					Group group = (Group) groupIter.next();
-					//String groupType = group.getProperties().getProperty("sections_category");
-					//groupType = groupType == null ? "" : " (" + groupType + ")";
-					String groupDescription = group.getDescription() == null
-							|| group.getDescription().equals("") ? "" : " : "
-							+ group.getDescription();
-					String selectDescription = createUniqueKey(groupDescription.toUpperCase(), sortedSelectItems);
-					String displayDescription = group.getTitle()
-							+ groupDescription;
- 					sortedSelectItems.put(selectDescription, new SelectItem(group.getId(), displayDescription));
+					String title = group.getTitle();
+					String groupId = group.getId();
+	                String uniqueTitle = title + groupId;
+	                sortedSelectItems.put(uniqueTitle.toUpperCase(), new SelectItem(group.getId(), title));
 				}
 				Set keySet = sortedSelectItems.keySet();
 				groupIter = keySet.iterator();
 				int i = 0;
 				while (groupIter.hasNext()) {
-					groupSelectItems[i++] = (SelectItem) sortedSelectItems
-							.get(groupIter.next());
+					groupSelectItems[i++] = (SelectItem) sortedSelectItems.get(groupIter.next());
 				}
 			}
 		} catch (IdUnusedException ex) {
@@ -1498,7 +1486,6 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 	}
 
 	/**
-	 * gopalrc Nov 2007
 	 * Returns the total number of groups for this site
 	 * @return
 	 */
@@ -1518,13 +1505,11 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 	}
 
 	/**
-	 * gopalrc Nov 2007
 	 * The authorized groups
 	 */
 	private String[] groupsAuthorized;
 
 	/**
-	 * gopalrc Nov 2007
 	 * Returns the groups to which this assessment is released
 	 * @return
 	 */
@@ -1649,6 +1634,10 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 
 	public String getReleaseToGroupsAsString() {
 		return releaseToGroupsAsString;
+	}
+
+	public String getReleaseToGroupsAsHtml() {
+		return FormattedText.escapeHtml(releaseToGroupsAsString,false);
 	}
 
 	public void setBlockDivs(String blockDivs){

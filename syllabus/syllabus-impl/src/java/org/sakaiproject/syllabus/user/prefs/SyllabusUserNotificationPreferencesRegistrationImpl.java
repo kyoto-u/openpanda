@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.3/syllabus-impl/src/java/org/sakaiproject/syllabus/user/prefs/SyllabusUserNotificationPreferencesRegistrationImpl.java $
- * $Id: SyllabusUserNotificationPreferencesRegistrationImpl.java 82737 2010-09-24 13:52:32Z chmaurer@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.0/syllabus-impl/src/java/org/sakaiproject/syllabus/user/prefs/SyllabusUserNotificationPreferencesRegistrationImpl.java $
+ * $Id: SyllabusUserNotificationPreferencesRegistrationImpl.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2010 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>msgcntr</artifactId>
 		<groupId>org.sakaiproject.msgcntr</groupId>
-		<version>3.0.3</version>
+		<version>10.0</version>
 	</parent>
 	<name>Sakai Message Forums API</name>
 	<groupId>org.sakaiproject.msgcntr</groupId>
@@ -33,15 +33,13 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-	       <groupId>org.sakaiproject.kernel</groupId>
-	       <artifactId>sakai-component-manager</artifactId>
-	    </dependency>
+		  <groupId>org.sakaiproject.kernel</groupId>
+		  <artifactId>sakai-component-manager</artifactId>
+		</dependency>
 		<dependency>
-            <groupId>org.sakaiproject.scheduler</groupId>
-            <artifactId>scheduler-api</artifactId>
-            <version>${sakai.scheduler.version}</version>
-            <scope>provided</scope>
-      </dependency>
+		  <groupId>org.sakaiproject.scheduler</groupId>
+		  <artifactId>scheduler-api</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources />

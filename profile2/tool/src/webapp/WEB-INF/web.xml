@@ -69,7 +69,7 @@
  	
 	<context-param>
         <param-name>wicket.configuration</param-name>
-        <!-- <param-value>development</param-value>-->
+        <!--<param-value>development</param-value>-->
         <param-value>deployment</param-value>
     </context-param>
 	

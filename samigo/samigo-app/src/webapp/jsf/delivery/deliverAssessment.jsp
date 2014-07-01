@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: deliverAssessment.jsp 127808 2013-07-25 20:37:03Z ottenhoff@longsight.com $
+* $Id: deliverAssessment.jsp 306017 2014-02-15 00:20:46Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -32,7 +32,6 @@
   <f:view>
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
-	  <script type="text/javascript" src="/samigo-app/js/saveForm.js"></script>	  	  
       <title> <h:outputText value="#{delivery.assessmentTitle}"/>
       </title>
       <style type="text/css">
@@ -48,14 +47,10 @@
          border-color: light grey;
        }
       </style>
-      </head>
-	
-      <body onload="<%= request.getAttribute("html.body.onload") %>; setLocation(); checkRadio(); SaveFormContentAsync('deliverAssessment.faces', 'takeAssessmentForm', 'takeAssessmentForm:save', 'takeAssessmentForm:lastSubmittedDate1', 'takeAssessmentForm:lastSubmittedDate2',  <h:outputText value="#{delivery.autoSaveRepeatMilliseconds}"/>, true); setTimeout('setLocation2()',2)" >
- 
-      <h:outputText value="<a name='top'></a>" escape="false" />
-      
+
       <%@ include file="/jsf/delivery/deliveryjQuery.jsp" %>
-      
+      <script type='text/javascript' src='/library/js/headscripts.js'></script><script type='text/javascript'>var sakai = sakai || {}; sakai.editor = sakai.editor || {};sakai.editor.enableResourceSearch = false;</script><script type='text/javascript'>var CKEDITOR_BASEPATH='/library/editor/ckeditor/';</script><script type='text/javascript' src='/library/editor/ckeditor/ckeditor.js'></script><script type='text/javascript' src='/library/editor/ckeditor.launch.js'></script>
+	  <script type="text/javascript" src="/samigo-app/js/saveForm.js"></script>	  	  
       <script type="text/javascript">
 		
 		function whichradio(obj){ 
@@ -115,10 +110,13 @@
       </script>
       
  
-       <div id="timer-warning" style="display:none" title="&nbsp;<span class='skip'>
-         <h:outputText value="#{deliveryMessages.five_minutes_left1} " />
-	     <h:outputText value="#{deliveryMessages.five_minutes_left2}" />
-	     <h:outputText value="#{deliveryMessages.five_minutes_left3}" /></span>">
+      </head>
+	
+      <body onload="<%= request.getAttribute("html.body.onload") %>; setLocation(); checkRadio(); SaveFormContentAsync('deliverAssessment.faces', 'takeAssessmentForm', 'takeAssessmentForm:autoSave', 'takeAssessmentForm:lastSubmittedDate1', 'takeAssessmentForm:lastSubmittedDate2',  <h:outputText value="#{delivery.autoSaveRepeatMilliseconds}"/>, true); setTimeout('setLocation2()',2)" >
+ 
+      <h:outputText value="<a name='top'></a>" escape="false" />
+      
+       <div id="timer-warning" style="display:none">
       	 <h:panelGrid columns="1" rowClasses="TableColumn, TableColumnLeft, TableColumnLeft" width="100%"  border="0">
            <h:outputText value="<b>#{deliveryMessages.five_minutes_left1}</b>" escape="false"/>
       	   <h:outputText value="<br/>#{deliveryMessages.five_minutes_left2}" escape="false"/>
@@ -147,7 +145,30 @@
 				<div id="squaresWaveG_8" class="squaresWaveG">
 				</div>
 			</div>
-			
+		</div>
+		
+		<div id="time-30-warning" style="display:none;text-align:center">
+		<h:outputFormat value="#{deliveryMessages.time_30_warning}" escape="false" rendered="#{delivery.useDueDate}">
+                <f:param value="#{delivery.dayDueDateString}"/>
+        </h:outputFormat>
+        <h:outputFormat value="#{deliveryMessages.time_30_warning}" escape="false" rendered="#{!delivery.useDueDate}">
+                <f:param value="#{delivery.dayRetractDateString}"/>
+        </h:outputFormat>
+        <br /><br /><br />
+        <h:outputText value="#{deliveryMessages.time_30_warning_2}" escape="false"/>
+        <br />
+		</div>
+		
+		
+		<div id="time-due-warning" style="display:none;text-align:center" >
+				<h:outputText value="#{deliveryMessages.time_due_warning_1}" escape="false"/>
+				<br/><br />
+				<button type="button" onclick="clickSubmit();"><h:outputText value="#{deliveryMessages.button_submit}" escape="false"/></button>
+				<br /><br />	
+				<a href="#" onclick="clickDoNotSubmit();"><h:outputText value="<u>#{deliveryMessages.link_do_not_submit}</u>" escape="false"/></a>
+				<br /><br />
+				<h:outputText value="#{deliveryMessages.time_due_warning_2}" escape="false"/>
+				<br /><br />
 		</div>
  
  <h:outputText value="<div class='portletBody' style='#{delivery.settings.divBgcolor};#{delivery.settings.divBackground}'>" escape="false"/>
@@ -289,6 +310,8 @@ document.links[newindex].onclick();
    rendered ="#{delivery.assessmentGrading.submittedDate!=null}"/>
 <h:inputHidden id="lastSubmittedDate2" value="0"
    rendered ="#{delivery.assessmentGrading.submittedDate==null}"/>
+<h:inputHidden id="hasTimeLimit" value="#{delivery.hasTimeLimit}"/>   
+<h:inputHidden id="showTimeWarning" value="#{delivery.showTimeWarning}"/>
 
 <!-- DONE BUTTON FOR PREVIEW -->
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
@@ -389,6 +412,11 @@ document.links[newindex].onclick();
             <%@ include file="/jsf/delivery/item/deliverMatching.jsp" %>
            </f:subview>
           </h:panelGroup>
+          <h:panelGroup rendered="#{question.itemData.typeId == 15}"><!-- // CALCULATED_QUESTION -->
+           <f:subview id="deliverCalculatedQuestion">
+            <%@ include file="/jsf/delivery/item/deliverCalculatedQuestion.jsp" %>
+           </f:subview>
+          </h:panelGroup>
           <h:panelGroup
             rendered="#{question.itemData.typeId == 1 || question.itemData.typeId == 3 || question.itemData.typeId == 12}">
            <f:subview id="deliverMultipleChoiceSingleCorrect">
@@ -400,6 +428,13 @@ document.links[newindex].onclick();
            <%@ include file="/jsf/delivery/item/deliverMultipleChoiceMultipleCorrect.jsp" %>
            </f:subview>
           </h:panelGroup>
+          
+          <h:panelGroup rendered="#{question.itemData.typeId == 14}">
+           <f:subview id="deliverExtendedMatchingItems">
+           <%@ include file="/jsf/delivery/item/deliverExtendedMatchingItems.jsp" %>
+           </f:subview>
+          </h:panelGroup>
+          
           <h:panelGroup rendered="#{question.itemData.typeId == 5}">
            <f:subview id="deliverShortAnswer">
            <%@ include file="/jsf/delivery/item/deliverShortAnswer.jsp" %>
@@ -490,7 +525,7 @@ document.links[newindex].onclick();
 
   <%-- SAVE --%>
   <h:panelGrid columns="1" border="0" >
-  <h:commandButton id="save" type="submit" value="#{deliveryMessages.button_save}"
+  <h:commandButton id="save" type="submit" value="#{commonMessages.action_save}"
     action="#{delivery.save_work}" onclick="disableSave();" rendered="#{delivery.actionString=='previewAssessment'
                  || delivery.actionString=='takeAssessment'
                  || delivery.actionString=='takeAssessmentViaUrl'}" />
@@ -548,6 +583,10 @@ document.links[newindex].onclick();
 
   </h:panelGrid>
 </h:panelGrid>
+
+   <h:commandButton id="autoSave" type="submit" value="" style="display: none"
+   action="#{delivery.auto_save}" rendered="#{delivery.actionString=='takeAssessment'
+                  || delivery.actionString=='takeAssessmentViaUrl'}" />
 
 	<h:commandLink id="hiddenReloadLink" action="#{delivery.same_page}" value="">
 	</h:commandLink>

@@ -1,6 +1,6 @@
 /**
- * $Id: ClaimLocator.java 81430 2010-08-18 14:12:46Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.3/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/ClaimLocator.java $
+ * $Id: ClaimLocator.java 308859 2014-04-26 00:12:26Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.0/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/ClaimLocator.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,7 @@ import org.sakaiproject.accountvalidator.logic.ValidationException;
 import org.sakaiproject.accountvalidator.logic.ValidationLogic;
 import org.sakaiproject.accountvalidator.model.ValidationAccount;
 import org.sakaiproject.accountvalidator.model.ValidationClaim;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.tool.api.SessionManager;
@@ -90,6 +91,12 @@ public class ClaimLocator implements BeanLocator {
 		this.developerHelperService = developerHelperService;
 	}
 
+	private ServerConfigurationService serverConfigurationService;
+	public void setServerConfigurationService(ServerConfigurationService serverConfigurationService)
+	{
+		this.serverConfigurationService = serverConfigurationService;
+	}
+
 	private Map<String, Object> delivered = new HashMap<String, Object>();
 	
 	public Object locateBean(String name) {
@@ -124,6 +131,20 @@ public class ClaimLocator implements BeanLocator {
 		}
 		
 		ValidationAccount va = validationLogic.getVaLidationAcountBytoken(vc.getValidationToken());
+		if (va == null)
+		{
+			log.warn("Couldn't obtain a ValidationAccount object for token: " + vc.getValidationToken());
+			return "error";
+		}
+
+		//With sendLegacyLinks disabled, the option to transfer memberships is not available for password resets
+		if (!serverConfigurationService.getBoolean("accountValidator.sendLegacyLinks", false) && ValidationAccount.ACCOUNT_STATUS_PASSWORD_RESET == va.getStatus())
+		{
+			log.warn("Was attempting to transfer memberships for a ValidationAccount of status " + va.getStatus());
+			return "error";
+
+		}
+
 		String oldUserRef = userDirectoryService.userReference(va.getUserId());
 		
 		//Try set up the ussersession

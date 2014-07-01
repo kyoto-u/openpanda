@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseSearchManager.java $
- * $Id: BaseSearchManager.java 117702 2012-12-14 14:30:43Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseSearchManager.java $
+ * $Id: BaseSearchManager.java 309400 2014-05-09 21:29:07Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,8 +41,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
-
-import net.sf.ehcache.Cache;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -90,6 +88,8 @@ import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.tool.api.SessionManager;
 
@@ -410,7 +410,7 @@ public class BaseSearchManager implements SearchManager, Observer
                 }
                 catch (IdUnusedException e)
                 {
-	                m_log.info("BasicSearch.getPage() unable to retrieve ciataion: " + id);
+	                m_log.warn("BasicSearch.getPage() unable to retrieve ciataion: " + id);
                 }
         	}
         	m_lastPageViewed = page;
@@ -1854,7 +1854,8 @@ public class BaseSearchManager implements SearchManager, Observer
 	public static final String SAKAI_KEY = "sakai.key";
 	public static final String SAKAI_HOST = "sakai.host";
 
-	public static final String SERVLET_NAME = "savecite";
+	//public static final String SERVLET_NAME = "savecite";
+	public static final String SERVLET_NAME = "sakai-citations-servlet";
 	public static final String WINDOW_PREFIX = "WebLearn Solo - ";
 
 	// Our types (defined in setupTypes())
@@ -1878,6 +1879,8 @@ public class BaseSearchManager implements SearchManager, Observer
 	protected ServerConfigurationService serverConfigurationService = null;
 
 	protected String databaseHierarchyResourceRef;
+
+	private MemoryService memoryService;
 
 	private Cache sessionContextCache;
 
@@ -2471,7 +2474,10 @@ public class BaseSearchManager implements SearchManager, Observer
 
 
 
+		sessionContextCache = memoryService.getCache("org.sakaiproject.citation.api.SearchManager.sessionContextCache");
 		SessionContext.setCache(sessionContextCache);
+
+		metasearchSessionManagerCache = memoryService.getCache("org.sakaiproject.citation.api.SearchManager.metasearchSessionManagerCache");
 		MetasearchSessionManager.setCache(metasearchSessionManagerCache);
 
 
@@ -2558,7 +2564,7 @@ public class BaseSearchManager implements SearchManager, Observer
     }
     catch (Exception exception)
     {
-      m_log.info("Failed to load "
+      m_log.warn("Failed to load "
               +  databaseXmlReference
               +  " (no changes made): "
               +  exception);
@@ -2635,7 +2641,7 @@ public class BaseSearchManager implements SearchManager, Observer
     	buf.append(SAKAI_SESSION);
     	buf.append("=nada&client=");
     	buf.append(saveciteClientId);
-    	buf.append("&");
+    	//buf.append("&");
     	
     	return buf.toString();
     }
@@ -2779,34 +2785,18 @@ public class BaseSearchManager implements SearchManager, Observer
 	}
 
 	/**
-	 * @return the metasearchSessionManagerCache
+	 * @return the memoryService
 	 */
-	public Cache getMetasearchSessionManagerCache()
+	public MemoryService getMemoryService()
 	{
-		return metasearchSessionManagerCache;
+		return memoryService;
 	}
 
 	/**
-	 * @param metasearchSessionManagerCache the metasearchSessionManagerCache to set
+	 * @param memoryService the memoryService to set
 	 */
-	public void setMetasearchSessionManagerCache(Cache metasearchSessionManagerCache)
+	public void setMemoryService(MemoryService memoryService)
 	{
-		this.metasearchSessionManagerCache = metasearchSessionManagerCache;
-	}
-
-	/**
-	 * @return the sessionContextCache
-	 */
-	public Cache getSessionContextCache()
-	{
-		return sessionContextCache;
-	}
-
-	/**
-	 * @param sessionContextCache the sessionContextCache to set
-	 */
-	public void setSessionContextCache(Cache sessionContextCache)
-	{
-		this.sessionContextCache = sessionContextCache;
+		this.memoryService = memoryService;
 	}
 }

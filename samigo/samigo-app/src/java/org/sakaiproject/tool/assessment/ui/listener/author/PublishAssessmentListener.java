@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/PublishAssessmentListener.java $
- * $Id: PublishAssessmentListener.java 104664 2012-02-13 23:22:51Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/PublishAssessmentListener.java $
+ * $Id: PublishAssessmentListener.java 132501 2013-12-11 21:18:24Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,6 +49,7 @@ import org.sakaiproject.tool.assessment.integration.helper.ifc.CalendarServiceHe
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.service.gradebook.shared.AssignmentHasIllegalPointsException;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedMetaData;
@@ -80,7 +81,7 @@ import org.sakaiproject.exception.IdUnusedException;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: PublishAssessmentListener.java 104664 2012-02-13 23:22:51Z ktsao@stanford.edu $
+ * @version $Id: PublishAssessmentListener.java 132501 2013-12-11 21:18:24Z holladay@longsight.com $
  */
 
 public class PublishAssessmentListener
@@ -152,7 +153,7 @@ public class PublishAssessmentListener
   			author.setJustPublishedAnAssessment(true);
 
   			//update any random draw questions from pool since they could have changed
-  			int success = assessmentService.updateAllRandomPoolQuestions(assessment);
+  			int success = assessmentService.updateAllRandomPoolQuestions(assessment, true);
   			if(success == assessmentService.UPDATE_SUCCESS){
 
   				//grab new updated assessment
@@ -261,10 +262,10 @@ public class PublishAssessmentListener
     }
 
     //#b - check if gradebook exist, if so, if assessment title already exists in GB
-    GradebookService g = null;
+    GradebookExternalAssessmentService g = null;
     if (integrated){
-      g = (GradebookService) SpringBeanLocator.getInstance().
-           getBean("org.sakaiproject.service.gradebook.GradebookService");
+      g = (GradebookExternalAssessmentService) SpringBeanLocator.getInstance().
+           getBean("org.sakaiproject.service.gradebook.GradebookExternalAssessmentService");
     }
     String toGradebook = assessment.getEvaluationModel().getToGradeBook();
     try{

@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,10 +21,10 @@
 
 package org.sakaiproject.site.impl;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -37,11 +37,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.RoleAlreadyDefinedException;
-import org.sakaiproject.authz.cover.AuthzGroupService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
@@ -49,19 +50,20 @@ import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
+import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.site.api.ToolConfiguration;
-import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.Time;
-import org.sakaiproject.time.cover.TimeService;
+import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.tool.api.Session;
-import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.BaseResourceProperties;
 import org.sakaiproject.util.BaseResourcePropertiesEdit;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.Web;
 import org.sakaiproject.util.Xml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -99,8 +101,20 @@ public class BaseSite implements Site
 	/** The site short description. */
 	protected String m_shortDescription = null;
 
+	/** The HTML-safe version of the short description */
+	protected String m_htmlShortDescription = null;
+
 	/** The site description. */
 	protected String m_description = null;
+
+	/** The HTML-safe version of the description */
+	protected String m_htmlDescription = null;
+
+	/** Track whether this description has been loaded. */
+	protected boolean m_descriptionLoaded = false;
+	
+	/** Track whether this site has been fully loaded. */
+	protected boolean m_fullyLoaded = false;
 
 	/** The name of the role given to users who join a joinable site. */
 	protected String m_joinerRole = null;
@@ -156,6 +170,8 @@ public class BaseSite implements Site
 	/** The azg from the AuthzGroupService that is my AuthzGroup impl. */
 	protected AuthzGroup m_azg = null;
 
+	private AuthzGroupService authzGroupService;
+
 	/**
 	 * Set to true if we have changed our azg, so it need to be written back on
 	 * save.
@@ -170,6 +186,10 @@ public class BaseSite implements Site
 
 	private BaseSiteService siteService;
 
+	private SessionManager sessionManager;
+
+	private UserDirectoryService userDirectoryService;
+
 	/** Softly deleted data */
 	protected boolean m_isSoftlyDeleted = false;
 	protected Date m_softlyDeletedDate = null;
@@ -183,7 +203,8 @@ public class BaseSite implements Site
 	 */
 	public BaseSite(BaseSiteService siteService, String id)
 	{
-		this.siteService = siteService;
+		setupServices(siteService, sessionManager, userDirectoryService);
+
 		m_id = id;
 
 		// setup for properties
@@ -197,8 +218,10 @@ public class BaseSite implements Site
 
 		// if the id is not null (a new site, rather than a reconstruction)
 		// add the automatic (live) properties
-		if (m_id != null)
+		if (m_id != null) {
 			siteService.addLiveProperties(this);
+		}
+
 	}
 
 	/**
@@ -212,10 +235,7 @@ public class BaseSite implements Site
 	 */
 	public BaseSite(BaseSiteService siteService, Site other)
 	{
-		this.siteService = siteService;
-
-		BaseSite bOther = (BaseSite) other;
-		set(bOther, true);
+		this(siteService, other, true);
 	}
 
 	/**
@@ -229,7 +249,7 @@ public class BaseSite implements Site
 	 */
 	public BaseSite(BaseSiteService siteService, Site other, boolean exact)
 	{
-		this.siteService = siteService;
+		setupServices(siteService, sessionManager, userDirectoryService);
 		BaseSite bOther = (BaseSite) other;
 		set(bOther, exact);
 	}
@@ -240,9 +260,10 @@ public class BaseSite implements Site
 	 * @param el
 	 *        The message in XML in a DOM element.
 	 */
-	public BaseSite(BaseSiteService siteService, Element el)
+	public BaseSite(BaseSiteService siteService, Element el, TimeService timeService)
 	{
-		this.siteService = siteService;
+		setupServices(siteService, sessionManager, userDirectoryService);
+
 		// setup for properties
 		m_properties = new BaseResourcePropertiesEdit();
 
@@ -256,20 +277,23 @@ public class BaseSite implements Site
 		m_title = StringUtils.trimToNull(el.getAttribute("title"));
 
 		// description might be encripted
-		m_description = StringUtils.trimToNull(el.getAttribute("description"));
-		if (m_description == null)
+		String tmpDesc = StringUtils.trimToNull(el.getAttribute("description"));
+		if (tmpDesc == null)
 		{
-			m_description = StringUtils.trimToNull(Xml.decodeAttribute(el,
+			tmpDesc = StringUtils.trimToNull(Xml.decodeAttribute(el,
 					"description-enc"));
 		}
+		setDescription(tmpDesc);
+		m_descriptionLoaded = true;
 
 		// short description might be encripted
-		m_shortDescription = StringUtils.trimToNull(el.getAttribute("short-description"));
-		if (m_shortDescription == null)
+		String tmpShortDesc = StringUtils.trimToNull(el.getAttribute("short-description"));
+		if (tmpShortDesc == null)
 		{
-			m_shortDescription = StringUtils.trimToNull(Xml.decodeAttribute(el,
+			tmpShortDesc = StringUtils.trimToNull(Xml.decodeAttribute(el,
 					"short-description-enc"));
 		}
+		setShortDescription(tmpShortDesc);
 
 		m_joinable = Boolean.valueOf(el.getAttribute("joinable")).booleanValue();
 		m_joinerRole = StringUtils.trimToNull(el.getAttribute("joiner-role"));
@@ -297,13 +321,13 @@ public class BaseSite implements Site
 		String time = StringUtils.trimToNull(el.getAttribute("created-time"));
 		if (time != null)
 		{
-			m_createdTime = TimeService.newTimeGmt(time);
+			m_createdTime = timeService.newTimeGmt(time);
 		}
 
 		time = StringUtils.trimToNull(el.getAttribute("modified-time"));
 		if (time != null)
 		{
-			m_lastModifiedTime = TimeService.newTimeGmt(time);
+			m_lastModifiedTime = timeService.newTimeGmt(time);
 		}
 
 		String customOrder = StringUtils.trimToNull(el.getAttribute("customPageOrdered"));
@@ -478,9 +502,24 @@ public class BaseSite implements Site
 			boolean published, boolean joinable, boolean pubView, String joinRole,
 			boolean isSpecial, boolean isUser, String createdBy, Time createdOn,
 			String modifiedBy, Time modifiedOn, boolean customPageOrdered,
-			boolean isSoftlyDeleted, Date softlyDeletedDate)
+			boolean isSoftlyDeleted, Date softlyDeletedDate, SessionManager sessionManager, UserDirectoryService userDirectoryService)
 	{
-		this.siteService = siteService;
+		// Since deferred description loading is the edge case, assume the description is real.
+		// This could be masked by extending String and using instanceof, or extending BaseSite to mark lazy instances,
+		// but it not sure which is cleanest for now.
+		this(siteService, id, title, type, shortDesc, description, iconUrl, infoUrl, skin, published, joinable, pubView, joinRole,
+				isSpecial, isUser, createdBy, createdOn, modifiedBy, modifiedOn, customPageOrdered, isSoftlyDeleted, softlyDeletedDate,
+				true, sessionManager, userDirectoryService);
+	}
+
+	public BaseSite(BaseSiteService siteService, String id, String title, String type, String shortDesc,
+			String description, String iconUrl, String infoUrl, String skin,
+			boolean published, boolean joinable, boolean pubView, String joinRole,
+			boolean isSpecial, boolean isUser, String createdBy, Time createdOn,
+			String modifiedBy, Time modifiedOn, boolean customPageOrdered,
+			boolean isSoftlyDeleted, Date softlyDeletedDate, boolean descriptionLoaded, SessionManager sessionManager, UserDirectoryService userDirectoryService)
+	{
+		setupServices(siteService, sessionManager, userDirectoryService);
 
 		// setup for properties
 		m_properties = new BaseResourcePropertiesEdit();
@@ -494,8 +533,9 @@ public class BaseSite implements Site
 		m_id = id;
 		m_title = title;
 		m_type = type;
-		m_shortDescription = shortDesc;
-		m_description = description;
+		setShortDescription(shortDesc);
+		setDescription(description);
+		m_descriptionLoaded = descriptionLoaded;
 		m_icon = iconUrl;
 		m_info = infoUrl;
 		m_skin = skin;
@@ -525,9 +565,46 @@ public class BaseSite implements Site
 	}
 
 	/**
-	 * Set me to be a deep copy of other (all but my id.)
+	 * Sets up the services needed by the BaseSite to operate
+	 * @param siteService the BSS
+	 * @param sessionManager the SM
+	 * @param userDirectoryService the UDS
+	 * @throws java.lang.IllegalStateException if the services would be null
+	 */
+	void setupServices(BaseSiteService siteService, SessionManager sessionManager, UserDirectoryService userDirectoryService) {
+		this.siteService = siteService;
+		if (this.siteService == null) {
+			this.siteService = (BaseSiteService) ComponentManager.get(SiteService.class);
+			if (this.siteService == null) {
+				throw new IllegalStateException("Cannot get the SiteService when constructing BaseSite");
+			}
+		}
+		this.authzGroupService = this.siteService.authzGroupService();
+		this.sessionManager = sessionManager;
+		if (this.sessionManager == null) {
+			this.sessionManager = (SessionManager) ComponentManager.get(SessionManager.class);
+			if (this.sessionManager == null) {
+				throw new IllegalStateException("Cannot get the SessionManager when constructing BaseSite");
+			}
+		}
+		this.userDirectoryService = userDirectoryService;
+		if (this.userDirectoryService == null) {
+			this.userDirectoryService = (UserDirectoryService) ComponentManager.get(UserDirectoryService.class);
+			if (this.userDirectoryService == null) {
+				throw new IllegalStateException("Cannot get the UserDirectoryService when constructing BaseSite");
+			}
+		}
+	}
+
+	/**
+	 * Set me to be a deep copy of other (all but my id).
 	 * 
-	 * @param bOther
+	 * Note that this no longer triggers lazy loading as of KNL-1011. This should
+	 * not cause any issues because the getters still trigger fetching by default.
+	 * If a copy is made of a site that is not fully loaded, it should stay lazy,
+	 * rather than accidentally triggering fetches.
+	 *
+	 * @param other
 	 *        the other to copy.
 	 * @param exact
 	 *        If true, we copy ids - else we generate new ones for site, page
@@ -543,7 +620,10 @@ public class BaseSite implements Site
 
 		m_title = other.m_title;
 		m_shortDescription = other.m_shortDescription;
+		m_htmlShortDescription = other.m_htmlShortDescription;
 		m_description = other.m_description;
+		m_htmlDescription = other.m_htmlDescription;
+		m_descriptionLoaded = other.m_descriptionLoaded;
 		m_joinable = other.m_joinable;
 		m_joinerRole = other.m_joinerRole;
 		m_published = other.m_published;
@@ -553,7 +633,27 @@ public class BaseSite implements Site
 		m_type = other.m_type;
 		m_pubView = other.m_pubView;
 		m_customPageOrdered = other.m_customPageOrdered;
-		
+		if (this.siteService == null) {
+			this.siteService = (BaseSiteService) ComponentManager.get(SiteService.class);
+			if (this.siteService == null) {
+				M_log.error("Cannot set the SiteService when set from BaseSite");
+			}
+		}
+		sessionManager = other.sessionManager;
+		if (this.sessionManager == null) {
+			this.sessionManager = (SessionManager) ComponentManager.get(SessionManager.class);
+			if (this.sessionManager == null) {
+				M_log.error("Cannot set the SessionManager when set from BaseSite");
+			}
+		}
+		userDirectoryService = other.userDirectoryService;
+		if (this.userDirectoryService == null) {
+			this.userDirectoryService = (UserDirectoryService) ComponentManager.get(UserDirectoryService.class);
+			if (this.userDirectoryService == null) {
+				M_log.error("Cannot set the UserDirectoryService when set from BaseSite");
+			}
+		}
+
 		//site copies keep soft site deletion flags
 		m_isSoftlyDeleted = other.m_isSoftlyDeleted;
 		m_softlyDeletedDate = other.m_softlyDeletedDate;
@@ -564,7 +664,7 @@ public class BaseSite implements Site
 		}
 		else
 		{
-			m_createdUserId = UserDirectoryService.getCurrentUser().getId();
+			m_createdUserId = userDirectoryService.getCurrentUser().getId();
 		}
 		m_lastModifiedUserId = other.m_lastModifiedUserId;
 		if (other.m_createdTime != null)
@@ -572,8 +672,9 @@ public class BaseSite implements Site
 		if (other.m_lastModifiedTime != null)
 			m_lastModifiedTime = (Time) other.m_lastModifiedTime.clone();
 
+		// We make sure to avoid triggering fetching by passing false to getProperties
 		m_properties = new BaseResourcePropertiesEdit();
-		ResourceProperties pOther = other.getProperties();
+		ResourceProperties pOther = other.getProperties(false);
 		if (exact)
 		{
 			m_properties.addAll(pOther);
@@ -589,25 +690,27 @@ public class BaseSite implements Site
 			}
 		}
 		((BaseResourcePropertiesEdit) m_properties)
-				.setLazy(((BaseResourceProperties) other.getProperties()).isLazy());
+				.setLazy(((BaseResourceProperties) pOther).isLazy());
 
-		// deep copy the pages
+		// deep copy the pages, but avoid triggering fetching by passing false to getPages
 		m_pages = new ResourceVector();
-		for (Iterator iPages = other.getPages().iterator(); iPages.hasNext();)
+		for (Iterator iPages = other.getPages(false).iterator(); iPages.hasNext();)
 		{
 			BaseSitePage page = (BaseSitePage) iPages.next();
 			m_pages.add(new BaseSitePage(siteService,page, this, exact));
 		}
 		m_pagesLazy = other.m_pagesLazy;
 
-		// deep copy the groups
+		// deep copy the groups, but avoid triggering fetching by passing false to getGroups
 		m_groups = new ResourceVector();
-		for (Iterator iGroups = other.getGroups().iterator(); iGroups.hasNext();)
+		for (Iterator iGroups = other.getGroups(false).iterator(); iGroups.hasNext();)
 		{
 			Group group = (Group) iGroups.next();
 			m_groups.add(new BaseGroup(siteService, group, this, exact));
 		}
 		m_groupsLazy = other.m_groupsLazy;
+
+		m_fullyLoaded = other.m_fullyLoaded;
 	}
 
 	/**
@@ -624,7 +727,7 @@ public class BaseSite implements Site
 	 */
 	public String getUrl()
 	{
-		Session s = SessionManager.getCurrentSession();
+		Session s = sessionManager.getCurrentSession();
 		String controllingPortal = (String) s.getAttribute("sakai-controlling-portal");
 		String siteString = "/site/";
 		if (controllingPortal != null)
@@ -665,10 +768,29 @@ public class BaseSite implements Site
 	 */
 	public ResourceProperties getProperties()
 	{
-		// if lazy, resolve
-		if (((BaseResourceProperties) m_properties).isLazy())
+		// Default to loading the properties if lazy
+		return getProperties(true);
+	}
+
+	/**
+	 * Access the Site's properties, with control over fetching of lazy collections.
+	 *
+	 * The allowFetch flag is typically passed as true, but passed as false for
+	 * fine-grained control while building copies, etc. This signature is not provided
+	 * on the Site interface and is only intended for use within the implementation package.
+	 *
+	 * @param allowFetch
+	 *        when true, fetch properties if not loaded;
+	 *        when false, avoid fetching and return the properties collection as-is
+	 * @return The Site's properties.
+	 *
+	 */
+	public ResourceProperties getProperties(boolean allowFetch)
+	{
+		// if lazy, resolve unless requested to avoid fetching (as for copy constructor)
+		if (allowFetch && ((BaseResourceProperties) m_properties).isLazy())
 		{
-			siteService.m_storage.readSiteProperties(
+			siteService.storage().readSiteProperties(
 					this, m_properties);
 			((BaseResourcePropertiesEdit) m_properties).setLazy(false);
 		}
@@ -683,11 +805,11 @@ public class BaseSite implements Site
 	{
 		try
 		{
-			return UserDirectoryService.getUser(m_createdUserId);
+			return userDirectoryService.getUser(m_createdUserId);
 		}
 		catch (Exception e)
 		{
-			return UserDirectoryService.getAnonymousUser();
+			return userDirectoryService.getAnonymousUser();
 		}
 	}
 
@@ -698,11 +820,11 @@ public class BaseSite implements Site
 	{
 		try
 		{
-			return UserDirectoryService.getUser(m_lastModifiedUserId);
+			return userDirectoryService.getUser(m_lastModifiedUserId);
 		}
 		catch (Exception e)
 		{
-			return UserDirectoryService.getAnonymousUser();
+			return userDirectoryService.getAnonymousUser();
 		}
 	}
 
@@ -749,12 +871,40 @@ public class BaseSite implements Site
 		return m_shortDescription;
 	}
 
+	/** HTML escape and store the site's short description. */
+	protected void escapeShortDescription()
+	{
+		m_htmlShortDescription = Web.escapeHtml(m_shortDescription);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public String getHtmlShortDescription()
+	{
+		return m_htmlShortDescription;
+	}
+
+	/** HTML escape and store the site's full description. */
+	protected void escapeDescription()
+	{
+		m_htmlDescription = Web.escapeHtml(m_description);
+	}
+
 	/**
 	 * @inheritDoc
 	 */
 	public String getDescription()
 	{
 		return m_description;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public String getHtmlDescription()
+	{
+		return m_htmlDescription;
 	}
 
 	/**
@@ -830,9 +980,28 @@ public class BaseSite implements Site
 	 */
 	public List getPages()
 	{
-		if (m_pagesLazy)
+		// Default to loading the pages if lazy
+		return getPages(true);
+	}
+
+	/**
+	 * Access the Site's list of pages, with control over fetching of lazy collections.
+	 *
+	 * The allowFetch flag is typically passed as true, but passed as false for
+	 * fine-grained control while building copies, etc. This signature is not provided
+	 * on the Site interface and is only intended for use within the implementation package.
+	 *
+	 * @param allowFetch
+	 *        when true, fetch pages if not loaded;
+	 *        when false, avoid fetching and return the page list as-is
+	 * @return The Site's list of SitePages.
+	 *
+	 */
+	public List getPages(boolean allowFetch)
+	{
+		if (allowFetch && m_pagesLazy)
 		{
-			siteService.m_storage.readSitePages(this,
+			siteService.storage().readSitePages(this,
 					m_pages);
 			m_pagesLazy = false;
 		}
@@ -845,9 +1014,29 @@ public class BaseSite implements Site
 	 */
 	public Collection getGroups()
 	{
-		if (m_groupsLazy)
+		// Default to loading the groups if lazy
+		return getGroups(true);
+	}
+
+	/**
+	 * Access the Site's list of groups, with control over fetching of lazy collections.
+	 *
+	 * The allowFetch flag is typically passed as true, but passed as false for
+	 * fine-grained control while building copies, etc. This signature is not provided
+	 * on the Site interface and is only intended for use within the implementation package.
+	 *
+	 * @param allowFetch
+	 *        when true, fetch groups if not loaded;
+	 *        when false, avoid fetching and return the group list as-is
+	 * @return The Site's list of Groups.
+	 *
+	 */
+	public Collection getGroups(boolean allowFetch)
+	{
+		// Avoid fetching if requested (as for copy constructor)
+		if (allowFetch && m_groupsLazy)
 		{
-			siteService.m_storage.readSiteGroups(
+			siteService.storage().readSiteGroups(
 					this, m_groups);
 			m_groupsLazy = false;
 		}
@@ -868,7 +1057,7 @@ public class BaseSite implements Site
                 siteGroupRefs.add(group.getReference());
             }
         }
-        Collection<String> membersInGroups = AuthzGroupService.getAuthzUsersInGroups(siteGroupRefs);
+		Collection<String> membersInGroups = authzGroupService.getAuthzUsersInGroups(siteGroupRefs);
 		return membersInGroups;
 	}
 
@@ -882,7 +1071,7 @@ public class BaseSite implements Site
 		for ( Iterator it=siteGroups.iterator(); it.hasNext(); )
 			siteGroupRefs.add( ((Group)it.next()).getReference() );
 			
-		List groups = AuthzGroupService.getAuthzUserGroupIds(siteGroupRefs, userId);
+		List groups = authzGroupService.getAuthzUserGroupIds(siteGroupRefs, userId);
 		Collection<Group> rv = new Vector<Group>();
 		for (Iterator i = groups.iterator(); i.hasNext();)
 		{
@@ -908,7 +1097,7 @@ public class BaseSite implements Site
 		for ( Iterator it=siteGroups.iterator(); it.hasNext(); )
 			siteGroupRefs.add( ((Group)it.next()).getReference() );
 			
-		List groups = AuthzGroupService.getAuthzUserGroupIds(siteGroupRefs, userId);
+		List groups = authzGroupService.getAuthzUserGroupIds(siteGroupRefs, userId);
 		Collection<Group> rv = new Vector<Group>();
 		for (Iterator i = groups.iterator(); i.hasNext();)
 		{
@@ -937,11 +1126,23 @@ public class BaseSite implements Site
 	 */
 	public void loadAll()
 	{
+		// Load up the full description if needed. If we fail to find the site in the database,
+		// mark the description as loaded anyway to avoid retrying if multiple calls come in.
+		if (!m_descriptionLoaded)
+		{
+			Site fullSite = siteService.storage().get(getId());
+			if (fullSite != null)
+			{
+				setDescription(fullSite.getDescription());
+			}
+			m_descriptionLoaded = true;
+		}
+
 		// first, pages
 		getPages();
 
 		// KNL-259 - Avoiding single-page fetch of properties by way of BaseToolConfiguration constructor
-		siteService.m_storage.readSitePageProperties(this);
+		siteService.storage().readSitePageProperties(this);
 		for (Iterator i = getPages().iterator(); i.hasNext();)
 		{
 			BaseSitePage page = (BaseSitePage) i.next();
@@ -949,14 +1150,16 @@ public class BaseSite implements Site
 		}
 
 		// next, tools from all pages, all at once
-		siteService.m_storage.readSiteTools(this);
+		siteService.storage().readSiteTools(this);
 
 		// get groups, all at once
 		getGroups();
 
 		// now all properties
-		siteService.m_storage
+		siteService.storage()
 				.readAllSiteProperties(this);
+		
+		m_fullyLoaded = true;
 	}
 
 	/**
@@ -1284,6 +1487,7 @@ public class BaseSite implements Site
 	public void setShortDescription(String shortDescripion)
 	{
 		m_shortDescription = StringUtils.trimToNull(shortDescripion);
+		escapeShortDescription();
 	}
 
 	/**
@@ -1292,6 +1496,7 @@ public class BaseSite implements Site
 	public void setDescription(String description)
 	{
 		m_description = StringUtils.trimToNull(description);
+		escapeDescription();
 	}
 
 	/**
@@ -1393,7 +1598,7 @@ public class BaseSite implements Site
 		// if lazy, resolve
 		if (((BaseResourceProperties) m_properties).isLazy())
 		{
-			siteService.m_storage.readSiteProperties(
+			siteService.storage().readSiteProperties(
 					this, m_properties);
 			((BaseResourcePropertiesEdit) m_properties).setLazy(false);
 		}
@@ -1511,7 +1716,7 @@ public class BaseSite implements Site
 		{
 			try
 			{
-				m_azg = AuthzGroupService.getAuthzGroup(getReference());
+				m_azg = authzGroupService.getAuthzGroup(getReference());
 			}
 			catch (GroupNotDefinedException e)
 			{
@@ -1528,7 +1733,7 @@ public class BaseSite implements Site
 						// make sure it's valid
 						try
 						{
-							UserDirectoryService.getUser(userId);
+							userDirectoryService.getUser(userId);
 						}
 						catch (UserNotDefinedException e1)
 						{
@@ -1539,7 +1744,7 @@ public class BaseSite implements Site
 					// use the current user if needed
 					if (userId == null)
 					{
-						User user = UserDirectoryService.getCurrentUser();
+						User user = userDirectoryService.getCurrentUser();
 						userId = user.getId();
 					}
 
@@ -1548,7 +1753,7 @@ public class BaseSite implements Site
 					AuthzGroup template = null;
 					try
 					{
-						template = AuthzGroupService.getAuthzGroup(groupAzgTemplate);
+						template = authzGroupService.getAuthzGroup(groupAzgTemplate);
 					}
 					catch (Exception e1)
 					{
@@ -1556,14 +1761,14 @@ public class BaseSite implements Site
 						{
 							// if the template is not defined, try the fall back
 							// template
-							template = AuthzGroupService.getAuthzGroup("!site.template");
+							template = authzGroupService.getAuthzGroup("!site.template");
 						}
 						catch (Exception e2)
 						{
 						}
 					}
 
-					m_azg = AuthzGroupService.newAuthzGroup(getReference(), template,
+					m_azg = authzGroupService.newAuthzGroup(getReference(), template,
 							userId);
 					m_azgChanged = true;
 				}
@@ -1719,12 +1924,45 @@ public class BaseSite implements Site
 	public void setSoftlyDeleted(boolean flag) {
 		m_isSoftlyDeleted = flag;
 		if(flag) {
-			m_softlyDeletedDate = new Date();
+			m_softlyDeletedDate = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 		} else {
 			m_softlyDeletedDate = null;
 		}
 	}
 
+	/**
+	 * Check if this Site's description field has been populated.
+	 * Note that this is intentionally not exposed through the Site interface to keep it
+	 * within the implementation package. The specifics of other lazy loading are not exposed
+	 * through the Site interface; the collections are simply empty if not loaded. The
+	 * SiteService encourages calls to {@link SiteService#getSite(String) getSite} and the
+	 * Site interface exposes {@link Site#loadAll() loadAll} to ensure all loading.
+	 *
+	 * @return true if the description has been loaded for this Site object
+	 */
+	public boolean isDescriptionLoaded()
+	{
+		return m_descriptionLoaded;
+	}
+	
+	/**
+	 * Check whether this Site has been fully populated.
+	 * Note that this is intentionally not exposed through the Site interface to keep it
+	 * within the implementation package. The specifics of other lazy loading are not exposed
+	 * through the Site interface; the collections are simply empty if not loaded. The
+	 * SiteService encourages calls to {@link SiteService#getSite(String) getSite} and the
+	 * Site interface exposes {@link Site#loadAll() loadAll} to ensure all loading.
+	 *
+	 * @return true if the Site object has been fully loaded (by loadAll)
+	 */
+	public boolean isFullyLoaded()
+	{
+		return m_fullyLoaded;
+	}
+
+	public void setFullyLoaded(boolean flag) {
+		m_fullyLoaded = flag;
+	}
 
 
 }

@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.net.URLEncoder;
 
 import org.sakaiproject.lessonbuildertool.SimplePageComment;
 import org.sakaiproject.lessonbuildertool.SimplePageItem;
@@ -20,6 +21,9 @@ import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean;
 import org.sakaiproject.lessonbuildertool.tool.view.CommentsViewParameters;
 import org.sakaiproject.lessonbuildertool.tool.view.GeneralViewParameters;
+import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.site.api.Group;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.time.cover.TimeService;
@@ -30,6 +34,7 @@ import uk.org.ponder.localeutil.LocaleGetter;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIInternalLink;
+import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UIVerbatim;
 import uk.org.ponder.rsf.components.decorators.UIFreeAttributeDecorator;
@@ -121,7 +126,7 @@ public class CommentsProducer implements ViewComponentProducer, ViewParamsReport
 				comments = (List<SimplePageComment>) simplePageToolDao.findCommentsOnItemByAuthor(params.itemId, params.author);
 			}else if(filter && params.studentContentItem) {
 				List<SimpleStudentPage> studentPages = simplePageToolDao.findStudentPages(params.itemId);
-				
+				Site site = SiteService.getSite(currentPage.getSiteId());
 				itemToPageowner = new HashMap<Long, String>();
 				List<Long> commentsItemIds = new ArrayList<Long>();
 				for(SimpleStudentPage p : studentPages) {
@@ -129,8 +134,15 @@ public class CommentsProducer implements ViewComponentProducer, ViewParamsReport
 					if(!p.isDeleted()) {
 						commentsItemIds.add(p.getCommentsSection());
 						String pageOwner = p.getOwner();
+						String pageGroup = p.getGroup();
+						if (pageGroup != null)
+						    pageOwner = pageGroup;
 						try {
-						    String o = UserDirectoryService.getUser(pageOwner).getDisplayName();
+						    String o = null;
+						    if (pageGroup != null)
+							o = site.getGroup(pageGroup).getTitle();
+						    else
+							o = UserDirectoryService.getUser(pageOwner).getDisplayName();
 						    if (o != null)
 							pageOwner = o;
 						} catch (Exception ignore) {};
@@ -426,15 +438,17 @@ public class CommentsProducer implements ViewComponentProducer, ViewParamsReport
 		
 		if(filter && simplePageBean.getEditPrivs() == 0) {
 			UIOutput.make(commentContainer, "contextSpan");
-			GeneralViewParameters eParams = new GeneralViewParameters(ShowPageProducer.VIEW_ID, comment.getPageId());
-			eParams.setPath("none");
-			eParams.author = comment.getAuthor();
-			
+
+			// because this is called via /faces, the full Sakai context is not set up.
+			// in particular, UIInternalLink will generate the wrong thing. Thus we
+			// make up a full URL ourselves.
+			String pars = "/portal/tool/" + URLEncoder.encode(params.placementId) + "/ShowPage?path=none" +
+			    "&author=" + URLEncoder.encode(comment.getAuthor());
 			// Need to provide the item ID
 			if(!params.studentContentItem && params.pageItemId != -1L) {
-				eParams.setItemId(params.pageItemId);
+			    pars += "&itemId=" + URLEncoder.encode(Long.toString(params.pageItemId));
 			}
-			UIInternalLink contextLink = UIInternalLink.make(commentContainer, "contextLink", messageLocator.getMessage("simplepage.show-context"), eParams);
+			UILink contextLink = UILink.make(commentContainer, "contextLink", messageLocator.getMessage("simplepage.show-context"), pars);
 			if (itemToPageowner == null)
 			    contextLink.decorate( new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.context-link-title-1").
 									       replace("{}", author)));
@@ -459,7 +473,7 @@ public class CommentsProducer implements ViewComponentProducer, ViewParamsReport
 	}
 	
 	public String getTimeDifference(long timeMillis) {
-		long difference = Math.round((System.currentTimeMillis() - timeMillis) / 1000); // In seconds
+		long difference = Math.round((System.currentTimeMillis() - timeMillis) / 1000.0d); // In seconds
 		
 		// These constants are calculated to take rounding into effect, and try to give a fairly
 		// accurate representation of the time difference using words.
@@ -471,27 +485,27 @@ public class CommentsProducer implements ViewComponentProducer, ViewParamsReport
 		}else if(difference < 90) {
 			descrip = messageLocator.getMessage("simplepage.one_min");
 		}else if(difference < 3570) { // 2 mins --> 59 mins
-			int minutes = Math.max(2, Math.round(difference / 60));
+			long minutes = Math.max(2, Math.round(difference / 60.0d));
 			descrip = messageLocator.getMessage("simplepage.x_min").replace("{}", String.valueOf(minutes));
 		}else if(difference < 7170) {
 			descrip = messageLocator.getMessage("simplepage.one_hour");
 		}else if(difference < 84600) { // 2 hours --> 23 hours
-			int hours = Math.max(2, Math.round(difference / 3600));
+			long hours = Math.max(2, Math.round(difference / 3600.0d));
 			descrip = messageLocator.getMessage("simplepage.x_hour").replace("{}", String.valueOf(hours));
 		}else if(difference < 129600) {
 			descrip = messageLocator.getMessage("simplepage.one_day");
 		}else if(difference < 2548800) { // 2 days --> 29 days
-			int days = Math.max(2, Math.round(difference / 86400));
+			long days = Math.max(2, Math.round(difference / 86400.0d));
 			descrip = messageLocator.getMessage("simplepage.x_day").replace("{}", String.valueOf(days));
 		}else if(difference < 3888000) {
 			descrip = messageLocator.getMessage("simplepage.one_month");
 		}else if(difference < 29808000) { // 2 months --> 11 months
-			int months = Math.max(2, Math.round(difference / 2592000));
+			long months = Math.max(2, Math.round(difference / 2592000.0d));
 			descrip = messageLocator.getMessage("simplepage.x_month").replace("{}", String.valueOf(months));
 		}else if(difference < 47304000) {
 			descrip = messageLocator.getMessage("simplepage.one_year");
 		}else { // 2+ years
-			int years = Math.max(2, Math.round(difference / 31536000));
+			long years = Math.max(2, Math.round(difference / 31536000.0d));
 			descrip = messageLocator.getMessage("simplepage.x_year").replace("{}", String.valueOf(years));
 		}
 		

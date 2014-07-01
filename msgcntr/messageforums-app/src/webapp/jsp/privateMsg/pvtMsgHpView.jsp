@@ -27,14 +27,14 @@
 
 
 
-		       		<script type="text/javascript" src="/library/js/jquery.js"></script>
+		       		<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 
 
 			<sakai:tool_bar  rendered="#{PrivateMessagesTool.messages}">
   			<sakai:tool_bar_item value="#{msgs.pvt_compose}" action="#{PrivateMessagesTool.processPvtMsgCompose}"  rendered="#{! PrivateMessagesTool.dispError}" />
   			<sakai:tool_bar_item value=" #{msgs.pvt_newfolder}" action="#{PrivateMessagesTool.processPvtMsgFolderSettingAdd}"  rendered="#{! PrivateMessagesTool.dispError}" />
- 			<sakai:tool_bar_item value=" #{msgs.pvt_settings}" action="#{PrivateMessagesTool.processPvtMsgSettings}" />
+ 			<sakai:tool_bar_item value=" #{msgs.pvt_settings}" action="#{PrivateMessagesTool.processPvtMsgSettings}" rendered="#{PrivateMessagesTool.showSettingsLink}" />
  			<sakai:tool_bar_item value=" #{msgs.pvt_permissions}" action="#{PrivateMessagesTool.processActionPermissions}" rendered="#{PrivateMessagesTool.instructor}" />
  			</sakai:tool_bar>
  		

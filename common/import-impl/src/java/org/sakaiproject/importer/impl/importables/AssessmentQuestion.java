@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-impl/src/java/org/sakaiproject/importer/impl/importables/AssessmentQuestion.java $
- * $Id: AssessmentQuestion.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-impl/src/java/org/sakaiproject/importer/impl/importables/AssessmentQuestion.java $
+ * $Id: AssessmentQuestion.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ public class AssessmentQuestion extends AbstractImportable {
 	private Set correctAnswerIDs;
 	private String feedbackWhenCorrect;
 	private String feedbackWhenIncorrect;
-	private Float pointValue;
+	private Double pointValue;
 	private Integer position;
 
 	public Integer getPosition() {
@@ -114,11 +114,11 @@ public class AssessmentQuestion extends AbstractImportable {
 		this.choices = choices;
 	}
 
-	public Float getPointValue() {
+	public Double getPointValue() {
 		return pointValue;
 	}
 
-	public void setPointValue(Float pointValue) {
+	public void setPointValue(Double pointValue) {
 		this.pointValue = pointValue;
 	}
 

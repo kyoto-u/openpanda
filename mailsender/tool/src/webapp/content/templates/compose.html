@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:rsf="http://ponder.org.uk/rsf" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:rsf="http://ponder.org.uk/rsf" xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 	<title rsf:id="page-title">Mail Sender</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -8,12 +8,9 @@
 	<link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
 	<link href="../css/MailSender.css" type="text/css" rel="stylesheet" media="all" />
 	<script type="text/javascript" language="JavaScript" src="/library/js/headscripts.js"></script>
-	<script type="text/javascript" language="JavaScript" src="../js/jquery-1.2.6.min.js"></script>
-	<script type="text/javascript" language="JavaScript" src="../js/attachment.js"></script>
-	<script type="text/javascript" language="JavaScript" src="../js/mailSender.js"></script>
-	<script type="text/javascript" language="JavaScript" src="../js/dirty.js"></script>
-	<script type="text/javascript" language="JavaScript" src="../js/rsf.js"></script>
-	<script type="text/javascript" language="JavaScript" src="../js/recipientSelector.js"></script>
+	<script type="text/javascript" language="JavaScript" src="/library/js/jquery-latest.min.js"></script>
+	<script type="text/javascript" rsf:id="resize"/>
+	<script type="text/javascript" language="JavaScript" src="../js/mailsender.js"></script>
 </head>
 
 <body>
@@ -72,10 +69,10 @@
 		</div>
 		<div class="section">
 			<div class="headerkeyholder">
-				<span rsf:id="msg=message_subject" class="headerkey">Subject:</span>
+				<span class="headerkey"><label rsf:id="msg=message_subject" for="subject">Subject:</label></span>
 			</div>
 			<div class="headervalue">
-				<input rsf:id="subject" class="fullwidth" name="subject" value="" type="text" />
+				<input rsf:id="subject" id="subject" class="fullwidth" name="subject" value="" type="text" />
 			</div>
 		</div>
 

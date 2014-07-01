@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site/tags/site-2.9.3/site-tool/tool/src/java/org/sakaiproject/site/tool/AdminSitesAction.java $
- * $Id: AdminSitesAction.java 94263 2011-06-30 16:15:36Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/site/tags/sakai-10.0/site-tool/tool/src/java/org/sakaiproject/site/tool/AdminSitesAction.java $
+ * $Id: AdminSitesAction.java 113961 2012-10-04 05:19:17Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1229,6 +1229,10 @@ public class AdminSitesAction extends PagedResourceActionII
 				} catch (IdUnusedException e) {
 					addAlert(state, rb.getFormattedMessage("sitact.thesitid2", new Object[]{site.getId()}));
 				}
+//				catch (IdUnusedException e)
+//				{
+//					addAlert(state, rb.getFormattedMessage("sitact.notfound", new Object[]{site.getId()}));
+//				}
 			}
 		}
 
@@ -1287,6 +1291,10 @@ public class AdminSitesAction extends PagedResourceActionII
 		} catch (IdUnusedException e) {
 			addAlert(state, rb.getFormattedMessage("sitact.thesitid2", new Object[]{site.getId()}));
 		}
+//		catch (IdUnusedException e)
+//		{
+//			addAlert(state, rb.getFormattedMessage("sitact.notfound", new Object[]{site.getId()}));
+//		}
 
 		// cleanup
 		cleanState(state);
@@ -1332,6 +1340,7 @@ public class AdminSitesAction extends PagedResourceActionII
 		String icon = StringUtil.trimToNull(data.getParameters().getString("icon"));
 		String info = StringUtil.trimToNull(data.getParameters().getString("info"));
 		boolean published = data.getParameters().getBoolean("published");
+		boolean softlyDeleted = data.getParameters().getBoolean("softlyDeleted");
 		String skin = StringUtil.trimToNull(data.getParameters().getString("skin"));
 		boolean pubView = data.getParameters().getBoolean("pubView");
 		boolean customOrder = data.getParameters().getBoolean("customOrder");
@@ -1434,6 +1443,7 @@ public class AdminSitesAction extends PagedResourceActionII
 			site.setType(type);
 			site.setPubView(pubView);
 			site.setPublished(published);
+			site.setSoftlyDeleted(softlyDeleted);
 			site.setCustomPageOrdered(customOrder);
 		}
 

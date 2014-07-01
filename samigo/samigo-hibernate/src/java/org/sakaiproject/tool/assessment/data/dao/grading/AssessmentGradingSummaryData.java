@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/grading/AssessmentGradingSummaryData.java $
- * $Id: AssessmentGradingSummaryData.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/grading/AssessmentGradingSummaryData.java $
+ * $Id: AssessmentGradingSummaryData.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,8 +24,6 @@ package org.sakaiproject.tool.assessment.data.dao.grading;
 import java.util.Date;
 
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingSummaryIfc;
 
 /**
  * <p>Title: </p>
@@ -37,7 +35,7 @@ import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingSummar
  */
 
 public class AssessmentGradingSummaryData
-    implements AssessmentGradingSummaryIfc
+    
 // need to implement org.osid.assessment.ItemTaken in the future
 // - daisyf 10/11/04
 {
@@ -50,23 +48,23 @@ private Long assessmentGradingSummaryId;
   private String agentId;
   private Integer totalSubmitted;
   private Integer totalSubmittedForGrade;
-  private AssessmentGradingIfc lastSubmittedAssessmentGrading;
+  private AssessmentGradingData lastSubmittedAssessmentGrading;
   private Date lastSubmittedDate;
   private Boolean lastSubmittedAssessmentIsLate;
-  private Float sumOf_autoScoreForGrade;
-  private Float average_autoScoreForGrade;
-  private Float highest_autoScoreForGrade;
-  private Float lowest_autoScoreForGrade;
-  private Float last_autoScoreForGrade;
-  private Float sumOf_overrideScoreForGrade;
-  private Float average_overrideScoreForGrade;
-  private Float highest_overrideScoreForGrade;
-  private Float lowest_overrideScoreForGrade;
-  private Float last_overrideScoreForGrade;
+  private Double sumOf_autoScoreForGrade;
+  private Double average_autoScoreForGrade;
+  private Double highest_autoScoreForGrade;
+  private Double lowest_autoScoreForGrade;
+  private Double last_autoScoreForGrade;
+  private Double sumOf_overrideScoreForGrade;
+  private Double average_overrideScoreForGrade;
+  private Double highest_overrideScoreForGrade;
+  private Double lowest_overrideScoreForGrade;
+  private Double last_overrideScoreForGrade;
   private Integer scoringType;
-  private AssessmentGradingIfc acceptedAssessmentGrading;
+  private AssessmentGradingData acceptedAssessmentGrading;
   private Boolean acceptedAssessmentIsLate;
-  private Float finalAssessmentScore;
+  private Double finalAssessmentScore;
   private Boolean feedToGradeBook;
 
   public AssessmentGradingSummaryData() {
@@ -101,10 +99,10 @@ private Long assessmentGradingSummaryId;
   public void setTotalSubmittedForGrade(Integer totalSubmittedForGrade) {
     this.totalSubmittedForGrade = totalSubmittedForGrade;
   }
-  public AssessmentGradingIfc getLastSubmittedAssessmentGrading() {
+  public AssessmentGradingData getLastSubmittedAssessmentGrading() {
     return lastSubmittedAssessmentGrading;
   }
-  public void setLastSubmittedAssessmentGrading(AssessmentGradingIfc lastSubmittedAssessmentGrading) {
+  public void setLastSubmittedAssessmentGrading(AssessmentGradingData lastSubmittedAssessmentGrading) {
     this.lastSubmittedAssessmentGrading = lastSubmittedAssessmentGrading;
   }
   public Date getLastSubmittedDate() {
@@ -119,64 +117,64 @@ private Long assessmentGradingSummaryId;
   public void setLastSubmittedAssessmentIsLate(Boolean lastSubmittedAssessmentIsLate) {
     this.lastSubmittedAssessmentIsLate = lastSubmittedAssessmentIsLate;
   }
-  public Float getSumOf_autoScoreForGrade() {
+  public Double getSumOf_autoScoreForGrade() {
     return sumOf_autoScoreForGrade;
   }
-  public void setSumOf_autoScoreForGrade(Float sumOf_autoScoreForGrade) {
+  public void setSumOf_autoScoreForGrade(Double sumOf_autoScoreForGrade) {
     this.sumOf_autoScoreForGrade = sumOf_autoScoreForGrade;
   }
-  public Float getAverage_autoScoreForGrade() {
+  public Double getAverage_autoScoreForGrade() {
     return average_autoScoreForGrade;
   }
-  public void setAverage_autoScoreForGrade(Float average_autoScoreForGrade) {
+  public void setAverage_autoScoreForGrade(Double average_autoScoreForGrade) {
     this.average_autoScoreForGrade = average_autoScoreForGrade;
   }
-  public Float getHighest_autoScoreForGrade() {
+  public Double getHighest_autoScoreForGrade() {
     return highest_autoScoreForGrade;
   }
-  public void setHighest_autoScoreForGrade(Float highest_autoScoreForGrade) {
+  public void setHighest_autoScoreForGrade(Double highest_autoScoreForGrade) {
     this.highest_autoScoreForGrade = highest_autoScoreForGrade;
   }
-  public Float getLowest_autoScoreForGrade() {
+  public Double getLowest_autoScoreForGrade() {
     return lowest_autoScoreForGrade;
   }
-  public void setLowest_autoScoreForGrade(Float lowest_autoScoreForGrade) {
+  public void setLowest_autoScoreForGrade(Double lowest_autoScoreForGrade) {
     this.lowest_autoScoreForGrade = lowest_autoScoreForGrade;
   }
-  public Float getLast_autoScoreForGrade() {
+  public Double getLast_autoScoreForGrade() {
     return last_autoScoreForGrade;
   }
-  public void setLast_autoScoreForGrade(Float last_autoScoreForGrade) {
+  public void setLast_autoScoreForGrade(Double last_autoScoreForGrade) {
     this.last_autoScoreForGrade = last_autoScoreForGrade;
   }
-  public Float getSumOf_overrideScoreForGrade() {
+  public Double getSumOf_overrideScoreForGrade() {
     return sumOf_overrideScoreForGrade;
   }
-  public void setSumOf_overrideScoreForGrade(Float sumOf_overrideScoreForGrade) {
+  public void setSumOf_overrideScoreForGrade(Double sumOf_overrideScoreForGrade) {
     this.sumOf_overrideScoreForGrade = sumOf_overrideScoreForGrade;
   }
-  public Float getAverage_overrideScoreForGrade() {
+  public Double getAverage_overrideScoreForGrade() {
     return average_overrideScoreForGrade;
   }
-  public void setAverage_overrideScoreForGrade(Float average_overrideScoreForGrade) {
+  public void setAverage_overrideScoreForGrade(Double average_overrideScoreForGrade) {
     this.average_overrideScoreForGrade = average_overrideScoreForGrade;
   }
-  public Float getHighest_overrideScoreForGrade() {
+  public Double getHighest_overrideScoreForGrade() {
     return highest_overrideScoreForGrade;
   }
-  public void setHighest_overrideScoreForGrade(Float highest_overrideScoreForGrade) {
+  public void setHighest_overrideScoreForGrade(Double highest_overrideScoreForGrade) {
     this.highest_overrideScoreForGrade = highest_overrideScoreForGrade;
   }
-  public Float getLowest_overrideScoreForGrade() {
+  public Double getLowest_overrideScoreForGrade() {
     return lowest_overrideScoreForGrade;
   }
-  public void setLowest_overrideScoreForGrade(Float lowest_overrideScoreForGrade) {
+  public void setLowest_overrideScoreForGrade(Double lowest_overrideScoreForGrade) {
     this.lowest_overrideScoreForGrade = lowest_overrideScoreForGrade;
   }
-  public Float getLast_overrideScoreForGrade() {
+  public Double getLast_overrideScoreForGrade() {
     return last_overrideScoreForGrade;
   }
-  public void setLast_overrideScoreForGrade(Float last_overrideScoreForGrade) {
+  public void setLast_overrideScoreForGrade(Double last_overrideScoreForGrade) {
     this.last_overrideScoreForGrade = last_overrideScoreForGrade;
   }
   public Integer getScoringType() {
@@ -186,10 +184,10 @@ private Long assessmentGradingSummaryId;
     this.scoringType = scoringType;
   }
 
-  public AssessmentGradingIfc getAcceptedAssessmentGrading() {
+  public AssessmentGradingData getAcceptedAssessmentGrading() {
     return acceptedAssessmentGrading;
   }
-  public void setAcceptedAssessmentGrading(AssessmentGradingIfc acceptedAssessmentGrading) {
+  public void setAcceptedAssessmentGrading(AssessmentGradingData acceptedAssessmentGrading) {
     this.acceptedAssessmentGrading = acceptedAssessmentGrading;
   }
   public Boolean getAcceptedAssessmentIsLate() {
@@ -198,10 +196,10 @@ private Long assessmentGradingSummaryId;
   public void setAcceptedAssessmentIsLate(Boolean acceptedAssessmentIsLate) {
     this.acceptedAssessmentIsLate = acceptedAssessmentIsLate;
   }
-  public Float getFinalAssessmentScore() {
+  public Double getFinalAssessmentScore() {
     return finalAssessmentScore;
   }
-  public void setFinalAssessmentScore(Float finalAssessmentScore) {
+  public void setFinalAssessmentScore(Double finalAssessmentScore) {
     this.finalAssessmentScore = finalAssessmentScore;
   }
   public Boolean getFeedToGradeBook() {

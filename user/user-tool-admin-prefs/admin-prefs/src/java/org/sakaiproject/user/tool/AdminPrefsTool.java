@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.3/user-tool-admin-prefs/admin-prefs/src/java/org/sakaiproject/user/tool/AdminPrefsTool.java $
- * $Id: AdminPrefsTool.java 111996 2012-08-30 19:53:13Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.0/user-tool-admin-prefs/admin-prefs/src/java/org/sakaiproject/user/tool/AdminPrefsTool.java $
+ * $Id: AdminPrefsTool.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-impl/impl/src/java/org/sakaiproject/citation/impl/DbCitationService.java $
- * $Id: DbCitationService.java 118326 2013-01-14 18:29:49Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/DbCitationService.java $
+ * $Id: DbCitationService.java 119774 2013-02-08 09:58:57Z a.fish@lancaster.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -290,7 +290,7 @@ public class DbCitationService extends BaseCitationService
 				}
 				else
 				{
-					M_log.info("DbCitationStorage.saveCitation value not List or String: " + value.getClass().getCanonicalName() + " " + value);
+					M_log.debug("DbCitationStorage.saveCitation value not List or String: " + value.getClass().getCanonicalName() + " " + value);
 					fields[1] = name;
 					fields[2] = value;
 
@@ -330,12 +330,16 @@ public class DbCitationService extends BaseCitationService
         	deleteCollection(collection);
 
 			String statement = "insert into " + m_collectionTableName + " (" + m_collectionTableId + ",PROPERTY_NAME,PROPERTY_VALUE) values ( ?, ?, ? )";
+			String orderStatement = "insert into " + m_collectionOrderTableName + " VALUES(?,?,?)";
 
 			boolean ok = true;
 
 			String collectionId = collection.getId();
 			Object[] fields = new Object[3];
 			fields[0] = collectionId;
+			
+			Object[] orderFields = new Object[3];
+			orderFields[0] = collectionId;
 
 			List members = collection.getCitations();
 			Iterator citationIt = members.iterator();
@@ -344,11 +348,11 @@ public class DbCitationService extends BaseCitationService
 				Citation citation = (Citation) citationIt.next();
 
 				save(citation);
-
-				// process the insert
-				fields[1] = PROPERTY_HAS_CITATION;
-				fields[2] = citation.getId();
-				ok = m_sqlService.dbWrite(statement, fields);
+				
+				// Insert the ordering table data.
+				orderFields[1] = citation.getId();
+				orderFields[2] = citation.getPosition();
+				ok = m_sqlService.dbWrite(orderStatement, orderFields);
 			}
 			
 			long mostRecentUpdate = TimeService.newTime().getTime();			
@@ -440,7 +444,6 @@ public class DbCitationService extends BaseCitationService
 
 			Object[] fields = new Object[3];
 			fields[0] = edit.getId();
-			fields[1] = PROPERTY_HAS_CITATION;
 			boolean ok = true;
 
 			List members = edit.getCitations();
@@ -457,10 +460,6 @@ public class DbCitationService extends BaseCitationService
 		    	}
 
 				commitCitation(citation);
-
-				// process the insert
-				fields[2] = citation.getId();
-				ok = m_sqlService.dbWrite(statement, fields);
 			}
 
 			edit.m_mostRecentUpdate = TimeService.newTime().getTime();			
@@ -554,6 +553,10 @@ public class DbCitationService extends BaseCitationService
 			fields[0] = edit.getId();
 
 			boolean ok = m_sqlService.dbWrite(statement, fields);
+			
+          	statement = "delete from " + m_collectionOrderTableName + " where (" + m_collectionTableId + " = ?)";
+
+			ok = m_sqlService.dbWrite(statement, new Object[] {edit.getId()});
         }
 
 		/* (non-Javadoc)
@@ -857,6 +860,8 @@ public class DbCitationService extends BaseCitationService
 			fields[0] = collectionId;
 
 			List triples = m_sqlService.dbRead(statement, fields, new TripleReader());
+			
+			int position = 1;
 
 			Iterator it = triples.iterator();
 			while(it.hasNext())
@@ -864,10 +869,12 @@ public class DbCitationService extends BaseCitationService
 				Triple triple = (Triple) it.next();
 				if(triple.isValid())
 				{
-					if(triple.getName().equals(PROPERTY_HAS_CITATION))
+					if(triple.getName().startsWith(PROPERTY_HAS_CITATION))
 					{
-						Citation citation = retrieveCitation((String) triple.getValue());
-						edit.add(citation);
+						// SAK-22296. Cunningly move the citation links into the new ordering table
+						m_sqlService.dbWrite("INSERT INTO " + m_collectionOrderTableName + " VALUES(?,?,?)", new Object[] {collectionId,(String)triple.getValue(),position});
+						position += 1;
+						m_sqlService.dbWrite("DELETE FROM " + m_collectionTableName + " WHERE " + m_collectionTableId + " = ? AND PROPERTY_NAME = '" + PROPERTY_HAS_CITATION + "' AND PROPERTY_VALUE LIKE ?", new Object[] {collectionId,(String)triple.getValue()});
 					}
 					else if(triple.getName().equals(PROP_MOST_RECENT_UPDATE))
 					{
@@ -895,6 +902,17 @@ public class DbCitationService extends BaseCitationService
 					 * TODO: else add property??
 					 */
 				}
+			}
+			
+			// Now add the citations into the ordering table. This has replaced the sakai:hasCitation linking mechanism.
+			String orderStatement = "select * from " + m_collectionOrderTableName + " where (COLLECTION_ID = ?) ORDER BY LOCATION";
+			List<Triple> orderTriples = m_sqlService.dbRead(orderStatement, new Object[] {collectionId}, new TripleReader());
+			
+			for(Triple orderTriple : orderTriples)
+			{
+				Citation citation = retrieveCitation((String) orderTriple.getName());
+				citation.setPosition(Integer.parseInt((String) orderTriple.getValue()));
+				edit.add(citation);
 			}
 
 			return edit;
@@ -1402,6 +1420,9 @@ public class DbCitationService extends BaseCitationService
 
 	/** Table name for collections. */
 	protected String m_collectionTableName = "CITATION_COLLECTION";
+	
+	/** Table name for collection order. */
+	protected String m_collectionOrderTableName = "CITATION_COLLECTION_ORDER";
 
 	protected String m_schemaFieldTableId = "FIELD_ID";
 

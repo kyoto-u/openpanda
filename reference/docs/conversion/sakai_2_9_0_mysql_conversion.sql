@@ -20,12 +20,10 @@ alter table SAKAI_SITE add SOFTLY_DELETED_DATE datetime;
 -- KNL-725 use a column type that stores the timezone
 alter table SAKAI_CLUSTER change UPDATE_TIME UPDATE_TIME timestamp;
 
--- See KNL-985 - These were removed from 2.9.x pending further investigation
-
 -- KNL-734 type of session and event date column
--- alter table SAKAI_SESSION change SESSION_START SESSION_START timestamp;
--- alter table SAKAI_SESSION change SESSION_END SESSION_END timestamp;
--- alter table SAKAI_EVENT change EVENT_DATE EVENT_DATE timestamp;
+alter table SAKAI_SESSION change SESSION_START SESSION_START timestamp;
+alter table SAKAI_SESSION change SESSION_END SESSION_END timestamp;
+alter table SAKAI_EVENT change EVENT_DATE EVENT_DATE timestamp;
 
 -- SAK-19964 Gradebook drop highest and/or lowest or keep highest score for a student
 alter table GB_CATEGORY_T add column DROP_HIGHEST int(11) null;
@@ -201,7 +199,7 @@ from PERMISSIONS_SRC_TEMP TMPSRC
 JOIN SAKAI_REALM_ROLE SRR ON (TMPSRC.ROLE_NAME = SRR.ROLE_NAME)
 JOIN SAKAI_REALM_FUNCTION SRF ON (TMPSRC.FUNCTION_NAME = SRF.FUNCTION_NAME);
 
--- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper")
+-- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper" or "!user.template")
 INSERT INTO SAKAI_REALM_RL_FN (REALM_KEY, ROLE_KEY, FUNCTION_KEY)
 SELECT
     SRRFD.REALM_KEY, SRRFD.ROLE_KEY, TMP.FUNCTION_KEY
@@ -209,7 +207,7 @@ FROM
     (SELECT DISTINCT SRRF.REALM_KEY, SRRF.ROLE_KEY FROM SAKAI_REALM_RL_FN SRRF) SRRFD
     JOIN PERMISSIONS_TEMP TMP ON (SRRFD.ROLE_KEY = TMP.ROLE_KEY)
     JOIN SAKAI_REALM SR ON (SRRFD.REALM_KEY = SR.REALM_KEY)
-    WHERE SR.REALM_ID != '!site.helper'
+    WHERE SR.REALM_ID != '!site.helper' AND SR.REALM_ID NOT LIKE '!user.template%'
     AND NOT EXISTS (
         SELECT 1
             FROM SAKAI_REALM_RL_FN SRRFI
@@ -316,7 +314,7 @@ from PERMISSIONS_SRC_TEMP TMPSRC
 JOIN SAKAI_REALM_ROLE SRR ON (TMPSRC.ROLE_NAME = SRR.ROLE_NAME)
 JOIN SAKAI_REALM_FUNCTION SRF ON (TMPSRC.FUNCTION_NAME = SRF.FUNCTION_NAME);
 
--- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper")
+-- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper" or "!user.template")
 INSERT INTO SAKAI_REALM_RL_FN (REALM_KEY, ROLE_KEY, FUNCTION_KEY)
 SELECT
     SRRFD.REALM_KEY, SRRFD.ROLE_KEY, TMP.FUNCTION_KEY
@@ -324,7 +322,7 @@ FROM
     (SELECT DISTINCT SRRF.REALM_KEY, SRRF.ROLE_KEY FROM SAKAI_REALM_RL_FN SRRF) SRRFD
     JOIN PERMISSIONS_TEMP TMP ON (SRRFD.ROLE_KEY = TMP.ROLE_KEY)
     JOIN SAKAI_REALM SR ON (SRRFD.REALM_KEY = SR.REALM_KEY)
-    WHERE SR.REALM_ID != '!site.helper'
+    WHERE SR.REALM_ID != '!site.helper' AND SR.REALM_ID NOT LIKE '!user.template%'
     AND NOT EXISTS (
         SELECT 1
             FROM SAKAI_REALM_RL_FN SRRFI
@@ -493,7 +491,7 @@ from PERMISSIONS_SRC_TEMP TMPSRC
 JOIN SAKAI_REALM_ROLE SRR ON (TMPSRC.ROLE_NAME = SRR.ROLE_NAME)
 JOIN SAKAI_REALM_FUNCTION SRF ON (TMPSRC.FUNCTION_NAME = SRF.FUNCTION_NAME);
 
--- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper")
+-- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper" or "!user.template")
 INSERT INTO SAKAI_REALM_RL_FN (REALM_KEY, ROLE_KEY, FUNCTION_KEY)
 SELECT
     SRRFD.REALM_KEY, SRRFD.ROLE_KEY, TMP.FUNCTION_KEY
@@ -501,7 +499,7 @@ FROM
     (SELECT DISTINCT SRRF.REALM_KEY, SRRF.ROLE_KEY FROM SAKAI_REALM_RL_FN SRRF) SRRFD
     JOIN PERMISSIONS_TEMP TMP ON (SRRFD.ROLE_KEY = TMP.ROLE_KEY)
     JOIN SAKAI_REALM SR ON (SRRFD.REALM_KEY = SR.REALM_KEY)
-    WHERE SR.REALM_ID != '!site.helper'
+    WHERE SR.REALM_ID != '!site.helper' AND SR.REALM_ID NOT LIKE '!user.template%'
     AND NOT EXISTS (
         SELECT 1
             FROM SAKAI_REALM_RL_FN SRRFI
@@ -736,14 +734,6 @@ alter table EMAIL_TEMPLATE_ITEM add unique key EMAIL_TEMPLATE_ITEM_KEY_LOCALE_KE
 -- SAK-22223 don't use null as a template key
 update EMAIL_TEMPLATE_ITEM set TEMPLATE_LOCALE = 'default' where TEMPLATE_LOCALE is null or TEMPLATE_LOCALE = '';
 -- end of SAK-22223 
-
-
--- KNL-952 - add site.add.project permission to preserve original behaviour
-INSERT INTO SAKAI_REALM_FUNCTION VALUES (DEFAULT, 'site.add.project');
-INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!user.template.maintain'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = '.auth'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'site.add.project'));
-INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!user.template.registered'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = '.auth'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'site.add.project'));
-INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!user.template.sample'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = '.auth'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'site.add.project'));
--- end KNL-952
 
 -- SAK-20884  new gradebook column
 ALTER TABLE GB_GRADEBOOK_T ADD COLUMN `DO_SHOW_STATISTICS_CHART`  bit(1) NULL DEFAULT NULL AFTER `DO_SHOW_ITEM_STATS`;

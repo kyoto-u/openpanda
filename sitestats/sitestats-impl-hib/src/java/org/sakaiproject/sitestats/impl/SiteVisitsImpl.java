@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/SiteVisitsImpl.java $
- * $Id: SiteVisitsImpl.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/SiteVisitsImpl.java $
+ * $Id: SiteVisitsImpl.java 133719 2014-01-27 11:20:56Z matthew.buckett@it.ox.ac.uk $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,6 +34,21 @@ public class SiteVisitsImpl implements SiteVisits, Serializable {
 	private long totalVisits;
 	private long totalUnique;
 
+	@Override
+	public int compareTo(SiteVisits other) {
+		int val = siteId.compareTo(other.getSiteId());
+		if (val != 0) return val;
+		val = date.compareTo(other.getDate());
+		if (val != 0) return val;
+		val = Long.signum(totalVisits - other.getTotalVisits());
+		if (val != 0) return val;
+		val = Long.signum(totalUnique - other.getTotalUnique());
+		if (val != 0) return val;
+		val = Long.signum(id - other.getId());
+		return val;
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if(o == null) return false;
 		if(!(o instanceof SiteVisitsImpl)) return false;
@@ -45,6 +60,7 @@ public class SiteVisitsImpl implements SiteVisits, Serializable {
 				&& totalUnique == other.getTotalUnique();
 	}
 
+	@Override
 	public int hashCode() {
 		if(siteId == null) return Integer.MIN_VALUE;
 		String hashStr = this.getClass().getName() + ":" 

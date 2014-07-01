@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>2.9.3</version>
-		<relativePath>../master/pom.xml</relativePath>
+        <version>10.0</version>
+	<relativePath>../master/pom.xml</relativePath>
     </parent>
 
     <name>sakai-site-manage base pom</name>
     <groupId>org.sakaiproject.sitemanage</groupId>
     <artifactId>sitemanage</artifactId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <packaging>pom</packaging>
 
     <profiles>
@@ -20,16 +20,13 @@
             <id>framework</id>
             <modules>
                 <module>site-association-api/api</module>
-                <module>site-association-assembly</module>
                 <module>site-association-hbm/hbm</module>
                 <module>site-association-impl/impl</module>
                 <module>site-association-impl/pack</module>
                 <module>site-association-tool/tool</module>
                 <module>site-association-util/util</module>
                 <module>site-manage-api/api</module>
-                <module>site-manage-assembly</module>
                 <module>site-manage-hbm</module>
-                <module>site-manage-help</module>
                 <module>site-manage-impl/impl</module>
                 <module>site-manage-impl/pack</module>
                 <module>site-manage-tool/tool</module>
@@ -46,18 +43,14 @@
             </activation>
             <modules>
                 <module>pageorder/tool</module>
-                <module>pageorder-assembly</module>
                 <module>site-association-api/api</module>
-                <module>site-association-assembly</module>
                 <module>site-association-hbm/hbm</module>
                 <module>site-association-impl/impl</module>
                 <module>site-association-impl/pack</module>
                 <module>site-association-tool/tool</module>
                 <module>site-association-util/util</module>
                 <module>site-manage-api/api</module>
-                <module>site-manage-assembly</module>
                 <module>site-manage-hbm</module>
-                <module>site-manage-help</module>
                 <module>site-manage-impl/impl</module>
                 <module>site-manage-impl/pack</module>
                 <module>site-manage-tool/tool</module>
@@ -72,9 +65,9 @@
     </profiles>
 
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/site-manage/branches/sakai-2.9.x</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/site-manage/branches/sakai-2.9.x</developerConnection>
-        <url>https://source.sakaiproject.org/svn/site-manage/branches/sakai-2.9.x</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/site-manage/trunk</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/site-manage/trunk</developerConnection>
+        <url>https://source.sakaiproject.org/svn/site-manage/trunk</url>
     </scm>
 
     <distributionManagement>
@@ -136,54 +129,13 @@
                 <artifactId>sakai-siteassociation-util</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.velocity</groupId>
-                <artifactId>sakai-velocity-tool-api</artifactId>
-                <version>${sakai.velocity-tool.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.velocity</groupId>
-                <artifactId>sakai-velocity-tool</artifactId>
-                <version>${sakai.velocity-tool.version}</version>
-            </dependency>
-            <!--
-            <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>2.6</version>
-                <scope>provided</scope>
-            </dependency>
-            -->
-            
-            <dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>0.10.6</version>
-				<scope>provided</scope>
-			</dependency>
-			
-			<dependency>
-				<groupId>net.sf.opencsv</groupId>
-				<artifactId>opencsv</artifactId>
-				<version>2.3</version>
-				<scope>compile</scope>
-			</dependency>
-            
+	    <dependency>
+	      <groupId>net.sf.opencsv</groupId>
+	      <artifactId>opencsv</artifactId>
+	      <version>2.3</version>
+	      <scope>compile</scope>
+	    </dependency>
         </dependencies>
     </dependencyManagement>
-    
-    <repositories> 
-		<repository> 
-			<id>sonatype-nexus-snapshots</id> 
-			<name>Sonatype Nexus Snapshots</name> 
-			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
-			<releases> 
-				<enabled>false</enabled> 
-			</releases> 
-			<snapshots> 
-				<enabled>true</enabled> 
-			</snapshots> 
-		</repository> 
-	</repositories>
     
 </project>

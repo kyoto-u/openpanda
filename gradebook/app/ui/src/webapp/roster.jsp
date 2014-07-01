@@ -1,6 +1,6 @@
 <f:view>
-	<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
-	<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" language="JavaScript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" language="JavaScript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/spreadsheetUI.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/dialog.js"></script>
 			<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/dialog.css" />
@@ -128,6 +128,9 @@
 		</h:panelGroup>
 		<h:panelGroup>
 			<h:outputText value="#{msgs.roster_footnote_legend3}" />
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputText value="#{msgs.roster_footnote_legend4}" />
 		</h:panelGroup>
 	</h:panelGrid>
 	</div>

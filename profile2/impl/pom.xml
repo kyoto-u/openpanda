@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.sakaiproject.profile2</groupId>
 		<artifactId>profile2</artifactId>
-	    <version>1.5.3</version>
+	    <version>10.0</version><!-- ProjectVersion -->
 	</parent>
   	
   	<dependencies>
@@ -28,14 +28,22 @@
     	<!-- SHARED EXTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
+            <artifactId>hibernate-core</artifactId>
         </dependency>
         <dependency>
-			<groupId>org.opensymphony.quartz</groupId>
+			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 		</dependency>
     	
@@ -69,6 +77,11 @@
 			<groupId>net.sf.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
 		</dependency>
+  		<dependency>
+  			<groupId>commons-io</groupId>
+  			<artifactId>commons-io</artifactId>
+  			<scope>provided</scope>
+  		</dependency> 
    		<!-- 
 		<dependency>
       		<groupId>org.sakaiproject.tinyurl</groupId>
@@ -120,9 +133,8 @@
         </dependency>
 
         <dependency>
-            <groupId>hsqldb</groupId>
+            <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>1.8.0.5</version>
             <scope>test</scope>
         </dependency>
 
@@ -248,16 +260,6 @@
 			<groupId>org.sakaiproject.kernel</groupId>
   			<artifactId>sakai-kernel-util</artifactId>
 		</dependency>
-		
-		<!-- legacy dependencies -->
-		<dependency>
-			<groupId>org.sakaiproject.profile</groupId>
-  			<artifactId>profile-api</artifactId>
-		</dependency>
-		<dependency>
-      		<groupId>commons-logging</groupId>
-      		<artifactId>commons-logging</artifactId>
-    	</dependency>
 
   	</dependencies>
   	

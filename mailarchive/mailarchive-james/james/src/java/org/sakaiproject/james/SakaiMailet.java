@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-james/james/src/java/org/sakaiproject/james/SakaiMailet.java $
- * $Id: SakaiMailet.java 106662 2012-04-09 20:26:34Z matthew@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.0/mailarchive-james/james/src/java/org/sakaiproject/james/SakaiMailet.java $
+ * $Id: SakaiMailet.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -227,7 +227,7 @@ public class SakaiMailet extends GenericMailet
 		}
 		catch (UserNotDefinedException e)
 		{
-			M_log.warn("service: no postmaster");
+			M_log.warn("service(): no postmaster, incoming mail will not be processed until a postmaster user (id="+POSTMASTER+") exists in this Sakai instance");
 			mail.setState(Mail.GHOST);
 			return;
 		}

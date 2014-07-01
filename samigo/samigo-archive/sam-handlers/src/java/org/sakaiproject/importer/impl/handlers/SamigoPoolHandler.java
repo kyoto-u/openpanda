@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-archive/sam-handlers/src/java/org/sakaiproject/importer/impl/handlers/SamigoPoolHandler.java $
- * $Id: SamigoPoolHandler.java 98492 2011-09-21 18:11:48Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-archive/sam-handlers/src/java/org/sakaiproject/importer/impl/handlers/SamigoPoolHandler.java $
+ * $Id: SamigoPoolHandler.java 107562 2012-04-25 11:53:21Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -43,17 +42,15 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.AnswerFeedback;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemText;
 import org.sakaiproject.tool.assessment.facade.ItemFacade;
 import org.sakaiproject.tool.assessment.facade.QuestionPoolFacade;
-import org.sakaiproject.tool.assessment.facade.SectionFacade;
 import org.sakaiproject.tool.assessment.services.ItemService;
 import org.sakaiproject.tool.assessment.services.QuestionPoolService;
 import org.sakaiproject.tool.cover.SessionManager;
-import org.sakaiproject.tool.cover.ToolManager;
 
 public class SamigoPoolHandler implements HandlesImportable {
 	// Samigo identifies each question type with an int
-	public static int TRUE_FALSE = 4;
-	public static int FILL_BLANK = 8;
-	public static int MATCHING = 9;
+	public static final int TRUE_FALSE = 4;
+	public static final int FILL_BLANK = 8;
+	public static final int MATCHING = 9;
 	
 	private QuestionPoolService qps = new QuestionPoolService();
 	private ItemService itemService = new ItemService();
@@ -69,7 +66,7 @@ public class SamigoPoolHandler implements HandlesImportable {
 		pool.setTitle(importPool.getTitle());
 		pool.setDescription(importPool.getDescription());
 		// have no idea what the magic number 30 is for, but Samigo used it when I created a question pool in the tool
-		pool.setAccessTypeId(new Long(30));
+		pool.setAccessTypeId(Long.valueOf(30));
 		Set questionItems = new HashSet();
 		questionItems.addAll(doQuestions(importPool.getEssayQuestions(), siteId));
 		questionItems.addAll(doQuestions(importPool.getFillBlankQuestions(), siteId));
@@ -91,7 +88,7 @@ public class SamigoPoolHandler implements HandlesImportable {
 		  });
 		for (int i = 0;i < questionItemsArray.length; i++) {
 			ItemFacade item = (ItemFacade)questionItemsArray[i];
-			item.setSequence(new Integer(i + 1));
+			item.setSequence(Integer.valueOf(i + 1));
 			qps.addItemToPool(item.getItemIdString(),savedPool.getQuestionPoolId());
 		}
 	}
@@ -125,7 +122,7 @@ public class SamigoPoolHandler implements HandlesImportable {
 				for (Iterator j = answers.iterator();j.hasNext();) {
 					importableAnswer = (AssessmentAnswer)j.next();
 					text = new ItemText();
-					text.setSequence(new Long(answerIndex));
+					text.setSequence(Long.valueOf(answerIndex));
 					answerIndex++;
 					text.setText(contextualizeUrls(importableAnswer.getAnswerText(), siteId));
 					answerSet = new HashSet();
@@ -140,7 +137,7 @@ public class SamigoPoolHandler implements HandlesImportable {
 						// set label A, B, C, D, etc. on answer based on its sequence number
 						answer.setLabel(new Character((char)(64 + choiceIndex)).toString());
 						answer.setText(contextualizeUrls(importableChoice.getAnswerText(), siteId));
-						answer.setIsCorrect(new Boolean(importableAnswer.getChoiceId().equals(importableChoice.getAnswerId())));
+						answer.setIsCorrect(Boolean.valueOf(importableAnswer.getChoiceId().equals(importableChoice.getAnswerId())));
 						answerSet.add(answer);
 					}
 					text.setAnswerSet(answerSet);
@@ -184,7 +181,7 @@ public class SamigoPoolHandler implements HandlesImportable {
 						answer.setText(contextualizeUrls(importableAnswer.getAnswerText(), siteId));
 					}
 					
-					answer.setIsCorrect(new Boolean(correctAnswerIDs.contains(answerId)));
+					answer.setIsCorrect(Boolean.valueOf(correctAnswerIDs.contains(answerId)));
 					answerSet.add(answer);
 				}
 				text.setAnswerSet(answerSet);
@@ -198,7 +195,7 @@ public class SamigoPoolHandler implements HandlesImportable {
 			itemFacade.setScore(importableQuestion.getPointValue());
 			itemFacade.setSequence(importableQuestion.getPosition());
 			// status is 0=inactive or 1=active
-			itemFacade.setStatus(new Integer(1));
+			itemFacade.setStatus(Integer.valueOf(1));
 			itemFacade.setHasRationale(Boolean.FALSE);
 			itemFacade.setCreatedBy(SessionManager.getCurrentSessionUserId());
 			itemFacade.setCreatedDate(new java.util.Date());

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/event/impl/ClusterEventTrackingServiceSqlOracle.java $
- * $Id: ClusterEventTrackingServiceSqlOracle.java 127978 2013-07-30 19:51:29Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/ClusterEventTrackingServiceSqlOracle.java $
+ * $Id: ClusterEventTrackingServiceSqlOracle.java 122934 2013-04-17 21:16:11Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

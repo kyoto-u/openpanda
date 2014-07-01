@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AssessmentSettingsBean.java $
- * $Id: AssessmentSettingsBean.java 110188 2012-07-06 18:32:26Z nbotimer@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AssessmentSettingsBean.java $
+ * $Id: AssessmentSettingsBean.java 309448 2014-05-12 22:11:45Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1123,6 +1123,10 @@ public class AssessmentSettingsBean
       return dateString;
     }
 
+    if (displayFormat == null) {   
+    	setDisplayFormat(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","output_data_picker_w_sec"));
+    }
+
     try {
       //dateString = displayFormat.format(date);
       TimeUtil tu = new TimeUtil();
@@ -1207,7 +1211,7 @@ public class AssessmentSettingsBean
 			  date = Integer.parseInt(dateArray[1]);
 			  month = Integer.parseInt(dateArray[0]);
 			  year = Integer.parseInt(dateArray[2].substring(0, 4));
-		  }		  
+		  }
 	  }
 	  catch(NumberFormatException  ne){
 		  log.error("NumberFormatException: " + ne.getMessage());
@@ -1409,25 +1413,23 @@ public class AssessmentSettingsBean
       return false;
   }
 
-  //modified gopalrc - Nov 2007
   public SelectItem[] getPublishingTargets(){
     HashMap targets = ptHelper.getTargets();
     Set e = targets.keySet();
     Iterator iter = e.iterator();
     int numSelections = getNumberOfGroupsForSite() > 0 ? 3 : 2;
    	SelectItem[] target = new SelectItem[numSelections];
+   	ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
     while (iter.hasNext()){
 	    String t = (String)iter.next();
 	    if ("Anonymous Users".equals(t)) {
-	  	  ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
-	  	  target[0] = new SelectItem(t, rb.getString("anonymous_users"));
+	    	target[0] = new SelectItem(t, rb.getString("anonymous_users"));
 	    }
 	    else if (numSelections == 3 && t.equals(AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS)) {
-	  	  ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
-	  	  target[2] = new SelectItem(t, rb.getString("selected_groups"));
+	      target[2] = new SelectItem(t, rb.getString("selected_groups"));
 	    }
 	    else if (t.equals(AgentFacade.getCurrentSiteName())) {
-	  	  target[1] = new SelectItem(t, t);
+	      target[1] = new SelectItem(t, rb.getString("entire_site"));
 	    }
     }
     return target;
@@ -1648,46 +1650,41 @@ public class AssessmentSettingsBean
   }
 
   /**
-   * gopalrc Nov 2007
    * Returns all groups for site
    * @return
    */
   public SelectItem[] getGroupsForSite(){
       SelectItem[] groupSelectItems = new SelectItem[0];
       TreeMap sortedSelectItems = new TreeMap();
-	  Site site = null;
-	  try {
-		 site = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
-		 Collection groups = site.getGroups();
-	     if (groups != null && groups.size() > 0) {
-	    	 groupSelectItems = new SelectItem[groups.size()];
-	    	 Iterator groupIter = groups.iterator();
-	    	 while (groupIter.hasNext()) {
-	    		 Group group = (Group) groupIter.next();
-	    		 //String groupType = group.getProperties().getProperty("sections_category");
-	    		 //groupType = groupType == null ? "" : " (" + groupType + ")";
-	    		 String groupDescription = group.getDescription()==null || group.getDescription().equals("") ? "" : " : " + group.getDescription();
-                         String selectDescription = createUniqueKey(groupDescription.toUpperCase(), sortedSelectItems);
-	    		 String displayDescription = group.getTitle() + groupDescription;
-			 sortedSelectItems.put(selectDescription, new SelectItem(group.getId(), displayDescription));
-	    	 }
-	    	 Set keySet = sortedSelectItems.keySet();
-	    	 groupIter = keySet.iterator();
-	    	 int i=0;
-	    	 while (groupIter.hasNext()) {
-	    		 groupSelectItems[i++] = (SelectItem) sortedSelectItems.get(groupIter.next());
-	    	 }
-	     }
-	  }
-	  catch (IdUnusedException ex) {
-		  // No site available
-	  }
-	  return groupSelectItems;
+      Site site = null;
+      try {
+          site = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
+          Collection groups = site.getGroups();
+          if (groups != null && groups.size() > 0) {
+              groupSelectItems = new SelectItem[groups.size()];
+              Iterator groupIter = groups.iterator();
+              while (groupIter.hasNext()) {
+                  Group group = (Group) groupIter.next();
+                  String title = group.getTitle();
+                  String groupId = group.getId();
+                  String uniqueTitle = title + groupId;
+                  sortedSelectItems.put(uniqueTitle.toUpperCase(), new SelectItem(group.getId(), title));
+              }
+              Set keySet = sortedSelectItems.keySet();
+              groupIter = keySet.iterator();
+              int i = 0;
+              while (groupIter.hasNext()) {
+                  groupSelectItems[i++] = (SelectItem) sortedSelectItems.get(groupIter.next());
+              }
+          }
+      } catch (IdUnusedException ex) {
+          // No site available
+      }
+      return groupSelectItems;
   }
   
   
   /**
-   * gopalrc Nov 2007
    * Returns the total number of groups for this site
    * @return
    */
@@ -1707,14 +1704,12 @@ public class AssessmentSettingsBean
   }
 
   /**
-   * gopalrc Nov 2007
    * The authorized groups
    */
   private String[] groupsAuthorized;
   private boolean noGroupSelectedError;
   
   /**
-   * gopalrc Nov 2007
    * Returns the groups to which this assessment is released
    * @return
    */
@@ -1748,7 +1743,6 @@ public class AssessmentSettingsBean
   
   /** 
    * To compensate for strange stateful behaviour of this bean
-   * added by gopalrc Nov 2007
    * 
    * TODO: troubleshoot stateful behaviour if time allows
    * - found that it's due to the bean having "session" scope
@@ -1776,6 +1770,10 @@ public class AssessmentSettingsBean
   
   public String getReleaseToGroupsAsString() {
 	  return releaseToGroupsAsString;
+  }
+  
+  public String getReleaseToGroupsAsHtml() {
+	  return FormattedText.escapeHtml(releaseToGroupsAsString,false);
   }
   
   public void setBlockDivs(String blockDivs){

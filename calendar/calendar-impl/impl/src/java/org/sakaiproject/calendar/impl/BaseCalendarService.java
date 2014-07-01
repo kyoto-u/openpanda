@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
- * $Id: BaseCalendarService.java 123594 2013-05-03 17:54:41Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
+ * $Id: BaseCalendarService.java 309198 2014-05-06 15:21:33Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,45 +21,6 @@
 
 package org.sakaiproject.calendar.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Properties;
-import java.util.Set;
-import java.util.Stack;
-import java.util.TimeZone;
-import java.util.Vector;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.URIResolver;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamSource;
-
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Property;
@@ -67,16 +28,7 @@ import net.fortuna.ical4j.model.TimeZoneRegistry;
 import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.parameter.Value;
-import net.fortuna.ical4j.model.property.CalScale;
-import net.fortuna.ical4j.model.property.Comment;
-import net.fortuna.ical4j.model.property.Description;
-import net.fortuna.ical4j.model.property.Location;
-import net.fortuna.ical4j.model.property.Organizer;
-import net.fortuna.ical4j.model.property.ProdId;
-import net.fortuna.ical4j.model.property.TzId;
-import net.fortuna.ical4j.model.property.Uid;
-import net.fortuna.ical4j.model.property.Version;
-
+import net.fortuna.ical4j.model.property.*;
 import org.apache.avalon.framework.logger.ConsoleLogger;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -87,78 +39,39 @@ import org.apache.fop.apps.Options;
 import org.apache.fop.configuration.Configuration;
 import org.apache.fop.messaging.MessageHandler;
 import org.sakaiproject.alias.api.Alias;
-import org.sakaiproject.alias.cover.AliasService;
-import org.sakaiproject.authz.api.AuthzPermissionException;
-import org.sakaiproject.authz.api.GroupNotDefinedException;
-import org.sakaiproject.authz.cover.AuthzGroupService;
-import org.sakaiproject.authz.cover.FunctionManager;
-import org.sakaiproject.authz.cover.SecurityService;
+import org.sakaiproject.alias.api.AliasService;
+import org.sakaiproject.authz.api.*;
 import org.sakaiproject.calendar.api.Calendar;
-import org.sakaiproject.calendar.api.CalendarEdit;
-import org.sakaiproject.calendar.api.CalendarEvent;
-import org.sakaiproject.calendar.api.CalendarEventEdit;
-import org.sakaiproject.calendar.api.CalendarEventVector;
-import org.sakaiproject.calendar.api.CalendarService;
-import org.sakaiproject.calendar.api.RecurrenceRule;
+import org.sakaiproject.calendar.api.*;
 import org.sakaiproject.calendar.api.CalendarEvent.EventAccess;
 import org.sakaiproject.calendar.cover.ExternalCalendarSubscriptionService;
-import org.sakaiproject.util.CalendarUtil;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.entity.api.ContextObserver;
-import org.sakaiproject.entity.api.Edit;
-import org.sakaiproject.entity.api.Entity;
-import org.sakaiproject.entity.api.EntityAccessOverloadException;
-import org.sakaiproject.entity.api.EntityCopyrightException;
-import org.sakaiproject.entity.api.EntityManager;
-import org.sakaiproject.entity.api.EntityNotDefinedException;
-import org.sakaiproject.entity.api.EntityPermissionException;
-import org.sakaiproject.entity.api.EntityTransferrer;
-import org.sakaiproject.entity.api.EntityTransferrerRefMigrator;
-import org.sakaiproject.entity.api.HttpAccess;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.entity.api.ResourcePropertiesEdit;
-import org.sakaiproject.event.api.Event;
-import org.sakaiproject.event.api.NotificationService;
-import org.sakaiproject.event.cover.EventTrackingService;
-import org.sakaiproject.exception.IdInvalidException;
-import org.sakaiproject.exception.IdUnusedException;
-import org.sakaiproject.exception.IdUsedException;
-import org.sakaiproject.exception.InUseException;
-import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.entity.api.*;
+import org.sakaiproject.event.api.*;
+import org.sakaiproject.exception.*;
 import org.sakaiproject.id.api.IdManager;
 import org.sakaiproject.javax.Filter;
-import org.sakaiproject.memory.api.Cache;
-import org.sakaiproject.memory.api.CacheRefresher;
 import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
-import org.sakaiproject.site.cover.SiteService;
-import org.sakaiproject.thread_local.cover.ThreadLocalManager;
+import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.site.api.ToolConfiguration;
+import org.sakaiproject.thread_local.api.ThreadLocalManager;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeBreakdown;
 import org.sakaiproject.time.api.TimeRange;
-import org.sakaiproject.time.cover.TimeService;
+import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.tool.api.SessionBindingEvent;
 import org.sakaiproject.tool.api.SessionBindingListener;
-import org.sakaiproject.tool.cover.SessionManager;
-import org.sakaiproject.tool.cover.ToolManager;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.user.cover.UserDirectoryService;
-import org.sakaiproject.util.BaseResourcePropertiesEdit;
-import org.sakaiproject.util.CalendarUtil;
-import org.sakaiproject.util.DefaultEntityHandler;
-import org.sakaiproject.util.EntityCollections;
-import org.sakaiproject.util.FormattedText;
-import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.SAXEntityReader;
-import org.sakaiproject.util.StorageUser;
-import org.sakaiproject.util.Validator;
-import org.sakaiproject.util.Web;
-import org.sakaiproject.util.Xml;
+import org.sakaiproject.util.*;
+import org.sakaiproject.util.cover.LinkMigrationHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -166,25 +79,37 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.util.*;
 import java.util.Map.Entry;
 /**
  * <p>
  * BaseCalendarService is an base implementation of the CalendarService. Extension classes implement object creation, access and storage.
  * </p>
  */
-public abstract class BaseCalendarService implements CalendarService, StorageUser, CacheRefresher, ContextObserver, EntityTransferrer, SAXEntityReader, EntityTransferrerRefMigrator
+public abstract class BaseCalendarService implements CalendarService, DoubleStorageUser, ContextObserver, EntityTransferrer, SAXEntityReader, EntityTransferrerRefMigrator
 {
 	/** Our logger. */
 	private static Log M_log = LogFactory.getLog(BaseCalendarService.class);
 
 	/** The initial portion of a relative access point URL. */
 	protected String m_relativeAccessPoint = null;
-
-	/** A Cache object for caching: calendars keyed by reference. */
-	protected Cache m_calendarCache = null;
-
-	/** A bunch of caches for events: keyed by calendar id, the cache is keyed by event reference. */
-	protected Hashtable m_eventCaches = null;
 
 	/** A Storage object for access to calendars and events. */
 	protected Storage m_storage = null;
@@ -244,7 +169,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	 */
 	protected boolean unlockCheck(String lock, String reference)
 	{
-		return SecurityService.unlock(lock, reference);
+		return m_securityService.unlock(lock, reference);
 
 	} // unlockCheck
 
@@ -265,8 +190,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			return;
 			
 		// otherwise check permissions
-		else if (!SecurityService.unlock(lock, reference))
-			throw new PermissionException(SessionManager.getCurrentSessionUserId(), lock, reference);
+		else if (!m_securityService.unlock(lock, reference))
+			throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), lock, reference);
 
 	} // unlock
 
@@ -307,7 +232,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
       String context = ref.getContext();
       String id = ref.getId();
       String alias = null;
-      List aliasList =  AliasService.getAliases( ref.getReference() );
+      List aliasList =  m_aliasService.getAliases( ref.getReference() );
       
       if ( ! aliasList.isEmpty() )
          alias = ((Alias)aliasList.get(0)).getId();
@@ -513,19 +438,13 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		m_idManager = manager;
 	}
 
-	/** Configuration: cache, or not. */
-	protected boolean m_caching = false;
-
 	/**
 	 * Configuration: set the caching
 	 * 
-	 * @param path
-	 *        The storage path.
+	 * @param value true or false (has no effect anymore)
+	 * @deprecated 8 April 2014 (Sakai 10) - this no longer does anything and will be removed
 	 */
-	public void setCaching(String value)
-	{
-		m_caching = Boolean.valueOf(value).booleanValue();
-	}
+	public void setCaching(String value) {} // disabled and blank intentionally
 
 	/** Dependency: EntityManager. */
 	protected EntityManager m_entityManager = null;
@@ -554,16 +473,49 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	{
 		m_serverConfigurationService = service;
 	}
-	
+
 	/** Dependency: AliasService. */
 	protected AliasService m_aliasService = null;
-	
+
 	/** Dependency: SiteService. */
 	protected SiteService m_siteService = null;
 
+	/** Dependency: AuthzGroupService */
+	protected AuthzGroupService m_authzGroupService = null;
+
+	/** Dependency: FunctionManager */
+	protected FunctionManager m_functionManager = null;
+
+	/** Dependency: SecurityService */
+	protected SecurityService m_securityService = null;
+	
+	/** Dependency: EventTrackingService */
+	protected EventTrackingService m_eventTrackingService = null;
+
+	/** Depedency: SessionManager */
+	protected SessionManager m_sessionManager = null;
+
+	/** Dependency: ThreadLocalManager */
+	protected ThreadLocalManager m_threadLocalManager = null;
+
+	/** Dependency: TimeService */
+	protected TimeService m_timeService = null;
+
+	/** Dependency: ToolManager */
+	protected ToolManager m_toolManager = null;
+
+	/** Dependency: UserDirectoryService */
+	protected UserDirectoryService m_userDirectoryService = null;
+
+	/** Dependency: UsageSessionService */
+	protected UsageSessionService m_usageSessionService = null;
+
+	/** Dependency: OpaqueUrlDao */
+	protected OpaqueUrlDao m_opaqueUrlDao = null;
+
 	/** A map of services used in SAX serialization */
 	private Map<String, Object> m_services;
-	
+
 	/**
 	 * Dependency: AliasService.
 	 * 
@@ -575,6 +527,125 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		m_aliasService = service;
 	}
 
+	/**
+	 * Dependency: SiteService.
+	 * 
+	 * @param service
+	 *        The SiteService.
+	 */
+	public void setSiteService(SiteService service)
+	{
+		m_siteService = service;
+	}
+
+	/**
+	 * Dependency: AuthzGroupService.
+	 * 
+	 * @param authzGroupService
+	 *        The AuthzGroupService.
+	 */
+	public void setAuthzGroupService(AuthzGroupService authzGroupService)
+	{
+		m_authzGroupService = authzGroupService;
+	}
+
+	/**
+	 * Dependency: FunctionManager.
+	 * 
+	 * @param functionManager
+	 *        The FunctionManager.
+	 */
+	public void setFunctionManager(FunctionManager functionManager)
+	{
+		m_functionManager = functionManager;
+	}
+
+	/**
+	 * Dependency: SecurityService.
+	 * 
+	 * @param securityService
+	 *        The SecurityService.
+	 */
+	public void setSecurityService(SecurityService securityService)
+	{
+		m_securityService = securityService;
+	}
+	
+
+	/**
+	 * Dependency: EventTrackingService.
+	 * @param eventTrackingService
+	 *        The EventTrackingService.
+	 */
+	public void setEventTrackingService(EventTrackingService eventTrackingService)
+	{
+		this.m_eventTrackingService = eventTrackingService;
+	}
+
+	/**
+	 * Dependency: SessionManager.
+	 * @param sessionManager
+	 *        The SessionManager.
+	 */
+	public void setSessionManager(SessionManager sessionManager)
+	{
+		this.m_sessionManager = sessionManager;
+	}
+
+	/**
+	 * Dependency: ThreadLocalManager.
+	 * @param threadLocalManager
+	 *        The ThreadLocalManager.
+	 */
+	public void setThreadLocalManager(ThreadLocalManager threadLocalManager)
+	{
+		this.m_threadLocalManager = threadLocalManager;
+	}
+
+	/**
+	 * Dependency: TimeService.
+	 * @param timeService
+	 *        The TimeService.
+	 */
+	public void setTimeService(TimeService timeService)
+	{
+		this.m_timeService = timeService;
+	}
+
+	/**
+	 * Dependency: ToolManager.
+	 * @param toolManager
+	 *        The ToolManager.
+	 */
+	public void setToolManager(ToolManager toolManager)
+	{
+		this.m_toolManager = toolManager;
+	}
+
+	/**
+	 * Dependency: UserDirectoryService.
+	 * @param userDirectoryService
+	 *        The UserDirectoryService.
+	 */
+	public void setUserDirectoryService(UserDirectoryService userDirectoryService)
+	{
+		this.m_userDirectoryService = userDirectoryService;
+	}
+
+	/**
+	 * Dependency: UsageSessionService
+	 * @param usageSessionService
+	 *        The UsageSessionService.
+	 */
+	public void setUsageSessionService(UsageSessionService usageSessionService) { this.m_usageSessionService = usageSessionService; }
+
+	/**
+	 * Dependency: OpaqueUrlDao
+	 * @param opaqueUrlDao
+	 *        The OpaqueUrlDao.
+	 */
+	public void setOpaqueUrlDao(OpaqueUrlDao opaqueUrlDao) { this.m_opaqueUrlDao = opaqueUrlDao; }
+	
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Init and Destroy
 	 *********************************************************************************************************************************************************************************************************************************************************/
@@ -594,19 +665,6 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			m_storage = newStorage();
 			m_storage.open();
 
-			// make the calendar cache
-			if (m_caching)
-			{
-				m_calendarCache = m_memoryService
-						.newCache(
-								"org.sakaiproject.calendar.api.CalendarService.calendarCache",
-								this, getAccessPoint(true) + Entity.SEPARATOR
-										+ REF_TYPE_CALENDAR + Entity.SEPARATOR);
-
-				// make the table to hold the event caches
-				m_eventCaches = new Hashtable();
-			}
-
          // create transformerFactory object needed by generatePDF
          transformerFactory = TransformerFactory.newInstance();
          transformerFactory.setURIResolver( new MyURIResolver(getClass().getClassLoader()) );
@@ -614,26 +672,27 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			// create DocumentBuilder object needed by printSchedule
 			docBuilder =  DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			
-			M_log.info("init(): caching: " + m_caching);
+			M_log.info("init()");
 		}
 		catch (Throwable t)
 		{
-			M_log.warn("init(): ", t);
+			M_log.warn("init(): "+t, t);
 		}
 
 		// register as an entity producer
 		m_entityManager.registerEntityProducer(this, REFERENCE_ROOT);
 
 		// register functions
-		FunctionManager.registerFunction(AUTH_ADD_CALENDAR);
-		FunctionManager.registerFunction(AUTH_REMOVE_CALENDAR_OWN);
-		FunctionManager.registerFunction(AUTH_REMOVE_CALENDAR_ANY);
-		FunctionManager.registerFunction(AUTH_MODIFY_CALENDAR_OWN);
-		FunctionManager.registerFunction(AUTH_MODIFY_CALENDAR_ANY);
-		FunctionManager.registerFunction(AUTH_IMPORT_CALENDAR);
-		FunctionManager.registerFunction(AUTH_SUBSCRIBE_CALENDAR);
-		FunctionManager.registerFunction(AUTH_READ_CALENDAR);
-		FunctionManager.registerFunction(AUTH_ALL_GROUPS_CALENDAR);
+		m_functionManager.registerFunction(AUTH_ADD_CALENDAR);
+		m_functionManager.registerFunction(AUTH_REMOVE_CALENDAR_OWN);
+		m_functionManager.registerFunction(AUTH_REMOVE_CALENDAR_ANY);
+		m_functionManager.registerFunction(AUTH_MODIFY_CALENDAR_OWN);
+		m_functionManager.registerFunction(AUTH_MODIFY_CALENDAR_ANY);
+		m_functionManager.registerFunction(AUTH_IMPORT_CALENDAR);
+		m_functionManager.registerFunction(AUTH_SUBSCRIBE_CALENDAR);
+		m_functionManager.registerFunction(AUTH_READ_CALENDAR);
+		m_functionManager.registerFunction(AUTH_ALL_GROUPS_CALENDAR);
+		m_functionManager.registerFunction(AUTH_OPTIONS_CALENDAR);
 	}
 
 	/**
@@ -641,16 +700,6 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	 */
 	public void destroy()
 	{
-		if (m_caching)
-		{
-			m_calendarCache.destroy();
-			m_calendarCache = null;
-
-			// TODO: destroy each cache
-			m_eventCaches.clear();
-			m_eventCaches = null;
-		}
-
 		m_storage.close();
 		m_storage = null;
 
@@ -716,44 +765,20 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	 */
 	protected Calendar findCalendar(String ref)
 	{
-		Calendar calendar = null;
+        // TODO: do we really want to do this? -ggolden
+        // if we have done this already in this thread, use that
+        Calendar calendar = (Calendar) m_threadLocalManager.get(ref);
+        if (calendar == null)
+        {
+            calendar = m_storage.getCalendar(ref);
 
-		if ((!m_caching) || (m_calendarCache == null) || (m_calendarCache.disabled()))
-		{
-			// TODO: do we really want to do this? -ggolden
-			// if we have done this already in this thread, use that
-			calendar = (Calendar) ThreadLocalManager.get(ref);
-			if (calendar == null)
-			{
-				calendar = m_storage.getCalendar(ref);
-
-				// "cache" the calendar in the current service in case they are needed again in this thread...
-				if (calendar != null)
-				{
-					ThreadLocalManager.set(ref, calendar);
-				}
-			}
-
-			return calendar;
-		}
-
-		// if we have it cached, use it (even if it's cached as a null, a miss)
-		if (m_calendarCache.containsKey(ref))
-		{
-			calendar = (Calendar) m_calendarCache.get(ref);
-		}
-
-		// if not in the cache, see if we have it in our info store
-		if ( calendar == null ) //SAK-12447 cache.get can return null on expired
-		{
-			calendar = m_storage.getCalendar(ref);
-
-			// if so, cache it, even misses
-			m_calendarCache.put(ref, calendar);
-		}
-
+            // "cache" the calendar in the current service in case they are needed again in this thread...
+            if (calendar != null)
+            {
+                m_threadLocalManager.set(ref, calendar);
+            }
+        }
 		return calendar;
-
 	} // findCalendar
 
 	/**
@@ -816,8 +841,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		m_storage.removeCalendar(calendar);
 
 		// track event
-		Event event = EventTrackingService.newEvent(EVENT_REMOVE_CALENDAR, calendar.getReference(), true);
-		EventTrackingService.post(event);
+		Event event = m_eventTrackingService.newEvent(EVENT_REMOVE_CALENDAR, calendar.getReference(), true);
+		m_eventTrackingService.post(event);
 
 		// mark the calendar as removed
 		((BaseCalendarEdit) calendar).setRemoved(event);
@@ -828,7 +853,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		// remove any realm defined for this resource
 		try
 		{
-			AuthzGroupService.removeAuthzGroup(AuthzGroupService.getAuthzGroup(calendar.getReference()));
+			m_authzGroupService.removeAuthzGroup(m_authzGroupService.getAuthzGroup(calendar.getReference()));
 		}
 		catch (AuthzPermissionException e)
 		{
@@ -839,66 +864,6 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		}
 
 	} // removeCalendar
-
-	/**
-	 * Return a List of all the defined calendars.
-	 * 
-	 * @return a List of Calendar objects (may be empty)
-	 */
-	public List getCalendars()
-	{
-		List calendars = new Vector();
-
-		if ((!m_caching) || (m_calendarCache == null) || (m_calendarCache.disabled()))
-		{
-			calendars = m_storage.getCalendars();
-			return calendars;
-		}
-
-		// if the cache is complete, use it
-		if (m_calendarCache.isComplete())
-		{
-			// get just the calendars in the cache
-			calendars = m_calendarCache.getAll();
-		}
-
-		// otherwise get all the calendars from storage
-		else
-		{
-			// Note: while we are getting from storage, storage might change. These can be processed
-			// after we get the storage entries, and put them in the cache, and mark the cache complete.
-			// -ggolden
-			synchronized (m_calendarCache)
-			{
-				// if we were waiting and it's now complete...
-				if (m_calendarCache.isComplete())
-				{
-					// get just the calendars in the cache
-					calendars = m_calendarCache.getAll();
-					return calendars;
-				}
-
-				// save up any events to the cache until we get past this load
-				m_calendarCache.holdEvents();
-
-				calendars = m_storage.getCalendars();
-				// update the cache, and mark it complete
-				for (int i = 0; i < calendars.size(); i++)
-				{
-					Calendar calendar = (Calendar) calendars.get(i);
-					m_calendarCache.put(calendar.getReference(), calendar);
-				}
-
-				m_calendarCache.setComplete();
-
-				// now we are complete, process any cached events
-				m_calendarCache.processEvents();
-			}
-		}
-
-		return calendars;
-
-	} // getCalendars
 
 	/**
 	 * check permissions for importing calendar events
@@ -1007,8 +972,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		m_storage.commitCalendar(edit);
 
 		// track event
-		Event event = EventTrackingService.newEvent(((BaseCalendarEdit) edit).getEvent(), edit.getReference(), true);
-		EventTrackingService.post(event);
+		Event event = m_eventTrackingService.newEvent(((BaseCalendarEdit) edit).getEvent(), edit.getReference(), true);
+		m_eventTrackingService.post(event);
 
 		// close the edit object
 		((BaseCalendarEdit) edit).closeEdit();
@@ -1067,6 +1032,23 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		{
 			return new YearlyRecurrenceRule();
 		}
+		else if (frequency.equals(MWRecurrenceRule.FREQ))
+		{
+			return new MWRecurrenceRule();
+		}
+		else if (frequency.equals(SMWRecurrenceRule.FREQ))
+		{
+			return new SMWRecurrenceRule();
+		}
+		else if (frequency.equals(SMTWRecurrenceRule.FREQ))
+		{
+			return new SMTWRecurrenceRule();
+		}
+		else if (frequency.equals(STTRecurrenceRule.FREQ))
+		{
+			return new STTRecurrenceRule();
+		}
+		//add more here
 
 		return null;
 	}
@@ -1100,6 +1082,23 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		{
 			return new YearlyRecurrenceRule(interval);
 		}
+		else if (frequency.equals(MWRecurrenceRule.FREQ))
+		{
+			return new MWRecurrenceRule(interval);
+		}
+		else if (frequency.equals(SMWRecurrenceRule.FREQ))
+		{
+			return new SMWRecurrenceRule(interval);
+		}
+		else if (frequency.equals(SMTWRecurrenceRule.FREQ))
+		{
+			return new SMTWRecurrenceRule(interval);
+		}
+		else if (frequency.equals(STTRecurrenceRule.FREQ))
+		{
+			return new STTRecurrenceRule(interval);
+		}
+		//add more here
 	
 		return null;
 	}
@@ -1134,6 +1133,23 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		{
 			return new YearlyRecurrenceRule(interval, count);
 		}
+		else if (frequency.equals(MWRecurrenceRule.FREQ))
+		{
+			return new MWRecurrenceRule(interval, count);
+		}
+		else if (frequency.equals(SMWRecurrenceRule.FREQ))
+		{
+			return new SMWRecurrenceRule(interval, count);
+		}
+		else if (frequency.equals(SMTWRecurrenceRule.FREQ))
+		{
+			return new SMTWRecurrenceRule(interval, count);
+		}
+		else if (frequency.equals(STTRecurrenceRule.FREQ))
+		{
+			return new STTRecurrenceRule(interval, count);
+		}
+		//add more here
 
 		return null;
 	}
@@ -1166,6 +1182,23 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		{
 			return new YearlyRecurrenceRule(interval, until);
 		}
+		else if (frequency.equals(MWRecurrenceRule.FREQ))
+		{
+			return new MWRecurrenceRule(interval, until);
+		}
+		else if (frequency.equals(SMWRecurrenceRule.FREQ))
+		{
+			return new SMWRecurrenceRule(interval, until);
+		}
+		else if (frequency.equals(SMTWRecurrenceRule.FREQ))
+		{
+			return new SMTWRecurrenceRule(interval, until);
+		}
+		else if (frequency.equals(STTRecurrenceRule.FREQ))
+		{
+			return new STTRecurrenceRule(interval, until);
+		}
+		//add more here
      
 		return null;
 	}
@@ -1202,107 +1235,20 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 					EntityAccessOverloadException, EntityCopyrightException
 			{
 				String calRef = calendarReference(ref.getContext(), SiteService.MAIN_CONTAINER);
-				
-				// we only access the pdf & ical reference
-				if ( !REF_TYPE_CALENDAR_PDF.equals(ref.getSubType()) &&
-					  !REF_TYPE_CALENDAR_ICAL.equals(ref.getSubType()) ) 
-						throw new EntityNotDefinedException(ref.getReference());
 
-				// check if ical export is enabled
-				if ( REF_TYPE_CALENDAR_ICAL.equals(ref.getSubType()) &&
-					  !getExportEnabled(calRef) )
-						throw new EntityNotDefinedException(ref.getReference());
-
-				try
+				if (REF_TYPE_CALENDAR_PDF.equals(ref.getSubType()))
 				{
-					Properties options = new Properties();
-					Enumeration e = req.getParameterNames();
-					while (e.hasMoreElements())
-					{
-						String key = (String) e.nextElement();
-						String[] values = req.getParameterValues(key);
-						if (values.length == 1)
-						{
-							options.put(key, values[0]);
-						}
-						else
-						{
-							StringBuilder buf = new StringBuilder();
-							for (int i = 0; i < values.length; i++)
-							{
-								buf.append(values[i] + "^");
-							}
-							options.put(key, buf.toString());
-						}
-					}
-
-					// We need to write to a temporary stream for better speed, plus
-					// so we can get a byte count. Internet Explorer has problems
-					// if we don't make the setContentLength() call.
-					ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
-
-					//	 Check if PDF document requested
-					if ( REF_TYPE_CALENDAR_PDF.equals(ref.getSubType()) )
-					{
-						res.addHeader("Content-Disposition", "inline; filename=\"schedule.pdf\"");
-						res.setContentType(PDF_MIME_TYPE);
-						printSchedule(options, outByteStream);
-					}
-					else
-					{
-                  List alias =  AliasService.getAliases(calRef);
-                  String aliasName = "schedule.ics";
-                  if ( ! alias.isEmpty() )
-                     aliasName =  ((Alias)alias.get(0)).getId();
-						
-						// update date/time reference
-						Time modDate = findCalendar(calRef).getModified();
-						if ( modDate == null )
-							modDate = TimeService.newTime(0);
-							
-						res.addHeader("Content-Disposition", "inline; filename=\"" + Web.encodeFileName(req, aliasName) + "\"");
-						res.setContentType(ICAL_MIME_TYPE);
-						res.setDateHeader("Last-Modified", modDate.getTime() );
-						
-						printICalSchedule(calRef, res.getOutputStream());
-					}
-					
-					res.setContentLength(outByteStream.size());
-					if (outByteStream.size() > 0)
-					{
-						// Increase the buffer size for more speed.
-						res.setBufferSize(outByteStream.size());
-					}
-
-					OutputStream out = null;
-					try
-					{
-						out = res.getOutputStream();
-						if (outByteStream.size() > 0)
-						{
-							outByteStream.writeTo(out);
-						}
-						out.flush();
-						out.close();
-					}
-					catch (Throwable ignore)
-					{
-					}
-					finally
-					{
-						if (out != null)
-						{
-							try
-							{
-								out.close();
-							}
-							catch (Throwable ignore)
-							{
-							}
-						}
-					}
+					handleAccessPdf(req, res, ref, calRef);
 				}
-				catch (Throwable t)
+				else if (REF_TYPE_CALENDAR_ICAL.equals(ref.getSubType()))
+ 				{
+					handleAccessIcal(req, res, ref, calRef);
+ 				}
+				else if (REF_TYPE_CALENDAR_OPAQUEURL.equals(ref.getSubType()))
+ 				{
+					handleAccessOpaqueUrl(req, res, ref, calRef);
+ 				}
+				else // we only access the opaq, pdf & ical reference
 				{
 					throw new EntityNotDefinedException(ref.getReference());
 				}
@@ -1328,10 +1274,16 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			if (parts.length > 2)
 			{
 				subType = parts[2];
+				// Opaque URLs put the opaque GUID where the context ID would normally be:
+				if (REF_TYPE_CALENDAR_OPAQUEURL.equals(subType) && parts.length > 3)
+				{
+					parts[3] = mapOpaqueGuidToContextId(ref, parts[3]);
+				}
 				if (REF_TYPE_CALENDAR.equals(subType) || 
 						 REF_TYPE_CALENDAR_PDF.equals(subType) || 
 						 REF_TYPE_CALENDAR_ICAL.equals(subType) ||
-						 REF_TYPE_CALENDAR_SUBSCRIPTION.equals(subType))
+						 REF_TYPE_CALENDAR_SUBSCRIPTION.equals(subType) ||
+						 REF_TYPE_CALENDAR_OPAQUEURL.equals(subType))
 				{
 					// next is the context id
 					if (parts.length > 3)
@@ -1369,6 +1321,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 						Calendar calendarObj = getCalendar(m_aliasService.getTarget(context));
 						context = calendarObj.getContext();
 					}
+
 					catch (IdUnusedException ide) {
 							M_log.info(".parseEntityReference():"+ide.toString()); 
 							return false;
@@ -1567,7 +1520,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 				// check SECURE_ALL_GROUPS - if not, check if the event has groups or not
 				// TODO: the last param needs to be a ContextService.getRef(ref.getContext())... or a ref.getContextAuthzGroup() -ggolden
-				if ((userId == null) || ((!SecurityService.isSuperUser(userId)) && (!AuthzGroupService.isAllowed(userId, SECURE_ALL_GROUPS, SiteService.siteReference(ref.getContext())))))
+				if ((userId == null) || ((!m_securityService.isSuperUser(userId)) && (!m_authzGroupService.isAllowed(userId, SECURE_ALL_GROUPS, m_siteService.siteReference(ref.getContext())))))
 				{
 					// get the calendar to get the message to get group information
 					String calendarRef = calendarReference(ref.getContext(), ref.getContainer());
@@ -1994,7 +1947,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 													ContentResource attachment = contentHostingService.addAttachmentResource(
 															Validator.escapeResourceName(oAttachment.getProperties().getProperty(ResourceProperties.PROP_DISPLAY_NAME)), 
 															toContext, 
-															ToolManager.getTool("sakai.schedule").getTitle(), 
+															m_toolManager.getTool("sakai.schedule").getTitle(), 
 															oAttachment.getContentType(),
 															oAttachment.getContent(), 
 															oAttachment.getProperties());
@@ -2050,6 +2003,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 							// commit new event
 							m_storage.commitEvent(nCalendar, eEdit);
+							transversalMap.put(oEvent.getId(), eEdit.getId());
 						}
 						catch (InUseException ignore) {}
 					}
@@ -2087,6 +2041,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 						CalendarEvent ce = (CalendarEvent) calEvents.get(i);	
 						String msgBodyFormatted = ce.getDescriptionFormatted();						
 						boolean updated = false;
+/*						
 						Iterator<Entry<String, String>> entryItr = entrySet.iterator();
 						while(entryItr.hasNext()) {
 							Entry<String, String> entry = (Entry<String, String>) entryItr.next();
@@ -2096,7 +2051,12 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 								updated = true;
 							}								
 						}	
-						if(updated){
+*/
+						StringBuffer msgBodyPreMigrate = new StringBuffer(msgBodyFormatted);
+						msgBodyFormatted = LinkMigrationHelper.migrateAllLinks(entrySet, msgBodyFormatted);
+						if(!msgBodyFormatted.equals(msgBodyPreMigrate.toString())){
+						
+//						if(updated){
 							CalendarEventEdit edit = calendarObj.getEditEvent(ce.getId(), org.sakaiproject.calendar.api.CalendarService.EVENT_MODIFY_CALENDAR);
 							edit.setDescriptionFormatted(msgBodyFormatted);
 							calendarObj.commitEvent(edit);
@@ -2412,7 +2372,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			if ( timeStr == null )
 				return null;
 			else
-				return TimeService.newTimeGmt(timeStr);
+				return m_timeService.newTimeGmt(timeStr);
 		}
 
 		/**
@@ -2421,8 +2381,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		 **/
 		public void setModified()
 		{
- 			String currentUser = SessionManager.getCurrentSessionUserId();
-			String now = TimeService.newTime().toString();
+ 			String currentUser = m_sessionManager.getCurrentSessionUserId();
+			String now = m_timeService.newTime().toString();
 			m_properties.addProperty(ResourceProperties.PROP_MODIFIED_BY, currentUser);
 			m_properties.addProperty(ResourceProperties.PROP_MODIFIED_DATE, now);
 		}
@@ -2462,84 +2422,11 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			// check security (throws if not permitted)
 			unlock(AUTH_READ_CALENDAR, getReference());
 
-			List events = new Vector();
-
-			if ((!m_caching) || (m_calendarCache == null) || (m_calendarCache.disabled()))
-			{
-            if ( range != null )
-               events = m_storage.getEvents(this, range.firstTime().getTime(), range.lastTime().getTime() );
-            else
-               events = m_storage.getEvents(this);
-			}
-
-			else
-			{
-				// find the event cache
-				Cache eventCache = (Cache) m_eventCaches.get(getReference());
-				if (eventCache == null)
-				{
-					synchronized (m_eventCaches)
-					{
-						// check again
-						eventCache = (Cache) m_eventCaches.get(getReference());
-
-						// if still not there, make one
-						if (eventCache == null)
-						{
-							eventCache = m_memoryService
-									.newCache(
-											"org.sakaiproject.calendar.api.CalendarService.eventCache",
-											service(), eventReference(
-													m_context, m_id, ""));
-							m_eventCaches.put(getReference(), eventCache);
-						}
-					}
-				}
-
-				// if the cache is complete, use it
-				if (eventCache.isComplete())
-				{
-					// get just this calendar's events
-					events = eventCache.getAll();
-				}
-
-				// otherwise get all the events from storage
-				else
-				{
-					// Note: while we are getting from storage, storage might change. These can be processed
-					// after we get the storage entries, and put them in the cache, and mark the cache complete.
-					// -ggolden
-					synchronized (eventCache)
-					{
-						// if we were waiting and it's now complete...
-						if (eventCache.isComplete())
-						{
-							// get just this calendar's events
-							events = eventCache.getAll();
-						}
-						else
-						{
-							// save up any events to the cache until we get past this load
-							eventCache.holdEvents();
-
-							// get all the events for the calendar
-							events = m_storage.getEvents(this);
-
-							// update the cache, and mark it complete
-							for (int i = 0; i < events.size(); i++)
-							{
-								CalendarEvent event = (CalendarEvent) events.get(i);
-								eventCache.put(event.getReference(), event);
-							}
-
-							eventCache.setComplete();
-
-							// now we are complete, process any cached events
-							eventCache.processEvents();
-						}
-                  
-					}
-				}
+			List events;
+			if (range != null) {
+				events = m_storage.getEvents(this, range.firstTime().getTime(), range.lastTime().getTime());
+			} else {
+				events = m_storage.getEvents(this);
 			}
 
 			// now filter out the events to just those in the range
@@ -2549,7 +2436,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			{
 				events = filterEvents(events, range);
 			}
-						
+
 			if (events.size() == 0) return events;
 
 			// filter out based on the filter
@@ -2694,7 +2581,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			// securtiy check (any sort (group, site) of add)
 			if (!allowAddEvent())
 			{
-				throw new PermissionException(SessionManager.getCurrentSessionUserId(), eventId(SECURE_ADD), getReference());
+				throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), eventId(SECURE_ADD), getReference());
 			}
 
 			// make one
@@ -2725,7 +2612,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				catch (PermissionException e)
 				{
 					cancelEvent(edit);
-					throw new PermissionException(SessionManager.getCurrentSessionUserId(), eventId(SECURE_ADD), getReference());
+					throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), eventId(SECURE_ADD), getReference());
 				}
 			}
 			
@@ -2740,7 +2627,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				catch (PermissionException e)
 				{
 					cancelEvent(edit);
-					throw new PermissionException(SessionManager.getCurrentSessionUserId(), eventId(SECURE_ADD), getReference());
+					throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), eventId(SECURE_ADD), getReference());
 				}
 			}
 
@@ -2833,7 +2720,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 			// check security 
          if ( ! allowAddEvent() )
-			   throw new PermissionException(SessionManager.getCurrentSessionUserId(), 
+			   throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), 
                                           AUTH_ADD_CALENDAR, getReference());
 			// reserve a calendar event with this id from the info store - if it's in use, this will return null
 			CalendarEventEdit event = m_storage.putEvent(this, eventFromXml.getId());
@@ -2921,7 +2808,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			if (!allowRemoveEvent(edit))
 			{
 				cancelEvent(edit);
-				throw new PermissionException(SessionManager.getCurrentSessionUserId(), AUTH_REMOVE_CALENDAR_ANY, edit.getReference());
+				throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), AUTH_REMOVE_CALENDAR_ANY, edit.getReference());
 			}
 
 			BaseCalendarEventEdit bedit = (BaseCalendarEventEdit) edit;
@@ -2936,7 +2823,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				String[] parts = bedit.m_id.substring(1).split("!");
 				try
 				{
-					timeRange = TimeService.newTimeRange(parts[0]);
+					timeRange = m_timeService.newTimeRange(parts[0]);
 					sequence = Integer.parseInt(parts[1]);
 					bedit.m_id = parts[2];
 				}
@@ -2963,14 +2850,14 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 					// complete the edit
 					m_storage.commitEvent(this, edit);
 					// post event for excluding the instance
-					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_EXCLUSIONS, indivEventEntityRef, true));
+					m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_EXCLUSIONS, indivEventEntityRef, true));
 				}
 
 				// delete them all, i.e. the one initial event
 				else
 				{
 					m_storage.removeEvent(this, edit);
-					EventTrackingService.post(EventTrackingService.newEvent(EVENT_REMOVE_CALENDAR_EVENT, edit.getReference(), true));
+					m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_REMOVE_CALENDAR_EVENT, edit.getReference(), true));
 				}
 			}
 
@@ -2978,12 +2865,12 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			else
 			{
 				m_storage.removeEvent(this, edit);
-				EventTrackingService.post(EventTrackingService.newEvent(EVENT_REMOVE_CALENDAR_EVENT, edit.getReference(), true));
+				m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_REMOVE_CALENDAR_EVENT, edit.getReference(), true));
 			}
 
 			// track event
-			Event event = EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR, edit.getReference(), true);
-			EventTrackingService.post(event);
+			Event event = m_eventTrackingService.newEvent(EVENT_MODIFY_CALENDAR, edit.getReference(), true);
+			m_eventTrackingService.post(event);
 			
 			// calendar notification
 			notify(event);
@@ -2994,7 +2881,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			// remove any realm defined for this resource
 			try
 			{
-				AuthzGroupService.removeAuthzGroup(AuthzGroupService.getAuthzGroup(edit.getReference()));
+				m_authzGroupService.removeAuthzGroup(m_authzGroupService.getAuthzGroup(edit.getReference()));
 			}
 			catch (AuthzPermissionException e)
 			{
@@ -3059,7 +2946,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				String[] parts = eventId.substring(1).split("!");
 				try
 				{
-					timeRange = TimeService.newTimeRange(parts[0]);
+					timeRange = m_timeService.newTimeRange(parts[0]);
 					sequence = Integer.parseInt(parts[1]);
 					eventId = parts[2];
 				}
@@ -3074,13 +2961,13 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 			// check security 
          if ( editType.equals(EVENT_ADD_CALENDAR) && ! allowAddEvent() )
-			   throw new PermissionException(SessionManager.getCurrentSessionUserId(), 
+			   throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), 
                                           AUTH_ADD_CALENDAR, getReference());
          else if ( editType.equals(EVENT_REMOVE_CALENDAR) && ! allowRemoveEvent(e) )
-			   throw new PermissionException(SessionManager.getCurrentSessionUserId(), 
+			   throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), 
                                           AUTH_REMOVE_CALENDAR_ANY, getReference());
          else if ( editType.equals(EVENT_MODIFY_CALENDAR) && ! allowEditEvent(eventId) )
-			   throw new PermissionException(SessionManager.getCurrentSessionUserId(), 
+			   throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), 
                                           AUTH_MODIFY_CALENDAR_ANY, getReference());
 
 			// ignore the cache - get the CalendarEvent with a lock from the info store
@@ -3153,7 +3040,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				String[] parts = bedit.m_id.substring(1).split("!");
 				try
 				{
-					timeRange = TimeService.newTimeRange(parts[0]);
+					timeRange = m_timeService.newTimeRange(parts[0]);
 					sequence = Integer.parseInt(parts[1]);
 					bedit.m_id = parts[2];
 				}
@@ -3176,9 +3063,9 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 					newEvent = (BaseCalendarEventEdit) m_storage.putEvent(this, id);
 					newEvent.setPartial(edit);
 					m_storage.commitEvent(this, newEvent);
-					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR, newEvent.getReference(), true));
-					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_EXCLUDED, newEvent.getReference(), true));
-					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_EXCLUSIONS, indivEventEntityRef, true));
+					m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_MODIFY_CALENDAR, newEvent.getReference(), true));
+					m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_EXCLUDED, newEvent.getReference(), true));
+					m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_EXCLUSIONS, indivEventEntityRef, true));
 
 					// get the edit back to initial values... so only the exclusion is changed
 					edit = (CalendarEventEdit) m_storage.getEvent(this, bedit.m_id);
@@ -3207,14 +3094,12 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			// update the properties
 			// addLiveUpdateProperties(edit.getPropertiesEdit());//%%%
 			
-			postEventsForChanges(bedit);
-			
 			// complete the edit
 			m_storage.commitEvent(this, edit);
 
 			// track event
-			Event event = EventTrackingService.newEvent(bedit.getEvent(), edit.getReference(), true);
-			EventTrackingService.post(event);
+			Event event = m_eventTrackingService.newEvent(bedit.getEvent(), edit.getReference(), true);
+			m_eventTrackingService.post(event);
 
 			// calendar notification
 			notify(event);
@@ -3249,84 +3134,6 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		} // commitEvent
 
 		/**
-		 * @param newEvent
-		 */
-		public void postEventsForChanges(BaseCalendarEventEdit newEvent) {
-			// determine which events should be posted by comparing with saved properties
-			BaseCalendarEventEdit savedEvent = (BaseCalendarEventEdit) this.findEvent(newEvent.m_id);
-			if(savedEvent == null) {
-				
-			} else {
-				// has type changed? 
-				String savedType = savedEvent.getType();
-				String newType = newEvent.getType();
-				if(savedType == null || newType == null) {
-					// TODO: is this an error?
-				} else {
-					if (!newType.equals(savedType))
-					{
-						// post type-change event
-						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_TYPE, newEvent.getReference() + "::" + savedType + "::" + newType, true));
-					}
-				}
-				
-				// has title changed?
-				if(savedEvent.getDisplayName() != null && ! savedEvent.getDisplayName().equals(newEvent.getDisplayName())) {
-					// post title-change event
-					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_TITLE, newEvent.getReference(), true));
-				}
-				
-				// has start-time changed?
-				TimeRange savedRange = savedEvent.getRange();
-				TimeRange newRange = newEvent.getRange();
-				if(savedRange == null || newRange == null) {
-					// TODO: Is this an error?
-				} else if(savedRange.firstTime() != null && savedRange.firstTime().compareTo(newRange.firstTime()) != 0) {
-					// post time-change event 
-					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_TIME, newEvent.getReference(), true));
-				}
-				
-				// has access changed?
-				if(savedEvent.getAccess() != newEvent.getAccess()) {
-					// post access-change event
-					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_ACCESS, newEvent.getReference(), true));
-				} else {
-					Collection savedGroups = savedEvent.getGroups();
-					Collection newGroups = newEvent.getGroups();
-					if(! (savedGroups.containsAll(newGroups) && newGroups.containsAll(savedGroups))) {
-						// post access-change event
-						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_ACCESS, newEvent.getReference(), true));
-					}
-				}
-				
-				// has frequency changed (other than exclusions)? 
-				RecurrenceRule savedRule = savedEvent.getRecurrenceRule();
-				RecurrenceRule newRule = newEvent.getRecurrenceRule();
-				if(savedRule == null && newRule == null) {
-					// do nothing -- no change
-				} else if(savedRule == null || newRule == null) {
-					// post frequency-change event
-					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));
-				} else {
-					// check for changes in properties of the rules
-					// (rule.getCount() rule.getFrequency() rule.getInterval() rule.getUntil() 
-					if(savedRule.getCount() != newRule.getCount() || savedRule.getInterval() != newRule.getInterval()) {
-						// post frequency-change event
-						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));								
-					} else if((savedRule.getFrequency() != null && ! savedRule.getFrequency().equals(newRule.getFrequency())) || (savedRule.getFrequency() == null && newRule.getFrequency() != null)) {
-						// post frequency-change event
-						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));								
-					} else if((savedRule.getUntil() == null && newRule.getUntil() != null) 
-							|| (savedRule.getUntil() != null && newRule.getUntil() == null)
-							|| (savedRule.getUntil() != null && savedRule.getUntil().getTime() != newRule.getUntil().getTime())) {
-						// post frequency-change event
-						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));								
-					}
-				}
-			}
-		}
-
-		/**
 		 * Cancel the changes made to a CalendarEventEdit object, and release the lock. The CalendarEventEdit is disabled, and not to be used after this call.
 		 * 
 		 * @param edit
@@ -3352,7 +3159,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				String[] parts = bedit.m_id.substring(1).split( "!");
 				try
 				{
-					timeRange = TimeService.newTimeRange(parts[0]);
+					timeRange = m_timeService.newTimeRange(parts[0]);
 					sequence = Integer.parseInt(parts[1]);
 					bedit.m_id = parts[2];
 				}
@@ -3452,8 +3259,6 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		 */
 		protected CalendarEvent findEvent(String eventId)
 		{
-			CalendarEvent e = null;
-
 			// if the id has a time range encoded, as for one of a sequence of recurring events, separate that out
 			TimeRange timeRange = null;
 			int sequence = 0;
@@ -3462,7 +3267,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				String[] parts = eventId.substring(1).split("!");
 				try
 				{
-					timeRange = TimeService.newTimeRange(parts[0]);
+					timeRange = m_timeService.newTimeRange(parts[0]);
 					sequence = Integer.parseInt(parts[1]);
 					eventId = parts[2];
 				}
@@ -3472,76 +3277,12 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				}
 			}
 
-			// events are cached with the full reference as key
-			String key = eventReference(m_context, m_id, eventId);
-
-			// if cache is disabled, don't use it
-			if ((!m_caching) || (m_calendarCache == null) || (m_calendarCache.disabled()))
-			{
-				// if we have "cached" the entire set of events in the thread, get that and find our message there
-				List events = (List) ThreadLocalManager.get(getReference() + ".events");
-				if (events != null)
-				{
-					for (Iterator i = events.iterator(); i.hasNext();)
-					{
-						CalendarEvent event = (CalendarEvent) i.next();
-						if (event.getId().equals(eventId))
-						{
-							e = event;
-							break;
-						}
-					}
-				}
-
-				if (e == null)
-				{
-					e = m_storage.getEvent(this, eventId);
-				}
-			}
-
-			else
-			{
-				// find the event cache
-				Cache eventCache = (Cache) m_eventCaches.get(getReference());
-				if (eventCache == null)
-				{
-					synchronized (m_eventCaches)
-					{
-						// check again
-						eventCache = (Cache) m_eventCaches.get(getReference());
-
-						// if still not there, make one
-						if (eventCache == null)
-						{
-							eventCache = m_memoryService
-									.newCache(
-											"org.sakaiproject.calendar.api.CalendarService.eventCache",
-											service(), eventReference(
-													m_context, m_id, ""));
-							m_eventCaches.put(getReference(), eventCache);
-						}
-					}
-				}
-
-				// if we have it cached, use it (even if it's cached as a null, a miss)
-				if (eventCache.containsKey(key))
-				{
-					e = (CalendarEvent) eventCache.get(key);
-				}
-
-				// if not in the cache, see if we have it in our info store
-				if ( e == null ) //SAK-12447 cache.get can return null on expired
-				{
-					e = m_storage.getEvent(this, eventId);
-
-					// if so, cache it, even misses
-					eventCache.put(key, e);
-				}
-			}
+			CalendarEvent e = m_storage.getEvent(this, eventId);
 
 			// now we have the primary event, if we have a recurring event sequence time range selector, use it
 			if ((e != null) && (timeRange != null))
 			{
+				timeRange.adjust(timeRange, e.getRange());
 				e = new BaseCalendarEventEdit(e, new RecurrenceInstance(timeRange, sequence));
 			}
 
@@ -3645,11 +3386,11 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			try
 			{
 				// get the channel's site's groups
-				Site site = SiteService.getSite(m_context);
+				Site site = m_siteService.getSite(m_context);
 				Collection groups = site.getGroups();
 
 				// if the user has SECURE_ALL_GROUPS in the context (site), and the function for the calendar (calendar,site), select all site groups
-				if ((SecurityService.isSuperUser()) || (AuthzGroupService.isAllowed(SessionManager.getCurrentSessionUserId(), SECURE_ALL_GROUPS, SiteService.siteReference(m_context))
+				if ((m_securityService.isSuperUser()) || (m_authzGroupService.isAllowed(m_sessionManager.getCurrentSessionUserId(), SECURE_ALL_GROUPS, m_siteService.siteReference(m_context))
 						&& unlockCheck(function, getReference())))
 				{
 					rv.addAll( groups );
@@ -3668,7 +3409,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				}
 			
 				// ask the authzGroup service to filter them down based on function
-				groupRefs = AuthzGroupService.getAuthzGroupsIsAllowed(SessionManager.getCurrentSessionUserId(), function, groupRefs);
+				groupRefs = m_authzGroupService.getAuthzGroupsIsAllowed(m_sessionManager.getCurrentSessionUserId(), function, groupRefs);
 
 				// pick the Group objects from the site's groups to return, those that are in the groupRefs list
 				for (Iterator i = groups.iterator(); i.hasNext();)
@@ -3869,7 +3610,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			m_attachments = m_entityManager.newReferenceList();
 
 			m_id = el.getAttribute("id");
-			m_range = TimeService.newTimeRange(el.getAttribute("range"));
+			m_range = m_timeService.newTimeRange(el.getAttribute("range"));
 			
 			m_access = CalendarEvent.EventAccess.SITE;
 			String access_str = el.getAttribute("access").toString();
@@ -4052,7 +3793,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			// after the storage has registered the event and it's id.
 			if (m_range == null)
 			{
-				return TimeService.newTimeRange(TimeService.newTime(0));
+				return m_timeService.newTimeRange(m_timeService.newTime(0));
 			}
 
 			// return (TimeRange) m_range.clone();
@@ -4238,7 +3979,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				TimeZone timezone = null;
 				if (timeZoneID.equals(""))
 				{
-					timezone = TimeService.getLocalTimeZone();
+					timezone = m_timeService.getLocalTimeZone();
 				}
 				else
 				{
@@ -4273,6 +4014,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		 */
 		public String getField(String name)
 		{
+			name = FormattedText.unEscapeHtml(name);
 			// names are prefixed to form a namespace
 			name = ResourceProperties.PROP_CALENDAR_EVENT_FIELDS + "." + name;
 
@@ -4332,7 +4074,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		*/
 		public boolean isUserOwner()
       {
- 			String currentUser = SessionManager.getCurrentSessionUserId();
+ 			String currentUser = m_sessionManager.getCurrentSessionUserId();
          String eventOwner = this.getCreator();
                    
          // for backward compatibility, treat unowned event as if it owned by this user
@@ -4344,8 +4086,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		*/
 		public void setCreator()
 		{
- 			String currentUser = SessionManager.getCurrentSessionUserId();
-			String now = TimeService.newTime().toString();
+ 			String currentUser = m_sessionManager.getCurrentSessionUserId();
+			String now = m_timeService.newTime().toString();
 			m_properties.addProperty(ResourceProperties.PROP_CREATOR, currentUser);
 			m_properties.addProperty(ResourceProperties.PROP_CREATION_DATE, now);
 
@@ -4366,8 +4108,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		*/
 		public void setModifiedBy()
 		{
- 			String currentUser = SessionManager.getCurrentSessionUserId();
-			String now = TimeService.newTime().toString();
+ 			String currentUser = m_sessionManager.getCurrentSessionUserId();
+			String now = m_timeService.newTime().toString();
 			m_properties.addProperty(ResourceProperties.PROP_MODIFIED_BY, currentUser);
 			m_properties.addProperty(ResourceProperties.PROP_MODIFIED_DATE, now);
 
@@ -4468,7 +4210,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			{
 				try
 				{
-					Site site = SiteService.getSite(m_calendar.getContext());
+					Site site = m_siteService.getSite(m_calendar.getContext());
 					if (site != null)
 						calendarName = site.getTitle();
 				}
@@ -4748,7 +4490,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				for (Iterator i = m_groups.iterator(); i.hasNext();)
 				{
 					String groupId = (String) i.next();
-					Group group = SiteService.findGroup(groupId);
+					Group group = m_siteService.findGroup(groupId);
 					if (group != null)
 					{
 						rv.add(group);
@@ -4792,7 +4534,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 					// is ref a group the user can remove from?
 					if ( !EntityCollections.entityCollectionContainsRefString(allowedGroups, ref) )
 					{
-						throw new PermissionException(SessionManager.getCurrentSessionUserId(), "access:group:remove", ref);
+						throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), "access:group:remove", ref);
 					}
 				}
 			}
@@ -4810,7 +4552,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 					// is ref a group the user can remove from?
 					if (!EntityCollections.entityCollectionContainsRefString(allowedGroups, ref))
 					{
-						throw new PermissionException(SessionManager.getCurrentSessionUserId(), "access:group:add", ref);
+						throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), "access:group:add", ref);
 					}
 				}
 			}
@@ -4832,7 +4574,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			boolean allowed = m_calendar.allowAddCalendarEvent();
 			if (!allowed)
 			{
-				throw new PermissionException(SessionManager.getCurrentSessionUserId(), "access:channel", getReference());				
+				throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), "access:channel", getReference());				
 			}
 
 			// we are clear to perform this
@@ -4884,7 +4626,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				String allGroupString="";
 				try
 				{
-					Site site = SiteService.getSite(cal.getContext());
+					Site site = m_siteService.getSite(cal.getContext());
 					for (Iterator i= m_groups.iterator(); i.hasNext();)
 					{
 						Group aGroup = site.getGroup((String) i.next());
@@ -4927,7 +4669,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 					if ( doStartElement(uri, localName, qName, attributes) ) {
 						if ( "event".equals(qName) && entity == null ) {
 							m_id = attributes.getValue("id");
-							m_range = ((org.sakaiproject.time.api.TimeService)services.get("timeservice")).newTimeRange(attributes
+							m_range = m_timeService.newTimeRange(attributes
 									.getValue("range"));
 
 							m_access = CalendarEvent.EventAccess.SITE;
@@ -5108,60 +4850,6 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		public void removeEvent(Calendar calendar, CalendarEventEdit edit);
 
 	} // Storage
-
-	/**********************************************************************************************************************************************************************************************************************************************************
-	 * CacheRefresher implementation (no container)
-	 *********************************************************************************************************************************************************************************************************************************************************/
-
-	/**
-	 * Get a new value for this key whose value has already expired in the cache.
-	 * 
-	 * @param key
-	 *        The key whose value has expired and needs to be refreshed.
-	 * @param oldValue
-	 *        The old exipred value of the key.
-	 * @param event
-	 *        The event which triggered this refresh.
-	 * @return a new value for use in the cache for this key; if null, the entry will be removed.
-	 */
-	public Object refresh(Object key, Object oldValue, Event event)
-	{
-		Object rv = null;
-
-		// key is a reference
-		Reference ref = m_entityManager.newReference((String) key);
-
-		// get from storage only (not cache!)
-
-		// for events
-		if (REF_TYPE_EVENT.equals(ref.getSubType()))
-		{
-			if (M_log.isDebugEnabled())
-				M_log.debug("refresh(): key " + key + " calendar id : " + ref.getContext() + "/" + ref.getContainer()
-						+ " event id : " + ref.getId());
-
-			// get calendar (Note: from the cache is ok)
-			Calendar calendar = findCalendar(calendarReference(ref.getContext(), ref.getContainer()));
-
-			// get the CalendarEvent (Note: not from cache! but only from storage)
-			if (calendar != null)
-			{
-				rv = m_storage.getEvent(calendar, ref.getId());
-			}
-		}
-
-		// for calendar
-		else
-		{
-			if (M_log.isDebugEnabled()) M_log.debug("refresh(): key " + key + " calendar id : " + ref.getReference());
-
-			// return the calendar (Note: not from cache! but only from storage)
-			rv = m_storage.getCalendar(ref.getReference());
-		}
-
-		return rv;
-
-	} // refresh
 
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * StorageUser implementation
@@ -5664,7 +5352,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				upperBound = eventTimeRange.lastTime();
 			}
 
-			return TimeService.newTimeRange(lowerBound, upperBound, true, false);
+			return m_timeService.newTimeRange(lowerBound, upperBound, true, false);
 		}
 
 		/**
@@ -5873,7 +5561,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		{
 			TimeRange adjustedTimeRange = adjustTimeRangeToLayoutTable(eventTimeRange);
 
-			TimeRange timeRangeToStart = TimeService.newTimeRange(this.timeRange.firstTime(), adjustedTimeRange.firstTime(), true,
+			TimeRange timeRangeToStart = m_timeService.newTimeRange(this.timeRange.firstTime(), adjustedTimeRange.firstTime(), true,
 					true);
 
 			//
@@ -5945,7 +5633,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				}
 			}
 
-			return TimeService.newTimeRange(firstTime, lastTime, true, false);
+			return m_timeService.newTimeRange(firstTime, lastTime, true, false);
 		}
 
 		/**
@@ -6217,9 +5905,10 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 			Source src = new DOMSource(doc);
 			
-			java.util.Calendar c = java.util.Calendar.getInstance(TimeService.getLocalTimeZone(),new ResourceLoader().getLocale());
+			java.util.Calendar c = java.util.Calendar.getInstance(m_timeService.getLocalTimeZone(),new ResourceLoader().getLocale());
 			CalendarUtil calUtil = new CalendarUtil(c);
 			String[] dayNames = calUtil.getCalendarDaysOfWeekNames(true);
+			String[] monthNames = calUtil.getCalendarMonthNames(true);
          
 			// Kludge: Xalan in JDK 1.4/1.5 does not properly resolve java classes 
 			// (http://xml.apache.org/xalan-j/faq.html#jdk14)
@@ -6232,18 +5921,18 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			transformer.setParameter("dayNames5", dayNames[5]);
 			transformer.setParameter("dayNames6", dayNames[6]);
 			
-			transformer.setParameter("jan", rb.getString("month.jan"));
-			transformer.setParameter("feb", rb.getString("month.feb"));
-			transformer.setParameter("mar", rb.getString("month.mar"));
-			transformer.setParameter("apr", rb.getString("month.apr"));
-			transformer.setParameter("may", rb.getString("month.may"));
-			transformer.setParameter("jun", rb.getString("month.jun"));
-			transformer.setParameter("jul", rb.getString("month.jul"));
-			transformer.setParameter("aug", rb.getString("month.aug"));
-			transformer.setParameter("sep", rb.getString("month.sep"));
-			transformer.setParameter("oct", rb.getString("month.oct"));
-			transformer.setParameter("nov", rb.getString("month.nov"));
-			transformer.setParameter("dec", rb.getString("month.dec"));
+			transformer.setParameter("jan", monthNames[0]);
+			transformer.setParameter("feb", monthNames[1]);
+			transformer.setParameter("mar", monthNames[2]);
+			transformer.setParameter("apr", monthNames[3]);
+			transformer.setParameter("may", monthNames[4]);
+			transformer.setParameter("jun", monthNames[5]);
+			transformer.setParameter("jul", monthNames[6]);
+			transformer.setParameter("aug", monthNames[7]);
+			transformer.setParameter("sep", monthNames[8]);
+			transformer.setParameter("oct", monthNames[9]);
+			transformer.setParameter("nov", monthNames[10]);
+			transformer.setParameter("dec", monthNames[11]);
          
 			transformer.setParameter("site", rb.getString("event.site"));
 			transformer.setParameter("event", rb.getString("event.event"));
@@ -6268,7 +5957,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	 */
 	protected TimeRange getFullDayTimeRangeFromYMD(int year, int month, int day)
 	{
-		return TimeService.newTimeRange(TimeService.newTimeLocal(year, month, day, 0, 0, 0, 0), TimeService.newTimeLocal(year,
+		return m_timeService.newTimeRange(m_timeService.newTimeLocal(year, month, day, 0, 0, 0, 0), m_timeService.newTimeLocal(year,
 				month, day, 23, 59, 59, 999));
 	}
 
@@ -6467,7 +6156,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				eventList.setAttribute(MAX_CONCURRENT_EVENTS_NAME, Integer.toString(maxConcurrentEventsOverListNode));
 
 				// Calculate the day of the week.
-				java.util.Calendar c = java.util.Calendar.getInstance(TimeService.getLocalTimeZone(),new ResourceLoader().getLocale());
+				java.util.Calendar c = java.util.Calendar.getInstance(m_timeService.getLocalTimeZone(),new ResourceLoader().getLocale());
 				CalendarUtil cal = new CalendarUtil(c);
 
 				Time date = currentTimeRange.firstTime();
@@ -6587,8 +6276,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	 *        This is the name of the user whose schedule is being printed.
 	 * @return Number of events generated in ical object
 	 */
-	protected int generateICal(net.fortuna.ical4j.model.Calendar ical,
-										String calendarReference)
+	protected int generateICal(net.fortuna.ical4j.model.Calendar ical, List<String> calRefs)
 	{
 		int numEvents = 0;
 		
@@ -6596,9 +6284,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		TimeRange currentTimeRange = getICalTimeRange();
 
 		// Get a list of events.
-		List calList = new ArrayList();
-		calList.add(calendarReference);
-		CalendarEventVector calendarEventVector = getEvents(calList, currentTimeRange);
+		CalendarEventVector calendarEventVector = getEvents(calRefs, currentTimeRange);
 		Iterator itEvent = calendarEventVector.iterator();
 
 		// Generate XML for all the events.
@@ -6614,14 +6300,14 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			
 			VEvent icalEvent = new VEvent(icalStartDate, duration, event.getDisplayName() );
 			
-			net.fortuna.ical4j.model.parameter.TzId tzId = new net.fortuna.ical4j.model.parameter.TzId( TimeService.getLocalTimeZone().getID() );
+			net.fortuna.ical4j.model.parameter.TzId tzId = new net.fortuna.ical4j.model.parameter.TzId( m_timeService.getLocalTimeZone().getID() );
 			icalEvent.getProperty(Property.DTSTART).getParameters().add(tzId);
 			icalEvent.getProperty(Property.DTSTART).getParameters().add(Value.DATE_TIME);
 			icalEvent.getProperties().add(new Uid(event.getId()));
 			// build the description, adding links to attachments if necessary
 			StringBuffer description = new StringBuffer("");
 			if ( event.getDescription() != null && !event.getDescription().equals("") )
-				description.append(event.getDescription());
+				description.append(event.getDescription().replace('\r', '\n'));
 			
 			List attachments = event.getAttachments();
 			if(attachments != null){
@@ -6642,7 +6328,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			
 			try
 			{
-				String organizer = UserDirectoryService.getUser( event.getCreator() ).getDisplayName();
+				String organizer = m_userDirectoryService.getUser( event.getCreator() ).getDisplayName();
 				organizer = organizer.replaceAll(" ","%20"); // get rid of illegal URI characters
 				icalEvent.getProperties().add(new Organizer(new URI("CN="+organizer)));
 			}
@@ -6673,11 +6359,11 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	
 	public TimeRange getICalTimeRange()
 	{
-		Time now = TimeService.newTime();
-		Time startTime = TimeService.newTime( now.getTime() - SIX_MONTHS );
-		Time endTime = TimeService.newTime( now.getTime() + SIX_MONTHS );
+		Time now = m_timeService.newTime();
+		Time startTime = m_timeService.newTime( now.getTime() - SIX_MONTHS );
+		Time endTime = m_timeService.newTime( now.getTime() + SIX_MONTHS );
 		
-		return TimeService.newTimeRange(startTime,endTime,true,true);
+		return m_timeService.newTimeRange(startTime,endTime,true,true);
 	}
 	
 	/**
@@ -6696,7 +6382,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		trimmedStartTime = Math.min(Math.max(containingRangeStartTime, rangeToTrimStartTime), containingRangeEndTime);
 		trimmedEndTime = Math.max(Math.min(containingRangeEndTime, rangeToTrimEndTime), rangeToTrimStartTime);
 
-		return TimeService.newTimeRange(TimeService.newTime(trimmedStartTime), TimeService.newTime(trimmedEndTime), true, false);
+		return m_timeService.newTimeRange(m_timeService.newTime(trimmedStartTime), m_timeService.newTime(trimmedEndTime), true, false);
 	}
 
 	/**
@@ -6708,7 +6394,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 		if (timeRange.duration() < MINIMUM_EVENT_LENGTH_IN_MSECONDS)
 		{
-			roundedTimeRange = TimeService.newTimeRange(timeRange.firstTime().getTime(), MINIMUM_EVENT_LENGTH_IN_MSECONDS);
+			roundedTimeRange = m_timeService.newTimeRange(timeRange.firstTime().getTime(), MINIMUM_EVENT_LENGTH_IN_MSECONDS);
 		}
 
 		return roundedTimeRange;
@@ -6769,8 +6455,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		// If a "Faculty" extra field is present, then add the node.
 		writeStringNodeToDom(doc, eventElement, FACULTY_NODE, event.getField(FACULTY_EVENT_ATTRIBUTE_NAME));
 
+
 		// If a "Description" field is present, then add the node.
-		writeStringNodeToDom(doc, eventElement, DESCRIPTION_NODE, event.getDescription());
 
 		parent.appendChild(eventElement);
 	}
@@ -6891,7 +6577,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	{
 		TimeBreakdown startBreakdown = timeRange.firstTime().breakdownLocal();
 
-		GregorianCalendar startCalendarDate = (GregorianCalendar)GregorianCalendar.getInstance(TimeService.getLocalTimeZone(), rb.getLocale());
+		GregorianCalendar startCalendarDate = (GregorianCalendar)GregorianCalendar.getInstance(m_timeService.getLocalTimeZone(), rb.getLocale());
 		startCalendarDate.set(startBreakdown.getYear(),	startBreakdown.getMonth() - 1, startBreakdown.getDay(), 0, 0, 0);
 
 		ArrayList weekDayTimeRanges = new ArrayList();
@@ -6908,15 +6594,15 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			//
 			// Use the same start/end times for all days.
 			//
-			Time curStartTime = TimeService.newTimeLocal(startCalendarDate.get(GregorianCalendar.YEAR), startCalendarDate
+			Time curStartTime = m_timeService.newTimeLocal(startCalendarDate.get(GregorianCalendar.YEAR), startCalendarDate
 					.get(GregorianCalendar.MONTH) + 1, startCalendarDate.get(GregorianCalendar.DAY_OF_MONTH), startBreakDown
 					.getHour(), startBreakDown.getMin(), startBreakDown.getSec(), startBreakDown.getMs());
 
-			Time curEndTime = TimeService.newTimeLocal(startCalendarDate.get(GregorianCalendar.YEAR), startCalendarDate
+			Time curEndTime = m_timeService.newTimeLocal(startCalendarDate.get(GregorianCalendar.YEAR), startCalendarDate
 					.get(GregorianCalendar.MONTH) + 1, startCalendarDate.get(GregorianCalendar.DAY_OF_MONTH), endBreakDown
 					.getHour(), endBreakDown.getMin(), endBreakDown.getSec(), endBreakDown.getMs());
 
-			TimeRange newTimeRange = TimeService.newTimeRange(curStartTime, curEndTime, true, false);
+			TimeRange newTimeRange = m_timeService.newTimeRange(curStartTime, curEndTime, true, false);
 			weekDayTimeRanges.add(newTimeRange);
 
 			// Move to the next day.
@@ -6935,7 +6621,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		String timeRangeString = (String) parameters.get(name);
 
 		TimeRange timeRange = null;
-		timeRange = TimeService.newTimeRange(timeRangeString);
+		timeRange = m_timeService.newTimeRange(timeRangeString);
 
 		return timeRange;
 	}
@@ -7009,7 +6695,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			}
 		}
 
-		return TimeService.newTimeLocal(breakDown.getYear(), breakDown.getMonth(), breakDown.getDay(), endHour, endMin, breakDown
+		return m_timeService.newTimeLocal(breakDown.getYear(), breakDown.getMonth(), breakDown.getDay(), endHour, endMin, breakDown
 				.getSec(), breakDown.getMs());
 	}
 
@@ -7017,7 +6703,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	throws PermissionException
 	{
 		// Get the list of calendars.from user session
-		List calendarReferenceList = (List)SessionManager.getCurrentSession().getAttribute(SESSION_CALENDAR_LIST);
+		List calendarReferenceList = (List)m_sessionManager.getCurrentSession().getAttribute(SESSION_CALENDAR_LIST);
 	
 		// check if there is any calendar to which the user has acces
 		Iterator it = calendarReferenceList.iterator();
@@ -7051,7 +6737,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		return calendarReferenceList;
 	}
 
-	protected void printICalSchedule(String calRef, OutputStream os) 
+	protected void printICalSchedule(String calelndarName, List<String> calRefs, OutputStream os)
+//	protected void printICalSchedule(String calRef, OutputStream os) 
 		throws PermissionException
 	{
 		// generate iCal text file 
@@ -7059,18 +6746,20 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		ical.getProperties().add(new ProdId("-//SakaiProject//iCal4j 1.0//EN"));
 		ical.getProperties().add(Version.VERSION_2_0);
 		ical.getProperties().add(CalScale.GREGORIAN);
+		ical.getProperties().add(new XProperty("X-WR-CALNAME", calelndarName));
 		
 		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry(); 
-		TzId tzId = new TzId( TimeService.getLocalTimeZone().getID() ); 
+		TzId tzId = new TzId( m_timeService.getLocalTimeZone().getID() ); 
 		ical.getComponents().add(registry.getTimeZone(tzId.getValue()).getVTimeZone());
 		
 		CalendarOutputter icalOut = new CalendarOutputter();
-		int numEvents = generateICal(ical, calRef);
+		int numEvents = generateICal(ical, calRefs);
 			
 		try 
 		{
-			if ( numEvents > 0 )
+			if (numEvents > 0) {
 				icalOut.output( ical, os );
+			}
 		}
 		catch (Exception e)
 		{
@@ -7114,7 +6803,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 		// Grab something in the middle of the time range so that we know that we're
 		// in the right month.
-		Time somewhereInTheMonthTime = TimeService.newTime(startTime.getTime() + 2 * millisecondsInWeek);
+		Time somewhereInTheMonthTime = m_timeService.newTime(startTime.getTime() + 2 * millisecondsInWeek);
 
 		TimeBreakdown somewhereInTheMonthBreakdown = somewhereInTheMonthTime.breakdownLocal();
 
@@ -7129,8 +6818,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		// Construct a new time range starting on the first day of the month and ending on
 		// the last day at one millisecond before midnight.
 		//
-		return TimeService.newTimeRange(TimeService.newTimeLocal(somewhereInTheMonthBreakdown.getYear(),
-				somewhereInTheMonthBreakdown.getMonth(), 1, 0, 0, 0, 0), TimeService.newTimeLocal(somewhereInTheMonthBreakdown
+		return m_timeService.newTimeRange(m_timeService.newTimeLocal(somewhereInTheMonthBreakdown.getYear(),
+				somewhereInTheMonthBreakdown.getMonth(), 1, 0, 0, 0, 0), m_timeService.newTimeLocal(somewhereInTheMonthBreakdown
 				.getYear(), somewhereInTheMonthBreakdown.getMonth(), numDaysInMonth, 23, 59, 59, 999));
 	}
 
@@ -7201,16 +6890,16 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 				//
 				// Use the same start/end times for all days.
 				//
-				curStartTime = TimeService.newTimeLocal(startCalendarDate.get(GregorianCalendar.YEAR), startCalendarDate
+				curStartTime = m_timeService.newTimeLocal(startCalendarDate.get(GregorianCalendar.YEAR), startCalendarDate
 						.get(GregorianCalendar.MONTH) + 1, startCalendarDate.get(GregorianCalendar.DAY_OF_MONTH),
 						dailyStartBreakDown.getHour(), dailyStartBreakDown.getMin(), dailyStartBreakDown.getSec(),
 						dailyStartBreakDown.getMs());
 
-				curEndTime = TimeService.newTimeLocal(startCalendarDate.get(GregorianCalendar.YEAR), startCalendarDate
+				curEndTime = m_timeService.newTimeLocal(startCalendarDate.get(GregorianCalendar.YEAR), startCalendarDate
 						.get(GregorianCalendar.MONTH) + 1, startCalendarDate.get(GregorianCalendar.DAY_OF_MONTH), dailyEndBreakDown
 						.getHour(), dailyEndBreakDown.getMin(), dailyEndBreakDown.getSec(), dailyEndBreakDown.getMs());
 
-				splitTimeRanges.add(TimeService.newTimeRange(curStartTime, curEndTime, true, false));
+				splitTimeRanges.add(m_timeService.newTimeRange(curStartTime, curEndTime, true, false));
 			}
 			else
 			{
@@ -7326,7 +7015,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 		};
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.sakaiproject.util.SAXEntityReader#getServices()
 	 */
@@ -7334,7 +7023,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	{
 		if ( m_services == null ) {
 			m_services = new HashMap<String, Object>();
-			m_services.put("timeservice", TimeService.getInstance());
+			m_services.put("timeservice", m_timeService);
 		}
 		return m_services;
 	}
@@ -7401,6 +7090,359 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		public int compare(Object o1, Object o2) {
 			return ((Group)o1).getTitle().compareToIgnoreCase( ((Group)o2).getTitle() );
 		}
+	}
+	
+	public String calendarOpaqueUrlReference(Reference ref)
+	{
+		// TODO: Currently not sure whether alias handling will be required for this or not.
+		OpaqueUrl opaqUrl = m_opaqueUrlDao.getOpaqueUrl(m_sessionManager.getCurrentSessionUserId(), ref.getReference());
+		return getAccessPoint(true) + Entity.SEPARATOR + REF_TYPE_CALENDAR_OPAQUEURL + Entity.SEPARATOR + opaqUrl.getOpaqueUUID() + Entity.SEPARATOR + ref.getId();
+	}
+	
+	/**
+ 	/**
+	 * check permissions for subscribing to the implicit calendar.
+	 * 
+	 * @param ref
+	 *        The calendar reference.
+	 * @return true if the user is allowed to subscribe to the implicit calendar, false if not.
+	 */
+	public boolean allowSubscribeThisCalendar(String ref)
+	{
+		// If you can read this calendar, you may subscribe to it:
+		return unlockCheck(AUTH_READ_CALENDAR, ref);
+	}
+	
+	protected String mapOpaqueGuidToContextId(Reference reference, String opaqueGuid)
+	{
+		OpaqueUrl opaqUrl = m_opaqueUrlDao.getOpaqueUrl(opaqueGuid);
+		if (opaqUrl != null)
+		{
+			String[] parts = StringUtils.split(opaqUrl.getCalendarRef(), Entity.SEPARATOR);
+			//This was originally parts[3], neither seem to work
+			return parts[2];
+		}
+		
+		return null;
+	}
+	
+	protected String extractOpaqueGuid(Reference reference) throws EntityNotDefinedException
+	{
+		// subType at [2], opaqueGuid [3]:
+		String[] parts = StringUtils.split(reference.getReference(), Entity.SEPARATOR);
+		if (parts.length < 4 || !REF_TYPE_CALENDAR_OPAQUEURL.equals(parts[1]))
+		{
+			throw new EntityNotDefinedException(reference.getReference());
+		}
+		return parts[2];
+	}
+	
+	protected void handleAccessPdf(HttpServletRequest req, HttpServletResponse res, Reference ref, String calRef)
+			throws EntityPermissionException, EntityNotDefinedException {
+		try
+		{
+			Properties options = new Properties();
+			Enumeration e = req.getParameterNames();
+			while (e.hasMoreElements())
+			{
+				String key = (String) e.nextElement();
+				String[] values = req.getParameterValues(key);
+				if (values.length == 1)
+				{
+					options.put(key, values[0]);
+				}
+				else
+				{
+					StringBuilder buf = new StringBuilder();
+					for (int i = 0; i < values.length; i++)
+					{
+						buf.append(values[i] + "^");
+					}
+					options.put(key, buf.toString());
+				}
+			}
+			
+			// We need to write to a temporary stream for better speed, plus
+			// so we can get a byte count. Internet Explorer has problems
+			// if we don't make the setContentLength() call.
+			ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+			res.addHeader("Content-Disposition", "inline; filename=\"schedule.pdf\"");
+			res.setContentType(PDF_MIME_TYPE);
+			printSchedule(options, outByteStream);
+			res.setContentLength(outByteStream.size());
+			
+			if (outByteStream.size() > 0)
+			{
+				// Increase the buffer size for more speed.
+				res.setBufferSize(outByteStream.size());
+			}
+			
+			OutputStream out = null;
+			try
+			{
+				out = res.getOutputStream();
+				if (outByteStream.size() > 0)
+				{
+					outByteStream.writeTo(out);
+				}
+				out.flush();
+				out.close();
+			}
+			catch (Throwable ignore)
+			{
+			}
+			finally
+			{
+				if (out != null)
+				{
+					try
+					{
+						out.close();
+					}
+					catch (Throwable ignore)
+					{
+					}
+				}
+			}
+		}
+		catch (Throwable t)
+		{
+			throw new EntityNotDefinedException(ref.getReference());
+		}
+	}
+	
+	protected void handleAccessIcalCommon(HttpServletRequest req, HttpServletResponse res, Reference ref, String calRef)
+			throws EntityPermissionException, PermissionException, IOException {
+		
+		// Extract the alias name to use for the filename.
+		List alias =  m_aliasService.getAliases(calRef);
+		String aliasName = "schedule.ics";
+		if ( ! alias.isEmpty() )
+			aliasName =  ((Alias)alias.get(0)).getId();
+		
+		List<String> referenceList = getCalendarReferences(ref.getContext());
+		Time modDate = m_timeService.newTime(0);
+		// Ok so we need to check to see if we've handled this reference before.
+		// This is to prevent loops when including calendars
+		// that currently includes other calendars we only do the check in here.
+		if (getUserAgent().equals(req.getHeader("User-Agent"))) {
+			res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			M_log.warn("Reject internal request for: "+ calRef);
+			return;
+		}
+		// update date/time reference
+		for (String curCalRef: referenceList)
+		{
+			Calendar curCal = findCalendar(curCalRef);
+			/*
+			 * TODO: This null check is required to handle the references 
+			 * pertaining to external calendar subscriptions as they are 
+			 * currently broken in (at least) the 2 following ways:
+			 * 
+			 * (i) findCalendar will return null rather than a calendar object.
+			 * (ii) getCalendar(String) will return a calendar object that is 
+			 * not null, but the corresponding getModified() method returns a
+			 * date than can not be parsed.  
+			 *  
+			 * Clearly such references to need to be improved to make them 
+			 * consistent with other types as at the moment they have to be
+			 * excluded as part of this process to find the most recent modified
+			 * date. 
+			 */
+			if (curCal == null)
+			{	
+				continue;
+			}
+			Time curModDate = curCal.getModified();
+			if ( curModDate != null && curModDate.after(modDate))
+			{
+				modDate = curModDate;
+			}
+		}
+		res.addHeader("Content-Disposition", "inline; filename=\"" + aliasName + "\"");
+		res.setContentType(ICAL_MIME_TYPE);
+		res.setDateHeader("Last-Modified", modDate.getTime() );
+		String calendarName = "";
+		try {
+			calendarName = m_siteService.getSite(ref.getContext()).getTitle();
+		} catch (IdUnusedException e) {
+		}
+		printICalSchedule(calendarName, referenceList, res.getOutputStream());
+	}
+	
+	protected void handleAccessIcal(HttpServletRequest req, HttpServletResponse res, Reference ref, String calRef)
+			throws EntityPermissionException, EntityNotDefinedException {
+		
+		// check if ical export is enabled
+		if (!getExportEnabled(calRef))
+		{
+			throw new EntityNotDefinedException(ref.getReference());
+		}
+		
+		// Make sure the current user can access this calendar first.
+		if (m_siteService.isUserSite(ref.getContext()) && !allowGetCalendar(calRef)) 
+		{
+			throw new EntityPermissionException(m_sessionManager.getCurrentSessionUserId(), SECURE_READ, calRef);
+		}
+		
+		try
+		{
+			handleAccessIcalCommon(req, res, ref, calRef);
+			
+			OutputStream out = null;
+			try
+			{
+				out = res.getOutputStream();
+				out.flush();
+				out.close();
+			}
+			catch (Throwable ignore)
+			{
+			}
+			finally
+			{
+				if (out != null)
+				{
+					try
+					{
+						out.close();
+					}
+					catch (Throwable ignore)
+					{
+					}
+				}
+			}
+		}
+		catch (EntityPermissionException epe)
+		{
+			throw epe;
+		}
+		catch (Throwable t)
+		{
+			throw new EntityNotDefinedException(ref.getReference());
+		}
+	}
+	
+	protected void handleAccessOpaqueUrl(HttpServletRequest req, HttpServletResponse res, Reference ref, String calRef)
+			throws EntityPermissionException, EntityNotDefinedException {
+		
+		// Get the user UUID from any opaque GUID within the reference:
+		String opaqueGuid = extractOpaqueGuid(ref);
+		String userId = null;
+		if (opaqueGuid != null)
+		{
+			OpaqueUrl opaqUrl = m_opaqueUrlDao.getOpaqueUrl(opaqueGuid);
+			userId = (opaqUrl != null) ? opaqUrl.getUserUUID() : null;
+		}
+		if (opaqueGuid == null || userId == null)
+		{
+			throw new EntityNotDefinedException(ref.getReference());
+		}
+		
+		boolean isAlreadyLoggedIn = false;
+		
+		try 
+		{
+			// We want to avoid an inadvertent logout coming from the same UA:
+			UsageSession usage = m_usageSessionService.getSession();
+			if ((usage != null) && userId.equals(usage.getUserId()) && !usage.isClosed())
+			{
+				isAlreadyLoggedIn = true;
+			}
+			String eid = m_userDirectoryService.getUserEid(userId);
+			Authentication authn = new Authentication(userId, eid);
+			if (m_usageSessionService.login(authn, req))
+			{
+				// Make sure the current user can access this calendar first.
+				if (allowGetCalendar(calRef)) 
+				{
+					handleAccessIcalCommon(req, res, ref, calRef);
+				}
+				else
+				{
+					M_log.warn("Calendar access via opaque UUID failed: " + opaqueGuid);
+					throw new EntityNotDefinedException(opaqueGuid);
+				}
+			}
+		} 
+		catch (UserNotDefinedException e) 
+		{
+			M_log.warn("User not found: " + userId);
+			throw new EntityNotDefinedException(ref.getReference());
+		} 
+		catch (PermissionException e) 
+		{
+			M_log.warn("Calendar access via opaque UUID failed: " + opaqueGuid);
+			throw new EntityNotDefinedException(opaqueGuid);
+		} 
+		catch (IOException e) 
+		{
+		}
+		finally
+		{
+			if (!isAlreadyLoggedIn)
+			{
+				m_usageSessionService.logout();
+			}
+		}
+	}
+	
+	protected List<String> getCalendarReferences(String siteId) {
+		// get merged calendars channel refs
+		String initMergeList = null;
+		try {
+			ToolConfiguration tc = m_siteService.getSite(siteId).getToolForCommonId("sakai.schedule");
+			if (tc != null) {
+				initMergeList = tc.getPlacementConfig().getProperty("mergedCalendarReferences");
+			}
+		} catch (IdUnusedException e){
+			initMergeList = null;
+		}
+		
+		// load all calendar channels (either primary or merged calendars)
+		String primaryCalendarReference = calendarReference(siteId, SiteService.MAIN_CONTAINER);
+		MergedList mergedCalendarList = loadChannels(siteId, primaryCalendarReference, initMergeList, null);
+		
+		// add external calendar subscriptions
+		List referenceList = mergedCalendarList.getReferenceList();
+		Set subscriptionRefList = ExternalCalendarSubscriptionService.getCalendarSubscriptionChannelsForChannels(primaryCalendarReference,referenceList);
+		referenceList.addAll(subscriptionRefList);
+		
+		return referenceList;
+	}
+	
+	/**
+	 ** loadChannels -- load specified primaryCalendarReference or merged
+	 ** calendars if initMergeList is defined
+	 **/
+	protected MergedList loadChannels(String siteId, String primaryCalendarReference, String initMergeList, MergedList.EntryProvider entryProvider) {
+		MergedList mergedCalendarList = new MergedList();
+		String[] channelArray = null;
+		boolean isOnWorkspaceTab = m_siteService.isUserSite(siteId);
+		
+		// Figure out the list of channel references that we'll be using.
+		// MyWorkspace is special: if not superuser, and not otherwise defined,
+		// get all channels
+		if (isOnWorkspaceTab && !m_securityService.isSuperUser() && initMergeList == null) {
+			channelArray = mergedCalendarList.getAllPermittedChannels(new CalendarChannelReferenceMaker());
+		} else {
+			channelArray = mergedCalendarList.getChannelReferenceArrayFromDelimitedString(primaryCalendarReference, initMergeList);
+		}
+		if (entryProvider == null) {
+			entryProvider = new MergedListEntryProviderFixedListWrapper(new EntryProvider(), primaryCalendarReference, channelArray, new CalendarReferenceToChannelConverter());
+		}
+		mergedCalendarList.loadChannelsFromDelimitedString(isOnWorkspaceTab, false, entryProvider, m_sessionManager.getCurrentSessionUserId(), channelArray, m_securityService.isSuperUser(), siteId);
+		
+		return mergedCalendarList;
+	}
+	
+
+	/**
+	 * Get the user agent we should use for request to get other calendars.
+	 * @return The user agent.
+	 */
+	String getUserAgent() {
+		return "Sakai/"+ m_serverConfigurationService.getString("version.sakai", "?") + " (Calendar Subscription)";
 	}
 	
 } // BaseCalendarService

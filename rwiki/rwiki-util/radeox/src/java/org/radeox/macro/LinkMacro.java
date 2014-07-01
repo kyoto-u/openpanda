@@ -36,7 +36,7 @@ import org.radeox.util.Encoder;
  * Macro for displaying external links with a name. The normal UrlFilter takes
  * the url as a name. @author stephan @team sonicteam
  * 
- * @version $Id: LinkMacro.java 29047 2007-04-18 07:40:45Z ian@caret.cam.ac.uk $
+ * @version $Id: LinkMacro.java 121896 2013-03-28 14:48:06Z matthew@longsight.com $
  */
 
 public class LinkMacro extends BaseLocaleMacro
@@ -104,6 +104,12 @@ public class LinkMacro extends BaseLocaleMacro
 				}
 
 			}
+
+            //Trim these elements to eliminate whitespace
+            url=url.trim();
+            target=target.trim();
+            text=text.trim();
+
 			writer.write("<span class=\"nobr\">"); //$NON-NLS-1$
 			if (!"none".equals(img) && engine instanceof ImageRenderEngine) //$NON-NLS-1$
 			{

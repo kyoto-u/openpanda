@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-api/api/src/java/org/sakaiproject/citation/api/CitationCollection.java $
- * $Id: CitationCollection.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-api/api/src/java/org/sakaiproject/citation/api/CitationCollection.java $
+ * $Id: CitationCollection.java 111481 2012-08-15 17:49:22Z jimeng@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,7 @@ package org.sakaiproject.citation.api;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.sakaiproject.citation.util.api.SearchException;
@@ -40,6 +41,7 @@ public interface CitationCollection extends Entity
 	public final static String SORT_BY_AUTHOR = "author";
 	public final static String SORT_BY_YEAR   = "year";
 	public final static String SORT_BY_TITLE  = "title";
+	public final static String SORT_BY_POSITION  = "position";
 	public final static String SORT_BY_UUID   = "uuid";
 	public final static String SORT_BY_DEFAULT_ORDER = "default";
 	
@@ -236,6 +238,11 @@ public interface CitationCollection extends Entity
 //	public Citation remove(Map properties);
 
 	/**
+	 * Access the timestamp of the most recent saved revision to this citation collection.
+	 */
+	public Date getLastModifiedDate();
+    
+	/**
      * @return
      */
     public String getSort();
@@ -295,6 +302,6 @@ public interface CitationCollection extends Entity
 	 * @throws IOException 
 	 */
 	public void exportRis(StringBuilder buffer, List<String> citationIds) throws IOException;
-    
+
 }	// interface Citation
 

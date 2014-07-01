@@ -30,13 +30,17 @@ ul.makeMenu li {
 <![endif]><![endif]-->
 
 #**#
-<script type ="text/javascript" src ="/library/js/jquery/1.4.2/jquery-1.4.2.min.js">
+<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js">
 <!-- // -->
 </script>
-<script  type ="text/javascript">
+<script type="text/javascript">
 $(document).ready(function() {
+	if ($('#content_print_result_url').length)
+	{
+		window.open($('#content_print_result_url').val(), $('#content_print_result_url_title'), "height=800,width=800");
+	}
 	jQuery('.portletBody').click(function(e) { 
-			
+	
 		if ( e.target.className !='menuOpen' &&e.target.className !='dropdn'  ){
 			$('.makeMenuChild').hide();
 		}
@@ -91,8 +95,8 @@ $(document).ready(function() {
 	        'aria-hidden': 'true',
 	        'tabindex': '-1'
 	    });
-	});
-	});
+	});	
+	})
 </script>
 #**#
 #set($num = 0)
@@ -101,6 +105,9 @@ $(document).ready(function() {
 	#if ($atHome && $atHome == $TRUE)
 			<ul class="navIntraTool actionToolBar">
 				<li class="firstToolBarItem"><span class="current">$tlang.getString("list.site")</span></li>
+				#if($showDropboxMultipleFoldersUpload)
+				<li><span><a href="#toolLinkParam("ResourcesAction" "doDropboxMultipleFoldersUpload" "siteId=$validator.escapeUrl(${site.id})")" title="$tlang.getString("multiple.file.upload")">$tlang.getString("multiple.file.upload")</a></span></li>
+				#end
 				#if($showWebdavLink)
 				<li><span><a href="#toolLink("ResourcesAction" "doShow_webdav")" title="$tlang.getString('dav.webdav')">$tlang.getString("dav.webdav")</a></span></li>
 				#end
@@ -119,9 +126,22 @@ $(document).ready(function() {
 			</ul>
 	#end 
 	#if ($alertMessage)
-		<br /><div class="alertMessage">$clang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div class="clear" ></div>
+                 <br /><div class="messageValidation">$alertMessage</div><div class="clear"></div>
+	#end
+	## display print success message
+	#if ($content_print_status_success)
+		<br /><div id="messageSuccessHolder" class="messageSuccess" style="display:block">$!content_print_message</div>
+	#end
+	## display print failure message
+	#if ($content_print_status_failure)
+		<br /><div id="messageSuccessHolder" class="messageError" style="display:block">$!content_print_message</div>
 	#end
 	<form name="showForm" id="showForm" action="#toolForm("ResourcesAction")" method="post">
+		## hidden fields for print url
+		#if ($!content_print_result_url && $!content_print_result_url_title)
+			<input type="hidden" value="$content_print_result_url" id="content_print_result_url" />
+			<input type="hidden" value="$content_print_result_url_title" id="content_print_result_url_title" />
+		#end
 		<input type="hidden" name="source" id="source" value="0" />
 		<input type="hidden" name="collectionId" id="collectionId" value="$validator.escapeHtml($collectionId)" />
 		<input type="hidden" name="navRoot" id="navRoot" value="" />
@@ -167,7 +187,7 @@ $(document).ready(function() {
             <select name="dropboxGroupFilter_groupId" id="dropboxGroupFilter_groupId" onchange="javascript:document.getElementById('sakai_action').value='doSetDropboxGroupIdFilter';document.getElementById('showForm').submit();">
                 <option value=""#if($!dropboxGroupFilter_groupId || $dropboxGroupFilter_groupId.equals("")) selected="selected"#end>$tlang.getString("grp.all")</option>
                 #foreach($group in $dropboxGroupFilter_groups)
-                    <option value="$group.getId()"#if($group.getId().equals($dropboxGroupFilter_groupId)) selected="selected"#end>$group.getTitle()</option>
+                    <option value="$group.getId()"#if($group.getId().equals($dropboxGroupFilter_groupId)) selected="selected"#end>$validator.escapeHtml($group.getTitle())</option>
                 #end
             </select>
         </div>
@@ -191,6 +211,24 @@ $(document).ready(function() {
 								
 								#set ($itemsOnLine = $itemsOnLine + 1)
 							#end
+
+                            ####### begin SAK-23304, add Show and Hide
+                            ####### Show/Hide can not be part of listActions because it was not a multipleItemAction for an item.
+                            ####### listActions are a list of multipleItemAction that you can do on individual resource/collection items.
+                            #if (!$dropboxMode)
+                                #if($canShowHide)
+                                    #if($itemsOnLine > 0)|#end
+                                        <input id="show-button" type="button" value="$tlang.getString('avail.show')"
+                                            onclick="javascript:document.getElementById('sakai_action').value='doMultiItemDispatch';document.getElementById('rt_action').value='show';document.getElementById('showForm').submit();"
+                                            disabled="disabled" alt="show" />
+                                            #if($itemsOnLine > 0)|#end
+                                                <input id="hide-button" type="button" value="$tlang.getString('avail.hide')"
+                                                    onclick="javascript:document.getElementById('sakai_action').value='doMultiItemDispatch';document.getElementById('rt_action').value='hide';document.getElementById('showForm').submit();"
+                                                    disabled="disabled" alt="hide" />
+                                #end
+                             #end
+                             ####### end SAK-23304, add Show and Hide
+
 						</span>
 					#end
 				</div>
@@ -230,7 +268,8 @@ $(document).ready(function() {
 				</th>
 				<th id="checkboxes"  style="border:none">
 						<input type="checkbox" name="selectall" id="selectall" disabled="disabled" title="$clang.getString("list.select")"
-							onclick="javascript:toggleSelectAll(this, 'selectedMembers')" value="" /><label for="selectall" class="skip">$clang.getString("list.select")</label>
+						onclick="javascript:toggleSelectAll(this, 'selectedMembers'); adjustShowHideCount(this)" value="" /><label for="selectall" class="skip">$clang.getString("list.select")</label>
+
 				</th>
 				<th id="title"  style="border:none">
 					<a href="javascript:document.getElementById('sakai_action').value='doSort';document.getElementById('collectionId').value='$collectionId';document.getElementById('criteria').value='title';document.getElementById('showForm').submit();"
@@ -335,9 +374,11 @@ $(document).ready(function() {
 						#if($item.depth > 0 && $item.hasMultipleItemActions())
 							<input type="checkbox" name="selectedMembers" id="list$num" 
 									#if($selectedItems.contains($item.id))checked="checked"#end
-									onclick="#foreach($key in $item.multipleItemActions.keySet())adjustCount(this, '$key');#end"
+									onclick="#foreach($key in $item.multipleItemActions.keySet())adjustCount(this, '$key');#end;adjustShowHideCount(this)"
  									value="$dqid" /><label for="list$num" class="skip">$clang.getString("att.select"): $validator.escapeHtml($item.name)</label>
 							#foreach($key in $item.multipleItemActions.keySet())$counter.increment("$key") $counter.increment("selectall")#if($selectedItems.contains($item.id))$counter.increment("${key}selected")#end#end
+							<input type="hidden" name="itemHidden" id="itemHidden" value="$item.hidden" />
+							<input type="hidden" name="itemCanRevise" id="itemCanRevise" value="$item.canRevise" />
 						#end
 					</td>
 					<td headers="title" style="text-indent:$width" class="specialLink">
@@ -504,18 +545,33 @@ $(document).ready(function() {
 						<th colspan="10"  style="border:none">
 						<h3>
 							<a href="javascript:document.getElementById('sakai_action').value='doHideOtherSites';document.getElementById('showForm').submit();"
-								title= "$clang.getString('list.hide')">
-							##<a href="#toolLink("ResourcesAction" "doHideOtherSites")" title= "$clang.getString('list.hide')">
-								<img src="#imageLink("sakai/collapse.gif")" alt="$clang.getString('list.hide')" border="0" align="top" />
-								$validator.escapeHtml("$clang.getString('list.hide')")
+								title= "$clang.getString('list.copycontent')">
+								<img src="#imageLink("sakai/collapse.gif")" alt="$clang.getString('list.copycontent')" border="0" align="top" />
+								$validator.escapeHtml("$clang.getString('list.copycontent')")
 							</a>
 						</h3>
 						</th>
 					</tr>
+					<tr>
+						<td colspan="10">
+							$tlang.getString('notes.expandfolder')
+						</td>					
+					</tr>
 					################################################################ Begin Paging widgets
 					#if($!allMsgNumber && $allMsgNumberInt && $allMsgNumberInt > 5)
 						<tr class="exclude">
-							<td colspan="10">
+							<td>
+								<div class="navPanel">
+									<div class="navIntraToolLink viewNav">
+									<span>
+										<input id="copy-button-other" type="button" value="$tlang.getString('action.copy')"
+											onclick="javascript:document.getElementById('sakai_action').value='doMultiItemDispatch';document.getElementById('rt_action').value='copy-other';document.getElementById('showForm').submit();"
+											disabled="disabled" alt="copy" />
+										</span>
+									</div>
+								</div>
+							</td>
+							<td colspan="9">
 								<div class="navPanel">
 								<div class="listNav">
  									<div class="instruction" style="margin-bottom:.3em;">$tlang.getString("viewing") $topMsgPos - $btmMsgPos $tlang.getString("of") $allMsgNumber $tlang.getString("items")</div>
@@ -555,6 +611,21 @@ $(document).ready(function() {
 								</div></div>
 							</td>
 						</tr>
+						#else
+						<tr class="exclude">
+							<td>
+								<div class="navPanel">
+									<div class="navIntraToolLink viewNav">
+										<span>
+											<input id="copy-button-other" type="button" value="$tlang.getString('action.copy')"
+												onclick="javascript:document.getElementById('sakai_action').value='doMultiItemDispatch';document.getElementById('rt_action').value='copy-other';document.getElementById('showForm').submit();"
+												disabled="disabled" alt="copy" />
+										</span>
+									</div>
+								</div>
+							</td>
+							<td colspan="9"></td>
+						</tr>
 					#end
 					################################################################ Eng Paging widgets
 					#foreach($item in $other_sites)
@@ -586,9 +657,9 @@ $(document).ready(function() {
 							</td>
 							<td headers="checkboxes">
 								#if($item.depth > 0 && $item.hasMultipleItemActions())
-									<input type="checkbox" name="selectedMembers" id="list$num" 
+									<input type="checkbox" name="selectedMembers-other" id="list$num"
 											#if($selectedItems.contains($item.id))checked="checked"#end
-											onclick="#foreach($key in $item.multipleItemActions.keySet())adjustCount(this, '$key');#end"
+											onclick="adjustCountOther(this, 'copy')"
  											value="$dqid" /><label for="list$num" class="skip">$clang.getString("att.select")</label>
 									#foreach($key in $item.multipleItemActions.keySet())$counter.increment("$key") $counter.increment("selectall")#if($selectedItems.contains($item.id))$counter.increment("${key}selected")#end#end
 								#end
@@ -667,66 +738,13 @@ $(document).ready(function() {
 									#if ($item.description !="" && $item.description) <a class="toggleDescription" href="#" title="$tlang.getString("list.description.link")"> <img src="#imageLink("/silk/information.png")" alt="$tlang.getString("list.description.link")"/></a><div role="alertdialog" aria-hidden="true" class="descPanel" style="display:none;border:2px solid #ccc;height:auto;background:#fff;padding:3px;position:absolute;top:-1000px;left:-1000px;z-index:100000;width:25%"><div class="descriptionClose" style="text-align:right;padding:2px;">x</div>$validator.escapeHtml($item.description)</div>#end
 								</h$headerDepth>	
 							</td>
-							<td headers="actions1"  class="attach" style="white-space:nowrap;vertical-align:middle">
-								#if($item.pasteActions && !$item.pasteActions.isEmpty())
-									#set ($itemsOnLine = 0)
-									#foreach($action in $item.pasteActions)
-										#if($itemsOnLine > 0)|#end
-										<a class=" highlightlink" title="$labeler.getLabel($action) $tlang.getString("paste.here")" href="javascript:document.getElementById('selectedItemId').value='$qid';document.getElementById('rt_action').value='${action.typeId}${ACTION_DELIMITER}$action.id';document.getElementById('sakai_action').value='doDispatchAction';submitform('showForm');"><img src = "#imageLink("silk/page_paste.gif")" border="0"  alt="$labeler.getLabel($action)"/></a> 
-										#set ($itemsOnLine = $itemsOnLine + 1)
-									#end
-								#end
-							</td>
-							<td headers="actions2" class="attach">
-								#if($item.addActions && !$item.addActions.isEmpty())
-									<ul style="margin:0;display:block" class="makeMenu" role="menubar">
-										<li class="menuOpen" tabindex="0" role="menuitem" aria-haspopup="true" aria-label="$tlang.getString("button.add"): $validator.escapeHtml(${item.name}) $item.hoverText">
-											&nbsp;$tlang.getString("button.add")
-											<img src = "#imageLink("sakai/icon-dropdn.gif")" border="0"  alt="$tlang.getString("button.add")" class="dropdn"/>
-											<ul class="makeMenuChild" role="menu">
-							    #foreach($action in $item.addActions)
-												<li>
-													<a tabindex="-1" role="menuitem" style="width:auto" href="javascript:document.getElementById('selectedItemId').value='$qid';document.getElementById('rt_action').value='${action.typeId}${ACTION_DELIMITER}$action.id';document.getElementById('sakai_action').value='doDispatchAction';submitform('showForm');">$labeler.getLabel($action)</a>
-												</li>
-							    #end
-											</ul>
-										</li>
-									</ul>
-								#end
-
-								</td>
-							<td headers="actions3" class="attach">
-							#if($item.otherActions && !$item.otherActions.isEmpty())
-									<ul style="margin:0;display:block" class="makeMenu" role="menubar">
-										<li class="menuOpen" tabindex="0" role="menuitem" aria-haspopup="true" aria-label="$tlang.getString("button.actions"): $validator.escapeHtml(${item.name}) $item.hoverText">
-											&nbsp;$tlang.getString("button.actions")
-											<img src = "#imageLink("sakai/icon-dropdn.gif")" border="0"   alt="$tlang.getString("button.actions")"  class="dropdn"/>
-											<ul class="makeMenuChild" role="menu">
-												#foreach($action in $item.otherActions)
-													<li>
-														<a tabindex="-1" role="menuitem" style="width:auto" href="javascript:document.getElementById('selectedItemId').value='$qid';document.getElementById('rt_action').value='${action.typeId}${ACTION_DELIMITER}$action.id';document.getElementById('sakai_action').value='doDispatchAction';submitform('showForm');">
-															$labeler.getLabel($action)
-														</a>
-													</li>
-												#end
-											</ul>
-								  	</li>
-									</ul>
-								#end
-
-							</td>
+							<td></td>
+							#set ($actionCount=($actionCount - 1))
+							#set ($actionCount2=($actionCount2 - 1))
+							<td headers="actions2" class="attach"></td>
+							<td headers="actions3" class="attach"></td>
 							#if($item.depth > 0)
-								<td headers="access" title="$item.effectiveGroupsLabel">
-									#if($item.isPubviewInherited() || $item.isPubview())
-										$tlang.getString("access.public")
-									#elseif($item.isInDropbox())
-										$tlang.getString("access.dropbox")
-									#elseif($item.effectiveAccess == $INHERITED_ACCESS || $item.effectiveAccess == $SITE_ACCESS)
-										$tlang.getString("access.site")
-									#elseif($item.effectiveAccess == $GROUP_ACCESS)
-										$tlang.getString("access.group")
-									#end
-								</td>
+								<td headers="access" title="$item.effectiveGroups"></td>
 								<td headers="creator">
 									$validator.escapeHtml($item.createdBy)
 								</td>
@@ -748,9 +766,9 @@ $(document).ready(function() {
 						<th colspan="10"  style="border:none">
 						<h3>
 							<a href="javascript:document.getElementById('sakai_action').value='doShowOtherSites';document.getElementById('showForm').submit();"
-								title= "$clang.getString('list.show')">
-								<img src="#imageLink("sakai/expand.gif")" alt="$clang.getString('list.show')" border="0" align="top" />
-								$validator.escapeHtml("$clang.getString('list.show')")
+								title= "$clang.getString('list.copycontent')">
+								<img src="#imageLink("sakai/expand.gif")" alt="$clang.getString('list.copycontent')" border="0" align="top" />
+								$validator.escapeHtml("$clang.getString('list.copycontent')")
 							</a>
 						</h3>
 						</th>
@@ -767,13 +785,19 @@ $(document).ready(function() {
 			<input type="hidden" id="${key}-count" value="$counter.getValue("${key}selected")" />
 		#end		
 		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+		<input type="hidden" id="show-count" value="$counter.getValue("showselected")" />
+		<input type="hidden" id="hide-count" value="$counter.getValue("hideselected")" /> 
+		## copy for other sites
+		<input type="hidden" id="copy-count-other" value="0" />
 	</form>						
 </div>
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 	<!--
 		#foreach($key in $listActions.keySet())
 			#if($counter.getValue("${key}selected") > 0)
 				document.getElementById("${key}-button").disabled = false;
+				document.getElementById("show-button").disabled = false;
+				document.getElementById("hide-button").disabled = false;
 			#end
 		#end
 		#if($counter.getValue("selectall") > 0)
@@ -809,6 +833,20 @@ $(document).ready(function() {
 					}
 					document.getElementById("${key}-count").value = "$counter.getValue("$key")";
 				#end
+#### begin SAK-23304
+                var show_button = document.getElementById("show-button");
+                if(show_button) {
+                        show_button.disabled = false;
+                        show_button.className = 'enabled';
+                }
+                document.getElementById("show-count").value = "$counter.getValue("show")";
+                var hide_button = document.getElementById("hide-button");
+                if(hide_button) {
+                        hide_button.disabled = false;
+                        hide_button.className = 'enabled';
+                }
+                document.getElementById("hide-count").value = "$counter.getValue("hide")";
+#### end SAK-23304
 			}
 			else
 			{
@@ -822,6 +860,22 @@ $(document).ready(function() {
 					}
 					document.getElementById("${key}-count").value = "0";
 				#end
+#### begin SAK-23304
+                var show_button = document.getElementById("show-button");
+                if(show_button)
+                {
+                        show_button.disabled = true;
+                        show_button.className = 'disabled';
+                }
+                document.getElementById("show-count").value = "0";
+                var hide_button = document.getElementById("hide-button");
+                if(hide_button)
+                {
+                        hide_button.disabled = true;
+                        hide_button.className = 'disabled';
+                }
+                document.getElementById("hide-count").value = "0";
+#### end SAK-23304
 			}
 		}
 		
@@ -853,7 +907,133 @@ $(document).ready(function() {
 				}
 			}
 		}
-		
+
+		function adjustCountOther(caller, key) {
+			var counter = document.getElementById(key + "-count-other");
+			var button = document.getElementById(key + "-button-other");
+			if (caller && caller.checked && caller.checked == true) {
+				counter.value = parseInt(counter.value) + 1;
+			} else {
+				counter.value = parseInt(counter.value) - 1;
+			}
+			if (button) {
+				if (counter.value > 0) {
+					button.disabled = false;
+					button.className='enabled';
+				} else {
+					button.disabled = true;
+					button.className='disabled';
+				}
+			}
+		}
+
+   function adjustShowHideCount(caller) {
+                var trlist = caller.parentNode.parentNode.parentNode.childNodes;
+                var enableshow=  false ;
+                var enablehide=  false ;
+
+                for (var i=0; i<trlist.length; i++){
+                        var thisTR = trlist[i];
+                        if (thisTR.tagName == "TR"){
+                                var inputlist= thisTR.getElementsByTagName("input");
+                                if (inputlist.length ==3) {
+
+                                        // 1.  check itemHidden
+                                        var thisTRitemHidden= thisTR.getElementsByTagName("input")[1];
+
+                                        var currHidden = false;
+                                        if (thisTRitemHidden&& (thisTRitemHidden.name == "itemHidden")) {
+                                                currHidden= thisTRitemHidden.value;
+                                        }
+
+                                        // 2. check itemCanRevise
+                                        var thisTRitemCanRevise = thisTR.getElementsByTagName("input")[2];
+                                        var currCanRevise= false;
+                                        if (thisTRitemCanRevise && (thisTRitemCanRevise.name == "itemCanRevise")) {
+                                                currCanRevise= thisTRitemCanRevise.value;
+                                        }
+
+                                        // 3. check item is checked or not
+                                        var thisTRcheckbox = thisTR.getElementsByTagName("input")[0];
+                                        var currchecked = false;
+                                        if (thisTRcheckbox && (thisTRcheckbox.name == "selectedMembers")) {
+                                                currchecked = thisTRcheckbox.checked;
+                                        }
+
+
+                                        if ((currchecked==true) && (currHidden=="true") && (currCanRevise == "true")) {
+                                                enableshow= true;
+                                                break;
+                                        }
+                                }
+                        }
+                }
+                for (var i=0; i<trlist.length; i++){
+                        var thisTR = trlist[i];
+                        if (thisTR.tagName == "TR"){
+                                var inputlist= thisTR.getElementsByTagName("input");
+                                if (inputlist.length ==3) {
+
+                                        // 1.  check itemHidden
+                                        var thisTRitemHidden= thisTR.getElementsByTagName("input")[1];
+                                        var currHidden = false;
+                                        if (thisTRitemHidden&& (thisTRitemHidden.name == "itemHidden")) {
+                                                currHidden= thisTRitemHidden.value;
+                                        }
+
+                                        // 2. check itemCanRevise
+                                        var thisTRitemCanRevise = thisTR.getElementsByTagName("input")[2];
+                                        var currCanRevise= false;
+                                        if (thisTRitemCanRevise && (thisTRitemCanRevise.name == "itemCanRevise")) {
+                                                currCanRevise= thisTRitemCanRevise.value;
+                                        }
+
+                                        // 3. check item is checked or not
+                                        var thisTRcheckbox = thisTR.getElementsByTagName("input")[0];
+                                        var currchecked = false;
+                                        if (thisTRcheckbox && (thisTRcheckbox.name == "selectedMembers")) {
+                                                currchecked = thisTRcheckbox.checked;
+                                        }
+
+                                        if ((currchecked==true) && (currHidden=="false") && (currCanRevise == "true")) {
+                                                enablehide= true;
+                                                break;
+                                        }
+                                }
+                        }
+                }
+
+                var showbutton = document.getElementById("show-button");
+                if(showbutton)
+                {
+                        if (enableshow)
+                        {
+                                showbutton.disabled = false;
+                                showbutton.className='enabled';
+                        }
+                        else
+                        {
+                                showbutton.disabled = true;
+                                showbutton.className='disabled';
+                        }
+                }
+
+                var hidebutton = document.getElementById("hide-button");
+                if(hidebutton)
+                {
+                        if (enablehide)
+                        {
+                                hidebutton.disabled = false;
+                                hidebutton.className='enabled';
+                        }
+                        else
+                        {
+                                hidebutton.disabled = true;
+                                hidebutton.className='disabled';
+                        }
+                }
+        }
+
 		function disableLinks()
 		{
 			if(document.getElementsByName)

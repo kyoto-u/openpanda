@@ -8,21 +8,17 @@
       <url>http://sakaiproject.org/</url>
    </organization>
    <inceptionYear>2007</inceptionYear>
-   <description>Qna webapp (tool)</description>
+   <description>Account Validator Tool</description>
    <packaging>war</packaging>
 
    <!-- the base is parent -->
    <parent>
      <groupId>org.sakaiproject.reset-pass</groupId>
 	<artifactId>reset-pass</artifactId>
-	<version>2.9.3</version>
+	<version>10.0</version>
    </parent>
 
    <properties>
-      <rsfutil.version>0.7.4</rsfutil.version>
-      <sakairsf.sakai.version>2.2.x</sakairsf.sakai.version>
-      <deploy.webappname>Qna</deploy.webappname>
-      <appserver.id>${sakai.appserver.id}</appserver.id>
    </properties>
 
    <dependencies>
@@ -63,21 +59,21 @@
       <dependency>
          <groupId>uk.org.ponder.sakairsf</groupId>
          <artifactId>sakairsf</artifactId>
-         <version>${rsfutil.version}-sakai_${sakairsf.sakai.version}</version>
+         <version>${sakairsf.version}</version>
          <type>jar</type>
       </dependency>
 
       <dependency>
          <groupId>uk.org.ponder.sakairsf</groupId>
          <artifactId>SakaiRSFComponents-evolvers</artifactId>
-         <version>${rsfutil.version}-sakai_${sakairsf.sakai.version}</version>
+		 <version>${sakairsf.components.version}</version>
          <type>jar</type>
       </dependency>
 
       <dependency>
          <groupId>uk.org.ponder.sakairsf</groupId>
          <artifactId>SakaiRSFComponents-templates</artifactId>
-         <version>${rsfutil.version}-sakai_${sakairsf.sakai.version}</version>
+         <version>${sakairsf.components.version}</version>
          <type>war</type>
       </dependency>
 	  
@@ -102,7 +98,7 @@
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>1.6.2</version>
+			<version>2.3</version>
 		</dependency>
    </dependencies>
 

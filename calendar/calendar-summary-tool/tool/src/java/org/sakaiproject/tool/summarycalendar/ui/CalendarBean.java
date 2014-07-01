@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/CalendarBean.java $
- * $Id: CalendarBean.java 110619 2012-07-23 14:22:54Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/CalendarBean.java $
+ * $Id: CalendarBean.java 134073 2014-02-04 18:01:31Z bkirschn@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -72,7 +72,10 @@ import org.sakaiproject.util.MergedList;
 import org.sakaiproject.util.MergedListEntryProviderFixedListWrapper;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.StringUtil;
-
+import org.sakaiproject.entitybroker.EntityBroker;
+import org.sakaiproject.entitybroker.EntityReference;
+import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
+import org.sakaiproject.entitybroker.exception.EntityNotFoundException;
 
 public class CalendarBean {
 
@@ -114,8 +117,6 @@ public class CalendarBean {
 	private MonthWeek								week6					= new MonthWeek();
 	private CalendarEventVector						calendarEventVector		= null;
 	private String									siteId					= null;
-	private String[]								months					= { "month.jan", "month.feb", "month.mar", "month.apr", "month.may", "month.jun", "month.jul", "month.aug", "month.sep", "month.oct",
-			"month.nov", "month.dec"											};
 
 	private Map	<String, String>									eventImageMap			= new HashMap<String, String>();
 	
@@ -723,11 +724,9 @@ public class CalendarBean {
 	}
 
 	public String getCaption() {
-		Calendar c = Calendar.getInstance(getCurrentUserTimezone(), msgs.getLocale());
-		c.setTime(getViewingDate());
-		String month = msgs.getString(months[c.get(Calendar.MONTH)]);
-		String year = c.get(Calendar.YEAR) + "";
-		return month + ", " + year;
+		SimpleDateFormat formatter = new SimpleDateFormat(msgs.getString("viewm.date_format"), msgs.getLocale());
+		formatter.setTimeZone(getCurrentUserTimezone());
+		return formatter.format(getViewingDate());
 	}
 
 	public boolean isViewingSelectedDay() {
@@ -774,6 +773,24 @@ public class CalendarBean {
 				String eventUrl = buildEventUrl(site, event.getReference());
 				selectedEvent.setUrl(eventUrl);
 				selectedEvent.setAttachments(event.getAttachments());
+				//Checking assignment If the event is assignment due date
+				try{
+					String assignmentId = event.getField(CalendarUtil.NEW_ASSIGNMENT_DUEDATE_CALENDAR_ASSIGNMENT_ID);
+					if (assignmentId != null && assignmentId.trim().length() > 0)
+					{
+						StringBuilder entityId = new StringBuilder( ASSN_ENTITY_PREFIX );
+						entityId.append( assignmentId );
+						if (entityBroker == null)
+						{
+							entityBroker = (EntityBroker) ComponentManager.get("org.sakaiproject.entitybroker.EntityBroker");
+						}
+						entityBroker.executeCustomAction(entityId.toString(), ASSN_ENTITY_ACTION, null, null);						
+					}
+					
+				}catch(EntityNotFoundException e){
+					selectedEvent.setOpenDateError(true);
+				}				
+				
 				// groups
 				if(M_as.unlock("calendar.all.groups", "/site/"+calendar.getContext())){
 					Collection grps = event.getGroupObjects();
@@ -861,4 +878,31 @@ public class CalendarBean {
 		Calendar c = Calendar.getInstance(getCurrentUserTimezone(),msgs.getLocale());
 		return new CalendarUtil(c).getCalendarDaysOfWeekNames(false);
 	}
+	
+	//SAK-19700 method to get name of tool so it can be rendered with the option link, for screenreaders
+	public String getToolTitle() {
+		return M_tm.getCurrentPlacement().getTitle();
+	}
+	
+	//SAK-19700 renders a complete Options link with an additional span link for accessiblity
+	public String getAccessibleOptionsLink() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(msgs.getString("menu_prefs"));
+		sb.append("<span class=\"skip\">");
+		sb.append(getToolTitle());
+		sb.append("</span>");
+		return sb.toString();
+		
+	}
+	
+	/**
+	 * Tests if the options section should be displayed.
+	 */
+	public boolean isPreferencesVisible() {
+		return M_as.unlock(CalendarService.AUTH_OPTIONS_CALENDAR, M_ca.calendarReference(getSiteId(), SiteService.MAIN_CONTAINER));
+	}
+	private final static String ASSN_ENTITY_ID     = "assignment";
+	private final static String ASSN_ENTITY_ACTION = "item";
+	private EntityBroker entityBroker;
+	private final static String ASSN_ENTITY_PREFIX = EntityReference.SEPARATOR+ASSN_ENTITY_ID+EntityReference.SEPARATOR+ASSN_ENTITY_ACTION+EntityReference.SEPARATOR;
 }

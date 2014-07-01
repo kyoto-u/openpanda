@@ -23,69 +23,45 @@
 
 package org.sakaiproject.lessonbuildertool.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.cover.ServerConfigurationService;
-
-import org.sakaiproject.lessonbuildertool.service.LessonSubmission;
+import org.sakaiproject.db.cover.SqlService;
+import org.sakaiproject.lessonbuildertool.SimplePageItem;
+import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean.UrlItem;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
-import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedMetaData;
-import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
-import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
-import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
-import org.sakaiproject.tool.assessment.facade.AssessmentFacadeQueries;
-import org.sakaiproject.tool.assessment.facade.AuthzQueriesFacadeAPI;
-import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacadeQueriesAPI;
-import org.sakaiproject.tool.assessment.data.dao.authz.AuthorizationData;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
-import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
-import org.sakaiproject.tool.assessment.services.GradingService;
-import org.sakaiproject.tool.assessment.services.PersistenceService;
-
-import org.w3c.dom.Document;
-import org.sakaiproject.tool.assessment.services.qti.QTIService;
-import org.sakaiproject.tool.assessment.qti.constants.QTIVersion;
-
-import org.sakaiproject.site.api.Group;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.api.Session;
-import org.sakaiproject.tool.cover.ToolManager;
+import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
+import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentData;
+import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
+import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedMetaData;
+import org.sakaiproject.tool.assessment.data.dao.authz.AuthorizationData;
+import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
+import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
+import org.sakaiproject.tool.assessment.facade.AuthzQueriesFacadeAPI;
+import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
+import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacadeQueriesAPI;
+import org.sakaiproject.tool.assessment.qti.constants.QTIVersion;
+import org.sakaiproject.tool.assessment.services.GradingService;
+import org.sakaiproject.tool.assessment.services.PersistenceService;
+import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
+import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
+import org.sakaiproject.tool.assessment.services.qti.QTIService;
 import org.sakaiproject.tool.cover.SessionManager;
-
-import org.sakaiproject.memory.api.Cache;
-import org.sakaiproject.memory.api.CacheRefresher;
-import org.sakaiproject.memory.api.MemoryService;
-
+import org.sakaiproject.tool.cover.ToolManager;
+import org.w3c.dom.Document;
 import uk.org.ponder.messageutil.MessageLocator;
 
-import org.sakaiproject.lessonbuildertool.SimplePageItem;
-import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
-import org.sakaiproject.db.cover.SqlService;
-import org.sakaiproject.db.api.SqlReader;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.io.IOException;
+import java.util.*;
 
 
 /**
@@ -173,7 +149,8 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 	    }
 	    if (parts.length >= 2) {
 		try {
-		    major = Integer.parseInt(parts[1]);
+		    String[] s = parts[1].split("\\D");
+		    major = Integer.parseInt(s[0]);
 		} catch (Exception e) {
 		};
 	    }
@@ -186,7 +163,7 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 		};
 	    }
 	    // samigo starting with 2.8.1 has the edit link
-	    if (cle == 2 && (major == 8 && minor > 0 || major > 8))
+	    if (cle > 2 || (cle == 2 && (major == 8 && minor > 0 || major > 8)))
 		defaultEditLink = true;
 	}
 	System.out.println("SamigoEntity thinks this is Sakai verison " + cle + "." + major + "." + minor + ", defaulting Samigo edit link to " + defaultEditLink);
@@ -235,7 +212,7 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 
     public PublishedAssessmentData getPublishedAssessment(Long publishedId, boolean nocache) {
 	
-	PublishedAssessmentData ret = (PublishedAssessmentData)assessmentCache.get(publishedId);
+	PublishedAssessmentData ret = (PublishedAssessmentData)assessmentCache.get(publishedId.toString());
 
 	if (!nocache && ret != null) {
 	    return ret;
@@ -254,7 +231,7 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 
 	if (ret != null) {
 	    ret.setComments(null);
-	    assessmentCache.put(publishedId, ret, DEFAULT_EXPIRATION);
+	    assessmentCache.put(publishedId.toString(), ret);
 	}
 
 	return ret;
@@ -331,16 +308,16 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 	return ret;
     }
 
-    public LessonEntity getEntity(String ref, SimplePageBean o) {
-	return getEntity(ref);
+    public LessonEntity getEntity(String ref) {
+	return getEntity(ref, null);
     }
 
-    public LessonEntity getEntity(String ref) {
+    public LessonEntity getEntity(String ref, SimplePageBean o) {
 	// if the site was copied, all sakaiids for tests are set to something like /sam_core/NNN
 	// the problem is that published asessments aren't copied. So all we can do is poitn to
 	// the core assessment. Of course you can't really take that, so we try to find a published
 	// assessment based on that core. If we find one, we fix up the sakaiids, and we're ok.
-	if (ref.startsWith("/sam_core/")) {
+	if (o != null && ref.startsWith("/sam_core/")) {
 	    Object fields[] = new Object[1];
 	    fields[0] = new Long(ref.substring("/sam_core/".length()));
 
@@ -354,6 +331,7 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 		for (SimplePageItem item: items) {
 		    item.setSakaiId(ref);
 		    simplePageToolDao.quickUpdate(item);
+		    o.checkControlGroup(item, item.isPrerequisite());
 		}
 	    } else
 		return null;
@@ -617,6 +595,16 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 	if (tool == null)
 	    return null;
     
+	if (false) {
+	    // code to verify that exportObject actually works
+	    if (assessment == null)
+		assessment = getPublishedAssessment(id);
+	    String aid = assessment.getAssessmentId().toString();
+	    
+	    Document doc = exportObject(aid);
+	    System.out.println("foo " + doc.getElementsByTagName("questestinterop"));
+	}
+
 	if (samigo_linked)
 	    return ServerConfigurationService.getToolUrl() + "/" + tool + "/jsf/author/editLink?publishedAssessmentId=" + id;
 	else
@@ -637,6 +625,18 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 	    return ServerConfigurationService.getToolUrl() + "/" + tool + "/jsf/index/mainIndex";
 
     }
+
+    // export an assessment as an XML document. This is in Samigo's version of QTI
+    public Document exportObject(String assessmentId) {
+	try {
+	    QTIService qtiService = new QTIService();
+	    return qtiService.getExportedAssessment(assessmentId, QTIVersion.VERSION_1_2);
+	} catch (Exception e) {
+	    System.out.println("exception in exportobject " + e);
+	    return null;
+	}
+    }
+	
 
     public String importObject(Document document, boolean isBank, String siteId, boolean hide) {
 
@@ -722,6 +722,12 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 	return assessment != null;
     }
 
+    public boolean notPublished(String ref) {
+	if (ref.startsWith("/sam_core/"))
+	    return true;
+	else
+	    return false;
+    }
 
     // return the list of groups if the item is only accessible to specific groups
     // null if it's accessible to the whole site.  Update the data in the cache
@@ -786,7 +792,7 @@ public class SamigoEntity implements LessonEntity, QuizEntity {
 	// will still have the old value
 	if (assessment != null)
 	    assessment.setComments(null);
-	PublishedAssessmentData cached = (PublishedAssessmentData)assessmentCache.get(id);
+	PublishedAssessmentData cached = (PublishedAssessmentData)assessmentCache.get(id.toString());
 	if (cached != null)
 	    cached.setComments(null);
 

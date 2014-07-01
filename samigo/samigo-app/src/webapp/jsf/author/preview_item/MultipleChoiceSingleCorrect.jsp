@@ -1,4 +1,4 @@
-<%-- $Id: MultipleChoiceSingleCorrect.jsp 84154 2010-11-02 21:05:12Z lydial@stanford.edu $
+<%-- $Id: MultipleChoiceSingleCorrect.jsp 123878 2013-05-08 22:59:16Z ktsao@stanford.edu $
 include file for delivering multiple choice single correct survey questions
 should be included in file importing DeliveryMessages
 --%>
@@ -28,16 +28,17 @@ should be included in file importing DeliveryMessages
   <!-- ATTACHMENTS -->
   <%@ include file="/jsf/author/preview_item/attachment.jsp" %>
 
-  <h:dataTable value="#{question.itemData.itemTextArraySorted}" var="itemText">
+  <h:dataTable value="#{question.itemData.itemTextArraySorted}" var="itemText" width="100%">
     <h:column>
-      <h:dataTable value="#{itemText.answerArraySorted}" var="answer">
+      <h:dataTable value="#{itemText.answerArraySorted}" var="answer" width="100%">
         <h:column>
          <h:panelGroup rendered="#{answer.text !=null && answer.text!=''}">
           <h:graphicImage id="image1" rendered="#{answer.isCorrect}" alt="#{authorMessages.correct}" url="/images/radiochecked.gif"/>
          
           <h:graphicImage id="image2" rendered="#{!answer.isCorrect}" alt="#{authorMessages.not_correct}" url="/images/radiounchecked.gif"/>
         
-          <h:outputText escape="false" value="#{answer.label}. #{answer.text}" />
+          <h:outputText escape="false" value="#{answer.label}. " />
+          <h:outputText escape="false" value="#{answer.text}" styleClass="mcAnswerText"/>
 </h:panelGroup>
 </h:column><h:column>
  

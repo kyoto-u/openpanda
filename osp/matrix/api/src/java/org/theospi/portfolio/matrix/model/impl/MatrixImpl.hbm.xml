@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.theospi.portfolio.matrix.model" default-lazy="false">
 
     <class name="Matrix" table="osp_matrix" lazy="true">
@@ -161,7 +161,7 @@
          <property name="owner" column="ownerId" not-null="true"
             type="org.sakaiproject.metaobj.shared.mgt.AgentUserType" />
         <property name="title" type="java.lang.String" />
-        <property name="description" type="text" />
+        <property name="description" type="materialized_clob" />
         <property name="worksiteId" type="org.sakaiproject.metaobj.shared.IdType" />
         <list name="levels" lazy="true" inverse="false" cascade="all-delete-orphan"
             table="osp_scaffolding_levels">
@@ -236,7 +236,7 @@
       </set>
 
       <property name="title" type="string" column="name" not-null="false"/>
-      <property name="description" type="text" column="description" not-null="false"/>
+      <property name="description" type="materialized_clob" column="description" not-null="false"/>
       
       <property name="suppressItems" column="SUPPRESS_ITEMS" type="boolean" not-null="false"/>
     

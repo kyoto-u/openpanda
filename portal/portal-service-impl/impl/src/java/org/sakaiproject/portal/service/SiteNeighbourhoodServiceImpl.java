@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/SiteNeighbourhoodServiceImpl.java $
- * $Id: SiteNeighbourhoodServiceImpl.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/SiteNeighbourhoodServiceImpl.java $
+ * $Id: SiteNeighbourhoodServiceImpl.java 309348 2014-05-08 19:55:03Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -124,10 +124,8 @@ public class SiteNeighbourhoodServiceImpl implements SiteNeighbourhoodService
 			return mySites;
 		}
 
-		// collect the user's sites
-		mySites = siteService.getSites(
-				org.sakaiproject.site.api.SiteService.SelectionType.ACCESS, null, null,
-				null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, null);
+		// collect the user's sites - don't care whether long descriptions are loaded
+		mySites = siteService.getUserSites(false);
 
 		// collect the user's preferences
 		List prefExclude = new ArrayList();
@@ -576,9 +574,15 @@ public class SiteNeighbourhoodServiceImpl implements SiteNeighbourhoodService
 		return null;
 	}
 
-	public String parseSiteAlias(String url)
+	public String parseSiteAlias(String alias)
 	{
-		String id = ((useAliasPrefix)?SITE_ALIAS:"")+url;
+		if (alias == null)
+		{
+			return null;
+		}
+		// Prepend site alias prefix if it's being used.
+		String id = ((useAliasPrefix)?SITE_ALIAS:"")+alias;
+
 		try
 		{
 			String reference = aliasService.getTarget(id);

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.3/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ui/PrivateMessageDecoratedBean.java $
- * $Id: PrivateMessageDecoratedBean.java 101365 2011-12-02 20:31:57Z wagnermr@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.0/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ui/PrivateMessageDecoratedBean.java $
+ * $Id: PrivateMessageDecoratedBean.java 134305 2014-02-10 15:43:57Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,6 +57,8 @@ public class PrivateMessageDecoratedBean
   private boolean isPreviewReplyAll = false;
   private boolean isPreviewForward = false;
   private PrivateMessageDecoratedBean previewReplyTmpMsg;
+  
+  private boolean isReplied = false;
   
   public PrivateMessage getMsg()
   {
@@ -217,9 +219,21 @@ public class PrivateMessageDecoratedBean
   public boolean getIsPreviewForward() {
 	  return isPreviewForward;
   }
+  public boolean getExternalEmail(){
+	  return this.msg.getExternalEmail();
+  }  
   public void setIsPreviewForward(boolean isPreviewForward) {
 	  this.isPreviewForward = isPreviewForward;
   }
+  
+  public boolean isReplied() {
+	  return isReplied;
+}
+
+  public void setReplied(boolean isReplied) {
+	  this.isReplied = isReplied;
+  }
+
 }
 
 

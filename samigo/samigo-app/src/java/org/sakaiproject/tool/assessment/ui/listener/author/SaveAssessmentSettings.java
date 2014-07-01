@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SaveAssessmentSettings.java $
- * $Id: SaveAssessmentSettings.java 100844 2011-11-18 05:24:52Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SaveAssessmentSettings.java $
+ * $Id: SaveAssessmentSettings.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,7 +73,7 @@ import org.sakaiproject.util.ResourceLoader;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: SaveAssessmentSettings.java 100844 2011-11-18 05:24:52Z ktsao@stanford.edu $
+ * @version $Id: SaveAssessmentSettings.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 
 public class SaveAssessmentSettings
@@ -219,15 +219,31 @@ public class SaveAssessmentSettings
         feedback.setFeedbackComponentOption(new Integer(assessmentSettings.getFeedbackComponentOption()));
     if (assessmentSettings.getFeedbackAuthoring()!=null)
      feedback.setFeedbackAuthoring(new Integer(assessmentSettings.getFeedbackAuthoring()));
-    feedback.setShowQuestionText(Boolean.valueOf(assessmentSettings.getShowQuestionText()));
-    feedback.setShowStudentResponse(Boolean.valueOf(assessmentSettings.getShowStudentResponse()));
-    feedback.setShowCorrectResponse(Boolean.valueOf(assessmentSettings.getShowCorrectResponse()));
-    feedback.setShowStudentScore(Boolean.valueOf(assessmentSettings.getShowStudentScore()));
-    feedback.setShowStudentQuestionScore(Boolean.valueOf(assessmentSettings.getShowStudentQuestionScore()));
-    feedback.setShowQuestionLevelFeedback(Boolean.valueOf(assessmentSettings.getShowQuestionLevelFeedback()));
-    feedback.setShowSelectionLevelFeedback(Boolean.valueOf(assessmentSettings.getShowSelectionLevelFeedback()));
-    feedback.setShowGraderComments(Boolean.valueOf(assessmentSettings.getShowGraderComments()));
-    feedback.setShowStatistics(Boolean.valueOf(assessmentSettings.getShowStatistics()));
+    // if 'No feedback' (it corresponds to value 3) is selected, 
+	// all components are unchecked
+    if (feedback.getFeedbackDelivery().equals(new Integer("3")))
+    {
+    	feedback.setShowQuestionText(false);
+		feedback.setShowStudentResponse(false);
+		feedback.setShowCorrectResponse(false);
+		feedback.setShowStudentScore(false);
+		feedback.setShowStudentQuestionScore(false);
+		feedback.setShowQuestionLevelFeedback(false);
+		feedback.setShowSelectionLevelFeedback(false);
+		feedback.setShowGraderComments(false);
+		feedback.setShowStatistics(false);
+    }
+    else {
+    		feedback.setShowQuestionText(Boolean.valueOf(assessmentSettings.getShowQuestionText()));
+    		feedback.setShowStudentResponse(Boolean.valueOf(assessmentSettings.getShowStudentResponse()));
+    		feedback.setShowCorrectResponse(Boolean.valueOf(assessmentSettings.getShowCorrectResponse()));
+    		feedback.setShowStudentScore(Boolean.valueOf(assessmentSettings.getShowStudentScore()));
+    		feedback.setShowStudentQuestionScore(Boolean.valueOf(assessmentSettings.getShowStudentQuestionScore()));
+    		feedback.setShowQuestionLevelFeedback(Boolean.valueOf(assessmentSettings.getShowQuestionLevelFeedback()));
+    		feedback.setShowSelectionLevelFeedback(Boolean.valueOf(assessmentSettings.getShowSelectionLevelFeedback()));
+    		feedback.setShowGraderComments(Boolean.valueOf(assessmentSettings.getShowGraderComments()));
+    		feedback.setShowStatistics(Boolean.valueOf(assessmentSettings.getShowStatistics()));
+    }
     assessment.setAssessmentFeedback(feedback);
 
     // g. set Grading
@@ -322,7 +338,6 @@ public class SaveAssessmentSettings
     updateAttachment(assessment.getAssessmentAttachmentList(), assessmentSettings.getAttachmentList(),(AssessmentIfc)assessment.getData(), true);
     EventTrackingService.post(EventTrackingService.newEvent("sam.setting.edit", "siteId=" + AgentFacade.getCurrentSiteId() + ", assessmentId=" + assessmentSettings.getAssessmentId(), true));
     
-    //added by gopalrc, 6 Nov 2007
     AuthzQueriesFacadeAPI authz = PersistenceService.getInstance().getAuthzQueriesFacade();
     if (assessmentSettings.getReleaseTo().equals(AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS)) {
         authz.removeAuthorizationByQualifierAndFunction(assessmentId.toString(), "TAKE_ASSESSMENT");

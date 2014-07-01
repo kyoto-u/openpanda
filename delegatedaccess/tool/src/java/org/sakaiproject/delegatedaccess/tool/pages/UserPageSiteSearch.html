@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
+
+<!--
+* The Trustees of Columbia University in the City of New York
+* licenses this file to you under the Educational Community License,
+* Version 2.0 (the "License"); you may not use this file
+* except in compliance with the License. You may obtain a copy of the
+* License at:
+*
+* http://opensource.org/licenses/ecl2.txt
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+-->
+
+<body>
+<wicket:extend>
+	<br/>
+	<wicket:enclosure child="currentLink">
+	<a wicket:id="currentLink">
+		<span wicket:id="currentLinkLabel">[currentLink]</span>
+	</a>
+	&nbsp;|&nbsp;
+	<a wicket:id="allLink">
+		<span wicket:id="allLinkLabel">[allLinkLabel]</span>
+	</a>
+	<br/>
+	</wicket:enclosure>
+	<br/>
+	<form wicket:id="form">
+		<h3><wicket:message key="searchSites"/></h3>
+		<table>
+			<tr>
+				<td align='right'>
+					<wicket:message key="siteIdTitleField"/>
+				</td>
+				<td>
+					<input type="text" wicket:id="search" />
+					
+				</td>
+			</tr>
+			<tr>
+				<td align='right'>
+					<span wicket:id="instructorFieldLabel"/>
+				</td>
+				<td>
+					<input type="text" wicket:id="instructorField" />
+					&nbsp;
+					<wicket:container wicket:id="instructorOptionsGroup">
+					    <label><input wicket:id="instructorOption" type="radio" name="ticker"/><wicket:message key="instructor"/></label>
+					    <label><input wicket:id="memberOption" type="radio" name="ticker"/><wicket:message key="member"/></label>
+				    </wicket:container>
+				</td>
+			</tr>
+			<tr>
+				<td align='right'>
+					<wicket:message key="termField"/>
+				</td>
+				<td>
+					<select wicket:id="termField">
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td/>
+				<td align='right'>
+					<input type="submit" onclick="loadSemaphore = true; showLoading();"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<br/>
+	<br/>	
+	<span wicket:id="searchResultsTitle">Results for: </span><span wicket:id="searchString" style="font-weight: bold">user search string</span>
+	<br/>
+	<div wicket:id="navigatorTop"></div>
+	<wicket:enclosure child="searchResult">
+	<table cellspacing="0" class="dataview listHier lines nolines">
+    <tbody>
+    	<tr>
+    	<th><a wicket:id="siteTitleSortLink"><wicket:message key="siteTitleHeader"/></a></th>
+    	<th><a wicket:id="siteIdSortLink"><wicket:message key="siteIdHeader"/></a></th>
+    	<th><a wicket:id="termSortLink"><wicket:message key="termHeader"/></a></th>
+    	<th><a wicket:id="accessSortLink"><wicket:message key="access"/></a></th>
+   		<th><a wicket:id="instructorSortLink"><span wicket:id="instructorSortLinkLabel"/></a></th>
+    	<wicket:enclosure child="startDateSortLink">
+	    	<th><a wicket:id="startDateSortLink"><wicket:message key="startDate"/></a></th>
+	    	<th><a wicket:id="endDateSortLink"><wicket:message key="endDate"/></a></th>
+	    	<th><wicket:message key="showAuthToolsHeader"/></th>
+	    	<th><wicket:message key="showPublicToolsHeader"/></th>
+    	</wicket:enclosure>
+    	<wicket:enclosure child="accessModifiedBySortLink">
+	    	<th><a wicket:id="accessModifiedBySortLink"><wicket:message key="accessModifiedBy"/></a></th>
+    		<th><a wicket:id="accessModifiedOnSortLink"><wicket:message key="accessModifiedOn"/></a></th>
+    	</wicket:enclosure>
+    	</tr>
+       <tr wicket:id="searchResult">
+       	 <td><a wicket:id="siteTitleLink"><span wicket:id="siteTitle">test</span></a></td>
+       	 <td><span wicket:id="siteId">site id</span></td>
+       	 <td><span wicket:id="term">term</span></td>
+       	 <td><span wicket:id="access">!site.course:instructor</span></td>
+       	 <wicket:enclosure child="instructor">
+	       	 <td>
+	       	 	<span wicket:id="instructor">Last, First</span>
+	       	 	<a wicket:id="instructorLookupLink"><wicket:message key="lookupInstructor"/></a>
+	       	 </td>
+       	 </wicket:enclosure>
+       	 <wicket:enclosure child="startDate">
+	       	 <td><span wicket:id="startDate">1/1/2012</span></td>
+	       	 <td><span wicket:id="endDate">12/21/2012</span></td>
+	       	 <td><span wicket:id="showAuthTools">Syllabus, Home</span></td>
+	       	 <td><span wicket:id="showPublicTools">Syllabus, Home</span></td>
+       	 </wicket:enclosure>
+       	 <wicket:enclosure child="accessModifiedBy">
+       	 	<td><span wicket:id="accessModifiedBy">Bryan Holladay</span></td>
+       	 	<td><span wicket:id="accessModified">4/13/2011</span></td>
+       	 </wicket:enclosure>
+       </tr>
+    </tbody>
+	</table>
+	</wicket:enclosure>
+	<div wicket:id="navigatorBottom"></div>
+
+</wicket:extend>
+</body>
+</html>

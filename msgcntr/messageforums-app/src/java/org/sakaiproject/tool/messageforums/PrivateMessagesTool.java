@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,10 +74,18 @@ import org.sakaiproject.component.app.messageforums.MembershipItem;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.HiddenGroupImpl;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.PrivateMessageImpl;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.PrivateTopicImpl;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.entity.api.Reference;
+import org.sakaiproject.event.api.Event;
+import org.sakaiproject.event.api.LearningResourceStoreService;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Actor;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Object;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Statement;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb.SAKAI_VERB;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Group;
@@ -250,7 +258,8 @@ public class PrivateMessagesTool
   private String composeSubject ;
   private String composeBody;
   private String selectedLabel="pvt_priority_normal" ;   //defautl set
-  private List totalComposeToList;
+  private List totalComposeToList = null;
+  private List totalComposeToBccList = null;
   private List totalComposeToListRecipients;
   
   //Delete items - Checkbox display and selection - Multiple delete
@@ -280,11 +289,11 @@ public class PrivateMessagesTool
   private String replyToAllSubject;
   
   //Setting Screen
-  private String sendEmailOut=SET_AS_NO;
   private String activatePvtMsg=SET_AS_NO; 
   private String forwardPvtMsg=SET_AS_NO;
   private String forwardPvtMsgEmail;
   private boolean superUser; 
+  private String sendToEmail;
   
   //message header screen
   private String searchText="";
@@ -295,6 +304,9 @@ public class PrivateMessagesTool
   
   // for compose, are we coming from main page?
   private boolean fromMain;
+  
+  // Message which will be marked as replied
+  private PrivateMessage replyingMessage;
   
   //////////////////////
   
@@ -336,9 +348,15 @@ public class PrivateMessagesTool
   private String selectedNonHiddenGroup = DEFAULT_NON_HIDDEN_GROUP_ID;
   private static final String PARAM_GROUP_ID = "groupId";
   private boolean currentSiteHasGroups = false;
+  private Boolean displayHiddenGroupsMsg = null;
+  
+  private boolean showProfileInfoMsg = false;
+  private boolean showProfileLink = false;
   
   public PrivateMessagesTool()
   {    
+	  showProfileInfoMsg = ServerConfigurationService.getBoolean("msgcntr.messages.showProfileInfo", true);
+	  showProfileLink = showProfileInfoMsg && ServerConfigurationService.getBoolean("profile2.profile.link.enabled", true);
   }
   
   /**
@@ -393,6 +411,11 @@ public class PrivateMessagesTool
     	area.setEnabled(true);
     }
     
+    // reset these in case the allowed recipients (such as hidden groups) was updated
+    totalComposeToList = null;
+    totalComposeToBccList = null;
+    displayHiddenGroupsMsg = null;
+    
     if (getUserId() != null && (getPvtAreaEnabled() || isInstructor() || isEmailPermit())){      
       PrivateForum pf = prtMsgManager.initializePrivateMessageArea(area, aggregateList);
       pf = prtMsgManager.initializationHelper(pf, area);
@@ -400,7 +423,7 @@ public class PrivateMessagesTool
       Collections.sort(pvtTopics, PrivateTopicImpl.TITLE_COMPARATOR);   //changed to date comparator
       forum=pf;
       activatePvtMsg = (Boolean.TRUE.equals(area.getEnabled())) ? SET_AS_YES : SET_AS_NO;
-      sendEmailOut = (Boolean.TRUE.equals(area.getSendEmailOut())) ? SET_AS_YES : SET_AS_NO;
+      sendToEmail = area.getSendToEmail() + "";
       forwardPvtMsg = (Boolean.TRUE.equals(pf.getAutoForward())) ? SET_AS_YES : SET_AS_NO;
       forwardPvtMsgEmail = pf.getAutoForwardEmail();
       hiddenGroups = new ArrayList<HiddenGroup>();
@@ -437,23 +460,58 @@ public class PrivateMessagesTool
 	  return area.getEnabled().booleanValue();
   } 
   
-  public boolean isDispSendEmailOut()
-  {
-    if (getPvtSendEmailOut() != null && getPvtSendEmailOut())
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
+  
+  /**
+   * 
+   * @return true if a copy of the message is always sent to the recipient email address(es)
+   * per the site-wide setting
+   */
+  public boolean isEmailCopyAlways() {
+      if (area == null) {
+          initializePrivateMessageArea();
+      }
+      
+      
+      return !isEmailCopyDisabled() && area.getSendToEmail() == Area.EMAIL_COPY_ALWAYS;
   }
   
-  public Boolean getPvtSendEmailOut() {
-	  if(area == null) {
-		  initializePrivateMessageArea();
+  public boolean isEmailCopyDisabled(){
+	  return ServerConfigurationService.getBoolean("mc.messages.ccEmailDisabled", false);
+  }
+  
+  /**
+   * 
+   * @return true if the sender may choose whether a copy of the message is sent to recipient
+   * email address(es)
+   */
+  public boolean isEmailCopyOptional() {
+      if (area == null) {
+          initializePrivateMessageArea();
+      }
+      
+      return !isEmailCopyDisabled() && area.getSendToEmail() == Area.EMAIL_COPY_OPTIONAL;
+  }
+  
+  
+  public boolean isEmailForwardDisabled(){
+	  return ServerConfigurationService.getBoolean("mc.messages.forwardEmailDisabled", false);
+  }
+  
+  public boolean isShowSettingsLink(){
+	  if(isInstructor()){
+		  //if the site has groups, then show the settings link b/c there
+		  //are settings for groups
+		  if(getCurrentSiteHasGroups()){
+			  return true;
+		  }else{
+			  //if no groups and all email settings are disabled, there's no
+			  //settings to show, so don't show the link
+			  return !isEmailForwardDisabled() || !isEmailCopyDisabled();
+		  }
+	  }else{
+		  //students only see forward options, if it's hidden, don't show this link
+		  return !isEmailForwardDisabled();
 	  }
-	  return area.getSendEmailOut();
   }
   
   //Return decorated Forum
@@ -843,6 +901,14 @@ public class PrivateMessagesTool
 	  this.booleanEmailOut= booleanEmailOut;
   }
   
+  public PrivateMessage getReplyingMessage() {
+	  return replyingMessage;
+  }
+  
+  public void setReplyingMessage(PrivateMessage replyingMessage) {
+	  this.replyingMessage = replyingMessage;
+  }
+  
   /**
    * 
    * @return true if the Messages tool setting in combination with the author-defined
@@ -851,7 +917,8 @@ public class PrivateMessagesTool
    */
   public boolean isSendEmail() {
       boolean sendEmail;
-      if (getBooleanEmailOut() && getPvtSendEmailOut()) {
+      if (isEmailCopyAlways() ||
+              (isEmailCopyOptional() && getBooleanEmailOut())) {
           sendEmail = true;
       } else {
           sendEmail = false;
@@ -925,33 +992,68 @@ public class PrivateMessagesTool
   
   public List getTotalComposeToList()
   { 
-      /** just need to refilter */
-      if (totalComposeToList != null) {
-          List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-          for (Iterator i = totalComposeToList.iterator(); i.hasNext();) {
-              MembershipItem item = (MembershipItem) i.next();
-              selectItemList.add(new SelectItem(item.getId(), item.getName()));
-          }
-
-          return selectItemList;       
+      if (totalComposeToList == null) {
+          initializeComposeToLists();
       }
-
-      totalComposeToListRecipients = new ArrayList();
-
-      courseMemberMap = membershipManager.getFilteredCourseMembers(true, getHiddenGroupIds(area.getHiddenGroups()));
-      //    courseMemberMap = membershipManager.getAllCourseMembers(true, true, true);
-      List members = membershipManager.convertMemberMapToList(courseMemberMap);
-
-      totalComposeToList = members;
 
       List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-
-      for (Iterator i = members.iterator(); i.hasNext();) {
+      for (Iterator i = totalComposeToList.iterator(); i.hasNext();) {
           MembershipItem item = (MembershipItem) i.next();
-          selectItemList.add(new SelectItem(item.getId(), item.getName()));//51d20a77----, "Maintain Role"
+          selectItemList.add(new SelectItem(item.getId(), item.getName()));
       }
 
-      return selectItemList;       
+      return selectItemList;              
+  }
+
+  public List getTotalComposeToBccList() {
+      if (totalComposeToBccList == null) {
+          initializeComposeToLists();
+      }
+
+      List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+      for (Iterator i = totalComposeToBccList.iterator(); i.hasNext();) {
+          MembershipItem item = (MembershipItem) i.next();
+          selectItemList.add(new SelectItem(item.getId(), item.getName()));
+      }
+
+      return selectItemList;
+  }
+  
+  /**
+   * Since the courseMemberMap generates new uuids each time it is called, and
+   * these uuids are used to identify the recipients of the message when the user
+   * sends the message, we need to do the logic for the "To" and "Bcc" lists together, 
+   * utilizing the same courseMemberMap. This will set the values for the
+   * totalComposeToList and totalComposeToBccList.
+   */
+  private void initializeComposeToLists() {
+      totalComposeToList = new ArrayList();
+      totalComposeToBccList = new ArrayList();
+      
+      List<String> hiddenGroupIds = getHiddenGroupIds(area.getHiddenGroups());
+      courseMemberMap = membershipManager.getFilteredCourseMembers(true, getHiddenGroupIds(area.getHiddenGroups()));
+      List members = membershipManager.convertMemberMapToList(courseMemberMap);
+      
+      List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+      // we need to filter out the hidden groups since they will only appear as recipients in the bcc list
+      for (Iterator i = members.iterator(); i.hasNext();) {
+          MembershipItem item = (MembershipItem) i.next();
+          if (hiddenGroupIds != null && item.getGroup() != null && hiddenGroupIds.contains(item.getGroup().getTitle())) {
+              // hidden groups only appear in the bcc list
+              totalComposeToBccList.add(item);
+          } else {
+              totalComposeToList.add(item);
+              totalComposeToBccList.add(item);
+          }
+      }  
+  }
+
+  public boolean isDisplayHiddenGroupsMsg() {
+      if (displayHiddenGroupsMsg == null) {
+          displayHiddenGroupsMsg = hiddenGroups != null && !hiddenGroups.isEmpty() && prtMsgManager.isAllowToViewHiddenGroups();
+      }
+      
+      return displayHiddenGroupsMsg;
   }
   
   private List<String> getHiddenGroupIds(Set hiddenGroups){
@@ -1106,6 +1208,14 @@ public boolean isFromMain() {
 public String getServerUrl() {
     return ServerConfigurationService.getServerUrl();
  }
+
+public boolean getShowProfileInfoMsg() {
+    return showProfileInfoMsg;
+}
+
+public boolean getShowProfileLink() {
+	return showProfileLink;
+}
 
 public void processChangeSelectView(ValueChangeEvent eve)
   {
@@ -1481,6 +1591,10 @@ public void processChangeSelectView(ValueChangeEvent eve)
     }
     //default setting for moveTo
     moveToTopic=selectedTopicId;
+    LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+            .get("org.sakaiproject.event.api.LearningResourceStoreService");
+    Event event = EventTrackingService.newEvent("msgcntr", "read private message", true);
+    lrss.registerStatement(getStatementForUserReadPvtMsg(lrss.getEventActor(event), getDetailMsg().getMsg().getTitle()), "msgcntr");
     return SELECTED_MESSAGE_PG;
   }
 
@@ -1497,6 +1611,9 @@ public void processChangeSelectView(ValueChangeEvent eve)
     	return null;
     
     PrivateMessage pm = getDetailMsg().getMsg();
+    
+    // To mark as replied when user send the reply
+    this.setReplyingMessage(pm);
     
     String title = pm.getTitle();
 	if(title != null && !title.startsWith(getResourceBundleString(REPLY_SUBJECT_PREFIX)))
@@ -1665,6 +1782,9 @@ private   int   getNum(char letter,   String   a)
 	    	return null;
 	    
 	    PrivateMessage pm = getDetailMsg().getMsg();
+	    
+	    // To mark as replied when user send the reply
+	    this.setReplyingMessage(pm);
 	    
 	    String title = pm.getTitle();
     	if(title != null && !title.startsWith(getResourceBundleString(ReplyAll_SUBJECT_PREFIX)))
@@ -1957,9 +2077,18 @@ private   int   getNum(char letter,   String   a)
     	pMsg= constructMessage(true, null) ;
     }
     
+    pMsg.setExternalEmail(booleanEmailOut);
     Map<User, Boolean> recipients = getRecipients();
     
     prtMsgManager.sendPrivateMessage(pMsg, recipients, isSendEmail()); 
+    // if you are sending a reply 
+    Message replying = pMsg.getInReplyTo();
+    if (replying!=null) {
+    	replying = prtMsgManager.getMessageById(replying.getId());
+    	if (replying!=null) {
+    		prtMsgManager.markMessageAsRepliedForUser((PrivateMessage)replying);
+    	}
+    }
     
     //update synopticLite tool information:
     
@@ -1967,9 +2096,13 @@ private   int   getNum(char letter,   String   a)
 
     //reset contents
     resetComposeContents();
-
-    EventTrackingService.post(EventTrackingService.newEvent(DiscussionForumService.EVENT_MESSAGES_ADD, getEventMessage(pMsg), false));
-
+    
+    LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+            .get("org.sakaiproject.event.api.LearningResourceStoreService");
+    Event event = EventTrackingService.newEvent(DiscussionForumService.EVENT_MESSAGES_ADD, getEventMessage(pMsg), false);
+    EventTrackingService.post(event);
+    lrss.registerStatement(getStatementForUserSentPvtMsg(lrss.getEventActor(event), pMsg.getTitle(), SAKAI_VERB.shared), "msgcntr");
+    
     if(fromMainOrHp != null && !"".equals(fromMainOrHp))
     {
     	String tmpBackPage = fromMainOrHp;
@@ -2064,6 +2197,7 @@ private   int   getNum(char letter,   String   a)
     }
     dMsg.setDraft(Boolean.TRUE);
     dMsg.setDeleted(Boolean.FALSE);
+    dMsg.setExternalEmail(booleanEmailOut);
 
     prtMsgManager.sendPrivateMessage(dMsg, getRecipients(), isSendEmail()); 
 
@@ -2276,6 +2410,10 @@ private   int   getNum(char letter,   String   a)
       getDetailMsg().setHasPre(thisDmb.getHasPre()) ;
 
     }    
+    LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+            .get("org.sakaiproject.event.api.LearningResourceStoreService");
+    Event event = EventTrackingService.newEvent("msgcntr", "read private message", true);
+    lrss.registerStatement(getStatementForUserReadPvtMsg(lrss.getEventActor(event), getDetailMsg().getMsg().getTitle()), "msgcntr");
     return null;
   }
 
@@ -2327,7 +2465,10 @@ private   int   getNum(char letter,   String   a)
       getDetailMsg().setHasNext(thisDmb.getHasNext());
       getDetailMsg().setHasPre(thisDmb.getHasPre()) ;
     }
-    
+    LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+            .get("org.sakaiproject.event.api.LearningResourceStoreService");
+    Event event = EventTrackingService.newEvent("msgcntr", "read private message", true);
+        lrss.registerStatement(getStatementForUserReadPvtMsg(lrss.getEventActor(event), getDetailMsg().getMsg().getTitle()), "msgcntr");
     return null;
   }
   
@@ -2570,8 +2711,13 @@ private   int   getNum(char letter,   String   a)
     	prtMsgManager.sendPrivateMessage(rrepMsg, recipients, isSendEmail());
     	
     	if(!rrepMsg.getDraft()){
+    		prtMsgManager.markMessageAsRepliedForUser(getReplyingMessage());
     		incrementSynopticToolInfo(recipients.keySet(), false);
-    		EventTrackingService.post(EventTrackingService.newEvent(DiscussionForumService.EVENT_MESSAGES_RESPONSE, getEventMessage(rrepMsg), false));
+    	    LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+    	            .get("org.sakaiproject.event.api.LearningResourceStoreService");
+    	    Event event = EventTrackingService.newEvent(DiscussionForumService.EVENT_MESSAGES_RESPONSE, getEventMessage(rrepMsg), false);
+    	    EventTrackingService.post(event);
+    	    lrss.registerStatement(getStatementForUserSentPvtMsg(lrss.getEventActor(event), getDetailMsg().getMsg().getTitle(), SAKAI_VERB.responded), "msgcntr");
     	}
     	//reset contents
     	resetComposeContents();
@@ -2583,7 +2729,7 @@ private   int   getNum(char letter,   String   a)
  
  private PrivateMessage getPvtMsgReplyMessage(PrivateMessage currentMessage, boolean isDraft){
     if (setDetailMsgCount != 1) {
-    	setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service")}));
+    	setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service","Sakai")}));
     	return null;
     } else {
     
@@ -2760,7 +2906,7 @@ private   int   getNum(char letter,   String   a)
  public String processPvtMsgForwardSend() {
     LOG.debug("processPvtMsgForwardSend()");
     if (setDetailMsgCount != 1) {
-    	setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service")}));
+    	setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service","Sakai")}));
     	return null;
     } else {
     	PrivateMessage pvtMsg = getPvtMsgForward(getDetailMsg().getMsg(), false);
@@ -2776,7 +2922,7 @@ private   int   getNum(char letter,   String   a)
  public String processPvtMsgForwardSaveDraft(){
 	 LOG.debug("processPvtMsgForwardSaveDraft()");
 	 if (setDetailMsgCount != 1) {
-		 setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service")}));
+	     setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service","Sakai")}));
 		 return null;
 	 } else {
 		 PrivateMessage pvtMsg = getPvtMsgForward(getDetailMsg().getMsg(), true);
@@ -2918,7 +3064,11 @@ private   int   getNum(char letter,   String   a)
     	if(!rrepMsg.getDraft()){
     		//update Synoptic tool info
     		incrementSynopticToolInfo(recipients.keySet(), false);
-    		EventTrackingService.post(EventTrackingService.newEvent(DiscussionForumService.EVENT_MESSAGES_FORWARD, getEventMessage(rrepMsg), false));
+            LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+                    .get("org.sakaiproject.event.api.LearningResourceStoreService");
+            Event event = EventTrackingService.newEvent(DiscussionForumService.EVENT_MESSAGES_FORWARD, getEventMessage(rrepMsg), false);
+            EventTrackingService.post(event);
+            lrss.registerStatement(getStatementForUserSentPvtMsg(lrss.getEventActor(event), getDetailMsg().getMsg().getTitle(), SAKAI_VERB.responded), "msgcntr");
     	}
     	//reset contents
     	resetComposeContents();    	    	
@@ -2958,7 +3108,7 @@ private   int   getNum(char letter,   String   a)
  public String processPvtMsgReplyAllSaveDraft(){
 	 LOG.debug("processPvtMsgReply All Send()");
 	 if (setDetailMsgCount != 1) {
-		 setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service")}));
+	     setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service","Sakai")}));
 		 return null;
 	 } else {
 		 PrivateMessage pvtMsg = processPvtMsgReplyAllSendHelper(false, Boolean.TRUE);
@@ -2973,7 +3123,7 @@ private   int   getNum(char letter,   String   a)
   public String processPvtMsgReplyAllSend() {
     LOG.debug("processPvtMsgReply All Send()");
     if (setDetailMsgCount != 1) {
-    	setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service")}));
+    	setErrorMessage(getResourceBundleString(MULTIPLE_WINDOWS , new Object[] {ServerConfigurationService.getString("ui.service","Sakai")}));
     	return null;
     } else {
     	PrivateMessage pvtMsg = processPvtMsgReplyAllSendHelper(false, Boolean.FALSE);
@@ -3172,9 +3322,14 @@ private   int   getNum(char letter,   String   a)
 	          prtMsgManager.sendPrivateMessage(rrepMsg, returnSet, isSendEmail());
 
 		  if(!rrepMsg.getDraft()){
+			  prtMsgManager.markMessageAsRepliedForUser(getReplyingMessage());
 			  //update Synoptic tool info
 			  incrementSynopticToolInfo(returnSet.keySet(), false);
-			  EventTrackingService.post(EventTrackingService.newEvent(DiscussionForumService.EVENT_MESSAGES_FORWARD, getEventMessage(rrepMsg), false));
+	          LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+	                    .get("org.sakaiproject.event.api.LearningResourceStoreService");
+	          Event event = EventTrackingService.newEvent(DiscussionForumService.EVENT_MESSAGES_FORWARD, getEventMessage(rrepMsg), false);
+	          EventTrackingService.post(event);
+	          lrss.registerStatement(getStatementForUserSentPvtMsg(lrss.getEventActor(event), getDetailMsg().getMsg().getTitle(), SAKAI_VERB.responded), "msgcntr");
 		  }
 		  //reset contents
 		  resetComposeContents();
@@ -3619,14 +3774,14 @@ private   int   getNum(char letter,   String   a)
   {
     this.forwardPvtMsgEmail = forwardPvtMsgEmail;
   }
-  public String getSendEmailOut()
-  {
-    return sendEmailOut;
+  
+  public String getSendToEmail() {
+      return this.sendToEmail;
   }
-  public void setSendEmailOut(String sendEmailOut)
-  {
-    this.sendEmailOut = sendEmailOut;
+  public void setSendToEmail(String sendToEmail) {
+      this.sendToEmail = sendToEmail;
   }
+  
   public boolean getSuperUser()
   {
     superUser=SecurityService.isSuperUser();
@@ -3687,7 +3842,6 @@ private   int   getNum(char letter,   String   a)
     
  
     String email= getForwardPvtMsgEmail();
-    String sendEmailOut=getSendEmailOut();
     String activate=getActivatePvtMsg() ;
     String forward=getForwardPvtMsg() ;
     if (email != null && (!SET_AS_NO.equals(forward)) 
@@ -3695,7 +3849,6 @@ private   int   getNum(char letter,   String   a)
       setValidEmail(false);
       setErrorMessage(getResourceBundleString(PROVIDE_VALID_EMAIL));
       setActivatePvtMsg(activate);
-      setSendEmailOut(sendEmailOut);
       return MESSAGE_SETTING_PG;
     }
     else
@@ -3705,8 +3858,15 @@ private   int   getNum(char letter,   String   a)
       Boolean formAreaEnabledValue = (SET_AS_YES.equals(activate)) ? Boolean.TRUE : Boolean.FALSE;
       area.setEnabled(formAreaEnabledValue);
       
-      Boolean formSendEmailOut = (SET_AS_YES.equals(sendEmailOut)) ? Boolean.TRUE : Boolean.FALSE;
-      area.setSendEmailOut(formSendEmailOut);
+      try {
+          int formSendToEmail = Integer.parseInt(sendToEmail);
+          area.setSendToEmail(formSendToEmail);
+      } catch (NumberFormatException nfe) {
+          // if this happens, there is likely something wrong in the UI that needs to be fixed
+          LOG.warn("Non-numeric option for sending email to recipient email address on Message screen. This may indicate a UI problem.");
+          setErrorMessage(getResourceBundleString("pvt_send_to_email_invalid"));
+          return MESSAGE_SETTING_PG;
+      }
       
       
       Boolean formAutoForward = (SET_AS_YES.equals(forward)) ? Boolean.TRUE : Boolean.FALSE;            
@@ -4355,6 +4515,7 @@ private   int   getNum(char letter,   String   a)
         PrivateMessageRecipient el = (PrivateMessageRecipient) iterator.next();
         if (el != null){
           dbean.setHasRead(el.getRead().booleanValue());
+          dbean.setReplied(el.getReplied().booleanValue());
         }
       }
       //Add decorate 'TO' String for sent message
@@ -5084,4 +5245,30 @@ private   int   getNum(char letter,   String   a)
 		public Locale getUserLocale(){
 			return new ResourceLoader().getLocale();
 		}
+
+    private LRS_Statement getStatementForUserReadPvtMsg(LRS_Actor student, String subject) {
+        String url = ServerConfigurationService.getPortalUrl();
+        LRS_Verb verb = new LRS_Verb(SAKAI_VERB.interacted);
+        LRS_Object lrsObject = new LRS_Object(url + "/privateMessage", "read-private-message");
+        HashMap<String, String> nameMap = new HashMap<String, String>();
+        nameMap.put("en-US", "User read a private message");
+        lrsObject.setActivityName(nameMap);
+        HashMap<String, String> descMap = new HashMap<String, String>();
+        descMap.put("en-US", "User read a private message with subject: " + subject);
+        lrsObject.setDescription(descMap);
+        return new LRS_Statement(student, verb, lrsObject);
+    }
+
+    private LRS_Statement getStatementForUserSentPvtMsg(LRS_Actor student, String subject, SAKAI_VERB sakaiVerb) {
+        String url = ServerConfigurationService.getPortalUrl();
+        LRS_Verb verb = new LRS_Verb(sakaiVerb);
+        LRS_Object lrsObject = new LRS_Object(url + "/privateMessage", "send-private-message");
+        HashMap<String, String> nameMap = new HashMap<String, String>();
+        nameMap.put("en-US", "User sent a private message");
+        lrsObject.setActivityName(nameMap);
+        HashMap<String, String> descMap = new HashMap<String, String>();
+        descMap.put("en-US", "User sent a private message with subject: " + subject);
+        lrsObject.setDescription(descMap);
+        return new LRS_Statement(student, verb, lrsObject);
+    }
 }

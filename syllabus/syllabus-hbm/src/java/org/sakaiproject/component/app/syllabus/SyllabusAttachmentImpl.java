@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.3/syllabus-hbm/src/java/org/sakaiproject/component/app/syllabus/SyllabusAttachmentImpl.java $
- * $Id: SyllabusAttachmentImpl.java 59687 2009-04-03 23:44:40Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.0/syllabus-hbm/src/java/org/sakaiproject/component/app/syllabus/SyllabusAttachmentImpl.java $
+ * $Id: SyllabusAttachmentImpl.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ import org.sakaiproject.api.app.syllabus.SyllabusData;
 
 /**
  * @author <a href="mailto:cwen.iupui.edu">Chen Wen</a>
- * @version $Id: SyllabusAttachmentImpl.java 59687 2009-04-03 23:44:40Z arwhyte@umich.edu $
+ * @version $Id: SyllabusAttachmentImpl.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  * 
  */
 public class SyllabusAttachmentImpl implements SyllabusAttachment, Comparable

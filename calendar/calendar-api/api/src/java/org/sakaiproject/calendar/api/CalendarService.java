@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-api/api/src/java/org/sakaiproject/calendar/api/CalendarService.java $
- * $Id: CalendarService.java 99972 2011-10-19 15:14:43Z zqian@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-api/api/src/java/org/sakaiproject/calendar/api/CalendarService.java $
+ * $Id: CalendarService.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,18 +21,14 @@
 
 package org.sakaiproject.calendar.api;
 
-import java.util.List;
-
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityProducer;
-import org.sakaiproject.exception.IdInvalidException;
-import org.sakaiproject.exception.IdUnusedException;
-import org.sakaiproject.exception.IdUsedException;
-import org.sakaiproject.exception.InUseException;
-import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.entity.api.Reference;
+import org.sakaiproject.exception.*;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeRange;
-import org.sakaiproject.entity.api.Reference;
+
+import java.util.List;
 
 /**
 * <p>CalendarService is the interface for the Calendar service.</p>
@@ -109,6 +105,9 @@ public interface CalendarService
 
 	/** Security function granted to users who will then have membership in all site groups based on their site membership. */
 	public static final String AUTH_ALL_GROUPS_CALENDAR = "calendar.all.groups";
+	
+	/** Security lock for adding to a calendar. */
+	public static final String AUTH_OPTIONS_CALENDAR = "calendar.options";
 
 	/** The Reference type for a calendar. */
 	public static final String REF_TYPE_CALENDAR = "calendar";
@@ -172,12 +171,12 @@ public interface CalendarService
    /** session attribute for list of all calendars user can reference */   
    public static final String SESSION_CALENDAR_LIST = "calendar.ref.list";
 
-
-	/**
-	* Return a List of all the defined calendars.
-	* @return a List of Calendar objects (may be empty)
-	*/
-	public List getCalendars();
+	/** Security lock for subscribing to the implicit calendar. */
+	public static final String AUTH_SUBSCRIBE_CALENDAR_THIS = "calendar.subscribe.this";
+	
+	/** The Reference type for an "Opaque URL" URL. */
+	public static final String REF_TYPE_CALENDAR_OPAQUEURL = "opaq";
+	
 
 	/**
 	* Add a new calendar.
@@ -383,6 +382,20 @@ public interface CalendarService
 	 */
 	RecurrenceRule newRecurrence(String frequency, int interval, Time until);
 
+ 	/**
+ 	 * check permissions for subscribing to the implicit calendar.
+ 	 * @param ref The calendar reference.
+ 	 * @return true if the user is allowed to subscribe to the implicit calendar, false if not.
+ 	 */
+	public boolean allowSubscribeThisCalendar(String ref);
+	
+	/**
+	 * Access the internal reference which can be used to access the calendar in iCal format from within the system, via an opaque URL.
+	 * @param ref The calendar reference
+	 * @return The the internal reference which can be used to access the calendar-in-pdf format from within the system.
+	 */
+	public String calendarOpaqueUrlReference(Reference ref);
+	
 }	// CalendarService
 
 

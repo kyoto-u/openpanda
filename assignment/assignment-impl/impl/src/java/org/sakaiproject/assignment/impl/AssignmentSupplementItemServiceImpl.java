@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -174,6 +174,42 @@ public class AssignmentSupplementItemServiceImpl extends HibernateDaoSupport imp
 	    return (List) getHibernateTemplate().execute(hcb);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean cleanAttachment(AssignmentSupplementItemWithAttachment item)
+	{
+		boolean rv = true;
+		Set<AssignmentSupplementItemAttachment> attachmentSet = item.getAttachmentSet();
+		if (attachmentSet != null)
+		{
+			for (Iterator<AssignmentSupplementItemAttachment> iAttachmentSet = attachmentSet.iterator(); iAttachmentSet.hasNext();)
+			{
+				AssignmentSupplementItemAttachment attachment = iAttachmentSet.next();
+				rv &= removeAttachment(attachment);
+			}
+		}
+		return rv;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean removeAttachment(AssignmentSupplementItemAttachment attachment)
+	{
+		try 
+		{
+			getHibernateTemplate().delete(attachment);
+			return true;
+		}
+		catch (DataAccessException e)
+		{
+			e.printStackTrace();
+			Log.warn(this + ".removeAttachment() Hibernate could not delete attachment " + attachment.getId());
+			return false;
+		}
+	}
+
    /*********************** model answer ************************/
 	/**
 	 * {@inheritDoc}}

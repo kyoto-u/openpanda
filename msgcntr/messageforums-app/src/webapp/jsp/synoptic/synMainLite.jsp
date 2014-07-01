@@ -13,8 +13,8 @@
 
 <f:view>
   <sakai:view id="synopticView">
-<script type="text/javascript" src="/library/js/jquery.js"></script>
-<sakai:script contextBase="/messageforums-tool" path="/js/jquery.tablesorter.js"/>
+<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/library/js/jquery/tablesorter/2.0.3/jquery.tablesorter-2.0.3.min.js"></script>
 <f:verbatim>
  <%
   	String thisId = request.getParameter("panel");
@@ -274,9 +274,7 @@ function mySetMainFrameHeightViewCell(id)
 						<f:verbatim><a href="" id="siteHeader" onclick="return false;"></a></f:verbatim>
 					</f:facet>
 				
-				<h:outputText value="#{msgs.syn_tool_link_begin}#{eachSite.siteUrl}';\">#{eachSite.synopticMsgcntrItem.siteTitle}</a>" 
-							escape="false" title="#{msgs.syn_goto_site}"/>
-								
+				<h:outputLink value="#{eachSite.siteUrl}" target="_parent" title="#{msgs.syn_goto_site}"><h:outputText value="#{eachSite.synopticMsgcntrItem.siteTitle}"/></h:outputLink>
 		   		</h:column>
 	
 				<h:column rendered="#{mfSynopticBeanLite.performance != '2' && !mfSynopticBeanLite.disableMessages}">

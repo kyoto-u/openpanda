@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreUpdateListener.java $
- * $Id: TotalScoreUpdateListener.java 113420 2012-09-21 21:34:06Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreUpdateListener.java $
+ * $Id: TotalScoreUpdateListener.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,9 +41,9 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math.util.MathUtils;
+import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.services.GradebookServiceException;
 import org.sakaiproject.tool.assessment.services.GradingService;
@@ -60,7 +60,7 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: TotalScoreUpdateListener.java 113420 2012-09-21 21:34:06Z ottenhoff@longsight.com $
+ * @version $Id: TotalScoreUpdateListener.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  */
 
 public class TotalScoreUpdateListener
@@ -90,7 +90,7 @@ public class TotalScoreUpdateListener
   private HashMap prepareAssessmentGradingHash(ArrayList assessmentGradingList){
     HashMap map = new HashMap();
     for (int i=0; i<assessmentGradingList.size(); i++){
-      AssessmentGradingIfc a = (AssessmentGradingIfc)assessmentGradingList.get(i);
+      AssessmentGradingData a = (AssessmentGradingData)assessmentGradingList.get(i);
       map.put(a.getAssessmentGradingId(), a);
     }
     return map;
@@ -118,7 +118,7 @@ public class TotalScoreUpdateListener
   	  String applyToUngraded = bean.getApplyToUngraded().trim();
   	  if(applyToUngraded != null && !"".equals(applyToUngraded)){
   		  try{
-  			  Float.valueOf(applyToUngraded).floatValue();
+  			  Double.valueOf(applyToUngraded).doubleValue();
   			  ArrayList allAgents = bean.getAllAgentsDirect();
   			  iter = allAgents.iterator();
   			  while(iter.hasNext()){
@@ -173,24 +173,24 @@ public class TotalScoreUpdateListener
   		  
         if (update){
         	log.debug("update is true");
-        	Float newScore = new Float(0f);
+        	Double newScore = new Double(0d);
         	AssessmentGradingData data = new AssessmentGradingData();
         	try {
         		if (!agentResults.getAssessmentGradingId().equals(Long.valueOf(-1)) ) {
         			// these are students who have submitted for grades.
         			// Add up new score
-        			newScore = Float.valueOf(newScoreString.toString());
+        			newScore = Double.valueOf(newScoreString.toString());
         			agentResults.setFinalScore(newScore+"");
         			BeanUtils.copyProperties(data, agentResults);
         			data.setPublishedAssessmentId(bean.getPublishedAssessment().getPublishedAssessmentId());
         			if ("-".equals(agentResults.getTotalAutoScore())) {
-        				data.setTotalAutoScore(Float.valueOf(0f));
+        				data.setTotalAutoScore(Double.valueOf(0d));
         			}
         			else {
-        				data.setTotalAutoScore(Float.valueOf(agentResults.getTotalAutoScore()));
+        				data.setTotalAutoScore(Double.valueOf(agentResults.getTotalAutoScore()));
         			}
-        			data.setTotalOverrideScore(Float.valueOf(agentResults.getTotalOverrideScore()));
-        			data.setFinalScore(Float.valueOf(agentResults.getFinalScore()));
+        			data.setTotalOverrideScore(Double.valueOf(agentResults.getTotalOverrideScore()));
+        			data.setFinalScore(Double.valueOf(agentResults.getFinalScore()));
         			data.setIsLate(agentResults.getIsLate());
         			data.setComments(agentResults.getComments());
         			data.setGradedBy(AgentFacade.getAgentString());
@@ -200,7 +200,7 @@ public class TotalScoreUpdateListener
         		else {
         			// these are students who have not submitted for grades and instructor made adjustment to their scores
         			// Add up new score
-        			newScore = Float.valueOf(newScoreString.toString());
+        			newScore = Double.valueOf(newScoreString.toString());
         			agentResults.setFinalScore(newScore+"");
 
         			BeanUtils.copyProperties(data, agentResults);
@@ -213,9 +213,9 @@ public class TotalScoreUpdateListener
         			// tell hibernate this is a new record
         			data.setAssessmentGradingId(Long.valueOf(0));
         			data.setSubmittedDate(null);
-        			data.setTotalAutoScore(Float.valueOf(0f));
-        			data.setTotalOverrideScore(Float.valueOf(agentResults.getTotalOverrideScore()));
-        			data.setFinalScore(Float.valueOf(agentResults.getFinalScore()));
+        			data.setTotalAutoScore(Double.valueOf(0d));
+        			data.setTotalOverrideScore(Double.valueOf(agentResults.getTotalOverrideScore()));
+        			data.setFinalScore(Double.valueOf(agentResults.getFinalScore()));
         			data.setComments(agentResults.getComments());
         			data.setGradedBy(AgentFacade.getAgentString());
         			data.setGradedDate(new Date());
@@ -259,6 +259,12 @@ public class TotalScoreUpdateListener
       GradingService delegate = new GradingService();
       try {
     	  delegate.saveTotalScores(grading, bean.getPublishedAssessment());
+    	  StringBuffer logString = new StringBuffer();
+    	  logString.append("gradedBy=");
+          logString.append(AgentFacade.getAgentString());
+    	  logString.append(", publishedAssessmentId=");
+    	  logString.append(bean.getPublishedAssessment().getPublishedAssessmentId());
+    	  EventTrackingService.post(EventTrackingService.newEvent("sam.total.score.update", "siteId=" + AgentFacade.getCurrentSiteId() + ", " + logString.toString(), true));
     	  log.debug("Saved total scores.");
       } catch (GradebookServiceException ge) {
     	  FacesContext context = FacesContext.getCurrentInstance();
@@ -277,25 +283,25 @@ public class TotalScoreUpdateListener
     agentResults.setComments(newComments);
     log.debug("newComments = " + newComments);
 
-    float totalAutoScore = 0; 
+    double totalAutoScore = 0; 
     if (agentResults.getTotalAutoScore()!=null && !("").equals(agentResults.getTotalAutoScore())){
       try{
-        totalAutoScore = Float.valueOf(agentResults.getTotalAutoScore()).floatValue();
+        totalAutoScore = Double.valueOf(agentResults.getTotalAutoScore()).doubleValue();
       }
       catch (NumberFormatException e){
         totalAutoScore = 0;
       }
     }
 
-    float totalOverrideScore = 0; 
+    double totalOverrideScore = 0; 
     Boolean newIsLate = agentResults.getIsLate(); // if the duedate were postpond, we need to adjust this
     // we will check if there is change of grade. if so, add up new score
     // else skip
-    AssessmentGradingIfc old = (AssessmentGradingIfc)map.get(agentResults.getAssessmentGradingId());
+    AssessmentGradingData old = (AssessmentGradingData)map.get(agentResults.getAssessmentGradingId());
     if (old != null){
         if (agentResults.getTotalOverrideScore()!=null && !("").equals(agentResults.getTotalOverrideScore())){
         	try{
-        		totalOverrideScore = Float.valueOf(agentResults.getTotalOverrideScore()).floatValue();
+        		totalOverrideScore = Double.valueOf(agentResults.getTotalOverrideScore()).doubleValue();
         	}
         	catch (NumberFormatException e){
         		log.warn("Adj has wrong input type" + e);
@@ -303,11 +309,11 @@ public class TotalScoreUpdateListener
         	}
         }
 
-      float newScore = totalAutoScore + totalOverrideScore;
-      newScoreString.append(Float.valueOf(newScore));
-	  float oldScore = 0;
+      double newScore = totalAutoScore + totalOverrideScore;
+      newScoreString.append(Double.valueOf(newScore));
+	  double oldScore = 0;
       if (old.getFinalScore()!=null){
-        oldScore = old.getFinalScore().floatValue();
+        oldScore = old.getFinalScore().doubleValue();
       }
       Boolean oldIsLate=old.getIsLate();
       
@@ -336,7 +342,7 @@ public class TotalScoreUpdateListener
     	if (score != null) {
     		if (!("").equals(score.trim()) && !("-").equals(score.trim())) {
     			try{
-    				totalOverrideScore = Float.valueOf(agentResults.getTotalOverrideScore()).floatValue();
+    				totalOverrideScore = Double.valueOf(agentResults.getTotalOverrideScore()).doubleValue();
     				noOverrideScore = false;
     			}
     			catch (NumberFormatException e){
@@ -353,8 +359,8 @@ public class TotalScoreUpdateListener
     		noOverrideScore = true;
     		totalAutoScore = 0;
     	}
-		float newScore = totalAutoScore + totalOverrideScore;
-		newScoreString.append(Float.valueOf(newScore));
+		double newScore = totalAutoScore + totalOverrideScore;
+		newScoreString.append(Double.valueOf(newScore));
 	    
     	if ("".equals(agentResults.getComments().trim()))
     		noComment = true;

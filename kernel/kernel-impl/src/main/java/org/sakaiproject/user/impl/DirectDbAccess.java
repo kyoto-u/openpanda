@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/user/impl/DirectDbAccess.java $
- * $Id: DirectDbAccess.java 113279 2012-09-21 14:54:40Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/DirectDbAccess.java $
+ * $Id: DirectDbAccess.java 106293 2012-03-27 13:32:29Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008, 2009, 2010 Sakai Foundation

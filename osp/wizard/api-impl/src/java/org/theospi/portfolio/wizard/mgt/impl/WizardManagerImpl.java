@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.3/wizard/api-impl/src/java/org/theospi/portfolio/wizard/mgt/impl/WizardManagerImpl.java $
-* $Id: WizardManagerImpl.java 118450 2013-01-17 21:05:56Z ottenhoff@longsight.com $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.0/wizard/api-impl/src/java/org/theospi/portfolio/wizard/mgt/impl/WizardManagerImpl.java $
+* $Id: WizardManagerImpl.java 309396 2014-05-09 21:23:15Z enietzel@anisakai.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,10 +28,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import java.sql.SQLException;
-
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.CacheException;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -69,6 +65,8 @@ import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.exception.UnsupportedFileTypeException;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.metaobj.security.AuthenticationManager;
 import org.sakaiproject.metaobj.security.AllowMapSecurityAdvisor;
 import org.sakaiproject.metaobj.shared.ArtifactFinder;
@@ -164,8 +162,7 @@ public class WizardManagerImpl extends HibernateDaoSupport
    private MatrixManager matrixManager;
    private LockManager lockManager;
    private WorksiteManager worksiteManager;
-   
-   private Cache siteCache = null;
+
    private String importFolderName;
 
    private static boolean allowAllGroups = 
@@ -853,21 +850,9 @@ public class WizardManagerImpl extends HibernateDaoSupport
     * {@inheritDoc}
     */
    public String getWizardIdSiteId(final Id wizardId) {
-      
-      try {
-    	  net.sf.ehcache.Element elem = null;
-    	  if(wizardId != null)
-    		  	elem = siteCache.get(wizardId.getValue());
-         if(siteCache != null && elem != null) {
-        	   if(elem.getValue() == null)
-        	      return null;
-            return elem.getValue().toString();
-         }
-      } catch(CacheException e) {
-         logger.warn("the wizard ehcache had an exception", e);
-      }
-      String siteId;
-      
+
+       String siteId;
+
       HibernateCallback hcb = new HibernateCallback() {
          public Object doInHibernate(Session session) throws HibernateException, SQLException  {
             String queryString = "select wizard.siteId from Wizard wizard where wizard.id = ?";
@@ -883,11 +868,6 @@ public class WizardManagerImpl extends HibernateDaoSupport
       };
 		
       siteId = ((String)getHibernateTemplate().execute(hcb));
-      if(siteCache != null && siteId != null)
-         siteCache.put(new net.sf.ehcache.Element(wizardId.getValue(), siteId));
-      if(siteCache != null && siteId == null)
-         siteCache.put(new net.sf.ehcache.Element(wizardId.getValue(), null));
-      
       return siteId;
    }
    
@@ -2718,22 +2698,6 @@ public class WizardManagerImpl extends HibernateDaoSupport
    }
 
    /**
-    * @return the siteCache
-    */
-   public Cache getSiteCache()
-   {
-      return siteCache;
-   }
-
-   /**
-    * @param siteCache the siteCache to set
-    */
-   public void setSiteCache(Cache siteCache)
-   {
-      this.siteCache = siteCache;
-   }
-
-   /**
     * @return Returns the worksiteManager.
     */
    public WorksiteManager getWorksiteManager() {
@@ -2745,5 +2709,5 @@ public class WizardManagerImpl extends HibernateDaoSupport
    public void setWorksiteManager(WorksiteManager worksiteManager) {
       this.worksiteManager = worksiteManager;
    }
-   
+
 }

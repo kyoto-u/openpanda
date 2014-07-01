@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/entity/api/Reference.java $
- * $Id: Reference.java 93399 2011-06-01 11:31:40Z matthew.buckett@oucs.ox.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/entity/api/Reference.java $
+ * $Id: Reference.java 134156 2014-02-06 11:29:58Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -67,6 +67,7 @@ public interface Reference
 
 	/**
 	 * Access the context id, if any.
+	 * Typically this is the site in which the entity is contained, although other contexts are possible.
 	 * 
 	 * @return the context id, if any.
 	 */

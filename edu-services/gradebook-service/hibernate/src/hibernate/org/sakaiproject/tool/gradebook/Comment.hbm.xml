@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,7 @@
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping default-cascade="none" package="org.sakaiproject.tool.gradebook"
 	default-lazy="false">
 	<class name="org.sakaiproject.tool.gradebook.Comment" table="GB_COMMENT_T">
@@ -33,7 +33,7 @@
 
 		<property name="studentId" column="STUDENT_ID" type="string" not-null="true" unique-key="G_O_STUDENT"/>
 
-		<property name="commentText" column="COMMENT_TEXT" type="text" not-null="false"/>
+		<property name="commentText" column="COMMENT_TEXT" type="materialized_clob" not-null="false"/>
 
         <property name="dateRecorded" column="DATE_RECORDED" type="timestamp" not-null="true"/>
 

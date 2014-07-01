@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeSite.java $
- * $Id: FakeSite.java 101440 2011-12-06 07:29:54Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeSite.java $
+ * $Id: FakeSite.java 120415 2013-02-23 01:14:37Z botimer@umich.edu $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -105,6 +105,11 @@ public class FakeSite implements Site {
 		return null;
 	}
 
+	public String getHtmlDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public Group getGroup(String arg0) {
 		// TODO Auto-generated method stub
 		return null;
@@ -180,6 +185,11 @@ public class FakeSite implements Site {
 	}
 
 	public String getShortDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getHtmlShortDescription() {
 		// TODO Auto-generated method stub
 		return null;
 	}

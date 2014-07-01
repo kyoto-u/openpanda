@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,9 +45,12 @@ import org.sakaiproject.time.cover.TimeService;
 
 /**
  * <p>
- * BaseDbSingleStorage is a class that stores Resources (of some type) in a
+ * BaseDbDualSingleStorage is a class that stores Resources (of some type) in a
  * database, <br />
  * provides locked access, and generally implements a services "storage" class.
+ * The resources are encoded into two fields.
+ * Optionally a second storage can be provided which is where the items are loaded
+ * from when a putDeleteResource is called.
  * The <br />
  * service's storage class can extend this to provide covers to turn Resource
  * and <br />
@@ -100,7 +103,7 @@ public class BaseDbDualSingleStorage  implements DbSingleStorage
 	protected boolean m_locksAreInTable = true;
 
 	/** The StorageUser to callback for new Resource and Edit objects. */
-	protected StorageUser m_user = null;
+	protected SingleStorageUser m_user = null;
 
 	/**
 	 * Locks, keyed by reference, holding Connections (or, if locks are done
@@ -152,10 +155,8 @@ public class BaseDbDualSingleStorage  implements DbSingleStorage
 	static
 	{
 		databaseBeans = new Hashtable<String, MultiSingleStorageSql>();
-		databaseBeans.put("db2", new MultiSingleStorageSqlDb2(STORAGE_FIELDS));
 		databaseBeans.put("default", new MultiSingleStorageSqlDefault(STORAGE_FIELDS));
 		databaseBeans.put("hsql", new MultiSingleStorageSqlHSql(STORAGE_FIELDS));
-		databaseBeans.put("mssql", new MultiSingleStorageSqlMsSql(STORAGE_FIELDS));
 		databaseBeans.put("mysql", new MultiSingleStorageSqlMySql(STORAGE_FIELDS));
 		databaseBeans.put("oracle", new MultiSingleStorageSqlOracle(STORAGE_FIELDS));
 	}
@@ -178,13 +179,13 @@ public class BaseDbDualSingleStorage  implements DbSingleStorage
 	 *        entry.
 	 * @param user
 	 *        The StorageUser class to call back for creation of Resource and
-	 *        Edit objects.
+	 *        Edit objects. This must implement EntityReader interface as well.
 	 * @param sqlService
 	 *        The SqlService.
 	 */
 	public BaseDbDualSingleStorage(String resourceTableName, String resourceTableIdField,
 			String[] resourceTableOtherFields, boolean locksInDb,
-			String resourceEntryName, StorageUser user, SqlService sqlService)
+			String resourceEntryName, SingleStorageUser user, SqlService sqlService)
 	{
 	    this(resourceTableName, resourceTableIdField, resourceTableOtherFields, locksInDb, resourceEntryName, user, sqlService, null);
 	}
@@ -214,11 +215,11 @@ public class BaseDbDualSingleStorage  implements DbSingleStorage
      * @param sqlService
      *        The SqlService.
      * @param storage
-     *        The storage for the normal resource (only used by delete storage)
+     *        The storage for the normal resource (only used by delete storage), this is how we load the original resource.
      */
 	public BaseDbDualSingleStorage(String resourceTableName, String resourceTableIdField,
 	        String[] resourceTableOtherFields, boolean locksInDb,
-	        String resourceEntryName, StorageUser user, SqlService sqlService,
+	        String resourceEntryName, SingleStorageUser user, SqlService sqlService,
 	        DbSingleStorage storage)
 	{
 	    m_resourceTableName = resourceTableName;

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.3/api/src/java/org/sakaiproject/poll/logic/ExternalLogic.java $
- * $Id: ExternalLogic.java 94048 2011-06-24 09:33:53Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.0/api/src/java/org/sakaiproject/poll/logic/ExternalLogic.java $
+ * $Id: ExternalLogic.java 134302 2014-02-10 14:26:43Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Actor;
 import org.sakaiproject.poll.model.PollRolePerms;
+import org.sakaiproject.poll.model.Vote;
 import org.sakaiproject.tool.api.ToolSession;
 
 public interface ExternalLogic {
@@ -203,6 +205,13 @@ public interface ExternalLogic {
 	public boolean isResultsChartEnabled();
 	
 	/**
+	 * Are the public access options available to the Instructor?
+	 * poll.allow.public.access=true|false, default false
+	 * @return
+	 */
+	public boolean isShowPublicAccess();
+
+	/**
 	 * Is the current user using a mobile browser?
 	 * @return
 	 */
@@ -213,5 +222,14 @@ public interface ExternalLogic {
 	 * @return
 	 */
 	public List<String> getPermissionKeys();
-	
+
+    /**
+     * Register a statement with the system LearningResourceStoreService
+     */
+    public void registerStatement(String pollText, Vote vote);
+
+    /**
+     * Register a statement with the system LearningResourceStoreService
+     */
+    public void registerStatement(String pollText, boolean newPoll);
 }

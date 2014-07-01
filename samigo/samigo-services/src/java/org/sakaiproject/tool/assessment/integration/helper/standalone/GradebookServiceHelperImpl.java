@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/integration/helper/standalone/GradebookServiceHelperImpl.java $
- * $Id: GradebookServiceHelperImpl.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/standalone/GradebookServiceHelperImpl.java $
+ * $Id: GradebookServiceHelperImpl.java 107319 2012-04-17 13:39:00Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,11 +25,11 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
+import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 
 /**
@@ -49,7 +49,7 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
 {
 	private static Log log = LogFactory.getLog(GradebookServiceHelperImpl.class);
 
-	public boolean isAssignmentDefined(String assessmentTitle, GradebookService g)
+	public boolean isAssignmentDefined(String assessmentTitle, GradebookExternalAssessmentService g)
 	{
 		return false;
 	}
@@ -64,7 +64,7 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
 	 * @return false: cannot add to gradebook
 	 * @throws java.lang.Exception
 	 */
-	public boolean addToGradebook(PublishedAssessmentData publishedAssessment, GradebookService g)
+	public boolean addToGradebook(PublishedAssessmentData publishedAssessment, GradebookExternalAssessmentService g)
 	{
 		return false;
 	}
@@ -80,7 +80,7 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
 	 *        the Gradebook Service
 	 * @throws java.lang.Exception
 	 */
-	public void removeExternalAssessment(String gradebookUId, String publishedAssessmentId, GradebookService g) throws Exception
+	public void removeExternalAssessment(String gradebookUId, String publishedAssessmentId, GradebookExternalAssessmentService g) throws Exception
 	{
 	}
 
@@ -93,7 +93,7 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
 	 *        the Gradebook Service
 	 * @return false, no gradebook integration
 	 */
-	public boolean gradebookExists(String gradebookUId, GradebookService g)
+	public boolean gradebookExists(String gradebookUId, GradebookExternalAssessmentService g)
 	{
 		return false;
 	}
@@ -119,15 +119,15 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
 	 *        the Gradebook Service
 	 * @throws java.lang.Exception
 	 */
-	public void updateExternalAssessmentScore(AssessmentGradingIfc ag, GradebookService g) throws Exception
+	public void updateExternalAssessmentScore(AssessmentGradingData ag, GradebookExternalAssessmentService g) throws Exception
 	{
 	}
 
 	public void updateExternalAssessmentScores(Long publishedAssessmentId, final Map studentUidsToScores,
-			  GradebookService g) throws Exception {
+			GradebookExternalAssessmentService g) throws Exception {
 	}
 	
-	public boolean updateGradebook(PublishedAssessmentIfc publishedAssessment, GradebookService g) throws Exception
+	public boolean updateGradebook(PublishedAssessmentIfc publishedAssessment, GradebookExternalAssessmentService g) throws Exception
 	{
 		// TODO Auto-generated method stub
 		return false;

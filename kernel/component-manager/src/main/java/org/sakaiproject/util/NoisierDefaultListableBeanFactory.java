@@ -1,6 +1,6 @@
 /**********************************************************************************
  *
- * $Id: NoisierDefaultListableBeanFactory.java 97201 2011-08-19 14:32:40Z aaronz@vt.edu $
+ * $Id: NoisierDefaultListableBeanFactory.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  *
  ***********************************************************************************
  *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

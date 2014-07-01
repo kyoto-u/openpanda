@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai_2-4-0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/PublishAssessmentNotificationListener.java $
- * $Id: ReorderPartsListener.java 16897 2006-10-09 00:28:33Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/PublishRepublishNotificationListener.java $
+ * $Id: PublishRepublishNotificationListener.java 108255 2012-05-17 18:30:57Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006 The Sakai Foundation.
@@ -44,7 +44,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
  * <p>Description: Sakai Assessment Manager</p>
  * <p>Copyright: Copyright (c) 2004 Sakai Project</p>
  * <p>Organization: Sakai Project</p>
- * @version $Id: PublishAssessmentNotificationListener.java 16897 2006-10-09 00:28:33Z ktsao@stanford.edu $
+ * @version $Id: PublishRepublishNotificationListener.java 108255 2012-05-17 18:30:57Z ktsao@stanford.edu $
  */
 
 public class PublishRepublishNotificationListener implements ValueChangeListener {

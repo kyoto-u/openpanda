@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages.panels;
 
 
@@ -79,7 +78,8 @@ public class MyInfoDisplay extends Panel {
 		if(dateOfBirth != null) {
 			
 			//full value contains year regardless of privacy settings
-			birthday = ProfileUtils.convertDateToString(dateOfBirth, ProfileConstants.DEFAULT_DATE_FORMAT);
+			// Passing null as the format parameter forces a user locale based format
+			birthday = ProfileUtils.convertDateToString(dateOfBirth, null);
 			
 			//get privacy on display of birthday year and format accordingly
 			//note that this particular method doesn't need the second userId param but we send for completeness

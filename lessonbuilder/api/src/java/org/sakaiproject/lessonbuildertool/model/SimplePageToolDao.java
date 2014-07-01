@@ -25,13 +25,20 @@ package org.sakaiproject.lessonbuildertool.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 
 import org.sakaiproject.lessonbuildertool.SimplePage;
 import org.sakaiproject.lessonbuildertool.SimplePageComment;
 import org.sakaiproject.lessonbuildertool.SimplePageGroup;
 import org.sakaiproject.lessonbuildertool.SimplePageItem;
 import org.sakaiproject.lessonbuildertool.SimplePageLogEntry;
+
+import org.sakaiproject.lessonbuildertool.SimplePageQuestionAnswer;
+import org.sakaiproject.lessonbuildertool.SimplePageQuestionResponse;
+import org.sakaiproject.lessonbuildertool.SimplePageQuestionResponseTotals;
 import org.sakaiproject.lessonbuildertool.SimpleStudentPage;
+import org.sakaiproject.lessonbuildertool.SimplePagePeerEval;
+import org.sakaiproject.lessonbuildertool.SimplePagePeerEvalResult;
 import org.sakaiproject.lessonbuildertool.SimplePageProperty;
 
 public interface SimplePageToolDao {
@@ -45,6 +52,7 @@ public interface SimplePageToolDao {
     // can edit pages in current site. Make sure that the page you are going to
     // edit is actually part of the current site.
 	public boolean canEditPage();
+	public boolean canEditPage(long pageid);
 
     // session flush
 	public void flush();
@@ -99,7 +107,8 @@ public interface SimplePageToolDao {
     // this is a generic one. Only use it for nearly unique sakaiids.
 	public List<SimplePageItem> findItemsBySakaiId(String sakaiId);
 	
-	public SimpleStudentPage findStudentPage(long itemId, String owner);
+	public SimpleStudentPage findStudentPage(long itemid, String owner);
+	public SimpleStudentPage findStudentPage(long itemid, Collection<String> groups);
 	
 	public SimpleStudentPage findStudentPage(long id);
 	
@@ -125,6 +134,19 @@ public interface SimplePageToolDao {
 
     // find resource items with access control involving specified sakaiid
 	public List findControlledResourcesBySakaiId(String id, String siteid);
+	
+	// get all of the multiple choice answers for a question item
+	public List<SimplePageQuestionAnswer> findAnswerChoices(SimplePageItem question);
+	
+	// does question have one answer marked correct?
+	public boolean hasCorrectAnswer(SimplePageItem question);
+
+	// get a specific multiple choice answer for a question item
+	public SimplePageQuestionAnswer findAnswerChoice(SimplePageItem question, long answerId);
+	
+	public SimplePageQuestionResponse findQuestionResponse(long questionId, String userId);
+	public SimplePageQuestionResponse findQuestionResponse(long responseId);
+	public List<SimplePageQuestionResponse> findQuestionResponses(long questionId);
 
     // basically, this is the Hibernate save. It works with any of our object types.
     // Checks for canEditPage, Except for SimplePageLog, where the code is assumed to 
@@ -186,18 +208,65 @@ public interface SimplePageToolDao {
 
     public SimplePageGroup makeGroup(String itemId, String groupId, String groups, String siteId);
 
+    public SimplePageQuestionResponse makeQuestionResponse(String userId, long questionId);
+    
     public SimplePageLogEntry makeLogEntry(String userId, long itemId, Long studentPageId);
     
     public SimplePageComment makeComment(long itemId, long pageId, String author, String comment, String UUID, boolean html);
 
-    public SimpleStudentPage makeStudentPage(long itemId, long pageId, String title, String author, boolean groupOwned);
+    public SimpleStudentPage makeStudentPage(long itemId, long pageId, String title, String author, String group);
+    
+    public SimplePageQuestionAnswer makeQuestionAnswer(String text, boolean correct);
+     
+    public boolean deleteQuestionAnswer(SimplePageQuestionAnswer questionAnswer, SimplePageItem item);
+
+    public void clearQuestionAnswers(SimplePageItem question);
+
+    public Long maxQuestionAnswer(SimplePageItem question);
+
+    public Long addQuestionAnswer(SimplePageItem question, Long id, String text, Boolean isCorrect);
     
     public SimplePageItem copyItem(SimplePageItem old);
 
+    public SimplePageItem copyItem2(SimplePageItem old, SimplePageItem item);
+
+    public Map JSONParse(String s);
+
+    public Map newJSONObject();
+
+    public List newJSONArray();
+
+    public SimplePageQuestionResponseTotals makeQRTotals(long qid, long rid);
+
+    public List<SimplePageQuestionResponseTotals> findQRTotals(long questionId);
+
+    public void incrementQRCount(long questionId, long responseId);
+
+    public void syncQRTotals(SimplePageItem item);
+    
+    public void addPeerEvalRow(SimplePageItem question, Long id, String text);
+
+    public void clearPeerEvalRows(SimplePageItem question);
+    
+    public Long maxPeerEvalRow(SimplePageItem question);
+    
+    public SimplePagePeerEval findPeerEval(long ItemId);
+    
+    //public List<SimplePageItem> getPeerEvalItems (SimplePageItem item);
+    
+    public SimplePagePeerEvalResult makePeerEvalResult(long pageId, String gradee, String grader, String rowText, int columnValue);
+    
+    public List<SimplePagePeerEvalResult> findPeerEvalResult(long pageId, String userId, String gradee);
+    
+    public List<SimplePagePeerEvalResult> findPeerEvalResultByOwner(long pageId,String grader);
+    
     public List<SimplePageItem>findGradebookItems(String gradebookUid);
+
+    public List<SimplePage>findGradebookPages(String gradebookUid);
 
     // items in lesson_builder_groups for specified site, map of itemId to groups
     public Map<String,String> getExternalAssigns(String siteId);
 
+    public int clearNeedsFixup(String siteId);
 
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.3/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
- * $Id: ResourcesAction.java 127206 2013-07-18 13:12:57Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.0/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
+ * $Id: ResourcesAction.java 307526 2014-03-26 23:02:29Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,8 +23,11 @@ package org.sakaiproject.content.tool;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -49,12 +52,15 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.alias.api.AliasEdit;
+import org.sakaiproject.alias.cover.AliasService;
 import org.sakaiproject.antivirus.api.VirusFoundException;
 import org.sakaiproject.authz.api.PermissionsHelper;
 import org.sakaiproject.authz.cover.AuthzGroupService;
@@ -73,6 +79,7 @@ import org.sakaiproject.content.api.ContentEntity;
 import org.sakaiproject.content.api.ContentHostingHandlerResolver;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentResourceEdit;
+import org.sakaiproject.content.api.ContentPrintService;
 import org.sakaiproject.content.api.ExpandableResourceType;
 import org.sakaiproject.content.api.GroupAwareEntity;
 import org.sakaiproject.content.api.InteractionAction;
@@ -113,6 +120,7 @@ import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeBreakdown;
@@ -130,17 +138,32 @@ import org.sakaiproject.util.ParameterParser;
 import org.sakaiproject.util.Resource;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.FileItem;
 import org.w3c.dom.Element;
+
+import java.io.PrintWriter;
+import java.io.IOException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.sakaiproject.util.RequestFilter;
+import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 
 /**
 * <p>ResourceAction is a ContentHosting application</p>
 *
 * @author University of Michigan, CHEF Software Development Team
-* @version $Revision: 127206 $
+* @version $Revision: 307526 $
 */
 public class ResourcesAction 
 	extends PagedResourceHelperAction // VelocityPortletPaneledAction
 {
+	 /** the content print service */
+	 private static ContentPrintService contentPrintService = (ContentPrintService) ComponentManager.get("org.sakaiproject.content.api.ContentPrintService");
+	 
+	 /** state variable name for the content print service call result */
+	 private static String CONTENT_PRINT_CALL_RESPONSE = "content_print_call_response";
+	 
 	/**
 	 * 
 	 */
@@ -503,11 +526,15 @@ public class ResourcesAction
 
 	private static final String MODE_DAV = "webdav";
 	
+	private static final String MODE_DROPBOX_MULTIPLE_FOLDERS_UPLOAD = "dropboxMultipleFoldersUpload";
+	
 	private static final String MODE_QUOTA = "quota";
 
 	/************** the edit context *****************************************/
 
 	private static final String MODE_DELETE_FINISH = "deleteFinish";
+	private static final String MODE_SHOW_FINISH = "showFinish";
+	private static final String MODE_HIDE_FINISH = "hideFinish"; 
 	
 	private static final String MODE_DROPBOX_OPTIONS = "dropboxOptions";
 
@@ -520,6 +547,8 @@ public class ResourcesAction
 	private static final String MODE_PROPERTIES = "properties";
 	
 	private static final String MODE_REORDER = "reorder";
+
+	private static final String MODE_RESTORE = "restore";
 	
 	protected static final String MODE_REVISE_METADATA = "revise_metadata";
 
@@ -594,6 +623,9 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 
 	protected static final String STATE_DELETE_SET = PREFIX + REQUEST + "delete_set";
 	
+	protected static final String STATE_SHOW_SET = PREFIX + "show_set";
+	protected static final String STATE_HIDE_SET = PREFIX + "hide_set"; 
+
 	protected static final String STATE_DROPBOX_HIGHLIGHT = PREFIX + REQUEST + "dropbox_highlight";
 
 	/** The name of the state attribute indicating whether the hierarchical list is expanded */
@@ -602,7 +634,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	/** Name of state attribute indicating number of members for a collection at which this tool should refuse to expand the collection. */
 	private static final String STATE_EXPANDABLE_FOLDER_SIZE_LIMIT = PREFIX + SYS + "expandable_folder_size_limit";
 
-	/** Name of state attribute containing a list of opened/expanded collections */
+	/** Name of state attribute containing a list of opened/expanded collections.
+	 * It's a sorted set that is unmodifiable. */
 	private static final String STATE_EXPANDED_COLLECTIONS = PREFIX + REQUEST + "expanded_collections";
 	
 	protected static final String STATE_EXPANDED_FOLDER_SORT_MAP = PREFIX + REQUEST + "expanded_folder_sort_map";
@@ -670,6 +703,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	private static final String STATE_NEED_TO_EXPAND_ALL = PREFIX + REQUEST + "need_to_expand_all";
 
 	protected static final String STATE_NON_EMPTY_DELETE_SET = PREFIX + REQUEST + "non-empty_delete_set";
+	protected static final String STATE_NON_EMPTY_SHOW_SET = PREFIX + "non-empty_show_set";
+	protected static final String STATE_NON_EMPTY_HIDE_SET = PREFIX + "non-empty_hide_set";
 	
 	/** The can-paste flag */
 	private static final String STATE_PASTE_ALLOWED_FLAG = PREFIX + REQUEST + "can_paste_flag";
@@ -754,8 +789,13 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 
 	private static final String TEMPLATE_DELETE_FINISH = "content/sakai_resources_deleteFinish";
 	
+	private static final String TEMPLATE_SHOW_FINISH = "content/sakai_resources_showFinish";
+	private static final String TEMPLATE_HIDE_FINISH = "content/sakai_resources_hideFinish";
+
 	private static final String TEMPLATE_DROPBOX_OPTIONS = "content/sakai_dropbox_options";
 
+	private static final String TEMPLATE_DROPBOX_MULTIPLE_FOLDERS_UPLOAD = "resources/sakai_dropbox_multiple_folders_upload";
+	
 	private static final String TEMPLATE_MORE = "content/chef_resources_more";
 
 	private static final String TEMPLATE_NEW_LIST = "content/sakai_resources_list";
@@ -763,6 +803,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	private static final String TEMPLATE_OPTIONS = "content/sakai_resources_options";
 	
 	private static final String TEMPLATE_REORDER = "content/chef_resources_reorder";
+
+	private static final String TEMPLATE_RESTORE = "content/sakai_resources_restore";
 
 	private static final String TEMPLATE_REVISE_METADATA = "content/sakai_resources_properties";
 
@@ -776,6 +818,9 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	
 	public static final String UTF_8_ENCODING = "UTF-8";
 	
+	/** Configuration: allow use of alias for site id in references. */
+	protected boolean m_siteAlias = true;
+	
 	// may need to distinguish permission on entity vs permission on its containing collection
 	static
 	{
@@ -783,6 +828,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		CONTENT_NEW_ACTIONS.add(ActionType.NEW_FOLDER);
 		CONTENT_NEW_ACTIONS.add(ActionType.NEW_URLS);
 		CONTENT_NEW_ACTIONS.add(ActionType.CREATE);
+		CONTENT_NEW_ACTIONS.add(ActionType.CREATE_BY_HELPER);
 		
 		PASTE_COPIED_ACTIONS.add(ActionType.PASTE_COPIED);
 		PASTE_MOVED_ACTIONS.add(ActionType.PASTE_MOVED);
@@ -791,6 +837,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		
 		CONTENT_READ_ACTIONS.add(ActionType.VIEW_CONTENT);
 		CONTENT_READ_ACTIONS.add(ActionType.COPY);
+		CONTENT_READ_ACTIONS.add(ActionType.PRINT_FILE);
 		
 		CONTENT_PROPERTIES_ACTIONS.add(ActionType.VIEW_METADATA);
 		
@@ -800,11 +847,13 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		CONTENT_MODIFY_ACTIONS.add(ActionType.REVISE_ORDER);
 		CONTENT_MODIFY_ACTIONS.add(ActionType.COMPRESS_ZIP_FOLDER);
 		CONTENT_MODIFY_ACTIONS.add(ActionType.EXPAND_ZIP_ARCHIVE);
+		CONTENT_MODIFY_ACTIONS.add(ActionType.RESTORE);
 		
 		CONTENT_DELETE_ACTIONS.add(ActionType.MOVE);
 		CONTENT_DELETE_ACTIONS.add(ActionType.DELETE);
 		
 		SITE_UPDATE_ACTIONS.add(ActionType.REVISE_PERMISSIONS);
+		SITE_UPDATE_ACTIONS.add(ActionType.MAKE_SITE_PAGE);
 
 		ACTIONS_ON_FOLDERS.add(ActionType.VIEW_METADATA);
 		ACTIONS_ON_FOLDERS.add(ActionType.REVISE_METADATA);
@@ -825,6 +874,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		ACTIONS_ON_RESOURCES.add(ActionType.COPY);
 		ACTIONS_ON_RESOURCES.add(ActionType.MOVE);
 		ACTIONS_ON_RESOURCES.add(ActionType.DELETE);
+		ACTIONS_ON_RESOURCES.add(ActionType.PRINT_FILE);
 
 		ACTIONS_ON_MULTIPLE_ITEMS.add(ActionType.COPY);
 		ACTIONS_ON_MULTIPLE_ITEMS.add(ActionType.MOVE);
@@ -834,6 +884,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		CREATION_ACTIONS.add(ActionType.NEW_FOLDER);
 		CREATION_ACTIONS.add(ActionType.NEW_URLS);
 		CREATION_ACTIONS.add(ActionType.CREATE);
+		CREATION_ACTIONS.add(ActionType.CREATE_BY_HELPER);
 		CREATION_ACTIONS.add(ActionType.PASTE_MOVED);
 		CREATION_ACTIONS.add(ActionType.PASTE_COPIED);
 	}
@@ -1289,7 +1340,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	    	resource.setContent(content);
 	    }
     }
-	
+
 	/**
 	* Paste the item(s) selected to be moved
 	*/
@@ -1391,11 +1442,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				}
 
 				// try to expand the collection
-				SortedSet expandedCollections = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-				if(! expandedCollections.contains(collectionId))
-				{
-					expandedCollections.add(collectionId);
-				}
+				Set<String> expandedCollections = getExpandedCollections(state);
+				expandedCollections.add(collectionId);
 
 				state.setAttribute (STATE_MOVE_FLAG, Boolean.FALSE.toString());
 			}
@@ -1517,16 +1565,13 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 					state.setAttribute (STATE_MODE, MODE_LIST);
 				}
 
-				SortedSet expandedCollections = setStateAttributeExpandedCollections(state);
-				if(! expandedCollections.contains(collectionId))
-				{
-					expandedCollections.add(collectionId);
-				}
+				// try to expand the collection
+				Set<String> expandedCollections = getExpandedCollections(state);
+				expandedCollections.add(collectionId);
 
 				// reset the copy flag
 				state.setAttribute (STATE_COPY_FLAG, Boolean.FALSE.toString());
 			}
-
 		}
 
 	}	// doPasteitems
@@ -1668,16 +1713,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			}
 
 			// try to expand the collection
-			SortedSet expandedCollections = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-			if(STATE_EXPANDED_COLLECTIONS == null)
-			{
-				expandedCollections = new TreeSet();
-				state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedCollections);
-			}
-			if(! expandedCollections.contains(collectionId))
-			{
-				expandedCollections.add(collectionId);
-			}
+			Set<String> expandedCollections = getExpandedCollections(state);
+			expandedCollections.add(collectionId);
 
 			// reset the copy flag
 			state.setAttribute (STATE_COPY_FLAG, Boolean.FALSE.toString());
@@ -2531,9 +2568,6 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	/**
 	 * Get the items in this folder that should be seen.
 	 * @param collectionId - String version of
-	 * @param expandedCollections - Hash of collection resources
-	 * @param sortedBy  - pass through to ContentHostingComparator
-	 * @param sortedAsc - pass through to ContentHostingComparator
 	 * @param parent - The folder containing this item
 	 * @param isLocal - true if navigation root and home collection id of site are the same, false otherwise
 	 * @param state - The session state
@@ -2551,13 +2585,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		
 		Map expandedFolderSortMap = setStateAttributeExpandedFolderSortMap(state);
 		
-		SortedSet<String> expandedCollections = (SortedSet<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-		if(expandedCollections == null)
-		{
-			expandedCollections = new TreeSet<String>();
-			state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedCollections);
-		}
-		String mode = (String) state.getAttribute (STATE_MODE);
+		Set<String> expandedCollections = getExpandedCollections(state);
 
 		List newItems = new LinkedList();
 		try
@@ -2568,7 +2596,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 
 			// get the collection
 			collection = contentService.getCollection(collectionId);
-			if(need_to_expand_all || (expandedCollections != null && expandedCollections.contains(collectionId)))
+			if(need_to_expand_all || expandedCollections.contains(collectionId))
 			{
 				Comparator comparator = null;
 				if(userSelectedSort != null)
@@ -2595,9 +2623,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 						comparator = ListItem.DEFAULT_COMPARATOR;
 					}
 				}
-				expandedFolderSortMap.put(collectionId, comparator);
 				expandedCollections.add(collectionId);
-				// state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, expandedFolderSortMap);
+				expandedFolderSortMap.put(collectionId, comparator);
 			}
 
 			String dummyId = collectionId.trim();
@@ -3894,6 +3921,14 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			//item.setPubviewPossible(! preventPublicDisplay);
 			item.metadataGroupsIntoContext(context);
 			
+			// copied from ResourcesHelperAction since the context created in that class is not available to a template used here.
+			if(parent.isDropbox)
+			{
+				String dropboxNotificationsProperty = getDropboxNotificationsProperty();
+				logger.debug("dropboxNotificationAllowed: buildCreateWizardContext: "+ Boolean.valueOf(ResourcesAction.DROPBOX_NOTIFICATIONS_ALLOW.equals(dropboxNotificationsProperty)));
+				context.put("dropboxNotificationAllowed", Boolean.valueOf(ResourcesAction.DROPBOX_NOTIFICATIONS_ALLOW.equals(dropboxNotificationsProperty)));
+			}
+			
 			context.put("item", item);
 			
 			state.setAttribute(STATE_CREATE_WIZARD_ITEM, item);
@@ -3970,6 +4005,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			// not show the public option or notification when in dropbox mode
 			context.put("dropboxMode", Boolean.TRUE);
 			String dropboxNotificationsProperty = getDropboxNotificationsProperty();
+			logger.debug("dropboxNotificationAllowed: buildDeleteConfirmContext: "+ Boolean.valueOf(DROPBOX_NOTIFICATIONS_ALLOW.equals(dropboxNotificationsProperty)));
 			context.put("dropboxNotificationAllowed", Boolean.valueOf(DROPBOX_NOTIFICATIONS_ALLOW.equals(dropboxNotificationsProperty)));
 		}
 		context.put("homeCollection", (String) state.getAttribute (STATE_HOME_COLLECTION_ID));
@@ -4180,11 +4216,12 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			if(dropboxMode)
 			{
 				context.put("showDropboxOptions", Boolean.TRUE.toString());
+				context.put("showDropboxMultipleFoldersUpload", Boolean.TRUE.toString());
 			}
 			else
 			{
 				
-				if(!inMyWorkspace )
+				if(!inMyWorkspace && !isSpecialSite)
 				{
 					context.put("showPermissions", Boolean.TRUE.toString());
 					//buildListMenu(portlet, context, data, state);
@@ -4202,7 +4239,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		}
 		
 		if (! isSpecialSite) {
-			context.put("showQuota", Boolean.valueOf(!dropboxMode && allowUpdateSite));
+			context.put("showQuota", Boolean.valueOf(dropboxMode || allowUpdateSite));
 		} else {
 			context.put("showQuota", Boolean.valueOf(false));
 		}
@@ -4310,9 +4347,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			List<String> items_to_be_moved = (List<String>) state.getAttribute(STATE_ITEMS_TO_BE_MOVED);
 			
 			boolean need_to_expand_all = Boolean.TRUE.toString().equals((String)state.getAttribute(STATE_NEED_TO_EXPAND_ALL));
-			SortedSet<String> expandedCollections = (SortedSet<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
+			Set<String> expandedCollections = getExpandedCollections(state);
 			expandedCollections.add(collectionId);
-			context.put("expandedCollections", expandedCollections);
 
 			ContentCollection collection = ContentHostingService.getCollection(collectionId);
 			
@@ -4337,6 +4373,13 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				}
 			}
 			
+                          // listActions needs to add Show and Hide
+                        boolean canShowHide = canReviseOwn() || canReviseAny();
+                        context.put("canShowHide", canShowHide);
+
+                        boolean canViewHidden= canViewHidden();
+                        context.put("canViewHidden", canViewHidden); 
+
 			String containingCollectionId = contentService.getContainingCollectionId(item.getId());
 			if(contentService.COLLECTION_DROPBOX.equals(containingCollectionId))
 			{
@@ -4372,7 +4415,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			String allowed_to_see_other_sites = (String) state.getAttribute(STATE_SHOW_ALL_SITES);
 			String show_other_sites = (String) state.getAttribute(STATE_SHOW_OTHER_SITES);
 			context.put("show_other_sites", show_other_sites);
-			if(Boolean.TRUE.toString().equals(allowed_to_see_other_sites))
+			if(Boolean.TRUE.toString().equals(allowed_to_see_other_sites) && canReviseAny())
 			{
 				context.put("allowed_to_see_other_sites", Boolean.TRUE.toString());
 				show_all_sites = Boolean.TRUE.toString().equals(show_other_sites);
@@ -4541,9 +4584,89 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		
 		context.put("labeler", new ResourceTypeLabeler());
 		
+		contentPrintResultIntoContext(data, context, state);
+		
 		return TEMPLATE_NEW_LIST;
 
 	}	// buildListContext
+	
+	protected void contentPrintResultIntoContext(RunData data, Context context, SessionState state)
+	{
+		if (state.getAttribute(CONTENT_PRINT_CALL_RESPONSE) != null)
+		{
+			HashMap<String, String> result = (HashMap<String, String>) state.getAttribute(CONTENT_PRINT_CALL_RESPONSE);
+			String status = result.get(contentPrintService.CONTENT_PRINT_RESPONSE_STATUS);
+			if (status != null && status.equals(contentPrintService.CONTENT_PRINT_RESPONSE_STATUS_SUCCESS))
+			{
+				// put the success status, confirmation message, and possible popup url address
+				context.put("content_print_status_success", Boolean.TRUE);
+			}
+			else
+			{
+				// put the failure status and message
+				context.put("content_print_status_failure", Boolean.TRUE);
+			}
+			context.put("content_print_message", result.get(contentPrintService.CONTENT_PRINT_RESPONSE_MESSAGE));
+			context.put("content_print_result_url", result.get(contentPrintService.CONTENT_PRINT_RESPONSE_URL));
+			context.put("content_print_result_url_title", result.get(contentPrintService.CONTENT_PRINT_RESPONSE_URL_TITLE));
+			
+			// clean the state object
+			state.removeAttribute(CONTENT_PRINT_CALL_RESPONSE);
+		}
+	}
+
+
+	/**
+	 * Check if you have 'content.revise.own' in the site @return
+	 * @return true if the user can revise
+	 */
+	public boolean canReviseOwn() {
+	    boolean canReviseOwn = false;
+	    try {
+	        Site site = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
+	        canReviseOwn = SecurityService.unlock(
+	                ContentHostingService.AUTH_RESOURCE_WRITE_OWN, site.getReference());
+
+	    } catch (IdUnusedException e) {
+	        logger.debug("ResourcesAction.canReviseOwn: cannot find current site");
+	    }
+	    return canReviseOwn;
+	}
+
+	/**
+	 * Check if you have 'content.view.hidden' in the site
+	 * @return true if can view hidden
+	 */
+	public boolean canViewHidden() {
+	    boolean canViewHidden= false;
+	    try {
+	        Site site = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
+	        canViewHidden= SecurityService.unlock(
+	                ContentHostingService.AUTH_RESOURCE_HIDDEN, site.getReference());
+
+	    } catch (IdUnusedException e) {
+	        logger.debug("ResourcesAction.canViewHidden: cannot find current site");
+	    }
+	    return canViewHidden;
+	}
+
+	/**
+	 * Check if you have 'content.revise.any' in the site
+	 * @return true if user can revise
+	 */
+	public boolean canReviseAny() {
+	    boolean canReviseAny = false;
+	    try {
+	        Site site = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
+	        canReviseAny = SecurityService.unlock(
+	                ContentHostingService.AUTH_RESOURCE_WRITE_ANY, site.getReference());
+
+	    } catch (IdUnusedException e) {
+	        logger.debug("ResourcesAction.canReviseAny: cannot find current site");
+	    }
+	    return canReviseAny;
+	}
+
 
 	/**
 	* Build the context for normal display
@@ -4639,6 +4762,16 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			// build the context for the basic step of delete confirm page
 			template = buildDeleteFinishContext (portlet, context, data, state);
 		}
+		else if (mode.equals (MODE_SHOW_FINISH))
+		{
+		    // build the context for the basic step of delete confirm page
+		    template = buildShowFinishContext (portlet, context, data, state);
+		}
+		else if (mode.equals (MODE_HIDE_FINISH))
+		{
+		    // build the context for the basic step of delete confirm page
+		    template = buildHideFinishContext (portlet, context, data, state);
+		}
 		else if (mode.equals (MODE_OPTIONS))
 		{
 			template = buildOptionsPanelContext (portlet, context, data, state);
@@ -4646,6 +4779,14 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		else if (mode.equals (MODE_DROPBOX_OPTIONS))
 		{
 			template = buildDropboxOptionsPanelContext (portlet, context, data, state);
+		}
+		else if (mode.equals (MODE_DROPBOX_MULTIPLE_FOLDERS_UPLOAD))
+		{
+			template = buildDropboxMultipleFoldersUploadPanelContext (portlet, context, data, state);
+		}
+		else if (mode.equals (MODE_RESTORE))
+		{
+			template = buildRestoreContext (portlet, context, data, state);
 		}
 		else if (mode.equals (MODE_REORDER))
 		{
@@ -4823,6 +4964,73 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	}
 	
 	/**
+	 * Build the context to establish restoring of resources/folders.
+	 */
+	public String buildRestoreContext(VelocityPortlet portlet, Context context, RunData data, SessionState state) 
+	{
+		context.put("tlang",rb);
+		
+		String folderId = (String) state.getAttribute(STATE_REORDER_FOLDER);
+		context.put("folderId", folderId);
+
+		List cPath = getCollectionPath(state);
+		context.put ("collectionPath", cPath);
+
+		Set highlightedItems = new TreeSet();
+		List all_roots = new ArrayList();
+		List this_site = new ArrayList();
+
+		// find the ContentHosting service
+		org.sakaiproject.content.api.ContentHostingService contentService = (org.sakaiproject.content.api.ContentHostingService) state.getAttribute (STATE_CONTENT_SERVICE);
+		List<ContentResource> members = contentService.getAllDeletedResources(folderId);
+		
+		String rootTitle = (String) state.getAttribute (STATE_SITE_TITLE);
+		
+		if(members != null && members.size() > 0)
+		{
+			ResourcesBrowseItem root = new ResourcesBrowseItem("ID",folderId,"");
+			List items = new LinkedList();
+			for(ContentResource resource: members) {   
+				ResourceProperties props = resource.getProperties();
+				String itemType = ((ContentResource)resource).getContentType();
+				String itemName = props.getProperty(ResourceProperties.PROP_DISPLAY_NAME);
+				ResourcesBrowseItem newItem = new ResourcesBrowseItem(resource.getId(), itemName, itemType);
+				try
+				{
+					Time modTime = props.getTimeProperty(ResourceProperties.PROP_MODIFIED_DATE);
+					String modifiedTime = modTime.toStringLocalShortDate() + " " + modTime.toStringLocalShort();
+					newItem.setModifiedTime(modifiedTime);
+				}
+				catch(Exception e)
+				{
+					String modifiedTimeString = props.getProperty(ResourceProperties.PROP_MODIFIED_DATE);
+					newItem.setModifiedTime(modifiedTimeString);
+				}
+				try
+				{
+					String modifiedBy = getUserProperty(props, ResourceProperties.PROP_MODIFIED_BY).getDisplayName();
+					newItem.setModifiedBy(modifiedBy);
+				}
+				catch(Exception e)
+				{
+					String modifiedBy = props.getProperty(ResourceProperties.PROP_MODIFIED_BY);
+					newItem.setModifiedBy(modifiedBy);
+				}
+
+				items.add(newItem);
+			}
+			root.setName(rootTitle);
+			root.addMembers(items);
+			this_site.add(root);
+			all_roots.add(root);
+		}
+		context.put ("this_site", this_site);
+		
+
+		return TEMPLATE_RESTORE;
+	}
+
+	/**
 	 * Build the context to establish a custom-ordering of resources/folders within a folder.
 	 */
 	public String buildReorderContext(VelocityPortlet portlet, Context context, RunData data, SessionState state) 
@@ -4834,16 +5042,16 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		context.put("folderId", folderId);
 		
 		// save expanded folder lists
-		SortedSet<String> expandedCollections = (SortedSet<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
+		Set<String> expandedCollections = getExpandedCollections(state);
 		Map expandedFolderSortMap = (Map) state.getAttribute(STATE_EXPANDED_FOLDER_SORT_MAP);
-		String need_to_expand_all = (String) state.getAttribute(STATE_NEED_TO_EXPAND_ALL);
 
 		// create temporary expanded folder lists for this invocation of getListView
+		// TODO Using session state to pass values to methods shouldn't be used.
 		Map tempExpandedFolderSortMap = new HashMap();
 		state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, tempExpandedFolderSortMap);
-		SortedSet tempExpandedCollections = new TreeSet();
+		state.removeAttribute(STATE_EXPANDED_COLLECTIONS);
+		Set<String> tempExpandedCollections = getExpandedCollections(state);
 		tempExpandedCollections.add(folderId);
-		state.setAttribute(STATE_EXPANDED_COLLECTIONS, tempExpandedCollections);
 
 		Set highlightedItems = new TreeSet();
 		List all_roots = new ArrayList();
@@ -4852,8 +5060,10 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		List members = getListView(folderId, highlightedItems, (ResourcesBrowseItem) null, true, state);
 
 		// restore expanded folder lists 
-		expandedCollections.addAll(tempExpandedCollections);
-		state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedCollections);
+		state.removeAttribute(STATE_EXPANDED_COLLECTIONS);
+		Set<String> newExpandedCollections = getExpandedCollections(state);
+		newExpandedCollections.addAll(expandedCollections);
+		newExpandedCollections.addAll(tempExpandedCollections);
 		expandedFolderSortMap.putAll(tempExpandedFolderSortMap);
 		state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, expandedFolderSortMap);
 
@@ -4948,6 +5158,14 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			state.setAttribute(STATE_REVISE_PROPERTIES_ITEM, item);
 		}
 		item.metadataGroupsIntoContext(context);
+		
+		if(item.isDropbox)
+		{
+			String dropboxNotificationsProperty = getDropboxNotificationsProperty();
+			logger.debug("dropboxNotificationAllowed: buildReviseMetadataContext: "+ Boolean.valueOf(ResourcesAction.DROPBOX_NOTIFICATIONS_ALLOW.equals(dropboxNotificationsProperty)));
+			context.put("dropboxNotificationAllowed", Boolean.valueOf(ResourcesAction.DROPBOX_NOTIFICATIONS_ALLOW.equals(dropboxNotificationsProperty)));
+		}
+		
 		context.put("item", item);
 		
 		String chhbeanname = "";
@@ -4977,7 +5195,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		}
 		conditionsHelper.buildConditionContext(context, state);
 		
-		context.put("shortUrlEnabled", ServerConfigurationService.getBoolean("shortenedurl.resources.enabled", false));
+		context.put("shortUrlEnabled", ServerConfigurationService.getBoolean("shortenedurl.resources.enabled", true));
 		
 		return TEMPLATE_REVISE_METADATA;
 	}
@@ -5066,7 +5284,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		context.put("server_url", ServerConfigurationService.getServerUrl());
 		context.put("site_id", ToolManager.getCurrentPlacement().getContext());
 		context.put("site_title", state.getAttribute(STATE_SITE_TITLE));
-		context.put("user_id", UserDirectoryService.getCurrentUser().getEid());
+		context.put("user_id", UserDirectoryService.getCurrentUser().getEid().matches(".*(;|/|\\?|:|@|&|=|\\+).*")?UserDirectoryService.getCurrentUser().getId():UserDirectoryService.getCurrentUser().getEid());
 		
 		if (ContentHostingService.isShortRefs())
 		{
@@ -5110,6 +5328,48 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				context.put("isWinIEBrowser", Boolean.TRUE.toString());
 			}
 		}
+		
+		String siteId = ToolManager.getCurrentPlacement().getContext();
+		boolean changed = false;
+
+		if (!inMyWorkspace && !dropboxMode && m_siteAlias)
+		{
+			// find site alias first
+			List target = AliasService.getAliases("/site/" + siteId);		
+	
+			if (!target.isEmpty()) {
+				// take the first alias only
+				AliasEdit alias = (AliasEdit) target.get(0);
+				siteId = alias.getId();
+	
+				// if there is no a site id exists that matches the alias name
+				if (!SiteService.siteExists(siteId))
+				{
+					changed = true;
+				}
+			} else {
+				// use mail archive alias
+				target = AliasService.getAliases("/mailarchive/channel/" + siteId + "/main");
+	
+				if (!target.isEmpty()) {
+					// take the first alias only
+					AliasEdit alias = (AliasEdit) target.get(0);
+					siteId = alias.getId();
+	
+					// if there is no a site id exists that matches the alias name
+					if (!SiteService.siteExists(siteId))
+					{
+						changed = true;
+					}
+				}
+			}
+		}
+		
+		if (changed) {
+			context.put("site_alias", siteId);						
+		} else {
+			context.put("site_alias", "");								
+		}
 
 		return TEMPLATE_DAV;
 
@@ -5127,7 +5387,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		context.put("tlang",rb);
 		// find the ContentTypeImage service
 		
-		String siteCollectionId = ContentHostingService.getSiteCollection(ToolManager.getCurrentPlacement().getContext());
+		boolean dropboxMode = RESOURCES_MODE_DROPBOX.equalsIgnoreCase((String) state.getAttribute(STATE_MODE_RESOURCES));
+		String siteCollectionId = dropboxMode ? ContentHostingService.getDropboxCollection(ToolManager.getCurrentPlacement().getContext()) : ContentHostingService.getSiteCollection(ToolManager.getCurrentPlacement().getContext());
 		try
 		{
 			ContentCollection collection = ContentHostingService.getCollection(siteCollectionId);
@@ -5140,13 +5401,14 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			
 			if (quota > 0)
 			{
-				long usagePrecent = usage * 100 / quota;
-				context.put("usagePercent", usagePrecent);
+				long usagePercent = usage * 100 / quota;
+				context.put("usagePercent", usagePercent+"%");
 				context.put("quota", ListItem.formatSize(quota * 1024));
 			}
 			else
 			{
 				context.put("quota", rb.get("quota.unlimited"));
+				context.put("usagePercent", "");
 			}
 		}
 		catch (IdUnusedException e)
@@ -5160,7 +5422,6 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			logger.warn("User doesn't have permission to access site collection", e);
 		}
 
-		boolean dropboxMode = RESOURCES_MODE_DROPBOX.equalsIgnoreCase((String) state.getAttribute(STATE_MODE_RESOURCES));
 		context.put("dropboxMode", Boolean.toString(dropboxMode));
 		
 		boolean maintainer = SiteService.allowUpdateSite(siteCollectionId);
@@ -5417,11 +5678,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	{
 		logger.debug(this + ".doCollapse_collection()");
 		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
-		SortedSet expandedItems = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-		if(expandedItems == null)
-		{
-			expandedItems = new TreeSet();
-		}
+		Set<String> expandedItems = getExpandedCollections(state);
 		Map folderSortMap = setStateAttributeExpandedFolderSortMap(state);
 
 		//get the ParameterParser from RunData
@@ -5489,8 +5746,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				newSet.add(id);
 			}
 		}
-
-		state.setAttribute(STATE_EXPANDED_COLLECTIONS, newSet);
+		expandedItems.clear();
+		expandedItems.addAll(newSet);
 
 		// remove this folder id into the set to be event-observed
 		removeObservingPattern(collectionId, state);
@@ -5505,6 +5762,25 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		state.setAttribute(STATE_LIST_PREFERENCE, LIST_COLUMNS);
 	}
 
+	//Test if groups are selected when needed
+	public static boolean checkGroups(ParameterParser params)
+	{
+			//Control if groups are selected
+			String access_mode= params.getString("access_mode" + ListItem.DOT + "0");
+			if (access_mode != null) 
+			{
+				if (access_mode.equals("grouped"))
+				{
+					String[] access_groups = params.getStrings("access_groups" + ListItem.DOT + "0");
+					if (access_groups==null || access_groups.length==0) 
+					{
+						return false;
+					}
+				}
+			}
+			return true; 	
+	}
+	
 	/**
 	 * @param data
 	 */
@@ -5574,6 +5850,11 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			else
 			{
 				name = name.trim();
+			}
+			//Control groups
+			if (!checkGroups(params)) {
+				addAlert(state, trb.getString("alert.youchoosegroup")); 
+				return;
 			}
 			
 			String collectionId = (String) state.getAttribute(STATE_CREATE_WIZARD_COLLECTION_ID);
@@ -5710,7 +5991,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 						toolSession.removeAttribute(ResourceToolAction.ACTION_PIPE);
 		
 						// show folder if in hierarchy view
-						SortedSet expandedCollections = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
+						Set<String> expandedCollections = getExpandedCollections(state);
 						expandedCollections.add(collectionId);
 		
 						state.setAttribute(STATE_MODE, MODE_LIST);
@@ -5748,6 +6029,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 					{
 						addAlert(state, alert);
 					}
+					ContentHostingService.cancelResource(resource);
 				}
 			} 
 			catch (IdUnusedException e) 
@@ -6081,6 +6363,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 					break;
 				case CREATE:
 					break;
+				case CREATE_BY_HELPER:
+					break;
 				case REVISE_CONTENT:
 					break;
 				case REPLACE_CONTENT:
@@ -6095,11 +6379,20 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 					pasteItem(state, selectedItemId);
 					//sAction.finalizeAction(reference);
 					break;
+				case RESTORE:
+					sAction.initializeAction(reference);
+					state.setAttribute(STATE_REORDER_FOLDER, selectedItemId);
+					state.setAttribute(STATE_MODE, MODE_RESTORE);
+					sAction.finalizeAction(reference);
+					break;
 				case REVISE_ORDER:
 					sAction.initializeAction(reference);
 					state.setAttribute(STATE_REORDER_FOLDER, selectedItemId);
 					state.setAttribute(STATE_MODE, MODE_REORDER);
 					sAction.finalizeAction(reference);
+					break;
+				case PRINT_FILE:
+					printFile(state, data, selectedItemId);
 					break;
 				default:
 					sAction.initializeAction(reference);
@@ -6174,7 +6467,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	{
 		logger.debug(this + ".doExpand_collection()");
 		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
-		SortedSet expandedItems = setStateAttributeExpandedCollections(state);
+		Set<String> expandedItems = getExpandedCollections(state);
 
 		//get the ParameterParser from RunData
 		ParameterParser params = data.getParameters ();
@@ -6600,7 +6893,25 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		{
 			doDeleteconfirm(data);
 		}
-		
+		else if(ResourceToolAction.SHOW.equals(actionId))
+		{
+			doShowconfirm(data);
+		}
+		else if(ResourceToolAction.HIDE.equals(actionId))
+		{
+			doHideconfirm(data);
+		}
+		else if(ResourceToolAction.COPY_OTHER.equals(actionId))
+		{
+			List<String> selectedSet  = new ArrayList<String>();
+			String[] selectedItems = params.getStrings("selectedMembers-other");
+			if(selectedItems != null)
+			{
+				selectedSet.addAll(Arrays.asList(selectedItems));
+			}
+			state.setAttribute(STATE_ITEMS_TO_BE_COPIED, selectedSet);
+			state.removeAttribute(STATE_ITEMS_TO_BE_MOVED);
+		}
 	}
 
 	/**
@@ -6662,12 +6973,12 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 
 			state.setAttribute(STATE_COLLECTION_ID, collectionId);
 			
-			SortedSet currentMap = Collections.synchronizedSortedSet(setStateAttributeExpandedCollections(state));
+			Set<String> expandedCollections = getExpandedCollections(state);
 			
 			Map sortMap = Collections.synchronizedMap(setStateAttributeExpandedFolderSortMap(state));
 			
 			// sync over sortMap removal
-			Iterator it = currentMap.iterator();
+			Iterator it = expandedCollections.iterator();
 			synchronized (sortMap)
 			{
 				while(it.hasNext())
@@ -6681,29 +6992,18 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				}
 			}
 			
-			// sync over currentMap removal
-			it = currentMap.iterator();
-			synchronized (it)
-			{
-				while(it.hasNext())
+			SortedSet newExpandedCollections = new TreeSet<String>();
+			for(String id: expandedCollections)
 				{
-					String id = (String) it.next();
-					if(id.startsWith(collectionId))
+				if(!id.startsWith(collectionId))
 					{
-						
-						it.remove();
-					}
+					newExpandedCollections.add(id);
 				}
 			}
+			newExpandedCollections.add(collectionId);
 			
-			if(!currentMap.contains(collectionId))
-			{
-				currentMap.add (collectionId);
-
-				// add this folder id into the set to be event-observed
-				addObservingPattern(collectionId, state);
-			}
-			//state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, new HashMap());
+			expandedCollections.clear();
+			expandedCollections.addAll(newExpandedCollections);
 		}
 
 	}	// doNavigate
@@ -6726,16 +7026,18 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	/**
 	 * get/init state attribute STATE_EXPANDED_COLLECTIONS
 	 * @param state
-	 * @return
+	 * @return An {@link Set} but never <code>null</code>.
 	 */
-	private static SortedSet setStateAttributeExpandedCollections(SessionState state) {
-		SortedSet currentMap = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-		if(currentMap == null)
+	private static Set<String> getExpandedCollections(SessionState state) {
+		Set<String> current = (Set<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
+		if(current == null)
 		{
-			currentMap = new TreeSet();
-			state.setAttribute(STATE_EXPANDED_COLLECTIONS, currentMap);
+			// We use a CopyOnWrite Set so that we don't have to do any sychronization when iterating over it.
+			// Switching to HashSet results in runaway threads and concurrentmodificationsexceptions (from iterating).
+			current = new CopyOnWriteArraySet<String>();
+			state.setAttribute(STATE_EXPANDED_COLLECTIONS, current);
 		}
-		return currentMap;
+		return current;
 	}
 
 	/**
@@ -6855,6 +7157,11 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			}
 			if (item.numberFieldIsOutOfRange) {
 				addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { item.getConditionAssignmentPoints() }));
+				return;
+			}
+			//Control if groups are selected
+			if (!checkGroups(params)) { 
+				addAlert(state, trb.getString("alert.youchoosegroup")); 
 				return;
 			}
 			
@@ -6979,6 +7286,55 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	}
 
 	/**
+	* Restore the files based on the selection
+	*/
+	public void doRestore( RunData data)
+	{
+		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
+
+		//get the ParameterParser from RunData
+		ParameterParser params = data.getParameters ();
+
+		String flow = params.getString("flow");
+		
+		if (!"cancel".equalsIgnoreCase("flow")) {
+			String[] selectedItems = params.getStrings("selectedMembers");	
+			if ("restore".equalsIgnoreCase(flow))
+			{
+				for (String selectedItem : selectedItems) {
+					try {
+						ContentHostingService.restoreResource(selectedItem);
+					} catch (Exception e) {
+						String[] args = { e.getClass().getName(), selectedItem, e.getMessage()};
+						addAlert(state, trb.getFormattedMessage("action.exception", args));					
+						logger.fatal("Unable to restore recourse with ID " + selectedItem ,e);
+					}
+				}
+			} 
+			else if ("remove".equalsIgnoreCase(flow))
+			{
+				for (String selectedItem : selectedItems) {
+					try {
+						ContentHostingService.removeDeletedResource(selectedItem);
+					} catch (Exception ex) {
+						String[] args = {ex.getClass().getName(),selectedItem, ex.getMessage() };
+						addAlert(state, trb.getFormattedMessage("action.exception", args));					
+						logger.fatal("Unable to permanently remove recourse with ID " + selectedItem ,ex);
+					}
+				}				
+			}
+		}
+
+		
+		if (state.getAttribute(STATE_MESSAGE) == null)
+		{
+			state.setAttribute (STATE_MODE, MODE_LIST);
+
+		}	// if-else
+
+	}
+
+	/**
 	* Sort based on the given property
 	*/
 	public void doSaveOrder ( RunData data)
@@ -7018,12 +7374,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 					
 					ContentHostingService.commitCollection(collection);
 					
-					SortedSet expandedCollections = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-					if(expandedCollections == null)
-					{
-						expandedCollections = (SortedSet) new TreeSet();
-						state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedCollections);
-					}
+					Set<String> expandedCollections = getExpandedCollections(state);
 					expandedCollections.add(folderId);
 					
 					Comparator comparator = ContentHostingService.newContentHostingComparator(ResourceProperties.PROP_CONTENT_PRIORITY, true);
@@ -7293,7 +7644,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		}
 		state.setAttribute(STATE_LIST_SELECTIONS, selectedSet);
 
-		state.setAttribute(STATE_EXPANDED_COLLECTIONS, new TreeSet());
+		getExpandedCollections(state).clear();
 		state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, new HashMap());
 		
 		// TODO: Should iterate over all collectionId's in expandedCollection 
@@ -7419,13 +7770,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			if(resources != null && ! resources.isEmpty())
 			{
 				// expand folder
-				SortedSet<String> expandedCollections = (SortedSet<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-				//SAK-19789 its possible for this to be null - DH
-				if (expandedCollections == null)
-				{
-					expandedCollections = new TreeSet<String>();
-					state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedCollections);
-				}
+				Set<String> expandedCollections = getExpandedCollections(state);
 				expandedCollections.add(pipe.getContentEntity().getId());
 			}
 			toolSession.removeAttribute(ResourceToolAction.ACTION_PIPE);
@@ -7436,7 +7781,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			if(folders != null && ! folders.isEmpty())
 			{
 				// expand folder
-				SortedSet<String> expandedCollections = (SortedSet<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
+				Set<String> expandedCollections = getExpandedCollections(state);
 				expandedCollections.add(pipe.getContentEntity().getId());
 			}
 			toolSession.removeAttribute(ResourceToolAction.ACTION_PIPE);
@@ -7451,10 +7796,18 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			else
 			{
 				// expand folder
-				SortedSet<String> expandedCollections = (SortedSet<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
+				Set<String> expandedCollections = getExpandedCollections(state);
 				expandedCollections.add(pipe.getContentEntity().getId());
 				toolSession.removeAttribute(ResourceToolAction.ACTION_PIPE);
 			}
+			state.setAttribute(STATE_MODE, MODE_LIST);
+			break;
+		case CREATE_BY_HELPER:
+			if(!pipe.isErrorEncountered() && !pipe.isActionCanceled()) {
+				Set<String> expandedCollections = getExpandedCollections(state);
+				expandedCollections.add(pipe.getContentEntity().getId());
+			}
+			toolSession.removeAttribute(ResourceToolAction.ACTION_PIPE);
 			state.setAttribute(STATE_MODE, MODE_LIST);
 			break;
 		case REVISE_CONTENT:
@@ -7620,7 +7973,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			
 			if(uploadMax == null && uploadCeiling == null)
 			{
-				state.setAttribute(STATE_FILE_UPLOAD_MAX_SIZE, "1");
+				state.setAttribute(STATE_FILE_UPLOAD_MAX_SIZE, "20");
 			}
 			else if(uploadCeiling == null)
 			{
@@ -7789,9 +8142,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			state.setAttribute(STATE_SITE_TITLE, title);
 		}
 
-		SortedSet expandedCollections = new TreeSet();
-		//expandedCollections.add (state.getAttribute (STATE_HOME_COLLECTION_ID));
-		state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedCollections);
+		getExpandedCollections(state).clear();
 		state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, new HashMap());
 		
 		state.setAttribute(STATE_DROPBOX_HIGHLIGHT, Integer.valueOf(1));
@@ -7967,12 +8318,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 					
 					slAction.finalizeAction(ref);
 					
-					SortedSet<String> expandedCollections = (SortedSet<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-					if(expandedCollections == null)
-					{
-						expandedCollections = new TreeSet();
-						state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedCollections);
-					}
+					Set<String> expandedCollections = getExpandedCollections(state);
 					expandedCollections.add(collectionId);
 				}
 				
@@ -8287,12 +8633,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		List<ListItem> other_sites = new ArrayList<ListItem>();
 
 		String collectionId = (String) state.getAttribute (STATE_COLLECTION_ID);
-		SortedSet<String> expandedCollections = (SortedSet<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-		if(expandedCollections == null)
-		{
-			expandedCollections = new TreeSet();
-			state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedCollections);
-		}
+		Set<String> expandedCollections = getExpandedCollections(state);
 		
 		Comparator userSelectedSort = (Comparator) state.getAttribute(STATE_LIST_VIEW_SORT);
 		
@@ -8460,17 +8801,28 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				ContentResourceEdit resource = ContentHostingService.addResource(collectionId,Validator.escapeResourceName(basename),Validator.escapeResourceName(extension),MAXIMUM_ATTEMPTS_FOR_UNIQUENESS);
 				
 				extractContent(fp, resource);
-
+								
 				// SAK-23171 - cleanup the URL spaces
-				String url = new String(resource.getContent());
-				String cleanedURL = StringUtils.trim(url);
-				cleanedURL = StringUtils.replace(cleanedURL, " ", "%20");
-				if (!StringUtils.equals(url, cleanedURL)) {
+				String originalUrl = new String(resource.getContent());
+				String cleanedURL = StringUtils.trim(originalUrl);
+				//cleanedURL = StringUtils.replace(cleanedURL, " ", "%20");
+				
+				// SAK-23587 - properly escape the URL where required
+				try {
+					URL url = new URL(cleanedURL);
+					URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+					cleanedURL = uri.toString();
+				} catch (Exception e) {
+					//ok to ignore, just use the original url
+					logger.debug("URL can not be encoded: " + e.getClass() + ":" + e.getCause());
+				}
+				
+				if (!StringUtils.equals(originalUrl, cleanedURL)) {
 				    // the url was cleaned up, log it and update it
-				    logger.info("Resources URL cleanup changed url to '"+cleanedURL+"' from '"+url+"'");
+				    logger.info("Resources URL cleanup changed url to '"+cleanedURL+"' from '"+originalUrl+"'");
 				    resource.setContent(cleanedURL.getBytes());
 				}
-
+				
 				resource.setContentType(fp.getRevisedMimeType());
 				resource.setResourceType(pipe.getAction().getTypeId());
 				int notification = NotificationService.NOTI_NONE;
@@ -8670,6 +9022,907 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				Entry<String, String> entry = mapIter.next();
 				state.setAttribute(entry.getKey(), entry.getValue());
 			}
+		}
+		
+	}
+
+
+	// https://jira.sakaiproject.org/browse/SAK-5350
+
+	/**
+	 * Build the context to upload files to multiple users and groups
+	 * SAK-5350
+	 * @param portlet
+	 * @param context
+	 * @param data
+	 * @param state
+	 * @return
+	 */
+	public String buildDropboxMultipleFoldersUploadPanelContext(VelocityPortlet portlet, Context context, RunData data, SessionState state) {
+	    context.put("tlang", trb);
+	    context.put("clang", rb);
+	    String home = (String) state.getAttribute(STATE_HOME_COLLECTION_ID);
+	    List<List<String>> usersDropboxList = new ArrayList();
+	    try {
+	        Site site = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
+	        String siteType = site.getType();
+	        if (siteType != null && "course".equals(siteType)) {
+	            context.put("isCourseSite", true);
+	        } else {
+	            context.put("isCourseSite", false);
+	        }
+	        Collection<Group> site_groups = site.getGroups();
+
+	        // Adding Groups to selector
+	        for (Iterator<Group> it = site_groups.iterator(); it.hasNext();) {
+	            Group grp = (Group) it.next();
+	            List<String> tempList = new ArrayList<String>();
+	            StringBuilder sb = new StringBuilder();
+	            tempList.add(grp.getId());
+	            sb.append(trb.getString("multiple.file.upload.group")).append(" ").append(grp.getTitle());
+	            tempList.add(sb.toString());
+	            tempList.add("group");
+	            usersDropboxList.add(tempList);
+	        }
+
+	        // form the azGroups for a context-as-implemented-by-site
+	        Collection azGroups = new Vector(2);
+	        azGroups.add(SiteService.siteReference(site.getId()));
+	        azGroups.add("!site.helper");
+	        // get the user ids who has dropbox.own permissions
+	        Set userIds = AuthzGroupService.getUsersIsAllowed(ContentHostingService.AUTH_DROPBOX_OWN, azGroups);
+
+	        // Adding users to selector
+	        for (Iterator<String> it = userIds.iterator(); it.hasNext();) {
+	            String tempUserId = it.next();
+	            try {
+	                User tempUser = UserDirectoryService.getUser(tempUserId);
+	                String userDisplayName = "";
+	                String lastName = tempUser.getLastName();
+	                String firstName = tempUser.getFirstName();
+	                if (lastName != null && !"".equals(lastName)) {
+	                    if (firstName != null && !"".equals(firstName)) {
+	                        userDisplayName = lastName + ", " + firstName;
+	                    } else {
+	                        userDisplayName = lastName;
+	                    }
+	                } else {
+	                    userDisplayName = tempUser.getDisplayName();
+	                    if (userDisplayName == null || "".equals(userDisplayName)) {
+	                        userDisplayName = tempUser.getEid();
+	                    }
+	                }
+	                List<String> tempList = new ArrayList<String>();
+	                tempList.add(tempUserId);
+	                tempList.add(userDisplayName);
+	                tempList.add("user");
+	                usersDropboxList.add(tempList);
+	            } catch (UserNotDefinedException e) {
+	                logger.error("User is not defined", e);
+	            }
+	        }
+	    } catch (Exception ex) {
+	        logger.error("Exception while getting users collections", ex);
+	    }
+	    context.put("usersDropboxList", usersDropboxList);
+	    return TEMPLATE_DROPBOX_MULTIPLE_FOLDERS_UPLOAD;
+	} // buildDropboxMultipleFoldersUploadPanelContext
+
+	/**
+	 * Handle a request to upload a file in multiple folders.
+	 * SAK-5350
+	 * @param runData
+	 */
+	public void doDropboxMultipleFoldersUpload(RunData runData) {
+	    SessionState state = ((JetspeedRunData) runData).getPortletSessionState(((JetspeedRunData) runData).getJs_peid());
+	    // go into upload file in multiple folders
+	    state.setAttribute(STATE_MODE, MODE_DROPBOX_MULTIPLE_FOLDERS_UPLOAD);
+	} // doDropboxMultipleFoldersUpload
+
+	/**
+	 * doMultipleFoldersUpload upload the file to multiple users folder
+	 * SAK-5350
+	 * @param data
+	 */
+	public void doMultipleFoldersUpload(RunData data) {
+	    logger.debug(this + ".doMultipleFoldersUpload()");
+	    SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+	    ParameterParser params = data.getParameters();
+	    String siteId = ToolManager.getCurrentPlacement().getContext();
+	    // Getting parameters
+	    FileItem fileitem = params.getFileItem("MultipleFolderContent");
+	    String displayName = params.getString("MultipleFolderDisplayName");
+	    String[] multipleDropboxSelected = params.getStrings("usersDropbox-selection");
+	    Set usersCollectionIds = new TreeSet();
+
+	    if (fileitem == null) {
+	        String max_file_size_mb = (String) state.getAttribute(STATE_FILE_UPLOAD_MAX_SIZE);
+	        int max_bytes = 1024 * 1024;
+	        try {
+	            max_bytes = Integer.parseInt(max_file_size_mb) * 1024 * 1024;
+	        } catch (Exception e) {
+	            // if unable to parse an integer from the value in the properties file, use 1 MB as a default
+	            max_file_size_mb = "1";
+	            max_bytes = 1024 * 1024;
+	        }
+
+	        String max_bytes_string = ResourcesAction.getFileSizeString(max_bytes, rb);
+	        // "The user submitted a file to upload but it was too big!"
+	        addAlert(state, trb.getFormattedMessage("size.exceeded", new Object[] { max_bytes_string }));
+	        state.setAttribute(STATE_MODE, MODE_DROPBOX_MULTIPLE_FOLDERS_UPLOAD);
+	        return;
+
+	    } else if (fileitem.getFileName() == null || fileitem.getFileName().length() == 0) {
+	        // no file selected -- skip this one
+	        addAlert(state, trb.getString("multiple.file.upload.nofileselected"));
+	        state.setAttribute(STATE_MODE, MODE_DROPBOX_MULTIPLE_FOLDERS_UPLOAD);
+	        return;
+
+	    } else if (fileitem.getFileName().length() > 0) {
+	        String filename = Validator.getFileName(fileitem.getFileName());
+	        if (displayName == null) {
+	            displayName = filename;
+	        } else if ("".equals(displayName)) {
+	            displayName = filename;
+	        }
+	        InputStream stream;
+	        String SEPARATOR = "/";
+	        String COLLECTION_DROPBOX = "/group-user/";
+	        stream = fileitem.getInputStream();
+	        String contentType = fileitem.getContentType();
+	        byte[] body = fileitem.get();
+	        ContentResourceEdit cr = null;
+	        String extension = "";
+	        String basename = filename.trim();
+	        if (filename.contains(".")) {
+	            String[] parts = filename.split("\\.");
+	            basename = parts[0];
+	            if (parts.length > 1) {
+	                extension = parts[parts.length - 1];
+	            }
+	            for (int i = 1; i < parts.length - 1; i++) {
+	                basename += "." + parts[i];
+	                // extension = parts[i + 1];
+	            }
+	        }
+	        if (multipleDropboxSelected == null) {
+	            addAlert(state, trb.getString("multiple.file.upload.nousersselected"));
+	            state.setAttribute(STATE_MODE, MODE_DROPBOX_MULTIPLE_FOLDERS_UPLOAD);
+	            return;
+	        } else if (multipleDropboxSelected.length < 1) {
+	            // no users selected
+	            addAlert(state, trb.getString("multiple.file.upload.nousersselected"));
+	            state.setAttribute(STATE_MODE, MODE_DROPBOX_MULTIPLE_FOLDERS_UPLOAD);
+	            return;
+	        } else {
+	            // Fill Collections with users
+	            for (int i = 0; i < multipleDropboxSelected.length; i++) {
+	                try {
+	                    UserDirectoryService.getUser(multipleDropboxSelected[i]);
+	                    // If the user exists, add to collection
+	                    usersCollectionIds.add(multipleDropboxSelected[i]);
+	                } catch (UserNotDefinedException ex) {
+	                    try {
+	                        Site site = SiteService.getSite(siteId);
+	                        Group grp = site.getGroup(multipleDropboxSelected[i]);
+
+	                        // form the azGroups for a
+	                        // context-as-implemented-by-site
+	                        Collection azGroups = new Vector(2);
+	                        azGroups.add(SiteService.siteReference(site.getId()));
+	                        azGroups.add("!site.helper");
+	                        // get the user ids who has dropbox.own permissions
+	                        Set<String> dbOwnsUserIds = AuthzGroupService.getUsersIsAllowed(ContentHostingService.AUTH_DROPBOX_OWN, azGroups);
+
+	                        for (Iterator<org.sakaiproject.authz.api.Member> it = grp.getMembers().iterator(); it.hasNext();) {
+	                            String userIdInGroup = it.next().getUserId();
+	                            if (dbOwnsUserIds.contains(userIdInGroup)) {
+	                                usersCollectionIds.add(userIdInGroup);
+	                            }
+	                        }
+	                    } catch (IdUnusedException e) {
+	                        // Error finding a previously selected group.
+	                        logger.error("Error in " + this + ".doMultipleFoldersUpload(): Unable to find selected Group", e);
+	                    }
+	                }
+	            }
+	        }
+
+	        try {
+	            for (Iterator it = usersCollectionIds.iterator(); it.hasNext();) {
+	                // A site Dropbox Collection ID will be /group-user/SITE_ID/USER_ID/
+	                String collectionId = COLLECTION_DROPBOX + siteId + SEPARATOR + it.next() + SEPARATOR;
+	                cr = ContentHostingService.addResource(collectionId, Validator.escapeResourceName(basename),
+	                        Validator.escapeResourceName(extension), MAXIMUM_ATTEMPTS_FOR_UNIQUENESS);
+
+	                // Add the actual contents of the file and content type
+	                cr.setContent(body);
+	                cr.setContentType(contentType);
+
+	                // fill up its properties
+	                ResourcePropertiesEdit resourceProperties = cr.getPropertiesEdit();
+	                resourceProperties.addProperty(ResourceProperties.PROP_IS_COLLECTION, Boolean.FALSE.toString());
+	                resourceProperties.addProperty(ResourceProperties.PROP_DISPLAY_NAME, displayName);
+	                resourceProperties.addProperty(ResourceProperties.PROP_CONTENT_LENGTH, new Integer(body.length).toString());
+
+	                // now to commit the changes
+	                boolean notification = params.getBoolean("notify_dropbox");
+	                int noti = NotificationService.NOTI_NONE;
+
+	                if (notification) {
+	                    noti = NotificationService.NOTI_REQUIRED;
+	                }
+	                ContentHostingService.commitResource(cr, noti);
+	            }
+	        } catch (PermissionException e) {
+	            addAlert(state, trb.getString("alert.perm"));
+	            logger.warn("PermissionException " + e);
+	        } catch (IdUnusedException e) {
+	            logger.warn("IdUnusedException: Error while getting dropbox collection, this error happens when a selected group contains a maintain user");
+	        } catch (IdInvalidException e) {
+	            logger.warn("IdInvalidException " + e);
+	        } catch (IdUniquenessException e) {
+	            logger.warn("IdUniquenessException " + e);
+	        } catch (IdLengthException e) {
+	            addAlert(state, trb.getFormattedMessage("alert.toolong", new String[] { e.getMessage() }));
+	            logger.warn("IdLengthException " + e);
+	        } catch (OverQuotaException e) {
+	            addAlert(state, trb.getFormattedMessage("alert.overquota", new String[] { filename }));
+	            logger.warn("OverQuotaException " + e);
+	        } catch (ServerOverloadException e) {
+	            addAlert(state, trb.getFormattedMessage("alert.unable1", new String[] { filename }));
+	            logger.warn("ServerOverloadException " + e);
+	        }
+	    }
+	    state.setAttribute(STATE_LIST_SELECTIONS, new TreeSet());
+	    state.setAttribute(STATE_MODE, MODE_LIST);
+	}
+
+
+	// BEGIN SAK-23304 additions:
+	
+	/**
+	 * set the state name to be "showfinish" if any item has been selected for deleting
+	 * @param data
+	 */
+	public void doShowconfirm(RunData data)
+	{
+	    SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
+
+	    // cancel copy if there is one in progress
+	    if(! Boolean.FALSE.toString().equals(state.getAttribute (STATE_COPY_FLAG)))
+	    {
+	        initCopyContext(state);
+	    }
+
+	    // cancel move if there is one in progress
+	    if(! Boolean.FALSE.toString().equals(state.getAttribute (STATE_MOVE_FLAG)))
+	    {
+	        initMoveContext(state);
+	    }
+
+	    Set showIdSet  = new TreeSet();
+	    String[] showIds = data.getParameters ().getStrings ("selectedMembers");
+	    if (showIds == null)
+	    {
+	        // there is no resource selected, show the alert message to the user
+	        addAlert(state, rb.getString("choosefile3"));
+	    }
+	    else
+	    {
+	        showIdSet.addAll(Arrays.asList(showIds));
+	        showItems(state, showIdSet);
+	    }
+
+	    if (state.getAttribute(STATE_MESSAGE) == null)
+	    {
+	        state.setAttribute (STATE_MODE, MODE_SHOW_FINISH);
+	        state.setAttribute(STATE_LIST_SELECTIONS, showIdSet);
+	    }
+	}       // doShowconfirm
+
+	/**
+	 * set the state name to be "hidefinish" if any item has been selected for deleting
+	 * @param data
+	 */
+	public void doHideconfirm(RunData data)
+	{
+	    SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
+
+	    // cancel copy if there is one in progress
+	    if(! Boolean.FALSE.toString().equals(state.getAttribute (STATE_COPY_FLAG)))
+	    {
+	        initCopyContext(state);
+	    }
+
+	    // cancel move if there is one in progress
+	    if(! Boolean.FALSE.toString().equals(state.getAttribute (STATE_MOVE_FLAG)))
+	    {
+	        initMoveContext(state);
+	    }
+
+	    Set hideIdSet  = new TreeSet();
+	    String[] hideIds = data.getParameters ().getStrings ("selectedMembers");
+	    if (hideIds == null)
+	    {
+	        // there is no resource selected, show the alert message to the user
+	        addAlert(state, rb.getString("choosefile3"));
+	    }
+	    else
+	    {
+	        hideIdSet.addAll(Arrays.asList(hideIds));
+	        hideItems(state, hideIdSet);
+	    }
+
+	    if (state.getAttribute(STATE_MESSAGE) == null)
+	    {
+	        state.setAttribute (STATE_MODE, MODE_HIDE_FINISH);
+	        state.setAttribute(STATE_LIST_SELECTIONS, hideIdSet);
+	    }
+	}       // doHideconfirm
+
+	/**
+	 * @param state
+	 * @param showIdSet
+	 */
+	protected void showItems(SessionState state, Set showIdSet)
+	{
+	    List showItems = new Vector();
+	    List notShowItems = new Vector();
+	    List nonEmptyFolders = new Vector();
+
+	    org.sakaiproject.content.api.ContentHostingService contentService = ContentHostingService.getInstance();
+
+	    for(String showId : (Set<String>) showIdSet)
+	    {
+	        ContentEntity entity = null;
+	        try
+	        {
+	            if(contentService.isCollection(showId))
+	            {
+	                entity = contentService.getCollection(showId);
+	            }
+	            else if(contentService.allowUpdateResource(showId))
+	            {
+	                entity = contentService.getResource(showId);
+	            }
+	            else
+	            {
+	                // do nothing
+	            }
+	            ListItem item = new ListItem(entity);
+	            if(item.isCollection() && contentService.allowUpdateCollection(showId))
+	            {
+	                showItems.add(item);
+	                if(! item.isEmpty)
+	                {
+	                    nonEmptyFolders.add(item);
+	                }
+	            }
+	            else if(!item.isCollection() && contentService.allowUpdateResource(showId))
+	            {
+	                showItems.add(item);
+	            }
+	            else
+	            {
+	                notShowItems.add(item);
+	            }
+
+	        }
+	        catch(PermissionException e)
+	        {
+	            logger.warn("PermissionException: "+e,e);
+	        }
+	        catch (IdUnusedException e)
+	        {
+	            logger.warn("IdUnusedException: "+e,e);
+	        }
+	        catch (TypeException e)
+	        {
+	            logger.warn("TypeException: "+e,e);
+	        }
+	    }
+
+	    if(! notShowItems.isEmpty())
+	    {
+	        String notShowNames = "";
+	        boolean first_item = true;
+	        Iterator notIt = notShowItems.iterator();
+	        while(notIt.hasNext())
+	        {
+	            ListItem item = (ListItem) notIt.next();
+	            if(first_item)
+	            {
+	                notShowNames = item.getName();
+	                first_item = false;
+	            }
+	            else if(notIt.hasNext())
+	            {
+	                notShowNames += ", " + item.getName();
+	            }
+	            else
+	            {
+	                notShowNames += " and " + item.getName();
+	            }
+	        }
+	        addAlert(state, rb.getString("notpermis_modify_remove") );
+	    }
+
+	    state.setAttribute (STATE_SHOW_SET, showItems);
+	    state.setAttribute (STATE_NON_EMPTY_SHOW_SET, nonEmptyFolders);
+	}
+
+	/**
+	 * @param state
+	 * @param hideIdSet
+	 * @param hideIds
+	 */
+	protected void hideItems(SessionState state, Set hideIdSet)
+	{
+	    List hideItems = new Vector();
+	    List notHideItems = new Vector();
+	    List nonEmptyFolders = new Vector();
+
+	    org.sakaiproject.content.api.ContentHostingService contentService = ContentHostingService.getInstance();
+
+	    for(String hideId : (Set<String>) hideIdSet)
+	    {
+	        ContentEntity entity = null;
+	        try
+	        {
+	            if(contentService.isCollection(hideId))
+	            {
+	                entity = contentService.getCollection(hideId);
+	            }
+	            else if(contentService.allowUpdateResource(hideId))
+	            {
+	                entity = contentService.getResource(hideId);
+	            }
+	            else
+	            {
+	                // do nothing
+	            }
+	            ListItem item = new ListItem(entity);
+	            if(item.isCollection() && contentService.allowUpdateCollection(hideId))
+	            {
+	                hideItems.add(item);
+	                if(! item.isEmpty)
+	                {
+	                    nonEmptyFolders.add(item);
+	                }
+	            }
+	            else if(!item.isCollection() && contentService.allowUpdateResource(hideId))
+	            {
+	                hideItems.add(item);
+	            }
+	            else
+	            {
+	                notHideItems.add(item);
+	            }
+
+	        }
+	        catch(PermissionException e)
+	        {
+	            logger.warn("PermissionException: "+e,e);
+	        }
+	        catch (IdUnusedException e)
+	        {
+	            logger.warn("IdUnusedException: "+e,e);
+	        }
+	        catch (TypeException e)
+	        {
+	            logger.warn("TypeException: "+e,e);
+	        }
+	    }
+
+	    if(! notHideItems.isEmpty())
+	    {
+	        String notHideNames = "";
+	        boolean first_item = true;
+	        Iterator notIt = notHideItems.iterator();
+	        while(notIt.hasNext())
+	        {
+	            ListItem item = (ListItem) notIt.next();
+	            if(first_item)
+	            {
+	                notHideNames = item.getName();
+	                first_item = false;
+	            }
+	            else if(notIt.hasNext())
+	            {
+	                notHideNames += ", " + item.getName();
+	            }
+	            else
+	            {
+	                notHideNames += " and " + item.getName();
+	            }
+	        }
+	        addAlert(state, rb.getString("notpermis_modify_remove") );
+	    }
+
+	    state.setAttribute (STATE_HIDE_SET, hideItems);
+	    state.setAttribute (STATE_NON_EMPTY_HIDE_SET, nonEmptyFolders);
+	}
+
+	/**
+	 * @param portlet
+	 * @param context
+	 * @param data
+	 * @param state
+	 * @return
+	 */
+	public String buildShowFinishContext(VelocityPortlet portlet, Context context, RunData data, SessionState state)
+	{
+	    context.put("tlang",trb);
+	    context.put ("collectionId", state.getAttribute (STATE_COLLECTION_ID) );
+
+
+	    List showItems = (List) state.getAttribute(STATE_SHOW_SET);
+	    List nonEmptyFolders = (List) state.getAttribute(STATE_NON_EMPTY_SHOW_SET);
+
+	    context.put ("showItems", showItems);
+
+	    /*
+        Iterator it = nonEmptyFolders.iterator();
+        while(it.hasNext())
+        {
+                ListItem folder = (ListItem) it.next();
+                String[] args = { folder.getName() };
+                String msg = rb.getFormattedMessage("folder.notempty_show", args) + " ";
+                addAlert(state, msg);
+        }
+	     */
+	    return TEMPLATE_SHOW_FINISH;
+	}
+
+	/**
+	 * @param portlet
+	 * @param context
+	 * @param data
+	 * @param state
+	 * @return
+	 */
+	public String buildHideFinishContext(VelocityPortlet portlet, Context context, RunData data, SessionState state)
+	{
+	    context.put("tlang",trb);
+	    context.put ("collectionId", state.getAttribute (STATE_COLLECTION_ID) );
+
+	    List hideItems = (List) state.getAttribute(STATE_HIDE_SET);
+	    List nonEmptyFolders = (List) state.getAttribute(STATE_NON_EMPTY_HIDE_SET);
+
+	    context.put ("hideItems", hideItems);
+
+	    /*
+        Iterator it = nonEmptyFolders.iterator();
+        while(it.hasNext())
+        {
+                ListItem folder = (ListItem) it.next();
+                String[] args = { folder.getName() };
+                String msg = rb.getFormattedMessage("folder.notempty_hide", args) + " ";
+                addAlert(state, msg);
+        }
+	     */
+
+	    // get site type
+	    String siteType = null;
+	    Site site;
+
+	    try
+	    {
+	        site = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
+	        siteType = site.getType();
+	    }
+	    catch (IdUnusedException e)
+	    {
+	        logger.debug("ResourcesAction.buildHideFinishContext: cannot find current site");
+	    }
+	    context.put ("sitetype",siteType);
+	    return TEMPLATE_HIDE_FINISH;
+	}
+
+	/**
+	 * show the selected collection or resource items
+	 */
+	public void doFinalizeShow( RunData data)
+	{
+	    SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
+	    state.setAttribute(STATE_LIST_SELECTIONS, new TreeSet());
+
+	    // cancel copy if there is one in progress
+	    if(! Boolean.FALSE.toString().equals(state.getAttribute (STATE_COPY_FLAG)))
+	    {
+	        initCopyContext(state);
+	    }
+
+	    // cancel move if there is one in progress
+	    if(! Boolean.FALSE.toString().equals(state.getAttribute (STATE_MOVE_FLAG)))
+	    {
+	        initMoveContext(state);
+	    }
+
+	    ParameterParser params = data.getParameters ();
+
+	    List items = (List) state.getAttribute(STATE_SHOW_SET);
+
+	    // delete the lowest item in the hireachy first
+	    Hashtable showItems = new Hashtable();
+	    // String collectionId = (String) state.getAttribute (STATE_COLLECTION_ID);
+	    int maxDepth = 0;
+	    int depth = 0;
+
+	    Iterator it = items.iterator();
+	    while(it.hasNext())
+	    {
+	        ListItem item = (ListItem) it.next();
+	        String[] parts = item.getId().split(Entity.SEPARATOR);
+	        depth = parts.length;
+	        if (depth > maxDepth)
+	        {
+	            maxDepth = depth;
+	        }
+	        List v = (List) showItems.get(new Integer(depth));
+	        if(v == null)
+	        {
+	            v = new Vector();
+	        }
+	        v.add(item);
+	        showItems.put(new Integer(depth), v);
+	    }
+
+	    boolean isCollection = false;
+	    for (int j=maxDepth; j>0; j--)
+	    {
+	        List v = (List) showItems.get(new Integer(j));
+	        if (v==null)
+	        {
+	            v = new Vector();
+	        }
+	        Iterator itemIt = v.iterator();
+	        while(itemIt.hasNext())
+	        {
+	            ListItem item = (ListItem) itemIt.next();
+	            try
+	            {
+	                if (item.isCollection())
+	                {
+	                    logger.debug("show this collection resource" + item.getId());
+	                    ContentCollectionEdit edit= ContentHostingService.editCollection(item.getId());
+	                    edit.setAvailability(false, null, null);
+	                    ContentHostingService.commitCollection(edit);
+
+	                }
+	                else
+	                {
+	                    logger.debug("show this non-collection resource " + item.getId());
+	                    ContentResourceEdit edit= ContentHostingService.editResource(item.getId());
+	                    edit.setAvailability(false, null, null);
+	                    ContentHostingService.commitResource(edit, 0);
+
+	                }
+	            }
+	            catch (IdUnusedException e)
+	            {
+	                logger.warn("IdUnusedException", e);
+	            }
+	            catch (TypeException e)
+	            {
+	                logger.warn("TypeException", e);
+	            }
+	            catch (PermissionException e)
+	            {
+	                logger.warn("PermissionException", e);
+	            }
+	            catch (ServerOverloadException e)
+	            {
+	                logger.warn("ServerOverloadException", e);
+	            }
+	            catch (OverQuotaException e)
+	            {
+	                logger.warn("OverQuotaException ", e);
+	            }
+	            catch (InUseException e)
+	            {
+	                logger.warn("InUseException ", e);
+	            }
+	        }       // for
+	    }       // for
+
+	    if (state.getAttribute(STATE_MESSAGE) == null)
+	    {
+	        // show sucessful
+	        state.setAttribute (STATE_MODE, MODE_LIST);
+	        state.removeAttribute(STATE_SHOW_SET);
+	        state.removeAttribute(STATE_NON_EMPTY_SHOW_SET);
+
+	        if (((String) state.getAttribute (STATE_SELECT_ALL_FLAG)).equals (Boolean.TRUE.toString()))
+	        {
+	            state.setAttribute (STATE_SELECT_ALL_FLAG, Boolean.FALSE.toString());
+	        }
+
+	    }       // if-else
+
+	}       // doFinalizeShow
+
+	/**
+	 * Hide the selected collection or resource items
+	 */
+	public void doFinalizeHide(RunData data)
+	{
+	    SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
+	    state.setAttribute(STATE_LIST_SELECTIONS, new TreeSet());
+
+	    // cancel copy if there is one in progress
+	    if(! Boolean.FALSE.toString().equals(state.getAttribute (STATE_COPY_FLAG)))
+	    {
+	        initCopyContext(state);
+	    }
+
+	    // cancel move if there is one in progress
+	    if(! Boolean.FALSE.toString().equals(state.getAttribute (STATE_MOVE_FLAG)))
+	    {
+	        initMoveContext(state);
+	    }
+
+	    ParameterParser params = data.getParameters ();
+
+	    List items = (List) state.getAttribute(STATE_HIDE_SET);
+
+	    // hide the lowest item in the hireachy first
+	    Hashtable hideItems = new Hashtable();
+	    // String collectionId = (String) state.getAttribute (STATE_COLLECTION_ID);
+	    int maxDepth = 0;
+	    int depth = 0;
+
+	    Iterator it = items.iterator();
+	    while(it.hasNext())
+	    {
+	        ListItem item = (ListItem) it.next();
+	        String[] parts = item.getId().split(Entity.SEPARATOR);
+	        depth = parts.length;
+	        if (depth > maxDepth)
+	        {
+	            maxDepth = depth;
+	        }
+	        List v = (List) hideItems.get(new Integer(depth));
+	        if(v == null)
+	        {
+	            v = new Vector();
+	        }
+	        v.add(item);
+	        hideItems.put(new Integer(depth), v);
+	    }
+	    boolean isCollection = false;
+	    for (int j=maxDepth; j>0; j--)
+	    {
+	        List v = (List) hideItems.get(new Integer(j));
+	        if (v==null)
+	        {
+	            v = new Vector();
+	        }
+	        Iterator itemIt = v.iterator();
+	        while(itemIt.hasNext())
+	        {
+	            ListItem item = (ListItem) itemIt.next();
+	            try
+	            {
+	                if (item.isCollection())
+	                {
+	                    logger.debug("show this collection resource" + item.getId());
+	                    ContentCollectionEdit edit= ContentHostingService.editCollection(item.getId());
+	                    edit.setAvailability(true, null, null);
+	                    ContentHostingService.commitCollection(edit);
+
+	                }
+	                else
+	                {
+	                    logger.debug("show this non-collection resource " + item.getId());
+	                    ContentResourceEdit edit= ContentHostingService.editResource(item.getId());
+	                    edit.setAvailability(true, null, null);
+	                    ContentHostingService.commitResource(edit, 0);
+
+	                }
+	            }
+
+	            catch (IdUnusedException e)
+	            {
+	                logger.warn("IdUnusedException", e);
+	            }
+	            catch (TypeException e)
+	            {
+	                logger.warn("TypeException", e);
+	            }
+	            catch (PermissionException e)
+	            {
+	                logger.warn("PermissionException", e);
+	            }
+	            catch (ServerOverloadException e)
+	            {
+	                logger.warn("ServerOverloadException", e);
+	            }
+	            catch (OverQuotaException e)
+	            {
+	                logger.warn("OverQuotaException ", e);
+	            }
+	            catch (InUseException e)
+	            {
+	                logger.warn("InUseException ", e);
+	            }
+	        }       // for
+	    }       // for
+
+	    if (state.getAttribute(STATE_MESSAGE) == null)
+	    {
+	        // Hide sucessful
+	        state.setAttribute (STATE_MODE, MODE_LIST);
+	        state.removeAttribute(STATE_HIDE_SET);
+	        state.removeAttribute(STATE_NON_EMPTY_HIDE_SET);
+
+	        if (((String) state.getAttribute (STATE_SELECT_ALL_FLAG)).equals (Boolean.TRUE.toString()))
+	        {
+	            state.setAttribute (STATE_SELECT_ALL_FLAG, Boolean.FALSE.toString());
+	        }
+
+	    }       // if-else
+
+	}       // doFinalizeShow
+
+// END SAK-23304 additions
+
+	/**
+	 * 
+	 * @param state
+	 * @param data
+	 * @param selectedItemId
+	 */
+	protected void printFile(SessionState state, RunData data, String selectedItemId)
+	{
+		logger.info(this + ".printFile()");
+		
+		ToolSession toolSession = SessionManager.getCurrentToolSession();
+
+		Cookie cookie = null;
+		HttpServletRequest req = data.getRequest();
+		
+		List<Object> params = new ArrayList<Object>();
+		Cookie[] cookies = req.getCookies();
+		for (int i = 0; i<cookies.length; i++)
+		{
+			params.add(cookies[i].getName() + "=" + cookies[i].getValue());
+		}
+		
+		try
+		{
+			ContentResource r = ContentHostingService.getResource(selectedItemId);
+			if (r != null)
+			{
+				try
+				{
+					//Upload the file
+					HashMap<String, String> result = contentPrintService.printResource(r, params);
+					if (result != null)
+					{
+						state.setAttribute(CONTENT_PRINT_CALL_RESPONSE, result);
+					}
+                    return;
+				}
+				catch (Exception e)
+				{
+					// TODO: do something
+					logger.warn(this + ".printFile() error with executeMultiPartRequest " + r.getReference());
+				}
+			}
+		}
+		catch (IdUnusedException e)
+		{
+			logger.warn(this + ".printFile() IdUnusedException " + selectedItemId );
+		}
+		catch (TypeException e)
+		{
+			logger.warn(this + ".printFile() TypeException " + selectedItemId );
+		}
+		catch (PermissionException e)
+		{
+			logger.warn(this + ".printFile() PermissionException " + selectedItemId );
 		}
 		
 	}

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/content/impl/BasicContentTypeImageService.java $
- * $Id: BasicContentTypeImageService.java 79318 2010-07-11 12:41:18Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/BasicContentTypeImageService.java $
+ * $Id: BasicContentTypeImageService.java 307862 2014-04-07 15:00:04Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -238,12 +238,18 @@ public class BasicContentTypeImageService implements ContentTypeImageService
 		m_contentTypeDisplayNames = null;
 
 		m_contentTypeExtensions = null;
+		
+		if (m_contentTypes != null) 
+		{
+			m_contentTypes.clear();
+			m_contentTypes = null;
+		}
 
-		m_contentTypes.clear();
-		m_contentTypes = null;
-
-		m_mimetypes.clear();
-		m_mimetypes = null;
+		if (m_mimetypes != null)
+		{
+			m_mimetypes.clear();
+			m_mimetypes = null;
+		}
 
 		M_log.info("destroy()");
 
@@ -309,7 +315,7 @@ public class BasicContentTypeImageService implements ContentTypeImageService
 	{
 		String extension = DEFAULT_EXTENSION;
 		
-		if (contentType != null && m_contentTypeExtensions.getIsValid(contentType.toLowerCase()))
+		if (contentType != null && m_contentTypeExtensions != null && m_contentTypeExtensions.getIsValid(contentType.toLowerCase()))
 		{
 			extension = m_contentTypeExtensions.getString(contentType.toLowerCase());
 			
@@ -356,11 +362,13 @@ public class BasicContentTypeImageService implements ContentTypeImageService
 	 */
 	public String getContentType(String extension)
 	{
-		String type = m_contentTypes.getProperty(extension.toLowerCase());
+		String type = UNKNOWN_TYPE;
+		if (m_contentTypes != null) {
+			type = m_contentTypes.getProperty(extension.toLowerCase());
 
-		// if not there, use the UNKNOWN_TYPE
-		if (type == null) type = UNKNOWN_TYPE;
-
+			// if not there, use the UNKNOWN_TYPE
+			if (type == null) type = UNKNOWN_TYPE;
+		}
 		return type;
 
 	} // getContentTypeDisplayName

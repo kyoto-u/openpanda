@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreListener.java $
- * $Id: TotalScoreListener.java 127215 2013-07-18 14:29:30Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreListener.java $
+ * $Id: TotalScoreListener.java 307047 2014-03-12 22:55:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,7 +53,6 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionData
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
@@ -83,7 +82,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: TotalScoreListener.java 127215 2013-07-18 14:29:30Z ottenhoff@longsight.com $
+ * @version $Id: TotalScoreListener.java 307047 2014-03-12 22:55:35Z ktsao@stanford.edu $
  */
 
 public class TotalScoreListener
@@ -319,25 +318,6 @@ public class TotalScoreListener
       ArrayList scores = new ArrayList();  
       ArrayList students_not_submitted= new ArrayList();  
       
-      /*
-      // if for anonymous, reset totalscorebean.getselectedsectionfiltervalue = ALL_SECTIONS_SELECT_VALUE 
-    if ("true".equalsIgnoreCase(bean.getAnonymous())){
-      //reset sectionaware pulldown to -1 all sections
-      //bean.setSelectedSectionFilterValue(TotalScoresBean.ALL_SECTIONS_SELECT_VALUE);
-      
-      // changed from above by gopalrc - Jan 2008
-    	//PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
-	    //  boolean groupRelease = publishedAssessmentService.isReleasedToGroups(bean.getPublishedId());
-    	boolean groupRelease = p.getAssessmentAccessControl().getReleaseTo().equals(AssessmentAccessControlIfc.RELEASE_TO_SELECTED_GROUPS);
-	  	if (groupRelease) {
-	  		bean.setSelectedSectionFilterValue(TotalScoresBean.RELEASED_SECTIONS_GROUPS_SELECT_VALUE);
-	  	}
-	  	else {
-	  		bean.setSelectedSectionFilterValue(TotalScoresBean.ALL_SECTIONS_SELECT_VALUE);
-	  	}
-      
-    }
-       */
       Map useridMap= bean.getUserIdMap(TotalScoresBean.CALLED_FROM_TOTAL_SCORE_LISTENER);
       ArrayList agents = new ArrayList();
       prepareAgentResultList(bean, p, scores, students_not_submitted, useridMap);
@@ -360,8 +340,12 @@ public class TotalScoreListener
         p.setSectionSet(sectionSet);
         Iterator sectionIter = sectionSet.iterator();
         boolean isAutoScored = true;
+        boolean hasFileUpload = false;
 		while (sectionIter.hasNext()) {
 			if (!isAutoScored) {
+				break;
+			}
+			if (hasFileUpload) {
 				break;
 			}
 			PublishedSectionData section = (PublishedSectionData) sectionIter.next();
@@ -370,18 +354,29 @@ public class TotalScoreListener
 			while (itemIter.hasNext()) {
 				PublishedItemData item = (PublishedItemData) itemIter.next();
 				Long typeId = item.getTypeId();
-				if (typeId.equals(TypeIfc.FILE_UPLOAD) 
-						|| typeId.equals(TypeIfc.ESSAY_QUESTION) 
+				if (typeId.equals(TypeIfc.ESSAY_QUESTION) 
 						|| typeId.equals(TypeIfc.AUDIO_RECORDING))
 				{ 
 					bean.setIsAutoScored(false); 
 					isAutoScored = false;
 					break; 
 				}
+				
+				if (typeId.equals(TypeIfc.FILE_UPLOAD))
+				{ 
+					bean.setIsAutoScored(false); 
+					isAutoScored = false;
+					bean.setHasFileUpload(true);
+					hasFileUpload = true;
+					break; 
+				}
 			}
 		}
 		if (isAutoScored) {
 			bean.setIsAutoScored(true); 
+		}
+		if (!hasFileUpload) {
+			bean.setHasFileUpload(false); 
 		}
 				
         bean.setFirstItem(getFirstItem(p));
@@ -598,7 +593,7 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
 
   /* Dump the grading and agent information into AgentResults */
   public void prepareAgentResult(PublishedAssessmentData p, Iterator iter, ArrayList agents, Map userRoles){
-	GradingService gradingService = new GradingService();
+	
 	TotalScoresBean bean = (TotalScoresBean) ContextUtil.lookupBean("totalScores");
     while (iter.hasNext())
     {
@@ -620,9 +615,11 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
       if(gdata.getTotalAutoScore() != null) {
     	  if (gdata.getForGrade()) {
     		  results.setTotalAutoScore(gdata.getTotalAutoScore().toString());
+    		  results.setForGrade(Boolean.TRUE);
     	  }
     	  else {
     		  results.setTotalAutoScore("-");
+    		  results.setForGrade(Boolean.FALSE);
     	  }
       }
       else
@@ -644,14 +641,17 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
       if(gdata.getTimeElapsed() != null)
         results.setTimeElapsed(gdata.getTimeElapsed());
       else
-        results.setTimeElapsed(new Integer(0));      
+        results.setTimeElapsed(Integer.valueOf(0));      
       
       results.setComments(FormattedText.convertFormattedTextToPlaintext(gdata.getComments()));
+      
+      results.setIsLate(gdata.getIsLate());
       
       Date dueDate = null;
       PublishedAccessControl ac = (PublishedAccessControl) p.getAssessmentAccessControl();
       if (ac!=null)
         dueDate = ac.getDueDate();
+      /*
       if (dueDate == null || gdata.getSubmittedDate() == null || gdata.getSubmittedDate().before(dueDate)) {   
         results.setIsLate(Boolean.FALSE);
       }
@@ -662,6 +662,7 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
         // LATE_SUBMISSION as a status. Comment out the following line for this reason.
         //results.setStatus(AssessmentGradingIfc.LATE_SUBMISSION);
       }
+      */
       
       if (gdata.getIsAutoSubmitted() != null && gdata.getIsAutoSubmitted().equals(Boolean.TRUE)) {
     	  results.setIsAutoSubmitted(true);
@@ -696,9 +697,12 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
     	  results.setLastInitial("Anonymous");
       results.setIdString(agent.getIdString());
       results.setAgentEid(agent.getEidString());
+      results.setAgentDisplayId(agent.getDisplayIdString());
       log.debug("testing agent getEid agent.getFirstname= " + agent.getFirstName());
       log.debug("testing agent getEid agent.getid= " + agent.getIdString());
       log.debug("testing agent getEid agent.geteid = " + agent.getEidString());
+      log.debug("testing agent getDisplayId agent.getdisplayid = " + agent.getDisplayIdString());
+
       results.setRole((String)userRoles.get(gdata.getAgentId()));
 
 
@@ -728,7 +732,7 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
     	Iterator it=agents.iterator();
     	while(it.hasNext()){
     		AgentResults ar=(AgentResults)it.next();
-    		Float averageScore=ar.getScoreSummation()/ar.getSubmissionCount();
+    		Double averageScore=ar.getScoreSummation()/ar.getSubmissionCount();
     		ar.setFinalScore(averageScore.toString());
     		ar.setComments(null);
     		ar.setSubmittedDate(new Date());
@@ -777,6 +781,7 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
     bs = new BeanSort(agents, sortProperty);
 
     if ((sortProperty).equals("lastName")) bs.toStringSort();
+    if ((sortProperty).equals("agentDisplayId")) bs.toStringSort();
     if ((sortProperty).equals("idString")) bs.toStringSort();
     if ((sortProperty).equals("agentEid")) bs.toStringSort();
     if ((sortProperty).equals("role")) bs.toStringSort();
@@ -850,15 +855,17 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
       //results.setIdString(agent.getEidString());
       results.setIdString(agent.getIdString());
       results.setAgentEid(agent.getEidString());
+      results.setAgentDisplayId(agent.getDisplayIdString());
       results.setRole((String)userRoles.get(studentid));
       // use -1 to indicate this is an unsubmitted agent
       results.setAssessmentGradingId(Long.valueOf(-1));
+      results.setForGrade(Boolean.FALSE);
       results.setTotalAutoScore("-");
       results.setTotalOverrideScore("-");
       results.setSubmittedDate(null);
       results.setFinalScore("-");
       results.setComments("");
-      results.setStatus(AssessmentGradingIfc.NO_SUBMISSION);  //  no submission
+      results.setStatus(AssessmentGradingData.NO_SUBMISSION);  //  no submission
       agents.add(results);
     }
   }

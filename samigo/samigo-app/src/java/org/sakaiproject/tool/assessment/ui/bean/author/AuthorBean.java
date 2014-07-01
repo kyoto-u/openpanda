@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AuthorBean.java $
- * $Id: AuthorBean.java 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AuthorBean.java $
+ * $Id: AuthorBean.java 309682 2014-05-20 18:52:15Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ import org.sakaiproject.component.cover.ServerConfigurationService;
  * General authoring information.
  * @author Ed Smiley
  *
- * @version $Id: AuthorBean.java 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
+ * @version $Id: AuthorBean.java 309682 2014-05-20 18:52:15Z ktsao@stanford.edu $
  */
 public class AuthorBean implements Serializable
 {
@@ -105,6 +105,12 @@ public class AuthorBean implements Serializable
   
   private boolean justPublishedAnAssessment = false;
   private String protocol;
+  /* properties used for editing published random pool items */
+  private boolean isEditPoolFlow = false;  
+  private String editPoolName;
+  private String editPoolSectionName;
+  private String editPoolSectionId;
+  /* ------------------------------------ /*
   
   
   /**
@@ -633,6 +639,9 @@ public class AuthorBean implements Serializable
   }
 
   public String getAssessCreationMode(){
+	  if (assessCreationMode == null || assessCreationMode.trim().equals("")) {
+		  return "1";
+	  }
 	  return assessCreationMode;
   }
 
@@ -669,7 +678,6 @@ public class AuthorBean implements Serializable
 	  }
 
 	  pendingActionList1 = new ArrayList<SelectItem>();
-	  ResourceLoader res = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
 	  ResourceLoader com = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.CommonMessages");
 	  AuthorizationBean authorizationBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
 
@@ -678,20 +686,20 @@ public class AuthorBean implements Serializable
 	  boolean isDeleteAnyAssessment = authorizationBean.getDeleteAnyAssessment();
 	  boolean isDeleteOwnAssessment = authorizationBean.getDeleteOwnAssessment();
 
-	  pendingActionList1.add(new SelectItem("select", res.getString("select_action")));
+	  pendingActionList1.add(new SelectItem("select", com.getString("action_select")));
 	  if (isEditAnyAssessment || isEditOwnAssessment) {
 		  pendingActionList1.add(new SelectItem("edit_pending", com.getString("edit_action")));
-		  pendingActionList1.add(new SelectItem("preview_pending", res.getString("t_preview")));
+		  pendingActionList1.add(new SelectItem("preview_pending", com.getString("action_preview")));
 		  if (Boolean.parseBoolean(ServerConfigurationService.getString("samigo.printAssessment"))) {
-			  pendingActionList1.add(new SelectItem("print_pending", res.getString("action_print")));
+			  pendingActionList1.add(new SelectItem("print_pending", com.getString("action_print")));
 		  }
 		  pendingActionList1.add(new SelectItem("settings_pending", com.getString("settings_action")));
 		  pendingActionList1.add(new SelectItem("publish", com.getString("publish_action")));
-		  pendingActionList1.add(new SelectItem("duplicate", res.getString("copy_action")));
+		  pendingActionList1.add(new SelectItem("duplicate", com.getString("action_duplicate")));
 		  pendingActionList1.add(new SelectItem("export", com.getString("export_action")));
 	  }
 	  if (isDeleteAnyAssessment || isDeleteOwnAssessment) {
-		  pendingActionList1.add(new SelectItem("remove_pending", res.getString("action_remove")));
+		  pendingActionList1.add(new SelectItem("remove_pending", com.getString("remove_action")));
 	  }
 	  return pendingActionList1;
   }
@@ -703,7 +711,6 @@ public class AuthorBean implements Serializable
 	  }
 
 	  pendingActionList2 = new ArrayList<SelectItem>();
-	  ResourceLoader res = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
 	  ResourceLoader com = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.CommonMessages");
 	  AuthorizationBean authorizationBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
 
@@ -712,19 +719,19 @@ public class AuthorBean implements Serializable
 	  boolean isDeleteAnyAssessment = authorizationBean.getDeleteAnyAssessment();
 	  boolean isDeleteOwnAssessment = authorizationBean.getDeleteOwnAssessment();
 
-	  pendingActionList2.add(new SelectItem("select", res.getString("select_action")));
+	  pendingActionList2.add(new SelectItem("select", com.getString("action_select")));
 	  if (isEditAnyAssessment || isEditOwnAssessment) {
 		  pendingActionList2.add(new SelectItem("edit_pending", com.getString("edit_action")));
-		  pendingActionList2.add(new SelectItem("preview_pending", res.getString("t_preview")));
+		  pendingActionList2.add(new SelectItem("preview_pending", com.getString("action_preview")));
 		  if (Boolean.parseBoolean(ServerConfigurationService.getString("samigo.printAssessment"))) {
-			  pendingActionList2.add(new SelectItem("print_pending", res.getString("action_print")));
+			  pendingActionList2.add(new SelectItem("print_pending", com.getString("action_print")));
 		  }
 		  pendingActionList2.add(new SelectItem("settings_pending", com.getString("settings_action")));
-		  pendingActionList2.add(new SelectItem("duplicate", res.getString("copy_action")));
+		  pendingActionList2.add(new SelectItem("duplicate", com.getString("action_duplicate")));
 		  pendingActionList2.add(new SelectItem("export", com.getString("export_action")));
 	  }
 	  if (isDeleteAnyAssessment || isDeleteOwnAssessment) {
-		  pendingActionList2.add(new SelectItem("remove_pending", res.getString("action_remove")));
+		  pendingActionList2.add(new SelectItem("remove_pending", com.getString("remove_action")));
 	  }
 	  return pendingActionList2;
   }
@@ -734,7 +741,7 @@ public class AuthorBean implements Serializable
 	  if (publishedActionList != null) {
 		  return publishedActionList;
 	  }
-	  ResourceLoader res = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
+
 	  ResourceLoader com = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.CommonMessages");
 	  AuthorizationBean authorizationBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
 
@@ -746,14 +753,14 @@ public class AuthorBean implements Serializable
 
 
 	  if (isEditAnyAssessment || isEditOwnAssessment) {
-		  publishedActionList.add(new SelectItem("preview_published", res.getString("t_preview")));
+		  publishedActionList.add(new SelectItem("preview_published", com.getString("action_preview")));
 		  if (Boolean.parseBoolean(ServerConfigurationService.getString("samigo.printAssessment"))) {
-			  publishedActionList.add(new SelectItem("print_published", res.getString("action_print")));
+			  publishedActionList.add(new SelectItem("print_published", com.getString("action_print")));
 		  }
 		  publishedActionList.add(new SelectItem("settings_published", com.getString("settings_action")));
 	  }
 	  if (isDeleteAnyAssessment || isDeleteOwnAssessment) {
-		  publishedActionList.add(new SelectItem("remove_published", res.getString("action_remove")));
+		  publishedActionList.add(new SelectItem("remove_published", com.getString("remove_action")));
 	  }
 
 	  return publishedActionList;
@@ -782,7 +789,48 @@ public class AuthorBean implements Serializable
   {
     return isErrorInSettings;
   }
-  
+
+  public boolean getIsEditPoolFlow()
+  {
+      return isEditPoolFlow;
+  }
+
+  public void setIsEditPoolFlow(boolean isEditPoolFlow)
+  {
+      this.isEditPoolFlow = isEditPoolFlow;
+  }
+
+  public String getEditPoolName()
+  {
+      return editPoolName;
+  }
+
+  public void setEditPoolName(String editPoolName)
+  {
+      this.editPoolName = editPoolName;
+  }
+
+  public String getEditPoolSectionName()
+  {
+      return editPoolSectionName;
+  }
+
+  public void setEditPoolSectionName(String editPoolSectionName)
+  {
+      this.editPoolSectionName = editPoolSectionName;
+  }
+
+  public String getEditPoolSectionId()
+  {
+      return editPoolSectionId;
+  }
+
+  public void setEditPoolSectionId(String editPoolSectionId)
+  {
+      this.editPoolSectionId = editPoolSectionId;
+  }
+
+
   public String getProtocol(){
 	  return protocol;
   }

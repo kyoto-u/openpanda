@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/archive-api/src/main/java/org/sakaiproject/importer/api/ImportDataSource.java $
- * $Id: ImportDataSource.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/archive-api/src/main/java/org/sakaiproject/importer/api/ImportDataSource.java $
+ * $Id: ImportDataSource.java 133338 2014-01-16 17:17:12Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,10 +24,22 @@ package org.sakaiproject.importer.api;
 import java.util.Collection;
 import java.util.List;
 
-public interface ImportDataSource {
-	List getItemCategories();
-	Collection getItemsForCategories(List categories);
-	void setItemCategories(List categories);
-	void setItems(Collection items);
+import org.sakaiproject.archive.api.ImportMetadata;
 
+/**
+ * An ImportDataSource is an object that acts as a container for the Importable objects in an archive.
+ * You can think of it as the abstract representation of some archive.
+ * When an archive has been parsed an ImportDataSource is returned that allows
+ * the handlers to the be called passing Importable items.
+ */
+public interface ImportDataSource {
+	List<ImportMetadata> getItemCategories();
+	Collection<Importable> getItemsForCategories(List<ImportMetadata> categories);
+	void setItemCategories(List<ImportMetadata> categories);
+	void setItems(Collection<Importable> items);
+
+	/**
+	 * This should be called when the content has been imported and is no longer needed.
+	 */
+	void cleanup();
 }

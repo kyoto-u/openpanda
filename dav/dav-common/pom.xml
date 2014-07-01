@@ -4,10 +4,9 @@
   <parent>
     <artifactId>dav-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <version>${sakai.version}</version>
   <name>sakai-dav-common</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>sakai-dav-common</artifactId>

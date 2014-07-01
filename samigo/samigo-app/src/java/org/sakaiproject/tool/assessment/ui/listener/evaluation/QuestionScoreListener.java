@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreListener.java $
- * $Id: QuestionScoreListener.java 11438 2006-06-30 20:06:03Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreListener.java $
+ * $Id: QuestionScoreListener.java 306187 2014-02-19 19:32:59Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,13 +40,14 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAnswer;
+import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingAttachment;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
+import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.MediaIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
@@ -60,6 +61,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.BeanSort;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 
 // end testing
 
@@ -248,13 +250,6 @@ public class QuestionScoreListener implements ActionListener,
 			}
 
 			if ("true".equalsIgnoreCase(totalBean.getAnonymous())) {
-				// reset sectionaware pulldown to -1 all sections
-				//totalBean
-				//		.setSelectedSectionFilterValue(TotalScoresBean.ALL_SECTIONS_SELECT_VALUE);
-				
-		        // changed from above by gopalrc - Jan 2008
-		    	//PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
-		        //boolean groupRelease = publishedAssessmentService.isReleasedToGroups(publishedId);
 				boolean groupRelease = publishedAssessment.getAssessmentAccessControl().getReleaseTo().equals(AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS);
 		    	if (groupRelease) {
 		    		totalBean.setSelectedSectionFilterValue(TotalScoresBean.RELEASED_SECTIONS_GROUPS_SELECT_VALUE);
@@ -419,7 +414,7 @@ public class QuestionScoreListener implements ActionListener,
 				bean.setMaxScore(publishedAssessment.getEvaluationModel()
 						.getFixedTotalScore().toString());
 			} catch (RuntimeException e) {
-				float score = (float) 0.0;
+				double score = (double) 0.0;
 				Iterator iter2 = publishedAssessment.getSectionArraySorted()
 				.iterator();
 				while (iter2.hasNext()) {
@@ -429,10 +424,10 @@ public class QuestionScoreListener implements ActionListener,
 					while (iter3.hasNext()) {
 						ItemDataIfc idata = (ItemDataIfc) iter3.next();
 						if (idata.getItemId().equals(Long.valueOf(itemId)))
-							score = idata.getScore().floatValue();
+							score = idata.getScore().doubleValue();
 					}
 				}
-				bean.setMaxScore(Float.toString(score));
+				bean.setMaxScore(Double.toString(score));
 			}
 			
 			// need to get id from somewhere else, not from data. data only
@@ -502,7 +497,6 @@ public class QuestionScoreListener implements ActionListener,
 			// authoringHelper.getRemoteUserName() needs servlet stuff
 
 			/* Dump the grading and agent information into AgentResults */
-			// ArrayList agents = new ArrayList();
 			iter = scoresByItem.values().iterator();
 			while (iter.hasNext()) {
 				AgentResults results = new AgentResults();
@@ -550,8 +544,11 @@ public class QuestionScoreListener implements ActionListener,
 						// upload, Audio, FIB, Fill in Numeric
 						// These question type use itemGrading.answetText to
 						// store information about their answer
-						if ((bean.getTypeId().equals("8") || bean.getTypeId().equals("11")) && gdataAnswer == null) {
+						if ((bean.getTypeId().equals("8") || bean.getTypeId().equals("11") || bean.getTypeId().equals("14")) && gdataAnswer == null) {
 							answerText = "";
+						} 
+						else if (bean.getTypeId().equals("14")) {//gopalrc - EMI
+							answerText = gdataPubItemText.getSequence() + ": " + gdataAnswer.getLabel();
 						}
 						else {
 							answerText = gdata.getAnswerText();
@@ -633,9 +630,24 @@ public class QuestionScoreListener implements ActionListener,
 					// non-abbreviated answers
 					// for essay questions
 
-					// Fix for SAK-6932: Strip out all HTML tags except image
-					// tags
-					if (answerText.length() > 35) {
+					int answerTextLength = 1000;
+					if (!bean.getTypeId().equals("5")) {
+						String s = ServerConfigurationService.getString("samigo.questionScore.answerText.length");
+						if (s != null) {
+							try {
+								answerTextLength = Integer.parseInt(s);
+							}
+							catch (NumberFormatException e) {
+								log.warn("NumberFormatException. Use the default value for answerTextLength");
+							}
+						}
+					}
+					else {
+						answerTextLength = 35;
+					}
+					
+					// Fix for SAK-6932: Strip out all HTML tags except image tags
+ 					if (answerText.length() > answerTextLength) {
 						String noHTMLAnswerText;
 						noHTMLAnswerText = answerText.replaceAll(
 								"<((..?)|([^iI][^mM][^gG].*?))>", "");
@@ -645,8 +657,8 @@ public class QuestionScoreListener implements ActionListener,
 						if (index != -1) {
 							answerText = noHTMLAnswerText;
 						} else {
-							if (noHTMLAnswerText.length() > 35) {
-								answerText = noHTMLAnswerText.substring(0, 35)
+							if (noHTMLAnswerText.length() > answerTextLength) {
+								answerText = noHTMLAnswerText.substring(0, answerTextLength)
 										+ "...";
 							} else {
 								answerText = noHTMLAnswerText;
@@ -678,16 +690,29 @@ public class QuestionScoreListener implements ActionListener,
 								} else {
 									answerText = crossmarkGif + answerText;
 								}
-						    }
-						    else {
+							}
+							else {
 								if (gdata.getIsCorrect().booleanValue()) {
 									answerText = checkmarkGif + answerText;
 								}
 								else {
 									answerText = crossmarkGif + answerText;
 								}
-						    }
-						}							
+							}
+						}
+						else if (bean.getTypeId().equals("15")) {  // CALCULATED_QUESTION
+							//need to do something here for fill in the blanks
+							if(gdataAnswer.getScore() > 0){
+								//if score is 0, there is no way to tell if user got the correct answer
+								//by using "autoscore"... wish there was a better way to tell if its correct or not
+								Double autoscore = gdata.getAutoScore();
+								if (!(Double.valueOf(0)).equals(autoscore)) {
+									answerText = checkmarkGif + answerText;
+								}else if(Double.valueOf(0).equals(autoscore)){
+									answerText = crossmarkGif + answerText;
+								}
+							}
+						}
 						else if(!bean.getTypeId().equals("3")){
 							if((gdataAnswer.getIsCorrect() != null && gdataAnswer.getIsCorrect()) || 
 									(gdataAnswer.getPartialCredit() != null && gdataAnswer.getPartialCredit() > 0)){
@@ -705,13 +730,13 @@ public class QuestionScoreListener implements ActionListener,
 						results.setAnswer(results.getAnswer() + "<br/>"
 								+ answerText);
 						if (gdata.getAutoScore() != null) {
-							results.setTotalAutoScore(Float.toString((Float.valueOf(
-								results.getExactTotalAutoScore())).floatValue()
-								+ gdata.getAutoScore().floatValue()));
+							results.setTotalAutoScore(Double.toString((Double.valueOf(
+								results.getExactTotalAutoScore())).doubleValue()
+								+ gdata.getAutoScore().doubleValue()));
 						}
 						else {
-							results.setTotalAutoScore(Float.toString((Float.valueOf(
-									results.getExactTotalAutoScore())).floatValue()));
+							results.setTotalAutoScore(Double.toString((Double.valueOf(
+									results.getExactTotalAutoScore())).doubleValue()));
 						}
 						results.setItemGradingAttachmentList(itemGradingAttachmentList);
 					} else {
@@ -724,7 +749,7 @@ public class QuestionScoreListener implements ActionListener,
 							results.setTotalAutoScore(gdata.getAutoScore()
 									.toString());
 						} else {
-							results.setTotalAutoScore(Float.toString(0));
+							results.setTotalAutoScore(Double.toString(0));
 						}
 						results.setComments(FormattedText.convertFormattedTextToPlaintext(gdata.getComments()));
 						results.setAnswer(answerText);
@@ -749,12 +774,16 @@ public class QuestionScoreListener implements ActionListener,
 							results.setLastInitial("Anonymous");
 						results.setIdString(agent.getIdString());
 						results.setAgentEid(agent.getEidString());
+                        results.setAgentDisplayId(agent.getDisplayIdString());
 						log.debug("testing agent getEid agent.getFirstname= "
-								+ agent.getFirstName());
+                                + agent.getFirstName());
 						log.debug("testing agent getEid agent.getid= "
 								+ agent.getIdString());
 						log.debug("testing agent getEid agent.geteid = "
 								+ agent.getEidString());
+                        log.debug("testing agent getDisplayId agent.getdisplayid = "
+                                + agent.getDisplayIdString());
+
 						results.setRole(agent.getRole());
 						results.setItemGradingAttachmentList(itemGradingAttachmentList);
 						agents.add(results);
@@ -832,7 +861,7 @@ public class QuestionScoreListener implements ActionListener,
 		HashMap map = (HashMap) itemScoresMap.get(itemId);
 		if (map == null) {
 			log.debug("getItemScores: map == null ");
-			map = delegate.getItemScores(publishedId, itemId, which);
+			map = delegate.getItemScores(publishedId, itemId, which, true);
 			log.debug("getItemScores: map size " + map.size());
 			itemScoresMap.put(itemId, map);
 		}
@@ -843,8 +872,8 @@ public class QuestionScoreListener implements ActionListener,
 		try {
 			int maxDurationAllowed = item.getDuration().intValue();
 			for (int i = 0; i < mediaList.size(); i++) {
-				MediaIfc m = (MediaIfc) mediaList.get(i);
-				float duration = (Float.valueOf(m.getDuration())).floatValue();
+				MediaData m = (MediaData) mediaList.get(i);
+				double duration = (Double.valueOf(m.getDuration())).doubleValue();
 				if (duration > maxDurationAllowed) {
 					m.setDurationIsOver(true);
 					m.setTimeAllowed(String.valueOf(maxDurationAllowed));

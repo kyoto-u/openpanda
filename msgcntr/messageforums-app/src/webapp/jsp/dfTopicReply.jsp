@@ -9,8 +9,9 @@
 
   <sakai:view title="#{msgs.cdfm_reply_to_topic}">
      <h:form id="dfCompose">
-            		<script type="text/javascript" src="/library/js/jquery.js"></script>
+            		<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
+       		<sakai:script contextBase="/messageforums-tool" path="/js/messages.js"/>
 <!--jsp/dfTopicReply.jsp-->
                 
 			<h3><h:outputText value="#{msgs.cdfm_reply_to_topic}" /></h3>
@@ -71,7 +72,7 @@
 	            <h:outputText value="#{msgs.cdfm_message}" />
 			<f:verbatim></h4></f:verbatim>	
 			<h:message for="df_compose_body" styleClass="messageAlert" id="bodyErrorMessages" />
-            <sakai:inputRichText value="#{ForumTool.composeBody}" id="df_compose_body" rows="#{ForumTool.editorRows}" cols="120">
+            <sakai:inputRichText value="#{ForumTool.composeBody}" id="df_compose_body" rows="#{ForumTool.editorRows}" cols="132">
 				<f:validateLength maximum="65000"/>
 			</sakai:inputRichText>
 	      

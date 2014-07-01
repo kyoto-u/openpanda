@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/AuthzQueriesFacadeAPI.java $
- * $Id: AuthzQueriesFacadeAPI.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AuthzQueriesFacadeAPI.java $
+ * $Id: AuthzQueriesFacadeAPI.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,8 +39,7 @@ public interface AuthzQueriesFacadeAPI
   public void removeAuthorizationByQualifier(String qualifierId, boolean isPublishedAssessment);
 
   /**
-   * Removes an authorization for a specified qualifier and function
-   * added by gopalrc - Nov 2007 
+   * Removes an authorization for a specified qualifier and function 
    * @param qualifierId
    * @param functionId
    */
@@ -49,7 +48,6 @@ public interface AuthzQueriesFacadeAPI
   /**
    * Removes an authorization for a specified agent, qualifier and function
    * TODO: This should be optimized into a single SQL call for a set of agents (groups)
-   * added by gopalrc - Nov 2007 
    * @param agentId
    * @param qualifierId
    */

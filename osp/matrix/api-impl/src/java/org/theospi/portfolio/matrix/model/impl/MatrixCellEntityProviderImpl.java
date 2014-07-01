@@ -165,7 +165,8 @@ CoreEntityProvider, AutoRegisterEntityProvider, PropertyProvideable, ActionsExec
 			//props.put("security.assignment.ref", submissionId);
 
 			String url;
-			String urlBase = "/portal/directtool/";
+			String urlBase = org.sakaiproject.component.cover.ServerConfigurationService.getPortalUrl();
+            urlBase = urlBase + "/directtool/";
 			if(isMatrix){
 				url = placement +
 				"/viewCell.osp?page_id=" + pageId;
@@ -180,7 +181,7 @@ CoreEntityProvider, AutoRegisterEntityProvider, PropertyProvideable, ActionsExec
 			if(decWrapperTag != null && !"".equals(decWrapperTag)){
 				//change the base to "tool" since this is called inside a thickbox and will
 				//not add the Oncourse portal around the tool page.
-				urlBase = "/portal/tool/";
+				urlBase = org.sakaiproject.component.cover.ServerConfigurationService.getPortalUrl()  + "/tool/";
 				url += "&session.readOnlyMatrix=true&TB_iframe=true&session." + WizardPageHelper.WIZARD_PAGE + "=&panel=Main&override." + SpringTool.LAST_VIEW_VISITED + "=/viewCell.osp&decWrapperTag=" + decWrapperTag;
 			}
 			if(decSiteId != null && !"".equals(decSiteId)){

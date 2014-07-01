@@ -1,10 +1,30 @@
+/**
+ * Copyright (c) 2008-2012 The Sakai Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://www.osedu.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.sakaiproject.profile2.logic;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
 import lombok.Setter;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.sakaiproject.profile2.dao.ProfileDao;
@@ -22,6 +42,7 @@ import org.sakaiproject.profile2.util.Messages;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserNotDefinedException;
 
 /**
  * Implementation of ProfileImageLogic API
@@ -33,6 +54,15 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 
 	private static final Logger log = Logger.getLogger(ProfileImageLogicImpl.class);
 
+	/**
+ 	 * {@inheritDoc}
+ 	 */
+	public ProfileImage getBlankProfileImage() {
+
+		ProfileImage profileImage = new ProfileImage();
+        profileImage.setExternalImageUrl(getUnavailableImageURL());
+        return profileImage;
+    }
 	
 	/**
  	 * {@inheritDoc}
@@ -44,12 +74,34 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 	/**
  	 * {@inheritDoc}
  	 */
+	public ProfileImage getOfficialProfileImage(String userUuid, String siteId) {
+		
+		ProfileImage profileImage = new ProfileImage();
+		
+		String currentUserId = sakaiProxy.getCurrentUserId();
+		String defaultImageUrl = getUnavailableImageURL();
+		
+		//check permissions. if not allowed, set default and return
+		if(!sakaiProxy.isUserMyWorkspace(siteId)) {
+			log.debug("checking if user: " + currentUserId + " has permissions in site: " + siteId);
+			if(!sakaiProxy.isUserAllowedInSite(currentUserId, ProfileConstants.ROSTER_VIEW_PHOTO, siteId)) {
+				profileImage.setExternalImageUrl(defaultImageUrl);
+				return profileImage;
+			}
+		}
+		
+		//otherwise get official image
+		return getOfficialImage(userUuid, profileImage, defaultImageUrl, StringUtils.equals(userUuid,currentUserId));
+	}
+	
+	/**
+ 	 * {@inheritDoc}
+ 	 */
 	public ProfileImage getProfileImage(String userUuid, ProfilePreferences prefs, ProfilePrivacy privacy, int size, String siteId) {
 		
 		ProfileImage image = new ProfileImage();
 		boolean allowed = false;
 		boolean isSameUser = false;
-		String officialImageSource;
 		
 		String defaultImageUrl;
 		if (ProfileConstants.PROFILE_IMAGE_THUMBNAIL == size) {
@@ -182,18 +234,7 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 			break;
 			
 			case ProfileConstants.PICTURE_SETTING_OFFICIAL: 
-				officialImageSource = sakaiProxy.getOfficialImageSource();
-				
-				//check source and get appropriate value
-				if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_URL)){
-					image.setOfficialImageUrl(getOfficialImageUrl(userUuid));
-				} else if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_PROVIDER)){
-					String data = getOfficialImageEncoded(userUuid);
-					if(StringUtils.isBlank(data)) {
-						image.setExternalImageUrl(defaultImageUrl);
-					}
-				}
-				image.setAltText(getAltText(userUuid, isSameUser, true));
+				image = getOfficialImage(userUuid,image,defaultImageUrl,isSameUser);
 			break;
 			
 			case ProfileConstants.PICTURE_SETTING_GRAVATAR:
@@ -213,6 +254,53 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 			break;
 				
 		}
+		
+		return image;
+	}
+	
+	/**
+	 * Gets the official image from url, ldap or filesystem, depending on what is specified in props. Filesystem photos
+	 * are looked up by appending the first letter of a user's eid, then a slash, then the second letter of the eid
+	 * followed by a slash and finally the eid suffixed by '.jpg'.
+	 * 
+	 * Like this:
+	 * /official-photos/a/d/adrian.jpg
+	 */
+	private ProfileImage getOfficialImage(String userUuid, ProfileImage image,String defaultImageUrl, boolean isSameUser) {
+		
+		String officialImageSource = sakaiProxy.getOfficialImageSource();
+				
+		//check source and get appropriate value
+		if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_URL)){
+			image.setOfficialImageUrl(getOfficialImageUrl(userUuid));
+		} else if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_PROVIDER)){
+			String data = getOfficialImageEncoded(userUuid);
+			if(StringUtils.isBlank(data)) {
+				image.setExternalImageUrl(defaultImageUrl);
+			} else {
+				image.setOfficialImageEncoded(data);
+			}
+		} else if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_FILESYSTEM)){
+			
+			//get the path based on the config from sakai.properties, basedir, pattern etc
+			String filename = getOfficialImageFileSystemPath(userUuid);
+
+			File file = new File(filename);
+
+			try {
+				byte[] data = getBytesFromFile(file);
+				if(data != null) {
+					image.setUploadedImage(data);
+				} else {
+					image.setExternalImageUrl(defaultImageUrl);
+				}
+			}
+			catch (IOException e) {
+				log.error("Could not find/read official profile image file: " + filename + ". The default profile image will be used instead.");
+				image.setExternalImageUrl(defaultImageUrl);
+			}
+		}
+		image.setAltText(getAltText(userUuid, isSameUser, true));
 		
 		return image;
 	}
@@ -737,7 +825,68 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		return imageUrl;
 	}
 	
+	/**
+	 * Read a file to a byte array.
+	 * 
+	 * @param file
+	 * @return byte[] if file ok, or null if its too big
+	 * @throws IOException
+	 */
+	private static byte[] getBytesFromFile(File file) throws IOException {
+    
+		// Get the size of the file
+		long length = file.length();
+		
+		if (length > (ProfileConstants.MAX_IMAGE_UPLOAD_SIZE * FileUtils.ONE_MB)) {
+			log.error("File too large: " + file.getCanonicalPath());  
+			return null;
+		}
+		
+		// return file contents
+		return FileUtils.readFileToByteArray(file);
+   }
 	
+	/**
+	 * Helper to get the path to the official image on the filesystem. This could be in one of several patterns.
+	 * @param userUuid
+	 * @return
+	 */
+	private String getOfficialImageFileSystemPath(String userUuid) {
+		
+		//get basepath, common to all
+		String basepath = sakaiProxy.getOfficialImagesDirectory();
+		
+		//get the pattern
+		String pattern = sakaiProxy.getOfficialImagesFileSystemPattern();
+		
+		//get user, common for all
+		User user = sakaiProxy.getUserById(userUuid);
+		String userEid = user.getEid();
+		
+		String filename = null;
+		
+		//create the path based on the basedir and pattern
+		if(StringUtils.equals(pattern, "ALL_IN_ONE")) {
+			filename = 	basepath + File.separator + userEid + ".jpg";
+		}
+		else if(StringUtils.equals(pattern, "ONE_DEEP")) {
+			String firstLetter = userEid.substring(0,1);
+			filename = basepath + File.separator + firstLetter + File.separator + userEid + ".jpg";
+		}
+		//insert more patterns here as required. Dont forget to update SakaiProxy and confluence with details.
+		else {
+			//TWO_DEEP is default
+			String firstLetter = userEid.substring(0,1);
+			String secondLetter = userEid.substring(1,2);
+			filename = basepath + File.separator + firstLetter + File.separator + secondLetter + File.separator + userEid + ".jpg";
+		}
+		
+		if(log.isDebugEnabled()){
+			log.debug("Path to official image on filesystem is: " + filename);
+		}
+		
+		return filename;
+	}
 	
 	@Setter
 	private SakaiProxy sakaiProxy;

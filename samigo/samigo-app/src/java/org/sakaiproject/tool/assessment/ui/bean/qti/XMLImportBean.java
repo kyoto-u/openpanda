@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/qti/XMLImportBean.java $
- * $Id: XMLImportBean.java 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/qti/XMLImportBean.java $
+ * $Id: XMLImportBean.java 133267 2014-01-14 00:50:50Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,27 +24,23 @@ package org.sakaiproject.tool.assessment.ui.bean.qti;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.text.MessageFormat;
 
-import org.sakaiproject.util.FormattedText;
-import org.sakaiproject.util.ResourceLoader;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.service.gradebook.shared.GradebookService;
-import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
+import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.contentpackaging.ImportService;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
@@ -62,8 +58,9 @@ import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.ItemAuthorBean;
 import org.sakaiproject.tool.assessment.ui.bean.questionpool.QuestionPoolBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.util.ResourceLoader;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
  
 /**
@@ -111,7 +108,9 @@ public class XMLImportBean implements Serializable
 	  String uploadFile = (String) e.getNewValue();
 
 	  if (uploadFile!= null && uploadFile.startsWith("SizeTooBig:")) {
-		  String paramValue = ServerConfigurationService.getString("samigo.sizeMax");
+		  FacesContext context = FacesContext.getCurrentInstance();
+		  ExternalContext external = context.getExternalContext();
+		  String paramValue = ((Long)((ServletContext)external.getContext()).getAttribute("FILEUPLOAD_SIZE_MAX")).toString();
 		  Long sizeMax = null;
 		  float sizeMax_float = 0f;
 		  if (paramValue != null) {
@@ -312,10 +311,10 @@ public class XMLImportBean implements Serializable
     
     // change grading book settings if there is no gradebook in the site
     boolean hasGradebook = false;
-   GradebookService g = null;
+    GradebookExternalAssessmentService g = null;
    if (integrated){
-     g = (GradebookService) SpringBeanLocator.getInstance().
-          getBean("org.sakaiproject.service.gradebook.GradebookService");
+     g = (GradebookExternalAssessmentService) SpringBeanLocator.getInstance().
+          getBean("org.sakaiproject.service.gradebook.GradebookExternalAssessmentService");
    }
    try{
      if (gbsHelper.isAssignmentDefined(assessment.getTitle(), g)){
@@ -451,7 +450,7 @@ public class XMLImportBean implements Serializable
     catch (Exception ex)
     {
       ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorImportExport");
-      FacesMessage message = new FacesMessage( rb.getString("import_err") );
+      FacesMessage message = new FacesMessage( rb.getString("import_err_pool") );
       FacesContext.getCurrentInstance().addMessage(null, message);
     }
   }

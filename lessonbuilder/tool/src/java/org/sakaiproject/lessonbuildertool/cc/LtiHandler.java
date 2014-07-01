@@ -21,8 +21,8 @@ package org.sakaiproject.lessonbuildertool.cc;
  */
 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/lessonbuilder/tags/lessonbuilder-1.4.3/tool/src/java/org/sakaiproject/lessonbuildertool/cc/LtiHandler.java $
- * $Id: LtiHandler.java 106416 2012-03-30 17:58:06Z hedrick@rutgers.edu $
+ * $URL: https://source.sakaiproject.org/svn/lessonbuilder/tags/sakai-10.0/tool/src/java/org/sakaiproject/lessonbuildertool/cc/LtiHandler.java $
+ * $Id: LtiHandler.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  **********************************************************************************
  *
  * Copyright (c) 2010 IMS GLobal Learning Consortium

@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,6 +76,7 @@ import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.cover.UserDirectoryService;
+import org.sakaiproject.util.ResourceLoader;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -90,6 +91,8 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
   private static final String QUERY_AGGREGATE_COUNT = "findAggregatePvtMsgCntForUserInContext";  
   private static final String QUERY_MESSAGES_BY_USER_TYPE_AND_CONTEXT = "findPrvtMsgsByUserTypeContext";
   private static final String QUERY_MESSAGES_BY_ID_WITH_RECIPIENTS = "findPrivateMessageByIdWithRecipients";
+  
+  private static final String MESSAGECENTER_BUNDLE = "org.sakaiproject.api.app.messagecenter.bundle.Messages";
   
   private AreaManager areaManager;
   private MessageForumsMessageManager messageManager;
@@ -1130,7 +1133,7 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
 
     //build the message body
     List additionalHeaders = new ArrayList(1);
-    additionalHeaders.add("Content-Type: text/html");
+    additionalHeaders.add("Content-Type: text/html; charset=utf-8");
     
 
     /** determines if default in sakai.properties is set, if not will make a reasonable default */
@@ -1154,9 +1157,17 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
     
     	currentArea = getAreaByContextIdAndTypeId(typeManager.getPrivateMessageAreaType());
 
-    	//this is fairly inneficient and should realy be a convenience method to lookup
-    	// the users who want to forward their messages
-    	privateForums = currentArea.getPrivateForums();
+    	// make sure the site-wide email copy preference is respected in case an invalid
+    	// value slipped in
+    	if (currentArea.getSendToEmail() == Area.EMAIL_COPY_ALWAYS) {
+    	    asEmail = true;
+    	} else if (currentArea.getSendToEmail() == Area.EMAIL_COPY_NEVER) {
+    	    asEmail = false;
+    	}
+    	
+        //this is fairly inneficient and should realy be a convenience method to lookup
+        // the users who want to forward their messages
+        privateForums = currentArea.getPrivateForums();
 
     	//create a map for efficient lookup for large sites
     	pfMap = new HashMap<String, PrivateForum>();
@@ -1220,7 +1231,7 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
     	emailService.sendToUsers(recipients.keySet(), additionalHeaders, bodyString);
     	}   	
 
-	if(forwardingEnabled)
+	if(!isEmailForwardDisabled() && forwardingEnabled)
 	{
 		InternetAddress fAddressesArr[] = new InternetAddress[fAddresses.size()];
 		fAddressesArr = fAddresses.toArray(fAddressesArr);
@@ -1247,12 +1258,28 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
 	}
   }
 
+  public boolean isEmailForwardDisabled(){
+	  return ServerConfigurationService.getBoolean("mc.messages.forwardEmailDisabled", false);
+  }
+  
 
   private String buildMessageBody(PrivateMessage message) {
 	  User currentUser = UserDirectoryService.getCurrentUser();
 	  StringBuilder body = new StringBuilder(message.getBody());
+	  
+	  StringBuilder fromString = new StringBuilder();
+	  fromString.append("<p>");
+	  if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
+	      fromString.append(getResourceBundleString("pvt_email_from_with_eid", 
+                      new Object[] {currentUser.getDisplayName(), currentUser.getEid(), currentUser.getEmail() }));
+	  } else {
+	      fromString.append(getResourceBundleString("pvt_email_from", 
+	              new Object[] {currentUser.getDisplayName(), currentUser.getEmail() }));
+	  }
+	  
+	  fromString.append("</p>");
 
-	  body.insert(0, "From: " + currentUser.getDisplayName() + "<p/>"); 
+	  body.insert(0, fromString.toString());
 
 	  // need to determine if there are "hidden" recipients to this message.
 	  // If so, we need to replace them with "Undisclosed Recipients"
@@ -1302,7 +1329,7 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
 	      }
 	  }
 
-	  body.insert(0, "To: " + sendToString + "<p/>");
+	  body.insert(0, "<p>" + getResourceBundleString("pvt_email_to", new Object[] {sendToString}) + "<p/>");
 
 	  if (message.getAttachments() != null && message.getAttachments().size() > 0) {
 
@@ -1336,7 +1363,7 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
 	  }
 
 	  String footer = "<p>----------------------<br>" +
-	  getResourceBundleString(EMAIL_FOOTER1) + " " + ServerConfigurationService.getString("ui.service") +
+	      getResourceBundleString(EMAIL_FOOTER1) + " " + ServerConfigurationService.getString("ui.service","Sakai") +
 	  " " + getResourceBundleString(EMAIL_FOOTER2) + " \"" +
 	  siteTitle + "\" " + getResourceBundleString(EMAIL_FOOTER3) + "\n" +
 	  getResourceBundleString(EMAIL_FOOTER4) +
@@ -1500,7 +1527,20 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
 	  }
 	}
 
+	public void markMessageAsRepliedForUser(final PrivateMessage message) {				
   
+		PrivateMessage pvtMessage = getPrivateMessageWithRecipients(message);
+		List recipientList = pvtMessage.getRecipients();
+
+		if (recipientList != null) {
+			String userId = getCurrentUser();
+			for (Object r : recipientList) {
+				if (((PrivateMessageRecipientImpl) r).getUserId().equals(userId)) {
+					((PrivateMessageRecipientImpl) r).setReplied(true);
+				}
+			}
+		}		
+	} 
 
   private PrivateMessage getPrivateMessageWithRecipients(
       final PrivateMessage message)
@@ -1828,6 +1868,12 @@ return topicTypeUuid;
 //	 ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
 
       return areaManager.getResourceBundleString(key);
+  }
+  
+  private String getResourceBundleString(String key, Object[] replacementValues) 
+  {
+      final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
+      return rb.getFormattedMessage(key, replacementValues);   
   }
 
   /**

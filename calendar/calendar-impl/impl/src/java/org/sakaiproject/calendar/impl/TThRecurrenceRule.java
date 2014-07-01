@@ -28,6 +28,8 @@ import org.sakaiproject.time.api.TimeRange;
 import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.time.api.TimeBreakdown;
 
+import org.sakaiproject.util.CalendarUtil;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,12 +42,14 @@ public class TThRecurrenceRule extends RecurrenceRuleBase
 {
 	/** The unique type / short frequency description. */
 	protected final static String FREQ = "TTh";
+	private CalendarUtil calUtil = null;
 	/**
 	* Construct.
 	*/
 	public TThRecurrenceRule()
 	{
 		super();
+		calUtil = new CalendarUtil();
 	}	// TThRecurrenceRule
 	/**
 	* Construct with no  limits.
@@ -54,6 +58,7 @@ public class TThRecurrenceRule extends RecurrenceRuleBase
 	public TThRecurrenceRule(int interval)
 	{
 		super(interval);
+		calUtil = new CalendarUtil();
 	}	// TThRecurrenceRule
 	/**
 	* Construct with count limit.
@@ -63,6 +68,7 @@ public class TThRecurrenceRule extends RecurrenceRuleBase
 	public TThRecurrenceRule(int interval, int count)
 	{
 		super(interval, count);
+		calUtil = new CalendarUtil();
 	}	// TThRecurrenceRule
 	/**
 	* Construct with time limit.
@@ -72,6 +78,7 @@ public class TThRecurrenceRule extends RecurrenceRuleBase
 	public TThRecurrenceRule(int interval, Time until)
 	{
 		super(interval, until);
+		calUtil = new CalendarUtil();
 	}	// TThRecurrenceRule
 	/**
 	* Serialize the resource into XML, adding an element to the doc under the top of the stack element.
@@ -105,7 +112,7 @@ public class TThRecurrenceRule extends RecurrenceRuleBase
 	 */
 	public String getFrequencyDescription()
 	{
-		return rb.getString("set.TTh");
+		return rb.getFormattedMessage("set.TTh.fm", calUtil.getDayOfWeekName(2), calUtil.getDayOfWeekName(4));
 	}
    
 	/**
@@ -139,24 +146,29 @@ public class TThRecurrenceRule extends RecurrenceRuleBase
 									 startBreakdown.getSec());	 //may have to move this line ahead 
 		
 		GregorianCalendar nextCalendarDate = (GregorianCalendar) startCalendarDate.clone();	
+		
+		//if day of week is not Tuesday or Thursday
 		if( ((startCalendarDate.get(GregorianCalendar.DAY_OF_WEEK)!=3) &&
 										((startCalendarDate.get(GregorianCalendar.DAY_OF_WEEK))!=5 )) )
 		{
+			//if day of week is Sunday, add two to make it Tuesday
 			if (startCalendarDate.get(GregorianCalendar.DAY_OF_WEEK)==1){
-				
 				startCalendarDate.add(java.util.Calendar.DAY_OF_MONTH, 2);
-			} 
+			}
+			//if day of week is Monday, add one to make it Tuesday
 			else if (startCalendarDate.get(GregorianCalendar.DAY_OF_WEEK)==2){
-				
 				startCalendarDate.add(java.util.Calendar.DAY_OF_MONTH, 1);
-			} 
+			}
+			//if day of week is Wednesday, add one to make it Thursday
 			else if (startCalendarDate.get(GregorianCalendar.DAY_OF_WEEK)==4){
 				startCalendarDate.add(java.util.Calendar.DAY_OF_MONTH, 1);
 				
 			} 
+			//if day of week is Friday, add four to make it next Tuesday
 			else if (startCalendarDate.get(GregorianCalendar.DAY_OF_WEEK)==6){
 				startCalendarDate.add(java.util.Calendar.DAY_OF_MONTH, 4);
 			}
+			//must be Saturday, add three to make it next Tuesday
 			else {
 				startCalendarDate.add(java.util.Calendar.DAY_OF_MONTH, 3);			 
 			} 
@@ -209,6 +221,7 @@ public class TThRecurrenceRule extends RecurrenceRuleBase
 			{
 				nextCalendarDate = (GregorianCalendar) startCalendarDate.clone();//this line seems pointless 
 				nextCalendarDate.add(java.util.Calendar.DAY_OF_MONTH, currentCount); //"1" is the supposed recurrence Type 
+								
 				int weekDay=nextCalendarDate.get(GregorianCalendar.DAY_OF_WEEK);
 				if((getInterval()>1&&(weekDay==6)))
 				{	

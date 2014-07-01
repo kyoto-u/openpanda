@@ -16,10 +16,11 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemText;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.osid.assessment.impl.ItemImpl;
 
-public class PublishedItemFacade extends ItemFacade implements Serializable, ItemDataIfc, Comparable {
+public class PublishedItemFacade extends ItemFacade implements Serializable, ItemDataIfc, Comparable<ItemDataIfc> {
 
 	private static final long serialVersionUID = -1711478342512505707L;
 	private PublishedSectionFacade section;
@@ -72,6 +73,8 @@ public class PublishedItemFacade extends ItemFacade implements Serializable, Ite
 	    this.itemFeedbackSet = getItemFeedbackSet();
 	    this.hasRationale= data.getHasRationale();//rshastri :SAK-1824
 	    this.itemAttachmentSet = getItemAttachmentSet();
+	    this.answerOptionsRichCount = getAnswerOptionsRichCount();
+	    this.answerOptionsSimpleOrRich = getAnswerOptionsSimpleOrRich();
 	  }
 
 	  // the following method's signature has a one to one relationship to

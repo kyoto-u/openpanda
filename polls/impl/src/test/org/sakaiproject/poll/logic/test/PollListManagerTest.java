@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.3/impl/src/test/org/sakaiproject/poll/logic/test/PollListManagerTest.java $
- * $Id: PollListManagerTest.java 115365 2012-10-31 16:05:04Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.0/impl/src/test/org/sakaiproject/poll/logic/test/PollListManagerTest.java $
+ * $Id: PollListManagerTest.java 125281 2013-05-31 03:42:46Z nbotimer@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -83,12 +83,12 @@ public class PollListManagerTest extends AbstractTransactionalSpringContextTests
     	externalLogicStubb.currentUserId = TestDataPreload.USER_UPDATE;
     	
     	//we shouldNot find this poll
-    	Poll pollFail = pollListManager.getPollById(Long.valueOf(99));
+    	Poll pollFail = pollListManager.getPollById(Long.valueOf(9999999));
     	assertNull(pollFail);
     	
-    	//this one should exist
+    	//this one should exist -- the preload saves one poll and remembers its ID
     	externalLogicStubb.currentUserId = TestDataPreload.USER_UPDATE;
-    	Poll poll1 = pollListManager.getPollById(Long.valueOf(1));
+    	Poll poll1 = pollListManager.getPollById(tdp.getFirstPollId());
     	assertNotNull(poll1);
     	
     	//it should have options
@@ -98,7 +98,7 @@ public class PollListManagerTest extends AbstractTransactionalSpringContextTests
     	//we expect this one to fails
 		externalLogicStubb.currentUserId = TestDataPreload.USER_NO_ACCEESS;
 		try {
-			Poll poll2 = pollListManager.getPollById(Long.valueOf(1));
+			Poll poll2 = pollListManager.getPollById(tdp.getFirstPollId());
 			fail("should not be allowed to read this poll");
 		} 
 		catch (SecurityException e) {
@@ -196,7 +196,8 @@ public class PollListManagerTest extends AbstractTransactionalSpringContextTests
 			e.printStackTrace();
 		} 
 		catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			// Successful tests should be quiet. IllegalArgumentException is actually expected on a null ID.
+			//e.printStackTrace();
 		}
 		
 		pollListManager.savePoll(poll1);
@@ -231,8 +232,8 @@ public class PollListManagerTest extends AbstractTransactionalSpringContextTests
 			pollListManager.deletePoll(poll1);
 			fail();
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Successful tests should be quiet. SecurityException is expected here.
+			//e.printStackTrace();
 		}
 		
 		

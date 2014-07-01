@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/SiteEmailNotificationRWiki.java $
- * $Id: SiteEmailNotificationRWiki.java 127748 2013-07-25 16:12:40Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/SiteEmailNotificationRWiki.java $
+ * $Id: SiteEmailNotificationRWiki.java 126326 2013-06-27 12:27:39Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

@@ -10,8 +10,17 @@
 <f:view>
   <sakai:view title="#{msgs.pvt_detmsgreply}">
     <h:form id="pvtMsgDetail">
-           		<script type="text/javascript" src="/library/js/jquery.js"></script>
+    		<script>
+       			// Define i18n for js text
+       			var msgs_js = { 
+       				"loading_wait":<h:outputText value="\"#{msgs.loading_wait}\"" />,
+       				"cdfm_profile_information":<h:outputText value="\"#{msgs.cdfm_profile_information}\"" />
+       			};
+       		</script>
+           		<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+           	<script type="text/javascript" src="/library/js/jquery/qtip/jquery.qtip-latest.min.js"></script>
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
+       		<sakai:script contextBase="/messageforums-tool" path="/js/messages.js"/>
 <!--jsp/privateMsg/pvtMsgDetail.jsp-->
 <%--			<sakai:tool_bar_message value="#{msgs.pvt_detmsgreply}" /> --%> 
 			<h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}"/> 
@@ -106,13 +115,43 @@
           <sakai:button_bar_item action="#{PrivateMessagesTool.processPvtMsgPreviewForwardBack}" value="#{msgs.pvt_back}" accesskey="b" />
         </sakai:button_bar>
           
+         
         <table class="itemSummary">
+         	  <%-- author image --%>
+         	  <f:subview id="authorImage" rendered="#{PrivateMessagesTool.showProfileInfoMsg}">
+	         	  <f:verbatim>
           <tr>
+			            <td rowspan="7">
+							<h:panelGroup styleClass="authorImage">
+								<h:outputLink value="#{PrivateMessagesTool.serverUrl}/direct/profile/#{PrivateMessagesTool.detailMsg.msg.authorId}/formatted" styleClass="authorProfile" rendered="#{PrivateMessagesTool.showProfileLink}">
+									<h:graphicImage value="#{PrivateMessagesTool.serverUrl}/direct/profile/#{PrivateMessagesTool.detailMsg.msg.authorId}/image/thumb" alt="#{message.message.author}" />
+								</h:outputLink>
+								<h:graphicImage value="#{PrivateMessagesTool.serverUrl}/direct/profile/#{PrivateMessagesTool.detailMsg.msg.authorId}/image/thumb" alt="#{message.message.author}" rendered="#{!PrivateMessagesTool.showProfileLink}"/>
+							</h:panelGroup>
+			            </td>
+			          </tr>
+	         	  </f:verbatim>
+         	  </f:subview>
+	          <tr>
             <th>
+	              <h:outputText value="#{msgs.pvt_authby}"/>
+	            </th>
+	            <td>
+	            	<h:outputText value="#{PrivateMessagesTool.detailMsg.msg.author}" />  
+	            	<h:outputText value="#{msgs.pvt_openb}" />  
+	            	<h:outputText value="#{PrivateMessagesTool.detailMsg.msg.created}" >
+	                	<f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>  
+	                </h:outputText>
+	            	<h:outputText value=" #{msgs.pvt_closeb}" /> 
+	            </td>
+	          </tr>
+	          <tr>
+	            <th>
             	 <h:outputText value="#{msgs.pvt_to}" />
             </th>
             <td>           	
             	 <h:outputText value="#{PrivateMessagesTool.detailMsg.recipientsAsText}" />
+            	 <h:outputText value=", (#{msgs.pvt_sent_as_email})" rendered="#{PrivateMessagesTool.detailMsg.msg.externalEmail}"/>
             </td>
           </tr>
           <f:subview id="bccRecipients" rendered="#{ForumTool.userId == PrivateMessagesTool.detailMsg.msg.createdBy && PrivateMessagesTool.detailMsg.recipientsAsTextBcc != null && PrivateMessagesTool.detailMsg.recipientsAsTextBcc != ''}">
@@ -139,20 +178,6 @@
             	<h:outputText value="#{PrivateMessagesTool.detailMsg.msg.title}" />  
             </td>  
           </tr>          
-          <tr>
-            <th>
-              <h:outputText value="#{msgs.pvt_authby}"/>
-            </th>
-            <td>
-            	<h:outputText value="#{PrivateMessagesTool.detailMsg.msg.author}" />  
-            	<h:outputText value="#{msgs.pvt_openb}" />  
-            	<h:outputText value="#{PrivateMessagesTool.detailMsg.msg.created}" >
-                	<f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>  
-                </h:outputText>
-            	<h:outputText value=" #{msgs.pvt_closeb}" /> 
-            </td>
-          </tr>
-          
           <tr>
             <th>
               <h:outputText value="#{msgs.pvt_label} "/>

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.3/messageforums-hbm/src/java/org/sakaiproject/component/app/messageforums/dao/hibernate/EmailNotificationImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.0/messageforums-hbm/src/java/org/sakaiproject/component/app/messageforums/dao/hibernate/EmailNotificationImpl.java $
  * $Id: EmailNotificationImpl.java 68560 2009-11-04 08:31:19Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

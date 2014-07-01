@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages.panels;
 
 
@@ -113,6 +112,8 @@ public class MyContactEdit extends Panel {
 		WebMarkupContainer emailContainer = new WebMarkupContainer("emailContainer");
 		emailContainer.add(new Label("emailLabel", new ResourceModel("profile.email")));
 		final TextField email = new TextField("email", new PropertyModel(userProfile, "email"));
+		email.setOutputMarkupId(true);
+		email.setMarkupId("emailinput");
 		email.add(EmailAddressValidator.getInstance());
 		//readonly view
 		Label emailReadOnly = new Label("emailReadOnly", new PropertyModel(userProfile, "email"));
@@ -127,6 +128,7 @@ public class MyContactEdit extends Panel {
 		
 		//email feedback
         final FeedbackLabel emailFeedback = new FeedbackLabel("emailFeedback", email);
+        emailFeedback.setMarkupId("emailFeedback");
         emailFeedback.setOutputMarkupId(true);
         emailContainer.add(emailFeedback);
         email.add(new ComponentVisualErrorBehaviour("onblur", emailFeedback));
@@ -151,11 +153,14 @@ public class MyContactEdit extends Panel {
                     } 
             } 
 		};
+		homepage.setMarkupId("homepageinput");
+		homepage.setOutputMarkupId(true);
 		homepage.add(new UrlValidator());
 		homepageContainer.add(homepage);
 		
 		//homepage feedback
         final FeedbackLabel homepageFeedback = new FeedbackLabel("homepageFeedback", homepage);
+        homepageFeedback.setMarkupId("homepageFeedback");
         homepageFeedback.setOutputMarkupId(true);
         homepageContainer.add(homepageFeedback);
         homepage.add(new ComponentVisualErrorBehaviour("onblur", homepageFeedback));
@@ -165,11 +170,14 @@ public class MyContactEdit extends Panel {
 		WebMarkupContainer workphoneContainer = new WebMarkupContainer("workphoneContainer");
 		workphoneContainer.add(new Label("workphoneLabel", new ResourceModel("profile.phone.work")));
 		final TextField workphone = new TextField("workphone", new PropertyModel(userProfile, "workphone"));
+		workphone.setMarkupId("workphoneinput");
+		workphone.setOutputMarkupId(true);
 		workphone.add(new PhoneNumberValidator());
 		workphoneContainer.add(workphone);
 
 		//workphone feedback
         final FeedbackLabel workphoneFeedback = new FeedbackLabel("workphoneFeedback", workphone);
+        workphoneFeedback.setMarkupId("workphoneFeedback");
         workphoneFeedback.setOutputMarkupId(true);
         workphoneContainer.add(workphoneFeedback);
         workphone.add(new ComponentVisualErrorBehaviour("onblur", workphoneFeedback));
@@ -179,11 +187,14 @@ public class MyContactEdit extends Panel {
 		WebMarkupContainer homephoneContainer = new WebMarkupContainer("homephoneContainer");
 		homephoneContainer.add(new Label("homephoneLabel", new ResourceModel("profile.phone.home")));
 		final TextField homephone = new TextField("homephone", new PropertyModel(userProfile, "homephone"));
+		homephone.setMarkupId("homephoneinput");
+        homephone.setOutputMarkupId(true);
 		homephone.add(new PhoneNumberValidator());
 		homephoneContainer.add(homephone);
 		
 		//homephone feedback
         final FeedbackLabel homephoneFeedback = new FeedbackLabel("homephoneFeedback", homephone);
+        homephoneFeedback.setMarkupId("homephoneFeedback");
         homephoneFeedback.setOutputMarkupId(true);
         homephoneContainer.add(homephoneFeedback);
         homephone.add(new ComponentVisualErrorBehaviour("onblur", homephoneFeedback));
@@ -193,11 +204,14 @@ public class MyContactEdit extends Panel {
 		WebMarkupContainer mobilephoneContainer = new WebMarkupContainer("mobilephoneContainer");
 		mobilephoneContainer.add(new Label("mobilephoneLabel", new ResourceModel("profile.phone.mobile")));
 		final TextField mobilephone = new TextField("mobilephone", new PropertyModel(userProfile, "mobilephone"));
+		mobilephone.setMarkupId("mobilephoneinput");
+        mobilephone.setOutputMarkupId(true);
 		mobilephone.add(new PhoneNumberValidator());
 		mobilephoneContainer.add(mobilephone);
 		
 		//mobilephone feedback
         final FeedbackLabel mobilephoneFeedback = new FeedbackLabel("mobilephoneFeedback", mobilephone);
+        mobilephoneFeedback.setMarkupId("mobilephoneFeedback");
         mobilephoneFeedback.setOutputMarkupId(true);
         mobilephoneContainer.add(mobilephoneFeedback);
         mobilephone.add(new ComponentVisualErrorBehaviour("onblur", mobilephoneFeedback));
@@ -207,11 +221,14 @@ public class MyContactEdit extends Panel {
 		WebMarkupContainer facsimileContainer = new WebMarkupContainer("facsimileContainer");
 		facsimileContainer.add(new Label("facsimileLabel", new ResourceModel("profile.phone.facsimile")));
 		final TextField facsimile = new TextField("facsimile", new PropertyModel(userProfile, "facsimile"));
+		facsimile.setMarkupId("facsimileinput");
+        facsimile.setOutputMarkupId(true);
 		facsimile.add(new PhoneNumberValidator());
 		facsimileContainer.add(facsimile);
 
 		//facsimile feedback
         final FeedbackLabel facsimileFeedback = new FeedbackLabel("facsimileFeedback", facsimile);
+        facsimileFeedback.setMarkupId("facsimileFeedback");
         facsimileFeedback.setOutputMarkupId(true);
         facsimileContainer.add(facsimileFeedback);
         facsimile.add(new ComponentVisualErrorBehaviour("onblur", facsimileFeedback));

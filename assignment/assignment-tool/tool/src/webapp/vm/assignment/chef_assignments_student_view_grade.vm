@@ -1,10 +1,6 @@
-<!-- $Id: chef_assignments_student_view_grade.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_student_view_grade.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
 <!-- start: chef_assignments_student_view_grade.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm,v 1.2 2005/05/19 19:39:49 gsilver.umich.edu Exp $ -->
-#parse("/vm/assignment/assignment_macros.vm")
-<link href="/sakai-assignment-tool/css/assignment.css" type="text/css" rel="stylesheet" media="all" />
-<script type="text/javascript" src="/library/js/jquery.js"></script>
-<script type="text/javascript"  src="/sakai-assignment-tool/js/assignments.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         setupToggleAreas('toggleAnchor', 'toggledContent', false, 'fast');
@@ -32,8 +28,13 @@
 	#end
 	<h3>
 	$validator.escapeHtml($assignment.getTitle())
+                        #if ($!assignment.isGroup() )
+                           <span> - $tlang.getString("gen.groupassignment") </span>
+                        #end
 			#if ($submission.Returned)
 						<span class="highlight"> - $tlang.getString("gen.returned")</span>
+                        #elseif (!$submission.getSubmitted())
+                                <span class="highlight"> - $submission.getStatus() </span>
 			#elseif (!$!nonElectronicType)
 				<span class="highlight"> - $tlang.getString("gen.subm4")</span>
 			#end
@@ -50,12 +51,32 @@
 						$tlang.getString("gen.title")
 					</th>
 					<td valign="top">
-						$validator.escapeHtml($assignment.title)
+                                            #assignmentTitleIcon($assignment)
+                                            $validator.escapeHtml($assignment.title)
 					</td>
 				</tr>
+				#if ($!assignment.isGroup())
 				<tr>
 					<th>
+						$tlang.getString('gen.group')
+                                 	</th>
+                                        <td>
+                                        #set($aGroup = $!site.getGroup($submission.getSubmitterId()))
+                                        #if ($aGroup)
+                                                $aGroup.getTitle()
+                                        #else
+                                                $tlang.getString("group.submission.not.found")
+                                        #end
+                                        </td>
+                                </tr>
+				#end
+				<tr>
+					<th>
+                                                #if ($!assignment.isGroup() )
+                                                    $tlang.getString("gen.students")
+                                                #else
 						$tlang.getString("gen.student")
+                                                #end
 				 </th>
 					<td>
 						#if (!$privateView)
@@ -88,7 +109,7 @@
 							<td class="highlight">
 								<strong>
 									#if ($assignment.getContent().TypeOfGrade != 1)
-										$submission.GradeDisplay
+                                                                               #if($!override)$override#else$submission.GradeDisplay#end
 									#else
 										$tlang.getString("gen.nograd")
 									#end
@@ -131,7 +152,16 @@
 				
 					</tr>
 				#end
-			
+			        #if ($!submission && $!submission.getSubmissionLog().size() > 0)
+                                        <tr>
+                                                <th>$tlang.getString("gen.history")</th>
+                                                <td>
+                                                        #foreach ($entry in $submission.getSubmissionLog())
+                                                                $entry<br>
+                                                        #end
+                                                </td>
+                                        </tr>
+                                #end
 			</table>
 		#if($assignment.getContent().AllowReviewService && $assignment.getContent().AllowStudentViewReport)
 			<div id="report" style='display:none'>$submission.getReviewReport()</div>
@@ -199,7 +229,13 @@
 								#end
 							#end
 							#if ($size == 0)
-								<p class="instruction">$tlang.getString("gen.noatt")</p>
+								<<p class="instruction">
+                                                                    #if ($submissionType == 5)
+                                                                        $tlang.getString("gen.noatt.single")
+                                                                    #else
+                                                                        $tlang.getString("gen.noatt")
+                                                                    #end
+                                                                </p>
 							#else
 								#foreach ($attachment in $mAttachments)
 									#set ($props = false)
@@ -243,7 +279,13 @@
 								#end
 							#end
 							#if ($size == 0)
-								<p class="instruction">$tlang.getString("gen.noatt")</p>
+								<p class="instruction">
+                                                                    #if ($submissionType == 5)
+                                                                        $tlang.getString("gen.noatt.single")
+                                                                    #else
+                                                                        $tlang.getString("gen.noatt")
+                                                                    #end
+                                                                </p>
 							#else
 								#foreach ($attachment in $aAttachments)
 									#set ($props = false)
@@ -300,7 +342,13 @@
 			#if ($size == 0)
 				##$tlang.getString("gen.noatt")
 			#else
-				<h5>$tlang.getString("gen.stuatt")</h5>
+				<h5>
+					#if ($assignment.getContent().getTypeOfSubmission() == 5)
+						$tlang.getString("gen.stuatt.single")
+					#else
+						$tlang.getString("gen.stuatt")
+					#end
+				</h5>
 					<ul class="attachList indnt1">
 					#foreach ($attachment in $submittedAttachments) 
 						#set ($props = false)
@@ -365,6 +413,21 @@
 							#end
 						#end
 					</ul>
+				#end
+				
+				##Show reviewer feedback from peer review (if exist and the peer review is closed)
+				#if ($peerReviews)
+					<h3>$tlang.getString("gen.peerReviews") </h3>
+					#foreach($review in $peerReviews)
+						<h5>$review.assessorDisplayName</h5>
+						<br/>
+						$tlang.getFormattedMessage("gen.score.display", $review.getScoreDisplay())
+						<br/>
+						#if($!review.getComment() && $review.getComment().length()>0)
+							<b>$tlang.getString("gen.comments")</b> 
+							<div class="textPanel">$validator.escapeHtmlFormattedText($review.getComment())</div>
+						#end
+					#end
 				#end
 			#end
 		<form action="#toolForm("AssignmentAction")" method="post" >

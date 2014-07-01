@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/AnswerIfc.java $
- * $Id: AnswerIfc.java 69050 2009-11-16 23:16:32Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/AnswerIfc.java $
+ * $Id: AnswerIfc.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,12 +23,12 @@
 
 package org.sakaiproject.tool.assessment.data.ifc.assessment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public  interface AnswerIfc
-    extends java.io.Serializable
+    extends Comparable<AnswerIfc>, java.io.Serializable
 {
   Long getId();
 
@@ -58,32 +58,32 @@ public  interface AnswerIfc
 
   void setIsCorrect(Boolean isCorrect);
 
-  Float getDiscount();
+  Double getDiscount();
   
-  void setDiscount(Float discount);
+  void setDiscount(Double discount);
   
   String getGrade();
 
   void setGrade(String grade);
 
-  Float getScore();
+  Double getScore();
 
-  void setScore(Float score);
+  void setScore(Double score);
   
   // to incorporate partial credit we need to add field for partial credit
-  void setPartialCredit(Float partialCredit);
+  void setPartialCredit(Double partialCredit);
   
-  Float getPartialCredit();
+  Double getPartialCredit();
 
-  Set getAnswerFeedbackSet();
+  Set<AnswerFeedbackIfc> getAnswerFeedbackSet();
 
-  ArrayList getAnswerFeedbackArray();
+  List<AnswerFeedbackIfc> getAnswerFeedbackArray();
 
-  void setAnswerFeedbackSet(Set answerFeedbackSet);
+  void setAnswerFeedbackSet(Set<AnswerFeedbackIfc> answerFeedbackSet);
 
   String getAnswerFeedback(String typeId);
 
-  HashMap getAnswerFeedbackMap();
+  HashMap<String, String> getAnswerFeedbackMap();
 
   String getCorrectAnswerFeedback();
 

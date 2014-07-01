@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/services/GradingService.java $
- * $Id: GradingService.java 9784 2006-05-22 19:33:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/services/GradingService.java $
+ * $Id: GradingService.java 309474 2014-05-13 19:53:41Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,60 +22,61 @@
 
 package org.sakaiproject.tool.assessment.services;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.math.BigDecimal;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.event.cover.EventTrackingService;
-import org.apache.commons.math.util.MathUtils;
 import org.apache.commons.math.complex.Complex;
 import org.apache.commons.math.complex.ComplexFormat;
-import org.sakaiproject.service.gradebook.shared.GradebookService;
+import org.apache.commons.math.util.MathUtils;
+import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
+import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingAttachment;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingAttachmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingIfc;
 import org.sakaiproject.tool.assessment.data.ifc.grading.StudentGradingSummaryIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
-import org.sakaiproject.tool.assessment.facade.AssessmentFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.GradebookFacade;
 import org.sakaiproject.tool.assessment.facade.TypeFacade;
 import org.sakaiproject.tool.assessment.facade.TypeFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
-import org.sakaiproject.tool.assessment.util.FormatException;
-import org.sakaiproject.tool.assessment.util.TextFormat;
+import org.sakaiproject.tool.assessment.util.SamigoExpressionError;
+import org.sakaiproject.tool.assessment.util.SamigoExpressionParser;
 
 
 /**
@@ -93,7 +94,27 @@ public class GradingService
    * key for a real number representation e.g 1 or 10E5 
    */
   public static final String ANSWER_TYPE_REAL = "REAL";
-  
+
+  // CALCULATED_QUESTION
+  final String OPEN_BRACKET = "\\{";
+  final String CLOSE_BRACKET = "\\}";
+  final String CALCULATION_OPEN = "[["; // not regex safe
+  final String CALCULATION_CLOSE = "]]"; // not regex safe
+  /**
+   * regular expression for matching the contents of a variable or formula name 
+   * in Calculated Questions
+   * NOTE: Old regex: ([\\w\\s\\.\\-\\^\\$\\!\\&\\@\\?\\*\\%\\(\\)\\+=#`~&:;|,/<>\\[\\]\\\\\\'\"]+?)
+   * was way too complicated.
+   */
+  final String CALCQ_VAR_FORM_NAME = "[a-zA-Z][^\\{\\}]*?"; // non-greedy (must start wtih alpha)
+  final String CALCQ_VAR_FORM_NAME_EXPRESSION = "("+CALCQ_VAR_FORM_NAME+")";
+
+  // variable match - (?<!\{)\{([^\{\}]+?)\}(?!\}) - means any sequence inside braces without a braces before or after
+  final Pattern CALCQ_ANSWER_PATTERN = Pattern.compile("(?<!\\{)" + OPEN_BRACKET + CALCQ_VAR_FORM_NAME_EXPRESSION + CLOSE_BRACKET + "(?!\\})");
+  final Pattern CALCQ_FORMULA_PATTERN = Pattern.compile(OPEN_BRACKET + OPEN_BRACKET + CALCQ_VAR_FORM_NAME_EXPRESSION + CLOSE_BRACKET + CLOSE_BRACKET);
+  final Pattern CALCQ_FORMULA_SPLIT_PATTERN = Pattern.compile("(" + OPEN_BRACKET + OPEN_BRACKET + CALCQ_VAR_FORM_NAME + CLOSE_BRACKET + CLOSE_BRACKET + ")");
+  final Pattern CALCQ_CALCULATION_PATTERN = Pattern.compile("\\[\\[([^\\[\\]]+?)\\]\\]?"); // non-greedy
+
   private static Log log = LogFactory.getLog(GradingService.class);
 
   /**
@@ -309,7 +330,7 @@ public class GradingService
     return scoringType;
   }
 
-  private boolean updateGradebook(AssessmentGradingIfc data, PublishedAssessmentIfc pub){
+  private boolean updateGradebook(AssessmentGradingData data, PublishedAssessmentIfc pub){
     // no need to notify gradebook if this submission is not for grade
     boolean forGrade = (Boolean.TRUE).equals(data.getForGrade());
 
@@ -343,13 +364,25 @@ public class GradingService
       return new HashMap();
     }
   }
-
-  public HashMap getItemScores(Long itemId, List scores)
+  
+  public HashMap getItemScores(Long publishedId, Long itemId, String which, boolean loadItemGradingAttachment)
   {
     try {
       return (HashMap) PersistenceService.getInstance().
         getAssessmentGradingFacadeQueries()
-          .getItemScores(itemId, scores);
+          .getItemScores(publishedId, itemId, which, loadItemGradingAttachment);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new HashMap();
+    }
+  }
+
+  public HashMap getItemScores(Long itemId, List scores, boolean loadItemGradingAttachment)
+  {
+    try {
+      return (HashMap) PersistenceService.getInstance().
+        getAssessmentGradingFacadeQueries()
+          .getItemScores(itemId, scores, loadItemGradingAttachment);
     } catch (Exception e) {
       e.printStackTrace();
       return new HashMap();
@@ -458,7 +491,7 @@ public class GradingService
 	    getMediaItemGradingHash(assessmentGradingId);
   }
   
-  public List getMediaArray(String publishedId, String publishItemId, String which){
+  public List<MediaData> getMediaArray(String publishedId, String publishItemId, String which){
 	    return PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
 	    getMediaArray(Long.valueOf(publishedId), Long.valueOf(publishItemId), which);
   }
@@ -486,9 +519,13 @@ public class GradingService
   }
 
   public AssessmentGradingData load(String assessmentGradingId) {
+	    return load(assessmentGradingId, true);
+  }
+  
+  public AssessmentGradingData load(String assessmentGradingId, boolean loadGradingAttachment) {
     try{
       return PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
-          load(Long.valueOf(assessmentGradingId));
+          load(Long.valueOf(assessmentGradingId), loadGradingAttachment);
     }
     catch(Exception e)
     {
@@ -507,7 +544,7 @@ public class GradingService
     }
   }
 
-  public AssessmentGradingIfc getLastAssessmentGradingByAgentId(String publishedAssessmentId, String agentIdString) {
+  public AssessmentGradingData getLastAssessmentGradingByAgentId(String publishedAssessmentId, String agentIdString) {
     try{
       return PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
           getLastAssessmentGradingByAgentId(Long.valueOf(publishedAssessmentId), agentIdString);
@@ -550,7 +587,7 @@ public class GradingService
 	  return assessmentGranding;
   }
   
-  public void saveItemGrading(ItemGradingIfc item)
+  public void saveItemGrading(ItemGradingData item)
   {
     try {
       PersistenceService.getInstance().
@@ -560,7 +597,7 @@ public class GradingService
     }
   }
 
-  public void saveOrUpdateAssessmentGrading(AssessmentGradingIfc assessment)
+  public void saveOrUpdateAssessmentGrading(AssessmentGradingData assessment)
   {
     try {
       /*	
@@ -592,7 +629,7 @@ public class GradingService
   }
   
   // This API only touch SAM_ASSESSMENTGRADING_T. No data gets inserted/updated in SAM_ITEMGRADING_T
-  public void saveOrUpdateAssessmentGradingOnly(AssessmentGradingIfc assessment)
+  public void saveOrUpdateAssessmentGradingOnly(AssessmentGradingData assessment)
   {
 	  Set origItemGradingSet = assessment.getItemGradingSet();
 	  HashSet h = new HashSet(origItemGradingSet);
@@ -625,7 +662,7 @@ public class GradingService
     }
   }
 
-  public AssessmentGradingIfc getHighestAssessmentGrading(String publishedAssessmentId, String agentId){
+  public AssessmentGradingData getHighestAssessmentGrading(String publishedAssessmentId, String agentId){
     try{
       return PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
 	      getHighestAssessmentGrading(Long.valueOf(publishedAssessmentId), agentId);
@@ -636,8 +673,8 @@ public class GradingService
     }
   }
   
-  public AssessmentGradingIfc getHighestSubmittedAssessmentGrading(String publishedAssessmentId, String agentId, String assessmentGradingId){
-	  AssessmentGradingIfc assessmentGrading = null;
+  public AssessmentGradingData getHighestSubmittedAssessmentGrading(String publishedAssessmentId, String agentId, String assessmentGradingId){
+	  AssessmentGradingData assessmentGrading = null;
 	  try {
 		  if (assessmentGradingId != null) {
 			  assessmentGrading = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
@@ -656,7 +693,7 @@ public class GradingService
 	  return  assessmentGrading;
   }
   
-  public AssessmentGradingIfc getHighestSubmittedAssessmentGrading(String publishedAssessmentId, String agentId){
+  public AssessmentGradingData getHighestSubmittedAssessmentGrading(String publishedAssessmentId, String agentId){
 	  return getHighestSubmittedAssessmentGrading(publishedAssessmentId, agentId, null);
   }
   
@@ -680,17 +717,17 @@ public class GradingService
     }
   }
 
-  public void updateItemScore(ItemGradingData gdata, float scoreDifference, PublishedAssessmentIfc pub){
+  public void updateItemScore(ItemGradingData gdata, double scoreDifference, PublishedAssessmentIfc pub){
     try {
       AssessmentGradingData adata = load(gdata.getAssessmentGradingId().toString());
       adata.setItemGradingSet(getItemGradingSet(adata.getAssessmentGradingId().toString()));
 
       Set itemGradingSet = adata.getItemGradingSet();
       Iterator iter = itemGradingSet.iterator();
-      float totalAutoScore = 0;
-      float totalOverrideScore = adata.getTotalOverrideScore().floatValue();
+      double totalAutoScore = 0;
+      double totalOverrideScore = adata.getTotalOverrideScore().doubleValue();
       while (iter.hasNext()){
-        ItemGradingIfc i = (ItemGradingIfc)iter.next();
+        ItemGradingData i = (ItemGradingData)iter.next();
         if (i.getItemGradingId().equals(gdata.getItemGradingId())){
 	  i.setAutoScore(gdata.getAutoScore());
           i.setComments(gdata.getComments());
@@ -698,14 +735,14 @@ public class GradingService
           i.setGradedDate(new Date());
 	}
         if (i.getAutoScore()!=null)
-          totalAutoScore += i.getAutoScore().floatValue();
+          totalAutoScore += i.getAutoScore().doubleValue();
       }
       
-      adata.setTotalAutoScore( Float.valueOf(totalAutoScore));
-      if (Float.compare((totalAutoScore+totalOverrideScore),Float.valueOf("0").floatValue())<0){
-    	  adata.setFinalScore(Float.valueOf("0"));
+      adata.setTotalAutoScore( Double.valueOf(totalAutoScore));
+      if (Double.compare((totalAutoScore+totalOverrideScore),Double.valueOf("0").doubleValue())<0){
+    	  adata.setFinalScore(Double.valueOf("0"));
       }else{
-    	  adata.setFinalScore(Float.valueOf(totalAutoScore+totalOverrideScore));
+    	  adata.setFinalScore(Double.valueOf(totalAutoScore+totalOverrideScore));
       }
       saveOrUpdateAssessmentGrading(adata);
       if (scoreDifference != 0){
@@ -723,7 +760,7 @@ public class GradingService
   /**
    * Assume this is a new item.
    */
-  public void storeGrades(AssessmentGradingIfc data, PublishedAssessmentIfc pub,
+  public void storeGrades(AssessmentGradingData data, PublishedAssessmentIfc pub,
                           HashMap publishedItemHash, HashMap publishedItemTextHash,
                           HashMap publishedAnswerHash, HashMap invalidFINMap, ArrayList invalidSALengthList) throws GradebookServiceException, FinFormatException
   {
@@ -734,7 +771,7 @@ public class GradingService
   /**
    * Assume this is a new item.
    */
-  public void storeGrades(AssessmentGradingIfc data, PublishedAssessmentIfc pub,
+  public void storeGrades(AssessmentGradingData data, PublishedAssessmentIfc pub,
                           HashMap publishedItemHash, HashMap publishedItemTextHash,
                           HashMap publishedAnswerHash, boolean persistToDB, HashMap invalidFINMap, ArrayList invalidSALengthList) throws GradebookServiceException, FinFormatException
   {
@@ -742,7 +779,7 @@ public class GradingService
 	  storeGrades(data, false, pub, publishedItemHash, publishedItemTextHash, publishedAnswerHash, persistToDB, invalidFINMap, invalidSALengthList);
   }
   
-  public void storeGrades(AssessmentGradingIfc data, boolean regrade, PublishedAssessmentIfc pub,
+  public void storeGrades(AssessmentGradingData data, boolean regrade, PublishedAssessmentIfc pub,
 		  HashMap publishedItemHash, HashMap publishedItemTextHash,
 		  HashMap publishedAnswerHash, boolean persistToDB) throws GradebookServiceException, FinFormatException {
 	  log.debug("storeGrades (not persistToDB) : data.getSubmittedDate()" + data.getSubmittedDate());
@@ -757,7 +794,7 @@ public class GradingService
    * If regrade is true, we just recalculate the graded score.  If it's
    * false, we do everything from scratch.
    */
-  public void storeGrades(AssessmentGradingIfc data, boolean regrade, PublishedAssessmentIfc pub,
+  public void storeGrades(AssessmentGradingData data, boolean regrade, PublishedAssessmentIfc pub,
                           HashMap publishedItemHash, HashMap publishedItemTextHash,
                           HashMap publishedAnswerHash, boolean persistToDB, HashMap invalidFINMap, ArrayList invalidSALengthList) 
          throws GradebookServiceException, FinFormatException {
@@ -768,29 +805,64 @@ public class GradingService
       // note that this itemGradingSet is a partial set of answer submitted. it contains only 
       // newly submitted answers, updated answers and MCMR/FIB/FIN answers ('cos we need the old ones to
       // calculate scores for new ones)
-      Set itemGradingSet = data.getItemGradingSet();
+      Set<ItemGradingData> itemGradingSet = data.getItemGradingSet();
       if (itemGradingSet == null)
-        itemGradingSet = new HashSet();
+        itemGradingSet = new HashSet<ItemGradingData>();
       log.debug("****itemGrading size="+itemGradingSet.size());
-      Iterator iter = itemGradingSet.iterator();
+      
+      List<ItemGradingData> tempItemGradinglist = new ArrayList<ItemGradingData>(itemGradingSet);
+      
+      // CALCULATED_QUESTION - if this is a calc question. Carefully sort the list of answers
+      if (isCalcQuestion(tempItemGradinglist, publishedItemHash)) {
+	      Collections.sort(tempItemGradinglist, new Comparator<ItemGradingData>(){
+	    	  public int compare(ItemGradingData o1, ItemGradingData o2) {
+	    		  ItemGradingData gradeData1 = o1;
+	    		  ItemGradingData gradeData2 = o2;
+	    		  
+	    		  // protect against blank ones in samigo initial setup.
+	    		  if (gradeData1 == null) return -1; 
+	    		  if (gradeData2 == null) return 1;
+	    		  if (gradeData1.getPublishedAnswerId() == null) return -1; 
+	    		  if (gradeData2.getPublishedAnswerId() == null) return 1; 
+	    		  return gradeData1.getPublishedAnswerId().compareTo(gradeData2.getPublishedAnswerId());
+	    	  }
+	      });
+      }
+      
+      Iterator<ItemGradingData> iter = tempItemGradinglist.iterator();
 
-      // fibAnswersMap contains a map of HashSet of answers for a FIB item,
+      // fibEmiAnswersMap contains a map of HashSet of answers for a FIB or EMI item,
       // key =itemid, value= HashSet of answers for each item.  
-      // This is used to keep track of answers we have already used for 
+      // For FIB: This is used to keep track of answers we have already used for
       // mutually exclusive multiple answer type of FIB, such as 
       // The flag of the US is {red|white|blue},{red|white|blue}, and {red|white|blue}.
       // so if the first blank has an answer 'red', the 'red' answer should 
-      // not be included in the answers for the other mutually exclusive blanks. 
-      HashMap fibAnswersMap= new HashMap();
+      // not be included in the answers for the other mutually exclusive blanks.
+      // For EMI: This keeps track of how many answers were given so we don't give
+      // extra marks for to many answers.
+      Map fibEmiAnswersMap = new HashMap();
+      Map<Long, Map<Long,Set<EMIScore>>> emiScoresMap = new HashMap<Long, Map<Long,Set<EMIScore>>>();
       
       //change algorithm based on each question (SAK-1930 & IM271559) -cwen
       HashMap totalItems = new HashMap();
       log.debug("****x2. "+(new Date()).getTime());
-      float autoScore = (float) 0;
+      double autoScore = (double) 0;
+      Long itemId = (long)0;
+      int calcQuestionAnswerSequence = 1; // sequence of answers for CALCULATED_QUESTION
       while(iter.hasNext())
       {
-        ItemGradingIfc itemGrading = (ItemGradingIfc) iter.next();
-        Long itemId = itemGrading.getPublishedItemId();
+        ItemGradingData itemGrading = iter.next();
+        
+        // CALCULATED_QUESTION - We increment this so we that calculated 
+        // questions can know where we are in the sequence of answers.
+        if (itemGrading.getPublishedItemId().equals(itemId)) {
+        	calcQuestionAnswerSequence++;
+        }
+        else {
+        	calcQuestionAnswerSequence = 1;
+        }
+        
+        itemId = itemGrading.getPublishedItemId();
         ItemDataIfc item = (ItemDataIfc) publishedItemHash.get(itemId);
         if (item == null) {
         	//this probably shouldn't happen
@@ -798,34 +870,29 @@ public class GradingService
         	continue;
         }
         Long itemType = item.getTypeId();  
-    	autoScore = (float) 0;
+    	autoScore = (double) 0;
 
         itemGrading.setAssessmentGradingId(data.getAssessmentGradingId());
         //itemGrading.setSubmittedDate(new Date());
         itemGrading.setAgentId(agent);
-        itemGrading.setOverrideScore(Float.valueOf(0));
-        
+        itemGrading.setOverrideScore(Double.valueOf(0));
+
         if (itemType == 5 && itemGrading.getAnswerText() != null) {
         	String processedAnswerText = itemGrading.getAnswerText().replaceAll("\r", "").replaceAll("\n", "");
-        	if (processedAnswerText.length() > 60000) {
+        	if (processedAnswerText.length() > 32000) {
         		if (invalidSALengthList != null) {
         			invalidSALengthList.add(item.getItemId());
         		}
         	}
         }
         
-        if (itemType == 8 && itemGrading.getAnswerText() != null) {
-        	String processedAnswerText = TextFormat.convertPlaintextToFormattedTextNoHighUnicode(log, itemGrading.getAnswerText().trim());
-        	itemGrading.setAnswerText(processedAnswerText);
-        }
-        
         // note that totalItems & fibAnswersMap would be modified by the following method
         try {
         	autoScore = getScoreByQuestionType(itemGrading, item, itemType, publishedItemTextHash, 
-                               totalItems, fibAnswersMap, publishedAnswerHash, regrade);
+                               totalItems, fibEmiAnswersMap, emiScoresMap, publishedAnswerHash, regrade, calcQuestionAnswerSequence);
         }
         catch (FinFormatException e) {
-        	autoScore = 0f;
+        	autoScore = 0d;
         	if (invalidFINMap != null) {
         		if (invalidFINMap.containsKey(itemId)) {
         			ArrayList list = (ArrayList) invalidFINMap.get(itemId);
@@ -840,13 +907,13 @@ public class GradingService
         }
         
         log.debug("**!regrade, autoScore="+autoScore);
-        if (!(TypeIfc.MULTIPLE_CORRECT).equals(itemType))
-          totalItems.put(itemId, Float.valueOf(autoScore));
+        if (!(TypeIfc.MULTIPLE_CORRECT).equals(itemType) && !(TypeIfc.EXTENDED_MATCHING_ITEMS).equals(itemType))
+          totalItems.put(itemId, Double.valueOf(autoScore));
         
         if (regrade && TypeIfc.AUDIO_RECORDING.equals(itemType))
         	itemGrading.setAttemptsRemaining(item.getTriesAllowed());
 	
-        itemGrading.setAutoScore(Float.valueOf(autoScore));
+        itemGrading.setAutoScore(Double.valueOf(autoScore));
       }
 
       if ((invalidFINMap != null && invalidFINMap.size() > 0) || (invalidSALengthList != null && invalidSALengthList.size() > 0)) {
@@ -862,23 +929,123 @@ public class GradingService
       }
       
       log.debug("****x3. "+(new Date()).getTime());
+      
+      List<ItemGradingData> emiItemGradings = new ArrayList<ItemGradingData>();
       // the following procedure ensure total score awarded per question is no less than 0
       // this probably only applies to MCMR question type - daisyf
       iter = itemGradingSet.iterator();
+      //since the itr goes through each answer (multiple answers for a signle mc question), keep track
+      //of its total score by itemId -> autoScore[]{user's score, total possible}
+      Map<Long, Double[]> mcmcAllOrNothingCheck = new HashMap<Long, Double[]>();
+      //get item information to check if it's MCMS and Not Partial Credit
+      Long itemType2 = -1l;
+      String mcmsPartialCredit = "";
+      double itemScore = -1;
       while(iter.hasNext())
       {
-        ItemGradingIfc itemGrading = (ItemGradingIfc) iter.next();
-        Long itemId = itemGrading.getPublishedItemId();
+        ItemGradingData itemGrading = iter.next();
+        itemId = itemGrading.getPublishedItemId();
         ItemDataIfc item = (ItemDataIfc) publishedItemHash.get(itemId);
-        Long itemType2 = item.getTypeId();
-        //float autoScore = (float) 0;
+      //SAM-1724 it's possible the item is not in the hash -DH
+        if (item == null) {
+        	log.error("unable to retrive itemDataIfc for: " + publishedItemHash.get(itemId));
+        	continue;
+        }
+        itemType2 = item.getTypeId();
+        //get item information to check if it's MCMS and Not Partial Credit
+        mcmsPartialCredit = item.getItemMetaDataByLabel(ItemMetaDataIfc.MCMS_PARTIAL_CREDIT);
+        itemScore = item.getScore();
+        //double autoScore = (double) 0;
+        
+        // this does not apply to EMI
+        // just create a short-list and handle differently below
+        if ((TypeIfc.EXTENDED_MATCHING_ITEMS).equals(itemType2)) {
+            emiItemGradings.add(itemGrading);
+        	continue;
+        }
 
-        float eachItemScore = ((Float) totalItems.get(itemId)).floatValue();
+        double eachItemScore = ((Double) totalItems.get(itemId)).doubleValue();
         if((eachItemScore < 0) && !((TypeIfc.MULTIPLE_CHOICE).equals(itemType2)||(TypeIfc.TRUE_FALSE).equals(itemType2)))
         {
-        	itemGrading.setAutoScore( Float.valueOf(0));
+        	itemGrading.setAutoScore( Double.valueOf(0));
+        }
+        //keep track of MCMC answer's total score in order to check for all or nothing
+        if(TypeIfc.MULTIPLE_CORRECT.equals(itemType2)  && "false".equals(mcmsPartialCredit)){
+        	Double accumulatedScore = itemGrading.getAutoScore();
+        	if(mcmcAllOrNothingCheck.containsKey(itemId)){
+        		Double[] accumulatedScoreArr = mcmcAllOrNothingCheck.get(itemId);
+        		accumulatedScore += accumulatedScoreArr[0];
+        	}
+        	mcmcAllOrNothingCheck.put(itemId, new Double[]{accumulatedScore, item.getScore()});
         }
       }
+      
+      log.debug("****x3.1 "+(new Date()).getTime());
+
+      // Loop 1: this procedure ensure total score awarded per EMI item
+      // is correct
+      // For emi's there are multiple gradings per item per question,
+      // for the grading we only know scores after grading so we need
+      // to reset the grading score here to the correct scores
+      // this currently only applies to EMI question type
+      if (emiItemGradings != null && !emiItemGradings.isEmpty()) {
+    	  Map<Long, Map<Long, Map<Long, EMIScore>>> emiOrderedScoresMap = reorderEMIScoreMap(emiScoresMap);
+    	  iter = emiItemGradings.iterator();
+    	  while (iter.hasNext()) {
+    		  ItemGradingData itemGrading = iter.next();
+
+    		  //SAM-2016 check for Nullity
+    		  if (itemGrading == null) {
+    			  log.warn("Map contains null itemgrading!");
+    			  continue;
+    		  }
+    		  
+    		  Map<Long, Map<Long, EMIScore>> innerMap = emiOrderedScoresMap
+    				  .get(itemGrading.getPublishedItemId()); 
+    		  
+    		  if (innerMap == null) {
+    			  log.warn("Inner map is empty!");
+    			  continue;
+    		  }
+    		  
+    		  Map<Long, EMIScore> scoreMap = innerMap
+    				  .get(itemGrading.getPublishedItemTextId());
+    		  
+    		  if (scoreMap == null) {
+    			  log.warn("Score map is empty!");
+    			  continue;
+    		  }
+    		  
+     		  EMIScore score = scoreMap
+    				  .get(itemGrading.getPublishedAnswerId());
+    		if (score == null) {
+    			//its possible! SAM-2016 
+    			log.warn("we can't find a score for answer: " + itemGrading.getPublishedAnswerId());
+    			continue;
+    		}
+    		  itemGrading.setAutoScore(emiOrderedScoresMap
+    				  .get(itemGrading.getPublishedItemId())
+    				  .get(itemGrading.getPublishedItemTextId())
+    				  .get(itemGrading.getPublishedAnswerId()).effectiveScore);
+    	  }
+      }
+      
+      // if it's MCMS and Not Partial Credit and the score isn't 100% (totalAutoScoreCheck != itemScore),
+      // that means the user didn't answer all of the correct answers only.  
+      // We need to set their score to 0 for all ItemGrading items
+      for(Entry<Long, Double[]> entry : mcmcAllOrNothingCheck.entrySet()){
+    	  if(!(MathUtils.equalsIncludingNaN(entry.getValue()[0], entry.getValue()[1], 0.0001))){
+    		  //reset all scores to 0 since the user didn't get all correct answers
+    		  iter = itemGradingSet.iterator();
+    		  while(iter.hasNext()){
+    			  ItemGradingData itemGrading = iter.next();
+    			  if(itemGrading.getPublishedItemId().equals(entry.getKey())){
+    				  itemGrading.setAutoScore(Double.valueOf(0));
+    			  }
+    		  }
+    	  }
+      }
+      
       log.debug("****x4. "+(new Date()).getTime());
 
       // save#1: this itemGrading Set is a partial set of answers submitted. it contains new answers and
@@ -894,13 +1061,13 @@ public class GradingService
       // save#2: now, we need to get the full set so we can calculate the total score accumulate for the
       // whole assessment.
       Set fullItemGradingSet = getItemGradingSet(data.getAssessmentGradingId().toString());
-      float totalAutoScore = getTotalAutoScore(fullItemGradingSet);
-      data.setTotalAutoScore( Float.valueOf(totalAutoScore));
+      double totalAutoScore = getTotalAutoScore(fullItemGradingSet);
+      data.setTotalAutoScore( Double.valueOf(totalAutoScore));
       //log.debug("**#1 total AutoScore"+totalAutoScore);
-      if (Float.compare((totalAutoScore + data.getTotalOverrideScore().floatValue()),new Float("0").floatValue())<0){
-    	  data.setFinalScore( Float.valueOf("0"));
+      if (Double.compare((totalAutoScore + data.getTotalOverrideScore().doubleValue()),new Double("0").doubleValue())<0){
+    	  data.setFinalScore( Double.valueOf("0"));
       }else{
-    	  data.setFinalScore(Float.valueOf(totalAutoScore + data.getTotalOverrideScore().floatValue()));
+    	  data.setFinalScore(Double.valueOf(totalAutoScore + data.getTotalOverrideScore().doubleValue()));
       }
       log.debug("****x6. "+(new Date()).getTime());
     } catch (GradebookServiceException ge) {
@@ -936,23 +1103,23 @@ public class GradingService
     }
   }
 
-  private float getTotalAutoScore(Set itemGradingSet){
+  private double getTotalAutoScore(Set itemGradingSet){
       //log.debug("*** no. of itemGrading="+itemGradingSet.size());
-    float totalAutoScore =0;
+    double totalAutoScore =0;
     Iterator iter = itemGradingSet.iterator();
     while (iter.hasNext()){
-      ItemGradingIfc i = (ItemGradingIfc)iter.next();
+      ItemGradingData i = (ItemGradingData)iter.next();
       //log.debug(i.getItemGradingId()+"->"+i.getAutoScore());
       if (i.getAutoScore()!=null)
-	totalAutoScore += i.getAutoScore().floatValue();
+	totalAutoScore += i.getAutoScore().doubleValue();
     }
     return totalAutoScore;
   }
 
-  private void notifyGradebookByScoringType(AssessmentGradingIfc data, PublishedAssessmentIfc pub){
+  private void notifyGradebookByScoringType(AssessmentGradingData data, PublishedAssessmentIfc pub){
     Integer scoringType = pub.getEvaluationModel().getScoringType();
     if (updateGradebook(data, pub)){
-      AssessmentGradingIfc d = data; // data is the last submission
+      AssessmentGradingData d = data; // data is the last submission
       // need to decide what to tell gradebook
       if ((scoringType).equals(EvaluationModelIfc.HIGHEST_SCORE))
         d = getHighestSubmittedAssessmentGrading(pub.getPublishedAssessmentId().toString(), data.getAgentId());
@@ -960,14 +1127,15 @@ public class GradingService
     }
   }
   
-  private float getScoreByQuestionType(ItemGradingIfc itemGrading, ItemDataIfc item,
-                                       Long itemType, HashMap publishedItemTextHash, 
-                                       HashMap totalItems, HashMap fibAnswersMap,
-                                       HashMap publishedAnswerHash, boolean regrade) throws FinFormatException {
-    //float score = (float) 0;
-    float initScore = (float) 0;
-    float autoScore = (float) 0;
-    float accumelateScore = (float) 0;
+  private double getScoreByQuestionType(ItemGradingData itemGrading, ItemDataIfc item,
+                                       Long itemType, Map publishedItemTextHash, 
+                                       Map totalItems, Map fibAnswersMap, Map<Long, Map<Long,Set<EMIScore>>> emiScoresMap,
+                                       HashMap publishedAnswerHash, boolean regrade,
+                                       int calcQuestionAnswerSequence) throws FinFormatException {
+    //double score = (double) 0;
+    double initScore = (double) 0;
+    double autoScore = (double) 0;
+    double accumelateScore = (double) 0;
     Long itemId = item.getItemId();
     int type = itemType.intValue();
     switch (type){ 
@@ -979,8 +1147,8 @@ public class GradingService
     	}
     	//overridescore
     	if (itemGrading.getOverrideScore() != null)
-    		autoScore += itemGrading.getOverrideScore().floatValue();
-    	totalItems.put(itemId, new Float(autoScore));
+    		autoScore += itemGrading.getOverrideScore().doubleValue();
+    	totalItems.put(itemId, new Double(autoScore));
     	break;// MC Single Correct
       case 12: // MC Multiple Correct Single Selection    	  
       case 3: // MC Survey
@@ -988,12 +1156,12 @@ public class GradingService
               autoScore = getAnswerScore(itemGrading, publishedAnswerHash);
               //overridescore
               if (itemGrading.getOverrideScore() != null)
-                autoScore += itemGrading.getOverrideScore().floatValue();
-	      totalItems.put(itemId,  Float.valueOf(autoScore));
+                autoScore += itemGrading.getOverrideScore().doubleValue();
+	      totalItems.put(itemId,  Double.valueOf(autoScore));
               break;
       case 2: // MC Multiple Correct
               ItemTextIfc itemText = (ItemTextIfc) publishedItemTextHash.get(itemGrading.getPublishedItemTextId());
-              ArrayList answerArray = itemText.getAnswerArray();
+              List answerArray = itemText.getAnswerArray();
               int correctAnswers = 0;
               if (answerArray != null){
                 for (int i =0; i<answerArray.size(); i++){
@@ -1006,77 +1174,96 @@ public class GradingService
               if (initScore > 0)
                 autoScore = initScore / correctAnswers;
               else
-                autoScore = (getTotalCorrectScore(itemGrading, publishedAnswerHash) / correctAnswers) * ((float) -1);
+                autoScore = (getTotalCorrectScore(itemGrading, publishedAnswerHash) / correctAnswers) * ((double) -1);
 
               //overridescore?
               if (itemGrading.getOverrideScore() != null)
-                autoScore += itemGrading.getOverrideScore().floatValue();
+                autoScore += itemGrading.getOverrideScore().doubleValue();
               if (!totalItems.containsKey(itemId)){
-                totalItems.put(itemId,  Float.valueOf(autoScore));
+                totalItems.put(itemId,  Double.valueOf(autoScore));
                 //log.debug("****0. first answer score = "+autoScore);
               }
               else{
-                accumelateScore = ((Float)totalItems.get(itemId)).floatValue();
+                accumelateScore = ((Double)totalItems.get(itemId)).doubleValue();
                 //log.debug("****1. before adding new score = "+accumelateScore);
                 //log.debug("****2. this answer score = "+autoScore);
                 accumelateScore += autoScore;
                 //log.debug("****3. add 1+2 score = "+accumelateScore);
-                totalItems.put(itemId,  Float.valueOf(accumelateScore));
-                //log.debug("****4. what did we put in = "+((Float)totalItems.get(itemId)).floatValue());
+                totalItems.put(itemId,  Double.valueOf(accumelateScore));
+                //log.debug("****4. what did we put in = "+((Double)totalItems.get(itemId)).doubleValue());
               }
               break;
 
       case 9: // Matching     
               initScore = getAnswerScore(itemGrading, publishedAnswerHash);
-              if (initScore > 0)
-                autoScore = initScore / ((float) item.getItemTextSet().size());
+              if (initScore > 0) {
+            	  	int nonDistractors = 0;
+          	    	Iterator<ItemTextIfc> itemIter = item.getItemTextArraySorted().iterator();
+          	    	while (itemIter.hasNext()) {
+          	    		ItemTextIfc curItem = itemIter.next();
+          	    		if (!isDistractor(curItem)) {
+          	    			nonDistractors++;
+          	    		}
+          	    	}            	  
+                    autoScore = initScore / nonDistractors;
+              	}
               //overridescore?
               if (itemGrading.getOverrideScore() != null)
-                autoScore += itemGrading.getOverrideScore().floatValue();
+                autoScore += itemGrading.getOverrideScore().doubleValue();
 
               if (!totalItems.containsKey(itemId))
-                totalItems.put(itemId,  Float.valueOf(autoScore));
+                totalItems.put(itemId,  Double.valueOf(autoScore));
               else {
-                accumelateScore = ((Float)totalItems.get(itemId)).floatValue();
+                accumelateScore = ((Double)totalItems.get(itemId)).doubleValue();
                 accumelateScore += autoScore;
-                totalItems.put(itemId,  Float.valueOf(accumelateScore));
+                totalItems.put(itemId,  Double.valueOf(accumelateScore));
               }
               break;
 
       case 8: // FIB
-              autoScore = getFIBScore(itemGrading, fibAnswersMap, item, publishedAnswerHash) / (float) ((ItemTextIfc) item.getItemTextSet().toArray()[0]).getAnswerSet().size();
+              autoScore = getFIBScore(itemGrading, fibAnswersMap, item, publishedAnswerHash) / (double) ((ItemTextIfc) item.getItemTextSet().toArray()[0]).getAnswerSet().size();
               //overridescore - cwen
               if (itemGrading.getOverrideScore() != null)
-                autoScore += itemGrading.getOverrideScore().floatValue();
+                autoScore += itemGrading.getOverrideScore().doubleValue();
 
               if (!totalItems.containsKey(itemId))
-                totalItems.put(itemId, Float.valueOf(autoScore));
+                totalItems.put(itemId, Double.valueOf(autoScore));
               else {
-                accumelateScore = ((Float)totalItems.get(itemId)).floatValue();
+                accumelateScore = ((Double)totalItems.get(itemId)).doubleValue();
                 accumelateScore += autoScore;
-                totalItems.put(itemId, Float.valueOf(accumelateScore));
+                totalItems.put(itemId, Double.valueOf(accumelateScore));
               }
               break;
+      case 15:  // CALCULATED_QUESTION
       case 11: // FIN
     	  try {
-    		  autoScore = getFINScore(itemGrading, item, publishedAnswerHash) / (float) ((ItemTextIfc) item.getItemTextSet().toArray()[0]).getAnswerSet().size();
+    	      if (type == 15) {  // CALCULATED_QUESTION
+    	          Map<Integer, String> calculatedAnswersMap = getCalculatedAnswersMap(itemGrading, item);
+	              int numAnswers = calculatedAnswersMap.size();
+	              autoScore = getCalcQScore(itemGrading, item, calculatedAnswersMap, calcQuestionAnswerSequence ) / (double) numAnswers;
+	          } else {
+	              autoScore = getFINScore(itemGrading, item, publishedAnswerHash) / (double) ((ItemTextIfc) item.getItemTextSet().toArray()[0]).getAnswerSet().size();
+	          }
     	  }
     	  catch (FinFormatException e) {
     		  throw e;
     	  }
     	  //overridescore - cwen
           if (itemGrading.getOverrideScore() != null)
-            autoScore += itemGrading.getOverrideScore().floatValue();
+            autoScore += itemGrading.getOverrideScore().doubleValue();
 
           if (!totalItems.containsKey(itemId))
-            totalItems.put(itemId, Float.valueOf(autoScore));
+            totalItems.put(itemId, Double.valueOf(autoScore));
           else {
-            accumelateScore = ((Float)totalItems.get(itemId)).floatValue();
+            accumelateScore = ((Double)totalItems.get(itemId)).doubleValue();
             accumelateScore += autoScore;
-            totalItems.put(itemId, Float.valueOf(accumelateScore));
+            totalItems.put(itemId, Double.valueOf(accumelateScore));
           }
           break;
 
+      case 14: // EMI
+    	  autoScore = getEMIScore(itemGrading, itemId, totalItems, emiScoresMap, publishedItemTextHash, publishedAnswerHash);
+          break;
       case 5: // SAQ
       case 6: // file upload
       case 7: // audio recording
@@ -1085,57 +1272,57 @@ public class GradingService
     	  	    autoScore = itemGrading.getAutoScore();
     	  	  }
               if (itemGrading.getOverrideScore() != null)
-                autoScore += itemGrading.getOverrideScore().floatValue();
+                autoScore += itemGrading.getOverrideScore().doubleValue();
               if (!totalItems.containsKey(itemId))
-                totalItems.put(itemId, Float.valueOf(autoScore));
+                totalItems.put(itemId, Double.valueOf(autoScore));
               else {
-                accumelateScore = ((Float)totalItems.get(itemId)).floatValue();
+                accumelateScore = ((Double)totalItems.get(itemId)).doubleValue();
                 accumelateScore += autoScore;
-                totalItems.put(itemId, Float.valueOf(accumelateScore));
+                totalItems.put(itemId, Double.valueOf(accumelateScore));
               }
               break;
     }
     return autoScore;
   }
 
-  /**
+/**
    * This grades multiple choice and true false questions.  Since
-   * multiple choice/multiple select has a separate ItemGradingIfc for
+   * multiple choice/multiple select has a separate ItemGradingData for
    * each choice, they're graded the same way the single choice are.
    * Choices should be given negative score values if one wants them
    * to lose points for the wrong choice.
    */
-  public float getAnswerScore(ItemGradingIfc data, HashMap publishedAnswerHash)
+  public double getAnswerScore(ItemGradingData data, Map publishedAnswerHash)
   {
     AnswerIfc answer = (AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId());
     if (answer == null || answer.getScore() == null) {
-    	return (float) 0;
+    	return (double) 0;
     }
     ItemDataIfc item = (ItemDataIfc) answer.getItem();
     Long itemType = item.getTypeId();
     if (answer.getIsCorrect() == null || !answer.getIsCorrect().booleanValue())
     {
-    	// return (float) 0;
+    	// return (double) 0;
     	// Para que descuente (For discount)
-    	if ((TypeIfc.MULTIPLE_CHOICE).equals(itemType)||(TypeIfc.TRUE_FALSE).equals(itemType)){
-    		return (Math.abs(answer.getDiscount().floatValue()) * ((float) -1));
+    	if ((TypeIfc.EXTENDED_MATCHING_ITEMS).equals(itemType)||(TypeIfc.MULTIPLE_CHOICE).equals(itemType)||(TypeIfc.TRUE_FALSE).equals(itemType)){
+    		return (Math.abs(answer.getDiscount().doubleValue()) * ((double) -1));
     	}else{
-    		return (float) 0;
+    		return (double) 0;
     	}
     }
-    return answer.getScore().floatValue();
+    return answer.getScore().doubleValue();
   }
 
-  public void notifyGradebook(AssessmentGradingIfc data, PublishedAssessmentIfc pub) throws GradebookServiceException {
+  public void notifyGradebook(AssessmentGradingData data, PublishedAssessmentIfc pub) throws GradebookServiceException {
     // If the assessment is published to the gradebook, make sure to update the scores in the gradebook
     String toGradebook = pub.getEvaluationModel().getToGradeBook();
 
-    GradebookService g = null;
+    GradebookExternalAssessmentService g = null;
     boolean integrated = IntegrationContextFactory.getInstance().isIntegrated();
     if (integrated)
     {
-      g = (GradebookService) SpringBeanLocator.getInstance().
-        getBean("org.sakaiproject.service.gradebook.GradebookService");
+      g = (GradebookExternalAssessmentService) SpringBeanLocator.getInstance().
+        getBean("org.sakaiproject.service.gradebook.GradebookExternalAssessmentService");
     }
 
     GradebookServiceHelper gbsHelper =
@@ -1149,8 +1336,8 @@ public class GradingService
 
     // add retry logic to resolve deadlock problem while sending grades to gradebook
 
-    Float originalFinalScore = data.getFinalScore();
-    int retryCount = PersistenceService.getInstance().getRetryCount().intValue();
+    Double originalFinalScore = data.getFinalScore();
+    int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount().intValue();
     while (retryCount > 0){
     	try {
     		// Send the average score if average was selected for multiple submissions
@@ -1160,7 +1347,7 @@ public class GradingService
     			if(data.getStatus() ==5) {
     				data.setFinalScore(data.getFinalScore());
     			} else {
-    				Float averageScore = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
+    				Double averageScore = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
     				getAverageSubmittedAssessmentGrading(Long.valueOf(pub.getPublishedAssessmentId()), data.getAgentId());
     				data.setFinalScore(averageScore);
     			}
@@ -1198,7 +1385,7 @@ public class GradingService
 	  log.warn("retry....");
       retryCount--;
       try {
-    	  int deadlockInterval = PersistenceService.getInstance().getDeadlockInterval().intValue();
+    	  int deadlockInterval = PersistenceService.getInstance().getPersistenceHelper().getDeadlockInterval().intValue();
     	  Thread.sleep(deadlockInterval);
       }
       catch(InterruptedException ex){
@@ -1277,12 +1464,11 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 -. multiple answer, mutually exclusive, wildcard , case insensitive
 
   */
-  
-  public float getFIBScore(ItemGradingIfc data, HashMap fibmap,  ItemDataIfc itemdata, HashMap publishedAnswerHash)
+  public double getFIBScore(ItemGradingData data, Map fibmap,  ItemDataIfc itemdata, Map publishedAnswerHash)
   {
     String studentanswer = "";
     boolean matchresult = false;
-    float totalScore = (float) 0;
+    double totalScore = (double) 0;
     data.setIsCorrect(Boolean.FALSE);
     
     if (data.getPublishedAnswerId() == null) {
@@ -1345,7 +1531,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
             }
 
             if (!alreadyused) {
-              totalScore += ((AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId())).getScore().floatValue();
+              totalScore += ((AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId())).getScore().doubleValue();
               data.setIsCorrect(Boolean.TRUE);
             }
 
@@ -1357,7 +1543,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
     return totalScore;
   }
 
-  public boolean getFIBResult(ItemGradingIfc data, HashMap fibmap,  ItemDataIfc itemdata, HashMap publishedAnswerHash)
+  public boolean getFIBResult(ItemGradingData data, HashMap fibmap,  ItemDataIfc itemdata, HashMap publishedAnswerHash)
   {
 	  // this method is similiar to getFIBScore(), except it returns true/false for the answer, not scores.  
 	  // may be able to refactor code out to be reused, but totalscores for mutually exclusive case is a bit tricky. 
@@ -1436,21 +1622,20 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
     return matchresult;
   }
   
-  
-  public float getFINScore(ItemGradingIfc data,  ItemDataIfc itemdata, HashMap publishedAnswerHash) throws FinFormatException
+  public double getFINScore(ItemGradingData data,  ItemDataIfc itemdata, Map publishedAnswerHash) throws FinFormatException
   {
 	  data.setIsCorrect(Boolean.FALSE);
-	  float totalScore = (float) 0;
+	  double totalScore = (double) 0;
 	  boolean matchresult = getFINResult(data, itemdata, publishedAnswerHash);
 	  if (matchresult){
-		  totalScore += ((AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId())).getScore().floatValue();
+		  totalScore += ((AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId())).getScore().doubleValue();
 		  data.setIsCorrect(Boolean.TRUE);
 	  }	
 	  return totalScore;
 	  
   }
 	  
-  public boolean getFINResult (ItemGradingIfc data,  ItemDataIfc itemdata, HashMap publishedAnswerHash) throws FinFormatException
+  public boolean getFINResult (ItemGradingData data,  ItemDataIfc itemdata, Map publishedAnswerHash) throws FinFormatException
   {
 	  String studentanswer = "";
 	  boolean range;
@@ -1597,27 +1782,162 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	  }
 
 	  return map;
+	}
+
+  /**
+   * EMI score processing
+   * 
+   */
+	private double getEMIScore(ItemGradingData itemGrading, Long itemId,
+			Map totalItems, Map<Long, Map<Long, Set<EMIScore>>> emiScoresMap,
+			Map publishedItemTextHash, Map publishedAnswerHash) {
+
+		log.debug("getEMIScore( " + itemGrading +", " + itemId);
+		double autoScore = 0.0;
+		if (!totalItems.containsKey(itemId)) {
+			totalItems.put(itemId, new HashMap());
+			emiScoresMap.put(itemId, new HashMap<Long, Set<EMIScore>>());
+		}
+
+		autoScore = getAnswerScore(itemGrading, publishedAnswerHash);
+		AnswerIfc answer = (AnswerIfc) publishedAnswerHash.get(itemGrading
+				.getPublishedAnswerId());
+		if (answer == null) {
+			//its possible we have an orphaned object ...
+			log.warn("could not find answer: " + itemGrading
+					.getPublishedAnswerId() + ", for item " + itemGrading.getItemGradingId());
+			return 0.0;
+		}
+		Long itemTextId = itemGrading.getPublishedItemTextId();
+
+		// update the fibEmiAnswersMap so we can keep track
+		// of how many answers were given
+		Map<Long, Set<EMIScore>> emiItemScoresMap = emiScoresMap.get(itemId);
+		// place the answer scores in a sorted set.
+		// so now we can mark the correct ones and discount the extra incorrect
+		// ones.
+		Set<EMIScore> scores = null;
+		if (emiItemScoresMap.containsKey(itemTextId)) {
+			scores = emiItemScoresMap.get(itemTextId);
+		} else {
+			scores = new TreeSet<EMIScore>();
+			emiItemScoresMap.put(itemTextId, scores);
+		}
+		scores.add(new EMIScore(itemId, itemTextId, itemGrading
+				.getPublishedAnswerId(), answer.getIsCorrect(), autoScore));
+
+		ItemTextIfc itemText = (ItemTextIfc) publishedItemTextHash.get(itemTextId);
+		int numberCorrectAnswers = itemText.getEmiCorrectOptionLabels()
+				.length();
+		Integer requiredCount = itemText.getRequiredOptionsCount();
+		// re-calculate the scores over for the whole item
+		autoScore = 0.0;
+		int c = 0;
+		for (EMIScore s : scores) {
+			c++;
+			s.effectiveScore = 0.0;
+			if (c <= numberCorrectAnswers && c <= requiredCount) {
+				// if correct and in count then add score
+				s.effectiveScore = s.correct ? s.score : 0.0;
+			} else if (c > numberCorrectAnswers) {
+				// if incorrect and over count add discount
+				s.effectiveScore = !s.correct ? s.score : 0.0;
+			}
+			if (autoScore + s.effectiveScore < 0.0) {
+				// the current item tipped it to negative,
+				// we cannot do this, so add zero
+				s.effectiveScore = 0.0;
+			}
+			autoScore += s.effectiveScore;
+		}
+
+		// override score
+		if (itemGrading.getOverrideScore() != null)
+			autoScore += itemGrading.getOverrideScore().doubleValue();
+
+		HashMap totalItemTextScores = (HashMap) totalItems.get(itemId);
+		totalItemTextScores.put(itemTextId, Double.valueOf(autoScore));
+		return autoScore;
+	}
+  /**
+   * CALCULATED_QUESTION
+   * Returns a double score value for the ItemGrading element being scored for a Calculated Question
+   * 
+   * @param calcQuestionAnswerSequence the order of answers in the list
+   * @return score for the item.
+   */
+  public double getCalcQScore(ItemGradingData data,  ItemDataIfc itemdata, Map<Integer, String> calculatedAnswersMap, int calcQuestionAnswerSequence)
+  {
+	  double totalScore = (double) 0;
+	  
+	  if (data.getAnswerText() == null) return totalScore; // zero for blank
+	  
+	  if (!calculatedAnswersMap.containsKey(calcQuestionAnswerSequence)) {
+		  return totalScore;
+	  }
+	  // this variable should look something like this "42.1|2,2"
+	  String allAnswerText = calculatedAnswersMap.get(calcQuestionAnswerSequence).toString();
+	  
+	  // NOTE: this correctAnswer will already have been trimmed to the appropriate number of decimals
+	  BigDecimal correctAnswer = new BigDecimal(getAnswerExpression(allAnswerText));
+	  
+	  // Determine if the acceptable variance is a constant or a % of the answer
+	  String varianceString = allAnswerText.substring(allAnswerText.indexOf("|")+1, allAnswerText.indexOf(","));
+	  BigDecimal acceptableVariance = BigDecimal.ZERO;
+	  if (varianceString.contains("%")){
+		  double percentage = Double.valueOf(varianceString.substring(0, varianceString.indexOf("%")));
+		  acceptableVariance = correctAnswer.multiply( new BigDecimal(percentage / 100) );
+	  }
+	  else {
+		  acceptableVariance = new BigDecimal(varianceString);
+	  }
+	  
+	  String userAnswerString = data.getAnswerText().replaceAll(",", "").trim();
+	  BigDecimal userAnswer;
+	  try {
+		  userAnswer = new BigDecimal(userAnswerString);
+	  } catch(NumberFormatException nfe) {
+		  return totalScore; // zero because it's not even a number!
+	  }
+	  //double userAnswer = Double.valueOf(userAnswerString);
+	  
+	  
+	  // this compares the correctAnswer against the userAnsewr
+	  BigDecimal answerDiff = (correctAnswer.subtract(userAnswer));
+	  boolean closeEnough = (answerDiff.abs().compareTo(acceptableVariance.abs()) <= 0);
+	  if (closeEnough){
+		  totalScore += itemdata.getScore(); 
+	  }	
+	  return totalScore;
+	  
   }
   
-  public float getTotalCorrectScore(ItemGradingIfc data, HashMap publishedAnswerHash)
+  public double getTotalCorrectScore(ItemGradingData data, Map publishedAnswerHash)
   {
     AnswerIfc answer = (AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId());
     if (answer == null || answer.getScore() == null)
-      return (float) 0;
-    return answer.getScore().floatValue();
+      return (double) 0;
+    return answer.getScore().doubleValue();
   }
 
-  private void setIsLate(AssessmentGradingIfc data, PublishedAssessmentIfc pub){
-    if (pub.getAssessmentAccessControl() != null
-      && pub.getAssessmentAccessControl().getDueDate() != null &&
-          pub.getAssessmentAccessControl().getDueDate().before(new Date()))
-          data.setIsLate(Boolean.TRUE);
-    else
-      data.setIsLate( Boolean.valueOf(false));
+  private void setIsLate(AssessmentGradingData data, PublishedAssessmentIfc pub){
+	  // If submit from timeout popup, we don't record LATE
+	  if (data.getSubmitFromTimeoutPopup()) {
+		  data.setIsLate( Boolean.valueOf(false));
+	  }
+	  else {
+		  if (pub.getAssessmentAccessControl() != null
+				  && pub.getAssessmentAccessControl().getDueDate() != null &&
+				  pub.getAssessmentAccessControl().getDueDate().before(new Date()))
+			  data.setIsLate(Boolean.TRUE);
+		  else
+			  data.setIsLate( Boolean.valueOf(false));
+	  }
+	  
     if (data.getForGrade().booleanValue())
       data.setStatus( Integer.valueOf(1));
     
-    data.setTotalOverrideScore(Float.valueOf(0));
+    data.setTotalOverrideScore(Double.valueOf(0));
   }
 
   public void deleteAll(Collection c)
@@ -1633,24 +1953,24 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
   /* Note:
    * assessmentGrading contains set of itemGrading that are not saved in the DB yet
    */
-  public void updateAssessmentGradingScore(AssessmentGradingIfc adata, PublishedAssessmentIfc pub){
+  public void updateAssessmentGradingScore(AssessmentGradingData adata, PublishedAssessmentIfc pub){
     try {
       Set itemGradingSet = adata.getItemGradingSet();
       Iterator iter = itemGradingSet.iterator();
-      float totalAutoScore = 0;
-      float totalOverrideScore = adata.getTotalOverrideScore().floatValue();
+      double totalAutoScore = 0;
+      double totalOverrideScore = adata.getTotalOverrideScore().doubleValue();
       while (iter.hasNext()){
-        ItemGradingIfc i = (ItemGradingIfc)iter.next();
+        ItemGradingData i = (ItemGradingData)iter.next();
         if (i.getAutoScore()!=null)
-          totalAutoScore += i.getAutoScore().floatValue();
+          totalAutoScore += i.getAutoScore().doubleValue();
         }
-        float oldAutoScore = adata.getTotalAutoScore().floatValue();
-        float scoreDifference = totalAutoScore - oldAutoScore;
-        adata.setTotalAutoScore(Float.valueOf(totalAutoScore));
-        if (Float.compare((totalAutoScore+totalOverrideScore),Float.valueOf("0").floatValue())<0){
-        	adata.setFinalScore(Float.valueOf("0"));
+        double oldAutoScore = adata.getTotalAutoScore().doubleValue();
+        double scoreDifference = totalAutoScore - oldAutoScore;
+        adata.setTotalAutoScore(Double.valueOf(totalAutoScore));
+        if (Double.compare((totalAutoScore+totalOverrideScore),Double.valueOf("0").doubleValue())<0){
+        	adata.setFinalScore(Double.valueOf("0"));
         }else{
-        	adata.setFinalScore(Float.valueOf(totalAutoScore+totalOverrideScore));
+        	adata.setFinalScore(Double.valueOf(totalAutoScore+totalOverrideScore));
         }
         saveOrUpdateAssessmentGrading(adata);
         if (scoreDifference != 0){
@@ -1764,7 +2084,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 		 p = Pattern.compile(regex_quote );
 		 }
 		 else {
-		 p = Pattern.compile(regex_quote,Pattern.CASE_INSENSITIVE );
+		 p = Pattern.compile(regex_quote,Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CASE);
 		 }
 		 Matcher m = p.matcher(input);
 		 boolean result = m.matches();
@@ -1786,6 +2106,13 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	      e.printStackTrace();
 	    }
 	    return results;
+  }
+  
+  
+  public List<ItemGradingData> getAllItemGradingDataForItemInGrading(Long assesmentGradingId, Long publihsedItemId) {
+	  List<ItemGradingData> results = new ArrayList<ItemGradingData>();
+	  results = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().getAllItemGradingDataForItemInGrading(assesmentGradingId, publihsedItemId);
+	  return results;
   }
   
   public HashMap getSiteSubmissionCountHash(String siteId) {
@@ -1936,7 +2263,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	    return list;
   }
   
-  private void removeUnsubmittedAssessmentGradingData(AssessmentGradingIfc data){
+  private void removeUnsubmittedAssessmentGradingData(AssessmentGradingData data){
 	  try {
 	      PersistenceService.getInstance().
 	        getAssessmentGradingFacadeQueries().removeUnsubmittedAssessmentGradingData(data);
@@ -1956,6 +2283,650 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	    }
 	    return hasGradingData;
   }
+
+
+  /**
+   * CALCULATED_QUESTION
+   * @param itemGrading
+   * @param item
+   * @return map of calc answers
+   */
+  private Map<Integer, String> getCalculatedAnswersMap(ItemGradingData itemGrading, ItemDataIfc item) {
+      HashMap<Integer, String> calculatedAnswersMap = new HashMap<Integer, String>();
+      // return value from extractCalcQAnswersArray is not used, calculatedAnswersMap is populated by this call
+      extractCalcQAnswersArray(calculatedAnswersMap, item, itemGrading.getAssessmentGradingId(), itemGrading.getAgentId());
+      return calculatedAnswersMap;
+  }
+
+  /**
+   * extractCalculations() is a utility function for Calculated Questions.  It takes
+   * one parameter, which is a block of text, and looks for any calculations
+   * that are encoded in the text.  A calculations is enclosed in [[ ]].
+   * <p>For example, if the passed parameter is <code>{a} + {b} = {{c}}, [[{a}+{b}]]</code>, 
+   * the resulting list would contain one entry: a string of "{a}+{b}"
+   * <p>Formulas must contain at least one variable OR parens OR calculation symbol (*-+/)
+   * @param text contents to be searched
+   * @return a list of matching calculations.  If no calculations are found, the 
+   * list will be empty.
+   */
+  public List<String> extractCalculations(String text) {
+      List<String> calculations = extractCalculatedQuestionKeyFromItemText(text, CALCQ_CALCULATION_PATTERN);
+      for (Iterator<String> iterator = calculations.iterator(); iterator.hasNext();) {
+        String calc = iterator.next();
+        if (!StringUtils.containsAny(calc, "{}()+-*/")) {
+            iterator.remove();
+        }
+      }
+      return calculations;
+  }
+
+  /**
+   * extractFormulas() is a utility function for Calculated Questions.  It takes
+   * one parameter, which is a block of text, and looks for any formula names
+   * that are encoded in the text.  A formula name is enclosed in {{ }}.  The 
+   * formula itself is encoded elsewhere.
+   * <p>For example, if the passed parameter is <code>{a} + {b} = {{c}}</code>, 
+   * the resulting list would contain one entry: a string of "c"
+   * <p>Formulas must begin with an alpha, but subsequent character can be 
+   * alpha-numeric
+   * @param text contents to be searched
+   * @return a list of matching formula names.  If no formulas are found, the 
+   * list will be empty.
+   */
+  public List<String> extractFormulas(String text) {
+      return extractCalculatedQuestionKeyFromItemText(text, CALCQ_FORMULA_PATTERN);
+  }
+
+  /**
+   * extractVariables() is a utility function for Calculated Questions.  It 
+   * takes one parameter, which is a block of text, and looks for any variable 
+   * names that are encoded in the text.  A variable name is enclosed in { }.  
+   * The values of the variable are encoded elsewhere.
+   * <p>For example, if the passed parameter is <code>{a} + {b} = {{c}}</code>, 
+   * the resulting list would contain two entries: strings of "a" and "b"
+   * <p>Variables must begin with an alpha, but subsequent character can be 
+   * alpha-numeric.
+   * <p>Note - a formula, encoded as {{ }}, will not be mistaken for a variable.
+   * @param text content to be searched
+   * @return a list of matching variable names.  If no variables are found, the 
+   * list will be empty
+   */
+  public List<String> extractVariables(String text) {
+    return extractCalculatedQuestionKeyFromItemText(text, CALCQ_ANSWER_PATTERN);
+  }
+
+  /**
+   * extractCalculatedQuestionKeyFromItemText() is a utility function for Calculated Questions.  It 
+   * takes a block of item text, and uses a pattern to looks for keys 
+   * that are encoded in the text.
+   * @param itemText content to be searched
+   * @param identifierPattern pattern to use to do the search
+   * @return a list of matching key values OR empty if none are found
+   */
+  private List<String> extractCalculatedQuestionKeyFromItemText(String itemText, Pattern identifierPattern) {
+      LinkedHashSet<String> keys = new LinkedHashSet<String>();
+      if (itemText != null && itemText.trim().length() > 0) {
+          Matcher keyMatcher = identifierPattern.matcher(itemText);
+          while (keyMatcher.find()) {
+              String match = keyMatcher.group(1);
+              keys.add(match);
+              /*
+              // first character before matching group
+              int start = keyMatcher.start(1) - 2;
+              // first character after matching group
+              int end = keyMatcher.end(1) + 1; // first character after the matching group
+              // if matching group is wrapped by {}, it's not what we are looking for (like another key or just some text)
+              if (start < 0 || end >= itemText.length() || itemText.charAt(start) != '{' || itemText.charAt(end) != '}') {
+                  keys.add(match);
+              }*/
+          }
+      }
+      return new ArrayList<String>(keys);
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * @param item the item which contains the formula
+   * @param formulaName the name of the formula
+   * @return the actual formula that matches this formula name OR "" (empty string) if it is not found
+   */
+  private String replaceFormulaNameWithFormula(ItemDataIfc item, String formulaName) {
+      String result = "";
+      @SuppressWarnings("unchecked")
+      List<ItemTextIfc> items = item.getItemTextArray();
+      for (ItemTextIfc itemText : items) {
+          if (itemText.getText().equals(formulaName)) {
+              @SuppressWarnings("unchecked")
+              List<AnswerIfc> answers = itemText.getAnswerArray();
+              for (AnswerIfc answer : answers) {
+                  if (itemText.getSequence().equals(answer.getSequence())) {
+                      result = answer.getText();
+                      break;
+                  }
+              }
+          }
+      }
+      return result;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * Takes the instructions and breaks it into segments, based on the location 
+   * of formula names.  One formula would give two segments, two formulas gives
+   * three segments, etc.
+   * <p>Note - in this context, it would probably be easier if any variable value
+   * substitutions have occurred before the breakup is done; otherwise,
+   * each segment will need to have substitutions done.
+   * @param instructions string to be broken up
+   * @return the original string, broken up based on the formula name delimiters
+   */
+  protected List<String> extractInstructionSegments(String instructions) {
+      List<String> segments = new ArrayList<String>();
+      if (instructions != null && instructions.length() > 0) {
+          String[] results = CALCQ_FORMULA_SPLIT_PATTERN.split(instructions); // only works because all variables and calculations are already replaced
+          for (String part : results) {
+              segments.add(part);
+          }
+          if (segments.size() == 1) {
+              // add in the trailing segment
+              segments.add("");
+          }
+          /*
+          final String FUNCTION_BEGIN = "{{";
+          final String FUNCTION_END = "}}";
+          while (instructions.indexOf(FUNCTION_BEGIN) > -1 && instructions.indexOf(FUNCTION_END) > -1) {
+              String segment = instructions.substring(0, instructions.indexOf(FUNCTION_BEGIN));
+              instructions = instructions.substring(instructions.indexOf(FUNCTION_END) + FUNCTION_END.length());
+              segments.add(segment);
+          }
+          segments.add(instructions);
+           */
+      }
+      return segments;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * applyPrecisionToNumberString() takes a string representation of a number and returns
+   * a string representation of that number, rounded to the specified number of
+   * decimal places, including trimming decimal places if needed.
+   * Will also throw away the extra trailing zeros as well as removing a trailing decimal point.
+   * @param numberStr
+   * @param decimalPlaces
+   * @return processed number string (will never be null or empty string)
+   */
+  public String applyPrecisionToNumberString(String numberStr, int decimalPlaces) {
+      // Trim off excess decimal points based on decimalPlaces value
+      BigDecimal bd = new BigDecimal(numberStr);
+      bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_EVEN);
+
+      String decimal = ".";
+      // TODO handle localized decimal separator?
+      //DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale);
+      //char dec = dfs.getDecimalFormatSymbols().getDecimalSeparator();
+
+      String displayAnswer = bd.toString();
+      if (displayAnswer.length() > 2 && displayAnswer.contains(decimal)) {
+          if (decimalPlaces == 0) { // Remove ".0" if decimalPlaces == 0
+              displayAnswer = displayAnswer.replace(decimal+"0", "");
+          } else {
+              // trim away all the extra 0s from the end of the number
+              if (displayAnswer.endsWith("0")) {
+                  displayAnswer = StringUtils.stripEnd(displayAnswer, "0");
+              }
+              if (displayAnswer.endsWith(decimal)) {
+                  displayAnswer = displayAnswer.substring(0, displayAnswer.length() - 1);
+              }
+          }
+      }
+      return displayAnswer;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * calculateFormulaValues() evaluates all formulas referenced in the 
+   * instructions.  For each formula name it finds, it retrieves the formula
+   * for the name, substitutes the randomized value for the variables,
+   * evaluates the formula to a real answer, and put the answer, along with
+   * the needed precision and decimal places in the returning Map. 
+   * @param variables a Map<String, String> of variables,  The key is the 
+   * variable name, the value is the text representation, after randomization, 
+   * of a number in the variable's defined range.
+   * @param item The question itself, which is needed to provide additional 
+   * information for called functions
+   * @return a Map<Integer, String>.  the Integer is simply the sequence.  
+   * Answers are returned in the order that the formulas are found.
+   * The String is the result of the formula, encoded as (value)|(tolerance),(decimal places)
+   * @throws Exception if either the formula expression fails to pass the 
+   * Samigo expression parser, which should never happen as this is validated
+   * when the question is saved, or if a divide by zero error occurs.
+   */
+  private Map<Integer, String> calculateFormulaValues(Map<String, String> variables, ItemDataIfc item) throws Exception {
+      Map<Integer, String> values = new HashMap<Integer, String>();
+      String instructions = item.getInstruction();
+      List<String> formulaNames = this.extractFormulas(instructions);
+      for (int i = 0; i < formulaNames.size(); i++) {
+          String formulaName = formulaNames.get(i);
+          String longFormula = replaceFormulaNameWithFormula(item, formulaName); // {a}+{b}|0.1,1
+          longFormula = defaultVarianceAndDecimal(longFormula); // sets defaults, in case tolerance or precision isn't set
+          
+          String formula = getAnswerExpression(longFormula); // returns just the formula
+          String answerData = getAnswerData(longFormula); // returns just tolerance and precision
+          int decimalPlaces = getAnswerDecimalPlaces(answerData);
+          
+          String substitutedFormula = replaceMappedVariablesWithNumbers(formula,variables);
+          String formulaValue = processFormulaIntoValue(substitutedFormula, decimalPlaces);
+          values.put(i + 1, formulaValue + answerData); // later answerData will be used for scoring
+      }
+      return values;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * This is a busy method. It does three things:
+   * <br>1. It removes the answer expressions ie. {{x+y}} from the question text. This value is
+   *    returned in the ArrayList texts. This format is necessary so that input boxes can be
+   *    placed in the text where the {{..}}'s appear.
+   * <br>2. It will call methods to swap out the defined variables with randomly generated values
+   *    within the ranges defined by the user.
+   * <br>3. It updates the HashMap answerList with the calculated answers in sequence. It will 
+   *    parse and calculate what each answer needs to be.
+   * <p>Note: If a divide by zero occurs. We change the random values and try again. It gets limited chances to
+   *    get valid values and then will return "infinity" as the answer.
+   * @param answerList will enter the method empty and be filled with sequential answers to the question
+   * @return ArrayList of the pieces of text to display surrounding input boxes
+   */
+  public List<String> extractCalcQAnswersArray(Map<Integer, String> answerList, ItemDataIfc item, Long gradingId, String agentId) {
+      final int MAX_ERROR_TRIES = 100;
+      boolean hasErrors = true;
+      Map<String, String> variableRangeMap = buildVariableRangeMap(item);
+      List<String> instructionSegments = new ArrayList<String>(0);
+
+      int attemptCount = 1;
+      while (hasErrors && attemptCount <= MAX_ERROR_TRIES) {
+          instructionSegments.clear();
+          Map<String, String> variablesWithValues = determineRandomValuesForRanges(variableRangeMap,item.getItemId(), gradingId, agentId, attemptCount);
+          try {
+              Map<Integer, String> evaluatedFormulas = calculateFormulaValues(variablesWithValues, item);
+              answerList.putAll(evaluatedFormulas);
+              // replace the variables in the text with values
+              String instructions = item.getInstruction();
+              instructions = replaceMappedVariablesWithNumbers(instructions, variablesWithValues);
+              // then replace the calculations with values (must happen AFTER the variable replacement)
+              try {
+                  instructions = replaceCalculationsWithValues(instructions, 5); // what decimal precision should we use here?
+                  // if could not process the calculation into a result then throws IllegalStateException which will be caught below and cause the numbers to regenerate
+              } catch (SamigoExpressionError e1) {
+                  log.warn("Samigo calculated item ("+item.getItemId()+") calculation invalid: "+e1.get());
+              }
+              // only pull out the segments if the formulas worked
+              instructionSegments = extractInstructionSegments(instructions);
+              hasErrors = false;
+          } catch (Exception e) {
+              attemptCount++;
+          }
+      }
+      return instructionSegments;
+  }
+  
+  /**
+   * CALCULATED_QUESTION
+   * This returns the decimal places value in the stored answer data.
+   * @param allAnswerText
+   * @return
+   */
+  private int getAnswerDecimalPlaces(String allAnswerText) {
+	String answerData = getAnswerData(allAnswerText);
+	int decimalPlaces = Integer.valueOf(answerData.substring(answerData.indexOf(",")+1, answerData.length()));
+	return decimalPlaces;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * This returns the "|2,2" (variance and decimal display) from the stored answer data.
+   * @param allAnswerText
+   * @return
+   */
+  private String getAnswerData(String allAnswerText) {
+      String answerData = allAnswerText.substring(allAnswerText.indexOf("|"), allAnswerText.length());
+      return answerData;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * This is just "(x+y)/z" or if values have been added to the expression it's the
+   * calculated value as stored in the answer data.
+   * @param allAnswerText
+   * @return
+   */
+  private String getAnswerExpression(String allAnswerText) {
+	  String answerExpression = allAnswerText.substring(0, allAnswerText.indexOf("|"));
+	  return answerExpression;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * Default acceptable variance and decimalPlaces. An answer is defined by an expression
+   * such as {x+y|1,2} if the variance and decimal places are left off. We have to default
+   * them to something.
+   */
+  private String defaultVarianceAndDecimal(String allAnswerText) {
+	  String defaultVariance = "0.001";
+	  String defaultDecimal = "3";
+	  
+	  if (!allAnswerText.contains("|")) {
+		  if (!allAnswerText.contains(","))
+			  allAnswerText = allAnswerText.concat("|"+defaultVariance+","+defaultDecimal);
+		  else
+			  allAnswerText = allAnswerText.replace(",","|"+defaultVariance+",");
+      }
+	  if (!allAnswerText.contains(","))
+		  allAnswerText = allAnswerText.concat(","+defaultDecimal);
+	  
+	  return allAnswerText;
+  }
+    
+  /**
+   * CALCULATED_QUESTION
+   * Takes an answer string and checks for the value returned
+   * is NaN or Infinity, indicating a Samigo formula parse error
+   * Returns false if divide by zero is detected.
+   */
+  public boolean isAnswerValid(String answer) {
+	  String INFINITY = "Infinity";
+	  String NaN = "NaN";
+	  if (answer.length() == 0) return false;
+	  if (answer.equals(INFINITY)) return false;
+	  if (answer.equals(NaN)) return false;	  
+	  return true;
+  }
+  
+  /**
+   * CALCULATED_QUESTION
+   * replaceMappedVariablesWithNumbers() takes a string and substitutes any variable
+   * names found with the value of the variable.  Variables look like {a}, the name of 
+   * that variable is "a", and the value of that variable is in variablesWithValues
+   * <p>Note - this function comprehends syntax like "5{x}".  If "x" is 37, the
+   * result would be "5*37"
+   * @param expression - the string being substituted into
+   * @param variables - Map key is the variable name, value is what will be 
+   * substituted into the expression.
+   * @return a string with values substituted.  If answerExpression is null, 
+   * returns a blank string (i.e "").  If variablesWithValues is null, returns
+   * the original answerExpression 
+   */
+  public String replaceMappedVariablesWithNumbers(String expression, Map<String, String> variables) {
+      if (expression == null) {
+          expression = "";
+      }
+
+      if (variables == null) {
+          variables = new HashMap<String, String>();
+      }
+
+      for (Map.Entry<String, String> entry : variables.entrySet()) {
+          String name = "{" + entry.getKey() + "}";
+          String value = entry.getValue();
+
+          // not doing string replace or replaceAll because the value being
+          // substituted can change for each occurrence of the variable.
+          int index = expression.indexOf(name);
+          while (index > -1) {
+              String prefix = expression.substring(0, index);
+              String suffix = expression.substring(index + name.length());
+
+              String replacementValue = value;
+              // if last character of prefix is a number or the edge of parenthesis, multiply by the variable
+              // if x = 37, 5{x} -> 5*37
+              // if x = 37 (5+2){x} -> (5+2)*37 (prefix is (5+2)
+              if (prefix.length() > 0 && (Character.isDigit(prefix.charAt(prefix.length() - 1)) || prefix.charAt(prefix.length() - 1) == ')')) {
+                  replacementValue = "*" + replacementValue;
+              }
+
+              // if first character of suffix is a number or the edge of parenthesis, multiply by the variable
+              // if x = 37, {x}5 -> 37*5
+              // if x = 37, {x}(5+2) -> 37*(5+2) (suffix is (5+2)
+              if (suffix.length() > 0 && (Character.isDigit(suffix.charAt(0)) || suffix.charAt(0) == '(')) {
+                  replacementValue = replacementValue + "*";
+              }
+
+              // perform substitution, then look for the next instance of current variable
+              expression = prefix + replacementValue + suffix;
+              index = expression.indexOf(name);
+          }
+      }
+      return expression;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * replaceMappedVariablesWithNumbers() takes a string and substitutes any variable
+   * names found with the value of the variable.  Variables look like {a}, the name of 
+   * that variable is "a", and the value of that variable is in variablesWithValues
+   * <p>Note - this function comprehends syntax like "5{x}".  If "x" is 37, the
+   * result would be "5*37"
+   * @param expression - the string which will be scanned for calculations
+   * @return the input string with calculations replaced with number values. If answerExpression is null, 
+   * returns a blank string (i.e "") and if no calculations are found then original string is returned.
+   * @throws IllegalStateException if the formula value cannot be calculated
+   * @throws SamigoExpressionError if the formula cannot be parsed
+   */
+  public String replaceCalculationsWithValues(String expression, int decimalPlaces) throws SamigoExpressionError {
+      if (StringUtils.isEmpty(expression)) {
+          expression = "";
+      } else {
+          Matcher keyMatcher = CALCQ_CALCULATION_PATTERN.matcher(expression);
+          ArrayList<String> toReplace = new ArrayList<String>();
+          while (keyMatcher.find()) {
+              String match = keyMatcher.group(1);
+              toReplace.add(match); // should be the formula
+          }
+          if (toReplace.size() > 0) {
+              for (String formula : toReplace) {
+                  String replace = CALCULATION_OPEN+formula+CALCULATION_CLOSE;
+                  String formulaValue = processFormulaIntoValue(formula, decimalPlaces);
+                  expression = StringUtils.replace(expression, replace, formulaValue);
+              }
+          }
+      }
+      return expression;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * Process a single formula into a final string representing the calculated value of the formula
+   * 
+   * @param formula the formula to process (e.g. 1 * 2 + 3 - 4), All variable replacement must have already happened
+   * @param decimalPlaces number of decimals to include in the final output
+   * @return the value of the formula OR empty string if there is nothing to process
+   * @throws IllegalStateException if the formula value cannot be calculated (typically caused by 0 divisors and the like)
+   * @throws SamigoExpressionError if the formula cannot be parsed
+   */
+  public String processFormulaIntoValue(String formula, int decimalPlaces) throws SamigoExpressionError {
+      String value = "";
+      if (StringUtils.isEmpty(formula)) {
+          value = "";
+      } else {
+          if (decimalPlaces < 0) {
+              decimalPlaces = 0;
+          }
+          formula = cleanFormula(formula);
+          SamigoExpressionParser parser = new SamigoExpressionParser(); // this will turn the expression into a number in string form
+          String numericString = parser.parse(formula, decimalPlaces+1);
+          if (this.isAnswerValid(numericString)) {
+              numericString = applyPrecisionToNumberString(numericString, decimalPlaces);
+              value = numericString;
+          } else {
+              throw new IllegalStateException("Invalid calculation formula ("+formula+") result ("+numericString+"), result could not be calculated");
+          }
+      }
+      return value;
+  }
+
+  /**
+   * Cleans up formula text so that whitespaces are normalized or removed
+   * @param formula formula with variables or without
+   * @return the cleaned formula
+   */
+  public static String cleanFormula(String formula) {
+      if (StringUtils.isEmpty(formula)) {
+          formula = "";
+      } else {
+          formula = StringUtils.trimToEmpty(formula).replaceAll("\\s+", " ");
+      }
+      return formula;
+  }
+
+  /**
+   * isNegativeSqrt() looks at the incoming expression and looks specifically
+   * to see if it executes the SQRT function.  If it does, it evaluates it.  If
+   * it has an error, it assumes that the SQRT function tried to evaluate a 
+   * negative number and evaluated to NaN.
+   * <p>Note - the incoming expression should have no variables.  They should 
+   * have been replaced before this function was called
+   * @param expression a mathematical formula, with all variables replaced by
+   * real values, to be evaluated
+   * @return true if the function uses the SQRT function, and the SQRT function
+   * evaluates as an error; else false
+   * @throws SamigoExpressionError if the evaluation of the SQRT function throws
+   * some other parse error
+   */
+    public boolean isNegativeSqrt(String expression) throws SamigoExpressionError {
+        Pattern sqrt = Pattern.compile("sqrt\\s*\\(");
+        boolean isNegative = false;
+        if (expression == null) {
+            expression = "";
+        }
+        expression = expression.toLowerCase();
+        Matcher matcher = sqrt.matcher(expression);
+        while (matcher.find()) {
+            int x = matcher.end();
+            int p = 1; // Parentheses left to match
+            int len = expression.length();
+            while (p > 0 && x < len) {
+                if (expression.charAt(x) == ')') {
+                    --p;
+                } else if (expression.charAt(x) == '(') {
+                    ++p;
+                }
+                ++x;
+            }
+            if (p == 0) {
+                String sqrtExpression = expression.substring(matcher.start(), x);
+                SamigoExpressionParser parser = new SamigoExpressionParser();
+                String numericAnswerString = parser.parse(sqrtExpression);
+                if (!isAnswerValid(numericAnswerString)) {
+                    isNegative = true;
+                    break; // finding 1 invalid one is enough
+                }
+            }
+        }
+        return isNegative;
+    }
+
+  /**
+   * CALCULATED_QUESTION
+   * Takes a map of ranges and randomly chooses values for those ranges and stores them in a new map.
+   */
+   public Map<String, String> determineRandomValuesForRanges(Map<String, String> variableRangeMap, long itemId, long gradingId, String agentId, int validAnswersAttemptCount) {
+	  Map<String, String> variableValueMap = new HashMap<String, String>();
+	  
+	  // seed random number generator
+	  long seed = getCalcuatedQuestionSeed(itemId, gradingId, agentId, validAnswersAttemptCount);
+	  Random generator = new Random(seed);
+	  
+	  Iterator<Map.Entry<String, String>> i = variableRangeMap.entrySet().iterator();
+	  while(i.hasNext())
+	  {
+		  Map.Entry<String, String>entry = i.next();
+		  
+		  String delimRange = entry.getValue().toString(); // ie. "-100|100,2"
+		  		  
+		  double minVal = Double.valueOf(delimRange.substring(0, delimRange.indexOf('|')));
+		  double maxVal = Double.valueOf(delimRange.substring(delimRange.indexOf('|')+1, delimRange.indexOf(',')));
+		  int decimalPlaces = Integer.valueOf(delimRange.substring(delimRange.indexOf(',')+1, delimRange.length()));
+		  		  
+		  // This line does the magic of creating the random variable value within the range.
+		  Double randomValue = minVal + (maxVal - minVal) * generator.nextDouble();
+		  
+		  // Trim off excess decimal points based on decimalPlaces value
+		  BigDecimal bd = new BigDecimal(randomValue);
+		  bd = bd.setScale(decimalPlaces,BigDecimal.ROUND_HALF_UP);
+		  randomValue = bd.doubleValue();
+		  
+		  String displayNumber = randomValue.toString();
+		  // Remove ".0" if decimalPlaces ==0
+		  if (decimalPlaces == 0) {
+			  displayNumber = displayNumber.replace(".0", "");
+		  }
+		  
+		  variableValueMap.put(entry.getKey(), displayNumber);
+	  }
+	  
+	  return variableValueMap;
+  }
+  
+  /**
+   * CALCULATED_QUESTION
+   * Accepts an ItemDataIfc and returns a HashMap with the pairs of 
+   * variable names and variable ranges.
+   */
+   private Map<String, String> buildVariableRangeMap(ItemDataIfc item) {
+       HashMap<String, String> variableRangeMap = new HashMap<String, String>();
+
+       String instructions = item.getInstruction();
+       List<String> variables = this.extractVariables(instructions);
+
+       // Loop through each VarName
+       @SuppressWarnings("unchecked")
+       List<ItemTextIfc> itemTextList = item.getItemTextArraySorted();
+       for (ItemTextIfc varName : itemTextList) {
+           // only look at variables for substitution, ignore formulas
+           if (variables.contains(varName.getText())) {
+               @SuppressWarnings("unchecked")
+               List<AnswerIfc> answerList = varName.getAnswerArray();
+               for (AnswerIfc range : answerList) {
+                   if (!(range.getLabel() == null) ) { // answer records and variable records are in the same set
+                       if (range.getSequence().equals(varName.getSequence()) && range.getText().contains("|")) {
+                           variableRangeMap.put(varName.getText(), range.getText());
+                       }
+                   }
+               }
+           }
+       }
+
+       return variableRangeMap;
+   }
+  
+  
+  /**
+   * CALCULATED_QUESTION
+   * Make seed by combining user id, item (question) id, grading (submission) id, and attempt count (due to div by 0)
+   */
+  private long getCalcuatedQuestionSeed(long itemId, long gradingId, String agentId, int validAnswersAttemptCount) {
+	  long userSeed = (long) agentId.hashCode();
+	  return userSeed * itemId * gradingId * validAnswersAttemptCount;
+  }
+
+  /**
+   * CALCULATED_QUESTION
+   * Simple to check to see if this is a calculated question. It's used in storeGrades() to see if the sort is necessary.
+   */
+  private boolean isCalcQuestion(List tempItemGradinglist, HashMap publishedItemHash) {
+	  if (tempItemGradinglist == null) return false;
+	  if (tempItemGradinglist.size() == 0) return false;
+	  
+	  Iterator iter = tempItemGradinglist.iterator();
+	  ItemGradingData itemCheck = (ItemGradingData) iter.next();
+	  Long itemId = itemCheck.getPublishedItemId();
+      ItemDataIfc item = (ItemDataIfc) publishedItemHash.get(itemId);
+      if (item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION)) {
+    	  return true;
+      }
+          
+      return false;
+  }
+
   
   public ArrayList getHasGradingDataAndHasSubmission(Long publishedAssessmentId) {
 	  ArrayList al = new ArrayList();
@@ -2010,10 +2981,10 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	  }
   }
   
-  public ItemGradingAttachmentIfc createItemGradingAttachment(
-		  ItemGradingIfc itemGrading, String resourceId, String filename,
+  public ItemGradingAttachment createItemGradingAttachment(
+		  ItemGradingData itemGrading, String resourceId, String filename,
 			String protocol) {
-	  ItemGradingAttachmentIfc attachment = null;
+	  ItemGradingAttachment attachment = null;
 		try {
 			attachment = PersistenceService.getInstance().
 	        getAssessmentGradingFacadeQueries().createItemGradingtAttachment(itemGrading,
@@ -2051,24 +3022,179 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
   
   /**
    * This grades multiple choice and true false questions.  Since
-   * multiple choice/multiple select has a separate ItemGradingIfc for
+   * multiple choice/multiple select has a separate ItemGradingData for
    * each choice, they're graded the same way the single choice are.
    * BUT since we have Partial Credit stuff around we have to have a separate method here  --mustansar
    * Choices should be given negative score values if one wants them
    * to lose points for the wrong choice.
    */
-  public float getAnswerScoreMCQ(ItemGradingIfc data, HashMap publishedAnswerHash)
+  public double getAnswerScoreMCQ(ItemGradingData data, Map publishedAnswerHash)
   {
 	  AnswerIfc answer = (AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId());
 	  if (answer == null || answer.getScore() == null) {
-		  return 0f;
+		  return 0d;
 	  }
 	  else if (answer.getIsCorrect().booleanValue()){ // instead of using answer score Item score needs to be used here 
-		  return (answer.getItem().getScore().floatValue()); //--mustansar 
+		  return (answer.getItem().getScore().doubleValue()); //--mustansar 
 	  }
-	  return (answer.getItem().getScore().floatValue()*answer.getPartialCredit().floatValue())/100f;
+	  return (answer.getItem().getScore().doubleValue()*answer.getPartialCredit().doubleValue())/100d;
   }
+  
+  /**
+   *  Reoder a map of EMI scores
+   * @param emiScoresMap
+   * @return
+   */
+  private Map<Long, Map<Long, Map<Long, EMIScore>>> reorderEMIScoreMap(Map<Long, Map<Long,Set<EMIScore>>> emiScoresMap){
+	  Map<Long, Map<Long, Map<Long, EMIScore>>> scoresMap = new HashMap<Long, Map<Long, Map<Long, EMIScore>>>();
+	  for(Map<Long,Set<EMIScore>> emiItemScoresMap: emiScoresMap.values()){
+		  for(Set<EMIScore> scoreSet: emiItemScoresMap.values()){
+			  for(EMIScore s: scoreSet){
+				  Map<Long, Map<Long, EMIScore>> scoresItem = scoresMap.get(s.itemId);
+				  if(scoresItem == null){
+					  scoresItem = new HashMap<Long, Map<Long, EMIScore>>();
+					  scoresMap.put(s.itemId, scoresItem);
+				  }
+				  Map<Long, EMIScore> scoresItemText = scoresItem.get(s.itemTextId);
+				  if(scoresItemText == null){
+					  scoresItemText = new HashMap<Long, EMIScore>();
+					  scoresItem.put(s.itemTextId, scoresItemText);
+				  }
+				  scoresItemText.put(s.answerId, s);
+			  }
+		  }
+	  }
+	  return scoresMap;
+  }
+	
+  	/**
+  	 * hasDistractors looks at an itemData object for a Matching question and determines
+  	 * if all of the choices have correct matches or not.
+  	 * @param item
+  	 * @return true if any of the choices do not have a correct answer (a distractor choice), or false
+  	 * if all choices have at least one correct answer
+  	 */
+  	public boolean hasDistractors(ItemDataIfc item) {
+		boolean hasDistractor = false;
+		Iterator<ItemTextIfc> itemIter = item.getItemTextArraySorted().iterator();
+		while (itemIter.hasNext()) {
+			ItemTextIfc curItem = itemIter.next();
+			if (isDistractor(curItem)) {
+				hasDistractor = true;
+				break;
+			}
+		}
+		return hasDistractor;	  
+	}
 
+  	/**
+  	 * determines if the passed parameter is a distractor
+  	 * <p>For ItemTextIfc objects that hold data for matching type questions, a distractor 
+  	 * is a choice that has no valid matches (i.e. no correct answers).  This function returns
+  	 * if this ItemTextIfc object has any correct answers
+  	 * @param itemText
+  	 * @return true if itemtext has no correct answers (a distrator) or false if itemtext has at least
+  	 * one correct answer
+  	 */
+	public boolean isDistractor(ItemTextIfc itemText) {
+		// look for items that do not have any correct answers
+		boolean hasCorrectAnswer = false;
+		List<AnswerIfc> answers = itemText.getAnswerArray();
+		Iterator<AnswerIfc> answerIter = answers.iterator();
+		while (answerIter.hasNext()) {
+			AnswerIfc answer = answerIter.next();
+			if (answer.getIsCorrect() != null && answer.getIsCorrect().booleanValue()) {
+				hasCorrectAnswer = true;
+				break;
+			}
+		}
+		return !hasCorrectAnswer;	  
+	}
+
+  public List getUnSubmittedAssessmentGradingDataList(Long publishedAssessmentId, String agentIdString)  {
+	  return PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
+			  getUnSubmittedAssessmentGradingDataList(publishedAssessmentId, agentIdString);
+  }
 }
 
+/**
+ * A EMI score
+ * @author jsmith
+ *
+ */
+class EMIScore implements Comparable<EMIScore>{
+	long itemId = 0L;
+	long itemTextId = 0L;
+	long answerId = 0L;
+	boolean correct = false;
+	double score = 0.0;
+	double effectiveScore = 0.0;
+	
+	/**
+	 * Create an EMI Score object
+	 * @param itemId
+	 * @param itemTextId
+	 * @param answerId
+	 * @param correct
+	 * @param score
+	 */
+	public EMIScore(Long itemId, Long itemTextId, Long answerId, boolean correct, Double score){
+		this.itemId = itemId == null? 0L : itemId.longValue();
+		this.itemTextId = itemTextId == null? 0L : itemTextId.longValue();
+		this.answerId = answerId == null? 0L : answerId.longValue();
+		this.correct = correct;
+		this.score = score == null? 0L : score.doubleValue();
+	}
+
+	public int compareTo(EMIScore o) {
+		//we want the correct higher scores first
+		if(correct == o.correct){
+			int c = Double.compare(o.score, score);
+			if (c == 0){
+				if(itemId != o.itemId){
+					return (int)(itemId - o.itemId);
+				}
+				if(itemTextId != o.itemTextId){
+					return (int)(itemTextId - o.itemTextId);
+				}
+				if(answerId != o.answerId){
+					return (int)(answerId - o.answerId);
+				}
+				return hashCode() - o.hashCode();
+			}else{
+				return c;
+			}
+		}else{
+			return correct?-1:1;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int)itemId;
+		result = prime * result + (int)itemTextId;
+		result = prime * result + (int)answerId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (this == obj) return true;
+		if (getClass() != obj.getClass()){
+			return false;
+		}
+		EMIScore other = (EMIScore) obj;
+		return (itemId == other.itemId && 
+				itemTextId == other.itemTextId &&
+				answerId == other.answerId);
+	}
+	
+	@Override
+	public String toString() {
+		return itemId + ":" + itemTextId + ":" + answerId + "(" + correct + ":" + score + ":" + effectiveScore + ")";
+	}
+}
 

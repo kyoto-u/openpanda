@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/authz/integrated/AuthzQueriesFacade.java $
+ * $Id: AuthzQueriesFacade.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,26 +26,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-
-import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.cover.AuthzGroupService;
 import org.sakaiproject.authz.cover.SecurityService;
-import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentBaseData;
 import org.sakaiproject.tool.assessment.data.dao.authz.AuthorizationData;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.AuthzQueriesFacadeAPI;
+import org.sakaiproject.tool.cover.ToolManager;
+import org.sakaiproject.user.cover.UserDirectoryService;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * <p>Description: Facade for AuthZ queries, standalone version.
@@ -277,7 +274,6 @@ public class AuthzQueriesFacade
 
   /**
    * Removes an authorization for a specified qualifier and function
-   * added by gopalrc - Nov 2007 
    * @param qualifierId
    * @param functionId
    */
@@ -290,7 +286,6 @@ public class AuthzQueriesFacade
   /**
    * Removes an authorization for a specified agent, qualifier and function
    * TODO: This should be optimized into a single SQL call for a set of agents (groups)
-   * added by gopalrc - Nov 2007 
    * @param agentId
    * @param qualifierId
    */

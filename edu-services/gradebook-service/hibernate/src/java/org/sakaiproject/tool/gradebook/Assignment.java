@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: Assignment.java 95108 2011-07-13 16:11:26Z holladay@longsight.com $
+* $Id: Assignment.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,7 +74,7 @@ public class Assignment extends GradableObject {
     private Category category;
     private Double averageTotal;
     private boolean ungraded;
-    private Boolean extraCredit = false;
+    private Boolean extraCredit = Boolean.FALSE;
 	private Double assignmentWeighting;
 	private Boolean countNullsAsZeros;
 	private String itemType;
@@ -235,6 +235,8 @@ public class Assignment extends GradableObject {
         this.pointsPossible = pointsPossible;
         this.dueDate = dueDate;
         this.released = true;
+        this.extraCredit = Boolean.FALSE;
+        this.hideInAllGradesTable = false;
     }
 
 
@@ -252,10 +254,14 @@ public class Assignment extends GradableObject {
         this.pointsPossible = pointsPossible;
         this.dueDate = dueDate;
         this.released = released;
+        this.extraCredit = Boolean.FALSE;
+        this.hideInAllGradesTable = false;
     }
 
     public Assignment() {
     	super();
+    	this.extraCredit = Boolean.FALSE;
+        this.hideInAllGradesTable = false;
     }
 
 	/**
@@ -491,7 +497,21 @@ public class Assignment extends GradableObject {
 			this.ungraded = ungraded;
 		}
 		
+		//these two functions are needed to keep the old API and help JSF and RSF play nicely together.  Since isExtraCredit already exists and we can't remove it
+		//and JSF expects Boolean values to be "getExtraCredit", this had to be added for JSF.  Also, since the external GB create item page is in
+		//RSF, you can't name it getExtraCredit and keep isExtraCredit b/c of SAK-14589
+		public Boolean getIsExtraCredit(){
+			return isExtraCredit();
+		}
+		
+		public void setIsExtraCredit(Boolean isExtraCredit){
+			this.setExtraCredit(isExtraCredit);
+		}
+		
 		public Boolean isExtraCredit() {
+			if(extraCredit == null){
+				return Boolean.FALSE;
+			}
 			return extraCredit;
 		}
 		

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/StartCreateItemListener.java $
- * $Id: StartCreateItemListener.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/StartCreateItemListener.java $
+ * $Id: StartCreateItemListener.java 308360 2014-04-18 22:24:29Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,10 +34,12 @@ import javax.faces.event.ValueChangeListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.tool.api.ToolSession;
+import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.TypeFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
+import org.sakaiproject.tool.assessment.ui.bean.author.CalculatedQuestionBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.ItemAuthorBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.ItemBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.MatchItemBean;
@@ -133,6 +135,7 @@ public class StartCreateItemListener implements ValueChangeListener, ActionListe
 
    String nextpage= null;
    ItemBean item = new ItemBean();
+   
    AssessmentBean assessmentBean = (AssessmentBean) ContextUtil.lookupBean("assessmentBean");
    try{
     // check to see if we arrived here from question pool
@@ -199,6 +202,9 @@ log.debug("after getting item.getItemType() ");
                         break;
                 case 7:
                         nextpage = "audioRecItem";
+                        // Set default values
+                        item.setTimeAllowed("30");
+                        item.setNumAttempts("9999");
                         break;
                 case 8:
                         nextpage = "fillInBlackItem";
@@ -209,6 +215,10 @@ log.debug("after getting item.getItemType() ");
                 case 13:
                         nextpage = "matrixChoicesSurveyItem";
                         break;
+                case 14:
+                    nextpage = "emiItem";
+                    break;
+                    
                 case 9:
      			MatchItemBean matchitem = new MatchItemBean();
 
@@ -216,6 +226,11 @@ log.debug("after getting item.getItemType() ");
       			item.setMatchItemBeanList(new ArrayList());
                         nextpage = "matchingItem";
                         break;
+                case 15: // CALCULATED_QUESTION
+                    CalculatedQuestionBean bean = new CalculatedQuestionBean();
+                    item.setCalculatedQuestion(bean);
+                    nextpage = "calculatedQuestionVariableItem";
+                    break;
                 case 10:
     			QuestionPoolBean qpoolBean= (QuestionPoolBean) ContextUtil.lookupBean("questionpool");
 			qpoolBean.setImportToAuthoring(true);

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/authz/cover/AuthzGroupService.java $
- * $Id: AuthzGroupService.java 101392 2011-12-05 15:07:25Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/authz/cover/AuthzGroupService.java $
+ * $Id: AuthzGroupService.java 112409 2012-09-13 14:11:16Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,6 +70,8 @@ public class AuthzGroupService
 	public static java.lang.String SECURE_UPDATE_AUTHZ_GROUP = org.sakaiproject.authz.api.AuthzGroupService.SECURE_UPDATE_AUTHZ_GROUP;
 
 	public static java.lang.String SECURE_UPDATE_OWN_AUTHZ_GROUP = org.sakaiproject.authz.api.AuthzGroupService.SECURE_UPDATE_OWN_AUTHZ_GROUP;
+	
+	public static java.lang.String SECURE_VIEW_ALL_AUTHZ_GROUPS = org.sakaiproject.authz.api.AuthzGroupService.SECURE_VIEW_ALL_AUTHZ_GROUPS;
 
 	public static java.lang.String ANON_ROLE = org.sakaiproject.authz.api.AuthzGroupService.ANON_ROLE;
 

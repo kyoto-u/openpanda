@@ -1,10 +1,10 @@
-<%-- $Id: deliverMatching.jsp 96833 2011-08-11 17:04:08Z ktsao@stanford.edu $
+<%-- $Id: deliverMatching.jsp 133922 2014-01-30 16:50:27Z ottenhoff@longsight.com $
 include file for delivering matching questions
 should be included in file importing DeliveryMessages
 --%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 <!--
-* $Id: deliverMatching.jsp 96833 2011-08-11 17:04:08Z ktsao@stanford.edu $
+* $Id: deliverMatching.jsp 133922 2014-01-30 16:50:27Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -34,16 +34,16 @@ should be included in file importing DeliveryMessages
      <h:outputText value="#{answer}" escape="false" />
    </h:column>
   </h:dataTable>
-  <h:outputText escape="false" value="<hr style='border:none;border-top:solid black 1px'/>" />
+
   <h:dataTable value="#{question.matchingArray}" var="matching">
     <h:column rendered="#{delivery.feedback eq 'true' &&
        delivery.feedbackComponent.showCorrectResponse && !delivery.noFeedback=='true'}">
       <h:graphicImage id="image"
-        rendered="#{matching.isCorrect}"
+        rendered="#{matching.isCorrect || matching.isDistractor}"
         alt="#{deliveryMessages.alt_correct}" url="/images/checkmark.gif" >
       </h:graphicImage>
       <h:graphicImage id="ximage"
-        rendered="#{matching.isCorrect != null && !matching.isCorrect}"
+        rendered="#{!matching.isCorrect && !matching.isDistractor}"
         alt="#{deliveryMessages.alt_correct}" url="/images/crossmark.gif" >
       </h:graphicImage>
       <h:graphicImage id="image2"
@@ -114,7 +114,7 @@ should be included in file importing DeliveryMessages
         <h:column>
           <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
           <h:outputLink value="#{attach.location}" target="new_window">
-            <h:outputText escape="false" value="#{attach.filename}" />
+            <h:outputText value="#{attach.filename}" />
           </h:outputLink>
         </h:column>
         <h:column>

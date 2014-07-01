@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-impl/impl/src/java/org/sakaiproject/citation/impl/CitationListAccessServlet.java $
- * $Id: CitationListAccessServlet.java 118326 2013-01-14 18:29:49Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/CitationListAccessServlet.java $
+ * $Id: CitationListAccessServlet.java 124219 2013-05-17 21:10:51Z a.fish@lancaster.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,9 +28,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,7 +36,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.citation.api.Citation;
 import org.sakaiproject.citation.api.CitationCollection;
-import org.sakaiproject.citation.api.CitationHelper;
 import org.sakaiproject.citation.api.Schema;
 import org.sakaiproject.citation.api.Schema.Field;
 import org.sakaiproject.citation.cover.CitationService;
@@ -52,13 +49,14 @@ import org.sakaiproject.entity.api.EntityPermissionException;
 import org.sakaiproject.entity.api.HttpAccess;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.event.api.Event;
+import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Validator;
-import org.sakaiproject.cheftool.VmServlet;
 
 /**
  * 
@@ -116,21 +114,41 @@ public class CitationListAccessServlet implements HttpAccess
 		{
 			throw new EntityNotDefinedException(ref.getReference());
 		}
+		
+		// SAK-22299. Build a pseudo content hosting event so that sitestats picks it up in its special resource area.
+		Event e = EventTrackingService.newEvent(ContentHostingService.EVENT_RESOURCE_READ, "/content" + ref.getId(), false);
+		EventTrackingService.post(e);
 
 	}	// handleAccess
 	
 	protected void handleExportRequest(HttpServletRequest req, HttpServletResponse res,
 			Reference ref, String format, String subtype) 
-			throws EntityNotDefinedException, EntityAccessOverloadException 
+			throws EntityNotDefinedException, EntityAccessOverloadException, EntityPermissionException 
 	{
+		if(! ContentHostingService.allowGetResource(req.getParameter("resourceId")))
+		{
+			String url = (req.getRequestURL()).toString();
+			String user = "";
+			if(req.getUserPrincipal() != null)
+			{
+				user = req.getUserPrincipal().getName();
+			}
+			throw new EntityPermissionException(user, ContentHostingService.EVENT_RESOURCE_READ, ref.getReference());
+		}			
+		
+		String fileName = req.getParameter("resourceDisplayName");
+		if(fileName == null || fileName.trim().equals("")) {
+			fileName = rb.getString("export.default.filename");
+		}
+		
 		if(org.sakaiproject.citation.api.CitationService.RIS_FORMAT.equals(format))
 		{
-			String collectionId = req.getParameter("collectionId");
+			String citationCollectionId = req.getParameter("citationCollectionId");
 			List<String> citationIds = new java.util.ArrayList<String>();
 			CitationCollection collection = null;
 			try 
 			{
-				collection = CitationService.getCollection(collectionId);
+				collection = CitationService.getCollection(citationCollectionId);
 			} 
 			catch (IdUnusedException e) 
 			{
@@ -146,9 +164,17 @@ public class CitationListAccessServlet implements HttpAccess
 				if( paramCitationIds == null || paramCitationIds.length < 1 )
 				{
 					// none selected - do not continue
+					try {
+						res.sendError(HttpServletResponse.SC_BAD_REQUEST, rb.getString("export.none_selected"));
+					} catch (IOException e) {
+						m_log.warn("export-selected request received with not citations selected. citationCollectionId: " + citationCollectionId);
+					}
+
 					return;
 				}
 				citationIds.addAll(Arrays.asList(paramCitationIds));
+				
+				fileName = rb.getFormattedMessage("export.filename.selected.ris", fileName);
 			}
 			else
 			{
@@ -159,7 +185,13 @@ public class CitationListAccessServlet implements HttpAccess
 				
 				if( citations == null || citations.size() < 1 )
 				{
-					// no citations to export - do not continue
+					// no citations to export - do not continue 
+					try {
+						res.sendError(HttpServletResponse.SC_NO_CONTENT, rb.getString("export.empty_collection"));
+					} catch (IOException e) {
+						m_log.warn("export-all request received for empty citation collection. citationCollectionId: " + citationCollectionId);
+					}
+					
 					return;
 				}
 				
@@ -167,8 +199,9 @@ public class CitationListAccessServlet implements HttpAccess
 				{
 					citationIds.add( citation.getId() );
 				}
+				fileName = rb.getFormattedMessage("export.filename.all.ris", fileName);
 			}
-			
+						
 			// We need to write to a temporary stream for better speed, plus
 			// so we can get a byte count. Internet Explorer has problems
 			// if we don't make the setContentLength() call.
@@ -185,7 +218,8 @@ public class CitationListAccessServlet implements HttpAccess
 			}
 
 			// Set the mime type for a RIS file
-			res.addHeader("Content-Disposition", "attachment; filename=\"citations.RIS\"");
+			res.addHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
+			//res.addHeader("Content-Disposition", "attachment; filename=\"citations.RIS\"");
 			res.setContentType("application/x-Research-Info-Systems");
 			res.setContentLength(buffer.length());
 
@@ -335,12 +369,16 @@ public class CitationListAccessServlet implements HttpAccess
     	    			out.println("\t\t\t\t |");
     	    		}
     				}
+    			} else {
+    				// We only want to show the open url if no custom urls have been specified.
+    				out.println("\t\t\t\t<a href=\"" + citation.getOpenurl() + "\" target=\"_blank\">" + ConfigurationService.getSiteConfigOpenUrlLabel() + "</a>");
     			}
-    			out.println("\t\t\t\t<a href=\"" + citation.getOpenurl() + "\" target=\"_blank\">" + ConfigurationService.getSiteConfigOpenUrlLabel() + "</a>");
     			/* not using view citation link - using toggle triangle
     			out.println("\t\t\t\t<a id=\"link_" + escapedId + "\" href=\"#\" onclick=\"viewFullCitation('" + escapedId + "'); return false;\">"
     					+ rb.getString( "action.view" ) + "</a>" );
     			*/
+    			// TODO This doesn't need any Inline HTTP Transport.
+    			out.println("\t\t\t\t<span class=\"Z3988\" title=\""+ citation.getOpenurlParameters().substring(1).replace("&", "&amp;")+ "\"></span>");
     			out.println("\t\t\t</div>");
 
     			// show detailed info

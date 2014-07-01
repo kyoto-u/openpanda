@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EventRegistryServiceImpl.java $
- * $Id: EventRegistryServiceImpl.java 101440 2011-12-06 07:29:54Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EventRegistryServiceImpl.java $
+ * $Id: EventRegistryServiceImpl.java 308540 2014-04-23 20:30:50Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,14 +17,6 @@
  * limitations under the License.
  */
 package org.sakaiproject.sitestats.impl.event;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,6 +37,8 @@ import org.sakaiproject.sitestats.impl.parser.ToolFactoryImpl;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.util.ResourceLoader;
 
+import java.util.*;
+
 
 public class EventRegistryServiceImpl implements EventRegistry, EventRegistryService, Observer {
 	/** Static fields */
@@ -54,8 +48,8 @@ public class EventRegistryServiceImpl implements EventRegistry, EventRegistrySer
 	private static ResourceLoader		msgs						= new ResourceLoader("Messages");
 
 	/** Event Registry members */
-	private List<String>				toolEventIds				= null;
-	private List<String>				anonymousToolEventIds		= null;
+	private Set<String>					toolEventIds				= null;
+	private Set<String>					anonymousToolEventIds		= null;
 	private Map<String, ToolInfo>		eventIdToolMap				= null;
 	private Map<String, String>			toolIdIconMap				= null;
 	private boolean						checkLocalEventNamesFirst	= false;
@@ -69,14 +63,20 @@ public class EventRegistryServiceImpl implements EventRegistry, EventRegistrySer
 	private Cache						eventRegistryCache			= null;
 
 	/** Sakai services */
+	private StatsManager				M_sm;
 	private SiteService					M_ss;
 	private ToolManager					M_tm;
 	private MemoryService				M_ms;
 	private ServerConfigurationService	M_scs;
 
+
 	// ################################################################
 	// Spring methods
 	// ################################################################
+	public void setStatsManager(StatsManager m_sm) {
+		M_sm = m_sm;
+	}
+	
 	public void setSiteService(SiteService siteService) {
 		this.M_ss = siteService;
 	}
@@ -120,12 +120,16 @@ public class EventRegistryServiceImpl implements EventRegistry, EventRegistrySer
 	/* (non-Javadoc)
 	 * @see org.sakaiproject.sitestats.impl.event.EventRegistryService#getEventIds()
 	 */
-	public List<String> getEventIds() {
+	public Set<String> getEventIds() {
 		if(toolEventIds == null){
-			toolEventIds = new ArrayList<String>();
-			Iterator<String> i = getEventIdToolMap().keySet().iterator();
-			while(i.hasNext())
-				toolEventIds.add(i.next());
+			toolEventIds = new HashSet<String>();
+			toolEventIds.addAll(getEventIdToolMap().keySet());
+			// Add on the presence events if we're interested.
+			toolEventIds.add(StatsManager.SITEVISIT_EVENTID);
+			if(M_sm.isEnableSitePresences()) {
+				toolEventIds.add(StatsManager.SITEVISITEND_EVENTID);
+			}
+			toolEventIds = Collections.unmodifiableSet(toolEventIds);
 		}
 		return toolEventIds;
 	}
@@ -133,9 +137,9 @@ public class EventRegistryServiceImpl implements EventRegistry, EventRegistrySer
 	/* (non-Javadoc)
 	 * @see org.sakaiproject.sitestats.impl.event.EventRegistryService#getAnonymousEventIds()
 	 */
-	public List<String> getAnonymousEventIds() {
+	public Set<String> getAnonymousEventIds() {
 		if(anonymousToolEventIds == null){
-			anonymousToolEventIds = new ArrayList<String>();
+			anonymousToolEventIds = new HashSet<String>();
 			for(ToolInfo ti : getEventRegistry()){
 				for(EventInfo ei : ti.getEvents()){
 					if(ei.isAnonymous()){
@@ -143,6 +147,7 @@ public class EventRegistryServiceImpl implements EventRegistry, EventRegistrySer
 					}
 				}
 			}
+			anonymousToolEventIds = Collections.unmodifiableSet(anonymousToolEventIds);
 		}
 		return anonymousToolEventIds;
 	}
@@ -369,6 +374,13 @@ public class EventRegistryServiceImpl implements EventRegistry, EventRegistrySer
 	public EventFactory getEventFactory() {
 		return new EventFactoryImpl();
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isRegisteredEvent(String eventId) {
+		return getEventIds().contains(eventId);
+	}
 
 	// ################################################################
 	// Utility Methods
@@ -376,22 +388,24 @@ public class EventRegistryServiceImpl implements EventRegistry, EventRegistrySer
 	/** Get the merged Event Registry. */
 	@SuppressWarnings("unchecked")
 	private List<ToolInfo> getMergedEventRegistry() {
-		if(eventRegistryCache.containsKey(CACHENAME_EVENTREGISTRY)) {
-			return (List<ToolInfo>) eventRegistryCache.get(CACHENAME_EVENTREGISTRY);
-		}else{
+		List<ToolInfo> eventRegistry = (List<ToolInfo>) eventRegistryCache.get(CACHENAME_EVENTREGISTRY);
+		if (eventRegistry == null) { // not found in the cache
 			// First:  use file Event Registry
-			List<ToolInfo> eventRegistry = fileEventRegistry.getEventRegistry();
-			
-			// Second: add EntityBroker Event Registry, 
+			eventRegistry = fileEventRegistry.getEventRegistry();
+			// Second: add EntityBroker Event Registry,
 			//         replacing events for tools found on this Registry
 			//         (but keeping the anonymous flag for events in both Registries)
 			eventRegistry = EventUtil.addToEventRegistry(entityBrokerEventRegistry.getEventRegistry(), true, eventRegistry);
-			
+
 			// Cache Event Registry
 			eventRegistryCache.put(CACHENAME_EVENTREGISTRY, eventRegistry);
 			LOG.debug("Cached EventRegistry.");
-			return eventRegistry;
 		}
+		// STAT-380 ensure we do not return a null from this method
+		if (eventRegistry == null) {
+			eventRegistry = new ArrayList<ToolInfo>(0);
+		}
+		return eventRegistry;
 	}
 	
 	/** Process event registry expired notifications */

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.JobDetail;
+import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
@@ -24,7 +25,7 @@ public class ScheduledInvocationManagerImpl implements ScheduledInvocationManage
 
 	private static final String SCHEDULED_INVOCATION_RUNNER_DEFAULT_INTERVAL_PROPERTY = "jobscheduler.invocation.interval";
 
-	private static final int SCHEDULED_INVOCATION_RUNNER_DEFAULT_INTERVAL = 600; //default: time in seconds, run every 10 mins
+	private static final int SCHEDULED_INVOCATION_RUNNER_DEFAULT_INTERVAL = 120; //default: time in seconds, run every 2 mins
 
 	
 	/** Dependency: IdManager */
@@ -58,19 +59,29 @@ public class ScheduledInvocationManagerImpl implements ScheduledInvocationManage
 	}
 	
 
+	/** Configuration: Should we autocreate our database tables */
+	protected boolean autoDdl;
+
+	public void setAutoDdl(boolean autoDdl) {
+		this.autoDdl = autoDdl;
+	}
 	
 	
 
 	public void init() {
 		LOG.info("init()");
+		if (autoDdl) {
+			m_sqlService.ddl(getClass().getClassLoader(), "delayed");
+			// Create the additional indexes as hibernate currently fails todo this.
+			// Once hibernate is updated to 3.6 it should be able to manage in it's own.
+			m_sqlService.ddl(getClass().getClassLoader(), "indexes");
+		}
 	      try {
 	          registerScheduledInvocationRunner();
 	       } catch (SchedulerException e) {
 	          LOG.error("failed to schedule ScheduledInvocationRunner job", e);
 	       }
 	    }
-
-	  
 
    public void destroy() {
       LOG.info("destroy()");
@@ -88,8 +99,10 @@ public class ScheduledInvocationManagerImpl implements ScheduledInvocationManage
           "org.sakaiproject.component.app.scheduler.ScheduledInvocationManagerImpl", new Date(startTime), null, SimpleTrigger.REPEAT_INDEFINITELY,
           getScheduledInvocationRunnerInterval());
 
-       m_schedulerManager.getScheduler().unscheduleJob(trigger.getName(), trigger.getGroup());
-       m_schedulerManager.getScheduler().scheduleJob(detail, trigger);
+       Scheduler scheduler = m_schedulerManager.getScheduler();
+       // This removes the jobs if there are no trigger left on it.
+       scheduler.unscheduleJob(trigger.getName(), trigger.getGroup());
+       scheduler.scheduleJob(detail, trigger);
     }
    
    protected int getScheduledInvocationRunnerInterval() {

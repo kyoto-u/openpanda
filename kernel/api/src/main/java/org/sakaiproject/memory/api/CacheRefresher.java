@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/memory/api/CacheRefresher.java $
- * $Id: CacheRefresher.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/memory/api/CacheRefresher.java $
+ * $Id: CacheRefresher.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,22 +24,40 @@ package org.sakaiproject.memory.api;
 import org.sakaiproject.event.api.Event;
 
 /**
- * <p>
+ * WARNING: this does NOT work and will not be called when cache entries are not found
+ * See https://jira.sakaiproject.org/browse/KNL-1226 for more details
+ *
+ * This defines a kind of listener method which will be called whenever a cache miss occurs.
+ * In other words, if the cache is asked to retrieve an object by a key which does not exist
+ * in the cache then this method will be called if defined for that cache. Then the returned
+ * value will be returned from the lookup (or a null if no new value was found) and
+ * also inserted into the cache (unless the value was null)<br/>
+ * <b>WARNING:</b> This can make your cache misses very costly so you will want to be careful
+ * about what you make this method actually do
+ * <br/>
+ * Similar to https://github.com/jsr107/jsr107spec/blob/master/src/main/java/javax/cache/integration/CacheLoader.java
+ *
+ * Original comment:<br/>
  * Utility API for classes that will refresh a cache entry when expired.
- * </p>
+ *
+ * @deprecated this does not work (see KNL-1226) and use of it should be removed from code OR replaced by CacheLoader
+ * @see org.sakaiproject.memory.api.CacheLoader and https://jira.sakaiproject.org/browse/KNL-1226
  */
-public interface CacheRefresher
-{
-	/**
-	 * Get a new value for this key whose value has already expired in the cache.
-	 * 
-	 * @param key
-	 *        The key whose value has expired and needs to be refreshed.
-	 * @param oldValue
-	 *        The old exipred value of the key.
-	 * @param event
-	 *        The event which triggered this refresh.
-	 * @return a new value for use in the cache for this key; if null, the entry will be removed.
-	 */
-	public Object refresh(Object key, Object oldValue, Event event);
+public interface CacheRefresher { // CacheLoader<K, V> {
+
+    /**
+     * Attempt to retrieve a value for this key from the cache user when none can be found in the cache
+     *
+     * @param key
+     *        The cache key whose value was not found in the cache
+     * @param oldValue (ALWAYS NULL)
+     *        The old expired value of the key.
+     * @param event (ALWAYS NULL)
+     *        The event which triggered this refresh.
+     * @return a new value for use in the cache for this key or null if no value exists for this item
+     * @deprecated this method will eventually drop the oldValue and event params and be replaced
+     * by one with a signature like: Object refresh(Object key); 07/Oct/2007
+     */
+    public Object refresh(Object key, Object oldValue, Event event);
+
 }

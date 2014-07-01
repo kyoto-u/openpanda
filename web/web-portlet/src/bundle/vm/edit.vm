@@ -52,13 +52,13 @@ $(document).ready(function() {
 			<label for="customNumberField">
 				$tlang.getString('gen.custheight')
 			</label>
-			<input id="customNumberField" maxlength="4" size="4" type="text" name="customNumberField" #if ($height == "$tlang.getString('gen.heisomelse')") value="$!validator.escapeHtml($custom_height)" #end/>
+			<input id="customNumberField" maxlength="4" size="4" type="text" name="customNumberField" #if ($height == "$tlang.getString('gen.heisomelse')") value="$!validator.escapeHtml($custom_height, false)" #end/>
 			$tlang.getString('gen.pixels')
 		</p>	
 #if ($source)
 		<p class="shorttext indnt1">
 			<label for="source">$tlang.getString("gen.url")</label>
-			<input type="text" name="source" id="source" value="$!source" size="40" />
+			<input type="text" name="source" id="source" value="$!validator.escapeHtml($!source, false)" size="40" />
 		</p>
 #end
 

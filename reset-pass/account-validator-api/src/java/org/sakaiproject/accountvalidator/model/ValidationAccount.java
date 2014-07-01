@@ -1,6 +1,6 @@
 /**
- * $Id: ValidationAccount.java 81590 2010-08-20 15:09:07Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.3/account-validator-api/src/java/org/sakaiproject/accountvalidator/model/ValidationAccount.java $
+ * $Id: ValidationAccount.java 308859 2014-04-26 00:12:26Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.0/account-validator-api/src/java/org/sakaiproject/accountvalidator/model/ValidationAccount.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,15 +70,16 @@ public class ValidationAccount {
 	private Integer status;
 	private String eid;
 
-	private String firstName;
-	private String surname;
+	private String firstName = "";
+	private String surname = "";
 	private Integer accountStatus;
 	
 	private String password;
 	private String password2;
 	
-
-
+	// This needs to support accepting null
+	private boolean terms;
+	
 	public String getPassword() {
 		return password;
 	}
@@ -112,6 +113,11 @@ public class ValidationAccount {
 	}
 
 	public String getFirstName() {
+		//avoid NPEs
+		if (firstName == null)
+		{
+			return "";
+		}
 		return firstName;
 	}
 
@@ -120,6 +126,11 @@ public class ValidationAccount {
 	}
 
 	public String getSurname() {
+		//avoid NPEs
+		if (surname == null)
+		{
+			return "";
+		}
 		return surname;
 	}
 
@@ -182,6 +193,15 @@ public class ValidationAccount {
 
 	public void setEid(String eid) {
 		this.eid = eid;
+	}
+	
+	public Boolean getTerms() {
+		return terms;
+	}
+
+	public void setTerms(Boolean terms) {
+		// RSF likes to set things to null
+		this.terms = (terms == null)?false:terms;
 	}
 
  }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.3/help-component-shared/src/java/org/sakaiproject/component/app/help/model/TableOfContentsBean.java $
- * $Id: TableOfContentsBean.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.0/help-component-shared/src/java/org/sakaiproject/component/app/help/model/TableOfContentsBean.java $
+ * $Id: TableOfContentsBean.java 109039 2012-06-05 20:02:04Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -29,7 +29,7 @@ import org.sakaiproject.api.app.help.TableOfContents;
 
 /**
  * table of contents bean
- * @version $Id: TableOfContentsBean.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * @version $Id: TableOfContentsBean.java 109039 2012-06-05 20:02:04Z holladay@longsight.com $
  * 
  */
 public class TableOfContentsBean implements TableOfContents

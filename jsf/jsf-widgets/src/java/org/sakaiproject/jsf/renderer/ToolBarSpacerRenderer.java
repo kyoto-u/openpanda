@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ import javax.faces.render.Renderer;
  * <p>This does not render children, but can deal with children by surrounding them in a comment.</p>
  *
  * @author University of Michigan, Sakai Software Development Team
- * @version $Revision: 68846 $
+ * @version $Revision: 105077 $
  */
 public class ToolBarSpacerRenderer extends Renderer
 {

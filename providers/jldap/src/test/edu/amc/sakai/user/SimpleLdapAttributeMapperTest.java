@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/jldap/src/test/edu/amc/sakai/user/SimpleLdapAttributeMapperTest.java $
- * $Id: SimpleLdapAttributeMapperTest.java 61856 2009-05-05 17:53:41Z dmccallum@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/jldap/src/test/edu/amc/sakai/user/SimpleLdapAttributeMapperTest.java $
+ * $Id: SimpleLdapAttributeMapperTest.java 134298 2014-02-10 13:37:14Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,16 +21,21 @@
 
 package edu.amc.sakai.user;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.sakaiproject.user.api.UserEdit;
-
 import com.novell.ldap.LDAPAttribute;
 import com.novell.ldap.LDAPAttributeSet;
 import com.novell.ldap.LDAPEntry;
-
 import junit.framework.TestCase;
+
+import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static edu.amc.sakai.user.AttributeMappingConstants.DEFAULT_EMAIL_ATTR;
+import static edu.amc.sakai.user.AttributeMappingConstants.DEFAULT_LOGIN_ATTR;
+import static edu.amc.sakai.user.AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SimpleLdapAttributeMapperTest extends TestCase {
 	
@@ -92,5 +97,32 @@ public class SimpleLdapAttributeMapperTest extends TestCase {
 		assertEquals("email@example.com", userData.getEmail());
 		
 	}
+
+	public void testValueMapping() {
+		attributeMapper.setValueMappings(Collections.singletonMap(LOGIN_ATTR_MAPPING_KEY,
+				new MessageFormat("{0}@EXAMPLE.COM")));
+		attributeMapper.init();
+		LDAPAttributeSet attributes = new LDAPAttributeSet();
+		// Example Kerberos principal (and we want to remove the domain
+		attributes.add(new LDAPAttribute(DEFAULT_LOGIN_ATTR, "user@EXAMPLE.COM"));
+		attributes.add(new LDAPAttribute(DEFAULT_EMAIL_ATTR, "user@example.com"));
+		LDAPEntry ldapEntry = new LDAPEntry("id=user,dc=example,dc=com", attributes);
+		LdapUserData userData = new LdapUserData();
+		attributeMapper.mapLdapEntryOntoUserData(ldapEntry, userData);
+		assertEquals("user", userData.getEid()); // Check the domain got removed.
+		assertEquals("user@example.com", userData.getEmail());
+	}
+
+	public void testValueMappingChecking() {
+		// This checks that we filter out bad value mappings.
+		// Have to use a proper map as we need to remove an item from it.
+		Map<String, MessageFormat> valueMappings = new HashMap<String, MessageFormat>();
+		valueMappings.put(LOGIN_ATTR_MAPPING_KEY, new MessageFormat("{0}to{1}many{2}"));
+		attributeMapper.setValueMappings(valueMappings);
+		attributeMapper.init();
+		assertEquals("We should have removed the bad format.", 0, attributeMapper.getValueMappings().size());
+	}
+
+
 
 }

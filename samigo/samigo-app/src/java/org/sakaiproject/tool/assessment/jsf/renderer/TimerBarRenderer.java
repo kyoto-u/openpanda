@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/TimerBarRenderer.java $
- * $Id: TimerBarRenderer.java 127808 2013-07-25 20:37:03Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/TimerBarRenderer.java $
+ * $Id: TimerBarRenderer.java 271441 2014-02-13 19:31:48Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ import java.util.Map;
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
  * @author (JavaScript) Brian Gosselin of http://scriptasylum.com
- * @version $Id: TimerBarRenderer.java 127808 2013-07-25 20:37:03Z ottenhoff@longsight.com $
+ * @version $Id: TimerBarRenderer.java 271441 2014-02-13 19:31:48Z ktsao@stanford.edu $
  */
 
 public class TimerBarRenderer extends Renderer
@@ -118,6 +118,12 @@ public class TimerBarRenderer extends Renderer
          writer.write("\n  var action = function()");
          writer.write("\n {");
          writer.write ("\n showTimerExpiredWarning (function (){");
+         writer.write("\n   " + attrMap.get("expireScript") + "clickSubmitForGrade();");
+         writer.write("\n });}");
+         writer.write("\n");
+         writer.write("\n  var action2 = function()");
+         writer.write("\n {");
+         writer.write ("\n showTimeDueWarning (function (){");
          writer.write("\n   " + attrMap.get("expireScript") + ";");
          writer.write("\n });}");
          writer.write("\n");
@@ -125,7 +131,6 @@ public class TimerBarRenderer extends Renderer
          writer.write("\n");
          writer.write("\n  var fiveMinutesAction = function()");
          writer.write("\n {");
-         //writer.write("\n  alert('"  + attrMap.get("fiveMinutesMessage1") + "\\n\\n" + attrMap.get("fiveMinutesMessage2") + "');");   
          writer.write("\n showTimerWarning();");
          writer.write("\n }");
          writer.write("\n");

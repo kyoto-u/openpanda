@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping default-cascade="none" package="org.sakaiproject.tool.gradebook"
 	default-lazy="false">
 	<class name="org.sakaiproject.tool.gradebook.Gradebook" table="GB_GRADEBOOK_T">
@@ -27,6 +27,10 @@
 		<property name="assignmentsDisplayed" column="ASSIGNMENTS_DISPLAYED" type="boolean" not-null="true"/>
 
 		<property name="courseGradeDisplayed" column="COURSE_GRADE_DISPLAYED" type="boolean" not-null="true"/>
+
+		<property name="totalPointsDisplayed" column="TOTAL_POINTS_DISPLAYED" type="boolean" not-null="true" />
+
+		<property name="courseAverageDisplayed" column="COURSE_AVERAGE_DISPLAYED" type="boolean" not-null="true" />
 
 		<property name="allAssignmentsEntered" column="ALL_ASSIGNMENTS_ENTERED" type="boolean" not-null="true"/>
 

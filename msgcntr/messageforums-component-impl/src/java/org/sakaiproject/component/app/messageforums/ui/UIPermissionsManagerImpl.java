@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -472,7 +472,16 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
    * @see org.sakaiproject.api.app.messageforums.ui.UIPermissionsManager#isPostToGradebook(org.sakaiproject.api.app.messageforums.DiscussionTopic,
    *      org.sakaiproject.api.app.messageforums.DiscussionForum)
    */
-  public boolean isPostToGradebook(DiscussionTopic topic, DiscussionForum forum)
+  public boolean isPostToGradebook(DiscussionTopic topic, DiscussionForum forum){
+	  return isPostToGradebook(topic, forum, getCurrentUserId());
+  }
+  
+  public boolean isPostToGradebook(DiscussionTopic topic, DiscussionForum forum, String userId)
+  {
+	  return isPostToGradebook(topic, forum, userId, getContextId());
+  }
+  
+  public boolean isPostToGradebook(DiscussionTopic topic, DiscussionForum forum, String userId, String contextId)
   {
     if (LOG.isDebugEnabled())
     {
@@ -482,11 +491,11 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
 
     try
     {
-      if (checkBaseConditions(topic, forum))
+      if (checkBaseConditions(topic, forum, userId, contextId))
       {
         return true;
       }
-      Iterator iter = getTopicItemsByCurrentUser(topic);
+      Iterator iter = getTopicItemsByUser(topic, userId, contextId);
       while (iter.hasNext())
       {
         DBMembershipItem item = (DBMembershipItem) iter.next();
@@ -917,12 +926,7 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
 	  userMemberships.add(currRole);
 	  // now, add any groups the user is a member of
 	  try {
-		  Collection groups;
-		  if (ThreadLocalManager.get("message_center_current_member_groups") != null) {
-			  groups = (Collection) ThreadLocalManager.get("message_center_current_member_groups");
-		  } else {
-			  groups = SiteService.getSite(toolManager.getCurrentPlacement().getContext()).getGroupsWithMember(getCurrentUserId());
-		  }
+		  Collection groups = SiteService.getSite(toolManager.getCurrentPlacement().getContext()).getGroupsWithMember(getCurrentUserId());
 	
 		  Iterator groupIter = groups.iterator();
 		  while (groupIter.hasNext())
@@ -1024,7 +1028,16 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
     //  for group awareness
     try
     {
-    	Collection groups = (Collection) ThreadLocalManager.get("message_center_current_member_groups");
+      	Collection groups = null;
+      	try
+      	{
+      		Site currentSite = SiteService.getSite(getContextId());
+      		groups = currentSite.getGroupsWithMember(getCurrentUserId());
+      	}
+        catch(IdUnusedException iue)
+        {
+        	LOG.error(iue.getMessage(), iue);
+        }
     	if(groups != null)
     	{
     		for (Iterator groupIterator = groups.iterator(); groupIterator.hasNext();)
@@ -1042,7 +1055,7 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
     }
     catch(Exception iue)
     {
-    	iue.printStackTrace();
+    	LOG.error(iue.getMessage(), iue);
     }
     
     return areaItems.iterator();
@@ -1119,7 +1132,16 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
 	//  for group awareness
     try
     {
-    	Collection groups = (Collection) ThreadLocalManager.get("message_center_current_member_groups");
+      	Collection groups = null;
+      	try
+      	{
+      		Site currentSite = SiteService.getSite(getContextId());
+      		groups = currentSite.getGroupsWithMember(getCurrentUserId());
+      	}
+        catch(IdUnusedException iue)
+        {
+        	LOG.error(iue.getMessage(), iue);
+        }
     	if(groups != null)
     	{
     		for (Iterator groupIterator = groups.iterator(); groupIterator.hasNext();)
@@ -1136,7 +1158,7 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
     }
     catch(Exception iue)
     {
-    	iue.printStackTrace();
+    	LOG.error(iue.getMessage(), iue);
     }
 
 //    Iterator iter = membershipItems.iterator();
@@ -1224,7 +1246,16 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
     //for group awareness
     try
     {
-    	Collection groups = (Collection) ThreadLocalManager.get("message_center_current_member_groups");
+      	Collection groups = null;
+      	try
+      	{
+      		Site currentSite = SiteService.getSite(getContextId());
+      		groups = currentSite.getGroupsWithMember(getCurrentUserId());
+      	}
+        catch(IdUnusedException iue)
+        {
+        	LOG.error(iue.getMessage(), iue);
+        }
     	if(groups != null)
     	{
     		for (Iterator groupIterator = groups.iterator(); groupIterator.hasNext();)
@@ -1241,7 +1272,7 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
     }
     catch(Exception iue)
     {
-    	iue.printStackTrace();
+    	LOG.error(iue.getMessage(), iue);
     }
     
 //    Iterator iter = membershipItems.iterator();
@@ -1353,7 +1384,7 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
   private String getCurrentUserRole(String siteId)
   {
 	  LOG.debug("getCurrentUserRole()");
-	  if(authzGroupService.getUserRole(getCurrentUserId(), "/site/" + siteId)==null&&sessionManager.getCurrentSessionUserId()==null&&getAnonRole()==true){
+	  if(authzGroupService.getUserRole(getCurrentUserId(), "/site/" + siteId)==null&&sessionManager.getCurrentSessionUserId()==null&&getAnonRole(siteId)==true){
 		  return ".anon";
 	  }
 	  return authzGroupService.getUserRole(getCurrentUserId(), "/site/" + siteId);
@@ -1374,7 +1405,7 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
     }
     
     // if user role is still null at this point, check for .anon
-    if(userRole == null && sessionManager.getCurrentSessionUserId() == null && getAnonRole() == true){
+    if(userRole == null && userId == null && getAnonRole("/site/" + siteId) == true){
         return ".anon";
     }
     
@@ -1385,6 +1416,11 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
     {
 	 return  forumManager.getAnonRole();	   
     }
+   
+   public boolean  getAnonRole(String contextSiteId)
+   {
+	 return  forumManager.getAnonRole(contextSiteId);	   
+   }
   /**
    * @return
    */
@@ -1525,7 +1561,7 @@ public class UIPermissionsManagerImpl implements UIPermissionsManager {
   	}
     catch(IdUnusedException iue)
     {
-    	iue.printStackTrace();
+    	LOG.error(iue.getMessage(), iue);
     }
 
    	ThreadLocalManager.set("message_center_current_member_groups", groups);

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.sakaiproject.samigo</groupId>
 		<artifactId>samigo</artifactId>
-		<version>2.9.3</version>
+		<version>10.0</version>
 	</parent>
     
 	<name>Sakai Samigo Component Package (samigo-pack)</name>
@@ -38,7 +38,6 @@
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.0.4</version>
 		</dependency>
 		<!-- Samigo Lite -->
 		<dependency>
@@ -60,6 +59,12 @@
 			<artifactId>jsr173</artifactId>
 			<version>1.0_api</version>
 		</dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>samigo-qti</artifactId>
+        </dependency>
+
 	</dependencies>
     
 	<build>

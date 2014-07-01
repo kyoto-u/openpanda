@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/email/impl/DbDigestService.java $
- * $Id: DbDigestService.java 76914 2010-05-01 10:21:05Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/email/impl/DbDigestService.java $
+ * $Id: DbDigestService.java 105669 2012-03-12 11:56:47Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,7 +29,7 @@ import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.email.api.Digest;
 import org.sakaiproject.email.api.DigestEdit;
 import org.sakaiproject.util.BaseDbSingleStorage;
-import org.sakaiproject.util.StorageUser;
+import org.sakaiproject.util.SingleStorageUser;
 
 /**
  * <p>
@@ -157,7 +157,7 @@ public class DbDigestService extends BaseDigestService
 		 * @param realm
 		 *        The StorageUser class to call back for creation of Resource and Edit objects.
 		 */
-		public DbStorage(StorageUser user)
+		public DbStorage(SingleStorageUser user)
 		{
 			super(m_tableName, "DIGEST_ID", null, m_locksInDb, "digest", user, sqlService);
 		}

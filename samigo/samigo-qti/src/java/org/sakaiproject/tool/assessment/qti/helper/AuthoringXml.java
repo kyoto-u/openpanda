@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/helper/AuthoringXml.java $
- * $Id: AuthoringXml.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/AuthoringXml.java $
+ * $Id: AuthoringXml.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,7 +62,7 @@ import org.sakaiproject.tool.assessment.qti.constants.QTIVersion;
  * <p>Copyright: Copyright (c) 2005 Sakai</p>
  * <p> </p>
  * @author Ed Smiley esmiley@stanford.edu
- * @version $Id: AuthoringXml.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * @version $Id: AuthoringXml.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 
 public class AuthoringXml
@@ -91,7 +91,9 @@ public class AuthoringXml
   public static final String ITEM_TF = "trueFalseTemplate.xml";
   public static final String ITEM_MATCHING = "matchTemplate.xml";
   public static final String ITEM_MXSURVEY = "mxSurveyTemplate.xml";
-  
+  public static final String ITEM_CALCQ = "calculatedQuestionTemplate.xml"; // CALCULATED_QUESTION
+  public static final String ITEM_EMI = "emiTemplate.xml";
+
   public static final String SURVEY_10 = SURVEY_PATH + "10.xml";
   public static final String SURVEY_5 = SURVEY_PATH + "5.xml";
   public static final String SURVEY_AGREE = SURVEY_PATH + "AGREE.xml";

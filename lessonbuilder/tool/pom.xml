@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.sakaiproject.lessonbuilder</groupId>
         <artifactId>lessonbuilder</artifactId>
-        <version>1.4.3</version>
-	<relativePath>../pom.xml</relativePath>
+        <version>10.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <name>sakai-lessonbuildertool-tool</name>
     <groupId>org.sakaiproject.lessonbuilder</groupId>
-    <artifactId>sakai-lessonbuildertool-tool</artifactId>
+    <artifactId>lessonbuilder-tool</artifactId>
     <packaging>war</packaging>
 
     <description>This project creates a WAR containing the Lesson Builder Tool for Sakai.</description>
@@ -21,7 +23,7 @@
         <dependency>
             <groupId>org.sakaiproject.basiclti</groupId>
             <artifactId>basiclti-api</artifactId>
-            <version>${sakai.basiclti.version}</version>
+            <!--version>${sakai.basiclti.version}</version-->
             <scope>provided</scope>
         </dependency>
 
@@ -40,7 +42,7 @@
         <dependency>
             <groupId>${sakai.assignment.groupId}</groupId>
             <artifactId>sakai-assignment-api</artifactId>
-            <version>${sakai.assignment.version}</version>
+            <!--version>${sakai.assignment.version}</version-->
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -52,26 +54,33 @@
             <artifactId>entitybroker-api</artifactId>
         </dependency>
         <dependency>
+          <groupId>${lessons-sakai-portal-util}</groupId>
+          <artifactId>${lessons-sakai-portal-util-artifact}</artifactId>
+          <version>${lessons-sakai-portal-util-version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.sakaiproject.entitybroker</groupId>
             <artifactId>entitybroker-utils</artifactId>
-            <version>${sakai.entitybroker.version}</version>
+            <!--version>${sakai.entitybroker.version}</version-->
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>sakai-lessonbuildertool-api</artifactId>
+            <artifactId>lessonbuilder-api</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>sakai-lessonbuildertool-hbm</artifactId>
+            <artifactId>lessonbuilder-hbm</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.sakaiproject.msgcntr</groupId>
             <artifactId>messageforums-api</artifactId>
-            <version>${sakai.msgcntr.version}</version>
+            <!--version>${sakai.msgcntr.version}</version-->
             <scope>provided</scope>
         </dependency>
         <dependency>
+	    <!-- TODO why is this needed by LB? -AZ - this will break shortly -->
             <groupId>org.sakaiproject.msgcntr</groupId>
             <artifactId>messageforums-hbm</artifactId>
             <version>${sakai.msgcntr.version}</version>
@@ -80,24 +89,24 @@
         <dependency>
             <groupId>org.sakaiproject.samigo</groupId>
             <artifactId>samigo-api</artifactId>
-            <version>${sakai.samigo.version}</version>
+            <!--version>${sakai.samigo.version}</version-->
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.samigo</groupId>
             <artifactId>samigo-hibernate</artifactId>
-            <version>${sakai.samigo.version}</version>
+            <!--version>${sakai.samigo.version}</version-->
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.samigo</groupId>
             <artifactId>samigo-qti</artifactId>
-            <version>${sakai.samigo.version}</version>
+            <!--version>${sakai.samigo.version}</version-->
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.samigo</groupId>
             <artifactId>samigo-services</artifactId>
-            <version>${sakai.samigo.version}</version>
+            <!--version>${sakai.samigo.version}</version-->
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -123,7 +132,9 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
+	    <artifactId>${sakai.hibernate.artifactId}</artifactId>
+	    <!--version>${sakai.hibernate.version}</version-->
+	    <scope>provided</scope>
         </dependency>
         <!-- Required for hibernate 3 HQL queries -->
         <dependency>
@@ -133,8 +144,9 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-        </dependency>
+            <artifactId>${sakai.spring.artifactId}</artifactId>
+            <!--version>${sakai.spring.version}</version--> 
+        </dependency>      
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -166,6 +178,10 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 
@@ -200,6 +216,7 @@
                   <sources>
                     <source>${src1}/java</source>
                     <source>${src2}/java</source>
+                    <source>${src3}/java</source>
                   </sources>
                 </configuration>
               </execution>
@@ -213,11 +230,11 @@
                   <resources>
                     <resource>
                       <directory>${src1}/webapp/WEB-INF</directory>
-                      <targetPath>${project.build.directory}/sakai-lessonbuildertool-tool-${project.version}/WEB-INF</targetPath>
+                      <targetPath>${project.build.directory}/lessonbuilder-tool-${project.version}/WEB-INF</targetPath>
                     </resource>
                     <resource>
                       <directory>${src2}/webapp/WEB-INF</directory>
-                      <targetPath>${project.build.directory}/sakai-lessonbuildertool-tool-${project.version}/WEB-INF</targetPath>
+                      <targetPath>${project.build.directory}/lessonbuilder-tool-${project.version}/WEB-INF</targetPath>
                     </resource>
                   </resources>
                 </configuration>
@@ -231,6 +248,13 @@
 
       <profile>
         <id>optional</id>
+<!-- NOTE: If you enable optional modules, please look at the <properties> section of the main
+ pom file for the settings for yaft, mneme, and assignment2. For the tools you use, make sure
+ to adjust the versions to match the version you are using. For the tools that are not in your
+ system, change the scope to "compile". That will cause the API jar file to be included with
+ lessons. Without that, the system won't start. For modules you use the API jar files will be
+ in shared/lib, so you want the scope to be "provided".
+-->
 
         <repositories>
           <!-- 

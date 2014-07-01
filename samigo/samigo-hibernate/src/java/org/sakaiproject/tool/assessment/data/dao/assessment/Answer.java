@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/Answer.java $
- * $Id: Answer.java 69050 2009-11-16 23:16:32Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/Answer.java $
+ * $Id: Answer.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,6 +26,8 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemData;
+import org.sakaiproject.tool.assessment.data.dao.shared.TypeD;
+import org.sakaiproject.tool.assessment.samlite.api.Question;
 import org.apache.log4j.*;
 import java.io.Serializable;
 import java.io.IOException;
@@ -35,7 +37,7 @@ import java.util.Iterator;
 import java.util.HashMap;
 
 public class Answer
-    implements Serializable, AnswerIfc, Comparable {
+    implements Serializable, AnswerIfc, Comparable<AnswerIfc>, Cloneable { 
   static Category errorLogger = Category.getInstance("errorLogger");
 
   private static final long serialVersionUID = 7526471155622776147L;
@@ -48,16 +50,21 @@ public class Answer
   private String label;
   private Boolean isCorrect;
   private String grade;
-  private Float score;
-  private Float discount;
-  private Float  partialCredit; //partial credit
+  private Double score;
+  private Double discount;
+  private Double  partialCredit; //partial credit
   private Set answerFeedbackSet;
   private HashMap answerFeedbackMap;
-  private ItemData dat=new ItemData();
+  private ItemData dat=new ItemData();  
+
   public Answer() {}
 
+  public Answer(ItemTextIfc itemText, String text, Long sequence, String label) {
+	  this(itemText, text, sequence, label, null, null, null, null, null);
+  }
+  
   public Answer(ItemTextIfc itemText, String text, Long sequence, String label,
-                Boolean isCorrect, String grade, Float score, Float partialCredit, Float discount) {
+                Boolean isCorrect, String grade, Double score, Double partialCredit, Double discount) {
     this.itemText = itemText;
     this.item = itemText.getItem();
     this.text = text;
@@ -69,9 +76,9 @@ public class Answer
     this.discount=discount;
     this.partialCredit=partialCredit;
   }
-
+	
   public Answer(ItemTextIfc itemText, String text, Long sequence, String label,
-                Boolean isCorrect, String grade, Float score, Float partialCredit, Float discount,
+                Boolean isCorrect, String grade, Double score, Double partialCredit, Double discount,
                 Set answerFeedbackSet) {
     this.itemText = itemText;
     this.item = itemText.getItem();
@@ -150,24 +157,24 @@ public class Answer
     this.grade = grade;
   }
 
-  public Float getScore() {
+  public Double getScore() {
     return score;
   }
 
-  public void setScore(Float score) {
+  public void setScore(Double score) {
     this.score = score;
   }
 
-  public Float getDiscount() {
+  public Double getDiscount() {
 	  if (this.discount==null){
-		  this.discount=Float.valueOf(0);
+		  this.discount=Double.valueOf(0);
 	  }
 	  return this.discount;
   }
 
-  public void setDiscount(Float discount) {
+  public void setDiscount(Double discount) {
 	  if (discount==null){
-		  discount=Float.valueOf(0);
+		  discount=Double.valueOf(0);
 	  }
 	  this.discount = discount;
   }
@@ -231,9 +238,8 @@ public class Answer
     return getAnswerFeedback(AnswerFeedbackIfc.ANSWER_FEEDBACK);
   }
 
-  public int compareTo(Object o) {
-      Answer a = (Answer)o;
-      return sequence.compareTo(a.sequence);
+  public int compareTo(AnswerIfc o) {
+      return sequence.compareTo(o.getSequence());
   }
 
   //Huong's adding for checking not empty feedback
@@ -258,13 +264,17 @@ public class Answer
 
 	  return dat.isNotEmpty(getText());
   }
-
+	
   //--mustansar for partial credit
-  public Float getPartialCredit(){
+  public Double getPartialCredit(){
 	  return partialCredit;
   }
-
-  public void setPartialCredit(Float pCredit ){
+	
+  public void setPartialCredit(Double pCredit ){
 	  this.partialCredit=pCredit;
   } 
+
+	protected Answer clone() throws CloneNotSupportedException {
+		return (Answer)super.clone();
+	}
 }

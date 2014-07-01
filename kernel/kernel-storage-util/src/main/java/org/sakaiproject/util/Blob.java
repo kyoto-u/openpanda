@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,6 +48,7 @@ import java.util.NoSuchElementException;
 * Long.MAX_VALUE (9.2233e18) bytes if your computer had that much storage.  :^)
 * <P>This is my 'pet' class.
 * @author T. Gee
+* @deprecated (KNL-898)
 *
 */
 public class Blob implements Cloneable, Serializable {

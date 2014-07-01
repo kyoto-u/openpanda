@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/providers/ReportDefsProvider.java $
- * $Id: ReportDefsProvider.java 78669 2010-06-21 13:55:23Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/providers/ReportDefsProvider.java $
+ * $Id: ReportDefsProvider.java 307523 2014-03-26 22:56:41Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,8 @@
 package org.sakaiproject.sitestats.tool.wicket.providers;
 
 import java.text.Collator;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
@@ -52,6 +56,7 @@ public class ReportDefsProvider implements IDataProvider {
 	private boolean 				filterWithToolsInSite;
 	private boolean 				includeHidden;
 	private List<ReportDef>			data;
+	private static Log log = LogFactory.getLog(ReportDefsProvider.class);
 
 	
 	public ReportDefsProvider(String siteId, int mode, boolean filterWithToolsInSite, boolean includeHidden) {
@@ -183,7 +188,14 @@ public class ReportDefsProvider implements IDataProvider {
 	
 	public final Comparator<ReportDef> getReportDefComparator() {
 		return new Comparator<ReportDef>() {
-			private final transient Collator		collator			= Collator.getInstance();
+			private transient Collator		collator = Collator.getInstance();
+			{
+				try{
+					collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+				}catch(ParseException e){
+				    log.error("Unable to create RuleBasedCollator");
+				}		
+			}
 			
 			public int compare(ReportDef o1, ReportDef o2) {
 				String title1 = null;

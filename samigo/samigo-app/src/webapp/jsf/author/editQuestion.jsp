@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: editQuestion.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+* $Id: editQuestion.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
 <%--
 ***********************************************************************************
 *
@@ -58,7 +58,7 @@ We need to find a strategy for doing this.
 something like if type true false render include true false etc.
 -->
 <h:panelGrid columns="2" cellpadding="3" cellspacing="3">
-  <h:commandButton type="submit" value="#{authorMessages.button_save}" action="editAssessment">
+  <h:commandButton type="submit" value="#{commonMessages.action_save}" action="editAssessment">
     <f:actionListener
       type="org.sakaiproject.tool.assessment.ui.listener.author.AuthorQuestionListener" />
   </h:commandButton>

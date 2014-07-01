@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/SearchIndexBuilderWorkerImpl.java $
- * $Id: SearchIndexBuilderWorkerImpl.java 118571 2013-01-22 16:40:50Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/SearchIndexBuilderWorkerImpl.java $
+ * $Id: SearchIndexBuilderWorkerImpl.java 111643 2012-08-20 13:41:59Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -69,7 +69,7 @@ public class SearchIndexBuilderWorkerImpl implements Runnable, SearchIndexBuilde
 	private static final String NODE_LOCK = "nodelockkey";
 
 
-	private final int numThreads = 2;
+	private int numThreads = 2;
 
 	/**
 	 * The maximum sleep time for the wait/notify semaphore
@@ -86,7 +86,7 @@ public class SearchIndexBuilderWorkerImpl implements Runnable, SearchIndexBuilde
 	/**
 	 * The currently running index Builder thread
 	 */
-	private Thread indexBuilderThread[] = new Thread[numThreads];
+	private Thread indexBuilderThread[] = null;
 
 	/**
 	 * sync object
@@ -243,6 +243,7 @@ public class SearchIndexBuilderWorkerImpl implements Runnable, SearchIndexBuilde
 				log.error("Search Index Worker needs SessionManager ");
 			}
 			log.debug("init start");
+			indexBuilderThread = new Thread[numThreads];
 			for (int i = 0; i < indexBuilderThread.length; i++)
 			{
 				indexBuilderThread[i] = new Thread(this);
@@ -1877,4 +1878,9 @@ public class SearchIndexBuilderWorkerImpl implements Runnable, SearchIndexBuilde
 	}
 
 
+	public void setNumThreads(int numThreads) {
+		this.numThreads = numThreads;
+	}
+
+	
 }

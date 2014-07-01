@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: ExternalAssignmentProvider.java 127788 2013-07-25 18:51:54Z ottenhoff@longsight.com $
+* $Id: ExternalAssignmentProvider.java 126908 2013-07-11 02:37:39Z nbotimer@unicon.net $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

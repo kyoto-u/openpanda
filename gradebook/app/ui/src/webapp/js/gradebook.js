@@ -155,22 +155,20 @@ function getTheElement(thisid)
 // Update the running total
 function updateRunningTotal(thisForm) {
 	var runningTotal = 0.0;
-	
-  for (var i=0; i < thisForm.elements.length; ++i) {
-  	formElement = thisForm.elements[i];
-    elementName = formElement.name;
-    var elementNamePieces = elementName.split(":");
-    var highlightTotal = true;
 
-    if (elementNamePieces[3] == "weightInput") {
-        weight = parseFloat(formElement.value);
-
-        if (weight >= 0) {
+  	var row = 0;
+  	var weightInput = getTheElement(thisForm.name + ":categoriesTable:" + row + ":weightInput");
+  	//just threw 10000 in there just in case as an out
+  	while(weightInput && row < 10000){
+  		weight = parseFloat(weightInput.value);
+  		var extraCreditCheckbox = getTheElement(thisForm.name + ":categoriesTable:" + row + ":catExtraCredit");
+		if (weight >= 0 && extraCreditCheckbox != null && !extraCreditCheckbox.checked) {
             runningTotal += weight;
         }
-    }
-  }
-  
+  		row++;
+  		weightInput = getTheElement(thisForm.name + ":categoriesTable:" + row + ":weightInput");
+  	}
+
   var neededTotal = 100.0 - runningTotal;
 
   var runningTotalValEl = getTheElement(thisForm.name + ":runningTotalVal");
@@ -206,14 +204,8 @@ function showHideDiv(hideDivisionNo, context, expandAlt, collapseAlt, expandTitl
     }
     else
     {
-      if(navigator.product == "Gecko")
-      {
-        divisionNo.style.display="table-row";
-      }
-      else
-      {
-        divisionNo.style.display="block";
-      }
+      divisionNo.style.display="table-row";
+
       if(imgNo)
       {
         imgNo.src = context + "/images/expand.gif";
@@ -258,15 +250,9 @@ function showHideAll(numToggles, context, expandAlt, collapseAlt, expandTitle, c
 		    }
 		  }
 		  else {
-		    if(navigator.product == "Gecko")
-      	{
-        	divisionNo.style.display="table-row";
-      	}
-      	else
-      	{
-        	divisionNo.style.display="block";
-     	 	}
-		    
+			  //Gecko specific fix no longer needed
+			  divisionNo.style.display="table-row";
+
 		    if (imgNo) {
 		      imgNo.src = context + "/images/expand.gif";
 		      imgNo.alt =  expandAlt;
@@ -292,18 +278,20 @@ function reEnableCategoryDropInputs(component) {
         var allElements = document.forms[0].elements;
         for(i=0; i < allElements.length; i++) {
                 var currentElement = allElements[i];
-                if(currentElement.name.indexOf(":pointValue") != -1
-                        || currentElement.name.indexOf(":relativeWeight") != -1
-                        || currentElement.name.indexOf(":dropHighest") != -1
-                        || currentElement.name.indexOf(":dropLowest") != -1
-                        || currentElement.name.indexOf(":keepHighest") != -1
-                   ) {
+                var currentElementName = currentElement.getAttribute('name');
+
+                if(currentElementName !== null && (currentElementName.indexOf(":pointValue") != -1
+                        || currentElementName.indexOf(":relativeWeight") != -1
+                        || currentElementName.indexOf(":dropHighest") != -1
+                        || currentElementName.indexOf(":dropLowest") != -1
+                        || currentElementName.indexOf(":keepHighest") != -1
+					)) {
                         // Recursive function call
                     reEnableCategoryDropInputs(currentElement);
                 }
         }
     } else {
-        var dropElement = getTheElement(component.name);
+		var dropElement = getTheElement(component.getAttribute('name'));
         dropElement.disabled = false;
     }
 }
@@ -318,14 +306,19 @@ function toggleVisibilityDropScoresFields() {
     var keepHighestVisibility = ""; // an unspecified display makes the column and column header visible
     var itemValueVisibility = "";
     var tbl  = document.getElementById(formName + ":categoriesTable");
+    if(!tbl) {
+        // No categories currently defined
+        return;
+    }
+
     var thead = tbl.getElementsByTagName('thead');
     var header = thead.item(0);
     var headerRows = header.getElementsByTagName('th');
 
-    if(headerRows.length == 6) {
-        var dropHighestIdx = 2;  // the index of 1st drop column, if Categories is selected
+    if(headerRows.length == 7) {
+        var dropHighestIdx = 3;  // the index of 1st drop column, if Categories is selected
     } else {
-        var dropHighestIdx = 3;  // the index of 1st drop column, if Categories & Weighting is selected
+        var dropHighestIdx = 4;  // the index of 1st drop column, if Categories & Weighting is selected
     }
 
     if(showDropHighest == undefined || showDropHighest.checked == false) {
@@ -346,7 +339,7 @@ function toggleVisibilityDropScoresFields() {
     headerRows[dropHighestIdx].style.display=dropHighestVisibility;
     headerRows[dropHighestIdx+1].style.display=dropLowestVisibility;
     headerRows[dropHighestIdx+2].style.display=keepHighestVisibility;
-    //headerRows[dropHighestIdx+3].style.display=itemValueVisibility;
+  //  headerRows[dropHighestIdx+3].style.display=itemValueVisibility;
     var rows = tbl.getElementsByTagName('tr');
     for (var row=0; row<rows.length;row++) {
         var cels = rows[row].getElementsByTagName('td')
@@ -354,7 +347,7 @@ function toggleVisibilityDropScoresFields() {
             cels[dropHighestIdx].style.display=dropHighestVisibility;
             cels[dropHighestIdx+1].style.display=dropLowestVisibility;
             cels[dropHighestIdx+2].style.display=keepHighestVisibility;
-            //cels[dropHighestIdx+3].style.display=itemValueVisibility;
+  //          cels[dropHighestIdx+3].style.display=itemValueVisibility; 
         }
     }
     dropScoresAdjust();
@@ -696,3 +689,4 @@ function disableButton(divId, button) {
   var div = document.getElementById(divId); 
   div.insertBefore(newButton, button);      
 }
+

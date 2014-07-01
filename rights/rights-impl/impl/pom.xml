@@ -4,7 +4,7 @@
   <parent>
     <artifactId>rights-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>sakai-rights-impl</name>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
+      <version>${sakai.commons-logging.version}</version>
     </dependency>
   </dependencies>
   <build>

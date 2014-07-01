@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,6 +74,8 @@ public interface DiscussionForumService extends EntityProducer
 	public static final String EVENT_FORUMS_TOPIC_REVISE = "forums.revisetopic";
 
 	public static final String EVENT_FORUMS_GRADE = "forums.grade";
+
+	public static final String EVENT_FORUMS_MOVE_THREAD = "forums.movethread";
 
 	/** Used to determine if MessageCenter tool part of site */
 	public static final String MESSAGE_CENTER_ID = "sakai.messagecenter";

@@ -1,6 +1,6 @@
 /**
- * $Id: PollVoteEntityProvider.java 86571 2010-12-16 15:00:24Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.3/tool/src/java/org/sakaiproject/poll/tool/entityproviders/PollVoteEntityProvider.java $
+ * $Id: PollVoteEntityProvider.java 127888 2013-07-29 11:54:18Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.0/tool/src/java/org/sakaiproject/poll/tool/entityproviders/PollVoteEntityProvider.java $
  * VoteEntityProvider.java - polls - Aug 22, 2008 9:50:39 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,6 +57,7 @@ import org.sakaiproject.poll.logic.PollVoteManager;
 import org.sakaiproject.poll.model.Option;
 import org.sakaiproject.poll.model.Poll;
 import org.sakaiproject.poll.model.Vote;
+import org.sakaiproject.user.api.UserDirectoryService;
 
 
 /**
@@ -82,12 +83,18 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
     public void setUsageSessionService(UsageSessionService usageSessionService) {
 		this.usageSessionService = usageSessionService;
 	}
+    
+    private UserDirectoryService userDirectoryService;
+    public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
+    	this.userDirectoryService = userDirectoryService;
+    }
 
 	public static final String PREFIX = "poll-vote";
     public String getEntityPrefix() {
         return PREFIX;
     }
 
+    @Deprecated
     public boolean entityExists(String id) {
         if (id == null) {
             return false;
@@ -100,11 +107,9 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
         return exists;
     }
 
+    @Deprecated
     public String createEntity(EntityReference ref, Object entity, Map<String, Object> params) {
-        String userId = developerHelperService.getCurrentUserId();
-        if (userId == null) {
-            throw new EntityException("User must be logged in to create new votes", ref.getId(), HttpServletResponse.SC_UNAUTHORIZED);
-        }
+        String userId = userDirectoryService.getCurrentUser().getId();
         Vote vote = (Vote) entity;
         
         log.debug("got vote: " + vote.toString());
@@ -171,6 +176,7 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
         return new Vote();
     }
 
+    @Deprecated
     public Object getEntity(EntityReference ref) {
     	String id = ref.getId();
         String currentUser = developerHelperService.getCurrentUserReference();
@@ -206,12 +212,9 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
         return vote;
     }
 
+    @Deprecated
     public List<?> getEntities(EntityReference ref, Search search) {
-        String currentUser = developerHelperService.getCurrentUserReference();
-        if (currentUser == null) {
-            throw new EntityException("Anonymous users cannot view votes", ref.getId(), HttpServletResponse.SC_UNAUTHORIZED);
-        }
-     
+        String currentUserId = userDirectoryService.getCurrentUser().getId();
         
         Restriction pollRes = search.getRestrictionByProperty("pollId");
         
@@ -221,6 +224,9 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
         }
         Long pollId = null;
         boolean viewVoters = false;
+        if (developerHelperService.isUserAdmin(developerHelperService.getCurrentUserReference())) {
+        	viewVoters = true;
+        }
         try {
             pollId = developerHelperService.convert(pollRes.getSingleValue(), Long.class);
         } catch (UnsupportedOperationException e) {
@@ -232,28 +238,23 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
         }
         List<Vote> votes = pollVoteManager.getAllVotesForPoll(poll);
         
-        //check permissions
-        String userId = developerHelperService.getUserIdFromRef(currentUser);
-        if (developerHelperService.isUserAdmin(currentUser)) {
-            // ok to view this vote
-        	viewVoters = true;
-        } else if (developerHelperService.isEntityRequestInternal(ref.toString())) {
+        if (developerHelperService.isEntityRequestInternal(ref.toString())) {
             // ok for all internal requests
-        } else if (!pollListManager.isAllowedViewResults(poll, userId)) {
+        } else if (!pollListManager.isAllowedViewResults(poll, currentUserId)) {
             // TODO - check vote location and perm?
             // not allowed to view
-            throw new SecurityException("User ("+currentUser+") cannot view vote ("+ref+")");
+            throw new SecurityException("User ("+currentUserId+") cannot view vote ("+ref+")");
         }
-        
         if (viewVoters)
         	return votes;
-        else 
+        else
         	return anonymizeVotes(votes);
     }
 
+    @Deprecated
     private List<?> anonymizeVotes(List<Vote> votes) {
     	List<Vote> ret = new ArrayList<Vote>();
-    	String userId = developerHelperService.getCurrentUserId();
+    	String userId = userDirectoryService.getCurrentUser().getId();
 
     	for (int i = 0; i < votes.size(); i++) {
     		Vote vote = (Vote)votes.get(i);
@@ -275,6 +276,7 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
 	 * Allows a user to create multiple Vote objects at once, taking one or more
 	 * pollOption parameters.
 	 */
+    @Deprecated
 	@EntityCustomAction(action = "vote", viewKey = EntityView.VIEW_NEW)
 	public List<Vote> vote(EntityView view, EntityReference ref, String prefix, Search search, OutputStream out,
 			Map<String, Object> params) {
@@ -284,10 +286,7 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
 		} catch (NumberFormatException nfe) {
 			throw new IllegalArgumentException("No pollId found.");
 		}
-		String userId = developerHelperService.getCurrentUserId();
-		if (userId == null) {
-			throw new SecurityException("user must be logged in to create new votes");
-		}
+		String userId = userDirectoryService.getCurrentUser().getId();
 		Poll poll = pollListManager.getPollById(pollId, false);
 		if (poll == null) {
 			throw new IllegalArgumentException("No poll found to update for the given reference: " + ref);
@@ -387,6 +386,7 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
      * @param id
      * @return
      */
+    @Deprecated
     private Vote getVoteById(String id) {
         Long voteId;
         try {
@@ -398,6 +398,7 @@ public class PollVoteEntityProvider extends AbstractEntityProvider implements Co
         return vote;
     }
 
+    @Deprecated
     public void updateEntity(EntityReference ref, Object entity, Map<String, Object> params) {
         throw new UnsupportedOperationException("Votes cannot currently be updated: " + ref);
     }

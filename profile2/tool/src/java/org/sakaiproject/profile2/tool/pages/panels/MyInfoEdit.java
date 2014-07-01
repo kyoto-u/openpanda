@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages.panels;
 
 
@@ -25,11 +24,11 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
@@ -42,13 +41,12 @@ import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.logic.ProfileWallLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.UserProfile;
+import org.sakaiproject.profile2.tool.components.CKEditorConfig;
+import org.sakaiproject.profile2.tool.components.CKEditorTextArea;
 import org.sakaiproject.profile2.tool.components.IconWithClueTip;
-import org.sakaiproject.profile2.tool.components.TextareaTinyMceSettings;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
 
-import wicket.contrib.tinymce.TinyMceBehavior;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 public class MyInfoEdit extends Panel {
 	
@@ -152,6 +150,8 @@ public class MyInfoEdit extends Panel {
 		WebMarkupContainer nicknameContainer = new WebMarkupContainer("nicknameContainer");
 		nicknameContainer.add(new Label("nicknameLabel", new ResourceModel("profile.nickname")));
 		TextField nickname = new TextField("nickname", new PropertyModel(userProfile, "nickname"));
+		nickname.setMarkupId("nicknameinput");
+		nickname.setOutputMarkupId(true);
 		nicknameContainer.add(nickname);
 		form.add(nicknameContainer);
 		
@@ -159,6 +159,8 @@ public class MyInfoEdit extends Panel {
 		WebMarkupContainer birthdayContainer = new WebMarkupContainer("birthdayContainer");
 		birthdayContainer.add(new Label("birthdayLabel", new ResourceModel("profile.birthday")));
 		TextField birthday = new TextField("birthday", new PropertyModel(userProfile, "birthday"));
+		birthday.setMarkupId("birthdayinput");
+		birthday.setOutputMarkupId(true);
 		birthdayContainer.add(birthday);
 		//tooltip
 		birthdayContainer.add(new IconWithClueTip("birthdayToolTip", ProfileConstants.INFO_IMAGE, new ResourceModel("text.profile.birthyear.tooltip")));
@@ -167,11 +169,10 @@ public class MyInfoEdit extends Panel {
 		//personal summary
 		WebMarkupContainer personalSummaryContainer = new WebMarkupContainer("personalSummaryContainer");
 		personalSummaryContainer.add(new Label("personalSummaryLabel", new ResourceModel("profile.summary")));
-		TextArea personalSummary = new TextArea("personalSummary", new PropertyModel(userProfile, "personalSummary"));
-		
-		//add TinyMCE control
-		personalSummary.add(new TinyMceBehavior(new TextareaTinyMceSettings()));
-		
+		CKEditorTextArea personalSummary = new CKEditorTextArea("personalSummary", new PropertyModel(userProfile, "personalSummary"));
+		personalSummary.setMarkupId("summaryinput");
+		personalSummary.setEditorConfig(CKEditorConfig.createCkConfig());
+		personalSummary.setOutputMarkupId(true);		
 		personalSummaryContainer.add(personalSummary);
 		form.add(personalSummaryContainer);
 		
@@ -211,9 +212,13 @@ public class MyInfoEdit extends Panel {
 				
             }
 			
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator() {
+				return CKEditorTextArea.getAjaxCallDecoratedToUpdateElementForAllEditorsOnPage();
+			}
+			
 		};
 		submitButton.setModel(new ResourceModel("button.save.changes"));
-		submitButton.add(new TinyMceAjaxSubmitModifier());
 		form.add(submitButton);
 		
         

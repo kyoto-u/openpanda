@@ -1,6 +1,6 @@
 /**
- * $Id: ServiceTestManager.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/rest/src/test/org/sakaiproject/entitybroker/rest/ServiceTestManager.java $
+ * $Id: ServiceTestManager.java 113492 2012-09-24 21:05:30Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/rest/src/test/org/sakaiproject/entitybroker/rest/ServiceTestManager.java $
  * TestManager.java - entity-broker - Jul 23, 2008 6:27:29 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

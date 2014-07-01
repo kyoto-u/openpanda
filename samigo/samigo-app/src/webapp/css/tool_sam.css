@@ -1,3 +1,14 @@
+.samigo-subheading {
+  font-weight: 400;
+  border-bottom: 1px solid #999;
+  font-size: 1.1em;
+  margin: 8px 0;
+}
+h4.samigo-category-subhead {
+  font-weight: bold;
+  padding-bottom: 8px;
+  color: black;
+}
 
 .treefolder {
  background-repeat: no-repeat;
@@ -12,19 +23,19 @@
  width: 26px;
 }
 
-.actionHeader{ 
+.actionHeader{
   overflow: hidden;
   width:100%;
   background:#eec;
   padding:0
 
  }
-.actionHeader h3 h4 h5{ 
+.actionHeader h3 h4 h5{
   float:left;
   margin:.3em
  }
 
-.actionHeader div{ 
+.actionHeader div{
   float:right;
   padding:.3em
 }
@@ -93,7 +104,7 @@ font-size:1.2em
 	font-size:85%;
 	border-right:1px solid #ddd;
 	border-left:1px solid #ddd;
-	border-top:1px solid #ddd;		
+	border-top:1px solid #ddd;
 	margin-bottom:0px;
 }
 
@@ -109,34 +120,38 @@ font-size:1.2em
 	vertical-align:bottom;
     text-align:left;
 }
+
+.samLeftTopNav  {
+	vertical-align:top;
+    text-align:top;
+}
+
 .samRightNav  {
 	vertical-align:bottom;
     text-align:right;
 }
 
-/* added gopalrc - Jan 2008  */
 .detailedStatsCorrectAnswerText {
     font-weight: bold;
 }
 
-.new_assessment 
+.new_assessment
 {
 	color: #555555;
 	font-weight: bold;
 }
 
-/* added gopalrc - Jan 2008  */
 .detailedStatsCorrectAnswerText {
     font-weight: bold;
 }
 
-.prePopulateText 
+.prePopulateText
 {
 	color:gray;
 }
 
 .textBelowHeader {
-	padding: .5em 0 0 0;
+	padding: .3em 0 0 0;
 }
 
 .selectAction {
@@ -185,16 +200,60 @@ font-size:1.2em
 }
 
 .makeInfo {
-	border: 1px solid #666; 
+	border: 1px solid #666;
 	background-color: #FFFDD2;
-	position: absolute; 
-	top: 0px; 
+	position: absolute;
+	top: 0px;
 	left: 30px;
 	text-indent: 0em;
 	margin-top: 0.4em;
 	margin-left: -1.2em;
 	max-height: 250px; /* if div >= to this max-height value, will override with scrollDescription class b/c IE scrollbar issues */
 	white-space: nowrap;
+}
+
+.makeLogInfo {
+	border: 1px solid #003366;
+	background-color: #FFFFCC;
+	left: 30px;
+	position: absolute;
+	top: -10px;
+	height: auto !important;
+            padding:6px;
+            font-size:1.1em;
+            color:#333;
+	text-indent: 0em;
+	margin-top: 0.6em;
+	margin-left: -1.5em;
+	max-height: 250px;  
+	white-space: nowrap;
+	overflow: scroll; /* for browsers that don't support overflow-y */
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.itemLogInfo {
+	border: 1px solid #003366;
+	background-color: #FFFFCC;
+	position: absolute;
+	top: -10px;
+	left: 20px;
+	height: auto !important;
+	padding: 3px 3px 3px 3px;
+	text-indent: 0em;
+	margin-top: 0.6em;
+	margin-left: -2.5em;
+	max-height: 100px;
+	max-width: 100px;
+	white-space: nowrap;
+	overflow: auto; /* for browsers that don't support overflow-y */
+}
+
+.scrollDescription {
+	height: 700px;
+	overflow: scroll; /* for browsers that don't support overflow-y */
+	overflow-x: auto;
+	overflow-y: scroll;
 }
 
 .info {
@@ -208,7 +267,7 @@ font-size:1.2em
 table.settings {
     border: 1px solid #bbb;
 }
- 	  	 
+
 .notification {
     color: #555;
     font-size: 110%;
@@ -243,39 +302,59 @@ li.last {
         border: 0 none;
 }
 
+/* Simple Borders for EMI Tables=====================*/
+table.simpleBorder {
+	border-bottom: 1px solid #ccc;
+	background-color: white;
+	vertical-align: top; 
+}
+table.simpleBorder td {
+	padding: 4px;
+	border-top: 1px solid #ccc;
+	background-color: white;
+	vertical-align: top; 
+}
+table.noBorder {
+	background-color: white;
+	vertical-align: top; 
+	border: 1px solid #fff;
+}
+table.noBorder td {
+	padding: 4px;
+	background-color: white;
+	vertical-align: top; 
+	border: 1px solid #fff;
+}
+
 #samigo-create-container {
-	width: 100%;
-	overflow: hidden;
 	margin-bottom: 20px;
-	height: 180px;
 }
 #samigo-create-new {
+	display: table-cell;
 	background-color: #F0F0F0;
-	float: left;
 	width: 40%;
 	padding: 12px;
-	height: 180px;
 }
 #samigo-create-new h4 {
 	margin: 0 0 8px;
 }
 #samigo-create-or {
-	float: left;
+	display: table-cell;
 	width: 10%;
 	text-align: center;
 	vertical-align: middle;
-	height: 180px;
 	line-height: 140px;
 }
 #samigo-create-import {
+	display: table-cell;
 	background-color: #F3F3F3;
-	float: left;
 	width: 40%;
 	padding: 20px;
-	height: 180px;
 }
 #tabs {
 	padding: 0;
+	min-height: 300px;
+	overflow: auto;
 }
 ul.ui-tabs-nav {
 	border-bottom: 2px solid #828282;
@@ -321,6 +400,29 @@ tr.list-row-even td, tr.list-row-odd td {
 }
 #tabs .ui-widget-content a:hover {
 	text-decoration: underline;
+}
+#divider {
+	background: none repeat scroll 0 0 #88D0E8;
+	height: 150px;
+	width: 1px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+.iconAdd {
+      background: url("/library/image/silk/add.png") no-repeat scroll 0 0 transparent;
+      padding-left: 20px;
+}
+.iconAttach {
+      background: url("/library/image/silk/attach.png") no-repeat scroll 0 0 transparent;
+      padding-left: 20px;
+}
+.greyBox {
+      background: none repeat-x scroll 50% 50% #F6F6F6;
+      border: 1px solid #eee;
+      padding: 8px;
+}
+.alignTop {
+      vertical-align: top;
 }
 
 tbody tr td.center{
@@ -399,7 +501,10 @@ a.hideDivision {
     color: #404040;
     font-family: Arial,Helvetica,sans-serif;
 }
-
+.placeholder
+{
+  color: #aaa;
+}
 .submissionInfoCol1{
     width: 200px; 
 }
@@ -408,12 +513,205 @@ a.hideDivision {
     width: 650px; 
 }
 
+.mcAnswerText {
+	display:inline-table;
+	width: 80%;
+}
 
+.mcColumn1 {
+  	width: 40px;
+}
 
+#jqueryui-accordion .ui-accordion-content {
+    background-color: #efefef;
+}
+#jqueryui-accordion .ui-accordion-header {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border: 1px solid #ddd;
+}
+table.listHierEventLog {
+    margin-top: 0em !important;
+}
+
+.divContainer {
+    width: 100%;
+    background-color: #EEEEEE;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    height: 1.5em;
+}
+
+.divLeft {
+    float: left;
+    vertical-align: middle;
+    padding-left: 0.5em;
+}
+
+.divRight {
+    float: right;
+    vertical-align: middle;
+    padding-right: 0.5em;
+}
+
+.html {
+	overflow: hidden;
+	height: 100%;
+}
+.body {
+	overflow: auto;
+	height: 100%;
+}
+
+.mcAnswerText {
+	display:inline-table;
+	width: 80%;
+}
 
 #timer-expired-warning{
 	text-align: center;	
 }
+
+#audio-recorder-header {
+    text-align: center;
+    border-bottom: 1px solid black;
+    font-size: 1.1em;
+    padding: 4px 0;
+    margin-bottom: 8px;
+}
+#audio-recorder-container {
+    padding: 0 8px;
+}
+#audio-popup-question {
+    font-size: 1.1em;
+    font-weight: bold;
+    padding-bottom: 12px;
+}
+#audio-recorder-intro div {
+    padding-bottom: 12px;
+}
+#audio-visual-container {
+    width: 778px;
+    height: 300px;
+    padding: 2px;
+    border: 1px solid black;
+    background-color: #ccc;
+}
+#audio-analyzer {
+    height: 180px;
+    width: 778px;
+    background-color: black;
+}
+#audio-timer-wrapper {
+    width: 776px;
+    height: 60px;
+    background-color: #333;
+    margin: 0 auto;
+    position: relative;
+    color: white;
+}
+#audio-scrubber {
+    width: 704px;
+    height: 12px;
+    border-radius: 4px;
+    background-color: #ccc;
+    border: 1px solid #ddd;
+    position: absolute;
+    top: 30px;
+    right: 50px;
+}
+#audio-timer {
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    width: 26px;
+    height: 14px;
+    background-color: #858585;
+    border: 1px solid #333;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 0.9em;
+    z-index: 999;
+}
+#audio-timer:after, #audio-timer:before {
+	top: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+#audio-timer:after {
+	border-color: rgba(133, 133, 133, 0);
+	border-top-color: #858585;
+	border-width: 4px;
+	left: 50%;
+	margin-left: -4px;
+}
+#audio-timer:before {
+	border-color: rgba(153, 153, 153, 0);
+	border-top-color: #999;
+	border-width: 5px;
+	left: 50%;
+	margin-left: -5px;
+}
+#audio-max-time {
+    position: absolute;
+    right: 8px; 
+    top: 30px;
+    width: 30px;
+    text-align: right;
+    font-size: 0.9em;
+}
+#audio-visual-container button {
+    height: 56px;
+    width: 60px;
+    padding-top: 32px;
+    margin-top: 2px;
+    color: black;
+}
+#audio-record {
+    background: transparent url(/library/image/record.png) no-repeat center 2px;
+}
+#audio-stop {
+    background: transparent url(/library/image/stop.png) no-repeat center 2px;
+}
+#audio-play {
+    background: transparent url(/library/image/play.png) no-repeat center 2px;
+}
+#audio-visual-container #audio-upload {
+    margin-left: 300px;
+    width: 140px;
+    border-radius: 5px;
+    height: 40px;
+    padding:0;
+    margin-top: 8px;
+    vertical-align: top;
+}
+#audio-posting, #audio-finished, #audio-browser-plea {
+    height: 200px;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+}
+div.attempts-remaining {
+    font-weight: bold;
+}
+#audio-mic-check {
+  padding: 8px 0;
+}
+#audio-last-attempt {
+  font-style: italic;
+  font-weight: normal;
+  padding-left: 100px;
+}
+#mic-check {
+    background: transparent url(/library/image/mic-check.png) no-repeat center center;
+}
+
 #squaresWaveG{
 position:relative;
 width:124px;
@@ -576,3 +874,30 @@ background-color:#DBDBDB;
 }
 
 }
+
+.downloanQuestionCheckbox {
+	vertical-align:top;
+}
+
+.downloanQuestionDescription {
+	vertical-align:top;
+}
+
+.alignBottom {
+    vertical-align: bottom;
+}
+
+.alignTop {
+    vertical-align: top;
+}
+
+.submissionAllowed {
+    margin-top: 3px;
+}
+
+.groupTable {
+	margin-top: 4px;
+    margin-left: 150px;
+}
+
+

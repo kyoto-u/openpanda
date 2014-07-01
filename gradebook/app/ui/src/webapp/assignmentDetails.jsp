@@ -53,7 +53,10 @@
  			summary="#{msgs.assignment_details_table_summary}"
 			border="0">
 				<h:outputText id="titleLabel" value="#{msgs.assignment_details_title}"/>
-				<h:outputText id="title" value="#{assignmentDetailsBean.assignment.name}"/>
+				<h:panelGroup>
+					<h:outputText id="title" value="#{assignmentDetailsBean.assignment.name}"/>
+					<h:outputText value=" (#{msgs.extra_credit})" rendered="#{assignmentDetailsBean.assignment.isExtraCredit}"/>
+				</h:panelGroup>
 
 				<h:outputText id="pointsLabel" value="#{msgs.assignment_details_points}"/>
 				<h:outputText id="points" value="#{assignmentDetailsBean.assignment.pointsPossible}">
@@ -324,7 +327,7 @@
 		</div> <!-- END OF INDNT1 -->
 
 
-<script src="/library/js/jquery.js" type="text/javascript"></script>
+<script src="/library/js/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	org_vals = new Array($("table#gbForm\\:gradingTable :text").length);

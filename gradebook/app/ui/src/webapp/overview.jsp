@@ -25,8 +25,8 @@
 		</div>
 		
 		<sakai:tool_bar rendered="#{overviewBean.userAbleToEditAssessments}">
-    		<sakai:tool_bar_item value="#{msgs.overview_add_item}"    action="#{overviewBean.navigateToAddAssignment}" />
-   			<sakai:tool_bar_item value="#{msgs.overview_import_item}" action="#{overviewBean.navigateToSpreadsheet}" />
+    		<sakai:tool_bar_item value="#{msgs.overview_add_item}"    action="#{overviewBean.navigateToAddAssignment}" current="false" style="sakai_jsf_not_current_marker" />
+   			<sakai:tool_bar_item value="#{msgs.overview_import_item}" action="#{overviewBean.navigateToSpreadsheet}" current="false" style="sakai_jsf_not_current_marker" />
   		</sakai:tool_bar>
   		
   						
@@ -109,9 +109,12 @@
 							<f:param name="assignmentId" value="#{gradebookItem.id}"/>
 						</h:commandLink>
 					</h:panelGroup>
+					<h:outputText value=" (#{msgs.extra_credit})" rendered="#{gradebookItem.isExtraCredit && (gradebookItem.category == null || !gradebookItem.category.isExtraCredit) }"/>
 				</h:panelGroup>
 				
+				
 				<h:outputText value="#{gradebookItem.name}" styleClass="categoryHeading" rendered="#{gradebookItem.isCategory}" />
+				<h:outputText value=" (#{msgs.extra_credit})" rendered="#{gradebookItem.isCategory && gradebookItem.isExtraCredit}"/>
 				<h:outputText value=" (" rendered="#{gradebookItem.isCategory && (gradebookItem.dropHighest != 0 || gradebookItem.drop_lowest != 0 || gradebookItem.keepHighest != 0)}" />
             <h:outputFormat value="#{msgs.cat_drop_highest_display}" rendered="#{gradebookItem.isCategory && gradebookItem.dropHighest != 0}" >
                 <f:param value="#{gradebookItem.dropHighest}"/>
@@ -166,7 +169,18 @@
 					<f:converter converterId="org.sakaiproject.gradebook.jsf.converter.PRECISE_PERCENTAGE" />
 				</h:outputText>
 			</h:column>
-			
+
+            <h:column rendered="#{overviewBean.displayTotalPoints}">
+                <f:facet name="header">
+                    <t:commandSortHeader columnName="pointsPossible" propertyName="pointsPossible" immediate="true" arrow="true">
+                        <h:outputText value="#{msgs.overview_assignments_header_total_points}" />
+                    </t:commandSortHeader>
+                </f:facet>
+                <h:outputText value="#{gradebookItem.pointsPossible}">
+                    <f:converter converterId="org.sakaiproject.gradebook.jsf.converter.TOTAL_POINTS_CONVERTER" />
+                </h:outputText>
+            </h:column>
+
 			<h:column>
 				<f:facet name="header">
 		    	<t:commandSortHeader columnName="dueDate" propertyName="dueDate" immediate="true" arrow="true">

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
- * $Id: CalendarAction.java 123595 2013-05-03 18:01:44Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
+ * $Id: CalendarAction.java 306386 2014-02-25 17:44:54Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -51,15 +52,10 @@ import org.sakaiproject.alias.api.Alias;
 import org.sakaiproject.alias.cover.AliasService;
 import org.sakaiproject.authz.api.PermissionsHelper;
 import org.sakaiproject.authz.cover.SecurityService;
-import org.sakaiproject.calendar.api.Calendar;
-import org.sakaiproject.calendar.api.CalendarEdit;
-import org.sakaiproject.calendar.api.CalendarEvent;
-import org.sakaiproject.calendar.api.CalendarEventEdit;
-import org.sakaiproject.calendar.api.CalendarEventVector;
-import org.sakaiproject.calendar.api.ExternalSubscription;
-import org.sakaiproject.calendar.api.RecurrenceRule;
+import org.sakaiproject.calendar.api.*;
 import org.sakaiproject.calendar.cover.CalendarImporterService;
 import org.sakaiproject.calendar.cover.CalendarService;
+import org.sakaiproject.entitybroker.exception.EntityNotFoundException;
 import org.sakaiproject.calendar.cover.ExternalCalendarSubscriptionService;
 import org.sakaiproject.calendar.tool.CalendarActionState.LocalEvent;
 import org.sakaiproject.cheftool.Context;
@@ -81,6 +77,7 @@ import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.entitybroker.EntityBroker;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.EntityReference;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
@@ -90,14 +87,13 @@ import org.sakaiproject.exception.InUseException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
-import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeBreakdown;
 import org.sakaiproject.time.api.TimeRange;
 import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.tool.api.Placement;
-import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
@@ -203,6 +199,12 @@ extends VelocityPortletStateAction
 	private ContentHostingService contentHostingService;
    
 	private EntityBroker entityBroker;
+
+	// Dependency: setup in init
+	private SessionManager sessionManager;
+
+	// Dependency: setup in init
+	private OpaqueUrlDao opaqueUrlDao;
    
 	// tbd fix shared definition from org.sakaiproject.assignment.api.AssignmentEntityProvider
 	private final static String ASSN_ENTITY_ID     = "assignment";
@@ -1687,6 +1689,10 @@ extends VelocityPortletStateAction
 			{
 				addAlert(sstate, rb.getString("java.alert.subsurlempty"));
 			}
+			else if(!FormattedText.validateURL(calendarUrl))
+			{
+				addAlert(sstate,rb.getString("java.alert.subsurlinvalid"));
+			}
 			else
 			{
 				String contextId = EntityManager.newReference(
@@ -2167,6 +2173,15 @@ extends VelocityPortletStateAction
 		{
 			return CalendarService.allowSubscribeCalendar(calendarReference);
 		}
+		
+		/**
+		 * Returns true if the user is allowed to subscribe to the implicit
+		 * calendar.
+		 */
+		static public boolean allowSubscribeThis(String calendarReference)
+		{
+			return CalendarService.allowSubscribeThisCalendar(calendarReference);
+	}
 	}
 	
 	private final static String SSTATE_ATTRIBUTE_ADDFIELDS_PAGE =
@@ -2190,7 +2205,7 @@ extends VelocityPortletStateAction
 	
 	private static final String EVENT_CONTEXT_VAR = "event";
 	private static final String NO_EVENT_FLAG_CONTEXT_VAR = "noEvent";
-	
+	private static final String NOT_OPEN_EVENT_FLAG_CONTEXT_VAR = "notOpenEvent";
 	//
 	// These are variables used in the context for communication between this
 	// action class and the Velocity template.
@@ -2279,7 +2294,7 @@ extends VelocityPortletStateAction
 								isOnWorkspaceTab(),
 								false,
 								entryProvider,
-								StringUtils.trimToEmpty(SessionManager.getCurrentSessionUserId()),
+								StringUtils.trimToEmpty(sessionManager.getCurrentSessionUserId()),
 								channelArray, 
 								SecurityService.isSuperUser(),
 								ToolManager.getCurrentPlacement().getContext());
@@ -2410,6 +2425,14 @@ extends VelocityPortletStateAction
 		{
 			buildIcalExportPanelContext(portlet, context, runData, state);
 		}
+		else if (stateName.equals("opaqueUrlClean"))
+		{
+			buildOpaqueUrlCleanContext(portlet, context, runData, state);
+		}
+		else if (stateName.equals("opaqueUrlExisting"))
+		{
+			buildOpaqueUrlExistingContext(portlet, context, runData, state);
+		}
 		else if (stateName.equals("delete"))
 		{
 			// build the context to display the property list
@@ -2423,6 +2446,27 @@ extends VelocityPortletStateAction
 		else if (stateName.equals(STATE_SET_FREQUENCY))
 		{
 			buildFrequencyContext(portlet, context, runData, state);
+		}
+
+		if (stateName.equals("description") 
+		        || stateName.equals("year") 
+		        || stateName.equals("month") 
+		        || stateName.equals("day") 
+		        || stateName.equals("week")
+		        || stateName.equals("list")
+		        ) {
+		    // SAK-23566 capture the view calendar events
+		    EventTrackingService ets = (EventTrackingService) ComponentManager.get(EventTrackingService.class);
+		    String calendarRef = state.getPrimaryCalendarReference();
+		    if (ets != null && calendarRef != null) {
+		        // need to cleanup the cal references which look like /calendar/calendar/4ea74c4d-3f9e-4c32-b03f-15e7915e6051/main
+		        String eventRef = StringUtils.replace(calendarRef, "/main", "/"+stateName);
+		        String calendarEventId = state.getCalendarEventId();
+		        if (StringUtils.isNotBlank(calendarEventId)) {
+		            eventRef += "/"+calendarEventId;
+		        }
+		        ets.post(ets.newEvent("calendar.read", eventRef, false));
+		    }
 		}
 
 		TimeZone timeZone = TimeService.getLocalTimeZone();
@@ -2556,6 +2600,8 @@ extends VelocityPortletStateAction
 	
 		RecurrenceRule rule = (RecurrenceRule) sstate.getAttribute(CalendarAction.SSTATE__RECURRING_RULE);
 
+		CalendarUtil calutil = new CalendarUtil();
+
 		// defaultly set frequency to be once
 		// if there is a saved state frequency attribute, replace the default one
 		String freq = CalendarAction.DEFAULT_FREQ;
@@ -2577,6 +2623,7 @@ extends VelocityPortletStateAction
 		}
 		context.put("freq", freq);
 		context.put("tlang",rb);
+		context.put("cutil",calutil);
 		context.put("config",configProps);
 		// get the data the user just input in the preview new/revise page
 		context.put("savedData",state.getNewData());
@@ -2902,13 +2949,19 @@ extends VelocityPortletStateAction
 					entityId.append( (CalendarService.getCalendar(calEvent.getCalendarReference())).getContext() );
 					entityId.append( EntityReference.SEPARATOR );
 					entityId.append( assignmentId );
-					ActionReturn ret = entityBroker.executeCustomAction(entityId.toString(), ASSN_ENTITY_ACTION, null, null);
-					if (ret != null && ret.getEntityData() != null) {
-						Object returnData = ret.getEntityData().getData();
-						assignData = (Map<String, Object>)returnData;
-					}
-					context.put("assignmenturl", (String) assignData.get("assignmentUrl"));
-					context.put("assignmentTitle", (String) assignData.get("assignmentTitle"));
+					try{
+						ActionReturn ret = entityBroker.executeCustomAction(entityId.toString(), ASSN_ENTITY_ACTION, null, null);
+						if (ret != null && ret.getEntityData() != null) {
+							Object returnData = ret.getEntityData().getData();
+							assignData = (Map<String, Object>)returnData;
+						}
+						context.put("assignmenturl", (String) assignData.get("assignmentUrl"));
+						context.put("assignmentTitle", (String) assignData.get("assignmentTitle"));
+					}catch(SecurityException e){
+						context.put(ALERT_MSG_KEY,rb.getString("java.alert.opendate"));
+						context.put(NOT_OPEN_EVENT_FLAG_CONTEXT_VAR, TRUE_STRING);
+						return;
+ 					}
 				}
 						
 				
@@ -2981,6 +3034,8 @@ extends VelocityPortletStateAction
 			CalendarPermissions.allowImport(
 				state.getPrimaryCalendarReference()),
 			CalendarPermissions.allowSubscribe(
+				state.getPrimaryCalendarReference()),
+			CalendarPermissions.allowSubscribeThis(
 					state.getPrimaryCalendarReference()));
 		
 		context.put(
@@ -3095,7 +3150,8 @@ extends VelocityPortletStateAction
 		context.put("tlang",rb);
 		context.put("config",configProps);
 		context.put("yearArray",yearObj);
-		context.put("year",Integer.valueOf(calObj.getYear()));
+		SimpleDateFormat formatter = new SimpleDateFormat(rb.getString("viewy.date_format"), rb.getLocale());
+		context.put("year", formatter.format(calObj.getTime()));
 		context.put("date",dateObj1);
 		state.setState("year");
 		
@@ -3122,6 +3178,8 @@ extends VelocityPortletStateAction
 			CalendarPermissions.allowImport(
 				state.getPrimaryCalendarReference()),
 			CalendarPermissions.allowSubscribe(
+				state.getPrimaryCalendarReference()),
+			CalendarPermissions.allowSubscribeThis(
 				state.getPrimaryCalendarReference()));
 		
 		// added by zqian for toolbar
@@ -3199,8 +3257,8 @@ extends VelocityPortletStateAction
 		calObj.setDay(dateObj1.getYear(),dateObj1.getMonth(),dateObj1.getDay());
 		
 		// retrieve the information from day, month and year to calObj again since calObj changed during the process of CalMonth().
-		context.put("nameOfMonth",calendarUtilGetMonth(calObj.getMonthInteger()));
-		context.put("year", Integer.valueOf(calObj.getYear()));
+		SimpleDateFormat formatter = new SimpleDateFormat(rb.getString("viewm.date_format"), rb.getLocale());
+		context.put("viewingDate", formatter.format(calObj.getTime()));
 		context.put("monthArray",monthObj2);
 		context.put("tlang",rb);
 		context.put("config",configProps);
@@ -3232,6 +3290,8 @@ extends VelocityPortletStateAction
 			CalendarPermissions.allowImport(
 				state.getPrimaryCalendarReference()),
 			CalendarPermissions.allowSubscribe(
+				state.getPrimaryCalendarReference()),
+			CalendarPermissions.allowSubscribeThis(
 				state.getPrimaryCalendarReference()));
 		
 		state.setState("month");
@@ -3556,6 +3616,8 @@ extends VelocityPortletStateAction
 			CalendarPermissions.allowImport(
 				state.getPrimaryCalendarReference()),
 			CalendarPermissions.allowSubscribe(
+				state.getPrimaryCalendarReference()),
+			CalendarPermissions.allowSubscribeThis(
 				state.getPrimaryCalendarReference()));
 		
 		context.put("permissionallowed",Boolean.valueOf(allowed));
@@ -3564,7 +3626,7 @@ extends VelocityPortletStateAction
 
 		context.put("selectedView", rb.getString("java.byday"));
 		
-		context.put("dayName", calendarUtilGetDay(calObj.getDay_Of_Week(false)));
+		context.put("dayName", calendarUtilGetDay(calObj.getDay_Of_Week(true)));
 
 	} // buildDayContext
 	
@@ -3689,7 +3751,7 @@ extends VelocityPortletStateAction
 			Vector eventVector1;
 			dateObj2 =	new MyDate();
 			dateObj2.setTodayDate(calObj.getMonthInteger(),calObj.getDayOfMonth(),calObj.getYear());
-			dateObj2.setDayName(calendarUtilGetDay(calObj.getDay_Of_Week(false)));
+			dateObj2.setDayName(calendarUtilGetDay(calObj.getDay_Of_Week(true)));
 			dateObj2.setNameOfMonth(calendarUtilGetMonth(calObj.getMonthInteger()));
 			
 			if (calObj.getDayOfMonth() == dayObj.getDay())
@@ -3791,6 +3853,8 @@ extends VelocityPortletStateAction
 			CalendarPermissions.allowImport(
 				state.getPrimaryCalendarReference()),
 			CalendarPermissions.allowSubscribe(
+				state.getPrimaryCalendarReference()),
+			CalendarPermissions.allowSubscribeThis(
 				state.getPrimaryCalendarReference()));
 		
 		calObj.setDay(yearObj.getYear(),monthObj1.getMonth(),dayObj.getDay());
@@ -3983,6 +4047,33 @@ extends VelocityPortletStateAction
 	} // buildIcalExportPanelContext
 	
 	/**
+	 * Setup for Opaque URL Export ("No URL").
+	 */
+	protected void buildOpaqueUrlCleanContext(VelocityPortlet portlet, Context context, RunData rundata, CalendarActionState state)
+	{
+		context.put("isMyWorkspace", isOnWorkspaceTab());
+		context.put("form-generate", BUTTON + "doOpaqueUrlGenerate");
+		context.put("form-cancel", BUTTON + "doCancel");
+	}
+	
+	/**
+	 * Setup for Opaque URL Export ("URL exists").
+	 */
+	protected void buildOpaqueUrlExistingContext(VelocityPortlet portlet, Context context, RunData rundata, CalendarActionState state)
+	{
+		String calId = state.getPrimaryCalendarReference();
+		Reference calendarRef = EntityManager.newReference(calId);
+		String opaqueUrl = ServerConfigurationService.getAccessUrl()
+			+ CalendarService.calendarOpaqueUrlReference(calendarRef);
+		context.put("opaqueUrl", opaqueUrl);
+		context.put("webcalUrl", opaqueUrl.replaceFirst("http", "webcal"));
+		context.put("isMyWorkspace", isOnWorkspaceTab());
+		context.put("form-regenerate", BUTTON + "doOpaqueUrlRegenerate");
+		context.put("form-delete", BUTTON + "doOpaqueUrlDelete");
+		context.put("form-cancel", BUTTON + "doCancel");
+	}
+	
+	/**
 	 * Build the context for showing delete view
 	 */
 	protected void buildDeleteContext(VelocityPortlet portlet,
@@ -4094,7 +4185,7 @@ extends VelocityPortletStateAction
 					dateObj.setTodayDate(m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),m_calObj.getYear());
 					
 					startTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),00,00,00,001);
-					endTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),23,59,00,000);
+					endTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),23,59,59,999);
 					
 					eventList = CalendarEventVectorObj.getEvents(TimeService.newTimeRange(startTime,endTime,true,true));
 					
@@ -4112,7 +4203,7 @@ extends VelocityPortletStateAction
 					dateObj.setTodayDate(m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),m_calObj.getYear());
 					
 					startTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),00,00,00,001);
-					endTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),23,59,00,000);
+					endTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),23,59,59,999);
 					
 					timeRange = TimeService.newTimeRange(startTime,endTime,true,true);
 					
@@ -4141,7 +4232,7 @@ extends VelocityPortletStateAction
 					
 					dateObj.setTodayDate(m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),m_calObj.getYear());
 					startTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),00,00,00,001);
-					endTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),23,59,00,000);
+					endTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),23,59,59,999);
 					
 					
 					timeRange = TimeService.newTimeRange(startTime,endTime,true,true);
@@ -4166,7 +4257,7 @@ extends VelocityPortletStateAction
 						dateObj.setTodayDate(m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),m_calObj.getYear());
 						
 						startTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),00,00,00,001);
-						endTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),23,59,00,000);
+						endTime = TimeService.newTimeLocal(m_calObj.getYear(),m_calObj.getMonthInteger(),m_calObj.getDayOfMonth(),23,59,59,999);
 						
 						timeRange = TimeService.newTimeRange(startTime,endTime,true,true);
 						
@@ -6413,6 +6504,10 @@ extends VelocityPortletStateAction
 							state.setPrimaryCalendarEdit(null);
 							state.setEdit(null);
 							state.setIsNewCalendar(false);
+							
+							// post update-type events for the revised schedule event
+							postEventsForChanges(edit);
+							
 						} // if (edit != null)
 						
 						m_calObj.setDay(Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day));
@@ -6901,6 +6996,43 @@ extends VelocityPortletStateAction
 	} // doMerge
 	
 	/**
+	 * Action is used when the user clicks on the 'Subscribe' link:
+	 */
+	public void doOpaqueUrl(RunData data, Context context)
+	{
+		CalendarActionState state = (CalendarActionState)getState(context, data, CalendarActionState.class);
+		state.setPrevState(state.getState());
+		state.setReturnState(state.getState());
+		OpaqueUrl opaqUrl = 
+			opaqueUrlDao.getOpaqueUrl(sessionManager.getCurrentSessionUserId(), state.getPrimaryCalendarReference());
+		String newState = (opaqUrl == null) ? "opaqueUrlClean" : "opaqueUrlExisting";
+		state.setState(newState);
+	}
+	
+	public void doOpaqueUrlGenerate(RunData data, Context context)
+	{
+		CalendarActionState state = (CalendarActionState)getState(context, data, CalendarActionState.class);
+		opaqueUrlDao.newOpaqueUrl(sessionManager.getCurrentSessionUserId(), state.getPrimaryCalendarReference());
+		state.setState("opaqueUrlExisting");
+	}
+	
+	public void doOpaqueUrlRegenerate(RunData data, Context context)
+	{
+		CalendarActionState state = (CalendarActionState)getState(context, data, CalendarActionState.class);
+		String userUUID = sessionManager.getCurrentSessionUserId();
+		String calendarRef = state.getPrimaryCalendarReference();
+		opaqueUrlDao.deleteOpaqueUrl(userUUID, calendarRef);
+		opaqueUrlDao.newOpaqueUrl(userUUID, calendarRef);
+	}
+	
+	public void doOpaqueUrlDelete(RunData data, Context context)
+	{
+		CalendarActionState state = (CalendarActionState)getState(context, data, CalendarActionState.class);
+		opaqueUrlDao.deleteOpaqueUrl(sessionManager.getCurrentSessionUserId(), state.getPrimaryCalendarReference());
+		state.setState("opaqueUrlClean");
+	}
+	
+	/**
 	 * Handle a request to set options.
 	 */
 	public void doCustomize(RunData runData, Context context)
@@ -7276,6 +7408,8 @@ extends VelocityPortletStateAction
 			CalendarPermissions.allowImport(
 				state.getPrimaryCalendarReference()),
 			CalendarPermissions.allowSubscribe(
+				state.getPrimaryCalendarReference()),
+			CalendarPermissions.allowSubscribeThis(
 					state.getPrimaryCalendarReference()));
 		
 		// added by zqian for toolbar
@@ -7427,7 +7561,7 @@ extends VelocityPortletStateAction
 			state.getPrimaryCalendarReference(),
 			isOnWorkspaceTab());
 			
-			SessionManager.getCurrentSession().setAttribute(CalendarService.SESSION_CALENDAR_LIST,calRefList);
+			sessionManager.getCurrentSession().setAttribute(CalendarService.SESSION_CALENDAR_LIST,calRefList);
 			
 			Reference calendarRef = EntityManager.newReference(state.getPrimaryCalendarReference());
 			
@@ -7456,7 +7590,8 @@ extends VelocityPortletStateAction
 	boolean allow_merge_calendars,
 	boolean allow_modify_calendar_properties,
 	boolean allow_import_export,
-	boolean allow_subscribe)
+	boolean allow_subscribe,
+	boolean allow_subscribe_this)
 	{
 		Menu bar = new MenuImpl(portlet, runData, "CalendarAction");
 		
@@ -7499,6 +7634,12 @@ extends VelocityPortletStateAction
 			{
 				bar.add( new MenuEntry(rb.getString("java.subscriptions"), null, allow_subscribe, MenuItem.CHECKED_NA, "doSubscriptions") );
 			}
+		
+		// A link for subscribing to the implicit calendar
+		if ( ServerConfigurationService.getBoolean("ical.opaqueurl.subscribe",false) )
+		{
+			bar.add( new MenuEntry(rb.getString("java.opaque_subscribe"), null, allow_subscribe_this, MenuItem.CHECKED_NA, "doOpaqueUrl") );
+		}
 		
 		//2nd menu bar for the PDF print only
 		Menu bar_print = new MenuImpl(portlet, runData, "CalendarAction");
@@ -7875,6 +8016,14 @@ extends VelocityPortletStateAction
 		{
 			entityBroker = (EntityBroker) ComponentManager.get("org.sakaiproject.entitybroker.EntityBroker");
 		}
+		if (sessionManager == null)
+		{
+			sessionManager = (SessionManager) ComponentManager.get(SessionManager.class);
+		}
+		if (opaqueUrlDao == null)
+		{
+			opaqueUrlDao = (OpaqueUrlDao) ComponentManager.get(OpaqueUrlDao.class);
+		}
 
 
 		// retrieve the state from state object
@@ -7991,10 +8140,8 @@ extends VelocityPortletStateAction
 	public String calendarUtilGetMonth(int l_month)
 	{
 		// get the index for the month. Note, the index is increased by 1, u need to deduct 1 first
-		String[] months = new String [] { rb.getString("jan"),rb.getString("feb"),rb.getString("mar"),
-											rb.getString("apr"), rb.getString("may"), rb.getString("jun"),
-											rb.getString("jul"), rb.getString("aug"), rb.getString("sep"),
-											rb.getString("oct"), rb.getString("nov"), rb.getString("dec") };
+		CalendarUtil calUtil = new CalendarUtil();
+		String[] months = calUtil.getCalendarMonthNames(false);
 
 		if (l_month >12) 
 		{
@@ -8011,9 +8158,9 @@ extends VelocityPortletStateAction
 	*/
 	private String calendarUtilGetDay(int dayofweek) 
 	{		
-		String[] l_ndays = new String[] {rb.getString("day.sunday"),rb.getString("day.monday"),
-					rb.getString("day.tuesday"),rb.getString("day.wednesday"),rb.getString("day.thursday")
-					,rb.getString("day.friday"),rb.getString("day.saturday")};
+
+		CalendarUtil calUtil = new CalendarUtil();
+		String[] l_ndays = calUtil.getCalendarDaysOfWeekNames(true);
 		
 		if ( dayofweek > 7 ) 
 		{
@@ -8027,6 +8174,113 @@ extends VelocityPortletStateAction
 		return l_ndays[dayofweek - 1];
 			
 	}	// calendarUtilGetDay
+	
+	/**
+	 * @param newEvent
+	 */
+	public void postEventsForChanges(CalendarEventEdit newEvent) {
+		// determine which events should be posted by comparing with saved properties
+		try
+		{
+			Calendar calendar = CalendarService.getCalendar(newEvent.getCalendarReference());
+			if (calendar != null)
+			{
+				try
+				{
+					CalendarEvent savedEvent = calendar.getEvent(newEvent.getId());
+					if(savedEvent == null) {
+						
+					} else {
+						
+						EventTrackingService m_eventTrackingService = (EventTrackingService) ComponentManager.get(EventTrackingService.class);
+					    
+						// has type changed? 
+						String savedType = savedEvent.getType();
+						String newType = newEvent.getType();
+						if(savedType == null || newType == null) {
+							// TODO: is this an error?
+						} else {
+							if (!newType.equals(savedType))
+							{
+								// post type-change event
+								m_eventTrackingService.post(m_eventTrackingService.newEvent(CalendarService.EVENT_MODIFY_CALENDAR_EVENT_TYPE, newEvent.getReference() + "::" + savedType + "::" + newType, true));
+							}
+						}
+						
+						// has title changed?
+						if(savedEvent.getDisplayName() != null && ! savedEvent.getDisplayName().equals(newEvent.getDisplayName())) {
+							// post title-change event
+							m_eventTrackingService.post(m_eventTrackingService.newEvent(CalendarService.EVENT_MODIFY_CALENDAR_EVENT_TITLE, newEvent.getReference(), true));
+						}
+						
+						// has start-time changed?
+						TimeRange savedRange = savedEvent.getRange();
+						TimeRange newRange = newEvent.getRange();
+						if(savedRange == null || newRange == null) {
+							// TODO: Is this an error?
+						} else if(savedRange.firstTime() != null && savedRange.firstTime().compareTo(newRange.firstTime()) != 0) {
+							// post time-change event 
+							m_eventTrackingService.post(m_eventTrackingService.newEvent(CalendarService.EVENT_MODIFY_CALENDAR_EVENT_TIME, newEvent.getReference(), true));
+						}
+						
+						// has access changed?
+						if(savedEvent.getAccess() != newEvent.getAccess()) {
+							// post access-change event
+							m_eventTrackingService.post(m_eventTrackingService.newEvent(CalendarService.EVENT_MODIFY_CALENDAR_EVENT_ACCESS, newEvent.getReference(), true));
+						} else {
+							Collection savedGroups = savedEvent.getGroups();
+							Collection newGroups = newEvent.getGroups();
+							if(! (savedGroups.containsAll(newGroups) && newGroups.containsAll(savedGroups))) {
+								// post access-change event
+								m_eventTrackingService.post(m_eventTrackingService.newEvent(CalendarService.EVENT_MODIFY_CALENDAR_EVENT_ACCESS, newEvent.getReference(), true));
+							}
+						}
+						
+						// has frequency changed (other than exclusions)? 
+						RecurrenceRule savedRule = savedEvent.getRecurrenceRule();
+						RecurrenceRule newRule = newEvent.getRecurrenceRule();
+						if(savedRule == null && newRule == null) {
+							// do nothing -- no change
+						} else if(savedRule == null || newRule == null) {
+							// post frequency-change event
+							m_eventTrackingService.post(m_eventTrackingService.newEvent(CalendarService.EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));
+						} else {
+							// check for changes in properties of the rules
+							// (rule.getCount() rule.getFrequency() rule.getInterval() rule.getUntil() 
+							if(savedRule.getCount() != newRule.getCount() || savedRule.getInterval() != newRule.getInterval()) {
+								// post frequency-change event
+								m_eventTrackingService.post(m_eventTrackingService.newEvent(CalendarService.EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));								
+							} else if((savedRule.getFrequency() != null && ! savedRule.getFrequency().equals(newRule.getFrequency())) || (savedRule.getFrequency() == null && newRule.getFrequency() != null)) {
+								// post frequency-change event
+								m_eventTrackingService.post(m_eventTrackingService.newEvent(CalendarService.EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));								
+							} else if((savedRule.getUntil() == null && newRule.getUntil() != null) 
+									|| (savedRule.getUntil() != null && newRule.getUntil() == null)
+									|| (savedRule.getUntil() != null && savedRule.getUntil().getTime() != newRule.getUntil().getTime())) {
+								// post frequency-change event
+								m_eventTrackingService.post(m_eventTrackingService.newEvent(CalendarService.EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));								
+							}
+						}
+					} // if
+				}
+				catch (IdUnusedException Exception)
+				{
+					M_log.warn(this + ":postEventsForChanges IdUnusedException Cannot find calendar event for " +  newEvent.getId());
+				}
+				catch (PermissionException Exception)
+				{
+					M_log.warn(this + ":postEventsForChanges PermissionException Cannot find calendar event for " +  newEvent.getId());
+				}
+			} // if
+		}
+		catch (IdUnusedException Exception)
+		{
+			M_log.warn(this + ":postEventsForChanges IdUnusedException Cannot find calendar for " +  newEvent.getCalendarReference());
+		}
+		catch (PermissionException Exception)
+		{
+			M_log.warn(this + ":postEventsForChanges PermissionException Cannot find calendar for " +  newEvent.getCalendarReference());
+		}
+	} 
 		
 }	 // CalendarAction
 

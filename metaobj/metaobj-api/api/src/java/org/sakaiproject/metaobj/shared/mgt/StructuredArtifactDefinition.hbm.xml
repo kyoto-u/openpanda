@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.sakaiproject.metaobj.shared.model">
 
    <class name="StructuredArtifactDefinitionBean" table="metaobj_form_def">
@@ -19,7 +19,7 @@
       <property name="siteState" type="int" not-null="true"/>
       <property name="globalState" type="int" not-null="true"/>
       <property name="schema" column="schemaData" type="binary" not-null="true" length="2147483647"/>
-      <property name="instruction" type="text"/>
+      <property name="instruction" type="materialized_clob"/>
       <property name="schemaHash" column="schema_hash" type="string"/>
       <property name="alternateCreateXslt" column="alternateCreateXslt" length="36" type="org.sakaiproject.metaobj.shared.IdType" />
       <property name="alternateViewXslt" column="alternateViewXslt" length="36" type="org.sakaiproject.metaobj.shared.IdType" />

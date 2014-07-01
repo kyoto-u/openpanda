@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.components;
 
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -45,7 +44,12 @@ public class GalleryImageRenderer extends Panel {
 			add(new ContextImage("img",new Model(ProfileConstants.UNAVAILABLE_IMAGE)));
 			return;
 		}
-
+		else if (sakaiProxy.getResource(imageResourceId) == null) {
+			// may have been deleted in CHS
+			add(new ContextImage("img",new Model(ProfileConstants.UNAVAILABLE_IMAGE)));
+			return;
+		}
+	
 		final byte[] imageBytes = sakaiProxy.getResource(imageResourceId).getBytes();
 		
 		if (imageBytes != null && imageBytes.length > 0) {

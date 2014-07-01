@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-impl/impl/src/test/org/sakaiproject/assignment/impl/AssignmentServiceTest.java $
- * $Id: AssignmentServiceTest.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-impl/impl/src/test/org/sakaiproject/assignment/impl/AssignmentServiceTest.java $
+ * $Id: AssignmentServiceTest.java 307929 2014-04-08 18:43:32Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,6 +26,7 @@ import java.lang.StringBuilder;
 import java.lang.Runtime;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 
@@ -34,7 +35,6 @@ import java.util.zip.ZipOutputStream;
 
 import org.sakaiproject.entity.api.Entity;
 
-import org.sakaiproject.util.Blob;
 import org.sakaiproject.util.StringUtil;
 
 
@@ -174,11 +174,10 @@ public class AssignmentServiceTest extends TestCase
 	protected void zipWithFlushing(boolean flushing)
 	{
 		String assignmentTitle = "Test Assignment Title";
-		Blob b = new Blob();
 		
 		try
 		{
-			ZipOutputStream out = new ZipOutputStream(b.outputStream());
+			ZipOutputStream out = new ZipOutputStream(new ByteArrayOutputStream());
 
 			// create the folder structor - named after the assignment's title
 			String root = assignmentTitle + Entity.SEPARATOR;

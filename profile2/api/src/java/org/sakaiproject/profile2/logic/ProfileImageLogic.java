@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2008-2012 The Sakai Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://www.osedu.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.sakaiproject.profile2.logic;
 
 import java.util.List;
@@ -17,6 +32,12 @@ import org.sakaiproject.profile2.model.ProfilePrivacy;
  * 
  */
 public interface ProfileImageLogic {
+
+    /**
+     * Get the blank profile image, the one a user sees if there is
+     * no other image available.
+     */
+	public ProfileImage getBlankProfileImage();
 
 	/**
 	 * Get the profile image for a user. Takes into account all global settings, user preferences and privacy.
@@ -45,6 +66,14 @@ public interface ProfileImageLogic {
 	 * @return
 	 */
 	public ProfileImage getProfileImage(String userUuid, ProfilePreferences prefs, ProfilePrivacy privacy, int size);
+	
+	/**
+	 * Gets the official profile image for a user.
+	 * @param userUuid
+	 * @param siteId siteId to check that the requesting user has roster.viewofficialphoto permission
+	 * @return The ProfileImage object, populated with either a url or binary data.
+	 */
+	public ProfileImage getOfficialProfileImage(String userUuid, String siteId);
 	
 	/**
 	 * Get the profile image for a user. Takes into account all global settings, user preferences, privacy and permissions in the given site.

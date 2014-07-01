@@ -7,9 +7,8 @@
 		class="edu.amc.sakai.user.JLDAPDirectoryProvider" init-method="init"
 		destroy-method="destroy" singleton="true">
 		
-		<property name="memoryService">
-			<ref bean="org.sakaiproject.memory.api.MemoryService"/>
-		</property>
+		<!-- Setting a MemoryService in JLDAP is deprecated! 
+			Caching is done centrally in the UserDirectoryService.callCache -->
 		
 		<!-- Required. Host name or address of your LDAP server -->
 		<property name="ldapHost">
@@ -96,18 +95,14 @@
 			<value>2</value>
 		</property -->
 
-		<!-- Optional. User entry cache ttl in millis. Defaults
-			to JLDAPDirectoryProvider.DEFAULT_CACHE_TTL (300000)-->
-		<!-- property name="cacheTTL">
-			<value>300000</value>
-		</property -->
+		<!-- Setting a cacheTTL in jldap-beans.xml is longer supported! 
+			 If you are attempting to cache your users for one hour instead of the default of 5 minutes, 
+			 set the central UserDirectoryService.callCache
+			 memory.org.sakaiproject.user.api.UserDirectoryService.callCache=timeToLiveSeconds=3600
+		-->
 
-		<!-- Optional. Control case-sensitivity of cache keys (User.eid values).
-		     Defaults to false. (Note that this is a departure from historical
-		     behavior.) -->
-		<property name="caseSensitiveCacheKeys">
-			<value>false</value>
-		</property>
+		<!-- Setting caseSensitiveCacheKeys is no longer supported!
+			 We assume that user jdoe is the same as user JDoe!! -->
 		
 		<!--  Optional. Control the return value of 
 		      JLDAPDirectoryProvider.authenticateWithProviderFirst(String)
@@ -147,11 +142,18 @@
 			<value>10</value>
 		</property -->
 
-		<!-- Optional. Maximum number of users to search for
-		     Defaults to DEFAULT_MAX_OBJECTS_TO_QUERY = 200
-		<property name="maxObjectsToQueryFor">
+		<!-- Optional. Size of batch when loading multiple users at once.
+		     Defaults to DEFAULT_BATCH_SIZE = 200 -->
+		<!-- property name="batchSize">
 		  <value>200</value>
-		</property>-->
+		</property -->
+		
+		<!-- Optional. Maximum number of users to search for. This allows you to limit the
+		     maximum number of results the LDAP client will process.
+		     Defaults to DEFAULT_MAX_RESULT_SIZE = 1000 -->
+		<!-- property name="maxResultSize">
+		  <value>1000</value>
+		</property -->
 		
 		<!-- Optional. Defaults to an instance of 
 		edu.amc.sakai.user.SimpleLdapAttributeMapper -->
@@ -219,6 +221,13 @@
 			</map>
 		</property -->
 		
+		<!-- If any of the values need manipulating with message formats they can be set here. -->
+		<!-- property name="valueMappings">
+			<map>
+				<entry key="displayId"><value>{0}@example.edu</value></entry>
+			</map>
+		</property -->
+
 		<!-- Several options for calculating Sakai user types based
 		on LDAP attributes. Defaults to an instance of EmptyStringUserTypeMapper -->
 		<property name="userTypeMapper">

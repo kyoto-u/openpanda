@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: templateEditor.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+<!-- $Id: templateEditor.jsp 133525 2014-01-22 00:26:29Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -33,7 +33,21 @@
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{templateMessages.template_editor}" /></title>
+      <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+      <script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
       <samigo:script path="/jsf/widget/hideDivision/hideDivision.js"/>
+      <samigo:script path="/js/authoring.js"/>
+      <link type="text/css" href="/samigo-app/css/ui-lightness/jquery-ui-1.7.2.custom.css" rel="stylesheet" media="all"/>
+
+      <script type="text/javascript">
+        $(document).ready(function() {
+          // set up the accordion for settings
+          $("#jqueryui-accordion").accordion({ heightStyle: "content",collapsible: true });
+          // adjust the height of the iframe to accomodate the expansion from the accordion
+          $("body").height($("body").outerHeight() + 800);
+        });
+      </script>
+     
       </head>
       <body onload="<%= request.getAttribute("html.body.onload") %>">
 <!-- content... -->
@@ -76,25 +90,14 @@
  <h:outputText escape="false" value="#{templateMessages.template_instructions}"/>
  <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
   <!-- *** GENERAL TEMPLATE INFORMATION *** -->
-  <div class="tier1">
-<p>
-<h:outputLink title="#{templateMessages.t_showDivs}" value="#" onclick="showDivs();" onkeypress="showDivs();" >
-<h:outputText value="#{templateMessages.allMenus0}"/>
-<h:outputText value="#{templateMessages.open}"/>
-</h:outputLink>
-<h:outputText value=" | " />
-<h:outputLink title="#{templateMessages.t_hideDivs}" value="#" onclick="hideDivs();" onkeypress="hideDivs();">
-<h:outputText value="#{templateMessages.close}"/>
-</h:outputLink>
-<h:outputText value="#{templateMessages.allMenus}"/>
-</p>
+  <div class="tier1" id="jqueryui-accordion">
   <samigo:hideDivision id="div1" title="#{templateMessages.template_inform}" >
     <div class="tier2">
        <h:selectBooleanCheckbox id="infocanbeviewed"
           value="#{template.valueMap.templateInfo_isInstructorEditable}"/>
      <h:outputText value="#{templateMessages.template_canbeviewed}"/>
   <div class="tier3">
- <h:panelGrid columns="2" columnClasses="shorttext"
+ <h:panelGrid columns="2" columnClasses="samigoCell"
       summary="#{templateMessages.enter_template_info_section}">
 
 
@@ -470,7 +473,7 @@
        <h:outputText value=" "/>
       <h:panelGroup>
     <h:selectOneRadio layout="pageDirection" value="#{template.feedbackType}"
-      required="true">
+      required="true" onclick="disableAllFeedbackCheckTemplate(this.value);">
       <f:selectItem itemValue="1"
         itemLabel="#{templateMessages.immediate_feedback}"/>
       <f:selectItem itemValue="4"
@@ -497,51 +500,51 @@
       <h:panelGrid columns="2">
 
       <h:panelGroup>
-        <h:selectBooleanCheckbox id="student_response"
+        <h:selectBooleanCheckbox id="feedbackComponentstudent_response"
           value="#{template.feedbackComponent_StudentResp}"/>
-        <h:outputLabel for="student_response" value="#{commonMessages.student_response}"/>
+        <h:outputLabel for="feedbackComponentstudent_response" value="#{commonMessages.student_response}"/>
       </h:panelGroup>
 
       <h:panelGroup>
-        <h:selectBooleanCheckbox id="question_level"
+        <h:selectBooleanCheckbox id="feedbackComponentquestion_level"
           value="#{template.feedbackComponent_QuestionLevel}"/>
-        <h:outputLabel for="question_level" value="#{commonMessages.question_level_feedback}"/>
+        <h:outputLabel for="feedbackComponentquestion_level" value="#{commonMessages.question_level_feedback}"/>
       </h:panelGroup>
 
       <h:panelGroup>
-        <h:selectBooleanCheckbox id="correct_response"
+        <h:selectBooleanCheckbox id="feedbackComponentcorrect_response"
           value="#{template.feedbackComponent_CorrectResp}"/>
-        <h:outputLabel for="correct_response" value="#{commonMessages.correct_response}"/>
+        <h:outputLabel for="feedbackComponentcorrect_response" value="#{commonMessages.correct_response}"/>
       </h:panelGroup>
 
       <h:panelGroup>
-        <h:selectBooleanCheckbox id="selection_level"
+        <h:selectBooleanCheckbox id="feedbackComponentselection_level"
           value="#{template.feedbackComponent_SelectionLevel}"/>
-        <h:outputLabel for="selection_level" value="#{commonMessages.selection_level_feedback}"/>
+        <h:outputLabel for="feedbackComponentselection_level" value="#{commonMessages.selection_level_feedback}"/>
       </h:panelGroup>
 
       <h:panelGroup>
-        <h:selectBooleanCheckbox id="student_score"
+        <h:selectBooleanCheckbox id="feedbackComponentstudent_score"
           value="#{template.feedbackComponent_StudentScore}"/>
-        <h:outputLabel for="student_score" value="#{templateMessages.student_score}"/>
+        <h:outputLabel for="feedbackComponentstudent_score" value="#{templateMessages.student_score}"/>
       </h:panelGroup>
 
       <h:panelGroup>
-        <h:selectBooleanCheckbox id="graders_comments"
+        <h:selectBooleanCheckbox id="feedbackComponentgraders_comments"
           value="#{template.feedbackComponent_GraderComments}"/>
-        <h:outputLabel for="graders_comments" value="#{commonMessages.graders_comments}"/>
+        <h:outputLabel for="feedbackComponentgraders_comments" value="#{commonMessages.graders_comments}"/>
       </h:panelGroup>
 
       <h:panelGroup>
-        <h:selectBooleanCheckbox id="student_question_score" 
+        <h:selectBooleanCheckbox id="feedbackComponentstudent_question_score" 
           value="#{template.feedbackComponent_StudentQuestionScore}"/>
-        <h:outputLabel for="student_question_score" value="#{templateMessages.student_questionscore}"/>
+        <h:outputLabel for="feedbackComponentstudent_question_score" value="#{templateMessages.student_questionscore}"/>
       </h:panelGroup>
    
       <h:panelGroup>
-        <h:selectBooleanCheckbox id="statistics_hist"
+        <h:selectBooleanCheckbox id="feedbackComponentstatistics_hist"
           value="#{template.feedbackComponent_Statistics}"/>
-        <h:outputLabel for="statistics_hist" value="#{commonMessages.statistics_and_histogram}"/>
+        <h:outputLabel for="feedbackComponentstatistics_hist" value="#{commonMessages.statistics_and_histogram}"/>
       </h:panelGroup>
 
      </h:panelGrid>
@@ -688,7 +691,6 @@
 </h:form>
 <!-- end content -->
 </div>
-<script type="text/javascript">hideUnhideAllDivsWithWysiwyg('none');</script>
       </body>
     </html>
   </f:view>

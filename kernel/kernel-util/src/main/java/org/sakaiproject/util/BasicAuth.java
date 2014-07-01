@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-util/src/main/java/org/sakaiproject/util/BasicAuth.java $
- * $Id: BasicAuth.java 111987 2012-08-30 18:04:53Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-util/src/main/java/org/sakaiproject/util/BasicAuth.java $
+ * $Id: BasicAuth.java 106499 2012-04-03 08:38:53Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -264,7 +264,7 @@ public class BasicAuth {
 	public boolean doAuth(HttpServletRequest req, HttpServletResponse res)
 			throws IOException {
 		if (doBasicAuth(req)) {
-			String uiService = ServerConfigurationService.getString("ui.service");
+		    String uiService = ServerConfigurationService.getString("ui.service", "Sakai");
 			res.addHeader("WWW-Authenticate", "Basic realm=\"" + uiService + "\"");
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED,
 					"Authorization Required");

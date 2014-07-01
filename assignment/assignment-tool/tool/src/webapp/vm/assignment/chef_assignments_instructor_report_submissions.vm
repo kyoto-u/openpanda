@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_report_submissions.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_report_submissions.vm 129945 2013-09-24 22:33:32Z matthew@longsight.com $ -->
 <!-- start: chef_assignments_instructory_report_submissions.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_report_submissions.vm,v 1.6 2005/06/03 15:38:27 gsilver.umich.edu Exp $ -->
 <div class="portletBody">
@@ -39,16 +39,51 @@
 		#end
 	</ul>
 		<h3>
+		#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
 		$!tlang.getString('gen.grarep')
 	</h3>
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
-	#if ($!submissions.size() == 0)
-		<p class="instruction">
-			$tlang.getString("gen.theare2")
-		</p>
-	#else
+
 		<div class="navPanel">
 			<div class="viewNav">
+			<br />
+			#if ($!groups.hasNext())
+			<form name="viewForm" class="inlineForm" method="post" action="#toolForm("AssignmentAction")">
+			<input type="hidden" name="option" id="option" value="x" />
+			<input type="hidden" name="eventSubmit_doView_submission_list_option" value="x" />
+			<span class="skip">$tlang.getString("newassig.selectmessage")</span>
+				<div class="instruction">
+					$tlang.getString("view_instruction") 
+				</div>
+				<span class="skip">$tlang.getString("newassig.selectmessage")</span>
+
+				<select id="view" name="viewgroup" size="1" tabindex="3" onchange="javascript:blur();document.getElementById('option').value='changeView';document.viewForm.submit();return false;">
+
+					#if (!$showSubmissionByFilterSearchOnly)
+						<option value="all" #if($!view.equals("all"))selected="selected"#end >$tlang.getString('gen.viewallgroupssections')</option>
+					#else
+						<option value="" >$tlang.getString('please_select_group')</option>
+					#end
+					#foreach($aGroup in $groups)
+						<option value="$!aGroup.Reference" #if($!view.equals($!aGroup.Reference))selected="selected"#end >$validator.escapeHtml($aGroup.Title)</option>
+					#end
+				</select>
+				<p />
+				<label for="$form_search" class="skip">$tlang.getString("search")</label>
+				<input value="$validator.escapeHtml($searchString)" name="search" id="search" type="text" class="searchField"  size="20" />
+				<input type="button" value="$tlang.getString('search')" onclick="blur();document.getElementById('option').value='search';document.viewForm.submit();return false;" />
+				#if (($!searchString) && (!$searchString.equals("")))
+					<input type="button" class="button" value="$tlang.getString("search_clear")" onclick="blur();document.getElementById('option').value='clearSearch';document.viewForm.submit();return false;" />
+				#end
+									
+				<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+			</form>
+			
+			#end
+			#if ($!submissions.size() == 0)
+				<p class="instruction">
+					$tlang.getString("gen.theare2")
+				</p>
+			#else
 			<br />
 			<a href="$accessPointUrl" title="$!tlang.getString('downspr')">$!tlang.getString('downspr')</a>
 				
@@ -142,7 +177,7 @@
 						</th>
 						<th id="assignment">
 							<a href="#" onclick="location='#toolLinkParam("AssignmentAction" "doSort_submission" "criteria=$!sortedBy_assignment")'; return false;" 
-							  title="$tlang.getString("check")">
+							  title="$tlang.getString("listassig.sorbytit")">
 								$tlang.getString("gen.assig")
 								#if ($sortedBy.equals($!sortedBy_assignment)) 
 									#if ($sortedAsc.equals("true")) 
@@ -195,41 +230,50 @@
 						</th>
 					</tr>
 					#foreach ($submission in $submissions)
-						#set ($assignment = $submission.getAssignment())
+						#set ($assignment = $submission.getSubmission().getAssignment())
 						#set ($submissionType = $assignment.Content.TypeOfSubmission)
 						<tr>
 							<td headers="studentname">
-								#set ($submitterNames = "")
-								## replace it with submitter sort names
-								#set ($count = 1)
-								#foreach ($submitter in $submission.submitters)
-									#set($submitterName = $submitter.getSortName())
-									#set($submitterId=$!submitter.getDisplayId())
-									#if ($!submitterId)
-										##attach the displayId
-									#set($submitterName=$submitterName.concat("(").concat($submitterId).concat(")"))
-									#end
-									#if ($!submitterName)
-										#if ($count == 1)
-											#set ($submitterNames = $!submitterName)
-										#else
-											#set ($submitterNames = $submitterNames.concat(", ").concat($!submitterName))
-										#end
-									#end
-									#set ($count = $count + 1)
-								#end
-								$validator.escapeHtml($!submitterNames)
+							#set ($submitterNames = "")
+							#if ($submission.getIsMultiGroup())
+							<span class="error alertMessage">
+							#end
+							#if ($submission.user)
+							    #set($submitterName = $submission.getUser().getSortName())
+                                #set($submitterId=$submission.getUser().getDisplayId())
+                                #if ($!submitterId)
+                                    #set($submitterName=$submitterName.concat(" (").concat($submitterId).concat(")"))
+                                #end    
+                                #if ($assignment.isGroup())
+                                    #if ($submission.group)
+                                        #set($submitterName=$submitterName.concat(" [").concat($submission.getGroup().getTitle()).concat("]"))
+                                    #end
+                                #end
+                                $validator.escapeHtml($!submitterName)
+                            #end
+                            #if ($submission.getIsMultiGroup())
+                            </span>
+                            #end
 							</td>
 							<td headers="assignment">
+							    #assignmentTitleIcon($assignment)
 								$validator.escapeHtml($validator.limit($assignment.Title, 40))
 							</td>
 							<td headers="grade">
-								#if ($!submission)
-									#if ($submission.Graded)
+								#if ($submission.getSubmission())
+									#if ($submission.getSubmission().Graded)
 										#if ($assignment.getContent().TypeOfGrade == 1)
 											$tlang.getString("gen.nograd")
 										#else
-											$submission.gradeDisplay
+                                            #if ($submission.group)
+                                                #if ($submission.getGradeForUser($submission.user.id))
+                                                    $submission.getGradeForUser($submission.user.id) <abbr title="Group Grade">($submission.getSubmission().gradeDisplay)</abbr>
+                                                #else
+                                                    $submission.getSubmission().gradeDisplay
+                                                #end
+                                            #else
+											$submission.getSubmission().gradeDisplay
+										    #end
 										#end
 									#end
 								#end
@@ -261,10 +305,10 @@
 								#if ($!submissionType == 4)
 									$tlang.getString("nonelec")
 								#else
-									#if ($!submission)
-										#if ($submission.submitted)
+									#if ($submission.getSubmission())
+										#if ($submission.getSubmission().submitted)
 											#set($timeSubmitted=false)
-											#set($timeSubmitted=$submission.TimeSubmitted)
+											#set($timeSubmitted=$submission.getSubmission().TimeSubmitted)
 											#if($!timeSubmitted)
 												$!timeSubmitted.toStringLocalFull()
 											#end
@@ -286,4 +330,4 @@
 		</form>
 	#end
 </div>
-<!-- end: chef_assignments_instructory_report_submissions.vm  -->
+<!-- end: chef_assignments_instructor_report_submissions.vm  -->

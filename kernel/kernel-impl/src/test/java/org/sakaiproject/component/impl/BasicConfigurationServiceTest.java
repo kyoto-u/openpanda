@@ -32,7 +32,9 @@ import junit.framework.TestCase;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.api.ServerConfigurationService.ConfigData;
+import org.sakaiproject.util.BasicConfigItem;
 
 /**
  * Used for testing protected methods in the BasicConfigurationService
@@ -59,6 +61,8 @@ public class BasicConfigurationServiceTest extends TestCase {
         basicConfigurationService.addConfigItem( new ConfigItemImpl("test5", "test5"), SOURCE);
         basicConfigurationService.addConfigItem( new ConfigItemImpl("test6", "test6"), SOURCE);
         basicConfigurationService.addConfigItem( new ConfigItemImpl("test7", "${AZ}"), SOURCE);
+        basicConfigurationService.addConfigItem( new ConfigItemImpl("intVal", 11), SOURCE);
+        basicConfigurationService.addConfigItem( new ConfigItemImpl("booleanVal", true), SOURCE);
         log.info(basicConfigurationService.getConfigData());
     }
 
@@ -98,7 +102,7 @@ public class BasicConfigurationServiceTest extends TestCase {
         // https://jira.sakaiproject.org/browse/SAK-22148
         int changed = basicConfigurationService.dereferenceConfig();
         ConfigData cd = basicConfigurationService.getConfigData();
-        assertEquals(14, cd.getTotalConfigItems());
+        assertEquals(16, cd.getTotalConfigItems());
         assertEquals(3, changed); // 4 of them have keys but 1 key is invalid so it will not be replaced
         assertEquals("Aaron", basicConfigurationService.getConfig("name", "default") );
         assertEquals("testing name=Aaron testing", basicConfigurationService.getConfig("testKeyNested", "default") );
@@ -230,6 +234,47 @@ public class BasicConfigurationServiceTest extends TestCase {
             }
         }
         return false;
+    }
+
+    public void testKNL_1132() {
+        // testing integer and boolean handling
+        int intVal = basicConfigurationService.getInt("intVal", -1);
+        assertEquals(11, intVal);
+        intVal = basicConfigurationService.getInt("intVal2", 12); // doesn't exist
+        assertEquals(12, intVal);
+        basicConfigurationService.addConfigItem( new ConfigItemImpl("intVal3", null), SOURCE);
+        intVal = basicConfigurationService.getInt("intVal3", 13); // value is null
+        assertEquals(13, intVal);
+
+        boolean booleanValue = basicConfigurationService.getBoolean("booleanVal", false);
+        assertEquals(true, booleanValue);
+        booleanValue = basicConfigurationService.getBoolean("booleanVal2", true); // doesn't exist
+        assertEquals(true, booleanValue);
+        basicConfigurationService.addConfigItem( new ConfigItemImpl("booleanVal3", null), SOURCE);
+        booleanValue = basicConfigurationService.getBoolean("booleanVal3", true); // value is null
+        assertEquals(true, booleanValue);
+
+        // NOTE: this is internal only (i.e. no one outside the kernel could encounter this)
+        ConfigItemImpl booleanVal4 = new ConfigItemImpl("booleanVal4", null);
+        booleanVal4.setDefaultValue(""); // causes an NPE
+        basicConfigurationService.addConfigItem( booleanVal4, SOURCE);
+        boolean booleanValue4 = basicConfigurationService.getBoolean("booleanVal4", false);
+        assertEquals(false, booleanValue4);    
+    }
+
+    public void testKNL_1137() {
+        // verify that types are handled correctly for 
+        basicConfigurationService.registerConfigItem(BasicConfigItem.makeDefaultedConfigItem("defaultedVal1", "string", SOURCE));
+        assertEquals(ServerConfigurationService.TYPE_STRING, basicConfigurationService.getConfigItem("defaultedVal1").getType());
+
+        basicConfigurationService.registerConfigItem(BasicConfigItem.makeDefaultedConfigItem("defaultedVal2", 123, SOURCE));
+        assertEquals(ServerConfigurationService.TYPE_INT, basicConfigurationService.getConfigItem("defaultedVal2").getType());
+
+        basicConfigurationService.registerConfigItem(BasicConfigItem.makeDefaultedConfigItem("defaultedVal3", new String[]{"AZ","BZ"}, SOURCE));
+        assertEquals(ServerConfigurationService.TYPE_ARRAY, basicConfigurationService.getConfigItem("defaultedVal3").getType());
+
+        basicConfigurationService.registerConfigItem(BasicConfigItem.makeDefaultedConfigItem("defaultedVal4", true, SOURCE));
+        assertEquals(ServerConfigurationService.TYPE_BOOLEAN, basicConfigurationService.getConfigItem("defaultedVal4").getType());
     }
 
 }

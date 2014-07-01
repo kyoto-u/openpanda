@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,8 +51,10 @@ import org.sakaiproject.memory.cover.MemoryServiceLocator;
 
 /**
  * <p>
- * BaseDbFlatStorage is a class that stores Resources (of some type) in a database, provides (optional) locked access, <br />
+ * BaseDbFlatStorage is a class that stores Resources (of some type) and associated properties
+ * in a database, provides (optional) locked access, <br />
  * and generally implements a services "storage" class. <br />
+ * The reason you would want to use this class is if you want to perform a DB query against the resource properties.
  * The service's storage class can extend this to provide covers to turn Resource and Edit into something more type specific to the service.
  * </p>
  * <p>
@@ -149,10 +151,8 @@ public class BaseDbFlatStorage
 	static
 	{
 		databaseBeans = new Hashtable<String, FlatStorageSql>();
-		databaseBeans.put("db2", new FlatStorageSqlDb2());
 		databaseBeans.put("default", new FlatStorageSqlDefault());
 		databaseBeans.put("hsql", new FlatStorageSqlHSql());
-		databaseBeans.put("mssql", new FlatStorageSqlMsSql());
 		databaseBeans.put("mysql", new FlatStorageSqlMySql());
 		databaseBeans.put("oracle", new FlatStorageSqlOracle());
 	}
@@ -394,14 +394,6 @@ public class BaseDbFlatStorage
 					m_resourceTableSortField1, m_resourceTableSortField2,0,0);
 			fields = flatStorageSql.getSelectFieldsFields(first, last);
 		}
-		else if ("mssql".equals(m_sql.getVendor()) || "db2".equals(m_sql.getVendor()))
-		{
-			sql = flatStorageSql.getSelectFieldsSql1(m_resourceTableName, fieldList(m_resourceTableReadFields, null), m_resourceTableIdField,
-					m_resourceTableSortField1, m_resourceTableSortField2, 0, 0);
-			sql += flatStorageSql.getSelectFieldsSql2(m_resourceTableName, fieldList(m_resourceTableReadFields, null), m_resourceTableIdField,
-					m_resourceTableSortField1, m_resourceTableSortField2, 0, 0);
-			fields = flatStorageSql.getSelectFieldsFields(first, last);
-		}
 		else
 		{
 			sql = flatStorageSql.getSelectFieldsSql1(m_resourceTableName, fieldList(m_resourceTableReadFields, null), null,
@@ -457,6 +449,63 @@ public class BaseDbFlatStorage
 	 */
 	public List getSelectedResources(String where, String order, Object[] values, String join)
 	{
+		return getSelectedResources(where, order, values, join, m_reader);
+	}
+
+	/**
+	 * Get all Resources matching an SQL where clause, with sorting and ordering, using a specialized reader.
+	 *
+	 * This is provided for specialized cases, where a known operation should make some optimizations or
+	 * apply transformations to given fields during row retrieval. For example, reading CLOBs may be the
+	 * default, but in some cases like long descriptions in simple search results, they are not relevant
+	 * and could hurt performance. Note that specialized readers should have the same return type and
+	 * expect the same indices as the default reader.
+	 *
+	 * @param where
+	 *        The SQL where clause with bind variables indicated (not including the preceding "where ").
+	 * @param order
+	 *        the SQL order clause (not including the preceding "order by ").
+	 * @param values
+	 *        The bind values
+	 * @param join
+	 *        a single or comma separated set of other tables to join in the from clause
+	 * @param reader
+	 *        a specialized SqlReader for this request supplied to read each row differently than the default
+	 * @return The list of all Resources that meet the criteria.
+	 */
+	protected List getSelectedResources(String where, String order, Object[] values, String join, SqlReader reader)
+	{
+		// read all resources from the db with a where
+		String sql = getResourceSql(where, order, values, join);
+		List all = m_sql.dbRead(sql, values, reader);
+
+		return all;
+	}
+
+	/**
+	 * Get the SQL to retrieve all resources matching specified conditions.
+	 *
+	 * TODO: Push this down to FlatStorageSql
+	 *
+	 * See {@link #getSelectedResources(String where, String order, Object[] values, String join)} for parameter details
+	 */
+	protected String getResourceSql(String where, String order, Object[] values, String join)
+	{
+		String fieldNames = fieldList(m_resourceTableReadFields, null);
+		return getResourceSql(fieldNames, where, order, values, join);
+	}
+
+	/**
+	 * Get the SQL to retrieve a subset of fields for all resources matching specified conditions.
+	 *
+	 * TODO: Push this down to FlatStorageSql
+	 *
+	 * @param fieldNames the fully qualified field list to select as used in an SQL query
+	 *
+	 * See {@link #getSelectedResources(String where, String order, Object[] values, String join)} for other parameter details
+	 */
+	protected String getResourceSql(String fieldNames, String where, String order, Object[] values, String join)
+	{
 		if (order == null)
 		{
 			order = m_resourceTableName + "." + m_resourceTableSortField1
@@ -464,13 +513,9 @@ public class BaseDbFlatStorage
 		}
 		if (where == null) where = "";
 
-		// read all resources from the db with a where
-		String sql = "select " + fieldList(m_resourceTableReadFields, null) + " from " + m_resourceTableName + ((join == null) ? "" : ("," + join))
+		String sql = "select " + fieldNames + " from " + m_resourceTableName + ((join == null) ? "" : ("," + join))
 				+ ((where.length() > 0) ? (" where " + where) : "") + " order by " + order;
-
-		List all = m_sql.dbRead(sql, values, m_reader);
-
-		return all;
+		return sql;
 	}
 
 	/**
@@ -554,7 +599,7 @@ public class BaseDbFlatStorage
 	}
 
 	/**
-	 * Get all Resources matching a SQL where clause.
+	 * Get all Resources matching an SQL where clause.
 	 * 
 	 * @param where
 	 *        The SQL where clause with bind variables indicated (not including the preceeding "where ".
@@ -562,13 +607,74 @@ public class BaseDbFlatStorage
 	 *        the SQL order clause (not including the preceeding "order by ").
 	 * @param values
 	 *        The bind values
+	 * @param first
+	 *        the row number of the first record to include for pagination
+	 * @param last
+	 *        the row number of the last record to include for pagination
 	 * @param join
 	 *        a single or comma separated set of other tables to join in the from clause
 	 * @return The list of all Resources that meet the criteria.
 	 */
 	public List getSelectedResources(String where, String order, Object[] values, int first, int last, String join)
 	{
-		Object[] fields;
+		return getSelectedResources(where, order, values, first, last, join, m_reader);
+	}
+
+	/**
+	 * Get all Resources matching an SQL where clause, with sorting and ordering, using a specialized reader.
+	 *
+	 * This is provided for specialized cases, where a known operation should make some optimizations or
+	 * apply transformations to given fields during row retrieval. For example, reading CLOBs may be the
+	 * default, but in some cases like long descriptions in simple search results, they are not relevant
+	 * and could hurt performance. Note that specialized readers should have the same return type and
+	 * expect the same indices as the default reader.
+	 *
+	 * @param where
+	 *        The SQL where clause with bind variables indicated (not including the preceding "where ".
+	 * @param order
+	 *        the SQL order clause (not including the preceding "order by ").
+	 * @param values
+	 *        The bind values
+	 * @param first
+	 *        the number of the first sorted record to include for pagination
+	 * @param last
+	 *        the number of the last sorted record to include for pagination
+	 * @param join
+	 *        a single or comma separated set of other tables to join in the from clause
+	 * @param reader
+	 *        a specialized SqlReader for this request supplied to read each row differently than the default
+	 * @return The list of all Resources that meet the criteria.
+	 */
+	protected List getSelectedResources(String where, String order, Object[] values, int first, int last, String join, SqlReader reader)
+	{
+		Object[] params = getPagedParameters(values, first, last);
+		String sql = getResourceSql(where, order, values, first, last, join);
+		List rv = m_sql.dbRead(sql, params, reader);
+
+		return rv;
+	}
+
+	/**
+	 * Get the SQL to retrieve all paged resources matching specified conditions.
+	 *
+	 * TODO: Push this down to FlatStorageSql
+	 *
+	 * See {@link #getSelectedResources(String where, String order, Object[] values, int first, int last, String join)} for parameter details.
+	 */
+	protected String getResourceSql(String where, String order, Object[] values, int first, int last, String join)
+	{
+		return getResourceSql(fieldList(m_resourceTableReadFields, null), where, order, values, first, last, join);
+	}
+
+	/**
+	 * Get the SQL to retrieve all paged resources matching specified conditions.
+	 *
+	 * TODO: Push this down to FlatStorageSql
+	 *
+	 * See {@link #getSelectedResources(String where, String order, Object[] values, int first, int last, String join)} for parameter details.
+	 */
+	protected String getResourceSql(String fieldNames, String where, String order, Object[] values, int first, int last, String join)
+	{
 		String sql;
 
 		if (order == null)
@@ -576,6 +682,36 @@ public class BaseDbFlatStorage
 			order = flatStorageSql.getOrder(m_resourceTableName, m_resourceTableSortField1, m_resourceTableSortField2);
 		}
 
+		if ("oracle".equals(m_sql.getVendor()))
+		{
+			sql = flatStorageSql.getSelectFieldsSql3(m_resourceTableName, fieldNames, m_resourceTableIdField,
+					m_resourceTableSortField1, m_resourceTableSortField2, (first - 1), (last - first + 1), join, where, order);
+		}
+		else
+		{
+			sql = flatStorageSql.getSelectFieldsSql3(m_resourceTableName, fieldNames, null,
+					m_resourceTableSortField1, m_resourceTableSortField2, (first - 1), (last - first + 1), join, where, order);
+		}
+		return sql;
+	}
+
+	/**
+	 * Get the finalized parameter array for passing to a vendor-specific paged query (as from getResourceSql)
+	 * to getSelectedResources.
+	 *
+	 * TODO: Push this down to FlatStorageSql
+	 *
+	 * @param values The parameter values to pass
+	 * @param first The first record to include for pagination
+	 * @param last The last record to include for pagination
+	 * @return A new array with the original values copied in and pagination parameters in the correct places.
+	 *
+	 * @see #getResourceSql(String, String, String, Object[], int, int, String)
+	 * @see #getSelectedResources(String, String, Object[], int, int, String)
+	 */
+	protected Object[] getPagedParameters(Object[] values, int first, int last)
+	{
+		Object[] fields;
 		if ("oracle".equals(m_sql.getVendor()))
 		{
 			if (values != null)
@@ -587,39 +723,14 @@ public class BaseDbFlatStorage
 			{
 				fields = new Object[2];
 			}
-			sql = flatStorageSql.getSelectFieldsSql3(m_resourceTableName, fieldList(m_resourceTableReadFields, null), m_resourceTableIdField,
-					m_resourceTableSortField1, m_resourceTableSortField2, (first - 1), (last - first + 1), join, where, order);
 			fields[fields.length - 2] = Long.valueOf(last);
 			fields[fields.length - 1] = Long.valueOf(first);
 		}
-		else if ("mssql".equals(m_sql.getVendor()) || "db2".equals(m_sql.getVendor()))
-		{
-			if (values != null)
-			{
-				fields = new Object[2 + values.length];
-				System.arraycopy(values, 0, fields, 0, values.length);
-			}
-			else
-			{
-				fields = new Object[2];
-			}
-
-			sql = flatStorageSql.getSelectFieldsSql3(m_resourceTableName, fieldList(m_resourceTableReadFields, null), m_resourceTableIdField,
-					m_resourceTableSortField1, m_resourceTableSortField2, (first - 1), (last - first + 1), join, where, order);
-			sql += flatStorageSql.getSelectFieldsSql4(m_resourceTableName, fieldList(m_resourceTableReadFields, null), m_resourceTableIdField,
-					m_resourceTableSortField1, m_resourceTableSortField2, (first - 1), (last - first + 1), join, where, order);
-			fields[fields.length - 2] = Long.valueOf(first);
-			fields[fields.length - 1] = Long.valueOf(last);
-		}
 		else
 		{
-			sql = flatStorageSql.getSelectFieldsSql3(m_resourceTableName, fieldList(m_resourceTableReadFields, null), null,
-					m_resourceTableSortField1, m_resourceTableSortField2, (first - 1), (last - first + 1), join, where, order);
 			fields = values;
 		}
-		List rv = m_sql.dbRead(sql, fields, m_reader);
-
-		return rv;
+		return fields;
 	}
 
 	/**
@@ -681,6 +792,7 @@ public class BaseDbFlatStorage
 		// we need to process and store results since MSSQL doesn't support selects in the VALUES clause
 		// bind values come from 'fields' array
 		// store results in fieldOverrides
+		// Note: MSSQL support removed in KNL-880
 
 		// will be a copy of table's insert values, with overrides as necessary
 		String[] overrideTableInsertValues = new String[m_resourceTableInsertValues.length];
@@ -689,41 +801,8 @@ public class BaseDbFlatStorage
 
 		for (int i = 0; i < m_resourceTableInsertValues.length; i++)
 		{
-			if ("mssql".equals(m_sql.getVendor()) && m_resourceTableInsertValues[i].startsWith("("))
-			{
-				String sql = m_resourceTableInsertValues[i];
-				List result = null;
-				if (sql.indexOf("?") < 0)
-				{ // if there are no parms in sql stmt, do read directly
-					result = m_sql.dbRead(sql);
-				}
-				else
-				{
-					Object[] bindValue = new Object[1];
-					bindValue[0] = fields[i];
-					result = m_sql.dbRead(conn, sql, bindValue, null);
-				}
-				if (result.size() > 0)
-				{
-					fieldOverrides[i] = result.get(0);
-				}
-				else
-				{
-					fieldOverrides[i] = "";
-				}
-			}
-			else
-			{
-				fieldOverrides[i] = fields[i];
-			}
-			if ("mssql".equals(m_sql.getVendor()))
-			{
-				overrideTableInsertValues[i] = "?";
-			}
-			else
-			{
-				overrideTableInsertValues[i] = m_resourceTableInsertValues[i];
-			}
+			fieldOverrides[i] = fields[i];
+			overrideTableInsertValues[i] = m_resourceTableInsertValues[i];
 		}
 		String statement = "insert into " + m_resourceTableName + "( " + fieldList(m_resourceTableInsertFields, m_resourceTableDbidField) + " )"
 				+ " values ( " + valuesParams(overrideTableInsertValues, (m_resourceTableDbidField)) + " )";
@@ -1048,6 +1127,9 @@ public class BaseDbFlatStorage
 		// if not properties table set, skip it
 		if (table == null) return;
 
+		// check we have an ID to lookup otherwise we get cross thread cache contamination.
+		if (id == null) return;
+
 		// the properties to fill in
 		final ResourcePropertiesEdit props = p;
 
@@ -1103,8 +1185,12 @@ public class BaseDbFlatStorage
 
 		if ( myCache != null )
 		{
-			// System.out.println("CACHE PUT cacheKey="+cacheKey+" props="+props);
-			myCache.put(cacheKey,props);
+			// We don't want to put the returned value in the cache otherwise the
+			// caller may changes it the copy in the cache is updated too, even if
+			// the caller's changed copy is never persisted into the database.
+			ResourcePropertiesEdit cacheCopy = new BaseResourcePropertiesEdit();
+			cacheCopy.addAll(props);
+			myCache.put(cacheKey,cacheCopy);
 		}
 	}
 
@@ -1504,9 +1590,9 @@ public class BaseDbFlatStorage
 
 		if (dbidField != null)
 		{
-			if (!"mysql".equals(m_sql.getVendor()) && !"mssql".equals(m_sql.getVendor()))
+			if (!"mysql".equals(m_sql.getVendor()))
 			{
-				// MySQL and ms sql server don't need this field, but oracle and HSQLDB do
+				// MySQL doesn't need this field, but oracle and HSQLDB do
 				buf.append("," + qualifyField(dbidField, m_resourceTableName));
 			}
 		}

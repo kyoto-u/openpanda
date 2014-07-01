@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/integration/helper/ifc/GradebookServiceHelper.java $
- * $Id: GradebookServiceHelper.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/ifc/GradebookServiceHelper.java $
+ * $Id: GradebookServiceHelper.java 107319 2012-04-17 13:39:00Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,10 +23,11 @@ package org.sakaiproject.tool.assessment.integration.helper.ifc;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
+import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
 
 /**
  * <p>Description:
@@ -40,25 +41,25 @@ import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
  */
 public interface GradebookServiceHelper extends Serializable
 {
-  public boolean gradebookExists(String gradebookUId, GradebookService g);
+  public boolean gradebookExists(String gradebookUId, GradebookExternalAssessmentService g);
   
   public boolean isGradebookExist(String SiteId);
 
   public void removeExternalAssessment(String gradebookUId,
-     String publishedAssessmentId, GradebookService g) throws Exception;
+     String publishedAssessmentId, GradebookExternalAssessmentService g) throws Exception;
 
   public boolean addToGradebook(PublishedAssessmentData publishedAssessment,
-    GradebookService g) throws Exception;
+		  GradebookExternalAssessmentService g) throws Exception;
 
   public boolean updateGradebook(PublishedAssessmentIfc publishedAssessment,
-    GradebookService g) throws Exception;
+		  GradebookExternalAssessmentService g) throws Exception;
 
   public boolean isAssignmentDefined(String assessmentTitle,
-    GradebookService g) throws Exception;
+		  GradebookExternalAssessmentService g) throws Exception;
 
-  public void updateExternalAssessmentScore(AssessmentGradingIfc ag,
-    GradebookService g) throws Exception;
+  public void updateExternalAssessmentScore(AssessmentGradingData ag,
+		  GradebookExternalAssessmentService g) throws Exception;
   
-  public void updateExternalAssessmentScores(Long publishedAssessmentId, final Map studentUidsToScores,
-		    GradebookService g) throws Exception;
+  public void updateExternalAssessmentScores(Long publishedAssessmentId, final Map<String, Double> studentUidsToScores,
+		  GradebookExternalAssessmentService g) throws Exception;
 }

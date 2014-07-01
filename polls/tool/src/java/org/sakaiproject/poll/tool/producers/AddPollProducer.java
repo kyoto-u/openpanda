@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -251,21 +251,25 @@ public class AddPollProducer implements ViewComponentProducer,NavigationCaseRepo
 			UILabelTargetDecorator.targetLabel(pollDescr, itemDescr);
 		}
 
-		UIInput voteOpen = UIInput.make(newPoll, "openDate:", "poll.voteOpen");
-		UIInput voteClose = UIInput.make(newPoll, "closeDate:", "poll.voteClose");
-		dateevolver.setStyle(FormatAwareDateInputEvolver.DATE_TIME_INPUT);
-		dateevolver.evolveDateInput(voteOpen, poll.getVoteOpen());
-		dateevolver.evolveDateInput(voteClose, poll.getVoteClose());
+		UIInput voteOpen = UIInput.make(newPoll, "openDate-iso8601", "poll.voteOpenStr", poll.getVoteOpenStr());
+		UIInput voteClose = UIInput.make(newPoll, "closeDate-iso8601", "poll.voteCloseStr", poll.getVoteCloseStr());
 		//UILabelTargetDecorator.targetLabel(pollOpen, voteOpen);
 		//UILabelTargetDecorator.targetLabel(pollClose, voteClose);
 
 		/*
 		 * access options
 		 */
-		UIMessage.make(newPoll,"poll_access_label","new_poll_access_label");
-		UIBoundBoolean.make(newPoll, "access-public", "poll.isPublic", poll.getIsPublic());
+		UIMessage pollAccessLabel = UIMessage.make(newPoll,"poll_access_label","new_poll_access_label");
+		UIBoundBoolean accessPublic = UIBoundBoolean.make(newPoll, "access-public", "poll.isPublic", poll.getIsPublic());
+		UIMessage newPollAccessPublicLabel = UIMessage.make(newPoll, "new_poll_access_public_label", "new_poll_access_public");
 		
-
+		// SAK-25399: Do not display the public access by default
+		if(!externalLogic.isShowPublicAccess()) {
+			newPoll.remove(pollAccessLabel);		
+			newPoll.remove(accessPublic);
+			newPoll.remove(newPollAccessPublicLabel);
+		}
+		
 		String[] minVotes = new String[]{"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"};
 		String[] maxVotes = new String[]{"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"};
 		UISelect min = UISelect.make(newPoll,"min-votes",minVotes,"#{poll.minOptions}",Integer.toString(poll.getMinOptions()));
@@ -368,7 +372,7 @@ public class AddPollProducer implements ViewComponentProducer,NavigationCaseRepo
 
 			PollViewParameters ecvp = (PollViewParameters) incoming;
 
-			if(null == ecvp || null == ecvp.id ) {
+			if(null == ecvp || null == ecvp.id || "New 0".equals(ecvp.id)) {
 				return;
 
 			} else {

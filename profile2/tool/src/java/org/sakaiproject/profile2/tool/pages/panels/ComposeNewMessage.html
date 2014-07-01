@@ -1,6 +1,8 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <!--
 
-    Copyright (c) 2008-2010 The Sakai Foundation
+    Copyright (c) 2008-2012 The Sakai Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +18,6 @@
 
 -->
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"  
       xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
       xml:lang="en"  
@@ -38,19 +39,27 @@
 			<!-- to -->
 			<tr>
 				<td class="label" wicket:id="toLabel">[toLabel]</td>
-				<td class="content"><input type="text" wicket:id="toField" /></td>
+				<td class="content">
+					<label for="messagerecipientinput" class="accessibility-label"><wicket:message key="accessibility.profile.messagerecipient.input"></wicket:message></label>
+					<input type="text" wicket:id="toField" />
+				</td>
 			</tr>
 			
 			<!-- subject -->
 			<tr>
 				<td class="label" wicket:id="subjectLabel">[subjectLabel]</td>
-				<td class="content"><input type="text" wicket:id="subjectField" class="formInputField" /></td>
+				<td class="content">
+					<label for="messagesubjectinput" class="accessibility-label"><wicket:message key="accessibility.profile.messagesubject.input"></wicket:message></label>
+					<input type="text" wicket:id="subjectField" class="formInputField" /></td>
 			</tr>
 			
 			<!-- message -->
 			<tr>
 				<td class="label" wicket:id="messageLabel">[messageLabel]</td>
-				<td class="content"><textarea wicket:id="messageField" class="formInputArea" rows="4" cols="40">[messageField]</textarea></td>
+				<td class="content">
+					<label for="messagebodyinput" class="accessibility-label"><wicket:message key="accessibility.profile.messagebody.input"></wicket:message></label>
+					<textarea wicket:id="messageField" class="formInputArea" rows="4" cols="40">[messageField]</textarea>
+				</td>
 			</tr>
 			
 		</table>

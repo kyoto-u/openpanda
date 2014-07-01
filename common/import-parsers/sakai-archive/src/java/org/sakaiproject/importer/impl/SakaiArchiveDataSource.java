@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveDataSource.java $
- * $Id: SakaiArchiveDataSource.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveDataSource.java $
+ * $Id: SakaiArchiveDataSource.java 133338 2014-01-16 17:17:12Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,7 @@
 
 package org.sakaiproject.importer.impl;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,9 +38,9 @@ public class SakaiArchiveDataSource extends BasicImportDataSource implements Sak
 	private String sourceFolder;
 	private String localArchiveFolder;
 	private String pathToArchive;
-	private byte[] fileData;
+	private InputStream fileData;
 
-	public SakaiArchiveDataSource(byte[] fileData, String localArchiveFolder, String pathToArchive) {
+	public SakaiArchiveDataSource(InputStream fileData, String localArchiveFolder, String pathToArchive) {
 		this.fileData = fileData;
 		this.localArchiveFolder = localArchiveFolder;
 		this.pathToArchive = pathToArchive;
@@ -55,17 +55,16 @@ public class SakaiArchiveDataSource extends BasicImportDataSource implements Sak
 		this.sourceFolder = sourceFolder;
 	}
 	
-	public void buildSourceFolder(Collection selectedItems) {		
+	public void buildSourceFolder(Collection<ImportMetadata> selectedItems) {		
 	    File dir = new File(pathToArchive + "/source"); //directory where file would be saved
 	    if (!dir.exists())
 	    {
 	        dir.mkdirs();
 	    }
-	    for (Iterator i = selectedItems.iterator();i.hasNext();)
+	    for (ImportMetadata impvalue: selectedItems)
 	    {
-	        ImportMetadata impvalue = (ImportMetadata) i.next();
 	        String selectedFileName = impvalue.getFileName();
-	        ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(fileData));
+	        ZipInputStream zipStream = new ZipInputStream(fileData);
 	        try {
     	        ZipEntry entry;
     	        String entryName;
@@ -137,7 +136,7 @@ public class SakaiArchiveDataSource extends BasicImportDataSource implements Sak
 	        }
 	    }
 	    // now take care of attachment files
-	    ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(fileData));
+	    ZipInputStream zipStream = new ZipInputStream(fileData);
 	    try {
     	    ZipEntry entry;
     	    String entryName;

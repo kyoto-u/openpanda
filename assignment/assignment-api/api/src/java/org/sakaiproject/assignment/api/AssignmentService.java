@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
- * $Id: AssignmentService.java 118512 2013-01-19 18:32:03Z nbotimer@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
+ * $Id: AssignmentService.java 127838 2013-07-26 15:55:26Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,6 +35,7 @@ import org.sakaiproject.exception.InUseException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.user.api.User;
 import org.w3c.dom.Element;
+import org.sakaiproject.site.api.Group;
 
 /**
  * <p>
@@ -708,6 +709,21 @@ public interface AssignmentService extends EntityProducer
 	public AssignmentSubmission getSubmission(String assignmentId, User person);
 	
 	/**
+	 * Access a User or Group's AssignmentSubmission to a particular Assignment.
+	 * 
+	 * @param assignmentId -
+	 *        The id of the assignment.
+	 * @param submitterId -
+	 *        The string id of the person or group who's Submission you would like.
+	 * @return AssignmentSubmission The user's submission for that Assignment, or null if one does not exist.
+	 * @throws IdUnusedException
+	 *         if the assignmentId does not correspond to an existing Assignment.
+	 * @throws PermissionException
+	 *         if the current user is not allowed to read this.
+	 */
+	public AssignmentSubmission getSubmission(String assignmentReference, String submitterId);
+	
+	/**
 	 * Access a User's AssignmentSubmission inside a list of AssignmentSubmission object.
 	 * 
 	 * @param  - submissions
@@ -727,6 +743,11 @@ public interface AssignmentService extends EntityProducer
 	 */
 	public List getSubmissions(Assignment assignment);
 	
+	/**
+	 * Return a sorted list of users representing a group.
+	 */
+	public List getSortedGroupUsers(Group g);
+
 	/**
 	 * Get the number of submissions which has been submitted.
 	 * 
@@ -845,6 +866,7 @@ public interface AssignmentService extends EntityProducer
 	 */
 	public boolean canSubmit(String context, Assignment a);
 	
+	public Collection<Group> getSubmitterGroupList(String searchFilterOnly, String allOrOneGroup, String searchString, String aRef, String contextString);
 	/**
 	 * Allow that the instructor can submit an assignment on behalf of student
 	 */

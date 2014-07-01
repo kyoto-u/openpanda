@@ -17,6 +17,9 @@
 		<value>org/sakaiproject/lessonbuildertool/simplepagegroup.hbm.xml</value>
 		<value>org/sakaiproject/lessonbuildertool/simplepagecomment.hbm.xml</value>
 		<value>org/sakaiproject/lessonbuildertool/simplestudentpage.hbm.xml</value>
+		<value>org/sakaiproject/lessonbuildertool/simplepagequestionresponse.hbm.xml</value>
+		<value>org/sakaiproject/lessonbuildertool/simplepagequestionresponsetotals.hbm.xml</value>
+		<value>org/sakaiproject/lessonbuildertool/simplepagepeerevalresult.hbm.xml</value>
 		<value>org/sakaiproject/lessonbuildertool/simplepageproperty.hbm.xml</value>
       </list>
     </property>
@@ -30,6 +33,7 @@
     </property>
     <property name="toolManager" ref="org.sakaiproject.tool.api.ActiveToolManager" />
     <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+    <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
   </bean>
 
 <!-- here's the version our code will access -->

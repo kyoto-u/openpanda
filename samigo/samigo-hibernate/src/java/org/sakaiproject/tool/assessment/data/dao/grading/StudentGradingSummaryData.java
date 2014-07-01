@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/grading/AssessmentGradingSummaryData.java $
- * $Id: AssessmentGradingSummaryData.java 15083 2006-09-20 20:03:55Z lydial@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/grading/StudentGradingSummaryData.java $
+ * $Id: StudentGradingSummaryData.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

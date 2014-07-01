@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.3/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusData.java $
- * $Id: SyllabusData.java 77661 2010-05-21 15:27:32Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.0/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusData.java $
+ * $Id: SyllabusData.java 122076 2013-04-02 19:35:27Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,12 +20,15 @@
  **********************************************************************************/
 package org.sakaiproject.api.app.syllabus;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 public interface SyllabusData
 {
  	public final String ITEM_POSTED="posted";
  	public final String ITEM_DRAFT= "draft";
+ 	public final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
   /**
    * @return Returns the emailNotification.
    */
@@ -109,6 +112,63 @@ public interface SyllabusData
   public Set getAttachments();
   
   public void setAttachments(Set attachments);
+  
+  /**
+   * @return Returns the syllabus' start time
+   */
+  public Date getStartDate();
+  
+  /**
+   * @param startDate The syllabus' start time
+   */
+  public void setStartDate(Date date);
+  
+  /**
+   * @return end date, the syllabus' end time
+   */
+  public Date getEndDate();
+  
+  /**
+   * @param end date, the syllabus' end time
+   */
+  public void setEndDate(Date dateDuration);
+  
+  /**
+   * flag used to associate date to the calendar tool
+   * @return
+   */
+  public Boolean isLinkCalendar();
+  public Boolean getLinkCalendar();
+  
+  /**
+   * flag used to associate date to the calendar tool
+   * @param linkCalendar
+   */
+  public void setLinkCalendar(Boolean linkCalendar);
+  
+  /**
+   * keep track of the calendar event ID so you can edit/remove it
+   * @param calendarEventId
+   */
+  public String getCalendarEventIdStartDate();
+  
+  /**
+   * keep track of the calendar event ID so you can edit/remove it
+   * @param calendarEventIdStartDate
+   */
+  public void setCalendarEventIdStartDate(String calendarEventIdStartDate);
+  
+  /**
+   * keep track of the calendar event ID so you can edit/remove it
+   * @return
+   */
+  public String getCalendarEventIdEndDate();
+  
+  /**
+   * keep track of the calendar event ID so you can edit/remove it
+   * @param calendarEventIdEndDate
+   */
+  public void setCalendarEventIdEndDate(String calendarEventIdEndDate);
 }
 
 

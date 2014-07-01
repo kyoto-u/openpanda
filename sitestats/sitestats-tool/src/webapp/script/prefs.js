@@ -1,6 +1,6 @@
 /*
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-tool/src/webapp/script/prefs.js $
- * $Id: prefs.js 72181 2009-09-28 11:28:47Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-tool/src/webapp/script/prefs.js $
+ * $Id: prefs.js 131093 2013-11-04 14:59:26Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,21 +23,21 @@ function updateToolSelection(selector) {
 		// tool class
 		if(jQuery(this).find('ul li :checkbox').length == jQuery(this).find('ul li :checked').length) {
 			jQuery(this).children('span').addClass('nodeToolSelected');
-			jQuery(this).children(':checkbox').attr('checked','checked');
+			jQuery(this).children(':checkbox').prop('checked','checked');
 			  
 		}else if(jQuery(this).find('ul li :checked').length === 0) {
 			jQuery(this).children('span').addClass('nodeToolUnselected');
-			jQuery(this).children(':checkbox').removeAttr('checked');
+			jQuery(this).children(':checkbox').removeProp('checked');
 			
 		}else{
 			jQuery(this).children('span').addClass('nodeToolPartialSelected');
-			jQuery(this).children(':checkbox').attr('checked','checked');
+			jQuery(this).children(':checkbox').prop('checked','checked');
 		}
 		
 		// event class
 		jQuery(this).find('ul li').each(function(i){
 			jQuery(this).find('span').removeClass();
-			if(jQuery(this).find(':checkbox').attr('checked')) {
+			if(jQuery(this).find(':checkbox').prop('checked')) {
 				jQuery(this).find('span').addClass('nodeEventSelected');
 			}else{
 				jQuery(this).find('span').addClass('nodeEventUnselected');
@@ -47,7 +47,7 @@ function updateToolSelection(selector) {
 }
 
 function toggleCheckboxAll() {
-	if(jQuery('#useAllTools').attr('checked')) {
+	if(jQuery('#useAllTools').prop('checked')) {
 		jQuery('.eventTree').hide();
 	}else{
 		jQuery('.eventTree').show();
@@ -57,9 +57,9 @@ function toggleCheckboxAll() {
 
 function selectUnselectEvents(obj) {
 	if(obj.checked) {
-		jQuery(obj).parent().find('ul li :checkbox').attr('checked','checked');
+		jQuery(obj).parent().find('ul li :checkbox').prop('checked','checked');
 	}else{
-		jQuery(obj).parent().find('ul li :checkbox').removeAttr('checked');
+		jQuery(obj).parent().find('ul li :checkbox').removeProp('checked');
 	}
 }
 

@@ -21,6 +21,7 @@
 						<h:inputText
 							id="titleInput"
 							required="true"
+							maxlength="99"
 							value="#{section.title}"/>
 					</h:panelGroup>
 
@@ -89,8 +90,6 @@
 									</t:div>
 		
 									<t:div styleClass="indent">
-										<h:message for="startTime" styleClass="validationEmbedded"/>
-										<h:message for="endTime" styleClass="validationEmbedded"/>										
 										<h:inputText id="startTime" value="#{meeting.startTimeString}" size="18" onfocus="clearIfDefaultString(this, '#{msgs.section_start_time_default}')" />
 										<t:selectOneRadio id="startTimeAm" layout="spread" value="#{meeting.startTimeAmString}">
 											<f:selectItem itemValue="true" itemLabel="#{confBean.capAM}"/>
@@ -114,6 +113,8 @@
 			
 									<t:div styleClass="indent meetingSecondCol">
 										<h:inputText id="location" value="#{meeting.location}" maxlength="20" />
+                                        <h:message for="startTime" styleClass="validationEmbedded"/>
+                                        <h:message for="endTime" styleClass="validationEmbedded"/>
 									</t:div>
 								</h:panelGroup>
 							</h:column>

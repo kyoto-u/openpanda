@@ -1,6 +1,6 @@
 /**
- * $Id: EntityHandlerImpl.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/rest/src/java/org/sakaiproject/entitybroker/rest/EntityHandlerImpl.java $
+ * $Id: EntityHandlerImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityHandlerImpl.java $
  * EntityHandler.java - entity-broker - Apr 6, 2008 9:03:03 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -92,8 +92,8 @@ import org.sakaiproject.entitybroker.util.request.RequestUtils;
 @SuppressWarnings("deprecation")
 public class EntityHandlerImpl implements EntityRequestHandler {
     public static String APP_VERSION = "1.0.1";
-    public static String SVN_REVISION = "$Revision: 104995 $";
-    public static String SVN_LAST_UPDATE = "$Date: 2012-02-24 00:32:56 +0900 (Fri, 24 Feb 2012) $";
+    public static String SVN_REVISION = "$Revision: 105077 $";
+    public static String SVN_LAST_UPDATE = "$Date: 2012-02-25 07:54:29 +0900 (Sat, 25 Feb 2012) $";
 
     /**
      * Empty constructor

@@ -93,8 +93,8 @@
 			
 		</script>
 		
-  	    <script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
-   		<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
+  	    <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+   		<script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
 		<sakai:script contextBase="/messageforums-tool" path="/js/dialog.js"/>
 		<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
 		<link rel="stylesheet" type="text/css" href="/messageforums-tool/css/dialog.css" />
@@ -236,20 +236,7 @@
   							<f:param value="#{stat.msgId}" name="msgId"/> 				  			
   				 </h:commandLink>
   				 </h:column>
-  			<h:column>
-  				<f:facet name="header">
-  					<h:outputText value="#{msgs.stat_forum_word_count}"  />				   
-  				</f:facet>
-  				<f:verbatim>
-  					<span id="messageBody</f:verbatim><h:outputText value="#{stat.msgId}"/><f:verbatim>" style="display: none" class="messageBody">
-  				</f:verbatim>
-  					<h:outputText escape="false" value="#{stat.message}"/>
-				<f:verbatim>  					
-  					</span>  				
-	  				<span id="wordCountSpan</f:verbatim><h:outputText value="#{stat.msgId}"/><f:verbatim>">
-	  				</span>	  				
-	  			</f:verbatim>
-  			</h:column>  			
+
   				 <h:column>
   					<h:outputLink value="../message/dfMsgGrade" target="dialogFrame"
 						onclick="dialogLinkClick(this);">

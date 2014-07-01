@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.3/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventSummary.java $
- * $Id: EventSummary.java 92193 2011-04-25 11:38:12Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventSummary.java $
+ * $Id: EventSummary.java 134073 2014-02-04 18:01:31Z bkirschn@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -71,6 +71,7 @@ public class EventSummary implements Serializable {
 	private boolean		hasAttachments	= false;
 	private List		attachments		= new ArrayList();
 	private List		attachmentsWrp	= new ArrayList();
+	private boolean 	openDateError	= false;
 	
 	
 	private static Log	 LOG = LogFactory.getLog(EventSummary.class);
@@ -294,5 +295,13 @@ public class EventSummary implements Serializable {
 	
 	private String getTimeStr(Time time) {
 		return time.toStringLocalTimeZ();
+	}
+	
+	public boolean isOpenDateError() {
+		return openDateError;
+	}
+	
+	public void setOpenDateError(boolean openDateError) {
+		this.openDateError = openDateError;
 	}
 }

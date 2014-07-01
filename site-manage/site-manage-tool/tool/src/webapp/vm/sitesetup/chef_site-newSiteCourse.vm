@@ -139,7 +139,7 @@ function redirectBasedOnSelection(){
 	#else
 		<h3>$tlang.getString("nscourse.edit") <span class="highlight">$!siteTitle</span></h3>
 	#end
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div>#end
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div>#end
 	<p class="instruction">
 		#if (!$!site)
 		$tlang.getString("nscourse.select")
@@ -180,7 +180,7 @@ function redirectBasedOnSelection(){
 					$tlang.getString("nscourse.current_displaying_courses_sections_for_id")
 				</label>	
 				<input type="text" name="userId" id="userId-id" value="$userId"/>
-				<input type="hidden" name="itemType" value="$!courseSiteType" />
+				<input type="hidden" name="itemType" value="$!siteType" />
 				<input type="hidden" name="selectTerm" value="$term.eid" />
 				<input type="button" accesskey="s" name="eventSubmit_doChange_user" value="$tlang.getString("nscourse.change_button")"
 					onclick="document.getElementById('option').value='change_user'; document.addCourseForm.submit(); return false;"
@@ -336,8 +336,11 @@ function redirectBasedOnSelection(){
 		<input type="hidden" name="option" id="option" value="x" />
 		<input type="hidden" name="eventSubmit_doContinue_new_course" value="x" />
 			#if (!$site)
-				<!-- Add Not Listed Courses -->
-				<a href="#" onclick="javascript:submitFindCourse();">$tlang.getString('nscourse.add_course_not_listed')</a>
+				## Added by bjones86 - determine to skip manual course site create link in worksite setup
+				#if( !$skipCourseSectionSelection || !$skipManualCourseCreation)
+					<!-- Add Not Listed Courses -->
+					<a href="#" onclick="javascript:submitFindCourse();">$tlang.getString('nscourse.add_course_not_listed')</a>
+				#end
 				## if site creation is based on template, this could be the final step!
 				#if ($!basedOnTemplate) 
 					<div class="instruction" id ="nextInstructions">
@@ -382,8 +385,10 @@ function redirectBasedOnSelection(){
 					<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 				</p>
 			#else
-				<!-- Add Not Listed Courses -->
-				<a href="#" onclick="javascript:submitFindCourse();">$tlang.getString('nscourse.add_course_not_listed')</a>
+				#if( !$skipCourseSectionSelection || !$skipManualCourseCreation)
+					<!-- Add Not Listed Courses -->
+					<a href="#" onclick="javascript:submitFindCourse();">$tlang.getString('nscourse.add_course_not_listed')</a>
+				#end
 				<p class="act">
 				<input type="hidden" name="option" id="option" value="x" />
 				<input

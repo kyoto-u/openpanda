@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -115,7 +115,7 @@ public class PollVoteProducer implements ViewComponentProducer,ViewParamsReporte
 		Poll poll = pollListManager.getPollById(Long.valueOf(strId));
 
 		if (!pollVoteManager.pollIsVotable(poll)){
-			tml.addMessage(new TargettedMessage("vote_noperm"));
+			tml.addMessage(new TargettedMessage("vote_noperm.voteCollection"));
 			return;
 		} else {
 			LOG.info("user: " + externalLogic.getCurrentUserId() + " can vote on poll: " + poll.getPollId());
@@ -127,7 +127,7 @@ public class PollVoteProducer implements ViewComponentProducer,ViewParamsReporte
 		//check if they can vote
 		if (poll.getLimitVoting() && pollVoteManager.userHasVoted(poll.getPollId())) {
 			LOG.warn("This user has already voted!");
-			UIOutput.make(tofill, "hasErrors",messageLocator.getMessage("vote_hasvoted"));
+			UIOutput.make(tofill, "hasErrors",messageLocator.getMessage("vote_hasvoted.voteCollection"));
 			return;
 		}
 

@@ -264,11 +264,10 @@ class OAuthRequest {
 
     // Parse the query-string to find and add GET parameters
     $parts = parse_url($http_url);
-    if ( $parts['query'] ) {
+    if ( isset($parts['query']) ) {
       $qparms = OAuthUtil::parse_parameters($parts['query']);
       $parameters = array_merge($qparms, $parameters);
     }
-     
 
     return new OAuthRequest($http_method, $http_url, $parameters);
   }
@@ -388,17 +387,34 @@ class OAuthRequest {
    */
   public function to_header() {
     $out ='Authorization: OAuth realm=""';
+    $comma = ',';
+    // Hack for RoR implementations that do not handle realm properly
+    // $out ='Authorization: OAuth ';
+    // $comma = '';
+    $comma = ',';
+    // Hack for RoR implementations that do not handle realm properly
+    // $out ='Authorization: OAuth ';
+    // $comma = '';
+    $comma = ',';
+    // Hack for RoR implementations that do not handle realm properly
+    // $out ='Authorization: OAuth ';
+    // $comma = '';
+    $comma = ',';
+    // Hack for RoR implementations that do not handle realm properly
+    // $out ='Authorization: OAuth ';
+    // $comma = '';
     $total = array();
     foreach ($this->parameters as $k => $v) {
       if (substr($k, 0, 5) != "oauth") continue;
       if (is_array($v)) {
         throw new OAuthException('Arrays not supported in headers');
       }
-      $out .= ',' .
+      $out .= $comma .
               OAuthUtil::urlencode_rfc3986($k) .
               '="' .
               OAuthUtil::urlencode_rfc3986($v) .
               '"';
+      $comma = ',';
     }
     return $out;
   }

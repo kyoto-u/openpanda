@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -55,6 +55,7 @@ public class HierDataTableRender extends HtmlBasicRenderer
 
 	private static final String RESOURCE_PATH = "/messageforums-tool";
 	private static final String BARIMG = RESOURCE_PATH + "/" + "images/collapse.gif";
+	private static final String EXPIMG = RESOURCE_PATH + "/" + "images/expand.gif";
 	private static final String CURSOR = "cursor:pointer";
 
 
@@ -253,16 +254,19 @@ public class HierDataTableRender extends HtmlBasicRenderer
 
 			writer.startElement("tr", data);
 
+			boolean display_moveCheckbox  = false;
 			// if this row should be hidden initially, setup those styles/classes
 			if (currentThread == null || !tmpMsg.getId().equals(currentThread.getId())) {
 				writer.writeAttribute("class", "hierItemBlock", null);
 				currentThread = tmpMsg;
 				displayToggle = !noArrows && dmb.getChildCount() > 0;
+				display_moveCheckbox  = true;
 				dmb.setDepth(0);
 			} else if (!noArrows) {
 				writer.writeAttribute("style", "display: none", null);
 				writer.writeAttribute("id", "_id_" + dmb.getMessage().getId() + "__hide_division_", null);
 				checkExpanded = true;
+				display_moveCheckbox  = false;
 			}
 
 			if (!noArrows && dmb.getMessage().getInReplyTo() != null) {
@@ -289,6 +293,26 @@ public class HierDataTableRender extends HtmlBasicRenderer
 					if (currColumnClass >= columnClasses.length) currColumnClass = 0;
 				}
 
+				// if hierItemBlock
+				if ((display_moveCheckbox) && (column.getId().endsWith("_checkbox")) && 
+						(dmb.getRevise()) && (!dmb.getDeleted())) {
+				writer.startElement("input", null);
+                                writer.writeAttribute("id", "moveCheckbox", null);
+                                writer.writeAttribute("type", "checkbox", null);
+                                writer.writeAttribute("name", "moveCheckbox", null);
+                                writer.writeAttribute("onclick", "enableDisableMoveThreadLink();", null);
+                                writer.writeAttribute("value", dmb.getMessage().getId(), null);
+                                writer.endElement("input");
+				writer.endElement("td");
+				continue;
+				}
+				else {
+					if (column.getId().endsWith("_checkbox")) {
+						writer.endElement("td");
+						continue;
+					}
+				}
+
 				if (displayToggle) {
 					// write the toggle td if necessary
 					if (dmb.getChildCount() > 0) {
@@ -299,7 +323,9 @@ public class HierDataTableRender extends HtmlBasicRenderer
 						writer.writeAttribute("id", "_id_" + dmb.getMessage().getId() + "__img_hide_division_", null);
 
 						writer.writeAttribute("onclick", "displayChildren('" + dmb.getMessage().getId() + "'); " +
-								"mySetMainFrameHeight('Main" + org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement().getId().replace("-", "x") + "');", null);
+								"mySetMainFrameHeight('Main" + org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement().getId().replace("-", "x") + "');" +
+								"if (msgExpanded['" + dmb.getMessage().getId() + "']) { this.src='" + BARIMG + "'; } else { this.src='" + EXPIMG + "'; }" +
+								"msgExpanded['" + dmb.getMessage().getId() + "'] = !msgExpanded['" + dmb.getMessage().getId() + "'];", null);
 
 						msgChildren.put(dmb.getMessage().getId(), new ArrayList<Long>());
 					}
@@ -343,7 +369,8 @@ public class HierDataTableRender extends HtmlBasicRenderer
 			StringBuilder javascript = new StringBuilder();
 			javascript
 			.append("<script type=\"text/javascript\">\n")
-			.append("  var msgChildren = new Array();\n");
+			.append("  var msgChildren = new Array();\n")
+			.append("  var msgExpanded = new Array();\n");
 
 			for (Entry<Long, List<Long>> entry: msgChildren.entrySet()) {
 				if (entry.getValue().size() > 0) {
@@ -352,7 +379,9 @@ public class HierDataTableRender extends HtmlBasicRenderer
 						javascript.append("'_id_").append(id).append("',");
 					}
 					javascript.setLength(javascript.length() - 1); // remove that last extra comma
-					javascript.append(");\n");
+					javascript
+					.append(");\n")
+					.append("  msgExpanded['").append(entry.getKey()).append("'] = false;\n");
 				}
 			}
 

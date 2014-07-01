@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/shared/impl/grading/GradingSectionAwareServiceImpl.java $
- * $Id: GradingSectionAwareServiceImpl.java 9277 2006-05-10 23:10:33Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/shared/impl/grading/GradingSectionAwareServiceImpl.java $
+ * $Id: GradingSectionAwareServiceImpl.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,22 +23,10 @@
 package org.sakaiproject.tool.assessment.shared.impl.grading;
 
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.MediaIfc;
-import org.sakaiproject.tool.assessment.shared.api.grading.GradingSectionAwareServiceAPI;
-import org.sakaiproject.tool.assessment.services.GradingService;
-import org.sakaiproject.tool.assessment.services.GradingServiceException;
-import java.util.ArrayList;
-import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
-//import org.sakaiproject.tool.assessment.integration.helper.integrated.SectionAwareServiceHelperImpl;
-import org.sakaiproject.tool.assessment.integration.helper.ifc.SectionAwareServiceHelper;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
+import org.sakaiproject.tool.assessment.integration.helper.ifc.SectionAwareServiceHelper;
+import org.sakaiproject.tool.assessment.shared.api.grading.GradingSectionAwareServiceAPI;
 
 /**
  *
@@ -111,7 +99,6 @@ public class GradingSectionAwareServiceImpl implements GradingSectionAwareServic
   }
 
   /**
-   * added by gopalrc - Jan 2008
    * @return
    *  an EnrollmentRecord list for each student that the current user
    *  is allowed to grade, who is in at least one of the release groups 

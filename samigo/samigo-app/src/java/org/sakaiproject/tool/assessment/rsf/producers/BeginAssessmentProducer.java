@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/rsf/producers/BeginAssessmentProducer.java $
- * $Id: BeginAssessmentProducer.java 68753 2009-11-10 20:26:03Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/rsf/producers/BeginAssessmentProducer.java $
+ * $Id: BeginAssessmentProducer.java 133598 2014-01-23 22:43:31Z ktsao@stanford.edu $
  **********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -124,6 +124,9 @@ public class BeginAssessmentProducer implements ViewComponentProducer,
     delivery.setTimeLimit("0");
     delivery.setBeginAssessment(true);
 
+    delivery.setNumberRetake(-1);
+    delivery.setActualNumberRetake(-1);
+    
     // set path
     delivery.setContextPath(httpServletRequest.getContextPath());
 

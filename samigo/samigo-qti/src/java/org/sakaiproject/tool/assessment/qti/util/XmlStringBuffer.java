@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/util/XmlStringBuffer.java $
- * $Id: XmlStringBuffer.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/util/XmlStringBuffer.java $
+ * $Id: XmlStringBuffer.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,6 +32,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -56,6 +57,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
+import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 /**
@@ -63,7 +68,7 @@ import org.xml.sax.SAXException;
  * <p>Organization: Sakai Project</p>
  * @author rshastri
  * @author Ed Smiley esmiley@stanford.edu
- * @version $Id: XmlStringBuffer.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * @version $Id: XmlStringBuffer.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 public class XmlStringBuffer
   implements java.io.Serializable
@@ -317,16 +322,21 @@ public class XmlStringBuffer
     else
     {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
-      Source xmlSource = new DOMSource(document);
-      Result outputTarget = new StreamResult(out);
-      Transformer tf;
-	  try {
-		tf = TransformerFactory.newInstance().newTransformer();
-	    tf.transform(xmlSource, outputTarget);
-	  } catch (TransformerException e) {
-		log.error(e.getMessage(), e);
-	  }
-      return out.toString();	
+		try {
+			DOMImplementationRegistry registry = DOMImplementationRegistry
+					.newInstance();
+			DOMImplementationLS impl = (DOMImplementationLS) registry
+					.getDOMImplementation("LS");
+			LSSerializer writer = impl.createLSSerializer();
+			writer.getDomConfig().setParameter("format-pretty-print",
+					Boolean.TRUE);
+			LSOutput output = impl.createLSOutput();
+			output.setByteStream(out);
+			writer.write(document, output);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return out.toString();	
     }
   }
 
@@ -446,6 +456,16 @@ public class XmlStringBuffer
 	  }
 	  return result;
   }
+  
+	public String getValueOf(String xpath) {
+		try {
+			XPath path = new DOMXPath(xpath);
+			return path.stringValueOf(this.getDocument());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return null;
+		}
+	}
 
   /**
    * perform Update on this object
@@ -474,7 +494,12 @@ public class XmlStringBuffer
       Element newElement = null;
       Attr newAttribute = null;
       List newElementList = this.selectNodes(xpath);
-      int aIndex = xpath.indexOf("@");
+      //only look at the last part of the path
+      int aIndex = xpath.lastIndexOf("/");
+      if(aIndex == -1){
+    	  aIndex = 0;
+      }
+      aIndex = xpath.indexOf("@", aIndex);
       int size = newElementList.size();
       if(size > 1)
       {
@@ -653,7 +678,7 @@ public class XmlStringBuffer
    *
    * @return
    */
-  private final Element createChildElement(String childXpath)
+  protected final Element createChildElement(String childXpath)
   {
     int index = childXpath.indexOf("/");
     String elementName = childXpath;
@@ -670,7 +695,6 @@ public class XmlStringBuffer
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
       DocumentBuilder db = dbf.newDocumentBuilder();
       Document document = db.newDocument();
-      element = document.createElement(elementName);
       element = document.createElement(elementName);
       if(child != null)
       {
@@ -699,11 +723,8 @@ public class XmlStringBuffer
         "addElement(String " + parentXpath + ", Element " + element + ")");
     }
 
-    List nodes = this.selectNodes(parentXpath);
-    Iterator iterator = nodes.iterator();
-    while(iterator.hasNext())
-    {
-      Element parent = (Element) iterator.next();
+    List<Element> nodes = this.selectNodes(parentXpath);
+    for(Element parent: nodes){
       if(! parent.getOwnerDocument().equals(element.getOwnerDocument()))
       {
         element = (Element) parent.getOwnerDocument().importNode(element, true);

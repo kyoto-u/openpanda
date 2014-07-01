@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/BaseSearchServiceImpl.java $
- * $Id: BaseSearchServiceImpl.java 118570 2013-01-22 16:39:59Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/BaseSearchServiceImpl.java $
+ * $Id: BaseSearchServiceImpl.java 118402 2013-01-16 21:32:11Z jbush@rsmart.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,11 +51,11 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
-import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 import org.sakaiproject.component.cover.ServerConfigurationService;
@@ -396,9 +396,10 @@ public abstract class BaseSearchServiceImpl implements SearchService
 			{
 
 				IndexSearcher indexSearcher = getIndexSearcher(false);
+				int MAX_RESULTS = 1000000;
 				if (indexSearcher != null)
 				{
-					Hits h = null;
+					TopDocs topDocs = null;
 					Filter indexFilter = (Filter) luceneFilters.get(filterName);
 					Sort indexSorter = (Sort) luceneSorters.get(sorterName);
 					if (log.isDebugEnabled())
@@ -409,23 +410,23 @@ public abstract class BaseSearchServiceImpl implements SearchService
 					}
 					if (indexFilter != null && indexSorter != null)
 					{
-						h = indexSearcher.search(query, indexFilter, indexSorter);
+						topDocs = indexSearcher.search(query, indexFilter, MAX_RESULTS, indexSorter);
 					}
 					else if (indexFilter != null)
 					{
-						h = indexSearcher.search(query, indexFilter);
+						topDocs = indexSearcher.search(query, indexFilter, MAX_RESULTS);
 					}
 					else if (indexSorter != null)
 					{
-						h = indexSearcher.search(query, indexSorter);
+						topDocs = indexSearcher.search(query, null, MAX_RESULTS, indexSorter);
 					}
 					else
 					{
-						h = indexSearcher.search(query);
+						topDocs = indexSearcher.search(query, MAX_RESULTS);
 					}
 					if (log.isDebugEnabled())
 					{
-						log.debug("Got " + h.length() + " hits"); //$NON-NLS-1$ //$NON-NLS-2$
+						log.debug("Got " + topDocs.totalHits + " hits"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					String context = null;
 					if (contexts != null && contexts.size() > 0)
@@ -436,7 +437,7 @@ public abstract class BaseSearchServiceImpl implements SearchService
 					eventTrackingService.post(eventTrackingService.newEvent(EVENT_SEARCH,
 							EVENT_SEARCH_REF + textQuery.toString(), context, true,
 							NotificationService.PREF_IMMEDIATE));
-					return new SearchListImpl(h, textQuery, start, end, 
+					return new SearchListImpl(topDocs, indexSearcher, textQuery, start, end, 
 							getAnalyzer(), filter, searchIndexBuilder, this);
 				}
 				else
@@ -1097,7 +1098,15 @@ public abstract class BaseSearchServiceImpl implements SearchService
 	}
 	
 	Directory spellIndexDirectory = null;
-	
+
+    public String[] getSearchSuggestions(String searchString, String currentSiteId, boolean allMySites) {
+        String suggestion = getSearchSuggestion(searchString);
+        if (suggestion != null && suggestion.length() > 0) {
+            return new String[]{searchString};
+        }
+        return new String[]{};
+    }
+
 	public String getSearchSuggestion(String queryString) {
 		log.info("getSearchSuggestion( " + queryString + ")");
 		

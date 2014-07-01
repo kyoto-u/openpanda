@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.3/help-tool/src/java/org/sakaiproject/tool/help/QuestionTool.java $
- * $Id: QuestionTool.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.0/help-tool/src/java/org/sakaiproject/tool/help/QuestionTool.java $
+ * $Id: QuestionTool.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -31,7 +31,7 @@ import org.sakaiproject.tool.cover.ToolManager;
 
 /**
  * question tool
- * @version $Id: QuestionTool.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * @version $Id: QuestionTool.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  */
 public class QuestionTool
 {

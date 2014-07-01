@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/services/ItemService.java $
- * $Id: ItemService.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/services/ItemService.java $
+ * $Id: ItemService.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +42,6 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.facade.ItemFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
-import org.sakaiproject.tool.assessment.facade.FavoriteColChoicesFacadeQueries;
 
 /**
  * The ItemService calls persistent service locator to reach the
@@ -63,6 +61,10 @@ public class ItemService
 
   /**
    * Get a particular item from the backend, with all questions.
+   * @param itemId
+   * @param agentId
+   * @return
+   * @deprecated 
    */
   public ItemFacade getItem(Long itemId, String agentId)
   {
@@ -201,6 +203,11 @@ public class ItemService
     }
   }
 
+  /**
+   *  Get a particular item from the backend, with all questions.
+   * @param itemId
+   * @return
+   */
   public ItemFacade getItem(String itemId) {
     try{
       return PersistenceService.getInstance().getItemFacadeQueries().
@@ -275,7 +282,9 @@ public class ItemService
       Answer newAnswer = new Answer(
           newItemText, answer.getText(), answer.getSequence(),
           answer.getLabel(),
-      	  answer.getIsCorrect(), answer.getGrade(), answer.getScore(), answer.getPartialCredit(), answer.getDiscount(), null);
+      	  answer.getIsCorrect(), answer.getGrade(), answer.getScore(), answer.getPartialCredit(), answer.getDiscount(), 
+      	  //answer.getCorrectOptionLabels(), 
+      	  null);
       Set newAnswerFeedbackSet = copyAnswerFeedbackSet(
           newAnswer, answer.getAnswerFeedbackSet());
       newAnswer.setAnswerFeedbackSet(newAnswerFeedbackSet);

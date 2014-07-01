@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.3/help-tool/src/java/org/sakaiproject/tool/help/ContentServlet.java $
- * $Id: ContentServlet.java 117701 2012-12-14 14:29:21Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.0/help-tool/src/java/org/sakaiproject/tool/help/ContentServlet.java $
+ * $Id: ContentServlet.java 309813 2014-05-27 15:41:49Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.URL;
 
 import javax.servlet.ServletException;
@@ -46,7 +47,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * Content Servlet serves help documents to document frame.
- * @version $Id: ContentServlet.java 117701 2012-12-14 14:29:21Z ottenhoff@longsight.com $
+ * @version $Id: ContentServlet.java 309813 2014-05-27 15:41:49Z enietzel@anisakai.com $
  */
 public class ContentServlet extends HttpServlet
 {
@@ -70,6 +71,11 @@ public class ContentServlet extends HttpServlet
       getHelpManager().initialize();
       String docId = req.getParameter(DOC_ID);
 
+      if (docId == null) {
+          res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+	  return;
+      }
+
       OutputStreamWriter writer = new OutputStreamWriter(res.getOutputStream(), "UTF-8");
       try {
           res.setContentType(TEXT_HTML);
@@ -79,13 +85,13 @@ public class ContentServlet extends HttpServlet
           
        	  resource = getHelpManager().getResourceByDocId(docId);
           //Possibly a fileURL
-          if (resource == null && docId.indexOf('/') >= 0) {
+          if (resource == null && docId != null && docId.indexOf('/') >= 0) {
         	  if (M_log.isDebugEnabled())
         		  M_log.debug("Adding new resource:"+docId);
         	  resource = getHelpManager().createResource();
         	  resource.setLocation("/"+docId);
         	  resource.setDocId(docId);
-        	  url = new URL(req.getScheme(),req.getLocalName(),req.getServerPort(),req.getContextPath()+"/"+docId);
+        	  url = new URL(req.getScheme(),req.getServerName(),req.getServerPort(),req.getContextPath()+"/"+docId);
         	  //Can't save it without a category as is null
         	  //getHelpManager().storeResource(resource);
           } 
@@ -96,7 +102,8 @@ public class ContentServlet extends HttpServlet
     	  		String localHelpPath = sakaiHomePath+getServerConfigurationService().getString("help.localpath","/help/");
     	  		File localFile = new File(localHelpPath+resource.getLocation());
     	  		boolean localFileIsFile = false;
-    	  		if(localFile.isFile()) { 
+    	  		String localFileCanonicalPath = localFile.getCanonicalPath();
+    	  		if(localFileCanonicalPath.contains(localHelpPath) && localFile.isFile()) { 
     	  			M_log.debug("Local help file overrides: "+resource.getLocation());
     	  			localFileIsFile = true;
     	  		}
@@ -139,8 +146,15 @@ public class ContentServlet extends HttpServlet
                       if (url == null) {
                     	  M_log.warn("Help document " + docId + " not found at: " + resource.getLocation());
                       } else {
-	                      BufferedReader br = new BufferedReader(
-	                              new InputStreamReader(url.openStream(),"UTF-8"));
+                    	  BufferedReader br = null;
+                    	  try {
+                    		  br = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
+                    	  }
+                    	  catch (ConnectException e){
+                    		  M_log.info("ConnectException on " + url.getPath());
+                    		  res.sendRedirect(resource.getLocation());
+                    		  return;
+                    	  }
 	                      try {
 	                          String sbuf;
 	                          while ((sbuf = br.readLine()) != null)

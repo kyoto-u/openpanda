@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedItemData.java $
- * $Id: PublishedItemData.java 122369 2013-04-08 16:39:49Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedItemData.java $
+ * $Id: PublishedItemData.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 
 public class PublishedItemData
-    implements java.io.Serializable, ItemDataIfc, Comparable {
+    implements java.io.Serializable, ItemDataIfc, Comparable<ItemDataIfc> {
   static Category errorLogger = Category.getInstance("errorLogger");
   static ResourceBundle rb = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.Messages");
 
@@ -59,8 +59,8 @@ public class PublishedItemData
   private String description;
   private Long typeId;
   private String grade;
-  private Float score;
-  private Float discount;
+  private Double score;
+  private Double discount;
   private String hint;
   private Boolean hasRationale;
   private Integer status;
@@ -75,12 +75,22 @@ public class PublishedItemData
   private Set itemAttachmentSet;
   private Boolean partialCreditFlag;
 
+  private String themeText;
+  private String leadInText;
+  private String emiAnswerOptionLabels=null;
+  
+  private ArrayList emiAnswerOptions;
+  private ArrayList emiQuestionAnswerCombinations;
+  
+  private Integer answerOptionsRichCount;
+  private Integer answerOptionsSimpleOrRich;
+  
   public PublishedItemData() {}
 
   // this constructor should be deprecated, it is missing triesAllowed
   public PublishedItemData(SectionDataIfc section, Integer sequence,
                   Integer duration, String instruction, String description,
-                  Long typeId, String grade, Float score, Float discount, String hint,
+                  Long typeId, String grade, Double score, Double discount, String hint,
                   Boolean hasRationale, Integer status, String createdBy,
                   Date createdDate, String lastModifiedBy,
                   Date lastModifiedDate,
@@ -109,7 +119,7 @@ public class PublishedItemData
 
   public PublishedItemData(SectionDataIfc section, Integer sequence,
                   Integer duration, String instruction, String description,
-                  Long typeId, String grade, Float score, Float discount, String hint,
+                  Long typeId, String grade, Double score, Double discount, String hint,
                   Boolean hasRationale, Integer status, String createdBy,
                   Date createdDate, String lastModifiedBy,
                   Date lastModifiedDate,
@@ -211,24 +221,24 @@ public class PublishedItemData
     this.grade = grade;
   }
 
-  public Float getScore() {
+  public Double getScore() {
     return this.score;
   }
 
-  public void setScore(Float score) {
+  public void setScore(Double score) {
     this.score = score;
   }
 
-  public Float getDiscount() {
+  public Double getDiscount() {
 	  if (this.discount==null){
-		  this.discount= Float.valueOf(0);
+		  this.discount= Double.valueOf(0);
 	  }
 	  return this.discount;
   }
 
-  public void setDiscount(Float discount) {
+  public void setDiscount(Double discount) {
 	  if (discount==null){
-		  discount =Float.valueOf(0);
+		  discount =Double.valueOf(0);
 	  }
 	  this.discount = discount;
   }
@@ -473,14 +483,28 @@ public class PublishedItemData
   */
    public String getText() {
      String text = "";
-     if (getTypeId().equals(TypeIfc.MATCHING) || getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY))
-       return instruction;
+     if (getTypeId().equals(TypeIfc.MATCHING) 
+             || getTypeId().equals(TypeIfc.CALCULATED_QUESTION)
+             || getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY))
+         return instruction;
      Set set = this.getItemTextSet();
      Iterator iter = set.iterator();
 
      while (iter.hasNext())
      {
        ItemTextIfc itemText = (ItemTextIfc) iter.next();
+       
+       //if EMI use only the first textItem's text for display (seqence = 0)
+       if (this.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS)) {
+    	   if (!itemText.getSequence().equals(Long.valueOf(0))) {
+    		   continue;
+    	   }
+    	   else {
+    		   text = itemText.getText();
+    		   break;
+    	   }
+       }
+
        text += "" + itemText.getText(); //each text add it in
 
        if (this.getTypeId().equals(TypeIfc.FILL_IN_BLANK))
@@ -545,12 +569,33 @@ public class PublishedItemData
 		if (itemTextArray.size() == 0)
 			return answerKey;
 
-		ArrayList answerArray = ((ItemTextIfc) itemTextArray.get(0))
+		if (this.getTypeId().equals(TypeD.EXTENDED_MATCHING_ITEMS)) {
+			Iterator itemTextIter = itemTextArray.iterator();
+			while (itemTextIter.hasNext()) {
+				ItemTextIfc itemText = (ItemTextIfc) itemTextIter.next();
+				if (itemText.isEmiQuestionItemText()) {
+				   answerKey += itemText.getSequence() + ":";
+				   List emiItems = itemText.getAnswerArraySorted();
+				   Iterator emiItemsIter = emiItems.iterator();
+				   while (emiItemsIter.hasNext()) {
+					   AnswerIfc answer = (AnswerIfc)emiItemsIter.next();
+					   if (answer.getIsCorrect()) {
+						   answerKey += answer.getLabel();
+					   }
+				   }
+				   answerKey += " ";
+				}
+			}
+			return answerKey;
+		}
+	   
+		List answerArray = ((ItemTextIfc) itemTextArray.get(0))
 				.getAnswerArraySorted();
 		HashMap h = new HashMap();
+		
 		for (int i = 0; i < itemTextArray.size(); i++) {
 			ItemTextIfc text = (ItemTextIfc) itemTextArray.get(i);
-			ArrayList answers = text.getAnswerArraySorted();
+			List answers = text.getAnswerArraySorted();
 			for (int j = 0; j < answers.size(); j++) {
 				AnswerIfc a = (AnswerIfc) answers.get(j);
 				if (!this.getPartialCreditFlag() && (Boolean.TRUE).equals(a.getIsCorrect())) {
@@ -576,9 +621,9 @@ public class PublishedItemData
 				}
 				//multiple choice partial credit:
 				if (this.getTypeId().equals(TypeD.MULTIPLE_CHOICE) && this.getPartialCreditFlag()){
-					Float pc =  Float.valueOf(a.getPartialCredit()); //--mustansar
+					Double pc =  Double.valueOf(a.getPartialCredit()); //--mustansar
 					if (pc == null) {
-						pc = Float.valueOf(0f);
+						pc = Double.valueOf(0d);
 					}
 					if(pc > 0){
 						String correct = rb.getString("correct");
@@ -610,9 +655,8 @@ public class PublishedItemData
 		return answerKey;
 	}
 
-  public int compareTo(Object o) {
-      PublishedItemData a = (PublishedItemData)o;
-      return sequence.compareTo(a.sequence);
+  public int compareTo(ItemDataIfc o) {
+      return sequence.compareTo(o.getSequence());
   }
 
     /*
@@ -678,7 +722,8 @@ public class PublishedItemData
     }
     return list;
   }
-
+  
+  
   public Boolean getPartialCreditFlag() {
 	  if (partialCreditFlag == null) {
 		  return Boolean.FALSE;
@@ -689,6 +734,153 @@ public class PublishedItemData
   public void setPartialCreditFlag(Boolean partialCreditFlag) {
 	  this.partialCreditFlag = partialCreditFlag;
   }
+  
+
+  public String getLeadInText() {
+	if (leadInText == null) {
+		setThemeAndLeadInText();
+	}
+	return leadInText;
+  }
+
+  public String getThemeText() {
+	if (themeText == null) {
+		setThemeAndLeadInText();
+	}
+	return themeText;
+  }
+
+  private void setThemeAndLeadInText() {
+		if (TypeD.EXTENDED_MATCHING_ITEMS.equals(getTypeId())) {
+			boolean themeTextIsSet = false, leadInTextIsSet = false;
+			Iterator iter = itemTextSet.iterator();
+			while (iter.hasNext()) {
+				ItemTextIfc itemText= (ItemTextIfc) iter.next();
+				if (itemText.getSequence().equals(ItemTextIfc.EMI_THEME_TEXT_SEQUENCE)) {
+					themeText = itemText.getText();
+					themeTextIsSet = true;
+				}
+				if (itemText.getSequence().equals(ItemTextIfc.EMI_LEAD_IN_TEXT_SEQUENCE)) {
+					leadInText = itemText.getText();
+					leadInTextIsSet = true;
+				}
+				
+				if (themeTextIsSet && leadInTextIsSet) {
+					return;
+				}
+			}
+		}
+	  }
+
+	public int getNumberOfCorrectEmiOptions() {
+		int count=0;
+		Iterator itemTextIter = itemTextSet.iterator();
+		while (itemTextIter.hasNext()) {
+			ItemTextIfc itemText = (ItemTextIfc)itemTextIter.next();
+			if (!itemText.isEmiQuestionItemText()) continue;
+			Iterator answerIter = itemText.getAnswerSet().iterator();
+			while (answerIter.hasNext()) {
+				AnswerIfc answer = (AnswerIfc) answerIter.next();
+				if (answer.getIsCorrect()) count++;
+			}
+		}
+		return count;
+	}
+  
+	//available option labels for EMI answers
+	public String getEmiAnswerOptionLabels() {
+		String emiAnswerOptionLabels = null;
+		if (TypeD.EXTENDED_MATCHING_ITEMS.equals(getTypeId())) {
+			if (getIsAnswerOptionsSimple()) {
+				emiAnswerOptionLabels = "";
+				Iterator iter = getEmiAnswerOptions().iterator();
+				while (iter.hasNext()) {
+					AnswerIfc answer = (AnswerIfc) iter.next();
+					emiAnswerOptionLabels += answer.getLabel();
+				}
+			}
+			else { // Rich
+				emiAnswerOptionLabels = ItemDataIfc.ANSWER_OPTION_LABELS.substring(0, getAnswerOptionsRichCount().intValue());
+			}
+		}
+		return emiAnswerOptionLabels;
+	}
+	
+	public boolean isValidEmiAnswerOptionLabel(String label) {
+		if (label == null) return false;
+		String validOptionLabels = getEmiAnswerOptionLabels();
+		if (label.length()==1 && validOptionLabels.contains(label)) {
+			return true;
+		}
+		return false;
+	}
+	
+	  public List getEmiAnswerOptions() {
+		  if (!typeId.equals(TypeD.EXTENDED_MATCHING_ITEMS)) return null;
+		  ItemTextIfc itemText = getItemTextBySequence(ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE);  
+		  if (itemText != null) {
+			    return itemText.getAnswerArraySorted();
+		  }
+		  return null;
+	  }
+	  
+	  public ArrayList getEmiQuestionAnswerCombinations() {
+		  if (!typeId.equals(TypeD.EXTENDED_MATCHING_ITEMS)) return null;
+		  Iterator iter = getItemTextArraySorted().iterator();
+		  ArrayList emiQuestionAnswerCombinations = new ArrayList();
+		  while (iter.hasNext()) {
+			  ItemTextIfc itemText = (ItemTextIfc)iter.next();
+			  if (itemText.isEmiQuestionItemText()) {
+				  emiQuestionAnswerCombinations.add(itemText);
+			  }
+		  }
+		  return emiQuestionAnswerCombinations;
+	  }
+	  
+	  public ItemTextIfc getItemTextBySequence(Long itemTextSequence) {
+		  ItemTextIfc itemText = null;  
+		  Iterator itemTextIter = itemTextSet.iterator();
+		  while (itemTextIter.hasNext()) {
+			  itemText = (ItemTextIfc) itemTextIter.next();
+			  if (itemText.getSequence().equals(itemTextSequence)) {
+				  return itemText;
+			  }
+		  }
+		  return null;
+	  }
+	  
+		public Integer getAnswerOptionsRichCount() {
+			return answerOptionsRichCount;
+		}
+
+		public void setAnswerOptionsRichCount(Integer answerOptionsRichCount) {
+			this.answerOptionsRichCount = answerOptionsRichCount;
+		}	  
+		  
+		public Integer getAnswerOptionsSimpleOrRich() {
+			return answerOptionsSimpleOrRich;
+		}
+
+		public void setAnswerOptionsSimpleOrRich(Integer answerOptionsSimpleOrRich) {
+			this.answerOptionsSimpleOrRich = answerOptionsSimpleOrRich;
+		}
+		
+		  public String getEmiAnswerOptionsRichText() {
+			  if (!typeId.equals(TypeD.EXTENDED_MATCHING_ITEMS)) return null;
+			  ItemTextIfc itemText = getItemTextBySequence(ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE);  
+			  if (itemText != null) {
+				    return itemText.getText();
+			  }
+			  return null;
+		  }
+
+		  public boolean getIsAnswerOptionsSimple() {
+			  return this.getAnswerOptionsSimpleOrRich().equals(ItemDataIfc.ANSWER_OPTIONS_SIMPLE);
+		  }
+
+		  public boolean getIsAnswerOptionsRich() {
+			  return this.getAnswerOptionsSimpleOrRich().equals(ItemDataIfc.ANSWER_OPTIONS_RICH);
+		  }
 
   public String[] getRowChoices(){
 
@@ -711,8 +903,8 @@ public class PublishedItemData
   public List<Integer> getColumnIndexList() {
 
 	  List<Integer> columnIndexList = new ArrayList<Integer>();
-	  ArrayList itemTextArray = getItemTextArraySorted();
-	  ArrayList answerArray = ((ItemTextIfc)itemTextArray.get(0)).getAnswerArraySorted();  
+	  List itemTextArray = getItemTextArraySorted();
+	  List answerArray = ((ItemTextIfc)itemTextArray.get(0)).getAnswerArraySorted();  
 	  List<String> stringList = new ArrayList<String>();
 
 	  for(int i=0; i<answerArray.size();i++) {
@@ -722,14 +914,14 @@ public class PublishedItemData
 		  }
 	  }
 	  for (int k=0; k< stringList.size(); k++){
-		  columnIndexList.add(new Integer(k));
+		  columnIndexList.add(Integer.valueOf(k));
 	  }
 	  return columnIndexList;
   }
 
   public String[] getColumnChoices() {
-	  ArrayList itemTextArray = getItemTextArraySorted();
-	  ArrayList answerArray = ((ItemTextIfc)itemTextArray.get(0)).getAnswerArraySorted();   
+	  List itemTextArray = getItemTextArraySorted();
+	  List answerArray = ((ItemTextIfc)itemTextArray.get(0)).getAnswerArraySorted();   
 	  List<String> stringList = new ArrayList<String>();
 
 	  for(int i=0; i<answerArray.size();i++) {

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.osedu.org/licenses/ECL-2.0
+ * http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,13 +18,14 @@ package org.sakaiproject.mailsender.logic.impl;
 
 import static org.sakaiproject.mailsender.logic.impl.MailConstants.PROTOCOL_SMTP;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.mail.MessagingException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -60,7 +61,6 @@ import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * This is the implementation for logic which is external to our app logic
@@ -409,13 +409,14 @@ public class ExternalLogicImpl implements ExternalLogic
 
 		try
 		{
-			List<EmailAddress> invalids = emailService.send(msg);
+			List<EmailAddress> invalids = emailService.send(msg,true);
 			List<String> rets = EmailAddress.toStringList(invalids);
 			Event event = eventService.newEvent(ExternalLogic.EVENT_EMAIL_SEND,
 					null, false);
 			eventService.post(event);
 			return rets;
 		}
+		//Catch these exceptions to give the user a better error message
 		catch (AddressValidationException e)
 		{
 			MailsenderException me = new MailsenderException(e.getMessage(), e);
@@ -427,6 +428,10 @@ public class ExternalLogicImpl implements ExternalLogic
 		{
 			MailsenderException me = new MailsenderException(e.getMessage(), e);
 			me.addMessage("error.no.valid.recipients", "");
+			throw me;
+		} catch (MessagingException e) {
+			MailsenderException me = new MailsenderException(e.getMessage(), e);
+			me.addMessage("error.messaging.exception", "");
 			throw me;
 		}
 	}
@@ -449,6 +454,12 @@ public class ExternalLogicImpl implements ExternalLogic
 	{
 		return securityService.unlock(userId,
 				org.sakaiproject.site.api.SiteService.SECURE_UPDATE_SITE, locationId);
+	}
+
+	public List<String> getPermissionKeys()
+	{
+		String[] perms = new String[] {PERM_ADMIN, PERM_SEND};
+		return Arrays.asList(perms);
 	}
 
 	public void setFunctionManager(FunctionManager functionManager)

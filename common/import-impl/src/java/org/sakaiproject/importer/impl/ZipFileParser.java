@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-impl/src/java/org/sakaiproject/importer/impl/ZipFileParser.java $
- * $Id: ZipFileParser.java 118449 2013-01-17 21:03:19Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-impl/src/java/org/sakaiproject/importer/impl/ZipFileParser.java $
+ * $Id: ZipFileParser.java 118267 2013-01-10 22:29:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,25 +47,33 @@ import org.sakaiproject.importer.api.ImportDataSource;
 import org.sakaiproject.importer.api.ImportFileParser;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import java.io.InputStream;
 
 public abstract class ZipFileParser implements ImportFileParser {
 	protected MimetypesFileTypeMap mimeTypes = new MimetypesFileTypeMap();
 	protected String pathToData;
 	protected String localArchiveLocation;
 
-	public boolean isValidArchive(byte[] fileData) {
-		ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(fileData));
+	public boolean isValidArchive(InputStream fileData) {
+		ZipInputStream zipStream = new ZipInputStream(fileData);
 		ZipEntry entry;
 		try {
 			entry = (ZipEntry) zipStream.getNextEntry();
 		} catch (IOException e) {
 			// IOException definitely indicates not a valid archive
 			return false;
+		} finally {
+		    try {
+                zipStream.close();
+            } catch (IOException e) {
+                // we tried
+            }
 		}
+		
 	    return (entry != null);
 	}
 
-	public ImportDataSource parse(byte[] fileData, String unArchiveLocation) {
+	public ImportDataSource parse(InputStream fileData, String unArchiveLocation) {
 		this.localArchiveLocation = unzipArchive(fileData, unArchiveLocation);
 		this.pathToData = unArchiveLocation + File.separator + localArchiveLocation;
 		awakeFromUnzip(pathToData);
@@ -85,7 +94,7 @@ public abstract class ZipFileParser implements ImportFileParser {
 
 	protected abstract Collection getCategoriesFromArchive(String pathToData);
 
-	protected String unzipArchive(byte[] fileData, String unArchiveLocation) {
+	protected String unzipArchive(InputStream fileData, String unArchiveLocation) {
 	    String localArchiveLocation = Long.toString(new java.util.Date().getTime());
 	    String pathToData = unArchiveLocation + "/" + localArchiveLocation;
 	    File dir = new File(pathToData); //directory where file would be saved
@@ -94,7 +103,7 @@ public abstract class ZipFileParser implements ImportFileParser {
 	    }
 
 	    Set<String> dirsMade = new TreeSet<String>();
-	    ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(fileData));
+	    ZipInputStream zipStream = new ZipInputStream(fileData);
 	    try {
     	    ZipEntry entry = null;
     	    try {
@@ -183,8 +192,8 @@ public abstract class ZipFileParser implements ImportFileParser {
 	    return localArchiveLocation;
 	}
 	
-	protected boolean fileExistsInArchive(String pathAndFilename, byte[] archive) {
-		ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(archive));
+	protected boolean fileExistsInArchive(String pathAndFilename, InputStream archive) {
+		ZipInputStream zipStream = new ZipInputStream(archive);
 		ZipEntry entry;
 		String entryName;
 		if (pathAndFilename.charAt(0) == '/') {
@@ -199,12 +208,20 @@ public abstract class ZipFileParser implements ImportFileParser {
 		    }
 		    return false;
 		} catch (IOException e) {
+			
 			return false;
+		} finally {
+		    try {
+                zipStream.close();
+            } catch (IOException e) {
+                // we tried
+            }
 		}
+		
 	}
 	
-	protected Document extractFileAsDOM(String pathAndFilename, byte[] archive) {
-		ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(archive));
+	protected Document extractFileAsDOM(String pathAndFilename, InputStream archive) {
+		ZipInputStream zipStream = new ZipInputStream(archive);
 		ZipEntry entry;
 		String entryName;
 		if (pathAndFilename.charAt(0) == '/') {
@@ -244,8 +261,10 @@ public abstract class ZipFileParser implements ImportFileParser {
             } catch (IOException e) {
                 // we tried
             }
+		    
 		}
 	}
+	
 	
 	protected byte[] getBytesFromFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);

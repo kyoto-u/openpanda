@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.authz.api.AuthzGroupAdvisor;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.AuthzPermissionException;
 import org.sakaiproject.authz.api.GroupAlreadyDefinedException;
@@ -259,4 +260,25 @@ public class MockAuthzGroupService implements AuthzGroupService {
         return null;
     }
 
+	@Override
+	public void addAuthzGroupAdvisor(AuthzGroupAdvisor advisor) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean removeAuthzGroupAdvisor(AuthzGroupAdvisor advisor) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<AuthzGroupAdvisor> getAuthzGroupAdvisors() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+    public Set getMaintainRoles() {
+        return null;
+    }
 }

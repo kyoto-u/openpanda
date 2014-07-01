@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -442,6 +442,8 @@ public class WebServiceImpl implements WebService, EntityTransferrer
 								tool.setTool(TOOL_ID, tr);
 								tool.setTitle(toolTitle);
 								if (contentUrl != null) {
+									// Replace references to the site we're copying from.
+									contentUrl = contentUrl.replace(fromContext, toContext);
 									tool.getPlacementConfig().setProperty(WEB_CONTENT_URL_PROP, contentUrl);
 								}
 
@@ -461,7 +463,7 @@ public class WebServiceImpl implements WebService, EntityTransferrer
 			SiteService.save(toSite);
 			ToolSession session = SessionManager.getCurrentToolSession();
 
-			if (session.getAttribute(ATTR_TOP_REFRESH) == null)
+			if (session != null && session.getAttribute(ATTR_TOP_REFRESH) == null)
 			{
 				session.setAttribute(ATTR_TOP_REFRESH, Boolean.TRUE);
 			}
@@ -531,7 +533,7 @@ public class WebServiceImpl implements WebService, EntityTransferrer
 				SiteService.save(toSite);
 				ToolSession session = SessionManager.getCurrentToolSession();
 
-				if (session.getAttribute(ATTR_TOP_REFRESH) == null)
+				if (session != null && session.getAttribute(ATTR_TOP_REFRESH) == null)
 				{
 					session.setAttribute(ATTR_TOP_REFRESH, Boolean.TRUE);
 				}

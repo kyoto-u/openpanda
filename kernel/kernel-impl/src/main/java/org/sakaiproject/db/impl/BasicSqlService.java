@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/db/impl/BasicSqlService.java $
- * $Id: BasicSqlService.java 97897 2011-09-08 15:59:19Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/db/impl/BasicSqlService.java $
+ * $Id: BasicSqlService.java 309954 2014-05-29 21:22:54Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1266,7 +1266,11 @@ public abstract class BasicSqlService implements SqlService
 			}
 
 			// if asked to fail quietly, just return -1 if we find this error.
-			if (recordAlreadyExists || failQuiet) return -1;
+			if (recordAlreadyExists || failQuiet) {
+				LOG.warn("Sql.dbWrite(): recordAlreadyExists: " +  recordAlreadyExists + ", failQuiet: " + failQuiet + ", : error code: " 
+					+ e.getErrorCode() + ", " + "sql: " + sql + ", binds: " + debugFields(fields) + ", error: " + e.toString());
+				return -1;
+			}
 
 			// perhaps due to a mysql deadlock?
 			if (sqlServiceSql.isDeadLockError(e.getErrorCode()))

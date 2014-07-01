@@ -1,12 +1,12 @@
-<!-- $Id: chef_assignments_student_preview_submission.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_student_preview_submission.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
 <!-- start: chef_assignments_student_preview_submission.vm -->
-#parse("/vm/assignment/assignment_macros.vm")
 <div class="portletBody">
 
 	<h3>
 		$tlang.getString("gen.assig")<span class="highlight"> - $tlang.getString("gen.pre")</span>
 	</h3>	
 
+    #set($allowUpdateAssignment=$!service.allowUpdateAssignment($assignment.Reference))
 	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
 	<table class="itemSummary" summary="$tlang.getString("gen.assdet")" border="0">
 		 <tr>
@@ -14,6 +14,7 @@
 				$tlang.getString("gen.title")
 			</th>
 			<td>
+                                #assignmentTitleIcon($assignment)
 				$validator.escapeHtml($assignment.getTitle())
 			</td>
 		</tr>
@@ -22,7 +23,10 @@
 				$tlang.getString("gen.due"):
 			</th>
 			<td>
-				$!assignment.getDueTime().toStringLocalFull()
+
+                #if ($assignment.getContent().getHideDueDate() != "true" || $!allowUpdateAssignment)
+                    $!assignment.dueTime.toStringLocalFull()
+                #end
 			</td>
 		</tr>
 		##resubmit number
@@ -107,7 +111,11 @@
 	##							$tlang.getString("gen.noatt")
 	#else
 		<h4>
-			$tlang.getString("gen.att")
+			#if ($assignment.getContent().getTypeOfSubmission() == 5)
+				$tlang.getString("gen.att.single")
+			#else
+				$tlang.getString("gen.att")
+			#end
 		</h4>	
 			<ul class="attachList indnt1">
 				#foreach ($attachment in $attachments) 

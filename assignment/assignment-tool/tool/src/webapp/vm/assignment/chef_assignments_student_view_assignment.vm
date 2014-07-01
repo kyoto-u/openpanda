@@ -1,16 +1,14 @@
-<!-- $Id: chef_assignments_student_view_assignment.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_student_view_assignment.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
 <!-- start: check_assignments_student_view_assignment.vm -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm,v 1.2 2005/05/19 19:39:49 gsilver.umich.edu Exp $ -->
-#parse("/vm/assignment/assignment_macros.vm")
-<link href="/sakai-assignment-tool/css/assignment.css" type="text/css" rel="stylesheet" media="all" />
-<script type="text/javascript" src="/library/js/jquery.js"></script>
-<script type="text/javascript"  src="/sakai-assignment-tool/js/assignments.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         setupToggleAreas('toggleAnchor', 'toggledContent', false, 'fast');
     });
 </script>
 
+#set ($submissionType = $assignment.getContent().getTypeOfSubmission())
+#set($allowUpdateAssignment=$!service.allowUpdateAssignment($assignment.Reference))
 <div class="portletBody">
 		<h3>
 		$tlang.getString("viewassig.viewass1") 	
@@ -50,7 +48,9 @@
 					$tlang.getString("gen.due")
 				</th>
 				<td>
-					$assignment.DueTime.toStringLocalFull()
+                    #if ($assignment.getContent().getHideDueDate() != "true" || $!allowUpdateAssignment)
+                        $!assignment.dueTime.toStringLocalFull()
+                    #end
 				</td>
 			</tr>
 			<tr>
@@ -94,6 +94,18 @@
 					</td>
 				</tr>
 			#end
+			<tr> 
+				<th>
+                                        $tlang.getString("gen.groupassignment")
+                                </th>
+                                <td>
+                                        #if ($assignment.isGroup())
+                                        $tlang.getString("gen.yes")
+                                        #else
+                                        $tlang.getString("gen.no")
+                                        #end
+                                </td>
+                        </tr>
 			<tr> 
 				<th>
 					$tlang.getString("gen.gra")
@@ -176,7 +188,13 @@
 								#end
 							#end
 							#if ($size == 0)
-								<p class="instruction">$tlang.getString("gen.noatt")</p>
+								<p class="instruction">
+                                                                    #if ($submissionType == 5)
+                                                                        $tlang.getString("gen.noatt.single")
+                                                                    #else
+                                                                        $tlang.getString("gen.noatt")
+                                                                    #end
+                                                                </p>
 							#else
 								#foreach ($attachment in $mAttachments)
 									#set ($props = false)
@@ -220,7 +238,13 @@
 								#end
 							#end
 							#if ($size == 0)
-								<p class="instruction">$tlang.getString("gen.noatt")</p>
+								<p class="instruction">
+                                                                    #if ($submissionType == 5)
+                                                                        $tlang.getString("gen.noatt.single")
+                                                                    #else
+                                                                        $tlang.getString("gen.noatt")
+                                                                    #end
+                                                                </p>
 							#else
 								#foreach ($attachment in $aAttachments)
 									#set ($props = false)

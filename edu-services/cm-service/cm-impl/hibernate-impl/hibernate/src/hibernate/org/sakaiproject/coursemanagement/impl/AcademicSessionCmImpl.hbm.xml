@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
-   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping default-cascade="none" package="org.sakaiproject.coursemanagement.impl" default-lazy="true">
 
     <class name="org.sakaiproject.coursemanagement.impl.AcademicSessionCmImpl"
@@ -38,7 +38,7 @@
 
     <query name="findAcademicSessions">
         <![CDATA[
-        from AcademicSessionCmImpl as term order by term.startDate
+        from AcademicSessionCmImpl as term order by term.startDate desc
         ]]>
     </query>
 
@@ -46,7 +46,7 @@
         <![CDATA[
         from AcademicSessionCmImpl as term where
         	term.current=true
-        	order by term.startDate
+        	order by term.startDate desc
         ]]>
     </query>
 

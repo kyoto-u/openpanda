@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/user/impl/UserAuthnComponent.java $
- * $Id: UserAuthnComponent.java 69282 2009-11-27 15:23:04Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/UserAuthnComponent.java $
+ * $Id: UserAuthnComponent.java 116588 2012-11-20 15:10:06Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -111,6 +111,10 @@ public abstract class UserAuthnComponent implements AuthenticationManager
 				authenticationCache().putAuthenticationFailure(evidence.getIdentifier(), evidence.getPassword());
 				throw new AuthenticationException("Invalid Login: Either user not found or password incorrect.");
 			}
+			String disabled = user.getProperties().getProperty("disabled");
+			if (disabled != null && "true".equals(disabled)) {
+				throw new AuthenticationException("disabled");
+			}
 
 			rv = new org.sakaiproject.util.Authentication(user.getId(), user.getEid());
 			
@@ -134,7 +138,10 @@ public abstract class UserAuthnComponent implements AuthenticationManager
 			try
 			{
 				User user = userDirectoryService().getUserByEid(evidence.getIdentifier());
-
+				String disabled = user.getProperties().getProperty("disabled");
+                        	if (disabled != null && "true".equals(disabled)) {
+                               		throw new AuthenticationException("Account Disabled: The users authentication has been disabled");
+                        	}
 				Authentication rv = new org.sakaiproject.util.Authentication(user.getId(), user.getEid());
 				return rv;
 			}

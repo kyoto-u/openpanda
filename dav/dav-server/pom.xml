@@ -4,7 +4,7 @@
     <parent>
         <artifactId>dav-base</artifactId>
         <groupId>org.sakaiproject</groupId>
-        <version>2.9.3</version>
+        <version>10.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <name>sakai-dav-server</name>
@@ -39,17 +39,6 @@
             <artifactId>commons-logging</artifactId>
         </dependency>
     </dependencies>
-    <repositories>
-      <repository>
-        <id>maven-repo2</id>
-        <name>Maven Repo 1</name>
-        <layout>default</layout>
-        <url>http://repo2.maven.org/maven2</url>
-        <snapshots>
-          <enabled>false</enabled>
-        </snapshots>
-      </repository>
-    </repositories>
 
     <build>
         <resources>

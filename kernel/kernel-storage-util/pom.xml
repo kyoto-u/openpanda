@@ -4,22 +4,25 @@
   <parent>
     <artifactId>kernel</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>1.3.3</version>
+    <version>10.0</version><!-- KernelVersion -->
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>Sakai Kernel Storage Util</name>
   <groupId>org.sakaiproject.kernel</groupId>
   <artifactId>sakai-kernel-storage-util</artifactId>
-  <version>1.3.3</version>
   <organization>
     <name>The Sakai Foundation</name>
     <url>http://sakaiproject.org/</url>
   </organization>
   <inceptionYear>2003</inceptionYear>
+  <properties>
+    <kernel.basedir>${basedir}/..</kernel.basedir>
+  </properties>
+
   <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-storage-util</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-storage-util</developerConnection>
-    <url>https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-storage-util</url>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/kernel/trunk/kernel-storage-util</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/kernel/trunk/kernel-storage-util</developerConnection>
+    <url>https://source.sakaiproject.org/svn/kernel/trunk/kernel-storage-util</url>
   </scm>
 
   <packaging>jar</packaging>
@@ -28,11 +31,14 @@
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-kernel-api</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-component-manager</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.kernel</groupId>
+      <artifactId>sakai-kernel-util</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

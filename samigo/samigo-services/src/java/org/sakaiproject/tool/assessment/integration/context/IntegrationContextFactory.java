@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/integration/context/IntegrationContextFactory.java $
- * $Id: IntegrationContextFactory.java 9347 2006-05-13 04:13:19Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/context/IntegrationContextFactory.java $
+ * $Id: IntegrationContextFactory.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,6 +66,25 @@ public abstract class IntegrationContextFactory
     log.debug("instance="+instance);
     return instance;
   }
+  
+  public static IntegrationContextFactory getTestInstance()
+  {
+	    log.debug("IntegrationContextFactory.getTestInstance()");
+	    if (instance==null)
+	    {
+	      try
+	      {
+	        FactoryUtil.setUseLocator(false);
+	        instance = FactoryUtil.lookup();
+	      }
+	      catch (Exception ex)
+	      {
+	        log.error("Unable to read integration context: " + ex);
+	      }
+	    }
+	    log.debug("instance="+instance);
+	    return instance;
+	  }
 
   // the factory api
   public abstract boolean isIntegrated();

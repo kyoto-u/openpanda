@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/shared/impl/grading/GradebookServiceImpl.java $
+ * $Id: GradebookServiceImpl.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,13 +23,13 @@
 package org.sakaiproject.tool.assessment.shared.impl.grading;
 
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
+import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
+import org.sakaiproject.tool.assessment.services.GradingServiceException;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.services.gradebook.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.shared.api.grading.GradebookServiceAPI;
-import org.sakaiproject.tool.assessment.services.GradingServiceException;
 
 /**
  * The GradebookServiceAPI describes an interface for gradebook information
@@ -106,7 +106,7 @@ public class GradebookServiceImpl implements GradebookServiceAPI
    * @param ag the assessment grading data
    * @param agentIdString agent id
    */
-  public void updateExternalAssessment(AssessmentGradingIfc ag, String agentIdString)
+  public void updateExternalAssessment(AssessmentGradingData ag, String agentIdString)
   {
     try
     {
@@ -141,7 +141,7 @@ public class GradebookServiceImpl implements GradebookServiceAPI
    * Update the score in the gradebook.
    * @param ag the assessment grading interface
    */
-  public void updateExternalAssessmentScore(AssessmentGradingIfc ag)
+  public void updateExternalAssessmentScore(AssessmentGradingData ag)
   {
     try
     {

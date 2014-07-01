@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.3/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
- * $Id: UserPrefsTool.java 127145 2013-07-17 17:40:04Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.0/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
+ * $Id: UserPrefsTool.java 133371 2014-01-17 14:05:06Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -41,6 +41,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.cover.ComponentManager;
@@ -227,13 +229,17 @@ public class UserPrefsTool
 
 	private List prefTimeZones = new ArrayList();
 
-	private List prefLocales = new ArrayList();
+	private List<SelectItem> prefLocales = new ArrayList<SelectItem>();
 
 	private int DEFAULT_TAB_COUNT = 4;
 	private int MAX_TAB_COUNT = 20;
 	private int MIN_TAB_COUNT = 2;
 
 	private String prefTabCount = null;
+
+	// SAK-23895
+       	private String prefTabLabel = null;
+       	private int DEFAULT_TAB_LABEL = 1;
 
 	private String[] selectedExcludeItems;
 
@@ -273,23 +279,31 @@ public class UserPrefsTool
 	/** The user id retrieved from UsageSessionService */
 	private String userId = "";
 
-	private String SAKAI_LOCALES = "locales";
-	private String SAKAI_LOCALES_MORE = "locales.more";
-
 	/**
 	 * SAK-11460:  With DTHML More Sites, there are potentially two
-	 * "Customize Tab" pages, namely "tab.jsp" (for the pre-DHTML more
-	 * sites), and "tab-dhtml-moresites.jsp".  Which one is used depends on the
-	 * sakai.properties "portal.use.dhtml.more".  Default is to use
-	 * the pre-DTHML page.
+	 * "Customize Tab" pages, namely "tab.jsp" (for the Drag and Drop)
+	 * and "tab-dhtml-moresites.jsp".  Which one is used depends on the
+	 * sakai.properties "prefs.tabs.dragdrop".
 	 */
 	private String m_TabOutcome = "tab";
 	
 	private Map<String, Integer> m_sortedTypes = new HashMap<String, Integer>();
 	private List<DecoratedNotificationPreference> m_registereddNotificationItems = new ArrayList<DecoratedNotificationPreference>();	
 	private List<Site> m_sites = new ArrayList<Site>();
+
+	// SAK-23895
+	private boolean prefShowTabLabelOption = true;
 	
 	// //////////////////////////////// PROPERTY GETTER AND SETTER ////////////////////////////////////////////
+
+	public boolean isPrefShowTabLabelOption() {
+	    return prefShowTabLabelOption;
+	}
+
+	public void setPrefShowTabLabelOption(boolean prefShowTabLabelOption) {
+	    this.prefShowTabLabelOption = prefShowTabLabelOption;
+	}
+
 	/**
 	 * @return Returns the prefExcludeItems.
 	 */
@@ -526,17 +540,18 @@ public class UserPrefsTool
 	/**
 	 * @return Returns the prefLocales
 	 */
-	public List getPrefLocales()
+	public List<SelectItem> getPrefLocales()
 	{
 		// Initialize list of supported locales, if necessary
-		if (prefLocales.size() == 0)
+		if (prefLocales.isEmpty())
 		{
 		    org.sakaiproject.component.api.ServerConfigurationService scs = (org.sakaiproject.component.api.ServerConfigurationService) ComponentManager.get(org.sakaiproject.component.api.ServerConfigurationService.class);
 		    Locale[] localeArray = scs.getSakaiLocales();
 			for (int i = 0; i < localeArray.length; i++)
 			{
-				if (i == 0 || !localeArray[i].equals(localeArray[i - 1]))
-					prefLocales.add(new SelectItem(localeArray[i].toString(), localeArray[i].getDisplayName()));
+				if (i == 0 || !localeArray[i].equals(localeArray[i - 1])) {
+					prefLocales.add(new SelectItem(localeArray[i].toString(), msgs.getLocaleDisplayName(localeArray[i])));
+				}
 			}
 		}
 
@@ -782,10 +797,14 @@ public class UserPrefsTool
 	public UserPrefsTool()
 	{
 		// Is DTHML more site enabled?
-		if (ServerConfigurationService.getBoolean ("portal.use.dhtml.more", false))
-			m_TabOutcome = "tabDHTMLMoreSites";
-		else
+		if (ServerConfigurationService.getBoolean ("prefs.tabs.dragdrop", true))
 			m_TabOutcome = "tab";
+		else
+			m_TabOutcome = "tabDHTMLMoreSites";
+
+		// do we show the option to display by site title or short description?
+		boolean show_tab_label_option = ServerConfigurationService.getBoolean("preference.show.tab.label.option", true);
+		setPrefShowTabLabelOption(show_tab_label_option);
 
 		//Tab order configuration
 		String defaultPreference="prefs_tab_title, prefs_noti_title, prefs_timezone_title, prefs_lang_title";
@@ -1161,17 +1180,45 @@ public class UserPrefsTool
 		ordered.addAll(mySites);
 
 		// Now convert to SelectItem for display in JSF
+                String sitetablabel = getPrefTabLabel();
 		for (Iterator iter = excluded.iterator(); iter.hasNext();)
 		{
 			Site element = (Site) iter.next();
-			SelectItem excludeItem = new SelectItem(element.getId(), element.getTitle());
+			// some short descriptins are empty or null
+			String shortdesc = element.getShortDescription();
+			if ((shortdesc == null) || ("".equals(shortdesc))){
+			    shortdesc = element.getTitle();
+			}
+
+			SelectItem excludeItem = null;
+
+			if ("1".equals(sitetablabel)) {
+			    excludeItem = new SelectItem(element.getId(), element.getTitle());
+			}
+			else {
+			    excludeItem = new SelectItem(element.getId(), shortdesc);
+			}
 			prefExcludeItems.add(excludeItem);
 		}
 
 		for (Iterator iter = ordered.iterator(); iter.hasNext();)
 		{
 			Site element = (Site) iter.next();
-			SelectItem orderItem = new SelectItem(element.getId(), element.getTitle());
+
+			// some short descriptins are empty or null
+			String shortdesc = element.getShortDescription();
+			if ((shortdesc == null) || ("".equals(shortdesc))){
+			    shortdesc = element.getTitle();
+			}
+
+			SelectItem orderItem = null;
+			if ("1".equals(sitetablabel)) {
+			    orderItem = new SelectItem(element.getId(), element.getTitle());
+			}
+			else {
+			    orderItem = new SelectItem(element.getId(), shortdesc);
+			}
+
 			prefOrderItems.add(orderItem);
 		}
 
@@ -1216,6 +1263,7 @@ public class UserPrefsTool
 		m_stuff.add(new KeyNameValue(CHARON_PREFS, "exclude", eparts, true));
 		m_stuff.add(new KeyNameValue(CHARON_PREFS, "order", oparts, true));
 		m_stuff.add(new KeyNameValue(CHARON_PREFS, "tabs", prefTabCount, false));
+		m_stuff.add(new KeyNameValue(CHARON_PREFS, "tab:label", prefTabLabel, false));
 
 		// save
 		saveEdit();
@@ -1241,6 +1289,20 @@ public class UserPrefsTool
 
 		// No tabs, nothing to do 
 		if ( prefTabString == null && prefDrawerString == null && prefHiddenString == null ) {
+
+			// SAK-23895 , we need to save the tab label preference even though there is no drag-drop actions. 
+			// Lydia: I hate to duplicate updatePrefs() code here. Can we call something like updatePrefs(null, null, null)? 
+			m_stuff = new Vector();
+			m_stuff.add(new KeyNameValue(CHARON_PREFS, "tab:label", prefTabLabel, false));
+			// save
+			saveEdit();
+			// release lock and clear session variables
+			cancelEdit();
+			// To stay on the same page - load the page data
+			processActionEdit();
+			tabUpdated = true; // set for display of text message on JSP
+			m_reloadTop = Boolean.TRUE;
+
 			return m_TabOutcome;
 		}
 
@@ -1287,6 +1349,7 @@ public class UserPrefsTool
 		if ( excludes != null && excludes.length() > 0 ) 
 			m_stuff.add(new KeyNameValue(CHARON_PREFS, "exclude", excludes, true));
 		m_stuff.add(new KeyNameValue(CHARON_PREFS, "tabs",  String.valueOf(tabcount), false));
+		m_stuff.add(new KeyNameValue(CHARON_PREFS, "tab:label", prefTabLabel, false));
 
 		// save
 		saveEdit();
@@ -1309,6 +1372,7 @@ public class UserPrefsTool
 		LOG.debug("processActionCancel()");
 
 		prefTabCount = null; // reset to retrieve original prefs
+		prefTabLabel = null; // reset to retrieve original prefs
 
 		// remove session variables
 		cancelEdit();
@@ -1946,6 +2010,44 @@ public class UserPrefsTool
 		return result;
 	}
 
+	// SAK-23895
+	private String selectedTabLabel = "";
+
+
+	private String getPrefTabLabel(){
+	    if ( prefTabLabel != null )
+	        return prefTabLabel;
+
+	    Preferences prefs = (PreferencesEdit) m_preferencesService.getPreferences(getUserId());
+	    ResourceProperties props = prefs.getProperties(CHARON_PREFS);
+	    prefTabLabel = props.getProperty("tab:label");
+
+	    if ( prefTabLabel == null )
+	        prefTabLabel = String.valueOf(DEFAULT_TAB_LABEL);
+
+	    return prefTabLabel;
+	}
+	/**
+	 * @return Returns the getSelectedTabLabel.
+	 */
+	public String getSelectedTabLabel()
+	{
+	    this.selectedTabLabel= getPrefTabLabel();
+	    return this.selectedTabLabel;
+
+	}
+
+	/**
+	 * @param label
+	 *        The tab label to set.
+	 */
+	public void setSelectedTabLabel(String label)
+	{
+	    this.prefTabLabel = label;
+	    this.selectedTabLabel = label;
+	}
+
+
 	// ////////////////////////////////////// REFRESH //////////////////////////////////////////
 	private String selectedRefreshItem = "";
 
@@ -2156,9 +2258,11 @@ public class UserPrefsTool
 	private Map<String, Integer> stringArrayToMap(String[] array) {
 		Map<String, Integer> retMap = new HashMap<String, Integer>();
 		Integer index = 0;
-		for (String key : array) {
+		if (array != null) {
+		    for (String key : array) {
 			retMap.put(key, index);
 			index++;
+		    }
 		}
 		return retMap;
 	}
@@ -2497,9 +2601,12 @@ public class UserPrefsTool
 				}
 			}
 			
-			String expandTypeString = ServerConfigurationService.getString("prefs.type.autoExpanded");
+			String expandTypeString = ServerConfigurationService.getString("prefs.type.autoExpanded", "portfolio");
 			
 			String[] sortedTypeList = ServerConfigurationService.getStrings("prefs.type.order");
+            if(sortedTypeList == null) {
+                sortedTypeList = new String[] {"portfolio","course","project"};
+            }
 			String[] termOrder = ServerConfigurationService.getStrings("portal.term.order");
 			List<String> myTermOrder = new ArrayList<String>();
 					
@@ -2945,6 +3052,14 @@ public class UserPrefsTool
 			return 0;
 		}
 
+	}
+	
+	/**
+	 * Gets the name of the service.
+	 * @return The name of the service that should be shown to users.
+	 */
+	public String getServiceName() {
+		return ServerConfigurationService.getString("ui.name", "Sakai");
 	}
 	
 }

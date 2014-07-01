@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.3/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/ArtifactFinder.java $
- * $Id: ArtifactFinder.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.0/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/ArtifactFinder.java $
+ * $Id: ArtifactFinder.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,8 +31,8 @@ import org.sakaiproject.metaobj.shared.model.MimeType;
  * Common search
  *
  * $Header: /opt/CVS/osp2.x/homesComponent/src/java/org/theospi/metaobj/repository/ArtifactFinder.java,v 1.1 2005/06/29 18:36:41 chmaurer Exp $
- * $Revision: 59676 $
- * $Date: 2009-04-04 08:18:23 +0900 (Sat, 04 Apr 2009) $
+ * $Revision: 105079 $
+ * $Date: 2012-02-25 08:08:11 +0900 (Sat, 25 Feb 2012) $
  */
 
 public interface ArtifactFinder {

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.3/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/MembershipAction.java $
- * $Id: MembershipAction.java 86098 2010-12-07 19:35:00Z darolmar@upvnet.upv.es $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-10.0/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/MembershipAction.java $
+ * $Id: MembershipAction.java 133304 2014-01-15 18:23:15Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,14 +31,20 @@ import org.sakaiproject.cheftool.JetspeedRunData;
 import org.sakaiproject.cheftool.PagedResourceActionII;
 import org.sakaiproject.cheftool.RunData;
 import org.sakaiproject.cheftool.VelocityPortlet;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.InUseException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.javax.PagingPosition;
+import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.site.util.SiteTextEditUtil;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.userauditservice.api.UserAuditRegistration;
+import org.sakaiproject.userauditservice.api.UserAuditService;
 import org.sakaiproject.util.ResourceLoader;
 
 /**
@@ -63,6 +69,10 @@ public class MembershipAction extends PagedResourceActionII
 	private static String SEARCH_TERM = "search";
 	
 	private static final String STATE_TOP_PAGE_MESSAGE = "msg-top";
+	
+	private static UserAuditRegistration userAuditRegistration = (UserAuditRegistration) ComponentManager.get("org.sakaiproject.userauditservice.api.UserAuditRegistration.membership");
+	private static UserAuditService userAuditService = (UserAuditService) ComponentManager.get(UserAuditService.class);
+	private static UserDirectoryService userDirectoryService = (UserDirectoryService) ComponentManager.get(UserDirectoryService.class);
 
 	/*
 	 * (non-Javadoc)
@@ -89,8 +99,10 @@ public class MembershipAction extends PagedResourceActionII
 		else
 		{
 		List openSites = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.JOINABLE,
-		// null, null, null, org.sakaiproject.service.legacy.site.SiteService.SortType.TITLE_ASC, null);
 				null, search, null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, null);
+			
+            // bjones86 - SAK-24423 - joinable site settings - filter sites
+            JoinableSiteSettings.filterSitesListForMembership( openSites );
 		size = openSites.size();
 		}
 
@@ -144,15 +156,23 @@ public class MembershipAction extends PagedResourceActionII
 
 			if (sortAsc)
 			{
-				rv = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.JOINABLE,
+				List<Site> sites = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.JOINABLE, 
 						// null, null, null, org.sakaiproject.service.legacy.site.SiteService.SortType.TITLE_ASC, null);
 						null, search, null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, page);
+				
+				// bjones86 - SAK-24423 - filter sites taking into account 'exclude from public list' setting and global toggle
+				JoinableSiteSettings.filterSitesListForMembership( sites );
+				rv = sites;
 			}
 			else
 			{
-				rv = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.JOINABLE,
-						// null, null, null, org.sakaiproject.service.legacy.site.SiteService.SortType.TITLE_DESC, null);
+				List<Site> sites = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.JOINABLE, 
+						// null, null, null, org.sakaiproject.service.legacy.site.SiteService.SortType.TITLE_ASC, null);
 						null, search, null, org.sakaiproject.site.api.SiteService.SortType.TITLE_DESC, page);
+				
+				// bjones86 - SAK-24423 - filter sites taking into account 'exclude from public list' setting and global toggle
+				JoinableSiteSettings.filterSitesListForMembership( sites );
+				rv = sites;
 			}
 		}
 
@@ -392,10 +412,26 @@ public class MembershipAction extends PagedResourceActionII
 		{
 			try
 			{
-				// join the site
-				SiteService.join(id);
-				String msg = rb.getString("mb.youhave2") + " " + SiteService.getSite(id).getTitle();
-				addAlert(state, msg);
+				// bjones86 - SAK-24423 - joinable site settings - join the site
+				if( JoinableSiteSettings.doJoinForMembership( id ) )
+				{
+					addAlert( state, rb.getString( "mb.youhave2" ) + " " + SiteService.getSite( id ).getTitle() );
+				}
+				else
+				{
+					addAlert( state, rb.getString( "mb.join.notAllowed" ) );
+				}
+				
+				// add to user auditing
+				List<String[]> userAuditList = new ArrayList<String[]>();
+				String currentUserEid = userDirectoryService.getCurrentUser().getEid();
+				String roleId = SiteService.getSite(id).getJoinerRole();
+				String[] userAuditString = {id,currentUserEid,roleId,userAuditService.USER_AUDIT_ACTION_ADD,userAuditRegistration.getDatabaseSourceKey(),currentUserEid};
+				userAuditList.add(userAuditString);
+				if (!userAuditList.isEmpty())
+				{
+					userAuditRegistration.addToUserAuditing(userAuditList);
+				}
 			}
 			catch (IdUnusedException e)
 			{
@@ -431,13 +467,27 @@ public class MembershipAction extends PagedResourceActionII
 		if (id != null)
 		{
 			String msg = rb.getString("mb.youhave") + " "; 
+			
+			// add to user auditing
+			List<String[]> userAuditList = new ArrayList<String[]>();
+			// get the User object since we need a couple of lookups
+			User tempUser = userDirectoryService.getCurrentUser();
+			String currentUserId = tempUser.getId();
+			String currentUserEid = tempUser.getEid();
+			
 			for(int i=0; i< id.length; i++){
 
 				try
 				{
+					// Get the user's role before unjoining the site
+					String roleId = SiteService.getSite(id[i]).getUserRole(currentUserId).getId();
+					
 					SiteService.unjoin(id[i]);
 					if (i>0) msg=msg+" ,";
 					msg = msg+SiteService.getSite(id[i]).getTitle();
+					
+					String[] userAuditString = {id[i],currentUserEid,roleId,userAuditService.USER_AUDIT_ACTION_REMOVE,userAuditRegistration.getDatabaseSourceKey(),currentUserEid};
+					userAuditList.add(userAuditString);
 				}
 				catch (IdUnusedException ignore)
 				{
@@ -455,6 +505,10 @@ public class MembershipAction extends PagedResourceActionII
 				}
 			}
 			addAlert(state, msg);
+			if (!userAuditList.isEmpty())
+			{
+				userAuditRegistration.addToUserAuditing(userAuditList);
+			}
 		}
 
 		// TODO: hard coding this frame id is fragile, portal dependent, and needs to be fixed -ggolden

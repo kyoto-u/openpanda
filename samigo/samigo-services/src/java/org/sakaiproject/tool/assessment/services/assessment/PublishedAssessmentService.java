@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/services/assessment/PublishedAssessmentService.java $
- * $Id: PublishedAssessmentService.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/services/assessment/PublishedAssessmentService.java $
+ * $Id: PublishedAssessmentService.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,11 +23,12 @@
 package org.sakaiproject.tool.assessment.services.assessment;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
-import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,16 +41,15 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedMetaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAttachmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentBaseIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
+import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
-import org.sakaiproject.tool.assessment.facade.AssessmentFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.PublishedSectionFacade;
@@ -185,6 +185,10 @@ public class PublishedAssessmentService extends AssessmentService{
   }
 
   public PublishedAssessmentFacade getPublishedAssessment(String assessmentId) {
+	//SAM-1995 if an empty or null id is passed throw and exception
+	if (assessmentId == null || "".equals(assessmentId)) {
+		throw new IllegalArgumentException("AssesmentId must be specified");
+	}
     try {
       return PersistenceService.getInstance().
           getPublishedAssessmentFacadeQueries().
@@ -419,17 +423,17 @@ public class PublishedAssessmentService extends AssessmentService{
       getItemType(new Long(publishedItemId));
   }
 
-  public HashMap preparePublishedItemTextHash(PublishedAssessmentIfc publishedAssessment){
-    HashMap map = new HashMap();
-    ArrayList sectionArray = publishedAssessment.getSectionArray();
+  public HashMap<Long, ItemTextIfc> preparePublishedItemTextHash(PublishedAssessmentIfc publishedAssessment){
+    HashMap<Long, ItemTextIfc> map = new HashMap<Long, ItemTextIfc>();
+    List<SectionDataIfc> sectionArray = publishedAssessment.getSectionArray();
     for (int i=0;i<sectionArray.size(); i++){
-      SectionDataIfc section = (SectionDataIfc)sectionArray.get(i);
-      ArrayList itemArray = section.getItemArray();
+      SectionDataIfc section = sectionArray.get(i);
+      List<ItemDataIfc> itemArray = section.getItemArray();
       for (int j=0;j<itemArray.size(); j++){
-        ItemDataIfc item = (ItemDataIfc)itemArray.get(j);
-        ArrayList itemTextArray = item.getItemTextArray();
+        ItemDataIfc item = itemArray.get(j);
+        List<ItemTextIfc> itemTextArray = item.getItemTextArray();
         for (int k=0;k<itemTextArray.size(); k++){
-          ItemTextIfc itemText = (ItemTextIfc)itemTextArray.get(k);
+          ItemTextIfc itemText = itemTextArray.get(k);
           map.put(itemText.getId(), itemText);
         }
       }
@@ -437,39 +441,41 @@ public class PublishedAssessmentService extends AssessmentService{
     return map;
   }
 
-
-  public HashMap preparePublishedItemHash(PublishedAssessmentIfc publishedAssessment){
-    HashMap map = new HashMap();
-    ArrayList sectionArray = publishedAssessment.getSectionArray();
+  public HashMap<Long, ItemDataIfc> preparePublishedItemHash(PublishedAssessmentIfc publishedAssessment){
+    HashMap<Long, ItemDataIfc> map = new HashMap<Long, ItemDataIfc>();
+    List<SectionDataIfc> sectionArray = publishedAssessment.getSectionArray();
     for (int i=0;i<sectionArray.size(); i++){
-      SectionDataIfc section = (SectionDataIfc)sectionArray.get(i);
-      ArrayList itemArray = section.getItemArray();
+      SectionDataIfc section = sectionArray.get(i);
+      List<ItemDataIfc> itemArray = section.getItemArray();
       for (int j=0;j<itemArray.size(); j++){
-        ItemDataIfc item = (ItemDataIfc)itemArray.get(j);
+        ItemDataIfc item = itemArray.get(j);
         map.put(item.getItemId(), item);
       }
     }
     return map;
   }
 
-  public HashMap preparePublishedAnswerHash(PublishedAssessmentIfc publishedAssessment){
-    HashMap map = new HashMap();
-    ArrayList sectionArray = publishedAssessment.getSectionArray();
+  public HashMap<Long, AnswerIfc> preparePublishedAnswerHash(PublishedAssessmentIfc publishedAssessment){
+    HashMap<Long, AnswerIfc> map = new HashMap<Long, AnswerIfc>();
+    ArrayList<SectionDataIfc> sectionArray = publishedAssessment.getSectionArray();
     for (int i=0;i<sectionArray.size(); i++){
-      SectionDataIfc section = (SectionDataIfc)sectionArray.get(i);
-      ArrayList itemArray = section.getItemArray();
+     SectionDataIfc section = sectionArray.get(i);
+      ArrayList<ItemDataIfc> itemArray = section.getItemArray();
       for (int j=0;j<itemArray.size(); j++){
-        ItemDataIfc item = (ItemDataIfc)itemArray.get(j);
-        ArrayList itemTextArray = item.getItemTextArray();
+        ItemDataIfc item = itemArray.get(j);
+        List<ItemTextIfc> itemTextArray = item.getItemTextArray();
         for (int k=0;k<itemTextArray.size(); k++){
-          ItemTextIfc itemText = (ItemTextIfc)itemTextArray.get(k);
-          ArrayList answerArray = itemText.getAnswerArraySorted();
+          ItemTextIfc itemText = itemTextArray.get(k);
+          List answerArray = itemText.getAnswerArraySorted();
           for (int m=0;m<answerArray.size(); m++){
             AnswerIfc answer = (AnswerIfc)answerArray.get(m);
             // SAK-14820: Sync with the scores from item. 
             if (answer != null) {
-            	answer.setScore(item.getScore());
-            	answer.setDiscount(item.getDiscount());
+            	// added following condition as this doesn't make sense for EMI questions
+            	if (!item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS)) {
+                	answer.setScore(item.getScore());
+                	answer.setDiscount(item.getDiscount());
+            	}
             	map.put(answer.getId(), answer);
             }
             
@@ -480,14 +486,14 @@ public class PublishedAssessmentService extends AssessmentService{
     return map;
   }
 
-  public HashMap prepareFIBItemHash(PublishedAssessmentIfc publishedAssessment){
-    HashMap map = new HashMap();
-    ArrayList sectionArray = publishedAssessment.getSectionArray();
+  public HashMap<Long, ItemDataIfc> prepareFIBItemHash(PublishedAssessmentIfc publishedAssessment){
+    HashMap<Long, ItemDataIfc> map = new HashMap<Long, ItemDataIfc>();
+    ArrayList<SectionDataIfc> sectionArray = publishedAssessment.getSectionArray();
     for (int i=0;i<sectionArray.size(); i++){
-      SectionDataIfc section = (SectionDataIfc)sectionArray.get(i);
-      ArrayList itemArray = section.getItemArray();
+      SectionDataIfc section = sectionArray.get(i);
+      ArrayList<ItemDataIfc> itemArray = section.getItemArray();
       for (int j=0;j<itemArray.size(); j++){
-        ItemDataIfc item = (ItemDataIfc)itemArray.get(j);
+        ItemDataIfc item = itemArray.get(j);
         if (item.getTypeId().equals( Long.valueOf(8))) // FIB question
           map.put(item.getItemId(), item);
       }
@@ -495,36 +501,73 @@ public class PublishedAssessmentService extends AssessmentService{
     return map;
   }
 
-  public HashMap prepareFINItemHash(PublishedAssessmentIfc publishedAssessment){
-	    HashMap map = new HashMap();
-	    ArrayList sectionArray = publishedAssessment.getSectionArray();
+  public HashMap<Long, ItemDataIfc> prepareFINItemHash(PublishedAssessmentIfc publishedAssessment){
+	    HashMap<Long, ItemDataIfc> map = new HashMap<Long, ItemDataIfc>();
+	    ArrayList<SectionDataIfc> sectionArray = publishedAssessment.getSectionArray();
 	    for (int i=0;i<sectionArray.size(); i++){
-	      SectionDataIfc section = (SectionDataIfc)sectionArray.get(i);
-	      ArrayList itemArray = section.getItemArray();
+	      SectionDataIfc section = sectionArray.get(i);
+	      ArrayList<ItemDataIfc> itemArray = section.getItemArray();
 	      for (int j=0;j<itemArray.size(); j++){
-	        ItemDataIfc item = (ItemDataIfc)itemArray.get(j);
+	        ItemDataIfc item = itemArray.get(j);
 	        if (item.getTypeId().equals( Long.valueOf(11))) // FIN question
 	          map.put(item.getItemId(), item);
 	      }
 	    }
 	    return map;
   }
+
+  /**
+   * CALCULATED_QUESTION
+   * @param publishedAssessment
+   * @return the map of item id -> item for calc questions in this map
+   */
+  public Map<Long, ItemDataIfc> prepareCalcQuestionItemHash(PublishedAssessmentIfc publishedAssessment){
+      // CALCULATED_QUESTION
+      Map<Long, ItemDataIfc> map = new HashMap<Long, ItemDataIfc>();
+      List<SectionDataIfc> sectionArray = publishedAssessment.getSectionArray();
+      for (int i=0;i<sectionArray.size(); i++) {
+          SectionDataIfc section = sectionArray.get(i);
+          List<ItemDataIfc> itemArray = section.getItemArray();
+          for (int j=0;j<itemArray.size(); j++) {
+              ItemDataIfc item = itemArray.get(j);
+              if (item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION)) { // CALCULATED_QUESTION
+                  map.put(item.getItemId(), item);
+              }
+          }
+      }
+      return map;
+  }
   
-  public HashMap prepareMCMRItemHash(PublishedAssessmentIfc publishedAssessment){
-    HashMap map = new HashMap();
-    ArrayList sectionArray = publishedAssessment.getSectionArray();
+  public HashMap<Long, ItemDataIfc> prepareMCMRItemHash(PublishedAssessmentIfc publishedAssessment){
+    HashMap<Long, ItemDataIfc> map = new HashMap<Long, ItemDataIfc>();
+    ArrayList<SectionDataIfc> sectionArray = publishedAssessment.getSectionArray();
     for (int i=0;i<sectionArray.size(); i++){
-      SectionDataIfc section = (SectionDataIfc)sectionArray.get(i);
-      ArrayList itemArray = section.getItemArray();
+      SectionDataIfc section = sectionArray.get(i);
+      ArrayList<ItemDataIfc> itemArray = section.getItemArray();
       for (int j=0;j<itemArray.size(); j++){
-        ItemDataIfc item = (ItemDataIfc)itemArray.get(j);
+        ItemDataIfc item = itemArray.get(j);
         if (item.getTypeId().equals( Long.valueOf(2))) // MCMR question
           map.put(item.getItemId(), item);
       }
     }
     return map;
   }
-
+  
+  public HashMap prepareEMIItemHash(PublishedAssessmentIfc publishedAssessment){
+	    HashMap<Long, ItemDataIfc> map = new HashMap<Long, ItemDataIfc>();
+	    List<? extends SectionDataIfc> sectionArray = publishedAssessment.getSectionArray();
+	    for (int i=0;i<sectionArray.size(); i++){
+	      SectionDataIfc section = sectionArray.get(i);
+	      List<ItemDataIfc> itemArray = section.getItemArray();
+	      for (int j=0;j<itemArray.size(); j++){
+	        ItemDataIfc item = itemArray.get(j);
+	        if (item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS)) // EMI question
+	          map.put(item.getItemId(), item);
+	      }
+	    }
+	    return map;
+  }
+  
   public HashSet getSectionSetForAssessment(Long publishedAssessmentId){
 	    return PersistenceService.getInstance().getPublishedAssessmentFacadeQueries().
 	    getSectionSetForAssessment(publishedAssessmentId);
@@ -600,11 +643,6 @@ public class PublishedAssessmentService extends AssessmentService{
 	   PersistenceService.getInstance().getPublishedAssessmentFacadeQueries().saveOrUpdatePublishedAccessControl(publishedAccessControl);
    }
    
-   /**
-    * added by gopalrc - Jan 2008
-    * @param publishedAssessmentId
-    * @return
-    */
    public boolean isReleasedToGroups(String publishedAssessmentId) {
 	   if (publishedAssessmentId == null) {
 		   return false;

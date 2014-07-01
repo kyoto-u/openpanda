@@ -156,7 +156,7 @@ public class MatrixTaggingProviderImpl implements MatrixTaggingProvider {
 	public TaggingHelperInfo getActivityHelperInfo(String activityRef) {
 		TaggingHelperInfo helperInfo = null;
 		String context = taggingManager.getContext(activityRef);
-		if (allowTagActivities(context)
+		if (context != null && allowTagActivities(context)
 				&& (taggingManager.getActivity(activityRef, this) != null)) {
 			Map<String, String> parameterMap = new HashMap<String, String>();
 			parameterMap.put(ACTIVITY_REF, activityRef);

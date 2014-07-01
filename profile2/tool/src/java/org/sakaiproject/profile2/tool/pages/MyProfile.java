@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages;
 
 
@@ -46,6 +45,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.profile2.exception.ProfileNotDefinedException;
 import org.sakaiproject.profile2.exception.ProfilePreferencesNotDefinedException;
+import org.sakaiproject.profile2.model.MyProfilePanelState;
 import org.sakaiproject.profile2.model.ProfilePreferences;
 import org.sakaiproject.profile2.model.SocialNetworkingInfo;
 import org.sakaiproject.profile2.model.UserProfile;
@@ -479,8 +479,13 @@ public class MyProfile extends BasePage {
 				public Panel getPanel(String panelId) {
 	
 					setTabCookie(ProfileConstants.TAB_INDEX_PROFILE);
-					return new MyProfilePanel(panelId, userProfile,
-							sakaiProxy.isBusinessProfileEnabled());
+					MyProfilePanelState panelState = new MyProfilePanelState();
+					panelState.showBusinessDisplay = sakaiProxy.isBusinessProfileEnabled();
+					panelState.showSocialNetworkingDisplay = sakaiProxy.isSocialProfileEnabled();
+					panelState.showInterestsDisplay = sakaiProxy.isInterestsProfileEnabled();
+					panelState.showStaffDisplay = sakaiProxy.isStaffProfileEnabled();
+					panelState.showStudentDisplay = sakaiProxy.isStudentProfileEnabled();
+					return new MyProfilePanel(panelId, userProfile,panelState);
 				}
 	
 			});

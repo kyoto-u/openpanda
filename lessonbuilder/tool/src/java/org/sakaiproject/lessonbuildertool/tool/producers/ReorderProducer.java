@@ -46,7 +46,9 @@ import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIOutput;
-import uk.org.ponder.rsf.components.decorators.UIFreeAttributeDecorator;                                                               
+import uk.org.ponder.rsf.components.UIComponent;
+import uk.org.ponder.rsf.components.decorators.UIFreeAttributeDecorator;
+
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -115,16 +117,15 @@ public class ReorderProducer implements ViewComponentProducer, NavigationCaseRep
 			if (secondPageId != null)
 			    secondPage = simplePageBean.getPage(secondPageId);
 
-			// are they hacking us? other page should be in the same site, in which case
-			// we don't need to check rights further. also same owner (typicall null; owner is for student pages)
+			// are they hacking us? other page should be in the same site, or tests fail
+			// The tests here will handle student pages, but the UI doesn't actually present them.
 
 			if (secondPage != null && !secondPage.getSiteId().equals(page.getSiteId()))
 			    secondPage = null;
-			if (secondPage != null &&
-			    ((secondPage.getOwner() == null && page.getOwner() != null) ||
-			     (secondPage.getOwner() != null && page.getOwner() == null) ||
-			     (secondPage.getOwner() != null && !secondPage.getOwner().equals(page.getOwner()))))
-			    secondPage = null;
+			if (secondPage != null) {
+			    if (!simplePageToolDao.canEditPage(secondPageId))
+				secondPage = null;
+			}
 			
 			// Some items are tacked onto the end automatically by setting the sequence to
 			// something less than or equal to 0.  This takes them out of the Reorder tool.
@@ -156,8 +157,8 @@ public class ReorderProducer implements ViewComponentProducer, NavigationCaseRep
 				if (i == null) {
 				    // marker between used and not used
 				    UIContainer row = UIBranchContainer.make(tofill, "item:");
-				    UIOutput.make(row, "seq", "---");
-				    UIOutput.make(row, "description", messageLocator.getMessage(secondPageId == null ? "simplepage.reorder-belowdelete" : "simplepage.reorder-aboveuse"));
+				    UIOutput.make(row, "seq", "---").decorate(new UIFreeAttributeDecorator("class", "marker"));
+				    UIOutput.make(row, "text-snippet", messageLocator.getMessage(secondPageId == null ? "simplepage.reorder-belowdelete" : "simplepage.reorder-aboveuse"));
 				    second = true;
 				    continue;
 				}
@@ -167,22 +168,30 @@ public class ReorderProducer implements ViewComponentProducer, NavigationCaseRep
 								  // so that links work properly.
 				}
 
-
 				UIContainer row = UIBranchContainer.make(tofill, "item:");
 				// * prefix indicates items are from the other page, and have to be copied.
 				UIOutput.make(row, "seq", (second ? "*" : "") +
 					                   String.valueOf(i.getSequence()));
-				UIOutput.make(row, "description", i.getDescription());
+
 				if (i.getType() == 5) {
-					String text = FormattedText.convertFormattedTextToPlaintext(i.getHtml());
-					if (text.length() > 100) {
-					    UIOutput.make(row, "text-snippet", text.substring(0,100));
-					} else {
-					    UIOutput.make(row, "text-snippet", text);
-					}
+				    String text = FormattedText.convertFormattedTextToPlaintext(i.getHtml());
+				    if (text.length() > 100)
+					text = text.substring(0,100);
+				    UIOutput.make(row, "text-snippet", text);
+				} else if (i.getType() == SimplePageItem.QUESTION) {
+				    String text = i.getAttribute("questionText");
+				    if (text == null)
+					text = messageLocator.getMessage("simplepage.questionName");
+				    if (text.length() > 100)
+					text = text.substring(0,100);
+				    UIOutput.make(row, "text-snippet", text);
 				} else {
+				    UIOutput.make(row, "description", i.getDescription());
 				    showPageProducer.makeLink(row, "link", i, simplePageBean, simplePageToolDao, messageLocator, true, currentPage, false, Status.NOT_REQUIRED);
 				}
+				UIComponent del = UIOutput.make(row, "dellink").decorate(new UIFreeAttributeDecorator("alt", messageLocator.getMessage("simplepage.delete")));
+				if (second)
+				    del.decorate(new UIFreeAttributeDecorator("style", "display:block"));
 			}
 
 
@@ -204,6 +213,7 @@ public class ReorderProducer implements ViewComponentProducer, NavigationCaseRep
 			UICommand.make(form, "cancel", messageLocator.getMessage("simplepage.cancel_message"), "#{simplePageBean.cancel}");
 		}
 	}
+
 
 	public void setSimplePageBean(SimplePageBean simplePageBean) {
 		this.simplePageBean = simplePageBean;

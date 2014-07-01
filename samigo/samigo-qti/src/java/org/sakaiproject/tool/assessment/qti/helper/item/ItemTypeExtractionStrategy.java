@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/item/ItemTypeExtractionStrategy.java $
+ * $Id: ItemTypeExtractionStrategy.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -160,7 +160,9 @@ public class ItemTypeExtractionStrategy
     // start with item title
     if (titleItemType != null)
     {
-      if (isExactType(titleItemType)) itemType = titleItemType;
+      if (isExactType(titleItemType)){
+    	  return titleItemType;
+      }
       titleItemType = guessType(titleItemType);
       if (titleItemType != null) itemType = titleItemType;
     }
@@ -168,7 +170,9 @@ public class ItemTypeExtractionStrategy
     // next try to figure out from qmd_itemtype metadata
     if (qmdItemType != null)
     {
-      if (isExactType(qmdItemType)) itemType = qmdItemType;
+      if (isExactType(qmdItemType)){
+    	  return qmdItemType;
+      }
       qmdItemType = guessType(qmdItemType);
       if (qmdItemType != null) itemType = qmdItemType;
     }
@@ -243,6 +247,11 @@ public class ItemTypeExtractionStrategy
     {
       itemType = AuthoringConstantStrings.FILE;
     }
+    else if (toGuess.indexOf("extended") != -1 &&
+    		toGuess.indexOf("matching") != -1)
+    {
+    	itemType = AuthoringConstantStrings.EMI;
+    }
     else if (toGuess.indexOf("match") != -1)
     {
       itemType = AuthoringConstantStrings.MATCHING;
@@ -256,12 +265,21 @@ public class ItemTypeExtractionStrategy
     }
     // place holder for numerical responses questions
     else if (toGuess.indexOf("numerical") != -1 ||
-            toGuess.indexOf("calculate") != -1 ||
+            (toGuess.indexOf("calculate") != -1 && toGuess.indexOf("question") == -1) ||
             toGuess.indexOf("math") != -1
             )
    {
      itemType = AuthoringConstantStrings.FIN;
    }
+    // CALCULATED_QUESTION
+    else if (toGuess.indexOf("calcq") != -1 ||
+            toGuess.indexOf("c.q.") != -1 ||
+            toGuess.indexOf("cq") != -1 ||
+            (toGuess.indexOf("calculate") != -1 && toGuess.indexOf("question") != -1)
+            )
+    {
+        itemType = AuthoringConstantStrings.CALCQ;
+    }
     else if (toGuess.indexOf("essay") != -1 ||
              toGuess.indexOf("short") != -1)
     {

@@ -1,7 +1,7 @@
 <!--
 #*
- $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-tool/tool/src/webapp/vm/citation/list.vm $
- $Id: list.vm 95805 2011-07-28 03:24:07Z ottenhoff@longsight.com $
+ $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-tool/tool/src/webapp/vm/citation/list.vm $
+ $Id: list.vm 119320 2013-01-30 15:15:14Z dgcliff@iu.edu $
 *#
  **********************************************************************************
  *
@@ -102,6 +102,14 @@
 				/>
 				#end				
 			</div>
+			
+			#if( !$resourcesAddAction )
+        		<label for="description">
+            		<strong>$tlang.getString("label.descr")</strong>
+        		</label>
+        		<br />
+				<textarea name="description" cols="80" rows="5" wrap="virtual">$!{description}</textarea>
+			#end				
 
 			#parse( "vm/citation/_listCitations.vm" )
 			
@@ -184,12 +192,12 @@ function doCitationAction( action ) {
   // do action
   if( action == "exportSelected" ) {
     if( numCitationsSelected() > 0 ) {
-      exportSelectedCitations( "$exportUrlSel", "$collectionId" );
+      exportSelectedCitations( "$exportUrlSel", "$citationCollectionId", "$resourceId" );
     } else {
       alert( "$tlang.getString( "select.warn.list" )" );
     }
   } else if( action == "exportList" ) {
-    exportAllCitations( "$exportUrlAll", "$collectionId" );
+    exportAllCitations( "$exportUrlAll", "$citationCollectionId", "$resourceId" );
   } else if( action == "removeSelected" ) {
     if( numCitationsSelected() > 0 ) {
       removeSelectedCitations( "#contentLink("Main")&sakai_action=doRemoveSelectedCitations&collectionId=$collectionId", "$FORM_NAME" );
@@ -198,6 +206,8 @@ function doCitationAction( action ) {
     }
   } else if( action == "removeList" ) {
     removeAllCitations( "$FORM_NAME" );
+  } else if( action == "reorderList" ) {
+    window.location.assign('#contentLink("Main")&sakai_action=doShowReorderCitations');
   }
   
   // reset select boxes

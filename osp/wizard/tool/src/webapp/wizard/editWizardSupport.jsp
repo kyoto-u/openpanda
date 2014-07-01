@@ -214,7 +214,7 @@
 		</fieldset>
 		 
 		 <fieldset class="fieldsetVis">
-		 	<legend>User forms</legend>
+		 	<legend><h:outputText value="#{msgs.user_forms_title}" /></legend>
 			<h:panelGrid columns="1">
 				<h:column>
 					<sakai:instruction_message value="#{msgs.com_ref_instruction}" />
@@ -232,7 +232,7 @@
 			</h:panelGrid>
 		</fieldset>	
 		<fieldset class="fieldsetVis">
-		 	<legend>Feedback and Evaluation</legend>
+		 	<legend><h:outputText value="#{msgs.feedb_eval_title}" /></legend>
 			<h:panelGrid columns="1">
 				<h:column>
 						

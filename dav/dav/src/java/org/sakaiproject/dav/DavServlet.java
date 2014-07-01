@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-2.9.3/dav/src/java/org/sakaiproject/dav/DavServlet.java $
- * $Id: DavServlet.java 128412 2013-08-12 19:25:54Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.0/dav/src/java/org/sakaiproject/dav/DavServlet.java $
+ * $Id: DavServlet.java 308543 2014-04-23 20:32:49Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -122,18 +122,17 @@ import org.apache.catalina.util.RequestUtil;
 import org.apache.catalina.util.XMLWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.alias.cover.AliasService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
-import org.sakaiproject.content.api.ContentCollection;
-import org.sakaiproject.content.api.ContentCollectionEdit;
-import org.sakaiproject.content.api.ContentHostingService;
-import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.content.api.ContentResourceEdit;
+import org.sakaiproject.content.api.*;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityPropertyNotDefinedException;
 import org.sakaiproject.entity.api.EntityPropertyTypeException;
+import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
+import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.event.api.UsageSession;
 import org.sakaiproject.event.cover.UsageSessionService;
@@ -148,6 +147,7 @@ import org.sakaiproject.exception.OverQuotaException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
+import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeBreakdown;
 import org.sakaiproject.time.cover.TimeService;
@@ -162,7 +162,6 @@ import org.sakaiproject.util.IdPwEvidence;
 import org.sakaiproject.util.RequestFilter;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
-import org.sakaiproject.was.login.SakaiWASLoginModule;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -269,6 +268,14 @@ public class DavServlet extends HttpServlet
 	 * Size of buffer for streaming downloads 
 	 */
 	protected static final int STREAM_BUFFER_SIZE = 102400;
+	
+	/**
+	 *  Max Size for xml property streams 4K 
+	 */
+	protected static final int MAX_XML_STREAM_LENGTH = 4096;
+
+	/** Configuration: allow use of alias for site id in references. */
+	protected boolean m_siteAlias = true;        
 
         // can be called on id with or withing adjustid, since
         // the prefixes we check for are not adjusted
@@ -325,9 +332,8 @@ public class DavServlet extends HttpServlet
 			}
 		}
 
-		// TODO: alias for site
-
 		// recognize /user/EID and makeit /user/ID
+		// change /group/alias_name and make it /group/site_id
 		String parts[] = StringUtil.split(id, Entity.SEPARATOR);
 		if (parts.length >= 3)
 		{
@@ -359,6 +365,56 @@ public class DavServlet extends HttpServlet
 						// if context was not a valid EID, leave it alone
 					}
 				}
+				
+			} 
+			else if (parts[1].equals("group"))
+			{
+				String context = parts[2];
+
+ 				// recognize alias for site id - but if a site id exists that matches the requested site id, that's what we will use
+ 				if (m_siteAlias && (context != null) && (context.length() > 0))
+ 				{
+ 					if (!SiteService.siteExists(context))
+ 					{
+ 						try
+ 						{
+ 							String target = AliasService.getTarget(context);
+							Reference targetRef = EntityManager.newReference(target);
+ 							boolean changed = false;
+
+ 							// for a site reference
+ 							if (SiteService.APPLICATION_ID.equals(targetRef.getType()))
+ 							{
+ 								// use the ref's id, i.e. the site id
+ 								context = targetRef.getId();
+ 								changed = true;
+ 							}
+
+ 							// for mail archive reference
+ 							// TODO: taken from MailArchiveService.APPLICATION_ID to (fake) reduce a dependency -ggolden
+ 							else if ("sakai:mailarchive".equals(targetRef.getType()))
+ 							{
+ 								// use the ref's context as the site id
+ 								context = targetRef.getContext();
+ 								changed = true;
+ 							}
+
+ 							// if changed, update the id
+ 							if (changed)
+ 							{
+ 								parts[2] = context;
+ 								String newId = StringUtil.unsplit(parts, Entity.SEPARATOR);
+			
+								// add the trailing separator if needed
+ 								if (id.endsWith(Entity.SEPARATOR)) newId += Entity.SEPARATOR;
+ 								id = newId;
+ 							}
+ 						}
+ 						catch (IdUnusedException noAlias)
+ 						{
+ 						}
+ 					}
+ 				}         
 			}
 		}
 		// recognize /group-user/SITE_ID/USER_EID and make it /group-user/SITE_ID/USER_ID 
@@ -966,43 +1022,44 @@ public class DavServlet extends HttpServlet
 		//DavServlet is none the wiser. 
 		//The Login Module code can be found at:
 		//https://source.sakaiproject.org/contrib/websphere/was-login-module/
+		/* removed 2013-09-10 -AZ
 		if ("websphere".equals(ServerConfigurationService.getString("servlet.container")))
-		    {
-			//Fetch the credentials collection from the Subject.
-			//A wrapper is used here because we need access to 
-			//com.ibm.ws.security.auth.WSLoginHelperImpl
-			Iterator credItr = null;
-			try {
-			    credItr = SakaiWASLoginModule.getSubject().getPrivateCredentials().iterator();
-			} catch (Exception e) {
-			    M_log.error("SAKAIDAV: Unabled to obtain WAS credentials.", e);
-			}
-			
-			String pw = "";
-			while (credItr != null && credItr.hasNext())
-			    {
-				//look for the Key-Value pair
-				Object cred = credItr.next();
-				if( cred instanceof SakaiWASLoginModule.SakaiWASLoginKeyValue ) 
-				    {
-					SakaiWASLoginModule.SakaiWASLoginKeyValue entry = 
-					    (SakaiWASLoginModule.SakaiWASLoginKeyValue)cred;
-					
-					//extract the password from the Key-Value pair
-					if( "sakai.dav.pw".equals(entry.getKey()) )
-					    {
-						pw = (String)entry.getValue();
-						String eid = prin.getName();
-						
-						//remake the Principal with the user eid 
-						//and the recently fetched password
-						prin = new DavPrincipal(eid,pw);
-						break;
-					    }
-				    }
-			    }
+		{
+		    //Fetch the credentials collection from the Subject.
+		    //A wrapper is used here because we need access to 
+		    //com.ibm.ws.security.auth.WSLoginHelperImpl
+		    Iterator credItr = null;
+		    try {
+		        credItr = SakaiWASLoginModule.getSubject().getPrivateCredentials().iterator();
+		    } catch (Exception e) {
+		        M_log.error("SAKAIDAV: Unabled to obtain WAS credentials.", e);
 		    }
- 
+
+		    String pw = "";
+		    while (credItr != null && credItr.hasNext())
+		    {
+		        //look for the Key-Value pair
+		        Object cred = credItr.next();
+		        if( cred instanceof SakaiWASLoginModule.SakaiWASLoginKeyValue ) 
+		        {
+		            SakaiWASLoginModule.SakaiWASLoginKeyValue entry = 
+		                    (SakaiWASLoginModule.SakaiWASLoginKeyValue)cred;
+
+		            //extract the password from the Key-Value pair
+		            if( "sakai.dav.pw".equals(entry.getKey()) )
+		            {
+		                pw = (String)entry.getValue();
+		                String eid = prin.getName();
+
+		                //remake the Principal with the user eid 
+		                //and the recently fetched password
+		                prin = new DavPrincipal(eid,pw);
+		                break;
+		            }
+		        }
+		    }
+		}
+		*/
 
 		if ((prin != null) && (prin instanceof DavPrincipal))
 		{
@@ -1042,6 +1099,7 @@ public class DavServlet extends HttpServlet
 						&& !UsageSessionService.login(a, req, UsageSessionService.EVENT_LOGIN_DAV))
 				{
 					// login failed
+					res.addHeader("WWW-Authenticate","Basic realm=\"DAV\"");
 					res.sendError(401);
 					return;
 				}
@@ -1049,6 +1107,7 @@ public class DavServlet extends HttpServlet
 			catch (AuthenticationException ex)
 			{
 				// not authenticated
+				res.addHeader("WWW-Authenticate","Basic realm=\"DAV\"");
 				res.sendError(401);
 				return;
 			}
@@ -1056,6 +1115,7 @@ public class DavServlet extends HttpServlet
 		else
 		{
 			// user name missing, so can't authenticate
+			res.addHeader("WWW-Authenticate","Basic realm=\"DAV\"");
 			res.sendError(401);
 			return;
 		}
@@ -1406,7 +1466,7 @@ public class DavServlet extends HttpServlet
 		}
 
 		@SuppressWarnings("unchecked")
-		public Iterator<Entity> list(String id)
+		public Iterator<ContentEntity> list(String id)
 		{
 			try
 			{
@@ -1417,8 +1477,8 @@ public class DavServlet extends HttpServlet
 				return null;
 			}
 			if (M_log.isDebugEnabled()) M_log.debug("DirContextSAKAI.list getting collection members and iterator");
-			List<Entity> members = collection.getMemberResources();
-			Iterator<Entity> it = members.iterator();
+			List<ContentEntity> members = collection.getMemberResources();
+			Iterator<ContentEntity> it = members.iterator();
 			return it;
 		}
 	}
@@ -1582,6 +1642,7 @@ public class DavServlet extends HttpServlet
 		    if (header.toUpperCase().contains(agent.toUpperCase())) {
 		        if (M_log.isInfoEnabled()) M_log.info("Redirecting DAV access because this is a browser." + header);
 		        resp.sendRedirect("/access/content" + adjustId(path));
+		        return;
 		    }
 		}
 
@@ -2015,8 +2076,13 @@ public class DavServlet extends HttpServlet
 		// It is strongly discouraged by the spec.
 
 		int contentLength = req.getContentLength();
-
-		if (contentLength > 0)
+		
+		if (contentLength > MAX_XML_STREAM_LENGTH)
+		{
+			resp.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE);
+			return;				
+		}
+		else if (contentLength > 0)
 		{
 
 			byte[] byteContent = new byte[contentLength];
@@ -2218,10 +2284,10 @@ public class DavServlet extends HttpServlet
 				if ((resources.isCollection) && (depth > 0))
 				{
 
-					Iterator<Entity> it = resources.list(currentPath);
+					Iterator<ContentEntity> it = resources.list(currentPath);
 					while (it.hasNext())
 					{
-						Entity mbr = (Entity) it.next();
+						Entity mbr = it.next();
 						String resourceName = getResourceNameSAKAI(mbr);
 
 						String newPath = currentPath;
@@ -2311,7 +2377,12 @@ public class DavServlet extends HttpServlet
 	    Hashtable<String,String> spaces = new Hashtable<String, String>();
 
 	    // read the xml document
-	    if (contentLength > 0) {
+	    if (contentLength > MAX_XML_STREAM_LENGTH)
+		{
+			resp.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE );
+			return;				
+		}
+		else if (contentLength > 0) {
 
 		byte[] byteContent = new byte[contentLength];
 		InputStream inputStream = req.getInputStream();
@@ -4219,6 +4290,7 @@ public class DavServlet extends HttpServlet
 		}
 		catch (PermissionException e)
 		{
+			resp.sendError(SakaidavStatus.SC_FORBIDDEN);
 			return false;
 		}
 		catch (InUseException e)

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages;
 
 import java.io.File;
@@ -113,6 +112,11 @@ public class MyPictures extends BasePage {
         addPictureForm.add(fileFeedback);
 		addPictureForm.setOutputMarkupId(true);
 		add(addPictureForm);
+		
+		Label invalidFileTypeMessageLabel = new Label("invalidFileTypeMessage",new ResourceModel("pictures.filetypewarning"));
+		invalidFileTypeMessageLabel.setMarkupId("invalidFileTypeMessage");
+		invalidFileTypeMessageLabel.setOutputMarkupId(true);
+		addPictureForm.add(invalidFileTypeMessageLabel);
 		
 		WebMarkupContainer addPictureContainer = new WebMarkupContainer(
 				"addPictureContainer");

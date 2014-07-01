@@ -49,7 +49,7 @@ should be included in file importing DeliveryMessages
       <h:graphicImage alt="#{deliveryMessages.alt_correct}" id="ximage"
         rendered="#{delivery.feedback eq 'true' &&
                     delivery.feedbackComponent.showCorrectResponse &&
-                    answer.answer.score gt 0 && answer.isCorrect != null && !answer.isCorrect && answer.hasInput && !delivery.noFeedback=='true'}" url="/images/crossmark.gif">
+                    answer.isCorrect != null && !answer.isCorrect && answer.hasInput && !delivery.noFeedback=='true'}" url="/images/crossmark.gif">
       </h:graphicImage>
 	  <h:inputText size="10" rendered="#{answer.hasInput 
 		&& delivery.actionString !='gradeAssessment' 
@@ -111,7 +111,7 @@ should be included in file importing DeliveryMessages
         <h:column>
           <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
           <h:outputLink value="#{attach.location}" target="new_window">
-            <h:outputText escape="false" value="#{attach.filename}" />
+            <h:outputText value="#{attach.filename}" />
           </h:outputLink>
         </h:column>
         <h:column>

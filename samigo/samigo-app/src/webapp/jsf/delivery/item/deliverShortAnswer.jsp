@@ -1,9 +1,9 @@
-<%-- $Id: deliverShortAnswer.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
+<%-- $Id: deliverShortAnswer.jsp 308239 2014-04-16 05:17:37Z ktsao@stanford.edu $
 include file for delivering short answer essay questions
 should be included in file importing DeliveryMessages
 --%>
 <!--
-* $Id: deliverShortAnswer.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
+* $Id: deliverShortAnswer.jsp 308239 2014-04-16 05:17:37Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -51,7 +51,7 @@ should be included in file importing DeliveryMessages
 <%-- If studentRichText is true, show the rich text answer option --%>
 <h:panelGrid rendered="#{delivery.actionString!='reviewAssessment'
             && delivery.actionString!='gradeAssessment' && delivery.studentRichText}">
-	<samigo:wysiwyg rows="240" columns="629" value="#{question.responseText}" hasToggle="yes">
+	<samigo:wysiwyg rows="240" value="#{question.responseText}" hasToggle="yes">
 	</samigo:wysiwyg>
 </h:panelGrid>
 
@@ -60,7 +60,7 @@ should be included in file importing DeliveryMessages
 <h:inputTextarea rows="20" cols="80" value="#{question.responseText}" 
    rendered="#{delivery.actionString!='reviewAssessment'
             && delivery.actionString!='gradeAssessment' && !delivery.studentRichText}">
-<f:validateLength maximum="60000"/>
+<f:validateLength maximum="32000"/>
 </h:inputTextarea>
 <h:outputText value="#{question.responseTextForDisplay}" 
    rendered="#{delivery.actionString=='reviewAssessment'
@@ -111,7 +111,7 @@ should be included in file importing DeliveryMessages
         <h:column>
           <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
           <h:outputLink value="#{attach.location}" target="new_window">
-            <h:outputText escape="false" value="#{attach.filename}" />
+            <h:outputText value="#{attach.filename}" />
           </h:outputLink>
         </h:column>
         <h:column>

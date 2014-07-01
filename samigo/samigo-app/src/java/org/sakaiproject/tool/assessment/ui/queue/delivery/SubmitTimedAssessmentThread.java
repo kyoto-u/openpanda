@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/queue/delivery/SubmitTimedAssessmentThread.java $
+ * $Id: SubmitTimedAssessmentThread.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,51 +21,43 @@
 
 package org.sakaiproject.tool.assessment.ui.queue.delivery;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.TimerTask;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.event.cover.NotificationService;
 import org.sakaiproject.tool.api.Session;
+import org.sakaiproject.tool.assessment.data.dao.assessment.EventLogData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionData;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
-import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
+import org.sakaiproject.tool.assessment.facade.EventLogFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
-import org.sakaiproject.tool.assessment.ui.queue.delivery.TimedAssessmentQueue;
-import org.sakaiproject.tool.assessment.ui.bean.delivery.DeliveryBean;
-import org.sakaiproject.tool.assessment.ui.listener.delivery.SubmitToGradingActionListener;
-import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
-import org.sakaiproject.tool.assessment.ui.model.delivery.TimedAssessmentGradingModel;
 import org.sakaiproject.tool.assessment.services.GradingService;
-import org.sakaiproject.tool.assessment.services.ItemService;
+import org.sakaiproject.tool.assessment.services.assessment.EventLogService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
+import org.sakaiproject.tool.assessment.ui.model.delivery.TimedAssessmentGradingModel;
 import org.sakaiproject.tool.cover.SessionManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.TimerTask;
-
+import java.util.ResourceBundle;
 /**
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
- * @version $Id: SubmitTimedAssessmentThread.java 1294 2005-08-19 17:22:35Z esmiley@stanford.edu $
+ * @version $Id: SubmitTimedAssessmentThread.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  */
 
 public class SubmitTimedAssessmentThread extends TimerTask
 {
 
   private static Log log = LogFactory.getLog(SubmitTimedAssessmentThread.class);
+  private static ResourceBundle eventLogMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.EventLogMessages");
+  
   public SubmitTimedAssessmentThread(){}
 
   public void run(){
@@ -90,19 +82,36 @@ public class SubmitTimedAssessmentThread extends TimerTask
           timedAG.setSubmittedForGrade(true);
           // set all the properties right and persist status to DB
           GradingService service = new GradingService();
-          AssessmentGradingData ag = service.load(timedAG.getAssessmentGradingId().toString());
+          AssessmentGradingData ag = service.load(timedAG.getAssessmentGradingId().toString(), false);
           if (!ag.getForGrade().booleanValue()) {
             ag.setForGrade(Boolean.TRUE);
             ag.setTimeElapsed(Integer.valueOf(timedAG.getTimeLimit()));
-            ag.setStatus(AssessmentGradingIfc.SUBMITTED); // this will change status 0 -> 1
+            ag.setStatus(AssessmentGradingData.SUBMITTED); // this will change status 0 -> 1
             ag.setIsLate(islate(ag.getPublishedAssessmentId()));
-            ag.setSubmittedDate(new Date());
+	    Date submitDate = new Date();
+            ag.setSubmittedDate(submitDate);
             // SAK-7302, users taking a timed assessment may exit without completing the assessment
             // set these two scores to 0 instaed of null
-    	    if (ag.getFinalScore() == null) ag.setFinalScore(Float.valueOf("0"));
-    	    if (ag.getTotalAutoScore() == null) ag.setTotalAutoScore(Float.valueOf("0"));
+    	    if (ag.getFinalScore() == null) ag.setFinalScore(Double.valueOf("0"));
+    	    if (ag.getTotalAutoScore() == null) ag.setTotalAutoScore(Double.valueOf("0"));
     	    service.completeItemGradingData(ag);
             service.saveOrUpdateAssessmentGrading(ag);
+          EventLogService eventService = new EventLogService();
+          EventLogFacade eventLogFacade = new EventLogFacade();
+
+          List eventLogDataList = eventService.getEventLogData(ag.getAssessmentGradingId());
+          EventLogData eventLogData= (EventLogData) eventLogDataList.get(0);
+          eventLogData.setErrorMsg(eventLogMessages.getString("timer_submit"));
+          eventLogData.setEndDate(submitDate);
+          if(submitDate != null && eventLogData.getStartDate() != null) {
+        	  double minute= 1000*60;
+        	  int eclipseTime = (int)Math.ceil(((submitDate.getTime() - eventLogData.getStartDate().getTime())/minute));
+        	  eventLogData.setEclipseTime(Integer.valueOf(eclipseTime)); 
+          } else {
+        	  eventLogData.setEclipseTime(null); 
+        	  eventLogData.setErrorMsg(eventLogMessages.getString("error_take"));
+          }
+          eventLogFacade.setData(eventLogData);
             PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
             String siteId = publishedAssessmentService.getPublishedAssessmentOwner(ag.getPublishedAssessmentId());
             EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.thread_submit", "siteId=" + AgentFacade.getCurrentSiteId() + ", submissionId=" + ag.getAssessmentGradingId(), siteId, true, NotificationService.NOTI_REQUIRED));
@@ -135,14 +144,14 @@ public class SubmitTimedAssessmentThread extends TimerTask
 		return Boolean.FALSE;
   }
 
-  private void notifyGradebookByScoringType(AssessmentGradingIfc ag, PublishedAssessmentFacade publishedAssessment){
+  private void notifyGradebookByScoringType(AssessmentGradingData ag, PublishedAssessmentFacade publishedAssessment){
 	  if (publishedAssessment == null || publishedAssessment.getEvaluationModel() == null) {
 		  // should not come to here
 		  log.debug("publishedAssessment is null or publishedAssessment.getEvaluationModel() is null");
 		  return;
 	  }
 	  if (publishedAssessment.getEvaluationModel().getToGradeBook().equals(EvaluationModelIfc.TO_DEFAULT_GRADEBOOK.toString())) {
-		  AssessmentGradingIfc assessmentGrading = ag; // data is the last submission
+		  AssessmentGradingData assessmentGrading = ag; // data is the last submission
 		  GradingService g = new GradingService();
 		  // need to decide what to tell gradebook
 		  if (publishedAssessment.getEvaluationModel().getScoringType().equals(EvaluationModelIfc.HIGHEST_SCORE)) {

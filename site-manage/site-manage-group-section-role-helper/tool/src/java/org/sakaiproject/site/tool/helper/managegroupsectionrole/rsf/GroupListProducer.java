@@ -39,6 +39,7 @@ import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.components.UISelectChoice;
 import uk.org.ponder.rsf.components.UIVerbatim;
+import uk.org.ponder.rsf.components.UIDeletionBinding;
 import uk.org.ponder.rsf.components.decorators.DecoratorList;
 import uk.org.ponder.rsf.components.decorators.UILabelTargetDecorator;
 import uk.org.ponder.rsf.components.decorators.UITooltipDecorator;
@@ -98,6 +99,7 @@ public class GroupListProducer
     	
     	UIBranchContainer actions = UIBranchContainer.make(tofill,"actions:",Integer.toString(0));
     	UIInternalLink.make(actions,"add",UIMessage.make("group.newgroup"), new GroupEditViewParameters(GroupEditProducer.VIEW_ID, null));
+    	UIInternalLink.make(actions,"joinableset_add",UIMessage.make("group.joinable.create"), new CreateJoinableGroupViewParameters(CreateJoinableGroupsProducer.VIEW_ID, null));
     	UIInternalLink.make(actions,"auto_add",UIMessage.make("group.auto.newgroup"), new GroupAutoCreateViewParameters(GroupAutoCreateProducer.VIEW_ID, null));
     	UIInternalLink.make(actions,"import_add",UIMessage.make("group.import"), new GroupImportViewParameters(GroupImportStep1Producer.VIEW_ID, null));
 
@@ -120,7 +122,9 @@ public class GroupListProducer
 
 			//get the headers for the table
 			UIMessage.make(deleteForm, "group-title-title","group.title");
+			UIMessage.make(deleteForm, "group-joinable-set-title","group.joinable-set");
 			UIMessage.make(deleteForm, "group-size-title", "group.number");
+			UIMessage.make(deleteForm, "group-members-title", "group.members");
 			UIMessage.make(deleteForm, "group-remove-title", "editgroup.remove");
 			  
 			for (Iterator<Group> it=groups.iterator(); it.hasNext(); ) {
@@ -135,8 +139,20 @@ public class GroupListProducer
                     UIOutput.make(grouprow, "group-name-label", messageLocator.getMessage("group.title"));
                 
                 nameLabel.decorate(new UILabelTargetDecorator(name));
-    			UIOutput.make(grouprow,"group-title",group.getTitle());
+                UIInternalLink editLink = UIInternalLink.make(grouprow,"group-title",group.getTitle(),  
+						new GroupEditViewParameters(GroupEditProducer.VIEW_ID, groupId));
+			editLink.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("editgroup.revise")+ ":" + group.getTitle()));
+			
+				String joinableSet = "---";
+				if(group.getProperties().getProperty(group.GROUP_PROP_JOINABLE_SET) != null){
+					joinableSet = group.getProperties().getProperty(group.GROUP_PROP_JOINABLE_SET);
+					UIInternalLink.make(grouprow,"group-joinable-set",joinableSet, new CreateJoinableGroupViewParameters(CreateJoinableGroupsProducer.VIEW_ID, joinableSet));
+				}else{
+					UIOutput.make(grouprow,"group-no-joinable-set",joinableSet);
+				}
+
     			int size = 0;
+    			String groupMembers = "";
     			try
     			{
     				AuthzGroup g = authzGroupService.getAuthzGroup(group.getReference()); 
@@ -152,6 +168,10 @@ public class GroupListProducer
 		    				try
 		    				{
 		    					User u = userDirectoryService.getUser(userId);
+		    					if(!"".equals(groupMembers)){
+		        					groupMembers += ", ";
+		        				}
+		    					groupMembers += u.getDisplayName();
 		    				}
 		    	        	catch (Exception e)
 		    	        	{
@@ -166,11 +186,14 @@ public class GroupListProducer
     			{
     				M_log.debug(this + "fillComponent: cannot find group " + group.getReference());
     			}
-    			UIOutput.make(grouprow,"group-size",String.valueOf(size));
+    			String sizeStr = String.valueOf(size);
+    			if(group.getProperties().getProperty(group.GROUP_PROP_JOINABLE_SET_MAX) != null){
+    				sizeStr += " (" + group.getProperties().getProperty(group.GROUP_PROP_JOINABLE_SET_MAX) + ")";
+				}
+    			UIOutput.make(grouprow,"group-size",sizeStr);
 
-    			UIInternalLink editLink = UIInternalLink.make(grouprow,"group-revise",messageLocator.getMessage("editgroup.revise"),  
-    						new GroupEditViewParameters(GroupEditProducer.VIEW_ID, groupId));
-    			editLink.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("editgroup.revise")+ ":" + group.getTitle()));
+    			UIOutput.make(grouprow,"group-members",groupMembers);
+    			
     			deletable.add(group.getId());
 				UISelectChoice delete =  UISelectChoice.make(grouprow, "group-select", deleteselect.getFullID(), (deletable.size()-1));
 				delete.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("delete_group_tooltip", new String[] {group.getTitle()})));
@@ -180,13 +203,15 @@ public class GroupListProducer
 			
 			deleteselect.optionlist.setValue(deletable.toStringArray());
 			UICommand.make(deleteForm, "delete-groups",  UIMessage.make("editgroup.removechecked"), "#{SiteManageGroupSectionRoleHandler.processConfirmGroupDelete}");
-			UICommand.make(deleteForm, "cancel", UIMessage.make("editgroup.cancel"), "#{SiteManageGroupSectionRoleHandler.processCancel}");
+			UICommand cancel = UICommand.make(deleteForm, "cancel", UIMessage.make("editgroup.cancel"), "#{SiteManageGroupSectionRoleHandler.processCancel}");
+			cancel.parameters.add(new UIDeletionBinding("#{destroyScope.resultScope}"));
 			
 		}
 		else
 		{
 			UIMessage.make(deleteForm, "no-group","group.nogroup");
-			UICommand.make(deleteForm, "cancel", UIMessage.make("editgroup.cancel"), "#{SiteManageGroupSectionRoleHandler.processCancel}");
+			UICommand cancel = UICommand.make(deleteForm, "cancel", UIMessage.make("editgroup.cancel"), "#{SiteManageGroupSectionRoleHandler.processCancel}");
+			cancel.parameters.add(new UIDeletionBinding("#{destroyScope.resultScope}"));
 		}
 
 		

@@ -1,14 +1,35 @@
-<!-- $Id: chef_assignments_instructor_new_edit_assignment.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_new_edit_assignment.vm 309230 2014-05-06 20:00:01Z enietzel@anisakai.com $ -->
 <!-- start: chef_assignments_instructor_new_edit_assignment.vm  -->
 ##<!-- $Header: Exp $ -->
 ## Assignments - Instructor new Assignment view
-#parse("/vm/assignment/assignment_macros.vm")
-<script type="text/javascript" src="/library/js/jquery.js"></script>
-##<script type="text/javascript" src="/library/js/form.js"></script>
-<script type="text/javascript"  src="/sakai-assignment-tool/js/assignments.js"></script>
+#set( $H = '-' )
+
+<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
+<link href="/library/js/jquery/ui/1.10.3/css/ui-lightness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript">
 $(document).ready(function() {
-	 setupAssignNew();
+ 	setupAssignNew();
+ 	#if($turnitin_forceSingleAttachment)
+	 	$("#new_assignment_use_review_service").click(function (){
+	 		var checked = this.checked;
+	 		if(checked){
+	 			$("#subType").val(5);
+	 		}
+	 		$("#subType > option").each(function(){
+	 			if(checked){
+	 				if($(this).val() != 5){
+	 					$(this).prop('disabled', 'disabled');
+	 				}
+	 			}else{
+	 				$(this).removeProp('disabled');
+	 			
+	 			}
+	 		});
+	 	});
+ 	#end
+
 });
 </script>
 
@@ -43,6 +64,13 @@ $(document).ready(function() {
 		border:none
 	}
 
+	.smallMatches{
+		background-color: lightyellow;
+		border-style: solid;
+		border-width: 1px;
+		border-color: lightgray;
+		padding: 1em 1em 1em 2em;
+	}
 </style>
 <script type="text/javascript">
     function SetMaxPoint(obj_option, obj_textfield)
@@ -89,12 +117,49 @@ $(document).ready(function() {
 		}
 	*#
 	
+	function togglePeerAssessmentOptions(checked){
+		var section = document.getElementById("peerAssessmentOptions");
+		if(checked){
+			section.style.display="block";
+			resizeFrame('grow');
+		}else{
+			section.style.display="none";
+			resizeFrame('shrink');
+		}
+	}
+	
 	function toggleReviewServiceOptions(checked){
 		var section = document.getElementById("reviewServiceOptions");
 		if(checked){
 			section.style.display="block";
 		}else{
 			section.style.display="none";
+		}
+	}
+	
+	function toggleSmallMatchesOptions(checked){
+		var section = document.getElementById("smallMatchesOptions");
+		if(checked){
+			section.style.display="inline-block";
+		}else{
+			section.style.display="none";
+		}
+	}
+	
+	function toggleSmallMatchesDisabled(){
+		var radioOption1 = document.getElementById("wordCount");
+		var radioOption2 = document.getElementById("percentage")
+		var excludeWords = document.getElementById("tiiExcludeValueWords");
+		var excludePercentages = document.getElementById("tiiExcludeValuePercentages");
+		
+		excludeWords.disabled = true;
+		excludeWords.value = "";
+		excludePercentages.disabled = true;
+		excludePercentages.value = "";
+		if(radioOption1.checked){
+			excludeWords.disabled = false;
+		}else if(radioOption2.checked){
+			excludePercentages.disabled = false;
 		}
 	}
 </script>
@@ -183,114 +248,130 @@ $(document).ready(function() {
 					</span>
 				</p>	
 			*#
-		<p class="shorttext">
+                #if ($visible_date_enabled) 
+               <p class="shorttext">
+                <p class="checkbox" id="tempVisibleDate" >
+                    <input type="checkbox" id="allowVisibleDateToggle" name="allowVisibleDateToggle" #if($!assignment.getVisibleTime())checked="checked"#end onclick="if(checked){jQuery('.visibleDatePanel').show();resizeFrame();}else{jQuery('.visibleDatePanel').hide();}" />
+                    <label for="allowVisibleDateToggle">$tlang.getString("allowVisibleDate")</label>
+                </p>
+               <p class="shorttext visibleDatePanel" #if(!$!assignment.getVisibleTime())style="display:none;"#end>
 			<span class="reqStar">*</span>
 			<label>
-				$tlang.getString("newassig.opedat")
-			</label>	
-			#chef_dateselectionwidget($name_OpenYear $name_OpenMonth $name_OpenDay $!value_year_from $!value_year_to $value_OpenYear $value_OpenMonth $value_OpenDay $dateFormat "")
-			&nbsp;$tlang.getString("gen.at")&nbsp;
-            <label class="skip" for="$name_OpenHour">$tlang.getString("dateselectionwidget.hour")</label>
-			<select name="$name_OpenHour" id="$name_OpenHour">
+				$tlang.getString("gen.visible.date")
+			</label>
+			#chef_dateselectionwidgetwithtitles($name_VisibleYear $name_VisibleMonth $name_VisibleDay $!value_year_from $!value_year_to $value_VisibleYear $value_VisibleMonth $value_VisibleDay $dateFormat $tlang.getString("dateselectionwidget.month") $tlang.getString("dateselectionwidget.day") $tlang.getString("dateselectionwidget.year") "")
+				 &nbsp;$tlang.getString("gen.at")&nbsp;
+            <label class="skip" for="$name_VisibleHour">$tlang.getString("dateselectionwidget.hour")</label>
+			<select name="$name_VisibleHour" id="$name_VisibleHour" title="$tlang.getString("dateselectionwidget.hour")">
 				#foreach ($i in [1..12])
-					#if ($value_OpenHour==$i)
+					#if ($i == $value_VisibleHour)
 						<option value="$i" selected="selected">$i</option>
 					#else
 						<option value="$i">$i</option>
 					#end
 				#end
 			</select>
-            <label class="skip" for="$name_OpenMin">$tlang.getString("dateselectionwidget.minute")</label>
-			<select name="$name_OpenMin" id="$name_OpenMin">
-				#foreach ($i in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
-					<option value="$i" #if($i == $value_OpenMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
+            <label class="skip" for="$name_VisibleMin">$tlang.getString("dateselectionwidget.minute")</label>
+			<select name="$name_VisibleMin" id="$name_VisibleMin" title="$tlang.getString("dateselectionwidget.minute")">
+				#foreach ($i in [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
+					<option value="$i" #if($i == $value_VisibleMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
 				#end
 			</select>
-            <label class="skip" for="$name_OpenAMPM">$tlang.getString("dateselectionwidget.ampm")</label>
-			<select name="$name_OpenAMPM" id="$name_OpenAMPM">
+            <label class="skip" for="$name_VisibleMin">$tlang.getString("dateselectionwidget.ampm")</label>
+			<select name="$name_VisibleAMPM" id="$name_VisibleAMPM" title="$tlang.getString("dateselectionwidget.ampm")">
 				#foreach ($i in ["AM", "PM"])
-					#if ($i == $value_OpenAMPM)
+					#if ($i == $value_VisibleAMPM)
 						<option value="$i" selected="selected">$i</option>
 					#else
-							<option value="$i">$i</option>
+						<option value="$i">$i</option>
 					#end
 				#end
 			</select>
+                    </p>
+               <p class="instruction labelindnt visibleDatePanel" #if(!$!assignment.getVisibleTime())style="display:none;"#end>
+			$tlang.getString("gen.stuwonsee")
+		</p>
+		#end
+		<script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
+		<p class="shorttext">
+			<span class="reqStar">*</span>
+			<label>
+				$tlang.getString("newassig.opedat")
+			</label>	
+			<input type="text" id="opendate" name="opendate" class="datepicker" value="">
+
+			<script type="text/javascript">
+			      localDatePicker({
+			      	input:'#opendate', 
+			      	useTime:1, 
+			      	val:"$value_OpenYear$H$value_OpenMonth$H$value_OpenDay $value_OpenHour:$value_OpenMin",
+			      	parseFormat: 'YYYY-MM-DD HH:mm',
+			      	ashidden:{
+			      		month:"new_assignment_openmonth",
+			      		day:"new_assignment_openday",
+			      		year:"new_assignment_openyear",
+			      		hour:"new_assignment_openhour",
+			      		minute:"new_assignment_openmin"
+			      	}
+			      });
+			</script>
+
 		</p>	
 		<p class="instruction labelindnt">
-			$tlang.getString("gen.stuwonsee")
+                        $tlang.getString("gen.stucantdo")
 		</p>
 		<p class="shorttext">
 			<span class="reqStar">*</span>
 			<label>
 				$tlang.getString("gen.duedat")
 			</label>
-			#chef_dateselectionwidget($name_DueYear $name_DueMonth $name_DueDay $!value_year_from $!value_year_to $value_DueYear $value_DueMonth $value_DueDay $dateFormat "")
-				&nbsp;$tlang.getString("gen.at")&nbsp;
-            <label class="skip" for="$name_DueHour">$tlang.getString("dateselectionwidget.hour")</label> 
-			<select name="$name_DueHour" id="$name_DueHour">
-				#foreach ($i in [1..12])
-					#if ($i == $value_DueHour)
-						<option value="$i" selected="selected">$i</option>
-					#else
-						<option value="$i">$i</option>
-					#end
-				#end
-			</select>
-            <label class="skip" for="$name_DueMin">$tlang.getString("dateselectionwidget.minute")</label>
-			<select name="$name_DueMin" id="$name_DueMin">
-				#foreach ($i in [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
-					<option value="$i" #if($i == $value_DueMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
-				#end
-			</select>
-            <label class="skip" for="$name_DueAMPM">$tlang.getString("dateselectionwidget.ampm")</label>
-			<select name="$name_DueAMPM" id="$name_DueAMPM">
-				#foreach ($i in ["AM", "PM"])
-					#if ($i == $value_DueAMPM)
-						<option value="$i" selected="selected">$i</option>
-					#else
-						<option value="$i">$i</option>
-					#end
-				#end
-			</select>
-		</p>
+
+			<input type="text" id="duedate" name="duedate" class="datepicker" value="">
+
+			<script type="text/javascript">
+			      localDatePicker({
+			      	input:'#duedate', 
+			      	useTime:1, 
+			      	val:"$value_DueYear$H$value_DueMonth$H$value_DueDay $value_DueHour:$value_DueMin",
+			      	parseFormat: 'YYYY-MM-DD HH:mm',
+			      	ashidden:{
+			      		month:"new_assignment_duemonth",
+			      		day:"new_assignment_dueday",
+			      		year:"new_assignment_dueyear",
+			      		hour:"new_assignment_duehour",
+			      		minute:"new_assignment_duemin"
+			      	}
+			      });
+			</script>
+
+ 		</p>
 		<p class="shorttext">
 			<span class="reqStar">*</span>
 			<label>
 				$tlang.getString("gen.acesubunt")
 			</label>
 			#if ($value_EnableCloseDate)
-				#chef_dateselectionwidget($name_CloseYear $name_CloseMonth $name_CloseDay $!value_year_from $!value_year_to $value_CloseYear $value_CloseMonth $value_CloseDay $dateFormat "")
-				 &nbsp;$tlang.getString("gen.at")&nbsp;
-                <label class="skip" for="$name_CloseHour">$tlang.getString("dateselectionwidget.hour")</label> 
-				<select name="$name_CloseHour" id="$name_CloseHour">
-					#foreach ($i in [1..12])
-						#if ($i == $value_CloseHour)
-							<option value="$i" selected="selected">$i</option>
-						#else
-							<option value="$i">$i</option>
-						#end
-					#end
-				</select>
-                <label class="skip" for="$name_CloseMin">$tlang.getString("dateselectionwidget.minute")</label>
-				<select name="$name_CloseMin" id="$name_CloseMin">
-					#foreach ($i in [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
-						<option value="$i" #if($i == $value_CloseMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
-					#end
-				</select>
-                <label class="skip" for="$name_CloseAMPM">$tlang.getString("dateselectionwidget.ampm")</label>
-				<select name="$name_CloseAMPM" id="$name_CloseAMPM">
-					#foreach ($i in ["AM", "PM"])
-						#if ($i == $value_CloseAMPM)
-							<option value="$i" selected="selected">$i</option>
-						#else
-							<option value="$i">$i</option>
-						#end
-					#end
-				</select>
-			#else
-                <label class="skip" for="$name_CloseMonth">$tlang.getString("dateselectionwidget.month")</label>
-				<select name="$name_CloseMonth" id="$name_CloseMonth" disabled="disabled">
+
+			<input type="text" id="closedate" name="closedate" class="datepicker" value="">
+
+			<script type="text/javascript">
+			      localDatePicker({
+			      	input:'#closedate', 
+			      	useTime:1, 
+			      	val:"$value_CloseYear$H$value_CloseMonth$H$value_CloseDay $value_CloseHour:$value_CloseMin",
+			      	parseFormat: 'YYYY-MM-DD HH:mm',
+			      	ashidden:{
+			      		month:"new_assignment_closemonth",
+			      		day:"new_assignment_closeday",
+			      		year:"new_assignment_closeyear",
+			      		hour:"new_assignment_closehour",
+			      		minute:"new_assignment_closemin"
+			      	}
+			      });
+			</script>
+
+ 			#else
+				<select name="$name_CloseMonth" id="$name_CloseMonth" title="$tlang.getString("dateselectionwidget.month")" disabled="disabled">
 					#foreach ($i in [1..12])
 						#if ($i == $value_CloseMonth)
 							<option value="$i" selected="selected">$monthTable.get($i)</option>
@@ -300,7 +381,7 @@ $(document).ready(function() {
 					#end
 				</select>
                 <label class="skip" for="$name_CloseDay">$tlang.getString("dateselectionwidget.day")</label>
-				<select name="$name_CloseDay" id="$name_CloseDay" disabled="disabled">
+				<select name="$name_CloseDay" id="$name_CloseDay" title="$tlang.getString("dateselectionwidget.day")" disabled="disabled">
 					#foreach ($i in [1..31])
 						#if ($i == $value_CloseDay)
 							<option value="$i" selected="selected">$i</option>
@@ -310,7 +391,7 @@ $(document).ready(function() {
 					#end
 				</select>
                 <label class="skip" for="$name_CloseYear">$tlang.getString("dateselectionwidget.year")</label>
-				<select name="$name_CloseYear" id="$name_CloseYear" disabled="disabled">
+				<select name="$name_CloseYear" id="$name_CloseYear" title="$tlang.getString("dateselectionwidget.year")" disabled="disabled">
 					#foreach ($i in [$!value_year_from..$!value_year_to])
 						#if ($i == $value_CloseYear)
 							<option value="$i" selected="selected">$i</option>
@@ -320,8 +401,8 @@ $(document).ready(function() {
 					#end
 				</select>
 				&nbsp;$tlang.getString("gen.at")&nbsp;
-                <label class="skip" for="$name_CloseHour">$tlang.getString("dateselectionwidget.hour")</label> 
-				<select name="$name_CloseHour" id="$name_CloseHour" disabled="disabled">
+                <label class="skip" for="$name_CloseHour">$tlang.getString("dateselectionwidget.hour")</label>
+				<select name="$name_CloseHour" id="$name_CloseHour" title="$tlang.getString("dateselectionwidget.hour")" disabled="disabled">
 					#foreach ($i in [1..12])
 						#if ($i == $value_CloseHour)
 							<option value="$i" selected="selected">$i</option>
@@ -331,13 +412,13 @@ $(document).ready(function() {
 					#end
 				</select>
                 <label class="skip" for="$name_CloseMin">$tlang.getString("dateselectionwidget.minute")</label>
-				<select name="$name_CloseMin" id="$name_CloseMin" disabled="disabled">
+				<select name="$name_CloseMin" id="$name_CloseMin" title="$tlang.getString("dateselectionwidget.minute")" disabled="disabled">
 					#foreach ($i in [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
 						<option value="$i" #if($i == $value_CloseMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
 					#end
 				</select>
                 <label class="skip" for="$name_CloseAMPM">$tlang.getString("dateselectionwidget.ampm")</label>
-				<select name="$name_CloseAMPM" id="$name_CloseAMPM" disabled="disabled">
+				<select name="$name_CloseAMPM" id="$name_CloseAMPM" title="$tlang.getString("dateselectionwidget.ampm")" disabled="disabled">
 					#foreach ($i in ["AM", "PM"])
 						#if ($i == $value_CloseAMPM)
 							<option value="$i" selected="selected">$i</option>
@@ -356,7 +437,7 @@ $(document).ready(function() {
 			<label for="subType">
 				$tlang.getString("gen.stusub")
 			</label>
-			<select name="$name_SubmissionType" id="subType" onchange="if(document.getElementById('subType').value != 4){document.getElementById('tempAllowRes').style.display = 'block';resizeFrame();}else{document.getElementById('tempAllowRes').style.display = 'none';document.getElementById('allowResToggle').checked=false;document.getElementById('allowResubmitNumber').style.display = 'none';document.getElementById('allowResubmitTime').style.display = 'none';}" /> >
+			<select name="$name_SubmissionType" id="subType" title="$tlang.getString("gen.subformat")" onchange="if(document.getElementById('subType').value != 4){document.getElementById('tempAllowRes').style.display = 'block';resizeFrame();}else{document.getElementById('tempAllowRes').style.display = 'none';document.getElementById('allowResToggle').checked=false;document.getElementById('allowResubmitNumber').style.display = 'none';document.getElementById('allowResubmitTime').style.display = 'none';}" /> >
 				#foreach ($i in [1..$!value_totalSubmissionTypes])
 					#if ($i == $value_SubmissionType)
 						<option value="$i" selected="selected">$submissionTypeTable.get($i)</option>
@@ -373,14 +454,14 @@ $(document).ready(function() {
 			#set($resubmitStyle="display:none")
 		#end
 		<p class="checkbox" id="tempAllowRes" #if ($value_SubmissionType == 4) style = "display:none"#end>
-			<input type="checkbox" id="allowResToggle" name ="allowResToggle" #if($!value_allowResubmitNumber && $value_SubmissionType != 4) checked="checked"#end onclick="if(checked){document.getElementById('allowResubmitNumber').style.display = 'block';document.getElementById('allowResubmitTime').style.display = 'block';resizeFrame();}else{document.getElementById('allowResubmitNumber').style.display = 'none';document.getElementById('allowResubmitTime').style.display = 'none'}" /> 
+			<input type="checkbox" id="allowResToggle" name ="allowResToggle" #if($!value_allowResubmitNumber && $value_SubmissionType != 4) checked="checked"#end onclick="if(checked){document.getElementById('allowResubmitNumber').style.display = 'block';document.getElementById('allowResubmitTime').style.display = 'block';document.getElementById('resubmitNotification').style.display = 'block';resizeFrame();}else{document.getElementById('allowResubmitNumber').style.display = 'none';document.getElementById('allowResubmitTime').style.display = 'none';document.getElementById('resubmitNotification').style.display = 'none';}" /> 
 			<label for="allowResToggle">$tlang.getString("allowResubmit")</label>
 	    </p>
 		<p class="shorttext" id="allowResubmitNumber" style="$!resubmitStyle">
 				<label for="allowResubmitNumber">
 					$tlang.getString("allow.resubmit.number")
 				</label>
-				<select name="$name_allowResubmitNumber" id="allowResubmitNumber">
+				<select name="$name_allowResubmitNumber" id="allowResubmitNumber" title="$tlang.getString("allow.resubmit.number")">
 					#foreach ($i in [1..10])
 						<option value="$i" #if($i==$!value_allowResubmitNumber)selected="selected"#end>
 							$i
@@ -390,39 +471,42 @@ $(document).ready(function() {
 				</select>
 		</p>
 		<p class="shorttext" id="allowResubmitTime" style="$!resubmitStyle">
+
+			<label for="$name_ResubmitMonth">
+				$tlang.getString("gen.resubmission") $tlang.getString("gen.acesubunt")
+			</label>
+		
+			<input type="text" id="resubmit" name="resubmit" class="datepicker" value="">
+
+
+			<script type="text/javascript">
+			      localDatePicker({
+			      	input:'#resubmit', 
+			      	useTime:1, 
+			      	val:"$value_ResubmitYear$H$value_ResubmitMonth$H$value_ResubmitDay $value_ResubmitHour:$value_ResubmitMin",
+			      	parseFormat: 'YYYY-MM-DD HH:mm',
+			      	ashidden:{
+			      		month:"allow_resubmit_closeMonth",
+			      		day:"allow_resubmit_closeDay",
+			      		year:"allow_resubmit_closeYear",
+			      		hour:"allow_resubmit_closeHour",
+			      		minute:"allow_resubmit_closeMin"
+			      	}
+			      });
+			</script>
 							## only show date selection when allowed to resubmit
-							<label>
-								$tlang.getString("gen.resubmission") $tlang.getString("gen.acesubunt")
-							</label>
-							#chef_dateselectionwidget($name_ResubmitYear $name_ResubmitMonth $name_ResubmitDay $!value_year_from $!value_year_to $value_ResubmitYear $value_ResubmitMonth $value_ResubmitDay $dateFormat "")
-							&nbsp;$tlang.getString("gen.at")&nbsp;
-                            <label class="skip" for="$name_ResubmitHour">$tlang.getString("dateselectionwidget.hour")</label>
-							<select name="$name_ResubmitHour" id="$name_ResubmitHour">
-								#foreach ($i in [1..12])
-									#if ($i == $value_ResubmitHour)
-										<option value="$i" selected="selected">$i</option>
-									#else
-										<option value="$i">$i</option>
-									#end
-								#end
-							</select>
-                            <label class="skip" for="$name_ResubmitMin">$tlang.getString("dateselectionwidget.minute")</label>
-							<select name="$name_ResubmitMin" id="$name_ResubmitMin">
-								#foreach ($i in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
-									<option value="$i" #if($i == $value_ResubmitMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
-								#end
-							</select>
-                            <label class="skip" for="$name_ResubmitAMPM">$tlang.getString("dateselectionwidget.ampm")</label>
-							<select name="$name_ResubmitAMPM" id="$name_ResubmitAMPM">
-								#foreach ($i in ["AM", "PM"])
-									#if ($i == $value_ResubmitAMPM)
-										<option value="$i" selected="selected">$i</option>
-									#else
-										<option value="$i">$i</option>
-									#end
-								#end
-							</select>
 						</p>
+		<p class="shorttext" id="resubmitNotification" style="$!resubmitStyle">
+			## whether to notify student about released grade and resubmission is available
+			<label for="notsendreleasereturnnotif">
+				$tlang.getString("send.submission.releasereturn.email.options")
+			</label>
+			<input type="radio" name="$!name_assignment_releasereturn_notification" id="notsendreleasereturnnotif" value="$!value_assignment_releasereturn_notification_none" #if($!value_assignment_releasereturn_notification.equals($!value_assignment_releasereturn_notification_none))checked="checked" #end />
+			$tlang.getString('send.submission.releasereturn.email.none')
+			<br/>
+			<input type="radio" name="$!name_assignment_releasereturn_notification" id="sendreleasereturnnotif" value="$!value_assignment_releasereturn_notification_each" #if($!value_assignment_releasereturn_notification.equals($!value_assignment_releasereturn_notification_each))checked="checked" #end />
+			$tlang.getString('send.submission.releasereturn.email')
+		</p>
 		#if ($withGrade)
 			<p class="shorttext" style="clear:both">
 				<span class="reqStar">*</span>
@@ -430,7 +514,7 @@ $(document).ready(function() {
 					$tlang.getString("gen.grasca")
 				</label>
 				<span class="skip">$tlang.getString("newassig.selectmessage")</span>				
-				<select id="$name_GradeType"  name="$name_GradeType" onchange="SetMaxPoint(this, $name_GradePoints)">
+				<select id="$name_GradeType"  name="$name_GradeType" title="$tlang.getString("gen.grasca")" onchange="SetMaxPoint(this, $name_GradePoints)">
 					#foreach ($i in [1..5])
 						#if ($i == $value_GradeType)
 							<option value="$i" selected="selected">$gradeTypeTable.get($i)</option>
@@ -453,13 +537,23 @@ $(document).ready(function() {
 		#end
 			<div class="longtext">
 				<label for="new_assignment_instructions" class="block">
-					$tlang.getString("gen.assinf")
+					<span class="reqStar">*</span> $tlang.getString("gen.assinf")
 				</label>
 				<table border="0" style="margin:0"><tr><td>
 					<textarea name="$name_Description" id="$name_Description" cols="80" rows="30" wrap="virtual">$validator.escapeHtmlFormattedTextarea($value_Description)</textarea>
 					#chef_setupformattedtextarea($name_Description)
 					</td></tr></table>
 			</div>
+		<p class="checkbox  indnt2">
+			#if ($value_CheckHideDueDate.equals("true"))
+				<input id="$name_CheckHideDueDate" name="$name_CheckHideDueDate" type="checkbox" value="true" checked="checked" />
+			#else
+				<input id="$name_CheckHideDueDate" name="$name_CheckHideDueDate" type="checkbox" value="true" />
+			#end
+			<label for="$name_CheckHideDueDate">
+				$tlang.getString("gen.hideduedate")
+			</label>
+		</p>
 		#if ($!name_CheckAddDueDate)
 			<p class="checkbox indnt2">
 				#if ($value_CheckAddDueDate.equals("true"))
@@ -553,6 +647,75 @@ $(document).ready(function() {
 						</label>
 					</div>
 					<br/>
+					#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_BIBLIOGRAPHIC || $show_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_QUOTED || $show_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_SMALL_MATCHES)
+						$tlang.getString("review.exclude.matches.header")
+						<br/>
+					#end
+					
+					<!-- Exclude Bibliographic materials -->
+					#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_BIBLIOGRAPHIC)
+					<div class="checkbox indnt1">
+							#if ($!value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_BIBLIOGRAPHIC.equals("true"))
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_BIBLIOGRAPHIC" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_BIBLIOGRAPHIC" type="checkbox" value="true" checked="checked" />
+							#else
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_BIBLIOGRAPHIC" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_BIBLIOGRAPHIC" type="checkbox" value="true" />
+							#end
+							<label for="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_BIBLIOGRAPHIC">
+								$tlang.getString("review.exclude.bibliographic") 
+							</label>
+					</div>
+					#end
+					<!-- Exclude Quoted materials -->
+					#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_QUOTED)
+					<div class="checkbox indnt1">
+							#if ($!value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_QUOTED.equals("true"))
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_QUOTED" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_QUOTED" type="checkbox" value="true" checked="checked" />
+							#else
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_QUOTED" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_QUOTED" type="checkbox" value="true" />
+							#end
+							<label for="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_QUOTED">
+								$tlang.getString("review.exclude.quoted") 
+							</label>
+					</div>
+					#end
+					<!-- Exclude small matches -->
+					
+					#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_SMALL_MATCHES)
+						<div class="checkbox indnt1">
+							#if ($value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE == 1 || $value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE == 2)
+								<input type="checkbox" value="true" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_SMALL_MATCHES" checked="checked"  onclick="toggleSmallMatchesOptions(this.checked)"/>
+							#else
+								<input type="checkbox" value="true" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_SMALL_MATCHES" onclick="toggleSmallMatchesOptions(this.checked)"/>
+							#end
+							<label for="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE">
+								$tlang.getString("review.exclude.smallMatches") 
+							</label>
+							<br/>
+								#if ($value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE == 1 || $value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE == 2)
+									<div id="smallMatchesOptions" class="indnt2 smallMatches" style="display:inline-block;">
+								#else
+									<div id="smallMatchesOptions" class="indnt2 smallMatches" style="display:none;">
+								#end
+								$tlang.getString("review.exclude.matches.by")<span class="reqStar">*</span>
+								<br/>
+								<input onchange="toggleSmallMatchesDisabled()" type="radio" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE" id="wordCount" value="1" #if ($value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE ==  1) checked="checked" #end/>
+								<label for="wordCount">
+									$tlang.getString("review.exclude.matches.wordmax") 
+								</label>
+								<input type="text" size="3" maxlength="3" id="tiiExcludeValueWords" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_VALUE" #if ($value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE ==  1) value="$value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_VALUE" #else disabled="disabled" #end/>
+								<br/>
+								
+								<input onchange="toggleSmallMatchesDisabled()" type="radio" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE" id="percentage" value="2" #if ($value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE == 2) checked="checked" #end/>
+								<label for="percentage">
+									$tlang.getString("review.exclude.matches.percentage") 
+								</label>
+								<input type="text" size="3" maxlength="3" id="tiiExcludeValuePercentages" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_VALUE" #if ($value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE == 2) value="$value_NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_VALUE" #else disabled="disabled" #end/>
+								%
+								<!--end div for smallMatchesOptions -->
+								</div>
+						</div>
+					#end
+					<br/>
 					$tlang.getString("review.originality.check")
 					<br/>
 					<div class="indnt1">
@@ -605,7 +768,6 @@ $(document).ready(function() {
 						</div>
 						#end
 					</div>
-					</div>
 				</div>
 			</div>
 		#end
@@ -629,7 +791,7 @@ $(document).ready(function() {
 						## hide the assignment list from Gradebook when clicked
 						<input type="radio" name="$!name_Addtogradebook" id="$!gradebookChoice_add" value="$!gradebookChoice_add" #if($!gradebookChoice.equals("$!gradebookChoice_add"))checked#end 
 							onclick="
-							if ($('#new_assignment_grade_points').attr('value'))
+							if ($('#new_assignment_grade_points').prop('value'))
 							{
 								if (document.getElementById('categoryList')) 
 								{
@@ -644,19 +806,19 @@ $(document).ready(function() {
 									if (document.getElementById('gradebookList'))
 										$('#gradebookList').fadeOut('slow');
 									if (document.getElementById('associate'))
-										$('#associate').attr('checked',false);
+										$('#associate').prop('checked',false);
 								}
 							}
 							else
 							{
 								## show alert since gradebook integration is only allowed for point-based assignment
-								$('#no').attr('checked',true);
+								$('#no').prop('checked',true);
 								if (document.getElementById('categoryList'))
 									$('#categoryList').fadeOut('slow');
 								if (document.getElementById('gradebookList'))
 									$('#gradebookList').fadeOut('slow');
 								if (document.getElementById('associate'))
-									$('#associate').attr('checked',false);
+									$('#associate').prop('checked',false);
 								if (document.getElementById('gradebookListWarnAssoc'))
 								{
 					       	 		$('#gradebookListWarnAssoc' ).fadeIn('slow');
@@ -682,7 +844,7 @@ $(document).ready(function() {
 								#if($!gradebookChoice.equals("$!gradebookChoice_associate"))checked#end 
 								onclick="if( document.getElementById('gradebookList') )
 								{
-									if ($('#new_assignment_grade_points').attr('value')) 
+									if ($('#new_assignment_grade_points').prop('value')) 
 									{
 										## show the gradebook assignment list
 										$('#categoryList').fadeOut('slow');
@@ -691,10 +853,10 @@ $(document).ready(function() {
 									else
 									{
 										## show alert since gradebook integration is only allowed for point-based assignment
-										$('#no').attr('checked',true);
+										$('#no').prop('checked',true);
 										$('#categoryList').fadeOut('slow');
 										$('#gradebookList').fadeOut('slow');
-										$('#associate').attr('checked',false);
+										$('#associate').prop('checked',false);
 						       	 		$('#gradebookListWarn' ).fadeIn('slow');
 						        		$('#gradebookListWarn').animate({opacity: 1.0}, 2500)
 						  				$('#gradebookListWarn' ).fadeOut('slow',function () 
@@ -727,7 +889,7 @@ $(document).ready(function() {
 								#elseif($!gradebookAssignmentsSelectedDisabled.get($gaId).equals("selected")) 
 									selected="selected"
 								#end>
-									$!gradebookAssignmentsLabel.get($gaId)
+									$validator.escapeHtml($!gradebookAssignmentsLabel.get($gaId))
 							</option>
 						#end
 					</select>
@@ -746,12 +908,119 @@ $(document).ready(function() {
 				</p>
 			#end
 		#end
+		## Peer Assessment
+		#if ($allowPeerAssessment)
+			<div style="display:block">
+				<h4>
+				$peerAssessmentName
+				</h4>
+				<div class="checkbox  indnt2">
+					#if ($!value_UsePeerAssessment.equals("true"))
+						<input id="$name_UsePeerAssessment" name="$name_UsePeerAssessment" type="checkbox" value="true" checked="checked" onclick="togglePeerAssessmentOptions(this.checked)"/>
+					#else
+						<input id="$name_UsePeerAssessment" name="$name_UsePeerAssessment" type="checkbox" value="true"  onclick="togglePeerAssessmentOptions(this.checked)"/>
+					#end
+					<label for="$name_UsePeerAssessment">
+						$peerAssessmentUse
+					</label>
+				</div>
+				#if ($!value_UsePeerAssessment.equals("true"))
+					<div id="peerAssessmentOptions" class="indnt3">
+				#else
+					<div id="peerAssessmentOptions" style="display:none" class="indnt3">
+				#end
+					<p class="instruction">
+						$tlang.getString("peerassessment.note")
+					</p>
+					<div id="peerperiod-finish">
+					$tlang.getString("peerassessment.periodfinishes")
+						<input type="text" id="new_assignment_peerperiod" name="new_assignment_peerperiod" class="datepicker" value="">
+					</div>
+
+						<script type="text/javascript">
+						      localDatePicker({
+						      	input:'#new_assignment_peerperiod', 
+						      	useTime:1, 
+						      	val:"$value_PeerPeriodYear$H$value_PeerPeriodMonth$H$value_PeerPeriodDay $value_PeerPeriodHour:$value_PeerPeriodMin",
+						      	parseFormat: 'YYYY-MM-DD HH:mm',
+						      	ashidden:{
+						      		month:"$name_PeerPeriodMonth",
+						      		day:"$name_PeerPeriodDay",
+						      		year:"$name_PeerPeriodYear",
+						      		hour:"$name_PeerPeriodHour",
+						      		minute:"$name_PeerPeriodMin"
+						      	}
+						      });
+						</script>
+					##Anonymous Eval
+					#if ($!value_PeerAssessmentAnonEval.equals("true"))
+						<input id="$name_PeerAssessmentAnonEval" name="$name_PeerAssessmentAnonEval" type="checkbox" value="true" checked="checked"/>
+					#else
+						<input id="$name_PeerAssessmentAnonEval" name="$name_PeerAssessmentAnonEval" type="checkbox" value="true"/>
+					#end
+					<label for="$name_PeerAssessmentAnonEval">
+						$tlang.getString("peerassessment.anonymousEvaluation")
+					</label>
+					<br/>
+					##Students View Reviews
+					#if ($!value_PeerAssessmentStudentViewReviews.equals("true"))
+						<input id="$name_PeerAssessmentStudentViewReviews" name="$name_PeerAssessmentStudentViewReviews" type="checkbox" value="true" checked="checked"/>
+					#else
+						<input id="$name_PeerAssessmentStudentViewReviews" name="$name_PeerAssessmentStudentViewReviews" type="checkbox" value="true"/>
+					#end
+					<label for="$name_PeerAssessmentStudentViewReviews">
+						$tlang.getString("peerassessment.studentViewReviews")
+					</label>
+					<br/>
+					##Number of Submissions for review
+					<span class="reqStar">*</span>
+					<input name="$name_PeerAssessmentNumReviews" id="$name_PeerAssessmentNumReviews" value="$!value_PeerAssessmentNumReviews" type="text" size="5" maxlength="11"/>
+					<label for="$name_PeerAssessmentNumReviews">
+						$tlang.getString("peerassessment.numSubmissions")
+					</label>
+					<br/>
+					<br/>
+					$tlang.getString("peerassessment.reviewInstructions")
+					<br/>
+					<table border="0" style="margin:0"><tr><td>
+						<textarea name="$name_PeerAssessmentInstructions" id="$name_PeerAssessmentInstructions" cols="80" rows="30" wrap="virtual">$validator.escapeHtmlTextarea($!value_PeerAssessmentInstructions)</textarea>
+						#chef_setupformattedtextarea($name_PeerAssessmentInstructions)
+					</td</tr></table>
+				</div>
+			</div>
+		#end
+		
+		
 		## group/section support
 		#if ($allowAddSiteAssignment)
 			#if ($!groups)
 				<h4>
 					$!tlang.getString('access')
 				</h4>
+                                 #if ($group_submissions_enabled)
+                                    <p class="checkbox  indnt2">
+                                        #if (!$!value_CheckIsGroupSubmission.equals("1"))
+                                            <input id="$name_CheckIsGroupSubmission" name="$name_CheckIsGroupSubmission" type="checkbox" value="1" />
+                                        #else
+                                            <input id="$name_CheckIsGroupSubmission" name="$name_CheckIsGroupSubmission" type="checkbox" value="1" checked="checked" />
+                                        #end
+                                        <label for="$name_CheckIsGroupSubmission">
+                                            $tlang.getString("group.issubmit")
+                                        </label>
+                                    </p>
+                                #end
+                                #if ($multipleGroupUsers)
+                                                <p class="checkbox indnt2">
+                                                <div style="color: red;" class="indnt2">$tlang.getString("group.user.multiple.warning")</div>
+                                                <div style="color: red;" class="indnt3">
+                                                #foreach($duser in $!multipleGroupUsers)
+                                                        #if ($velocityCount > 1), #end
+                                                        $duser
+                                                #end
+                                                </div>
+                                                </p>
+                                #end
+
 				<p class="checkbox  indnt2">
 				#if (!$!allowGroupAssignmentsInGradebook)
 						<input type="radio" name="range" id="site" value="site" #if($!range == "site")checked="checked"#end 
@@ -779,7 +1048,7 @@ $(document).ready(function() {
 			## added group awareness
 			<p class="checkbox indnt2">
 				#if (!$!allowGroupAssignmentsInGradebook)
-						<input type="radio" name="range" id="groups" value="groups" #if($!range == "groups")checked="checked"#end onclick="if (document.getElementById('addToGradebook') != null){document.getElementById('addToGradebook').style.display = 'none';document.getElementById('$!name_Addtogradebook').checked=false};$('#groupTable').fadeIn('slow');resizeFrame()"  />
+					<input type="radio" name="range" id="groups" value="groups" #if($!range == "groups")checked="checked"#end onclick="if (document.getElementById('addToGradebook') != null){document.getElementById('addToGradebook').style.display = 'none';document.getElementById('$!name_Addtogradebook').checked=false};$('#groupTable').fadeIn('slow');resizeFrame()"  />
 				#else
 					<input type="radio" name="range" id="groups" value="groups" #if($!range == "groups")checked="checked"#end onclick="$('#groupTable').fadeIn('slow');resizeFrame()"  />  
 				#end
@@ -816,13 +1085,16 @@ $(document).ready(function() {
 								<input type="checkbox" name="selectedGroups" id="id-$group.Id" title="$group.Id" value="$group.Id" #if($selected) checked="checked"#end />
 							</td>
 							<td headers="name" class="checkbox" style="white-space:nowrap">
-								<label for="id-$group.Id">
+								#if ($group_submissions_enabled)
+                                                                    #sectionIcon($group)
+                                                                #end
+                                                                <label for="id-$group.Id">
 									$validator.escapeHtml($group.Title)
 								</label>	
 							</td>
-							<td headers="description" width="100%"> ##mozilla does not resize table children dynamically , so set here
-								#set($description = "")
-								#set($description = $group.Description)
+							<td headers="description" width="100%"> ##mozilla does not resize table children dynamically , so set here                                                                
+                                                                #set($description = "")
+								#set($description=$group.Description)
 								$validator.escapeHtml($!description)
 							</td>
 						</tr>
@@ -831,31 +1103,42 @@ $(document).ready(function() {
 		#end
 		## whether to show the instructor notification choices
 		#if ($!name_assignment_instructor_notifications)
-			<h4>
-				$tlang.getString("receive.confirm.submission.email.options")
-			</h4>
-			<p class="checkbox  indnt2">
-				<input type="radio" name="$!name_assignment_instructor_notifications" id="notsendnotif" value="$!value_assignment_instructor_notifications_none" #if($!value_assignment_instructor_notifications.equals($!value_assignment_instructor_notifications_none))checked="checked" #end />
-				<label for="notsendnotif">$tlang.getString('receive.confirm.submission.email.none')</label>
-				<br/>
-				<input type="radio" name="$!name_assignment_instructor_notifications" id="sendnotif" value="$!value_assignment_instructor_notifications_each" #if($!value_assignment_instructor_notifications.equals($!value_assignment_instructor_notifications_each))checked="checked" #end />
-				<label for="sendnotif">$tlang.getString('receive.confirm.submission.email.each')</label>
-				<br/>
-				<input type="radio" name="$!name_assignment_instructor_notifications" id="sendnotifsummary" value="$!value_assignment_instructor_notifications_digest" #if($!value_assignment_instructor_notifications.equals($!value_assignment_instructor_notifications_digest))checked="checked" #end />
-				<label for="sendnotifsummary">$tlang.getString('receive.confirm.submission.email.digest')</label>
-			</p>
+            <fieldset>
+                <legend>
+                    <h4>
+                        $tlang.getString("receive.confirm.submission.email.options")
+                    </h4>
+                </legend>
+    			<p class="checkbox  indnt2">
+    				<input type="radio" name="$!name_assignment_instructor_notifications" id="notsendnotif" value="$!value_assignment_instructor_notifications_none" #if($!value_assignment_instructor_notifications.equals($!value_assignment_instructor_notifications_none))checked="checked" #end />
+    				<label for="notsendnotif">$tlang.getString('receive.confirm.submission.email.none')</label>
+    			</p>
+                <p class="checkbox  indnt2">
+    				<input type="radio" name="$!name_assignment_instructor_notifications" id="sendnotif" value="$!value_assignment_instructor_notifications_each" #if($!value_assignment_instructor_notifications.equals($!value_assignment_instructor_notifications_each))checked="checked" #end />
+    				<label for="sendnotif">$tlang.getString('receive.confirm.submission.email.each')</label>
+    			</p>
+                <p class="checkbox  indnt2">
+    				<input type="radio" name="$!name_assignment_instructor_notifications" id="sendnotifsummary" value="$!value_assignment_instructor_notifications_digest" #if($!value_assignment_instructor_notifications.equals($!value_assignment_instructor_notifications_digest))checked="checked" #end />
+    				<label for="sendnotifsummary">$tlang.getString('receive.confirm.submission.email.digest')</label>
+    			</p>
+            </fieldset>
 		#end
 		## whether to notify student about released grade
-		<h4>
-			$tlang.getString("send.submission.releasegrade.email.options")
-		</h4>
-		<p class="checkbox  indnt2">
-			<input type="radio" name="$!name_assignment_releasegrade_notification" id="notsendreleasegradenotif" value="$!value_assignment_releasegrade_notification_none" #if($!value_assignment_releasegrade_notification.equals($!value_assignment_releasegrade_notification_none))checked="checked" #end />
-			<label for="notsendreleasegradenotif">$tlang.getString('send.submission.releasegrade.email.none')</label>
-			<br/>
-			<input type="radio" name="$!name_assignment_releasegrade_notification" id="sendreleasegradenotif" value="$!value_assignment_releasegrade_notification_each" #if($!value_assignment_releasegrade_notification.equals($!value_assignment_releasegrade_notification_each))checked="checked" #end />
-			<label for="sendreleasegradenotif">$tlang.getString('send.submission.releasegrade.email')</label>
-		</p>
+		     <fieldset>
+		         <legend>
+		             <h4>
+                        $tlang.getString("send.submission.releasegrade.email.options")
+                    </h4>
+                </legend>
+		         <p class="checkbox  indnt2"> 
+        			<input type="radio" name="$!name_assignment_releasegrade_notification" id="notsendreleasegradenotif" value="$!value_assignment_releasegrade_notification_none" #if($!value_assignment_releasegrade_notification.equals($!value_assignment_releasegrade_notification_none))checked="checked" #end />
+        			<label for="notsendreleasegradenotif">$tlang.getString('send.submission.releasegrade.email.none')</label>
+			     </p>
+                 <p class="checkbox  indnt2">
+        			<input type="radio" name="$!name_assignment_releasegrade_notification" id="sendreleasegradenotif" value="$!value_assignment_releasegrade_notification_each" #if($!value_assignment_releasegrade_notification.equals($!value_assignment_releasegrade_notification_each))checked="checked" #end />
+        			<label for="sendreleasegradenotif">$tlang.getString('send.submission.releasegrade.email')</label>
+                </p>
+		  </fieldset>
 		## attachments
 		<h4>
 			$tlang.getString("gen.att")
@@ -869,7 +1152,13 @@ $(document).ready(function() {
 			#end
 		#end
 		#if ($size == 0)
-			<p class="instruction">$tlang.getString("gen.noatt")</p>
+			<p class="instruction">
+                            #if ($value_SubmissionType == 5)
+                                $tlang.getString("gen.noatt.single")
+                            #else
+                                $tlang.getString("gen.noatt")
+                            #end
+                        </p>
 
 			<div class="act">
 				<input type="button" name="attach" value="$tlang.getString('gen.addatt')" onclick="javascript:document.newAssignmentForm.onsubmit();document.getElementById('option').value='attach';document.newAssignmentForm.submit();return false;"/>
@@ -1005,7 +1294,13 @@ $(document).ready(function() {
 				#end
 			#end
 			#if ($size == 0)
-				<p class="instruction">$tlang.getString("gen.noatt")</p>
+				<p class="instruction">
+                                    #if ($value_SubmissionType == 5)
+                                        $tlang.getString("gen.noatt.single")
+                                    #else
+                                        $tlang.getString("gen.noatt")
+                                    #end
+                                </p>
 			#else
 				<ul class="attachList indnt1">
 					#foreach ($attachment in $modelanswer_attachments) 
@@ -1035,7 +1330,7 @@ $(document).ready(function() {
 					$tlang.getString("modelAnswer.show_to_student.prompt")
 				</label>
 				## show to student time option
-				<select id="modelanswer_to" name="modelanswer_showto">
+				<select id="modelanswer_to" name="modelanswer_showto" title="$tlang.getString("modelAnswer.show_to_student.tooltip")">
 					#foreach ($k in ["0", "1", "2", "3", "4"])
 						#set($string = "modelAnswer.show_to_student.")
 						#set($string = $string.concat($k))
@@ -1112,7 +1407,7 @@ $(document).ready(function() {
 					$tlang.getString("note.to.prompt")
 				</label>
 				#if ($!note && $!allowEditAssignmentNoteItem || !$!note)
-					<select id="note_to" name="note_to">
+					<select id="note_to" name="note_to" title="$tlang.getString("note.to.tooltip")">
 						#foreach ($k in ["0", "1", "2", "3"])
 							#set($string = "note.to.")
 							#set($string = $string.concat($k))
@@ -1179,7 +1474,13 @@ $(document).ready(function() {
 				#end
 			#end
 			#if ($size == 0)
-				<p class="instruction">$tlang.getString("gen.noatt")</p>
+				<p class="instruction">
+                                    #if ($value_SubmissionType == 5)
+                                        $tlang.getString("gen.noatt.single")
+                                    #else
+                                        $tlang.getString("gen.noatt")
+                                    #end
+                                </p>
 			#else
 				<ul class="attachList indnt1">
 					#foreach ($attachment in $allPurpose_attachments) 
@@ -1241,9 +1542,6 @@ $(document).ready(function() {
 						</label>
 					</td>
 					<td>
-						<label for="allPurposeReleaseHour">
-							$tlang.getString("allPurpose.show.time")
-						</label>
 					</td>
 				</tr>
 				<tr>
@@ -1254,28 +1552,27 @@ $(document).ready(function() {
 					<td>
 					</td>
 					<td>
-					#chef_dateselectionwidget($name_allPurposeReleaseYear $name_allPurposeReleaseMonth $name_allPurposeReleaseDay $!value_year_from $!value_year_to $value_allPurposeReleaseYear $value_allPurposeReleaseMonth $value_allPurposeReleaseDay $dateFormat "")
+
+						<input type="text" id="allPurposeRelease" name="allPurposeRelease" class="datepicker" value="">
+
+						<script type="text/javascript">
+						      localDatePicker({
+						      	input:'#allPurposeRelease', 
+						      	useTime:1, 
+						      	val:"$value_allPurposeReleaseYear$H$value_allPurposeReleaseMonth$H$value_allPurposeReleaseDay $value_allPurposeReleaseHour:$value_allPurposeReleaseMin",
+						      	parseFormat: 'YYYY-MM-DD HH:mm',
+						      	ashidden:{
+						      		month:"allPurpose_releaseMonth",
+						      		day:"allPurpose_releaseDay",
+						      		year:"allPurpose_releaseYear",
+						      		hour:"allPurpose_releaseHour",
+						      		minute:"allPurpose_releaseMin"
+						      	}
+						      });
+						</script>
+
 					</td>
 					<td>
-						<select name="$name_allPurposeReleaseHour" id="$name_allPurposeReleaseHour">
-							#foreach ($i in [1..12])
-								<option value="$i" #if ($value_allPurposeReleaseHour==$i)selected="selected"#end>$i</option>
-							#end
-						</select>
-						<select name="$name_allPurposeReleaseMin" id="$name_allPurposeReleaseMin">
-							#foreach ($i in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
-								<option value="$i" #if($i == $value_allPurposeReleaseMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
-							#end
-						</select>
-						<select name="$name_allPurposeReleaseAMPM" id="$name_allPurposeReleaseAMPM">
-							#foreach ($i in ["AM", "PM"])
-								#if ($i == $value_allPurposeReleaseAMPM)
-									<option value="$i" selected="selected">$i</option>
-								#else
-									<option value="$i">$i</option>
-								#end
-						#end
-					</select>
 					</td>
 				</tr>
 				<tr>
@@ -1316,28 +1613,27 @@ $(document).ready(function() {
 					<td>
 					</td>
 					<td>
-						#chef_dateselectionwidget($name_allPurposeRetractYear $name_allPurposeRetractMonth $name_allPurposeRetractDay $!value_year_from $!value_year_to $value_allPurposeRetractYear $value_allPurposeRetractMonth $value_allPurposeRetractDay $dateFormat "")
+
+						<input type="text" id="allPurposeRetract" name="allPurposeRetract" class="datepicker" value="">
+
+						<script type="text/javascript">
+						      localDatePicker({
+						      	input:'#allPurposeRetract', 
+						      	useTime:1, 
+						      	val:"$value_allPurposeRetractYear$H$value_allPurposeRetractMonth$H$value_allPurposeRetractDay $value_allPurposeRetractHour:$value_allPurposeRetractMin",
+						      	parseFormat: 'YYYY-MM-DD HH:mm',
+						      	ashidden:{
+						      		month:"allPurpose_retractMonth",
+						      		day:"allPurpose_retractDay",
+						      		year:"allPurpose_retractYear",
+						      		hour:"allPurpose_retractHour",
+						      		minute:"allPurpose_retractMin"
+						      	}
+						      });
+						</script>
+
 					</td>
 					<td>
-						<select name="$name_allPurposeRetractHour" id="$name_allPurposeRetractHour">
-							#foreach ($i in [1..12])
-								<option value="$i" #if ($value_allPurposeRetractHour==$i)selected="selected"#end>$i</option>
-							#end
-						</select>
-						<select name="$name_allPurposeRetractMin" id="$name_allPurposeRetractMin">
-							#foreach ($i in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
-								<option value="$i" #if($i == $value_allPurposeRetractMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
-							#end
-						</select>
-						<select name="$name_allPurposeRetractAMPM" id="$name_allPurposeRetractAMPM">
-							#foreach ($i in ["AM", "PM"])
-								#if ($i == $value_allPurposeRetractAMPM)
-									<option value="$i" selected="selected">$i</option>
-								#else
-									<option value="$i">$i</option>
-								#end
-						#end
-					</select>
 					</td>
 				</tr>
 				<tr>
@@ -1361,8 +1657,6 @@ $(document).ready(function() {
 					#foreach ($role in $!roleUsers.keySet())
 
 						#set ($roleCount=$roleCount + 1)
-
-						#set($allString=$tlang.getString("all").concat(" ").concat($role))
 						#set($expandString=$tlang.getString("allPurpose.show.expand").concat(" ").concat($role).concat(" ").concat($tlang.getString("allPurpose.show.list")))
 						#set($collapseString=$tlang.getString("allPurpose.show.collapse").concat(" ").concat($role).concat(" ").concat($tlang.getString("allPurpose.show.list")))
 						#set($expandId = "expand_")
@@ -1382,7 +1676,7 @@ $(document).ready(function() {
 								</a>
 								<input id="$showInputString" name="showInputString_$roleCount" #if ($!value_allPurposeAccessList.contains($role)) checked="checked" #end type="checkbox" name="allPurpose_$role" class="selectAllMembers"/>
 								<label for="showInputString_$roleCount">
-									$allString
+									$role
 								</label>
 								(<span class="highlight countDisplay"></span> <span class="highlight">$tlang.getString("allPurpose.user.selection.count")</span>)
 								<ul id="roleDiv_$roleCount"  style="display:none;" class="attachList userList">
@@ -1424,7 +1718,7 @@ $(document).ready(function() {
 			</div>
 		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
-	<script language="JavaScript" type="text/JavaScript">
+	<script type="text/JavaScript">
 		<!--
 			function toggleSelectAll(caller, elementName)
 			{

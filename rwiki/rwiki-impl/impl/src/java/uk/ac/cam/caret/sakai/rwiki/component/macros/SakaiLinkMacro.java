@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SakaiLinkMacro.java $
- * $Id: SakaiLinkMacro.java 127747 2013-07-25 16:10:58Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SakaiLinkMacro.java $
+ * $Id: SakaiLinkMacro.java 121903 2013-03-28 15:27:10Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -117,6 +117,8 @@ public class SakaiLinkMacro extends BaseLocaleMacro
 			
 			url = context.convertLink(url);
 			
+            //Trim url
+            url=url.trim();
 
 			// SAK-20449 XSS protection
 			if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("ftp://") &&

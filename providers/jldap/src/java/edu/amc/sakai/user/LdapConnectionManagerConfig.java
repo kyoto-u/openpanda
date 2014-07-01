@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/jldap/src/java/edu/amc/sakai/user/LdapConnectionManagerConfig.java $
- * $Id: LdapConnectionManagerConfig.java 110799 2012-07-26 18:04:51Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/jldap/src/java/edu/amc/sakai/user/LdapConnectionManagerConfig.java $
+ * $Id: LdapConnectionManagerConfig.java 132537 2013-12-13 00:23:13Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -203,13 +203,34 @@ public interface LdapConnectionManagerConfig {
 	public void setPoolMaxConns(int maxConns);
 	
 	/**
-	 * @return The maximum number of results that can be returned in our query
+	 * @return The maximum number of objects to lookup in one query.
+	 * @deprecated {@link #getBatchSize()}
 	 */
 	public int getMaxObjectsToQueryFor();
 	
 	/**
-	 * @param maxResultsFromOneQuery The maximum number of results that can be returned in our query 
+	 * @param maxObjectsToQueryFor The maximum number objects to lookup in one query.
+	 * @deprecated {@link #setBatchSize(int)}
 	 */
 	public void setMaxObjectsToQueryFor(int maxObjectsToQueryFor);
 	
+	/**
+	 * @return The maximum number of objects to lookup in one query.
+	 */
+	public int getBatchSize();
+
+	/**
+	 * @param batchSize The maximum number objects to lookup in one query.
+	 */
+	public void setBatchSize(int batchSize);
+
+	/**
+	 * @return The maximum number of results to ever get back from LDAP.
+	 */
+	public int getMaxResultSize();
+
+	/**
+	 * @param maxResultSize The maximum number of results to ever get back from LDAP.
+	 */
+	public void setMaxResultSize(int maxResultSize);
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/authz/impl/AuthzGroupServiceTest.java $
- * $Id: AuthzGroupServiceTest.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/AuthzGroupServiceTest.java $
+ * $Id: AuthzGroupServiceTest.java 133031 2014-01-06 20:27:07Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,6 +30,8 @@ import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.tool.api.SessionManager;
+
+import java.util.Set;
 
 /**
  * <p>
@@ -109,4 +111,9 @@ public class AuthzGroupServiceTest extends DbAuthzGroupService
 	{
 		return null;
 	}
+
+    @Override
+    public Set<String> getMaintainRoles() {
+        return null;
+    }
 }

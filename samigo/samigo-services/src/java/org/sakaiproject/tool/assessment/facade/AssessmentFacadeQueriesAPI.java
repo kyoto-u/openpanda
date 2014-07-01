@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/AssessmentFacadeQueriesAPI.java $
- * $Id: AssessmentFacadeQueriesAPI.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentFacadeQueriesAPI.java $
+ * $Id: AssessmentFacadeQueriesAPI.java 306187 2014-02-19 19:32:59Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,6 +37,8 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentBaseIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.osid.shared.impl.IdImpl;
@@ -94,6 +96,11 @@ public interface AssessmentFacadeQueriesAPI {
 	 */
 	public ArrayList getTitleOfAllActiveAssessmentTemplates();
 
+	/**
+	 * 
+	 * @param assessmentId
+	 * @return the assement or null if non found
+	 */
 	public AssessmentFacade getAssessment(Long assessmentId);
 
 	public void removeAssessment(Long assessmentId);
@@ -188,6 +195,11 @@ public interface AssessmentFacadeQueriesAPI {
 
 	public void removeItemAttachment(Long itemAttachmentId);
 
+	public ItemTextAttachmentIfc createItemTextAttachment(ItemTextIfc itemText,
+			String resourceId, String filename, String protocolboolean, boolean isEditPendingAssessmentFlow);
+
+	public void removeItemTextAttachment(Long itemTextAttachmentId);
+	
 	public void updateAssessmentLastModifiedInfo(
 			AssessmentFacade assessment);
 

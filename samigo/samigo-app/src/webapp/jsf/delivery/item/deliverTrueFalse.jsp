@@ -1,9 +1,9 @@
-<%-- $Id: deliverTrueFalse.jsp 96833 2011-08-11 17:04:08Z ktsao@stanford.edu $
+<%-- $Id: deliverTrueFalse.jsp 133922 2014-01-30 16:50:27Z ottenhoff@longsight.com $
 include file for delivering multiple choice single correct survey questions
 should be included in file importing DeliveryMessages
 --%>
 <!--
-* $Id: deliverTrueFalse.jsp 96833 2011-08-11 17:04:08Z ktsao@stanford.edu $
+* $Id: deliverTrueFalse.jsp 133922 2014-01-30 16:50:27Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -118,7 +118,7 @@ should be included in file importing DeliveryMessages
         <h:column>
           <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
           <h:outputLink value="#{attach.location}" target="new_window">
-            <h:outputText escape="false" value="#{attach.filename}" />
+            <h:outputText value="#{attach.filename}" />
           </h:outputLink>
         </h:column>
         <h:column>

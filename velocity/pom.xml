@@ -5,40 +5,32 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>2.9.3</version>
+        <version>10.0</version>
 		<relativePath>../master/pom.xml</relativePath>
     </parent>
 
     <name>sakai-velocity base pom</name>
     <groupId>org.sakaiproject.velocity</groupId>
     <artifactId>velocity</artifactId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <packaging>pom</packaging>
     
     <modules>
-        <module>assembly</module>
         <module>tool</module>
         <module>tool-api</module>
     </modules>
     
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.3</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.3</developerConnection>
-        <url>https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.3</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/velocity/trunk</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/velocity/trunk</developerConnection>
+        <url>https://source.sakaiproject.org/svn/velocity/trunk</url>
     </scm>
- 
-    <repositories> 
-		<repository> 
-			<id>sonatype-nexus-snapshots</id> 
-			<name>Sonatype Nexus Snapshots</name> 
-			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
-			<releases> 
-				<enabled>false</enabled> 
-			</releases> 
-			<snapshots> 
-				<enabled>true</enabled> 
-			</snapshots> 
-		</repository> 
-    </repositories>
-   
+    
+    <distributionManagement>
+        <site>
+            <id>sakai-site</id>
+            <name>Sakai release Site</name>
+            <url>scpexe://source.sakaiproject.org/var/www/html/release/velocity/${project.version}</url>
+        </site>
+    </distributionManagement>
 </project>

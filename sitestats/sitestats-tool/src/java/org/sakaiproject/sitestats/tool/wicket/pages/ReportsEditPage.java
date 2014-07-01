@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/ReportsEditPage.java $
- * $Id: ReportsEditPage.java 87931 2011-02-02 12:12:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/ReportsEditPage.java $
+ * $Id: ReportsEditPage.java 307523 2014-03-26 22:56:41Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,8 @@
 package org.sakaiproject.sitestats.tool.wicket.pages;
 
 import java.text.Collator;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -122,8 +124,16 @@ public class ReportsEditPage extends BasePage {
 	/** Ajax update lock */
 	private final ReentrantLock		ajaxUpdateLock	= new ReentrantLock();
 	private boolean					usersLoaded		= false;
+	private static Log log = LogFactory.getLog(ReportsEditPage.class);
 	
 	private transient Collator		collator		= Collator.getInstance();
+	{
+		try{
+			collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+		}catch(ParseException e){
+			log.error("Unable to create RuleBasedCollator");
+		}		
+	}
 	
 	public ReportsEditPage() {
 		this(null, null, null);
@@ -185,7 +195,6 @@ public class ReportsEditPage extends BasePage {
 		super.renderHead(response);
 		response.renderJavascriptReference(JQUERYSCRIPT);
 		response.renderJavascriptReference(StatsManager.SITESTATS_WEBAPP + "/script/reports.js");
-		response.renderJavascriptReference(StatsManager.SITESTATS_WEBAPP + "/script/jquery.ifixpng2.js");
 		StringBuilder onDomReady = new StringBuilder();
 		onDomReady.append("checkWhatSelection();");
 		onDomReady.append("checkWhenSelection();");
@@ -193,8 +202,6 @@ public class ReportsEditPage extends BasePage {
         onDomReady.append("checkHowSelection();");
         onDomReady.append("checkReportDetails();");
         onDomReady.append("checkHowChartSelection();");
-		onDomReady.append("jQuery.ifixpng('"+StatsManager.SITESTATS_WEBAPP+"images/transparent.gif'); ");
-		onDomReady.append("jQuery('img').ifixpng();");
 		response.renderOnDomReadyJavascript(onDomReady.toString());
 	}
 	

@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,6 +48,7 @@ import org.w3c.dom.NodeList;
  * "storage" class. The service's storage class can extend this to provide covers to <br />
  * turn Resource and Edit into something more type specific to the service.
  * </p>
+ * @deprecated This was used in earlier versions of Sakai and isn't supported any longer.
  */
 public class BaseXmlFileStorage
 {

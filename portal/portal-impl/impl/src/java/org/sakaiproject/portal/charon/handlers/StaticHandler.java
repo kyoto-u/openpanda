@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/StaticHandler.java $
- * $Id: StaticHandler.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/StaticHandler.java $
+ * $Id: StaticHandler.java 305995 2014-02-14 18:09:22Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.portal.util.URLUtils;
 
 /**
  * Handler to process static content with an internal, in memory cache.
@@ -42,7 +43,7 @@ import org.apache.commons.logging.LogFactory;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 305995 $
  * 
  */
 public abstract class StaticHandler extends BasePortalHandler
@@ -102,7 +103,7 @@ public abstract class StaticHandler extends BasePortalHandler
 				staticCache = new StaticCache[100];
 				staticCacheHolder.set(staticCache);
 			}
-			String path = req.getPathInfo();
+			String path = URLUtils.getSafePathInfo(req);
 			if (path.indexOf("..") >= 0)
 			{
 				res.sendError(404);
@@ -174,7 +175,7 @@ public abstract class StaticHandler extends BasePortalHandler
 		catch (IOException ex)
 		{
 			log.info("Failed to send portal content ", ex);
-			res.sendError(404, ex.getMessage());
+			res.sendError(404, URLUtils.getSafePathInfo(req));
 		}
 
 	}

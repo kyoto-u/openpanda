@@ -44,7 +44,7 @@ public class FormResourceType implements SiteSpecificResourceType {
          ResourceToolAction.CREATE, ResourceToolAction.ActionType.CREATE, FORM_TYPE_ID, CREATE_HELPER,
          requiredKeys);
       ResourceToolAction revise = new BaseInteractionAction(ResourceToolAction.REVISE_CONTENT,
-         ResourceToolAction.ActionType.REVISE_CONTENT, FORM_TYPE_ID, REVISE_HELPER, null);
+         ResourceToolAction.ActionType.REVISE_CONTENT, FORM_TYPE_ID, REVISE_HELPER, (List<String>)null);
       ResourceToolAction copy = new BaseServiceLevelAction(ResourceToolAction.COPY,
          ResourceToolAction.ActionType.COPY, FORM_TYPE_ID, true);
       ResourceToolAction delete = new BaseServiceLevelAction(ResourceToolAction.DELETE,

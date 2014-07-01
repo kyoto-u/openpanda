@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.logic;
 
 
@@ -67,7 +66,6 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserEdit;
 import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.util.Validator;
 
 /**
  * Implementation of SakaiProxy for Profile2.
@@ -680,7 +678,7 @@ public class SakaiProxyImpl implements SakaiProxy {
 				sb.append(MIME_ADVISORY);
 				sb.append(BOUNDARY_LINE);
 				sb.append(PLAIN_TEXT_HEADERS);
-				sb.append(Validator.escapeHtmlFormattedText(message));
+				sb.append(StringEscapeUtils.escapeHtml(message));
 				sb.append(BOUNDARY_LINE);
 				sb.append(HTML_HEADERS);
 				sb.append(htmlPreamble(subject));
@@ -956,6 +954,42 @@ public class SakaiProxyImpl implements SakaiProxy {
 				"profile2.profile.business.enabled",
 				ProfileConstants.SAKAI_PROP_PROFILE2_PROFILE_BUSINESS_ENABLED);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isSocialProfileEnabled() {
+		return serverConfigurationService.getBoolean(
+				"profile2.profile.social.enabled",
+				ProfileConstants.SAKAI_PROP_PROFILE2_PROFILE_SOCIAL_ENABLED);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isInterestsProfileEnabled() {
+		return serverConfigurationService.getBoolean(
+				"profile2.profile.interests.enabled",
+				ProfileConstants.SAKAI_PROP_PROFILE2_PROFILE_INTERESTS_ENABLED);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isStaffProfileEnabled() {
+		return serverConfigurationService.getBoolean(
+				"profile2.profile.staff.enabled",
+				ProfileConstants.SAKAI_PROP_PROFILE2_PROFILE_STAFF_ENABLED);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isStudentProfileEnabled() {
+		return serverConfigurationService.getBoolean(
+				"profile2.profile.student.enabled",
+				ProfileConstants.SAKAI_PROP_PROFILE2_PROFILE_STUDENT_ENABLED);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -981,6 +1015,15 @@ public class SakaiProxyImpl implements SakaiProxy {
 	public boolean isProfileConversionEnabled() {
 		return serverConfigurationService.getBoolean("profile2.convert", ProfileConstants.SAKAI_PROP_PROFILE2_CONVERSION_ENABLED);
 	}
+	
+	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public boolean isProfileImageImportEnabled() {
+		return serverConfigurationService.getBoolean("profile2.import.images", ProfileConstants.SAKAI_PROP_PROFILE2_IMPORT_IMAGES_ENABLED);
+	}
+	
 	
 	/**
  	* {@inheritDoc}
@@ -1016,6 +1059,13 @@ public class SakaiProxyImpl implements SakaiProxy {
  	*/
 	public boolean isProfileGalleryEnabledGlobally() {
 		return serverConfigurationService.getBoolean("profile2.gallery.enabled", ProfileConstants.SAKAI_PROP_PROFILE2_GALLERY_ENABLED);
+	}
+	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public boolean isMessagingEnabledGlobally() {
+		return serverConfigurationService.getBoolean("profile2.messaging.enabled", true);
 	}
 	
 	/**
@@ -1238,6 +1288,21 @@ public class SakaiProxyImpl implements SakaiProxy {
 	public String getOfficialImageSource() {
 		return serverConfigurationService.getString("profile2.official.image.source", ProfileConstants.OFFICIAL_IMAGE_SETTING_DEFAULT);
 	}
+	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public String getOfficialImagesDirectory() {
+		return serverConfigurationService.getString("profile2.official.image.directory", "/official-photos");
+	}
+	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public String getOfficialImagesFileSystemPattern() {
+		return serverConfigurationService.getString("profile2.official.image.directory.pattern", "TWO_DEEP");
+	}
+	
 	
 	/**
  	* {@inheritDoc}
@@ -1553,6 +1618,7 @@ public class SakaiProxyImpl implements SakaiProxy {
 
 	//INJECT OTHER RESOURCES
 	@Setter
+
 	private ArrayList<String> emailTemplates;
 	
 	

@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +56,6 @@ import org.sakaiproject.api.app.messageforums.PermissionLevelManager;
 import org.sakaiproject.api.app.messageforums.PermissionManager;
 import org.sakaiproject.api.app.messageforums.Topic;
 import org.sakaiproject.api.app.messageforums.TopicControlPermission;
-import org.sakaiproject.api.app.messageforums.cover.ForumScheduleNotificationCover;
 import org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager;
 import org.sakaiproject.api.app.messageforums.ui.UIPermissionsManager;
 import org.sakaiproject.authz.api.AuthzGroup;
@@ -1146,9 +1145,7 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
 //      }
 //    }
     
-    forum.setAvailability(ForumScheduleNotificationCover.makeAvailableHelper(forum.getAvailabilityRestricted(), forum.getOpenDate(), forum.getCloseDate()));
     forumManager.saveDiscussionForum(forum, draft, logEvent, currentUser);
-    ForumScheduleNotificationCover.scheduleAvailability(forum);
     //set flag to false since permissions could have changed.  This will force a clearing and resetting
     //of the permissions cache.
     ThreadLocalManager.set("message_center_permission_set", Boolean.valueOf(false));
@@ -1209,19 +1206,9 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
             + ")");
 
     boolean saveForum = topic.getId() == null;
-    topic.setAvailability(ForumScheduleNotificationCover.makeAvailableHelper(topic.getAvailabilityRestricted(), topic.getOpenDate(), topic.getCloseDate()));
+    
     topic.setDraft(Boolean.valueOf(draft));
     forumManager.saveDiscussionForumTopic(topic, false, currentUser, logEvent);
-    Long topicId = topic.getId();
-    if(topicId == null){
-    	Topic topicTmp = forumManager.getTopicByUuid(topic.getUuid());
-    	if(topicTmp != null){
-    		topicId = topicTmp.getId();
-    	}
-    }
-    if(topicId != null){
-    	ForumScheduleNotificationCover.scheduleAvailability(topic);
-    }
     
     if (saveForum)
     {
@@ -1670,11 +1657,16 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
   
   public boolean  getAnonRole()
   {
+	  return getAnonRole(getContextSiteId());
+  }
+  
+  public boolean  getAnonRole(String contextSiteId)
+  {
    LOG.debug("getAnonRoles()");
    AuthzGroup realm = null;
    try
     {
-      realm = AuthzGroupService.getAuthzGroup(getContextSiteId());      
+      realm = AuthzGroupService.getAuthzGroup(contextSiteId);      
       Role anon = realm.getRole(".anon");
      if (sessionManager.getCurrentSessionUserId()==null && anon != null && anon.getAllowedFunctions().contains("site.visit"))
       {

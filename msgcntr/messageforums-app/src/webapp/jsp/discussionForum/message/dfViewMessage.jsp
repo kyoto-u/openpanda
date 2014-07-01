@@ -9,11 +9,12 @@
 <f:view>
 	<sakai:view toolCssHref="/messageforums-tool/css/msgcntr.css">
 		<h:form id="msgForum" styleClass="specialLink">
-			<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
-			<sakai:script contextBase="/messageforums-tool" path="/js/jquery.qtip.js"/>
+			<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+			<script type="text/javascript" src="/library/js/jquery/qtip/jquery.qtip-latest.min.js"></script>
+			<link rel="stylesheet" type="text/css" href="/library/js/jquery/qtip/jquery.qtip-latest.min.css" />
 			<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
 			<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
-			<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
+			<sakai:script contextBase="/messageforums-tool" path="/js/messages.js"/>
 			
 			<!--jsp/discussionForum/message/dfViewMessage.jsp-->
 			<script type="text/javascript">
@@ -23,7 +24,9 @@
 					}
 						$('.permaLink').click(function(event){
 							event.preventDefault();
-							var url = $(this).attr('href');
+                            var url = $(this).attr('href');
+                            if (!url)
+							    url = this.href;
 							$('#permalinkHolder input').val(url);
 							$('#permalinkHolder').css({
 								'top': event.pageY + 20,
@@ -43,8 +46,6 @@
 					});
 			</script>
 
-<script type="text/javascript">
-</script>
 			<%--breadcrumb and thread nav grid--%>
 			<h:panelGrid columns="2" width="100%" styleClass="navPanel">
 				<h:panelGroup>
@@ -54,23 +55,26 @@
 						<h:commandLink action="#{ForumTool.processActionHome}" value="#{msgs.cdfm_discussion_forums}" title=" #{msgs.cdfm_discussion_forums}"
 							rendered="#{ForumTool.forumsTool}" />
 						<f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
-						<h:commandLink action="#{ForumTool.processActionDisplayForum}" value="#{ForumTool.selectedForum.forum.title}" 
+						<h:commandLink action="#{ForumTool.processActionDisplayForum}" 
 								title=" #{ForumTool.selectedForum.forum.title}" rendered="#{ForumTool.showForumLinksInNav}" >
 							<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+							<h:outputText value="#{ForumTool.selectedForum.forum.title}"/>
 						</h:commandLink>
 						<h:outputText value="#{ForumTool.selectedForum.forum.title}" rendered="#{!ForumTool.showForumLinksInNav}"/>
 						<f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
-						<h:commandLink action="#{ForumTool.processActionDisplayTopic}" value="#{ForumTool.selectedTopic.topic.title}" 
+						<h:commandLink action="#{ForumTool.processActionDisplayTopic}"  
 								title=" #{ForumTool.selectedTopic.topic.title}">
 								<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
 								<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
+								<h:outputText value="#{ForumTool.selectedTopic.topic.title}"/>
 						</h:commandLink>
 						<f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
-						<h:commandLink action="#{ForumTool.processActionDisplayThread}" value="#{ForumTool.selectedThreadHead.message.title}" 
+						<h:commandLink action="#{ForumTool.processActionDisplayThread}"  
 								title=" #{ForumTool.selectedThreadHead.message.title}">
 							<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
 							<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
 							<f:param value="#{ForumTool.selectedThreadHead.message.id}" name="messageId"/>
+							<h:outputText value="#{ForumTool.selectedThreadHead.message.title}"/>
 						</h:commandLink>
 					<f:verbatim></h3></f:verbatim>
 				</h:panelGroup>
@@ -148,7 +152,7 @@
 					</h:commandLink>
 					
 					<h:commandLink title="#{msgs.cdfm_button_bar_reply_to_thread}" action="#{ForumTool.processDfMsgReplyThread}" 
-							rendered="#{ForumTool.selectedTopic.isNewResponse && ForumTool.selectedThreadHead.msgApproved && !ForumTool.selectedTopic.locked && !ForumTool.selectedForum.locked == 'true'}">
+							rendered="#{ForumTool.selectedTopic.isNewResponseToResponse && ForumTool.selectedThreadHead.msgApproved && !ForumTool.selectedTopic.locked && !ForumTool.selectedForum.locked == 'true'}">
 						<h:graphicImage value="/../../library/image/silk/folder_go.png" alt="#{msgs.cdfm_button_bar_reply_to_thread}" />
 						<h:outputText value=" #{msgs.cdfm_button_bar_reply_to_thread}" />
 					</h:commandLink>
@@ -225,10 +229,12 @@
 						<h:outputText 	rendered="#{ForumTool.allowedToApproveMsg && ForumTool.allowedToDenyMsg}" value="#{msgs.cdfm_msg_pending_label}" styleClass="messagePending"/>
 						<h:outputText value="#{ForumTool.selectedMessage.message.title}"  styleClass="title" />
 						<h:outputText value="<br />" escape="false" />
-						<h:outputLink value="#{ForumTool.serverUrl}/direct/profile/#{ForumTool.selectedMessage.message.authorId}/formatted" styleClass="authorProfile" rendered="#{ForumTool.showProfileLink}">
-							<h:outputText value="#{ForumTool.selectedMessage.message.author}" styleClass="textPanelFooter"/>
-						</h:outputLink>
-						<h:outputText value="#{ForumTool.selectedMessage.message.author}" styleClass="textPanelFooter" rendered="#{!ForumTool.showProfileLink}"/>
+						<h:outputText value="#{ForumTool.selectedMessage.message.author}" styleClass="textPanelFooter" rendered="#{!ForumTool.instructor}"/>
+                        <h:commandLink action="#{mfStatisticsBean.processActionStatisticsUser}" immediate="true" title=" #{ForumTool.selectedMessage.message.author }" styleClass="textPanelFooter" rendered="#{ForumTool.instructor}">
+                        	<f:param value="#{ForumTool.selectedMessage.authorEid}" name="siteUserId"/>
+                        	<f:param value="#{ForumTool.selectedMessage.message.author}" name="siteUser"/>
+                        	<h:outputText value="#{ForumTool.selectedMessage.message.author}"/>
+                        </h:commandLink>
 						<h:outputText value=" #{msgs.cdfm_openb} "  styleClass="textPanelFooter" />
 						<h:outputText value="#{ForumTool.selectedMessage.message.created}"  styleClass="textPanelFooter" >
 							<f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{ForumTool.userTimeZone}" locale="#{ForumTool.userLocale}"/>  
@@ -250,6 +256,21 @@
 						<h:outputText value="#{msgs.cdfm_next_msg}" rendered="#{!ForumTool.selectedMessage.hasNext}" />
 					</h:panelGroup>
 				</h:panelGrid>
+ 
+			                                        <%-- Rank IMAGE --%>
+                        <f:verbatim><div></f:verbatim>
+                    <h:panelGroup rendered="#{ForumTool.selectedMessage.authorRank != null}">
+                        <h:outputText escape="false" value="<img src=\"#{ForumTool.selectedMessage.authorRank.rankImage.attachmentUrl}\" height=\"35\" width=\"35\" />" />
+                    </h:panelGroup>
+                        <f:verbatim></div></f:verbatim>
+
+                                        <%-- Rank NAME--%>
+                        <h:outputText value="#{ForumTool.selectedMessage.authorRank.title}" styleClass="forumsRankName"/>
+			<h:outputText value="#{msgs.num_of_posts} #{ForumTool.selectedMessage.authorPostCount}" styleClass="forumsRankName" rendered="#{ForumTool.selectedMessage.authorRank.type == 2}"/>
+			
+			
+
+	
 				<f:verbatim><div class="textPanel"></f:verbatim>
 					<h:outputText escape="false" value="#{ForumTool.selectedMessage.message.body}" id="messageBody" 
 							rendered="#{!ForumTool.selectedMessage.message.deleted}" />

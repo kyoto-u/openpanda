@@ -5,20 +5,18 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>2.9.3</version>
+        <version>10.0</version>
 		<relativePath>../master/pom.xml</relativePath>
     </parent>
 
     <name>Sakai Mail Archive Project</name>
     <groupId>org.sakaiproject.mailarchive</groupId>
     <artifactId>mailarchive</artifactId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>mailarchive-api/api</module>
-        <module>mailarchive-assembly</module>
-        <module>mailarchive-help</module>
         <module>mailarchive-impl/impl</module>
         <module>mailarchive-impl/pack</module>
         <module>mailarchive-james/james</module>
@@ -28,10 +26,18 @@
     </modules>
     
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3</developerConnection>
-        <url>https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/mailarchive/trunk</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/mailarchive/trunk</developerConnection>
+        <url>https://source.sakaiproject.org/svn/mailarchive/trunk</url>
     </scm>
+      
+    <distributionManagement>
+        <site>
+            <id>sakai-site</id>
+            <name>Sakai release Site</name>
+            <url>scpexe://source.sakaiproject.org/var/www/html/release/mailarchive/${project.version}</url>
+        </site>
+    </distributionManagement>
       
     <dependencyManagement>
         <dependencies>
@@ -48,19 +54,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
-    <repositories> 
-		<repository> 
-			<id>sonatype-nexus-snapshots</id> 
-			<name>Sonatype Nexus Snapshots</name> 
-			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
-			<releases> 
-				<enabled>false</enabled> 
-			</releases> 
-			<snapshots> 
-				<enabled>true</enabled> 
-			</snapshots> 
-		</repository> 
-	</repositories>
-
 </project>

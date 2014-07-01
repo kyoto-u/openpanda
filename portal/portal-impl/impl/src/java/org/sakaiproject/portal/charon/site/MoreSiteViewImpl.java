@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/MoreSiteViewImpl.java $
- * $Id: MoreSiteViewImpl.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/MoreSiteViewImpl.java $
+ * $Id: MoreSiteViewImpl.java 134284 2014-02-08 21:39:55Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -22,12 +22,14 @@
 package org.sakaiproject.portal.charon.site;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,6 +42,9 @@ import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.coursemanagement.api.AcademicSession;
+import org.sakaiproject.coursemanagement.api.CourseManagementService;
+import org.sakaiproject.component.cover.ComponentManager;
 
 /**
  * @author ieb
@@ -49,6 +54,8 @@ public class MoreSiteViewImpl extends DefaultSiteViewImpl
 {
 	/** messages. */
 	private static ResourceLoader rb = new ResourceLoader("sitenav");
+    private CourseManagementService courseManagementService = (CourseManagementService) ComponentManager.get(CourseManagementService.class);
+
 
 	/**
 	 * @param siteHelper
@@ -74,7 +81,7 @@ public class MoreSiteViewImpl extends DefaultSiteViewImpl
 	@Override
 	protected void processMySites()
 	{
-		boolean useDHTMLMore =  Boolean.valueOf(serverConfigurationService.getBoolean("portal.use.dhtml.more", false));
+		boolean useDHTMLMore =  Boolean.valueOf(serverConfigurationService.getBoolean("portal.use.dhtml.more", true));
 		if (useDHTMLMore)
 		{
 			List<Site> allSites = new ArrayList<Site>();
@@ -82,7 +89,7 @@ public class MoreSiteViewImpl extends DefaultSiteViewImpl
 			allSites.addAll(moreSites);
 			// get Sections
 			Map<String, List> termsToSites = new HashMap<String, List>();
-			Map<String, List> tabsMoreTerms = new HashMap<String, List>();
+			Map<String, List> tabsMoreTerms = new TreeMap<String, List>();
 			for (int i = 0; i < allSites.size(); i++)
 			{
 				Site site = allSites.get(i);
@@ -155,7 +162,7 @@ public class MoreSiteViewImpl extends DefaultSiteViewImpl
 				List<Map> temp = siteHelper.convertSitesToMaps(request, currentList, prefix,
 						currentSiteId, myWorkspaceSiteId,
 						/* includeSummary */false, /* expandSite */false,
-						/* resetTools */"true".equals(serverConfigurationService
+						/* resetTools */"true".equalsIgnoreCase(serverConfigurationService
 								.getString(Portal.CONFIG_AUTO_RESET)),
 						/* doPages */true, /* toolContextPath */null, loggedIn);
 
@@ -172,7 +179,11 @@ public class MoreSiteViewImpl extends DefaultSiteViewImpl
 			// Order term column headers according to order specified in
 			// portal.term.order
 			// Filter out terms for which user is not a member of any sites
-
+			
+			// SAK-19464 - Set tab order
+			// Property portal.term.order 
+			// Course sites (sorted in order by getAcademicSessions START_DATE ASC)
+			// Rest of terms in alphabetic order
 			if (termOrder != null)
 			{
 				for (int i = 0; i < termOrder.length; i++)
@@ -185,6 +196,19 @@ public class MoreSiteViewImpl extends DefaultSiteViewImpl
 
 					}
 
+				}
+			}
+			
+
+			if (courseManagementService != null) {
+				Collection<AcademicSession> sessions = courseManagementService.getAcademicSessions();
+				for (AcademicSession s: sessions) {
+					String title = s.getTitle();
+					if (tabsMoreTerms.containsKey(title)) {
+						if (!tabsMoreSortedTermList.contains(title)) {
+							tabsMoreSortedTermList.add(title);
+						}
+					}
 				}
 			}
 

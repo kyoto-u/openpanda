@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/QuestionScoresBean.java $
- * $Id: QuestionScoresBean.java 70929 2010-01-06 00:16:57Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/QuestionScoresBean.java $
+ * $Id: QuestionScoresBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,31 +38,14 @@ import javax.faces.event.ActionEvent;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.sakaiproject.content.api.FilePickerHelper;
-import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.jsf.model.PhaseAware;
-import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.assessment.business.entity.RecordingData;
-import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
-import org.sakaiproject.tool.assessment.services.GradingService;
-import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
+import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
 import org.sakaiproject.tool.assessment.ui.bean.util.Validator;
-import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentSettingsBean;
-import org.sakaiproject.tool.assessment.ui.bean.author.PublishedAssessmentSettingsBean;
-import org.sakaiproject.tool.assessment.ui.bean.evaluation.TotalScoresBean;
-import org.sakaiproject.tool.assessment.ui.listener.author.SaveAssessmentAttachmentListener;
 import org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScoreListener;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.util.AttachmentUtil;
-import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAttachmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingAttachmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingIfc;
-import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.util.ResourceLoader;
 
 /**
@@ -109,7 +92,6 @@ public class QuestionScoresBean
   private HashMap scoresByItem;
   private static Log log = LogFactory.getLog(QuestionScoresBean.class);
 
-  // modified by gopalrc - Jan 2008
   //private String selectedSectionFilterValue = TotalScoresBean.ALL_SECTIONS_SELECT_VALUE;
   private String selectedSectionFilterValue = null;
   
@@ -132,8 +114,8 @@ public class QuestionScoresBean
   private Map userIdMap;
   private HashMap agentResultsByItemGradingId;
   private boolean isAnyItemGradingAttachmentListModified;
-  private Boolean releasedToGroups = null; // added by gopalrc - Jan 2008
-
+  private Boolean releasedToGroups = null;
+  
   /**
    * Creates a new QuestionScoresBean object.
    */
@@ -308,15 +290,6 @@ public class QuestionScoresBean
   public void setPublishedId(String ppublishedId)
   {
     publishedId = ppublishedId;
-    /*
-    //added by gopalrc - Jan 2007
-	if (isReleasedToGroups()) {
-		setSelectedSectionFilterValue(TotalScoresBean.RELEASED_SECTIONS_GROUPS_SELECT_VALUE);
-	}
-	else {
-		setSelectedSectionFilterValue(TotalScoresBean.ALL_SECTIONS_SELECT_VALUE);
-	}
-    */
   }
 
   /**
@@ -791,7 +764,7 @@ public class QuestionScoresBean
 
 
   public String getSelectedSectionFilterValue() {
-	  // lazy initialization added by gopalrc - Jan 2008  
+	  // lazy initialization
 	  if (selectedSectionFilterValue == null) {
 		  if (isReleasedToGroups()) {
 			  setSelectedSectionFilterValue(TotalScoresBean.RELEASED_SECTIONS_GROUPS_SELECT_VALUE);
@@ -956,18 +929,7 @@ public void clear(ActionEvent event) {
 		this.haveModelShortAnswer = haveModelShortAnswer;
 	}
 
-	/**
-	 * added by gopalrc - jan 2008
-	 * @return
-	 */
 	public boolean isReleasedToGroups() {
-/*		
-		if (releasedToGroups == null) {
-	    	PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
-	    	releasedToGroups = publishedAssessmentService.isReleasedToGroups(publishedId);
-		}
-		return releasedToGroups;
-*/
 		return this.getPublishedAssessment().getAssessmentAccessControl().getReleaseTo().equals(AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS);
 	}
 	

@@ -26,11 +26,16 @@
       </list>
     </property>
   </bean>
+  
+  <bean id="persistenceHelper" class="org.sakaiproject.tool.assessment.services.PersistenceHelper">
+  	<property name="deadlockInterval"><value>3500</value></property>
+  	<property name="retryCount"><value>5</value></property>
+  </bean>
 
    <bean id="PersistenceService"
         class="org.sakaiproject.tool.assessment.services.PersistenceService">
-     <property name="deadlockInterval"><value>3500</value></property>
-     <property name="retryCount"><value>5</value></property>
+     
+     <property name="persistenceHelper" ref="persistenceHelper"/>
      <property name="typeFacadeQueries"> <ref bean="TypeFacadeQueries" /> </property>
      <property name="questionPoolFacadeQueries"><ref bean="QuestionPoolFacadeQueries" /> </property>
      <property name="sectionFacadeQueries"> <ref bean="SectionFacadeQueries" /> </property>
@@ -45,6 +50,7 @@
      <property name="authzQueriesFacade"><ref bean="AuthzQueriesFacade" /></property>
      <property name="favoriteColChoicesFacadeQueries"><ref bean ="FavoriteColChoicesFacadeQueries"/></property>
      <property name="sectionAwareness" ><ref bean="org.sakaiproject.section.api.SectionAwareness"/></property>
+     <property name="eventLogFacadeQueries" ><ref bean="EventLogFacadeQueries"/></property>
    </bean>
     
    <bean id="TypeFacadeQueries"
@@ -99,6 +105,21 @@
       <property name="transactionManager"><ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/></property>
       <property name="target">
         <bean class="org.sakaiproject.tool.assessment.facade.AssessmentFacadeQueries">
+          <property name="sessionFactory"><ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/></property>
+	</bean>
+      </property>
+      <property name="transactionAttributes">
+        <props>
+          <prop key="*">PROPAGATION_REQUIRED</prop>
+        </props>
+      </property>
+    </bean>
+    
+      <bean id="EventLogFacadeQueries"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+      <property name="transactionManager"><ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/></property>
+      <property name="target">
+        <bean class="org.sakaiproject.tool.assessment.facade.EventLogFacadeQueries">
           <property name="sessionFactory"><ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/></property>
 	</bean>
       </property>
@@ -176,6 +197,9 @@
       <property name="target">
         <bean class="org.sakaiproject.tool.assessment.facade.AssessmentGradingFacadeQueries">
           <property name="sessionFactory"><ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/></property>
+          <property name="contentHostingService" ref="org.sakaiproject.content.api.ContentHostingService"/>
+          <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
+          <property name="persistenceHelper" ref="persistenceHelper"/>
 	</bean>
       </property>
       <property name="transactionAttributes">
@@ -254,15 +278,22 @@
       </property>
     </bean>
 
+  <bean id="QTIService"
+    class="org.sakaiproject.tool.assessment.services.qti.QTIService">
+  </bean>
+
     <bean id="org.sakaiproject.tool.assessment.services.assessment.AssessmentEntityProducer"
               class="org.sakaiproject.tool.assessment.services.assessment.AssessmentEntityProducer"
               singleton="true" init-method="init" destroy-method="destroy">
+	  <property name="qtiService" ref="QTIService"/>
     </bean>
+
 
   <bean id ="org.sakaiproject.tool.assessment.entity.api.PublishedEntityProvider"
       class="org.sakaiproject.tool.assessment.entity.impl.PublishedAssessmentEntityProviderImpl">
     <property name="publishedAssessmentFacadeQueries" ref="PublishedAssessmentFacadeQueries" />
     <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+    <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />
   </bean>
 
    <!--  Add a job to auto-submit assessments -->

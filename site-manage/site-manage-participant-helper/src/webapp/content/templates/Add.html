@@ -5,9 +5,9 @@
 	<link href="/library/skin/tool_base.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all"/>
 	<link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all"/>
 	<script type="text/javascript" rsf:id="resize"/>
-	<script type="text/javascript" src="/library/js/jquery/jquery-ui/js/jquery.js"></script>
-	<script type="text/javascript" src="/library/js/jquery/jquery-ui/js/jquery-ui.js"></script>
-	<link type="text/css" href="/library/js/jquery/jquery-ui/css/smoothness/jquery-ui.css" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
+	<link type="text/css" href="/library/js/jquery/ui/1.10.3/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" media="screen" />
 	<script type="text/javascript" language="JavaScript" src="/library/js/headscripts.js"></script>
 </head>
 
@@ -31,6 +31,7 @@
 
 		<!-- form for adding participant -->
 		<form rsf:id="participant-form" >
+			<input rsf:id="csrfToken" name="csrfToken" id="csrfToken" type="hidden"/>
 			<!-- add official account -->
 			<h4 class="instruction" rsf:id="officialAccountSectionTitle"></h4>
 			<label rsf:id="officialAccountLabel" for ="officialAccountParticipant">
@@ -65,7 +66,7 @@
 			</table>
 			
 			<!--  choose active/inactive status -->
-			<h4 class="instruction" rsf:id="msg=participant.status"></h4> 
+			<h4 class="instruction" rsf:id="status-message"></h4> 
 			<span rsf:id="select-status"></span>
 			<table class="listHier lines nolines" style="width:auto" summary="">
 				<tr rsf:id="status-row:">

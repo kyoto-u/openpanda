@@ -20,10 +20,15 @@
    </bean>
 
     <!-- EB Entity Providers - classes in sakai-gradebook-app-ui -->
-    <bean id="GradebookEntityProvider" class="org.sakaiproject.tool.gradebook.ui.helpers.entity.GradebookEntityProvider"
-        init-method="init" destroy-method="destroy">
-        <property name="entityProviderManager" ref="org.sakaiproject.entitybroker.entityprovider.EntityProviderManager" />
+    <bean id="GradebookEntityProvider" 
+    	parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
+    	class="org.sakaiproject.tool.gradebook.ui.helpers.entity.GradebookEntityProvider"
+        >
         <property name="gradebookService" ref="org.sakaiproject.service.gradebook.GradebookService" />
+        <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />
+      	<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+      	<property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+	  	<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     </bean>
 
     <bean id="LocalPermissionLogic" class="org.sakaiproject.tool.gradebook.ui.helpers.beans.locallogic.LocalPermissionLogic">
@@ -31,24 +36,19 @@
     </bean>
 
     <!-- handles configuration of internationalization messages -->
-    <bean id="messageSource" parent="messageSourceParent">
+    <bean id="messageSource" parent="messageSourceParent"
+        depends-on="TLABPostProcessorLoader">
       <property name="basename" value="WEB-INF/bundle/messages" />
     </bean>
 
-   <!--  intercept incoming views to filter on permissions -->
     <bean parent="viewParamsInterceptorParent">
+        <!-- intercept incoming views to filter on permissions -->
         <property name="value">
             <bean id="GradebookViewParamsInterceptor" class="org.sakaiproject.tool.gradebook.ui.helpers.params.GradebookViewParamsInterceptor">
                 <property name="localPermissionLogic" ref="LocalPermissionLogic" />
             </bean>
         </property>
     </bean>
-
-      <!-- Override the default style of user messages -->
-   <bean id="messageTemplateContributor" parent="templateContributorParent">
-      <property name="baseDirectory" value="component-templates/" />
-      <property name="templateNames" value="Messages" />
-   </bean>
 
     <bean id="Assignment" parent="entityBeanLocatorParent">
         <property name="newMethod" value="AssignmentCreator.create" />

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/BasicHttpCommand.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/BasicHttpCommand.java $
  * $Id: BasicHttpCommand.java 21065 2007-02-07 00:15:30Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

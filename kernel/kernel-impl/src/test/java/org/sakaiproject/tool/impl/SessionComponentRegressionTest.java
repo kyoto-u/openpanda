@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/test/java/org/sakaiproject/tool/impl/SessionComponentRegressionTest.java $
- * $Id: SessionComponentRegressionTest.java 66380 2009-09-09 13:09:43Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/test/java/org/sakaiproject/tool/impl/SessionComponentRegressionTest.java $
+ * $Id: SessionComponentRegressionTest.java 308853 2014-04-25 23:40:21Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006 The Sakai Foundation.
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,20 +20,13 @@
  **********************************************************************************/
 package org.sakaiproject.tool.impl;
 
-import java.lang.reflect.Field;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import org.apache.commons.lang.mutable.MutableLong;
 import org.jmock.Expectations;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.ToolSession;
+
+import java.lang.reflect.Field;
+import java.util.concurrent.*;
 
 
 /**
@@ -638,7 +631,7 @@ public class SessionComponentRegressionTest extends BaseSessionComponentTest {
 		String uuid = nextUuid();
 		final MySession session = new MySession(sessionComponent,uuid,threadLocalManager,idManager,
 				sessionComponent,sessionListener,sessionComponent.getInactiveInterval(),new MyNonPortableSession(),
-				new MutableLong(System.currentTimeMillis())) {
+				new MutableLong(System.currentTimeMillis()), null) {
 			
 			// Make eclipse warnings go away and define this
 			private static final long serialVersionUID = 1L;
@@ -685,7 +678,7 @@ public class SessionComponentRegressionTest extends BaseSessionComponentTest {
 		};
 		final MySession session = new MySession(sessionComponent,uuid,threadLocalManager,idManager,
 				sessionComponent,sessionListener,sessionComponent.getInactiveInterval(),new MyNonPortableSession(),
-				expirationTimeSuggestion);
+				expirationTimeSuggestion, null);
 		return session;
 	}
 	
@@ -696,7 +689,7 @@ public class SessionComponentRegressionTest extends BaseSessionComponentTest {
 		String uuid = nextUuid();
 		final MySession session = new MySession(sessionComponent,uuid,threadLocalManager,idManager,
 				sessionComponent,sessionListener,sessionComponent.getInactiveInterval(),new MyNonPortableSession(),
-				new MutableLong(System.currentTimeMillis())) {
+				new MutableLong(System.currentTimeMillis()), null) {
 			private long superGetLastAccessedTime() {
 				return super.getLastAccessedTime();
 			}

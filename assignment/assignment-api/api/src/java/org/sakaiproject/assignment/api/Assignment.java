@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-api/api/src/java/org/sakaiproject/assignment/api/Assignment.java $
- * $Id: Assignment.java 68798 2009-11-11 18:48:22Z zqian@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/Assignment.java $
+ * $Id: Assignment.java 128106 2013-08-02 14:34:11Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -117,6 +117,16 @@ public interface Assignment extends Entity, Comparable
 	// send student email notification when the grade is released
 	public static final String ASSIGNMENT_RELEASEGRADE_NOTIFICATION_EACH = "assignment_releasegrade_notification_each";
 
+	public static final String ASSIGNMENT_RELEASERESUBMISSION_NOTIFICATION_VALUE = "assignment_releasereturn_notification_value";
+	public static final String ASSIGNMENT_RELEASERESUBMISSION_NOTIFICATION_NONE = "assignment_releasereturn_notification_none";
+	public static final String ASSIGNMENT_RELEASERESUBMISSION_NOTIFICATION_EACH = "assignment_releasereturn_notification_each";	
+	/**
+	 * Access if this is a group submission type of this Assignment.
+	 * 
+	 * @return The Assignment's AssignmentContent.
+	 */
+	public boolean isGroup();
+                
 	/**
 	 * Access the AssignmentContent of this Assignment.
 	 * 
@@ -151,6 +161,20 @@ public interface Assignment extends Entity, Comparable
 	 * @return The Time at which the Assignment is due, or null if unspecified.
 	 */
 	public Time getDueTime();
+
+	/**
+         * Access the time at which the assignment is visible; may be null.
+         *
+         * @return The Time at which the Assignment is visible, or null if unspecified.
+         */
+        public Time getVisibleTime();
+
+	/**
+ 	 * Access the time at which the assignment is visible; (String)
+	 *
+	 * @return The Time at which the Assignment is visible
+	 */
+	public String getVisibleTimeString();
 
 	/**
 	 * Access the time at which the assignment is due; (String)
@@ -278,6 +302,43 @@ public interface Assignment extends Entity, Comparable
 	 * @return The AssignmentAccess access mode for the Assignment.
 	 */
 	AssignmentAccess getAccess();
+	
+	public Time getPeerAssessmentPeriod();
+ 	
+	public boolean getPeerAssessmentAnonEval();
+
+	public boolean getPeerAssessmentStudentViewReviews();
+
+	public int getPeerAssessmentNumReviews();
+
+	public String getPeerAssessmentInstructions();
+	/**
+	 * Access whether this AssignmentContent allows peer assessment.
+	 * 
+	 * @return true if the AssignmentContent allows peer assessment, false otherwise.
+	 */
+	public boolean getAllowPeerAssessment();
+	
+	/**
+	 * peer assessment is set for this assignment and the current time 
+	 * falls between the assignment close time and the peer asseessment period time
+	 * @return
+	 */
+	public boolean isPeerAssessmentOpen();
+	
+	/**
+	 * peer assessment is set for this assignment but the close time hasn't passed
+	 * @return
+	 */
+	public boolean isPeerAssessmentPending();
+	
+	/**
+	 * peer assessment is set for this assignment but the current time is passed 
+	 * the peer assessment period
+	 * @return
+	 */
+	public boolean isPeerAssessmentClosed();
+
 
 	/**
 	 * <p>

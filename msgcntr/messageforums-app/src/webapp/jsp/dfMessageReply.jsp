@@ -10,7 +10,7 @@
 	<sakai:view title="#{msgs.cdfm_reply_tool_bar_message}" toolCssHref="/messageforums-tool/css/msgcntr.css">
 	<!--jsp/dfMessageReplyThread.jsp-->    
 		<h:form id="dfCompose" styleClass="specialLink">
-             		<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
+             		<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function() {
 					$('#openLinkBlock').hide();
@@ -24,6 +24,7 @@
 				
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
        		<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
+       		<sakai:script contextBase="/messageforums-tool" path="/js/messages.js"/>
         <h:outputText styleClass="alertMessage" value="#{msgs.cdfm_reply_deleted}" rendered="#{ForumTool.errorSynch}" />
 	
 
@@ -120,7 +121,7 @@
 				</a>
 				<span style="margin-left:3em"><img src="/library/image/silk/table_add.png" />&nbsp;<h:outputText value="#{msgs.cdfm_message_count}" />:&nbsp;<span  id="counttotal"> </span></span>		
 		   	</div>
-            <sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" value="#{ForumTool.composeBody}" id="df_compose_body" rows="#{ForumTool.editorRows}" cols="120">
+            <sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" value="#{ForumTool.composeBody}" id="df_compose_body" rows="#{ForumTool.editorRows}" cols="132">
 				<f:validateLength maximum="65000"/>
 			</sakai:inputRichText>
 			<script language="javascript" type="text/javascript">

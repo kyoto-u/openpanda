@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/ResetDeliveryListener.java $
+ * $Id: ResetDeliveryListener.java 271441 2014-02-13 19:31:48Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ import java.util.HashMap;
  * <p>Title: Samigo</p>
  * <p>Purpose:  this module handles the beginning of the assessment
  * <p>Description: Sakai Assessment Manager</p>
- * @version $Id: ResetDeliveryListener.java 694 2005-07-20 04:56:48Z daisyf@stanford.edu $
+ * @version $Id: ResetDeliveryListener.java 271441 2014-02-13 19:31:48Z ktsao@stanford.edu $
  */
 
 public class ResetDeliveryListener implements ActionListener
@@ -68,5 +68,13 @@ public class ResetDeliveryListener implements ActionListener
     bean.setTimeElapseAfterFileUpload(null);
     bean.setLastTimer(0);
     bean.setTimeLimit("0");
+    bean.setNumberRetake(-1);
+    bean.setActualNumberRetake(-1);
+    bean.setHasShowTimeWarning(false);
+    bean.setShowTimeWarning(false);
+    bean.setTurnIntoTimedAssessment(false);
+    bean.setSkipFlag(false);
+    bean.setUseDueDate(true);
+    bean.setSubmitFromTimeoutPopup(false);
   }
 }

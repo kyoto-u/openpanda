@@ -43,9 +43,21 @@ var ThemeBg="";//Background image of Calendar window.
 //end Configurable parameters
 //end Global variable
 
-function NewCal(pCtrl,pFormat,pShowTime,pTimeMode)
+function NewCal(pCtrl,pFormat,pShowTime,pTimeMode,defaultTime)
 {
-	Cal=new Calendar(dtToday);
+	if(defaultTime != null && defaultTime != ""){
+		try{
+			var time = defaultTime.match(/(\d+)(?::(\d\d))?\s*(p?)/);
+			if(time[1] == 12 && !time[3]){
+				//12 am, set hours to 0
+				dtToday.setHours(0);
+			}else{
+				dtToday.setHours( parseInt(time[1]) + (time[3] && time[1] != 12 ? 12 : 0) );
+			}
+			dtToday.setMinutes( parseInt(time[2]) || 0 );
+		}catch(e){}
+	}
+		Cal=new Calendar(dtToday);
 	if ((pShowTime!=null) && (pShowTime))
 	{
 		Cal.ShowTime=true;

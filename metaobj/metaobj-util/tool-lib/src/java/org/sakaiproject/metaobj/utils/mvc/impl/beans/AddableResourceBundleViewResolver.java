@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.3/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/impl/beans/AddableResourceBundleViewResolver.java $
- * $Id: AddableResourceBundleViewResolver.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/impl/beans/AddableResourceBundleViewResolver.java $
+ * $Id: AddableResourceBundleViewResolver.java 125281 2013-05-31 03:42:46Z nbotimer@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -92,7 +92,7 @@ public class AddableResourceBundleViewResolver extends ResourceBundleViewResolve
                Thread.currentThread().getContextClassLoader());
          reader.registerBeanDefinitions(bundle);
       }
-      factory.registerCustomEditor(Resource.class, new ResourceEditor(getApplicationContext()));
+      factory.registerCustomEditor(Resource.class, (new ResourceEditor(getApplicationContext())).getClass());
 
       if (isCache()) {
          factory.preInstantiateSingletons();

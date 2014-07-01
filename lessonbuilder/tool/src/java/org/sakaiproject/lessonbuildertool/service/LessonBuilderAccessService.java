@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -55,9 +56,12 @@ import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.authz.api.SecurityAdvisor.SecurityAdvice;
+import org.sakaiproject.authz.cover.AuthzGroupService;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentEntity;
+import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.entity.api.EntityAccessOverloadException;
 import org.sakaiproject.entity.api.EntityCopyrightException;
 import org.sakaiproject.entity.api.EntityNotDefinedException;
@@ -66,7 +70,6 @@ import org.sakaiproject.entity.api.EntityPropertyNotDefinedException;
 import org.sakaiproject.entity.api.HttpAccess;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
@@ -103,6 +106,8 @@ public class LessonBuilderAccessService {
 	private static Log M_log = LogFactory.getLog(LessonBuilderAccessService.class);
 
 	public static final String ATTR_SESSION = "sakai.session";
+   
+	public static final String COPYRIGHT_ACCEPTED_REFS_ATTR = "Access.Copyright.Accepted";
 
 	LessonBuilderAccessAPI lessonBuilderAccessAPI = null;
 
@@ -345,6 +350,20 @@ public class LessonBuilderAccessService {
 				    }
 				}
 
+				// basically there are two checks to be done: is the item accessible in Lessons,
+				// and is the underlying resource accessible in Sakai.
+				// This code really does check both. Sort of. 
+				// 1) it checks accessibility to the containing page by seeing if it has been visited.
+				//  This is stricter than necessary, but there's no obvious reason to let people use this
+				//  who aren't following an actual URL we gave them.
+				// 2) it checks group access as part of the normal resource permission check. Sakai
+				//  should sync the two. We actually don't check it for items in student home directories,
+				//  as far as I can tell
+				// 3) it checks availability (prerequisites) by calling the code from SimplePageBean
+				// We could rewrite this with the new LessonsAccess methods, but since we have to do
+				// resource permission checking also, and there's some duplication, it doesn't seem worth
+				// rewriting this code. What I've done is review it to make sure it does the same thing.
+
 				String id = itemString.substring(i);
 				itemString = itemString.substring(0, i);
 
@@ -362,9 +381,15 @@ public class LessonBuilderAccessService {
 						throw new EntityNotDefinedException(ref.getReference());
 					}
 					
+	// code here is also in simplePageBean.isItemVisible. change it there
+	// too if you change this logic
+
 					SimplePageItem item = simplePageToolDao.findItem(itemId.longValue());
 					SimplePage currentPage = simplePageToolDao.getPage(item.getPageId());
 					String owner = currentPage.getOwner();  // if student content
+					String group = currentPage.getGroup();  // if student content
+					if (group != null)
+					    group = "/site/" + currentPage.getSiteId() + "/group/" + group;
 					String currentSiteId = currentPage.getSiteId();
 					
 
@@ -408,15 +433,45 @@ public class LessonBuilderAccessService {
 					}
 
 					if (useLb) {
-
 					    // key into access cache
 					    String accessKey = itemString + ":" + sessionManager.getCurrentSessionUserId();
+					    // special access if we have a student site and item is in worksite of one of the students
+					    // Normally we require that the person doing the access be able to see the file, but in
+					    // that specific case we allow the access. Note that in order to get a sakaiid pointing
+					    // into the user's space, the person editing the page must have been able to read the file.
+					    // this allows a user in your group to share any of your resources that he can see.
+					    String usersite = null;
+					    if (owner != null && group != null && id.startsWith("/user/")) {
+						String username = id.substring(6);
+						int slash = username.indexOf("/");
+						if (slash > 0)
+						    usersite = username.substring(0,slash);
+						// normally it is /user/EID, so convert to userid
+						try {
+						    usersite = UserDirectoryService.getUserId(usersite);
+						} catch (Exception e) {};
+						String itemcreator = item.getAttribute("addedby");
+						// suppose a member of the group adds a resource from another member of
+						// the group. (This will only work if they have read access to it.)
+						// We don't want to gimick access in that case. I think if you
+						// add your own item, you've given consent. But not if someone else does.
+						// itemcreator == null is for items added before this patch. I'm going to
+						// continue to allow access for them, to avoid breaking existing content.
+						if (usersite != null && itemcreator != null && !usersite.equals(itemcreator))
+						    usersite = null;
+					    }							
 
-					    if (owner != null && id.startsWith("/user/" + owner)) {
-						// for a student page, if it's in the student's worksite
-						// allow it. The assumption is that only the page owner
-						// can put content in the page, and he would only put
-						// in his own content if he wants it to be visible
+					// code here is also in simplePageBean.isItemVisible. change it there
+					// too if you change this logic
+
+					    // for a student page, if it's in one of the groups' worksites, allow it
+					    // The assumption is that only one of those people can put content in the
+					    // page, and then only if the can see it.
+
+					    if (owner != null && usersite != null && AuthzGroupService.getUserRole(usersite, group) != null) {
+						// OK
+					    } else if (owner != null && group == null && id.startsWith("/user/" + owner)) {
+						// OK
 					    } else {
 						// do normal checking for other content
 						if (pushedAdvisor) {
@@ -448,6 +503,7 @@ public class LessonBuilderAccessService {
 						// caches that we aren't trying to manage in the long term
 						// but don't do this unless the item needs checking
 
+						if (!canSeeAll(currentPage.getSiteId())) {
 						SimplePageBean simplePageBean = new SimplePageBean();
 						simplePageBean.setMessageLocator(messageLocator);
 						simplePageBean.setToolManager(toolManager);
@@ -465,9 +521,11 @@ public class LessonBuilderAccessService {
 						simplePageBean.setCurrentSiteId(currentPage.getSiteId());
 						simplePageBean.setCurrentPage(currentPage);
 						simplePageBean.setCurrentPageId(currentPage.getPageId());
+						simplePageBean.init();
 
 						if (!simplePageBean.isItemAvailable(item, item.getPageId())) {
 							throw new EntityPermissionException(null, null, null);
+						}
 						}
 						accessCache.put(accessKey, "true", DEFAULT_EXPIRATION);
 						
@@ -517,15 +575,23 @@ public class LessonBuilderAccessService {
 					} catch (TypeException e) {
 						throw new EntityNotDefinedException(id);
 					}
-					// no copyright enforcement, I don't think
 
+					// we only do copyright on resources. I.e. not on inline things,which are MULTIMEDIA
+					if (item.getType() == SimplePageItem.RESOURCE && 
+					    needsCopyright(resource))
+					    throw new EntityCopyrightException(resource.getReference());
+  
 					try {
 					    // following cast is redundant is current kernels, but is needed for Sakai 2.6.1
 						long len = (long)resource.getContentLength();
 						String contentType = resource.getContentType();
 						
 						// 	for url resource type, encode a redirect to the body URL
-						if (contentType.equalsIgnoreCase(ResourceProperties.TYPE_URL)) {
+						// in 2.10 have to check resourcetype, but in previous releasese
+						// it doesn't get copied in site copy, so check content type. 10 doesn't set the contenttype to url
+						// so we have to check both to work in all versions
+						if (contentType.equalsIgnoreCase(ResourceProperties.TYPE_URL) ||
+						    "org.sakaiproject.content.types.urlResource".equalsIgnoreCase(resource.getResourceType())) {
 							if (len < MAX_URL_LENGTH) {
 								byte[] content = resource.getContent();
 								if ((content == null) || (content.length == 0)) {
@@ -675,6 +741,8 @@ public class LessonBuilderAccessService {
 						}
 					}
 					
+                                        // Track event - only for full reads
+                                        eventTrackingService.post(eventTrackingService.newEvent(ContentHostingService.EVENT_RESOURCE_READ, resource.getReference(null), false));
 
 		        }
 		        else 
@@ -1139,6 +1207,13 @@ public class LessonBuilderAccessService {
 				ref = getReference(id);
 			}
 
+			// if site maintainer or see all, allow any access.
+			// used to check this after the unlock below, but a user with see all
+			// may be prevented by group access from seeing the resource, but
+			// we still want them to see it.
+			if (canSeeAll(siteId) && id.startsWith("/group/" + siteId))
+			    return true;
+
 			// this will check basic access and group access. FOr that normal Sakai
 			// checking is fine.
 			isAllowed = ref != null && securityService.unlock(lock, ref);
@@ -1148,11 +1223,6 @@ public class LessonBuilderAccessService {
 			// resources from normal view but still see them through Lessons
 
 			if (isAllowed) {
-			    // if site maintainer, don't check release dates. The real check is complex, involving
-			    // who owns the page. For our purposes if it's a resource in this site, allow a maintainer
-			    // to access it.
-			    if (canWritePage(siteId) && id.startsWith("/group/" + siteId))
-				return true;
 
 			    boolean pushedAdvisor = false;
 			    ContentResource resource = null;
@@ -1202,10 +1272,70 @@ public class LessonBuilderAccessService {
 		return securityService.unlock(SimplePage.PERMISSION_LESSONBUILDER_READ, ref);
 	}
 
-	public boolean canWritePage(String siteId) {
+	public boolean canSeeAll(String siteId) {
 		String ref = "/site/" + siteId;
-		return securityService.unlock(SimplePage.PERMISSION_LESSONBUILDER_UPDATE, ref);
+		if (securityService.unlock(SimplePage.PERMISSION_LESSONBUILDER_UPDATE, ref))
+		    return true;
+		if (securityService.unlock(SimplePage.PERMISSION_LESSONBUILDER_SEE_ALL, ref))
+		    return true;
+		return false;
 	}
 
+    /* this is a public service, used by other modules */
+	public boolean needsCopyright (String sakaiId) {
+	    try {
+		ContentResource resource = contentHostingService.getResource(sakaiId);
+		return needsCopyright(resource);
+	    } catch (Exception e) {
+		return false;
+	    }
+	}
+
+	public boolean needsCopyright (ContentResource resource) {
+
+	    try {
+		ResourceProperties props = resource.getProperties();
+		boolean requiresCopyrightAgreement = 
+		    props.getProperty(ResourceProperties.PROP_COPYRIGHT_ALERT) != null;
+
+		if (!requiresCopyrightAgreement)
+		    return false;
+		
+		// requires copyright agreement. See if user has agreed
+
+		Collection accepted = (Collection) sessionManager.getCurrentSession().getAttribute(COPYRIGHT_ACCEPTED_REFS_ATTR);
+		// if no collection, initialize it
+		if (accepted == null) {
+		    accepted = new Vector();
+		    sessionManager.getCurrentSession().setAttribute(COPYRIGHT_ACCEPTED_REFS_ATTR, accepted);
+		}
+		
+		// now see if user has accepted copyright
+                if (!accepted.contains(resource.getReference()))
+		    return true;
+
+	    } catch (Exception e) {
+		// if we can't get the resource, attempt to enforce copyright
+		// will almost certainly fail, so fall through to false
+	    }
+
+	    return false;
+	}
+
+	public void acceptCopyright (String sakaiId) {
+	    try {
+		Collection accepted = (Collection) sessionManager.getCurrentSession().getAttribute(COPYRIGHT_ACCEPTED_REFS_ATTR);
+		// if no collection, initialize it
+		if (accepted == null) {
+		    accepted = new Vector();
+		    sessionManager.getCurrentSession().setAttribute(COPYRIGHT_ACCEPTED_REFS_ATTR, accepted);
+		}
+		
+		accepted.add(contentHostingService.getReference(sakaiId));
+
+	    } catch (Exception e) {
+		// if can't find session or reference, not much we can do
+	    }
+	}
 
 }

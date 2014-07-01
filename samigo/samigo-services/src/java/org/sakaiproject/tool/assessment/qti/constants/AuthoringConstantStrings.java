@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/constants/AuthoringConstantStrings.java $
- * $Id: AuthoringConstantStrings.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/qti/constants/AuthoringConstantStrings.java $
+ * $Id: AuthoringConstantStrings.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,8 +21,6 @@
 
 
 package org.sakaiproject.tool.assessment.qti.constants;
-
-import org.sakaiproject.util.ResourceLoader;
 
 /**
  * A set of strings for QTI XML item characteristics
@@ -85,7 +83,9 @@ file = File Upload
   public static final String ESSAY_ALT = "Essay";
   public static final String AUDIO = "Audio Recording";
   public static final String FILE = "File Upload";
+  public static final String EMI = "Extended Matching Items";
   public static final String MATRIX = "Survey Matrix";
+  public static final String CALCQ =  "Calculated Question"; // CALCULATED_QUESTION - 15
 
   /*
   public static final String ANONYMOUS = rb.getString("anonymous"); // Anonymous Users
@@ -112,7 +112,7 @@ file = File Upload
   // I'm just adding an "" to make FIN the itemTypes[11].  This is used in ItemTypeExtractionStrategy.getValidType()
   
   public static final String[] itemTypes =
-  { "Unknown Type", MCSC, MCMC, SURVEY, TF, ESSAY, FILE, AUDIO, FIB, MATCHING,"", FIN, MCMCSS, MATRIX};
+  { "Unknown Type", MCSC, MCMC, SURVEY, TF, ESSAY, FILE, AUDIO, FIB, MATCHING,"", FIN, MCMCSS, MATRIX, EMI, CALCQ};
   
 
   // Feedback Type

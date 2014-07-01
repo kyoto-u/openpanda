@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.3/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusServiceImpl.java $
- * $Id: SyllabusServiceImpl.java 95984 2011-08-01 12:19:26Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.0/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusServiceImpl.java $
+ * $Id: SyllabusServiceImpl.java 129426 2013-09-06 19:58:44Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,6 +73,8 @@ import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.BaseResourcePropertiesEdit;
 import org.sakaiproject.util.Validator;
+
+import org.sakaiproject.util.cover.LinkMigrationHelper;
 
 //permission convert
 import org.sakaiproject.authz.cover.SecurityService;
@@ -684,7 +686,8 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
                                         syData.getTitle(), (new Integer(
                                             initPosition)), syData.getAsset(),
                                         syData.getView(), syData.getStatus(),
-                                        syData.getEmailNotification());
+                                        syData.getEmailNotification(), syData.getStartDate(), syData.getEndDate(), syData.isLinkCalendar(),
+                                        syData.getCalendarEventIdStartDate(), syData.getCalendarEventIdEndDate());
                             		Set attachSet = new TreeSet();
                             		for(int m=0; m<attachStringList.size(); m++)
                             		{
@@ -705,7 +708,7 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
                             		syData.setAttachments(attachSet);
                                 
                                 syllabusManager.addSyllabusToSyllabusItem(
-                                    syllabusItem, syData);
+                                    syllabusItem, syData, false);
 
                               }
                             }
@@ -793,9 +796,10 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
                   SyllabusData newToSyData = syllabusManager
                   		  .createSyllabusDataObject(toSyData.getTitle(),
                           positionNo, toSyData.getAsset(), toSyData.getView(),
-                          toSyData.getStatus(), toSyData.getEmailNotification());
+                          toSyData.getStatus(), toSyData.getEmailNotification(), toSyData.getStartDate(), toSyData.getEndDate(), toSyData.isLinkCalendar(),
+                          toSyData.getCalendarEventIdStartDate(), toSyData.getCalendarEventIdEndDate());
                   
-                  syllabusManager.addSyllabusToSyllabusItem(toSyItem, newToSyData);
+                  syllabusManager.addSyllabusToSyllabusItem(toSyItem, newToSyData, false);
                 }
             }
             else
@@ -1080,7 +1084,14 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
 
 	public void deletePostedSyllabus(SyllabusData data)
 	{
-    BaseResourceEdit bre = new BaseResourceEdit(data.getSyllabusId().toString(), data);
+		Placement placement = ToolManager.getCurrentPlacement();
+		String siteId = placement.getContext();
+		deletePostedSyllabus(data, siteId);
+	}
+	
+	public void deletePostedSyllabus(SyllabusData data, String siteId)
+	{
+    BaseResourceEdit bre = new BaseResourceEdit(data.getSyllabusId().toString(), data, siteId);
     
     addLiveSyllabusProperties(bre);
     
@@ -1212,7 +1223,8 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
 										positionNo, toSyData.getAsset(),
 										toSyData.getView(), toSyData
 												.getStatus(), toSyData
-												.getEmailNotification());
+												.getEmailNotification(), toSyData.getStartDate(), toSyData.getEndDate(), toSyData.isLinkCalendar(),
+												toSyData.getCalendarEventIdStartDate(), toSyData.getCalendarEventIdEndDate());
 						Set attachSet = syllabusManager.getSyllabusAttachmentsForSyllabusData(toSyData);
 						Iterator attachIter = attachSet.iterator();
 						Set newAttachSet = new TreeSet();
@@ -1233,7 +1245,7 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
 						}
 						newToSyData.setAttachments(newAttachSet);
 						syllabusManager.addSyllabusToSyllabusItem(toSyItem,
-								newToSyData);
+								newToSyData, false);
 				  }
 				} 
 				else 
@@ -1276,8 +1288,12 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
 
 	public void draftChangeSyllabus(SyllabusData data)
 	{
-    BaseResourceEdit bre = new BaseResourceEdit(data.getSyllabusId().toString(), data);
-    
+		Placement placement = ToolManager.getCurrentPlacement();
+		String siteId = placement.getContext();
+		draftChangeSyllabus(data, siteId);
+	}
+    public void draftChangeSyllabus(SyllabusData data, String siteId){
+    BaseResourceEdit bre = new BaseResourceEdit(data.getSyllabusId().toString(), data, siteId);
     addLiveSyllabusProperties(bre);
     
     bre.setEvent(EVENT_SYLLABUS_DRAFT_CHANGE);
@@ -1376,7 +1392,7 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
 	 * {@inheritDoc}
 	 */
 	public void updateEntityReferences(String toContext, Map<String, String> transversalMap){		  
-		if(transversalMap != null && transversalMap.size() > 0){
+		if(transversalMap != null){
 			Set<Entry<String, String>> entrySet = (Set<Entry<String, String>>) transversalMap.entrySet();	  	
 
 			try
@@ -1395,20 +1411,61 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
 					{
 						SyllabusData fromSyllabusData = (SyllabusData) fromSetIter.next();
 
-
-						String msgBody = fromSyllabusData.getAsset();
 						boolean updated = false;
-						Iterator<Entry<String, String>> entryItr = entrySet.iterator();
-						while(entryItr.hasNext()) {
-							Entry<String, String> entry = (Entry<String, String>) entryItr.next();
-							String fromContextRef = entry.getKey();
-							if(msgBody.contains(fromContextRef)){									
-								msgBody = msgBody.replace(fromContextRef, entry.getValue());
+						//Body Text
+						String msgBody = fromSyllabusData.getAsset();
+						if(msgBody != null){
+							StringBuffer msgBodyPreMigrate = new StringBuffer(msgBody);
+							msgBody = LinkMigrationHelper.migrateAllLinks(entrySet, msgBody);
+							if(!msgBody.equals(msgBodyPreMigrate.toString())){
+								fromSyllabusData.setAsset(msgBody);
 								updated = true;
-							}								
-						}	
+							}
+						}
+						//Start Date
+						String startCalEventId = fromSyllabusData.getCalendarEventIdStartDate();
+						if(startCalEventId != null){
+							StringBuffer startCalIdMigrate = new StringBuffer(startCalEventId);
+							startCalEventId = LinkMigrationHelper.migrateAllLinks(entrySet, startCalEventId);
+							if(!startCalEventId.equals(startCalIdMigrate.toString())){
+								fromSyllabusData.setCalendarEventIdStartDate(startCalEventId);
+								updated = true;
+							}else{
+								//we couldn't find the calendar event tied to this item,
+								//this means it wasn't imported over
+								//we need to remove it and update the data properties
+								fromSyllabusData.setCalendarEventIdStartDate(null);
+								if(fromSyllabusData.getCalendarEventIdEndDate() == null){
+									//unlink the calendar if end date ID is null
+									//otherwise, just let end date id logic determine
+									//whether to set link to false
+									fromSyllabusData.setLinkCalendar(false);
+								}
+								updated = true;
+							}
+						}
+						//End Date
+						String endCalEventId = fromSyllabusData.getCalendarEventIdEndDate();
+						if(endCalEventId != null){
+							StringBuffer endCalIdMigrate = new StringBuffer(endCalEventId);
+							endCalEventId = LinkMigrationHelper.migrateAllLinks(entrySet, endCalEventId);
+							if(!endCalEventId.equals(endCalIdMigrate.toString())){
+								fromSyllabusData.setCalendarEventIdEndDate(endCalEventId);
+								updated = true;
+							}else{
+								//we couldn't find the calendar event tied to this item,
+								//this means it wasn't imported over
+								//we need to remove it and update the data properties
+								fromSyllabusData.setCalendarEventIdEndDate(null);
+								if(fromSyllabusData.getCalendarEventIdStartDate() == null){
+									//both end and start IDs are null, uncheck the link for calendar
+									fromSyllabusData.setLinkCalendar(false);
+								}
+								updated = true;
+							}
+						}
+						
 						if(updated){
-							fromSyllabusData.setAsset(msgBody);
 							syllabusManager.saveSyllabus(fromSyllabusData);
 						}
 					}

@@ -1,6 +1,6 @@
 /**
- * $Id: MembershipEntityProvider.java 51727 2008-09-03 09:00:03Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/trunk/impl/src/java/org/sakaiproject/entitybroker/providers/MembershipEntityProvider.java $
+ * $Id: MembershipEntityProvider.java 308856 2014-04-26 00:03:02Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/core-providers/src/java/org/sakaiproject/entitybroker/providers/MembershipEntityProvider.java $
  * ServerConfigEntityProvider.java - entity-broker - Jul 17, 2008 2:19:03 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,6 +34,8 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.api.privacy.PrivacyManager;
+import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.email.api.EmailService;
@@ -67,7 +69,7 @@ import org.sakaiproject.site.api.SiteService.SelectionType;
  * @author Aaron Zeckoski (azeckoski @ gmail.com)
  */
 public class MembershipEntityProvider extends AbstractEntityProvider implements CoreEntityProvider,
-        RESTful, ActionsExecutable {
+RESTful, ActionsExecutable {
 
     private static Log log = LogFactory.getLog(MembershipEntityProvider.class);
 
@@ -87,6 +89,16 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
 
     public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
+    }
+    
+    private PrivacyManager privacyManager;
+    public void setPrivacyManager(PrivacyManager privacyManager){
+    	this.privacyManager = privacyManager;
+    }
+    
+    private SecurityService securityService;
+    public void setSecurityService(SecurityService securityService){
+    	this.securityService = securityService;
     }
 
     public static String PREFIX = "membership";
@@ -345,6 +357,10 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
                         continue;
                     }
                     Member m = site.getMember(userId);
+                    if (m == null) {
+                        log.warn("Unable to add user ("+user+") to group ("+group.getId()+") in site ("+site.getId()+"), user is not a member of the site (and must be)");
+                        continue;
+                    }
                     Role role = m.getRole();
 
                     if (group.getMember(userId) == null && (role != null && role.getId() != null)) {
@@ -400,7 +416,7 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
             } catch (PermissionException e) {
                 throw new SecurityException(
                         "Current user does not have permission to save this group:" + groupId
-                                + " to site:" + site.getId());
+                        + " to site:" + site.getId());
             }
             return null;
         }
@@ -452,13 +468,17 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
         String roleId = null;
         boolean includeSites = true;
         boolean includeGroups = false;
+        
+        //SAK-25710 hold a map of each sites type so we can look them up later (entityId, siteType)
+        Map<String,String> siteTypes = new HashMap<String,String>();
+        
         if (search == null) {
             search = new Search();
         }
         if (!search.isEmpty()) {
             // process the search
             roleId = (String) search.getRestrictionValueByProperties(new String[] { "role",
-                    "roleId" });
+            "roleId" });
             Restriction userRes = search
                     .getRestrictionByProperty(CollectionResolvable.SEARCH_USER_REFERENCE);
             if (userRes != null) {
@@ -480,7 +500,7 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
             }
         }
         if (locationReference == null && userId == null) {
-            // if these are both nul then we default to getting memberships for the current user
+            // if these are both null then we default to getting memberships for the current user
             if (currentUserId != null) {
                 userId = currentUserId;
             }
@@ -508,9 +528,9 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
             userId = userEntityProvider.findAndCheckUserId(userId, null);
             //SAK-22396 if the user is unknown this will be null
             if (userId == null) {
-            	throw new IllegalArgumentException("unable to find user");
+                throw new IllegalArgumentException("unable to find user with id ("+userId+")");
             }
-            
+
             boolean userCurrent = userId.equals(currentUserId);
             if (!userCurrent && !developerHelperService.isUserAdmin(currentUserId)) {
                 throw new SecurityException(
@@ -529,7 +549,9 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
                     Member sm = site.getMember(userId);
                     if (sm != null) {
                         if (includeSites) {
-                            members.add(new EntityMember(sm, site.getReference(), null));
+                        	EntityMember em = new EntityMember(sm, site.getReference(), null);
+                            members.add(em);
+                        	siteTypes.put(em.getId(), site.getType());
                         }
                         // also check the groups
                         if (includeGroups) {
@@ -577,7 +599,7 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
         }
         // handle the sorting
         Comparator<EntityMember> memberComparator = new EntityMember.MemberSortName(); // default by
-                                                                                       // sortname
+        // sortname
         if (search.getOrders().length > 0) {
             Order order = search.getOrders()[0]; // only one sort allowed
             if ("email".equals(order.getProperty())) {
@@ -594,7 +616,13 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
         // now we put the members into entity data objects
         ArrayList<EntityData> l = new ArrayList<EntityData>();
         for (EntityMember em : sortedMembers) {
-            EntityData ed = new EntityData(new EntityReference(PREFIX, em.getId()), null, em);
+                    	
+            //SAK-25710 add site type as a property
+            Map<String,Object> props = new HashMap<String,Object>();
+            String siteType = siteTypes.get(em.getId());
+            props.put("siteType", siteType);
+                        
+            EntityData ed = new EntityData(new EntityReference(PREFIX, em.getId()), null, em, props);
             l.add(ed);
         }
         return l;
@@ -735,16 +763,19 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
         SiteGroup sg = findLocationByReference(locationReference);
         String currentUserId = developerHelperService.getCurrentUserId();
         if (!userId.equals(currentUserId)) {
-            isAllowedAccessMembers(sg.site);
+            isAllowedAccessMembers(sg.site, sg.group);
         }
+        boolean viewHidden = securityService.unlock("roster.viewHidden", sg.site.getReference());
         if (sg.group == null) {
             // site only
             member = sg.site.getMember(userId);
         } else {
             // group and site
             member = sg.group.getMember(userId);
+            //see if the user has viewHidden permission at the group level too
+            viewHidden = viewHidden || securityService.unlock("roster.viewHidden", sg.group.getReference());
         }
-        if (member != null) {
+        if (member != null && !privacyManager.findHidden(sg.site.getReference(), new HashSet<String>(Arrays.asList(userId))).contains(userId)) {
             EntityUser eu = userEntityProvider.getUserById(userId);
             em = new EntityMember(member, sg.locationReference, eu);
         }
@@ -766,26 +797,34 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
         } catch (IllegalArgumentException e) {
             throw new EntityNotFoundException("Could not find the location based on the ref ("+locationReference+"): " + e, locationReference);
         }
-        isAllowedAccessMembers(sg.site);
+       	isAllowedAccessMembers(sg.site, sg.group);
+        boolean viewHidden = viewHidden = securityService.unlock("roster.viewHidden", sg.site.getReference());
+        Set<String> hiddenUsers = new HashSet<String>();
         if (sg.group == null) {
             // site only
             members = sg.site.getMembers();
         } else {
             // group and site
             members = sg.group.getMembers();
+            //see if user has the ability to view hidden at the group level as well
+            viewHidden = viewHidden || securityService.unlock("roster.viewHidden", sg.group.getReference());
         }
-       
-        for (Member member : members) {
-        	//The id passed may not be a valid user
-        	EntityUser eu = userEntityProvider.getUserById(member.getUserId());
-        	if (eu != null) {
-        		EntityMember em = new EntityMember(member, sg.locationReference, eu);
-        		l.add(em);
+        if(!siteService.allowViewRoster(sg.site.getId()) && !viewHidden){
+        	//add hidden users to set so we can filter them out
+        	Set<String> memberIds = new HashSet<String>();
+        	for(Member member : members){
+        		memberIds.add(member.getUserId());
         	}
-
-
+        	hiddenUsers = privacyManager.findHidden(sg.site.getReference(), memberIds);
         }
-        
+        // filter out possible invalid/orphaned users (SAK-22396, SAK-17498, SAK-23863)
+        for (Member member : members) {
+            EntityUser eu = userEntityProvider.getUserById(member.getUserId());
+            if (eu != null && !hiddenUsers.contains(member.getUserId())) {
+                EntityMember em = new EntityMember(member, sg.locationReference, eu);
+                l.add(em);
+            }
+        }
         return l;
     }
 
@@ -825,7 +864,7 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
         } else {
             throw new IllegalArgumentException(
                     "Do not know how to handle this location reference (" + locationReference
-                            + "), only can handle site and group references");
+                    + "), only can handle site and group references");
         }
         if (holder.site == null) {
             throw new IllegalArgumentException(
@@ -934,7 +973,7 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
      * @throws SecurityException
      *             if not allowed
      */
-    protected boolean isAllowedAccessMembers(Site site) {
+    protected boolean isAllowedAccessMembers(Site site, Group g) {
         // check if the current user can access this
         String userReference = developerHelperService.getCurrentUserReference();
         if (userReference == null) {
@@ -944,8 +983,10 @@ public class MembershipEntityProvider extends AbstractEntityProvider implements 
             String siteId = site.getId();
             if (siteService.allowViewRoster(siteId)) {
                 return true;
-            } else {
-                throw new SecurityException("Memberships in this site (" + site.getReference()
+            } else if(g != null && Boolean.TRUE.toString().equals(g.getProperties().getProperty(Group.GROUP_PROP_VIEW_MEMBERS))){
+            	return true;
+            }else{
+            	throw new SecurityException("Memberships in this site (" + site.getReference()
                         + ") are not accessible for the current user: " + userReference);
             }
         }

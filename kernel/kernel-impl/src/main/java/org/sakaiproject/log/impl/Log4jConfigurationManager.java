@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/log/impl/Log4jConfigurationManager.java $
- * $Id: Log4jConfigurationManager.java 94961 2011-07-11 04:55:26Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/log/impl/Log4jConfigurationManager.java $
+ * $Id: Log4jConfigurationManager.java 123029 2013-04-19 12:20:44Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,17 +21,16 @@
 
 package org.sakaiproject.log.impl;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Appender;
-import org.apache.log4j.Layout;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.log4j.*;
 import org.apache.log4j.spi.ErrorHandler;
 import org.apache.log4j.spi.Filter;
 import org.apache.log4j.spi.LoggingEvent;
@@ -102,6 +101,14 @@ public abstract class Log4jConfigurationManager implements LogConfigurationManag
 	{
 		if (m_enabled)
 		{
+		    // Load optional log4j.properties file from sakai home
+		    String log4jConfigFilePath = serverConfigurationService().getSakaiHomePath() + "log4j.properties";
+		    if (StringUtils.isNotEmpty(log4jConfigFilePath)) {
+		        if (new File(log4jConfigFilePath).exists()) {
+		            PropertyConfigurator.configureAndWatch(log4jConfigFilePath);
+		        }
+		    }
+
 			// slip in our appender
 			Appender a = Logger.getRootLogger().getAppender("Sakai");
 			if (a != null)

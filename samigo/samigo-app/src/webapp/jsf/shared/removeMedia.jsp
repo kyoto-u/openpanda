@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  
-<!-- $Id: removeMedia.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+<!-- $Id: removeMedia.jsp 133922 2014-01-30 16:50:27Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -44,7 +44,7 @@
    <p>
      <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
      <h:outputLink title="#{deliveryMessages.t_media}" value="#" onclick="window.open('#{mediaBean.mediaUrl}','new_window');" onkeypress="window.open('#{mediaBean.mediaUrl}','new_window');">
-       <h:outputText escape="false" value="#{mediaBean.filename}" />
+       <h:outputText value="#{mediaBean.filename}" />
      </h:outputLink>
    </p>
    <p class="act">

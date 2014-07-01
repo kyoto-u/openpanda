@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/widget/VisitsWidget.java $
- * $Id: VisitsWidget.java 78669 2010-06-21 13:55:23Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/widget/VisitsWidget.java $
+ * $Id: VisitsWidget.java 128561 2013-08-16 01:43:57Z matthew@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -486,7 +486,7 @@ public class VisitsWidget extends Panel {
 				rp.setHowSortAscending(true);
 				rp.setHowSortBy(StatsManager.T_DATE);
 				r.setReportParams(rp);
-				PagingPosition paging = new PagingPosition(0, 0);
+				PagingPosition paging = new PagingPosition();
 				Report report = Locator.getFacade().getReportManager().getReport(r, true, paging, false);
 				Date firstDate = new Date();
 				if(report.getReportData().size() > 0) {

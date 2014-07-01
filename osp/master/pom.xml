@@ -6,7 +6,7 @@
   <parent>
     <artifactId>osp-base</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>OSP Master</name>

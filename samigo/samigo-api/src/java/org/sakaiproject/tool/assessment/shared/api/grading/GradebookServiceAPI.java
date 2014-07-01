@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL $
+ * $Id $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,14 +18,10 @@
  * limitations under the License.
  *
  **********************************************************************************/
-
-
-
-
 package org.sakaiproject.tool.assessment.shared.api.grading;
 
+import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
 
 /**
  * The GradebookServiceAPI describes an interface for gradebook information
@@ -59,7 +55,7 @@ public interface GradebookServiceAPI
    * @param ag
    * @param agentIdString
    */
-  public void updateExternalAssessment(AssessmentGradingIfc ag,
+  public void updateExternalAssessment(AssessmentGradingData ag,
                                               String agentIdString);
   /**
    *
@@ -72,6 +68,6 @@ public interface GradebookServiceAPI
    *
    * @param ag
    */
-  public void updateExternalAssessmentScore(AssessmentGradingIfc ag) ;
+  public void updateExternalAssessmentScore(AssessmentGradingData ag) ;
 
 }

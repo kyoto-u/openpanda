@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>master</artifactId>
+        <version>10.0</version>
+        <relativePath>../master/pom.xml</relativePath>
+    </parent>
+
+    <name>Sakai Roster2 base pom</name>
+    <groupId>org.sakaiproject.roster2</groupId>
+    <artifactId>roster2</artifactId>
+    <version>10.0</version>
+    <organization>
+        <name>Sakai Project</name>
+        <url>http://sakaiproject.org/</url>
+    </organization>
+    <inceptionYear>2010</inceptionYear>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>roster-app</module>
+    </modules>
+
+    <properties>
+        <poi.version>3.9</poi.version>
+        <velocity.version>1.7</velocity.version>
+        <yuicompressor.plugin.version>1.2</yuicompressor.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>d.b.robinson</id>
+            <name>Daniel Robinson</name>
+            <organization>Lancaster University</organization>
+            <email>d.b.robinson@lancaster.ac.uk</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>0</timezone>
+        </developer>
+        <developer>
+            <id>a.fish</id>
+            <name>Adrian Fish</name>
+            <organization>Lancaster University</organization>
+            <email>a.fish@lancaster.ac.uk</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>0</timezone>
+        </developer>
+        <developer>
+            <id>steve.swinsburg</id>
+            <name>Steve Swinsburg</name>
+            <email>steve.swinsburg@gmail.com</email>
+            <roles>
+            	<role>developer</role>
+                <role>POM plumber</role>
+                <role>release manager</role>
+            </roles>
+            <timezone>+10</timezone>
+        </developer>
+        <developer>
+            <id>arwhyte</id>
+            <name>Anthony Whyte</name>
+            <organization>Sakai Foundation / University of Michigan</organization>
+            <email>arwhyte@umich.edu</email>
+            <roles>
+                <role>POM plumber</role>
+                <role>Past release manager</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/roster2/trunk/</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/roster2/trunk/</developerConnection>
+        <url>https://source.sakaiproject.org/svn/roster2/trunk/</url>
+    </scm>
+
+</project>

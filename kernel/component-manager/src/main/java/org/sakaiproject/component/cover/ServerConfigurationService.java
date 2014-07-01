@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/component-manager/src/main/java/org/sakaiproject/component/cover/ServerConfigurationService.java $
- * $Id: ServerConfigurationService.java 61014 2009-04-23 16:58:05Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/component-manager/src/main/java/org/sakaiproject/component/cover/ServerConfigurationService.java $
+ * $Id: ServerConfigurationService.java 121987 2013-04-01 13:15:46Z bkirschn@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,7 +31,7 @@ import java.util.Map;
  * ServerConfigurationService is a static Cover for the {@link org.sakaiproject.component.api.ServerConfigurationService ServerConfigurationService}; see that interface for usage details.
  * </p>
  * 
- * @version $Revision: 61014 $
+ * @version $Revision: 121987 $
  */
 public class ServerConfigurationService
 {
@@ -216,12 +216,64 @@ public class ServerConfigurationService
 		return service.getToolOrder(param0);
 	}
 
+	/** 
+	 * Access the list of tools by group
+	 * 
+	 * @param category
+	 *			 The tool category
+	 * @return An unordered list of tool ids (String) in selected group, or an empty list if there are none for this category.
+	 */	
 	public static java.util.List getToolsRequired(java.lang.String param0)
 	{
 		org.sakaiproject.component.api.ServerConfigurationService service = getInstance();
 		if (service == null) return null;
 
 		return service.getToolsRequired(param0);
+	}
+	
+	/**
+	 * Access the list of groups by category (site type)
+	 * 
+	 * @param category
+	 *			 The tool category
+	 * @return An ordered list of tool ids (String) indicating the desired tool display order, or an empty list if there are none for this category.
+	 */
+	public static java.util.List getCategoryGroups(java.lang.String param0)
+	{
+		org.sakaiproject.component.api.ServerConfigurationService service = getInstance();
+		if (service == null) return null;
+
+		return service.getCategoryGroups(param0);
+	}	
+
+
+	/*
+	 * Returns true if selected tool is contained in pre-initialized list of selected items
+	 * @parms toolId id of the selected tool
+	 */
+	public static boolean toolGroupIsSelected(String param0,String param1) {
+		org.sakaiproject.component.api.ServerConfigurationService service = getInstance();
+		if (service == null) return false;
+
+		return service.toolGroupIsSelected(param0,param1);			
+	}
+
+	 /*
+	  * Returns true if selected tool is contained in pre-initialized list of required items
+	  * @parms toolId id of the selected tool
+	  */
+	public static boolean toolGroupIsRequired(String param0, String param1) {
+		org.sakaiproject.component.api.ServerConfigurationService service = getInstance();
+		if (service == null) return false;
+		return service.toolGroupIsRequired(param0,param1);			
+	}
+	
+	public static java.util.List getToolGroup(java.lang.String param0)
+	{
+		org.sakaiproject.component.api.ServerConfigurationService service = getInstance();
+		if (service == null) return null;
+
+		return service.getToolGroup(param0);
 	}
 
 	public static java.util.List getDefaultTools(java.lang.String param0)

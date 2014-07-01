@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/tool/api/ToolManager.java $
- * $Id: ToolManager.java 79508 2010-07-15 17:38:55Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/tool/api/ToolManager.java $
+ * $Id: ToolManager.java 307864 2014-04-07 15:05:21Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -129,6 +129,37 @@ public interface ToolManager
 	boolean isVisible(Site site, ToolConfiguration config);
 	
 	// TODO: unregister...
+	
+	/**
+	 * Get the localized property of a tool
+	 * @param toolId The fully qualified id of a sakai tool.
+	 * @param key The name of the property, for example title or description.
+	 * @return The tool property, null if tool id is invalid.
+	 */
+	String getLocalizedToolProperty(String toolId, String key);
+
+
+	/**
+	 * Check if the placement is hidden.
+	 * @param placement
+	 * @return <code>true</code> if the current placement is hidden.
+	 */
+	public boolean isHidden(Placement placement);
+	/**
+	 * The optional tool configuration tag "functions.require" describes a
+	 * set of permission lists which decide the visibility of the tool link
+	 * for this site user. Lists are separated by "|" and permissions within a
+	 * list are separated by ",". Users must have all the permissions included in
+	 * at least one of the permission lists.
+	 *
+	 * For example, a value like "section.role.student,annc.new|section.role.ta"
+	 * would let a user with "section.role.ta" see the tool, and let a user with
+	 * both "section.role.student" AND "annc.new" see the tool, but not let a user
+	 * who only had "section.role.student" see the tool.
+	 *
+	 * If the configuration tag is not set or is null, then all users see the tool.
+	 */
+	public boolean allowTool(Site site, Placement placement);
 }
 
 

@@ -1,9 +1,12 @@
-<!-- $Id: chef_assignments_student_view_submission_confirmation.vm 94881 2011-07-08 14:22:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_student_view_submission_confirmation.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
 <!-- start:  chef_assignments_student_view_submission_confirmation.vm  -->
-#parse("/vm/assignment/assignment_macros.vm")
 ## showing the submission confirmation page
+<link href="/sakai-assignment-tool/css/assignment.css" type="text/css" rel="stylesheet" media="all" />
 <div class="portletBody">
 	<h3>
+                #if ($!assignment.isGroup())
+                        $tlang.getString('gen.group')  
+                #end
 		#if ($!submitted)
 			$tlang.getString('confirm.submission.title')
 		#else
@@ -17,9 +20,9 @@
 		$tlang.getString('confirm.savesubmission.success')
 	#end
 	#if ($!email_confirmation && $!submitted)	 
-  #if ($!user_email)	 
-  	$tlang.getString('confirm.submission.email')
-	#end
+            #if ($!user_email)	 
+                $tlang.getString('confirm.submission.email')
+            #end
 	#end
 </div>
 	#if ($!email_confirmation && $!submitted)	 
@@ -40,6 +43,34 @@
 					$validator.escapeHtml($!user_name) #if($!user_id)($!user_id)#end
 				</td>
 			</tr>
+
+			#if ($!assignment.isGroup() ) 
+			<tr>
+                                <th>
+                                        $tlang.getString('gen.group'):
+                                </th>
+                                <td>
+                                        #set($aGroup = $!site.getGroup($submission.getSubmitterId()))
+                                        #if ($aGroup)
+                                                $aGroup.getTitle()
+                                        #else
+                                              $tlang.getString('group.submission.not.found')
+                                        #end
+                                </td>
+                        </tr>
+                        <tr>
+                                <th>
+                                        $tlang.getString('gen.students'):
+                                </th>
+                                <td>
+					#set ($submitters = $submission.submitters)
+					#foreach ($submitter in $submitters)
+							$validator.escapeHtml($submitter.DisplayName)<br />
+					#end
+                                </td>
+                        </tr>
+			#end
+
 			##site
 			<tr>
 				<th>
@@ -55,6 +86,7 @@
 					$tlang.getString('assignment')
 				</th>
 				<td>
+                                        #assignmentTitleIcon($assignment)
 					$validator.escapeHtml($!assignment_title)
 				</td>
 			</tr>
@@ -82,6 +114,16 @@
 					</td>
 				</tr>
 			#end
+                                #if ($!submission && $!submission.getSubmissionLog().size() > 0)
+                                        <tr>
+                                                <th>$tlang.getString('gen.history')</th>
+                                                <td>
+                                                        #foreach ($entry in $submission.getSubmissionLog())
+                                                                $entry<br>
+                                                        #end
+                                                </td>
+                                        </tr>
+                                #end
 		</table>
 		<h4>
 			#if ($!submitted)
@@ -112,7 +154,11 @@
 		#if (!$textSubmissionOnly)
 			<h4>
 				#if ($!submitted)
-					$tlang.getString('gen.stuatt')
+					#if ($submissionType == 5)
+						$tlang.getString("gen.stuatt.single")
+					#else
+						$tlang.getString("gen.stuatt")
+					#end
 				#else
 					$tlang.getString('confirm.savesubmission.attachments')
 				#end		
@@ -126,7 +172,11 @@
 				#end
 			#end 
 			#if ($size == 0)
-			 $tlang.getString("gen.noatt")
+			#if ($submissionType == 5)
+                                 $tlang.getString("gen.noatt.single")
+                            #else
+                                 $tlang.getString("gen.noatt")
+                            #end
 			#else
 				<ul class="attachList indnt2">
 				#foreach ($attachment in $!submit_attachments) 
@@ -141,9 +191,15 @@
 				</ul>
 			#end
 		#end	
+		#if ($!linkInvoked)
+		<p class="act">
+			<input type="submit" accesskey="x" onClick="window.close();" name="eventSubmit_doConfirm_assignment_submission" value="$tlang.getString("gen.closeexit")"  class="active" />
+		</p>		
+		#else	
 		<p class="act">
 			<input type="submit" accesskey="x" name="eventSubmit_doConfirm_assignment_submission" value="$tlang.getString('gen.backtolist')"  class="active" />
 		</p>
+		#end
 		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>

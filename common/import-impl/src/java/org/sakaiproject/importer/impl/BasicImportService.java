@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-impl/src/java/org/sakaiproject/importer/impl/BasicImportService.java $
- * $Id: BasicImportService.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-impl/src/java/org/sakaiproject/importer/impl/BasicImportService.java $
+ * $Id: BasicImportService.java 133378 2014-01-17 16:47:47Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,55 +22,52 @@
 package org.sakaiproject.importer.impl;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.importer.api.HandlesImportable;
 import org.sakaiproject.importer.api.ImportDataSource;
 import org.sakaiproject.importer.api.ImportFileParser;
 import org.sakaiproject.importer.api.ImportService;
 import org.sakaiproject.importer.api.Importable;
+import org.sakaiproject.importer.api.ResetOnCloseInputStream;
 
-import org.sakaiproject.component.api.ServerConfigurationService;
+import java.io.InputStream;
 
 public class BasicImportService implements ImportService {
 	
-	private List parsers;
-	private List resourceHandlers;
+	private List<ImportFileParser> parsers;
+	private List<HandlesImportable> resourceHandlers;
 	private ServerConfigurationService configService = 
 		org.sakaiproject.component.cover.ServerConfigurationService.getInstance();
 
-	public void doImportItems(Collection importables, String siteId) {
-		HandlesImportable handler = null;
-		for(Iterator i = importables.iterator();i.hasNext();) {
-			Importable thing = (Importable)i.next();
-			for(Iterator j = resourceHandlers.iterator();j.hasNext();) {
-				handler = (HandlesImportable)j.next();
+	public void doImportItems(Collection<Importable> importables, String siteId) {
+		for(Importable thing: importables) {
+			for(HandlesImportable handler: resourceHandlers) {
 				if (handler.canHandleType(thing.getTypeName())) {
 					handler.handle(thing, siteId);
-					}
+				}
 			}
 		}
-
 	}
 
-	public boolean isValidArchive(byte[] archiveFileData) {
-		boolean isValid = false;
-		for(Iterator i = this.parsers.iterator();i.hasNext();) {
-			if(((ImportFileParser)i.next()).isValidArchive(archiveFileData)){
-				isValid = true;
-				break;
-			}
-		}
-		return isValid;
+	public boolean isValidArchive(ResetOnCloseInputStream archiveFileData) {
+		return findParser(archiveFileData) != null;
 	}
 
-	public ImportDataSource parseFromFile(byte[] archiveFileData) {
-		for(Iterator i = this.parsers.iterator();i.hasNext();){
-			ImportFileParser parser = (ImportFileParser)i.next();
+	private ImportFileParser findParser(ResetOnCloseInputStream archiveFileData) {
+		for(ImportFileParser parser : parsers) {
 			if(parser.isValidArchive(archiveFileData)){
-				return parser.newParser().parse(archiveFileData, configService.getSakaiHomePath() + "archive");
+				return parser;
 			}
+		}
+		return null;
+	}
+
+	public ImportDataSource parseFromFile(ResetOnCloseInputStream archiveFileData) {
+		ImportFileParser parser = findParser(archiveFileData);
+		if (parser != null) {
+			return parser.newParser().parse(archiveFileData, configService.getSakaiHomePath() + "archive");
 		}
 		// invalid or unsupported archive file
 		// TODO this should probably throw an exception
@@ -81,7 +78,7 @@ public class BasicImportService implements ImportService {
 		this.parsers.add(parser);
 	}
 	
-	public void setParsers(List parsers) {
+	public void setParsers(List<ImportFileParser> parsers) {
 		this.parsers = parsers;
 	}
 	
@@ -89,7 +86,7 @@ public class BasicImportService implements ImportService {
 		this.resourceHandlers.add(handler);
 	}
 	
-	public void setResourceHandlers(List resourceHandlers) {
+	public void setResourceHandlers(List<HandlesImportable> resourceHandlers) {
 		this.resourceHandlers = resourceHandlers;
 	}
 

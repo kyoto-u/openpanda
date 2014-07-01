@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: PreferencesBean.java 69016 2009-11-15 15:12:47Z aaronz@vt.edu $
+* $Id: PreferencesBean.java 119424 2013-02-01 16:00:15Z holladay@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,7 @@ package org.sakaiproject.tool.gradebook.ui;
 
 import org.sakaiproject.tool.gradebook.Assignment;
 import org.sakaiproject.tool.gradebook.Category;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 
 /**
  * Session-scoped preferences for the sakai gradebook.  These are currently
@@ -84,6 +85,23 @@ public class PreferencesBean {
         rosterTableSelectedSectionFilter = new Integer(EnrollmentTableBean.ALL_SECTIONS_SELECT_VALUE);
 
         defaultMaxDisplayedScoreRows = 50;
+        String defaultMaxDisplayedScoreRowsSakaiProp = ServerConfigurationService.getString("gradebook.defaultMaxDisplayedScoreRows");
+        if(defaultMaxDisplayedScoreRowsSakaiProp != null){
+        	try{
+        		int defaultMaxDisplayedScoreRowsSakaiPropInt = Integer.parseInt(defaultMaxDisplayedScoreRowsSakaiProp);
+        		if(defaultMaxDisplayedScoreRowsSakaiPropInt == 5 ||
+        				defaultMaxDisplayedScoreRowsSakaiPropInt == 10 ||
+        				defaultMaxDisplayedScoreRowsSakaiPropInt == 15 ||
+        				defaultMaxDisplayedScoreRowsSakaiPropInt == 20 ||
+        				defaultMaxDisplayedScoreRowsSakaiPropInt == 50 ||
+        				defaultMaxDisplayedScoreRowsSakaiPropInt == 100 ||
+        				defaultMaxDisplayedScoreRowsSakaiPropInt == 0){
+        			defaultMaxDisplayedScoreRows = defaultMaxDisplayedScoreRowsSakaiPropInt;
+        		}
+        	}catch (Exception e) {
+        		//integer parse issue, bad property
+			}
+        }
     }
 
 	// Paging preferences

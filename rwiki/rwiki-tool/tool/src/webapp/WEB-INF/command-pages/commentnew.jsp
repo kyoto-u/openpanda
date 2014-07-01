@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/commentnew.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/commentnew.jsp $
  * $Id: commentnew.jsp 89292 2011-03-04 17:01:13Z savithap@umich.edu $
  ***********************************************************************************
  *

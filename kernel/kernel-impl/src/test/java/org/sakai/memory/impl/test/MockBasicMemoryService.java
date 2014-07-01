@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockBasicMemoryService.java $
- * $Id: MockBasicMemoryService.java 88354 2011-02-11 09:12:55Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockBasicMemoryService.java $
+ * $Id: MockBasicMemoryService.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,8 +25,6 @@ import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.event.api.EventTrackingService;
-import org.sakaiproject.event.api.UsageSessionService;
-import org.sakaiproject.memory.api.MemoryPermissionException;
 import org.sakaiproject.memory.impl.BasicMemoryService;
 
 /**
@@ -38,18 +36,16 @@ public class MockBasicMemoryService extends BasicMemoryService
 
 	private EventTrackingService eventTrackingService;
 	private SecurityService securityService;
-	private UsageSessionService usageSessionService;
 	private AuthzGroupService authzGroupService;
 	private ServerConfigurationService serverConfigurationService;
 
 	/**
 	 * 
 	 */
-	public MockBasicMemoryService(EventTrackingService eventTrackingService, SecurityService securityService, UsageSessionService usageSessionService, AuthzGroupService authzGroupService, ServerConfigurationService serverConfigurationService)
+	public MockBasicMemoryService(EventTrackingService eventTrackingService, SecurityService securityService, AuthzGroupService authzGroupService, ServerConfigurationService serverConfigurationService)
 	{
 		this.eventTrackingService = eventTrackingService;
 		this.securityService = securityService;
-		this.usageSessionService = usageSessionService;
 		this.authzGroupService = authzGroupService;
 		this.serverConfigurationService = serverConfigurationService;
 	}
@@ -72,16 +68,6 @@ public class MockBasicMemoryService extends BasicMemoryService
 	return securityService;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.sakaiproject.memory.impl.BasicMemoryService#usageSessionService()
-	 */
-	@Override
-	protected UsageSessionService usageSessionService()
-	{
-		return usageSessionService;
-	}
-	
-	@Override
 	protected AuthzGroupService authzGroupService()
 	{
 		return authzGroupService;
@@ -92,6 +78,4 @@ public class MockBasicMemoryService extends BasicMemoryService
 		return serverConfigurationService;
 	}
 
-
-
-	}
+}

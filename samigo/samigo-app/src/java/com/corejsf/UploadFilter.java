@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/com/corejsf/UploadFilter.java $
-* $Id: UploadFilter.java 67218 2009-10-05 22:30:25Z ktsao@stanford.edu $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/com/corejsf/UploadFilter.java $
+* $Id: UploadFilter.java 121739 2013-03-25 19:19:30Z ktsao@stanford.edu $
 ***********************************************************************************
 * Copyright (c) 2004 Sun Microsystems from the Java Series, Core Java ServerFaces
 * source freely distributable.
@@ -12,7 +12,7 @@
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-*       http://www.osedu.org/licenses/ECL-2.0
+*       http://www.opensource.org/licenses/ECL-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,25 +56,21 @@ public class UploadFilter implements Filter {
 
    public void init(FilterConfig config) throws ServletException {
        repositoryPath = ServerConfigurationService.getString(
-	 "samigo.answerUploadRepositoryPath", config.getInitParameter(
-         "com.corejsf.UploadFilter.repositoryPath"));
+	 "samigo.answerUploadRepositoryPath", "${sakai.home}/samigo/answerUploadRepositoryPath/");
 
       try {
          String paramValue = ServerConfigurationService.getString(
-            "samigo.sizeThreshold", config.getInitParameter(
-            "com.corejsf.UploadFilter.sizeThreshold"));
+            "samigo.sizeThreshold", "1024");
          if (paramValue != null)
             sizeThreshold = Integer.parseInt(paramValue);
 
          paramValue = ServerConfigurationService.getString(
-            "samigo.sizeMax", config.getInitParameter(
-            "com.corejsf.UploadFilter.sizeMax"));
+            "samigo.sizeMax", "40960");
          if (paramValue != null)
             sizeMax = Long.parseLong(paramValue);
 
          paramValue = ServerConfigurationService.getString(
-            "samigo.saveMediaToDb", config.getInitParameter(
-            "com.corejsf.UploadFilter.saveMediaToDb"));
+            "samigo.saveMediaToDb", "true");
          if (paramValue != null)
             saveMediaToDb = paramValue;
 
@@ -90,8 +86,8 @@ public class UploadFilter implements Filter {
       }
       ServletContext context = config.getServletContext();
       context.setAttribute("FILEUPLOAD_REPOSITORY_PATH",repositoryPath);
-      context.setAttribute("FILEUPLOAD_SIZE_THRESHOLD",new Integer(sizeThreshold));
-      context.setAttribute("FILEUPLOAD_SIZE_MAX",new Long(sizeMax));
+      context.setAttribute("FILEUPLOAD_SIZE_THRESHOLD", Integer.valueOf(sizeThreshold));
+      context.setAttribute("FILEUPLOAD_SIZE_MAX", Long.valueOf(sizeMax));
       context.setAttribute("FILEUPLOAD_SAVE_MEDIA_TO_DB", saveMediaToDb);
    }
 

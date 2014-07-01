@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-api/src/java/org/sakaiproject/sitestats/api/event/EventRegistryService.java $
- * $Id: EventRegistryService.java 96802 2011-08-11 12:57:41Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-api/src/java/org/sakaiproject/sitestats/api/event/EventRegistryService.java $
+ * $Id: EventRegistryService.java 133719 2014-01-27 11:20:56Z matthew.buckett@it.ox.ac.uk $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ package org.sakaiproject.sitestats.api.event;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.sakaiproject.sitestats.api.parser.EventFactory;
 import org.sakaiproject.sitestats.api.parser.ToolFactory;
@@ -30,15 +31,15 @@ public interface EventRegistryService {
 	
 	/**
 	 * Get all statisticable tool events.
-	 * @return A list of event ids.
+	 * @return A set of event ids.
 	 */
-	public List<String> getEventIds();
+	public Set<String> getEventIds();
 
 	/**
 	 * Get all anonymous tool events.
-	 * @return A list of anonymous event ids.
+	 * @return A set of anonymous event ids.
 	 */
-	public List<String> getAnonymousEventIds();
+	public Set<String> getAnonymousEventIds();
 	
 	/**
 	 * Get the statisticable event registry.
@@ -102,5 +103,12 @@ public interface EventRegistryService {
 	 * @return List of event ids
 	 */
 	public List<String> getServerEventIds();
+
+	/**
+	 * Is the supplied event id a valid one.
+	 * @param eventId The event id. Eg: site.visit.
+	 * @return <code>true</code> if it's known about by site stats.
+	 */
+	public boolean isRegisteredEvent(String eventId);
 
 }

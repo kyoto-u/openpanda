@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/memory/tags/sakai-2.9.3/memory-tool/tool/src/java/org/sakaiproject/memory/tool/MemoryAction.java $
- * $Id: MemoryAction.java 88355 2011-02-11 10:09:46Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/memory/tags/sakai-10.0/memory-tool/tool/src/java/org/sakaiproject/memory/tool/MemoryAction.java $
+ * $Id: MemoryAction.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,14 +22,9 @@
 package org.sakaiproject.memory.tool;
 
 import org.sakaiproject.authz.cover.SecurityService;
-import org.sakaiproject.cheftool.Context;
-import org.sakaiproject.cheftool.JetspeedRunData;
-import org.sakaiproject.cheftool.RunData;
-import org.sakaiproject.cheftool.VelocityPortlet;
-import org.sakaiproject.cheftool.VelocityPortletPaneledAction;
+import org.sakaiproject.cheftool.*;
 import org.sakaiproject.cheftool.api.Menu;
 import org.sakaiproject.event.api.SessionState;
-import org.sakaiproject.memory.api.MemoryPermissionException;
 import org.sakaiproject.memory.cover.MemoryServiceLocator;
 import org.sakaiproject.util.ResourceLoader;
 
@@ -87,7 +82,7 @@ public class MemoryAction extends VelocityPortletPaneledAction
 		{
 			MemoryServiceLocator.getInstance().resetCachers();
 		}
-		catch (MemoryPermissionException e)
+		catch (SecurityException e)
 		{
 			state.setAttribute("message", rb.getString("memory.notpermis"));
 		}
@@ -106,7 +101,7 @@ public class MemoryAction extends VelocityPortletPaneledAction
 		{
 			MemoryServiceLocator.getInstance().evictExpiredMembers();
 		}
-		catch (MemoryPermissionException e)
+		catch (SecurityException e)
 		{
 			state.setAttribute("message", rb.getString("memory.notpermis"));
 		}

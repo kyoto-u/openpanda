@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/util/XmlMapper.java $
- * $Id: XmlMapper.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/util/XmlMapper.java $
+ * $Id: XmlMapper.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ import org.sakaiproject.tool.assessment.qti.util.XmlUtil;
  * Note this now supports deep copy.
  *
  * @author @author Ed Smiley
- * @version $Id: XmlMapper.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * @version $Id: XmlMapper.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  */
 public class XmlMapper
 {

@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,8 +22,11 @@
 package org.sakaiproject.chat2.tool;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,6 +43,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.PermissionsHelper;
@@ -51,6 +55,8 @@ import org.sakaiproject.chat2.model.ChatFunctions;
 import org.sakaiproject.chat2.model.PresenceObserver;
 import org.sakaiproject.chat2.tool.ColorMapper;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.courier.api.CourierService;
 import org.sakaiproject.event.api.UsageSession;
 import org.sakaiproject.event.cover.UsageSessionService;
@@ -456,7 +462,7 @@ public class ChatTool implements RoomObserver, PresenceObserver {
     * @param channel
     * @return Returns if the channel validates
     */
-   protected boolean validateChannel(ChatChannel channel) {      
+   protected boolean validateChannel(ChatChannel channel) {
       boolean validates = true;
       if (channel.getTitle() == null || channel.getTitle().length() == 0) {
          
@@ -473,7 +479,17 @@ public class ChatTool implements RoomObserver, PresenceObserver {
          setErrorMessage("editRoomForm:desc", "desc_too_long", new String[] {Integer.toString(255)});
          validates = false;
       }
-      
+
+      if (logger.isDebugEnabled()) logger.debug("chat start ("+channel.getStartDate()+") and end ("+channel.getEndDate()+") dates");
+      // validate the dates
+      if (channel.getStartDate() != null && channel.getEndDate() != null) {
+          // check the dates are valid
+          if (channel.getStartDate().after(channel.getEndDate())) {
+              setErrorMessage("editRoomForm:startDate", "custom_date_error_order", new Object[] {channel.getStartDate(), channel.getEndDate()});
+              validates = false;
+          }
+      }
+
       if (!validates)
          setErrorMessage("validation_error", new String[] {});
       
@@ -611,6 +627,53 @@ public class ChatTool implements RoomObserver, PresenceObserver {
             getToolManager().getCurrentTool().getTitle(), getWorksite().getTitle()});
   }
 
+   /**
+    * @return the translated message based on the current date settings for this channel
+    */
+   public String getDatesMessage() {
+       String msg = null;
+       if (this.currentChannel != null) {
+           DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+           if (this.currentChannel.getStartDate() != null && this.currentChannel.getEndDate() != null) {
+               msg = getMessageFromBundle("custom_date_display", 
+                       new Object[] {df.format(this.currentChannel.getStartDate()), df.format(this.currentChannel.getEndDate())}
+               );
+           } else if (this.currentChannel.getStartDate() != null) {
+               msg = getMessageFromBundle("custom_date_display_start", 
+                       new Object[] {df.format(this.currentChannel.getStartDate()), ""}
+               );
+           } else if (this.currentChannel.getEndDate() != null) {
+               msg = getMessageFromBundle("custom_date_display_end", 
+                       new Object[] {"", df.format(this.currentChannel.getEndDate())}
+               );
+           }
+       }
+       return msg;
+   }
+
+   /**
+    * @return true if chat posting is restricted by configured dates or false otherwise
+    */
+   public boolean isDatesRestricted() {
+       boolean restricted = false;
+       if (this.currentChannel != null) {
+           Date today = new Date();
+           Date start = this.currentChannel.getStartDate();
+           if (start == null) {
+               start = today;
+           }
+           Date end = this.currentChannel.getEndDate();
+           if (end == null) {
+               end = today;
+           }
+           if ( today.before(start) || today.after(end) ) {
+               // today is outside the configured dates so posting restricted by dates
+               restricted = true;
+           }
+       }
+       return restricted;
+   }
+
    public Site getWorksite() {
        if (worksite == null) {
            try {
@@ -704,6 +767,10 @@ public class ChatTool implements RoomObserver, PresenceObserver {
                retView = PAGE_ENTER_ROOM;
            else
                retView = PAGE_LIST_ROOMS;
+
+           // copy the dates into the channel for saving
+           channel.setStartDate(dChannel.getStartDate());
+           channel.setEndDate(dChannel.getEndDate());
 
            if (validateChannel(channel))
                try {
@@ -1252,7 +1319,9 @@ public class ChatTool implements RoomObserver, PresenceObserver {
 	   
 	   if(getCanRenderMessageOptions()){
 
-		   SelectItem item1 = new SelectItem(Integer.toString(MESSAGEOPTIONS_ALL_MESSAGES), getMessageFromBundle("allMessages"));
+		   // Commenting out the original here for now in case this is ever truly implemented.  Instead, display the true maximum limit
+		   // SelectItem item1 = new SelectItem(Integer.toString(MESSAGEOPTIONS_ALL_MESSAGES), getMessageFromBundle("allMessages"));
+		   SelectItem item1 = new SelectItem(Integer.toString(MESSAGEOPTIONS_ALL_MESSAGES), getCustomOptionText(ChatChannel.FILTER_BY_NUMBER, getChatManager().getMessagesMax()));
 		   SelectItem item2 = new SelectItem(Integer.toString(MESSAGEOPTIONS_MESSAGES_BY_NUMBER), getCustomOptionText(ChatChannel.FILTER_BY_NUMBER, numberParam));
 		   SelectItem item3 = new SelectItem(Integer.toString(MESSAGEOPTIONS_MESSAGES_BY_DATE), getCustomOptionText(ChatChannel.FILTER_BY_TIME, timeParam));
 		   SelectItem item4 = new SelectItem(Integer.toString(MESSAGEOPTIONS_NO_MESSAGES), getCustomOptionText(ChatChannel.FILTER_NONE, 0));
@@ -1265,7 +1334,9 @@ public class ChatTool implements RoomObserver, PresenceObserver {
 		   String filter = dChannel != null ? dChannel.getChatChannel().getFilterType() : "";
 		   SelectItem item = null;
 		   if(filter.equals(ChatChannel.FILTER_ALL)){
-			   item = new SelectItem(Integer.toString(MESSAGEOPTIONS_ALL_MESSAGES), getMessageFromBundle("allMessages"));
+			   // Commenting out the original here for now in case this is ever truly implemented.  Instead, display the true maximum limit
+			   // item = new SelectItem(Integer.toString(MESSAGEOPTIONS_ALL_MESSAGES), getMessageFromBundle("allMessages"));
+			   item = new SelectItem(Integer.toString(MESSAGEOPTIONS_ALL_MESSAGES), getCustomOptionText(ChatChannel.FILTER_BY_NUMBER, getChatManager().getMessagesMax()));
 		   }else if(filter.equals(ChatChannel.FILTER_BY_NUMBER)){
 			   item = new SelectItem(Integer.toString(MESSAGEOPTIONS_MESSAGES_BY_NUMBER), getCustomOptionText(ChatChannel.FILTER_BY_NUMBER, numberParam));
 		   }else if(filter.equals(ChatChannel.FILTER_BY_TIME)){
@@ -1345,6 +1416,10 @@ public class ChatTool implements RoomObserver, PresenceObserver {
        }
        else if (Integer.parseInt(getMessageOptions()) == MESSAGEOPTIONS_NO_MESSAGES) {
            maxMessages = 0;
+       }
+       EventTrackingService ets = (EventTrackingService) ComponentManager.get(EventTrackingService.class);
+       if (ets != null && dChannel != null && dChannel.getChatChannel() != null) {
+           ets.post(ets.newEvent("chat.read", dChannel.getChatChannel().getReference(), false));
        }
        return getMessages(getContext(), xDaysOld, maxMessages, true);
    }
@@ -1606,6 +1681,21 @@ public class ChatTool implements RoomObserver, PresenceObserver {
 		    }
 	
 	    }
+   }
+
+   //SAK-19700 method to get name of tool so it can be rendered with the option link, for screenreaders
+   public String getToolTitle() {
+	   return toolManager.getCurrentPlacement().getTitle();
+   }
+   
+   //SAK-19700 renders a complete Options link with an additional span link for accessiblity
+   public String getAccessibleOptionsLink() {
+	   StringBuilder sb = new StringBuilder();
+	   sb.append(getMessageFromBundle("manage_tool"));
+	   sb.append("<span class=\"skip\">");
+	   sb.append(getToolTitle());
+	   sb.append("</span>");
+	   return sb.toString();
    }
    
 }

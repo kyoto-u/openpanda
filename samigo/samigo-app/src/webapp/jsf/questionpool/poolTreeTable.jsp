@@ -1,4 +1,4 @@
-<!-- $Id: poolTreeTable.jsp 64627 2009-07-08 17:40:49Z ktsao@stanford.edu $
+<!-- $Id: poolTreeTable.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -61,6 +61,7 @@
   <f:param name="qpid" value="#{pool.questionPoolId}"/>
   <f:param name="orderBy" value="text"/>
   <f:param name="ascending" value="true"/>
+  <f:param name="getItems" value="false"/>
   <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.SortQuestionListListener" />
 </h:commandLink>
 
@@ -81,6 +82,12 @@
 <h:outputText rendered="#{questionpool.importToAuthoring != 'true' && authorization.copyOwnQuestionPool && pool.ownerId==questionpool.agentId}" value=" #{questionPoolMessages.separator} " />
 <h:commandLink title="#{questionPoolMessages.t_copyPool}" rendered="#{questionpool.importToAuthoring != 'true' && authorization.copyOwnQuestionPool}" id="copylink" immediate="true" action="#{questionpool.startCopyPool}">
   <h:outputText id="copy" value="#{questionPoolMessages.copy}"/>
+  <f:param name="qpid" value="#{pool.questionPoolId}"/>
+</h:commandLink>
+<!-- Unshare Pool -->
+<h:outputText rendered="#{questionpool.importToAuthoring != 'true' && pool.ownerId!=questionpool.agentId}" value=" #{questionPoolMessages.separator} " />
+<h:commandLink title="#{questionPoolMessages.t_unsharePool}" rendered="#{questionpool.importToAuthoring != 'true' && pool.ownerId!=questionpool.agentId}" id="unsharelink" immediate="true" action="#{questionpool.startUnsharePool}">
+  <h:outputText id="unshare" value="#{questionPoolMessages.unshare}"/>
   <f:param name="qpid" value="#{pool.questionPoolId}"/>
 </h:commandLink>
 <!-- Move Pool -->
@@ -233,7 +240,7 @@ lydial: in 2.2, use Display Name instead of ownerId, since ownerId now returns t
        <h:outputText value="#{questionPoolMessages.remove_chbox}"/>
      </f:facet>
 
-<h:selectManyCheckbox onclick="checkUpdate()" onkeypress="checkUpdate()" id="removeCheckbox" value ="#{questionpool.destPools}" rendered="#{pool.ownerId==questionpool.agentId}">
+<h:selectManyCheckbox onclick="checkUpdate()" onkeypress="checkUpdate()" id="removeCheckbox" value="#{questionpool.destPools}" rendered="#{pool.ownerId==questionpool.agentId}">
 
 	<f:selectItem itemValue="#{pool.questionPoolId}"  itemLabel=""/>
 </h:selectManyCheckbox>

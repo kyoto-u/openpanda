@@ -44,14 +44,24 @@ $Id: histogramScores.jsp 38982 2007-12-06 13:05:38Z gopal.ramasammycook@gmail.co
 
   <!-- HEADINGS -->
   <%@ include file="/jsf/evaluation/evaluationHeadings.jsp" %>
-
-  <h3>
-    <h:outputText value="#{evaluationMessages.item_analysis}"/>
-    <h:outputText value="#{evaluationMessages.column} "/>
-    <h:outputText value="#{histogramScores.assessmentName} " escape="false"/>
-  </h3>
   
-     <h:outputText value=" <p class=\"navViewAction\">" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false"/>
+  <h:panelGrid columns="1">
+  <h:panelGroup>
+  <f:verbatim><h3></f:verbatim>
+  	<h:outputText value="#{evaluationMessages.item_analysis}#{evaluationMessages.column} " escape="false"/>
+  <f:verbatim><span style="font-weight:normal !important;"></f:verbatim>
+  	<h:outputText value="#{histogramScores.assessmentName} " escape="false"/>
+  <f:verbatim></span></f:verbatim>
+  <f:verbatim></h3></f:verbatim>
+  </h:panelGroup>
+  </h:panelGrid>
+  
+  <!-- Per UX, for formatting -->
+  <div class="textBelowHeader">
+    <h:outputText value=""/>
+  </div>  
+  
+     <h:outputText value="<ul class='navIntraTool actionToolbar' role='menu'><li role='menuitem' class='firstToolBarItem'><span>" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false"/>
      
      <h:commandLink title="#{evaluationMessages.t_submissionStatus}" action="submissionStatus" immediate="true" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}">
       <h:outputText value="#{evaluationMessages.sub_status}" />
@@ -60,7 +70,7 @@ $Id: histogramScores.jsp 38982 2007-12-06 13:05:38Z gopal.ramasammycook@gmail.co
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.SubmissionStatusListener" />
     </h:commandLink>
     
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}"/>
+    <h:outputText value=" </span><li role='menuitem'><span>" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false"/>
     
     <h:commandLink title="#{evaluationMessages.t_totalScores}" action="totalScores" immediate="true" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}">
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.ResetTotalScoreListener" />
@@ -68,7 +78,7 @@ $Id: histogramScores.jsp 38982 2007-12-06 13:05:38Z gopal.ramasammycook@gmail.co
       <h:outputText value="#{commonMessages.total_scores}" />
     </h:commandLink>
     
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}"/>
+    <h:outputText value="</span><li role='menuitem'><span>" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false"/>
     
     <h:commandLink title="#{evaluationMessages.t_questionScores}" action="questionScores" immediate="true" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}">
       <f:actionListener
@@ -76,7 +86,7 @@ $Id: histogramScores.jsp 38982 2007-12-06 13:05:38Z gopal.ramasammycook@gmail.co
       <h:outputText value="#{evaluationMessages.q_view}" />
     </h:commandLink>
 
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" />
+    <h:outputText value="</span><li role='menuitem'><span>" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false" />
     
     <h:commandLink title="#{evaluationMessages.t_histogram}" action="histogramScores" immediate="true"
       rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" >
@@ -86,28 +96,38 @@ $Id: histogramScores.jsp 38982 2007-12-06 13:05:38Z gopal.ramasammycook@gmail.co
     </h:commandLink>
 
 
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}"/>
+    <h:outputText value="</span><li role='menuitem'><span>" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false"/>
     
     <h:outputText value="#{evaluationMessages.item_analysis}" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}"/>
 
-    <h:outputText value=" #{evaluationMessages.separator} "  rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}"/>
+    <h:outputText value="</span><li role='menuitem'><span>"  rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false"/>
     
     <h:commandLink title="#{commonMessages.export_action}" action="exportResponses" immediate="true"  rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}">
       <h:outputText value="#{commonMessages.export_action}" />
   	  <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.ExportResponsesListener" />
     </h:commandLink>
     
-    <h:outputText value=" </p>" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false"/>
+    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.hasFileUpload}"/>
+   
+    <h:commandLink title="#{evaluationMessages.t_title_download_file_submissions}" action="downloadFileSubmissions" immediate="true" rendered="#{totalScores.hasFileUpload}">
+      <h:outputText value="#{evaluationMessages.title_download_file_submissions}" />
+        <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.ResetQuestionScoreListener" />
+        <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.DownloadFileSubmissionsListener" />
+    </h:commandLink>
+    
+    <h:outputText value="</span></li></ul>" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false"/>
 
+    <f:verbatim><br /></f:verbatim>
+ 
 <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+
 <div class="tier1">
 
 
   <!-- LAST/ALL SUBMISSIONS; PAGER; ALPHA INDEX  -->
     <h:panelGroup rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}">
      <h:outputText value="#{evaluationMessages.view} " />
-      <h:outputText value="#{evaluationMessages.column} " />
-
+    
      <h:selectOneMenu value="#{histogramScores.allSubmissions}" id="allSubmissionsL"
         required="true" onchange="document.forms[0].submit();" rendered="#{totalScores.scoringOption eq '2'}">
       <f:selectItem itemValue="2" itemLabel="#{evaluationMessages.last_sub}" />
@@ -207,8 +227,8 @@ Below added by gopalrc Nov 2007
         <f:facet name="header">
             <h:outputText escape="false" value="A" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[0].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>0 && !item.histogramBars[0].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[0].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>0 && item.histogramBars[0].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[0].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>0 && !item.histogramBars[0].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[0].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>0 && item.histogramBars[0].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
 
@@ -216,8 +236,8 @@ Below added by gopalrc Nov 2007
         <f:facet name="header">
             <h:outputText escape="false" value="B" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[1].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>1 && !item.histogramBars[1].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[1].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>1 && item.histogramBars[1].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[1].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>1 && !item.histogramBars[1].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[1].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>1 && item.histogramBars[1].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
 
@@ -225,8 +245,8 @@ Below added by gopalrc Nov 2007
         <f:facet name="header">
             <h:outputText escape="false" value="C" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[2].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>2 && !item.histogramBars[2].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[2].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>2 && item.histogramBars[2].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[2].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>2 && !item.histogramBars[2].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[2].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>2 && item.histogramBars[2].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
 
@@ -234,8 +254,8 @@ Below added by gopalrc Nov 2007
         <f:facet name="header">
             <h:outputText escape="false" value="D" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[3].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>3 && !item.histogramBars[3].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[3].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>3 && item.histogramBars[3].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[3].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>3 && !item.histogramBars[3].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[3].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>3 && item.histogramBars[3].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
 
@@ -243,8 +263,8 @@ Below added by gopalrc Nov 2007
         <f:facet name="header">
             <h:outputText escape="false" value="E" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[4].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>4 && !item.histogramBars[4].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[4].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>4 && item.histogramBars[4].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[4].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>4 && !item.histogramBars[4].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[4].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>4 && item.histogramBars[4].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
 
@@ -252,56 +272,56 @@ Below added by gopalrc Nov 2007
         <f:facet name="header">
             <h:outputText escape="false" value="F" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[5].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>5 && !item.histogramBars[5].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[5].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>5 && item.histogramBars[5].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[5].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>5 && !item.histogramBars[5].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[5].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>5 && item.histogramBars[5].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
     <h:column rendered="#{histogramScores.maxNumberOfAnswers>6}">
         <f:facet name="header">
             <h:outputText escape="false" value="G" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[6].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>6 && !item.histogramBars[6].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[6].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>6 && item.histogramBars[6].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[6].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>6 && !item.histogramBars[6].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[6].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>6 && item.histogramBars[6].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
     <h:column rendered="#{histogramScores.maxNumberOfAnswers>7}">
         <f:facet name="header">
             <h:outputText escape="false" value="H" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[7].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>7 && !item.histogramBars[7].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[7].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>7 && item.histogramBars[7].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[7].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>7 && !item.histogramBars[7].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[7].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>7 && item.histogramBars[7].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
     <h:column rendered="#{histogramScores.maxNumberOfAnswers>8}">
         <f:facet name="header">
             <h:outputText escape="false" value="I" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[8].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>8 && !item.histogramBars[8].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[8].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>8 && item.histogramBars[8].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[8].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>8 && !item.histogramBars[8].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[8].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>8 && item.histogramBars[8].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
     <h:column rendered="#{histogramScores.maxNumberOfAnswers>9}">
         <f:facet name="header">
             <h:outputText escape="false" value="J" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[9].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>9 && !item.histogramBars[9].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[9].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>9 && item.histogramBars[9].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[9].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>9 && !item.histogramBars[9].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[9].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>9 && item.histogramBars[9].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
     <h:column rendered="#{histogramScores.maxNumberOfAnswers>10}">
         <f:facet name="header">
             <h:outputText escape="false" value="K" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[10].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>10 && !item.histogramBars[10].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[10].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>10 && item.histogramBars[10].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[10].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>10 && !item.histogramBars[10].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[10].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>10 && item.histogramBars[10].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
     <h:column rendered="#{histogramScores.maxNumberOfAnswers>11}">
         <f:facet name="header">
             <h:outputText escape="false" value="L" /> 
         </f:facet>
-        <h:outputText value="#{item.histogramBars[11].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>11 && !item.histogramBars[11].isCorrect}"/>
-        <h:outputText value="#{item.histogramBars[11].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>11 && item.histogramBars[11].isCorrect}" styleClass="detailedStatsCorrectAnswerText"/>
+        <h:outputText value="#{item.histogramBars[11].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>11 && !item.histogramBars[11].isCorrect && item.showIndividualAnswersInDetailedStatistics}"/>
+        <h:outputText value="#{item.histogramBars[11].numStudents}" escape="false" rendered="#{histogramScores.maxNumberOfAnswers>11 && item.histogramBars[11].isCorrect && item.showIndividualAnswersInDetailedStatistics}" styleClass="detailedStatsCorrectAnswerText"/>
     </h:column>
 
     <h:column rendered="#{histogramScores.maxNumberOfAnswers>12}">

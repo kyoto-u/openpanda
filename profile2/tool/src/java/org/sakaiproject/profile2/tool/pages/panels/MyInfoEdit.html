@@ -1,6 +1,8 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <!--
 
-    Copyright (c) 2008-2010 The Sakai Foundation
+    Copyright (c) 2008-2012 The Sakai Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +18,6 @@
 
 -->
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"  
       xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
       xml:lang="en"  
@@ -73,14 +74,18 @@
 					<!-- nickname -->
 					<tr wicket:id="nicknameContainer">
 						<td class="label" wicket:id="nicknameLabel">[nicknameLabel]</td>
-						<td class="content"><input type="text" wicket:id="nickname" class="formInputField" /></td>
+						<td class="content">
+							<label for="nicknameinput" class="accessibility-label"><wicket:message key="accessibility.profile.nickname.input">Enter your nickname</wicket:message></label>
+							<input type="text" wicket:id="nickname" class="formInputField" />
+						</td>
 					</tr>
 					
 					<!-- birthday -->
 					<tr wicket:id="birthdayContainer">
 						<td class="label" wicket:id="birthdayLabel">[birthdayLabel]</td>
 						<td class="content">
-							<input type="text" wicket:id="birthday" class="formInputField datePicker" readonly="readonly" />
+							<label for="birthdayinput" class="accessibility-label"><wicket:message key="accessibility.profile.birthday">Enter your birthday</wicket:message></label>
+							<input type="text" wicket:id="birthday" class="formInputField datePicker" />
 							<span wicket:id="birthdayToolTip">[birthdayToolTip]</span>
 						</td>
 					</tr>
@@ -88,7 +93,10 @@
 					<!-- personal summary -->
 					<tr wicket:id="personalSummaryContainer">
 						<td class="label" wicket:id="personalSummaryLabel">[personalSummaryLabel]</td>
-						<td class="content"><textarea wicket:id="personalSummary" class="formInputArea" rows="4" cols="40">[personalSummary]</textarea></td>
+						<td class="content">
+							<label for="summaryinput" class="accessibility-label"><wicket:message key="accessibility.profile.summaryinput">Enter your personal summary</wicket:message></label>
+							<textarea wicket:id="personalSummary" class="formInputArea" rows="4" cols="40">[personalSummary]</textarea>
+						</td>
 					</tr>
 					
 				</table>
@@ -106,11 +114,12 @@
 		/*
 		ranged from current year minus 100 years and cannot be past today
 		defaults to today if none set
-		http://docs.jquery.com/UI/Datepicker/datepicker#options
+		http://jqueryui.com/demos/datepicker/
 		*/
 		$(document).ready(function(){
 
 			$('.datePicker').datepicker({
+				changeYear: true,
 				yearRange: '-100:+1',
 				dateFormat: 'dd MM yy',
 				defaultDate: new Date(),

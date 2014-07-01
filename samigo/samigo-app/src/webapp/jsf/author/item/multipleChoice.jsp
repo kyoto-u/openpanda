@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: multipleChoice.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+* $Id: multipleChoice.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
 <%--
 ***********************************************************************************
 *
@@ -45,12 +45,12 @@
 <%@ include file="/jsf/author/item/itemHeadings.jsp" %>
 <h:form id="itemForm" onsubmit="return editorCheck();">
 <p class="act">
-  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
 
-  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getPoolOutcome}"  styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getPoolOutcome}"  styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
@@ -80,7 +80,7 @@
 <div class="tier2">
 
 <div class="shorttext"> <h:outputLabel value="#{authorMessages.answer_point_value}" />
-<h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" size="6" onchange="toPoint(this.id);">
+<h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true"  disabled="#{author.isEditPoolFlow}" size="6" onchange="toPoint(this.id);">
 <f:validateDoubleRange minimum="0.00" />
 </h:inputText>
 
@@ -103,7 +103,7 @@
                     value="#{itemauthor.currentItem.itemType}"
 	                valueChangeListener="#{itemauthor.currentItem.toggleChoiceTypes}" >
     <f:selectItem itemValue="1" itemLabel="#{commonMessages.multiple_choice_sin}" />  
-    <f:selectItem itemValue="12" itemLabel="#{commonMessages.multipl_mc_ss}" />
+    <f:selectItem itemValue="12" itemLabel="#{commonMessages.multipl_mc_ss}" /> 
     <f:selectItem itemValue="2"   itemLabel="#{commonMessages.multipl_mc_ms}" />
   </h:selectOneRadio>
 </div>
@@ -132,6 +132,22 @@
   </h:panelGroup>
   </h:panelGroup>
 </div>
+
+<!-- multiple choice, multiple selection: full or partial credit -->
+<div id="mcms_credit_toggle" class="tier3">
+  <h:panelGroup id="mcms_credit_JSF_toggle" 
+   				rendered="#{itemauthor.currentItem.itemType == 2}">
+    <h:selectOneRadio id="mcms_credit_partial_credit"
+					  layout="pageDirection"
+					  onkeypress="this.form.onsubmit();this.form.submit();"
+					  value="#{itemauthor.currentItem.mcmsPartialCredit}">
+      <f:selectItem itemValue="true" itemLabel="#{commonMessages.mutlipl_mc_ms_partial_credit}"  />
+      <f:selectItem itemValue="false" itemLabel="#{commonMessages.multipl_mc_ms_full_credit}"  />
+    </h:selectOneRadio>
+  </h:panelGroup>
+</div>
+
+
     
 <div id="discountDiv" class="longtext">
   <h:panelGroup id="discountTable"
@@ -297,7 +313,7 @@
     </h:selectOneRadio>
 </div>
     <!-- 6 PART -->
-<h:panelGrid columns="3"  columnClasses="shorttext" rendered="#{itemauthor.target == 'assessment'}">
+<h:panelGrid columns="3"  columnClasses="shorttext" rendered="#{itemauthor.target == 'assessment' && !author.isEditPoolFlow}">
 <f:verbatim>&nbsp;</f:verbatim>
 <h:outputLabel value="#{authorMessages.assign_to_p} " />
   <h:selectOneMenu id="assignToPart" value="#{itemauthor.currentItem.selectedSection}">
@@ -364,12 +380,12 @@
 </div>
 
 <p class="act">
-  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
 
-  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getPoolOutcome}"  styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getPoolOutcome}"  styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>

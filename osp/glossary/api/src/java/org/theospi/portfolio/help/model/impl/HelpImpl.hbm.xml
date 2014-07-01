@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.theospi.portfolio.help.model">
 
    <class name="GlossaryEntry" table="osp_help_glossary" lazy="true">
@@ -18,7 +18,7 @@
          <generator class="org.sakaiproject.metaobj.shared.IdGenerator"/>
       </id>
       <property name="entryId" column="entry_id" type="org.sakaiproject.metaobj.shared.IdType"/>
-      <property name="longDescription" column="long_description" type="text" />
+      <property name="longDescription" column="long_description" type="materialized_clob" />
    </class>
    
    

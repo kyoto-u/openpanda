@@ -1,50 +1,39 @@
 package org.imsglobal.pox;
 
-import java.io.Reader;
 import java.io.ByteArrayInputStream;
-
+import java.io.Reader;
 import java.net.URLDecoder;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.TreeMap;
-import java.util.Date;
 import java.util.Properties;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
-import java.lang.IllegalArgumentException;
-
 import javax.servlet.http.HttpServletRequest;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 
-import javax.xml.xpath.*;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import net.oauth.OAuth;
-import net.oauth.OAuthMessage;
-import net.oauth.OAuthConsumer;
 import net.oauth.OAuthAccessor;
+import net.oauth.OAuthConsumer;
+import net.oauth.OAuthMessage;
 import net.oauth.OAuthValidator;
 import net.oauth.SimpleOAuthValidator;
-import net.oauth.signature.OAuthSignatureMethod;
-import net.oauth.server.HttpRequestMessage;
 import net.oauth.server.OAuthServlet;
 import net.oauth.signature.OAuthSignatureMethod;
-import org.imsglobal.basiclti.Base64;
-
-import java.security.MessageDigest;
 
 import org.apache.commons.lang.StringEscapeUtils;
-
+import org.imsglobal.basiclti.Base64;
 import org.imsglobal.basiclti.XMLMap;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class IMSPOXRequest {
 
@@ -180,6 +169,7 @@ public class IMSPOXRequest {
 	}
 
 	// Load but do not check the authentication
+	@SuppressWarnings("deprecation")
 	public void loadFromRequest(HttpServletRequest request) 
 	{
 		String contentType = request.getContentType();
@@ -273,8 +263,11 @@ public class IMSPOXRequest {
 			result = expr.evaluate(postDom, XPathConstants.NODESET);
 			nodes = (NodeList) result;
 			headerElement = (Element) nodes.item(0);
+		}catch(javax.xml.xpath.XPathExpressionException e) {
+			errorMessage = "Could not parse XPATH: "+e.getMessage();
+			return;
 		}catch(Exception e) {
-			errorMessage = "Could not parse PATH: "+e.getMessage();
+			errorMessage = "Could not parse input XML: "+e.getMessage();
 			return;
 		}
 
@@ -288,8 +281,13 @@ public class IMSPOXRequest {
 	// Assumes data is all loaded
 	public void validateRequest(String oauth_consumer_key, String oauth_secret, HttpServletRequest request) 
 	{
+		validateRequest(oauth_consumer_key, oauth_secret, request, null) ;
+	}
+
+	public void validateRequest(String oauth_consumer_key, String oauth_secret, HttpServletRequest request, String URL) 
+	{
 		valid = false;
-		OAuthMessage oam = OAuthServlet.getMessage(request, null);
+		OAuthMessage oam = OAuthServlet.getMessage(request, URL);
 		OAuthValidator oav = new SimpleOAuthValidator();
 		OAuthConsumer cons = new OAuthConsumer("about:blank#OAuth+CallBack+NotUsed", 
 				oauth_consumer_key, oauth_secret, null);
@@ -349,6 +347,7 @@ public class IMSPOXRequest {
 		"                <imsx_codeMajor>failure</imsx_codeMajor>\n" +
 		"                <imsx_severity>error</imsx_severity>\n" +
 		"                <imsx_description>%s</imsx_description>\n" +
+		"                <imsx_operationRefIdentifier>%s</imsx_operationRefIdentifier>" + 
 		"            </imsx_statusInfo>\n" +
 		"        </imsx_POXResponseHeaderInfo>\n" + 
 		"    </imsx_POXHeader>\n" +
@@ -357,12 +356,18 @@ public class IMSPOXRequest {
 
 	public static String getFatalResponse(String description)
 	{
+		return getFatalResponse(description, "unknown");
+	}
+
+	public static String getFatalResponse(String description, String message_id)
+	{
 		Date dt = new Date();
 		String messageId = ""+dt.getTime();
 
 		return String.format(fatalMessage, 
 				StringEscapeUtils.escapeXml(messageId), 
-				StringEscapeUtils.escapeXml(description)); 
+				StringEscapeUtils.escapeXml(description),
+				StringEscapeUtils.escapeXml(message_id)); 
 	}
 
 	static final String responseMessage = 

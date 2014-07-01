@@ -1,6 +1,6 @@
 /**
- * $Id: EntityViewTest.java 66521 2009-09-16 08:34:58Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/api/src/test/org/sakaiproject/entitybroker/EntityViewTest.java $
+ * $Id: EntityViewTest.java 125663 2013-06-12 13:43:37Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/api/src/test/org/sakaiproject/entitybroker/EntityViewTest.java $
  * EntityViewTest.java - entity-broker - Apr 10, 2008 7:20:29 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -314,6 +314,14 @@ public class EntityViewTest extends TestCase {
       assertEquals("myid", ev.getPathSegment(1) );
       assertEquals("stuff", ev.getPathSegment(2) );
       assertEquals("this has spaces", ev.getPathSegment(3) );
+      assertEquals(null, ev.getPathSegment(4) );
+
+      ev = new EntityView("/myprefix/myid/stuff/this_is_a_site.with.periods.in.the.name");
+      assertNotNull(ev);
+      assertEquals("myprefix", ev.getPathSegment(0) );
+      assertEquals("myid", ev.getPathSegment(1) );
+      assertEquals("stuff", ev.getPathSegment(2) );
+      assertEquals("this_is_a_site.with.periods.in.the.name", ev.getPathSegment(3) );
       assertEquals(null, ev.getPathSegment(4) );
 
    }

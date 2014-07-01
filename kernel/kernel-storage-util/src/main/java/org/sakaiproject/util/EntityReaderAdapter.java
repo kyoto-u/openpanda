@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ public class EntityReaderAdapter implements EntityReaderHandler
 
 	private static final Log log = LogFactory.getLog(EntityReaderAdapter.class);
 
-	private StorageUser storageUser = null;
+	private SingleStorageUser storageUser = null;
 
 	private String containerEntryTagName;
 
@@ -92,7 +92,7 @@ public class EntityReaderAdapter implements EntityReaderHandler
 			{
 				try
 				{
-					// read the xml
+					// read the xml using DOM.
 					Document doc = StorageUtils.readDocumentFromString(xml);
 
 					// verify the root element
@@ -105,7 +105,15 @@ public class EntityReaderAdapter implements EntityReaderHandler
 					}
 
 					// re-create a resource
-					Entity entry = storageUser.newContainer(root);
+					// Originally this code just assumed that it was dealing with a DoubleStorage.
+					// When the only place it was used was with SingleStorage in which containers don't make
+					// sense.
+					Entity entry = null;
+					if (storageUser instanceof DoubleStorageUser) {
+						entry = ((DoubleStorageUser)storageUser).newContainer(root);
+					} else {
+						entry = storageUser.newResource(null, root);
+					}
 					return entry;
 				}
 				catch (Exception ex)
@@ -207,14 +215,14 @@ public class EntityReaderAdapter implements EntityReaderHandler
 	/**
 	 * @return the storageUser
 	 */
-	public StorageUser getStorageUser()
+	public SingleStorageUser getStorageUser()
 	{
 		return storageUser;
 	}
 	/**
 	 * @param storageUser the storageUser to set
 	 */
-	public void setStorageUser(StorageUser storageUser)
+	public void setStorageUser(SingleStorageUser storageUser)
 	{
 		this.storageUser = storageUser;
 	}

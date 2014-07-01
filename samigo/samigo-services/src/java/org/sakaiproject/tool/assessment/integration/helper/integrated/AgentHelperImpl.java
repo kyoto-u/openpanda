@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/AgentHelperImpl.java $
- * $Id: AgentHelperImpl.java 9497 2006-05-15 23:46:05Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/AgentHelperImpl.java $
+ * $Id: AgentHelperImpl.java 130512 2013-10-15 23:46:40Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,28 +25,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.sakaiproject.tool.cover.ToolManager; 
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
-import org.sakaiproject.authz.cover.AuthzGroupService;
-import org.sakaiproject.site.cover.SiteService;
-import org.sakaiproject.user.cover.UserDirectoryService;
-import org.sakaiproject.user.api.User;
 import org.sakaiproject.authz.api.Role;
-
+import org.sakaiproject.authz.cover.AuthzGroupService;
+import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.tool.api.Placement;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.AgentHelper;
 import org.sakaiproject.tool.assessment.osid.shared.impl.AgentImpl;
 import org.sakaiproject.tool.assessment.osid.shared.impl.IdImpl;
-//cwen
-import org.sakaiproject.tool.api.Placement;
-import org.sakaiproject.tool.assessment.facade.AgentFacade;
-import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.tool.cover.ToolManager;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.cover.UserDirectoryService;
 
 /**
  *
@@ -487,4 +481,27 @@ log.debug("getEidById agentString s = " + s);
 
     return !commentOutFileUpload.equalsIgnoreCase("true");
   }
+
+    /**
+     * Get the Agent DisplayId given an Id String.
+     *
+     * @param agentString the Agent Id string.
+     * @return the Agent Eid.
+     */
+    public String getDisplayId(String agentString) {
+        if (AgentHelper.UNASSIGNED_AGENT_STRING.equals(agentString)) {
+            return "";
+        }
+        try {
+            if (!agentString.startsWith("anonymous_"))  {
+                return UserDirectoryService.getUser(agentString).getDisplayId();
+            }
+
+        } catch (Exception e) {
+            log.warn("getDisplayId: " + e.getMessage());
+        }
+        return "";
+    }
+
+
 }

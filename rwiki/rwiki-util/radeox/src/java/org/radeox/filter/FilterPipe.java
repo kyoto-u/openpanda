@@ -39,7 +39,7 @@ import org.radeox.filter.context.FilterContext;
  * FilterPipe is a collection of Filters which are applied one by one to an
  * input to generate output @author stephan @team sonicteam
  * 
- * @version $Id: FilterPipe.java 7756 2006-04-13 12:25:49Z ian@caret.cam.ac.uk $
+ * @version $Id: FilterPipe.java 309395 2014-05-09 21:21:54Z enietzel@anisakai.com $
  */
 
 public class FilterPipe
@@ -186,20 +186,7 @@ public class FilterPipe
 			Filter f = (Filter) filterIterator.next();
 			try
 			{
-				// assume all filters non cacheable
-				if (f instanceof CacheFilter)
-				{
-					renderContext.setCacheable(true);
-				}
-				else
-				{
-					renderContext.setCacheable(false);
-				}
 				String tmp = f.filter(output, context);
-				if (output.equals(tmp))
-				{
-					renderContext.setCacheable(true);
-				}
 				if (null == tmp)
 				{
 					log.warn("FilterPipe.filter: error while filtering: " + f);
@@ -208,7 +195,6 @@ public class FilterPipe
 				{
 					output = tmp;
 				}
-				renderContext.commitCache();
 			}
 			catch (Exception e)
 			{

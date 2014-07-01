@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,13 +44,16 @@ import org.sakaiproject.api.app.messageforums.DiscussionForumService;
 import org.sakaiproject.api.app.messageforums.Message;
 import org.sakaiproject.api.app.messageforums.MessageForumsMessageManager;
 import org.sakaiproject.api.app.messageforums.MessageForumsTypeManager;
+import org.sakaiproject.api.app.messageforums.MessageMoveHistory;
 import org.sakaiproject.api.app.messageforums.PrivateMessage;
 import org.sakaiproject.api.app.messageforums.SynopticMsgcntrManager;
 import org.sakaiproject.api.app.messageforums.Topic;
 import org.sakaiproject.api.app.messageforums.UnreadStatus;
+import org.sakaiproject.api.app.messageforums.UserStatistics;
 import org.sakaiproject.api.app.messageforums.cover.SynopticMsgcntrManagerCover;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.AttachmentImpl;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.MessageImpl;
+import org.sakaiproject.component.app.messageforums.dao.hibernate.MessageMoveHistoryImpl;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.PrivateMessageImpl;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.UnreadStatusImpl;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.Util;
@@ -89,6 +92,8 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     private static final String QUERY_FIND_PENDING_MSGS_BY_CONTEXT_AND_USER_AND_PERMISSION_LEVEL_NAME = "findAllPendingMsgsByContextByMembershipByPermissionLevelName";
     private static final String QUERY_FIND_PENDING_MSGS_BY_TOPICID = "findPendingMsgsByTopicId";
     private static final String QUERY_UNDELETED_MSG_BY_TOPIC_ID = "findUndeletedMessagesByTopicId";
+    private static final String QUERY_MOVED_MESSAGES_BY_TOPICID = "findMovedMessagesByTopicId";
+    private static final String QUERY_MOVED_HISTORY_BY_MESSAGEID = "findMovedHistoryByMessageId";
     //private static final String ID = "id";
 
     private static final String MESSAGECENTER_HELPER_TOOL_ID = "sakai.messageforums.helper";
@@ -355,7 +360,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     	
         HibernateCallback hcb = new HibernateCallback() {
             public Object doInHibernate(Session session) throws HibernateException, SQLException {
-                Query q = session.getNamedQuery("findAuthoredMessageCountForStudentInSite");
+                Query q = session.getNamedQuery("findAuthoredMessageCountForStudent");
                 q.setParameter("contextId", getContextId(), Hibernate.STRING);
                 q.setParameter("userId", userId, Hibernate.STRING);
                 return q.uniqueResult();
@@ -384,6 +389,27 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
       return (List)getHibernateTemplate().execute(hcb);
     }
     
+    public List<UserStatistics> findAuthoredStatsForStudent(final String studentId) {
+        if (LOG.isDebugEnabled()) LOG.debug("findAuthoredStatsForStudent()");
+        
+        HibernateCallback hcb = new HibernateCallback() {
+          public Object doInHibernate(Session session) throws HibernateException, SQLException {
+              Query q = session.getNamedQuery("findAuthoredStatsForStudent");
+              q.setParameter("contextId", getContextId(), Hibernate.STRING);
+              q.setParameter("userId", studentId, Hibernate.STRING);
+              return q.list();
+          }
+        };
+        List<UserStatistics> returnList = new ArrayList<UserStatistics>();
+        List<Object[]> results = (List<Object[]>)getHibernateTemplate().execute(hcb);
+        for(Object[] result : results){
+      	  UserStatistics stat = new UserStatistics((String) result[0], (String) result[1], (Date) result[2], (String) result[3], 
+      			  ((Integer) result[4]).toString(), ((Integer) result[5]).toString(), ((Integer) result[6]).toString(), studentId);
+      	  returnList.add(stat);
+        }
+        return returnList;
+      }
+    
     public List<Message> findAuthoredMessagesForStudentByTopicId(final String studentId, final Long topicId) {
     	if (LOG.isDebugEnabled()) LOG.debug("findReadMessagesForCurrentStudentByTopicId()");
 
@@ -400,6 +426,27 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     	return (List)getHibernateTemplate().execute(hcb);
     }
 
+    public List<UserStatistics> findAuthoredStatsForStudentByTopicId(final String studentId, final Long topicId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findAuthoredStatsForStudentByTopicId()");
+
+    	HibernateCallback hcb = new HibernateCallback() {
+    		public Object doInHibernate(Session session) throws HibernateException, SQLException {
+    			Query q = session.getNamedQuery("findAuthoredStatsForStudentByTopicId");
+    			q.setParameter("topicId", topicId, Hibernate.LONG);
+    			q.setParameter("userId", studentId, Hibernate.STRING);
+    			return q.list();
+    		}
+    	};
+    	List<UserStatistics> returnList = new ArrayList<UserStatistics>();
+    	List<Object[]> results = (List<Object[]>)getHibernateTemplate().execute(hcb);
+    	for(Object[] result : results){
+    		UserStatistics stat = new UserStatistics((String) result[0], (String) result[1], (Date) result[2], (String) result[3], 
+    				((Integer) result[4]).toString(), ((Integer) result[5]).toString(), ((Integer) result[6]).toString(), studentId);
+    		returnList.add(stat);
+    	}
+    	return returnList;
+    }
+
     public List<Message> findAuthoredMessagesForStudentByForumId(final String studentId, final Long forumId) {
     	if (LOG.isDebugEnabled()) LOG.debug("findAuthoredMessagesForStudentByForumId()");
 
@@ -414,6 +461,27 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     	};
 
     	return (List)getHibernateTemplate().execute(hcb);
+    }
+    
+    public List<UserStatistics> findAuthoredStatsForStudentByForumId(final String studentId, final Long topicId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findAuthoredStatsForStudentByForumId()");
+
+    	HibernateCallback hcb = new HibernateCallback() {
+    		public Object doInHibernate(Session session) throws HibernateException, SQLException {
+    			Query q = session.getNamedQuery("findAuthoredStatsForStudentByForumId");
+    			q.setParameter("forumId", topicId, Hibernate.LONG);
+    			q.setParameter("userId", studentId, Hibernate.STRING);
+    			return q.list();
+    		}
+    	};
+    	List<UserStatistics> returnList = new ArrayList<UserStatistics>();
+    	List<Object[]> results = (List<Object[]>)getHibernateTemplate().execute(hcb);
+    	for(Object[] result : results){
+    		UserStatistics stat = new UserStatistics((String) result[0], (String) result[1], (Date) result[2], (String) result[3], 
+    				((Integer) result[4]).toString(), ((Integer) result[5]).toString(), ((Integer) result[6]).toString(), studentId);
+    		returnList.add(stat);
+    	}
+    	return returnList;
     }
     
     public List<Object[]> findAuthoredMessageCountForAllStudents() {
@@ -506,51 +574,67 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
      * (non-Javadoc)
      * @see org.sakaiproject.api.app.messageforums.MessageForumsMessageManager#findReadMessagesForStudent()
      */
-    public List<Message> findReadMessagesForStudent(final String studentId) {
-      if (LOG.isDebugEnabled()) LOG.debug("findReadMessagesForCurrentStudent()");
+    public List<UserStatistics> findReadStatsForStudent(final String studentId) {
+      if (LOG.isDebugEnabled()) LOG.debug("findReadStatsForStudent()");
       
       HibernateCallback hcb = new HibernateCallback() {
         public Object doInHibernate(Session session) throws HibernateException, SQLException {
-            Query q = session.getNamedQuery("findReadMessagesForStudent");
+            Query q = session.getNamedQuery("findReadStatsForStudent");
             q.setParameter("contextId", getContextId(), Hibernate.STRING);
             q.setParameter("userId", studentId, Hibernate.STRING);
             return q.list();
         }
       };
-      
-      return (List)getHibernateTemplate().execute(hcb);
+      List<UserStatistics> returnList = new ArrayList<UserStatistics>();
+      List<Object[]> results = (List<Object[]>)getHibernateTemplate().execute(hcb);
+      for(Object[] result : results){
+    	  UserStatistics stat = new UserStatistics((String) result[0], (String) result[1], (Date) result[2], (String) result[3], 
+    			  ((Integer) result[4]).toString(), ((Integer) result[5]).toString(), ((Integer) result[6]).toString(), studentId);
+    	  returnList.add(stat);
+      }
+      return returnList;
     }
     
-    public List<Message> findReadMessagesForStudentByTopicId(final String studentId, final Long topicId) {
-    	if (LOG.isDebugEnabled()) LOG.debug("findReadMessagesForCurrentStudentByTopicId()");
+    public List<UserStatistics> findReadStatsForStudentByTopicId(final String studentId, final Long topicId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findReadStatsForStudentByTopicId()");
 
     	HibernateCallback hcb = new HibernateCallback() {
     		public Object doInHibernate(Session session) throws HibernateException, SQLException {
-    			Query q = session.getNamedQuery("findReadMessagesForStudentByTopicId");
-    			q.setParameter("contextId", getContextId(), Hibernate.STRING);
+    			Query q = session.getNamedQuery("findReadStatsForStudentByTopicId");
     			q.setParameter("userId", studentId, Hibernate.STRING);
     			q.setParameter("topicId", topicId, Hibernate.LONG);
     			return q.list();
     		}
     	};
-
-    	return (List)getHibernateTemplate().execute(hcb);
+        List<UserStatistics> returnList = new ArrayList<UserStatistics>();
+        List<Object[]> results = (List<Object[]>)getHibernateTemplate().execute(hcb);
+        for(Object[] result : results){
+      	  UserStatistics stat = new UserStatistics((String) result[0], (String) result[1], (Date) result[2], (String) result[3], 
+      			  ((Integer) result[4]).toString(), ((Integer) result[5]).toString(), ((Integer) result[6]).toString(), studentId);
+      	  returnList.add(stat);
+        }
+        return returnList;
     }
     
-    public List<Message> findReadMessagesForStudentByForumId(final String studentId, final Long forumId) {
-    	if (LOG.isDebugEnabled()) LOG.debug("findReadMessagesForStudentByForumId()");
+    public List<UserStatistics> findReadStatsForStudentByForumId(final String studentId, final Long forumId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findReadStatsForStudentByForumId()");
 
     	HibernateCallback hcb = new HibernateCallback() {
     		public Object doInHibernate(Session session) throws HibernateException, SQLException {
-    			Query q = session.getNamedQuery("findReadMessagesForStudentByForumId");
-    			q.setParameter("contextId", getContextId(), Hibernate.STRING);
+    			Query q = session.getNamedQuery("findReadStatsForStudentByForumId");
     			q.setParameter("userId", studentId, Hibernate.STRING);
     			q.setParameter("forumId", forumId, Hibernate.LONG);
     			return q.list();
     		}
     	};
-
-    	return (List)getHibernateTemplate().execute(hcb);
+        List<UserStatistics> returnList = new ArrayList<UserStatistics>();
+        List<Object[]> results = (List<Object[]>)getHibernateTemplate().execute(hcb);
+        for(Object[] result : results){
+      	  UserStatistics stat = new UserStatistics((String) result[0], (String) result[1], (Date) result[2], (String) result[3], 
+      			  ((Integer) result[4]).toString(), ((Integer) result[5]).toString(), ((Integer) result[6]).toString(), studentId);
+      	  returnList.add(stat);
+        }
+        return returnList;
     }
     
     public List<Object[]> findReadMessageCountForAllStudents() {
@@ -999,7 +1083,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
             	if (message.getTopic().getBaseForum()==null && message.getTopic().getOpenForum() != null) 	 
                     message.getTopic().setBaseForum((BaseForum) message.getTopic().getOpenForum()); 	 
 	 
-            	this.saveMessage(message, true, toolId, userId, context, true);
+            	this.saveMessage(message, false, toolId, userId, context, true);
 
         	if (isMessageFromForums)
         		eventTrackingService.post(eventTrackingService.newEvent(DiscussionForumService.EVENT_FORUMS_READ, getEventMessage(message, toolId, userId, context), false));
@@ -1867,4 +1951,88 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
         LOG.debug("about to return");
         return Util.setToList(resultSet); 
 	}
+	
+
+	public void saveMessageMoveHistory(Long messageId, Long desttopicId, Long sourceTopicId, boolean checkReminder){
+		if (messageId == null || desttopicId == null || sourceTopicId == null) {
+			LOG.error("saveMessageMoveHistory failed with desttopicId: " + desttopicId + ", messageId: " + messageId + ", sourceTopicId: " + sourceTopicId);
+			throw new IllegalArgumentException("Null Argument");
+}
+
+		if (LOG.isDebugEnabled()) LOG.debug("saveMessageMoveHistory executing with desttopicId: " + desttopicId + ", messageId: " + messageId + ", sourceTopicId: " + sourceTopicId);
+
+
+		List moved_history = null;
+
+		moved_history = this.findMovedHistoryByMessageId(messageId);
+
+		// if moving back to the original topic,  set reminder to false, otherwise the original topic will show a Move reminder.
+			if (LOG.isDebugEnabled()) LOG.debug("saveMessageMoveHistory (moved_messages size  " + moved_history.size()  );
+			for (Iterator histIter = moved_history.iterator(); histIter.hasNext();) {
+				MessageMoveHistory hist = (MessageMoveHistory) histIter.next();
+				if (LOG.isDebugEnabled()) LOG.debug("moved message ids = " +  hist.getId()  + "  from : " + hist.getFromTopicId()  + "   topic : " +  hist.getToTopicId() );
+				if (hist.getFromTopicId().equals(desttopicId)){
+					hist.setReminder(false);
+					hist.setModified(new Date());
+					hist.setModifiedBy(getCurrentUser());
+ 					getHibernateTemplate().update(hist);
+				}
+			}
+
+		MessageMoveHistory mhist = new MessageMoveHistoryImpl ();
+
+		mhist.setToTopicId(desttopicId);
+		mhist.setMessageId(messageId);
+		mhist.setFromTopicId(sourceTopicId);
+		mhist.setReminder(checkReminder);
+		mhist.setUuid(getNextUuid());
+		mhist.setCreated(new Date());
+		mhist.setCreatedBy(getCurrentUser());
+		mhist.setModified(new Date());
+		mhist.setModifiedBy(getCurrentUser());
+
+		getHibernateTemplate().saveOrUpdate(mhist);
+
+
+	}
+
+	public List findMovedMessagesByTopicId(final Long topicId) {
+		if (topicId == null) {
+			LOG.error("findMovedMessagesByTopicId failed with topicId: " + topicId);
+			throw new IllegalArgumentException("Null Argument");
+		}
+
+		if (LOG.isDebugEnabled()) LOG.debug("findMovedMessagesByTopicId executing with topicId: " + topicId);
+
+		HibernateCallback hcb = new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Query q = session.getNamedQuery(QUERY_MOVED_MESSAGES_BY_TOPICID);
+				q.setParameter("topicId", topicId, Hibernate.LONG);
+				return q.list();
+			}
+		};
+
+		return (List) getHibernateTemplate().execute(hcb);        
+	}
+
+	public List findMovedHistoryByMessageId(final Long messageid){
+		if (messageid == null) {
+			LOG.error("findMovedHistoryByMessageId failed with messageid: " + messageid);
+			throw new IllegalArgumentException("Null Argument");
+		}
+
+		if (LOG.isDebugEnabled()) LOG.debug("findMovedHistoryByMessageId executing with messageid: " + messageid);
+
+		HibernateCallback hcb = new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Query q = session.getNamedQuery(QUERY_MOVED_HISTORY_BY_MESSAGEID);
+				q.setParameter("messageId", messageid, Hibernate.LONG);
+				return q.list();
+			}
+		};
+
+		return (List) getHibernateTemplate().execute(hcb);        
+
+	}
+	   
 }

@@ -1,9 +1,5 @@
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/sitesetup/chef_site-siteInfo-editAccess.vm,v 1.3 2005/05/15 17:05:00 gsilver.umich.edu Exp $ -->
 ## Site list Sites list on worksite setup home page
-<script type="text/javascript" src="/library/js/jquery/jquery-ui/js/jquery.js"></script>
-<script type="text/javascript" src="/library/js/jquery/jquery-ui/js/jquery-ui.js"></script>
-<link type="text/css" href="/library/js/jquery/jquery-ui/css/smoothness/jquery-ui.css" rel="stylesheet" media="screen" />
-<script type="text/javascript" src="/sakai-site-manage-tool/js/site-manage.js"></script>
 #if ($shoppingPeriodInstructorEditable || $viewDelegatedAccessUsers)
 	<script type="text/javascript" src="/sakai-site-manage-tool/js/site-manage-delegatedaccess.js"></script>
 	<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
@@ -49,10 +45,24 @@
 		}
 	}
 	
+	## bjones86 - SAK-24423 - joinable site settings - checkbox synchronization
+	function doCategoryCheck( clickedElement )
+	{
+        var clickedElementName = clickedElement.getAttribute( "name" );
+        var isChecked = clickedElement.checked;
+
+        var checkboxes = document.getElementsByName( clickedElementName );            
+        var maxBoxes = checkboxes.length;
+
+        for( var i = 0; i < maxBoxes; i++ )
+        {
+            checkboxes[i].checked = isChecked;
+        }
+    }
+	
 	
 // -->	
 </script>
-<link type="text/css" href="/sakai-site-manage-tool/css/site-manage.css" rel="stylesheet" media="screen" />
 <div class ="portletBody">
 	#if($menu)#toolbar($menu)#end
 	#if ($!site)
@@ -78,7 +88,7 @@
 		</p>
 	#end
 	#if ($alertMessage)
-		<div class="alertMessage">$tlang.getString("ediacc.alert") $validator.escapeHtml($alertMessage)</div>
+		<div class="alertMessage">$tlang.getString("ediacc.alert") $alertMessage</div>
 		<div class="clear"></div>
 	#end
 	<form name="editParticipantForm" action="#toolForm("SiteAction")" method="post">
@@ -227,7 +237,114 @@
 						#end
 					</select>
 				</p>
+				
+				## bjones86 - SAK-24423 - joinable site settings title
+				#if( $joinGroupEnabled || $joinExcludeFromPublicListEnabled || $joinLimitAccountTypesEnabled ||
+						$joinGroupEnabledLocalDisabledGlobal || $joinExcludeEnabledLocalDisabledGlobal ||
+						$joinLimitEnabledLocalDisabledGlobal )
+					<p class="indnt3">$tlang.getString( "ediacc.additionJoinAccessOptions" )</p>
+				#end
+				
+				## bjones86 - SAK-24423 - joinable site settings - joiner group
+				#if( $joinGroupEnabled || $joinGroupEnabledLocalDisabledGlobal )
+					<p class="checkbox indnt6">
+						<label for="selectJoinerGroup" #if( !$joinGroupEnabled || $joinGroupEnabledLocalDisabledGlobal ) class="instruction" #end>
+							$tlang.getString( "ediacc.joinToGroup" )
+						</label>
+						<select name="selectJoinerGroup" id="selectJoinerGroup" #if( !$joinGroupEnabled || $joinGroupEnabledLocalDisabledGlobal ) disabled #end >
+							<option value="noSelection" #if( $joinerGroup == "noSelection" ) selected="selected" #end>$tlang.getString( "ediacc.pleSelGroup" )</option>
+							#foreach( $group in $siteGroups )
+								<option value="$group.Id" #if( $group.Id == $joinerGroup ) selected="selected" #end>$group.title</option>
+							#end
+						</select>
+						#if( $joinGroupEnabledLocalDisabledGlobal )
+							<p class="indnt7 messageInformation">$tlang.getString( "ediacc.groupEnabledLocalDiabledGlobal" )</p>
+						#end
+					</p>
+				#end
+				
+				## bjones86 - SAK-24423 - joinable site settings - exclude from public list
+				#if( $joinExcludeFromPublicListEnabled || $joinExcludeEnabledLocalDisabledGlobal )
+					<p class="checkbox indnt4">
+						<input name="chkJoinExcludeFromPublicList" id="chkJoinExcludeFromPublicList" type="checkbox"
+							#if( $joinExcludeFromPublicList ) checked="checked" #end
+							#if( !$joinExcludeFromPublicListEnabled || $joinExcludeEnabledLocalDisabledGlobal ) disabled #end />
+						<label for="chkJoinExcludeFromPublicList" #if( !$joinExcludeFromPublicListEnabled || $joinExcludeEnabledLocalDisabledGlobal ) class="instruction" #end>
+							$tlang.getString( "ediacc.joinExcludeFromPublic" )
+						</label>
+					</p>
+					#if( $joinExcludeEnabledLocalDisabledGlobal )
+						<p class="indnt7 messageInformation">$tlang.getString( "ediacc.excludeEnabledLocalDisabledGlobal" )</p>
+					#end
+				#end
+				
+				## bjones86 - SAK-24423 - joinable site settings - limit by account types
+				#if( $joinLimitAccountTypesEnabled || $joinLimitEnabledLocalDisabledGlobal )
+					<p class="checkbox indnt4">
+						<input name="chkJoinLimitByAccountType" id="chkJoinLimitByAccountType" type="checkbox" 
+							onclick="this.checked ? document.getElementById( 'joinerAccountTypes' ).style.display='block' 
+							: document.getElementById('joinerAccountTypes').style.display='none'"
+							#if( $joinLimitByAccountType ) checked="checked" #end
+							#if( !$joinLimitAccountTypesEnabled || $joinLimitEnabledLocalDisabledGlobal ) disabled #end />
+						<label for="chkJoinLimitByAccountType" #if( !$joinLimitAccountTypesEnabled || $joinLimitEnabledLocalDisabledGlobal ) class="instruction" #end>
+							$tlang.getString( "ediacc.joinLimitByAccountType" )
+						</label>
+					</p>
+					
+					#if( $joinLimitEnabledLocalDisabledGlobal )
+						<p class="indnt7 messageInformation">$tlang.getString( "ediacc.limitEnabledLocalDisabledGlobal" )</p>
+					#end
+					
+                    <div class="indnt6" id="joinerAccountTypes" #if( $joinLimitByAccountType ) style="display:block" #else  style="display:none" #end>
+	            		#foreach( $category in $joinableAccountTypeCategories )
+	                        #if( !$category )
+	                            #foreach( $accType in $joinableAccountTypes )
+	                                <p class="checkbox">
+	                                    <input type="checkbox" name="chkJoin-$accType.type" id="chkJoin-$accType.type"
+	                                        #foreach( $accountType in $joinLimitedAccountTypes )
+	                                            #if( $accountType == $accType.type )
+	                                                checked="checked"
+	                                            #end
+	                                        #end
+	                                        #if( $joinLimitEnabledLocalDisabledGlobal )
+	                                            disabled
+	                                        #end
+	                                    />
+	                                    <label for="chkJoin-$accType.type" #if( $joinLimitEnabledLocalDisabledGlobal ) class="instruction" #end>
+	                                        $accType.label
+	                                    </label>
+	                                </p>
+	                            #end
+	                        #end
+	
+	                        <p class="checkbox #if( $joinLimitEnabledLocalDisabledGlobal ) instruction #end">
+	                            $category
+	                            #foreach( $accType in $joinableAccountTypes )
+	                                #if( $accType.category == $category )
+	                                    #set( $checkboxName = "$accType.category$accType.type" )
+	                                    <p class="checkbox">
+	                                        <input type="checkbox" name="chkJoin-$accType.type" id="chkJoin-$checkboxName" onclick="doCategoryCheck( this )"
+	                                            #foreach( $accountType in $joinLimitedAccountTypes )
+	                                                #if( $accountType == $accType.type )
+	                                                    checked="checked"
+	                                                #end
+	                                            #end
+	                                            #if( $joinLimitEnabledLocalDisabledGlobal )
+	                                                disabled
+	                                            #end
+	                                        />
+	                                        <label for="chkJoin-$checkboxName" #if( $joinLimitEnabledLocalDisabledGlobal ) class="instruction" #end>
+	                                            $accType.label
+	                                        </label>
+	                                    </p>
+	                                #end
+	                            #end
+	                        </p>
+	                    #end
 			</div>
+				#end
+				
+		</div>
 		</div>
         </fieldset>
 		<div id="globalAccessNoDiv" $globalAccessNoDivDisplay>

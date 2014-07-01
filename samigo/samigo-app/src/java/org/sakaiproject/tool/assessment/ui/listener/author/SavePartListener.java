@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePartListener.java $
- * $Id: SavePartListener.java 97332 2011-08-23 22:23:15Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePartListener.java $
+ * $Id: SavePartListener.java 128687 2013-08-20 18:46:26Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,7 +66,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: SavePartListener.java 97332 2011-08-23 22:23:15Z ktsao@stanford.edu $
+ * @version $Id: SavePartListener.java 128687 2013-08-20 18:46:26Z ktsao@stanford.edu $
  */
 
 public class SavePartListener
@@ -200,18 +200,18 @@ public class SavePartListener
     	
     	if(addItemsFromPool){
     		boolean hasRandomPartScore = false;
-    		Float score = null;
+    		Double score = null;
     		String requestedScore = sectionBean.getRandomPartScore();
     		if (requestedScore != null && !requestedScore.equals("")) {
     			hasRandomPartScore = true;
-    			score = new Float(requestedScore);
+    			score = new Double(requestedScore);
     		}
     		boolean hasRandomPartDiscount = false;
-    		Float discount = null;
+    		Double discount = null;
     		String requestedDiscount = sectionBean.getRandomPartDiscount();
     		if (requestedDiscount != null && !requestedDiscount.equals("")) {
     			hasRandomPartDiscount = true;
-    			discount = new Float(requestedDiscount);
+    			discount = new Double(requestedDiscount);
     		}
     		
     		if (hasRandomPartScore && score != null) {
@@ -267,7 +267,8 @@ public class SavePartListener
 	  SectionFacade section;
 	  if ("".equals(sectionId)){
 		  section = assessmentService.addSection(assessmentId);
-		  sectionId = section.getSectionId().toString();
+		  //This is never read in the code
+		  //sectionId = section.getSectionId().toString();
 	  }
 	  else {
 		  section = assessmentService.getSection(sectionId);
@@ -304,8 +305,8 @@ public class SavePartListener
      String randomScore = sectionBean.getRandomPartScore();
      if (randomScore != null && !randomScore.equals("")) {    	 
     	 try{
-    		 float randomScoreFloat = Float.parseFloat(randomScore);
-    		 if(randomScoreFloat < 0.0){
+    		 double randomScoreDouble = Double.parseDouble(randomScore);
+    		 if(randomScoreDouble < 0.0){
     			 err=ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","qdrawn_pt_error");
     			 context.addMessage(null,new FacesMessage(err ));
     			 return false;
@@ -316,12 +317,17 @@ public class SavePartListener
     		 return false;
     	 }
      }
+     else {
+		 err=ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","qdrawn_null_error_pos");
+		 context.addMessage(null,new FacesMessage(err ));
+		 return false;
+     }
 
      String randomDiscount = sectionBean.getRandomPartDiscount();
      if (randomDiscount != null && !randomDiscount.equals("")) {
     	 try{
-    		 float randomDiscountFloat = Float.parseFloat(randomDiscount);
-    		 if(randomDiscountFloat < 0.0){
+    		 double randomDiscountDouble = Double.parseDouble(randomDiscount);
+    		 if(randomDiscountDouble < 0.0){
     			 err=ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","qdrawn_pt_error");
     			 context.addMessage(null,new FacesMessage(err ));
     			 return false;
@@ -331,6 +337,11 @@ public class SavePartListener
     		 context.addMessage(null,new FacesMessage(err ));
     		 return false;
     	 }
+     }
+     else {
+		 err=ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","qdrawn_null_error_neg");
+		 context.addMessage(null,new FacesMessage(err ));
+		 return false; 
      }
      return true;
   }

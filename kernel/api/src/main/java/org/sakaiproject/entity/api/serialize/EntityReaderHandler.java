@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/entity/api/serialize/EntityReaderHandler.java $
- * $Id: EntityReaderHandler.java 79497 2010-07-15 15:33:23Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/entity/api/serialize/EntityReaderHandler.java $
+ * $Id: EntityReaderHandler.java 105669 2012-03-12 11:56:47Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,11 +24,8 @@ package org.sakaiproject.entity.api.serialize;
 import org.sakaiproject.entity.api.Entity;
 
 /**
- * <pre>
- *  An Entity Reader handler provides methods to read resources and containers
- *  from storage and to serialize them back out to storage.
- *  
- * </pre>
+ *  An Entity Reader handler provides methods to read(parse) resources and containers
+ *  from storage and to write(serialise) them back out to storage.
  * 
  * @author ieb
  */
@@ -56,6 +53,7 @@ public interface EntityReaderHandler
 	 * @throws EntityParseException
 	 */
 	Entity parse(Entity container, String xml, byte[] blob) throws EntityParseException;
+
 	/**
 	 * returns true if the implementation will parse the target
 	 * 

@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,7 +24,11 @@ package org.sakaiproject.content.tool;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,9 +37,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,22 +53,25 @@ import org.sakaiproject.cheftool.VelocityPortlet;
 import org.sakaiproject.cheftool.VelocityPortletPaneledAction;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
-import org.sakaiproject.content.api.ContentCollection;
-import org.sakaiproject.content.api.ContentEntity;
-import org.sakaiproject.content.api.ContentTypeImageService;
-import org.sakaiproject.content.api.MultiFileUploadPipe;
-import org.sakaiproject.content.api.ResourceToolAction;
-import org.sakaiproject.content.api.ResourceToolActionPipe;
-import org.sakaiproject.content.api.ResourceType;
-import org.sakaiproject.content.api.ResourceTypeRegistry;
+import org.sakaiproject.content.api.*;
 import org.sakaiproject.content.api.GroupAwareEntity.AccessMode;
 import org.sakaiproject.content.cover.ContentHostingService;
+import org.sakaiproject.content.util.ZipContentUtil;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.entity.api.ResourcePropertiesEdit;
+import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.event.cover.NotificationService;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.IdUsedException;
+import org.sakaiproject.exception.InUseException;
+import org.sakaiproject.exception.OverQuotaException;
+import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.exception.IdUniquenessException;
 import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.api.SitePage;
+import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.cover.TimeService;
@@ -76,6 +86,7 @@ import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ParameterParser;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Validator;
+import org.sakaiproject.content.tool.ResourcesAction;
 
 public class ResourcesHelperAction extends VelocityPortletPaneledAction 
 {
@@ -116,6 +127,10 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 	protected  static final String REVISE_URL_TEMPLATE = "resources/sakai_revise_url";
 	
 	protected static final String REPLACE_CONTENT_TEMPLATE = "resources/sakai_replace_file";
+	
+	protected static final String MAKE_SITE_PAGE_TEMPLATE = "resources/sakai_make_site_page";
+
+    protected static final String ERROR_PAGE_TEMPLATE = "resources/sakai_error_page";
 
 	/** The content type image lookup service in the State. */
 	private static final String STATE_CONTENT_TYPE_IMAGE_SERVICE = PREFIX + "content_type_image_service";
@@ -147,6 +162,12 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 	
 	/** name of state attribute for the default retract time */
 	protected static final String STATE_DEFAULT_RETRACT_TIME = PREFIX + "default_retract_time";
+	
+	/** The title of the new page to be created in the site */
+	protected static final String STATE_PAGE_TITLE = PREFIX + "page_title";
+	
+	/** Tool property to enable Drag and Drop uploads in a per-tool basis */
+	private static final String TOOL_PROP_DRAGNDROP_ENABLED = "content.upload.dragndrop";
 
 	public String buildAccessContext(VelocityPortlet portlet,
 			Context context,
@@ -291,7 +312,7 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 				}
 			}
 			logger.debug(attributes, new Throwable());
-			return null;
+            return ERROR_PAGE_TEMPLATE;
 		}
 		if(pipe.isActionCompleted())
 		{
@@ -334,12 +355,81 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		case NEW_URLS:
 			template = buildNewUrlsContext(portlet, context, data, state);
 			break;
+		case MAKE_SITE_PAGE:
+			template = buildMakeSitePageContext(portlet, context, data, state);
+			break;
 		default:
 			// hmmmm
+		    logger.info(this + "hmmm");
+			template = buildMakeSitePageContext(portlet, context, data, state);
 			break;
 		}
 		
 		return template;
+	}
+
+	public String buildMakeSitePageContext(VelocityPortlet portlet, Context context,
+			RunData data, SessionState state) {
+		logger.debug(this + ".buildMakeSitePage()");
+
+		int requestStateId = ResourcesAction.preserveRequestState(state, new String[]{ResourcesAction.PREFIX + ResourcesAction.REQUEST});
+		context.put("requestStateId", requestStateId);
+		
+		context.put("page", state.getAttribute(STATE_PAGE_TITLE));
+		
+		return MAKE_SITE_PAGE_TEMPLATE;
+	}
+	
+	public void doMakeSitePage(RunData data) {
+		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
+		ParameterParser params = data.getParameters ();
+
+		ToolSession toolSession = SessionManager.getCurrentToolSession();
+		ResourceToolActionPipe pipe = (ResourceToolActionPipe) toolSession.getAttribute(ResourceToolAction.ACTION_PIPE);
+
+		String url = pipe.getContentEntity().getUrl();
+		String title = params.getString("page");
+		if (title == null || title.trim().length() == 0)
+		{
+			addAlert(state, rb.getString("alert.page.empty"));
+			return;
+		}
+		state.setAttribute(STATE_PAGE_TITLE, title);
+		
+		Placement placement = ToolManager.getCurrentPlacement();
+		String context = null;
+		if (placement != null)
+		{
+			context = placement.getContext();
+			try {
+				Tool tr = ToolManager.getTool("sakai.iframe");
+				
+				Site site = SiteService.getSite(context);
+				for (SitePage page: (List<SitePage>)site.getPages()) {
+					if (title.equals(page.getTitle())) {
+						addAlert(state, rb.getString("alert.page.exists"));
+						return;
+					}
+				}
+				SitePage newPage = site.addPage();
+				newPage.setTitle(title);
+				ToolConfiguration tool = newPage.addTool();
+				tool.setTool("sakai.iframe", tr);
+				tool.setTitle(title);
+				tool.getPlacementConfig().setProperty("source", url);
+				SiteService.save(site);
+				
+				scheduleTopRefresh();
+				toolSession.setAttribute(ResourceToolAction.DONE, Boolean.TRUE);
+
+			} catch (IdUnusedException e) {
+				logger.warn("Somehow we couldn't find the site.", e);
+			} catch (PermissionException e) {
+				logger.info("No permission to add page.", e);
+				addAlert(state, rb.getString("alert.page.permission"));
+			}
+		}
+		
 	}
 
 	protected String buildNewUrlsContext(VelocityPortlet portlet, Context context, RunData data, SessionState state)
@@ -558,6 +648,13 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		}
 		else if(ResourceType.TYPE_URL.equals(typeId))
 		{
+			String decodedUrl = pipe.getContentstring();
+			try {
+				decodedUrl = URLDecoder.decode(pipe.getContentstring(), "UTF-8");
+			} catch (Exception e){
+				//cant decode, continue anyway with original string
+			}
+			context.put("decodedUrl", decodedUrl);
 			template = REVISE_URL_TEMPLATE;
 		}
 		else if(ResourceType.TYPE_UPLOAD.equals(typeId) && mimetype != null && ResourceType.MIME_TYPE_HTML.equals(mimetype))
@@ -596,12 +693,24 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		{
 			max_file_size_mb = "20";
 		}
+		context.put("uploadMaxSize", max_file_size_mb);
+		
 		String upload_limit = rb.getFormattedMessage("upload.limit", new String[]{ max_file_size_mb });
 		context.put("upload_limit", upload_limit);
 		
 		String uploadMax = ServerConfigurationService.getString("content.upload.max");
 		String instr_uploads= rb.getFormattedMessage("instr.uploads", new String[]{ uploadMax});
 		context.put("instr_uploads", instr_uploads);
+
+		Boolean dragAndDrop = ServerConfigurationService.getBoolean("content.upload.dragndrop", true);
+		String strDragAndDropEnabled = ToolManager.getCurrentPlacement().getConfig().getProperty(TOOL_PROP_DRAGNDROP_ENABLED);
+
+		if (StringUtils.isNotBlank(strDragAndDropEnabled))
+		{
+			dragAndDrop = dragAndDrop || (new Boolean(strDragAndDropEnabled));
+		}
+
+		context.put("dragAndDrop", dragAndDrop);
 
 //		int max_bytes = 1024 * 1024;
 //		try
@@ -678,6 +787,24 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 
 		return CREATE_UPLOADS_TEMPLATE;
 	}
+	
+
+	public void doFinishUpload (RunData data){
+		ToolSession toolSession = SessionManager.getCurrentToolSession();
+		
+		ResourceToolActionPipe pipe = (ResourceToolActionPipe) toolSession.getAttribute(ResourceToolAction.ACTION_PIPE);
+
+		if(pipe != null)
+		{
+			pipe.setActionCanceled(false);
+			pipe.setErrorEncountered(false);
+			pipe.setActionCompleted(true);
+		}
+		
+		logger.debug(this + ".doFinishUpload() finished action");
+		toolSession.setAttribute(ResourceToolAction.DONE, Boolean.TRUE);
+	}	
+	
 
 	public void doCancel(RunData data)
 	{
@@ -794,6 +921,17 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		}
 		else if(ResourceType.TYPE_URL.equals(resourceType))
 		{
+			
+			// SAK-23587 - properly escape the URL where required
+			try {
+				URL url = new URL(content);
+				URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+				content = uri.toString();
+			} catch (Exception e) {
+				//ok to ignore, just use the original url
+				logger.debug("URL can not be encoded: " + e.getClass() + ":" + e.getCause());
+			}
+			
 			pipe.setRevisedMimeType(ResourceType.MIME_TYPE_URL);
 			pipe.setNotification(noti);
 		}
@@ -940,6 +1078,11 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 			}
 			if (newFolder.numberFieldIsOutOfRange) {
 				addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { newFolder.getConditionAssignmentPoints() }));
+				return;
+			}
+			//Control if groups are selected
+			if (!ResourcesAction.checkGroups(params)) {
+				addAlert(state, rb.getString("alert.youchoosegroup")); 
 				return;
 			}
 
@@ -1207,6 +1350,12 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 				addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { newFile.getConditionAssignmentPoints() }));
 				return;
 			}
+			//Control if groups are selected
+			if (!ResourcesAction.checkGroups(params)) {
+				addAlert(state, rb.getString("alert.youchoosegroup")); 
+				return;
+			}
+			
 			// notification
 			int noti = determineNotificationPriority(params, newFile.isDropbox, newFile.userIsMaintainer());
 			newFile.setNotification(noti);
@@ -1502,6 +1651,12 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 				    addAlert(state, contentResourceBundle.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { newFile.getConditionAssignmentPoints() }));
 					return;
 				}
+				//Control if groups are selected
+				if (!ResourcesAction.checkGroups(params)) {
+					addAlert(state, rb.getString("alert.youchoosegroup")); 
+					return;
+				}
+				
 				ResourceConditionsHelper.saveCondition(newFile, params, state, i);
 				
 				uploadCount++;
@@ -1650,7 +1805,7 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 			
 			if(uploadMax == null && uploadCeiling == null)
 			{
-				state.setAttribute(STATE_FILE_UPLOAD_MAX_SIZE, "1");
+				state.setAttribute(STATE_FILE_UPLOAD_MAX_SIZE, "20");
 			}
 			else if(uploadCeiling == null)
 			{
@@ -1721,6 +1876,7 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		}
 
 		state.setAttribute (STATE_CONTENT_TYPE_IMAGE_SERVICE, org.sakaiproject.content.cover.ContentTypeImageService.getInstance());
+		state.removeAttribute(STATE_PAGE_TITLE);
 	}
 	
 	protected void toolModeDispatch(String methodBase, String methodExt, HttpServletRequest req, HttpServletResponse res)
@@ -1737,6 +1893,7 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		if (done != null)
 		{
 			toolSession.removeAttribute(ResourceToolAction.STARTED);
+			sstate.removeAttribute(STATE_PAGE_TITLE);
 			Tool tool = ToolManager.getCurrentTool();
 		
 			String url = (String) SessionManager.getCurrentToolSession().getAttribute(tool.getId() + Tool.HELPER_DONE_URL);
@@ -1759,5 +1916,284 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		
 		super.toolModeDispatch(methodBase, methodExt, req, res);
 	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException
+	{
+		String fullPath = request.getParameter("fullPath");
+		String action = request.getParameter("sakai_action");
+		logger.debug("Received action: "+action+" for file: "+fullPath);
+		
+		if(fullPath != null)
+		{
+			String uploadMax = ServerConfigurationService.getString("content.upload.max");
+			String siteQuota = ServerConfigurationService.getString("siteQuota@org.sakaiproject.content.api.ContentHostingService");
+			Long fileSize = Long.parseLong(request.getHeader("content-length"));
+			if((uploadMax != null && !"".equals(uploadMax)) &&   (fileSize /1024L / 1024L) > Long.parseLong(uploadMax)){
+				addAlert(getState(request), rb.getFormattedMessage("alert.over-per-upload-quota", new Object[]{uploadMax}));
+			} else if ((siteQuota != null && !"".equals(siteQuota)) && (fileSize /1024L / 1024L)  > Long.parseLong(siteQuota)) {
+				addAlert(getState(request), rb.getFormattedMessage("alert.over-site-upload-quota", new Object[]{siteQuota}));
+			} else {
+				JetspeedRunData rundata = (JetspeedRunData) request.getAttribute(ATTR_RUNDATA);
+				if (checkCSRFToken(request,rundata,action)) {
+					doDragDropUpload(request, response, fullPath);
+				}
+			}
+		}
+		else
+		{
+			if (action!=null)
+			{
+				super.doPost(request, response);
+			}
+			else
+			{
+				//Action NULL - Here we have a folder uploaded in a browser that does not support it.
+				logger.warn("Action null and file null in ResourcesHelperAction");
+				
+				//RequestFilter throws an Exception when a folder is uploaded from a not valid browser (anyone but Chrome 21+):
+				//org.apache.commons.fileupload.FileUploadBase$IOFileUploadException: Processing of multipart/form-data request failed. Stream ended unexpectedly
+				
+				//No way to handle this in server side, unless we modify RequestFilter or create our own FileUpload handler.
+				//The easiest fix is to handle not valid folders in client side.
+				//It is done, so this piece of code should never be reached.
+			}
+		}
+	}
+
+
+	private synchronized void doDragDropUpload(HttpServletRequest request, HttpServletResponse response, String fullPath)
+	{
+		//Feel free to sent comments/warnings/advices to me at daniel.merino AT unavarra.es
+		
+		//Full method must be synchronized because a collection can edited and committed in two concurrent requests
+		//Dropzone allows multiple parallel uploads so if all this process is not synchronized, InUseException is thrown
+		//Maybe a more sophisticated concurrence can be set in the future
+		
+		SessionState state = getState(request);
+		ToolSession toolSession = SessionManager.getCurrentToolSession();
+
+		ContentResourceEdit resource = null;
+		ContentCollectionEdit collection= null;
+
+		String uploadFileName=null;
+		String collectionName=null;
+		
+		String resourceGroup = toolSession.getAttribute("resources.request.create_wizard_collection_id").toString();
+
+		if (!("undefined".equals(fullPath) || "".equals(fullPath)))
+		{
+			//Received a file that is inside an uploaded folder 
+			//Try to create a collection with this folder and to add the file inside it after
+			File myfile = new File(fullPath);
+			String fileName = myfile.getName();			
+			collectionName=resourceGroup+myfile.getParent();
+
+			//AFAIK it is not possible to check undoubtedly if a collection exists
+			//isCollection() only tests if name is valid and checkCollection() returns void type
+			//So the procedure is to create the collection and capture thrown Exceptions
+			collection = createCollectionIfNotExists(collectionName);
+			
+			if (collection==null)
+			{
+				addAlert(state,contentResourceBundle.getFormattedMessage("dragndrop.collection.error",new Object[]{collectionName,fileName}));
+				return;
+			}
+		}
+
+		try
+		{
+			//Now upload the received file
+			//Test that file has been sent in request 
+			DiskFileItem uploadFile = (DiskFileItem) request.getAttribute("file");
+			String contentType = uploadFile.getContentType();
+			
+			if(uploadFile != null)
+			{
+				uploadFileName=uploadFile.getName();
+				
+				String extension = "";
+				String basename = uploadFileName.trim();
+				if (uploadFileName.contains(".")) {
+					String[] parts = uploadFileName.split("\\.");
+					basename = parts[0];
+					if (parts.length > 1) {
+						extension = parts[parts.length - 1];
+					}
+					for (int i = 1; i < parts.length - 1; i++) {
+						basename += "." + parts[i];
+					}
+				}
+
+				if (collection!=null)
+				{
+					logger.debug("Adding resource "+uploadFileName+" in collection "+collection.getId());
+					resource = ContentHostingService.addResource(collection.getId(), Validator.escapeResourceName(basename),Validator.escapeResourceName(extension),5);
+				}
+				else
+				{
+					//Method getUniqueFileName was added to change external name of uploaded resources if they exist already in the collection, just the same way that their internal id.
+					//However, that is not the way Resources tool works. Internal id is changed but external name is the same for every copy of the same file.
+					//So I disable this method call, though it can be enabled again if desired.
+					
+					//String resourceName = getUniqueFileName(uploadFileName, resourceGroup);
+					
+					logger.debug("Adding resource "+uploadFileName+" in current folder ("+resourceGroup+")");
+					resource = ContentHostingService.addResource(resourceGroup, Validator.escapeResourceName(basename), Validator.escapeResourceName(extension),5);
+				}
+
+				if (resource != null)
+				{
+					if (contentType!=null) resource.setContentType(contentType);
+					
+					ResourcePropertiesEdit resourceProps = resource.getPropertiesEdit();
+					resourceProps.addProperty(ResourcePropertiesEdit.PROP_DISPLAY_NAME, uploadFileName);
+					resource.setContent(uploadFile.getInputStream());
+					resource.setContentType(contentType);
+					ContentHostingService.commitResource(resource, NotificationService.NOTI_NONE);
+					
+					if (collection != null){
+						ContentHostingService.commitCollection(collection);
+						logger.debug("Collection commited: "+collection.getId());
+					}
+				}
+				else
+				{
+					addAlert(state, contentResourceBundle.getFormattedMessage("dragndrop.upload.error",new Object[]{uploadFileName}));
+					return;
+				}
+			}
+		}
+		catch (IdUniquenessException e)
+		{
+			addAlert(state,contentResourceBundle.getFormattedMessage("dragndrop.duplicated.error",new Object[]{uploadFileName,ResourcesAction.MAXIMUM_ATTEMPTS_FOR_UNIQUENESS}));
+			return;
+		}
+		catch (OverQuotaException e) {
+			addAlert(state, rb.getString("alert.over-site-upload-quota"));
+			logger.warn("Drag and drop upload failed: " + e, e);
+		} catch (Exception e) {
+			logger.warn("Drag and drop upload failed: " + e, e);
+		}
+		
+		try
+		{
+			//Set an i18n OK message for successfully uploaded files. This message is captured by client side and written in the files of Dropzone.
+			response.setContentType("text/plain");
+			response.setStatus(200);
+			PrintWriter pw = response.getWriter();
+			pw.write(contentResourceBundle.getString("dragndrop.success.upload"));
+			pw.flush();
+			pw.close();
+		}
+		catch (Exception e)
+		{
+			logger.error("Exception writing response in ResourcesHelperAction");
+			return;
+		}
+
+		toolSession.setAttribute(ResourceToolAction.DONE, Boolean.TRUE);
+	}
+
+	private ContentCollectionEdit createCollectionIfNotExists(String collectionName)
+	{
+		//Try to get an existing collection or create it if it does not exist
+		//Weird thing: To get existing collections a File.separator must finish the collection's name or a Permissions exception is thrown
+		//This does not happen when creating the collection
+		
+		ContentCollectionEdit cc = null;
+		try
+		{
+			logger.debug("Looking for collection "+collectionName+File.separator);
+			if (ContentHostingService.getCollection(collectionName+File.separator)!=null)
+			{
+				//As Sakai usual behaviour in Resources tool, Collections internal ids do not use non-ASCII chars, so for example folder "Videos" and "Vídeos" are asigned to the same id.
+				//So id must be always used. Using collection's name can fail.
+				cc=ContentHostingService.editCollection(ContentHostingService.getCollection(collectionName+File.separator).getId());
+				logger.debug("Editing collection found with id: "+cc.getId());
+			}
+		}
+		catch (IdUnusedException e)
+		{
+			logger.debug("Collection "+collectionName+File.separator+" does not exist, proceed to create it.");
+
+			//It does not exist, so create the folder
+			String carpetaName = collectionName.substring(collectionName.lastIndexOf(File.separator)+1,collectionName.length()); //Deepest folder name
+
+			try
+			{
+				cc = ContentHostingService.addCollection(collectionName);
+				ResourcePropertiesEdit m_oPropEditSub = cc.getPropertiesEdit();
+				m_oPropEditSub.addProperty(ResourceProperties.PROP_DISPLAY_NAME, carpetaName);
+
+				if (cc!=null)
+					ContentHostingService.commitCollection(cc);
+			}
+			catch (IdUsedException e2)
+			{ 
+				logger.warn("IdUsedException "+e2.toString());
+				return null;
+			}
+			catch (Exception e2)
+			{
+				logger.warn("Exception on exception: "+e2.toString());
+				return null;
+			}
+		}
+		catch (InUseException e)
+		{
+			//This exception can be thrown for concurrence issues with multiple parallel uploads.
+			//Synchronizing doDragDropUpload method avoids it
+			logger.warn("InUseException: "+e.toString());
+			e.printStackTrace();
+			return null;
+		}
+		catch (Exception e)
+		{
+			logger.warn("Exception: "+e.toString());
+			return null;
+		}
+		logger.debug("Returning collection: "+cc.getId());
+		return cc;
+	}
+
+/*
+	private String getUniqueFileName(String uploadFileName, String resourceGroup) throws org.sakaiproject.exception.PermissionException, org.sakaiproject.exception.TypeException
+	{
+		String resourceId = "";
+		boolean isNameUnique = false;
+		String fileName = uploadFileName;
+		int attempt = 0;
+		while (!isNameUnique)
+		{
+			try
+			{
+				resourceId = resourceGroup + fileName;
+				ContentResource tempEdit = ContentHostingService.getResource(resourceId);
+				if(tempEdit != null)
+				{
+					attempt++;
+					StringBuffer fileNameBuffer = new StringBuffer();
+					if(attempt > 1)
+					{
+						fileNameBuffer.append(fileName.substring(0, fileName.lastIndexOf("-")));
+					}
+					else
+					{
+						fileNameBuffer.append(fileName.substring(0, fileName.lastIndexOf(".")));
+					}
+					fileNameBuffer.append("-");
+					fileNameBuffer.append(attempt);
+					fileNameBuffer.append(fileName.substring(fileName.lastIndexOf("."), fileName.length()));
+					fileName = fileNameBuffer.toString();
+				}
+			}
+			catch (IdUnusedException e)
+			{
+				isNameUnique = true;
+			}
+		}
+		return fileName;
+	}
+*/
 
 }

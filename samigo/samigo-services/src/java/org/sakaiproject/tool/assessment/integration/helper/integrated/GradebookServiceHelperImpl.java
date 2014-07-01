@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/GradebookServiceHelperImpl.java $
- * $Id: GradebookServiceHelperImpl.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/GradebookServiceHelperImpl.java $
+ * $Id: GradebookServiceHelperImpl.java 127473 2013-07-21 00:04:12Z nbotimer@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,32 +27,23 @@ import java.util.Map;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
-import org.sakaiproject.tool.assessment.services.GradingService;
-import org.sakaiproject.tool.assessment.facade.GradebookFacade;
-import org.sakaiproject.tool.api.Tool;
-import org.sakaiproject.tool.cover.ToolManager;
 import org.apache.commons.math.util.MathUtils;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
-import org.sakaiproject.spring.SpringBeanLocator;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.sakaiproject.tool.assessment.data.dao.assessment.
-  PublishedAssessmentData;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
-import org.sakaiproject.tool.assessment.integration.helper.ifc.
-  GradebookServiceHelper;
+import org.sakaiproject.tool.assessment.facade.GradebookFacade;
+import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
+import org.sakaiproject.tool.assessment.services.GradingService;
+import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
+import org.sakaiproject.tool.cover.ToolManager;
 
 /**
  *
@@ -81,7 +72,7 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
    * @param g  the Gradebook Service
    * @return true if the given gradebook exists
    */
-  public boolean gradebookExists(String gradebookUId, GradebookService g)
+  public boolean gradebookExists(String gradebookUId, GradebookExternalAssessmentService g)
   {
     log.debug("GradebookService = " + g);
     if (gradebookUId == null)
@@ -147,7 +138,7 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
    * @throws java.lang.Exception
    */
 public void removeExternalAssessment(String gradebookUId,
-   String publishedAssessmentId, GradebookService g) throws Exception
+   String publishedAssessmentId, GradebookExternalAssessmentService g) throws Exception
   {
     if (g.isGradebookDefined(gradebookUId))
     {
@@ -156,7 +147,7 @@ public void removeExternalAssessment(String gradebookUId,
   }
 
   public boolean isAssignmentDefined(String assessmentTitle,
-                                GradebookService g) throws Exception
+		  GradebookExternalAssessmentService g) throws Exception
   {
     String gradebookUId = GradebookFacade.getGradebookUId();
     return g.isAssignmentDefined(gradebookUId, assessmentTitle);
@@ -170,7 +161,7 @@ public void removeExternalAssessment(String gradebookUId,
    * @throws java.lang.Exception
    */
   public boolean addToGradebook(PublishedAssessmentData publishedAssessment,
-                                GradebookService g) throws
+		  GradebookExternalAssessmentService g) throws
     Exception
   {
     //log.info("total point(s) is/are =" +
@@ -230,7 +221,7 @@ public void removeExternalAssessment(String gradebookUId,
    * @throws java.lang.Exception
    */
   public boolean updateGradebook(PublishedAssessmentIfc publishedAssessment,
-		  GradebookService g) throws Exception
+		  GradebookExternalAssessmentService g) throws Exception
   {
     log.debug("updateGradebook start");
     String gradebookUId = GradebookFacade.getGradebookUId();
@@ -256,8 +247,8 @@ public void removeExternalAssessment(String gradebookUId,
    * @param g  the Gradebook Service
    * @throws java.lang.Exception
    */
-  public void updateExternalAssessmentScore(AssessmentGradingIfc ag,
-   GradebookService g) throws
+  public void updateExternalAssessmentScore(AssessmentGradingData ag,
+		  GradebookExternalAssessmentService g) throws
     Exception
   {
     boolean testErrorHandling=false;
@@ -273,20 +264,20 @@ public void removeExternalAssessment(String gradebookUId,
       return;
     }
     
-    //SAM-1562 We need to round the float score and covert to a double -DH
-    float fScore = MathUtils.round(ag.getFinalScore(), 2);
-    Double score = Float.valueOf(fScore).doubleValue();
+    //SAM-1562 We need to round the double score and covert to a double -DH
+    double fScore = MathUtils.round(ag.getFinalScore(), 2);
+    Double score = Double.valueOf(fScore).doubleValue();
     log.info("rounded:  " + ag.getFinalScore() + " to: " + score.toString() );
     g.updateExternalAssessmentScore(gradebookUId,
       ag.getPublishedAssessmentId().toString(),
-      ag.getAgentId(),  score);
+      ag.getAgentId(),  score.toString());
     if (testErrorHandling){
       throw new Exception("Encountered an error in update ExternalAssessmentScore.");
     }
   }
   
-  public void updateExternalAssessmentScores(Long publishedAssessmentId, final Map studentUidsToScores,
-		  GradebookService g) throws Exception {
+  public void updateExternalAssessmentScores(Long publishedAssessmentId, final Map<String, Double> studentUidsToScores,
+		  GradebookExternalAssessmentService g) throws Exception {
 	  boolean testErrorHandling=false;
 	  PublishedAssessmentService pubService = new PublishedAssessmentService();
 	  String gradebookUId = pubService.getPublishedAssessmentOwner(publishedAssessmentId);

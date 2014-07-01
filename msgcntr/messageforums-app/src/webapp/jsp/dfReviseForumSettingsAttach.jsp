@@ -9,14 +9,16 @@
 </jsp:useBean>
 <f:view>
 	<sakai:view title="#{msgs.cdfm_discussion_forum_settings}" toolCssHref="/messageforums-tool/css/msgcntr.css">
-	<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
 	<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>      
 	<script type="text/javascript" src="/messageforums-tool/js/jquery.charcounter.js"> </script>
 	<sakai:script contextBase="/messageforums-tool" path="/js/permissions_header.js"/>
 	<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
-
+	<sakai:script contextBase="/messageforums-tool" path="/js/messages.js"/>
 	<sakai:script contextBase="/messageforums-tool" path="/js/datetimepicker.js"/>
+	<script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
+	<link href="/library/js/jquery/ui/1.10.3/css/ui-lightness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
 	<%
 	  	String thisId = request.getParameter("panel");
   		if (thisId == null) 
@@ -35,11 +37,11 @@
 	}
 
 	function openDateCal(){
-			NewCal('revise:openDate','MMDDYYYY',true,12);
+			NewCal('revise:openDate','MMDDYYYY',true,12, '<h:outputText value="#{ForumTool.defaultAvailabilityTime}"/>');
 	}
 
 	function closeDateCal(){
-			NewCal('revise:closeDate','MMDDYYYY',true,12);
+			NewCal('revise:closeDate','MMDDYYYY',true,12, '<h:outputText value="#{ForumTool.defaultAvailabilityTime}"/>');
 	}
 	</script>
 
@@ -105,7 +107,7 @@
 			<%--RTEditor area - if enabled--%>
 			<h:panelGroup rendered="#{! ForumTool.disableLongDesc}">
 				<h:outputText id="outputLabel2" value="#{msgs.cdfm_fullDescription}" style="display:block;padding:.5em 0"/>
-			<sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" rows="#{ForumTool.editorRows}" cols="120" id="df_compose_description" value="#{ForumTool.selectedForum.forum.extendedDescription}">
+			<sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" rows="#{ForumTool.editorRows}" cols="132" id="df_compose_description" value="#{ForumTool.selectedForum.forum.extendedDescription}">
 				<f:validateLength maximum="65000"/>
 			</sakai:inputRichText>
 	      	</h:panelGroup>
@@ -207,26 +209,37 @@
                </h:panelGroup>
                <h:panelGroup id="openDateSpan" styleClass="indnt2 openDateSpan calWidget" style="display: #{ForumTool.selectedForum.availabilityRestricted ? '' : 'none'}">
                	   <h:outputLabel value="#{msgs.openDate}: " for="openDate"/>
-	               <h:inputText id="openDate" value="#{ForumTool.selectedForum.openDate}"/>
-	               <f:verbatim>
-	               	<a id="openCal" href="javascript:openDateCal();">
-	               </f:verbatim>
-	               <h:graphicImage url="/images/calendar.png" title="#{msgs.pickDate}" alt="#{msgs.pickDate}"/>
-	               <f:verbatim>
-	               </a>
-	               </f:verbatim>
+
+	               <h:inputText id="openDate" styleClass="openDate" value="#{ForumTool.selectedForum.openDate}"/>
+
+              	</h:panelGroup>
+               <h:panelGroup id="closeDateSpan" styleClass="indnt2 closeDateSpan calWidget" style="display: #{ForumTool.selectedForum.availabilityRestricted ? '' : 'none'}">
               		<h:outputLabel value="#{msgs.closeDate}: " for="closeDate" />
-	               <h:inputText id="closeDate" value="#{ForumTool.selectedForum.closeDate}"/>
-	               <f:verbatim>
-	               	<a id="closeCal" href="javascript:closeDateCal();">
-	               </f:verbatim>
-	               <h:graphicImage url="/images/calendar.png" title="#{msgs.pickDate}" alt="#{msgs.pickDate}"/>
-	               <f:verbatim>
-	               </a>
-	               </f:verbatim>
+	               <h:inputText id="closeDate" styleClass="closeDate" value="#{ForumTool.selectedForum.closeDate}"/>
+
               	</h:panelGroup>
            </h:panelGrid>
  		</div>
+
+
+ 		
+
+ 		<script type="text/javascript">
+ 		      localDatePicker({
+ 		      	input:'.openDate', 
+ 		      	ashidden: { iso8601: 'openDateISO8601' },
+ 		      	getval:'.openDate',
+ 		      	useTime:1 
+ 		      });
+
+ 		      localDatePicker({
+ 		      	input:'.closeDate', 
+ 		      	ashidden: { iso8601: 'closeDateISO8601' },
+ 		      	getval:'.closeDate',
+ 		      	useTime:1 
+ 		      });
+ 		</script>
+
 
 		<h4><h:outputText value="#{msgs.cdfm_forum_mark_read}"/></h4>
 			<table><tr><td>

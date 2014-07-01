@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/tool/cover/ToolManager.java $
- * $Id: ToolManager.java 79403 2010-07-14 04:50:06Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/tool/cover/ToolManager.java $
+ * $Id: ToolManager.java 121987 2013-04-01 13:15:46Z bkirschn@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -130,5 +130,12 @@ public class ToolManager
 		org.sakaiproject.tool.api.ToolManager manager = getInstance();
 		return manager.isVisible (site, config);
 	}
+	
+	public static String getLocalizedToolProperty(String toolId, String key){
+		org.sakaiproject.tool.api.ToolManager manager = getInstance();
+		if (manager == null) return null;
+
+		return manager.getLocalizedToolProperty(toolId, key);
+	}	
 	
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/questionpool/SortQuestionListListener.java $
- * $Id: SortQuestionListListener.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/questionpool/SortQuestionListListener.java $
+ * $Id: SortQuestionListListener.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 /**
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
- * @version $Id: SortQuestionListListener.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * @version $Id: SortQuestionListListener.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 
 public class SortQuestionListListener
@@ -52,6 +52,7 @@ public class SortQuestionListListener
     
     String orderBy = ContextUtil.lookupParam("orderBy");
     String ascending =ContextUtil.lookupParam("ascending");
+    String getItems =ContextUtil.lookupParam("getItems");
     if (orderBy != null &&!orderBy.trim().equals("")){
     	questionpoolbean.setSortQuestionProperty(orderBy);
     	log.debug("orderBy = " + ContextUtil.lookupParam("orderBy"));
@@ -67,15 +68,17 @@ public class SortQuestionListListener
     String qpid=ContextUtil.lookupParam("qpid");
     QuestionPoolService delegate = new QuestionPoolService();
     ArrayList list= null;
-    if (qpid==null ||("").equals(qpid)){
-     list = delegate.getAllItemsSorted(questionpoolbean.getCurrentPool().getId(), orderBy, ascending);
+    if (getItems != null && getItems.trim().equals("false")){
+    	log.debug("Do not getItems: getItems = " + getItems);
+    } else {
+		if (qpid == null || ("").equals(qpid.trim())){
+			list = delegate.getAllItemsSorted(questionpoolbean.getCurrentPool().getId(), orderBy, ascending);
+    	}
+    	else{
+    		list = delegate.getAllItemsSorted(Long.valueOf(qpid),orderBy, ascending);
+    	}
+    	log.debug("AFTER CALLING DELEGATE");
+        questionpoolbean.setAllItems(list);
     }
-    else{
-	list = delegate.getAllItemsSorted(Long.valueOf(qpid),orderBy, ascending);
-    }
-    
-    log.debug("AFTER CALLING DELEGATE");
-    questionpoolbean.setAllItems(list);
-
   }
 }

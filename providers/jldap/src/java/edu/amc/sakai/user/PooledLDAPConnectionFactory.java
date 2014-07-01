@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/jldap/src/java/edu/amc/sakai/user/PooledLDAPConnectionFactory.java $
- * $Id: PooledLDAPConnectionFactory.java 61856 2009-05-05 17:53:41Z dmccallum@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/jldap/src/java/edu/amc/sakai/user/PooledLDAPConnectionFactory.java $
+ * $Id: PooledLDAPConnectionFactory.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,9 +29,6 @@ import com.novell.ldap.LDAPConnection;
 import com.novell.ldap.LDAPConstraints;
 import com.novell.ldap.LDAPException;
 import com.novell.ldap.LDAPTLSSocketFactory;
-import com.novell.ldap.LDAPSearchConstraints;
-import com.novell.ldap.LDAPSearchResults;
-import com.novell.ldap.LDAPEntry;
 
 /**
  * An object factory for managing <code>PooledLDAPConnection<code>s

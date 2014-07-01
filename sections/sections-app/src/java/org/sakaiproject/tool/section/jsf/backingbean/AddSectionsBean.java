@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.3/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/AddSectionsBean.java $
- * $Id: AddSectionsBean.java 96928 2011-08-14 10:26:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.0/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/AddSectionsBean.java $
+ * $Id: AddSectionsBean.java 307517 2014-03-26 22:23:38Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,6 +37,8 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.api.ComponentManager;
 import org.sakaiproject.section.api.coursemanagement.Course;
 import org.sakaiproject.section.api.coursemanagement.CourseSection;
 import org.sakaiproject.tool.section.jsf.JsfUtil;
@@ -69,8 +71,14 @@ public class AddSectionsBean extends CourseDependentBean implements SectionEdito
 		if(log.isDebugEnabled()) log.debug("sections = " + sections);
 		if(log.isDebugEnabled()) log.debug("sectionsChanged = " + sectionsChanged);
 
-		numSectionsSelectItems = new ArrayList<SelectItem>(10);
-		for(int i=0; i < 10;) {
+		ComponentManager cm = org.sakaiproject.component.cover.ComponentManager.getInstance();
+		ServerConfigurationService serverConfigurationService = (ServerConfigurationService) cm.get(ServerConfigurationService.class); 
+
+		int limit = serverConfigurationService.getInt("sections.maxgroups.category", 10);
+		if (limit <= 0) limit = 10;
+
+		numSectionsSelectItems = new ArrayList<SelectItem>(limit);
+		for(int i = 0; i < limit;) {
 			Integer currVal = ++i;
 			numSectionsSelectItems.add(new SelectItem(currVal));
 		}

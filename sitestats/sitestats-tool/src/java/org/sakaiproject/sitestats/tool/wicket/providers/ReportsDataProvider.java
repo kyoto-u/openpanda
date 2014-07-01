@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/providers/ReportsDataProvider.java $
- * $Id: ReportsDataProvider.java 78671 2010-06-21 15:20:56Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/providers/ReportsDataProvider.java $
+ * $Id: ReportsDataProvider.java 307523 2014-03-26 22:56:41Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,8 @@ package org.sakaiproject.sitestats.tool.wicket.providers;
 
 import java.io.Serializable;
 import java.text.Collator;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -65,6 +67,7 @@ public class ReportsDataProvider extends SortableSearchableDataProvider {
 	private ReportDef				reportDef;
 	private Report					report;
 	private int 					reportRowCount		= -1;
+	private static Log logger = LogFactory.getLog(ReportsDataProvider.class);	
 
 	public ReportsDataProvider(PrefsData prefsData, ReportDef reportDef) {
 		this(prefsData, reportDef, true);
@@ -134,7 +137,14 @@ public class ReportsDataProvider extends SortableSearchableDataProvider {
 	public final Comparator<Stat> getReportDataComparator(final String fieldName, final boolean sortAscending, 
 			final StatsManager SST_sm, final EventRegistryService SST_ers, final UserDirectoryService M_uds) {
 		return new Comparator<Stat>() {
-			private final transient Collator collator	= Collator.getInstance();
+			private transient Collator collator= Collator.getInstance();
+			{
+				try{
+					collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+				}catch(ParseException e){
+				    logger.error("Unable to create RuleBasedCollator");
+				}		
+			}			
 			
 			public int compare(Stat r1, Stat r2) {
 				if(fieldName.equals(COL_SITE)){

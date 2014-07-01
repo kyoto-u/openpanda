@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-render-engine-impl/pack/src/test/org/sakaiproject/portal/charon/test/MockCharonPortal.java $
- * $Id: MockCharonPortal.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-render-engine-impl/pack/src/test/org/sakaiproject/portal/charon/test/MockCharonPortal.java $
+ * $Id: MockCharonPortal.java 132920 2013-12-26 17:29:01Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -167,7 +167,7 @@ public class MockCharonPortal extends HttpServlet
                 String headCssToolSkin = "<link href=\"" 
                 + "/tool.css\" type=\"text/css\" rel=\"stylesheet\" media=\"all\" />\n";
                 String headCss = headCssToolBase + headCssToolSkin;
-                String headJs = "<script type=\"text/javascript\" language=\"JavaScript\" src=\"/library/js/headscripts.js\"></script>\n";
+                String headJs = "<script type=\"text/javascript\" src=\"/library/js/headscripts.js\"></script>\n";
                 String head = headCss + headJs;
 
                 rcontext.put("sakai_html_head", head);
@@ -195,40 +195,6 @@ public class MockCharonPortal extends HttpServlet
 
 		// end the response
 		sendResponse(rcontext, "site");
-	}
-
-	public void doSiteFrameTop() throws IOException
-	{
-		PortalRenderContext rcontext = startPageContext();
-
-		rcontext.put("sakaiFrameEdit","sakaiFrameEdit");
-		rcontext.put("sakaiFrameTitle","sakaiFrameTitle");
-		rcontext.put("sakaiFrameReset","sakaiFrameReset");
-		rcontext.put("sakaiFramePortlet","sakaiFramePortlet");
-		rcontext.put("sakaiSinglePage","sakaiSinglePage");
-
-		// the 'full' top area
-		includeSiteNav(rcontext);
-
-		// end the response
-		sendResponse(rcontext, "site-frame-top");
-	}
-
-	public void doGalleryFrameTop() throws IOException
-	{
-		PortalRenderContext rcontext = startPageContext();
-
-		rcontext.put("sakaiFrameEdit","sakaiFrameEdit");
-		rcontext.put("sakaiFrameTitle","sakaiFrameTitle");
-		rcontext.put("sakaiFrameReset","sakaiFrameReset");
-		rcontext.put("sakaiFramePortlet","sakaiFramePortlet");
-		rcontext.put("sakaiSinglePage","sakaiSinglePage");
-
-		// the 'full' top area
-		includeSiteNav(rcontext);
-
-		// end the response
-		sendResponse(rcontext, "gallery-frame-top");
 	}
 
 	public void doWorksite() throws IOException

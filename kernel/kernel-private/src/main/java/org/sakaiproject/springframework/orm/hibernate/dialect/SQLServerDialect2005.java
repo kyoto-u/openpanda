@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-private/src/main/java/org/sakaiproject/springframework/orm/hibernate/dialect/SQLServerDialect2005.java $
- * $Id: SQLServerDialect2005.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-private/src/main/java/org/sakaiproject/springframework/orm/hibernate/dialect/SQLServerDialect2005.java $
+ * $Id: SQLServerDialect2005.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,7 @@ import java.sql.Types;
  * <br>Creation Date: May 1, 2006
  *
  * @author Mike DeSimone, mike.[at].rsmart.com
- * @version $Revision: 51317 $
+ * @version $Revision: 105077 $
  */
 public class SQLServerDialect2005 extends SQLServerDialect {
 

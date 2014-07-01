@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-render-engine-impl/impl/src/java/org/sakaiproject/portal/charon/velocity/VelocityPortalRenderEngine.java $
- * $Id: VelocityPortalRenderEngine.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-render-engine-impl/impl/src/java/org/sakaiproject/portal/charon/velocity/VelocityPortalRenderEngine.java $
+ * $Id: VelocityPortalRenderEngine.java 132676 2013-12-17 17:01:38Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -53,7 +53,7 @@ import org.sakaiproject.tool.api.SessionManager;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 132676 $
  */
 
 public class VelocityPortalRenderEngine implements PortalRenderEngine
@@ -68,7 +68,7 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 
 	private ServletContext context;
 
-	private String defaultSkin = "defaultskin";
+	private String defaultSkin = "neoskin";
 
 	private boolean styleAble = false;
 
@@ -84,6 +84,10 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 
 	public void init() throws Exception
 	{
+		if (log.isTraceEnabled()) {
+			debug = true;
+		}
+		
 		try
 		{
 			styleAble = serverConfigurationService.getBoolean("portal.styleable", false);
@@ -218,6 +222,10 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 	public void render(String template, PortalRenderContext rcontext, Writer out)
 			throws Exception
 	{
+		if (log.isTraceEnabled()) {
+		   log.trace("Portal trace is on, dumping PortalRenderContext to log:\n" + rcontext.dump());
+		}
+		
 		Context vc = ((VelocityPortalRenderContext) rcontext).getVelocityContext();
 		String skin = (String) vc.get("pageCurrentSkin");
 		if (skin == null || skin.length() == 0)

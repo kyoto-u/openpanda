@@ -1,6 +1,6 @@
 /**
- * $Id: ServerConfigEntityProvider.java 52527 2008-09-20 20:23:54Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/trunk/impl/src/java/org/sakaiproject/entitybroker/providers/ServerConfigEntityProvider.java $
+ * $Id: ServerConfigEntityProvider.java 130232 2013-10-08 12:32:33Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/core-providers/src/java/org/sakaiproject/entitybroker/providers/ServerConfigEntityProvider.java $
  * ServerConfigEntityProvider.java - entity-broker - Jul 17, 2008 2:19:03 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

@@ -4,7 +4,7 @@
   <parent>
     <artifactId>user</artifactId>
     <groupId>org.sakaiproject.user</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>sakai-user-tool-admin-prefs</name>
@@ -48,16 +48,6 @@
     <!-- Sun JSF RI jars (jsf-impl, jsf-api) and dependencies
 			(commons-digester, commons-collections, commons-digester, commons-beanutils, taglibs/standard, jstl) -->
     <dependency>
-      <groupId>jsf</groupId>
-      <artifactId>jsf-impl</artifactId>
-      <version>1.1.01</version>
-    </dependency>
-    <dependency>
-      <groupId>jsf</groupId>
-      <artifactId>jsf-api</artifactId>
-      <version>1.1.01</version>
-    </dependency>
-    <dependency>
       <groupId>commons-digester</groupId>
       <artifactId>commons-digester</artifactId>
       <version>1.6</version>
@@ -80,7 +70,6 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
-      <version>1.0.2</version>
     </dependency>
     <!-- end Sun RI dependencies -->
   </dependencies>

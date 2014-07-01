@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: matching.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+* $Id: matching.jsp 130983 2013-10-30 21:21:40Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -33,16 +33,9 @@
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{authorMessages.item_display_author}"/></title>
-      <!-- HTMLAREA -->
-      <samigo:stylesheet path="/htmlarea/htmlarea.css"/>
-      <samigo:script path="/htmlarea/htmlarea.js"/>
-      <samigo:script path="/htmlarea/lang/en.js"/>
-      <samigo:script path="/htmlarea/dialog.js"/>
-      <samigo:script path="/htmlarea/popupwin.js"/>
-      <samigo:script path="/htmlarea/popups/popup.js"/>
-      <samigo:script path="/htmlarea/navigo_js/navigo_editor.js"/>
-      <samigo:script path="/jsf/widget/wysiwyg/samigo/wysiwyg.js"/>
+      
       <!-- AUTHORING -->
+      <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
       <samigo:script path="/js/authoring.js"/>
 <%--
 <script type="text/JavaScript">
@@ -66,11 +59,11 @@
 <%@ include file="/jsf/author/item/itemHeadings.jsp" %>
 <h:form id="itemForm">
 <p class="act">
-  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
-  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getPoolOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getPoolOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
@@ -98,7 +91,7 @@
   <!-- 1 POINTS -->
   <div class="tier2">
    <div class="shorttext"> <h:outputLabel value="#{authorMessages.answer_point_value}" />
-    <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" onchange="toPoint(this.id);">
+    <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" disabled="#{author.isEditPoolFlow}" onchange="toPoint(this.id);">
 <f:validateDoubleRange minimum="0.00"/>
 </h:inputText>
 <br/><h:message for="answerptr" styleClass="validate"/>
@@ -181,14 +174,22 @@
    
           <h:outputText value=" #{authorMessages.matching_choice_col}"/>
 <h:panelGrid>
-  <samigo:wysiwyg rows="140" value="#{itemauthor.currentItem.currentMatchPair.choice}" hasToggle="yes">
-     <f:validateLength maximum="4000"/>
-   </samigo:wysiwyg>
+  <samigo:wysiwyg value="#{itemauthor.currentItem.currentMatchPair.choice}"
+  	rows="140"   
+  	hasToggle="yes">
+     <f:validateLength maximum="4000" />
+   </samigo:wysiwyg>  
+   
 </h:panelGrid>
-          <h:outputText value=" #{authorMessages.matching_match_col}"/>
+    <h:outputText value=" #{authorMessages.matching_match_col}"/>
+	<h:selectOneMenu value="#{itemauthor.currentItem.currentMatchPair.controllingSequence }" id="controllingSequence">
+		<f:selectItems value="#{itemauthor.currentItem.selfSequenceList }" />
+	</h:selectOneMenu>
 
  <h:panelGrid>
-   <samigo:wysiwyg rows="140" value="#{itemauthor.currentItem.currentMatchPair.match}" hasToggle="yes">
+   <samigo:wysiwyg value="#{itemauthor.currentItem.currentMatchPair.match}"
+    rows="140"   
+   	hasToggle="yes">
      <f:validateLength maximum="4000"/>
    </samigo:wysiwyg>
 
@@ -226,7 +227,7 @@
 <f:verbatim><br/></f:verbatim>
 <f:verbatim><br/></f:verbatim>
 <div class="tier2">
-  <h:commandButton value="#{authorMessages.button_save_pair}" action="#{itemauthor.currentItem.addMatchPair}">
+  <h:commandButton value="#{commonMessages.action_save_pair}" action="#{itemauthor.currentItem.addMatchPair}">
   </h:commandButton>
 </div>
 <f:verbatim><br/></f:verbatim>
@@ -258,7 +259,7 @@
 --%>
     <!-- 6 PART -->
 
-<h:panelGrid columns="3" columnClasses="shorttext" rendered="#{itemauthor.target == 'assessment'}">
+<h:panelGrid columns="3" columnClasses="shorttext" rendered="#{itemauthor.target == 'assessment' && !author.isEditPoolFlow}">
 <f:verbatim>&nbsp;</f:verbatim>
 <h:outputLabel value="#{authorMessages.assign_to_p}" />
   <h:selectOneMenu id="assignToPart" value="#{itemauthor.currentItem.selectedSection}">
@@ -327,11 +328,11 @@
 
 
 <p class="act">
-  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
-  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getPoolOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getPoolOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
@@ -353,6 +354,9 @@
 <!-- end content -->
 </div>
 
+<script type="text/javascript">
+applyMenuListener("controllingSequence");
+</script>
     </body>
   </html>
 </f:view>

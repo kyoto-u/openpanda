@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/SectionAwareServiceHelperImpl.java $
- * $Id: SectionAwareServiceHelperImpl.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/SectionAwareServiceHelperImpl.java $
+ * $Id: SectionAwareServiceHelperImpl.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,22 +22,26 @@
 
 package org.sakaiproject.tool.assessment.integration.helper.integrated;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.section.api.SectionAwareness;
 import org.sakaiproject.section.api.coursemanagement.CourseSection;
 import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
 import org.sakaiproject.section.api.facade.Role;
 import org.sakaiproject.site.api.Group;
+import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
-import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.SectionAwareServiceHelper;
-import org.sakaiproject.tool.assessment.integration.helper.integrated.FacadeUtils;
 import org.sakaiproject.tool.assessment.services.PersistenceService;
 
 
@@ -92,42 +96,36 @@ public class SectionAwareServiceHelperImpl extends AbstractSectionsImpl implemen
 		return enrollments;
 	}
 
-	
-
-	/**
-	 * added by gopalrc - Jan 2008
-	 * @param siteid
-	 * @param userUid
-	 * @return
-	 */
 	public List getGroupReleaseEnrollments(String siteid, String userUid, String publishedAssessmentId) {
 		List availEnrollments = getAvailableEnrollments(siteid, userUid);
 		List enrollments = new ArrayList();
+
+		HashSet<String> membersInReleaseGroups = new HashSet<String>(0);
+		try {
+		    List releaseGroupIds = PersistenceService.getInstance().getPublishedAssessmentFacadeQueries().getReleaseToGroupIdsForPublishedAssessment(publishedAssessmentId);
+		    Set<String> releaseGroupIdsSet = new HashSet<String>(releaseGroupIds);
+		    Site site = siteService.getInstance().getSite(siteid); // this follows the way the service is already written but it is a bad practice
+			membersInReleaseGroups = new HashSet<String>( site.getMembersInGroups(releaseGroupIdsSet) );
+		} catch (IdUnusedException ex) {
+			// no site found, just log a warning
+		    log.warn("Unable to find a site with id ("+siteid+") in order to get the enrollments, will return 0 enrollments");
+		}
+
 		for (Iterator eIter = availEnrollments.iterator(); eIter.hasNext(); ) {
 			EnrollmentRecord enr = (EnrollmentRecord)eIter.next();
-			if (isUserInReleaseGroup(enr.getUser().getUserUid(), AgentFacade.getCurrentSiteId(), publishedAssessmentId)) {
+			if (membersInReleaseGroups.contains( enr.getUser().getUserUid())) {
 				enrollments.add(enr);
 			}
 		}
+
 		return enrollments;
 	}
 	
-	
-	/**
-	 * added by gopalrc - Jan 2008
-	 */
 	private SiteService siteService;
 	public void setSiteService(SiteService siteService) {
 		this.siteService = siteService;
 	}
 	
-
-	/**
-	 * added by gopalrc - Jan 2008
-	 * @param userId
-	 * @param siteId
-	 * @return
-	 */
 	private boolean isUserInReleaseGroup(String userId, String siteId, String publishedAssessmentId) {
 		//String functionName="assessment.takeAssessment";
 		Collection siteGroups = null;

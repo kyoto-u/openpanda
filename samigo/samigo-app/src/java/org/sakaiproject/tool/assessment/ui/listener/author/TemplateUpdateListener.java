@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/TemplateUpdateListener.java $
- * $Id: TemplateUpdateListener.java 71511 2010-01-15 22:35:10Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/TemplateUpdateListener.java $
+ * $Id: TemplateUpdateListener.java 133525 2014-01-22 00:26:29Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,7 +62,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: TemplateUpdateListener.java 71511 2010-01-15 22:35:10Z ktsao@stanford.edu $
+ * @version $Id: TemplateUpdateListener.java 133525 2014-01-22 00:26:29Z ktsao@stanford.edu $
  */
 
 public class TemplateUpdateListener
@@ -274,25 +274,40 @@ public class TemplateUpdateListener
 	  feedback.setEditComponents(Integer.valueOf("1"));
       else
 	  feedback.setEditComponents(Integer.valueOf("0"));
-
-      feedback.setShowQuestionText
-        (templateBean.getFeedbackComponent_QuestionText());
-      feedback.setShowStudentResponse
-        (templateBean.getFeedbackComponent_StudentResp());
-      feedback.setShowCorrectResponse
-        (templateBean.getFeedbackComponent_CorrectResp());
-      feedback.setShowStudentScore
-        (templateBean.getFeedbackComponent_StudentScore());
-      feedback.setShowStudentQuestionScore
-        (templateBean.getFeedbackComponent_StudentQuestionScore());
-      feedback.setShowQuestionLevelFeedback
-        (templateBean.getFeedbackComponent_QuestionLevel());
-      feedback.setShowSelectionLevelFeedback
-        (templateBean.getFeedbackComponent_SelectionLevel());
-      feedback.setShowGraderComments
-        (templateBean.getFeedbackComponent_GraderComments());
-      feedback.setShowStatistics
-        (templateBean.getFeedbackComponent_Statistics());
+      // if 'No feedback' (it corresponds to value 3) is selected, 
+      // all components are unchecked
+      if (feedback.getFeedbackDelivery().equals(new Integer("3")))
+      {
+    	  feedback.setShowQuestionText(false);
+    	  feedback.setShowStudentResponse(false);
+    	  feedback.setShowCorrectResponse(false);
+    	  feedback.setShowStudentScore(false);
+    	  feedback.setShowStudentQuestionScore(false);
+    	  feedback.setShowQuestionLevelFeedback(false);
+    	  feedback.setShowSelectionLevelFeedback(false);
+    	  feedback.setShowGraderComments(false);
+    	  feedback.setShowStatistics(false);
+      }
+      else {
+    	  	feedback.setShowQuestionText
+    	  		(templateBean.getFeedbackComponent_QuestionText());
+    	  	feedback.setShowStudentResponse
+    	  		(templateBean.getFeedbackComponent_StudentResp());
+    	  	feedback.setShowCorrectResponse
+    	  		(templateBean.getFeedbackComponent_CorrectResp());
+    	  	feedback.setShowStudentScore
+    	  		(templateBean.getFeedbackComponent_StudentScore());
+    	  	feedback.setShowStudentQuestionScore
+    	  		(templateBean.getFeedbackComponent_StudentQuestionScore());
+    	  	feedback.setShowQuestionLevelFeedback
+    	  		(templateBean.getFeedbackComponent_QuestionLevel());
+    	  	feedback.setShowSelectionLevelFeedback
+    	  		(templateBean.getFeedbackComponent_SelectionLevel());
+    	  	feedback.setShowGraderComments
+    	  		(templateBean.getFeedbackComponent_GraderComments());
+    	  	feedback.setShowStatistics
+    	  		(templateBean.getFeedbackComponent_Statistics());
+      }
 
       //log.info("templateId = " + templateIdString);
       if ("0".equals(templateIdString)) // New template

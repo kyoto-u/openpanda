@@ -11,13 +11,20 @@
           </list>
          </property>
     </bean>
-
+<!--  
    <bean id="org.sakaiproject.messagebundle.api.MessageBundleService.target"
          class="org.sakaiproject.messagebundle.impl.MessageBundleServiceImpl"
          singleton="true" init-method="init" lazy-init="true">
       <property name="sessionFactory">
          <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
       </property>
+   </bean>
+ -->    
+   <bean id="org.sakaiproject.messagebundle.api.MessageBundleService.target"
+         class="org.sakaiproject.messagebundle.impl.CachingMessageBundleServiceImpl"
+         singleton="true" init-method="init" destroy-method="destroy" lazy-init="true">
+      <property name="sessionFactory" ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+      <property name="memoryService" ref="org.sakaiproject.memory.api.MemoryService"/>
    </bean>
 
     <bean id="org.sakaiproject.messagebundle.api.MessageBundleService"

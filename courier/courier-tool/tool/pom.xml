@@ -4,14 +4,14 @@
     
     <parent>
         <groupId>org.sakaiproject.courier</groupId>
-        <artifactId>courier-base</artifactId>
-        <version>2.9.3</version>
+        <artifactId>courier</artifactId>
+        <version>10.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     
     <name>courier</name>
     <groupId>org.sakaiproject.courier</groupId>
-    <artifactId>courier</artifactId>
+    <artifactId>courier-tool</artifactId>
     <organization>
         <name>University of Michigan</name>
         <url>http://sakaiproject.org/</url>
@@ -23,7 +23,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>sakai-courier-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.kernel</groupId>
@@ -42,4 +41,20 @@
             <artifactId>servlet-api</artifactId>
         </dependency>
     </dependencies>
+    
+    
+    <build>
+        <plugins>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.sakaiproject.maven.plugins</groupId>
+                <artifactId>sakai</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <deployId>courier</deployId>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/entity/api/ResourceProperties.java $
- * $Id: ResourceProperties.java 93399 2011-06-01 11:31:40Z matthew.buckett@oucs.ox.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/entity/api/ResourceProperties.java $
+ * $Id: ResourceProperties.java 124158 2013-05-16 15:37:05Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@
 package org.sakaiproject.entity.api;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -173,6 +174,9 @@ public interface ResourceProperties extends Serializable
 	
 	/** Property name on a ContentEntity indicating if we should add HTML header/footer.*/
 	static final String PROP_ADD_HTML = "SAKAI:add_html";
+	
+	/** Property name on a ContentEntity indicating if the item is hidden but it's content is public.*/
+	static final String PROP_HIDDEN_WITH_ACCESSIBLE_CONTENT = "SAKAI:hidden_accessible_content";
 
 	/**
 	 * Property name on a Resource or Collection which will allow resources with
@@ -270,9 +274,18 @@ public interface ResourceProperties extends Serializable
 	 *            if not found.
 	 * @exception EntityPropertyTypeException
 	 *            if the property is found but not a Time.
+	 * @deprecated use {@link #getDateProperty(String)}
 	 */
 	Time getTimeProperty(String name) throws EntityPropertyNotDefinedException, EntityPropertyTypeException;
 
+	/**
+	 * Access a named property as a Date
+	 * @param name The property name.
+	 * @return the property value
+	 * @throws EntityPropertyNotDefinedException if not found
+	 * @throws EntityPropertyTypeException if the property is not a date 
+	 */
+	Date getDateProperty(String name) throws EntityPropertyNotDefinedException, EntityPropertyTypeException;
 	/**
 	 * Access a named property as a User.
 	 * 

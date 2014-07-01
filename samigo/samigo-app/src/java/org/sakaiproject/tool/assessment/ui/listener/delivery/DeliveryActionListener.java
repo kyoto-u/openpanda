@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/DeliveryActionListener.java $
- * $Id: DeliveryActionListener.java 128514 2013-08-15 14:43:49Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/DeliveryActionListener.java $
+ * $Id: DeliveryActionListener.java 309682 2014-05-20 18:52:15Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,13 +25,15 @@ package org.sakaiproject.tool.assessment.ui.listener.delivery;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.faces.context.FacesContext;
@@ -43,16 +45,22 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
-
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.event.api.Event;
+import org.sakaiproject.event.api.LearningResourceStoreService;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Actor;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Object;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Statement;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb.SAKAI_VERB;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.event.cover.NotificationService;
-import org.sakaiproject.tool.assessment.data.dao.assessment.Answer;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
+import org.sakaiproject.tool.assessment.data.dao.assessment.EventLogData;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
+import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingAttachment;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
@@ -63,15 +71,16 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
+import org.sakaiproject.tool.assessment.facade.EventLogFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
 import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI.Phase;
 import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI.PhaseStatus;
+import org.sakaiproject.tool.assessment.services.assessment.EventLogService;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.ContentsDeliveryBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.DeliveryBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.FeedbackComponent;
@@ -79,9 +88,9 @@ import org.sakaiproject.tool.assessment.ui.bean.delivery.FibBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.FinBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.ItemContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.MatchingBean;
+import org.sakaiproject.tool.assessment.ui.bean.delivery.MatrixSurveyBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.SectionContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.SelectionBean;
-import org.sakaiproject.tool.assessment.ui.bean.delivery.MatrixSurveyBean;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.StudentScoresBean;
 import org.sakaiproject.tool.assessment.ui.bean.shared.PersonBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
@@ -97,7 +106,7 @@ import org.sakaiproject.util.ResourceLoader;
  * <p>Purpose:  this module creates the lists of published assessments for the select index
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: DeliveryActionListener.java 128514 2013-08-15 14:43:49Z ottenhoff@longsight.com $
+ * @version $Id: DeliveryActionListener.java 309682 2014-05-20 18:52:15Z ktsao@stanford.edu $
  */
 
 public class DeliveryActionListener
@@ -108,6 +117,8 @@ public class DeliveryActionListener
   private static Log log = LogFactory.getLog(DeliveryActionListener.class);
   //private static ContextUtil cu;
   private boolean resetPageContents = true;
+  private long previewGradingId = (long)(Math.random() * 1000);
+  private static ResourceBundle eventLogMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.EventLogMessages");
 
   /**
    * ACTION.
@@ -142,13 +153,12 @@ public class DeliveryActionListener
       }
       // Clear elapsed time, set not timed out
       clearElapsedTime(delivery);
- 
+
       // set show student score
       setShowStudentScore(delivery, publishedAssessment);
       setShowStudentQuestionScore(delivery, publishedAssessment);
       setDeliverySettings(delivery, publishedAssessment);
-      
-      
+    
       // 3. there 3 types of navigation: by question (question will be displayed one at a time), 
       // by part (questions in a part will be displayed together) or by assessment (i.e. 
       // all questions will be displayed on one page). When navigating from TOC, a part number
@@ -201,6 +211,7 @@ public class DeliveryActionListener
       GradingService service = new GradingService();
       PublishedAssessmentService pubService = new PublishedAssessmentService();
       AssessmentGradingData ag = null;
+      SecureDeliveryServiceAPI secureDelivery = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI();
       boolean isFirstTimeBegin = false;
       
       switch (action){
@@ -247,7 +258,6 @@ public class DeliveryActionListener
               delivery.setSecureDeliveryHTMLFragment( "" );
               delivery.setBlockDelivery( false );
               
-              SecureDeliveryServiceAPI secureDelivery = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI();
               if ( secureDelivery.isSecureDeliveryAvaliable() ) {
             	  
             	  String moduleId = publishedAssessment.getAssessmentMetaDataByLabel( SecureDeliveryServiceAPI.MODULE_KEY );
@@ -297,6 +307,18 @@ public class DeliveryActionListener
             			  return;
             		  }
             	  }
+                  
+                  // #3. secure delivery START phase
+                  if ( secureDelivery.isSecureDeliveryAvaliable() ) {
+                      String moduleId = publishedAssessment.getAssessmentMetaDataByLabel( SecureDeliveryServiceAPI.MODULE_KEY );
+                      if ( moduleId != null && ! SecureDeliveryServiceAPI.NONE_ID.equals( moduleId ) ) {
+                          HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+                          PhaseStatus status = secureDelivery.validatePhase(moduleId, Phase.ASSESSMENT_START, publishedAssessment, request );
+                          if ( PhaseStatus.FAILURE == status ) {
+                              return;
+                          }
+                      }    	  
+                  }
               }
               
               // If this is a linear access and user clicks on Show Feedback, we do not
@@ -343,7 +365,7 @@ public class DeliveryActionListener
                   // this returns a HashMap with (publishedItemId, itemGrading)
                   itemGradingHash = service.getLastItemGradingData(id, agent); //
                   log.debug("**** DeliveryActionListener #1");
-                  
+
                   if (itemGradingHash!=null && itemGradingHash.size()>0){
                 	  log.debug("**** DeliveryActionListener #1a");
                 	  ag = setAssessmentGradingFromItemData(delivery, itemGradingHash, true);
@@ -372,6 +394,34 @@ public class DeliveryActionListener
             	  setTimer(delivery, publishedAssessment, true, isFirstTimeBegin);
             	  setStatus(delivery, pubService, Long.valueOf(id));
             	  
+            	  EventLogService eventService = new EventLogService();
+                  EventLogFacade eventLogFacade = new EventLogFacade();
+                  String agentEid = AgentFacade.getEid();
+                  //ONC-3500
+                  if(agentEid == null || agentEid.equals("")){
+                	  agentEid= "N/A";
+                  }
+                  //set event log data
+                  EventLogData eventLogData = new EventLogData();
+                  eventLogData.setAssessmentId(Long.valueOf(id));
+                  eventLogData.setProcessId(delivery.getAssessmentGradingId());
+                  eventLogData.setStartDate(new Date());
+                  eventLogData.setTitle(publishedAssessment.getTitle());
+                  eventLogData.setUserEid(agentEid); 
+                  String site_id = AgentFacade.getCurrentSiteId();
+                  //take assessment via url
+                  if(site_id == null) {
+                      PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
+                      site_id = publishedAssessmentService.getPublishedAssessmentOwner(Long.valueOf(delivery.getAssessmentId()));
+                  }
+                  eventLogData.setSiteId(site_id);
+                  eventLogData.setErrorMsg(eventLogMessages.getString("no_submission"));
+                  eventLogData.setEndDate(null);
+                  eventLogData.setEclipseTime(null);
+                      
+                  eventLogFacade.setData(eventLogData);
+                  eventService.saveOrUpdateEventLog(eventLogFacade);           	  
+                  
             	  if (action == DeliveryBean.TAKE_ASSESSMENT) {
             		  StringBuffer eventRef = new StringBuffer("publishedAssessmentId=");
             		  eventRef.append(delivery.getAssessmentId());
@@ -384,7 +434,10 @@ public class DeliveryActionListener
             			  int timeRemaining = Integer.parseInt(delivery.getTimeLimit()) - Integer.parseInt(delivery.getTimeElapse());
             			  eventRef.append(timeRemaining);
             		  }
-            		  EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.take", "siteId=" + AgentFacade.getCurrentSiteId() + ", " + eventRef.toString(), true));
+                      Event event = EventTrackingService.newEvent("sam.assessment.take",
+                              "siteId=" + site_id + ", " + eventRef.toString(), true);
+                      EventTrackingService.post(event);
+                      registerIrss(delivery, event, false);
             	  }
             	  else if (action == DeliveryBean.TAKE_ASSESSMENT_VIA_URL) {
             		  StringBuffer eventRef = new StringBuffer("publishedAssessmentId=");
@@ -398,9 +451,10 @@ public class DeliveryActionListener
             			  int timeRemaining = Integer.parseInt(delivery.getTimeLimit()) - Integer.parseInt(delivery.getTimeElapse());
             			  eventRef.append(timeRemaining);
             		  }
-            		  PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
-            		  String siteId = publishedAssessmentService.getPublishedAssessmentOwner(Long.valueOf(delivery.getAssessmentId()));
-            		  EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.take.via_url", "siteId=" + AgentFacade.getCurrentSiteId() + ", " + eventRef.toString(), siteId, true, NotificationService.NOTI_REQUIRED));
+                      Event event = EventTrackingService.newEvent("sam.assessment.take.via_url",
+                                "siteId=" + site_id + ", " + eventRef.toString(), site_id, true, NotificationService.NOTI_REQUIRED);
+                      EventTrackingService.post(event);
+                      registerIrss(delivery, event, true);
             	  }
               }
               else {
@@ -438,9 +492,60 @@ public class DeliveryActionListener
     }
     catch (RuntimeException e)
     {
-      throw e;
+    	DeliveryBean delivery = (DeliveryBean) ContextUtil.lookupBean("delivery");
+    	String id = getPublishedAssessmentId(delivery);
+    	String agentEid = AgentFacade.getEid();
+    	if(agentEid == null || agentEid.equals("")) {
+    		agentEid= "N/A";
+    	}
+
+    	PublishedAssessmentFacade publishedAssessment = getPublishedAssessment(delivery, id);
+
+    	EventLogService eventService = new EventLogService();
+    	EventLogFacade eventLogFacade = new EventLogFacade();
+    	EventLogData eventLogData = null;
+
+    	List eventLogDataList = eventService.getEventLogData(delivery.getAssessmentGradingId());
+    	if(eventLogDataList != null && eventLogDataList.size() > 0) {
+    		eventLogData= (EventLogData) eventLogDataList.get(0);
+    		eventLogData.setErrorMsg(eventLogMessages.getString("error_begin"));
+    	} else {
+    		eventLogData = new EventLogData();
+    		eventLogData.setErrorMsg(eventLogMessages.getString("error_begin"));
+    		eventLogData.setAssessmentId(Long.valueOf(id));
+    		eventLogData.setProcessId(delivery.getAssessmentGradingId());
+    		eventLogData.setStartDate(new Date());
+    		eventLogData.setTitle(publishedAssessment.getTitle());
+    		eventLogData.setUserEid(agentEid); 
+    		String site_id =AgentFacade.getCurrentSiteId();
+    		//take assessment via url
+    		if(site_id == null) {
+    			PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
+    			site_id = publishedAssessmentService.getPublishedAssessmentOwner(Long.valueOf(delivery.getAssessmentId()));
+    		}
+    		eventLogData.setSiteId(site_id);
+    		eventLogData.setEndDate(null);
+    		eventLogData.setEclipseTime(null);
+    	}
+    	
+        eventLogFacade.setData(eventLogData);
+    	eventService.saveOrUpdateEventLog(eventLogFacade);
+    	throw e;
     }
 
+  }
+  
+  protected void registerIrss(DeliveryBean delivery, Event event, boolean isViaURL) {
+	  LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
+			  .get("org.sakaiproject.event.api.LearningResourceStoreService");
+	  if (null != lrss && lrss.getEventActor(event) != null) {
+		  StringBuffer lrssMetaInfo = new StringBuffer("Assesment: " + delivery.getAssessmentTitle());
+		  lrssMetaInfo.append(", Past Due?: " + delivery.getPastDue());
+		  if (isViaURL) {
+			  lrssMetaInfo.append(", Assesment taken via URL.");
+		  }
+		  lrss.registerStatement(getStatementForTakeAssessment(lrss.getEventActor(event), event, lrssMetaInfo.toString()), "samigo");
+	  }
   }
 
   /**
@@ -461,7 +566,7 @@ public class DeliveryActionListener
     {
       ItemGradingData igd = (ItemGradingData) ( (ArrayList) itemGradingHash.get(
         keys.next())).toArray()[0];
-      AssessmentGradingData agd = gradingService.load(igd.getAssessmentGradingId().toString());
+      AssessmentGradingData agd = gradingService.load(igd.getAssessmentGradingId().toString(), false);
       agd.setItemGradingSet(gradingService.getItemGradingSet(agd.getAssessmentGradingId().toString()));
       if (!agd.getForGrade().booleanValue()){
         log.debug("setAssessmentGradingFromItemData agd.getTimeElapsed(): " + agd.getTimeElapsed());
@@ -487,15 +592,21 @@ public class DeliveryActionListener
    */
   private void setDeliveryFeedbackOnforEvaluation(DeliveryBean delivery)
   {
-    delivery.getFeedbackComponent().setShowCorrectResponse(true);
-    delivery.getFeedbackComponent().setShowGraderComment(true);
-    delivery.getFeedbackComponent().setShowItemLevel(true);
-    delivery.getFeedbackComponent().setShowQuestion(true);
-    delivery.getFeedbackComponent().setShowResponse(true);
-    delivery.getFeedbackComponent().setShowSelectionLevel(true);
-    delivery.getFeedbackComponent().setShowStats(true);
-    delivery.getFeedbackComponent().setShowStudentScore(true);
-    delivery.getFeedbackComponent().setShowStudentQuestionScore(true);
+	  if (delivery.getFeedbackComponent() == null)
+	  {
+		  delivery.setFeedbackComponent(new FeedbackComponent());
+	  }
+	  delivery.getFeedbackComponent().setShowCorrectResponse(true);
+	  delivery.getFeedbackComponent().setShowGraderComment(true);
+	  delivery.getFeedbackComponent().setShowItemLevel(true);
+	  delivery.getFeedbackComponent().setShowQuestion(true);
+	  delivery.getFeedbackComponent().setShowResponse(true);
+	  delivery.getFeedbackComponent().setShowSelectionLevel(true);
+	  delivery.getFeedbackComponent().setShowStats(true);
+	  delivery.getFeedbackComponent().setShowStudentScore(true);
+	  delivery.getFeedbackComponent().setShowStudentQuestionScore(true);
+
+
   }
 
   /**
@@ -530,8 +641,8 @@ public class DeliveryActionListener
                                            HashMap publishedAnswerHash)
   {
     ContentsDeliveryBean contents = new ContentsDeliveryBean();
-    float currentScore = 0;
-    float maxScore = 0;
+    double currentScore = 0;
+    double maxScore = 0;
 
     // get parts
     ArrayList partSet = publishedAssessment.getSectionArraySorted();
@@ -648,8 +759,8 @@ public class DeliveryActionListener
     DeliveryBean delivery, HashMap publishedAnswerHash)
   {
     ContentsDeliveryBean contents = new ContentsDeliveryBean();
-    float currentScore = 0;
-    float maxScore = 0;
+    double currentScore = 0;
+    double maxScore = 0;
 
     // get parts
     ArrayList partSet = publishedAssessment.getSectionArraySorted();
@@ -693,8 +804,8 @@ public class DeliveryActionListener
     DeliveryBean delivery, HashMap publishedAnswerHash)
   {
     ContentsDeliveryBean contents = new ContentsDeliveryBean();
-    float currentScore = 0;
-    float maxScore = 0;
+    double currentScore = 0;
+    double maxScore = 0;
     int sectionCount = 0;
 
     // get parts
@@ -756,8 +867,8 @@ public class DeliveryActionListener
     DeliveryBean delivery, HashMap publishedAnswerHash)
   {
     ContentsDeliveryBean contents = new ContentsDeliveryBean();
-    float currentScore = 0;
-    float maxScore = 0;
+    double currentScore = 0;
+    double maxScore = 0;
     int sectionCount = 0;
     int questionCount = 0; // This is to increment the part if we run
     // out of questions
@@ -781,10 +892,10 @@ public class DeliveryActionListener
 
       //questionCount = secFacade.getItemSet().size();
       // need to  get ItemArraySort, insteand of getItemSet, to return corr number for random draw parts
-      ArrayList itemlist = secFacade.getItemArray();
+      List<ItemDataIfc> itemlist = secFacade.getItemArray();
       long seed = getSeed(secFacade, delivery, (long) AgentFacade.getAgentString().hashCode());
 
-      ArrayList sortedlist = getItemArraySortedWithRandom(secFacade, itemlist, seed); 
+      List<ItemDataIfc> sortedlist = getItemArraySortedWithRandom(secFacade, itemlist, seed); 
       questionCount = sortedlist.size();
 
       if ((delivery.getNoQuestions() || questionCount != 0) && itemIndex > (questionCount - 1) && sectionCount == sectionIndex) {
@@ -851,8 +962,8 @@ public class DeliveryActionListener
   private SectionContentsBean getPartBean(SectionDataIfc part, HashMap itemGradingHash,
                                           DeliveryBean delivery, HashMap publishedAnswerHash)
   {
-    float maxPoints = 0;
-    float points = 0;
+    double maxPoints = 0;
+    double points = 0;
     int unansweredQuestions = 0;
 
     //SectionContentsBean sec = new SectionContentsBean();
@@ -860,8 +971,8 @@ public class DeliveryActionListener
     // daisy change to use this existing constructor instead 11/09/05
     SectionContentsBean sec = new SectionContentsBean(part);
 
-    ArrayList itemSet = null;
-    ArrayList itemlist = part.getItemArray();
+    List<ItemDataIfc> itemSet = null;
+    List<ItemDataIfc> itemlist = part.getItemArray();
     long seed = 0;
     if (delivery.getActionMode()==DeliveryBean.GRADE_ASSESSMENT) {
       StudentScoresBean studentscorebean = (StudentScoresBean) ContextUtil.lookupBean("studentScores");
@@ -946,16 +1057,16 @@ public class DeliveryActionListener
     SectionDataIfc part, int itemIndex, HashMap itemGradingHash, 
     DeliveryBean delivery, HashMap publishedAnswerHash)
   {
-    float maxPoints = 0;
-    float points = 0;
+    double maxPoints = 0;
+    double points = 0;
     int unansweredQuestions = 0;
     int itemCount = 0;
 
     //SectionContentsBean sec = new SectionContentsBean();
     SectionContentsBean sec = new SectionContentsBean(part);
-    ArrayList itemlist = part.getItemArray();
+    List<ItemDataIfc> itemlist = part.getItemArray();
     long seed = getSeed(part, delivery, (long) AgentFacade.getAgentString().hashCode());
-    ArrayList itemSet= getItemArraySortedWithRandom(part, itemlist, seed);
+    List<ItemDataIfc> itemSet= getItemArraySortedWithRandom(part, itemlist, seed);
 
     sec.setQuestions(itemSet.size());
 
@@ -1032,8 +1143,8 @@ public class DeliveryActionListener
   {
     ItemContentsBean itemBean = new ItemContentsBean();
     itemBean.setItemData(item);
-    itemBean.setMaxPoints(item.getScore().floatValue());
-    itemBean.setPoints( (float) 0);
+    itemBean.setMaxPoints(item.getScore().doubleValue());
+    itemBean.setPoints( (double) 0);
 
     // update maxNumAttempts for audio
     if (item.getTriesAllowed() != null)
@@ -1064,14 +1175,22 @@ public class DeliveryActionListener
       if (data.getAutoScore() != null)
       {
         itemBean.setPoints(itemBean.getExactPoints() +
-                           data.getAutoScore().floatValue());
+                           data.getAutoScore().doubleValue());
       }
       // set attempts remaining for audio, there is only one itemGradingData
       // per question in this case  
       if (data.getAttemptsRemaining() !=null ){
         itemBean.setAttemptsRemaining(data.getAttemptsRemaining());
       }
-      itemGradingAttachmentList.addAll(data.getItemGradingAttachmentList());
+      
+      // set the itemGradingAttachment only for Review and Grading flows because itemGradingAttachment 
+      // can exist in these two flows only (grader can only enter comments for submitted assessments) 
+      if (delivery.getActionMode() == 3 || delivery.getActionMode() == 4) {
+    	  itemGradingAttachmentList.addAll(data.getItemGradingAttachmentList());
+      }
+      else {
+    	  itemGradingAttachmentList.addAll(new ArrayList<ItemGradingAttachment>());
+      }
       //itemBean.setItemGradingAttachmentList(data.getItemGradingAttachmentList());
     }
     itemBean.setItemGradingAttachmentList(itemGradingAttachmentList);
@@ -1082,11 +1201,12 @@ public class DeliveryActionListener
         item.getTypeId().equals(TypeIfc.MULTIPLE_CHOICE_SURVEY) ||
         item.getTypeId().equals(TypeIfc.AUDIO_RECORDING) ||
         item.getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY))
+
     {
       itemBean.setFeedback(item.getGeneralItemFeedback());
     }
  
-    else if ( itemBean.getMaxPoints()>0) {
+    else if (itemBean.getMaxPoints()>0 && !item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT)) {
         // 
         // This is not really needed because the next Else{} will cover all other question types. 
     	// However it's much cheaper to check scores rather than looping through and check each answers. 
@@ -1108,8 +1228,8 @@ public class DeliveryActionListener
     	// this doesn't happen very often. 
     	
     	
-    	ArrayList itemgradingList = itemBean.getItemGradingDataArray();
-    	Iterator iterAnswer = itemgradingList.iterator();
+    	List<ItemGradingData> itemgradingList = itemBean.getItemGradingDataArray();
+    	Iterator<ItemGradingData> iterAnswer = itemgradingList.iterator();
     	boolean haswronganswer =true;
     	HashMap fibmap = new HashMap();
     	int mcmc_match_counter = 0;
@@ -1121,11 +1241,11 @@ public class DeliveryActionListener
     	
     	//calculate total # of correct answers. 
     	int correctAnswers = 0;
-    	if ((item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) )|| (item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION) )||(item.getTypeId().equals(TypeIfc.MATCHING) )){
+    	if ((item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS)) || (item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) )|| (item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION) )||(item.getTypeId().equals(TypeIfc.MATCHING) )){
     		Iterator itemTextIter = item.getItemTextArray().iterator();
     		while (itemTextIter.hasNext()){
     			ItemTextIfc itemText = (ItemTextIfc) itemTextIter.next();
-    			ArrayList answerArray = itemText.getAnswerArray();
+    			List answerArray = itemText.getAnswerArray();
     			
     			if (answerArray != null){
     				for (int indexAnswer =0; indexAnswer<answerArray.size(); indexAnswer++){
@@ -1143,7 +1263,7 @@ public class DeliveryActionListener
     	while (iterAnswer.hasNext())
     	{
     		
-    		ItemGradingIfc data = (ItemGradingIfc) iterAnswer.next();
+    		ItemGradingData data = iterAnswer.next();
     		
     		  AnswerIfc answer = (AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId());
     		  
@@ -1169,7 +1289,7 @@ public class DeliveryActionListener
     				  log.debug("should not come to here");
     			  }
     		  }
-    		  else if  ((item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) )||(item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION) )||(item.getTypeId().equals(TypeIfc.MATCHING) )){
+    		  else if  ((item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS)) || (item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) )||(item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION) )||(item.getTypeId().equals(TypeIfc.MATCHING) )){
       		    if ((answer !=null) && (answer.getIsCorrect() == null || !answer.getIsCorrect().booleanValue())){
     		    	haswronganswer =true;
     		    	
@@ -1190,7 +1310,7 @@ public class DeliveryActionListener
     		  }
     		   
     	}
-    	if ((item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) )|| (item.getTypeId().equals(TypeIfc.MATCHING) )){
+    	if ( (item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS)) || (item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) )|| (item.getTypeId().equals(TypeIfc.MATCHING) )){
     		if (mcmc_match_counter==correctAnswers){
     			haswronganswer=false;
     		}
@@ -1229,12 +1349,15 @@ public class DeliveryActionListener
 
     ArrayList myanswers = new ArrayList();
     ResourceLoader rb = null;
+	rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+
     // Generate the answer key
     String key = "";
     Iterator key1 = item.getItemTextArraySorted().iterator();
-    int j = 1;
+    int j = 0;
     while (key1.hasNext())
     {
+    	j++;
       // We need to store the answers in an arraylist in case they're
       // randomized -- we assign labels here, and then step through
       // them again later, and we have to make sure the order is the
@@ -1244,10 +1367,31 @@ public class DeliveryActionListener
       ItemTextIfc text = (ItemTextIfc) key1.next();
       Iterator key2 = null;
 
+      if (item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS) && text.isEmiQuestionItemText())
+      {
+    	  //changes for VULA-1861 - EMI answer key format in delivery is confusing
+    	  int correctAnswerCnt = 0;
+    	  Iterator answersIter =  text.getAnswerArraySorted().iterator();
+    	  while (answersIter.hasNext()) {
+    	    AnswerIfc answer = (AnswerIfc) answersIter.next();
+    	    if(answer.getIsCorrect()) {
+    	    	correctAnswerCnt += 1;
+    	    }
+    	  }    		
+    	  String required=null;    	  
+    	  if (text.getRequiredOptionsCount() != null && text.getRequiredOptionsCount().intValue() < correctAnswerCnt) {
+    		  required=text.getRequiredOptionsCount().toString();
+        	  key += " | " + text.getSequence() + ": " + required + " " + rb.getString("of") + " ";
+    	  } else {
+        	  key += " | " + text.getSequence() + ": ";
+    	  }
+      }
+
       // Never randomize Fill-in-the-blank or Numeric Response, always randomize matching
       if (randomize && !(item.getTypeId().equals(TypeIfc.FILL_IN_BLANK)||
     		  item.getTypeId().equals(TypeIfc.FILL_IN_NUMERIC) || 
     		  item.getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY)) ||
+    		  item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION) || // CALCULATED_QUESTION
     		  item.getTypeId().equals(TypeIfc.MATCHING))
       {
             ArrayList shuffled = new ArrayList();
@@ -1302,6 +1446,7 @@ public class DeliveryActionListener
             && (item.getTypeId().equals(TypeIfc.MULTIPLE_CHOICE) ||
                 item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) ||
                 item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION) ||
+                item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS) ||
                 item.getTypeId().equals(TypeIfc.MULTIPLE_CHOICE_SURVEY) ||
                 item.getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY)))
         {
@@ -1322,8 +1467,9 @@ public class DeliveryActionListener
               String addition = "";
               if (item.getTypeId().equals(TypeIfc.MATCHING))
               {
-                addition = Integer.toString(j++) + ":";
+                addition = Integer.toString(j) + ":";
               }
+
               if ("".equals(key))
               {
                 key += addition + answer.getLabel();
@@ -1334,12 +1480,18 @@ public class DeliveryActionListener
               }
             }
           }
-          
+          	
+          if (item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS) && text.isEmiQuestionItemText()
+        		  && answer.getIsCorrect())
+          {
+        	  key += answer.getLabel();
+          }
+
           //multiple choice partial credit:
           if (item.getTypeId().equals(TypeIfc.MULTIPLE_CHOICE) && item.getPartialCreditFlag()){
-        	  Float pc =  Float.valueOf(answer.getPartialCredit());
+        	  Double pc =  Double.valueOf(answer.getPartialCredit());
         	  if (pc == null) {
-        		  pc = Float.valueOf(0f);
+        		  pc = Double.valueOf(0d);
         	  }
         	  if(pc > 0){
         		  if (rb == null) { 	 
@@ -1385,11 +1537,22 @@ public class DeliveryActionListener
               key += ", " + answer.getText();
             }
           }
+          // CALCULATED_QUESTION
+          if (item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION))
+          {
+                key = commaDelimtedCalcQuestionAnswers(item, delivery, itemBean);
+          }
           //myanswers will get the answer even for matrix and multiple choices survey
           myanswers.add(answer);
         }
       }
     }
+    
+    if (item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS))
+    {
+  	  key += " | ";
+    }
+
     itemBean.setKey(key);
 
     // Delete this
@@ -1405,22 +1568,30 @@ public class DeliveryActionListener
         item.getTypeId().equals(TypeIfc.MATCHING))
     {
       Iterator iter = myanswers.iterator();
+      SelectionBean selectionBean = null;
+      
       while (iter.hasNext())
       {
-        SelectionBean selectionBean = new SelectionBean();
-        selectionBean.setItemContentsBean(itemBean);
         AnswerIfc answer = (AnswerIfc) iter.next();
+    	selectionBean = new SelectionBean();
+        selectionBean.setItemContentsBean(itemBean);
         selectionBean.setAnswer(answer);
-
+        
         // It's saved lower case in the db -- this is a kludge
         if (item.getTypeId().equals(TypeIfc.TRUE_FALSE) && // True/False
             answer.getText().equals("true"))
         {
+          if (rb == null) { 	 
+        	rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+          }
           answer.setText(rb.getString("true_msg"));
         }
         if (item.getTypeId().equals(TypeIfc.TRUE_FALSE) && // True/False
             answer.getText().equals("false"))
         {
+          if (rb == null) { 	 
+        	rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+          }
           answer.setText(rb.getString("false_msg"));
 
         }
@@ -1501,7 +1672,7 @@ public class DeliveryActionListener
         {
           answers.add(selectionBean);
         }
-      }
+      } //end while
     }
     // Delete this
     itemBean.setAnswers(answers);
@@ -1510,7 +1681,10 @@ public class DeliveryActionListener
     if (item.getTypeId().equals(TypeIfc.MATCHING)) // matching
     {
       populateMatching(item, itemBean, publishedAnswerHash);
-
+    }
+    else if (item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS))
+    {
+        populateEMI(item, itemBean, publishedAnswerHash);
     }
     else if (item.getTypeId().equals(TypeIfc.FILL_IN_BLANK)) // fill in the blank
     {
@@ -1531,12 +1705,91 @@ public class DeliveryActionListener
     {
     	populateMatrixChoices(item, itemBean, publishedAnswerHash);
     }
+    // CALCULATED_QUESTION
+    else if (item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION))
+    {
+        populateCalculatedQuestion(item, itemBean, delivery);
+    }
     
     return itemBean;
   }
 
+  // This method treats EMI in a similar way as multiple MCMR questions
+  public void populateEMI(ItemDataIfc item, ItemContentsBean bean, HashMap publishedAnswerHash)
+  {
+    Iterator itemTextIter = item.getItemTextArraySorted().iterator();
+    //int j = 1;
+    ArrayList beans = new ArrayList();
+    ArrayList newAnswers = null;
+    
+    // Iterate through the PublishedItemTexts
+    // Each ItemText represents a sub-question question
+    // and is used to populate a MatchingBean
+    while (itemTextIter.hasNext())
+    {
+      ItemTextIfc text = (ItemTextIfc) itemTextIter.next();
+      
+      //Don't use the non-question item ItemTexts
+      //i.e. ones which do not contain actual question-answer combos
+ 	  if (!text.isEmiQuestionItemText()) continue;
+
+      MatchingBean mbean = new MatchingBean();
+      newAnswers = new ArrayList();
+      mbean.setText(text.getText());
+      mbean.setItemSequence(text.getSequence() + "");
+
+      mbean.setItemText(text);
+      mbean.setItemContentsBean(bean);
+
+      Iterator itemTextAnwersIter = text.getAnswerArraySorted().iterator();
+     
+      int i = 0;
+
+      ResourceLoader rb = null;
+      if (rb == null) { 	 
+  		rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+  	  }
+     
+      // Now add the user responses (ItemGrading)
+      int responseCount = 0;
+      ArrayList userResponseLabels = new ArrayList();
+      Iterator itemGradingIter = bean.getItemGradingDataArray().iterator();
+      while (itemGradingIter.hasNext())
+      {
+        ItemGradingData data = (ItemGradingData) itemGradingIter.next();
+        if (data.getPublishedItemTextId().equals(text.getId()))
+        {
+            // We found an existing grading data for this itemtext (sub-question)
+            // mbean.setItemGradingData(data);
+            AnswerIfc pubAnswer = (AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId()); 
+            if (pubAnswer != null) {
+            	userResponseLabels.add(pubAnswer.getLabel());
+            	data.setPublishedAnswerId(pubAnswer.getId());
+            }
+        }
+      }
+
+      //Sort the user Response Labels and create the response string
+      Collections.sort(userResponseLabels);
+      String previousResponse = "";
+      Iterator sortedLabels = userResponseLabels.iterator();
+      while (sortedLabels.hasNext()) {
+    	  previousResponse += sortedLabels.next().toString();
+      }
+      mbean.setResponse(previousResponse);
+      beans.add(mbean);
+    }
+    
+    bean.setMatchingArray(beans);
+    bean.setAnswers(newAnswers); // Change the answers to just text
+    bean.setIsMultipleItems(beans.size() > 1);
+  }
+
   public void populateMatching(ItemDataIfc item, ItemContentsBean bean, HashMap publishedAnswerHash)
   {
+	  // used only for questions with distractors where the user has selected None of the Above
+	  final Long NONE_OF_THE_ABOVE = -1l;
+	  
     Iterator iter = item.getItemTextArraySorted().iterator();
     int j = 1;
     ArrayList beans = new ArrayList();
@@ -1583,6 +1836,13 @@ public class DeliveryActionListener
                                    Character.toString(alphabet.charAt(i++)),
                                    ""));
       }
+      
+      GradingService gs = new GradingService();
+      if (gs.hasDistractors(item)) {
+    	  choices.add(new SelectItem(NONE_OF_THE_ABOVE.toString(),
+    			  					"None of the Above",
+    			  					""));
+      }
 
       mbean.setChoices(choices); // Set the A/B/C... pulldown
 
@@ -1612,6 +1872,8 @@ public class DeliveryActionListener
               mbean.setFeedback(pubAnswer.getInCorrectAnswerFeedback());
               mbean.setIsCorrect(false);
             }
+          } else if (NONE_OF_THE_ABOVE.equals(data.getPublishedAnswerId())) {
+        	  mbean.setResponse(data.getPublishedAnswerId().toString());
           }
           break;
         }
@@ -1644,17 +1906,17 @@ public class DeliveryActionListener
         fbean.setText("");
       fbean.setHasInput(true);
 
-      ArrayList datas = bean.getItemGradingDataArray();
+      List<ItemGradingData> datas = bean.getItemGradingDataArray();
       if (datas == null || datas.isEmpty())
       {
         fbean.setIsCorrect(false);
       }
       else
       {
-        Iterator iter2 = datas.iterator();
+        Iterator<ItemGradingData> iter2 = datas.iterator();
         while (iter2.hasNext())
         {
-          ItemGradingData data = (ItemGradingData) iter2.next();
+          ItemGradingData data = iter2.next();
           if ((data.getPublishedAnswerId()!=null) && data.getPublishedAnswerId().equals(answer.getId()))
           {
             fbean.setItemGradingData(data);
@@ -1794,17 +2056,17 @@ public class DeliveryActionListener
         fbean.setText("");
       fbean.setHasInput(true);
 
-      ArrayList datas = bean.getItemGradingDataArray();
+      List<ItemGradingData> datas = bean.getItemGradingDataArray();
       if (datas == null || datas.isEmpty())
       {
         fbean.setIsCorrect(false);
       }
       else
       {
-        Iterator iter2 = datas.iterator();
+        Iterator<ItemGradingData> iter2 = datas.iterator();
         while (iter2.hasNext())
         {
-          ItemGradingData data = (ItemGradingData) iter2.next();
+          ItemGradingData data = iter2.next();
           
           
           log.debug(" " + data.getPublishedAnswerId() + " = " + answer.getId());
@@ -1854,8 +2116,8 @@ public class DeliveryActionListener
 	  ArrayList matrixArray = new ArrayList();
 
 	  List<Integer> columnIndexList = new ArrayList<Integer>();
-	  ArrayList itemTextArray = item.getItemTextArraySorted();
-	  ArrayList answerArray = ((ItemTextIfc)itemTextArray.get(0)).getAnswerArraySorted(); 
+	  List itemTextArray = item.getItemTextArraySorted();
+	  List answerArray = ((ItemTextIfc)itemTextArray.get(0)).getAnswerArraySorted(); 
 	  MatrixSurveyBean mbean = null;
 
 	  List<String> stringList = new ArrayList<String>();
@@ -1869,7 +2131,7 @@ public class DeliveryActionListener
 	  }
 
 	  for (int k=0; k<stringList.size(); k++){
-		  columnIndexList.add(new Integer(k));
+		  columnIndexList.add(Integer.valueOf(k));
 	  }	
 
 	  String [] columnChoices = stringList.toArray(new String[stringList.size()]);
@@ -1885,7 +2147,7 @@ public class DeliveryActionListener
 	  for(int i=0; i<iList.size(); i++)
 	  {	
 		  ItemTextIfc text = iList.get(i);
-		  ArrayList answers = ((ItemTextIfc)itemTextArray.get(i)).getAnswerArraySorted();
+		  List answers = ((ItemTextIfc)itemTextArray.get(i)).getAnswerArraySorted();
 		  List<AnswerIfc> alist = new ArrayList<AnswerIfc>();
 		  List<String> slist = new ArrayList<String>();
 		  for(int j= 0; j<answers.size(); j++)
@@ -1902,10 +2164,10 @@ public class DeliveryActionListener
 		  mbean.setItemContentsBean(bean);
 		  mbean.setAnswerArray(answerIfcs);
 		  mbean.setAnswerSid(answerSid);
-		  ArrayList itemGradingArray = bean.getItemGradingDataArray();
+		  List<ItemGradingData> itemGradingArray = bean.getItemGradingDataArray();
 		  for (int k=0; k< itemGradingArray.size(); k++)
 		  {
-			  ItemGradingData data = (ItemGradingData)itemGradingArray.get(k);
+			  ItemGradingData data = itemGradingArray.get(k);
 			  if((data.getPublishedItemTextId()).longValue() == text.getId().longValue()){
 				  mbean.setItemGradingData(data);
 				  if (data.getPublishedAnswerId() != null)
@@ -1999,8 +2261,112 @@ public class DeliveryActionListener
 
   }
 */
-  
-  
+
+  /**
+   * CALCULATED_QUESTION
+   * This method essentially will convert a CalculatedQuestion item which is initially structured
+   * like a Matching item and reshape it into something more akin to a Fill-in-the-blank numeric
+   * item.
+   */
+  public void populateCalculatedQuestion(ItemDataIfc item, ItemContentsBean bean, DeliveryBean delivery)
+  {
+      long gradingId = determineCalcQGradingId(delivery);
+      String agentId = determineCalcQAgentId(delivery, bean);
+
+      HashMap<Integer, String> answersMap = new HashMap<Integer, String>();
+      GradingService service = new GradingService();
+      // texts is the display text that will show in the question. AnswersMap gets populated with
+      // pairs such as key:x, value:42.0
+      List<String> texts = service.extractCalcQAnswersArray(answersMap, item, gradingId, agentId);
+      String questionText = texts.get(0);
+
+      ItemTextIfc text = (ItemTextIfc) item.getItemTextArraySorted().toArray()[0];
+      List<FinBean> fins = new ArrayList<FinBean>();
+      bean.setInstruction(questionText); // will be referenced in table of contents
+
+      int numOfAnswers = answersMap.size();
+
+      int i = 0;
+      List<AnswerIfc> calcQuestionEntities = text.getAnswerArraySorted();
+
+      // Here's where I had to do it a little messy, so I'll explain. The variable are like
+      // matching pairs so they are stored as answers. But this question has real answers
+      // too. So I recycle the answer object I stored the variables in again to represent
+      // answers too.
+      // I sort this list by answer id so that it will come back from the student in a 
+      // predictable order.
+      Collections.sort(calcQuestionEntities, new Comparator<AnswerIfc>(){
+          public int compare(AnswerIfc a1, AnswerIfc a2) {
+              return a1.getId().compareTo(a2.getId());
+          }
+      });
+
+      Iterator<AnswerIfc> iter = calcQuestionEntities.iterator();
+      while (iter.hasNext())
+      {
+          if (i == numOfAnswers) break; // AnswerArray holds the vars so there may be more than we need
+
+          AnswerIfc answer = iter.next();
+
+          answer.setIsCorrect(true);
+
+          FinBean fbean = new FinBean();
+          fbean.setItemContentsBean(bean);
+          fbean.setAnswer(answer);
+          if (texts.toArray().length>i) {
+              fbean.setText( (String) texts.toArray()[i++]);
+          } else {
+              fbean.setText("");
+          }
+          fbean.setHasInput(true); // input box
+
+          List<ItemGradingData> datas = bean.getItemGradingDataArray();
+          if (datas == null || datas.isEmpty())
+          {
+              fbean.setIsCorrect(false);
+          } else {
+              for (ItemGradingData data : datas) {
+
+                  if ((data.getPublishedAnswerId()!=null) && (data.getPublishedAnswerId().equals(answer.getId())))
+                  {
+                      fbean.setItemGradingData(data);
+                      fbean.setResponse(FormattedText.convertFormattedTextToPlaintext(data.getAnswerText()));
+                      fbean.setIsCorrect(false);
+                      if (answer.getText() == null)
+                      {
+                          answer.setText("");
+                      }
+                      StringTokenizer st2 = new StringTokenizer(answer.getText(), "|");
+                      while (st2.hasMoreTokens())
+                      {
+                          String nextT = st2.nextToken();
+                          log.debug("nextT = " + nextT);
+                          //  mark answer as correct if autoscore > 0
+
+                          if (data.getAutoScore() != null &&
+                                  data.getAutoScore().doubleValue() > 0.0)
+                          {
+                              fbean.setIsCorrect(true);
+                          }
+                      }
+                  }
+              }
+          }
+          fins.add(fbean);
+      }
+
+      FinBean fbean = new FinBean();
+      if(texts.toArray().length>i)
+          fbean.setText( (String) texts.toArray()[i]);
+      else
+          fbean.setText("");
+      fbean.setHasInput(false);
+      fins.add(fbean);
+
+      bean.setFinArray((ArrayList) fins);
+
+  }
+
   public String getAgentString(){
     PersonBean person = (PersonBean) ContextUtil.lookupBean("person");
     String agentString = person.getId();
@@ -2151,7 +2517,7 @@ public class DeliveryActionListener
     		SectionDataIfc section = (SectionDataIfc) i1.next();
     		Iterator i2 = null;
 
-    		ArrayList itemlist = section.getItemArray();
+    		List<ItemDataIfc> itemlist = section.getItemArray();
     		long seed = 0;
     		if (delivery.getActionMode()==DeliveryBean.GRADE_ASSESSMENT) {
     			StudentScoresBean studentscorebean = (StudentScoresBean) ContextUtil.lookupBean("studentScores");
@@ -2160,7 +2526,7 @@ public class DeliveryActionListener
     		else {
     			seed = getSeed(section, delivery, (long) AgentFacade.getAgentString().hashCode());
     		}
-    		ArrayList sortedlist = getItemArraySortedWithRandom(section, itemlist, seed);
+    		List<ItemDataIfc> sortedlist = getItemArraySortedWithRandom(section, itemlist, seed);
     		i2 = sortedlist.iterator();
 
     		while (i2.hasNext()) {
@@ -2190,10 +2556,41 @@ public class DeliveryActionListener
     int timeLimit = 0;
     AssessmentAccessControlIfc control = publishedAssessment.getAssessmentAccessControl();
     AssessmentGradingData ag = delivery.getAssessmentGrading();
+
     delivery.setBeginTime(ag.getAttemptDate());
-    if (delivery.getHasTimeLimit() && control != null && control.getTimeLimit()!=null) {
+    String timeLimitInSetting = control.getTimeLimit() == null ? "0" : control.getTimeLimit().toString();
+    String timeBeforeDueRetract = delivery.getTimeBeforeDueRetract(timeLimitInSetting);
+    boolean isTimedAssessmentBySetting = delivery.getHasTimeLimit() && 
+    		control.getTimeLimit() != null && control.getTimeLimit().intValue() > 0;
+    //boolean turnIntoTimedAssessment = false;
+    boolean releaseToAnonymouse = control.getReleaseTo() != null && control.getReleaseTo().indexOf("Anonymous Users")> -1;
+    
+    // Turn into timed assessment if:
+    // 1. Not release to anonymous users
+    // 2. Not from Auto Save, File Upload, or Table of Content (skipFlag == true)
+    // 3. Not during Retake
+    // 4. Not a timed assessment (timed assessment setting is not selected)
+    // 5. time limit less than 30 min
+    if (!delivery.getTurnIntoTimedAssessment() && !releaseToAnonymouse && !delivery.getSkipFlag() && delivery.getActualNumberRetake() >= delivery.getNumberRetake() && 
+    		!isTimedAssessmentBySetting && (!"0".equals(timeBeforeDueRetract) && Integer.parseInt(timeBeforeDueRetract) <= 1800)) {
+    	delivery.setTurnIntoTimedAssessment(true);
+    }
+    
+    // reset skipFlag
+    delivery.setSkipFlag(false);  
+    
+    delivery.setTurnIntoTimedAssessment(delivery.getTurnIntoTimedAssessment());
+    if (delivery.getTurnIntoTimedAssessment() && !delivery.getHasShowTimeWarning()) {
+    	delivery.setShowTimeWarning(true);
+    	delivery.setHasShowTimeWarning(true);
+    }
+    else {
+    	delivery.setShowTimeWarning(false);
+    }
+
+    if (isTimedAssessmentBySetting) {
     	if (fromBeginAssessment) {
-    		timeLimit = Integer.parseInt(delivery.updateTimeLimit(publishedAssessment.getAssessmentAccessControl().getTimeLimit().toString()));
+    		timeLimit = Integer.parseInt(delivery.updateTimeLimit(timeLimitInSetting, timeBeforeDueRetract));
     	}
     	else {
     		if (delivery.getTimeLimit() != null) {
@@ -2201,29 +2598,24 @@ public class DeliveryActionListener
     		}
     	}
     }
-      
+    else if (delivery.getTurnIntoTimedAssessment()) {
+   		timeLimit = Integer.parseInt(delivery.updateTimeLimit(timeLimitInSetting, timeBeforeDueRetract));
+    }
+    
+
     if (timeLimit==0) 
       delivery.setTimeRunning(false);
     else{
       delivery.setTimeRunning(true);
       delivery.setTimeLimit(timeLimit+"");
 
-      //if assessment is half done, load setting saved in DB,
+      // if assessment is half done, load setting saved in DB,
       // else set time elapsed as 0
-      //AssessmentGradingData ag = delivery.getAssessmentGrading();
-      //delivery.setBeginTime(ag.getAttemptDate());
       if (delivery.isTimeRunning() && delivery.getBeginAssessment()){
-    	//int timeElapsed  = Math.round((float)((new Date()).getTime() - ag.getAttemptDate().getTime())/1000.0f); //in sec
-    	//delivery.setTimeElapse(String.valueOf(timeElapsed));
-        /*
-    	if (ag.getTimeElapsed() != null){
-          delivery.setTimeElapse(ag.getTimeElapsed().toString());
-        }
-        else{  // this is a new timed assessment
-          delivery.setTimeElapse("0");
-        }
-        */
-        queueTimedAssessment(delivery, timeLimit, fromBeginAssessment, publishedAssessment, isFirstTimeBegin);
+    	// no backend timer for non-timed assessment  
+    	if (!delivery.getTurnIntoTimedAssessment()) {
+    		queueTimedAssessment(delivery, timeLimit, fromBeginAssessment, publishedAssessment, isFirstTimeBegin);
+    	}
         delivery.setBeginAssessment(false);
       }
       else{ // in midst of assessment taking, sync it with timedAG
@@ -2284,7 +2676,7 @@ public class DeliveryActionListener
 	    int timeLimit = Integer.parseInt(delivery.getPublishedAssessment().getAssessmentAccessControl().getTimeLimit().toString());
 		// due date
 	    if (delivery.getDueDate() != null && !acceptLateSubmission) {
-	    	int timeBeforeDue  = Math.round((float)(delivery.getDueDate().getTime() - (new Date()).getTime())/1000.0f); //in sec
+	    	int timeBeforeDue  = Math.round((double)(delivery.getDueDate().getTime() - (new Date()).getTime())/1000.0d); //in sec
 	    	if (timeBeforeDue < timeLimit && fromBeginAssessment) {
 				delivery.setTimeElapse("0");
 				timedAG.setBeginDate(new Date());
@@ -2293,7 +2685,7 @@ public class DeliveryActionListener
 	    }
 	    // retract date
 	    if (delivery.getRetractDate() != null) {
-	    	int timeBeforeRetract  = Math.round((float)(delivery.getRetractDate().getTime() - (new Date()).getTime())/1000.0f); //in sec
+	    	int timeBeforeRetract  = Math.round((double)(delivery.getRetractDate().getTime() - (new Date()).getTime())/1000.0d); //in sec
 	    	if (timeBeforeRetract < timeLimit && fromBeginAssessment) {
 				delivery.setTimeElapse("0");
 				timedAG.setBeginDate(new Date());
@@ -2325,7 +2717,7 @@ public class DeliveryActionListener
     adata.setAttemptDate(new Date());
     adata.setIsLate(Boolean.FALSE);
     adata.setStatus(Integer.valueOf(0));
-    adata.setTotalOverrideScore(Float.valueOf(0));
+    adata.setTotalOverrideScore(Double.valueOf(0));
     adata.setTimeElapsed(Integer.valueOf("0"));
     GradingService gradingService = new GradingService();
     gradingService.saveOrUpdateAssessmentGrading(adata);
@@ -2342,7 +2734,7 @@ public class DeliveryActionListener
   
   /* this method takes the list returned from the data/dao class, and checks for part type and returns a sorted list of items. If part type is not random then return the original list
   */
-  private ArrayList getItemArraySortedWithRandom(SectionDataIfc part, ArrayList list, long seed) {
+  private List<ItemDataIfc> getItemArraySortedWithRandom(SectionDataIfc part, List<ItemDataIfc> list, long seed) {
 
     Integer numberToBeDrawn= null;
 
@@ -2413,4 +2805,89 @@ public class DeliveryActionListener
 	Integer status = pubService.getPublishedAssessmentStatus(publishedAssessmentId);
 	delivery.getPublishedAssessment().setStatus(status);
   }
+  
+  /**
+   * CALCULATED_QUESTION
+   * This returns the comma delimted answer key for display such as "42.1,23.19"
+   */
+  private String commaDelimtedCalcQuestionAnswers(ItemDataIfc item, DeliveryBean delivery, ItemContentsBean itemBean) {
+	  long gradingId = determineCalcQGradingId(delivery);
+	  String agentId = determineCalcQAgentId(delivery, itemBean);
+	  
+	  String keysString = "";
+	  GradingService service = new GradingService();
+	
+	HashMap<Integer, String> answersMap = new HashMap<Integer, String>();
+	service.extractCalcQAnswersArray(answersMap, item, gradingId, agentId); // return value not used, answersMap is populated
+	
+	int answerSequence = 1; // this corresponds to the sequence value assigned in extractCalcQAnswersArray()
+	while(answerSequence <= answersMap.size()) {
+			String answer = (String)answersMap.get(answerSequence);
+		  answer = answer.substring(0, answer.indexOf("|")); // cut off extra data e.g. "|2,3"
+		  keysString = keysString.concat(answer + ",");
+		  answerSequence++;
+	  }
+	  if (keysString.length() > 2) {
+		  keysString = keysString.substring(0, keysString.length()-1); // truncating the comma on the end
+	  }
+	  return keysString;
+  }
+  
+  /**
+   * CALCULATED_QUESTION
+   * We need the agentIds in order to properly set the pseudorandom seed
+   * for calculated questions.
+   */
+  private String determineCalcQAgentId(DeliveryBean delivery, ItemContentsBean itemBean) {
+	  String agentId = "";
+	  if (delivery.getAssessmentGradingId() != null) { //not a preview
+		  	if (delivery.getAssessmentGrading() != null) {
+		  		agentId = delivery.getAssessmentGrading().getAgentId();
+		  	}
+		  	else { // Instructor or TA is accessing the data
+		  		if (itemBean.getItemGradingDataArray().size() == 0) {
+		  			return "error";
+		  		}
+		  		Iterator iterForAgent = itemBean.getItemGradingDataArray().iterator();
+		  		ItemGradingData dataForAgent = (ItemGradingData) iterForAgent.next();
+		  		agentId = dataForAgent.getAgentId();
+		  	}
+	  }
+	  else { // preview
+	  	// give the instructor a random value each time for this
+	  	agentId = "instructor_preview"; // doesn't really matter for preview
+	  }
+	  return agentId;
+  }
+  
+  /**
+   * CALCULATED_QUESTION
+   * We need the gradingIds in order to properly set the pseudorandom seed
+   * for calculated questions.
+   */
+  private long determineCalcQGradingId(DeliveryBean delivery) {
+	  long gradingId = 0;
+	  if (delivery.getAssessmentGradingId() != null) { //not a preview
+		  	gradingId = delivery.getAssessmentGradingId();
+	  }
+	  else { // preview
+	  	// give the instructor a random value each time for this
+	  	gradingId = previewGradingId;
+	  }
+	  return gradingId;
+  }
+  
+    protected LRS_Statement getStatementForTakeAssessment(LRS_Actor actor, Event event, String assessmentName) {
+      String url = ServerConfigurationService.getPortalUrl();
+      LRS_Verb verb = new LRS_Verb(SAKAI_VERB.attempted);
+      LRS_Object lrsObject = new LRS_Object(url + "/assessment", "attempted-assessment");
+      HashMap<String, String> nameMap = new HashMap<String, String>();
+      nameMap.put("en-US", "User attempted assessment");
+      lrsObject.setActivityName(nameMap);
+      HashMap<String, String> descMap = new HashMap<String, String>();
+      descMap.put("en-US", "User attempted assessment: " + assessmentName);
+      lrsObject.setDescription(descMap);
+      return new LRS_Statement(actor, verb, lrsObject);
+  }
 }
+

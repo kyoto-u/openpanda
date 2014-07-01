@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/archive-api/src/main/java/org/sakaiproject/importer/api/Importable.java $
- * $Id: Importable.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/archive-api/src/main/java/org/sakaiproject/importer/api/Importable.java $
+ * $Id: Importable.java 133338 2014-01-16 17:17:12Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,8 +21,16 @@
 
 package org.sakaiproject.importer.api;
 
+/**
+ * Importables are extracted as a collection by a parser, and passed one at a time
+ * to one or more handlers to be added to Sakai.
+ */
 public interface Importable {
 	String getGuid();
+	/**
+	 * Get the type for this importable.
+	 * @return A String type, this is used for deciding which handler to use.
+	 */
 	String getTypeName();
 	String getLegacyGroup();
 	String getContextPath();

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/archive-api/src/main/java/org/sakaiproject/importer/api/HasSequence.java $
- * $Id: HasSequence.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/archive-api/src/main/java/org/sakaiproject/importer/api/HasSequence.java $
+ * $Id: HasSequence.java 133338 2014-01-16 17:17:12Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,11 @@
  **********************************************************************************/
 package org.sakaiproject.importer.api;
 
+/**
+ * If an Importable has an order then this interface can be applied to it and 
+ * then they can be arranged into an order.
+ * @see Importable
+ */
 public interface HasSequence {
 	int getSequenceNum();
 

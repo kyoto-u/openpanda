@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCWebContentTranslator.java $
- * $Id: CCWebContentTranslator.java 118449 2013-01-17 21:03:19Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCWebContentTranslator.java $
+ * $Id: CCWebContentTranslator.java 118267 2013-01-10 22:29:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

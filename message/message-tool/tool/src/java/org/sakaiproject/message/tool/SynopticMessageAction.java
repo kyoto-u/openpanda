@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.3/message-tool/tool/src/java/org/sakaiproject/message/tool/SynopticMessageAction.java $
- * $Id: SynopticMessageAction.java 92934 2011-05-17 18:43:01Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.0/message-tool/tool/src/java/org/sakaiproject/message/tool/SynopticMessageAction.java $
+ * $Id: SynopticMessageAction.java 115617 2012-11-02 05:57:05Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -409,6 +409,9 @@ public class SynopticMessageAction extends VelocityPortletPaneledAction
 		// + " time: " + (endTime - startTime));
 		// }
 		// }
+		
+		//SAK-19700 put name of tool into context so it can be rendered with the option link, for screenreaders
+		context.put("toolTitle", ToolManager.getCurrentPlacement().getTitle());
 
 		return rv;
 

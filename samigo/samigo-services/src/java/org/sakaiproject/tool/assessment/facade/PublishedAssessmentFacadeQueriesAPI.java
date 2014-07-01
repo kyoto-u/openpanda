@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueriesAPI.java $
- * $Id: PublishedAssessmentFacadeQueriesAPI.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueriesAPI.java $
+ * $Id: PublishedAssessmentFacadeQueriesAPI.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -98,7 +98,7 @@ public interface PublishedAssessmentFacadeQueriesAPI
       Set itemSet, String protocol);
 
   public Set preparePublishedItemTextSet(PublishedItemData publishedItem,
-      Set itemTextSet);
+      Set itemTextSet, String protocol);
 
   public Set preparePublishedItemMetaDataSet(PublishedItemData publishedItem,
       Set itemMetaDataSet);
@@ -126,6 +126,11 @@ public interface PublishedAssessmentFacadeQueriesAPI
 
   public AssessmentData loadAssessment(Long assessmentId);
 
+  /**
+   *  Retrieve a published Assessment
+   * @param assessmentId the id of the assessment
+   * @return the Assessment object or null if none found
+   */
   public PublishedAssessmentData loadPublishedAssessment(Long assessmentId);
 
   public ArrayList getAllTakeableAssessments(String orderBy, boolean ascending,
@@ -315,13 +320,7 @@ public interface PublishedAssessmentFacadeQueriesAPI
  
   public Integer getPublishedItemCount(Long publishedAssessmentId);
   
-  /**
-   * added by gopalrc - Nov 2007
-   * @param publishedAssessmentId
-   * @return
-   */
   public Integer getPublishedSectionCount(final Long publishedAssessmentId);
-  
   
   public PublishedAttachmentData getPublishedAttachmentData(Long attachmentId);
 
@@ -339,11 +338,6 @@ public interface PublishedAssessmentFacadeQueriesAPI
   
   public void saveOrUpdatePublishedAccessControl(AssessmentAccessControlIfc publishedAccessControl);
 
-  /**
-   * added by gopalrc - Jan 2008
-   * @param publishedAssessmentId
-   * @return
-   */
   public List getReleaseToGroupIdsForPublishedAssessment(final String publishedAssessmentId);
   
   public Integer getPublishedAssessmentStatus(Long publishedAssessmentId);

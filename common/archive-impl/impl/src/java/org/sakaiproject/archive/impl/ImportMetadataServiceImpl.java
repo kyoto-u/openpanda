@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/archive-impl/impl/src/java/org/sakaiproject/archive/impl/ImportMetadataServiceImpl.java $
- * $Id: ImportMetadataServiceImpl.java 84140 2010-11-02 19:59:39Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/archive-impl/impl/src/java/org/sakaiproject/archive/impl/ImportMetadataServiceImpl.java $
+ * $Id: ImportMetadataServiceImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ import org.w3c.dom.NodeList;
 
 /**
  * @author rshastri <a href="mailto:rshastri@iupui.edu ">Rashmi Shastri </a>
- * @version $Id: ImportMetadataServiceImpl.java 84140 2010-11-02 19:59:39Z ottenhoff@longsight.com $
+ * @version $Id: ImportMetadataServiceImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  *  
  */
 

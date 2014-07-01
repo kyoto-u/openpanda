@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.3/wizard/tool/src/java/org/theospi/portfolio/wizard/tool/WizardTool.java $
-* $Id: WizardTool.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.0/wizard/tool/src/java/org/theospi/portfolio/wizard/tool/WizardTool.java $
+* $Id: WizardTool.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -826,7 +826,7 @@ public class WizardTool extends BuilderTool {
 
       try {
            context.redirect("osp.permissions.helper/editPermissions?" +
-                 "message=" + getPermissionsMessage() +
+                 "message=" + Validator.escapeUrl(getPermissionsMessage()) +
                  "&name=wizard" +
                  "&qualifier=" + getToolManager().getCurrentPlacement().getContext() +
                  "&returnView=matrixRedirect");

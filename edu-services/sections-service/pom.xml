@@ -4,12 +4,11 @@
     <parent>
         <artifactId>edu-services</artifactId>
         <groupId>org.sakaiproject.edu-services</groupId>
-        <version>1.2.3</version>
+        <version>10.0</version><!-- ProjectVersion -->
     </parent>
     <name>Sakai Sections Project</name>
     <groupId>org.sakaiproject.edu-services.sections</groupId>
     <artifactId>sections</artifactId>
-    <version>1.2.3</version>
     <packaging>pom</packaging>
     <modules>
         <module>sections-api</module>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/site/impl/BaseSiteService.java $
- * $Id: BaseSiteService.java 125728 2013-06-13 16:57:33Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/site/impl/BaseSiteService.java $
+ * $Id: BaseSiteService.java 308876 2014-04-28 14:06:04Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,80 +21,47 @@
 
 package org.sakaiproject.site.impl;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.Stack;
-import java.util.Vector;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.authz.api.AuthzGroup;
-import org.sakaiproject.authz.api.AuthzGroupService;
-import org.sakaiproject.authz.api.AuthzPermissionException;
-import org.sakaiproject.authz.api.FunctionManager;
-import org.sakaiproject.authz.api.GroupNotDefinedException;
-import org.sakaiproject.authz.api.Role;
-import org.sakaiproject.authz.api.SecurityAdvisor;
-import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.authz.api.*;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.entity.api.ContextObserver;
-import org.sakaiproject.entity.api.Edit;
-import org.sakaiproject.entity.api.Entity;
-import org.sakaiproject.entity.api.EntityAccessOverloadException;
-import org.sakaiproject.entity.api.EntityCopyrightException;
-import org.sakaiproject.entity.api.EntityManager;
-import org.sakaiproject.entity.api.EntityNotDefinedException;
-import org.sakaiproject.entity.api.EntityPermissionException;
-import org.sakaiproject.entity.api.EntityProducer;
-import org.sakaiproject.entity.api.HttpAccess;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.entity.api.ResourcePropertiesEdit;
+import org.sakaiproject.entity.api.*;
+import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.IdUsedException;
 import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.id.api.IdManager;
 import org.sakaiproject.javax.PagingPosition;
+import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.MemoryService;
-import org.sakaiproject.site.api.Group;
-import org.sakaiproject.site.api.Site;
-import org.sakaiproject.site.api.SiteAdvisor;
-import org.sakaiproject.site.api.SitePage;
-import org.sakaiproject.site.api.SiteService;
-import org.sakaiproject.site.api.ToolConfiguration;
+import org.sakaiproject.site.api.*;
 import org.sakaiproject.thread_local.api.ThreadLocalManager;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeService;
+import org.sakaiproject.tool.api.ActiveToolManager;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.util.Resource;
-import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.StorageUser;
-import org.sakaiproject.util.StringUtil;
-import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * <p>
  * BaseSiteService is a base implementation of the SiteService.
  * </p>
  */
-public abstract class BaseSiteService implements SiteService, StorageUser
+public abstract class BaseSiteService implements SiteService, Observer
 {
 	/** Our logger. */
 	private static Log M_log = LogFactory.getLog(BaseSiteService.class);
@@ -122,22 +89,33 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	private static final String RESOURCEBUNDLE = "resource.bundle.siteimpl";
 	private static final String PORTAL_SKIN_NEOPREFIX_PROPERTY = "portal.neoprefix";
 	private static final String PORTAL_SKIN_NEOPREFIX_DEFAULT = "neo-";
+	private static final String ORIGINAL_SITE_ID_PROPERTY = "original-site-id";
+
 	private static String portalSkinPrefix;
 
 	private ResourceLoader rb = null;
 	// protected ResourceLoader rb = new ResourceLoader("site-impl");
 
 	/** Storage manager for this service. */
-	protected Storage m_storage = null;
+	private Storage m_storage = null;
 
 	/** The initial portion of a relative access point URL. */
 	protected String m_relativeAccessPoint = null;
 
 	/** A site cache. */
-	protected SiteCacheImpl m_siteCache = null;
+	protected SiteCache m_siteCache = null;
+
+	/** The name/bean for the User-Site cache. */
+	protected static final String USER_SITE_CACHE = "org.sakaiproject.site.api.SiteService.userSiteCache";
+
+	/** Cache for sites accessible to a given user. */
+	protected Cache m_userSiteCache = null;
 
 	/** A list of observers watching site save events **/
 	protected List<SiteAdvisor> siteAdvisors;
+        
+    /** sfoster9@uwo.ca - A delegate class to contain the join methods **/
+    protected JoinSiteDelegate joinSiteDelegate;
 
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Abstractions, etc.
@@ -303,15 +281,15 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	 */
 	protected void regenerateAllSiteIds()
 	{
-		List<Site> sites = m_storage.getAll();
+		List<Site> sites = storage().getAll();
 		for (Iterator<Site> iSites = sites.iterator(); iSites.hasNext();)
 		{
 			Site site = (Site) iSites.next();
 			if (site != null)
 			{
-				Site edit = m_storage.get(site.getId());
+				Site edit = storage().get(site.getId());
 				edit.regenerateIds();
-				m_storage.save(edit);
+				storage().save(edit);
 
 				M_log.info("regenerateAllSiteIds: site: " + site.getId());
 			}
@@ -426,6 +404,16 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	 * @return the AuthzGroupService collaborator.
 	 */
 	protected abstract AuthzGroupService authzGroupService();
+	
+	/**
+	 * @return the ActiveToolManager collaborator.
+	 */
+	protected abstract ActiveToolManager activeToolManager();
+	
+	/**
+	 * @return the IdManager collaborator.
+	 */
+	protected abstract IdManager idManager();
 
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Init and Destroy
@@ -449,7 +437,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 
 			// construct storage and read
 			m_storage = newStorage();
-			m_storage.open();
+			storage().open();
 
 			if (m_regenerateIds)
 			{
@@ -460,8 +448,23 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			// <= 0 minutes indicates no caching desired
 			if (m_cacheSeconds > 0)
 			{
-				// build a synchronized map for the call cache, automatiaclly checking for expiration every 15 mins.
-				m_siteCache = new SiteCacheImpl(memoryService(), m_cacheCleanerSeconds, siteReference(""));
+                boolean useLegacy = serverConfigurationService().getBoolean("memory.use.legacy", false); // TODO remove this after 10 merge
+                if (useLegacy) {
+                    m_siteCache = new SiteCacheImpl(memoryService(), m_cacheCleanerSeconds, siteReference(""));
+                } else {
+                    m_siteCache = new SiteCacheSafe(memoryService(), eventTrackingService()); // ONLY keep this part -AZ
+                }
+			}
+
+			// Register our user-site cache property
+			serverConfigurationService().registerConfigItem(BasicConfigItem.makeDefaultedConfigItem(PROP_CACHE_USER_SITES, true, "org.sakaiproject.api.SiteService"));
+
+			// Get the user-site cache from the MemoryService for now -- maybe directly from cache manager or Spring later.
+			// Also register as an observer so we can catch site updates and invalidate.
+			if (serverConfigurationService().getBoolean(PROP_CACHE_USER_SITES, true))
+			{
+				m_userSiteCache = memoryService().newCache(USER_SITE_CACHE);
+				eventTrackingService().addObserver(this);
 			}
 
 			// register as an entity producer
@@ -486,6 +489,10 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			
 			portalSkinPrefix = serverConfigurationService().getString(PORTAL_SKIN_NEOPREFIX_PROPERTY, PORTAL_SKIN_NEOPREFIX_DEFAULT);
 
+                        
+            // sfoster9@uwo.ca
+            // assign a new JoinSiteDelegate to handle the join methods; provide it services from this class
+            joinSiteDelegate = new JoinSiteDelegate( this, securityService(), userDirectoryService() );
 		}
 		catch (Exception t)
 		{
@@ -498,8 +505,11 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	 */
 	public void destroy()
 	{
-		m_storage.close();
+		storage().close();
 		m_storage = null;
+
+		// Stop listening for site update events
+		eventTrackingService().deleteObserver(this);
 
 		M_log.info("destroy()");
 	}
@@ -605,6 +615,24 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	}
 
 	/**
+	 * Cache a copy of a site if caching is enabled.
+	 *
+	 * @param site the Site to cache
+	 * @return true when the site was cached, false when the site is null or caching is disabled
+	 */
+	protected boolean cacheSite(Site site)
+	{
+		if (site != null && m_siteCache != null)
+		{
+			String ref = siteReference(site.getId());
+			Site copy = new BaseSite(this, site, true);
+			m_siteCache.put(ref, copy);
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Access an already defined site object.
 	 * 
 	 * @param id
@@ -618,9 +646,17 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		if (id == null) throw new IdUnusedException("<null>");
 
 		Site rv = getCachedSite(id);
-		if ( rv != null ) return rv;
 
-		rv = m_storage.get(id);
+		// Return the site from cache only if it is a BaseSite and is fully loaded.
+		//
+		// Note that getCachedSite always returns a BaseSite instance now, so
+		// this instanceof check is not strictly necessary, but paranoid. If
+		// the cast would fail, we have to retrieve the site. This is slightly
+		// kludgy because the caching and lazy-loading are somewhat bolted on.
+		if ( rv != null && rv instanceof BaseSite && ((BaseSite)rv).isFullyLoaded()) return rv;
+
+		// Get the whole site, including the description.
+		rv = storage().get(id);
 
 		// if not found
 		if (rv == null) throw new IdUnusedException(id);
@@ -632,12 +668,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		// EventTrackingService.post(EventTrackingService.newEvent(SECURE_ACCESS_SITE, site.getReference()));
 
 		// cache a copy
-		if (m_siteCache != null)
-		{
-			String ref = siteReference(id);
-			Site copy = new BaseSite(this, rv, true);
-			m_siteCache.put(ref, copy, m_cacheSeconds);
-		}
+		cacheSite(rv);
 
 		return rv;
 	}
@@ -670,12 +701,12 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			}
 
 			// check the exists cache
-			if (m_storage.check(id))
+			if (storage().check(id))
 			{
 				// cache it
 				if (m_siteCache != null)
 				{
-					m_siteCache.put(siteReference(id), Boolean.TRUE, m_cacheSeconds);
+					m_siteCache.put(siteReference(id), Boolean.TRUE);
 				}
 
 				return true;
@@ -686,7 +717,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 				// cache the miss
 				if (m_siteCache != null)
 				{
-					m_siteCache.put(siteReference(id), Boolean.FALSE, m_cacheSeconds);
+					m_siteCache.put(siteReference(id), Boolean.FALSE);
 				}
 			}
 		}
@@ -738,7 +769,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 					unlock(SECURE_ADD_USER_SITE, siteReference(id));
 
 					// reserve a site with this id from the info store - if it's in use, this will return null
-					BaseSite site = (BaseSite) m_storage.put(id);
+					BaseSite site = (BaseSite) storage().put(id);
 					if (site == null)
 					{
 						throw new IdUsedException(id);
@@ -840,7 +871,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		}
 
 		// check for existance
-		if (!m_storage.check(site.getId()))
+		if (!storage().check(site.getId()))
 		{
 			throw new IdUnusedException(site.getId());
 		}
@@ -860,7 +891,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		unlock2(SECURE_UPDATE_SITE_MEMBERSHIP, SECURE_UPDATE_SITE, site.getReference());
 
 		// check for existance
-		if (!m_storage.check(site.getId()))
+		if (!storage().check(site.getId()))
 		{
 			throw new IdUnusedException(site.getId());
 		}
@@ -890,7 +921,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		unlock2(SECURE_UPDATE_GROUP_MEMBERSHIP, SECURE_UPDATE_SITE, site.getReference());
 
 		// check for existance
-		if (!m_storage.check(site.getId()))
+		if (!storage().check(site.getId()))
 		{
 			throw new IdUnusedException(site.getId());
 		}
@@ -930,8 +961,20 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			iter.next().update(site);
 		}
 
+		site.setFullyLoaded(true);
+
 		// complete the edit
-		m_storage.save(site);
+		storage().save(site);
+		
+		// Check to see if an this is an interesting enough change to invalidate the user-site cache.
+		// For now, we just check if the title changed because that persists in the portal navigation.
+		// As with other areas, if the main and user-site caches were more integrated (keeping references
+		// for users rather than copies), we would not have to synchronize explicitly here.
+		Site cached = getCachedSite(site.getId());
+		if (cached != null && site.getTitle() != null && !site.getTitle().equals(cached.getTitle())) {
+			clearUserCacheForSite(site);
+		}
+		cacheSite(site);
 
 		// save any modified azgs
 		try
@@ -1040,18 +1083,10 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	 */
 	public void saveSiteInfo(String id, String description, String infoUrl) throws IdUnusedException, PermissionException
 	{
-		String ref = siteReference(id);
-
-		// check security (throws if not permitted)
-		unlock(SECURE_UPDATE_SITE, ref);
-
-		// check for existance
-		if (!m_storage.check(id))
-		{
-			throw new IdUnusedException(id);
-		}
-
-		m_storage.saveInfo(id, description, infoUrl);
+		Site site = getSite(id);
+		site.setDescription(description);
+		site.setInfoUrl(infoUrl);
+		save(site);
 	}
 
 	/**
@@ -1078,12 +1113,26 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			return unlockCheck(SECURE_ADD_SITE, siteReference(id));
 		}
 	}
+	
+	/**
+	 * read the site Type definition from configuration files
+	 */
+	public List<String> getSiteTypeStrings(String type)
+	{
+		String[] siteTypes = serverConfigurationService().getStrings(type + "SiteType");
+		if (siteTypes == null || siteTypes.length == 0)
+		{
+			siteTypes = new String[] {type};
+		}
+		return Arrays.asList(siteTypes);
+	}
 
 	private boolean isCourseSite(String siteId) {
 		boolean rv = false;
 		try {
 			Site s = getSite(siteId);
-			if (serverConfigurationService().getString("courseSiteType", "course").equals(s.getType())) 
+			List<String> courseSiteTypes = getSiteTypeStrings("course");
+			if (courseSiteTypes.contains(s.getType())) 
 				return true;
 				
 		} catch (IdUnusedException e) {
@@ -1097,7 +1146,8 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		boolean rv = false;
 		try {
 			Site s = getSite(siteId);
-			if (serverConfigurationService().getString("portfolioSiteType", "portfolio").equals(s.getType())) 
+			List<String> portfolioSiteTypes = getSiteTypeStrings("portfolio");
+			if (portfolioSiteTypes.contains(s.getType())) 
 				return true;
 				
 		} catch (IdUnusedException e) {
@@ -1111,7 +1161,8 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		boolean rv = false;
 		try {
 			Site s = getSite(siteId);
-			if (serverConfigurationService().getString("projectSiteType", "project").equals(s.getType())) 
+			List<String> projectSiteTypes = getSiteTypeStrings("project");
+			if (projectSiteTypes.contains(s.getType())) 
 				return true;
 				
 		} catch (IdUnusedException e) {
@@ -1155,22 +1206,22 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		
 		
 		// SAK-12631
-		if (serverConfigurationService().getString("courseSiteType", "course").equals(type)) {
+		if (getSiteTypeStrings("course").contains(type)) {
 			unlock(SECURE_ADD_COURSE_SITE, siteReference(id));
 		}
 
 		// KNL-703
-		if (serverConfigurationService().getString("portfolioSiteType", "portfolio").equals(type)) {
+		if (getSiteTypeStrings("portfolio").contains(type)) {
 			unlock(SECURE_ADD_PORTFOLIO_SITE, siteReference(id));
 		}
 		
 		// KNL-952
-		if (serverConfigurationService().getString("projectSiteType", "project").equals(type)) {
+		if (getSiteTypeStrings("project").contains(type)) {
 			unlock(SECURE_ADD_PROJECT_SITE, siteReference(id));
 		}
 
 		// reserve a site with this id from the info store - if it's in use, this will return null
-		Site site = m_storage.put(id);
+		Site site = storage().put(id);
 		if (site == null)
 		{
 			throw new IdUsedException(id);
@@ -1227,7 +1278,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		}
 
 		// reserve a site with this id from the info store - if it's in use, this will return null
-		Site site = m_storage.put(id);
+		Site site = storage().put(id);
 		if (site == null)
 		{
 			throw new IdUsedException(id);
@@ -1257,6 +1308,9 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		// clear the site's notification id in properties
 		site.getPropertiesEdit().removeProperty(ResourceProperties.PROP_SITE_EMAIL_NOTIFICATION_ID);
 
+		// KNL-1103, store the site we are copying from
+		site.getPropertiesEdit().addProperty(ORIGINAL_SITE_ID_PROPERTY, other.getId());
+
 		((BaseSite) site).setEvent(SECURE_ADD_SITE);
 
 		doSave((BaseSite) site, true);
@@ -1282,19 +1336,32 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 
 		// if soft site deletes are active
 		if(serverConfigurationService().getBoolean("site.soft.deletion", false)) {
-			// if site is not already softly deleted, softly delete it
-			// if already marked for deletion, check permission to hard delete, if ok, let continue.
-			if(!site.isSoftlyDeleted()) {
-				site.setSoftlyDeleted(true);
-				save(site);
-				return;
+			
+			M_log.debug("Soft site deletes are enabled.");
+			
+			//KNL-983 only soft delete if not user site
+			//made it verbose for logging purposes
+			if(isUserSite(site.getId())) {
+				M_log.debug("Site: " + site.getId() + " is user site and will be hard deleted.");
+			} else if (isSpecialSite(site.getId())) {
+				M_log.debug("Site: " + site.getId() + " is special site and will be hard deleted.");
 			} else {
-				unlock(SECURE_REMOVE_SOFTLY_DELETED_SITE, site.getReference());
+				M_log.debug("Site: " + site.getId() + " is not user or special site and will be soft deleted.");
+			
+				// if site is not already softly deleted, softly delete it
+				// if already marked for deletion, check permission to hard delete, if ok, let continue.
+				if(!site.isSoftlyDeleted()) {
+					site.setSoftlyDeleted(true);
+					save(site);
+					return;
+				} else {
+					unlock(SECURE_REMOVE_SOFTLY_DELETED_SITE, site.getReference());
+				}
 			}
 		}
 		
 		// complete the edit
-		m_storage.remove(site);
+		storage().remove(site);
 
 		// track it
 		eventTrackingService().post(eventTrackingService().newEvent(SECURE_REMOVE_SITE, site.getReference(), true));
@@ -1489,7 +1556,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			}
 
 			// if not, get the tool's site id, cache the site, and try again
-			String siteId = m_storage.findToolSiteId(id);
+			String siteId = storage().findToolSiteId(id);
 			if (siteId != null)
 			{
 				// read and cache the site, pages, tools, etc.
@@ -1510,7 +1577,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			return null;
 		}
 
-		rv = m_storage.findTool(id);
+		rv = storage().findTool(id);
 
 		return rv;
 	}
@@ -1536,7 +1603,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			}
 
 			// if not, get the page's site id, cache the site, and try again
-			String siteId = m_storage.findPageSiteId(id);
+			String siteId = storage().findPageSiteId(id);
 			if (siteId != null)
 			{
 				// read and cache the site, pages, tools
@@ -1556,7 +1623,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			return null;
 		}
 
-		rv = m_storage.findPage(id);
+		rv = storage().findPage(id);
 
 		return rv;
 	}
@@ -1596,20 +1663,175 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			throw new PermissionException(user, AuthzGroupService.SECURE_UPDATE_OWN_AUTHZ_GROUP, siteReference(id));
 		}
 
-		// do the join
+		// sfoster9@uwo.ca
+        // once joined, add the user to the specified join group and send an email, if these join options are selected
+        // if anything goes wrong with adding to a group or sending email, the join should still finish
 		try
 		{
+			// do the join
 			authzGroupService().joinGroup(siteReference(id), roleId);
 		}
-		catch (GroupNotDefinedException e)
+		catch(GroupNotDefinedException e)
 		{
 			throw new IdUnusedException(e.getId());
 		}
-		catch (AuthzPermissionException e)
+		catch(AuthzPermissionException e)
 		{
 			throw new PermissionException(e.getUser(), e.getFunction(), e.getResource());
 		}
+		catch(Exception e)
+		{
+			M_log.error(String.format("Unexpected exception joining user %s to site %s: ", user, id), e);
+			return;
 	}
+		
+		try
+		{
+			// add joining user to the site's join group; the delegate method checks if there are any groups to join
+            joinSiteDelegate.addJoinerToGroup(site);
+		}
+		catch(Exception e)
+		{
+			M_log.error(String.format("Unexpected exception joining user %s to group in site %s: ", user, id), e);
+		}
+	}
+        
+    /**
+	 * @inheritDoc
+	 */
+	public boolean isAllowedToJoin(String siteID)
+	{
+        Site site = null;
+        try 
+        {
+            // get the site
+            site = getDefinedSite(siteID);
+        }
+        catch (IdUnusedException iue)
+        {
+            M_log.error("Site could not be determined for allowed to join method: " + iue.getMessage(), iue);
+            return false;
+        }
+        
+        // pass to the JoinDelegate method to handle the logic
+        return joinSiteDelegate.isAllowedToJoin(site);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+    public String getJoinGroupId(String siteID)
+    {
+        Site site = null;
+                
+        try 
+        {
+            // get the site
+            site = getDefinedSite(siteID);
+        }
+        catch (IdUnusedException iue)
+        {
+            M_log.error("Site could not be determined for getting the join group: " + iue.getMessage(), iue);
+        }
+        
+        // pass to the JoinDelegate method to handle the logic
+        return joinSiteDelegate.getJoinGroupId(site);
+    }
+
+    /**
+     * @inheritDoc
+     */
+	public boolean isCurrentUserMemberOfSite( String siteID )
+	{
+		if( siteID == null || "".equals( siteID ) )
+        {
+			return false;
+        }
+		
+		try
+		{
+            // get the current user
+            User user = userDirectoryService().getCurrentUser();
+            if( user == null )
+            {
+            	return false;
+            }
+            
+			// If current user is a member of the site, return true; otherwise return false
+            return getSite( siteID ).getMember( user.getId() ) != null;
+		}
+		catch( IdUnusedException ex ) 
+        { 
+            M_log.debug( "isAlreadyMember()", ex ); 
+        }
+		
+		// Otherwise they're not already a member, return false
+		return false;
+	}
+    
+    /** 
+     * @inheritDoc
+     */
+    public boolean isLimitByAccountTypeEnabled(String siteID)
+    {
+        return joinSiteDelegate.isLimitByAccountTypeEnabled(siteID);
+    }
+    
+    /** 
+     * @inheritDoc
+     */
+    public LinkedHashSet<String> getAllowedJoinableAccountTypeCategories()
+    {
+    	return joinSiteDelegate.getAllowedJoinableAccountTypeCategories();
+    }
+    
+    /** 
+     * @inheritDoc
+     */
+    public List<String> getAllowedJoinableAccountTypes()
+    {
+    	return joinSiteDelegate.getAllowedJoinableAccountTypes();
+    }
+    
+    /** 
+     * @inheritDoc
+     */
+    public List<AllowedJoinableAccount> getAllowedJoinableAccounts()
+	{
+    	return joinSiteDelegate.getAllowedJoinableAccounts();
+	}
+    
+    /** 
+     * @inheritDoc
+     */
+    public boolean isGlobalJoinGroupEnabled()
+    {
+    	return joinSiteDelegate.getGlobalJoinGroupEnabled();
+    }
+    
+    /** 
+     * @inheritDoc
+     */
+    public boolean isGlobalJoinExcludedFromPublicListEnabled()
+    {
+    	return joinSiteDelegate.getGlobalJoinExcludeFromPublicListEnabled();
+    }
+
+    /** 
+     * @inheritDoc
+     */
+    public boolean isGlobalJoinLimitByAccountTypeEnabled()
+    {
+    	return joinSiteDelegate.getGlobalJoinLimitByAccountTypeEnabled();
+    }
+
+    /** 
+     * @inheritDoc
+     */
+    public boolean isGlobalJoinFromSiteBrowserEnabled()
+    {
+    	return joinSiteDelegate.getGlobalSiteBrowserJoinEnabled();
+    }
 
 	/**
 	 * @inheritDoc
@@ -1696,7 +1918,8 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			}
         }
 
-		return m_storage.getSiteSkin(id);
+        //No site cache. Check the db.
+        return adjustSkin(storage().getSiteSkin(id),true);
 	}
 
 	/**
@@ -1704,7 +1927,108 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	 */
 	public List<String> getSiteTypes()
 	{
-		return m_storage.getSiteTypes();
+		return storage().getSiteTypes();
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public List<Site> getUserSites() {
+		return getUserSites(true);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public List<Site> getUserSites(boolean requireDescription) {
+		String userId = sessionManager().getCurrentSessionUserId();
+		List<Site> userSites = getCachedUserSites(userId);
+
+		// Retrieve sites on cache miss or anonymous user
+		if (userSites == null)
+		{
+			userSites = getSites(
+					org.sakaiproject.site.api.SiteService.SelectionType.ACCESS, null, null,
+					null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, null, requireDescription);
+
+			// Cache the results
+			setCachedUserSites(userId, userSites);
+		}
+
+		return userSites;
+	}
+
+	/**
+	 * Cache the list of accessible Sites for a user.
+	 *
+	 * @param userId the (internal) user ID for whom to cache sites; null will result in a no-op
+	 * @param sites the list of sites that are accessible for the user; may be null to remove the user from the cache
+	 */
+	protected void setCachedUserSites(String userId, List<Site> sites)
+	{
+		if (m_userSiteCache != null && userId != null)
+		{
+			if (sites == null)
+			{
+				clearUserCacheForUser(userId);
+			}
+			else
+			{
+				m_userSiteCache.put(userId, sites);
+			}
+		}
+	}
+
+	/**
+	 * Remove the list of cached sites for a specified user.
+	 *
+	 * @param userId the (internal) user ID for whom to purge sites; null will result in a no-op
+	 */
+	protected void clearUserCacheForUser(String userId)
+	{
+		if (m_userSiteCache != null && userId != null)
+		{
+			m_userSiteCache.remove(userId);
+		}
+	}
+
+	/**
+	 * Clear the user-site cache for all the members of this site.
+	 *
+	 * This is provided to force retrieval of the user-site list for all members of an updated site.
+	 *
+	 * If the site and user-site cache were more tightly integrated, we could update, but membership
+	 * updates are relatively rare and the retrieval is relatively cheap when done occasionally.
+	 *
+	 * @param site The site for which all members' site cache should be cleared.
+	 *
+	 */
+	protected void clearUserCacheForSite(Site site)
+	{
+		if (m_userSiteCache != null && site != null)
+		{
+			for (Member member : site.getMembers())
+			{
+				clearUserCacheForUser(member.getUserId());
+			}
+		}
+	}
+
+	/**
+	 * Get the list of sites that are accessible to a given user from the cache.
+	 *
+	 * @param the internal user ID to check in the cache; null results in a null return
+	 * @return a List of Sites that are accessible to the user, null on cache miss
+	 */
+	@SuppressWarnings("unchecked")
+	protected List<Site> getCachedUserSites(String userId)
+	{
+		List<Site> userSites = null;
+		if (m_userSiteCache != null && userId != null)
+		{
+			userSites = (List<Site>) m_userSiteCache.get(userId);
+		}
+		return userSites;
 	}
 
 	/**
@@ -1713,14 +2037,30 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	public List<Site> getSites(SelectionType type, Object ofType, String criteria, Map propertyCriteria, SortType sort,
 			PagingPosition page)
 	{
-		return m_storage.getSites(type, ofType, criteria, propertyCriteria, sort, page);
+		return getSites(type, ofType, criteria, propertyCriteria, sort, page, true);
 	}
 	
 	/**
 	 * @inheritDoc
 	 */
+	public List<Site> getSites(SelectionType type, Object ofType, String criteria, Map propertyCriteria, SortType sort,
+			PagingPosition page, boolean requireDescription)
+	{
+		return storage().getSites(type, ofType, criteria, propertyCriteria, sort, page, requireDescription);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.sakaiproject.site.api.SiteService#getSiteIds(org.sakaiproject.site.api.SiteService.SelectionType, java.lang.Object, java.lang.String, java.util.Map, org.sakaiproject.site.api.SiteService.SortType, org.sakaiproject.javax.PagingPosition)
+	 */
+	public List<String> getSiteIds(SelectionType type, Object ofType, String criteria, Map<String, String> propertyCriteria, SortType sort, PagingPosition page) {
+	    return storage().getSiteIds(type, ofType, criteria, propertyCriteria, sort, page);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public List<Site> getSoftlyDeletedSites() {
-		return m_storage.getSoftlyDeletedSites();
+		return storage().getSoftlyDeletedSites();
 	}
 
 	/**
@@ -1728,7 +2068,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	 */
 	public int countSites(SelectionType type, Object ofType, String criteria, Map propertyCriteria)
 	{
-		return m_storage.countSites(type, ofType, criteria, propertyCriteria);
+		return storage().countSites(type, ofType, criteria, propertyCriteria);
 	}
 
 	/**
@@ -1736,10 +2076,13 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	 */
 	public void setSiteSecurity(String siteId, Set updateUsers, Set visitUnpUsers, Set visitUsers)
 	{
-		m_storage.setSiteSecurity(siteId, updateUsers, visitUnpUsers, visitUsers);
+		storage().setSiteSecurity(siteId, updateUsers, visitUnpUsers, visitUsers);
 
 		// the site's azg may have just been updated, so enforce site group subset membership
 		enforceGroupSubMembership(siteId);
+
+		Event invalidate = eventTrackingService().newEvent(EVENT_SITE_USER_INVALIDATE, siteId, true);
+		eventTrackingService().post(invalidate);
 	}
 
 	/**
@@ -1802,7 +2145,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			visitUnpSites.remove(id);
 			visitSites.remove(id);		}
 		
-		m_storage.setUserSecurity(userId, updateSites, visitUnpSites, visitSites);
+		storage().setUserSecurity(userId, updateSites, visitUnpSites, visitSites);
 	}
 
 	/**********************************************************************************************************************************************************************************************************************************************************
@@ -2022,9 +2365,21 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	/**
 	 * {@inheritDoc}
 	 */
-	public String getEntityUrl(Reference ref)
-	{
-		return null;
+	public String getEntityUrl(Reference ref) {
+		String url = null;
+		if (ref != null) {
+		    try {
+		        Site site = getSite(ref.getId());
+		        url = site.getUrl();
+		    } catch (IdUnusedException e) {
+		        // this could happen if the site reference is invalid
+		        if (M_log.isDebugEnabled()) M_log.debug("getEntityUrl(): " + e);
+		    } catch (Exception e) {
+		        // this is a real failure
+		        M_log.error("getEntityUrl(): "+e.getClass().getName()+": " + e, e);
+		    }
+		}
+		return url;
 	}
 
 	/**
@@ -2447,7 +2802,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		public List getSiteTypes();
 
 		/**
-		 * Access a list of Site objets that meet specified criteria.
+		 * Access a list of Site objects that meet specified criteria.
 		 * 
 		 * @param type
 		 *        The SelectionType specifying what sort of selection is intended.
@@ -2461,10 +2816,62 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		 *        A SortType indicating the desired sort. For no sort, set to SortType.NONE.
 		 * @param page
 		 *        The PagePosition subset of items to return.
-		 * @return The List (Site) of Site objets that meet specified criteria.
+		 * @return The List (Site) of Site objects that meet specified criteria.
 		 */
 		public List getSites(SelectionType type, Object ofType, String criteria, Map propertyCriteria, SortType sort,
 				PagingPosition page);
+
+		/**
+		 * Access a list of Site objects that meet specified criteria, with control over description retrieval.
+		 * Note that this signature is primarily provided to help with performance when retrieving lists of
+		 * sites not for full display, specifically for the list of a user's sites for navigation. Note that
+		 * any sites that have their descriptions, pages, or tools cached will be returned completely, so some
+		 * or all full descriptions may be present even when requireDescription is passed as false.
+		 *
+		 * If a fully populated Site is desired from a potentially partially populated Site, call
+		 * {@link #getSite(String id) getSite} or {@link Site#loadAll()}. Either method will load and cache
+		 * whatever additional data is not yet cached.
+		 *
+		 * @param type
+		 *        The SelectionType specifying what sort of selection is intended.
+		 * @param ofType
+		 *        Site type criteria: null for any type; a String to match a single type; A String[], List or Set to match any type in the collection.
+		 * @param criteria
+		 *        Additional selection criteria: sits returned will match this string somewhere in their id, title, description, or skin.
+		 * @param propertyCriteria
+		 *        Additional selection criteria: sites returned will have a property named to match each key in the map, whose values match (somewhere in their value) the value in the map (may be null or empty).
+		 * @param sort
+		 *        A SortType indicating the desired sort. For no sort, set to SortType.NONE.
+		 * @param page
+		 *        The PagePosition subset of items to return.
+		 * @param requireDescription
+		 *        When true, force a full retrieval of each description; when false, return any uncached descriptions as the empty string
+		 * @return The List of Site objects that meet specified criteria.
+		 */
+		public List<Site> getSites(SelectionType type, Object ofType, String criteria, Map propertyCriteria, SortType sort,
+				PagingPosition page, boolean requireDescription);
+
+		/**
+		 * Get the Site IDs for all sites matching criteria.
+		 * This is useful when you only need the listing of site ids (for other operations) and do not need the actual Site objects.
+		 *
+		 * All parameters are the same as {@link #getSites(org.sakaiproject.site.api.SiteService.SelectionType, Object, String, Map, org.sakaiproject.site.api.SiteService.SortType, PagingPosition)}
+		 * 
+		 * @param type
+		 *        The SelectionType specifying what sort of selection is intended.
+		 * @param ofType
+		 *        Site type criteria: null for any type; a String to match a single type; A String[], List or Set to match any type in the collection.
+		 * @param criteria
+		 *        Additional selection criteria: sites returned will match this string somewhere in their id, title, description, or skin.
+		 * @param propertyCriteria
+		 *        Additional selection criteria: sites returned will have a property named to match each key in the map, whose values match (somewhere in their value) the value in the map (may be null or empty).
+		 * @param sort
+		 *        A SortType indicating the desired sort. For no sort, set to SortType.NONE.
+		 * @param page
+		 *        The PagePosition subset of items to return.
+		 * @return a List of the Site IDs for the sites matching the criteria.
+		 */
+		List<String> getSiteIds(SelectionType type, Object ofType, String criteria, Map<String, String> propertyCriteria, SortType sort, PagingPosition page);
 
 		/**
 		 * Count the Site objets that meet specified criteria.
@@ -2644,7 +3051,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		public String findGroupSiteId(String id);
 
 		/**
-		 * Read site pages from storage into the site's pages.
+		 * Read site groups from storage into the site's groups.
 		 * 
 		 * @param site
 		 *        The site for which groups are desired.
@@ -2659,220 +3066,6 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		 * @return List of Sites or empty list if none.
 		 */
 		public List<Site> getSoftlyDeletedSites();
-	}
-
-	/**********************************************************************************************************************************************************************************************************************************************************
-	 * StorageUser implementation
-	 *********************************************************************************************************************************************************************************************************************************************************/
-
-	/**
-	 * Construct a new continer given just an id.
-	 * 
-	 * @param id
-	 *        The id for the new object.
-	 * @return The new containe Resource.
-	 */
-	public Entity newContainer(String ref)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new container resource, from an XML element.
-	 * 
-	 * @param element
-	 *        The XML.
-	 * @return The new container resource.
-	 */
-	public Entity newContainer(Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new container resource, as a copy of another
-	 * 
-	 * @param other
-	 *        The other contianer to copy.
-	 * @return The new container resource.
-	 */
-	public Entity newContainer(Entity other)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new rsource given just an id.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param id
-	 *        The id for the new object.
-	 * @param others
-	 *        (options) array of objects to load into the Resource's fields.
-	 * @return The new resource.
-	 */
-	public Entity newResource(Entity container, String id, Object[] others)
-	{
-		return new BaseSite(this,id);
-	}
-
-	/**
-	 * Construct a new resource, from an XML element.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param element
-	 *        The XML.
-	 * @return The new resource from the XML.
-	 */
-	public Entity newResource(Entity container, Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new resource from another resource of the same type.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param other
-	 *        The other resource.
-	 * @return The new resource as a copy of the other.
-	 */
-	public Entity newResource(Entity container, Entity other)
-	{
-		return new BaseSite(this,(Site) other, true);
-	}
-
-	/**
-	 * Construct a new continer given just an id.
-	 * 
-	 * @param id
-	 *        The id for the new object.
-	 * @return The new containe Resource.
-	 */
-	public Edit newContainerEdit(String ref)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new container resource, from an XML element.
-	 * 
-	 * @param element
-	 *        The XML.
-	 * @return The new container resource.
-	 */
-	public Edit newContainerEdit(Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new container resource, as a copy of another
-	 * 
-	 * @param other
-	 *        The other contianer to copy.
-	 * @return The new container resource.
-	 */
-	public Edit newContainerEdit(Entity other)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new rsource given just an id.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param id
-	 *        The id for the new object.
-	 * @param others
-	 *        (options) array of objects to load into the Resource's fields.
-	 * @return The new resource.
-	 */
-	public Edit newResourceEdit(Entity container, String id, Object[] others)
-	{
-		BaseSite e = new BaseSite(this,id);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * Construct a new resource, from an XML element.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param element
-	 *        The XML.
-	 * @return The new resource from the XML.
-	 */
-	public Edit newResourceEdit(Entity container, Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * Construct a new resource from another resource of the same type.
-	 * 
-	 * @param container
-	 *        The Resource that is the container for the new resource (may be null).
-	 * @param other
-	 *        The other resource.
-	 * @return The new resource as a copy of the other.
-	 */
-	public Edit newResourceEdit(Entity container, Entity other)
-	{
-		BaseSite e = new BaseSite(this,(Site) other);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * Collect the fields that need to be stored outside the XML (for the resource).
-	 * 
-	 * @return An array of field values to store in the record outside the XML (for the resource).
-	 */
-	public Object[] storageFields(Entity r)
-	{
-		return null;
-	}
-
-	/**
-	 * Check if this resource is in draft mode.
-	 * 
-	 * @param r
-	 *        The resource.
-	 * @return true if the resource is in draft mode, false if not.
-	 */
-	public boolean isDraft(Entity r)
-	{
-		return false;
-	}
-
-	/**
-	 * Access the resource owner user id.
-	 * 
-	 * @param r
-	 *        The resource.
-	 * @return The resource owner user id.
-	 */
-	public String getOwnerId(Entity r)
-	{
-		return null;
-	}
-
-	/**
-	 * Access the resource date.
-	 * 
-	 * @param r
-	 *        The resource.
-	 * @return The resource date.
-	 */
-	public Time getDate(Entity r)
-	{
-		return null;
 	}
 
 	/**
@@ -2924,7 +3117,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 				unlock(SECURE_ADD_USER_SITE, siteReference(siteId));
 
 				// reserve a site with this id from the info store - if it's in use, this will return null
-				BaseSite site = (BaseSite) m_storage.put(siteId);
+				BaseSite site = (BaseSite) storage().put(siteId);
 				if (site == null)
 				{
 					msg.append(this + "cannot find site: " + siteId);
@@ -2940,7 +3133,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 					}
 
 					// assign source site's attributes to the target site
-					((BaseSite) site).set(new BaseSite(this,el), false);
+					((BaseSite) site).set(new BaseSite(this, el, timeService()), false);
 
 					try
 					{
@@ -3013,7 +3206,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			// if we don't have it yet, get the group's site, and the group from there
 			if (rv == null)
 			{
-				String siteId = m_storage.findGroupSiteId(refOrId);
+				String siteId = storage().findGroupSiteId(refOrId);
 				if (siteId != null)
 				{
 					try
@@ -3103,4 +3296,74 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	{
 		return siteAdvisors.remove(siteAdvisor);
 	}
+
+	/**
+	 * Process site update events (from EventTrackingService)
+	 *
+	 * The only events processed now are "site.usersite.invalidate" and "site.visit.denied",
+	 * which were added to encapsulate the peculiarities of real-world events (users being
+	 * added and removed from sites) versus the posted site and authz group events. The
+	 * interesting actions where we can expect a user's view of membership to update
+	 * immediately (add, join, unjoin) flow through setSiteSecurity with some variety of
+	 * other events being posted. The invalidate event gets posted at the conclusion of that
+	 * method to be picked up here, across the cluster. The visit denied event gets posted
+	 * when a known user visits a known site and is denied. This is considered a signal to
+	 * regenerate that user's cache since the assumption is generally that the user would have
+	 * clicked a site link presented to them before their access was revoked.
+	 *
+	 * @param _ The Observable, which is effectively nothing with ETS
+	 * @param eventObj The event from ETS; will be checked and no-op if null or not an Event
+	 */
+	public void update(Observable _, Object eventObj) {
+		if (eventObj == null || !(eventObj instanceof Event))
+		{
+			return;
+		}
+
+		// TODO: Update this dispatching once ETS can register listeners for specific events
+		Event event = (Event) eventObj;
+
+		// When membership updates come in, we purge the user-site cache for all members.
+		// This could be optimized by integrating the site and user-site caches more closely, but
+		// it is a reasonable cost since the user-site cache will be regenerated for each user on
+		// on their first portal hit. Membership updates are much more rare than visits, so this
+		// allows the cache to have a reasonably high TTL across the cluster. The site will be
+		// cached on every server, so it will not force each user to retrieve it, just recalculate
+		// based on the cache and any other uncached sites on the next portal hit.
+		//
+		// We are catching adds and role updates with the invalidate event. The denied visit event
+		// captures the case where someone visits a site from which they were removed. Drops are
+		// harder to catch (because EVENT_USER_SITE_MEMBERSHIP_REMOVE is not fired consistently),
+		// but this approach is generally acceptable. A user may need to be added to a site and
+		// may communicate with someone who can do so and is logged in on a different server. This
+		// will invalidate immediately. Drops are not typically communicated. The user will not
+		// retain the privilege to view the site and the denied visit will remove the inaccessible
+		// site from the user cache, so having his/her cache persist for the TTL is not problematic.
+
+		String eventType = event.getEvent();
+
+		if (EVENT_SITE_USER_INVALIDATE.equals(eventType))
+		{
+			// KNL-1171: always clear the cache for the user as the Site below may have been deleted
+			clearUserCacheForUser(event.getUserId());
+
+			try {
+				Site site = getSite(event.getResource());
+				clearUserCacheForSite(site);
+			} catch (IdUnusedException e) {
+				if (M_log.isDebugEnabled())
+				{
+					M_log.debug("Site not found when handling an event (" + eventType + "), ID/REF: " + event.getResource());
+				}
+			}
+		}
+		else if (EVENT_SITE_VISIT_DENIED.equals(eventType) || AuthzGroupService.SECURE_UNJOIN_AUTHZ_GROUP.equals(eventType))
+		{
+			clearUserCacheForUser(event.getUserId());
+		}
+	}
+	protected Storage storage() {
+		return m_storage;
+	}
+
 }

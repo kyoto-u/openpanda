@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /* Profile2 styles */
 
 #pageWrapper { 
-	width: 750px;
+	width: 760px;
 	position: relative;
 	left: 5px;
 	top: 5px;
@@ -35,7 +34,7 @@
 	position: relative;
 	top: 0;
 	left: 200px;
-	width: 500px;
+	width: 520px;
 	padding-left: 20px;
 }
 
@@ -47,7 +46,7 @@
 }
 
 div#footer {
-	width: 750px;
+	width: 760px;
 	clear: both;
 	position: relative;
 }
@@ -847,6 +846,11 @@ h2 {
 	padding: 0;
 }
 
+.connections-wrap .connection-summary-wrap,
+.search-result .search-result-summary-wrap {
+	width:340px;
+}
+
 .search-result-summary {
 	word-wrap:break-word;
 }
@@ -899,9 +903,10 @@ h2 {
 
 
 
-/* overrides cluetip's text color */
-#cluetip-inner {
+/* overrides cluetip's text color and border that jquery-ui sets */
+.cluetip-inner {
 	color: #5D5D5D;
+	border: 0 !important;
 }
 
 
@@ -1454,7 +1459,7 @@ main-profile-tabpanel .tab-row a:visited.active,
 }
 
 .wall-post-container {
-	height: 150px;
+/*	height: 150px; let this be set automatically by the contents*/
 	padding-bottom: 5px;
 }
 
@@ -1518,3 +1523,9 @@ main-profile-tabpanel .tab-row a:visited.active,
 	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
 	clip: rect(1px, 1px, 1px, 1px);
 }
+
+/* center the datepicker icon */
+img.ui-datepicker-trigger {
+	vertical-align: middle;
+}
+

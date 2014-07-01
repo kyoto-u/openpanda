@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/component-manager/src/main/java/org/sakaiproject/component/locales/SakaiLocales.java $
- * $Id: SakaiLocales.java 122965 2013-04-18 15:02:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/component-manager/src/main/java/org/sakaiproject/component/locales/SakaiLocales.java $
+ * $Id: SakaiLocales.java 130655 2013-10-21 10:36:50Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -32,6 +32,6 @@ public class SakaiLocales {
      * This should be complete list of supported locales and should match the commented list in default.sakai.properties
      * It MUST be a comma separated list of locale keys (be careful with your formatting)
      */
-    public static final String SAKAI_LOCALES_DEFAULT = "en_US, en_GB, en_AU, en_NZ, en_ZA, ja_JP, ko_KR, nl_NL, zh_CN, zh_TW, es_ES, fr_CA, fr_FR, ca_ES, sv_SE, ar, ru_RU, pt_PT, pt_BR, eu, vi_VN, tr_TR, es_MX, mn, pl_PL";
+    public static final String SAKAI_LOCALES_DEFAULT = "en_US, en_GB, en_AU, en_NZ, en_ZA, ja_JP, ko_KR, nl_NL, zh_CN, zh_TW, es_ES, fr_CA, fr_FR, ca_ES, sv_SE, ar, ru_RU, pt_PT, pt_BR, eu, vi_VN, tr_TR, es_MX, mn, pl_PL, de_DE";
 
 }

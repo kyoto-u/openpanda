@@ -1,6 +1,6 @@
-<!-- $Id: chef_assignments_tags_list.vm 94881 2011-07-08 14:22:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_tags_list.vm 131328 2013-11-07 22:25:15Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_tags_list.vm  -->
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
 
 function saveChanges(formName, textAreaId) {
 	var _textArea = document.getElementById(textAreaId);

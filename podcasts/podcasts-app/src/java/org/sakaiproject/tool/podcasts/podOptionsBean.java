@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.3/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podOptionsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.0/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podOptionsBean.java $
  * $Id: podOptionsBean.java 14691 2006-09-15 12:36:27Z josrodri@iupui.edu$
  ***********************************************************************************
  *
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -84,12 +84,14 @@ public class podOptionsBean {
 	 */
 	public String processOptionChange() {
 
-		podcastService.reviseOptions(podOption == PUBLIC);
+		int previousOption = podcastService.getOptions();
+		if(podOption != previousOption) {
+			podcastService.reviseOptions(podOption == PUBLIC);
 
-		if (podOption == SITE) {
-			// Set the display message because changed to Display to Site
-			setErrorMessage(CHANGE_TO_SITE);
-
+			if (podOption == SITE) {
+				// Set the display message because changed to Display to Site
+				setErrorMessage(CHANGE_TO_SITE);
+			}
 		}
 
 		return "cancel";

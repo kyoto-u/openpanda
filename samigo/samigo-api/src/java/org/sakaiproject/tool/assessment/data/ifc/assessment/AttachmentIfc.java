@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/grading/MediaIfc.java $
- * $Id: MediaIfc.java 11438 2006-06-30 20:06:03Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/AttachmentIfc.java $
+ * $Id: AttachmentIfc.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,12 +29,16 @@ import java.util.Date;
 public interface AttachmentIfc
     extends Serializable{
 
-  public static Long ASSESSMENT_ATTACHMENT = new Long(1);
-  public static Long SECTION_ATTACHMENT = new Long(2);
-  public static Long ITEM_ATTACHMENT = new Long(3);
-  public static Long ITEMGRADING_ATTACHMENT = new Long(4);
-  public static Integer ACTIVE_STATUS = new Integer(1);
-  public static Integer INACTIVE_STATUS = new Integer(0);
+  // This three parameters are for SAM_ATTACHMENT_T table	
+  public static Long ASSESSMENT_ATTACHMENT = Long.valueOf(1);
+  public static Long SECTION_ATTACHMENT = Long.valueOf(2);
+  public static Long ITEM_ATTACHMENT = Long.valueOf(3);
+  //This parameter is for SAM_GRADINGATTACHMENT_T table
+  public static Long ITEMGRADING_ATTACHMENT = Long.valueOf(1);
+  
+  public static Long ITEM_TEXT_ATTACHMENT = Long.valueOf(5);//for EMI sub-item attachments 
+  public static Integer ACTIVE_STATUS = Integer.valueOf(1);
+  public static Integer INACTIVE_STATUS = Integer.valueOf(0);
 
   Long getAttachmentId();
 

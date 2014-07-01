@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/component-manager/src/main/java/org/sakaiproject/component/api/ServerConfigurationService.java $
- * $Id: ServerConfigurationService.java 122965 2013-04-18 15:02:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/component-manager/src/main/java/org/sakaiproject/component/api/ServerConfigurationService.java $
+ * $Id: ServerConfigurationService.java 122219 2013-04-04 21:01:10Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -167,11 +167,16 @@ public interface ServerConfigurationService
 	String getString(String name, String dflt);
 
 	/**
-	 * Access some named configuration values as an array of strings. The name is the base name. name + ".count" must be defined to be a positive integer - how many are defined. name + "." + i (1..count) must be defined to be the values.
+	 * Access some named configuration values as an array of strings. 
+	 * There are 2 ways this is indicated in the system:
+	 * 1) The name is the base name. name + ".count" must be defined to be a positive integer - how many are defined. name + "." + i (1..count) must be defined to be the values.
+	 * 2) A comma delimited list of values: name=val1,val2,val3
+	 * If count is 0 or the value is empty then an empty string array is the resulting return value.
+	 * Null is returned ONLY in the case the value cannot be found at all.
 	 * 
 	 * @param name
 	 *        The configuration value name base.
-	 * @return The configuration value with this name, or the null if not found.
+	 * @return The configuration value with this name, empty array if no values or count=0, OR null if config name is not found.
 	 */
 	String[] getStrings(String name);
 
@@ -231,16 +236,50 @@ public interface ServerConfigurationService
 	 *   is implementation dependent.
 	 */
 	String getRawProperty(String name);
-	
-	/**
-	 * Access the list of tool ids in order for this category, to impose on the displays of many tools
+
+	/** 
+	 * KNL-989
+	 * Access the list of tools by group
 	 * 
 	 * @param category
 	 *        The tool category
-	 * @return An ordered list of tool ids (String) indicating the desired tool display order, or an empty list if there are none for this category.
+	 * @return An unordered list of tool ids (String) in selected group, or an empty list if there are none for this category.
+	 */
+	List<String> getToolGroup(String category);
+
+	/** 
+	 * KNL-989
+	 * Access the list of tool ids in order for this category, to impose on the displays of many tools
+	 * 
+	 * @param category	Site type
+	 * @return An unordered list of group names (String), or an empty list if there are none for this category.
 	 */
 	List<String> getToolOrder(String category);
 
+	/** 
+	 * KNL-989
+	 * Returns true if selected tool is contained in pre-initialized list of selected items
+	 * @parms toolId id of the selected tool
+	 */
+	public boolean toolGroupIsSelected(String groupName, String toolId) ;
+
+	/** 
+	 * KNL-989
+	 * Returns true if selected tool is contained in pre-initialized list of required items
+	 * @parms toolId id of the selected tool
+	 */
+	public boolean toolGroupIsRequired(String groupName, String toolId);
+	 
+	/** 
+	 * KNL-989
+	 * Access the list of groups by category (site type)
+	 * 
+	 * @param category
+	 *			 The tool category
+	 * @return An ordered list of tool ids (String) indicating the desired tool display order, or an empty list if there are none for this category.
+	 */
+	List<String> getCategoryGroups(String category);
+	
 	/**
 	 * Access the list of tool ids that are required for this category.
 	 * 

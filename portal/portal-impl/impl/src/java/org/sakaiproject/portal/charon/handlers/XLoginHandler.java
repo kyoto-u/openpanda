@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/XLoginHandler.java $
- * $Id: XLoginHandler.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/XLoginHandler.java $
+ * $Id: XLoginHandler.java 111881 2012-08-27 23:11:05Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -31,12 +31,12 @@ import org.sakaiproject.tool.api.Session;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 111881 $
  * 
  */
 public class XLoginHandler extends BasePortalHandler
 {
-	private static final String URL_FRAGMENT = "xlogin";
+	public static final String URL_FRAGMENT = "xlogin";
 
 	public XLoginHandler()
 	{

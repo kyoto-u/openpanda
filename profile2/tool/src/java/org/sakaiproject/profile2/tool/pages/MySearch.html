@@ -1,6 +1,8 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <!--
 
-    Copyright (c) 2008-2010 The Sakai Foundation
+    Copyright (c) 2008-2012 The Sakai Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +18,6 @@
 
 -->
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"  
       xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
       xml:lang="en"  
@@ -43,6 +44,7 @@
 						<tr>
 							<td class="label" wicket:id="searchLabel">[searchLabel]</td>
 							<td class="content">
+								<label for="searchinput" class="accessibility-label"><wicket:message key="text.search.terms.tooltip"></wicket:message></label>
 								<input type="text" wicket:id="searchField" class="formInputField" wicket:message="title:text.search.terms.tooltip" />
 							</td>
 							<td class="toolTip"><span wicket:id="searchToolTip">[searchToolTip]</span></td>
@@ -53,17 +55,13 @@
 						<tr wicket:id="searchTypeRadioGroup">
 							<td wicket:id="searchTypeNameLabel">[searchTypeNameLabel]</td>
 							<td>
-								<label>
-									<input type="radio" wicket:id="searchTypeName" />
-									<span class="accessibility-label"><wicket:message key="accessibility.search.byname" /></span>
-								</label>
+								<input type="radio" wicket:id="searchTypeName" />
+								<label for="searchtypenameinput" class="accessibility-label"><wicket:message key="text.search.byname.tooltip" /></label>
 							</td>
 							<td wicket:id="searchTypeInterestLabel">[searchTypeInterestLabel]</td>
 							<td>
-								<label>
-									<input type="radio" wicket:id="searchTypeInterest" />
-									<span class="accessibility-label"><wicket:message key="accessibility.search.byinterest" /></span>
-								</label>
+								<input type="radio" wicket:id="searchTypeInterest" />
+								<label for="searchtypeinterestinput" class="accessibility-label"><wicket:message key="text.search.byinterest.tooltip" /></label>
 							</td>
 						</tr>
 					</table>
@@ -71,21 +69,18 @@
 						<tr>
 							<td class="label" wicket:id="connectionsLabel">[connectionsLabel]</td>
 							<td>
-								<label>
-									<input type="checkbox" wicket:id="connectionsCheckBox"  />
-									<span class="accessibility-label"><wicket:message key="accessibility.search.connections" /></span>
-								</label>
+								<input type="checkbox" wicket:id="connectionsCheckBox"  />
+								<label for="includeconnectionsinput" class="accessibility-label"><wicket:message key="accessibility.search.connections" /></label>
 							</td>
 						</tr>
 						<tr>
 							<td class="label" wicket:id="worksiteLabel">[worksiteLabel]</td>
 							<td>
-								<label>
-									<input type="checkbox" wicket:id="worksiteCheckBox"  />
-									<span class="accessibility-label"><wicket:message key="accessibility.search.worksite" /></span>
-								</label>
+								<input type="checkbox" wicket:id="worksiteCheckBox"  />
+								<label for="limittositeinput" class="accessibility-label"><wicket:message key="accessibility.search.worksite" /></label>
 							</td>
 							<td class="content">
+								<label for="worksiteselect" class="accessibility-label"><wicket:message key="accessibility.search.worksite" /></label>
 								<select wicket:id="worksiteChoice" wicket:message="title:accessibility.search.worksite"></select>
 							</td>
 						</tr>

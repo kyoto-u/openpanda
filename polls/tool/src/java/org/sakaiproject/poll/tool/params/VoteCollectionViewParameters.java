@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.3/tool/src/java/org/sakaiproject/poll/tool/params/VoteCollectionViewParameters.java $
- * $Id: VoteCollectionViewParameters.java 103685 2012-01-26 22:21:06Z bkirschn@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.0/tool/src/java/org/sakaiproject/poll/tool/params/VoteCollectionViewParameters.java $
+ * $Id: VoteCollectionViewParameters.java 109827 2012-06-28 15:39:26Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

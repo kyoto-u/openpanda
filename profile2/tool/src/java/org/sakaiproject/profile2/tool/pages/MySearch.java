@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages;
 
 
@@ -123,9 +122,10 @@ public class MySearch extends BasePage {
         searchForm.setOutputMarkupId(true);
         
         //search field
-        searchForm.add(new Label("searchLabel", new ResourceModel("text.search.terms")));
+        searchForm.add(new Label("searchLabel", new ResourceModel("text.search.terms.label")));
         searchField = new TextField<String>("searchField", new PropertyModel<String>(searchStringModel, "string"));
         searchField.setRequired(true);
+        searchField.setMarkupId("searchinput");
         searchField.setOutputMarkupId(true);
         searchForm.add(searchField);
         searchForm.add(new IconWithClueTip("searchToolTip", ProfileConstants.INFO_IMAGE, new ResourceModel("text.search.terms.tooltip")));
@@ -136,18 +136,23 @@ public class MySearch extends BasePage {
 		searchTypeRadioGroup.setOutputMarkupId(true);
 		searchTypeRadioGroup.setRenderBodyOnly(false);
 		Radio<String> searchTypeRadioName = new Radio<String>("searchTypeName", new Model<String>(ProfileConstants.SEARCH_TYPE_NAME));
+		searchTypeRadioName.setMarkupId("searchtypenameinput");
+        searchTypeRadioName.setOutputMarkupId(true);
 		searchTypeRadioName.add(new AttributeModifier("title", true, new ResourceModel("text.search.byname.tooltip")));
 		searchTypeRadioGroup.add(searchTypeRadioName);
 		Radio<String> searchTypeRadioInterest = new Radio<String>("searchTypeInterest", new Model<String>(ProfileConstants.SEARCH_TYPE_INTEREST));
+		searchTypeRadioInterest.setMarkupId("searchtypeinterestinput");
+        searchTypeRadioInterest.setOutputMarkupId(true);
 		searchTypeRadioInterest.add(new AttributeModifier("title", true, new ResourceModel("text.search.byinterest.tooltip")));
 		searchTypeRadioGroup.add(searchTypeRadioInterest);
-		searchTypeRadioGroup.add(new Label("searchTypeNameLabel", new ResourceModel("text.search.byname")));
-		searchTypeRadioGroup.add(new Label("searchTypeInterestLabel", new ResourceModel("text.search.byinterest")));
+		searchTypeRadioGroup.add(new Label("searchTypeNameLabel", new ResourceModel("text.search.byname.label")));
+		searchTypeRadioGroup.add(new Label("searchTypeInterestLabel", new ResourceModel("text.search.byinterest.label")));
 		searchForm.add(searchTypeRadioGroup);
 		
 		searchForm.add(new Label("connectionsLabel", new ResourceModel("text.search.include.connections")));
 		// model is true (include connections by default)
 		connectionsCheckBox = new CheckBox("connectionsCheckBox", new Model<Boolean>(true));
+		connectionsCheckBox.setMarkupId("includeconnectionsinput");
 		connectionsCheckBox.setOutputMarkupId(true);
 		searchForm.add(connectionsCheckBox);
 				
@@ -157,6 +162,7 @@ public class MySearch extends BasePage {
 		searchForm.add(new Label("worksiteLabel", new ResourceModel("text.search.include.worksite")));
 		// model is false (include all worksites by default)
 		worksiteCheckBox = new CheckBox("worksiteCheckBox", new Model<Boolean>(false));
+		worksiteCheckBox.setMarkupId("limittositeinput");
 		worksiteCheckBox.setOutputMarkupId(true);
 		worksiteCheckBox.setEnabled(hasWorksites);
 		searchForm.add(worksiteCheckBox);
@@ -186,6 +192,7 @@ public class MySearch extends BasePage {
 		};
 		
 		worksiteChoice = new DropDownChoice("worksiteChoice", defaultWorksiteIdModel, worksitesModel, new HashMapChoiceRenderer(worksiteMap));
+		worksiteChoice.setMarkupId("worksiteselect");
 		worksiteChoice.setOutputMarkupId(true);
 		worksiteChoice.setNullValid(false);
 		worksiteChoice.setEnabled(hasWorksites);
@@ -670,7 +677,7 @@ public class MySearch extends BasePage {
 				}
 			}
 		};
-		searchSubmitButton.setModel(new ResourceModel("button.search"));
+		searchSubmitButton.setModel(new ResourceModel("button.search.generic"));
 		searchForm.add(searchSubmitButton);
         add(searchForm);
 		                

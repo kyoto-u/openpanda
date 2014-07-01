@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -296,7 +296,7 @@ public interface FormattedText {
      * previous form.
      * 
      * @param value
-     * @return
+     * @return converted text
      */
     public String convertOldFormattedText(String value);
 
@@ -355,5 +355,37 @@ public interface FormattedText {
      * @return value fully escaped using URL rules.
      */
     public String escapeUrl(String value);
+
+    /**
+     * General utility to validate a URL.
+     * The idea is to encode the rules we have for URLs we are willing
+     * to put in src="URL" or href="URL" places within our code,
+     * relative URLs must start with "/"
+     * 
+     * @param urlToValidate a URL that might be placed in Sakai content
+     * @return true if the URL is valid OR false if it fails the tests
+     */
+    public boolean validateURL(String urlToValidate);
+
+    /**
+     * General utility to escape a user-entered URL for use as an attribute.
+     * The idea is that we have many places that put user-entered URLs
+     * into src="URL" or href="URL" places within our markup.  There
+     * are many "valid" URLs that are dangerous unless escaped.
+     * 
+     * Note: java.net.URLEncode.encode() is not sufficient for because
+     * it encodes the whole string including colons and slashes so
+     * http://www.sakaiproject.org/?x=Hello World becomes
+     * http%3A%2F%2Fwww.sakaiproject.org%2F%3Fx%3DHello%20World instead of
+     * http://www.sakaiproject.org/?x=Hello%20World
+     *
+     * java.net.URLEncode.encode() is designed for application/x-www-form-urlencoded
+     * data in forms and as the parameters on GET strings.  It is not suitable
+     * to encode entire URLs prior to embedding them in an href or src attribute.
+     * 
+     * @param urlToSanitize a URL that might be placed in href= or src=
+     * @return a properly escaped url
+     */
+    public String sanitizeHrefURL(String urlToSanitize);
 
 }

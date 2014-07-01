@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/SubmissionStatusBean.java $
+ * $Id: SubmissionStatusBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -78,7 +78,6 @@ public class SubmissionStatusBean
   private HashMap answeredItems;
   private static Log log = LogFactory.getLog(SubmissionStatusBean.class);
   
-  // modified by gopalrc - Jan 2008
   //private String selectedSectionFilterValue = TotalScoresBean.ALL_SECTIONS_SELECT_VALUE;
   private String selectedSectionFilterValue = null;
 
@@ -93,7 +92,7 @@ public class SubmissionStatusBean
   private String searchString;
   private String defaultSearchString;
   
-  private Boolean releasedToGroups = null; // added by gopalrc - Jan 2008
+  private Boolean releasedToGroups = null;
 
   /**
    * Creates a new SubmissionStatusBean object.
@@ -208,15 +207,6 @@ public class SubmissionStatusBean
   public void setPublishedId(String ppublishedId)
   {
     publishedId = ppublishedId;
-    /*
-    //added by gopalrc - Jan 2007
-	if (isReleasedToGroups()) {
-		setSelectedSectionFilterValue(TotalScoresBean.RELEASED_SECTIONS_GROUPS_SELECT_VALUE);
-	}
-	else {
-		setSelectedSectionFilterValue(TotalScoresBean.ALL_SECTIONS_SELECT_VALUE);
-	}
-    */
   }
 
   /**
@@ -608,7 +598,7 @@ public class SubmissionStatusBean
 
 
   public String getSelectedSectionFilterValue() {
-	  // lazy initialization added by gopalrc - Jan 2008  
+	  // lazy initialization
 	  if (selectedSectionFilterValue == null) {
 		  if (isReleasedToGroups()) {
 			  setSelectedSectionFilterValue(TotalScoresBean.RELEASED_SECTIONS_GROUPS_SELECT_VALUE);
@@ -717,7 +707,6 @@ public class SubmissionStatusBean
 	}
 	
 	/**
-	 * added by gopalrc - jan 2008
 	 * @return
 	 */
 	public boolean isReleasedToGroups() {

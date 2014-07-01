@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.3/help-api/src/java/org/sakaiproject/api/app/help/Category.java $
- * $Id: Category.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.0/help-api/src/java/org/sakaiproject/api/app/help/Category.java $
+ * $Id: Category.java 106357 2012-03-28 23:18:54Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -25,7 +25,7 @@ import java.util.Set;
 
 /** 
  * Category container.
- * @version $Id: Category.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $ 
+ * @version $Id: Category.java 106357 2012-03-28 23:18:54Z matthew.buckett@oucs.ox.ac.uk $ 
  */
 public interface Category
 {

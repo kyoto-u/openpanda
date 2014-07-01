@@ -36,6 +36,7 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.portal.util.CSSUtils;
 
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.localeutil.LocaleGetter;                                                                                          
@@ -77,7 +78,10 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 	private SimplePageBean simplePageBean;
 	private SimplePageToolDao simplePageToolDao;
 	public MessageLocator messageLocator;
-	public LocaleGetter localeGetter;                                                                                             
+	public LocaleGetter localeGetter;
+
+	static final String ICONSTYLE = "\n.portletTitle .action img {\n        background: url({}/help.gif) center right no-repeat;\n}\n.portletTitle .action img:hover, .portletTitle .action img:focus {\n        background: url({}/help_h.gif) center right no-repeat\n}\n.portletTitle .title img {\n        background: url({}/reload.gif) center left no-repeat;\n}\n.portletTitle .title img:hover, .portletTitle .title img:focus {\n        background: url({}/reload_h.gif) center left no-repeat\n}\n";
+
 	public static final String VIEW_ID = "ShowItem";
 
 	public String getViewID() {
@@ -138,18 +142,28 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 	    List<SimplePageBean.PathEntry> breadcrumbs = simplePageBean.getHierarchy();
 	    SimplePageItem item = simplePageBean.findItem (params.getItemId());
 
+	    // precompute tests we'll need more than once
+	    int type = 0;
+	    boolean available = false;
+	    if (item != null) {
+		type = item.getType();
+		available = simplePageBean.isItemVisible(item) && simplePageBean.isItemAvailable(item, item.getPageId());
+	    }
+	    
+	    // update permissions in tools if appropriate.
+	    if (available) {
+		if (type == SimplePageItem.RESOURCE || type == SimplePageItem.BLTI)
+		    simplePageBean.track(params.getItemId(), null);
+		else if (item.isPrerequisite() && (type == SimplePageItem.PAGE || type == SimplePageItem.ASSIGNMENT || type == SimplePageItem.ASSESSMENT || type == SimplePageItem.FORUM))
+		    simplePageBean.checkItemPermissions(item, true); // set acl, etc		
+
+	    }
+
 	    // this is a "next" page where we couldn't tell if the item is
 	    // available. Need to check here in order to set ACLs. If not available,
 	    // return to calling page
 	    if (item != null && "true".equals(params.getRecheck())) {
-		if (simplePageBean.isItemAvailable(item, item.getPageId())) {
-		    // for resources we do our own tracking, for the other types handled by this
-		    // class we depend upon the tool
-		    if (item.getType() == SimplePageItem.RESOURCE)
-			simplePageBean.track(params.getItemId(), null);
-		    else if (item.isPrerequisite())
-			simplePageBean.checkItemPermissions(item, true); // set acl, etc
-		} else {
+	        if (!available) {
 		    SimplePageBean.PathEntry containingPage = null;
 		    if (breadcrumbs.size() > 0)  // shouldn't ever fail
 			containingPage = breadcrumbs.get(breadcrumbs.size()-1);  // page we're on
@@ -164,12 +178,10 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 		    return;
 		}
 	    } else if (item != null && item.getType() == SimplePageItem.RESOURCE) {
-		// since recheck isn't set, permission checking should have been done.
-		// for most item types handled here, we depend upon the tool for final access
-		// checking and for tracking. But for resources we have to do it.
-		if (simplePageBean.isItemAvailable(item, item.getPageId()))
-		    simplePageBean.track(params.getItemId(), null);
-		else {
+		// other item types we depend upon the underlying tool, except
+		// resources we have to do ourselves
+		// NOTE: consider doing this for BLTI also
+		if (!available) {
 		    UIOutput.make(tofill, "hiddenAlert");
 		    UIOutput.make(tofill, "hidden-text", messageLocator.getMessage("simplepage.complete_required"));
 		    return;
@@ -183,13 +195,11 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 	    String iconBase = null;
 
 	    if (helpurl != null || reseturl != null) {
-		skinName = simplePageBean.getCurrentSite().getSkin();
-		System.out.println("skinname " + skinName);
-		if (skinName == null)
-		    skinName = ServerConfigurationService.getString("skin.default", "default");
+
 		skinRepo = ServerConfigurationService.getString("skin.repo", "/library/skin");
-		iconBase = skinRepo + "/" + skinName + "/images/";
-		System.out.println("iconbase " + iconBase);
+		iconBase = skinRepo + "/" + CSSUtils.adjustCssSkinFolder(null) + "/images";
+		UIVerbatim.make(tofill, "iconstyle", ICONSTYLE.replace("{}", iconBase));
+
 	    }
 
 	    if (helpurl != null) {
@@ -199,7 +209,6 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 		    decorate(new UIFreeAttributeDecorator("title",
 				 messageLocator.getMessage("simplepage.help-button")));
 		UIOutput.make(tofill, "helpimage2").
-		    decorate(new UIFreeAttributeDecorator("src", iconBase + "help.gif")).
 		    decorate(new UIFreeAttributeDecorator("alt",
 				 messageLocator.getMessage("simplepage.help-button")));
 		UIOutput.make(tofill, "helpnewwindow2",
@@ -213,7 +222,6 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 		    decorate(new UIFreeAttributeDecorator("title",
 			        messageLocator.getMessage("simplepage.reset-button")));
 		UIOutput.make(tofill, "resetimage2").
-		    decorate(new UIFreeAttributeDecorator("src", iconBase + "reload.gif")).
 		    decorate(new UIFreeAttributeDecorator("alt",
 			        messageLocator.getMessage("simplepage.reset-button")));
 	    }

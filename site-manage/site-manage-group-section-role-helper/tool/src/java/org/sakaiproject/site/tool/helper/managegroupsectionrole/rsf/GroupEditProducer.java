@@ -3,8 +3,13 @@ package org.sakaiproject.site.tool.helper.managegroupsectionrole.rsf;
 import java.util.Collection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
@@ -28,6 +33,7 @@ import uk.ac.cam.caret.sakai.rsf.producers.FrameAdjustingProducer;
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
+import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIInput;
@@ -36,6 +42,8 @@ import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UISelect;
+import uk.org.ponder.rsf.components.UIDeletionBinding;
+import uk.org.ponder.rsf.components.decorators.UICSSDecorator;
 import uk.org.ponder.rsf.components.decorators.UILabelTargetDecorator;
 import uk.org.ponder.rsf.components.decorators.UITooltipDecorator;
 import uk.org.ponder.rsf.evolvers.FormatAwareDateInputEvolver;
@@ -113,9 +121,33 @@ public class GroupEditProducer implements ViewComponentProducer, ActionResultInt
     			 groupId = g.getId();
     			 groupTitle = g.getTitle();
     			 groupDescription = g.getDescription();
+    			 handler.allowViewMembership = Boolean.valueOf(g.getProperties().getProperty(g.GROUP_PROP_VIEW_MEMBERS));
     			 groupMembers = g.getMembers();
     			 groupProviderId = g.getProviderGroupId();
     			 groupRoleProviderRoles = handler.getGroupProviderRoles(g);
+    			 String joinableSet = g.getProperties().getProperty(g.GROUP_PROP_JOINABLE_SET);
+    			 if(joinableSet != null && !"".equals(joinableSet.trim())){
+    				 handler.joinableSetName = joinableSet;
+    				 handler.joinableSetNameOrig = joinableSet;
+    				 handler.joinableSetNumOfMembers = g.getProperties().getProperty(g.GROUP_PROP_JOINABLE_SET_MAX);
+    				 handler.allowPreviewMembership = Boolean.valueOf(g.getProperties().getProperty(g.GROUP_PROP_JOINABLE_SET_PREVIEW));
+    				 //set unjoinable.  Since you can't change this value at the group edit page, all groups will have the same
+    				 //value in the set.  Find another group in the same set (if exist) and set it to the same value.
+    				 for(Group group : handler.site.getGroups()){
+    		        		String joinableSetName = group.getProperties().getProperty(group.GROUP_PROP_JOINABLE_SET);
+    		        		if(joinableSetName != null && joinableSetName.equals(joinableSet)){
+    		        			//we only need to find the first one since all are the same
+    		        			handler.unjoinable = Boolean.valueOf(group.getProperties().getProperty(g.GROUP_PROP_JOINABLE_UNJOINABLE));
+    		        			break;
+    		        		}
+    				 }
+    			 }else{
+    				 handler.joinableSetName = "";
+    				 handler.joinableSetNameOrig = "";
+    				 handler.joinableSetNumOfMembers = "";
+    				 handler.allowPreviewMembership = false;
+    				 handler.unjoinable = false;
+    			 }
     		 }
     		 catch (Exception e)
     		 {
@@ -138,10 +170,51 @@ public class GroupEditProducer implements ViewComponentProducer, ActionResultInt
          UIInput titleTextIn = UIInput.make(groupForm, "group_title", "#{SiteManageGroupSectionRoleHandler.title}",groupTitle);
 		 
 		
-		 UIMessage groupDescrLabel = UIMessage.make(arg0, "group_description_label", "group.description"); 
+		 UIMessage groupDescrLabel = UIMessage.make(groupForm, "group_description_label", "group.description"); 
 		 UIInput groupDescr = UIInput.make(groupForm, "group_description", "#{SiteManageGroupSectionRoleHandler.description}", groupDescription); 
 		 UILabelTargetDecorator.targetLabel(groupDescrLabel, groupDescr);
 		 
+		 //allow view membership:
+		 UIBoundBoolean viewMemCheckbox = UIBoundBoolean.make(groupForm, "allowViewMembership", "#{SiteManageGroupSectionRoleHandler.allowViewMembership}");
+		 UILabelTargetDecorator.targetLabel(UIMessage.make(groupForm, "allowViewMembership-label", "group.allow.view.membership"), viewMemCheckbox);
+		 
+		 //Joinable Set:
+		 UIMessage joinableSetLabel = UIMessage.make(groupForm, "group_joinable_set_label", "group.joinable.set");
+		 List<String> joinableSetValuesSet = new ArrayList<String>();
+		 for(Group group : handler.site.getGroups()){
+			 String joinableSet = group.getProperties().getProperty(group.GROUP_PROP_JOINABLE_SET);
+			 if(joinableSet != null && !joinableSetValuesSet.contains(joinableSet)){
+				 joinableSetValuesSet.add(joinableSet);
+			 }
+		 }
+		 Collections.sort(joinableSetValuesSet);
+		 List<String> joinableSetValues = new ArrayList<String>();
+		 List<String> joinableSetNames = new ArrayList<String>();
+		 joinableSetValues.add("");
+		 joinableSetNames.add(messageLocator.getMessage("none"));
+		 joinableSetValues.addAll(joinableSetValuesSet);
+		 joinableSetNames.addAll(joinableSetValuesSet);
+		 
+		 String[] joinableSetNamesArr = joinableSetNames.toArray(new String[joinableSetNames.size()]);
+		 String[] joinableSetValuesArr = joinableSetValues.toArray(new String[joinableSetValues.size()]);
+		 UISelect joinableSetSelect = UISelect.make(groupForm, "joinable-set", joinableSetValuesArr,
+				 joinableSetNamesArr, "SiteManageGroupSectionRoleHandler.joinableSetName");
+		 UILabelTargetDecorator.targetLabel(joinableSetLabel, joinableSetSelect);
+		 //joinable div:
+		 UIBranchContainer joinableDiv = UIBranchContainer.make(groupForm, "joinable-set-div:");
+		 if(handler.joinableSetName == null || "".equals(handler.joinableSetName)){
+			 Map<String, String> hidden = new HashMap<String, String>();
+			 hidden.put("display", "none");
+			 joinableDiv.decorate(new UICSSDecorator(hidden));
+		 }
+		//Max members Row:
+		 UIMessage.make(joinableDiv, "group-max-members", "group.joinable.maxMembers2");
+		 UIInput.make(joinableDiv, "num-max-members", "SiteManageGroupSectionRoleHandler.joinableSetNumOfMembers");
+		 //allow preview row:
+		 UIBoundBoolean checkbox = UIBoundBoolean.make(joinableDiv, "allowPreviewMembership", "#{SiteManageGroupSectionRoleHandler.allowPreviewMembership}");
+		 UILabelTargetDecorator.targetLabel(UIMessage.make(joinableDiv, "allowPreviewMembership-label", "group.joinable.allowPreview"), checkbox);
+
+
 		 UIOutput.make(groupForm, "membership_label", messageLocator.getMessage("editgroup.membership"));
 		 UIOutput.make(groupForm, "membership_site_label", messageLocator.getMessage("editgroup.generallist"));
 		 UIOutput.make(groupForm, "membership_group_label", messageLocator.getMessage("editgroup.grouplist"));
@@ -278,7 +351,8 @@ public class GroupEditProducer implements ViewComponentProducer, ActionResultInt
 	        
     	 UICommand.make(groupForm, "save", addUpdateButtonName, "#{SiteManageGroupSectionRoleHandler.processAddGroup}");
 
-         UICommand.make(groupForm, "cancel", messageLocator.getMessage("editgroup.cancel"), "#{SiteManageGroupSectionRoleHandler.processBack}");
+         UICommand cancel = UICommand.make(groupForm, "cancel", messageLocator.getMessage("editgroup.cancel"), "#{SiteManageGroupSectionRoleHandler.processBack}");
+         cancel.parameters.add(new UIDeletionBinding("#{destroyScope.resultScope}"));
          
          UIInput.make(groupForm, "newRight", "#{SiteManageGroupSectionRoleHandler.memberList}", state);
          

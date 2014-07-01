@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,6 +46,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
+ * Single Storage provides persisting of just resources(no properties, no container).
  * <p>
  * BaseDbSingleStorage is a class that stores Resources (of some type) in a database, <br />
  * provides locked access, and generally implements a services "storage" class. The <br />
@@ -88,10 +89,11 @@ public class BaseDbSingleStorage implements DbSingleStorage
 	protected boolean m_locksAreInTable = true;
 
 	/** The StorageUser to callback for new Resource and Edit objects. */
-	protected StorageUser m_user = null;
+	protected SingleStorageUser m_user = null;
 
 	/**
 	 * Locks, keyed by reference, holding Connections (or, if locks are done locally, holding an Edit).
+	 * Obviously this doesn't enable locking in a clustered environment.
 	 */
 	protected Hashtable m_locks = null;
 
@@ -127,10 +129,8 @@ public class BaseDbSingleStorage implements DbSingleStorage
 	static
 	{
 		databaseBeans = new Hashtable<String, SingleStorageSql>();
-		databaseBeans.put("db2", new SingleStorageSqlDb2());
 		databaseBeans.put("default", new SingleStorageSqlDefault());
 		databaseBeans.put("hsql", new SingleStorageSqlHSql());
-		databaseBeans.put("mssql", new SingleStorageSqlMsSql());
 		databaseBeans.put("mysql", new SingleStorageSqlMySql());
 		databaseBeans.put("oracle", new SingleStorageSqlOracle());
 	}
@@ -154,7 +154,7 @@ public class BaseDbSingleStorage implements DbSingleStorage
 	 *        The SqlService.
 	 */
 	public BaseDbSingleStorage(String resourceTableName, String resourceTableIdField, String[] resourceTableOtherFields, boolean locksInDb,
-			String resourceEntryName, StorageUser user, SqlService sqlService)
+			String resourceEntryName, SingleStorageUser user, SqlService sqlService)
 	{
 	    this(resourceTableName, resourceTableIdField, resourceTableOtherFields, locksInDb, resourceEntryName, user, sqlService, null);
 	}
@@ -183,7 +183,7 @@ public class BaseDbSingleStorage implements DbSingleStorage
      *        The storage for the normal resource (only used by delete storage)
      */
 	public BaseDbSingleStorage(String resourceTableName, String resourceTableIdField, String[] resourceTableOtherFields, boolean locksInDb,
-	        String resourceEntryName, StorageUser user, SqlService sqlService,
+	        String resourceEntryName, SingleStorageUser user, SqlService sqlService,
 	        DbSingleStorage storage)
 	{
 	    m_resourceTableName = resourceTableName;

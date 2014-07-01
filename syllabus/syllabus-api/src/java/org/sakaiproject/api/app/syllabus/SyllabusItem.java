@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.3/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusItem.java $
- * $Id: SyllabusItem.java 59687 2009-04-03 23:44:40Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.0/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusItem.java $
+ * $Id: SyllabusItem.java 130450 2013-10-14 21:24:08Z jbush@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,6 +77,18 @@ public interface SyllabusItem
    * @param redirectURL The redirectURL to set.
    */
   public void setRedirectURL(String redirectURL);
+
+    /**
+     *
+     * @return  whether or not to open the redirect url in a new window
+     */
+  public Boolean isOpenInNewWindow();
+
+    /**
+     *
+     * @param openInNewWindow
+     */
+  public void setOpenInNewWindow(Boolean openInNewWindow);
 }
 
 

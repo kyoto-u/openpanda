@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.3/podcasts-api/src/java/org/sakaiproject/api/app/podcasts/PodcastService.java $
- * $Id: PodcastService.java 121811 2013-03-26 23:52:47Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.0/podcasts-api/src/java/org/sakaiproject/api/app/podcasts/PodcastService.java $
+ * $Id: PodcastService.java 125825 2013-06-16 12:40:53Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,7 +64,7 @@ public interface PodcastService // extends EntityProducer
 	public static final String COLLECTION_PODCASTS_DESCRIPTION = "Common Folder for All Site Podcasts";
 
 	/** This string gives the Service name (class w/ package prefix) for podcast service **/
-	public static final String PODCASTS_SERVICE_NAME = "org.sakaiproject.api.app.syllabus.PodcastService";
+	public static final String PODCASTS_SERVICE_NAME = "org.sakaiproject.api.app.podcasts.PodcastService";
 
 	/** This string is the name of the property used when displaying and sorting the podcasts **/
 	public static final String DISPLAY_DATE = "displayDate";

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/BaseMailArchiveService.java $
- * $Id: BaseMailArchiveService.java 97074 2011-08-16 20:24:30Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.0/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/BaseMailArchiveService.java $
+ * $Id: BaseMailArchiveService.java 131324 2013-11-07 20:22:01Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +56,7 @@ import org.sakaiproject.message.api.MessageChannel;
 import org.sakaiproject.message.api.MessageChannelEdit;
 import org.sakaiproject.message.api.MessageHeader;
 import org.sakaiproject.message.api.MessageHeaderEdit;
-import org.sakaiproject.message.impl.BaseMessageService;
+import org.sakaiproject.message.util.BaseMessage;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.cover.TimeService;
@@ -73,10 +73,10 @@ import org.w3c.dom.NodeList;
 
 /**
  * <p>
- * BaseMailArchiveService extends the BaseMessageService for the specifics of MailArchive.
+ * BaseMailArchiveService extends the BaseMessage for the specifics of MailArchive.
  * </p>
  */
-public abstract class BaseMailArchiveService extends BaseMessageService implements MailArchiveService, ContextObserver
+public abstract class BaseMailArchiveService extends BaseMessage implements MailArchiveService, ContextObserver
 {
 	/** Our logger. */
 	private static Log M_log = LogFactory.getLog(BaseMailArchiveService.class);

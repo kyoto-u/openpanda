@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/services/qti/QTIService.java $
- * $Id: QTIService.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-cp/src/java/org/sakaiproject/tool/assessment/contentpackaging/ImportService.java $
+ * $Id: ImportService.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +49,7 @@ import org.w3c.dom.NodeList;
 
 /**
  * <p>Copyright: Copyright (c) 2007 Sakai</p>
- * @version $Id: QTIService.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * @version $Id: ImportService.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  */
 
 public class ImportService {

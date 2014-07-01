@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/NameHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/NameHelper.java $
  * $Id: NameHelper.java 96735 2011-08-10 15:57:33Z aaronz@vt.edu $
  ***********************************************************************************
  *

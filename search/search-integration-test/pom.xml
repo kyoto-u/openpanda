@@ -5,7 +5,7 @@
   <parent>
     <artifactId>search</artifactId>
     <groupId>org.sakaiproject.search</groupId>
-    <version>1.4.3</version>
+    <version>10.0</version><!-- ProjectVersion -->
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>sakai-search-integration-test</name>
@@ -21,7 +21,6 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>2.5.6.SEC01</version>
       <type>jar</type>
     </dependency>
   </dependencies>

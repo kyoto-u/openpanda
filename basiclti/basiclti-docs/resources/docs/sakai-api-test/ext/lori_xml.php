@@ -54,6 +54,9 @@ $method="POST";
 $endpoint = $_REQUEST['url'];
 $content_type = "application/xml";
 
+//http://stackoverflow.com/questions/2822774/php-is-htmlentities-sufficient-for-creating-xml-safe-values
+$lis_result_sourcedid = htmlspecialchars($lis_result_sourcedid);
+
 if ( $_REQUEST['submit'] == "Get Course Structure" && isset($_REQUEST['context_id'] ) &&
     isset($_REQUEST['lis_result_sourcedid'] ) ) {
     $postBody = str_replace(
@@ -70,7 +73,7 @@ if ( $_REQUEST['submit'] == "Get Course Structure" && isset($_REQUEST['context_i
     exit();
 }
 
-$response = sendOAuthBodyPOST($method, $endpoint, $oauth_consumer_key, $oauth_consumer_secret, $content_type, $postBody);
+$response = sendOAuthBody($method, $endpoint, $oauth_consumer_key, $oauth_consumer_secret, $content_type, $postBody);
 global $LastOAuthBodyBaseString;
 $lbs = $LastOAuthBodyBaseString;
 

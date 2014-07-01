@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/site/api/Site.java $
- * $Id: Site.java 101392 2011-12-05 15:07:25Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/site/api/Site.java $
+ * $Id: Site.java 120411 2013-02-23 01:14:26Z botimer@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -90,8 +90,14 @@ public interface Site extends Edit, Comparable, Serializable, AuthzGroup
 	/** @return A short text Description of the site. */
 	String getShortDescription();
 
+	/** @return An HTML-safe version of the short Description of the site. */
+	String getHtmlShortDescription();
+
 	/** @return A longer text Description of the site. */
 	String getDescription();
+
+	/** @return An HTML-safe version of the Description of the site. */
+	String getHtmlDescription();
 
 	/** @return The Site's icon URL. */
 	String getIconUrl();
@@ -118,7 +124,7 @@ public interface Site extends Edit, Comparable, Serializable, AuthzGroup
 	List<SitePage> getPages();
 
 	/**
-	 * Make sure pages and tools, groups and properties are loaded, not lazy
+	 * Make sure description, pages, tools, groups, and properties are loaded, not lazy
 	 */
 	void loadAll();
 
@@ -238,6 +244,7 @@ public interface Site extends Edit, Comparable, Serializable, AuthzGroup
      * @param groupIds IDs of authZ groups (AuthzGroup selection criteria),
      *      a null groupIds includes all groups in the site, an empty set includes none of them
      * @return collection of user IDs who are in (members of) a set of site groups
+     * @since 1.3.0
      */
     Collection<String> getMembersInGroups(Set<String> groupIds);
 

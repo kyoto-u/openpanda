@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.3/podcasts-app/src/java/org/sakaiproject/tool/podcasts/jsf/tag/DatePickerTag.java $
- * $Id: DatePickerTag.java 59679 2009-04-03 23:27:51Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.0/podcasts-app/src/java/org/sakaiproject/tool/podcasts/jsf/tag/DatePickerTag.java $
+ * $Id: DatePickerTag.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ import javax.faces.context.FacesContext;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: DatePickerTag.java 59679 2009-04-03 23:27:51Z arwhyte@umich.edu $
+ * @version $Id: DatePickerTag.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  */
 
 public class DatePickerTag extends UIComponentTag

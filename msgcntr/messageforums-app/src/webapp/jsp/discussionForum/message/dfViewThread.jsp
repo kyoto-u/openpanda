@@ -17,10 +17,11 @@
 	<h:form id="msgForum" rendered="#{!ForumTool.selectedTopic.topic.draft || ForumTool.selectedTopic.topic.createdBy == ForumTool.userId}">
 
 		<!--jsp/discussionForum/message/dfViewThread.jsp-->
-       		<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
-       		<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
+       		<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+       		<script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
   			<sakai:script contextBase="/messageforums-tool" path="/js/dialog.js"/>
-			<sakai:script contextBase="/messageforums-tool" path="/js/jquery.qtip.js"/>
+			<script type="text/javascript" src="/library/js/jquery/qtip/jquery.qtip-latest.min.js"></script>
+			<link rel="stylesheet" type="text/css" href="/library/js/jquery/qtip/jquery.qtip-latest.min.css" />
   			<link rel="stylesheet" type="text/css" href="/messageforums-tool/css/dialog.css" />	
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 		<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
@@ -61,14 +62,15 @@
  			$(document).ready(function() {
 				setupMessageNav('messagePending');
 				setupMessageNav('messageNew');
-				if ($('div.hierItemBlock').length > 2){
+				if ($('div.hierItemBlock').size() >= 2){
 					$('.itemNav').clone().addClass('specialLink').appendTo('form')
+					$("<br/><br/>").appendTo('form');
 				}
 			});
 </script>		
-		<sakai:tool_bar separator="#{msgs.cdfm_toolbar_separator}">
+		<sakai:tool_bar separator="#{msgs.cdfm_toolbar_separator}" rendered="#{!ForumTool.threadMoved}">
 				<sakai:tool_bar_item action="#{ForumTool.processDfMsgReplyThread}" value="#{msgs.cdfm_reply_thread}" 
-		  			rendered="#{ForumTool.selectedTopic.isNewResponse && ForumTool.selectedThreadHead.msgApproved && !ForumTool.selectedTopic.locked && !ForumTool.selectedForum.locked == 'true'}" />
+		  			rendered="#{ForumTool.selectedTopic.isNewResponseToResponse && ForumTool.selectedThreadHead.msgApproved && !ForumTool.selectedTopic.locked && !ForumTool.selectedForum.locked == 'true'}" />
 		  		
 		  		<h:commandLink action="#{ForumTool.processActionMarkAllThreadAsRead}" rendered="#{ForumTool.selectedTopic.isMarkAsRead and not ForumTool.selectedTopic.topic.autoMarkThreadsRead}"> 
    	        		<h:outputText value=" #{msgs.cdfm_mark_all_as_read}" />
@@ -90,14 +92,16 @@
 			      <h:commandLink action="#{ForumTool.processActionHome}" value="#{msgs.cdfm_discussion_forums}" title=" #{msgs.cdfm_discussion_forums}"
 			      		rendered="#{ForumTool.forumsTool}" />
       			  <f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
-					  <h:commandLink action="#{ForumTool.processActionDisplayForum}" value="#{ForumTool.selectedForum.forum.title}" title=" #{ForumTool.selectedForum.forum.title}" rendered="#{ForumTool.showForumLinksInNav}">
+					  <h:commandLink action="#{ForumTool.processActionDisplayForum}" title=" #{ForumTool.selectedForum.forum.title}" rendered="#{ForumTool.showForumLinksInNav}">
 						  <f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+						  <h:outputText value="#{ForumTool.selectedForum.forum.title}"/>
 					  </h:commandLink>
 					  <h:outputText value="#{ForumTool.selectedForum.forum.title}" rendered="#{!ForumTool.showForumLinksInNav}"/>
 				  <f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
-				  	  <h:commandLink action="#{ForumTool.processActionDisplayTopic}" value="#{ForumTool.selectedTopic.topic.title}" title="#{ForumTool.selectedTopic.topic.title}">
+				  	  <h:commandLink action="#{ForumTool.processActionDisplayTopic}" title="#{ForumTool.selectedTopic.topic.title}">
 					  	  <f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
 					  	  <f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
+					  	  <h:outputText value="#{ForumTool.selectedTopic.topic.title}"/>
 				  	  </h:commandLink>
 				  <f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
 				  	<h:graphicImage url="/images/silk/date_delete.png" title="#{msgs.topic_restricted_message}" alt="#{msgs.topic_restricted_message}" rendered="#{ForumTool.selectedTopic.availability == 'false'}" style="margin-right:.5em"/>
@@ -134,7 +138,19 @@
 				 <%@ include file="dfViewSearchBarThread.jsp"%>
 		
 		<h:outputText value="#{msgs.cdfm_postFirst_warning}" rendered="#{ForumTool.needToPostFirst}" styleClass="messageAlert"/>
-		<h:outputText value="#{msgs.cdfm_no_unread_messages}" rendered="#{empty ForumTool.selectedThread && !ForumTool.needToPostFirst}" styleClass="instruction" style="display:block;"/>
+        <%-- a moved message --%>
+        <h:panelGroup rendered="#{ForumTool.threadMoved}" >
+          <f:verbatim><span></f:verbatim>
+            <h:outputText styleClass="threadMovedMsg" value="<b>#{ForumTool.selectedThreadHead.message.title}</b> " escape="false"/>
+            <h:outputText styleClass="threadMovedMsg" value="#{msgs.hasBeen} " />
+            <h:commandLink action="#{ForumTool.processActionDisplayTopic}" id="topic_title" styleClass="threadMovedMsg">
+              <h:outputText value="#{msgs.moved}" />
+                                                    <f:param value="#{ForumTool.selectedThreadHead.message.topic.id}" name="topicId"/>
+                                                    <f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+                                            </h:commandLink>
+            <h:outputText styleClass="threadMovedMsg"  value=" #{msgs.anotherTopic}" />
+          <f:verbatim></span></f:verbatim>
+        </h:panelGroup>
 		<div id="messNavHolder" style="clear:both;"></div>
 		<%--rjlowe: Expanded View to show the message bodies, but not threaded --%>
 		<h:dataTable id="expandedMessages" value="#{ForumTool.selectedThread}" var="message" rendered="#{!ForumTool.threaded}"

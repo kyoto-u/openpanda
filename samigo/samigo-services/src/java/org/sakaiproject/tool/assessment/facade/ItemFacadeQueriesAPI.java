@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/ItemFacadeQueriesAPI.java $
- * $Id: ItemFacadeQueriesAPI.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/ItemFacadeQueriesAPI.java $
+ * $Id: ItemFacadeQueriesAPI.java 122568 2013-04-11 09:52:12Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,8 +45,6 @@ public interface ItemFacadeQueriesAPI
 
   public void show(Long itemId);
 
-  public ItemFacade getItem(Long itemId, String agent);
-
   public void showType(Long typeId);
 
   public void listType();
@@ -75,6 +73,15 @@ public interface ItemFacadeQueriesAPI
    */
   public ItemFacade getItem(Long itemId);
 
+  /**
+   * Retrieve an item from storage
+   * @param itemId the itemId
+   * @param agent agentId not used
+   * @return the item or null if not found
+   * @deprecated use {@link getItem}
+   */
+  public ItemFacade getItem(Long itemId, String agent);
+  
   public HashMap getItemsByKeyword(String keyword);
 
   public Long getItemTextId(Long publishedItemId);

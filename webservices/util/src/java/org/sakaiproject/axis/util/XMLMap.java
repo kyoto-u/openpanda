@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/webservices/tags/webservices-1.1.3/util/src/java/org/sakaiproject/axis/util/XMLMap.java $
- * $Id: XMLMap.java 118448 2013-01-17 20:59:36Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/webservices/tags/sakai-10.0/util/src/java/org/sakaiproject/axis/util/XMLMap.java $
+ * $Id: XMLMap.java 118266 2013-01-10 22:00:09Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

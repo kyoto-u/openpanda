@@ -1,6 +1,6 @@
 /*****************************************************************************
- * $URL: https://source.sakaiproject.org/svn/config/tags/sakai-2.9.3/localization/bundles/src/java/org/sakaiproject/localization/util/SiteemaconProperties.java $
- * $Id: SiteemaconProperties.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/config/tags/sakai-10.0/localization/bundles/src/java/org/sakaiproject/localization/util/SiteemaconProperties.java $
+ * $Id: SiteemaconProperties.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  *****************************************************************************
  *
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *			http://www.osedu.org/licenses/ECL-2.0
+ *			http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

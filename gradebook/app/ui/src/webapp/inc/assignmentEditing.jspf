@@ -50,13 +50,18 @@
 		<h:outputText style="color: #BB1111" value="#{bean.selectedCategory.itemValue}" rendered="#{bean.assignment.pointsPossible != bean.selectedCategory.itemValue}"/>
 		<h:outputText styleClass="validation" value="#{msgs.cat_external_value_warning}" rendered="#{bean.assignment.pointsPossible != bean.selectedCategory.itemValue}"/>
 	</h:panelGroup>
+	<h:outputText value=""/>
+	<h:panelGrid columns="2" columnClasses="prefixedCheckbox">
+		<h:selectBooleanCheckbox id="extraCredit" value="#{bean.assignment.isExtraCredit}" onkeypress="return submitOnEnter(event, 'gbForm:saveButton');"/>
+		<h:outputLabel for="extraCredit" value="#{msgs.extra_credit}" />
+	</h:panelGrid>
 
 	<h:panelGroup rendered="#{!bean.assignment.externallyMaintained}">
 		<h:outputLabel for="dueDate" id="dueDateLabel" value="#{msgs.due_date}"/>
 		<h:outputText style="font-weight:normal;" value=" #{msgs.date_entry_format_description}"/>
 	</h:panelGroup>
 	<h:panelGroup rendered="#{!bean.assignment.externallyMaintained}">
-    <t:inputCalendar id="dueDate" value="#{bean.assignment.dueDate}" renderAsPopup="true" renderPopupButtonAsImage="true" popupTodayString="#{msgs.date_entry_today_is}" popupWeekString="#{msgs.date_entry_week_header}" />
+    <t:inputCalendar id="dueDate" value="#{bean.assignment.dueDate}" renderAsPopup="true" renderPopupButtonAsImage="true" popupTodayString="#{msgs.date_entry_today_is}" popupWeekString="#{msgs.date_entry_week_header}" popupDateFormat="#{msgs.date_entry_format}" popupGotoString="#{msgs.date_entry_goto}" />
 		<h:message for="dueDate" styleClass="alertMessageInline" />
 	</h:panelGroup>
 	

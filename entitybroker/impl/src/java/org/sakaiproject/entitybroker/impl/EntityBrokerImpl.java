@@ -1,6 +1,6 @@
 /**
- * $Id: EntityBrokerImpl.java 76274 2010-04-16 16:02:23Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/impl/src/java/org/sakaiproject/entitybroker/impl/EntityBrokerImpl.java $
+ * $Id: EntityBrokerImpl.java 123125 2013-04-23 01:03:34Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/impl/src/java/org/sakaiproject/entitybroker/impl/EntityBrokerImpl.java $
  * EntityBrokerImpl.java - entity-broker - Apr 6, 2008 9:03:03 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -325,6 +325,14 @@ public class EntityBrokerImpl implements EntityBroker, PropertiesProvider {
     public List<BrowseEntity> getBrowseableEntities(String parentPrefix) {
         List<BrowseEntity> l = entityBrokerManager.getBrowseableEntities(parentPrefix);
         return l;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.sakaiproject.entitybroker.entityprovider.extension.LearningTrackingProvider#registerStatement(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Float)
+     */
+    public void registerStatement(String prefix, String actorEmail, String verbStr, String objectURI, Boolean resultSuccess, Float resultScaledScore) {
+        externalIntegrationProvider.registerStatement(prefix, actorEmail, verbStr, objectURI, resultSuccess, resultScaledScore);
     }
 
 

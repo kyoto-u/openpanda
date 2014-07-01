@@ -41,8 +41,9 @@
 				</h:outputText>
 				<h:outputText value="#{msgs.student_view_not_released}" rendered="#{!studentViewBean.courseGradeReleased}"/>
 			</h:panelGroup>
-			
-			<h:outputText rendered="#{studentViewBean.showCoursePoints}" value="#{msgs.course_points_name}" />
+			<h:panelGroup>	
+				<h:outputText rendered="#{studentViewBean.showCoursePoints}" value="#{msgs.course_points_name}" />
+			</h:panelGroup>
 			<h:panelGroup>
 			  <h:outputText id="cumPoints" value="#{studentViewBean.pointsEarned}" rendered="#{studentViewBean.showCoursePoints}">
 			    <f:converter converterId="org.sakaiproject.gradebook.jsf.converter.POINTS" />
@@ -87,6 +88,8 @@
 					</f:facet>
 					<h:outputText value="#{row.associatedAssignment.name}" rendered="#{row.assignment}"/>
 					<h:outputText value="#{row.name}" styleClass="categoryHeading" rendered="#{row.isCategory}"/>
+					<h:outputText value=" (#{msgs.extra_credit})" rendered="#{row.isCategory && row.isExtraCredit}"/>
+					<h:outputText value=" (#{msgs.extra_credit})" rendered="#{!row.isCategory && row.associatedAssignment.isExtraCredit && (row.associatedAssignment.category == null || !row.associatedAssignment.category.isExtraCredit) }"/>
 		            <h:outputText value=" (" styleClass="categoryHeading" rendered="#{row.isCategory && (row.dropHighest != 0 || row.drop_lowest != 0 || row.keepHighest != 0)}" />
 		            <h:outputFormat value="#{msgs.cat_drop_highest_display}" styleClass="categoryHeading" rendered="#{row.isCategory && row.dropHighest != 0}" >
 		                <f:param value="#{row.dropHighest}"/>

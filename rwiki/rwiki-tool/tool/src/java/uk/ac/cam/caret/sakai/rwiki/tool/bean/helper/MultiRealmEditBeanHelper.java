@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/helper/MultiRealmEditBeanHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/helper/MultiRealmEditBeanHelper.java $
  * $Id: MultiRealmEditBeanHelper.java 14502 2006-09-13 11:31:53Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

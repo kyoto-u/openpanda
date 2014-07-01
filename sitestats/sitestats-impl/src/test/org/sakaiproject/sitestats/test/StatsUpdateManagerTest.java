@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/StatsUpdateManagerTest.java $
- * $Id: StatsUpdateManagerTest.java 78669 2010-06-21 13:55:23Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/StatsUpdateManagerTest.java $
+ * $Id: StatsUpdateManagerTest.java 116373 2012-11-14 18:40:48Z matthew.buckett@it.ox.ac.uk $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,17 +52,19 @@ import org.sakaiproject.sitestats.impl.SiteVisitsImpl;
 import org.sakaiproject.sitestats.impl.StatsUpdateManagerImpl;
 import org.sakaiproject.sitestats.test.data.FakeData;
 import org.sakaiproject.sitestats.test.mocks.FakeEvent;
+import org.sakaiproject.sitestats.test.mocks.FakeEventRegistryService;
 import org.sakaiproject.sitestats.test.mocks.FakeSite;
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
 
 
 public class StatsUpdateManagerTest extends AbstractAnnotationAwareTransactionalTests { 
 	// AbstractAnnotationAwareTransactionalTests / AbstractTransactionalSpringContextTests
-	private StatsUpdateManager		M_sum;
-	private StatsManager			M_sm;
-	private DB						db;
-	private SiteService				M_ss;
-	private EventTrackingService	M_ets;
+	private StatsUpdateManager			M_sum;
+	private StatsManager				M_sm;
+	private DB							db;
+	private SiteService					M_ss;
+	private EventTrackingService		M_ets;
+	private FakeEventRegistryService	M_ers;
 	
 	// Spring configuration	
 	public void setStatsUpdateManager(StatsUpdateManager M_sum) {
@@ -73,6 +75,9 @@ public class StatsUpdateManagerTest extends AbstractAnnotationAwareTransactional
 	}
 	public void setDb(DB db) {
 		this.db = db;
+	}
+	public void setEventRegistryService(FakeEventRegistryService M_ers) {
+		this.M_ers = M_ers;
 	}
 	
 	@Override
@@ -111,6 +116,8 @@ public class StatsUpdateManagerTest extends AbstractAnnotationAwareTransactional
 		// apply
 		replay(M_sm);
 		((StatsUpdateManagerImpl)M_sum).setStatsManager(M_sm);
+		// Setups fake dependencies.
+		M_ers.setStatsManager(M_sm);
 	}
 
 	// run this before each test starts and as part of the transaction

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/RecentChangesMacro.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/RecentChangesMacro.java $
  * $Id: RecentChangesMacro.java 96569 2011-08-07 18:36:42Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *

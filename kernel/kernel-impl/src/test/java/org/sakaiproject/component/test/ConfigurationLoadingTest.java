@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: ConfigurationLoadingTest.java 122965 2013-04-18 15:02:58Z arwhyte@umich.edu $
+* $Id: ConfigurationLoadingTest.java 122214 2013-04-04 20:50:04Z azeckoski@unicon.net $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -71,7 +71,7 @@ public class ConfigurationLoadingTest extends SakaiKernelTestBase {
 	public void testSakaiProperties() throws Exception {
 		// Check that the test sakai-configuration.xml and sakai.properties files have been loaded.
 		Assert.assertTrue(serverConfigurationService.getString("loadedTomcatSakaiProperties").equals("true"));
-		Assert.assertTrue(serverConfigurationService.getString("gatewaySiteId").equals("!gateway"));
+		Assert.assertTrue(serverConfigurationService.getString("kernel.test.key").equals("kernel"));
 		ITestComponent testComponent = (ITestComponent)getService(ITestComponent.class.getName());
 		Assert.assertTrue(testComponent.getOverrideString1().equals("nondefault"));
 		Assert.assertTrue(testComponent.getPlaceholderString1().equals("nondefault"));
@@ -189,6 +189,18 @@ public class ConfigurationLoadingTest extends SakaiKernelTestBase {
         assertEquals("\"this\",\"is\",\"invalid", invalidStr);
         String[] invalid = serverConfigurationService.getStrings("stringInvalidCsv");
         assertNull(invalid);
+
+        // KNL-1032 - stringCountEmptyList, stringEmptyList
+        String[] stringsEmpty = serverConfigurationService.getStrings("stringCountEmptyList");
+        assertNotNull(stringsEmpty);
+        assertEquals(0, stringsEmpty.length);
+        stringsEmpty = serverConfigurationService.getStrings("stringEmptyList");
+        assertNotNull(stringsEmpty);
+        assertEquals(0, stringsEmpty.length);
+
+        // also quickly verify non-existent works correctly
+        String[] stringsNotExists = serverConfigurationService.getStrings("stringsNotExistsInTheConfigAnywhereXXXXXXXXXXXXXX");
+        assertNull(stringsNotExists);
     }
 	
 	/**

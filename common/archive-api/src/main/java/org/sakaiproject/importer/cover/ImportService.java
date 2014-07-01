@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/archive-api/src/main/java/org/sakaiproject/importer/cover/ImportService.java $
- * $Id: ImportService.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/archive-api/src/main/java/org/sakaiproject/importer/cover/ImportService.java $
+ * $Id: ImportService.java 133378 2014-01-17 16:47:47Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,7 +24,9 @@ package org.sakaiproject.importer.cover;
 import java.util.Collection;
 
 import org.sakaiproject.importer.api.ImportDataSource;
+import org.sakaiproject.importer.api.ResetOnCloseInputStream;
 import org.sakaiproject.component.cover.ComponentManager;
+import java.io.InputStream;
 
 public class ImportService {
 	/**
@@ -50,11 +52,11 @@ public class ImportService {
 		getInstance().doImportItems(importables, siteId);
 	}
 	
-	public static boolean isValidArchive(byte[] archiveFileData) {
+	public static boolean isValidArchive(ResetOnCloseInputStream archiveFileData) {
 		return getInstance().isValidArchive(archiveFileData);
 	}
 	
-	public static ImportDataSource parseFromFile(byte[] archiveFileData) {
+	public static ImportDataSource parseFromFile(ResetOnCloseInputStream archiveFileData) {
 		return getInstance().parseFromFile(archiveFileData);
 	}
 

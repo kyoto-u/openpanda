@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ContentsDeliveryBean.java $
- * $Id: ContentsDeliveryBean.java 63326 2009-06-04 22:07:55Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ContentsDeliveryBean.java $
+ * $Id: ContentsDeliveryBean.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,8 +40,8 @@ public class ContentsDeliveryBean
 	 */
 	private static final long serialVersionUID = -4619361961662881387L;
 private java.util.ArrayList partsContents;
-  private float currentScore;
-  private float maxScore; // SectionContentsBean
+  private double currentScore;
+  private double maxScore; // SectionContentsBean
   // for display/hide score
   private boolean showStudentScore;
   private String pointsDisplayString;
@@ -50,7 +50,7 @@ private java.util.ArrayList partsContents;
    * Current score for entire contents.
    * @return current score for entire contents
    */
-  public float getCurrentScore()
+  public double getCurrentScore()
   {
     return currentScore;
   }
@@ -59,7 +59,7 @@ private java.util.ArrayList partsContents;
    * Current score for entire contents
    * @param currentScore current score for entire contents
    */
-  public void setCurrentScore(float currentScore)
+  public void setCurrentScore(double currentScore)
   {
     this.currentScore = currentScore;
   }
@@ -68,7 +68,7 @@ private java.util.ArrayList partsContents;
    * Maximum score for entire contents.
    * @return maximum score for entire contents
    */
-  public float getMaxScore()
+  public double getMaxScore()
   {
     return maxScore;
   }
@@ -77,7 +77,7 @@ private java.util.ArrayList partsContents;
    * Maximum score for entire contents.
    * @param maxScore maximum score for entire contents
    */
-  public void setMaxScore(float maxScore)
+  public void setMaxScore(double maxScore)
   {
     this.maxScore = maxScore;
   }

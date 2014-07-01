@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/constants/QTIConstantStrings.java $
- * $Id: QTIConstantStrings.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/qti/constants/QTIConstantStrings.java $
+ * $Id: QTIConstantStrings.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,7 @@ package org.sakaiproject.tool.assessment.qti.constants;
  * <p>Organization: Sakai Project</p>
  * @author rshastri
  * @author Ed Smiley esmiley@stanford.edu
- * @version $Id: QTIConstantStrings.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * @version $Id: QTIConstantStrings.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 public class QTIConstantStrings
 {
@@ -168,6 +168,8 @@ public class QTIConstantStrings
   public static final  String PROMPT = "prompt";
   public static final  String FIBTYPE = "fibtype";
   public static final  String FINTYPE = "fintype";
+  public static final  String EMITYPE = "emitype";
+  
   public static final  String ORIENTATION = "orientation";
   public static final  String LOWERBOUND = "lowerbound";
   public static final  String UPPERBOUND = "upperbound";

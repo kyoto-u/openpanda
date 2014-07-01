@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-render-impl/impl/src/java/org/sakaiproject/portal/render/portlet/services/SakaiOptionalPortletContainerServices.java $
- * $Id: SakaiOptionalPortletContainerServices.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-render-impl/impl/src/java/org/sakaiproject/portal/render/portlet/services/SakaiOptionalPortletContainerServices.java $
+ * $Id: SakaiOptionalPortletContainerServices.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -66,7 +66,7 @@ import org.sakaiproject.user.cover.UserDirectoryService;
 /**
  * @author csev
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 105079 $
  */
 public class SakaiOptionalPortletContainerServices implements OptionalContainerServices
 {

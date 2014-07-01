@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/site/api/SiteService.java $
- * $Id: SiteService.java 113287 2012-09-21 15:14:51Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/site/api/SiteService.java $
+ * $Id: SiteService.java 307866 2014-04-07 15:13:58Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,7 @@
 
 package org.sakaiproject.site.api;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -128,6 +129,9 @@ public interface SiteService extends EntityProducer
 	/** The property to indicate whether or not subsites are to be added to the tool list */
 	public static final String PROP_SHOW_SUBSITES = "sakai:show-subsites";
 	
+	/** The configuration property for enabling or disabling user-site caching, defaults to true. */
+	public static final String PROP_CACHE_USER_SITES = "user.site.cache.enabled";
+
 	/**
 	 * Event for adding user to site
 	 * info logged: user id, site id, role name, active status, provided status
@@ -164,6 +168,28 @@ public interface SiteService extends EntityProducer
 	 */
 	static final String EVENT_USER_GROUP_MEMBERSHIP_REMOVE = "user.group.membership.delete";
 
+	/**
+	 * Event for recording site visits that are denied based on permissions.
+	 * The resource referenced is the Site ID and the User ID will be available.
+	 */
+	static final String EVENT_SITE_VISIT_DENIED = "site.visit.denied";
+
+	/**
+	 * An event to trigger User-Site cache invalidation across the cluster.
+	 * The resource referenced is the Site ID.
+	 */
+	static final String EVENT_SITE_USER_INVALIDATE = "site.usersite.invalidate";
+
+	/**
+	 * An event for starting the site import
+	 */
+	static final String EVENT_SITE_IMPORT_START = "site.import.start";
+	
+	/**
+	 * An event for ending the site import
+	 */
+	static final String EVENT_SITE_IMPORT_END = "site.import.end";
+	
 	/**
 	 * <p>
 	 * SelectionType enumerates different supported types of selection criteria for getting / counting sites.
@@ -233,6 +259,12 @@ public interface SiteService extends EntityProducer
 
 		/** Get any non-user sites. */
 		public static final SelectionType NON_USER = new SelectionType("nonUser", false, true, false, true);
+		
+		/** Get my deleted sites. */
+		public static final SelectionType DELETED = new SelectionType("deleted", true, true, true, false);
+
+		/** Get any deleted sites, normally used by admin or purge job. */
+		public static final SelectionType ANY_DELETED = new SelectionType("anyDeleted", false, false, false, false);
 	}
 
 	/**
@@ -352,7 +384,8 @@ public interface SiteService extends EntityProducer
 	boolean siteExists(String id);
 
 	/**
-	 * Access a site object.
+	 * Access a site object. This method does not perform any security/permission checks. 
+	 * If you need permission checks to occur, use {@link getSiteVisit(String id)} instead
 	 * 
 	 * @param id
 	 *        The site id string.
@@ -686,6 +719,103 @@ public interface SiteService extends EntityProducer
 	 *            if the site is otherwise being edited.
 	 */
 	void join(String id) throws IdUnusedException, PermissionException;
+        
+        /**
+     * Check if current user has the allowed user account type to join the site.
+     * The account type of the joining user can be restricted by the site maintainer if option is available system-wide.
+     * 
+     * @author sfoster9@uwo.ca, bjones86@uwo.ca
+     * @param id
+     *      The site id
+     * @return true if the user has same user account type that the site is restricted to, or if the option is disabled system-wide
+     */
+    boolean isAllowedToJoin(String id);
+    
+    /**
+     * Get the group that a joining user will be added to upon joining a site, if option is available system-wide
+     * 
+     * @author sfoster9@uwo.ca, bjones86@uwo.ca
+     * @param id
+     *      The site id
+     * @return group id of the group that a joining user will be added to upon joining a site; an empty string represents no joiner group
+     */
+    String getJoinGroupId(String id);
+    
+    /**
+	 * Determine if the current user is already a member of the site.
+	 * 
+     * @author sfoster9@uwo.ca, bjones86@uwo.ca
+	 * @param siteID
+	 * 		The ID of the site in question
+	 * @return true if current user is a member of the site
+	 */
+    boolean isCurrentUserMemberOfSite(String id);
+    
+    /**
+     * Checks if the system and the provided site allows account types of joining users to be limited
+     * 
+     * @author sfoster9@uwo.ca, bjones86@uwo.ca
+     * @param id 
+     *      The site to check if the join system will limit users to allowed account types
+     * @return true if the join site is limiting account types
+     */
+    boolean isLimitByAccountTypeEnabled(String id);
+    
+    /**
+     * Get the list of allowed account type categories
+     * 
+     * @author bjones86@uwo.ca
+     * @return list of allowed account type categories from sakai.properties
+     */
+    LinkedHashSet<String> getAllowedJoinableAccountTypeCategories();
+    
+    /**
+     * Get the (unfriendly) list of allowed account types
+     * 
+     * @author bjones86@uwo.ca
+     * @return list of allowed account types from sakai.properties (internal account type key values)
+     */
+    List<String> getAllowedJoinableAccountTypes();
+    
+    /**
+     * Get the 'friendly' list of AllowedJoinableAccount objects
+     * 
+     * @author bjones86@uwo.ca
+     * @return
+     */
+    List<AllowedJoinableAccount> getAllowedJoinableAccounts();
+    
+    /**
+     * Check if joiner group is enabled/disabled globally (sakai.property)
+     * 
+     * @author bjones86@uwo.ca
+     * @return true/false (enabled/disabled)
+     */
+    boolean isGlobalJoinGroupEnabled();
+    
+    /**
+     * Check if exclude from public list is enabled/disabled globally (sakai.property)
+     * 
+     * @author bjones86@uwo.ca
+     * @return true/false (enabled/disabled)
+     */
+    boolean isGlobalJoinExcludedFromPublicListEnabled();
+    
+    /**
+     * Check if join limited by account types is enabled/disabled globally (sakai.property)
+     * 
+     * @author bjones86@uwo.ca
+     * @return true/false (enabled/disabled)
+     */
+    boolean isGlobalJoinLimitByAccountTypeEnabled();
+    
+    /**
+     * Check if join from Site Browser is enabled/disabled globally (sakai.property)
+     * 
+     * @author bjones86@uwo.ca
+     * @return true/false (enabled/disabled)
+     */
+    boolean isGlobalJoinFromSiteBrowserEnabled();
 
 	/**
 	 * check permissions for unjoin() - unjoining the site and removing all role relationships.
@@ -727,8 +857,39 @@ public interface SiteService extends EntityProducer
 	List<String> getSiteTypes();
 
 	/**
+	 * Access a list of sites that the current user can visit, sorted by title.
+	 *
+	 * This is a convenience and performance wrapper for getSites, because there are many places that need
+	 * the complete list of sites for the current user, and getSites is unnecessarily verbose in that case.
+	 * Because the semantics of this call are specific, it can also be optimized by the implementation.
+	 *
+	 * The sites returned follow the same semantics as those from
+	 * {@link #getSites(SelectionType, Object, String, Map, SortType, PagingPosition) getSites}.
+	 *
+	 * This signature is a wrapper for {@link #getUserSites(boolean) getUserSites(true)}, requiring descriptions be included.
+	 *
+	 * @return A List<Site> of those sites the current user can access.
+	 */
+	List<Site> getUserSites();
+
+	/**
+	 * Access a list of sites that the current user can visit, sorted by title, optionally requiring descriptions.
+	 *
+	 * This is a convenience and performance wrapper for getSites, because there are many places that need
+	 * the complete list of sites for the current user, and getSites is unnecessarily verbose in that case.
+	 * Because the semantics of this call are specific, it can also be optimized by the implementation.
+	 *
+	 * The sites returned follow the same semantics as those from
+	 * {@link #getSites(SelectionType, Object, String, Map, SortType, PagingPosition) getSites}.
+	 *
+	 * @param requireDescription when true, full descriptions will be included; when false, full descriptions may be omitted.
+	 * @return A List<Site> of those sites the current user can access.
+	 */
+	List<Site> getUserSites(boolean requireDescription);
+
+	/**
 	 * Access a list of Site objects that meet specified criteria.
-	 * NOTE: The sites returned will not have child objects loaded. If these sites need to be saved
+	 * NOTE: The sites returned may not have child objects loaded. If these sites need to be saved
 	 * a completely populated site should be retrieved from {@link #getSite(String)}
 	 * @param type
 	 *        The SelectionType specifying what sort of selection is intended.
@@ -745,8 +906,59 @@ public interface SiteService extends EntityProducer
 	 * @return The List (Site) of Site objets that meet specified criteria.
 	 */
 	List<Site> getSites(SelectionType type, Object ofType, String criteria, Map<String, String> propertyCriteria, SortType sort, PagingPosition page);
-
 	
+	/**
+	 * Access a list of Site objects that meet specified criteria, with control over description retrieval.
+	 *
+	 * Note that this signature is primarily provided to help with performance when retrieving lists of
+	 * sites not for full display, specifically for the list of a user's sites for navigation. Note that
+	 * any sites that have their descriptions, pages, or tools cached will be returned completely, so some
+	 * or all full descriptions may be present even when requireDescription is passed as false.
+	 *
+	 * If a fully populated Site is desired from a potentially partially populated Site, call
+	 * {@link #getSite(String id) getSite} or {@link Site#loadAll()}. Either method will load and cache
+	 * whatever additional data is not yet cached.
+	 *
+	 * @param type
+	 *        The SelectionType specifying what sort of selection is intended.
+	 * @param ofType
+	 *        Site type criteria: null for any type; a String to match a single type; A String[], List or Set to match any type in the collection.
+	 * @param criteria
+	 *        Additional selection criteria: sites returned will match this string somewhere in their id, title, description, or skin.
+	 * @param propertyCriteria
+	 *        Additional selection criteria: sites returned will have a property named to match each key in the map, whose values match (somewhere in their value) the value in the map (may be null or empty).
+	 * @param sort
+	 *        A SortType indicating the desired sort. For no sort, set to SortType.NONE.
+	 * @param page
+	 *        The PagePosition subset of items to return.
+	 * @param requireDescription
+	 *        When true, force a full retrieval of each description; when false, return any uncached descriptions as the empty string
+	 * @return The List of Site objects that meet specified criteria, with potentially empty descriptions based on requireDescription and caching.
+	 */
+	List<Site> getSites(SelectionType type, Object ofType, String criteria, Map<String, String> propertyCriteria, SortType sort, PagingPosition page, boolean requireDescription);
+
+	/**
+	 * Get the Site IDs for all sites matching criteria.
+	 * This is useful when you only need the listing of site ids (for other operations) and do not need the actual Site objects.
+	 *
+	 * All parameters are the same as {@link #getSites(org.sakaiproject.site.api.SiteService.SelectionType, Object, String, Map, org.sakaiproject.site.api.SiteService.SortType, PagingPosition)}
+	 * 
+	 * @param type
+	 *        The SelectionType specifying what sort of selection is intended.
+	 * @param ofType
+	 *        Site type criteria: null for any type; a String to match a single type; A String[], List or Set to match any type in the collection.
+	 * @param criteria
+	 *        Additional selection criteria: sites returned will match this string somewhere in their id, title, description, or skin.
+	 * @param propertyCriteria
+	 *        Additional selection criteria: sites returned will have a property named to match each key in the map, whose values match (somewhere in their value) the value in the map (may be null or empty).
+	 * @param sort
+	 *        A SortType indicating the desired sort. For no sort, set to SortType.NONE.
+	 * @param page
+	 *        The PagePosition subset of items to return.
+	 * @return a List of the Site IDs for the sites matching the criteria.
+	 */
+	List<String> getSiteIds(SelectionType type, Object ofType, String criteria, Map<String, String> propertyCriteria, SortType sort, PagingPosition page);
+
 	/**
 	 * Get all sites that have been softly deleted
 	 * 
@@ -851,4 +1063,16 @@ public interface SiteService extends EntityProducer
 	 * @return true if the site is allowed to addRoleSwap(id), false if not.
 	 */
 	boolean allowRoleSwap(String id);
-}
+	
+	/**
+	 * returns all type strings that are associated with specified site type.
+	 * Following is an example of site type settings, which defines two strings as "course"-type
+	 * courseSiteType.count=2
+	 * courseSiteType.1=course
+	 * courseSiteType.2=course2
+	 * @param type Site type
+	 * @return list of site type strings
+	 */
+	public List<String> getSiteTypeStrings(String type);
+	
+} 

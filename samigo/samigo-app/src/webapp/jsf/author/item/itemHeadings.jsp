@@ -2,7 +2,7 @@
 Headings for item edit pages, needs to have msg=AuthorMessages.properties.
 --%>
 <!--
-* $Id: itemHeadings.jsp 116508 2012-11-16 22:39:47Z ktsao@stanford.edu $
+* $Id: itemHeadings.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -23,6 +23,7 @@ Headings for item edit pages, needs to have msg=AuthorMessages.properties.
 **********************************************************************************/
 --%>
 -->
+<!-- Core files -->
 <script type="text/JavaScript">
 function changeTypeLink(field){
 
@@ -37,6 +38,11 @@ for (i=0; i<document.links.length; i++) {
 document.links[newindex].onclick();
 }
 
+//Display the EMI question example
+function displayEMIHelp(){
+	window.open('../../../../../../samigo-app/emi/help.txt', '_blank', 'location=no,menubar=no,status=no,toolbar=no');
+}
+//-->
 </script>
 <h:form id="itemFormHeading">
 <%-- The following hidden fields echo some of the data in the item form
@@ -82,6 +88,12 @@ document.links[newindex].onclick();
     </h:commandLink>
 
 <f:verbatim></span></li>
+<li role="menuitem" ><span></f:verbatim>
+    <h:commandLink id="evnetLogLink" accesskey="#{generalMessages.a_log}" title="#{generalMessages.t_eventLog}" action="eventLog" immediate="true" rendered="#{authorization.adminQuestionPool}">
+      <h:outputText value="#{generalMessages.eventLog}" />
+      <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.EventLogListener" />
+    </h:commandLink>
+<f:verbatim></span></li>
 </ul>
 <br/></f:verbatim>
 
@@ -123,13 +135,13 @@ document.links[newindex].onclick();
 </h3>
 <!-- CHANGE TYPE -->
 <div class="tier1">
-<div class=" shorttext"><h:outputLabel value="#{authorMessages.change_q_type}" rendered="#{author.isEditPendingAssessmentFlow}"/>
+<div class=" shorttext"><h:outputLabel value="#{authorMessages.change_q_type}" rendered="#{itemauthor.target == 'assessment' && author.isEditPendingAssessmentFlow || (itemauthor.target == 'questionpool' && itemauthor.itemType == '')}"/>
 <%-- todo:
 listener set selectFromQuestionPool, eliminating the rendered attribute
 --%>
 
 <%-- from question pool context, do not show question pool as option --%>
-<h:selectOneMenu rendered="#{(itemauthor.target == 'assessment' && questionpool.importToAuthoring == 'true') || itemauthor.target == 'questionpool'}" onchange="changeTypeLink(this);"
+<h:selectOneMenu rendered="#{(itemauthor.target == 'assessment' && questionpool.importToAuthoring == 'true') || (itemauthor.target == 'questionpool' && itemauthor.itemType == '')}" onchange="changeTypeLink(this);"
   value="#{itemauthor.currentItem.itemType}" required="true" id="changeQType1">
   <f:valueChangeListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.StartCreateItemListener" />
@@ -148,6 +160,13 @@ listener set selectFromQuestionPool, eliminating the rendered attribute
 
 <h:commandLink id="hiddenlink" action="#{itemauthor.doit}" value="">
 </h:commandLink>
+
+&nbsp;
+<h:outputLink title="#{authorMessages.example_emi_question}" value="#" rendered="#{itemauthor.currentItem.itemType == 14}" 
+		onclick="javascript:window.open('/samigo-app/jsf/author/item/emiWhatsThis.faces','EMIWhatsThis','width=800,height=660,scrollbars=yes, resizable=yes');" 
+		onkeypress="javascript:window.open('/samigo-app/jsf/author/item/emiWhatsThis.faces','EMIWhatsThis','width=800,height=660,scrollbars=yes, resizable=yes');" >
+	<h:outputText  value=" (#{authorMessages.example_emi_question})"/>
+</h:outputLink>
 
 <h:message rendered="#{questionpool.importToAuthoring == 'true' && itemauthor.target == 'assessment'}" for="changeQType1" infoClass="messageSamigo" warnClass="validation" errorClass="messageSamigo" fatalClass="messageSamigo"/>
 <h:message rendered="#{questionpool.importToAuthoring == 'false' && itemauthor.target == 'assessment'}" for="changeQType2" infoClass="messageSamigo" warnClass="messageSamigo" errorClass="messageSamigo" fatalClass="messageSamigo"/>
@@ -171,7 +190,9 @@ listener set selectFromQuestionPool, eliminating the rendered attribute
      <h:outputText rendered="#{itemauthor.currentItem.itemType== 7}" value="#{authorMessages.audio_recording}"/>
      <h:outputText rendered="#{itemauthor.currentItem.itemType== 6}" value="#{authorMessages.file_upload}"/>
      <h:outputText rendered="#{itemauthor.currentItem.itemType== 10}" value="#{authorMessages.import_from_q}"/>
+     <h:outputText rendered="#{itemauthor.currentItem.itemType== 14}" value="#{authorMessages.extended_matching_items}"/>
      <h:outputText rendered="#{itemauthor.currentItem.itemType== 13}" value="#{authorMessages.matrix_choices_surv}"/>
+     <h:outputText rendered="#{itemauthor.currentItem.itemType== 15}" value="#{authorMessages.calculated_question}"/><!-- // CALCULATED_QUESTION -->
    </b>
  </span>
  <span class="rightNav">
@@ -179,7 +200,7 @@ listener set selectFromQuestionPool, eliminating the rendered attribute
  <%--
   temporily comment put Preview link for a specific question in Author. It will not be the feature in Sam 1.5.
   <h:commandLink id="preview" immediate="true" action="preview">
-          <h:outputText value="#{authorMessages.t_preview}" />
+          <h:outputText value="#{commonMessages.action_preview}" />
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemModifyListener" />
   </h:commandLink>

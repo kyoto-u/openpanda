@@ -530,7 +530,6 @@ public class Assignment2Entity implements LessonEntity, AssignmentInterface {
 	    log.warn("can't find assignment " + id);
 	    return null;
 	}
-
 	Connection connection = null;
 	try {
 	    connection = SqlService.borrowConnection();
@@ -539,8 +538,10 @@ public class Assignment2Entity implements LessonEntity, AssignmentInterface {
 	    fields[0] = id;
 	    fields[1] = userId;
 	    List<String>submissions = SqlService.dbRead(connection, sql, fields, null);
-
-	    if (submissions != null && submissions.size() > 0 && "1".equals(submissions.get(0))) {
+	    if (submissions != null && submissions.size() > 0) {
+		String completed = submissions.get(0);
+		if (!("1".equals(completed) || "true".equals(completed)))
+		    return null;
 		if (assignment.gradebookitem == null)
 		    return new LessonSubmission(null);
 		// following will give a security error if assignment not released. I think that's better than
@@ -617,6 +618,10 @@ public class Assignment2Entity implements LessonEntity, AssignmentInterface {
 	    assignment = getAssignment(id);
        return assignment != null;
    }
+
+    public boolean notPublished(String ref) {
+	return false;
+    }
 
     // return the list of groups if the item is only accessible to specific groups
     // null if it's accessible to the whole site.

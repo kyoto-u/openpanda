@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/index/impl/SnowballAnalyzerFactory.java $
- * $Id: SnowballAnalyzerFactory.java 59685 2009-04-03 23:36:24Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/index/impl/SnowballAnalyzerFactory.java $
+ * $Id: SnowballAnalyzerFactory.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,6 +35,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.PorterStemFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.util.Version;
 import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.index.AnalyzerFactory;
 
@@ -77,7 +82,9 @@ public class SnowballAnalyzerFactory implements AnalyzerFactory
 
 		public StemAnalyzer()
 		{
-			keywordAnalyzer = new StandardAnalyzer(stopWords);
+			List<String> words = Arrays.asList(stopWords);
+			Set<String> wordSet = new HashSet<String>(words);
+			keywordAnalyzer = new StandardAnalyzer(Version.LUCENE_29, wordSet);
 		}
 
 		/*

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/LoginServlet.java $
- * $Id: LoginServlet.java 114442 2012-10-16 18:29:30Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/LoginServlet.java $
+ * $Id: LoginServlet.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,7 +61,7 @@ import org.sakaiproject.user.cover.UserDirectoryService;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: LoginServlet.java 114442 2012-10-16 18:29:30Z ktsao@stanford.edu $
+ * @version $Id: LoginServlet.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 
 public class LoginServlet
@@ -114,6 +114,9 @@ public class LoginServlet
     delivery.setLastTimer(0);
     delivery.setTimeLimit("0");
     delivery.setBeginAssessment(true);
+
+    delivery.setNumberRetake(-1);
+    delivery.setActualNumberRetake(-1);
 
     // set path
     delivery.setContextPath(req.getContextPath());
@@ -170,7 +173,7 @@ public class LoginServlet
       }
 
       log.debug("*** agentIdString: "+agentIdString);
-
+       
       String nextAction = delivery.checkFromViaUrlLogin();
       log.debug("nextAction="+nextAction);
       if (isAuthorized){
@@ -279,14 +282,6 @@ public class LoginServlet
     return isMember;
   }
   
-  /**
-   * added by gopalrc - Nov 2007
-   * 
-   * @param pub
-   * @param req
-   * @param res
-   * @return
-   */
   private boolean checkMembershipForGroupRelease(PublishedAssessmentFacade pub,
 	       HttpServletRequest req, HttpServletResponse res){
 	    boolean isMember=false;
@@ -320,13 +315,6 @@ public class LoginServlet
 	    return isMember;
   }
     
-  /**
-   * added by gopalrc - Nov 2007
-   * 
-   * @param authorizedGroupId
-   * @param userGroups
-   * @return
-   */
   private boolean isUserInAuthorizedGroup(String authorizedGroupId, Collection userGroups) {
 	  if (userGroups==null || userGroups.isEmpty() 
 			  || authorizedGroupId==null || authorizedGroupId.equals("")) {

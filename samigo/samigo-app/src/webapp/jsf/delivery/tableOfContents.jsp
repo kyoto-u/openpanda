@@ -7,7 +7,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: tableOfContents.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+* $Id: tableOfContents.jsp 307042 2014-03-12 21:13:16Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -34,7 +34,7 @@
     <title><h:outputText value="#{deliveryMessages.table_of_contents}" /></title>
     <samigo:script path="/jsf/widget/hideDivision/hideDivision.js" />
     </head>
-    <body onload="hideUnhideAllDivsExceptFirst('none');;<%= request.getAttribute("html.body.onload") %>">
+    <body onload="<%= request.getAttribute("html.body.onload") %>">
 <!--div class="portletBody"-->
 
  <!-- IF A SECURE DELIVERY MODULE HAS BEEN SELECTED, INJECT ITS HTML FRAGMENT (IF ANY) HERE -->
@@ -90,6 +90,9 @@ function clickSubmitForGrade(){
 <!-- DONE BUTTON FOR PREVIEW ASSESSMENT -->
 <h:form id="tableOfContentsForm">
 
+<h:inputHidden id="hasTimeLimit" value="#{delivery.hasTimeLimit}"/>   
+<h:inputHidden id="showTimeWarning" value="#{delivery.showTimeWarning}"/>
+
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
  <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
@@ -109,11 +112,7 @@ function clickSubmitForGrade(){
   <samigo:timerBar height="15" width="300"
     wait="#{delivery.timeLimit}"
     elapsed="#{delivery.timeElapse}"
-	expireMessage1="#{deliveryMessages.time_expired1}"
-	expireMessage2="#{deliveryMessages.time_expired2}"
-	fiveMinutesMessage1="#{deliveryMessages.five_minutes_left1}"
-	fiveMinutesMessage2="#{deliveryMessages.five_minutes_left2}"
-    expireScript="document.forms[0].elements['tableOfContentsForm:elapsed'].value=loaded; document.forms[0].elements['tableOfContentsForm:outoftime'].value='true'; clickSubmitForGrade();" />
+    expireScript="document.forms[0].elements['tableOfContentsForm:elapsed'].value=loaded; document.forms[0].elements['tableOfContentsForm:outoftime'].value='true';" />
 <f:verbatim>  </span></f:verbatim>
 
 <h:commandButton type="button" onclick="document.getElementById('remText').style.display=document.getElementById('remText').style.display=='none' ? '': 'none';document.getElementById('timer').style.display=document.getElementById('timer').style.display=='none' ? '': 'none';document.getElementById('bar').style.display=document.getElementById('bar').style.display=='none' ? '': 'none'" value="#{deliveryMessages.hide_show}" />

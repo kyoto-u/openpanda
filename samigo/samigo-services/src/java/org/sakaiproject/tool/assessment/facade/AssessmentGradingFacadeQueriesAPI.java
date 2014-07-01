@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueriesAPI.java $
- * $Id: AssessmentGradingFacadeQueriesAPI.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueriesAPI.java $
+ * $Id: AssessmentGradingFacadeQueriesAPI.java 307020 2014-03-12 00:02:31Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,12 +31,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
+import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingAttachment;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingAttachmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingIfc;
 import org.sakaiproject.tool.assessment.data.ifc.grading.StudentGradingSummaryIfc;
 
 public interface AssessmentGradingFacadeQueriesAPI
@@ -46,13 +44,29 @@ public interface AssessmentGradingFacadeQueriesAPI
 
   public List getTotalScores(String publishedId, String which, boolean getSubmittedOnly);
   
+  /**
+   * Get all submissions that are flagged for grading
+   * @param publishedId the published assesment id
+   * @return
+   */
   public List getAllSubmissions(String publishedId);
   
   public List getAllAssessmentGradingData(Long publishedId);
 
+  /**
+   * Get all answers for a a particular published item
+   * This is needed by certain question types like EMI
+   * @param assesmentGradingId
+   * @param publishedItemId
+   * @return an list of all the items or an empty list if none
+   */
+  public List<ItemGradingData> getAllItemGradingDataForItemInGrading(final Long assesmentGradingId, final Long publishedItemId);
+  
   public HashMap getItemScores(Long publishedId, Long itemId, String which);
+  
+  public HashMap getItemScores(Long publishedId, Long itemId, String which, boolean loadItemGradingAttachment);
 
-  public HashMap getItemScores(final Long itemId, List scores);
+  public HashMap getItemScores(final Long itemId, List scores, boolean loadItemGradingAttachment);
   
   /**
    * This returns a hashmap of all the latest item entries, keyed by
@@ -75,7 +89,7 @@ public interface AssessmentGradingFacadeQueriesAPI
   /**
    * Assume this is a new item.
    */
-  //public void storeGrades(AssessmentGradingIfc data);
+  //public void storeGrades(AssessmentGradingData data);
 
   /**
    * This is the big, complicated mess where we take all the items in
@@ -85,7 +99,7 @@ public interface AssessmentGradingFacadeQueriesAPI
    * If regrade is true, we just recalculate the graded score.  If it's
    * false, we do everything from scratch.
    */
-  //public void storeGrades(AssessmentGradingIfc data, boolean regrade);
+  //public void storeGrades(AssessmentGradingData data, boolean regrade);
 
   /**
    * This grades multiple choice and true false questions.  Since
@@ -94,7 +108,7 @@ public interface AssessmentGradingFacadeQueriesAPI
    * Choices should be given negative score values if one wants them
    * to lose points for the wrong choice.
    */
-  //public float getAnswerScore(ItemGradingIfc data);
+  //public double getAnswerScore(ItemGradingIfc data);
 
   public Long add(AssessmentGradingData a);
 
@@ -127,10 +141,12 @@ public interface AssessmentGradingFacadeQueriesAPI
       Long publishedItemId);
 
   public AssessmentGradingData load(Long id);
+  
+  public AssessmentGradingData load(Long id, boolean loadGradingAttachment);
 
   public ItemGradingData getItemGrading(Long id);
 
-  public AssessmentGradingIfc getLastAssessmentGradingByAgentId(
+  public AssessmentGradingData getLastAssessmentGradingByAgentId(
       Long publishedAssessmentId, String agentIdString);
 
   public AssessmentGradingData getLastSavedAssessmentGradingByAgentId(
@@ -145,18 +161,18 @@ public interface AssessmentGradingFacadeQueriesAPI
   
   public List getLastSubmittedOrGradedAssessmentGradingList(Long publishedAssessmentId);
 
-  public void saveItemGrading(ItemGradingIfc item);
+  public void saveItemGrading(ItemGradingData item);
 
-  public void saveOrUpdateAssessmentGrading(AssessmentGradingIfc assessment);
+  public void saveOrUpdateAssessmentGrading(AssessmentGradingData assessment);
 
-    //public void setIsLate(AssessmentGradingIfc assessment);
+    //public void setIsLate(AssessmentGradingData assessment);
 
   public List getAssessmentGradingIds(Long publishedItemId);
 
-  public AssessmentGradingIfc getHighestAssessmentGrading(
+  public AssessmentGradingData getHighestAssessmentGrading(
       Long publishedAssessmentId, String agentId);
 
-  public AssessmentGradingIfc getHighestSubmittedAssessmentGrading(
+  public AssessmentGradingData getHighestSubmittedAssessmentGrading(
 		  Long publishedAssessmentId, String agentId, Long assessmentGradingId);
 
   public HashMap getLastAssessmentGradingByPublishedItem(Long publishedAssessmentId);
@@ -215,7 +231,7 @@ public interface AssessmentGradingFacadeQueriesAPI
   
   public boolean getHasGradingData(Long publishedAssessmentId);
 
-  public void removeUnsubmittedAssessmentGradingData(AssessmentGradingIfc data);
+  public void removeUnsubmittedAssessmentGradingData(AssessmentGradingData data);
     
   public ArrayList getHasGradingDataAndHasSubmission(Long publishedAssessmentId);
   
@@ -228,7 +244,7 @@ public interface AssessmentGradingFacadeQueriesAPI
   
   public void autoSubmitAssessments();
   
-  public ItemGradingAttachmentIfc createItemGradingtAttachment(ItemGradingIfc itemGrading, String resourceId, String filename, String protocol);
+  public ItemGradingAttachment createItemGradingtAttachment(ItemGradingData itemGrading, String resourceId, String filename, String protocol);
   
   public void removeItemGradingAttachment(Long attachmentId);
   
@@ -241,6 +257,9 @@ public interface AssessmentGradingFacadeQueriesAPI
   public void completeItemGradingData(AssessmentGradingData assessmentGradingData);	
   
   public List getHighestSubmittedAssessmentGradingList(final Long publishedAssessmentId);
-  public Float getAverageSubmittedAssessmentGrading( final Long publishedAssessmentId, final String agentId);
-  public HashMap getAverageAssessmentGradingByPublishedItem(Long publishedAssessmentId);	
+  public Double getAverageSubmittedAssessmentGrading( final Long publishedAssessmentId, final String agentId);
+  public HashMap getAverageAssessmentGradingByPublishedItem(Long publishedAssessmentId);
+  
+  public List getUnSubmittedAssessmentGradingDataList(Long publishedAssessmentId, String agentIdString);
+
 }

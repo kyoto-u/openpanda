@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.entityprovider;
 
 import java.io.IOException;
@@ -96,8 +95,11 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 			throw new EntityNotFoundException("Invalid user.", ref.getId());
 		}
 		
+		//check for siteId in the request
+		String siteId = requestGetter.getRequest().getParameter("siteId");
+		
 		//get the full profile for the user, takes care of privacy checks against the current user
-		UserProfile userProfile = profileLogic.getUserProfile(uuid);
+		UserProfile userProfile = profileLogic.getUserProfile(uuid, siteId);
 		if(userProfile == null) {
 			throw new EntityNotFoundException("Profile could not be retrieved for " + ref.getId(), ref.getReference());
 		}
@@ -110,44 +112,63 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 	@EntityCustomAction(action="image",viewKey=EntityView.VIEW_SHOW)
 	public Object getProfileImage(OutputStream out, EntityView view, Map<String,Object> params, EntityReference ref) {
 		
-		//convert input to uuid
-		String uuid = sakaiProxy.ensureUuid(ref.getId());
-		if(StringUtils.isBlank(uuid)) {
-			throw new EntityNotFoundException("Invalid user.", ref.getId());
-		}
+		final String id = ref.getId();
+
+        final boolean wantsBlank = id.equals(ProfileConstants.BLANK);
+
+        String uuid = "";
+
+        if(!wantsBlank) {
+		    //convert input to uuid
+		    uuid = sakaiProxy.ensureUuid(ref.getId());
+            if(StringUtils.isBlank(uuid)) {
+                throw new EntityNotFoundException("Invalid user.", ref.getId());
+            }
+        }
 		
 		ProfileImage image = null;
-		boolean wantsThumbnail = StringUtils.equals("thumb", view.getPathSegment(3)) ? true : false;
+		final boolean wantsThumbnail = StringUtils.equals("thumb", view.getPathSegment(3)) ? true : false;
 		
 		boolean wantsAvatar = false;
 		if(!wantsThumbnail) {
 			wantsAvatar = StringUtils.equals("avatar", view.getPathSegment(3)) ? true : false;
 		}
 		
+		final boolean wantsOfficial = StringUtils.equals("official", view.getPathSegment(3)) ? true : false;
+
 		if(log.isDebugEnabled()) {
 			log.debug("wantsThumbnail:" + wantsThumbnail);
 			log.debug("wantsAvatar:" + wantsAvatar);
+			log.debug("wantsOfficial:" + wantsOfficial);
+			log.debug("wantsBlank:" + wantsBlank);
 		}
 		
 		//optional siteid
-		String siteId = (String)params.get("siteId");
+		final String siteId = (String)params.get("siteId");
 		if(StringUtils.isNotBlank(siteId) && !sakaiProxy.checkForSite(siteId)){
 			throw new EntityNotFoundException("Invalid siteId: " + siteId, ref.getReference());
 		}
 		
-		//get thumb or avatar if requested - or fallback
-		if(wantsThumbnail) {
-			image = imageLogic.getProfileImage(uuid, null, null, ProfileConstants.PROFILE_IMAGE_THUMBNAIL, siteId);
-		} 
-		if(!wantsThumbnail && wantsAvatar) {
-			image = imageLogic.getProfileImage(uuid, null, null, ProfileConstants.PROFILE_IMAGE_AVATAR, siteId);
-		}
-		if(!wantsThumbnail && !wantsAvatar) {
-			image = imageLogic.getProfileImage(uuid, null, null, ProfileConstants.PROFILE_IMAGE_MAIN, siteId);
-		}
+        if(wantsBlank) {
+            image = imageLogic.getBlankProfileImage();
+        } else {
+		    //get thumb or avatar if requested - or fallback
+            if(wantsThumbnail) {
+                image = imageLogic.getProfileImage(uuid, null, null, ProfileConstants.PROFILE_IMAGE_THUMBNAIL, siteId);
+            } 
+            if(!wantsThumbnail && wantsAvatar) {
+                image = imageLogic.getProfileImage(uuid, null, null, ProfileConstants.PROFILE_IMAGE_AVATAR, siteId);
+            }
+            if(!wantsThumbnail && !wantsAvatar) {
+                image = imageLogic.getProfileImage(uuid, null, null, ProfileConstants.PROFILE_IMAGE_MAIN, siteId);
+            }
+            if(wantsOfficial) {
+			    image = imageLogic.getOfficialProfileImage(uuid, siteId);
+		    }
+        }
 		
 		if(image == null) {
-			throw new EntityNotFoundException("No profile image for " + ref.getId(), ref.getReference());
+			throw new EntityNotFoundException("No profile image for " + id, ref.getReference());
 		}
 		
 		//check for binary
@@ -158,17 +179,16 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 				ActionReturn actionReturn = new ActionReturn("BASE64", image.getMimeType(), out);
 				return actionReturn;
 			} catch (IOException e) {
-				throw new EntityException("Error retrieving profile image for " + ref.getId() + " : " + e.getMessage(), ref.getReference());
+				throw new EntityException("Error retrieving profile image for " + id + " : " + e.getMessage(), ref.getReference());
 			}
 		}
 		
-		
-		String url = image.getUrl();
+		final String url = image.getUrl();
 		if(StringUtils.isNotBlank(url)) {
 			try {
 				requestGetter.getResponse().sendRedirect(url);
 			} catch (IOException e) {
-				throw new EntityException("Error redirecting to external image for " + ref.getId() + " : " + e.getMessage(), ref.getReference());
+				throw new EntityException("Error redirecting to external image for " + id + " : " + e.getMessage(), ref.getReference());
 			}
 		}
 		
@@ -228,9 +248,12 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 		
 		//get the full profile 
 		UserProfile userProfile = (UserProfile) getEntity(ref);
+
+		//Check for siteId in the request
+		String siteId = requestGetter.getRequest().getParameter("siteId");
 		
 		//convert UserProfile to HTML object
-		String formattedProfile = getUserProfileAsHTML(userProfile);
+		String formattedProfile = getUserProfileAsHTML(userProfile, siteId);
 		
 		//ActionReturn actionReturn = new ActionReturn("UTF-8", "text/html", entity);
 		ActionReturn actionReturn = new ActionReturn(Formats.UTF_8, Formats.HTML_MIME_TYPE, formattedProfile);
@@ -339,7 +362,7 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 	/**
 	 * {@inheritDoc}
 	 */
-	private String getUserProfileAsHTML(UserProfile userProfile) {
+	private String getUserProfileAsHTML(UserProfile userProfile, String siteId) {
 		
 		//note there is no birthday in this field. we need a good way to get the birthday without the year. 
 		//maybe it needs to be stored in a separate field and treated differently. Or returned as a localised string.

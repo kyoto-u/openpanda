@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/util/BeanDateComparator.java $
- * $Id: BeanDateComparator.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/util/BeanDateComparator.java $
+ * $Id: BeanDateComparator.java 121197 2013-03-14 15:40:44Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,7 @@ import java.text.*;
  * DOCUMENTATION PENDING
  *
  * @author $author$
- * @version $Id: BeanDateComparator.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * @version $Id: BeanDateComparator.java 121197 2013-03-14 15:40:44Z holladay@longsight.com $
  */
 public class BeanDateComparator
   extends BeanSortComparator

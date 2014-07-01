@@ -5,19 +5,18 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>2.9.3</version>
+        <version>10.0</version>
 		<relativePath>../master/pom.xml</relativePath>
     </parent>
 
     <name>sakai-presence base pom</name>
     <groupId>org.sakaiproject.presence</groupId>
     <artifactId>presence</artifactId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>presence-api/api</module>
-        <module>presence-assembly</module>
         <module>presence-impl/impl</module>
         <module>presence-impl/pack</module>
         <module>presence-tool/tool</module>
@@ -25,10 +24,18 @@
     </modules>
 
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/presence/tags/presence-2.9.3</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/presence/tags/presence-2.9.3</developerConnection>
-        <url>https://source.sakaiproject.org/svn/presence/tags/presence-2.9.3</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/presence/trunk</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/presence/trunk</developerConnection>
+        <url>https://source.sakaiproject.org/svn/presence/trunk</url>
     </scm>
+
+    <distributionManagement>
+        <site>
+            <id>sakai-site</id>
+            <name>Sakai release Site</name>
+            <url>scpexe://source.sakaiproject.org/var/www/html/release/presence/${project.version}</url>
+        </site>
+    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
@@ -44,19 +51,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
-    <repositories> 
-		<repository> 
-			<id>sonatype-nexus-snapshots</id> 
-			<name>Sonatype Nexus Snapshots</name> 
-			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
-			<releases> 
-				<enabled>false</enabled> 
-			</releases> 
-			<snapshots> 
-				<enabled>true</enabled> 
-			</snapshots> 
-		</repository> 
-	</repositories>
-    
 </project>

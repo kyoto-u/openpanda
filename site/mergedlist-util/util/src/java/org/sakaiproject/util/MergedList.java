@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site/tags/site-2.9.3/mergedlist-util/util/src/java/org/sakaiproject/util/MergedList.java $
- * $Id: MergedList.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/site/tags/sakai-10.0/mergedlist-util/util/src/java/org/sakaiproject/util/MergedList.java $
+ * $Id: MergedList.java 120414 2013-02-23 01:14:36Z botimer@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -449,8 +449,8 @@ public class MergedList extends ArrayList
 		 List finalList = new ArrayList();
 		 String [] returnArray = null;
 
-		List siteList = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
-						null, null, null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, null);
+		 // Get all accessible sites for the current user, not requiring descriptions
+		 List siteList = SiteService.getUserSites(false);
 		 
 		 Iterator it = siteList.iterator();
 		 

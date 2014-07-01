@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.logic;
 
 import java.util.ArrayList;
@@ -59,6 +58,13 @@ public class ProfileLogicImpl implements ProfileLogic {
 	 * {@inheritDoc}
 	 */
 	public UserProfile getUserProfile(final String userUuid) {
+	    return getUserProfile(userUuid, null);
+    }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public UserProfile getUserProfile(final String userUuid, final String siteId) {
 		
 		//check auth and get currentUserUuid
 		String currentUserUuid = sakaiProxy.getCurrentUserId();
@@ -120,7 +126,9 @@ public class ProfileLogicImpl implements ProfileLogic {
 		//ADD email if allowed, REMOVE contact info if not
 		if(privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_CONTACTINFO)) {
 			p.setEmail(u.getEmail());
-		} else {
+        } else if(siteId != null && sakaiProxy.isUserAllowedInSite(currentUserUuid, ProfileConstants.ROSTER_VIEW_EMAIL, siteId)) {
+			p.setEmail(u.getEmail());
+        } else {
 			p.setEmail(null);
 			p.setHomepage(null);
 			p.setHomephone(null);
@@ -375,6 +383,15 @@ public class ProfileLogicImpl implements ProfileLogic {
 		if(sakaiProxy.isProfileConversionEnabled()) {
 			//run the profile image converter
 			converter.convertProfileImages();
+		}
+		
+		// Should we import profile image URLs to be uploaded profile images?
+		if (sakaiProxy.isProfileImageImportEnabled()) {
+			if (sakaiProxy.getProfilePictureType() != ProfileConstants.PICTURE_SETTING_UPLOAD) {
+				log.warn("I'm set to import images but profile2.picture.type=upload is not set. Not importing.");
+			} else {
+				converter.importProfileImages();
+			}
 		}
 		
 		//do we need to import profiles?

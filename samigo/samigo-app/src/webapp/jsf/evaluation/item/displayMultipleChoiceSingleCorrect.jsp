@@ -1,4 +1,4 @@
-<%-- $Id: displayMultipleChoiceSingleCorrect.jsp 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
+<%-- $Id: displayMultipleChoiceSingleCorrect.jsp 123878 2013-05-08 22:59:16Z ktsao@stanford.edu $
 include file for displaying multiple choice single correct survey questions
 --%>
 <!--
@@ -26,7 +26,7 @@ include file for displaying multiple choice single correct survey questions
   <h:outputText value="#{question.text}"  escape="false"/>
   <h:dataTable value="#{question.itemTextArray}" var="itemText">
    <h:column>
-   <h:dataTable value="#{itemText.answerArraySorted}" var="answer">
+   <h:dataTable value="#{itemText.answerArraySorted}" var="answer" width="100%">
     <h:column rendered="#{answer.text!=null && answer.text!=''}">
       <h:graphicImage id="image8" rendered="#{answer.isCorrect || (question.partialCreditFlag && answer.partialCredit gt 0)}"
          alt="#{evaluationMessages.alt_correct}" url="/images/delivery/checkmark.gif" >
@@ -47,7 +47,7 @@ include file for displaying multiple choice single correct survey questions
       </h:selectOneRadio>
     </h:column>
     <h:column rendered="#{answer.text!=null && answer.text!=''}">
-      <h:outputText value="#{answer.text}" escape="false" >
+      <h:outputText styleClass="mcAnswerText" value="#{answer.text}" escape="false" >
       	<f:converter converterId="org.sakaiproject.tool.assessment.jsf.convert.AnswerSurveyConverter" />
       </h:outputText>
     </h:column>

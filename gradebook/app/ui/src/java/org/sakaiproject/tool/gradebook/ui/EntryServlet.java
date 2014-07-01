@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: EntryServlet.java 77563 2010-05-18 19:42:04Z jonrcook@indiana.edu $
+* $Id: EntryServlet.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

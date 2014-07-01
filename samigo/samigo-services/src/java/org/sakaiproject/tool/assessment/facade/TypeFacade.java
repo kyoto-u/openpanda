@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/TypeFacade.java $
- * $Id: TypeFacade.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/TypeFacade.java $
+ * $Id: TypeFacade.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,36 +32,12 @@ public class TypeFacade implements Serializable, TypeIfc{
 
   // please make sure that the value match with the one in the Type table. Also see
   // 02_TypeData.sql when generate the table
-  // these are qestion type available in this site,
+  // these are question type available in this site,
 
   /**
 	 * 
 	 */
 	private static final long serialVersionUID = -3400550482739705371L;
-  public static final Long MULTIPLE_CHOICE =  Long.valueOf(1);
-  public static final Long MULTIPLE_CORRECT = Long.valueOf(2);
-  public static final Long MULTIPLE_CHOICE_SURVEY = Long.valueOf(3);
-  public static final Long TRUE_FALSE = Long.valueOf(4);
-  public static final Long ESSAY_QUESTION = Long.valueOf(5);
-  public static final Long FILE_UPLOAD = Long.valueOf(6);
-  public static final Long AUDIO_RECORDING = Long.valueOf(7);
-  public static final Long FILL_IN_BLANK = Long.valueOf(8);
-  public static final Long FILL_IN_NUMERIC = Long.valueOf(11);
-  public static final Long MATCHING = Long.valueOf(9);
-  public static final Long MULTIPLE_CORRECT_SINGLE_SELECTION = Long.valueOf(12);
-  public static final Long MATRIX_CHOICES_SURVEY = Long.valueOf(13);
-  // these are section type available in this site,
-  public static final Long DEFAULT_SECTION = Long.valueOf(21);
-  // these are assessment template type available in this site,
-  public static final Long TEMPLATE_QUIZ = Long.valueOf(41);
-  public static final Long TEMPLATE_HOMEWORK = Long.valueOf(42);
-  public static final Long TEMPLATE_MIDTERM = Long.valueOf(43);
-  public static final Long TEMPLATE_FINAL = Long.valueOf(44);
-  // these are assessment type available in this site,
-  public static final Long QUIZ = Long.valueOf(61);
-  public static final Long HOMEWORK = Long.valueOf(62);
-  public static final Long MIDTERM = Long.valueOf(63);
-  public static final Long FINAL = Long.valueOf(64);
 
   private Long typeId;
   private String authority;

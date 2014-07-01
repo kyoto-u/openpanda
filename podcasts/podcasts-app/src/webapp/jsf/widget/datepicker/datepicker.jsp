@@ -5,7 +5,7 @@
 
 <!--
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.3/podcasts-app/src/webapp/jsf/widget/datepicker/datepicker.jsp $
+* $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.0/podcasts-app/src/webapp/jsf/widget/datepicker/datepicker.jsp $
 * $Id: datepicker.jsp 59491 2009-04-01 19:09:19Z arwhyte@umich.edu $
 ***********************************************************************************
 *

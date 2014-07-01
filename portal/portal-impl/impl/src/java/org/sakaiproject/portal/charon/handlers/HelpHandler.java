@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/HelpHandler.java $
- * $Id: HelpHandler.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/HelpHandler.java $
+ * $Id: HelpHandler.java 310205 2014-06-12 18:20:03Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -39,12 +39,13 @@ import org.sakaiproject.util.Web;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 310205 $
  * 
  */
 public class HelpHandler extends BasePortalHandler
 {
 	private static final String URL_FRAGMENT = "help";
+	private static final String WEB_INF_FRAGMENT = "WEB-INF";
 
 	public HelpHandler()
 	{
@@ -62,7 +63,7 @@ public class HelpHandler extends BasePortalHandler
 	public int doGet(String[] parts, HttpServletRequest req, HttpServletResponse res,
 			Session session) throws PortalHandlerException
 	{
-		if ((parts.length >= 2) && (parts[1].equals(HelpHandler.URL_FRAGMENT)))
+		if ((parts.length >= 2) && (parts[1].equals(HelpHandler.URL_FRAGMENT)) && (parts.length == 2 || !parts[2].equals(HelpHandler.WEB_INF_FRAGMENT)))
 		{
 			try
 			{

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/reference/tags/sakai-2.9.3/library/src/webapp/editor/ckextraplugins/wordcount/plugin.js $
- * $Id: plugin.js 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: $
+ * $Id: $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007 The Sakai Foundation
@@ -37,10 +37,16 @@
     */
 
 		function getWordCount(htmlData) {
-				var matches = htmlData.replace(/<[^<|>]+?>|&nbsp;/gi,' ').replace(/[\u0080-\u202e\u2030-\u205f\u2061-\ufefe\uff00-\uffff]/g,'x').match(/\b/g);
+				var matches = htmlData
+				matches = matches.replace(/<[^<|>]+?>|&nbsp;/gi,' ')
+				matches = matches.replace(/[\u0080-\u202e\u2030-\u205f\u2061-\ufefe\uff00-\uffff]/g,'x')
+				//Quote should still be matched
+				matches = matches.replace(/&quot;/g,'"')
+				//Match on word boundary followed by spaces or punctuations
+				matches = matches.match(/\b[\s?!,.):"]+/g);
 				var count = 0;
 				if(matches) {
-						count = matches.length/2;
+						count = matches.length;
 				}
 				return count;
 		}
@@ -66,7 +72,7 @@
 								if (evt) {
 										var editor = evt.editor;
 										space = getSpaceElement(editor);
-										space.setHtml( editor.lang.WordCountTxt + " : " + getWordCount(editor.getData()) );
+										space.setHtml( editor.lang.wordcount.WordCountTxt + " : " + getWordCount(editor.getData()) );
 								}
 						}
 
@@ -79,16 +85,19 @@
             editor.on('key', ShowWordCount);
             editor.on('paste', ShowWordCount);
 
-						editor.on( 'themeSpace', function( evt )
-								{
-										//Creating bottom
-										if ( evt.data.space == 'bottom' )
-										{
-												evt.data.html +=
-														'<span id="' + spaceId + '_label" class="cke_voice_label">' + editor.lang.elementsPath.eleLabel + '</span>' +
-														'<div id="' + spaceId + '" style="float:right" class="cke_wordcount" role="group" aria-labelledby="' + spaceId + '_label">' + emptyHtml + '</div>';
-										}
-								})
+	    var createBottom = function (evt) {
+		//Creating bottom
+		if ( evt.data.space == 'bottom' )
+		{
+		    evt.data.html +=
+//			'<span id="' + spaceId + '_label" class="cke_voice_label">' + editor.lang.elementsPath.eleLabel + '</span>' +
+			'<div id="' + spaceId + '" style="float:right" class="cke_wordcount" role="group" aria-labelledby="' + spaceId + '_label">' + emptyHtml + '</div>';
+		}
+	    };
+	    //v4
+	    editor.on('uiSpace', createBottom);
+	    //v3
+	    editor.on('themeSpace', createBottom);
         }
     });
 })();

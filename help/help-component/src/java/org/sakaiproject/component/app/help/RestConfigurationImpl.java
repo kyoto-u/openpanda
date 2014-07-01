@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.3/help-component/src/java/org/sakaiproject/component/app/help/RestConfigurationImpl.java $
- * $Id: RestConfigurationImpl.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.0/help-component/src/java/org/sakaiproject/component/app/help/RestConfigurationImpl.java $
+ * $Id: RestConfigurationImpl.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -43,7 +43,7 @@ import org.xml.sax.InputSource;
 
 /**
  * @author <a href="mailto:jlannan.iupui.edu">Jarrod Lannan</a>
- * @version $Id: RestConfigurationImpl.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * @version $Id: RestConfigurationImpl.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  * 
  */
 public class RestConfigurationImpl implements RestConfiguration

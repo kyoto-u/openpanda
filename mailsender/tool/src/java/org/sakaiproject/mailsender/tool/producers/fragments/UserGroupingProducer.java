@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.osedu.org/licenses/ECL-2.0
+ * http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -157,8 +157,11 @@ public class UserGroupingProducer implements ViewComponentProducer, ViewParamsRe
 					if (numEntriesInRole > 0 || config.isDisplayEmptyGroups())
 					{
 						// create a branch for looping
+						// The localId needs to be unique as multiple copies of this element will get loaded
+						// into the same page if a user switches between roles/groups/sections.
 						UIBranchContainer roleBranch = UIBranchContainer.make(tofill,
-								"mailsender-usersGroupOption:", Integer.toString(i));
+								"mailsender-usersGroupOption:",
+								role.getType().toString().toLowerCase()+ "-"+ Integer.toString(i));
 
 						// build the EL binding
 						UIBoundBoolean input = UIBoundBoolean.make(roleBranch,

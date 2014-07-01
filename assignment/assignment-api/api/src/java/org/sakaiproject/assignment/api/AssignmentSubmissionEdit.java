@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmissionEdit.java $
- * $Id: AssignmentSubmissionEdit.java 93990 2011-06-23 13:20:32Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmissionEdit.java $
+ * $Id: AssignmentSubmissionEdit.java 133971 2014-01-31 16:53:55Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,6 +58,23 @@ public interface AssignmentSubmissionEdit extends AssignmentSubmission, Edit
 	 *        the User to add.
 	 */
 	public void addSubmitter(User submitter);
+
+	/**
+	 * String id of User or Group
+	 * 
+	 * @param id -
+	 *        User or group id of submitter.
+	 */
+	public void setSubmitterId(String id);
+        /**
+         * String entry for submission log.
+         * 
+         * @param entry - 
+         *         String log entry for group submission
+         */
+        public void addSubmissionLogEntry(String entry);
+        
+        public void addGradeForUser(String id, String grade);
 
 	/**
 	 * Remove an User from the submitter list
@@ -169,6 +186,12 @@ public interface AssignmentSubmissionEdit extends AssignmentSubmission, Edit
 	 *        true if the submission has been graded, false otherwise.
 	 */
 	public void setGraded(boolean graded);
+	
+	/**
+	 * Set the grader id (this can be used to track between auto grades or instructor grades)
+	 * @param id
+	 */
+	public void setGradedBy(String id);
 
 	/**
 	 * Set the review Score for this assignment

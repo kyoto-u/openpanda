@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.3/impl/src/java/org/sakaiproject/poll/dao/PollDao.java $
- * $Id: PollDao.java 60214 2009-04-17 13:50:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.0/impl/src/java/org/sakaiproject/poll/dao/PollDao.java $
+ * $Id: PollDao.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

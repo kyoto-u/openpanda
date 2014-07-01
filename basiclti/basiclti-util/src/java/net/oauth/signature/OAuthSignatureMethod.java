@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
@@ -48,6 +49,10 @@ public abstract class OAuthSignatureMethod {
                 getSignature(message)));
     }
 
+    private final String POST_HTTP = "POST&http%3A%2F%2";
+    private final String POST_SECURE = "POST&https%3A%2F%2";
+    private final String GET_HTTP = "GET&http%3A%2F%2";
+    private final String GET_SECURE = "GET&https%3A%2F%2";
     /**
      * Check whether the message has a valid signature.
      * @throws URISyntaxException 
@@ -60,7 +65,23 @@ public abstract class OAuthSignatureMethod {
         message.requireParameters("oauth_signature");
         String signature = message.getSignature();
         String baseString = getBaseString(message);
-        if (!isValid(signature, baseString)) {
+        String otherBaseString = null;
+
+	// Allow for some confusion coming through load balancers
+	if ( baseString.startsWith(POST_HTTP) ) { 
+		otherBaseString = baseString.replaceFirst("^"+POST_HTTP,POST_SECURE);
+	} else if ( baseString.startsWith(POST_SECURE) ) { 
+		otherBaseString = baseString.replaceFirst("^"+POST_SECURE, POST_HTTP);
+	} else if ( baseString.startsWith(GET_HTTP) ) { 
+		otherBaseString = baseString.replaceFirst("^"+GET_HTTP,GET_SECURE);
+	} else if ( baseString.startsWith(GET_SECURE) ) { 
+		otherBaseString = baseString.replaceFirst("^"+GET_SECURE, GET_HTTP);
+	}
+
+	boolean valid = isValid(signature, baseString);
+	if ( ! valid && otherBaseString != null ) valid = isValid(signature, otherBaseString);
+
+        if (!valid) {
             OAuthProblemException problem = new OAuthProblemException(
                     "signature_invalid");
             problem.setParameter("oauth_signature", signature);
@@ -172,7 +193,8 @@ public abstract class OAuthSignatureMethod {
         return scheme + "://" + authority + path;
     }
 
-    protected static String normalizeParameters(
+    @SuppressWarnings("rawtypes")
+	protected static String normalizeParameters(
             Collection<? extends Map.Entry> parameters) throws IOException {
         if (parameters == null) {
             return "";
@@ -211,7 +233,7 @@ public abstract class OAuthSignatureMethod {
     public static OAuthSignatureMethod newMethod(String name,
             OAuthAccessor accessor) throws OAuthException {
         try {
-            Class methodClass = NAME_TO_CLASS.get(name);
+            Class<?> methodClass = NAME_TO_CLASS.get(name);
             if (methodClass != null) {
                 OAuthSignatureMethod method = (OAuthSignatureMethod) methodClass
                 .newInstance();
@@ -236,11 +258,12 @@ public abstract class OAuthSignatureMethod {
      * Subsequently, newMethod(name) will attempt to instantiate the given
      * class, with no constructor parameters.
      */
-    public static void registerMethodClass(String name, Class clazz) {
+    public static void registerMethodClass(String name, Class<?> clazz) {
         NAME_TO_CLASS.put(name, clazz);
     }
 
-    private static final Map<String, Class> NAME_TO_CLASS = new ConcurrentHashMap<String, Class>();
+    @SuppressWarnings("rawtypes")
+	private static final Map<String, Class> NAME_TO_CLASS = new ConcurrentHashMap<String, Class>();
     static {
         registerMethodClass("HMAC-SHA1", HMAC_SHA1.class);
         registerMethodClass("PLAINTEXT", PLAINTEXT.class);
@@ -253,7 +276,8 @@ public abstract class OAuthSignatureMethod {
     private static class ComparableParameter implements
             Comparable<ComparableParameter> {
 
-        ComparableParameter(Map.Entry value) {
+        @SuppressWarnings("rawtypes")
+		ComparableParameter(Map.Entry value) {
             this.value = value;
             String n = toString(value.getKey());
             String v = toString(value.getValue());
@@ -262,7 +286,8 @@ public abstract class OAuthSignatureMethod {
             // that can appear in a percentEncoded string.
         }
 
-        final Map.Entry value;
+        @SuppressWarnings("rawtypes")
+		final Map.Entry value;
 
         private final String key;
 
@@ -282,7 +307,8 @@ public abstract class OAuthSignatureMethod {
     }
 
     /** Retrieve the original parameters from a sorted collection. */
-    private static List<Map.Entry> getParameters(
+    @SuppressWarnings("rawtypes")
+	private static List<Map.Entry> getParameters(
             Collection<ComparableParameter> parameters) {
         if (parameters == null) {
             return null;

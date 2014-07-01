@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/ContentHostingContentProducer.java $
- * $Id: ContentHostingContentProducer.java 68448 2009-11-02 12:50:44Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/ContentHostingContentProducer.java $
+ * $Id: ContentHostingContentProducer.java 107465 2012-04-23 02:28:00Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -114,6 +114,29 @@ public class ContentHostingContentProducer implements EntityContentProducer, Sto
 		customProperties.add("Tdc_abstract.http://purl.org/dc/terms/abstract");
 		customProperties.add("Tdc_contributor.http://purl.org/dc/elements/1.1/contributor");
 		customProperties.add("tag.tag");
+		
+		//LOM fields
+		customProperties.add("Tlom_role.http://ltsc.ieee.org/xsd/lomv1.0/role");
+		customProperties.add("Tlom_coverage.http://ltsc.ieee.org/xsd/lomv1.0/coverage");
+		customProperties.add("Tlom_status.http://ltsc.ieee.org/xsd/lomv1.0/status");
+		//customProperties.add("lom_duration.http://ltsc.ieee.org/xsd/lomv1.0/duration");
+		customProperties.add("Tlom_engagement.http://ltsc.ieee.org/xsd/lomv1.0/engagement");
+		customProperties.add("Tlom_learning_resource_type.http://ltsc.ieee.org/xsd/lomv1.0/learning_resource_type");
+		customProperties.add("Tlom_interactivity_level.http://ltsc.ieee.org/xsd/lomv1.0/interactivity_level");
+		customProperties.add("Tlom_context_level.http://ltsc.ieee.org/xsd/lomv1.0/context_level");
+		customProperties.add("Tlom_difficulty.http://ltsc.ieee.org/xsd/lomv1.0/difficulty");
+		//customProperties.add("lom_learning_time.http://ltsc.ieee.org/xsd/lomv1.0/learning_time");
+		customProperties.add("Tlom_assumed_knowledge.http://ltsc.ieee.org/xsd/lomv1.0/assumed_knowledge");
+		customProperties.add("Tlom_technical_requirements.http://ltsc.ieee.org/xsd/lomv1.0/technical_requirements");
+		customProperties.add("Tlom_install_remarks.http://ltsc.ieee.org/xsd/lomv1.0/install_remarks");
+		customProperties.add("Tlom_other_requirements.http://ltsc.ieee.org/xsd/lomv1.0/other_requirements");
+		customProperties.add("Tlom_level.http://ltsc.ieee.org/xsd/lomv1.0/granularity_level");
+		customProperties.add("Tlom_structure.http://ltsc.ieee.org/xsd/lomv1.0/structure");
+		customProperties.add("Tlom_relation.http://ltsc.ieee.org/xsd/lomv1.0/relation");
+		customProperties.add("Tlom_reviewer.http://ltsc.ieee.org/xsd/lomv1.0/reviewer");
+		//customProperties.add("lom_review_date.http://ltsc.ieee.org/xsd/lomv1.0/review_date");
+		customProperties.add("Tlom_review_comments.http://ltsc.ieee.org/xsd/lomv1.0/review_comments");
+
 	}
 
 	public void init()
@@ -610,6 +633,7 @@ public class ContentHostingContentProducer implements EntityContentProducer, Sto
 
 	public boolean canRead(String ref)
 	{
+		log.debug("canRead(" + ref);
 		try
 		{
 			Reference reference = entityManager.newReference(ref);
@@ -642,6 +666,11 @@ public class ContentHostingContentProducer implements EntityContentProducer, Sto
 			for (String propname : customProperties)
 			{
 				String[] propKey = propname.split("\\.", 2);
+				
+				if(log.isDebugEnabled()) {
+					log.debug("prop: " + propKey[0] + "=" + propKey[1]);
+				}
+				
 				if (propKey.length == 2)
 				{
 					List<?> prop = contentResource.getProperties().getPropertyList(propKey[1]);

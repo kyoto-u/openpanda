@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/optimize/impl/OptimizeTransactionListenerImpl.java $
- * $Id: OptimizeTransactionListenerImpl.java 69958 2009-12-17 09:45:20Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/optimize/impl/OptimizeTransactionListenerImpl.java $
+ * $Id: OptimizeTransactionListenerImpl.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -103,8 +103,9 @@ public class OptimizeTransactionListenerImpl implements OptimizeTransactionListe
 					.getPermanentIndexWriter();
 			// open the temp writer
 
-			pw.addIndexes(new Directory[] { d });
+			pw.addIndexesNoOptimize(new Directory[] { d });
 			pw.optimize();
+			pw.commit();
 			pw.close();
 
 			iw.close();
@@ -144,7 +145,7 @@ public class OptimizeTransactionListenerImpl implements OptimizeTransactionListe
 
 	/**
 	 * Perform the merge operation on the segments into a temporary segment,
-	 * open the permanent segment to ensure that a writer lock can be aquired
+	 * open the permanent segment to ensure that a writer lock can be acquired
 	 * 
 	 * @see org.sakaiproject.search.transaction.api.TransactionListener#prepare(org.sakaiproject.search.transaction.api.IndexTransaction)
 	 */
@@ -166,9 +167,10 @@ public class OptimizeTransactionListenerImpl implements OptimizeTransactionListe
 			for (File f : optimzableSegments)
 			{
 				
-				directories[i++] = FSDirectory.getDirectory(f, false);
+				directories[i++] = FSDirectory.open(f);
 			}
 			iw.addIndexesNoOptimize(directories);
+			iw.commit();
 			iw.optimize();
 			log.info("LocalOptimize: Optimized "+optimzableSegments.length+" segments in to local master ");
 			for ( Directory d : directories ) {

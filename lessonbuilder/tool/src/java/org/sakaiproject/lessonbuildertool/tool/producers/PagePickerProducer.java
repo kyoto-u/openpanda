@@ -40,8 +40,11 @@ import org.sakaiproject.lessonbuildertool.SimplePageLogEntry;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean;
 import org.sakaiproject.lessonbuildertool.tool.view.GeneralViewParameters;
 import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
+import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.content.cover.ContentTypeImageService;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.lessonbuildertool.service.LessonsAccess;
 
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.localeutil.LocaleGetter;                                                                                          
@@ -78,12 +81,21 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 
 	private SimplePageBean simplePageBean;
 	private SimplePageToolDao simplePageToolDao;
+        private LessonsAccess lessonsAccess;
 	private ToolManager toolManager;
 	public MessageLocator messageLocator;
 	public LocaleGetter localeGetter;                                                                                             
 
         private boolean somePagesHavePrerequisites = false;
         private long currentPageId = -1;
+
+	private Map<String,String> imageToMimeMap;
+	public void setImageToMimeMap(Map<String,String> map) {
+		this.imageToMimeMap = map;
+	}
+    public boolean useSakaiIcons = ServerConfigurationService.getBoolean("lessonbuilder.use-sakai-icons", false);
+
+    public boolean enableShowItems = ServerConfigurationService.getBoolean("lessonbuilder.enable-show-items", true);
 
 	public class PageEntry {
 		Long pageId;
@@ -101,6 +113,11 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		simplePageToolDao = (SimplePageToolDao) dao;
 	}
 
+	public void setLessonsAccess(LessonsAccess l) {
+	    lessonsAccess = l;
+	}
+
+
 	public void setToolManager(ToolManager service) {
 		toolManager = service;
 	}
@@ -116,7 +133,7 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
     //   pageMap - a map that starts out having all pages in the site, we remove entries as we show them
     //      that lets us find at the end anything that hasn't been shown
 
-    public void findAllPages(SimplePageItem pageItem, List<PageEntry>entries, Map<Long,SimplePage> pageMap, Set<Long>topLevelPages, int level, boolean toplevel) {
+    public void findAllPages(SimplePageItem pageItem, List<PageEntry>entries, Map<Long,SimplePage> pageMap, Set<Long>topLevelPages, Set<Long>sharedPages, int level, boolean toplevel) {
 	    // System.out.println("in findallpages " + pageItem.getName() + " " + toplevel);
 	    Long pageId = Long.valueOf(pageItem.getSakaiId());	    
 
@@ -157,8 +174,10 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 	    // already done if removed from map.
 	    // however for top level pages, expand them for their primary entry,
 	    // i.e. when toplevel is set.
-	    if (pageMap.get(pageId) == null || (topLevelPages.contains(pageId) && !toplevel))
+	    if (pageMap.get(pageId) == null || (topLevelPages.contains(pageId) && !toplevel)) {
+		sharedPages.add(pageId);
 	    	return;
+	    }
 
 	    // say done
 	    pageMap.remove(pageId);
@@ -181,7 +200,7 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 			    nexts.add(item);
 			else  {
 			    // System.out.println("call for subpage " + item.getName() + " " + false);
-			    findAllPages(item, entries, pageMap, topLevelPages, level +1, false);
+			    findAllPages(item, entries, pageMap, topLevelPages, sharedPages, level +1, false);
 			}
 	    	}
 	    }
@@ -189,7 +208,7 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 	    for (SimplePageItem item: nexts) {
 	    	if (item.getType() == SimplePageItem.PAGE) {
 		    // System.out.println("calling findallpage " + item.getName() + " " + false);
-		    findAllPages(item, entries, pageMap, topLevelPages, level, false);
+		    findAllPages(item, entries, pageMap, topLevelPages, sharedPages, level, false);
 	    	}
 	    }
 	}
@@ -271,6 +290,8 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		// build map of all pages, so we can see if any are left over
 		Map<Long,SimplePage> pageMap = new HashMap<Long,SimplePage>();
 			
+		Set<Long> sharedPages = new HashSet<Long>();
+
 		// all pages
 		List<SimplePage> pages = simplePageToolDao.getSitePages(simplePageBean.getCurrentSiteId());
 		for (SimplePage p: pages)
@@ -285,7 +306,7 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		// this adds everything you can find from top level pages to entries
 		for (SimplePageItem sitePageItem : sitePages) {
 		    // System.out.println("findallpages " + sitePageItem.getName() + " " + true);
-		    findAllPages(sitePageItem, entries, pageMap, topLevelPages, 0, true);
+		    findAllPages(sitePageItem, entries, pageMap, topLevelPages, sharedPages, 0, true);
 		}
 
 		// warn students if we aren't showing all the pages
@@ -316,6 +337,9 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		    }
 		}
 
+		if (canEditPage && sharedPages.size() > 0)
+		    UIOutput.make(tofill, "sharedpageexplanation");
+
 		UIForm form = UIForm.make(tofill, "page-picker");
 
 		ArrayList<String> values = new ArrayList<String>();
@@ -340,7 +364,7 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		    
 		    UIBranchContainer row = UIBranchContainer.make(form, "page:");
 		    if (entry.toplevel)
-			row.decorate(new UIFreeAttributeDecorator("style", "list-style-type:none; margin-top:1em"));
+			row.decorate(new UIFreeAttributeDecorator("style", "list-style-type:none; margin-top:0.5em"));
 		    
 		    if (entry.level < 0)
 		    	UIOutput.make(row, "heading", messageLocator.getMessage("simplepage.chooser.unused"));
@@ -349,7 +373,7 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		    	int level = entry.level;
 		    	if (level > 5)
 		    		level = 5;
-		    	String imagePath = "/sakai-lessonbuildertool-tool/images/";
+		    	String imagePath = "/lessonbuilder-tool/images/";
 		    	SimplePageItem item = simplePageBean.findItem(entry.itemId);
 		    	SimplePageLogEntry logEntry = simplePageBean.getLogEntry(entry.itemId);
 		    	String note = null;
@@ -390,6 +414,36 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		    		UIOutput.make(row, "link-note", note + " ");
 		    	UIOutput.make(row, "link-text", entry.title);
 
+                if(enableShowItems) {
+		    	    UIOutput.make(row, "item-list-toggle");
+		    	    UIOutput.make(row, "itemListContainer").decorate(new UIFreeAttributeDecorator("style", "margin-left: " + (3*level) + "em"));
+		    	    UIOutput.make(row, "itemList");
+			    
+                    for(SimplePageItem pageItem : simplePageToolDao.findItemsOnPage(entry.pageId)) {
+
+                        UIBranchContainer itemListItem = UIBranchContainer.make(row, "item:");
+
+                        if (pageItem.isRequired()) {
+                            UIOutput.make(itemListItem, "required-image");
+                        } else {
+                            UIOutput.make(itemListItem, "not-required-image");
+                        }
+
+                        UIOutput.make(itemListItem,"item-icon")
+                            .decorate(getImageSourceDecorator(pageItem));
+
+                        if (pageItem.isPrerequisite()) {
+                            itemListItem.decorate(new UIFreeAttributeDecorator("class", "disabled-text-item"));
+                        }
+
+                        if(SimplePageItem.TEXT == pageItem.getType()) {
+                            UIOutput.make(itemListItem, "name",  messageLocator.getMessage("simplepage.chooser.textitemplaceholder"))
+                                .decorate(new UIFreeAttributeDecorator("class", "text-item-placeholder"));
+                        } else {
+                            UIOutput.make(itemListItem, "name", pageItem.getName());
+                        }
+                    }
+                }
 		    	index++;
 
 		    	// for pagepicker or summary if canEdit and page doesn't have an item
@@ -422,6 +476,26 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 
 		    }
 
+		    if (canEditPage && entry != null && entry.pageId != null && sharedPages.contains(entry.pageId)) {
+			UIOutput.make(row, "shared");
+		    }
+
+		    // debug code for development. this will be removed at some point
+		    if (ServerConfigurationService.getBoolean("lessonbuilder.accessibilitydebug", false)) {
+			if (entry != null && entry.pageId != null && lessonsAccess.isPageAccessible(entry.pageId,simplePageBean.getCurrentSiteId(),"c08d3ac9-c717-472a-ad91-7ce0b434f42f", null)) {
+			    UIOutput.make(row, "page1");
+			}
+			if (entry != null && entry.pageId != null && lessonsAccess.isPageAccessible(entry.pageId,simplePageBean.getCurrentSiteId(),"c08d3ac9-c717-472a-ad91-7ce0b434f42f", simplePageBean)) {
+			    UIOutput.make(row, "page2");
+			}
+			if (entry != null && entry.pageId != null && lessonsAccess.isItemAccessible(entry.itemId,simplePageBean.getCurrentSiteId(),"c08d3ac9-c717-472a-ad91-7ce0b434f42f", null)) {
+			    UIOutput.make(row, "item1");
+			}
+			if (entry != null && entry.pageId != null && lessonsAccess.isItemAccessible(entry.itemId,simplePageBean.getCurrentSiteId(),"c08d3ac9-c717-472a-ad91-7ce0b434f42f", simplePageBean)) {
+			    UIOutput.make(row, "item2");
+			} 
+		    }
+
 		}
 
 		if (!summaryPage) {
@@ -449,6 +523,74 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		    UICommand.make(form, "submit", messageLocator.getMessage("simplepage.delete-selected"), "#{simplePageBean.deletePages}");
 		}		
 	}
+
+    private UIFreeAttributeDecorator getImageSourceDecorator(SimplePageItem pageItem) {
+
+        switch (pageItem.getType()) {
+            case SimplePageItem.FORUM:
+                return new UIFreeAttributeDecorator("src", "/library/image/silk/comments.png");
+            case SimplePageItem.ASSIGNMENT:
+                return new UIFreeAttributeDecorator("src", "/library/image/silk/page_edit.png");
+            case SimplePageItem.ASSESSMENT:
+                return new UIFreeAttributeDecorator("src", "/library/image/silk/pencil.png");
+            case SimplePageItem.QUESTION:
+                return new UIFreeAttributeDecorator("src", "/library/image/silk/pencil.png");
+            case SimplePageItem.COMMENTS:
+                return new UIFreeAttributeDecorator("src", "/library/image/silk/comments.png");
+            case SimplePageItem.BLTI:
+                return new UIFreeAttributeDecorator("src", "/library/image/silk/application_go.png");
+            case SimplePageItem.PAGE:
+                return new UIFreeAttributeDecorator("src", "/library/image/silk/book_open.png");
+            case SimplePageItem.RESOURCE:
+                return getImageSourceDecoratorFromMimeType(pageItem);
+            case SimplePageItem.MULTIMEDIA:
+                return getImageSourceDecoratorFromMimeType(pageItem);
+            case SimplePageItem.TEXT:
+                return getImageSourceDecoratorFromMimeType(pageItem);
+            default:
+                return new UIFreeAttributeDecorator("src", "");
+        } 
+    }
+
+    private UIFreeAttributeDecorator getImageSourceDecoratorFromMimeType(SimplePageItem pageItem) {
+
+        String mimeType = pageItem.getHtml();
+
+        if(SimplePageItem.TEXT == pageItem.getType()) {
+            mimeType = "text/html";
+        } else if("application/octet-stream".equals(mimeType)) {
+            // OS X reports octet stream for things like MS Excel documents.
+            // Force a mimeType lookup so we get a decent icon.
+            mimeType = null;
+        }
+
+        if (mimeType == null || mimeType.equals("")) {
+            String s = pageItem.getSakaiId();
+            int j = s.lastIndexOf(".");
+            if (j >= 0)
+            s = s.substring(j+1);
+            mimeType = ContentTypeImageService.getContentType(s);
+        }
+
+        String src = null;
+
+        if (!useSakaiIcons) {
+            src = imageToMimeMap.get(mimeType);
+        }
+
+        if (src == null) {
+            String image = ContentTypeImageService.getContentTypeImage(mimeType);
+            if (image != null) {
+                src = "/library/image/" + image;
+            }
+        }
+        
+        if(src != null) {
+            return new UIFreeAttributeDecorator("src", src);
+        } else {
+            return new UIFreeAttributeDecorator("src", "");
+        }
+    }
 
 	public ViewParameters getViewParameters() {
 		return new GeneralViewParameters();

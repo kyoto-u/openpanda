@@ -17,10 +17,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.axis.AxisFault;
 import org.apache.axis.encoding.Base64;
 
-import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.authz.cover.AuthzGroupService;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.Role;
+import org.sakaiproject.authz.api.SecurityService;
 
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.user.api.UserEdit;
@@ -44,6 +44,7 @@ import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentResource;
+import org.sakaiproject.content.api.ContentResourceEdit;
 import org.sakaiproject.content.api.ContentEntity;
 
 import org.sakaiproject.entity.api.Entity;
@@ -88,6 +89,7 @@ public class ContentHosting {
 	public static String RESOURCE_TYPE_ATTACHMENT = "attachment";
 	
 	private ContentHostingService contentHostingService;
+	private SecurityService securityService;
 	
 	
 	/**
@@ -99,6 +101,7 @@ public class ContentHosting {
 	 */
 	public ContentHosting() {
 		contentHostingService = (ContentHostingService) ComponentManager.get(ContentHostingService.class.getName());
+		securityService = (SecurityService) ComponentManager.get(SecurityService.class.getName());
 	}
 
 	
@@ -318,6 +321,72 @@ public class ContentHosting {
 		return "failure";
 	}
 
+
+	/**
+	 *	Update the contents of a resource.  The resource is passed either as text or encoded using Base64 flagged
+	 *	using the binary parameter.
+	 *
+	 *	TODO:  Add a message notifying the Resource tool that a resource has been updated.
+	 *
+	 *	@param sessionid a valid sessionid
+	 *	@param resourceId of the resource
+	 *	@param contentMime content string
+	 *	@param type content type string
+	 *	@param binary if true, content is encoded using Base64, if false content is assumed to be text.
+	 *	@return 'Success' or 'Failure'
+	 *
+	 *	@author David Horwitz
+	 */
+	public String updateContentItem(String sessionid, String resourceId, String contentMime, String type, boolean binary) {
+	
+		try {
+			//establish the session
+			Session s = establishSession(sessionid);
+
+			//  Extract content.
+			byte[] content = null;
+			if (binary) {
+				content = Base64.decode(contentMime);
+			}
+			else {
+				content = contentMime.getBytes();
+			}
+			
+			contentHostingService.updateResource(resourceId, type, content);
+			
+			return "success";
+		}
+	
+		catch (Exception e) {
+			LOG.error("updateContentItem(): " + e.getClass().getName() + " : " + e.getMessage());
+		}
+		return "failure";
+	}
+
+	/**
+	 *	Delete the content resource given by an id (with full path).
+	 *
+	 *	TODO:  Add a message notifying the Resource tool that a root.has been added to a site.
+	 *
+	 *	@param sessionid a valid sessionid
+	 *	@return the id of the resource to be deleted.
+	 *
+	 *	@author Mark Norton
+	 */
+	public String deleteResource(String sessionId, String resourceId) {			
+		try {
+			//establish the session
+			Session s = establishSession(sessionId);
+
+			contentHostingService.removeResource(resourceId);
+			return "success";
+		}
+	
+		catch (Exception e) {
+			LOG.error("deleteResource(): " + e.getClass().getName() + " : " + e.getMessage());
+		}
+		return "failure";
+	}
 
 	/**
 	 *	Get the data associated with a resource id.  This is actually an alternative way to get a resource, since
@@ -604,5 +673,121 @@ public class ContentHosting {
 		return item;
 	}
 	
+	// Return XML document listing all resources user has in default (My Workspace) site
+	public String getMyWorkspaceResources (String sessionid) throws AxisFault {
+		return getUserResources( sessionid, null );
+ 	}
+
+	// Return XML document listing all resources user has in (optional) site
+	public String getUserResources (String sessionid, String siteId) throws AxisFault {
+		Session session = establishSession(sessionid);
+		String collectionId = null;
 	
+		if ( siteId == null || siteId.equals("") ) {
+			collectionId = "/user/" + session.getUserId() + "/";
+   		} 
+		else {
+		collectionId = "/group/" + siteId + "/";
+		}
+   
+		try {
+			List allResources = contentHostingService.getAllResources( collectionId );
+
+			if ( allResources == null || allResources.size() == 0 ) {
+					return "<list/>";
+			}
+
+			Document dom = Xml.createDocument();
+			Node list = dom.createElement("list");
+			dom.appendChild(list);
+
+			for (Iterator i = allResources.iterator(); i.hasNext();) {
+					ContentEntity entity = (ContentEntity)i.next();
+					Node item = dom.createElement("item");
+					String url = entity.getUrl().replaceFirst("/access/content/","/web/");
+					item.appendChild( dom.createTextNode(url) );
+					list.appendChild(item);
+			}
+
+			return Xml.writeDocumentToString(dom);
+		}
+		catch (Exception e) {
+			return "failure";
+		}
+	}
+
+	/**
+	 * Synchronize resources from a source site to a destination site. Accepts a sourceSiteId and a destinationSiteId. 
+	 * If the resource is not present in the destination it copies it there. If the resource does exist in the 
+	 * destination it performs an update if the source resource's mod date is greater than the destination's.
+	 * 
+	 * Note: It will not do deletes because there could be legitimate reasons for additional files in the destination
+	 * site.
+	 *
+	 * @param 	sessionid 		the id of a valid session
+	 * @param 	siteidsource	the id of the site to base this new site on
+	 * @param 	siteiddest		the id of the new site (ie test123)
+	 * @return					success or exception message
+	 *
+     *	@author Paul Dagnall
+	 */
+	public String syncResources ( String sessionid, String siteidsource, String siteiddest) throws AxisFault {
+		Session session = establishSession(sessionid);
+		
+		try {
+			//check only admin
+			if (!securityService.isSuperUser()) {
+				LOG.warn("syncResources(): Permission denied. Restricted to admin users.");
+				throw new AxisFault("WS syncResources(): Permission denied. Restricted to admin users.");
+			}
+			
+			// Get all resources for source
+			List<ContentResource> sourceSiteResourceList = null;
+			String sourceFolderPath = "/group/" + siteidsource + "/";
+			String destFolderPath = "/group/" + siteiddest + "/";
+			sourceSiteResourceList = contentHostingService.getAllResources(sourceFolderPath);
+			
+			// Iterate through each source site resource. Copy/update if necessary
+			for (ContentResource sourceResource: sourceSiteResourceList) {
+				
+				// Use a string replace to determine what the destination directory path (also id) should be.
+				String destResourceId = sourceResource.getId().replaceAll(siteidsource, siteiddest);
+				String destResourceDirectoryPath = destResourceId.substring(0,destResourceId.lastIndexOf('/')+1);
+				
+				// Does the resource exist? If so, check if it needs updated
+				try {
+					ContentResource destResource = contentHostingService.getResource(destResourceId);
+					
+					// Id was found so get LastModifiedDates and compare to determine if an updated occurred.
+					ContentResourceEdit sourceEdit = contentHostingService.editResource(sourceResource.getId());
+					ResourcePropertiesEdit sourceProps = sourceEdit.getPropertiesEdit();
+					String sourceResourceModDateStr = sourceProps.getProperty(ResourceProperties.PROP_MODIFIED_DATE);
+					contentHostingService.cancelResource(sourceEdit); // Needed to prevent InUseException
+					Long sourceResourceModDate = Long.parseLong(sourceResourceModDateStr.trim());
+					
+					ContentResourceEdit destEdit = contentHostingService.editResource(destResourceId);
+					ResourcePropertiesEdit destProps = destEdit.getPropertiesEdit();
+					String destResourceModDateStr = destProps.getProperty(ResourceProperties.PROP_MODIFIED_DATE);
+					contentHostingService.cancelResource(destEdit); // Needed to prevent InUseException
+					Long destResourceModDate = Long.parseLong(destResourceModDateStr.trim());
+					
+					// Dates will be formatted like this 20101122153619691 for Nov 22, 2010...
+					if (sourceResourceModDate > destResourceModDate) { // if source is newer, update
+						contentHostingService.removeAllLocks(destResourceId); // assume priority
+						contentHostingService.updateResource(destResourceId, null, sourceResource.getContent());
+					}
+
+				} catch (IdUnusedException e) { 
+					// Resource doesn't exist in destination so let's copy it
+					contentHostingService.copyIntoFolder(sourceResource.getId(), destResourceDirectoryPath);
+				}
+			}
+		
+		}
+		catch (Exception e) {  
+			LOG.error ("syncResources(): " + e.getClass().getName() + " : " + e.getMessage());
+		 	return e.getClass().getName() + " : " + e.getMessage();
+		}
+		return "success";
+	}
 }

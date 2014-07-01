@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/shared/SakaiBootStrap.java $
- * $Id: SakaiBootStrap.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-pack/src/java/org/sakaiproject/tool/assessment/shared/SakaiBootStrap.java $
+ * $Id: SakaiBootStrap.java 113495 2012-09-24 23:16:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import java.io.File;
  * This class will be used to initialize the state of the application.
  * 
  * @author <a href="mailto:lance@indiana.edu">Lance Speelmon</a>
- * @version $Id: SakaiBootStrap.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * @version $Id: SakaiBootStrap.java 113495 2012-09-24 23:16:45Z ottenhoff@longsight.com $
  */
 public class SakaiBootStrap
 {
@@ -99,7 +99,7 @@ public class SakaiBootStrap
       LOG.debug("****autoDdl disabled.");
     }
 
-    String uploadPath = ServerConfigurationService.getString("samigo.answerUploadRepositoryPath", null);
+    String uploadPath = ServerConfigurationService.getString("samigo.answerUploadRepositoryPath", "${sakai.home}/samigo/answerUploadRepositoryPath/");
 
     if(uploadPath != null)
     {

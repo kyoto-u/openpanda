@@ -7,7 +7,7 @@
 		$tlang.getString("import.reuse2")
 	</p>
 	#if ($alertMessage)
-		<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div>
+		<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div>
 		<div class="clear"></div>
 	#end
 	<p class="instruction">
@@ -68,6 +68,9 @@
 			<input type="submit" accesskey="s" class="active" name="eventSubmit_doContinue" value="$tlang.getString('gen.finish')" />
 			<input type="submit" accesskey="b" name="eventSubmit_doBack" value="$tlang.getString('gen.back')" />
 			<input type="submit" accesskey="x"  name="eventSubmit_doCancel" value="$tlang.getString('gen.cancel')" />
+		</p>
+		<p class="alertMessageInline">
+		$tlang.getString("import.links.warning")
 		</p>
 		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>

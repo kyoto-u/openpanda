@@ -1034,5 +1034,13 @@
           class="org.theospi.portfolio.presentation.render.PresentationTagFactory"
           singleton="true" init-method="init">
     </bean>
+    
+    <bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"  
+	      class="org.theospi.portfolio.presentation.entity.PresentationEntityProvider">
+	    <property name="presentationService">
+            <ref bean="org.theospi.portfolio.presentation.support.PresentationService" />
+        </property>		
+    </bean>
+    
 
 </beans>

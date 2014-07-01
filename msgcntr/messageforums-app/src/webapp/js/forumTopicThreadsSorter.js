@@ -109,35 +109,6 @@ jQuery.fn.threadsSorter = function() {
 				return false;
 		}
 		
-		/* Making header looks similar to sakai other sorting tables' header */
-		function decorateHeaders(){	
-			var cssObj = { 'text-decoration': 'underline',
-						'color':'#3355bb'
-						}
-			$('.header').each( function () {
-				var str = $(this).text().split(" ");
-				if(str[0] == "Authored"){
-					str[0] = "Author";
-				}
-				
-				//trim off spaces
-				str[0]=str[0].replace(/(^[\s\xA0]+|[\s\xA0]+$)/g, '');
-
-				if(str[0].length != 0){
-					$(this).css(cssObj);
-					$(this).attr("title","Sort By " + str[0]);
-				}
-			}), 
-
-			$('.header').hover(
-				function () {
-					$(this).css("color","#0000ee");
-				},
-				function () {
-					$(this).css("color","#3355bb");
-			    }
-			);
-		}	
 			
 		/* get original table cache before it's sorted to 
 		   record and mark the parent/desendant relationship in each row.
@@ -331,7 +302,7 @@ jQuery.fn.threadsSorter = function() {
 		});
 
 		//Showing headers clickable and sortable like sakai style
-		decorateHeaders();
+		//decorateHeaders();
 		
 		$this = $(this);
 

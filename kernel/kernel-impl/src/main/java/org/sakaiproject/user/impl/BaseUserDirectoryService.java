@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
- * $Id: BaseUserDirectoryService.java 118591 2013-01-22 20:34:14Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
+ * $Id: BaseUserDirectoryService.java 309201 2014-05-06 15:45:40Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,37 +21,14 @@
 
 package org.sakaiproject.user.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.TreeSet;
-import java.util.Vector;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.authz.api.AuthzGroupService;
-import org.sakaiproject.authz.api.AuthzPermissionException;
-import org.sakaiproject.authz.api.FunctionManager;
-import org.sakaiproject.authz.api.GroupNotDefinedException;
-import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.authz.api.*;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
-import org.sakaiproject.entity.api.Edit;
-import org.sakaiproject.entity.api.Entity;
-import org.sakaiproject.entity.api.EntityManager;
-import org.sakaiproject.entity.api.HttpAccess;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.entity.api.ResourcePropertiesEdit;
+import org.sakaiproject.entity.api.*;
+import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.id.api.IdManager;
 import org.sakaiproject.memory.api.Cache;
@@ -62,26 +39,9 @@ import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.tool.api.SessionBindingEvent;
 import org.sakaiproject.tool.api.SessionBindingListener;
 import org.sakaiproject.tool.api.SessionManager;
-import org.sakaiproject.user.api.AuthenticatedUserProvider;
-import org.sakaiproject.user.api.AuthenticationManager;
-import org.sakaiproject.user.api.ContextualUserDisplayService;
-import org.sakaiproject.user.api.DisplayAdvisorUDP;
-import org.sakaiproject.user.api.DisplaySortAdvisorUPD;
-import org.sakaiproject.user.api.ExternalUserSearchUDP;
-import org.sakaiproject.user.api.User;
-import org.sakaiproject.user.api.UserAlreadyDefinedException;
-import org.sakaiproject.user.api.UserDirectoryProvider;
-import org.sakaiproject.user.api.UserDirectoryService;
-import org.sakaiproject.user.api.UserEdit;
-import org.sakaiproject.user.api.UserFactory;
-import org.sakaiproject.user.api.UserIdInvalidException;
-import org.sakaiproject.user.api.UserLockedException;
-import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.user.api.UserPermissionException;
-import org.sakaiproject.user.api.UsersShareEmailUDP;
+import org.sakaiproject.user.api.*;
 import org.sakaiproject.util.BaseResourceProperties;
 import org.sakaiproject.util.BaseResourcePropertiesEdit;
-import org.sakaiproject.util.StorageUser;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.api.FormattedText;
@@ -89,6 +49,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.*;
 
 /**
  * <p>
@@ -101,7 +63,7 @@ import org.w3c.dom.NodeList;
  * Each User that ever goes through Sakai is allocated a Sakai unique UUID. Even if we don't keep the User record in Sakai, we keep a map of this id to the external eid.
  * </p>
  */
-public abstract class BaseUserDirectoryService implements UserDirectoryService, StorageUser, UserFactory
+public abstract class BaseUserDirectoryService implements UserDirectoryService, UserFactory
 {
 	/** Our log (commons). */
 	private static Log M_log = LogFactory.getLog(BaseUserDirectoryService.class);
@@ -132,6 +94,12 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 	
 	/** Collaborator for doing passwords. */
 	protected PasswordService m_pwdService = null;
+	
+	/** For validating passwords */
+	protected PasswordPolicyProvider m_passwordPolicyProvider = null;
+	
+	/** Component ID used to find the password policy provider */
+	protected String m_passwordPolicyProviderName = PasswordPolicyProvider.class.getName();
 
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Abstractions, etc.
@@ -141,6 +109,54 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 	 * Construct storage for this service.
 	 */
 	protected abstract Storage newStorage();
+
+	/* (non-Javadoc)
+	 * @see org.sakaiproject.user.api.UserDirectoryService#validatePassword(java.lang.String, org.sakaiproject.user.api.User)
+	 */
+	public PasswordRating validatePassword(String password, User user) {
+	    // NOTE: all passwords are valid by default
+	    PasswordRating rating = PasswordRating.PASSED_DEFAULT;
+	    PasswordPolicyProvider ppp = getPasswordPolicy();
+	    if (ppp != null) {
+	        if (user == null) {
+	            user = getCurrentUser();
+	            if (user == m_anon) {
+	                user = null; // no user available
+	            }
+	        }
+	        rating = ppp.validatePassword(password, user);
+	    }
+	    return rating;
+	}
+
+	/**
+	 * @return the current password policy provider 
+	 *     OR null if there is not one OR null if the password policy is disabled
+	 */
+	public PasswordPolicyProvider getPasswordPolicy() {
+	    // https://jira.sakaiproject.org/browse/KNL-1123
+	    // If the password policy object is not null, return it to the caller
+	    if ( m_passwordPolicyProvider == null ) {
+	        // Otherwise, try to get the (default) password policy object before returning it
+	        // Try getting it by the configured name
+	        if ( m_passwordPolicyProviderName != null ) {
+	            m_passwordPolicyProvider = (PasswordPolicyProvider) ComponentManager.get( m_passwordPolicyProviderName );
+	        }
+	        // Try getting the default impl via ComponentManager
+	        if ( m_passwordPolicyProvider == null ) {
+	            m_passwordPolicyProvider = (PasswordPolicyProvider) ComponentManager.get(PasswordPolicyProvider.class);
+	        }
+	        // If all else failed, manually instantiate default implementation
+	        if ( m_passwordPolicyProvider == null ) {
+	            m_passwordPolicyProvider = new PasswordPolicyProviderDefaultImpl(serverConfigurationService());
+	        }
+	    }
+	    PasswordPolicyProvider ppp = m_passwordPolicyProvider;
+	    if (!serverConfigurationService().getBoolean("user.password.policy", false)) {
+	        ppp = null; // don't send back a policy if disabled
+	    }
+	    return ppp;
+	}
 
 	/**
 	 * Access the partial URL that forms the root of resource URLs.
@@ -382,6 +398,14 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		m_contextualUserDisplayService = contextualUserDisplayService;
 	}
 
+	public void setPasswordPolicyProvider( PasswordPolicyProvider passwordPolicyProvider ) {
+		m_passwordPolicyProvider = passwordPolicyProvider;
+	}
+
+	public void setPasswordPolicyProviderName( String passwordPolicyProviderName ) {
+		m_passwordPolicyProviderName = StringUtils.trimToNull( passwordPolicyProviderName );
+	}
+
 	/** The # seconds to cache gets. 0 disables the cache. */
 	protected int m_cacheSeconds = 0;
 
@@ -539,9 +563,15 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			if (m_cacheCleanerSeconds > 0) {
 				M_log.warn("cacheCleanerSeconds@org.sakaiproject.user.api.UserDirectoryService is no longer supported");
 			}
-			m_callCache = memoryService().newCache(
-					"org.sakaiproject.user.api.UserDirectoryService.callCache",
-					userReference(""));
+
+            // caching for users
+            m_callCache = memoryService().getCache("org.sakaiproject.user.api.UserDirectoryService.callCache");
+            if (!m_callCache.isDistributed()) {
+                // KNL_1229 use an Observer for cache cleanup when the cache is not distributed
+                M_log.info("Creating user callCache observer for event based cache expiration (for local caches)");
+                m_userCacheObserver = new UserCacheObserver();
+                eventTrackingService().addObserver(m_userCacheObserver);
+            }
 
 			// register as an entity producer
 			entityManager().registerEntityProducer(this, REFERENCE_ROOT);
@@ -574,6 +604,16 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 				m_pwdService = new PasswordService();
 			}
 
+			m_passwordPolicyProviderName = serverConfigurationService().getString(PasswordPolicyProvider.SAK_PROP_PROVIDER_NAME, PasswordPolicyProvider.class.getName());
+			if (StringUtils.isEmpty(m_passwordPolicyProviderName)) {
+			    m_passwordPolicyProviderName = PasswordPolicyProvider.class.getName();
+			    M_log.warn("init(): Empty name for passwordPolicyProvider: Using the default name instead: "+m_passwordPolicyProviderName);
+			}
+			if (m_passwordPolicyProvider == null) {
+				m_passwordPolicyProvider = getPasswordPolicy(); // this will load the PasswordPolicy provider bean or instantiate the default
+			}
+			M_log.info("init(): PasswordPolicyProvider ("+m_passwordPolicyProviderName+"): " + ((m_passwordPolicyProvider == null) ? "none" : m_passwordPolicyProvider.getClass().getName()));
+
 			M_log.info("init(): provider: " + ((m_provider == null) ? "none" : m_provider.getClass().getName())
 					+ " separateIdEid: " + m_separateIdEid);
 		}
@@ -582,6 +622,34 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			M_log.warn("init(): ", t);
 		}
 	}
+
+    /**
+     * KNL-1229 Supports legacy event based cache expiration
+     */
+    UserCacheObserver m_userCacheObserver;
+
+    /**
+     * KNL-1229 Allow for legacy event based cache expiration
+     * Only used when distributed caches are not in use
+     */
+    class UserCacheObserver implements Observer {
+        @Override
+        public void update(Observable observable, Object o) {
+            if (o instanceof Event) {
+                Event event = (Event) o;
+                if (event.getResource() != null && (
+                    SECURE_UPDATE_USER_OWN.equals(event.getEvent())
+                    || SECURE_UPDATE_USER_ANY.equals(event.getEvent())
+                    || SECURE_REMOVE_USER.equals(event.getEvent())
+                    )
+                ) {
+                    String userRef = event.getResource();
+                    removeCachedUser(userRef);
+                }
+            }
+
+        }
+    }
 
 	/**
 	 * Returns to uninitialized state. You can use this method to release resources thet your Service allocated when Turbine shuts down.
@@ -592,6 +660,9 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		m_storage = null;
 		m_provider = null;
 		m_anon = null;
+		m_passwordPolicyProvider = null;
+        m_callCache.close();
+        m_userCacheObserver = null;
 
 		M_log.info("destroy()");
 	}
@@ -2976,141 +3047,4 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		public List<User> getUsersByEids(Collection<String> eids);
 	}
 
-	/**********************************************************************************************************************************************************************************************************************************************************
-	 * StorageUser implementation (no container)
-	 *********************************************************************************************************************************************************************************************************************************************************/
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newContainer(String ref)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newContainer(Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newContainer(Entity other)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newResource(Entity container, String id, Object[] others)
-	{
-		return new BaseUserEdit(id);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newResource(Entity container, Element element)
-	{
-		return new BaseUserEdit(element);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newResource(Entity container, Entity other)
-	{
-		return new BaseUserEdit((User) other);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newContainerEdit(String ref)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newContainerEdit(Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newContainerEdit(Entity other)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newResourceEdit(Entity container, String id, Object[] others)
-	{
-		BaseUserEdit e = new BaseUserEdit(id);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newResourceEdit(Entity container, Element element)
-	{
-		BaseUserEdit e = new BaseUserEdit(element);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newResourceEdit(Entity container, Entity other)
-	{
-		BaseUserEdit e = new BaseUserEdit((User) other);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Object[] storageFields(Entity r)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public boolean isDraft(Entity r)
-	{
-		return false;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public String getOwnerId(Entity r)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Time getDate(Entity r)
-	{
-		return null;
-	}
 }

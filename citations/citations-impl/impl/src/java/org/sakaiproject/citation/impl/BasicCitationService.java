@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.3/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
- * $Id: BasicCitationService.java 118326 2013-01-14 18:29:49Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
+ * $Id: BasicCitationService.java 112008 2012-08-30 21:42:16Z jimeng@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -203,7 +203,7 @@ public class BasicCitationService extends BaseCitationService
         public CitationCollection addCollection(Map attributes, List citations)
         {
          	// need to create a collection (referred to below as "edit")
-        	BasicCitationCollection edit = new BasicCitationCollection(attributes, citations);
+        	CitationCollection edit = new BasicCitationCollection(attributes, citations);
         	
         	this.m_collections.put(edit.getId(), edit);
         	
@@ -284,7 +284,7 @@ public class BasicCitationService extends BaseCitationService
 
 		public CitationCollection copyAll(String collectionId) 
 		{
-			BasicCitationCollection original = (BasicCitationCollection) this.m_collections.get(collectionId);
+			CitationCollection original = (CitationCollection) this.m_collections.get(collectionId);
 			CitationCollection copy = null;
 			
 			if(original != null)

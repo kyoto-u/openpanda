@@ -7,7 +7,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: submitted.jsp 127808 2013-07-25 20:37:03Z ottenhoff@longsight.com $
+* $Id: submitted.jsp 125267 2013-05-30 18:04:08Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -130,10 +130,14 @@ window.close();
 </div>
 
 <br /><br />
+
+
 <div class="tier1">
   <h:panelGrid columns="2" cellpadding="3" cellspacing="3">
     <h:commandButton type="submit" value="#{deliveryMessages.button_continue}" action="select"
        rendered="#{delivery.actionString=='takeAssessment'}" />
+
+
 
     <h:commandButton value="#{deliveryMessages.review_results}" type="button" id="reviewAssessment"
        rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.anonymousLogin && (delivery.feedbackComponent.showImmediate || delivery.feedbackComponent.showOnSubmission || delivery.feedbackOnDate) && delivery.feedbackComponentOption=='2'}" 

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/SectionRoleResolver.java $
- * $Id: SectionRoleResolver.java 83968 2010-11-01 11:36:21Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/SectionRoleResolver.java $
+ * $Id: SectionRoleResolver.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

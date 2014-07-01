@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-api/api/src/java/org/sakaiproject/portal/api/Portal.java $
- * $Id: Portal.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-api/api/src/java/org/sakaiproject/portal/api/Portal.java $
+ * $Id: Portal.java 132883 2013-12-21 19:57:10Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -41,7 +41,7 @@ import org.sakaiproject.tool.api.ToolException;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 132883 $
  */
 public interface Portal
 {
@@ -84,11 +84,6 @@ public interface Portal
 	 * The default portal name is none is specified.
 	 */
 	public static final String DEFAULT_PORTAL_CONTEXT = "charon";
-
-	/**
-	 * Configuration option indicaing support for frame set mode.
-	 */
-	public static final String FRAMESET_SUPPORT = "portal.frameset";
 
 	/**
 	 * Configuration option to enable/disable state reset on navigation change

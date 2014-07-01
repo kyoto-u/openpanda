@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.osedu.org/licenses/ECL-2.0
+ * http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,6 +25,7 @@ import org.sakaiproject.mailsender.tool.params.UserGroupViewParameters;
 import org.sakaiproject.mailsender.tool.producers.fragments.UserGroupingProducer;
 import org.sakaiproject.user.api.User;
 
+import uk.ac.cam.caret.sakai.rsf.producers.FrameAdjustingProducer;
 import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -33,7 +34,9 @@ import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
+import uk.org.ponder.rsf.components.decorators.UIColumnsDecorator;
 import uk.org.ponder.rsf.components.decorators.UIFreeAttributeDecorator;
+import uk.org.ponder.rsf.components.decorators.UIRowsDecorator;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
@@ -53,6 +56,7 @@ public class ComposeProducer implements ViewComponentProducer, NavigationCaseRep
 	private NavBarRenderer navBarRenderer;
 	private TextInputEvolver richTextEvolver;
 	private ViewStateHandler viewStateHandler;
+	private FrameAdjustingProducer frameAdjustingProducer;
 
 	public void setExternalLogic(ExternalLogic externalLogic)
 	{
@@ -77,6 +81,11 @@ public class ComposeProducer implements ViewComponentProducer, NavigationCaseRep
 	public String getViewID()
 	{
 		return VIEW_ID;
+	}
+
+	public void setFrameAdjustingProducer(FrameAdjustingProducer frameAdjustingProducer)
+	{
+		this.frameAdjustingProducer = frameAdjustingProducer;
 	}
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
@@ -149,6 +158,12 @@ public class ComposeProducer implements ViewComponentProducer, NavigationCaseRep
 		UIInput content = UIInput.make(mainForm, "content-div:", emailBean + ".content");
 		richTextEvolver.evolveTextInput(content);
 
+		// We have to make the textarea 30 rows so that when we resize the iframe we get a size that will be roughly
+		// the same as when the WYSIWYG editor has loaded. This is all because we don't resize the iframe after
+		// the WYSIWYG has loaded, SAK-23692 may be better in future.
+		// This can't be done before the rich text evolver has run.
+		content.decorate(new UIRowsDecorator(30));
+
 		// create 'send me a copy' checkbox
 		UIBoundBoolean.make(mainForm, "sendMeCopy", emailBean + ".config.sendMeACopy");
 
@@ -162,6 +177,8 @@ public class ComposeProducer implements ViewComponentProducer, NavigationCaseRep
 		UICommand.make(mainForm, "send-button", UIMessage.make("send_mail_button"),
 				"emailBean.sendEmail");
 		UICommand.make(mainForm, "cancel-button", UIMessage.make("cancel_mail_button"));
+
+		frameAdjustingProducer.fillComponents(tofill, "resize", "resetFrame");
 	}
 
 	/**

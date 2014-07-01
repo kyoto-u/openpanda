@@ -1,6 +1,6 @@
 /**
- * $Id: SessionEntityProvider.java 51318 2008-08-24 05:28:47Z csev@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/trunk/impl/src/java/org/sakaiproject/entitybroker/providers/SessionEntityProvider.java $
+ * $Id: SessionEntityProvider.java 130232 2013-10-08 12:32:33Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/core-providers/src/java/org/sakaiproject/entitybroker/providers/SessionEntityProvider.java $
  * SessionEntityProvider.java - entity-broker - Jul 15, 2008 4:03:52 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

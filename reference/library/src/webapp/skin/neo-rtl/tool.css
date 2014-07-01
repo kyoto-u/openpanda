@@ -327,7 +327,7 @@ table.calendar .event {
 /* skinned cell of standard tab. data table */
 .listHier td {
     vertical-align: top;
-    padding: .3em .4em !important;
+    padding: .3em .4em;
 }
 /* lines - provides rules and hover effects on some tables */
 table.lines {
@@ -436,7 +436,7 @@ tr#selectedReorder td.arrowHere {
 }
 /* SECTION 6 HIERARCHY */
 /* headers are used in many places for structuring things semantically - these are the plain headers - below there are others contextually defined */
-h2, h6 {
+.portletBody h2, h6 {
     color: #555;
     padding: 0;
     font-weight: bold;
@@ -1153,9 +1153,6 @@ ul.makeMenu li.menuClose a:hover {
     margin: 2px 0 0 2px;
     font-size: 1.3em;
 }
-#show-pages {
-    margin-top: -5px
-}
 /* ===[ New alerts ]=== */
 .validationEmbedded, .validation, .alertMessage {
     background: white url(../../image/silk/exclamation.png) 4px 4px no-repeat !important
@@ -1236,4 +1233,15 @@ input[type="checkbox"][disabled="disabled"], input[type="checkbox"][disabled="tr
 }
 .listNav input[type="submit"], .listNav input[type="button"] {
     height: 20px !important
+}
+@media screen and (max-device-width: 480px) {
+.login td.logo {
+    width: 175px;
+    background: #fff url(images/x-login-logo-sm.png) no-repeat;
+    background-position: 10px 20px;
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    border-color: #ccc;
+}
+
 }

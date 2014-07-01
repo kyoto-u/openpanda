@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/site/impl/SiteCacheImpl.java $
- * $Id: SiteCacheImpl.java 88170 2011-02-09 07:20:56Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/site/impl/SiteCacheImpl.java $
+ * $Id: SiteCacheImpl.java 308876 2014-04-28 14:06:04Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,51 +21,43 @@
 
 package org.sakaiproject.site.impl;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import net.sf.ehcache.event.CacheEventListener;
-
-import org.sakaiproject.component.api.ServerConfigurationService;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.memory.api.Cache;
-import org.sakaiproject.memory.api.DerivedCache;
 import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.ToolConfiguration;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * <p>
  * SiteCacheImpl is a cache tuned for Site (and page / tool) access.
  * </p>
+ * @deprecated after 10, remove this for Sakai 11
  */
-public class SiteCacheImpl implements DerivedCache, CacheEventListener
-{
+public class SiteCacheImpl implements CacheEventListener, SiteCache {
 	
 	private static Log M_log = LogFactory.getLog(SiteCacheImpl.class);
-	
-	ServerConfigurationService serverConfigurationService = null;
-	
 	/** Map of a tool id to a cached site's tool configuration instance. */
 	protected Map<String, ToolConfiguration> m_tools = new ConcurrentHashMap<String, ToolConfiguration>();
-
 	/** Map of a page id to a cached site's SitePage instance. */
 	protected Map<String, SitePage> m_pages = new ConcurrentHashMap<String, SitePage>();
-
 	/** Map of a group id to a cached site's Group instance. */
 	protected Map<String, Group> m_groups = new ConcurrentHashMap<String, Group>();
-
 	/** The base cache. */
 	protected Cache m_cache = null;
-	
+	ServerConfigurationService serverConfigurationService = null;
 	/*** Variables to implement site cache specific metrics. The usual Ehcache metrics are not
 	 * sufficient because we handle the page / tool / group caching outside of Ehcache. 
 	 ***/
@@ -89,9 +81,6 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 		m_cache = memoryService.newCache(
 				"org.sakaiproject.site.impl.SiteCacheImpl.cache", pattern);
 
-		// setup as the derived cache
-		m_cache.attachDerivedCache(this);
-
 		// Provide an instance of the server configuration service.
 		this.serverConfigurationService = serverConfigurationService;
 
@@ -112,10 +101,9 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 	 *        The key with which to find the object.
 	 * @param payload
 	 *        The object to cache.
-	 * @param duration
-	 *        The time to cache the object (seconds).
 	 */
-	public void put(Object key, Object payload, int duration)
+	@Override
+    public void put(String key, Object payload)
 	{
 		m_cache.put(key, payload);
 	}
@@ -127,7 +115,8 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 	 *        The cache key.
 	 * @return true if the key maps to a non-expired cache entry, false if not.
 	 */
-	public boolean containsKey(Object key)
+	@Override
+    public boolean containsKey(String key)
 	{
 		return m_cache.containsKey(key);
 	}
@@ -139,7 +128,8 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 	 *        The cache key.
 	 * @return The payload, or null if the payload is null, the key is not found, or the entry has expired (Note: use containsKey() to remove this ambiguity).
 	 */
-	public Object get(Object key)
+	@Override
+    public Object get(String key)
 	{
 		return m_cache.get(key);
 	}
@@ -147,7 +137,8 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 	/**
 	 * Clear all entries.
 	 */
-	public void clear()
+	@Override
+    public void clear()
 	{
 		m_cache.clear();
 	}
@@ -158,9 +149,10 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 	 * @param key
 	 *        The cache key.
 	 */
-	public void remove(Object key)
+	@Override
+    public boolean remove(String key)
 	{
-		m_cache.remove(key);
+		return m_cache.remove(key);
 	}
 
 	/**
@@ -170,7 +162,8 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 	 *        The tool's id.
 	 * @return The ToolConfiguration that has this id, from a cached site.
 	 */
-	public ToolConfiguration getTool(String toolId)
+	@Override
+    public ToolConfiguration getTool(String toolId)
 	{
 		return (ToolConfiguration) m_tools.get(toolId);
 	}
@@ -182,7 +175,8 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 	 *        The page's id.
 	 * @return The SitePage that has this id, from a cached site.
 	 */
-	public SitePage getPage(String pageId)
+	@Override
+    public SitePage getPage(String pageId)
 	{
 		return (SitePage) m_pages.get(pageId);
 	}
@@ -194,15 +188,13 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 	 *        The group id.
 	 * @return The Group that has this id, from a cached site.
 	 */
-	public Group getGroup(String groupId)
+	@Override
+    public Group getGroup(String groupId)
 	{
 		return (Group) m_groups.get(groupId);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void notifyCacheClear()
+    private void notifyCacheClear()
 	{
 		// clear the tool ids
 		m_tools.clear();
@@ -214,18 +206,30 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 		m_groups.clear();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void notifyCachePut(Object key, Object payload)
+    private void notifyCachePut(String key, Object payload)
 	{
 		// add the payload (Site) tool ids
 		if (payload instanceof Site)
 		{
 			Site site = (Site) payload;
 
+			Collection<SitePage> sitePages;
+			Collection<Group> siteGroups;
+			// TODO: If the boolean versions of getPages and getGroups are
+			//       added to the Site interface, this check should be removed.
+			if (site instanceof BaseSite)
+			{
+				sitePages  = ((BaseSite) site).getPages(false);
+				siteGroups = ((BaseSite) site).getGroups(false);
+			}
+			else
+			{
+				sitePages  = site.getPages();
+				siteGroups = site.getGroups();
+			}
+
 			// add the pages and tools to the cache
-			for (Iterator<SitePage> pages = site.getPages().iterator(); pages.hasNext();)
+			for (Iterator<SitePage> pages = sitePages.iterator(); pages.hasNext();)
 			{
 				SitePage page = (SitePage) pages.next();
 				m_pages.put(page.getId(), page);
@@ -237,7 +241,7 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 			}
 
 			// add the groups to the cache
-			for (Iterator<Group> groups = site.getGroups().iterator(); groups.hasNext();)
+			for (Iterator<Group> groups = siteGroups.iterator(); groups.hasNext();)
 			{
 				Group group = (Group) groups.next();
 				m_groups.put(group.getId(), group);
@@ -245,10 +249,7 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 		}		
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void notifyCacheRemove(Object key, Object payload)
+    private void notifyCacheRemove(String key, Object payload)
 	{
 		// clear the tool ids for this site
 		if ((payload != null) && (payload instanceof Site))
@@ -291,25 +292,23 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 	 * If the cache configuration is not efficient then you want to know about it.  
 	 */
 	protected void updateSiteCacheStatistics() {
-	
 		if (cacheEventReportInterval == 0) {
 			return;
 		}
-		
+
 		++cacheEventCount;
 		if (cacheEventCount % cacheEventReportInterval != 0) {
 			return;
 		}
-		
-		M_log.info("SiteCache:"
-				+" eventCount: "+cacheEventCount
-				+" sites  "+m_cache.getSize()
-				+" tools: "+m_tools.size()
-				+" pages: "+m_pages.size()
-				+" groups: "+m_groups.size()
-				);
+
+		if (M_log.isDebugEnabled()) M_log.debug("SiteCacheSafe:"
+                        + " eventCount: " + cacheEventCount
+                        + " tools: " + m_tools.size()
+                        + " pages: " + m_pages.size()
+                        + " groups: " + m_groups.size()
+        );
 	}
-	
+
 	public void dispose() {
 		M_log.debug("ehcache event: dispose");	
 	}
@@ -320,7 +319,7 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 			M_log.debug("ehcache event: notifyElementEvicted: "+element.getKey());
 		}
 		
-		notifyCacheRemove(element.getObjectKey(), element.getObjectValue());		
+		notifyCacheRemove(element.getObjectKey().toString(), element.getObjectValue());
 		updateSiteCacheStatistics();
 	}
 
@@ -329,7 +328,7 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 			M_log.debug("ehcache event: notifyElementExpired: "+element.getKey());
 		}
 		
-		notifyCacheRemove(element.getObjectKey(), element.getObjectValue());
+		notifyCacheRemove(element.getObjectKey().toString(), element.getObjectValue());
 		updateSiteCacheStatistics();
 	}
 
@@ -338,6 +337,7 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 		if (M_log.isDebugEnabled()) {
 			M_log.debug("ehcache event: notifyElementPut: "+element.getKey());
 		}
+        notifyCachePut(element.getObjectKey().toString(), element.getObjectValue());
 		updateSiteCacheStatistics();
 	}
 
@@ -346,6 +346,7 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 		if (M_log.isDebugEnabled()) {
 			M_log.debug("ehcache event: notifyElementRemoved: "+element.getKey());	
 		}
+        notifyCacheRemove(element.getObjectKey().toString(), element.getObjectValue());
 		updateSiteCacheStatistics();
 	}
 
@@ -361,6 +362,7 @@ public class SiteCacheImpl implements DerivedCache, CacheEventListener
 		if (M_log.isDebugEnabled()) {
 			M_log.debug("ehcache event: notifyRemoveAll");
 		}
+        notifyCacheClear();
 		updateSiteCacheStatistics();
 	}
 	

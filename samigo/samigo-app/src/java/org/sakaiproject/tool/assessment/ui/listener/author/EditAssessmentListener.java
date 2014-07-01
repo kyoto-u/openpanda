@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/EditAssessmentListener.java $
- * $Id: EditAssessmentListener.java 113407 2012-09-21 20:46:17Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/EditAssessmentListener.java $
+ * $Id: EditAssessmentListener.java 113840 2012-10-01 14:49:26Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,7 +52,7 @@ import org.sakaiproject.tool.cover.ToolManager;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: EditAssessmentListener.java 113407 2012-09-21 20:46:17Z ottenhoff@longsight.com $
+ * @version $Id: EditAssessmentListener.java 113840 2012-10-01 14:49:26Z holladay@longsight.com $
  */
 
 public class EditAssessmentListener
@@ -66,10 +66,18 @@ public class EditAssessmentListener
 
   public void processAction(ActionEvent ae) throws AbortProcessingException
   {
+      
     // #1a - come from authorIndex.jsp, load the assessment
     // goto editAssessment.jsp if successful
 	AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
     String editType = ContextUtil.lookupParam("editType");
+    
+    // reset author.isEditPoolFlow (for pub assessment random pool question editing) in case the user clicked around the interface (not using save or republish) and tries to go back into an assessment (either pub or unpub)
+    if (author != null) {
+        author.setIsEditPoolFlow(false);
+    }
+
+
     if (editType != null) {
     	if ("pendingAssessment".equals(editType)) {
     		setPropertiesForAssessment(author);

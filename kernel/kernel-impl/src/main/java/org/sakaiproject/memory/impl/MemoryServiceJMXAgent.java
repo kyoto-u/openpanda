@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/memory/impl/MemoryServiceJMXAgent.java $
- * $Id: MemoryServiceJMXAgent.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/memory/impl/MemoryServiceJMXAgent.java $
+ * $Id: MemoryServiceJMXAgent.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,18 +21,17 @@
 
 package org.sakaiproject.memory.impl;
 
-import java.lang.management.ManagementFactory;
-
-import javax.management.MBeanServer;
-
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.management.ManagementService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.management.ManagementService;
+import javax.management.MBeanServer;
+import java.lang.management.ManagementFactory;
 
 /**
  * @author ieb
+ * @deprecated as of Sakai 2.9, this should no longer be used and should be removed in Sakai 11
  */
 public class MemoryServiceJMXAgent
 {

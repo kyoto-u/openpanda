@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/test/org/sakaiproject/tool/assessment/ui/bean/evaluation/ExportResponsesBeanTest.java $
+ * $Id: ExportResponsesBeanTest.java 108724 2012-05-30 10:03:22Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation

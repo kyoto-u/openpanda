@@ -1,7 +1,7 @@
 <!--
 
-    $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-tool/src/webapp/html/widget/Widget.html $
-    $Id: Widget.html 77908 2010-05-25 13:03:34Z nuno@ufp.edu.pt $
+    $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-tool/src/webapp/html/widget/Widget.html $
+    $Id: Widget.html 131093 2013-11-04 14:59:26Z ottenhoff@longsight.com $
 
     Copyright (c) 2006-2009 The Sakai Foundation
 
@@ -35,7 +35,7 @@
 
                jQuery(more).hide();
                jQuery(less).show();
-               if(jQuery.browser.msie && jQuery.browser.version == '8.0') {
+               if (navigator.userAgent.match(/MSIE 8/) !== null) {
                     // as usual, MS IE is buggy...
             	    jQuery(middle).show();
                }else{
@@ -51,9 +51,6 @@
             });
         }
     }
-    jQuery(document).ready(function(){
-        jQuery('.alpha').ifixpng();
-    });
     </script>
 </wicket:head>
 <wicket:panel>

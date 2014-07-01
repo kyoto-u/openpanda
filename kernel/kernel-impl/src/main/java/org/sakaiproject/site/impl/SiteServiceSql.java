@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/site/impl/SiteServiceSql.java $
- * $Id: SiteServiceSql.java 90984 2011-03-31 10:20:38Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/site/impl/SiteServiceSql.java $
+ * $Id: SiteServiceSql.java 113964 2012-10-04 05:22:35Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -358,7 +358,7 @@ public interface SiteServiceSql
 	String getSitesWhereSoftlyDeletedOnlySql();
 	
 	/**
-	 * returns the sql statement which is part of the qhere clause to only retrieve sites that are NOT softly deleted
+	 * returns the sql statement which is part of the where clause to only retrieve sites that are NOT softly deleted
 	 * @return
 	 */
 	String getSitesWhereNotSoftlyDeletedSql();

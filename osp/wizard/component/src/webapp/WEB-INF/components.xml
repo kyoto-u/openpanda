@@ -267,9 +267,6 @@
       <property name="matrixManager">
          <ref bean="matrixManager"/>
       </property>
-      <property name="siteCache">
-         <ref bean="org.theospi.portfolio.wizard.mgt.impl.WizardManagerImpl.cache"/>
-      </property>
       <property name="eventService">
       	<ref bean="org.theospi.event.EventService"/>
       </property>
@@ -277,18 +274,6 @@
          <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
       </property>
    </bean>
-   
-   <bean id="org.theospi.portfolio.wizard.mgt.impl.WizardManagerImpl.cache" 
-  			class="org.sakaiproject.memory.util.EhCacheFactoryBean">
-  	<property name="cacheManager"><ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/></property>
-    <property name="cacheName"><value>org.theospi.portfolio.wizard.mgt.impl.WizardManagerImpl.cache</value></property>
-    <property name="maxElementsInMemory" ><value>500</value></property>
-    <property name="diskPersistent" ><value>false</value></property>
-    <property name="eternal" ><value>false</value></property>
-    <property name="timeToLive" ><value>60</value></property>
-    <property name="timeToIdle" ><value>10</value></property>
-  </bean>
-   
 
    <bean id="org.theospi.portfolio.wizard.mgt.WizardManager"
       class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"

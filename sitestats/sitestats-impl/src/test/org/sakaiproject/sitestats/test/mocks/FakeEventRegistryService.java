@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeEventRegistryService.java $
- * $Id: FakeEventRegistryService.java 96802 2011-08-11 12:57:41Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeEventRegistryService.java $
+ * $Id: FakeEventRegistryService.java 133719 2014-01-27 11:20:56Z matthew.buckett@it.ox.ac.uk $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,11 +19,14 @@
 package org.sakaiproject.sitestats.test.mocks;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.sitestats.api.StatsManager;
 import org.sakaiproject.sitestats.api.event.EventRegistryService;
 import org.sakaiproject.sitestats.api.event.ToolInfo;
 import org.sakaiproject.sitestats.api.parser.EventFactory;
@@ -41,9 +44,14 @@ public class FakeEventRegistryService implements EventRegistryService {
 	public void setToolManager(ToolManager M_tm) {
 		this.M_tm = M_tm;
 	}
+	
+	private StatsManager					M_sm;
+	public void setStatsManager(StatsManager M_sm) {
+		this.M_sm = M_sm;
+	}
 
-	public List<String> getAnonymousEventIds() {
-		return Arrays.asList(FakeData.EVENT_CONTENTDEL);
+	public Set<String> getAnonymousEventIds() {
+		return Collections.singleton(FakeData.EVENT_CONTENTDEL);
 	}
 
 	public EventFactory getEventFactory() {
@@ -55,7 +63,12 @@ public class FakeEventRegistryService implements EventRegistryService {
 		return FakeData.EVENTID_TOOL_MAP;
 	}
 
-	public List<String> getEventIds() {
+	public Set<String> getEventIds() {
+		if (M_sm.isEnableSitePresences()) {
+			Set<String> eventIds = new HashSet<String>(FakeData.EVENTIDS);
+			eventIds.add(StatsManager.SITEVISITEND_EVENTID);
+			return eventIds;
+		}
 		return FakeData.EVENTIDS;
 	}
 
@@ -105,6 +118,11 @@ public class FakeEventRegistryService implements EventRegistryService {
 
 	public List<String> getServerEventIds() {
 		return new ArrayList<String>();
+	}
+
+	@Override
+	public boolean isRegisteredEvent(String eventId) {
+		return getEventIds().contains(eventId);
 	}
 
 }

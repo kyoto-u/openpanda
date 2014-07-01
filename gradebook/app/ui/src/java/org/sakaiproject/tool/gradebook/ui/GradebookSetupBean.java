@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -613,7 +613,9 @@ public class GradebookSetupBean extends GradebookDependentBean implements Serial
 						uiCategory.setWeight(new Double(0));
 					}
 					
-					if (localGradebook.getCategory_type() != GradebookService.CATEGORY_TYPE_WEIGHTED_CATEGORY || uiCategory.isExtraCredit() == null)
+					if ((localGradebook.getCategory_type() != GradebookService.CATEGORY_TYPE_WEIGHTED_CATEGORY 
+							&& localGradebook.getCategory_type() != GradebookService.CATEGORY_TYPE_ONLY_CATEGORY)
+							|| uiCategory.isExtraCredit() == null)
 					{
 						uiCategory.setExtraCredit(null);
 					}

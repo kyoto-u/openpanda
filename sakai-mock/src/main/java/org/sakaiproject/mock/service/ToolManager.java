@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.3/src/main/java/org/sakaiproject/mock/service/ToolManager.java $
- * $Id: ToolManager.java 79369 2010-07-13 08:16:47Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.0/src/main/java/org/sakaiproject/mock/service/ToolManager.java $
+ * $Id: ToolManager.java 307875 2014-04-07 15:40:27Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,16 +20,16 @@
  **********************************************************************************/
 package org.sakaiproject.mock.service;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.api.Tool;
 import org.w3c.dom.Document;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.Iterator;
+import java.util.Set;
 
 public class ToolManager implements org.sakaiproject.tool.api.ToolManager {
 	Set<Tool> tools;
@@ -98,4 +98,16 @@ public class ToolManager implements org.sakaiproject.tool.api.ToolManager {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public String getLocalizedToolProperty(String toolId, String key) {
+		return null;
+	}
+
+    public boolean isHidden(Placement placement) {
+        return false;
+    }
+
+    public boolean allowTool(Site site, Placement placement) {
+        return true;
+    }
 }

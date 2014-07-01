@@ -5,7 +5,7 @@
   <parent>
     <artifactId>gradebook-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>sakai-gradebook-app</artifactId>
@@ -17,4 +17,12 @@
     <!--module>standalone-app</module-->
     <module>ui</module>
   </modules>
+  <profiles>
+      <profile>
+          <id>remove-10</id>
+          <modules>
+              <module>standalone-app</module>
+          </modules>
+      </profile>
+  </profiles>
 </project>

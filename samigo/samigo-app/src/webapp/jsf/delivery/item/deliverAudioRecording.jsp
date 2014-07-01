@@ -1,9 +1,9 @@
-<%-- $Id: deliverAudioRecording.jsp 104706 2012-02-15 07:32:19Z miguel.carro@samoo.es $
+<%-- $Id: deliverAudioRecording.jsp 308878 2014-04-28 14:18:33Z enietzel@anisakai.com $
 include file for delivering audio questions
 should be included in file importing DeliveryMessages
 --%>
 <!--
-* $Id: deliverAudioRecording.jsp 104706 2012-02-15 07:32:19Z miguel.carro@samoo.es $
+* $Id: deliverAudioRecording.jsp 308878 2014-04-28 14:18:33Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -44,12 +44,15 @@ should be included in file importing DeliveryMessages
   <h:panelGrid cellpadding="10" columns="1">
     <h:panelGroup>
 		<h:outputText escape="false" value="
-        	<object>
-        		<param name=\"autostart\" value=\"false\"/>
-        		<param name=\"autoplay\" value=\"false\"/>
-        		<param name=\"controller\" value=\"true\"/>         
-        		<embed src=\"#{delivery.protocol}/samigo-app/servlet/ShowMedia?mediaId=#{question.mediaArray[0].mediaId}\" volume=\"50\" height=\"25\" width=\"300\" autostart=\"false\" autoplay=\"false\" controller=\"true\" type=\"audio/basic\"/>
-        	</object>" 
+          <script tye=\"text/javascript\">
+            var audio = new Audio();
+            if (!audio.canPlayType(\"audio/wav\")) {
+               document.write('<object><param name=\"autostart\" value=\"false\"/><param name=\"autoplay\" value=\"false\"/><param name=\"controller\" value=\"true\"/><embed src=\"#{delivery.protocol}/samigo-app/servlet/ShowMedia?mediaId=#{question.mediaArray[0].mediaId}\" volume=\"50\" height=\"25\" width=\"300\" autostart=\"false\" autoplay=\"false\" controller=\"true\" type=\"audio/basic\"/></object>');
+            }
+            else {
+                document.write('<audio controls=\"controls\"><source src=\"#{delivery.protocol}/samigo-app/servlet/ShowMedia?mediaId=#{question.mediaArray[0].mediaId}\" type=\"audio/wav\"/></audio>');
+            }
+          </script>" 
         />
 
       <f:verbatim><br /></f:verbatim>
@@ -70,12 +73,15 @@ should be included in file importing DeliveryMessages
   </h:panelGrid>
 <f:verbatim></div></f:verbatim>
 
-<%-- <%@ include file="/jsf/delivery/item/audioObject.jsp" %> --%>
-<%-- <%@ include file="/jsf/delivery/item/audioApplet.jsp" %> --%>
-
-<h:outputLink title="#{assessmentSettingsMessages.record_your_answer}" value="#" rendered="#{delivery.actionString!='reviewAssessment'}"  onclick="javascript:window.open('../author/audioRecordingPopup.faces?questionId=#{question.itemData.itemId}&duration=#{question.duration}&triesAllowed=#{question.triesAllowed}&attemptsRemaining=#{question.attemptsRemaining}','AudioRecordingApplet','width=584,height=400,scrollbars=no, resizable=no');" >
+<h:panelGroup rendered="#{question.attemptsRemaining == null || question.attemptsRemaining > 0}">
+  <h:outputLink title="#{assessmentSettingsMessages.record_your_answer}" value="#" rendered="#{delivery.actionString!='reviewAssessment'}"  onclick="javascript:window.open('../author/audioRecordingPopup.faces?questionId=#{question.itemData.itemId}&duration=#{question.duration}&triesAllowed=#{question.triesAllowed}&attemptsRemaining=#{question.attemptsRemaining}&questionNumber=#{question.number}&questionTotal=#{part.questions}','AudioRecordingApplet','width=800,height=560,scrollbars=no, resizable=no');" >
 	<h:outputText value=" #{assessmentSettingsMessages.record_your_answer}"/>
-</h:outputLink>
+  </h:outputLink>
+</h:panelGroup>
+
+<h:panelGroup rendered="#{question.attemptsRemaining != null && question.attemptsRemaining < 1}">
+  <h:outputText value=" #{assessmentSettingsMessages.record_no_more_attempts}"/>
+</h:panelGroup>
 
 <h:panelGroup rendered="#{(delivery.actionString=='previewAssessment'
                 || delivery.actionString=='takeAssessment' 
@@ -111,7 +117,7 @@ should be included in file importing DeliveryMessages
         <h:column>
           <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
           <h:outputLink value="#{attach.location}" target="new_window">
-            <h:outputText escape="false" value="#{attach.filename}" />
+            <h:outputText value="#{attach.filename}" />
           </h:outputLink>
         </h:column>
         <h:column>

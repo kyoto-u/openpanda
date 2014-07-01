@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL:  $
- * $Id:  $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/component/impl/ConfigDataImpl.java $
+ * $Id: ConfigDataImpl.java 309232 2014-05-06 20:01:53Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -59,7 +59,7 @@ public class ConfigDataImpl implements ConfigData {
                 }
             }
         }
-        this.sources = sourceSet.toArray(new String[0]);
+        this.sources = sourceSet.toArray(new String[sourceSet.size()]);
         Collections.sort(cis);
         this.items = new ArrayList<ConfigItem>(cis);
     }

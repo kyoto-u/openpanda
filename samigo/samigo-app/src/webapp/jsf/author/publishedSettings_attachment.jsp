@@ -20,7 +20,7 @@
 --%>
 -->
 <!-- ASSESSMENT ATTACHMENTS -->
- <div class="longtext"><h:outputLabel value="#{assessmentSettingsMessages.attachments}" />
+<h:outputLabel value="#{assessmentSettingsMessages.attachments}" />
   <br/>
   <h:panelGroup rendered="#{publishedSettings.hasAttachment}">
     <h:dataTable value="#{publishedSettings.attachmentList}" var="attach">
@@ -30,7 +30,7 @@
       <h:column>
         <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
         <h:outputLink value="#{attach.location}" target="new_window">
-          <h:outputText escape="false" value="#{attach.filename}" />
+          <h:outputText value="#{attach.filename}" />
         </h:outputLink>
       </h:column>
       <h:column>
@@ -56,5 +56,5 @@
              value="#{assessmentSettingsMessages.add_remove_attachments}"/>
     </sakai:button_bar>
   </h:panelGroup>
-</div>
+  
 

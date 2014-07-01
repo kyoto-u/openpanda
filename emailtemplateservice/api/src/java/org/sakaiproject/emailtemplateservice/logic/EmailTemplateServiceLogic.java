@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.3/api/src/java/org/sakaiproject/emailtemplateservice/logic/EmailTemplateServiceLogic.java $
- * $Id: EmailTemplateServiceLogic.java 52893 2008-09-29 16:16:30Z bkirschn@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/sakai-10.0/api/src/java/org/sakaiproject/emailtemplateservice/logic/EmailTemplateServiceLogic.java $
+ * $Id: EmailTemplateServiceLogic.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright 2006, 2007 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License. 
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software 
  * distributed under the License is distributed on an "AS IS" BASIS, 

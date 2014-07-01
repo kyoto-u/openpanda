@@ -7,7 +7,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: stub.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+* $Id: stub.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
 <%--
 ***********************************************************************************
 *

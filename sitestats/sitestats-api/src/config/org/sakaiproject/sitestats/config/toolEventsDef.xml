@@ -544,7 +544,41 @@
         <event eventId="profile.search.interest" selected="false"/>
         <event eventId="profile.status.update" selected="false"/>
         <event eventId="profile.twitter.update" selected="false"/>
-       <event eventId="profile.message.sent" selected="false"/>
+       	<event eventId="profile.message.sent" selected="false"/>
+		<event eventId="profile.image.change.upload" selected="false"/>
+		<event eventId="profile.image.change.url" selected="false"/>
+       	<event eventId="profile.image.upload" selected="false"/>
+		<event eventId="profile.new" selected="false"/>
+		<event eventId="profile.info.update" selected="false"/>
+		<event eventId="profile.contact.update" selected="false"/>
+		<event eventId="profile.interests.update" selected="false"/>
+		<event eventId="profile.staff.update" selected="false"/>
+		<event eventId="profile.student.update" selected="false"/>
+		<event eventId="profile.socialnetworking.update" selected="false"/>
+       	<event eventId="profile.business.update" selected="false"/>
+		<event eventId="profile.friend.ignore" selected="false"/>
+       	<event eventId="profile.friend.remove" selected="false"/>
+		<event eventId="profile.privacy.new" selected="false"/>
+		<event eventId="profile.privacy.update" selected="false"/>
+       	<event eventId="profile.prefs.new" selected="false"/>
+		<event eventId="profile.prefs.update" selected="false"/>
+		<event eventId="profile.gallery.image.upload" selected="false"/>
+       	
         <eventParserTip for="contextId" separator="/" index="2"/>
     </tool>
+
+	<tool
+		toolId="sakai.iframe"
+		selected="true"
+		additionalToolIds="sakai.iframe.service,sakai.iframe.myworkspace,sakai.iframe.site">
+        <event eventId="webcontent.read" selected="true"/>
+        <event eventId="webcontent.revise" selected="true"/>
+        <event eventId="webcontent.service.read" selected="true"/>
+        <event eventId="webcontent.service.revise" selected="true"/>
+        <event eventId="webcontent.myworkspace.read" selected="true"/>
+        <event eventId="webcontent.myworkspace.revise" selected="true"/>
+        <event eventId="webcontent.site.read" selected="true"/>
+        <event eventId="webcontent.site.revise" selected="true"/>
+        <eventParserTip for="contextId" separator="/" index="2"/>
+	</tool>
 </toolEventsDef>

@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-api/src/java/org/sakaiproject/sitestats/api/SitePresence.java $
- * $Id: SitePresence.java 78188 2010-06-01 16:11:14Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-api/src/java/org/sakaiproject/sitestats/api/SitePresence.java $
+ * $Id: SitePresence.java 133719 2014-01-27 11:20:56Z matthew.buckett@it.ox.ac.uk $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,9 +22,11 @@ import java.util.Date;
 
 /**
  * Record with time spent in site, by date and user.
+ * This must be {@link java.lang.Comparable} so that the updates can be sorted before being inserted into the database
+ * to avoid deadlocks.
  * @author Nuno Fernandes
  */
-public interface SitePresence extends Stat {
+public interface SitePresence extends Stat, Comparable<SitePresence> {
 
 	/** Get time spent (in milliseconds) */
 	public long getDuration();

@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,7 +57,7 @@ import org.sakaiproject.site.api.SiteService;
 import org.springframework.dao.DataAccessException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
+import org.w3c.dom.NodeList;
 
 
 public class PollListManagerImpl implements PollListManager,EntityTransferrer {
@@ -65,7 +65,6 @@ public class PollListManagerImpl implements PollListManager,EntityTransferrer {
     // use commons logger
     private static Log log = LogFactory.getLog(PollListManagerImpl.class);
     public static final String REFERENCE_ROOT = Entity.SEPARATOR + "poll";
-
 
 
     private EntityManager entityManager;
@@ -156,8 +155,8 @@ public class PollListManagerImpl implements PollListManager,EntityTransferrer {
             if (PollListManager.PERMISSION_VOTE.equals(permissionConstant)) {
                 // limit to polls which are open
                 Date now = new Date();
-                search.addRestriction(new Restriction("voteOpen", now));
-                search.addRestriction(new Restriction("voteClose", now));
+                search.addRestriction(new Restriction("voteOpen", now, Restriction.LESS));
+                search.addRestriction(new Restriction("voteClose", now, Restriction.GREATER));
             } else {
                 // show all polls
             }
@@ -198,6 +197,7 @@ public class PollListManagerImpl implements PollListManager,EntityTransferrer {
             return false;
         }
         log.debug(" Poll  " + t.toString() + "successfuly saved");
+        externalLogic.registerStatement(t.getText(), newPoll);
         if (newPoll)
         	externalLogic.postEvent("poll.add", "poll/site/"
                     + t.getSiteId() + "/poll/" + t.getId(), true);
@@ -403,7 +403,7 @@ public class PollListManagerImpl implements PollListManager,EntityTransferrer {
             return true;
 
         if (externalLogic.isAllowedInLocation(PERMISSION_DELETE_OWN, externalLogic.getSiteRefFromId(poll.getSiteId()))
-        		&& poll.getOwner().equals(externalLogic.getCurrentuserReference()))
+        		&& poll.getOwner().equals(externalLogic.getCurrentUserId()))
             return true;
 
         return false;
@@ -437,8 +437,9 @@ public class PollListManagerImpl implements PollListManager,EntityTransferrer {
         StringBuilder results = new StringBuilder();
 
         // String assignRef = assignmentReference(siteId, SiteService.MAIN_CONTAINER);
-        results.append("archiving " + getLabel() + " context " + Entity.SEPARATOR + siteId
-                + Entity.SEPARATOR + SiteService.MAIN_CONTAINER + ".\n");
+        results.append("archiving " + getLabel() + " context " + Entity.SEPARATOR 
+                       + siteId + Entity.SEPARATOR + SiteService.MAIN_CONTAINER 
+                       + ".\n");
 
         // start with an element with our very own (service) name
         Element element = doc.createElement(PollListManager.class.getName());
@@ -477,9 +478,22 @@ public class PollListManagerImpl implements PollListManager,EntityTransferrer {
         return results.toString();
     }
 
-    public String merge(String arg0, Element arg1, String arg2, String arg3, Map arg4, Map arg5,
-            Set arg6) {
-        // TODO Auto-generated method stub
+	public String merge(String siteId, Element root, String archivePath, String fromSiteId, Map<String, String> attachmentNames, Map<String, String> userIdTrans, Set<String> userListAllowImport) {
+        /* USERS ARE NOT MERGED */
+        NodeList polls = root.getElementsByTagName("poll");
+        for (int i=0; i<polls.getLength(); ++i) {
+            Element pollElement = (Element) polls.item(i);
+            Poll poll = Poll.fromXML(pollElement);
+            poll.setSiteId(siteId);
+            savePoll(poll);
+            NodeList options = pollElement.getElementsByTagName("option");
+            for (int j=0; j<options.getLength(); ++j) {
+                Element optionElement = (Element) options.item(j);
+                Option option = PollUtil.xmlToOption(optionElement);
+                option.setPollId(poll.getPollId());
+                saveOption(option);
+            }
+        }
         return null;
     }
 

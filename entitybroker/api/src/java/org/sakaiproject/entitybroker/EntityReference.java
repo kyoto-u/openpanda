@@ -1,6 +1,6 @@
 /**
- * $Id: EntityReference.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/api/src/java/org/sakaiproject/entitybroker/EntityReference.java $
+ * $Id: EntityReference.java 130233 2013-10-08 14:00:47Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/api/src/java/org/sakaiproject/entitybroker/EntityReference.java $
  * AutoRegister.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -302,8 +302,10 @@ public class EntityReference implements Cloneable, Serializable {
         if (spos != -1) {
             int spos2 = getSeparatorPos(reference, 2);
             if (spos2 == -1) {
-                // trim off the extension from the end
-                spos2 = reference.lastIndexOf(PERIOD);
+                // trim off the extension from the end if it seems valid
+                if (TemplateParseUtil.findExtension(reference)[2] != null) {
+                    spos2 = reference.lastIndexOf(PERIOD);
+                }
             }
             id = spos2 == -1 ? reference.substring(spos + 1) : reference.substring(spos + 1, spos2);
         }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.util;
 
 /**
@@ -114,9 +113,10 @@ public class ProfileConstants {
 	public static final int PICTURE_SETTING_DEFAULT = PICTURE_SETTING_UPLOAD;
 	
 	// if using official photo, where does that image come from?
-	// can be either a url or from a provider. 
+	// can be url, provider or filesystem. 
 	public static final String OFFICIAL_IMAGE_SETTING_URL = "url";
 	public static final String OFFICIAL_IMAGE_SETTING_PROVIDER = "provider";
+	public static final String OFFICIAL_IMAGE_SETTING_FILESYSTEM = "filesystem";
 	
 	public static final String OFFICIAL_IMAGE_SETTING_DEFAULT = OFFICIAL_IMAGE_SETTING_URL;
 
@@ -125,6 +125,9 @@ public class ProfileConstants {
 	
 	//gravatar base URL
 	public static final String GRAVATAR_BASE_URL = "http://www.gravatar.com/avatar/";
+
+    // Defines the name of the blank image, the one a user gets when nothing else is available
+    public static final String BLANK = "blank";
 	
 	
 	/*
@@ -203,6 +206,10 @@ public class ProfileConstants {
 	public static final boolean SAKAI_PROP_PROFILE2_PRIVACY_CHANGE_ENABLED = true; //profile2.privacy.change.enabled
 	public static final boolean SAKAI_PROP_PROFILE2_GALLERY_ENABLED = true; //profile2.gallery.enabled
 	public static final boolean SAKAI_PROP_PROFILE2_PROFILE_BUSINESS_ENABLED = false; //profile2.profile.business.enabled
+	public static final boolean SAKAI_PROP_PROFILE2_PROFILE_SOCIAL_ENABLED = true; //profile2.profile.social.enabled
+	public static final boolean SAKAI_PROP_PROFILE2_PROFILE_STAFF_ENABLED = true; //profile2.profile.staff.enabled
+	public static final boolean SAKAI_PROP_PROFILE2_PROFILE_STUDENT_ENABLED = true; //profile2.profile.student.enabled
+	public static final boolean SAKAI_PROP_PROFILE2_PROFILE_INTERESTS_ENABLED = true; //profile2.profile.interests.enabled
 	public static final boolean SAKAI_PROP_PROFILE2_OFFICIAL_IMAGE_ENABLED = false; //profile2.official.image.enabled
 	public static final boolean SAKAI_PROP_PROFILE2_GRAVATAR_IMAGE_ENABLED = true; //profile2.gravatar.image.enabled
 	public static final boolean SAKAI_PROP_PROFILE2_WALL_ENABLED = true; //profile2.wall.enabled
@@ -211,6 +218,7 @@ public class ProfileConstants {
 	public static final boolean SAKAI_PROP_PROFILE2_IMPORT_ENABLED = false; //profile2.import
 	public static final boolean SAKAI_PROP_PROFILE2_PROFILE_FIELDS_ENABLED = true; //profile2.profile.fields.enabled
 	public static final boolean SAKAI_PROP_PROFILE2_PROFILE_STATUS_ENABLED = true; //profile2.profile.status.enabled
+	public static final boolean SAKAI_PROP_PROFILE2_IMPORT_IMAGES_ENABLED = false; // profile2.import.images
 
 
 	
@@ -391,6 +399,7 @@ public class ProfileConstants {
 	 */
 	
 	public static final String ROSTER_VIEW_PHOTO = "roster.viewofficialphoto";
+	public static final String ROSTER_VIEW_EMAIL = "roster.viewemail";
 	
 	
 	/*
@@ -398,6 +407,7 @@ public class ProfileConstants {
 	 */
 	public static final String GOOGLE_REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
 	public static final String GOOGLE_DOCS_SCOPE = "https://docs.google.com/feeds/";
+
 	
 	
 }

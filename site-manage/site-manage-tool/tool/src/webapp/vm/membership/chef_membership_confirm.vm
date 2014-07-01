@@ -6,7 +6,7 @@
 	<p class="alertMessage">$tlang.getString("mb.confirm1") </p> 
 	<ol>
 	#foreach ($site in $unjoinSite)
-		<li>$site</li>
+		<li>$validator.escapeHtml($site)</li>
 	#end
 	</ol>	
 	<form action="#toolForm("$action")" method="post">

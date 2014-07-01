@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,8 @@ import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.event.api.EventTrackingService;
 
 
 /**
@@ -42,6 +44,11 @@ public class StudentViewBean extends ViewByStudentBean implements Serializable {
 			setStudentUid(studentUidToView);
 		} else {
 			setStudentUid(getUserUid());
+			// SAK-23566 indicate the student viewed their grades
+			EventTrackingService ets = (EventTrackingService) ComponentManager.get(EventTrackingService.class);
+			if (ets != null) {
+			    ets.post(ets.newEvent("gradebook.studentView", "/gradebook/studentView/"+getUserUid(), false));
+			}
 		}
 
 		super.init();

@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,6 +52,8 @@ import org.sakaiproject.util.RequestFilter;
 
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
+import uk.org.ponder.rsf.components.UIBranchContainer;
+import uk.org.ponder.rsf.components.UIOutput;
 import au.com.bytecode.opencsv.CSVReader;
 /**
  * 
@@ -59,7 +62,9 @@ import au.com.bytecode.opencsv.CSVReader;
  */
 public class SiteManageGroupSectionRoleHandler {
 	
-	/** Our log (commons). */
+	private static final String REQ_ATTR_GROUPFILE = "groupfile";
+
+    /** Our log (commons). */
 	private static Log M_log = LogFactory.getLog(SiteManageGroupSectionRoleHandler.class);
 	
 	private List<Member> groupMembers;
@@ -111,12 +116,31 @@ public class SiteManageGroupSectionRoleHandler {
     private final String GROUP_HIDE = "group.hide";
     private final String SITE_REORDER = "group.reorder";
     private final String SITE_RESET = "group.reset";
+    
+    public String joinableSetName = "";
+    public String joinableSetNameOrig = "";
+    public String joinableSetNumOfGroups = "";
+    public String joinableSetNumOfMembers = "";
+    public boolean allowPreviewMembership = false;
+    public boolean allowViewMembership = false;
+    public boolean unjoinable = false;
+    public boolean unjoinableOrig = false;
 
     // Tool session attribute name used to schedule a whole page refresh.
     public static final String ATTR_TOP_REFRESH = "sakai.vppa.top.refresh"; 
-    
-	private static final String CSV_MIME_TYPE="text/csv";
-	
+
+    // SAK-23016 - added CSV types from http://filext.com/file-extension/CSV
+    private static final String CSV_FILE_EXTENSION="csv";
+    private static final String[] CSV_MIME_TYPES = {
+        "application/csv", 
+        "application/excel", 
+        "application/vnd.ms-excel", 
+        "application/vnd.msexcel", 
+        "text/anytext", 
+        "text/comma-separated-values", 
+        "text/csv"
+    };
+
 	public TargettedMessageList messages;
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;
@@ -189,6 +213,14 @@ public class SiteManageGroupSectionRoleHandler {
 	    
 	    importedGroups = null;
 	    
+	    joinableSetName = "";
+	    joinableSetNameOrig = "";
+	    joinableSetNumOfGroups = "";
+	    joinableSetNumOfMembers = "";
+	    allowPreviewMembership = false;
+	    allowViewMembership = false;
+	    unjoinable = false;
+	    unjoinableOrig = false;
 	}
 	 
     /**
@@ -208,7 +240,7 @@ public class SiteManageGroupSectionRoleHandler {
     			for (Iterator gIterator = allGroups.iterator(); gIterator.hasNext();) {
     				Group gNext = (Group) gIterator.next();
     				String gProp = gNext.getProperties().getProperty(
-    						SiteConstants.GROUP_PROP_WSETUP_CREATED);
+    						gNext.GROUP_PROP_WSETUP_CREATED);
     				if (gProp != null && gProp.equals(Boolean.TRUE.toString())) {
     					groups.add(gNext);
     				}
@@ -591,6 +623,25 @@ public class SiteManageGroupSectionRoleHandler {
 				}
     		}
     	}
+    	
+    	int joinableSetNumOfMembersInt = -1;
+    	if(joinableSetName != null && !"".equals(joinableSetName.trim())){
+    		if(joinableSetNumOfMembers == null || "".equals(joinableSetNumOfMembers)){
+    			messages.addMessage(new TargettedMessage("maxMembers.empty.alert","num-groups"));
+    			return null;
+    		}else{
+    			try{
+    				joinableSetNumOfMembersInt = Integer.parseInt(joinableSetNumOfMembers);
+    				if(joinableSetNumOfMembersInt <= 0){
+        				messages.addMessage(new TargettedMessage("maxMembers.zero.alert","num-max-members"));
+            			return null;
+        			}
+    			}catch (Exception e) {
+    				messages.addMessage(new TargettedMessage("maxMembers.empty.alert","num-max-members"));
+    				return null;
+    			}
+    		}
+    	}
 
 		if (id != null)
 		{
@@ -601,13 +652,25 @@ public class SiteManageGroupSectionRoleHandler {
 		{
 			// adding a new group
 	        group= site.addGroup();
-	        group.getProperties().addProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
+	        group.getProperties().addProperty(group.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
 		}
 		
 		if (group != null)
 		{
 			group.setTitle(title);
-            group.setDescription(description);   
+            group.setDescription(description);
+            group.getProperties().addProperty(group.GROUP_PROP_VIEW_MEMBERS, Boolean.toString(allowViewMembership));
+            if(joinableSetName != null && !"".equals(joinableSetName.trim())){
+            	group.getProperties().addProperty(group.GROUP_PROP_JOINABLE_SET, joinableSetName);
+            	group.getProperties().addProperty(group.GROUP_PROP_JOINABLE_SET_MAX, joinableSetNumOfMembers);
+            	group.getProperties().addProperty(group.GROUP_PROP_JOINABLE_SET_PREVIEW,Boolean.toString(allowPreviewMembership));
+            	group.getProperties().addProperty(group.GROUP_PROP_JOINABLE_UNJOINABLE, Boolean.toString(unjoinable));
+            }else{
+            	group.getProperties().removeProperty(group.GROUP_PROP_JOINABLE_SET);
+            	group.getProperties().removeProperty(group.GROUP_PROP_JOINABLE_SET_MAX);
+            	group.getProperties().removeProperty(group.GROUP_PROP_JOINABLE_SET_PREVIEW);
+            	group.getProperties().removeProperty(group.GROUP_PROP_JOINABLE_UNJOINABLE);
+            }
             
             boolean found = false;
             // remove those no longer included in the group
@@ -900,7 +963,7 @@ public class SiteManageGroupSectionRoleHandler {
 	    		for (String roster:rosterList)
 	    		{
 	    			Group group = site.addGroup();
-        			group.getProperties().addProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
+        			group.getProperties().addProperty(group.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
 		        		
 		        	// roster provider string
         			//rsf doesn't like "."'s, so these have been escaped.  Now unescape them
@@ -921,7 +984,7 @@ public class SiteManageGroupSectionRoleHandler {
 	        			Group group = site.addGroup();
 	        			// make the provider id as of SITEID_ROLEID
 	        			//group.setProviderGroupId(site.getId() + "_" + role);
-	        			group.getProperties().addProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
+	        			group.getProperties().addProperty(group.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
 	        			group.getProperties().addProperty(SiteConstants.GROUP_PROP_ROLE_PROVIDERID, role);
 	
 			        	String title = truncateGroupTitle(role);
@@ -1028,7 +1091,7 @@ public class SiteManageGroupSectionRoleHandler {
     		List<Group> gList = new ArrayList<Group>();
     		while(groupCount < numOfGroups){
     			Group group = site.addGroup();
-    			group.getProperties().addProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
+    			group.getProperties().addProperty(group.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
 
     			//Title
     			StringBuffer title = new StringBuffer();
@@ -1188,7 +1251,7 @@ public class SiteManageGroupSectionRoleHandler {
     	for(Group group:groups)
     	{
     		// check if there is one group with this roster id already
-    		String groupWSetupCreated = group.getProperties().getProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED);
+    		String groupWSetupCreated = group.getProperties().getProperty(group.GROUP_PROP_WSETUP_CREATED);
 			if (groupWSetupCreated != null && groupWSetupCreated.equalsIgnoreCase(Boolean.TRUE.toString()))
 			{
 				if (group.getProviderGroupId() != null && group.getProviderGroupId().equals(rosterId))
@@ -1216,7 +1279,7 @@ public class SiteManageGroupSectionRoleHandler {
     	for(Group group:groups)
     	{
     		// check if there is one group with this roster id already
-    		String groupWSetupCreated = group.getProperties().getProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED);
+    		String groupWSetupCreated = group.getProperties().getProperty(group.GROUP_PROP_WSETUP_CREATED);
 			if (groupWSetupCreated != null && groupWSetupCreated.equalsIgnoreCase(Boolean.TRUE.toString()))
 			{
 				String groupRole = group.getProperties().getProperty(SiteConstants.GROUP_PROP_ROLE_PROVIDERID);
@@ -1247,31 +1310,36 @@ public class SiteManageGroupSectionRoleHandler {
      */
     public String processUploadAndCheck() {
         String uploadsDone = (String) httpServletRequest.getAttribute(RequestFilter.ATTR_UPLOADS_DONE);
-        
+
         FileItem usersFileItem;
-        
+
         if (uploadsDone != null && uploadsDone.equals(RequestFilter.ATTR_UPLOADS_DONE)) {
 
             try {
-                usersFileItem = (FileItem) httpServletRequest.getAttribute("groupfile");
-                
+                usersFileItem = (FileItem) httpServletRequest.getAttribute(REQ_ATTR_GROUPFILE);
+
                 if(usersFileItem != null && usersFileItem.getSize() > 0) {
-                	
-                	String mimetype = usersFileItem.getContentType();
-                	
-                	if(StringUtils.equals(mimetype, CSV_MIME_TYPE)) {
-                		if(processCsvFile(usersFileItem)) {
-                			return "success";
-                		}
-                	} else {
-                		M_log.error("Invalid file type: " + mimetype);
-                		return "error";
-                	}
+
+                    String mimetype = usersFileItem.getContentType();
+                    String filename = usersFileItem.getName();
+
+                    if (ArrayUtils.contains(CSV_MIME_TYPES, mimetype) 
+                            || StringUtils.endsWith(filename, "csv")) {
+                        if (processCsvFile(usersFileItem)) {
+                            return "success"; // SHORT CIRCUIT
+                        }
+                    } else {
+                        M_log.error("Invalid file type: " + mimetype);
+                        return "error"; // SHORT CIRCUIT
+                    }
                 }
             }
             catch (Exception e){
-            	M_log.error(e.getClass() + " : " + e.getMessage());
-                return "error";
+                M_log.error(e.getClass() + " : " + e.getMessage());
+                return "error"; // SHORT CIRCUIT
+            } finally {
+                // clear the groupfile attribute so the tool does not have to be reset
+                httpServletRequest.removeAttribute(REQ_ATTR_GROUPFILE);
             }
         }
 
@@ -1389,7 +1457,7 @@ public class SiteManageGroupSectionRoleHandler {
 			if(group == null){
         		//create new group
     	        group= site.addGroup();
-    	        group.getProperties().addProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
+    	        group.getProperties().addProperty(group.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
     	        group.setTitle(importedGroup.getGroupTitle());
 			}
 			
@@ -1483,6 +1551,197 @@ public class SiteManageGroupSectionRoleHandler {
     @Getter
     private List<ImportedGroup> importedGroups;
    
+    public String processCreateJoinableSet() {
+    	// reset the warning messages
+    	resetTargettedMessageList();
+    	
+    	String returnVal = processCreateJoinableSetHelper(true);
+    	if(returnVal == null){
+    		return null;
+    	}else{
+    		resetParams();
+    		return returnVal;
+    	}
+    }
+    
+    private String processCreateJoinableSetHelper(boolean newSet){
+    	if(joinableSetName == null || "".equals(joinableSetName.trim())){
+			messages.addMessage(new TargettedMessage("groupTitle.empty.alert","groupTitle-group"));
+			return null;
+		}
+    	int joinableSetNumOfGroupsInt = -1;
+    	if(joinableSetNumOfGroups == null || "".equals(joinableSetNumOfGroups)){
+    		messages.addMessage(new TargettedMessage("numGroups.empty.alert","num-groups"));
+			return null;
+    	}else{
+    		try{
+    			joinableSetNumOfGroupsInt = Integer.parseInt(joinableSetNumOfGroups);
+    			if(joinableSetNumOfGroupsInt > 1000){
+    				messages.addMessage(new TargettedMessage("maxGroups.alert","num-groups"));
+        			return null;
+    			}
+    			if(joinableSetNumOfGroupsInt <= 0){
+    				messages.addMessage(new TargettedMessage("numGroups.zero.alert","num-groups"));
+    			}
+    		}catch (Exception e) {
+    			messages.addMessage(new TargettedMessage("numGroups.empty.alert","num-groups"));
+    			return null;
+			}
+    	}
+    	int joinableSetNumOfMembersInt = -1;
+    	if(joinableSetNumOfMembers == null || "".equals(joinableSetNumOfMembers)){
+    		messages.addMessage(new TargettedMessage("maxMembers.empty.alert","num-groups"));
+			return null;
+    	}else{
+    		try{
+    			joinableSetNumOfMembersInt = Integer.parseInt(joinableSetNumOfMembers);
+    			if(joinableSetNumOfMembersInt <= 0){
+    				messages.addMessage(new TargettedMessage("maxMembers.zero.alert","num-max-members"));
+        			return null;
+    			}
+    		}catch (Exception e) {
+    			messages.addMessage(new TargettedMessage("maxMembers.empty.alert","num-max-members"));
+    			return null;
+			}
+    	}
+    	int groupsCreated = 0;
+    	Collection siteGroups = site.getGroups();
+    	Set<String> groupTitles = new HashSet<String>();
+		if (siteGroups != null && siteGroups.size() > 0)
+		{
+			for (Iterator iGroups = siteGroups.iterator(); iGroups.hasNext();) {
+				Group iGroup = (Group) iGroups.next();
+				groupTitles.add(iGroup.getTitle());
+				if(newSet){
+					//check that this joinable group name doesn't already exist, if so,
+					//warn the user:
+					String joinableSetProp = iGroup.getProperties().getProperty(iGroup.GROUP_PROP_JOINABLE_SET);
+					if(joinableSetProp != null && !"".equals(joinableSetProp) && joinableSetProp.equalsIgnoreCase(joinableSetName)){
+						//already have a joinable set named this:
+						messages.addMessage(new TargettedMessage("joinableset.duplicate.alert","num-max-members"));
+		    			return null;
+					}
+				}
+			}
+		}
+    	for(int i = 1; groupsCreated < joinableSetNumOfGroupsInt && i < 1000; i++){
+    		String groupTitle = joinableSetName + "-" + i;
+    		if(!groupTitles.contains(groupTitle)){
+    			Group g = site.addGroup();
+    			g.getProperties().addProperty(g.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
+    			g.getProperties().addProperty(g.GROUP_PROP_JOINABLE_SET, joinableSetName);
+    			g.getProperties().addProperty(g.GROUP_PROP_JOINABLE_SET_MAX, joinableSetNumOfMembers);
+    			g.getProperties().addProperty(g.GROUP_PROP_JOINABLE_SET_PREVIEW,Boolean.toString(allowPreviewMembership));
+    			g.getProperties().addProperty(g.GROUP_PROP_VIEW_MEMBERS, Boolean.toString(allowViewMembership));
+    			g.getProperties().addProperty(g.GROUP_PROP_JOINABLE_UNJOINABLE, Boolean.toString(unjoinable));
+    			g.setTitle(joinableSetName + " " + i);
+    			try{
+    				siteService.save(site);
+    				groupsCreated++;
+    			}catch (Exception e) {
+    			}
+    		}
+    	}
+    	
+    	return "success";
+    }
+    
+    public String processDeleteJoinableSet(){
+    	// reset the warning messages
+    	resetTargettedMessageList();
+    	
+    	boolean updated = false;
+    	for(Group group : site.getGroups()){
+    		String joinableSet = group.getProperties().getProperty(group.GROUP_PROP_JOINABLE_SET);
+    		if(joinableSet != null && joinableSet.equals(joinableSetNameOrig)){
+    			group.getProperties().removeProperty(group.GROUP_PROP_JOINABLE_SET);
+    			group.getProperties().removeProperty(group.GROUP_PROP_JOINABLE_SET_MAX);
+    			group.getProperties().removeProperty(group.GROUP_PROP_JOINABLE_SET_PREVIEW);
+    			group.getProperties().removeProperty(group.GROUP_PROP_JOINABLE_UNJOINABLE);
+    			updated = true;
+    		}
+    	}
+    	if(updated){
+    		try{
+    			siteService.save(site);
+    		}catch (Exception e) {
+    		}
+    	}
+    	
+    	resetParams();
+    	
+    	return "success";
+    }
    
+    public String processChangeJoinableSetName(){
+    	// reset the warning messages
+    	resetTargettedMessageList();
+    	
+    	String returnVal = processChangeJoinableSetNameHelper();
+    	
+    	if(returnVal == null){
+    		return null;
+    	}else{
+    		resetParams();
+    		return returnVal;
+    	}
+    }
+    
+    private String processChangeJoinableSetNameHelper(){
+    	if(joinableSetName == null || "".equals(joinableSetName.trim())){
+			messages.addMessage(new TargettedMessage("groupTitle.empty.alert","groupTitle-group"));
+			return null;
+		}
+    	if(!joinableSetName.equals(joinableSetNameOrig) || unjoinable != unjoinableOrig){
+    		if(!joinableSetName.equals(joinableSetNameOrig)){
+    			//check that the new joinable set name doesn't already exist
+    			Collection siteGroups = site.getGroups();
+    			if (siteGroups != null && siteGroups.size() > 0)
+    			{
+    				for (Iterator iGroups = siteGroups.iterator(); iGroups.hasNext();) {
+    					Group iGroup = (Group) iGroups.next();
+    					//check that this joinable group name doesn't already exist, if so,
+    					//warn the user:
+    					String joinableSetProp = iGroup.getProperties().getProperty(iGroup.GROUP_PROP_JOINABLE_SET);
+    					if(joinableSetProp != null && !"".equals(joinableSetProp) && joinableSetProp.equals(joinableSetName)){
+    						//already have a joinable set named this:
+    						messages.addMessage(new TargettedMessage("joinableset.duplicate.alert","num-max-members"));
+    						return null;
+    					}
+    				}
+    			}
+    		}
+    		boolean updated = false;
+    		for(Group group : site.getGroups()){
+        		String joinableSet = group.getProperties().getProperty(group.GROUP_PROP_JOINABLE_SET);
+        		if(joinableSet != null && joinableSet.equals(joinableSetNameOrig)){
+        			group.getProperties().addProperty(group.GROUP_PROP_JOINABLE_SET, joinableSetName);
+        			group.getProperties().addProperty(group.GROUP_PROP_JOINABLE_UNJOINABLE, Boolean.toString(unjoinable));
+        			updated = true;
+        		}
+        	}
+    		if(updated){
+    			try{
+    				siteService.save(site);
+    			}catch (Exception e) {
+    			}
+    		}
+    	}
+    	return "success";
+    }
+    
+    public String processGenerateJoinableSet(){
+    	// reset the warning messages
+    	resetTargettedMessageList();
+    	//since the user could have changed the values and this action doesn't save the changes, reset to the orig values:
+    	joinableSetName = joinableSetNameOrig;
+    	unjoinable = unjoinableOrig;
+    	//generate the new groups since it will check all the required fields
+    	String returnVal = processCreateJoinableSetHelper(false);
+    	if(returnVal != null && "success".equals(returnVal)){
+    		resetParams();
+    	}
+    	return returnVal;
+    }
 }
 

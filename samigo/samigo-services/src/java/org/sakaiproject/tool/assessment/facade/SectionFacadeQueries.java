@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/SectionFacadeQueries.java $
- * $Id: SectionFacadeQueries.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/SectionFacadeQueries.java $
+ * $Id: SectionFacadeQueries.java 106521 2012-04-04 08:14:42Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,25 +21,19 @@
 
 package org.sakaiproject.tool.assessment.facade;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
-
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentBaseData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.ItemData;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.sakaiproject.tool.assessment.data.dao.assessment.SectionData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.SectionMetaData;
+import org.sakaiproject.tool.assessment.osid.shared.impl.IdImpl;
+import org.sakaiproject.tool.assessment.services.PersistenceService;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.sakaiproject.tool.assessment.services.PersistenceService;
-import org.sakaiproject.tool.assessment.osid.shared.impl.IdImpl;
 
 public class SectionFacadeQueries  extends HibernateDaoSupport implements SectionFacadeQueriesAPI {
   private static Log log = LogFactory.getLog(SectionFacadeQueries.class);
@@ -116,7 +110,7 @@ public class SectionFacadeQueries  extends HibernateDaoSupport implements Sectio
   
   public void remove(Long sectionId) {
       SectionFacade section = (SectionFacade) getHibernateTemplate().load(SectionData.class, sectionId);
-    int retryCount = PersistenceService.getInstance().getRetryCount().intValue();
+    int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount().intValue();
     while (retryCount > 0){
       try {
         getHibernateTemplate().delete(section);
@@ -124,7 +118,7 @@ public class SectionFacadeQueries  extends HibernateDaoSupport implements Sectio
       }
       catch (Exception e) {
         log.warn("problem removing section: "+e.getMessage());
-        retryCount = PersistenceService.getInstance().retryDeadlock(e, retryCount);
+        retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e, retryCount);
       }
     }
   }
@@ -144,7 +138,7 @@ public class SectionFacadeQueries  extends HibernateDaoSupport implements Sectio
     if (section != null) {
 
       SectionMetaData sectionmetadata = new SectionMetaData(section, label, value);
-    int retryCount = PersistenceService.getInstance().getRetryCount().intValue();
+    int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount().intValue();
     while (retryCount > 0){
       try {
         getHibernateTemplate().save(sectionmetadata);
@@ -152,7 +146,7 @@ public class SectionFacadeQueries  extends HibernateDaoSupport implements Sectio
       }
       catch (Exception e) {
         log.warn("problem add section metadata: "+e.getMessage());
-        retryCount = PersistenceService.getInstance().retryDeadlock(e, retryCount);
+        retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e, retryCount);
       }
     }
     }
@@ -174,7 +168,7 @@ public class SectionFacadeQueries  extends HibernateDaoSupport implements Sectio
 //    List sectionmetadatalist = getHibernateTemplate().find(query,
 //        new Object[] { sectionId, label },
 //        new org.hibernate.type.Type[] { Hibernate.LONG , Hibernate.STRING });
-    int retryCount = PersistenceService.getInstance().getRetryCount().intValue();
+    int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount().intValue();
     while (retryCount > 0){
       try {
         getHibernateTemplate().deleteAll(sectionmetadatalist);
@@ -182,7 +176,7 @@ public class SectionFacadeQueries  extends HibernateDaoSupport implements Sectio
       }
       catch (Exception e) {
         log.warn("problem delete section metadata: "+e.getMessage());
-        retryCount = PersistenceService.getInstance().retryDeadlock(e, retryCount);
+        retryCount = PersistenceService.getInstance().getPersistenceHelper().retryDeadlock(e, retryCount);
       }
     }
   }

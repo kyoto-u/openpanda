@@ -1,4 +1,19 @@
 /**
+ * Copyright (c) 2008-2012 The Sakai Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://www.osedu.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
  * 
  */
 package org.sakaiproject.profile2.logic;
@@ -162,7 +177,7 @@ public class ProfileWorksiteLogicImpl implements ProfileWorksiteLogic {
 			User owner = sakaiProxy.getUserById(ownerId);
 			if (null != owner) {
 				// false == provided
-				site.addMember(ownerId, ROLE_MAINTAIN, true, false);					
+				site.addMember(ownerId, site.getMaintainRole(), true, false);
 			} else {
 				log.warn("unknown user " + ownerId + " tried to create worksite");
 				return false;
@@ -325,7 +340,7 @@ public class ProfileWorksiteLogicImpl implements ProfileWorksiteLogic {
 				User user = sakaiProxy.getUserById(member.getUuid());
 				if (null != user) {						
 					// false == provided
-					site.addMember(member.getUuid(), ROLE_ACCESS, true, false);
+					site.addMember(member.getUuid(), sakaiProxy.getServerConfigurationParameter("profile2.worksite.access.role",ROLE_ACCESS), true, false);
 				} else {
 					log .warn("attempt to add unknown user " + member.getUuid() + " to worksite");
 				}

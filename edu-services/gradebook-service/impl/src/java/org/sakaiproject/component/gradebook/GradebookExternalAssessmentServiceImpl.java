@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookExternalAssessmentServiceImpl.java 127788 2013-07-25 18:51:54Z ottenhoff@longsight.com $
+* $Id: GradebookExternalAssessmentServiceImpl.java 131294 2013-11-06 20:41:08Z matthew@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,12 +46,12 @@ import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.service.gradebook.shared.AssessmentNotFoundException;
 import org.sakaiproject.service.gradebook.shared.AssignmentHasIllegalPointsException;
+import org.sakaiproject.service.gradebook.shared.CommentDefinition;
 import org.sakaiproject.service.gradebook.shared.ConflictingAssignmentNameException;
 import org.sakaiproject.service.gradebook.shared.ConflictingExternalIdException;
 import org.sakaiproject.service.gradebook.shared.ExternalAssignmentProvider;
 import org.sakaiproject.service.gradebook.shared.ExternalAssignmentProviderCompat;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
-import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookNotFoundException;
 import org.sakaiproject.service.gradebook.shared.InvalidCategoryException;
@@ -59,11 +59,10 @@ import org.sakaiproject.tool.gradebook.Assignment;
 import org.sakaiproject.tool.gradebook.AssignmentGradeRecord;
 import org.sakaiproject.tool.gradebook.Category;
 import org.sakaiproject.tool.gradebook.Gradebook;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-
 import org.sakaiproject.tool.gradebook.facades.EventTrackingService;
 import org.sakaiproject.util.ResourceLoader;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager implements GradebookExternalAssessmentService {
 	private static final Log log = LogFactory.getLog(GradebookExternalAssessmentServiceImpl.class);
@@ -301,62 +300,65 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
         return (Assignment)getHibernateTemplate().execute(hc);
     }
 
-	/**
-	 * @see org.sakaiproject.service.gradebook.shared.GradebookService#updateExternalAssessmentScore(java.lang.String, java.lang.String, java.lang.String, Double)
-	 */
-	public void updateExternalAssessmentScore(final String gradebookUid, final String externalId,
-			final String studentUid, final Double points) throws GradebookNotFoundException, AssessmentNotFoundException {
+	
+    public void updateExternalAssessmentComments(final String gradebookUid, final String externalId, final Map<String, String> studentUidsToComments)
+    		throws GradebookNotFoundException, AssessmentNotFoundException {
+    	//TODO DO	
+    	final Assignment asn = getExternalAssignment(gradebookUid, externalId);
+    	if (asn == null) {
+    		throw new AssessmentNotFoundException("There is no assessment id=" + externalId + " in gradebook uid=" + gradebookUid);
+    	}
+    	final Set studentIds = studentUidsToComments.keySet();
+    	if (studentIds.isEmpty()) {
+    		return;
+    	}
+    	final Date now = new Date();
+    	final String graderId = getUserUid();
 
-        final Assignment asn = getExternalAssignment(gradebookUid, externalId);
+    	getHibernateTemplate().execute(new HibernateCallback() {
+    		public Object doInHibernate(Session session) throws HibernateException {
+    			List existingScores;
+    			if (studentIds.size() <= MAX_NUMBER_OF_SQL_PARAMETERS_IN_LIST) {
+    				Query q = session.createQuery("from AssignmentGradeRecord as gr where gr.gradableObject=:go and gr.studentId in (:studentIds)");
+    				q.setParameter("go", asn);
+    				q.setParameterList("studentIds", studentIds);
+    				existingScores = q.list();
+    			} else {
+    				Query q = session.createQuery("from AssignmentGradeRecord as gr where gr.gradableObject=:go");
+    				q.setParameter("go", asn);
+    				existingScores = filterGradeRecordsByStudents(q.list(), studentIds);
+    			}
 
-        if(asn == null) {
-            throw new AssessmentNotFoundException("There is no assessment id=" + externalId + " in gradebook uid=" + gradebookUid);
-        }
+    			Set changedStudents = new HashSet();
+    			for (Iterator iter = existingScores.iterator(); iter.hasNext(); ) {
+    				AssignmentGradeRecord agr = (AssignmentGradeRecord)iter.next();
+    				String studentUid = agr.getStudentId();
 
-        if (logData.isDebugEnabled()) logData.debug("BEGIN: Update 1 score for gradebookUid=" + gradebookUid + ", external assessment=" + externalId + " from " + asn.getExternalAppName());
+    				// Try to reduce data contention by only updating when a score
+    				// has changed or property has been set forcing a db update every time.
+    				boolean alwaysUpdate = ServerConfigurationService.getBoolean(UPDATE_SAME_SCORE_PROP, false);
 
-        HibernateCallback hc = new HibernateCallback() {
-            public Object doInHibernate(Session session) throws HibernateException {
-                Date now = new Date();
+    				CommentDefinition gradeComment = getAssignmentScoreComment(gradebookUid, asn.getName(), studentUid);
+    				String oldComment = gradeComment != null ? gradeComment.getCommentText() : null;
+    				String newComment = (String) studentUidsToComments.get(studentUid);
 
-                AssignmentGradeRecord agr = getAssignmentGradeRecord(asn, studentUid, session);
+    				if ( alwaysUpdate || (newComment != null && !newComment.equals(oldComment)) || (newComment == null && oldComment != null) ) {
+    					changedStudents.add(studentUid);
+    					setAssignmentScoreComment(gradebookUid, asn.getName(), studentUid, newComment);
+    				}
+    			}
 
-                // Try to reduce data contention by only updating when the
-                // score has actually changed or property has been set forcing a db update every time.
-                boolean alwaysUpdate = ServerConfigurationService.getBoolean(UPDATE_SAME_SCORE_PROP, false);
-                
-                Double oldPointsEarned = (agr == null) ? null : agr.getPointsEarned();
-                if ( alwaysUpdate || (points != null && !points.equals(oldPointsEarned)) ||
-					(points == null && oldPointsEarned != null) ) {
-					if (agr == null) {
-						agr = new AssignmentGradeRecord(asn, studentUid, points);
-					} else {
-						agr.setPointsEarned(points);
-					}
+    			if (log.isDebugEnabled()) log.debug("updateExternalAssessmentScores sent " + studentIds.size() + " records, actually changed " + changedStudents.size());
 
-					agr.setDateRecorded(now);
-					agr.setGraderId(getUserUid());
-					if (log.isDebugEnabled()) log.debug("About to save AssignmentGradeRecord id=" + agr.getId() + ", version=" + agr.getVersion() + ", studenttId=" + agr.getStudentId() + ", pointsEarned=" + agr.getPointsEarned());
-					session.saveOrUpdate(agr);
+    			// Sync database.
+    			session.flush();
+    			session.clear();
+    			return null;
+    		}
+    	});
+    }
 
-					// Sync database.
-					session.flush();
-					session.clear();
-				} else {
-					if(log.isDebugEnabled()) log.debug("Ignoring updateExternalAssessmentScore, since the new points value is the same as the old");
-				}
-                return null;
-            }
-        };
-        getHibernateTemplate().execute(hc);
-        if (eventTrackingService != null) {
-            eventTrackingService.postEvent("gradebook.updateItemScore","/gradebook/"+gradebookUid+"/"+asn.getName()+"/"+studentUid+"/"+points+"/student");
-        }
-        if (logData.isDebugEnabled()) logData.debug("END: Update 1 score for gradebookUid=" + gradebookUid + ", external assessment=" + externalId + " from " + asn.getExternalAppName());
-		if (log.isDebugEnabled()) log.debug("External assessment score updated in gradebookUid=" + gradebookUid + ", externalId=" + externalId + " by userUid=" + getUserUid() + ", new score=" + points);
-	}
-
-	public void updateExternalAssessmentScores(final String gradebookUid, final String externalId, final Map studentUidsToScores)
+	public void updateExternalAssessmentScores(final String gradebookUid, final String externalId, final Map<String, Double> studentUidsToScores)
 	throws GradebookNotFoundException, AssessmentNotFoundException {
 
       final Assignment assignment = getExternalAssignment(gradebookUid, externalId);
@@ -431,7 +433,7 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
       });
 	}
 
-	public void updateExternalAssessmentScoresString(final String gradebookUid, final String externalId, final Map studentUidsToScores)
+	public void updateExternalAssessmentScoresString(final String gradebookUid, final String externalId, final Map<String, String> studentUidsToScores)
 		throws GradebookNotFoundException, AssessmentNotFoundException {
 
 		final Assignment assignment = getExternalAssignment(gradebookUid, externalId);
@@ -652,7 +654,9 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
 		}
 
 		for (ExternalAssignmentProvider provider : getExternalAssignmentProviders().values()) {
-			Map<String, List<String>> externals = provider.getAllExternalAssignments(gradebookUid, studentIds);
+			//SAK-24407 - Some tools modify this set so we can't pass it. I considered making it an unmodifableCollection but that would require changing a number of tools
+			Set studentIdsCopy = new HashSet(studentIds);
+			Map<String, List<String>> externals = provider.getAllExternalAssignments(gradebookUid, (studentIdsCopy));
 			for (String studentId : externals.keySet()) {
 				if (visible.containsKey(studentId)) {
 					visible.get(studentId).addAll(externals.get(studentId));
@@ -825,6 +829,43 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
     getHibernateTemplate().execute(hc);
 	}
 
+	
+	public void updateExternalAssessmentComment(final String gradebookUid, final String externalId, final String studentUid, final String comment) 
+	throws GradebookNotFoundException, AssessmentNotFoundException {
+		final Assignment asn = getExternalAssignment(gradebookUid, externalId);
+
+		if(asn == null) {
+			throw new AssessmentNotFoundException("There is no assessment id=" + externalId + " in gradebook uid=" + gradebookUid);
+		}
+
+		if (logData.isDebugEnabled()) logData.debug("BEGIN: Update 1 score for gradebookUid=" + gradebookUid + ", external assessment=" + externalId + " from " + asn.getExternalAppName());
+
+		HibernateCallback hc = new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException {
+				Date now = new Date();
+
+				// Try to reduce data contention by only updating when the
+				// score has actually changed or property has been set forcing a db update every time.
+				boolean alwaysUpdate = ServerConfigurationService.getBoolean(UPDATE_SAME_SCORE_PROP, false);
+
+				CommentDefinition gradeComment = getAssignmentScoreComment(gradebookUid, asn.getName(), studentUid);
+				String oldComment = gradeComment != null ? gradeComment.getCommentText() : null;
+
+				if ( alwaysUpdate || (comment != null && !comment.equals(oldComment)) ||
+						(comment == null && oldComment != null) ) {
+					if(comment != null)
+						setAssignmentScoreComment(gradebookUid, asn.getName(), studentUid, comment);
+					else
+						setAssignmentScoreComment(gradebookUid, asn.getName(), studentUid, null);
+				}
+				return null;
+			}
+		};
+		getHibernateTemplate().execute(hc);
+		if (logData.isDebugEnabled()) logData.debug("END: Update 1 score for gradebookUid=" + gradebookUid + ", external assessment=" + externalId + " from " + asn.getExternalAppName());
+		if (log.isDebugEnabled()) log.debug("External assessment comment updated in gradebookUid=" + gradebookUid + ", externalId=" + externalId + " by userUid=" + getUserUid() + ", new score=" + comment);
+	}
+	
 	public void updateExternalAssessmentScore(final String gradebookUid, final String externalId, final String studentUid, final String points) 
 	throws GradebookNotFoundException, AssessmentNotFoundException
 	{

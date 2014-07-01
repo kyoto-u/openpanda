@@ -89,9 +89,10 @@ $(document).ready(function() {
 				<h:graphicImage url="/images/silk/date_delete.png" title="#{msgs.forum_restricted_message}" alt="#{msgs.forum_restricted_message}" rendered="#{forum.availability == 'false'}" style="margin-right:.5em"/>
 				<%-- locked marker --%>
 				<h:graphicImage url="/images/silk/lock.png" alt="#{msgs.cdfm_forum_locked}" rendered="#{forum.locked == 'true'}" style="margin-right:.5em"/>
-				<h:commandLink action="#{ForumTool.processActionDisplayForum}"  value="#{forum.forum.title}" title=" #{forum.forum.title}" rendered="#{ForumTool.showForumLinksInNav}"  styleClass="title">
-		        <f:param value="#{forum.forum.id}" name="forumId"/>
-	        </h:commandLink>
+				<h:commandLink action="#{ForumTool.processActionDisplayForum}" title=" #{forum.forum.title}" rendered="#{ForumTool.showForumLinksInNav}"  styleClass="title">
+			        <f:param value="#{forum.forum.id}" name="forumId"/>
+			        <h:outputText value="#{forum.forum.title}"/>
+		        </h:commandLink>
 				<h:outputText value="#{forum.forum.title}" rendered="#{!ForumTool.showForumLinksInNav}"  styleClass="title" />
 				<%-- links to act on this forum --%>
 				
@@ -138,9 +139,8 @@ $(document).ready(function() {
 		
 <%-- the forum details --%>
 				<h:outputText value="#{forum.forum.shortDescription}" styleClass="shortDescription"/>
-	  
-				<h:outputLink id="forum_extended_show" value="javascript:void(0)" title="#{msgs.cdfm_view}"  styleClass="show"
-						rendered="#{!empty forum.attachList || forum.forum.extendedDescription != '' && forum.forum.extendedDescription != null && forum.forum.extendedDescription != '<br/>'}"
+	  			<f:subview id="longDesc" rendered="#{!empty forum.attachList || (forum.forum.extendedDescription != '' &&  forum.forum.extendedDescription != null && forum.forum.extendedDescription != '<br/>')}">
+				<h:outputLink id="forum_extended_show" value="javascript:void(0)" title="#{msgs.cdfm_view}"  styleClass="show" style="#{ForumTool.alwaysShowFullDesc  ? 'display:none' : 'display:block'}"
 						onclick="toggleExtendedDescription($(this).next('.hide'), $('div.toggle:first', $(this).parents('table.forumHeader')), $(this));">
 					<h:graphicImage url="/images/collapse.gif" /><h:outputText value="#{msgs.cdfm_view}" />
 					<h:outputText value=" #{msgs.cdfm_full_description}"  rendered="#{forum.forum.extendedDescription != '' && forum.forum.extendedDescription != null && forum.forum.extendedDescription != '<br/>'}"/>
@@ -149,14 +149,19 @@ $(document).ready(function() {
 			  </h:outputLink>
 
 				<%--//designNote: these link always show up even after you  have "zeroed out" a long description because it always saves a crlf --%>
-				<h:outputLink id="forum_extended_hide" value="javascript:void(0)" title="#{msgs.cdfm_hide}" style="display:none;" styleClass="hide" 
+				<h:outputLink id="forum_extended_hide" value="javascript:void(0)" title="#{msgs.cdfm_hide}" styleClass="hide" style="#{ForumTool.alwaysShowFullDesc ? 'display:block' : 'display:none'}"
 						onclick="toggleExtendedDescription($(this).prev('.show'), $('div.toggle:first', $(this).parents('table.forumHeader')), $(this));">
 					<h:graphicImage url="/images/expand.gif"/> <h:outputText value="#{msgs.cdfm_hide}" />
 					<h:outputText value=" #{msgs.cdfm_full_description}"  rendered="#{forum.forum.extendedDescription != '' && forum.forum.extendedDescription != null && forum.forum.extendedDescription != '<br/>'}"/>
 					<h:outputText value=" #{msgs.cdfm_and}"  rendered="#{!empty forum.attachList && forum.forum.extendedDescription != '' && forum.forum.extendedDescription != null && forum.forum.extendedDescription != '<br/>'}"/>
 					<h:outputText value=" #{msgs.cdfm_attach}"  rendered="#{!empty forum.attachList}"/>
 			  </h:outputLink>
-				<f:verbatim><div class="toggle" style="display:none;"></f:verbatim>
+			  	<f:subview id="hideLongDesc" rendered="#{!ForumTool.alwaysShowFullDesc}">
+					<f:verbatim><div class="toggle" style="display:none;"></f:verbatim>
+				</f:subview>
+				<f:subview id="showLongDesc" rendered="#{ForumTool.alwaysShowFullDesc}">
+					<f:verbatim><div class="toggle"></f:verbatim>
+				</f:subview>
 					<mf:htmlShowArea value="#{forum.forum.extendedDescription}"  hideBorder="true" />
 					<%-- attachs --%>
 					<h:dataTable  styleClass="attachListTable" value="#{forum.attachList}" var="eachAttach" rendered="#{!empty forum.attachList}" columnClasses="attach,bogus" style="font-size:.9em;width:auto;margin-left:1em" border="0" cellpadding="3" cellspacing="0">
@@ -176,6 +181,7 @@ $(document).ready(function() {
 			</h:column>	
 	  </h:dataTable>
 				<f:verbatim></div></f:verbatim>
+				</f:subview>
 	  </h:panelGroup>
   </h:panelGrid>
 	  <%-- the topic list  --%>
@@ -201,20 +207,29 @@ $(document).ready(function() {
 							<h:outputText id="draft_space" value="  - " rendered="#{topic.topic.draft == 'true'}" styleClass="title"/>
 							<h:graphicImage url="/images/silk/date_delete.png" title="#{msgs.topic_restricted_message}" alt="#{msgs.topic_restricted_message}" rendered="#{topic.availability == 'false'}" style="margin-right:.5em"/>
 							<h:graphicImage url="/images/silk/lock.png" alt="#{msgs.cdfm_forum_locked}" rendered="#{forum.locked == 'true' || topic.locked == 'true'}" style="margin-right:.5em"/>
-							<h:commandLink action="#{ForumTool.processActionDisplayTopic}" id="topic_title" value="#{topic.topic.title}" title=" #{topic.topic.title}" styleClass="title">
-					      <f:param value="#{topic.topic.id}" name="topicId"/>
-					      <f:param value="#{forum.forum.id}" name="forumId"/>
-				      </h:commandLink>
-							<%-- // display singular ('message') if one message --%>
-				     <h:outputText styleClass="textPanelFooter" id="topic_msg_count55" value=" #{msgs.cdfm_openb} #{topic.totalNoMessages} #{msgs.cdfm_lowercase_msg} - #{topic.unreadNoMessages} #{msgs.cdfm_unread}" 
-								rendered="#{topic.isRead && topic.totalNoMessages == 1}"/>
-							<%-- // display plural ('messages') if 0 or more than 1 messages --%>
-					   <h:outputText id="topic_msg_count56" value=" #{msgs.cdfm_openb} #{topic.totalNoMessages} #{msgs.cdfm_lowercase_msgs} - #{topic.unreadNoMessages} #{msgs.cdfm_unread}" 
-								rendered="#{topic.isRead && (topic.totalNoMessages > 1 || topic.totalNoMessages == 0) }" styleClass="textPanelFooter" />
-				     <h:outputText id="topic_moderated" value="#{msgs.cdfm_topic_moderated_flag}" styleClass="textPanelFooter" rendered="#{topic.moderated == 'true' && topic.isRead}" />
-    	        <h:outputText value=" #{msgs.cdfm_closeb}" styleClass="textPanelFooter" rendered="#{topic.isRead}"/>
-							<%--//desNote: only show the new "new" message if there are no unread messages --%>
-							<h:outputText styleClass="childrenNew" value=" #{msgs.cdfm_newflagparent}"  rendered="#{topic.unreadNoMessages > 0 }" />
+							<h:commandLink action="#{ForumTool.processActionDisplayTopic}" id="topic_title" title=" #{topic.topic.title}" styleClass="title">
+								<f:param value="#{topic.topic.id}" name="topicId"/>
+								<f:param value="#{forum.forum.id}" name="forumId"/>
+								<h:outputText value="#{topic.topic.title}"/>
+							</h:commandLink>
+             
+               <%-- // display  singular ('unread message') if unread message is  1 --%> 
+               <h:outputText styleClass="childrenNew" id="topic_msg_count55" value="  #{topic.unreadNoMessages} #{msgs.cdfm_lowercase_unread_msg}" 
+                             rendered="#{topic.isRead && topic.unreadNoMessages >= 1}"/>   
+                       
+               <%-- // display  plural ('unread messages') with different style sheet if unread message is 0 --%>  
+               <h:outputText styleClass="childrenNewZero" id="topic_msg_count57" value="   #{topic.unreadNoMessages} #{msgs.cdfm_lowercase_unread_msg}" 
+                             rendered="#{topic.isRead && topic.unreadNoMessages == 0}"/> 
+               
+               <%-- // display singular ('message') if total message is 1--%>                   
+               <h:outputText styleClass="textPanelFooter" id="topic_msg_count58" value="#{msgs.cdfm_of} #{topic.totalNoMessages} #{msgs.cdfm_lowercase_msg}"
+                             rendered="#{topic.isRead && topic.totalNoMessages == 1}"/>
+                                     
+               <%-- // display singular ('message') if total message is 0 or more than 1--%>                   
+               <h:outputText styleClass="textPanelFooter" id="topic_msg_count59" value="#{msgs.cdfm_of} #{topic.totalNoMessages} #{msgs.cdfm_lowercase_msgs}"
+                             rendered="#{topic.isRead && (topic.totalNoMessages > 1 || topic.totalNoMessages == 0)}"/>
+                                
+               <h:outputText id="topic_moderated" value=" #{msgs.cdfm_forum_moderated_flag}" styleClass="textPanelFooter" rendered="#{topic.moderated == 'true' && topic.isRead}" />
 
 							<%--//desNote: links to act on this topic --%>
 							<h:outputText value=" "  styleClass="actionLinks"/>
@@ -223,7 +238,7 @@ $(document).ready(function() {
 					     <f:param value="#{topic.topic.id}" name="topicId"/>
 				       <f:param value="#{forum.forum.id}" name="forumId"/>
 				     </h:commandLink>
-							<h:outputText  value=" | " rendered="#{forum.newTopic}"/>
+							<h:outputText  value=" | " rendered="#{forum.newTopic || ForumTool.instructor || topic.changeSettings}"/>
 
 							<%-- link to display other options on this topic --%>
 							<f:verbatim><a href="#" class="moreMenuLink"></f:verbatim>
@@ -258,28 +273,29 @@ $(document).ready(function() {
 						<f:verbatim></ul></f:verbatim>														
 							<%--the topic details --%>
 							<h:outputText id="topic_desc" value="#{topic.topic.shortDescription}" styleClass="shortDescription" />
-							
-							<h:outputLink id="forum_extended_show" value="javascript:void(0)" title="#{msgs.cdfm_view}" styleClass="show"
-									rendered="#{!empty topic.attachList || topic.topic.extendedDescription != '' && topic.topic.extendedDescription != null && topic.topic.extendedDescription != '<br/>'}"
-									onclick="toggleExtendedDescription($(this).next('.hide'), $('td div.toggle:first', $(this).parents('tr:first').next('tr')), $(this));">
+							<f:subview id="longDescTopic" rendered="#{!empty topic.attachList || (topic.topic.extendedDescription != '' &&  topic.topic.extendedDescription != null && topic.topic.extendedDescription != '<br/>')}">
+							<h:outputLink id="forum_extended_show" value="javascript:void(0)" title="#{msgs.cdfm_view}" styleClass="show" style="#{ForumTool.alwaysShowFullDesc  ? 'display:none' : 'display:block'}"
+									onclick="toggleExtendedDescription($(this).next('.hide'), $('td div.toggle:first', $(this).parents('tr:first')), $(this));">
 									<h:graphicImage url="/images/collapse.gif"/><h:outputText value="#{msgs.cdfm_view}" />
 									<h:outputText value=" #{msgs.cdfm_full_description}" rendered="#{topic.topic.extendedDescription != '' && topic.topic.extendedDescription != null && topic.topic.extendedDescription != '<br/>'}"/>
 									<h:outputText value=" #{msgs.cdfm_and}" rendered="#{!empty topic.attachList && topic.topic.extendedDescription != '' && topic.topic.extendedDescription != null && topic.topic.extendedDescription != '<br/>'}"/>
 									<h:outputText value=" #{msgs.cdfm_attach}" rendered="#{!empty topic.attachList}"/>
 				    </h:outputLink>  
 				  
-							<h:outputLink id="forum_extended_hide" value="javascript:void(0)" title="#{msgs.cdfm_hide}" style="display:none " styleClass="hide" 
-									rendered="#{!empty topic.attachList || topic.topic.extendedDescription != '' && topic.topic.extendedDescription != null && topic.topic.extendedDescription != '<br/>'}"
-									onclick="toggleExtendedDescription($(this).prev('.show'), $('td div.toggle:first', $(this).parents('tr:first').next('tr')), $(this));">
+							<h:outputLink id="forum_extended_hide" value="javascript:void(0)" title="#{msgs.cdfm_hide}" styleClass="hide" style="#{ForumTool.alwaysShowFullDesc ? 'display:block' : 'display:none'}"
+									onclick="toggleExtendedDescription($(this).prev('.show'), $('td div.toggle:first', $(this).parents('tr:first')), $(this));">
 									<h:graphicImage url="/images/expand.gif"/><h:outputText value="#{msgs.cdfm_hide}" />
 									<h:outputText value=" #{msgs.cdfm_full_description}" rendered="#{topic.topic.extendedDescription != '' && topic.topic.extendedDescription != null && topic.topic.extendedDescription != '<br/>'}"/>
 									<h:outputText value=" #{msgs.cdfm_and}" rendered="#{!empty topic.attachList && topic.topic.extendedDescription != '' && topic.topic.extendedDescription != null && topic.topic.extendedDescription != '<br/>'}"/>
 									<h:outputText value=" #{msgs.cdfm_attach}" rendered="#{!empty topic.attachList}"/>
 				    </h:outputLink>
 
-				 </h:panelGroup>
-						<h:panelGroup>
-							<f:verbatim><div class="toggle" style="display:none;"></f:verbatim>
+							<f:subview id="hideLongDescTopic" rendered="#{!ForumTool.alwaysShowFullDesc}">
+								<f:verbatim><div class="toggle" style="display:none;"></f:verbatim>
+							</f:subview>
+							<f:subview id="showLongDescTopic" rendered="#{ForumTool.alwaysShowFullDesc}">
+								<f:verbatim><div class="toggle"></f:verbatim>
+							</f:subview>
 					<mf:htmlShowArea  id="topic_fullDescription" hideBorder="true"	 value="#{topic.topic.extendedDescription}" />
 								<%--//desNote:attach list --%>
 								<h:dataTable  styleClass="attachListTable" value="#{topic.attachList}" var="eachAttach" rendered="#{!empty topic.attachList}" cellpadding="3" cellspacing="0" columnClasses="attach,bogus" style="font-size:.9em;width:auto;margin-left:1em" border="0">
@@ -304,8 +320,9 @@ $(document).ready(function() {
 			</h:dataTable>
 			--%>
     <f:verbatim></div></f:verbatim>
+    </f:subview>
 						</h:panelGroup>
-
+					
 					</h:panelGrid>
 	 </h:column>
       </h:dataTable>			

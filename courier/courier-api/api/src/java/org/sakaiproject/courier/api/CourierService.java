@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.3/courier-api/api/src/java/org/sakaiproject/courier/api/CourierService.java $
- * $Id: CourierService.java 109790 2012-06-28 13:36:52Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.0/courier-api/api/src/java/org/sakaiproject/courier/api/CourierService.java $
+ * $Id: CourierService.java 131633 2013-11-15 21:36:42Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ import java.util.List;
  * </p>
  * 
  * @deprecated The CourierService is no longer a preferred way to communicate with clients.
- * 		It will be removed in a future release of Sakai (after 2.10)
+ * 		It will be removed in a future release of Sakai (after 10.0)
  * 		There are better technologies to use, please do not use.
  *      <a href="https://jira.sakaiproject.org/browse/SAK-22053">SAK-22053</a>
  */

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/jldap/src/java/edu/amc/sakai/user/RegexpBlacklistEidValidator.java $
- * $Id: RegexpBlacklistEidValidator.java 61856 2009-05-05 17:53:41Z dmccallum@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/jldap/src/java/edu/amc/sakai/user/RegexpBlacklistEidValidator.java $
+ * $Id: RegexpBlacklistEidValidator.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,8 @@ package edu.amc.sakai.user;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Implements <code>User</code> EID "validation" by checking
@@ -60,7 +62,7 @@ public class RegexpBlacklistEidValidator implements EidValidator {
 	 *   null or entirely whitespace
 	 */
 	protected boolean isMinimallyValidEid(String eid) {
-		return eid != null && eid.trim().length() > 0;
+		return StringUtils.isNotBlank(eid);
 	}
 
 	/**

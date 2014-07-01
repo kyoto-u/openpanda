@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/CombineDuplicateSubmissionsConversionHandler.java $
- * $Id: CombineDuplicateSubmissionsConversionHandler.java 101746 2011-12-14 16:45:33Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/CombineDuplicateSubmissionsConversionHandler.java $
+ * $Id: CombineDuplicateSubmissionsConversionHandler.java 105182 2012-02-27 20:23:29Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.util.conversion.SchemaConversionHandler;

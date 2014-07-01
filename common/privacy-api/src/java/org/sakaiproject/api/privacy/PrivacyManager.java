@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,6 +52,11 @@ public interface PrivacyManager
 	public static final String SYSTEM_RECORD_TYPE = "system_record";
 	
 	public static final String USER_RECORD_TYPE = "user_record";
+	
+	public static final String VISIBLE = "privacy_visible";
+	public static final String HIDDEN = "privacy_hidden";
+	public static final String PRIVACY_PREFS = "sakai:pref:privacy";
+	public static final String DEFAULT_PRIVACY_KEY = "default";
 	
 	// Tool methods ------------------------------------------------------
 	
@@ -124,5 +129,9 @@ public interface PrivacyManager
 	 * @param recordType is a UUID i.e. (getSystemRecordType(), getUserRecordType())
 	 */
 	void setViewableState(String contextId, Map userViewableState, String recordType);
+
+	String getDefaultPrivacyState(String userId);
+
+	void setDefaultPrivacyState(String userId, String visibility);
 	
 }

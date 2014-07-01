@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/helper/ExtractionHelper.java $
- * $Id: ExtractionHelper.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/ExtractionHelper.java $
+ * $Id: ExtractionHelper.java 309681 2014-05-20 18:49:14Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,6 +25,7 @@ package org.sakaiproject.tool.assessment.qti.helper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,16 +34,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jdom.input.DOMBuilder;
-import org.jdom.output.XMLOutputter;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentResource;
 //import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
@@ -51,15 +50,21 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.AnswerFeedback;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
+import org.sakaiproject.tool.assessment.data.dao.assessment.ItemAttachment;
+import org.sakaiproject.tool.assessment.data.dao.assessment.ItemData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemText;
+import org.sakaiproject.tool.assessment.data.dao.assessment.ItemTextAttachment;
 import org.sakaiproject.tool.assessment.data.dao.assessment.SecuredIPAddress;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerFeedbackIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentBaseIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextAttachmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
@@ -70,6 +75,7 @@ import org.sakaiproject.tool.assessment.facade.SectionFacade;
 import org.sakaiproject.tool.assessment.qti.asi.ASIBaseClass;
 import org.sakaiproject.tool.assessment.qti.asi.Assessment;
 import org.sakaiproject.tool.assessment.qti.asi.Item;
+import org.sakaiproject.tool.assessment.qti.asi.PrintUtil;
 import org.sakaiproject.tool.assessment.qti.asi.Section;
 import org.sakaiproject.tool.assessment.qti.constants.AuthoringConstantStrings;
 import org.sakaiproject.tool.assessment.qti.constants.QTIVersion;
@@ -81,16 +87,10 @@ import org.sakaiproject.tool.assessment.qti.util.Iso8601TimeInterval;
 import org.sakaiproject.tool.assessment.qti.util.XmlMapper;
 import org.sakaiproject.tool.assessment.qti.util.XmlUtil;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
-import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
-import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.tool.assessment.util.TextFormat;
-import org.sakaiproject.tool.cover.ToolManager;
-import org.sakaiproject.user.api.User;
-import org.sakaiproject.user.cover.UserDirectoryService;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -98,7 +98,7 @@ import org.xml.sax.SAXException;
  * <p> </p>
  * <p>Copyright: Copyright (c) 2005 Sakai</p>
  * @author Ed Smiley esmiley@stanford.edu
- * @version $Id: ExtractionHelper.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * @version $Id: ExtractionHelper.java 309681 2014-05-20 18:49:14Z ktsao@stanford.edu $
  */
 
 public class ExtractionHelper
@@ -114,6 +114,7 @@ public class ExtractionHelper
       "extractAssessment.xsl";
   private static final String SECTION_TRANSFORM = "extractSection.xsl";
   private static final String ITEM_TRANSFORM = "extractItem.xsl";
+  private static final String ITEM_EMI_TRANSFORM = "extractEMIItem.xsl";
   public static final String REMOVE_NAMESPACE_TRANSFORM = "removeDefaultNamespaceFromQTI.xsl";
   private static Log log = LogFactory.getLog(ExtractionHelper.class);
 
@@ -266,6 +267,11 @@ public class ExtractionHelper
   {
     return map(ITEM_TRANSFORM, itemXml, isRespondus);
   }
+  
+  public Map mapEMIItem(Item itemXml, boolean isRespondus)
+  {
+	  return map(ITEM_EMI_TRANSFORM, itemXml, isRespondus);
+  }
 
   /**
    * Helper method
@@ -406,6 +412,7 @@ public class ExtractionHelper
     return (ASSESSMENT_TRANSFORM.equals(transform)) ||
             SECTION_TRANSFORM.equals(transform) ||
             ITEM_TRANSFORM.equals(transform) ||
+            ITEM_EMI_TRANSFORM.equals(transform) ||
             REMOVE_NAMESPACE_TRANSFORM.equals(transform) ? true : false;
   }
 
@@ -617,7 +624,7 @@ public class ExtractionHelper
     {
       feedback.setFeedbackDelivery(feedback.FEEDBACK_ON_SUBMISSION);
     }
-    else if ("NO_FEEDBACK".equalsIgnoreCase(assessment.getAssessmentMetaDataByLabel(
+    else if ("NONE".equalsIgnoreCase(assessment.getAssessmentMetaDataByLabel(
     	"FEEDBACK_DELIVERY")))
     {
       feedback.setFeedbackDelivery(feedback.NO_FEEDBACK);
@@ -813,17 +820,21 @@ public class ExtractionHelper
     else if (releasedTo != null && releasedTo.indexOf("Selected Groups") > -1){
     	releasedTo = AgentFacade.getCurrentSiteName();
     }
+    else if (releasedTo != null && releasedTo.indexOf(AuthoringConstantStrings.ANONYMOUS) > -1){
+	releasedTo = AuthoringConstantStrings.ANONYMOUS;
+    }
     else {
     	if (AgentFacade.getCurrentSiteName() != null) {
     		releasedTo = AgentFacade.getCurrentSiteName();
     	}
-    	else {
-    		control.setReleaseTo(releasedTo);
-    	}
+    }
+
+    if (releasedTo != null) {
+	control.setReleaseTo(releasedTo);
     }
     
     // Timed Assessment
-    if (duration != null)
+    if (duration != null && !duration.trim().isEmpty())
     {
       try
       {
@@ -1083,14 +1094,11 @@ public class ExtractionHelper
 	  	return;
 	}
 	
-    Set assessmentAttachmentSet = (Set) assessment.getAssessmentAttachmentSet();
-    if (assessmentAttachmentSet == null) {
-    	assessmentAttachmentSet = new HashSet();
-    }
+	
         
     AssessmentAttachmentIfc assessmentAttachment;
     String[] attachmentArray = attachment.split("\\n");
-    HashSet set = new HashSet();
+    Set<AssessmentAttachmentIfc> set = new HashSet<AssessmentAttachmentIfc>();
 	AttachmentHelper attachmentHelper = new AttachmentHelper();
 	AssessmentService assessmentService = new AssessmentService();
     for (int i = 0; i < attachmentArray.length; i++) {
@@ -1122,14 +1130,10 @@ public class ExtractionHelper
 	  	return;
 	}
 	
-    Set sectionAttachmentSet = (Set) section.getSectionAttachmentSet();
-    if (sectionAttachmentSet == null) {
-    	sectionAttachmentSet = new HashSet();
-    }
-        
+   
     SectionAttachmentIfc sectionAttachment;
     String[] attachmentArray = attachment.split("\\n");
-    HashSet set = new HashSet();
+    Set<SectionAttachmentIfc> set = new HashSet<SectionAttachmentIfc>();
 	AttachmentHelper attachmentHelper = new AttachmentHelper();
 	AssessmentService assessmentService = new AssessmentService();
     for (int i = 0; i < attachmentArray.length; i++) {
@@ -1161,14 +1165,9 @@ public class ExtractionHelper
 		  return;
 	  }
 
-	  Set itemAttachmentSet = (Set) item.getItemAttachmentSet();
-	  if (itemAttachmentSet == null) {
-		  itemAttachmentSet = new HashSet();
-	  }
-
 	  ItemAttachmentIfc itemAttachment;
 	  String[] attachmentArray = attachment.split("\\n");
-	  HashSet set = new HashSet();
+	  Set<ItemAttachmentIfc> set = new HashSet<ItemAttachmentIfc>();
 	  AttachmentHelper attachmentHelper = new AttachmentHelper();
 	  AssessmentService assessmentService = new AssessmentService();
 	  for (int i = 0; i < attachmentArray.length; i++) {
@@ -1490,14 +1489,25 @@ public class ExtractionHelper
    * @param item the item, which will  be persisted
    * @param itemMap the extracted properties
    */
-  public void updateItem(ItemFacade item, Map itemMap)
+  public void updateItem(ItemFacade item, Item itemXml)
   {
-	  updateItem(item, itemMap, false);
+	  updateItem(item, itemXml, false);
   }
   
-  public void updateItem(ItemFacade item, Map itemMap, boolean isRespondus)
+  public void updateItem(ItemFacade item, Item itemXml, boolean isRespondus)
   {
-    // type and title
+	  Map itemMap = mapItem(itemXml, isRespondus);
+	  updateItem(item, itemXml, itemMap, isRespondus);
+  }
+	  
+  public void updateItem(ItemFacade item, Item itemXml, Map itemMap)
+  {
+	  updateItem(item, itemXml, itemMap, false);
+  }
+  
+  public void updateItem(ItemFacade item, Item itemXml, Map itemMap, boolean isRespondus)
+  {
+	// type and title
     String title = (String) itemMap.get("title");
     item.setDescription(title);
 
@@ -1596,6 +1606,13 @@ public class ExtractionHelper
     {
     	addMatrixSurveyTextAndAnswers(item, itemMap);
     }
+    else if (TypeIfc.EXTENDED_MATCHING_ITEMS.longValue() == typeId.longValue())
+    {
+    	addExtendedMatchingItemsTextAndAnswers(item, itemXml, itemMap);
+    }
+    else if (TypeIfc.CALCULATED_QUESTION.longValue() == typeId.longValue()) {
+        addCalculatedQuestionAnswers(item, itemMap);
+    }
     else
     {
     	if (isRespondus) {
@@ -1621,7 +1638,11 @@ public class ExtractionHelper
       if (item.getTypeId().equals(TypeIfc.ESSAY_QUESTION)) {
     	score = "1";
       }
-      else if (item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) || item.getTypeId().equals(TypeIfc.FILL_IN_BLANK) || item.getTypeId().equals(TypeIfc.MATCHING)) {
+      else if (item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) 
+              || item.getTypeId().equals(TypeIfc.FILL_IN_BLANK) 
+              || item.getTypeId().equals(TypeIfc.MATCHING)
+              || item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION) // CALCULATED_QUESTION
+              ) {
         score = (String) itemMap.get("score");
       }
       else {
@@ -1654,18 +1675,18 @@ public class ExtractionHelper
     item.setInstruction( (String) itemMap.get("instruction"));
     if (notNullOrEmpty(score))
     {
-      item.setScore( Float.valueOf(score));
+      item.setScore( Double.valueOf(score));
     }
     else {
-    	item.setScore(Float.valueOf(0));
+    	item.setScore(Double.valueOf(0));
     }
     
     if (notNullOrEmpty(discount))
     {
-    	item.setDiscount(Float.valueOf(discount));
+    	item.setDiscount(Double.valueOf(discount));
     }
     else {
-    	item.setDiscount(Float.valueOf(0));
+    	item.setDiscount(Double.valueOf(0));
     }
 
     if (notNullOrEmpty( partialCreditFlag))
@@ -1834,8 +1855,8 @@ public class ExtractionHelper
 				  answer.setLabel(label); // up to 26, is this a problem?
 
 				  // correct answer and score
-				  float score = 0;
-				  float discount = 0;
+				  double score = 0;
+				  double discount = 0;
 
 				  answer.setIsCorrect(Boolean.FALSE);
 				  // if label matches correct answer it is correct
@@ -1856,9 +1877,9 @@ public class ExtractionHelper
 				  score = getCorrectScore(item, 1);
 				  discount = getCorrectDiscount(item);
 				  log.debug("setting answer" + label + " score to:" + score);
-				  answer.setScore( Float.valueOf(score));
+				  answer.setScore( Double.valueOf(score));
 				  log.debug("setting answer " + label + " discount to:" + discount);
-				  answer.setDiscount(Float.valueOf(discount));
+				  answer.setDiscount(Double.valueOf(discount));
 
 				  answer.setText(makeFCKAttachment(answerText));
 				  answer.setItemText(itemText);
@@ -1888,10 +1909,10 @@ public class ExtractionHelper
 						  index = index - 1L;
 						  int indexInteger = Long.valueOf(index).intValue();
 						  String strPCredit = (String) answerScoreList.get(indexInteger);
-						  float fltPCredit = Float.parseFloat(strPCredit);
-						  Float pCredit = (fltPCredit/(item.getScore().floatValue()))*100;
+						  double fltPCredit = Double.parseDouble(strPCredit);
+						  Double pCredit = (fltPCredit/(item.getScore().doubleValue()))*100;
 						  if (pCredit.isNaN()){
-							  answer.setPartialCredit(0F);
+							  answer.setPartialCredit(0D);
 						  }
 						  else{
 							  answer.setPartialCredit(pCredit);
@@ -1997,17 +2018,17 @@ public class ExtractionHelper
 			  answer.setLabel(label); // up to 26, is this a problem?
 
 			  // correct answer and score
-			  float score = 0;
-			  float discount = 0;
+			  double score = 0;
+			  double discount = 0;
 
 			  // manual authoring disregards correctness
 			  // so we will do the same.
 			  score = getCorrectScore(item, 1);
 			  discount = getCorrectDiscount(item);
 			  log.debug("setting answer" + label + " score to:" + score);
-			  answer.setScore( Float.valueOf(score));
+			  answer.setScore( Double.valueOf(score));
 			  log.debug("setting answer " + label + " discount to:" + discount);
-			  answer.setDiscount(Float.valueOf(discount));
+			  answer.setDiscount(Double.valueOf(discount));
 
 			  answer.setItemText(itemText);
 			  answer.setItem(item.getData());
@@ -2023,22 +2044,22 @@ public class ExtractionHelper
 	  item.setItemTextSet(itemTextSet);
   }
 
-  private float getCorrectScore(ItemDataIfc item, int answerSize)
+  private double getCorrectScore(ItemDataIfc item, int answerSize)
   {
-    float score =0;
+    double score =0;
     if (answerSize>0 && item!=null && item.getScore()!=null)
     {
-      score = item.getScore().floatValue()/answerSize;
+      score = item.getScore().doubleValue()/answerSize;
     }
     return score;
   }
 
-  private float getCorrectDiscount(ItemDataIfc item)
+  private double getCorrectDiscount(ItemDataIfc item)
   {
-	  float discount =0;
+	  double discount =0;
 	  if (item!=null && item.getDiscount()!=null)
 	  {
-		  discount = item.getDiscount().floatValue();
+		  discount = item.getDiscount().doubleValue();
 	  }
 	  return discount;
   }
@@ -2190,15 +2211,15 @@ public class ExtractionHelper
         answer.setIsCorrect(Boolean.TRUE);
         // manual authoring disregards the number of partial answers
         // so we will do the same.
-        float score = getCorrectScore(item, 1);
-        float discount = getCorrectDiscount(item);
-//        float score = getCorrectScore(item, answerList.size());
+        double score = getCorrectScore(item, 1);
+        double discount = getCorrectDiscount(item);
+//        double score = getCorrectScore(item, answerList.size());
 
         log.debug("setting answer " + label + " score to:" + score);
-        answer.setScore( Float.valueOf(score));
+        answer.setScore( Double.valueOf(score));
         
         log.debug("setting answer " + label + " discount to:" + discount);
-        answer.setDiscount( Float.valueOf(discount));
+        answer.setDiscount( Double.valueOf(discount));
         
         answer.setItem(item.getData());
         int sequence = a + 1;
@@ -2267,7 +2288,7 @@ public class ExtractionHelper
 	  answer.setText(makeFCKAttachment(answerTextStringbuf.toString()));
 	  answer.setItemText(itemText);
 	  answer.setIsCorrect(Boolean.TRUE);
-	  answer.setScore(Float.valueOf(item.getScore()));
+	  answer.setScore(Double.valueOf(item.getScore()));
 	  answer.setItem(item.getData());
 	  answer.setSequence(Long.valueOf(1l));
 	  answerSet.add(answer);
@@ -2425,12 +2446,17 @@ public class ExtractionHelper
         // correct answer and score
         // manual authoring disregards the number of partial answers
         // or whether the answer is correct so we will do the same.
-//        float score = 0;
-        float score = getCorrectScore(item, 1);
-        float discount = getCorrectDiscount(item);
+//        double score = 0;
+        double score = getCorrectScore(item, 1);
+        double discount = getCorrectDiscount(item);
         
-        // if this answer is the indexed one, flag as correct
-        if (a + 1 == targetIndex)
+        // assume that the xslt creates the three important lists in the correct order
+        // sourceList and target list individually don't matter
+        // indexList must be ordered by source, then target, in the same order
+        // as source and target are ordered
+        int index = a + i * targetList.size();
+        String correctStatus = (String) indexList.get(index);
+        if ("CorrectMatch".equals(correctStatus))
         {
           target.setIsCorrect(Boolean.TRUE);
 //          score = getCorrectScore(item, targetList.size());
@@ -2441,8 +2467,8 @@ public class ExtractionHelper
           target.setIsCorrect(Boolean.FALSE);
         }
         log.debug("setting answer " + a + " score to:" + score);
-        target.setScore( Float.valueOf(score));
-        target.setDiscount(Float.valueOf(discount));
+        target.setScore( Double.valueOf(score));
+        target.setDiscount(Double.valueOf(discount));
 
         if (answerFeedbackList != null)
         {
@@ -2488,10 +2514,6 @@ public class ExtractionHelper
 		  item.setInstruction(makeFCKAttachmentFromRespondus((String) itemTextList.get(0)));
 	  }
 	  
-	  if (Math.pow(sourceList.size(), 2) != targetList.size()) {
-		  throw new RespondusMatchingException("Matching question error!");
-	  }
-	  
 	  HashMap<String, String> sourceMap = new HashMap<String, String>();
 	  if (sourceList != null) {
 		  Iterator iter = sourceList.iterator();
@@ -2520,7 +2542,7 @@ public class ExtractionHelper
 		  }
 	  }
 
-	  HashSet itemTextSet = new HashSet();
+	  Set<ItemText> itemTextSet = new HashSet<ItemText>();
 	  String ident = "";
 	  String correctVar = "";
 	  String sourceText = "";
@@ -2534,9 +2556,6 @@ public class ExtractionHelper
 		  log.debug("sourceText: " + sourceText);
 
 		  ItemText sourceItemText = new ItemText();
-		  sourceItemText.setText(makeFCKAttachmentFromRespondus(sourceText));
-		  sourceItemText.setItem(item.getData());
-		  sourceItemText.setSequence(Long.valueOf(itemSequence++)); 
 
 		  int answerSequence = 1;
 		  HashSet targetSet = new HashSet();
@@ -2555,11 +2574,11 @@ public class ExtractionHelper
 			  answer.setItemText(sourceItemText);
 			  answer.setItem(item.getData());
 			  answer.setSequence( Long.valueOf(answerSequence++));
-			  answer.setScore(Float.valueOf(getCorrectScore(item, 1)));
+			  answer.setScore(Double.valueOf(getCorrectScore(item, 1)));
 
 			  ident = source.getKey();
 			  correctVar = correctMap.get(ident);
-			  if (correctVar.equals(target.getKey())) {
+			  if (target.getKey().equals(correctVar)) {
 				  answer.setIsCorrect(Boolean.TRUE);
 			  }
 			  else {
@@ -2567,9 +2586,27 @@ public class ExtractionHelper
 			  }
 			  targetSet.add(answer);
 		  }
-
+		  sourceItemText.setText(makeFCKAttachmentFromRespondus(sourceText));
+		  sourceItemText.setItem(item.getData());
+		  sourceItemText.setSequence(Long.valueOf(itemSequence++)); 
 		  sourceItemText.setAnswerSet(targetSet);
 		  itemTextSet.add(sourceItemText);
+	  }
+	  // Respondus allows for more matches than choices.  
+	  // If any answer does not have a correct choice, throw an exception
+	  Set<String> correctAnswers = new HashSet<String>();
+	  Set<String> allAnswers = new HashSet<String>();
+	  for (ItemText itemText : itemTextSet) {
+		  Set<AnswerIfc> answers = itemText.getAnswerSet();
+		  for (AnswerIfc answer : answers) {
+			  allAnswers.add(answer.getText());
+			  if (answer.getIsCorrect()) {
+				  correctAnswers.add(answer.getText());
+			  }
+		  }		  
+	  }
+	  if (!correctAnswers.containsAll(allAnswers)) {
+		  throw new RespondusMatchingException("All answers do not have a valid choice.");
 	  }
 	  
 	  item.setItemTextSet(itemTextSet);
@@ -2658,13 +2695,13 @@ public class ExtractionHelper
 				  // correct answer and score
 				  // manual authoring disregards the number of partial answers
 				  // or whether the answer is correct so we will do the same.
-				  // float score = 0;
-				  float score = 0.0f;
-				  float discount = 0.0f;
+				  // double score = 0;
+				  double score = 0.0d;
+				  double discount = 0.0d;
 
 				  log.debug("setting answer " + a + " score to:" + score);
-				  target.setScore( Float.valueOf(score));
-				  target.setDiscount(Float.valueOf(discount));
+				  target.setScore( Double.valueOf(score));
+				  target.setDiscount(Double.valueOf(discount));
 
 				  targetSet.add(target);
 
@@ -2722,6 +2759,137 @@ public class ExtractionHelper
     }
 
     return newList;
+  }
+
+  /**
+   * CALCULATED Questions ONLY
+   * @param item
+   * @param itemMap
+   */
+  private void addCalculatedQuestionAnswers(ItemFacade item, Map itemMap) {
+      // we do not have access to the raw XML data, so this was the easiest way
+      // that I could think of to return the variable and formula information
+      // in the itemMap.  The transform could do more, but XmlMapper.map function
+      // is limited.  The variable lists should all be the same size, and the 
+      // formula lists should all be the same size
+      List<String> variableNames = (List) itemMap.get("variableNames");
+      List<String> variableMins = (List) itemMap.get("variableMins");
+      List<String> variableMaxs = (List) itemMap.get("variableMaxs");
+      List<String> variableDecimalPlaces = (List) itemMap.get("variableDecimalPlaces");
+      
+      List<String> formulaNames = (List) itemMap.get("formulaNames");
+      List<String> formulaTexts = (List) itemMap.get("formulaTexts");
+      List<String> formulaTolerances = (List) itemMap.get("formulaTolerances");
+      List<String> formulaDecimalPlaces = (List) itemMap.get("formulaDecimalPlaces");
+      
+      List<String> instructions = (List) itemMap.get("itemText");
+      if (instructions.size() > 0) {
+          String instruction = instructions.get(0);
+          if (instruction != null && instruction.length() > 0) {
+              instruction = XmlUtil.processFormattedText(log, (String) instructions.get(0));
+              instruction = instruction.replaceAll("\\?\\?"," ");//SAK-2298
+              item.setInstruction(instruction);
+          }
+      }
+      
+      // loops through variablenames and formulanames creates the entries for sam_itemtext_t
+      // within those loops, create the entries for sam_answer_t
+      // setIsCorrect() for variables will only be correct in the inner variable loop
+      // setIsCorrect() for formulas will only be correct in the inner formula loop
+      // this feels kludgy.  
+      Set itemTextSet = new HashSet<ItemText>();
+      
+      // variable outer loop
+      for (int i = 0; i < variableNames.size(); i++) {
+          char answerLabel = 'A';
+          ItemText itemText = new ItemText();
+          itemText.setText(variableNames.get(i));
+          itemText.setItem(item.getData());
+          itemText.setSequence(Long.valueOf(i + 1));
+          
+          // associate answers with the text
+          Set<AnswerIfc> answerSet = new HashSet<AnswerIfc>();
+          for (int j = 0; j < variableNames.size(); j++) {
+              String varMin = variableMins.get(j);
+              String varMax = variableMaxs.get(j);
+              String varDecimalPlaces = variableDecimalPlaces.get(j);
+              
+              Answer answer = new Answer();
+              answer.setItem(item.getData());
+              answer.setItemText(itemText);
+              answer.setLabel("" + answerLabel++);
+              answer.setText(varMin + "|" + varMax + "," + varDecimalPlaces);
+              answer.setSequence(Long.valueOf(j + 1));
+              // only a variable can be correct here, since we're comparing variables
+              answer.setIsCorrect(i == j);
+              answerSet.add(answer);
+          }
+          
+          for (int j = 0; j < formulaNames.size(); j++) {
+              String forText = formulaTexts.get(j);
+              String forTolerance = formulaTolerances.get(j);
+              String forDecimalPlaces = formulaDecimalPlaces.get(j);
+              
+              Answer answer = new Answer();
+              answer.setItem(item.getData());
+              answer.setItemText(itemText);
+              answer.setLabel("" + answerLabel++);
+              answer.setText(forText + "|" + forTolerance + "," + forDecimalPlaces);
+              answer.setSequence(Long.valueOf(variableNames.size() + j + 1));
+              // no formulas will ever match here
+              answer.setIsCorrect(Boolean.FALSE);
+              answerSet.add(answer);              
+          }
+          itemText.setAnswerSet(answerSet);          
+          itemTextSet.add(itemText);
+      }
+      
+      // formula outer loop
+      for (int i = 0; i < formulaNames.size(); i++) {          
+          char answerLabel = 'A';
+          ItemText itemText = new ItemText();
+          itemText.setText(formulaNames.get(i));
+          itemText.setItem(item.getData());
+          itemText.setSequence(Long.valueOf(variableNames.size() + i + 1));
+          
+          // associate answers with the text
+          Set<AnswerIfc> answerSet = new HashSet<AnswerIfc>();
+          for (int j = 0; j < variableNames.size(); j++) {
+              String varMin = variableMins.get(j);
+              String varMax = variableMaxs.get(j);
+              String varDecimalPlaces = variableDecimalPlaces.get(j);
+              
+              Answer answer = new Answer();
+              answer.setItem(item.getData());
+              answer.setItemText(itemText);
+              answer.setLabel("" + answerLabel++);
+              answer.setText(varMin + "|" + varMax + "," + varDecimalPlaces);
+              answer.setSequence(Long.valueOf(j + 1));
+              // no variables will ever match here
+              answer.setIsCorrect(Boolean.FALSE);
+              answerSet.add(answer);
+          }
+          
+          for (int j = 0; j < formulaNames.size(); j++) {
+              String forText = formulaTexts.get(j);
+              String forTolerance = formulaTolerances.get(j);
+              String forDecimalPlaces = formulaDecimalPlaces.get(j);
+              
+              Answer answer = new Answer();
+              answer.setItem(item.getData());
+              answer.setItemText(itemText);
+              answer.setLabel("" + answerLabel++);
+              answer.setText(forText + "|" + forTolerance + "," + forDecimalPlaces);
+              answer.setSequence(Long.valueOf(variableNames.size() + j + 1));
+              // only a formula can be correct here, since we're comparing formulas
+              answer.setIsCorrect(i == j);
+              answerSet.add(answer);              
+          }
+          itemText.setAnswerSet(answerSet);          
+          itemTextSet.add(itemText);
+      }
+      
+      item.setItemTextSet(itemTextSet);
   }
 
   /**
@@ -2805,4 +2973,185 @@ public class ExtractionHelper
   {
     this.unzipLocation = unzipLocation;
   }
+  
+  //------------- EMI -------------------//
+	private String get(Map itemMap, String key) {
+		return ((String) itemMap.get(key)).trim();
+	}
+
+	private List<String> getList(Map itemMap, String key) {
+		return (List<String>) itemMap.get(key);
+	}
+
+	private void addExtendedMatchingItemsTextAndAnswers(ItemFacade item, Item itemXml,
+			Map itemMap) {
+		itemMap = mapEMIItem(itemXml, false);
+		Set<ItemTextIfc> itemTextSet = new TreeSet<ItemTextIfc>();
+		item.setItemTextSet(itemTextSet);
+		item.setStatus(ItemDataIfc.ACTIVE_STATUS);
+		// Theme text
+		itemTextSet.add(new ItemText((ItemData) item.getData(),
+				ItemTextIfc.EMI_THEME_TEXT_SEQUENCE, get(itemMap, "theme"),
+				null));
+		// attachments
+//		item.setItemAttachmentSet(makeEMIAttachments(item,
+////				getList(itemMap, "richOptionAttachImage"),
+////				getList(itemMap, "richOptionAttachAudio"),
+////				getList(itemMap, "richOptionAttachVideo"),
+//				getList(itemMap, "richOptionAttach")));
+		// options
+		boolean simple = "Simple".equals(get(itemMap, "answerOptions")) ? true
+				: false;
+		item.setAnswerOptionsSimpleOrRich(simple ? ItemDataIfc.ANSWER_OPTIONS_SIMPLE
+				: ItemDataIfc.ANSWER_OPTIONS_RICH);
+		Map<String, String> optionMap = new HashMap<String, String>();
+		if (simple) {
+			itemTextSet.add(makeEMISimpleOptions(item,
+					getList(itemMap, "options"), optionMap));
+			item.setAnswerOptionsRichCount(0);
+		} else {// rich
+			itemTextSet.add(makeEMIRichOptions(item,
+					get(itemMap, "richOptionText"),
+					getList(itemMap, "options"), optionMap));
+		}
+		// Leadin text
+		itemTextSet.add(new ItemText((ItemData) item.getData(),
+				ItemTextIfc.EMI_LEAD_IN_TEXT_SEQUENCE, get(itemMap, "leadin"),
+				null));
+		// score
+		item.setScore(Double.valueOf(get(itemMap, "score")));
+		item.setDiscount(Double.valueOf(get(itemMap, "discount")));
+		// items
+		itemTextSet.addAll(makeEMIItems(item, getList(itemMap, "items"),
+				optionMap));
+	}
+
+	private Set<ItemAttachmentIfc> makeEMIAttachments(ItemFacade item,
+			List<String> attachList) {
+		if(attachList == null || attachList.isEmpty()){
+			return null;
+		}
+		Set<ItemAttachmentIfc> attachSet = new TreeSet<ItemAttachmentIfc>();
+		for(String attach: attachList){
+			attach = attach.trim();
+			int index = attach.indexOf("[");
+			String fileName = attach.substring(0, index);
+			attach = attach.substring(index);
+			index = attach.indexOf("]");
+			String mimeType = attach.substring(1, index);
+			index = attach.indexOf("(");
+			attach = attach.substring(index);
+			index = attach.indexOf(")");
+			Long size = Long.valueOf(attach.substring(1, index));
+			attach = attach.substring(index+1);
+			String location = attach;
+			String resourceId = location.replace("%2B", "+").replace("%20", " ").replace("/access/content", "");
+			attachSet.add(new ItemAttachment(null, item, resourceId, 
+					fileName, mimeType, size, null, location, 
+					false, ItemAttachmentIfc.ACTIVE_STATUS, null, null, null, null));
+		}
+		return attachSet;
+	}
+
+	private ItemText makeEMISimpleOptions(ItemFacade item,
+			List<String> options, Map<String, String> optionMap) {
+		ItemText itemText = new ItemText((ItemData) item.getData(),
+				ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE, "", null);
+		Set<AnswerIfc> answerSet = new TreeSet<AnswerIfc>();
+		itemText.setAnswerSet(answerSet);
+		long seq = 1;
+		for (String option : options) {
+			option = option.trim();
+			String text = option.substring(3).trim();
+			Answer a = new Answer(itemText, text, seq++, option.substring(1, 2));
+			a.setIsCorrect(false);
+			answerSet.add(a);
+			optionMap.put(option.substring(1, 2), text);
+		}
+		return itemText;
+	}
+
+	private ItemText makeEMIRichOptions(ItemFacade item, String richText,
+			List<String> options, Map<String, String> optionMap) {
+		item.setAnswerOptionsRichCount(options.size());
+		for (String option : options) {
+			option = option.trim().substring(1, 2);
+			optionMap.put(option, option);
+		}
+		ItemText itemText = new ItemText((ItemData) item.getData(),
+				ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE, richText, null);
+		return itemText;
+	}
+
+	private Set<ItemText> makeEMIItems(ItemFacade item, List<String> items,
+			Map<String, String> optionMap) {
+		Set<ItemText> itemTextSet = new TreeSet<ItemText>();
+		long seq = 1;
+		for (String itemdata : items) {
+			itemdata = itemdata.trim();
+			int index = itemdata.indexOf("|");
+			int required = Integer.valueOf(itemdata.substring(1, index));
+			itemdata = itemdata.substring(index + 1).trim();
+			index = itemdata.indexOf("]");
+			String grade = itemdata.substring(0, index);
+			itemdata = itemdata.substring(index + 1).trim();
+			index = itemdata.indexOf("@ATTACH@");
+			String text = itemdata.substring(0, index).trim();
+			itemdata = itemdata.substring(index + "@ATTACH@".length()).trim();
+			Set<AnswerIfc> answers = new TreeSet<AnswerIfc>();
+			ItemText itemText = new ItemText((ItemData) item.getData(), seq++,
+					text, answers);
+			itemText.setRequiredOptionsCount(required);
+			index = itemdata.indexOf("@ANSWERS@");
+//			itemText.setItemTextAttachmentSet(makeEMIItemTextAttachmentSet(itemText, itemdata.substring(0, index)));
+			itemTextSet.add(itemText);
+			itemdata = itemdata.substring(index + "@ANSWERS@".length()).trim();
+			index = itemdata.indexOf("[");
+			long answerSeq = 1;
+			while (index != -1) {
+				String label = itemdata.substring(1, 2);
+				itemdata = itemdata.substring(3).trim();
+				boolean correct = itemdata.startsWith("CORRECT");
+				index = itemdata.indexOf(")");
+				double score = Double.valueOf(itemdata.substring(
+						itemdata.indexOf("|") + 1, index));
+				answers.add(new Answer(itemText, optionMap.get(label),
+						answerSeq++, label, correct, grade, correct?score:0.0, null,
+						correct?0.0:-score));
+				itemdata = itemdata.substring(index + 1).trim();
+				index = itemdata.indexOf("[");
+			}
+		}
+		return itemTextSet;
+	}
+
+	private Set<ItemTextAttachmentIfc> makeEMIItemTextAttachmentSet(
+			ItemText itemText,  String attachments) {
+		attachments = attachments.trim();
+		if(attachments.length() == 0){
+			return null;
+		}
+		List<String> attachList = Arrays.asList(attachments.split("@"));
+		Set<ItemTextAttachmentIfc> attachSet = new TreeSet<ItemTextAttachmentIfc>();
+		for(String attach: attachList){
+			attach = attach.trim();
+			if(attach.length() == 0) continue;
+			int index = attach.indexOf("[");
+			String fileName = attach.substring(0, index);
+			attach = attach.substring(index);
+			index = attach.indexOf("]");
+			String mimeType = attach.substring(1, index);
+			index = attach.indexOf("(");
+			attach = attach.substring(index);
+			index = attach.indexOf(")");
+			Long size = Long.valueOf(attach.substring(1, index));
+			attach = attach.substring(index+1);
+			String location = attach;
+			String resourceId = location.replace("%2B", "+").replace("%20", " ").replace("/access/content", "");
+			attachSet.add(new ItemTextAttachment(null, itemText, resourceId, 
+					fileName, mimeType, size, null, location, 
+					false, ItemTextAttachmentIfc.ACTIVE_STATUS, null, null, null, null));
+		}
+		return attachSet;
+	}
 }

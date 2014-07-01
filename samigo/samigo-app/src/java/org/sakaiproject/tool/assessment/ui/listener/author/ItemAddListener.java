@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ItemAddListener.java $
- * $Id: ItemAddListener.java 122369 2013-04-08 16:39:49Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ItemAddListener.java $
+ * $Id: ItemAddListener.java 308490 2014-04-22 19:22:40Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,10 +19,10 @@
  *
  **********************************************************************************/
 
-
-
 package org.sakaiproject.tool.assessment.ui.listener.author;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,8 +38,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import org.apache.commons.lang.StringUtils;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.event.cover.EventTrackingService;
@@ -53,12 +53,15 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemText;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.services.FinFormatException;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.ItemFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedItemFacade;
@@ -72,17 +75,20 @@ import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentS
 import org.sakaiproject.tool.assessment.ui.bean.author.AnswerBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
+import org.sakaiproject.tool.assessment.ui.bean.author.CalculatedQuestionAnswerIfc;
+import org.sakaiproject.tool.assessment.ui.bean.author.CalculatedQuestionFormulaBean;
+import org.sakaiproject.tool.assessment.ui.bean.author.CalculatedQuestionVariableBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.ItemAuthorBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.ItemBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.MatchItemBean;
+import org.sakaiproject.tool.assessment.ui.bean.author.CalculatedQuestionBean;
 import org.sakaiproject.tool.assessment.ui.bean.questionpool.QuestionPoolBean;
 import org.sakaiproject.tool.assessment.ui.bean.questionpool.QuestionPoolDataBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.TextFormat;
-import org.sakaiproject.util.FormattedText;
-
 import org.sakaiproject.tool.assessment.data.dao.assessment.FavoriteColChoices;
 import org.sakaiproject.tool.assessment.data.dao.assessment.FavoriteColChoicesItem;
+import org.sakaiproject.util.FormattedText;
 
 /**
  * <p>Title: Samigo</p>
@@ -93,7 +99,7 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.FavoriteColChoicesIt
 public class ItemAddListener
     implements ActionListener {
 
-  private static Log log = LogFactory.getLog(ItemAddListener.class);
+  private static final Log log = LogFactory.getLog(ItemAddListener.class);
   //private static ContextUtil cu;
   //private String scalename; // used for multiple choice Survey
   private boolean error = false;
@@ -113,6 +119,7 @@ public class ItemAddListener
 
     ItemAuthorBean itemauthorbean = (ItemAuthorBean) ContextUtil.lookupBean("itemauthor");
     ItemBean item = itemauthorbean.getCurrentItem();
+    item.setEmiVisibleItems("0");
     String iText = ContextUtil.stringWYSIWYG(item.getItemText());
     String iInstruction = ContextUtil.stringWYSIWYG(item.getInstruction());
     String iType = item.getItemType();
@@ -121,15 +128,19 @@ public class ItemAddListener
    
     // SAK-6050
     // if((!iType.equals(TypeFacade.MATCHING.toString())&&((iText==null)||(iText.replaceAll("<.*?>", "").trim().equals(""))))|| (iType.equals(TypeFacade.MATCHING.toString()) && ((iInstruction==null)||(iInstruction.replaceAll("<.*?>", "").trim().equals(""))))){
-    if((!iType.equals(TypeFacade.MATCHING.toString())&&((iText==null)||(iText.toLowerCase().replaceAll("<^[^(img)]*?>", "").trim().equals(""))))|| (iType.equals(TypeFacade.MATCHING.toString()) && ((iInstruction==null)||(iInstruction.toLowerCase().replaceAll("<^[^(img)]*?>", "").trim().equals(""))))){ 
-	
- 
-	String emptyText_err = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","emptyText_error");     
-	context.addMessage(null,new FacesMessage(emptyText_err));
-	return;
-
+    if( (!iType.equals(TypeFacade.MATCHING.toString())&&((iText==null) ||(iText.toLowerCase().replaceAll("<^[^(img)]*?>", "").trim().equals(""))))|| (iType.equals(TypeFacade.MATCHING.toString()) && ((iInstruction==null)||(iInstruction.toLowerCase().replaceAll("<^[^(img)]*?>", "").trim().equals(""))))){
+    	
+    	// Like Matching CaculatedQuestion will also use Instruction instead of itemText
+    	if (!iType.equals(TypeFacade.CALCULATED_QUESTION.toString())) {
+			String emptyText_err = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","emptyText_error");     
+			context.addMessage(null,new FacesMessage(emptyText_err));
+			return;
+    	}
     }   
-   
+
+    if(iType.equals(TypeFacade.EXTENDED_MATCHING_ITEMS.toString()))
+    	checkEMI();
+    
     if(iType.equals(TypeFacade.MULTIPLE_CHOICE.toString()))
 	checkMC(true);
 
@@ -232,6 +243,44 @@ public class ItemAddListener
     	}
     } 
 
+    // CALCULATED_QUESTION
+    if (iType.equals(TypeFacade.CALCULATED_QUESTION.toString())) {
+        
+        // make sure any last minute updates to instructions are handles
+        // this also does the standard validations
+        CalculatedQuestionExtractListener extractListener = new CalculatedQuestionExtractListener();
+        List<String> errors = extractListener.validate(item);
+        if (errors.size() > 0) {
+            for (String curError : errors) {
+                context.addMessage(null, new FacesMessage(curError));
+            }
+            error = true;
+        }
+                
+        if(error) {
+            item.setOutcome("calculatedQuestion");
+            item.setPoolOutcome("calculatedQuestion");
+            return;
+        }
+        
+        // if no errors remove disabled variables and formulas before saving
+        CalculatedQuestionBean question = item.getCalculatedQuestion();
+        Iterator<CalculatedQuestionVariableBean> variableIter = question.getVariables().values().iterator();        
+        while (variableIter.hasNext()) {
+            CalculatedQuestionVariableBean variable = variableIter.next();
+            if (!variable.getActive()) {
+                variableIter.remove();
+            }
+        }
+        Iterator<CalculatedQuestionFormulaBean> formulaIter = question.getFormulas().values().iterator();
+        while (formulaIter.hasNext()) {
+            CalculatedQuestionFormulaBean formula = formulaIter.next();
+            if (!formula.getActive()) {
+                formulaIter.remove();
+            }
+        }
+    }
+
 	try {
 		saveItem(itemauthorbean);
 	}
@@ -248,7 +297,116 @@ public class ItemAddListener
     itemauthorbean.setItemTypeString("");
   }
     
+	private void checkEMI() {
+		ItemAuthorBean itemauthorbean = (ItemAuthorBean) ContextUtil
+				.lookupBean("itemauthor");
+		ItemBean item = itemauthorbean.getCurrentItem();
+		FacesContext context = FacesContext.getCurrentInstance();
 
+		boolean missingOrInvalidAnswerOptionLabels = false;
+		boolean blankSimpleOptionText = false;
+		boolean tooFewAnswerOptions = false;
+		boolean richTextOptionsError = false;
+		
+		if(item.getAnswerOptionsSimpleOrRich().equals("2")) {//Simple Paste
+			if (item.getEmiAnswerOptionsPaste() != null
+					&& !item.getEmiAnswerOptionsPaste().trim().equals("")) {
+				item.populateEmiAnswerOptionsFromPasted();
+			}
+			item.setAnswerOptionsSimpleOrRich(ItemDataIfc.ANSWER_OPTIONS_SIMPLE.toString());
+		}//no else here. we need to go into the next if!
+		if (item.getAnswerOptionsSimpleOrRich().equals(ItemDataIfc.ANSWER_OPTIONS_SIMPLE.toString())) {
+
+			List<AnswerBean> answerOptions = item.getEmiAnswerOptionsClean();
+			String txt = "";
+			Iterator<AnswerBean> iter = answerOptions.iterator();
+			while (iter.hasNext()) {
+				AnswerBean answerbean = iter.next();
+				txt = answerbean.getText().trim();
+				if ((txt == null) || (txt.equals(""))) {
+					blankSimpleOptionText = true;
+				}
+			} // end of while
+		}
+		else { // Rich Options
+			String richText = ContextUtil.stringWYSIWYG(item.getEmiAnswerOptionsRich());;
+			if (richText.toLowerCase().replaceAll("<^[^(img)]*?>", "").trim()
+					.equals("")) {
+				item.setEmiAnswerOptionsRich("");
+			}
+			if (item.getEmiAnswerOptionsRich().equals("") && !itemauthorbean.getHasAttachment()) {
+				richTextOptionsError = true;
+			}
+		}
+		
+		String availableOptionLabels = item.getEmiAnswerOptionLabelsSorted();
+		if (availableOptionLabels.length()<2) {
+			tooFewAnswerOptions = true;
+		}
+		else if (!availableOptionLabels.startsWith("A") || !ItemDataIfc.ANSWER_OPTION_LABELS.contains(availableOptionLabels)) {
+			missingOrInvalidAnswerOptionLabels = true;
+		}
+		
+		// Validate Correct Option Labels here because these require cross-field
+		// validation
+		List qaCombos = (List) item.getEmiQuestionAnswerCombinationsClean();
+		Iterator qaCombosIter = qaCombos.iterator();
+		int invalidQACombos = 0;
+		while (qaCombosIter.hasNext()) {
+			AnswerBean qaCombo = (AnswerBean) qaCombosIter.next();
+			boolean isValidQACombo = qaCombo.isValidCorrectOptionLabels(availableOptionLabels, context);
+			if (!isValidQACombo) invalidQACombos++;
+		}
+
+		if (!error) {
+			if (blankSimpleOptionText) {
+				String simpleTextOptionsBlank_err = ContextUtil
+						.getLocalizedString(
+								"org.sakaiproject.tool.assessment.bundle.AuthorMessages",
+								"simple_text_options_blank_error");
+				context.addMessage(null, new FacesMessage(simpleTextOptionsBlank_err));
+				error = true;
+			}			
+			
+			if (tooFewAnswerOptions) {
+				String answerList_err = ContextUtil
+						.getLocalizedString(
+								"org.sakaiproject.tool.assessment.bundle.AuthorMessages",
+								"answerList_error");
+				context.addMessage(null, new FacesMessage(answerList_err));
+				error = true;
+			} 
+			
+			if (missingOrInvalidAnswerOptionLabels) {
+				String answerOptionLabelError = ContextUtil
+						.getLocalizedString(
+								"org.sakaiproject.tool.assessment.bundle.AuthorMessages",
+								"missing_or_invalid_answer_options_labels_error");
+				context.addMessage(null, new FacesMessage(answerOptionLabelError + ": "
+						+ availableOptionLabels));
+				error = true;
+			}
+			
+			if (richTextOptionsError) {
+				String richOptions_err = ContextUtil
+						.getLocalizedString(
+								"org.sakaiproject.tool.assessment.bundle.AuthorMessages",
+								"rich_text_options_error");
+				context.addMessage(null, new FacesMessage(richOptions_err));
+				error = true;
+			}			
+			
+			if (invalidQACombos > 0) {
+				error = true;
+			}
+		}
+
+		if (error) {
+			item.setOutcome("emiItem");
+			item.setPoolOutcome("emiItem");
+		}
+	}
+	
   public void checkMC(boolean isSingleSelect){
 	  ItemAuthorBean itemauthorbean = (ItemAuthorBean) ContextUtil.lookupBean("itemauthor");
 	  ItemBean item =itemauthorbean.getCurrentItem();
@@ -393,7 +551,7 @@ public class ItemAddListener
 		    break;
 		}
 		else{
-		    if((notEmpty==true)&&(index+1 !=index)&&(!(text.substring(indexOfOpen+1,index).equals("</p><p>")))){
+		    if((notEmpty==true)&&(indexOfOpen+1 !=index)&&(!(text.substring(indexOfOpen+1,index).equals("</p><p>")))){
 		       hasOpen=false;
                        notEmpty=false;
 		    }
@@ -456,7 +614,7 @@ public class ItemAddListener
     		    break;
     		}
     		else{
-    		    if((notEmpty==true)&&(index+1 !=index)&&(!(text.substring(indexOfOpen+1,index).equals("</p><p>")))){
+    		    if((notEmpty==true)&&(indexOfOpen+1 !=index)&&(!(text.substring(indexOfOpen+1,index).equals("</p><p>")))){
     		       hasOpen=false;
                            notEmpty=false;
     		    }
@@ -521,11 +679,11 @@ public class ItemAddListener
       log.debug("**** isEditPendingAssessmentFlow : " + isEditPendingAssessmentFlow);
       String target = itemauthor.getTarget();
       boolean isFromQuestionPool = false;
-      if (target != null && target.equals(ItemAuthorBean.FROM_QUESTIONPOOL)) {
+      if (target != null && (target.equals(ItemAuthorBean.FROM_QUESTIONPOOL) && ! author.getIsEditPoolFlow())) {
     	  isFromQuestionPool = true;
       }
       log.debug("**** isFromQuestionPool : " + isFromQuestionPool);
-      isPendingOrPool = isEditPendingAssessmentFlow || isFromQuestionPool;
+      isPendingOrPool = isEditPendingAssessmentFlow || (isFromQuestionPool && ! author.getIsEditPoolFlow());
       ItemService delegate;
       if (isPendingOrPool) {
     	  EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", itemId=" + itemauthor.getItemId(), true));
@@ -553,14 +711,19 @@ public class ItemAddListener
      		item = new PublishedItemFacade();
      	}
       }
-      item.setScore(Float.valueOf(bean.getItemScore()));
-      item.setDiscount(Float.valueOf(bean.getItemDiscount()));
+      item.setScore(Double.valueOf(bean.getItemScore()));
+      item.setDiscount(Double.valueOf(bean.getItemDiscount()));
       item.setHint("");
 
       item.setStatus(ItemDataIfc.ACTIVE_STATUS);
 
       item.setTypeId(Long.valueOf(bean.getItemType()));
 
+  	  if (item.getTypeId().equals(TypeFacade.EXTENDED_MATCHING_ITEMS)) {
+	    item.setAnswerOptionsSimpleOrRich(Integer.valueOf(bean.getAnswerOptionsSimpleOrRich()));
+	    item.setAnswerOptionsRichCount(Integer.valueOf(bean.getAnswerOptionsRichCount()));
+  	  }
+      
       item.setCreatedBy(AgentFacade.getAgentString());
       item.setCreatedDate(new Date());
       item.setLastModifiedBy(AgentFacade.getAgentString());
@@ -608,20 +771,26 @@ public class ItemAddListener
               }
               if ((bean.getGeneralFeedback() != null)) {
                 	updateItemFeedback(item, ItemFeedbackIfc.GENERAL_FEEDBACK, stripPtags(bean.getGeneralFeedback()));
-              }
+           }
       }
       else {
-    	  //prepare itemText, including answers
-    	  if (item.getTypeId().equals(TypeFacade.MATCHING)) {
-    		  item.setItemTextSet(prepareTextForMatching(item, bean, itemauthor));
-    	  }
-    	  else if(item.getTypeId().equals(TypeFacade.MATRIX_CHOICES_SURVEY)) {
-    		  item.setItemTextSet(prepareTextForMatrixChoice(item, bean, itemauthor));
-    	  }
-    	  else {
-    		  item.setItemTextSet(prepareText(item, bean, itemauthor));
-    	  }
-    	  
+        	//prepare itemText, including answers
+    	  	if (item.getTypeId().equals(TypeFacade.EXTENDED_MATCHING_ITEMS)) {
+                item.setItemTextSet(prepareTextForEMI(item, bean, itemauthor));
+    	  	}
+    	  	else if (item.getTypeId().equals(TypeFacade.MATCHING)) {
+                item.setItemTextSet(prepareTextForMatching(item, bean, itemauthor));
+            }
+			else if(item.getTypeId().equals(TypeFacade.CALCULATED_QUESTION)) {
+              item.setItemTextSet(prepareTextForCalculatedQuestion(item, bean, itemauthor));
+    	    }
+    	  	else if(item.getTypeId().equals(TypeFacade.MATRIX_CHOICES_SURVEY)) {
+    	  		item.setItemTextSet(prepareTextForMatrixChoice(item, bean, itemauthor));
+    	  	}
+            else { //Other Types
+                item.setItemTextSet(prepareText(item, bean, itemauthor));
+            }
+    	  	
             // prepare MetaData
             item.setItemMetaDataSet(prepareMetaData(item, bean));
 
@@ -648,6 +817,17 @@ public class ItemAddListener
        // added by daisyf, 10/10/06
        updateAttachment(item.getItemAttachmentList(), itemauthor.getAttachmentList(),
                         (ItemDataIfc)item.getData(), true);
+
+	  	if (item.getTypeId().equals(TypeFacade.EXTENDED_MATCHING_ITEMS)) {
+	  		Iterator emiItemIter = itemauthor.getCurrentItem().getEmiQuestionAnswerCombinationsClean().iterator();
+	  		while (emiItemIter.hasNext()) {
+	  		   AnswerBean answerBean = (AnswerBean)emiItemIter.next();
+	  		   ItemTextIfc itemText = item.getItemTextBySequence(answerBean.getSequence());
+	  	       updateItemTextAttachment(answerBean.getAttachmentList(),
+	  	    		 itemText, true);
+	  		}
+	  	}
+
        item = delegate.getItem(item.getItemId().toString());
 
 
@@ -766,11 +946,27 @@ public class ItemAddListener
     		  itemauthor.setInsertToSection(null);
     	  }
           
+          if (author != null && author.getIsEditPoolFlow()) {
+              section.getData().setLastModifiedDate(item.getLastModifiedDate());
+              DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
+              section.addSectionMetaData(SectionDataIfc.QUESTIONS_RANDOM_DRAW_DATE, df.format(item.getLastModifiedDate()));
+              assessdelegate.saveOrUpdateSection(section);
+          }
+          
           delegate.saveItem(item);
 
           // added by daisyf, 10/10/06
           updateAttachment(item.getItemAttachmentList(), itemauthor.getAttachmentList(),
                            (ItemDataIfc)item.getData(), isEditPendingAssessmentFlow);
+          
+  	  	if (item.getTypeId().equals(TypeFacade.EXTENDED_MATCHING_ITEMS)) {
+            for(AnswerBean answerBean: itemauthor.getCurrentItem().getEmiQuestionAnswerCombinationsClean()){
+  	  		   ItemTextIfc itemText = item.getItemTextBySequence(answerBean.getSequence());
+  	  	       updateItemTextAttachment(answerBean.getAttachmentList(),
+  	  	    		 itemText, isEditPendingAssessmentFlow);
+  	  		}
+  	  	}
+
           item = delegate.getItem(item.getItemId().toString());
 
         }
@@ -794,7 +990,7 @@ public class ItemAddListener
         	}
         	temp = stringList.toArray(new String[stringList.size()]);
         	for(int i=0; i<temp.length; i++){
-        		FavoriteColChoicesItem favoriteChoiceItem = new FavoriteColChoicesItem(StringUtils.chomp(temp[i]),new Integer(i));
+        		FavoriteColChoicesItem favoriteChoiceItem = new FavoriteColChoicesItem(StringUtils.chomp(temp[i]),Integer.valueOf(i));
         		favoriteChoiceItem.setFavoriteChoice(favorite);
         		favorite.getFavoriteItems().add(favoriteChoiceItem);
         	}
@@ -836,82 +1032,211 @@ public class ItemAddListener
       // sorry, i need this for item attachment, used by SaveItemAttachmentListener. 
       itemauthor.setItemId(item.getItemId().toString());
   }
+  
+/**
+ * for the current choice, loop through all answers and add unique matches to the list of valid matches for the choice. 
+ * @param choicebean current choice
+ * @param matchItemBeanList
+ * @param item
+ * @param bean
+ * @return
+ */
+  private ItemText selectAnswers(MatchItemBean choicebean, ArrayList<MatchItemBean> matchItemBeanList, ItemFacade item, ItemBean bean) {
+	  
+	  // Create a list of valid answers to loop through.  Ignore answers that are distractors
+	  // or are controlled by another MatchItemBean
+	  List<MatchItemBean> validAnswers = new ArrayList<MatchItemBean>();
+	  Iterator<MatchItemBean>validAnswerIter = matchItemBeanList.iterator();
+	  while (validAnswerIter.hasNext()) {
+		  MatchItemBean validAnswer = validAnswerIter.next();
+		  if (MatchItemBean.CONTROLLING_SEQUENCE_DEFAULT.equals(validAnswer.getControllingSequence())) {
+			  validAnswers.add(validAnswer);
+		  }
+	  }
+	  
+	  ItemText choicetext = new ItemText();
+	  choicetext.setItem(item.getData()); // all set to the same
+	  choicetext.setSequence(choicebean.getSequence());
+	  choicetext.setText(stripPtags(choicebean.getChoice()));
 
+	  // loop through matches for in validAnswers list and add all to this choice
+	  Iterator<MatchItemBean>answeriter = validAnswers.iterator();	  
+	  Set<AnswerIfc> answerSet = new HashSet<AnswerIfc>();
+	  while (answeriter.hasNext()) {
+		  Answer answer = null;
+		  MatchItemBean answerbean = (MatchItemBean) answeriter.next();
+		  if (answerbean.getSequence().equals(choicebean.getSequence()) ||
+				  answerbean.getSequenceStr().equals(choicebean.getControllingSequence())) {
+			  // correct answers
+			  answer = new Answer(choicetext, stripPtags(answerbean
+					  .getMatch()), answerbean.getSequence(), AnswerBean
+					  .getChoiceLabels()[answerbean.getSequence()
+					                     .intValue() - 1], Boolean.TRUE, null, Double.valueOf(
+					                    		 bean.getItemScore()), Double.valueOf(0d), Double.valueOf(bean.getItemDiscount()));
+
+		  } else {
+			  // incorrect answers
+			  answer = new Answer(choicetext, stripPtags(answerbean
+					  .getMatch()), answerbean.getSequence(), AnswerBean
+					  .getChoiceLabels()[answerbean.getSequence()
+					                     .intValue() - 1], Boolean.FALSE, null,  Double.valueOf(
+					                    		 bean.getItemScore()), Double.valueOf(0d), Double.valueOf(bean.getItemDiscount()));
+		  }
+
+		  // record answers for all combination of pairs
+		  HashSet<AnswerFeedback> answerFeedbackSet = new HashSet<AnswerFeedback>();
+		  answerFeedbackSet.add(new AnswerFeedback(answer,
+				  AnswerFeedbackIfc.CORRECT_FEEDBACK,
+				  stripPtags(answerbean.getCorrMatchFeedback())));
+		  answerFeedbackSet.add(new AnswerFeedback(answer,
+				  AnswerFeedbackIfc.INCORRECT_FEEDBACK,
+				  stripPtags(answerbean.getIncorrMatchFeedback())));
+		  answer.setAnswerFeedbackSet(answerFeedbackSet);
+		  answerSet.add(answer);
+	  }
+	  choicetext.setAnswerSet(answerSet);
+	  return choicetext;
+  }
+  
   private HashSet prepareTextForMatching(ItemFacade item, ItemBean bean,
 		  ItemAuthorBean itemauthor) {
 	  // looping through matchItemBean
-	  ArrayList matchItemBeanList = bean.getMatchItemBeanList();
-	  HashSet textSet = new HashSet();
-	  Iterator choiceiter = matchItemBeanList.iterator();
+	  ArrayList<MatchItemBean>matchItemBeanList = bean.getMatchItemBeanList();
+	  HashSet<ItemText> textSet = new HashSet<ItemText>();
+	  
+	  Iterator<MatchItemBean> choiceiter = matchItemBeanList.iterator();
 	  while (choiceiter.hasNext()) {
-
-		  MatchItemBean choicebean = (MatchItemBean) choiceiter.next();
-
-		  ItemText choicetext = new ItemText();
-		  choicetext.setItem(item.getData()); // all set to the same
-		  // ItemFacade
-		  choicetext.setSequence(choicebean.getSequence());
-
-		  choicetext.setText(stripPtags(choicebean.getChoice()));
-
-		  // need to loop through matches for in matchItemBean list
-		  // and add all possible matches to this choice
-
-		  // log.info(
-		  Iterator answeriter = matchItemBeanList.iterator();
-		  HashSet answerSet = new HashSet();
-		  Answer answer = null;
-		  while (answeriter.hasNext()) {
-
-			  MatchItemBean answerbean = (MatchItemBean) answeriter.next();
-
-			  if (answerbean.getSequence().equals(choicebean.getSequence())) {
-				  answer = new Answer(choicetext, stripPtags(answerbean
-						  .getMatch()), answerbean.getSequence(), AnswerBean
-						  .getChoiceLabels()[answerbean.getSequence()
-						                     .intValue() - 1], Boolean.TRUE, null, Float.valueOf(
-						                    		 bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
-
-				  // only add feedback for correct pairs
-				  HashSet answerFeedbackSet = new HashSet();
-				  answerFeedbackSet.add(new AnswerFeedback(answer,
-						  AnswerFeedbackIfc.CORRECT_FEEDBACK,
-						  stripPtags(answerbean.getCorrMatchFeedback())));
-				  answerFeedbackSet.add(new AnswerFeedback(answer,
-						  AnswerFeedbackIfc.INCORRECT_FEEDBACK,
-						  stripPtags(answerbean.getIncorrMatchFeedback())));
-				  answer.setAnswerFeedbackSet(answerFeedbackSet);
-
-			  } else {
-				  answer = new Answer(choicetext, stripPtags(answerbean
-						  .getMatch()), answerbean.getSequence(), AnswerBean
-						  .getChoiceLabels()[answerbean.getSequence()
-						                     .intValue() - 1], Boolean.FALSE, null,  Float.valueOf(
-						                    		 bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
-			  }
-
-			  // record answers for all combination of pairs
-
-			  HashSet answerFeedbackSet = new HashSet();
-			  answerFeedbackSet.add(new AnswerFeedback(answer,
-					  AnswerFeedbackIfc.CORRECT_FEEDBACK,
-					  stripPtags(answerbean.getCorrMatchFeedback())));
-			  answerFeedbackSet.add(new AnswerFeedback(answer,
-					  AnswerFeedbackIfc.INCORRECT_FEEDBACK,
-					  stripPtags(answerbean.getIncorrMatchFeedback())));
-			  answer.setAnswerFeedbackSet(answerFeedbackSet);
-			  answerSet.add(answer);
-
-		  }
-		  choicetext.setAnswerSet(answerSet);
-		  textSet.add(choicetext);
-
+		  MatchItemBean choicebean = choiceiter.next();
+		  ItemText choicetext = selectAnswers(choicebean, matchItemBeanList, item, bean);
+		  textSet.add(choicetext);  
 	  }
 	  return textSet;
   }
+  
+  /**
+   * Updated and refactored - Aug 2010
+   * Prepare Text for Extended Matching Item Questions
+   * @param item
+   * @param bean
+   * @param itemauthor
+   * @return
+   */
+  private HashSet prepareTextForEMI(ItemFacade item, ItemBean bean,
+			ItemAuthorBean itemauthor) {
+	  
+		HashSet textSet = new HashSet();
+		HashSet answerSet1 = new HashSet();
+	  
+	  	// ///////////////////////////////////////////////////////////
+		//
+		// 1. save Theme and Lead-In Text and Answer Options
+		//  
+		// ///////////////////////////////////////////////////////////
+		ItemTextIfc textTheme = new ItemText();
+		textTheme.setItem(item.getData());
+		textTheme.setSequence(ItemTextIfc.EMI_THEME_TEXT_SEQUENCE);
+		textTheme.setText(bean.getItemText());
+		
+		ItemTextIfc textAnswerOptions = new ItemText();
+		textAnswerOptions.setItem(item.getData());
+		textAnswerOptions.setSequence(ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE);
+		textAnswerOptions.setText(bean.getEmiAnswerOptionsRich());
+
+		ItemTextIfc textLeadIn = new ItemText();
+		textLeadIn.setItem(item.getData());
+		textLeadIn.setSequence(ItemTextIfc.EMI_LEAD_IN_TEXT_SEQUENCE);
+		textLeadIn.setText(bean.getLeadInStatement());
+		
+		// ///////////////////////////////////////////////////////////
+		//
+		// 2. save Answer Options - emiAnswerOptions
+		// with ItemText  (seq=ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE).
+		// These will be used to construct the actual answers.
+		// ///////////////////////////////////////////////////////////
+		Iterator iter = bean.getEmiAnswerOptionsClean().iterator();
+		AnswerIfc answer = null;
+		while (iter.hasNext()) {
+			AnswerBean answerbean = (AnswerBean) iter.next();
+			answer = new Answer(textAnswerOptions, stripPtags(answerbean.getText()),
+					answerbean.getSequence(), answerbean.getLabel(),
+					Boolean.FALSE, null,
+					null, null, null, null);
+			answerSet1.add(answer);
+		}
+		
+		textAnswerOptions.setAnswerSet(answerSet1);
+		textSet.add(textTheme);
+		textSet.add(textAnswerOptions);
+		textSet.add(textLeadIn);
+
+		// ///////////////////////////////////////////////////////////
+		//
+		// 3. Prepare and save actual answers from answer components 
+		// (emiAnswerOptions and emiQuestionAnswerCombinations)
+		// ///////////////////////////////////////////////////////////
+                @SuppressWarnings("unchecked")
+		List<AnswerBean> emiQuestionAnswerCombinations = bean.getEmiQuestionAnswerCombinationsClean();
+                int answerCombinations = emiQuestionAnswerCombinations.size();
+                iter = emiQuestionAnswerCombinations.iterator();
+		AnswerBean qaCombo = null;
+		Double itemScore = 0.0;
+		while (iter.hasNext()) {
+			qaCombo = (AnswerBean) iter.next();
+			
+			ItemTextIfc itemText = new ItemText();
+			itemText.setItem(item.getData());
+			itemText.setSequence(qaCombo.getSequence());
+			itemText.setText(qaCombo.getText());
+			int requiredOptions = (Integer.valueOf(qaCombo.getRequiredOptionsCount())).intValue();
+			if (requiredOptions == 0) {
+				requiredOptions = qaCombo.correctOptionsCount();
+			}
+			itemText.setRequiredOptionsCount(requiredOptions);
+			itemScore += qaCombo.getScore();
+
+			//for emi the score per correct answer is itemTotal/requiredOptions
+			//the discount is 1/2 the negative of that for answers more then required
+			HashSet answerSet = new HashSet();
+			
+			if (Integer.valueOf(bean.getAnswerOptionsSimpleOrRich()).equals(ItemDataIfc.ANSWER_OPTIONS_SIMPLE) ) {
+				Iterator selectionOptions = textAnswerOptions.getAnswerArraySorted().iterator();
+				while (selectionOptions.hasNext()) {
+					AnswerIfc selectOption = (AnswerIfc) selectionOptions.next();
+					answerSet.add(getAnswer(qaCombo, itemText, selectOption.getText(),
+							selectOption.getSequence(), selectOption.getLabel(), requiredOptions));
+				}
+			}
+			else { // ANSWER_OPTION_RICH
+				int answerOptionsCount = Integer.valueOf(bean.getAnswerOptionsRichCount());
+				for (int i=0; i<answerOptionsCount; i++) {
+					String label = ItemDataIfc.ANSWER_OPTION_LABELS.substring(i, i+1);
+					answerSet.add(getAnswer(qaCombo, itemText, label,
+							Long.valueOf(i), label, requiredOptions));
+				}
+			}
+			itemText.setAnswerSet(answerSet);
+			textSet.add(itemText);
+			
+		}
+		item.setScore(itemScore);
+		return textSet;
+	}
+  
+	private AnswerIfc getAnswer(AnswerBean qaCombo, ItemTextIfc itemText, String text, Long sequence, String label, int requiredOptions) {
+		String correctLabels = qaCombo.getCorrectOptionLabels();
+		int correctRequiredCount = correctLabels.length()<requiredOptions?correctLabels.length():requiredOptions;
+		boolean isCorrect = qaCombo.getCorrectOptionLabels().contains(label);
+
+		// item option score
+		Double score = qaCombo.getScore() / correctRequiredCount;
+		
+		return new Answer(itemText, text,
+				sequence, label, isCorrect,
+				qaCombo.getScoreUserSet() ? "user" : "auto", 
+				isCorrect ? score : 0.0, null, isCorrect ? 0.0 : -score / 2, null);
+	}
 
   private String[] returnMatrixChoices(ItemBean bean,String str){
-
 	  String[] result=null,temp=null;
 	  if ("row".equals(str))
 		  temp = bean.getRowChoices().split(System.getProperty("line.separator"));
@@ -955,7 +1280,7 @@ public class ItemAddListener
 		  HashSet answerSet = new HashSet();
 		  Answer answer = null;
 		  for(int j=0; j< columnChoices.length;j++){
-			  answer = new Answer(itemText,columnChoices[j],Long.valueOf(j+1),null, null, null, Float.valueOf(bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+			  answer = new Answer(itemText,columnChoices[j],Long.valueOf(j+1),null, null, null, Double.valueOf(bean.getItemScore()), Double.valueOf(0d), Double.valueOf(bean.getItemDiscount()));
 			  answerSet.add(answer);
 		  }
 		  itemText.setAnswerSet(answerSet);
@@ -999,12 +1324,12 @@ public class ItemAddListener
 					// choice type
 
 					newanswer = new Answer(text1, theanswer, Long.valueOf(i + 1),
-							"", Boolean.TRUE, null, Float.valueOf(bean
-									.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+							"", Boolean.TRUE, null, Double.valueOf(bean
+									.getItemScore()), Double.valueOf(0d), Double.valueOf(bean.getItemDiscount()));
 				} else {
 					newanswer = new Answer(text1, theanswer, Long.valueOf(i + 1),
-							"", Boolean.FALSE, null, Float.valueOf(bean
-									.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+							"", Boolean.FALSE, null, Double.valueOf(bean
+									.getItemScore()), Double.valueOf(0d), Double.valueOf(bean.getItemDiscount()));
 				}
 				answerSet1.add(newanswer);
 			}
@@ -1024,7 +1349,7 @@ public class ItemAddListener
 			// label is null because we don't use labels in essay questions
 			// theanswer is the model answer used as a sample for student
 			Answer modelanswer = new Answer(text1, theanswer, Long.valueOf(1),
-					null, Boolean.TRUE, null, Float.valueOf(bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+					null, Boolean.TRUE, null, Double.valueOf(bean.getItemScore()), Double.valueOf(0d), Double.valueOf(bean.getItemDiscount()));
 
 			HashSet answerFeedbackSet1 = new HashSet();
 
@@ -1044,7 +1369,7 @@ public class ItemAddListener
 
 			for (int i = 0; i < choices.length; i++) {
 				Answer answer1 = new Answer(text1, choices[i], Long.valueOf(i + 1),
-						null, null, null, Float.valueOf(bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+						null, null, null, Double.valueOf(bean.getItemScore()), Double.valueOf(0d), Double.valueOf(bean.getItemDiscount()));
 				answerSet1.add(answer1);
 			}
 			text1.setAnswerSet(answerSet1);
@@ -1063,7 +1388,7 @@ public class ItemAddListener
 				String oneanswer = (String) fibanswers[i];
 				Answer answer1 = new Answer(text1, oneanswer, Long.valueOf(i + 1),
 						null, Boolean.TRUE, null,
-						Float.valueOf(bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+						Double.valueOf(bean.getItemScore()), Double.valueOf(0d), Double.valueOf(bean.getItemDiscount()));
 				answerSet1.add(answer1);
 			}
 
@@ -1082,7 +1407,7 @@ public class ItemAddListener
 				String oneanswer = (String) finanswers[i];
 				Answer answer1 = new Answer(text1, oneanswer, Long.valueOf(i + 1),
 						null, Boolean.TRUE, null,
-						Float.valueOf(bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+						Double.valueOf(bean.getItemScore()), Double.valueOf(0d), Double.valueOf(bean.getItemDiscount()));
 				answerSet1.add(answer1);
 			}
 
@@ -1106,28 +1431,28 @@ public class ItemAddListener
 					answer = new Answer(text1,
 							stripPtags(answerbean.getText()), answerbean
 									.getSequence(), answerbean.getLabel(),
-							Boolean.TRUE, null, Float.valueOf(bean.getItemScore()), Float.valueOf(100f), Float.valueOf(bean.getItemDiscount()));
+							Boolean.TRUE, null, Double.valueOf(bean.getItemScore()), Double.valueOf(100d), Double.valueOf(bean.getItemDiscount()));
 				} else {
 					if (item.getTypeId().equals(TypeFacade.MULTIPLE_CHOICE) && item.getPartialCreditFlag()){
-						Float pc =  Float.valueOf(answerbean.getPartialCredit()); //--mustansar
+						Double pc =  Double.valueOf(answerbean.getPartialCredit()); //--mustansar
 						if (pc == null) {
-							pc = Float.valueOf(0f);
+							pc = Double.valueOf(0d);
 						}
 						answer = new Answer(text1, 
 								stripPtags(answerbean.getText()), 
 								answerbean.getSequence(),
 								answerbean.getLabel(),
-								Boolean.FALSE, null, Float.valueOf(bean.getItemScore()) , 
+								Boolean.FALSE, null, Double.valueOf(bean.getItemScore()) , 
 								pc,
-								Float.valueOf(bean.getItemDiscount()));}
+								Double.valueOf(bean.getItemDiscount()));}
 					else {
 						answer = new Answer(text1, 
 								stripPtags(answerbean.getText()), 
 								answerbean.getSequence(),
 								answerbean.getLabel(),
-								Boolean.FALSE, null, Float.valueOf(bean.getItemScore()) ,
-								Float.valueOf(0f), //No partial Credit since it is not enabled the column is not null 
-								Float.valueOf(bean.getItemDiscount()));
+								Boolean.FALSE, null, Double.valueOf(bean.getItemScore()) ,
+								Double.valueOf(0d), //No partial Credit since it is not enabled the column is not null 
+								Double.valueOf(bean.getItemDiscount()));
 					}
 				}
 				HashSet answerFeedbackSet1 = new HashSet();
@@ -1156,7 +1481,74 @@ public class ItemAddListener
 
 		return textSet;
 	} 
-
+	
+	  /**
+	   * prepareTextForCalculatedqQestion takes the formulas and variables that are 
+	   * stored in CalculatedQuestionFormulaBeans and CalculatedQuestionVariableBeans
+	   * and translates them into ItemTextIfc and AnswerIfc objects.  The only difference
+	   * between the formula and the variable is what information is actually kept in
+	   * the answer.text field.  ItemText has the name of the formula or variable in ItemTextIfc.text
+	   * AnswerIfc.text stores either a formula as (formula string)|(tolerance),(decimal places) or a
+	   * variable as (min)|(max),(decimal places).
+	   * <p>Unlike matching answers, answerfeedback is not kept here; only the feedback associated with the entire
+	   * question is persisted.
+	   * @param item
+	   * @param bean
+	   * @param itemauthor
+	   * @return
+	   */
+	  private Set<ItemText> prepareTextForCalculatedQuestion(ItemFacade item, ItemBean bean,
+	          ItemAuthorBean itemauthor) {
+	      CalculatedQuestionBean calcBean = bean.getCalculatedQuestion();      
+	      Set<ItemText> textSet = new HashSet<ItemText>();
+	      double score = Double.valueOf(bean.getItemScore());
+	      double partialCredit = 0d;
+	      double discount = Double.valueOf(bean.getItemDiscount());
+	      String grade = null;            
+	      
+	      // Variables and formulas are very similar, and both have entries in the 
+	      // sam_itemtext_t table.  Because of the way the data is structured, every 
+	      // answer stored in sam_answer_t is a possible match to every ItemText 
+	      // stored in sam_itemtext_t.   If there is one variable and one formula, 
+	      // there are 2 entries in sam_itemtext_t and 4 entries in sam_answer_t.  
+	      // 2 variables and 2 formulas has 4 entries in sam_itemtext_t and 16 entries 
+	      // in sam_answer_t.  This is required for the current design (which makes 
+	      // more sense for other question types; we're just trying to work within 
+	      // that structure.  We loop through each formula and variable to create 
+	      // an entry in sam_itemtext_t (ItemText choiceText).  Then for each 
+	      // choicetext, we loop through all variables and formulas to create the 
+	      // answer objects.
+	      List<CalculatedQuestionAnswerIfc> list = new ArrayList<CalculatedQuestionAnswerIfc>();
+	      list.addAll(calcBean.getFormulas().values());
+	      list.addAll(calcBean.getVariables().values());
+	      
+	      // loop through all variables and formulas to create ItemText objects
+	      for (CalculatedQuestionAnswerIfc varFormula : list) {
+	          ItemText choiceText = new ItemText();
+	          choiceText.setItem(item.getData());
+	          choiceText.setText(varFormula.getName());
+	          Long sequence = varFormula.getSequence();
+	          choiceText.setSequence(sequence);
+	          
+	          Set<AnswerIfc> answerSet = new HashSet<AnswerIfc>();
+	          
+	          // loop through all variables and formulas to create all answers for the ItemText object
+	          for (CalculatedQuestionAnswerIfc curVarFormula : list) {
+	              String match = curVarFormula.getMatch();
+	              Long curSequence = curVarFormula.getSequence();
+	              boolean isCorrect = curSequence.equals(sequence);
+	              String choiceLabel = curVarFormula.getName();
+	              Answer answer = new Answer(choiceText, match, curSequence, choiceLabel,
+	                      isCorrect, grade, score, partialCredit, discount);
+	              answerSet.add(answer);
+	          }
+	          choiceText.setAnswerSet(answerSet);
+	          textSet.add(choiceText);          
+	      }
+	            
+	      return textSet;
+	  }
+	  
   private Set preparePublishedText(ItemFacade item, ItemBean bean, ItemService delegate) throws FinFormatException{
 
 	  if (item.getTypeId().equals(TypeFacade.TRUE_FALSE)) {
@@ -1181,6 +1573,14 @@ public class ItemAddListener
 	  }
 	  else if (item.getTypeId().equals(TypeFacade.MATCHING)) {
 		  preparePublishedTextForMatching(item, bean, delegate);
+	  }
+	  else if (item.getTypeId().equals(TypeFacade.EXTENDED_MATCHING_ITEMS)) {
+		  item.setAnswerOptionsSimpleOrRich(Integer.valueOf(bean.getAnswerOptionsSimpleOrRich()));
+		  item.setAnswerOptionsRichCount(Integer.valueOf(bean.getAnswerOptionsRichCount()));
+		  preparePublishedTextForEMI(item, bean, delegate);		  
+	  }
+	  else if (item.getTypeId().equals(TypeFacade.CALCULATED_QUESTION)) {
+	      preparePublishedTextForCalculatedQueston(item, bean, delegate);
 	  }
 	  else if(item.getTypeId().equals(TypeFacade.MATRIX_CHOICES_SURVEY)) {
 		  preparePublishedTextForMatrixSurvey(item,bean,delegate);
@@ -1207,8 +1607,8 @@ public class ItemAddListener
 		  Iterator answerIter = answerSet.iterator();
 		  while (answerIter.hasNext()) {
 			  answer = (AnswerIfc) answerIter.next();
-			  answer.setScore(Float.valueOf(bean.getItemScore()));
-			  answer.setDiscount(Float.valueOf(bean.getItemDiscount()));
+			  answer.setScore(Double.valueOf(bean.getItemScore()));
+			  answer.setDiscount(Double.valueOf(bean.getItemDiscount()));
 			  if (answer.getText().equals(bean.getCorrAnswer())) {
 				  answer.setIsCorrect(Boolean.TRUE);
 			  }
@@ -1233,7 +1633,7 @@ public class ItemAddListener
 		  // Storing the model answer essay as an Answer, and feedback in the Answerfeedback	
 		  while (answerIter.hasNext()) {
 			  answer = (AnswerIfc) answerIter.next();
-			  answer.setScore(Float.valueOf(bean.getItemScore()));
+			  answer.setScore(Double.valueOf(bean.getItemScore()));
 			  String theanswer = bean.getCorrAnswer();
 		      if (theanswer == null) {
 		        theanswer = ""; // can be empty
@@ -1265,7 +1665,7 @@ public class ItemAddListener
 		  
 		  for (int i = 0; i < choices.length; i++) {
 			  AnswerIfc answer = new PublishedAnswer(text, choices[i], Long.valueOf(i + 1),
-					null, null, null, Float.valueOf(bean.getItemScore()), null, Float.valueOf(bean.getItemDiscount()));
+					null, null, null, Double.valueOf(bean.getItemScore()), null, Double.valueOf(bean.getItemDiscount()));
 			  answerSet.add(answer);
 		  }
 		  text.setAnswerSet(answerSet);
@@ -1299,7 +1699,7 @@ public class ItemAddListener
 			Iterator answerIter = answerSet.iterator();
 			while (answerIter.hasNext()) {
 				AnswerIfc answer = (AnswerIfc) answerIter.next();
-				answer.setScore(Float.valueOf(bean.getItemScore()));
+				answer.setScore(Double.valueOf(bean.getItemScore()));
 				i = answer.getSequence().intValue();
 				if (i <= newAnswersSize) {
 					String oneanswer = (String) answers[i - 1];
@@ -1313,7 +1713,7 @@ public class ItemAddListener
 					String oneanswer = (String) answers[j];
 					AnswerIfc answer = new PublishedAnswer(text, oneanswer,
 							Long.valueOf(j + 1), null, Boolean.TRUE, null,
-							Float.valueOf(bean.getItemScore()), null, Float.valueOf(bean.getItemDiscount()));
+							Double.valueOf(bean.getItemScore()), null, Double.valueOf(bean.getItemDiscount()));
 					answerSet.add(answer);
 				}
 			}
@@ -1347,13 +1747,13 @@ public class ItemAddListener
 			Iterator answerIter = answerSet.iterator();
 			while (answerIter.hasNext()) {
 				AnswerIfc answer = (AnswerIfc) answerIter.next();
-				answer.setDiscount(Float.valueOf(bean.getItemDiscount()));
+				answer.setDiscount(Double.valueOf(bean.getItemDiscount()));
 				i = answer.getSequence().intValue();
 				if (i <= newAnswersSize) {				
-					answer.setScore(Float.valueOf(bean.getItemScore()));
+					answer.setScore(Double.valueOf(bean.getItemScore()));
 					answerBean = (AnswerBean) newAnswerMap.get(Long.valueOf(String.valueOf(i)));
 					String oneAnswer = stripPtags(answerBean.getText());
-					answer.setPartialCredit(Float.valueOf(answerBean.getPartialCredit()));
+					answer.setPartialCredit(Double.valueOf(answerBean.getPartialCredit()));
 					String oneLabel = answerBean.getLabel();
 					log.debug("oneAnswer = " + oneAnswer);
 					log.debug("oneLabel = " + oneLabel);
@@ -1384,12 +1784,12 @@ public class ItemAddListener
 					if (isCorrectChoice(bean, answerBean.getLabel().trim())) {
 						answer = new PublishedAnswer(text, oneAnswer,
 							Long.valueOf(j), oneLabel, Boolean.TRUE, null,
-							Float.valueOf(bean.getItemScore()), Float.valueOf(100f), Float.valueOf(bean.getItemDiscount()));
+							Double.valueOf(bean.getItemScore()), Double.valueOf(100d), Double.valueOf(bean.getItemDiscount()));
 					}
 					else {
 						answer = new PublishedAnswer(text, oneAnswer,
 								Long.valueOf(j), oneLabel, Boolean.FALSE, null,
-								Float.valueOf(bean.getItemScore()), Float.valueOf(answerBean.getPartialCredit()), Float.valueOf(bean.getItemDiscount()));
+								Double.valueOf(bean.getItemScore()), Double.valueOf(answerBean.getPartialCredit()), Double.valueOf(bean.getItemDiscount()));
 					}
 					HashSet answerFeedbackSet = new HashSet();
 				    answerFeedbackSet.add(new PublishedAnswerFeedback(answer,
@@ -1404,6 +1804,102 @@ public class ItemAddListener
 		}
   }
   
+  private void preparePublishedTextForCalculatedQueston(ItemFacade item, ItemBean bean, ItemService delegate) {
+      Set<ItemTextIfc> itemTextSet = item.getItemTextSet();            
+      CalculatedQuestionBean calcBean = bean.getCalculatedQuestion();      
+      double score = Double.valueOf(bean.getItemScore());
+      double partialCredit = 0d;
+      double discount = Double.valueOf(bean.getItemDiscount());
+      String grade = null;            
+      
+      // Variables and formulas are very similar, and both have entries in the 
+      // sam_itemtext_t table.  Because of the way the data is structured, every 
+      // answer stored in sam_answer_t is a possible match to every ItemText 
+      // stored in sam_itemtext_t.   If there is one variable and one formula, 
+      // there are 2 entries in sam_itemtext_t and 4 entries in sam_answer_t.  
+      // 2 variables and 2 formulas has 4 entries in sam_itemtext_t and 16 entries 
+      // in sam_answer_t.  This is required for the current design (which makes 
+      // more sense for other question types; we're just trying to work within 
+      // that structure.  We loop through each formula and variable to create 
+      // an entry in sam_itemtext_t (ItemText choiceText).  Then for each 
+      // choicetext, we loop through all variables and formulas to create the 
+      // answer objects.
+      List<CalculatedQuestionAnswerIfc> list = new ArrayList<CalculatedQuestionAnswerIfc>();
+      list.addAll(calcBean.getFormulas().values());
+      list.addAll(calcBean.getVariables().values());
+      
+      // loop through all variables and formulas to create ItemText objects
+      for (CalculatedQuestionAnswerIfc varFormula : list) {
+          ItemTextIfc choiceText = null;
+          for (ItemTextIfc itemText : itemTextSet) {
+              if (itemText.getSequence().equals(varFormula.getSequence())) {
+                  choiceText = itemText;
+              }
+          }
+          if (choiceText == null) {
+              choiceText = new PublishedItemText();
+              choiceText.setItem(item.getData());
+              choiceText.setSequence(varFormula.getSequence());
+              itemTextSet.add(choiceText);
+          }
+          choiceText.setText(varFormula.getName());
+          Long sequence = choiceText.getSequence();
+          
+          Set<AnswerIfc> answerSet = choiceText.getAnswerSet();
+          if (answerSet == null) {
+              answerSet = new HashSet<AnswerIfc>();
+              choiceText.setAnswerSet(answerSet);
+          }
+          
+          // loop through all variables and formulas to create all answers for the ItemText object
+          for (CalculatedQuestionAnswerIfc curVarFormula : list) {
+              String match = curVarFormula.getMatch();
+              Long curSequence = curVarFormula.getSequence();
+              boolean isCorrect = curSequence.equals(sequence);
+              String choiceLabel = AnswerBean.getChoiceLabels()[curSequence.intValue()];
+              boolean foundAnswer = false;
+              for (AnswerIfc curAnswer : answerSet) {
+                  if (curAnswer.getSequence().equals(sequence)) {
+                      curAnswer.setText(varFormula.getMatch());
+                      foundAnswer = true;
+                      break;
+                  }
+              }
+              if (!foundAnswer) {
+                  AnswerIfc answer = new PublishedAnswer(choiceText, match, curSequence, choiceLabel,
+                          isCorrect, grade, score, partialCredit, discount);
+                  answerSet.add(answer);
+              }
+          }
+      }
+      
+      // If we're saving fewer variables/formulas than are currently in  the 
+      // itemtext/answer list, we need to delete the extra ones.
+      // ASSUMPTION - that sequences in sam_itemtext_t and sam_answer_t have no gaps.  If
+      // there are 3 entries in sam_itemtext_t, they are numbered 1, 2, and 3 
+      // (not 1, 2, 4 for example).  This assumption should be verified
+      if (list.size() < itemTextSet.size()) {
+          Set<ItemTextIfc> toBeRemovedTextSet = new HashSet<ItemTextIfc>();
+          Set<AnswerIfc> toBeRemovedAnswerSet = new HashSet<AnswerIfc>();
+          for (ItemTextIfc curItemText : itemTextSet) {
+              Set<AnswerIfc> answerSet = curItemText.getAnswerSet();
+              for (AnswerIfc curAnswer : answerSet) {
+                  if (curAnswer.getSequence() > list.size()) {
+                      toBeRemovedAnswerSet.add(curAnswer);
+                  }
+              }
+              answerSet.removeAll(toBeRemovedAnswerSet);
+              delegate.deleteSet(toBeRemovedAnswerSet);
+              if (curItemText.getSequence() > list.size()) {
+                  toBeRemovedTextSet.add(curItemText);
+              }
+          }
+          itemTextSet.removeAll(toBeRemovedTextSet);
+          delegate.deleteSet(toBeRemovedTextSet);          
+      }
+  }
+
+  
   private void preparePublishedTextForMatching(ItemFacade item,
 			ItemBean bean, ItemService delegate) {
 		Set textSet = item.getItemTextSet();
@@ -1417,7 +1913,7 @@ public class ItemAddListener
 		// looping through matchItemBean
 		ArrayList matchItemBeanList = bean.getMatchItemBeanList();
 		Iterator choiceIter = matchItemBeanList.iterator();
-		HashMap newMatchItemMap = new HashMap();
+		
 		Set answerSet = null;
 		ItemTextIfc itemText = null;
 		AnswerIfc answer = null;
@@ -1466,14 +1962,14 @@ public class ItemAddListener
 										.getSequence(), AnswerBean
 										.getChoiceLabels()[matchBean
 										.getSequence().intValue() - 1],
-								Boolean.TRUE, null, new Float(bean.getItemScore()), null, Float.valueOf(bean.getItemDiscount()));
+								Boolean.TRUE, null, new Double(bean.getItemScore()), null, Double.valueOf(bean.getItemDiscount()));
 					} else {
 						answer = new PublishedAnswer(itemText,
 								stripPtags(matchBean.getMatch()), matchBean
 										.getSequence(), AnswerBean
 										.getChoiceLabels()[matchBean
 										.getSequence().intValue() - 1],
-								Boolean.FALSE, null, new Float(bean.getItemScore()), null, Float.valueOf(bean.getItemDiscount()));
+								Boolean.FALSE, null, new Double(bean.getItemScore()), null, Double.valueOf(bean.getItemDiscount()));
 					}
 
 					// record answers for all combination of pairs
@@ -1489,7 +1985,7 @@ public class ItemAddListener
 					
 				} else {
 					answer = (AnswerIfc) answerMap.get(matchSequence);
-					answer.setScore(Float.valueOf(bean.getItemScore()));
+					answer.setScore(Double.valueOf(bean.getItemScore()));
 					String oneAnswer = stripPtags(matchBean.getMatch());
 					String oneLabel = AnswerBean.getChoiceLabels()[matchSequence
 							.intValue() - 1];
@@ -1550,8 +2046,179 @@ public class ItemAddListener
 			delegate.deleteSet(toBeRemovedTextSet);
 		}
   }
+  
+  /**
+   * Prepare Text for Extended Matching Item Questions
+   * @param item
+   * @param bean
+   * @param itemauthor
+   * @return
+   */
+  private void preparePublishedTextForEMI(ItemFacade item,
+			ItemBean bean, ItemService delegate) {
+	  
+	  	// ///////////////////////////////////////////////////////////
+		//
+		// 1. save Theme and Lead-In Text and Answer Options
+		//  
+		// ///////////////////////////////////////////////////////////
+        ItemTextIfc textTheme = item.getItemTextBySequence(ItemTextIfc.EMI_THEME_TEXT_SEQUENCE);
+		textTheme.setText(bean.getItemText());
+		
+		ItemTextIfc textAnswerOptions = item.getItemTextBySequence(ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE);
+		textAnswerOptions.setText(bean.getEmiAnswerOptionsRich());
 
+		ItemTextIfc textLeadIn = item.getItemTextBySequence(ItemTextIfc.EMI_LEAD_IN_TEXT_SEQUENCE);
+		textLeadIn.setText(bean.getLeadInStatement());
+		
+		// ///////////////////////////////////////////////////////////
+		//
+		// 2. save Answer Options - emiAnswerOptions
+		// with ItemText  (seq=ItemTextIfc.EMI_ANSWER_OPTIONS_SEQUENCE).
+		// These will be used to construct the actual answers.
+        //
+        // ///////////////////////////////////////////////////////////
+        Set<AnswerIfc> answerOptions = textAnswerOptions.getAnswerSet();
+        Set<AnswerIfc> deleteAnswerOptions = new HashSet<AnswerIfc>(answerOptions);
+        answerOptions.clear();
+        outer: for(AnswerBean answerBean: bean.getEmiAnswerOptionsClean()){
+            for(AnswerIfc currentAnswerOption: deleteAnswerOptions){
+                if(currentAnswerOption.getSequence().equals(answerBean.getSequence())){
+                    //update the existing answer
+                    currentAnswerOption.setText(stripPtags(answerBean.getText()));
+                    currentAnswerOption.setLabel(answerBean.getLabel());
+                    currentAnswerOption.setIsCorrect(Boolean.FALSE);
+                    answerOptions.add(currentAnswerOption);
+                    continue outer;
+                }
+            }
+            //This is a new answer option, so add it
+            //later (a little below this) we will add all the answer options to the items too
+            AnswerIfc answerOption = new PublishedAnswer(textAnswerOptions,
+					stripPtags(answerBean.getText()), answerBean
+					.getSequence(), answerBean.getLabel(),
+					Boolean.FALSE, null, null, null, null, null);
+			answerOptions.add(answerOption);
+		}
+        //The deleted answer options that will be removed
+        deleteAnswerOptions.removeAll(answerOptions);
+        delegate.deleteSet(deleteAnswerOptions);
+		
+		// ///////////////////////////////////////////////////////////
+		//
+		// 3. Prepare and save actual answers from answer components 
+		// (emiAnswerOptions and emiQuestionAnswerCombinations)
+		// ///////////////////////////////////////////////////////////
+		List<AnswerBean> emiQuestionAnswerCombinations = bean.getEmiQuestionAnswerCombinationsClean();
+        Double itemScore = 0.0;
+        Set<ItemTextIfc> deleteItemText = new HashSet<ItemTextIfc>(item.getItemTextSet());
+        item.getItemTextSet().clear();
+        //Put the theme, options and lead in back
+        for(ItemTextIfc currentItemText : deleteItemText) {
+          if (currentItemText.getSequence() < 1) {
+              item.getItemTextSet().add(currentItemText);
+          }
+        }
+        deleteItemText.removeAll(item.getItemTextSet());
+        for(AnswerBean answerBean: emiQuestionAnswerCombinations){
+            ItemTextIfc itemText = null;
+			for(ItemTextIfc currentItemText: deleteItemText){
+                if(currentItemText.getSequence().equals(answerBean.getSequence())){
+                    itemText = currentItemText;
+                    break;
+                }
+            }
+            if(itemText == null){
+                itemText = new PublishedItemText();
+                itemText.setItem(item.getData());
+                itemText.setSequence(answerBean.getSequence());
+            }
+			itemText.setText(answerBean.getText());
+			
+			int requiredOptions = (Integer.valueOf(answerBean.getRequiredOptionsCount())).intValue();
+			if (requiredOptions == 0) {
+				requiredOptions = answerBean.correctOptionsCount();
+			}
+			itemText.setRequiredOptionsCount(requiredOptions);
+            itemScore += answerBean.getScore();
+			
+            Set<AnswerIfc> deleteItemAnswerSet = new HashSet<AnswerIfc>(itemText.getAnswerSet());
+            itemText.getAnswerSet().clear();
+			if (Integer.valueOf(bean.getAnswerOptionsSimpleOrRich()).equals(ItemDataIfc.ANSWER_OPTIONS_SIMPLE) ) {
+                outer2: for(AnswerIfc currentAnswerOption: answerOptions){
+				    String correctLabels = answerBean.getCorrectOptionLabels();
+                    int correctRequiredCount = correctLabels.length()<requiredOptions?correctLabels.length():requiredOptions;
+                    boolean isCorrect = answerBean.getCorrectOptionLabels().contains(currentAnswerOption.getLabel());
 
+                    // item option score
+                    Double score = answerBean.getScore() / correctRequiredCount;
+                    for(AnswerIfc currentItemAnswer: deleteItemAnswerSet){
+                        //if the answer option was removed before then the item
+                        //answer will also be removed (not added back here)
+                        if(currentItemAnswer.getSequence().equals(currentAnswerOption.getSequence())){
+                            currentItemAnswer.setText(currentAnswerOption.getText());
+                            currentItemAnswer.setLabel(currentAnswerOption.getLabel());
+                            currentItemAnswer.setIsCorrect(isCorrect);
+                            currentItemAnswer.setGrade(answerBean.getScoreUserSet() ? "user" : "auto");
+                            currentItemAnswer.setScore(isCorrect ? score : 0.0);
+                            currentItemAnswer.setPartialCredit(null);
+                            currentItemAnswer.setDiscount(isCorrect ? 0.0 : -score / 2);
+                            currentItemAnswer.setAnswerFeedbackSet(null);
+                            itemText.getAnswerSet().add(currentItemAnswer);
+                            continue outer2;
+                        }
+                    }
+                    //if we get here then there is a new answer option and we need to 
+                    //add it to the itemtext
+                    itemText.getAnswerSet().add(new PublishedAnswer(itemText, currentAnswerOption.getText(),
+                                            currentAnswerOption.getSequence(), currentAnswerOption.getLabel(),
+                                            isCorrect, answerBean.getScoreUserSet() ? "user" : "auto",
+                                            isCorrect ? score : 0.0, null, isCorrect ? 0.0 : -score / 2));
+				}
+			}
+			else { // ANSWER_OPTION_RICH
+				int answerOptionsCount = Integer.valueOf(bean.getAnswerOptionsRichCount());
+                outer3: for (int i=0; i<answerOptionsCount; i++) {
+					String label = ItemDataIfc.ANSWER_OPTION_LABELS.substring(i, i+1);
+					String correctLabels = answerBean.getCorrectOptionLabels();
+                    int correctRequiredCount = correctLabels.length()<requiredOptions?correctLabels.length():requiredOptions;
+                    boolean isCorrect = answerBean.getCorrectOptionLabels().contains(label);
+
+                    // item option score
+                    Double score = answerBean.getScore() / correctRequiredCount;
+                    for(AnswerIfc currentItemAnswer: deleteItemAnswerSet){
+                        //if the answer option was removed before then the item
+                        //answer will also be removed (not added back here)
+                        if(currentItemAnswer.getSequence() == i){
+                            currentItemAnswer.setText(label);
+                            currentItemAnswer.setLabel(label);
+                            currentItemAnswer.setIsCorrect(isCorrect);
+                            currentItemAnswer.setGrade(answerBean.getScoreUserSet() ? "user" : "auto");
+                            currentItemAnswer.setScore(isCorrect ? score : 0.0);
+                            currentItemAnswer.setPartialCredit(null);
+                            currentItemAnswer.setDiscount(isCorrect ? 0.0 : -score / 2);
+                            currentItemAnswer.setAnswerFeedbackSet(null);
+                            itemText.getAnswerSet().add(currentItemAnswer);
+                            continue outer3;
+                        }
+                    }
+                    //if we get here then there is a new answer option and we need to 
+                    //add it to the itemtext
+                    itemText.getAnswerSet().add(new PublishedAnswer(itemText, label,
+                                            Long.valueOf(i), label,
+                                            isCorrect, answerBean.getScoreUserSet() ? "user" : "auto",
+                                            isCorrect ? score : 0.0, null, isCorrect ? 0.0 : -score / 2));
+				}
+			}
+            deleteItemAnswerSet.removeAll(itemText.getAnswerSet());
+            delegate.deleteSet(deleteItemAnswerSet);
+			item.getItemTextSet().add(itemText);
+		}
+        deleteItemText.removeAll(item.getItemTextSet());
+        delegate.deleteSet(deleteItemText);
+        item.setScore(itemScore);
+	}
+  
   private void preparePublishedTextForOthers(ItemFacade item, ItemBean bean) {
 	  ItemTextIfc text = null;
 	  Set textSet = item.getItemTextSet();
@@ -1583,6 +2250,12 @@ public class ItemAddListener
 		set.add(new ItemMetaData(item.getData(),
 					ItemMetaDataIfc.RANDOMIZE, bean.getRandomized()));
 		}
+		// MSMC property got left out, added in metadata
+		if (bean.getMcmsPartialCredit() != null) {
+		set.add(new ItemMetaData(item.getData(),
+					ItemMetaDataIfc.MCMS_PARTIAL_CREDIT, bean.getMcmsPartialCredit()));
+		}
+		
 		// 2/19/06 use PREDEFINED_SCALE to be in sync with what we are using
 		// for import/export
 		if (bean.getScaleName() != null) {
@@ -1683,6 +2356,8 @@ public class ItemAddListener
 		  }
 		  else if (itemMetaData.getLabel().equals(ItemMetaDataIfc.KEYWORD)){
 			  itemMetaData.setEntry(bean.getKeyword());
+		  }else if(itemMetaData.getLabel().equals(ItemMetaDataIfc.MCMS_PARTIAL_CREDIT)){
+			  itemMetaData.setEntry(bean.getMcmsPartialCredit());
 		  }
 	  
 		  // save settings for mutually exclusive for FIB. Default=false
@@ -1807,9 +2482,9 @@ public class ItemAddListener
 	  String processedAnswer = "";
 	  if (answer.indexOf("|") == -1) {
 		  processedAnswer = answer.replaceAll(" ", "").replaceAll(",", ".");
-		  // Test if it is a valid Float
+		  // Test if it is a valid Double
 		  try {
-			  Float.parseFloat(processedAnswer); 
+			  Double.parseDouble(processedAnswer); 
 		  }
 		  catch (NumberFormatException e) {
 			  return false;
@@ -1823,9 +2498,9 @@ public class ItemAddListener
 	  }
 	  for (int i = 0; i < 2; i++) {
 		  String tmpAnswer = tokens[i].replaceAll(" ", "").replaceAll(",", ".");
-		  // Test if it is a valid Float
+		  // Test if it is a valid Double
 		  try {
-			  Float.parseFloat(tmpAnswer);
+			  Double.parseDouble(tmpAnswer);
 		  }
 		  catch (NumberFormatException e) {
 			  return false;
@@ -1993,28 +2668,56 @@ public class ItemAddListener
     }
   }
 
+  private void updateItemTextAttachment(List newList, ItemTextIfc itemText, boolean pendingOrPool){
+	    if (newList == null || newList.size() == 0) return;
+	    List list = new ArrayList();
+	    for (int i=0; i<newList.size(); i++){
+	      ItemTextAttachmentIfc a = (ItemTextAttachmentIfc)newList.get(i);
+	      // new attachments
+	      a.setAttachmentId(null);  
+	      a.setItemText(itemText);
+	      list.add(a);
+	    }      
+	    // save new ones
+	    AssessmentService service;
+	    if (pendingOrPool) {
+	    	service = new AssessmentService();
+	    }
+	    else {
+	    	service = new PublishedAssessmentService();
+	    }
+	    service.saveOrUpdateAttachments(list);
+  }
+  
   private HashMap getAttachmentIdHash(List list){
     HashMap map = new HashMap();
     for (int i=0; i<list.size(); i++){
-      ItemAttachmentIfc a = (ItemAttachmentIfc)list.get(i);
+      AttachmentIfc a = (AttachmentIfc)list.get(i);
       map.put(a.getAttachmentId(), a);
     }
     return map;
   }
-  
+
   private void updateItemFeedback(ItemFacade item, String feedbackTypeId, String feedbackText) {
 	  Set itemFeedbackSet = item.getItemFeedbackSet();
 	  if ((itemFeedbackSet == null || itemFeedbackSet.size() == 0)) {
 		  item.addItemFeedback(feedbackTypeId, feedbackText);
 	  }
 	  else {
+          boolean feedbackTypeExists = false;
 		  Iterator iter = itemFeedbackSet.iterator();
 		  while (iter.hasNext()) {
 			  ItemFeedbackIfc itemFeedback = (ItemFeedbackIfc) iter.next();
 			  if (itemFeedback.getTypeId().equals(feedbackTypeId)) {
+                  feedbackTypeExists = true;
 				  itemFeedback.setText(feedbackText);
+				  break;
 			  }
 		  }
+          //If the feedback type was not found in the set, add it so changes are not lost.
+          if (!feedbackTypeExists) {
+        	  item.addItemFeedback(feedbackTypeId, feedbackText);
+          }
 	  }
   }
   

@@ -1,6 +1,6 @@
 /**********************************************************************************
  *
- * $Id: GradebookService.java 97231 2011-08-19 18:31:41Z wagnermr@iupui.edu $
+ * $Id: GradebookService.java 129384 2013-09-05 14:17:00Z holladay@longsight.com $
  *
  ***********************************************************************************
  *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -493,7 +493,7 @@ public interface GradebookService {
 			AssignmentHasIllegalPointsException;
 
 	/**
-	 * @deprecated Replaced by {@link addExternalAssessment(String, String, String, Boolean)}
+	 * @deprecated Replaced by {@link GradebookExternalAssessmentService#addExternalAssessment(String, String, String, Boolean)}
 	 */
 	public void addExternalAssessment(String gradebookUid, String externalId,
 			String externalUrl, String title, double points, Date dueDate,
@@ -503,7 +503,7 @@ public interface GradebookService {
 			AssignmentHasIllegalPointsException;
 
 	/**
-	 * @deprecated Replaced by {@link updateExternalAssessment(String, String, String, String, Double, Date)}
+	 * @deprecated Replaced by {@link GradebookExternalAssessmentService#updateExternalAssessment(String, String, String, String, Double, Date)}
 	 */
 	public void updateExternalAssessment(String gradebookUid,
 			String externalId, String externalUrl, String title, double points,
@@ -547,7 +547,9 @@ public interface GradebookService {
 			String externalId) throws GradebookNotFoundException;
 
 	public Map getImportCourseGrade(String gradebookUid);
-	  
+	public Map getImportCourseGrade(String gradebookUid, boolean useDefault);
+
+
 	/**return Object to avoid circular dependency with sakai-gradebook-tool */
 	public Object getGradebook(String uid) throws GradebookNotFoundException;
 
@@ -556,7 +558,7 @@ public interface GradebookService {
 	 * @param gradebookUid
 	 * @return
 	 * 
-	 * @Deprecated see {@link  #checkStudentsNotSubmitted(String)}
+	 * @deprecated see {@link  #checkStudentsNotSubmitted(String)}
 	 */
 	public boolean checkStuendsNotSubmitted(String gradebookUid);
 	
@@ -744,6 +746,15 @@ public interface GradebookService {
 	 * 
 	 */
 	public Map getCalculatedCourseGrade(String gradebookUid);
+
+	/**
+	 * Get a Map of auto calculated CourseGrade for students.
+	 * @param gradebookUid
+	 * @param mapTheGrades Should we map the grades from points to letters?
+	 * @return Map of enrollment displayId as key, point as value
+	 * 
+	 */
+	public Map getCalculatedCourseGrade(String gradebookUid, boolean mapTheGrades);
 	
 	/**
 	 * Get student's assignment's score as string.

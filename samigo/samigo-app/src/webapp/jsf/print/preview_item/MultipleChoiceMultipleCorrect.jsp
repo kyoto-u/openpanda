@@ -32,16 +32,17 @@ should be included in file importing DeliveryMessages
   <h:outputText value="<br />" escape="false" />    
   <%@ include file="/jsf/delivery/item/attachment.jsp" %>
 
-  <h:dataTable value="#{question.itemData.itemTextArraySorted}" var="itemText">
+  <h:dataTable value="#{question.itemData.itemTextArraySorted}" var="itemText" width="100%">
     <h:column>
-      <h:dataTable value="#{itemText.answerArraySorted}" var="answer">
+      <h:dataTable value="#{itemText.answerArraySorted}" var="answer" width="100%">
         <h:column> 
           <%-- inputBlock --%>
           <h:panelGroup styleClass="inputBlock" rendered="#{answer.text != null && answer.text ne ''}">
                      
             <%-- Show answer text --%>
             <h:graphicImage id="image1" url="/images/unchecked.gif"/>
-            <h:outputText escape="false" value="#{answer.label}. #{answer.text}" />
+            <h:outputText escape="false" value="#{answer.label}. " />
+            <h:outputText escape="false" value="#{answer.text}" styleClass="mcAnswerText"/>
             
           </h:panelGroup>
         </h:column>

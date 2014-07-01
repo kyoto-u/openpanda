@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <name>Lessonbuilder DB DDL generator</name>
     <groupId>org.sakaiproject.lessonbuilder</groupId>
-    <artifactId>sakai-lessonbuilder-ddl-generator</artifactId>
+    <artifactId>lessonbuilder-ddl-generator</artifactId>
     <packaging>pom</packaging>
 
     <parent>
         <groupId>org.sakaiproject.lessonbuilder</groupId>
         <artifactId>lessonbuilder</artifactId>
-        <version>1.4.3-SNAPSHOT</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -23,11 +23,11 @@
         <!-- pull in your hibernate persistent objects -->
         <dependency>
 	  <groupId>org.sakaiproject.lessonbuilder</groupId>
-	  <artifactId>sakai-lessonbuildertool-hbm</artifactId>
+	  <artifactId>lessonbuilder-hbm</artifactId>
         </dependency>
         <dependency>
 	  <groupId>org.sakaiproject.lessonbuilder</groupId>
-	  <artifactId>sakai-lessonbuildertool-api</artifactId>
+	  <artifactId>lessonbuilder-api</artifactId>
         </dependency>
 
     </dependencies>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/access/tags/sakai-2.9.3/access-impl/impl/src/java/org/sakaiproject/access/tool/AccessServlet.java $
- * $Id: AccessServlet.java 74527 2010-03-11 10:06:18Z matthew.buckett@oucs.ox.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/access/tags/sakai-10.0/access-impl/impl/src/java/org/sakaiproject/access/tool/AccessServlet.java $
+ * $Id: AccessServlet.java 309233 2014-05-06 20:03:16Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -340,6 +340,7 @@ public class AccessServlet extends VmServlet
 		catch (EntityNotDefinedException e)
 		{
 			// the request was not valid in some way
+			M_log.debug("dispatch(): ref: " + ref.getReference(), e);
 			sendError(res, HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
@@ -357,12 +358,13 @@ public class AccessServlet extends VmServlet
 			}
 
 			// otherwise reject the request
+			M_log.debug("dispatch(): ref: " + ref.getReference(), e);
 			sendError(res, HttpServletResponse.SC_FORBIDDEN);
 		}
 
 		catch (EntityAccessOverloadException e)
 		{
-			M_log.info("dispatch(): ref: " + ref.getReference() + e);
+			M_log.info("dispatch(): ref: " + ref.getReference(), e);
 			sendError(res, HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 		}
 
@@ -451,6 +453,12 @@ public class AccessServlet extends VmServlet
 		} 
 		
 		
+		// if there is a Range: header for partial content and we haven't done basic auth, refuse the request	(SAK-23678)
+		if (req.getHeader("Range") != null) {
+			sendError(res, HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
+
 		// get the Sakai session
 		Session session = SessionManager.getCurrentSession();
 

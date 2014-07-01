@@ -1,4 +1,4 @@
-<%-- $Id: deliverMultipleChoiceMultipleCorrect.jsp 96833 2011-08-11 17:04:08Z ktsao@stanford.edu $
+<%-- $Id: deliverMultipleChoiceMultipleCorrect.jsp 133922 2014-01-30 16:50:27Z ottenhoff@longsight.com $
 include file for delivering multiple choice questions
 should be included in file importing DeliveryMessages
 --%>
@@ -27,7 +27,7 @@ should be included in file importing DeliveryMessages
   <!-- ATTACHMENTS -->
   <%@ include file="/jsf/delivery/item/attachment.jsp" %>
 
-  <h:dataTable value="#{question.selectionArray}" var="selection">
+  <h:dataTable value="#{question.selectionArray}" var="selection" width="100%">
     <h:column rendered="#{delivery.feedback eq 'true' &&
        delivery.feedbackComponent.showCorrectResponse && !delivery.noFeedback=='true'}">
       <h:graphicImage id="image"
@@ -47,7 +47,7 @@ should be included in file importing DeliveryMessages
                  || delivery.actionString=='gradeAssessment'}" />
      <h:outputText value=" #{selection.answer.label}" escape="false" />
      <h:outputText value="#{deliveryMessages.dot}" rendered="#{selection.answer.label ne ''}" />
-     <h:outputText value=" #{selection.answer.text}" escape="false" />
+     <h:outputText value=" #{selection.answer.text}" styleClass="mcAnswerText" escape="false" />
      <f:verbatim></label></f:verbatim>
     </h:column>
     <h:column>
@@ -95,7 +95,7 @@ should be included in file importing DeliveryMessages
     <h:outputText value=" "/>
   </h:panelGrid>
 
-  <h:panelGrid rendered="#{delivery.actionString !='gradeAssessment' &&  delivery.feedbackComponent.showItemLevel && !delivery.noFeedback=='true' && question.feedbackIsNotEmpty}">
+  <h:panelGrid rendered="#{delivery.feedbackComponent.showItemLevel && !delivery.noFeedback=='true' && question.feedbackIsNotEmpty}">
     <h:panelGroup>
       <h:outputLabel for="feedSC" styleClass="answerkeyFeedbackCommentLabel" value="#{commonMessages.feedback}#{deliveryMessages.column} " />
       <h:outputText id="feedSC" value="#{question.feedback}" escape="false" />
@@ -117,7 +117,7 @@ should be included in file importing DeliveryMessages
         <h:column>
           <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
           <h:outputLink value="#{attach.location}" target="new_window">
-            <h:outputText escape="false" value="#{attach.filename}" />
+            <h:outputText value="#{attach.filename}" />
           </h:outputLink>
         </h:column>
         <h:column>

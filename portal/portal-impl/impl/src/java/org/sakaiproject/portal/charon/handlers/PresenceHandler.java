@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PresenceHandler.java $
- * $Id: PresenceHandler.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PresenceHandler.java $
+ * $Id: PresenceHandler.java 128674 2013-08-20 15:14:33Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -41,12 +41,13 @@ import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.ToolException;
 import org.sakaiproject.tool.cover.ActiveToolManager;
 import org.sakaiproject.util.Web;
+import org.sakaiproject.portal.util.URLUtils;
 
 /**
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 128674 $
  * 
  */
 public class PresenceHandler extends BasePortalHandler
@@ -110,7 +111,7 @@ public class PresenceHandler extends BasePortalHandler
 			// if not logged in, give them a chance
 			if (session.getUserId() == null)
 			{
-				portal.doLogin(req, res, session, req.getPathInfo(), false);
+				portal.doLogin(req, res, session, URLUtils.getSafePathInfo(req), false);
 			}
 			else
 			{

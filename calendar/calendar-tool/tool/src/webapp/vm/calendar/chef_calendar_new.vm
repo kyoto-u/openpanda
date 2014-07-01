@@ -312,7 +312,7 @@ function resizeFrame(){
     }
 }
 </script>
-<script type="text/javascript" src="/library/js/jquery.js">
+<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js">
 </script>
 
 <div class="portletBody">
@@ -817,6 +817,7 @@ function resizeFrame(){
 			#end
 		</p>
 		#foreach ($addfield in $addFieldsCalendarsCollection)
+			#set ($addfield = $validator.escapeHtml($addfield))
 			<p class="shorttext">
 				<label for="$addfield">
 					$addfield

@@ -10,6 +10,7 @@
 
 -- Add indexes for improved performance and reduced locking.
 alter table SAM_MEDIA_T modify (MEDIA blob);
+
 create index SAM_AMETADATA_ASSESSMENTID_I on SAM_ASSESSMETADATA_T (ASSESSMENTID);
 create index SAM_SECUREDIP_ASSESSMENTID_I on SAM_SECUREDIP_T (ASSESSMENTID);
 create index SAM_SECTION_ASSESSMENTID_I on SAM_SECTION_T (ASSESSMENTID);

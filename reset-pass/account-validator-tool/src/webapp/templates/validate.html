@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:rsf="http://ponder.org.uk/rsf" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Account Validation</title>
+<title rsf:id="msg=validate.title">Account Validation</title>
 <link href="/library/skin/tool_base.css"
 	type="text/css" rel="stylesheet" media="all" />
 <link href="/library/skin/default/tool.css"
@@ -12,23 +12,25 @@
 <script rsf:id="scr=portal-matter" type="text/javascript"
 	language="JavaScript" src="/library/js/headscripts.js"></script>
 <script type="text/javascript" language="JavaScript"
-	src="/library/js/jquery.js"></script>
+	src="/library/js/jquery/1.4.2/jquery-1.4.2.min.js"></script>
 <script type="text/javascript">
         $(document).ready(function() {
             if ($('form').length === 0) {
                 $('table').remove();
                 return false;
             }
-            var css_invalidField = {'border':'1px solid red'},
-                css_normalField = {'border':''};
+            var css_invalidField = {'border':'1px solid red'};
             $("input.inputBox").bind('keyup', function(){
-                $(this).css(css_normalField);
+                $(this).removeAttr("style");
+            });
+            $("input[type=checkbox]").click(function() {
+            	$(this).parents(".required").removeAttr("style");
             });
             $("input.submit").bind('click', function() {
                 var that = $(this),
                         form = that.parents('form:eq(0)'),
                         errors = 0;
-                $('form .required').css(css_normalField);
+                $('form .required').removeAttr("style");
                 $.each(form.find('.required'), function(i, _this) {
                     var field = $(_this);
                     if (field.attr('type') === 'text') {
@@ -43,6 +45,14 @@
                                 errors ++;
                             }
                         }
+                    // This is for the checkbox as we can't add a border to it.
+                    } else if (field.is("div")) {
+                        $("input[type=checkbox]", field).each(function(j, checkbox) {
+                            if (!$(checkbox).is(":checked")) {
+                                field.css(css_invalidField);
+                                errors ++;
+                            }
+                        });
                     }
                 });
                 if (form.find('input.password2').length > 0) {
@@ -68,6 +78,7 @@
 <body>
 <div class="wrapper">
 <div class="header">
+<a rsf:id="redirectLink">Reset your Sakai password / Accept your Sakai invitation</a>
 <div rsf:id="message-for:*"><span>Message for user here</span></div>
 
 <div class="stylized">
@@ -102,12 +113,17 @@
 		<div rsf:id="passrow2:"><label rsf:id="msg=password2">Confirm password</label> <input
 			type="password" class="inputBox required password2"
 			rsf:id="password2" id="password2" /></div>
+		<div class=" required terms" rsf:id="termsrow:">
+			<input id="terms" type="checkbox" rsf:id="terms"/>
+			<label rsf:id="termsLabel" for="terms">I accept the terms and conditions</label>
+		</div>
 		<input class="submit" type="submit" rsf:id="addDetailsSub" /></form>
 		</div>
 		</td>
 		<td width="2px" valign="middle" align="center">
 		<div class="spacerVertical"></div>
-		<span class="or">OR</span>
+
+		<span rsf:id="validate.or" class="or">OR</span>
 		<div class="spacerVertical"></div>
 		</td>
 		<td valign="top">

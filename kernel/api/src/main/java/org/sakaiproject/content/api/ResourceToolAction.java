@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -104,6 +104,11 @@ public interface ResourceToolAction
 		REPLACE_CONTENT,
 		
 		/**
+		 * Restore the content of the folder.    
+		 */
+		RESTORE,
+		
+		/**
 		 * Revise metadata -- Handled by Resources tool.  Requires content.revise.any permission 
 		 * 		(or content.revise.own if user is creator).
 		 */
@@ -173,7 +178,7 @@ public interface ResourceToolAction
 		 * Collapse a folder to hide its members -- Handled by Resources tool.  No permission checks. 
 		 */
 		COLLAPSE_FOLDER,
-		
+
 		/**
 		 * Custom action -- Handled by helper.  May be interactive or service-level.  Custom actions
 		 * 		must implement the CustomToolAction interface to provide Resources tool with a way to 
@@ -189,7 +194,17 @@ public interface ResourceToolAction
 		/**
 		 * Expands a zip file into serveral folders and archives 
 		 */
-		EXPAND_ZIP_ARCHIVE
+		EXPAND_ZIP_ARCHIVE,
+
+		/**
+		 * Create a page in the site linking to the content.
+		 */
+		MAKE_SITE_PAGE,
+		
+		/**
+		 * Print a file
+		 */
+		PRINT_FILE
 	}
 	
 	public static final String CREATE = "create";
@@ -208,9 +223,14 @@ public interface ResourceToolAction
 	public static final String REORDER = "revise_order";
 	public static final String EXPAND = "expand";
 	public static final String COLLAPSE = "collapse";
+	public static final String RESTORE = "restore";
 	public static final String COMPRESS_ZIP_FOLDER = "compress_zip_folder";
 	public static final String EXPAND_ZIP_ARCHIVE = "expand_zip_archive";
-	
+	public static final String MAKE_SITE_PAGE = "make_site_page";
+	public static final String SHOW = "show";
+	public static final String HIDE = "hide";
+	public static final String COPY_OTHER = "copy-other";
+	public static final String PRINT_FILE = "print file";
 	public static final String ACTION_DELIMITER = ":";
 		
 	/**

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/event/impl/SessionServiceAdaptorTest.java $
- * $Id: SessionServiceAdaptorTest.java 62002 2009-05-07 18:27:46Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/SessionServiceAdaptorTest.java $
+ * $Id: SessionServiceAdaptorTest.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,87 +37,129 @@ import org.sakaiproject.tool.api.SessionManager;
  * SessionServiceAdaptorTest extends the db alias service providing the dependency injectors for testing. *
  * </p>
  */
-public class SessionServiceAdaptorTest extends UsageSessionServiceAdaptor
-{
-	/**
-	 * @return the TimeService collaborator.
-	 */
-	protected TimeService timeService()
-	{
-		return null;
-	}
+@SuppressWarnings("unchecked")
+public class SessionServiceAdaptorTest extends UsageSessionServiceAdaptor {
 
-	/** Dependency: SqlService. */
-	/**
-	 * @return the SqlService collaborator.
-	 */
-	protected SqlService sqlService()
-	{
-		return null;
-	}
+    TimeService timeService;
+    SqlService sqlService;
+    ServerConfigurationService serverConfigurationService;
+    ThreadLocalManager threadLocalManager;
+    SessionManager sessionManager;
+    IdManager idManager;
+    EventTrackingService eventTrackingService;
+    AuthzGroupService authzGroupService;
+    UserDirectoryService userDirectoryService;
+    MemoryService memoryService;
 
-	/**
-	 * @return the ServerConfigurationService collaborator.
-	 */
-	protected ServerConfigurationService serverConfigurationService()
-	{
-		return null;
-	}
+    public void setTimeService(TimeService timeService) {
+        this.timeService = timeService;
+    }
 
-	/**
-	 * @return the ThreadLocalManager collaborator.
-	 */
-	protected ThreadLocalManager threadLocalManager()
-	{
-		return null;
-	}
+    public void setSqlService(SqlService sqlService) {
+        this.sqlService = sqlService;
+    }
 
-	/**
-	 * @return the SessionManager collaborator.
-	 */
-	protected SessionManager sessionManager()
-	{
-		return null;
-	}
+    public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
+        this.serverConfigurationService = serverConfigurationService;
+    }
 
-	/**
-	 * @return the IdManager collaborator.
-	 */
-	protected IdManager idManager()
-	{
-		return null;
-	}
+    public void setThreadLocalManager(ThreadLocalManager threadLocalManager) {
+        this.threadLocalManager = threadLocalManager;
+    }
 
-	/**
-	 * @return the EventTrackingService collaborator.
-	 */
-	protected EventTrackingService eventTrackingService()
-	{
-		return null;
-	}
+    public void setSessionManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+    }
 
-	/**
-	 * @return the AuthzGroupService collaborator.
-	 */
-	protected AuthzGroupService authzGroupService()
-	{
-		return null;
-	}
+    public void setIdManager(IdManager idManager) {
+        this.idManager = idManager;
+    }
 
-	/**
-	 * @return the UserDirectoryService collaborator.
-	 */
-	protected UserDirectoryService userDirectoryService()
-	{
-		return null;
-	}
-	
-	/**
-	 * @return the MemoryService collaborator.
-	 */
-	protected MemoryService memoryService()
-	{
-		return null;
-	}
+    public void setEventTrackingService(EventTrackingService eventTrackingService) {
+        this.eventTrackingService = eventTrackingService;
+    }
+
+    public void setAuthzGroupService(AuthzGroupService authzGroupService) {
+        this.authzGroupService = authzGroupService;
+    }
+
+    public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
+        this.userDirectoryService = userDirectoryService;
+    }
+
+    public void setMemoryService(MemoryService memoryService) {
+        this.memoryService = memoryService;
+    }
+
+    /**
+     * @return the TimeService collaborator.
+     */
+    protected TimeService timeService() {
+        return timeService;
+    }
+
+    /** Dependency: SqlService. */
+    /**
+     * @return the SqlService collaborator.
+     */
+    protected SqlService sqlService() {
+        return sqlService;
+    }
+
+    /**
+     * @return the ServerConfigurationService collaborator.
+     */
+    protected ServerConfigurationService serverConfigurationService() {
+        return serverConfigurationService;
+    }
+
+    /**
+     * @return the ThreadLocalManager collaborator.
+     */
+    protected ThreadLocalManager threadLocalManager() {
+        return threadLocalManager;
+    }
+
+    /**
+     * @return the SessionManager collaborator.
+     */
+    protected SessionManager sessionManager() {
+        return sessionManager;
+    }
+
+    /**
+     * @return the IdManager collaborator.
+     */
+    protected IdManager idManager() {
+        return idManager;
+    }
+
+    /**
+     * @return the EventTrackingService collaborator.
+     */
+    protected EventTrackingService eventTrackingService() {
+        return eventTrackingService;
+    }
+
+    /**
+     * @return the AuthzGroupService collaborator.
+     */
+    protected AuthzGroupService authzGroupService() {
+        return authzGroupService;
+    }
+
+    /**
+     * @return the UserDirectoryService collaborator.
+     */
+    protected UserDirectoryService userDirectoryService() {
+        return userDirectoryService;
+    }
+
+    /**
+     * @return the MemoryService collaborator.
+     */
+    protected MemoryService memoryService() {
+        return memoryService;
+    }
 
 }

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.3/site-association-tool/tool/src/java/org/sakaiproject/siteassociation/tool/common/BaseBean.java $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-10.0/site-association-tool/tool/src/java/org/sakaiproject/siteassociation/tool/common/BaseBean.java $
  * $Id: BaseBean.java 68686 2009-11-09 16:43:13Z chmaurer@iupui.edu $
  ***********************************************************************************
  *

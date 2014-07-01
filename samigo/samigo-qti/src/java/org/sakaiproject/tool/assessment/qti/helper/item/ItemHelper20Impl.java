@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/helper/item/ItemHelper20Impl.java $
- * $Id: ItemHelper20Impl.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/item/ItemHelper20Impl.java $
+ * $Id: ItemHelper20Impl.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,6 +35,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.qti.asi.Item;
 import org.sakaiproject.tool.assessment.qti.constants.AuthoringConstantStrings;
@@ -47,7 +48,7 @@ import org.sakaiproject.tool.assessment.qti.helper.AuthoringXml;
  * <p>Organization: Sakai Project</p>
  * <p>Version for QTI 2.0 item XML, significant differences between 1.2 and 2.0</p>
  * @author Ed Smiley esmiley@stanford.edu
- * @version $Id: ItemHelper20Impl.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * @version $Id: ItemHelper20Impl.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 
 public class ItemHelper20Impl extends ItemHelperBase
@@ -73,12 +74,12 @@ public class ItemHelper20Impl extends ItemHelperBase
    * @param score
    * @param itemXml
    */
-  public void addMaxScore(Float score, Item itemXml)
+  public void addMaxScore(Double score, Item itemXml)
   {
     // normalize if null
     if (score == null)
     {
-      score =  Float.valueOf(0);
+      score =  Double.valueOf(0);
     }
     // set the responseElse baseValue, if it exists
     String xPath =
@@ -98,12 +99,12 @@ public class ItemHelper20Impl extends ItemHelperBase
    * @param score
    * @param itemXml
    */
-  public void addMinScore(Float score, Item itemXml)
+  public void addMinScore(Double score, Item itemXml)
   {
     // normalize if null
     if (score == null)
     {
-      score =  Float.valueOf(0);
+      score =  Double.valueOf(0);
     }
     // first, set the outcomeDeclaration defaultValue, if it exists
     String xPath =
@@ -190,7 +191,7 @@ public class ItemHelper20Impl extends ItemHelperBase
    * @param itemXml
    * @param itemText text to be updated
    */
-  public void setItemTexts(ArrayList itemTextList, Item itemXml)
+  public void setItemTexts(List<ItemTextIfc> itemTextList, Item itemXml)
   {
     String xPath = "assessmentItem/itemBody";
     if (itemTextList.size() < 1)
@@ -249,7 +250,7 @@ public class ItemHelper20Impl extends ItemHelperBase
    * @param itemTextList the text(s) for item
    */
 
-  public void setAnswers(ArrayList itemTextList, Item itemXml)
+  public void setAnswers(List<ItemTextIfc> itemTextList, Item itemXml)
   {
     // other types either have no answer or include them in their template
     if (!itemXml.isMatching() && !itemXml.isFIB() && !itemXml.isFIN() &&
@@ -317,7 +318,7 @@ public class ItemHelper20Impl extends ItemHelperBase
    * @param itemTextList the text(s) for item
    */
 
-  public void setFeedback(ArrayList itemTextList, Item itemXml)
+  public void setFeedback(List<ItemTextIfc> itemTextList, Item itemXml)
   {
     String xpath =
       "assessmentItem/itemBody/choiceInteraction/<simpleChoice/feedbackInline";
@@ -439,8 +440,29 @@ public class ItemHelper20Impl extends ItemHelperBase
   public void addIncorrectAnswer(String incorrectAnswerLabel, Item itemXml)
   {
   }
-
+	
+  public void setItemLabel(String itemLabel, Item itemXml){
+	  //todo
+  }
+  
   public void setItemText(String itemText, Item itemXml)
   { //todo
   }
+  
+  public void setItemText(String itemText, String flowClass, Item itemXml){
+	  //todo
+  }
+  
+  public void setPresentationLabel(String presentationLabel, Item itemXml){
+	  //todo
+  }
+  
+  public void setPresentationFlowResponseIdent(String presentationFlowResponseIdent, Item itemXml){
+	  //todo
+  }
+
+public void setAttachments(Set<? extends AttachmentIfc> attachmentSet, Item item) {
+	// todo
+	
+}
 }

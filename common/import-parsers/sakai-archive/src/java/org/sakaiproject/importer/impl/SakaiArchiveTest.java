@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.3/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveTest.java $
- * $Id: SakaiArchiveTest.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveTest.java $
+ * $Id: SakaiArchiveTest.java 106351 2012-03-28 20:21:21Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,26 +39,23 @@ import junit.framework.TestCase;
 
 public class SakaiArchiveTest extends TestCase {
 	private static ImportFileParser parser;
-	private byte[] archiveData;
+	//private byte[] archiveData;
 	private FileInputStream archiveStream;
 	
 	public void setUp() throws IOException {
 		System.out.println("doing setUp()");
 		parser = new SakaiArchiveFileParser();
 		archiveStream = new FileInputStream(new File("/Users/zach/Downloads/sakai_course_export.zip"));
-		archiveData = new byte[archiveStream.available()];
-		archiveStream.read(archiveData,0,archiveStream.available());
-		archiveStream.close();
 	}
 	public void testCanGetDataSource() {
-		ImportDataSource dataSource = (ImportDataSource) parser.parse(archiveData, "/Users/zach/Desktop");
+		ImportDataSource dataSource = (ImportDataSource) parser.parse(archiveStream, "/Users/zach/Desktop");
 		assertNotNull(dataSource);
 		System.out.println("There are " + dataSource.getItemCategories().size() + " categories in this archive.");
 		((SakaiArchiveDataSource)dataSource).buildSourceFolder(dataSource.getItemCategories());
 	}
 	
 	public void testArchiveIsValid() {
-		assertTrue(parser.isValidArchive(archiveData));
+		assertTrue(parser.isValidArchive(archiveStream));
 	}
 	
 

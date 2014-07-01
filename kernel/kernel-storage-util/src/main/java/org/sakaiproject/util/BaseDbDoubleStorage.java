@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.db.api.SqlReader;
@@ -52,7 +53,7 @@ import org.w3c.dom.Element;
 
 /**
  * <p>
- * BaseDbDoubleStorage is a class that stores Resources (of some type) in a database, <br />
+ * BaseDbDoubleStorage is a class that stores collections of Resources (of some type) in a database, <br />
  * provides locked access, and generally implements a services "storage" class. The <br />
  * service's storage class can extend this to provide covers to turn Resource and <br />
  * Edit into something more type specific to the service.
@@ -125,7 +126,7 @@ public class BaseDbDoubleStorage
 	protected boolean m_locksAreInTable = true;
 
 	/** The StorageUser to callback for new Resource and Edit objects. */
-	protected StorageUser m_user = null;
+	protected DoubleStorageUser m_user = null;
 
 	/**
 	 * Locks, keyed by reference, holding Connections (or, if locks are done locally, holding an Edit). Note: keying by reference allows botu
@@ -162,10 +163,8 @@ public class BaseDbDoubleStorage
 	static
 	{
 		databaseBeans = new Hashtable<String, DoubleStorageSql>();
-		databaseBeans.put("db2", new DoubleStorageSqlDb2());
 		databaseBeans.put("default", new DoubleStorageSqlDefault());
 		databaseBeans.put("hsqldb", new DoubleStorageSqlHSql());
-		databaseBeans.put("mssql", new DoubleStorageSqlMsSql());
 		databaseBeans.put("mysql", new DoubleStorageSqlMySql());
 		databaseBeans.put("oracle", new DoubleStorageSqlOracle());
 	}
@@ -204,7 +203,7 @@ public class BaseDbDoubleStorage
 			String resourceTableOwnerField, String resourceTableDraftField,
 			String resourceTablePubViewField, String[] resourceTableOtherFields, String[] resourceTableSearchFields, 
 			boolean locksInDb, String containerEntryName,
-			String resourceEntryName, StorageUser user, SqlService sqlService)
+			String resourceEntryName, DoubleStorageUser user, SqlService sqlService)
 	{
 		m_containerTableName = containerTableName;
 		m_containerTableIdField = containerTableIdField;
@@ -234,7 +233,7 @@ public class BaseDbDoubleStorage
 			String resourceTableOwnerField, String resourceTableDraftField,
 			String resourceTablePubViewField, String[] resourceTableOtherFields, // String[] resourceTableSearchFields, 
 			boolean locksInDb, String containerEntryName,
-			String resourceEntryName, StorageUser user, SqlService sqlService)
+			String resourceEntryName, DoubleStorageUser user, SqlService sqlService)
 	{
 		m_containerTableName = containerTableName;
 		m_containerTableIdField = containerTableIdField;
@@ -935,6 +934,26 @@ public class BaseDbDoubleStorage
 		return null;
 	}
 
+
+	/**
+	 * Get all Resources.
+	 *
+	 * @param container
+	 *        The container for this resource.
+	 * @param softFilter
+	 *        an optional software filter
+	 * @param sqlFilter
+	 *        an optional conditional for select statement
+	 * @param asc
+	 *        true means ascending
+	 * @param pager
+	 *        an optional range of elements to return inclusive
+	 * @return The list (Resource) of all Resources.
+	 */
+	public List getAllResources(Entity container, Filter softFilter, String sqlFilter, boolean asc, PagingPosition pager) {
+		return getAllResources(container, softFilter, sqlFilter, asc, pager, null);
+	}
+
 	/**
 	 * Get all Resources.
 	 * 
@@ -948,9 +967,11 @@ public class BaseDbDoubleStorage
 	 *        true means ascending
 	 * @param pager
 	 *        an optional range of elements to return inclusive
+	 * @param bindVariables
+	 *        an optional list of bind variables
 	 * @return The list (Resource) of all Resources.
 	 */
-	public List getAllResources(Entity container, Filter softFilter, String sqlFilter, boolean asc, PagingPosition pager)
+	public List getAllResources(Entity container, Filter softFilter, String sqlFilter, boolean asc, PagingPosition pager, List <Object> bindVariables)
 	{
 		
 		pager = fixPagingPosition(softFilter, pager);
@@ -1015,6 +1036,11 @@ public class BaseDbDoubleStorage
 		Object[] fields = new Object[1+searchFieldCount];
 		fields[0] = container.getReference();
 		for ( int i=0; i < searchFieldCount; i++) fields[i+1] = "%" + searchString + "%";
+
+		if (bindVariables != null && bindVariables.size() > 0) {
+			// Add the bind variables to the fields to substitute in the prepared statement
+			fields = ArrayUtils.addAll(fields, bindVariables.toArray(new Object[fields.length]));
+		}
 
 		// System.out.println("getAllResources="+sql);
 
@@ -1562,13 +1588,6 @@ public class BaseDbDoubleStorage
 				buf.append("select messages.XML from (");
 				buf.append("select XML from " + m_resourceTableName);
 			}
-			else if ("mssql".equals(m_sql.getVendor()))
-			{
-				buf.append("select top (" + limitedToLatest + ") XML from " + m_resourceTableName);
-			}
-         else if ("db2".equals(m_sql.getVendor())) {
-            buf.append("select XML from " + m_resourceTableName);
-         }
 			else
 			// if ("hsqldb".equals(m_sql.getVendor()))
 			{
@@ -1634,17 +1653,6 @@ public class BaseDbDoubleStorage
 				buf.append(" ) AS messages LIMIT " + limitedToLatest);
 				useLimitField = false;
 			}
-			else if ("mssql".equals(m_sql.getVendor()))
-			{
-				// explicitly do nothing here, we handle with 'top' clause above
-				useLimitField = false;
-			}
-         else if ("db2".equals(m_sql.getVendor()))
-         {
-            buf.append(" FETCH FIRST " + limitedToLatest + " ROWS ONLY");
-            useLimitField = false;
-         }
-
          else
 			// if ("hsqldb".equals(m_sql.getVendor()))
 			{

@@ -4,6 +4,14 @@
 <%@ taglib uri="http://sakaiproject.org/jsf/syllabus" prefix="syllabus" %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
 <f:view>
+<jsp:useBean id="msgs" class="org.sakaiproject.util.ResourceLoader" scope="session">
+   <jsp:setProperty name="msgs" property="baseName" value="org.sakaiproject.tool.syllabus.bundle.Messages"/>
+</jsp:useBean>
+
+	<sakai:view_container title="#{SyllabusTool.siteTitle}">
+	<sakai:stylesheet path="/syllabus/css/syllabus.css" />
+	<sakai:view_content>
+
 
 <script type="text/javascript">
 	// SAK-12177: If i'm being loaded into the iframe upon redirect
@@ -13,13 +21,6 @@
 	    window.location.href = '<h:outputText value="#{SyllabusTool.resetUrl}" />';
 </script>
 
-<jsp:useBean id="msgs" class="org.sakaiproject.util.ResourceLoader" scope="session">
-   <jsp:setProperty name="msgs" property="baseName" value="org.sakaiproject.tool.syllabus.bundle.Messages"/>
-</jsp:useBean>
-
-	<sakai:view_container title="#{SyllabusTool.siteTitle}">
-	<sakai:stylesheet path="/syllabus/css/syllabus.css" />
-	<sakai:view_content>
 
 <%-- gsilver: global things about syllabus tool:
 1 ) what happens to empty lists - still generate a table?
@@ -41,8 +42,24 @@
 				<h:dataTable value="#{SyllabusTool.entries}" var="eachEntry" rendered="#{! SyllabusTool.syllabusItem.redirectURL}" style="margin-top:1em;clear:both;" summary="#{msgs.mainCaption}" >
 					<h:column>
 							<f:verbatim><h4 class="textPanelHeader"></f:verbatim>		  
+								<h:outputText rendered="#{eachEntry.status == eachEntry.draftStatus}" value="#{msgs.mainDraft} - "/> 
 								<h:outputText value="#{eachEntry.entry.title}" />
-								<h:outputText rendered="#{eachEntry.status == 'draft'}" value="#{msgs.mainDraft}"/>
+								<f:subview id="date" rendered="#{eachEntry.entry.startDate != null || eachEntry.entry.endDate != null}">
+									<f:verbatim><br/><span style="font-weight: normal"></f:verbatim>
+										<h:outputText value="("/>
+										<h:outputText value="#{eachEntry.entry.startDate}">
+											<f:convertDateTime type="date" pattern="EEE MMM dd, yyyy hh:mm a"/>
+										</h:outputText>
+										<h:outputText value=" - " rendered="#{eachEntry.entry.startDate != null && eachEntry.entry.endDate != null}"/>
+										<h:outputText value="#{eachEntry.entry.endDate}" rendered="#{!eachEntry.startAndEndDatesSameDay}">
+								  			<f:convertDateTime type="date" pattern="EEE MMM dd, yyyy hh:mm a"/>
+										</h:outputText>
+										<h:outputText value="#{eachEntry.entry.endDate}" rendered="#{eachEntry.startAndEndDatesSameDay}">
+								  			<f:convertDateTime type="date" pattern="hh:mm a"/>
+										</h:outputText>
+										<h:outputText value=")"/>
+									<f:verbatim></span></f:verbatim>
+								</f:subview>
 							<f:verbatim></h4></f:verbatim>
 							<f:verbatim><div class="textPanel"></f:verbatim>
 							<syllabus:syllabus_htmlShowArea value="#{eachEntry.entry.asset}" />

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.3/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementService.java $
- * $Id: AnnouncementService.java 100702 2011-11-11 23:45:37Z yorkadam@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.0/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementService.java $
+ * $Id: AnnouncementService.java 127568 2013-07-23 12:01:49Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,6 +64,9 @@ public interface AnnouncementService extends MessageService
 	/** The Reference type for an announcement */
 	public static final String REF_TYPE_ANNOUNCEMENT = "announcement";
 	
+    /** The property name of the channel to use instead of the site channel */
+    public final static String ANNOUNCEMENT_CHANNEL_PROPERTY = "channel";
+
 	/** The Reference type for an announcement rss feed */
 	public static final String REF_TYPE_ANNOUNCEMENT_RSS = "rss";
 	

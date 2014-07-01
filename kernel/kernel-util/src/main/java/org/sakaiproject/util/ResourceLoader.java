@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL$
- * $Id$
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-util/src/main/java/org/sakaiproject/util/ResourceLoader.java $
+ * $Id: ResourceLoader.java 307313 2014-03-20 19:57:48Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,17 +21,7 @@
 
 package org.sakaiproject.util;
 
-import java.text.MessageFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.Set;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.cover.ComponentManager;
@@ -40,10 +30,15 @@ import org.sakaiproject.i18n.InternationalizedMessages;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.PreferencesService;
 
+import java.text.MessageFormat;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * ResourceLoader provides an alternate implementation of org.util.ResourceBundle, dynamically selecting the prefered locale from either the user's session or from the user's sakai preferences
  * 
  * @author Sugiura, Tatsuki (University of Nagoya)
+ * @author Aaron Zeckoski (azeckoski @ unicon.net)
  */
 @SuppressWarnings("rawtypes")
 public class ResourceLoader extends DummyMap implements InternationalizedMessages
@@ -52,28 +47,37 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 
 	// name of ResourceBundle
 	protected String baseName = null;
-	
-	// Optional ClassLoader for ResourceBundle
-	protected ClassLoader classLoader = null;
+    public String getBaseName() {
+        return baseName;
+    }
 
-	// cached set of ResourceBundle objects
-	protected Hashtable<Locale, ResourceBundle> bundles = new Hashtable<Locale, ResourceBundle>();
+    // Optional ClassLoader for ResourceBundle
+	protected ClassLoader classLoader = null;
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    // cached set of ResourceBundle objects
+	protected ConcurrentHashMap<Locale, ResourceBundle> bundles = new ConcurrentHashMap<Locale, ResourceBundle>();
 
     // cached set of last time bundle was loaded
-    protected Hashtable<Locale, Date> bundlesTimestamp = new Hashtable<Locale, Date>();
+    protected ConcurrentHashMap<Locale, Date> bundlesTimestamp = new ConcurrentHashMap<Locale, Date>();
 
 	// current user id
 	protected String userId = null;
-	
-	// session key string for determining validity of ResourceBundle cache
-	protected String LOCALE_SESSION_KEY = "sakai.locale.";
+    public String getUserId() {
+        return userId;
+    }
+
+    // session key string for determining validity of ResourceBundle cache
+	protected final String LOCALE_SESSION_KEY = "sakai.locale.";
 
 	// Debugging variables for displaying ResourceBundle name & property	
-	protected String DEBUG_LOCALE = "en_US_DEBUG";
-	private   String DBG_PREFIX = "** ";
-	private   String DBG_SUFFIX = " **";
+	protected final String DEBUG_LOCALE = "en_US_DEBUG";
+	private final String DBG_PREFIX = "** ";
+	private final String DBG_SUFFIX = " **";
 
-	private static Object LOCK = new Object();
+	private final static Object LOCK = new Object();
 
 	private static SessionManager sessionManager;
 	protected static SessionManager getSessionManager() {
@@ -142,7 +146,8 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	/**
 	 ** Return ResourceBundle properties as if Map.entrySet() 
 	 **/
-    public Set entrySet()
+	@Override
+	public Set entrySet()
 	{
 		return getBundleAsMap().entrySet();
 	}
@@ -170,7 +175,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
     ** @author Jean-Francois Leveque (Universite Pierre et Marie Curie - Paris 6)
     **
     **/
-	public String getFormattedMessage(String key, Object[] args)
+	public String getFormattedMessage(String key, Object... args)
 	{
 		if ( getLocale().toString().equals(DEBUG_LOCALE) )
 			return formatDebugPropertiesString( key );
@@ -198,17 +203,59 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	{
 		String value = getString(key);
 
-		if (value.length() == 0) return dflt;
+		int originalLength = value.length();
+		if (originalLength == 0) return dflt;
 
 		try
 		{
+			value = value.trim();
+			if (originalLength != value.length())
+			{
+				M_log.warn("getInt(key, dflt) bundle name=" + this.baseName +
+						", locale=" + getLocale() + ", key=" +
+						key + ", dflt=" + dflt+ ", Trailing whitespace trimmed.");
+			}
 			return Integer.parseInt(value);
 		}
 		catch (NumberFormatException e)
 		{
-			// ignore
-			return dflt;
+			if (M_log.isDebugEnabled()) {
+				M_log.debug("getInt(key, dflt) bundle name=" + this.baseName +
+						", locale=" + getLocale() + ", key=" +
+						key + ", dflt=" + dflt+ ", NumberFormatException");
+			}
 		}
+		return dflt;
+	}
+   
+	/**
+	** Return a locale's display Name
+	**
+	** @return String used to display Locale
+	**
+	** @author Jean-Francois Leveque (Universite Pierre et Marie Curie - Paris 6)
+	**/
+	public String getLocaleDisplayName(Locale loc) {
+		Locale preferedLoc = getLocale();
+
+		StringBuilder displayName = new StringBuilder(loc.getDisplayLanguage(loc));
+
+		if (StringUtils.isNotBlank(loc.getDisplayCountry(loc))) {
+			displayName.append(" - ").append(loc.getDisplayCountry(loc));
+		}
+
+		if (StringUtils.isNotBlank(loc.getVariant())) {
+			displayName.append(" (").append(loc.getDisplayVariant(loc)).append(")");
+		}
+
+		displayName.append(" [").append(loc.toString()).append("] ");
+		displayName.append(loc.getDisplayLanguage(preferedLoc));
+
+		if (StringUtils.isNotBlank(loc.getDisplayCountry(preferedLoc))) {
+ 			displayName.append(" - ").append(loc.getDisplayCountry(preferedLoc));
+		}
+
+		return displayName.toString();
 	}
    
 	/**
@@ -224,8 +271,8 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	** @author Steve Swinsburg (steve.swinsburg@gmail.com)
 	 **/
 	public Locale getLocale()
-	{			 
-	    Locale loc = null;
+	{
+	    Locale loc;
 	    // check if locale is requested for specific user
 	    if ( this.userId != null ) {
 	        loc = getLocale( this.userId );
@@ -259,7 +306,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	    	
 	    M_log.debug("Locale: " + loc.toString());
 
-		 return loc;
+	    return loc;
 	}
 	
 	/**
@@ -269,12 +316,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	 **/
 	protected String formatDebugPropertiesString( String key )
 	{
-		StringBuilder dbgPropertiesString = new StringBuilder(DBG_PREFIX);
-		dbgPropertiesString.append( this.baseName );
-		dbgPropertiesString.append( " " );
-		dbgPropertiesString.append( key );
-		dbgPropertiesString.append( DBG_SUFFIX );
-		return dbgPropertiesString.toString();
+	    return DBG_PREFIX + this.baseName + " " + key + DBG_SUFFIX;
 	}
 
 	/**
@@ -386,7 +428,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 		} //Ignore and continue
 		
 		
-		return loc;		  
+		return loc;
 	}
 
 	/**
@@ -403,9 +445,17 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 		{
 			return false;
 		}
-	} 
-	
-	/**
+	}
+
+    @Override
+    public boolean containsKey(Object key) {
+        if (key == null || !(key instanceof String)) {
+            return false;
+        }
+        return getIsValid((String)key);
+    }
+
+    /**
 	 * Return string value for specified property in current locale specific ResourceBundle
 	 * 
 	 * @param key property key to look up in current ResourceBundle
@@ -536,7 +586,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	 **/
 	public Set keySet()
 	{
-		return getBundleAsMap().keySet();
+		return getBundle().keySet();
 	}
 
 	/**
@@ -544,7 +594,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	 */
 	public void purgeCache()
 	{
-		this.bundles = new Hashtable<Locale, ResourceBundle>();
+		this.bundles = new ConcurrentHashMap<Locale, ResourceBundle>();
 		M_log.debug("purge bundle cache");
 	}
 
@@ -570,7 +620,17 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 		return getBundleAsMap().values();
 	}
 
-	/**
+	@Override
+	public int size() {
+		return getBundle().keySet().size();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return getBundle().keySet().isEmpty();
+	}
+
+    /**
 	 * Return ResourceBundle for user's preferred locale
 	 * 
 	 * @return user's ResourceBundle object
@@ -581,7 +641,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
             return getBundleFromDb();
         }
 		Locale loc = getLocale();
-		ResourceBundle bundle = (ResourceBundle) this.bundles.get(loc);
+		ResourceBundle bundle = this.bundles.get(loc);
 		if (bundle == null)
 		{
 			if (M_log.isDebugEnabled()) {
@@ -600,8 +660,8 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	{
 		Locale loc = getLocale();
         //TODO consider using a better caching method here
-		ResourceBundle bundle = (ResourceBundle) this.bundles.get(loc);
-        Date timeStamp = (Date) this.bundlesTimestamp.get(loc);
+		ResourceBundle bundle = this.bundles.get(loc);
+        Date timeStamp = this.bundlesTimestamp.get(loc);
 		if ((timeStamp == null || timeStamp.getTime() + ServerConfigurationService.getInt("load.bundles.from.db.timeout", 30000) < new Date().getTime() ) )
 		{
 			M_log.debug("Load bundle name=" + this.baseName + ", locale=" + getLocale().toString());
@@ -615,7 +675,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	 **/
 	protected Map<Object, Object> getBundleAsMap()
 	{
-		Map<Object, Object> bundle = new Hashtable<Object, Object>();
+		Map<Object, Object> bundle = new ConcurrentHashMap<Object, Object>();
 
 		for (Enumeration e = getBundle().getKeys(); e.hasMoreElements();)
 		{
@@ -642,19 +702,16 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 		ResourceBundle newBundle = null;
 		try
 		{
-			if ( this.classLoader == null )
+			if (this.classLoader == null) {
 				newBundle = ResourceBundle.getBundle(this.baseName, loc);
-			else
+			} else {
 				newBundle = ResourceBundle.getBundle(this.baseName, loc, this.classLoader);
-
-
+			}
+		} catch (NullPointerException e) {
+			// IGNORE FAILURE
 		}
-        catch (NullPointerException e)
-        {
-        } // ignore
 
-
-		setBundle(loc, newBundle);
+        setBundle(loc, newBundle);
 		return newBundle;
 	}
 
@@ -670,7 +727,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	 */
 	protected ResourceBundle loadBundleFromDb(Locale loc)
 	{
-		ResourceBundle newBundle = null;
+		ResourceBundle newBundle;
 		try
 		{
             newBundle = DbResourceBundle.addResourceBundle(this.baseName, loc, this.classLoader);
@@ -705,6 +762,15 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 		this.bundles.put(loc, bundle);
         this.bundlesTimestamp.put(loc, new Date());
 	}
+
+    @Override
+    public String toString() {
+        return "ResourceLoader{" +
+                       "base='" + baseName + '\'' +
+                       ", user='" + userId + '\'' +
+                       '}';
+    }
+
 }
 
 @SuppressWarnings({ "rawtypes" })

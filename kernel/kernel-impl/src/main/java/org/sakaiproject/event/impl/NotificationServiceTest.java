@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/event/impl/NotificationServiceTest.java $
- * $Id: NotificationServiceTest.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/NotificationServiceTest.java $
+ * $Id: NotificationServiceTest.java 122028 2013-04-01 19:49:35Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,10 +21,12 @@
 
 package org.sakaiproject.event.impl;
 
+import org.sakaiproject.component.api.ComponentManager;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.id.api.IdManager;
+import org.sakaiproject.memory.api.MemoryService;
 
 /**
  * <p>
@@ -62,6 +64,13 @@ public class NotificationServiceTest extends DbNotificationService
 	 */
 	protected SqlService sqlService()
 	{
+		return null;
+	}
+
+	/**
+	 * @see org.sakaiproject.event.impl.BaseNotificationService#memoryService()
+	 */
+	protected MemoryService memoryService() {
 		return null;
 	}
 }

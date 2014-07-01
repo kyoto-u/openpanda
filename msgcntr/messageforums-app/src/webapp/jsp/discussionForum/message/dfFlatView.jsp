@@ -12,11 +12,12 @@
 	<h:form id="msgForum" styleClass="specialLink">
 
 	<!--jsp/discussionForum/message/dfFlatView.jsp-->
-		<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
-		<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
 		<sakai:script contextBase="/messageforums-tool" path="/js/dialog.js"/>
   		<link rel="stylesheet" type="text/css" href="/messageforums-tool/css/dialog.css" />
-		<sakai:script contextBase="/messageforums-tool" path="/js/jquery.qtip.js"/>
+		<script type="text/javascript" src="/library/js/jquery/qtip/jquery.qtip-latest.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/library/js/jquery/qtip/jquery.qtip-latest.min.css" />
 		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 		<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
 	<%--//
@@ -81,8 +82,9 @@
 			      <h:commandLink action="#{ForumTool.processActionHome}" value="#{msgs.cdfm_discussion_forums}" title=" #{msgs.cdfm_discussion_forums}"
 			      		rendered="#{ForumTool.forumsTool}" />
       			  <f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
-					  <h:commandLink action="#{ForumTool.processActionDisplayForum}" value="#{ForumTool.selectedForum.forum.title}" title=" #{ForumTool.selectedForum.forum.title}">
+					  <h:commandLink action="#{ForumTool.processActionDisplayForum}" title=" #{ForumTool.selectedForum.forum.title}">
 						  <f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+						  <h:outputText value="#{ForumTool.selectedForum.forum.title}" />
 					  </h:commandLink>
 				  <f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
 				  	  <h:outputText value="#{ForumTool.selectedTopic.topic.title}" />

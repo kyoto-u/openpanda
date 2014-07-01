@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/services/PersistenceService.java $
- * $Id: PersistenceService.java 9275 2006-05-10 22:58:35Z lydial@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/services/PersistenceService.java $
+ * $Id: PersistenceService.java 113856 2012-10-01 18:52:04Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,6 +29,8 @@ import org.sakaiproject.section.api.SectionAwareness;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.AssessmentGradingFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.AuthzQueriesFacadeAPI;
+import org.sakaiproject.tool.assessment.facade.FavoriteColChoicesFacadeQueriesAPI;
+import org.sakaiproject.tool.assessment.facade.EventLogFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.ItemFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.PublishedItemFacadeQueriesAPI;
@@ -38,7 +40,6 @@ import org.sakaiproject.tool.assessment.facade.SectionFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.TypeFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.authz.AuthorizationFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.util.PagingUtilQueriesAPI;
-import org.sakaiproject.tool.assessment.facade.FavoriteColChoicesFacadeQueriesAPI;
 
 /**
  * @author jlannan
@@ -63,31 +64,33 @@ public class PersistenceService{
 	private AuthzQueriesFacadeAPI authzQueriesFacade;
 	private SectionAwareness sectionAwareness;
 	private FavoriteColChoicesFacadeQueriesAPI favoriteColChoicesFacadeQueries;
-
+	private PersistenceHelper persistenceHelper;
+	
+	
+        private EventLogFacadeQueriesAPI eventLogFacadeQueries;  
 
 	public static PersistenceService getInstance(){
 	    return (PersistenceService)ComponentManager.get("PersistenceService");
 	}
 
-        private Integer deadlockInterval; // in ms
+       private Integer deadlockInterval = 1000; // in ms
 
         public void setDeadlockInterval(Integer deadlockInterval){
           this.deadlockInterval = deadlockInterval;
         }
-
         public Integer getDeadlockInterval(){
           return deadlockInterval;
-        }
+        } 
 
-        private Integer retryCount; // in ms
+        
+	private Integer retryCount = 1000; // in ms
+       public void setRetryCount(Integer retryCount){
+         this.retryCount = retryCount;
+       }
 
-        public void setRetryCount(Integer retryCount){
-          this.retryCount = retryCount;
-        }
-
-        public Integer getRetryCount(){
-          return retryCount;
-        }
+       public Integer getRetryCount(){
+         return retryCount;
+       }
 
 
 	public QuestionPoolFacadeQueriesAPI getQuestionPoolFacadeQueries(){
@@ -122,6 +125,14 @@ public class PersistenceService{
 	    this.itemFacadeQueries = itemFacadeQueries;
 	}
 
+	public PersistenceHelper getPersistenceHelper() {
+		return persistenceHelper;
+	}
+
+	public void setPersistenceHelper(PersistenceHelper persistenceHelper) {
+		this.persistenceHelper = persistenceHelper;
+	}
+	
 	public AssessmentFacadeQueriesAPI getAssessmentFacadeQueries(){
 	    return assessmentFacadeQueries;
 	    //return (AssessmentFacadeQueriesAPI)ComponentManager.get(org.sakaiproject.tool.assessment.facade.AssessmentFacadeQueriesAPI.class);
@@ -201,26 +212,36 @@ public class PersistenceService{
 	}
 
 
-	public int retryDeadlock(Exception e, int retryCount){
-		log.warn("Error saving to db...retry again....");
-		String errorMessage = e.getMessage();
-		log.warn(errorMessage);
-		int index = errorMessage.indexOf("ORA-00060"); // deadlock
-		int index2 = errorMessage.indexOf("SQL state [61000]"); // oracle deadlock
-		int index3 = errorMessage.indexOf("SQL state [41000]"); // mysql deadlock
-		if (index > -1 || index2 > -1 || index3 > -1){
-			retryCount--;
-			try {
-				int ideadlockInterval = deadlockInterval.intValue();
-				Thread.currentThread().sleep(ideadlockInterval);
-			}
-			catch(InterruptedException ex){
-				log.warn(ex.getMessage());
-			}
-		}
-		else retryCount = 0;
-		return retryCount;
-	}
+      public int retryDeadlock(Exception e, int retryCount){
+        log.warn("Error saving to db...retry again....");
+        String errorMessage = e.getMessage();
+        log.warn(errorMessage);
+        int index = errorMessage.indexOf("ORA-00060"); // deadlock
+        int index2 = errorMessage.indexOf("SQL state [61000]"); // oracle deadlock
+        int index3 = errorMessage.indexOf("SQL state [41000]"); // mysql deadlock
+        if (index > -1 || index2 > -1 || index3 > -1){
+          retryCount--;
+          try {
+            int ideadlockInterval = deadlockInterval.intValue();
+            Thread.currentThread().sleep(ideadlockInterval);
+          }
+          catch(InterruptedException ex){
+            log.warn(ex.getMessage());
+          }
+        }
+        else retryCount = 0;
+     return retryCount;
+   }
+      
+      public EventLogFacadeQueriesAPI getEventLogFacadeQueries() {
+    	  return eventLogFacadeQueries;
+      }
+
+      public void setEventLogFacadeQueries(
+    		  EventLogFacadeQueriesAPI eventLogFacadeQueries) {
+    	  this.eventLogFacadeQueries = eventLogFacadeQueries;
+      }
+        
 
 	public void setFavoriteColChoicesFacadeQueries(FavoriteColChoicesFacadeQueriesAPI favoriteColChoicesFacadeQueries){
 		this.favoriteColChoicesFacadeQueries = favoriteColChoicesFacadeQueries;

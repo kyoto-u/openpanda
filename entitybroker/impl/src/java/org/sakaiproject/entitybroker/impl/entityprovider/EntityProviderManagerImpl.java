@@ -1,6 +1,6 @@
 /**
- * $Id: EntityProviderManagerImpl.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/impl/src/java/org/sakaiproject/entitybroker/impl/entityprovider/EntityProviderManagerImpl.java $
+ * $Id: EntityProviderManagerImpl.java 113499 2012-09-25 01:13:56Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/impl/src/java/org/sakaiproject/entitybroker/impl/entityprovider/EntityProviderManagerImpl.java $
  * EBlogic.java - entity-broker - Apr 15, 2008 4:29:18 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

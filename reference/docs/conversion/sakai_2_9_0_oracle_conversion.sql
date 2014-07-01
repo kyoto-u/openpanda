@@ -23,21 +23,19 @@ alter table SAKAI_SITE add SOFTLY_DELETED_DATE timestamp;
 -- Empty the SAKAI_CLUSTER, Oracle refuses to alter the table with records in it..
 delete from SAKAI_CLUSTER;
 -- Change the datatype
-alter table SAKAI_CLUSTER modify (UPDATE_TIME timestamp with local time zone);
-
--- See KNL-985 - These were removed from 2.9.x pending further investigation
+alter table SAKAI_CLUSTER modify (UPDATE_TIME timestamp with time zone);
 
 -- KNL-735 use a datetype with timezone
 -- Make sure sakai is stopped when running this.
 -- Empty the SAKAI_EVENT & SAKAI_SESSION, Oracle refuses to alter the table with records in it.
--- delete from SAKAI_EVENT;
--- delete from SAKAI_SESSION;
+delete from SAKAI_EVENT;
+delete from SAKAI_SESSION;
 
 -- Change the datatype
--- alter table SAKAI_EVENT MODIFY (EVENT_DATE timestamp with time zone); 
+alter table SAKAI_EVENT MODIFY (EVENT_DATE timestamp with time zone); 
 -- Change the datatype
--- alter table SAKAI_SESSION MODIFY (SESSION_START timestamp with time zone); 
--- alter table SAKAI_SESSION MODIFY (SESSION_END timestamp with time zone); 
+alter table SAKAI_SESSION MODIFY (SESSION_START timestamp with time zone); 
+alter table SAKAI_SESSION MODIFY (SESSION_END timestamp with time zone); 
 
 --SAK-19964 Gradebook drop highest and/or lowest or keep highest score for a student
 alter table GB_CATEGORY_T add DROP_HIGHEST number(11,0) null;
@@ -285,7 +283,7 @@ from PERMISSIONS_SRC_TEMP TMPSRC
 JOIN SAKAI_REALM_ROLE SRR ON (TMPSRC.ROLE_NAME = SRR.ROLE_NAME)
 JOIN SAKAI_REALM_FUNCTION SRF ON (TMPSRC.FUNCTION_NAME = SRF.FUNCTION_NAME);
 
--- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper")
+-- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper" OR "!user.template")
 INSERT INTO SAKAI_REALM_RL_FN (REALM_KEY, ROLE_KEY, FUNCTION_KEY)
 SELECT
     SRRFD.REALM_KEY, SRRFD.ROLE_KEY, TMP.FUNCTION_KEY
@@ -293,7 +291,7 @@ FROM
     (SELECT DISTINCT SRRF.REALM_KEY, SRRF.ROLE_KEY FROM SAKAI_REALM_RL_FN SRRF) SRRFD
     JOIN PERMISSIONS_TEMP TMP ON (SRRFD.ROLE_KEY = TMP.ROLE_KEY)
     JOIN SAKAI_REALM SR ON (SRRFD.REALM_KEY = SR.REALM_KEY)
-    WHERE SR.REALM_ID != '!site.helper'
+    WHERE SR.REALM_ID != '!site.helper' AND SR.REALM_ID NOT LIKE '!user.template%'
     AND NOT EXISTS (
         SELECT 1
             FROM SAKAI_REALM_RL_FN SRRFI
@@ -401,7 +399,7 @@ from PERMISSIONS_SRC_TEMP TMPSRC
 JOIN SAKAI_REALM_ROLE SRR ON (TMPSRC.ROLE_NAME = SRR.ROLE_NAME)
 JOIN SAKAI_REALM_FUNCTION SRF ON (TMPSRC.FUNCTION_NAME = SRF.FUNCTION_NAME);
 
--- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper")
+-- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper" OR "!user.template")
 INSERT INTO SAKAI_REALM_RL_FN (REALM_KEY, ROLE_KEY, FUNCTION_KEY)
 SELECT
     SRRFD.REALM_KEY, SRRFD.ROLE_KEY, TMP.FUNCTION_KEY
@@ -409,7 +407,7 @@ FROM
     (SELECT DISTINCT SRRF.REALM_KEY, SRRF.ROLE_KEY FROM SAKAI_REALM_RL_FN SRRF) SRRFD
     JOIN PERMISSIONS_TEMP TMP ON (SRRFD.ROLE_KEY = TMP.ROLE_KEY)
     JOIN SAKAI_REALM SR ON (SRRFD.REALM_KEY = SR.REALM_KEY)
-    WHERE SR.REALM_ID != '!site.helper'
+    WHERE SR.REALM_ID != '!site.helper' AND SR.REALM_ID NOT LIKE '!user.template%'
     AND NOT EXISTS (
         SELECT 1
             FROM SAKAI_REALM_RL_FN SRRFI
@@ -574,7 +572,7 @@ from PERMISSIONS_SRC_TEMP TMPSRC
 JOIN SAKAI_REALM_ROLE SRR ON (TMPSRC.ROLE_NAME = SRR.ROLE_NAME)
 JOIN SAKAI_REALM_FUNCTION SRF ON (TMPSRC.FUNCTION_NAME = SRF.FUNCTION_NAME);
 
--- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper")
+-- insert the new functions into the roles of any existing realm that has the role (don't convert the "!site.helper" OR "!user.template")
 INSERT INTO SAKAI_REALM_RL_FN (REALM_KEY, ROLE_KEY, FUNCTION_KEY)
 SELECT
     SRRFD.REALM_KEY, SRRFD.ROLE_KEY, TMP.FUNCTION_KEY
@@ -582,7 +580,7 @@ FROM
     (SELECT DISTINCT SRRF.REALM_KEY, SRRF.ROLE_KEY FROM SAKAI_REALM_RL_FN SRRF) SRRFD
     JOIN PERMISSIONS_TEMP TMP ON (SRRFD.ROLE_KEY = TMP.ROLE_KEY)
     JOIN SAKAI_REALM SR ON (SRRFD.REALM_KEY = SR.REALM_KEY)
-    WHERE SR.REALM_ID != '!site.helper'
+    WHERE SR.REALM_ID != '!site.helper' AND SR.REALM_ID NOT LIKE '!user.template%'
     AND NOT EXISTS (
         SELECT 1
             FROM SAKAI_REALM_RL_FN SRRFI
@@ -832,10 +830,3 @@ update EMAIL_TEMPLATE_ITEM set TEMPLATE_LOCALE = 'default' where TEMPLATE_LOCALE
 -- SAM-1216 Oracle and hibernate and forcing the blob
 alter table SAM_MEDIA_T modify (MEDIA blob); 
 -- end SAM-1216
-
--- KNL-952 - add site.add.project permission to preserve original behaviour
-INSERT INTO SAKAI_REALM_FUNCTION VALUES (SAKAI_REALM_FUNCTION_SEQ.NEXTVAL, 'site.add.project');
-INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!user.template.maintain'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = '.auth'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'site.add.project'));
-INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!user.template.registered'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = '.auth'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'site.add.project'));
-INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!user.template.sample'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = '.auth'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'site.add.project'));
--- end KNL-952

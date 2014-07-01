@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.3/src/main/java/org/sakaiproject/mock/domain/Site.java $
- * $Id: Site.java 101436 2011-12-06 03:04:14Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.0/src/main/java/org/sakaiproject/mock/domain/Site.java $
+ * $Id: Site.java 120413 2013-02-23 01:14:34Z botimer@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -252,8 +252,16 @@ public class Site extends AuthzGroup implements org.sakaiproject.site.api.Site {
 		return shortDescription;
 	}
 
+	public String getHtmlShortDescription() {
+		return shortDescription;
+	}
+
 	public void setShortDescription(String shortDescription) {
 		this.shortDescription = shortDescription;
+	}
+
+	public String getHtmlDescription() {
+		return description;
 	}
 
 	public String getSkin() {

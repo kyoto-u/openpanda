@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.3/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteBrowserAction.java $
- * $Id: SiteBrowserAction.java 121817 2013-03-27 00:52:43Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-10.0/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteBrowserAction.java $
+ * $Id: SiteBrowserAction.java 133304 2014-01-15 18:23:15Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -188,10 +188,10 @@ public class SiteBrowserAction extends PagedResourceActionII implements SiteHelp
 			state.setAttribute(SEARCH_TERM_PROP, termSearchProperty);
 		}
 
-		String noSearchSiteType = StringUtils.trimToNull(ServerConfigurationService.getString("sitesearch.noshow.sitetype"));
-		if (noSearchSiteType != null)
+		String[] noSearchSiteTypes = ServerConfigurationService.getStrings("sitesearch.noshow.sitetype");
+		if (noSearchSiteTypes != null)
 		{
-			state.setAttribute(NO_SHOW_SEARCH_TYPE, noSearchSiteType);
+			state.setAttribute(NO_SHOW_SEARCH_TYPE, noSearchSiteTypes);
 		}
 
 		// Make sure we have a permission to be looking for.
@@ -245,6 +245,21 @@ public class SiteBrowserAction extends PagedResourceActionII implements SiteHelp
 		{
 			template = buildVisitContext(state, context);
 		}
+		
+		// bjones86 - SAK-24423 - joinable site settings - join from site browser
+		else if( JoinableSiteSettings.SITE_BROWSER_JOIN_MODE.equalsIgnoreCase( mode ) )
+		{
+			if( JoinableSiteSettings.isJoinFromSiteBrowserEnabled() )
+			{
+				template = JoinableSiteSettings.buildJoinContextForSiteBrowser( state, context, rb );
+			}
+		else
+		{
+				Log.warn( "chef", "SiteBrowserAction: mode = " + mode + ", but site browser join is disabled globally" );
+				template = buildListContext( state, context );
+			}
+		}
+		
 		else
 		{
 			Log.warn("chef", "SiteBrowserAction: mode: " + mode);
@@ -288,6 +303,11 @@ public class SiteBrowserAction extends PagedResourceActionII implements SiteHelp
 		List sites = prepPage(state);
 		state.setAttribute(STATE_SITES, sites);
 		context.put("sites", sites);
+		
+		// bjones86 - SAK-24423 - joinable site settings - put the necessary info into the context for the list interface
+		JoinableSiteSettings.putSiteMapInContextForSiteBrowser( context, sites );
+        JoinableSiteSettings.putCurrentUserInContextForSiteBrowser( context );
+        JoinableSiteSettings.putIsSiteBrowserJoinEnabledInContext( context );
 
 		if (state.getAttribute(STATE_NUM_MESSAGES) != null)
 			context.put("allMsgNumber", state.getAttribute(STATE_NUM_MESSAGES).toString());
@@ -331,6 +351,17 @@ public class SiteBrowserAction extends PagedResourceActionII implements SiteHelp
 		// inform the observing courier that we just updated the page...
 		// if there are pending requests to do so they can be cleared
 		// justDelivered(state);
+        if (cms != null) 
+        {
+            Map<String, String> smap =new HashMap<String, String>();
+            Collection<AcademicSession> sessions = cms.getAcademicSessions();
+            for (AcademicSession s: sessions) {
+                smap.put(s.getEid(),s.getTitle());
+            } 
+
+            context.put("termsmap", smap );
+        }
+
 
 		return "_list";
 
@@ -341,20 +372,22 @@ public class SiteBrowserAction extends PagedResourceActionII implements SiteHelp
 	 */
 	private String buildSimpleSearchContext(SessionState state, Context context)
 	{
-
 		List newTypes = new Vector();
 		if (state.getAttribute(NO_SHOW_SEARCH_TYPE) != null)
 		{
-			String noType = state.getAttribute(NO_SHOW_SEARCH_TYPE).toString();
-			List oldTypes = SiteService.getSiteTypes();
-			for (int i = 0; i < oldTypes.size(); i++)
-			{
-				String siteType = oldTypes.get(i).toString();
-				if ((siteType.indexOf(noType)) == -1)
-				{
-					newTypes.add(siteType);
+			// SAK-19287
+			String[] noTypes = (String[]) state.getAttribute(NO_SHOW_SEARCH_TYPE);
+			List<String> oldTypes = SiteService.getSiteTypes();
+			
+			for (int i = 0; i < noTypes.length; i++) {
+				if (noTypes[i] != null && noTypes[i].length() > 0) {
+					String noType = noTypes[i].trim();
+					if (oldTypes.contains(noType)) {
+						oldTypes.remove(noType);
+					}
 				}
 			}
+			newTypes.addAll(oldTypes);
 		}
 		else
 		{
@@ -379,7 +412,7 @@ public class SiteBrowserAction extends PagedResourceActionII implements SiteHelp
 			context.put("termSearchSiteType", termSearchSiteType);
 			if (cms != null) 
 			{
-				context.put("terms", sortAcademicSessions( cms.getAcademicSessions() ));
+                context.put("terms", sortAcademicSessions( cms.getAcademicSessions()));
 			}
 		}
 
@@ -545,6 +578,11 @@ public class SiteBrowserAction extends PagedResourceActionII implements SiteHelp
 			}
 
 			context.put("contentTypeImageService", ContentTypeImageService.getInstance());
+			
+			// bjones86 - SAK-24423 - joinable site settings - put info into the context for the visit UI
+			JoinableSiteSettings.putIsSiteBrowserJoinEnabledInContext( context );
+			JoinableSiteSettings.putIsCurrentUserAlreadyMemberInContextForSiteBrowser( context, siteId );
+			JoinableSiteSettings.putIsSiteExcludedFromPublic( context, siteId );
 		}
 		catch (IdUnusedException err)
 		{
@@ -599,6 +637,26 @@ public class SiteBrowserAction extends PagedResourceActionII implements SiteHelp
 		}
 
 	} // doVisit
+	
+	/**
+	 * Handle a request to join a site.
+	 * 
+	 * @author bjones86
+	 * 
+	 * @param data
+	 * 				the state to get the settings from
+	 * @param context
+	 * 				the object to put the settings into
+	 */
+	public void doJoin( RunData data, Context context )
+	{
+		SessionState state = ( (JetspeedRunData) data).getPortletSessionState( ( (JetspeedRunData) data).getJs_peid() );
+		String message = JoinableSiteSettings.doJoinForSiteBrowser( state, rb, data.getParameters().getString( "id" ) );
+		if( message != null && !message.isEmpty() )
+		{
+			addAlert( state, message );
+		}
+	} // doJoin
 
 	/**
 	 * Handle a request to return to the list.

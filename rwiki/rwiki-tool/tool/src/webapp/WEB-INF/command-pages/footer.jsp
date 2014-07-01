@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.3/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/footer.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/footer.jsp $
  * $Id: footer.jsp 20386 2007-01-17 18:17:52Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

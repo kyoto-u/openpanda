@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: Gradebook.java 95212 2011-07-15 11:39:20Z david.horwitz@uct.ac.za $
+* $Id: Gradebook.java 130402 2013-10-11 18:54:57Z matthew@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,6 +45,8 @@ public class Gradebook implements Serializable {
     private Set<GradeMapping> gradeMappings;
     private boolean assignmentsDisplayed;
     private boolean courseGradeDisplayed;
+    private boolean totalPointsDisplayed;
+    private boolean courseAverageDisplayed;
     private boolean allAssignmentsEntered;
     private boolean locked;
     private int grade_type;
@@ -218,6 +220,22 @@ public class Gradebook implements Serializable {
      */
     public void setCourseGradeDisplayed(boolean courseGradeDisplayed) {
         this.courseGradeDisplayed = courseGradeDisplayed;
+    }
+
+    public boolean isTotalPointsDisplayed() {
+      return totalPointsDisplayed;
+    }
+
+    public void setTotalPointsDisplayed(boolean totalPointsDisplayed) {
+      this.totalPointsDisplayed = totalPointsDisplayed;
+    }
+
+    public boolean isCourseAverageDisplayed() {
+      return courseAverageDisplayed;
+    }
+
+    public void setCourseAverageDisplayed(boolean courseAverageDisplayed) {
+      this.courseAverageDisplayed = courseAverageDisplayed;
     }
 
     public String toString() {

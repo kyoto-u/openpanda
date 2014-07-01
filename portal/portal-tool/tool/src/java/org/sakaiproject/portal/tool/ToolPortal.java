@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-tool/tool/src/java/org/sakaiproject/portal/tool/ToolPortal.java $
- * $Id: ToolPortal.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-tool/tool/src/java/org/sakaiproject/portal/tool/ToolPortal.java $
+ * $Id: ToolPortal.java 132744 2013-12-18 15:34:44Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -36,6 +36,7 @@ import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.portal.util.ErrorReporter;
 import org.sakaiproject.portal.util.ToolURLManagerImpl;
+import org.sakaiproject.portal.util.URLUtils;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
@@ -54,7 +55,7 @@ import org.sakaiproject.util.Web;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 132744 $
  */
 
 public class ToolPortal extends HttpServlet
@@ -120,7 +121,7 @@ public class ToolPortal extends HttpServlet
 
 			// our path is /placement-id/tool-destination, but we want to
 			// include anchors and parameters in the destination...
-			String path = req.getPathInfo();
+			String path = URLUtils.getSafePathInfo(req);
 			if ((path == null) || (path.length() <= 1))
 			{
 				res.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -281,7 +282,7 @@ public class ToolPortal extends HttpServlet
 		String headCssToolSkin = "<link href=\"" + skinRepo + "/" + skin
 				+ "/tool.css\" type=\"text/css\" rel=\"stylesheet\" media=\"all\" />\n";
 		String headCss = headCssToolBase + headCssToolSkin;
-		String headJs = "<script type=\"text/javascript\" language=\"JavaScript\" src=\"/library/js/headscripts.js\"></script>\n";
+		String headJs = "<script type=\"text/javascript\" src=\"/library/js/headscripts.js\"></script>\n";
 		String head = headCss + headJs;
 		StringBuilder bodyonload = new StringBuilder();
 		if (p != null)

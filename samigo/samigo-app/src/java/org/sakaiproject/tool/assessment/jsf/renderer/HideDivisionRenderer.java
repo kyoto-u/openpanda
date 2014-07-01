@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/HideDivisionRenderer.java $
- * $Id: HideDivisionRenderer.java 96482 2011-08-05 22:59:49Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/HideDivisionRenderer.java $
+ * $Id: HideDivisionRenderer.java 110587 2012-07-20 21:45:44Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,15 +43,14 @@ import org.sakaiproject.tool.cover.SessionManager;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: HideDivisionRenderer.java 96482 2011-08-05 22:59:49Z ktsao@stanford.edu $
+ * @version $Id: HideDivisionRenderer.java 110587 2012-07-20 21:45:44Z ktsao@stanford.edu $
  */
 
 public class HideDivisionRenderer extends Renderer
 {
 //  private static final String BARSTYLE = "navModeAction";
   private static final String BARSTYLE = "";
-  private static final String BARTAG = "h4";
-  private static final String BARIMG = "/images/right_arrow.gif";
+  private static final String BARTAG = "h3";
 
   public boolean supportsComponentType(UIComponent component)
   {
@@ -111,13 +110,10 @@ public class HideDivisionRenderer extends Renderer
           .getRequestContextPath();
 
         writer.write("<" + BARTAG + " class=\"" + BARSTYLE + "\">");
-        writer.write("<a href=\"#\""+ " class=\"hideDivision\" onclick=\"javascript:showHideDiv('" + id +
-           "', '" +  contextPath + "');\" onmouseup=\"blur()\"><img id=\"__img_hide_division_" + id + "\" alt=\"Click to reveal:\"");
-        writer.write("    src=\""   + contextPath +
-           BARIMG + "\" style=\"cursor:pointer;\" />");
+        writer.write("<a href=\"#\""+ " class=\"jqueryui-hideDivision\">");
         writer.write("  " + title + "");
         writer.write("</a></"+ BARTAG + ">");
-        writer.write("<div \" id=\"__hide_division_" + id + "\">");
+        writer.write("<div id=\"__hide_division_" + id + "\">");
     }
 
 

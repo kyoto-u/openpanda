@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>base</artifactId>
-		<groupId>org.sakaiproject</groupId>
-		<version>2.9.3</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+    <parent>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>master</artifactId>
+        <version>10.0</version>
+        <relativePath>../master/pom.xml</relativePath>
+    </parent>
 	<name>Sakai Config Project</name>
 	<groupId>org.sakaiproject</groupId>
 	<artifactId>config</artifactId>
-  <version>2.9.3</version>
+    <version>10.0</version>
 	<packaging>pom</packaging>
 	<description>The Config project is home to Sakai configuration and localization files.  Config includes 
 	several versions of sakai.properties, a text file containing a series of key/value pairs 
@@ -34,9 +34,9 @@
         </developer>
     </developers>
 	<scm>
-		<connection>scm:svn:https://source.sakaiproject.org/svn/config/branches/sakai-2.9.x</connection>
-		<developerConnection>scm:svn:https://source.sakaiproject.org/svn/config/branches/sakai-2.9.x</developerConnection>
-		<url>https://source.sakaiproject.org/svn/config/branches/sakai-2.9.x</url>
+		<connection>scm:svn:https://source.sakaiproject.org/svn/config/trunk</connection>
+		<developerConnection>scm:svn:https://source.sakaiproject.org/svn/config/trunk</developerConnection>
+		<url>https://source.sakaiproject.org/svn/config/trunk</url>
 	</scm>
 	<modules>
 		<module>configuration/bundles</module>
@@ -45,4 +45,35 @@
 		<module>sharedI18n/bundles</module>
 		<module>sharedI18n/pack</module>
 	</modules>
+	<build>
+	    <pluginManagement>
+	        <plugins>
+	            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+	            <plugin>
+	                <groupId>org.eclipse.m2e</groupId>
+	                <artifactId>lifecycle-mapping</artifactId>
+	                <version>1.0.0</version>
+	                <configuration>
+	                    <lifecycleMappingMetadata>
+	                        <pluginExecutions>
+	                            <pluginExecution>
+	                                <pluginExecutionFilter>
+	                                    <groupId>org.apache.maven.plugins</groupId>
+	                                    <artifactId>maven-antrun-plugin</artifactId>
+	                                    <versionRange>[1.6,)</versionRange>
+	                                    <goals>
+	                                        <goal>run</goal>
+	                                    </goals>
+	                                </pluginExecutionFilter>
+	                                <action>
+	                                    <ignore></ignore>
+	                                </action>
+	                            </pluginExecution>
+	                        </pluginExecutions>
+	                    </lifecycleMappingMetadata>
+	                </configuration>
+	            </plugin>
+	        </plugins>
+	    </pluginManagement>
+	</build>
 </project>

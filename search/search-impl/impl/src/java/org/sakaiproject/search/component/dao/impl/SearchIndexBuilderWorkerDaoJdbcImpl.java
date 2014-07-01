@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/component/dao/impl/SearchIndexBuilderWorkerDaoJdbcImpl.java $
- * $Id: SearchIndexBuilderWorkerDaoJdbcImpl.java 118571 2013-01-22 16:40:50Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/component/dao/impl/SearchIndexBuilderWorkerDaoJdbcImpl.java $
+ * $Id: SearchIndexBuilderWorkerDaoJdbcImpl.java 111640 2012-08-20 12:58:11Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,13 +33,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
@@ -48,7 +48,6 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.hibernate.HibernateException;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.search.api.EntityContentProducer;
 import org.sakaiproject.search.api.SearchIndexBuilder;
 import org.sakaiproject.search.api.SearchIndexBuilderWorker;
@@ -60,10 +59,12 @@ import org.sakaiproject.search.dao.SearchIndexBuilderWorkerDao;
 import org.sakaiproject.search.index.IndexStorage;
 import org.sakaiproject.search.model.SearchBuilderItem;
 import org.sakaiproject.search.model.impl.SearchBuilderItemImpl;
+import org.sakaiproject.search.util.DigestStorageUtil;
+import org.sakaiproject.search.util.DocumentIndexingUtils;
 import org.sakaiproject.site.api.Site;
-import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.api.SiteService.SelectionType;
 import org.sakaiproject.site.api.SiteService.SortType;
+import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
 
 public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWorkerDao
@@ -102,6 +103,14 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 	private DataSource dataSource = null;
 
 	private ServerConfigurationService serverConfigurationService;
+	
+	private SearchService searchService = null;
+	
+
+	public void setSearchService(SearchService searchService) {
+		this.searchService = searchService;
+	}
+
 
 	public void init()
 	{
@@ -205,7 +214,10 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 					}
 					try
 					{
-						con.close();
+						if (con != null)
+						{
+							con.close();
+						}
 					}
 					catch (Exception e)
 					{
@@ -367,116 +379,11 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 							if (indexDoc && sep != null && sep.isForIndex(ref)
 									&& sep.getSiteId(ref) != null)
 							{
-
-								Document doc = new Document();
-								Reference r;
-								String container = sep.getContainer(ref);
-								if (container == null) container = ""; //$NON-NLS-1$
-								doc.add(new Field(SearchService.DATE_STAMP, String
-										.valueOf(System.currentTimeMillis()),
-										Field.Store.COMPRESS, Field.Index.UN_TOKENIZED));
-								doc.add(new Field(SearchService.FIELD_CONTAINER,
-										filterNull(container), Field.Store.COMPRESS,
-										Field.Index.UN_TOKENIZED));
-								doc.add(new Field(SearchService.FIELD_ID, filterNull(sep
-										.getId(ref)), Field.Store.COMPRESS,
-										Field.Index.NO));
-								doc.add(new Field(SearchService.FIELD_TYPE,
-										filterNull(sep.getType(ref)),
-										Field.Store.COMPRESS, Field.Index.UN_TOKENIZED));
-								doc.add(new Field(SearchService.FIELD_SUBTYPE,
-										filterNull(sep.getSubType(ref)),
-										Field.Store.COMPRESS, Field.Index.UN_TOKENIZED));
-								doc.add(new Field(SearchService.FIELD_REFERENCE,
-										filterNull(ref), Field.Store.COMPRESS,
-										Field.Index.UN_TOKENIZED));
-
 								
-								if (sep.isContentFromReader(ref))
-								{
-									contentReader = sep.getContentReader(ref);
-									if ( log.isDebugEnabled() ) {
-										log.debug("Adding Content for "+ref+" using "+contentReader);
-									}
-									doc.add(new Field(SearchService.FIELD_CONTENTS,
-											contentReader, Field.TermVector.YES));
-								}
-								else
-								{
-									String content = sep.getContent(ref);
-									if ( log.isDebugEnabled() ) {
-										log.debug("Adding Content for "+ref+" as ["+content+"]");
-									}
-									doc.add(new Field(SearchService.FIELD_CONTENTS,
-											filterNull(content),
-											Field.Store.NO, Field.Index.TOKENIZED,
-											Field.TermVector.YES));
-								}
-
-								doc.add(new Field(SearchService.FIELD_TITLE,
-										filterNull(sep.getTitle(ref)),
-										Field.Store.COMPRESS, Field.Index.TOKENIZED,
-										Field.TermVector.YES));
-								doc.add(new Field(SearchService.FIELD_TOOL,
-										filterNull(sep.getTool()), Field.Store.COMPRESS,
-										Field.Index.UN_TOKENIZED));
-								doc.add(new Field(SearchService.FIELD_URL, filterUrl(filterNull(sep
-										.getUrl(ref))), Field.Store.COMPRESS,
-										Field.Index.UN_TOKENIZED));
-								doc.add(new Field(SearchService.FIELD_SITEID,
-										filterNull(sep.getSiteId(ref)),
-										Field.Store.COMPRESS, Field.Index.UN_TOKENIZED));
-
-								// add the custom properties
-
-								Map m = sep.getCustomProperties(ref);
-								if (m != null)
-								{
-									for (Iterator cprops = m.keySet().iterator(); cprops
-											.hasNext();)
-									{
-										String key = (String) cprops.next();
-										Object value = m.get(key);
-										String[] values = null;
-										if (value instanceof String)
-										{
-											values = new String[1];
-											values[0] = (String) value;
-										}
-										if (value instanceof String[])
-										{
-											values = (String[]) value;
-										}
-										if (values == null)
-										{
-											log
-													.info("Null Custom Properties value has been suppled by " //$NON-NLS-1$
-															+ sep + " in index " //$NON-NLS-1$
-															+ key);
-										}
-										else
-										{
-											for (int i = 0; i < values.length; i++)
-											{
-												if (key.startsWith("T"))
-												{
-													key = key.substring(1);
-													doc.add(new Field(key,
-															filterNull(values[i]),
-															Field.Store.COMPRESS,
-															Field.Index.TOKENIZED,Field.TermVector.YES));
-												}
-												else
-												{
-													doc.add(new Field(key,
-															filterNull(values[i]),
-															Field.Store.COMPRESS,
-															Field.Index.UN_TOKENIZED));
-												}
-											}
-										}
-									}
-								}
+								DigestStorageUtil digestStorageUtil = new DigestStorageUtil(searchService);
+								//Reader contentReader = null;
+								Document doc = DocumentIndexingUtils.createIndexDocument(ref, digestStorageUtil, sep, serverConfigurationService.getServerUrl(), contentReader);
+										//indexDocTMP(ref, sep);
 
 								log.debug("Indexing Document " + doc); //$NON-NLS-1$
 
@@ -593,10 +500,10 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 			{
 				if (log.isDebugEnabled())
 				{
-					log.debug("Closing Index Writer With " + indexWrite.docCount()
+					log.debug("Closing Index Writer With " + indexWrite.maxDoc()
 							+ " documents");
 					Directory d = indexWrite.getDirectory();
-					String[] s = d.list();
+					String[] s = d.listAll();
 					log.debug("Directory Contains ");
 					for (int i = 0; i < s.length; i++)
 					{
@@ -611,35 +518,8 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 
 	}
 
-	/**
-	 * @param string
-	 * @return
-	 */
-	private String filterUrl(String url)
-	{
-		String serverURL = serverConfigurationService.getServerUrl();
-		if ( url != null && url.startsWith(serverURL) ) {
-			String absUrl = url.substring(serverURL.length());
-			if ( !absUrl.startsWith("/") ) {
-				absUrl = "/" + absUrl;
-			}
-			return absUrl;
-		}
-		return url;
-	}
 
-	/**
-	 * @param title
-	 * @return
-	 */
-	private String filterNull(String s)
-	{
-		if (s == null)
-		{
-			return "";
-		}
-		return s;
-	}
+
 
 	private int completeUpdate(SearchIndexBuilderWorker worker, Connection connection,
 			List runtimeToDo) throws Exception
@@ -850,12 +730,21 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 			if (indexWrite != null)
 			{
 				Document doc = new Document();
-				doc
-				.add(new Field(SearchService.DATE_STAMP, String.valueOf(System
-						.currentTimeMillis()), Field.Store.COMPRESS,
-						Field.Index.UN_TOKENIZED));
-				doc.add(new Field(SearchService.FIELD_ID, "---INDEX-CREATED---",
-						Field.Store.COMPRESS, Field.Index.UN_TOKENIZED));
+				//The date of indexing
+				String timeStamp = String
+						.valueOf(System.currentTimeMillis());
+				doc.add(new Field(SearchService.DATE_STAMP, timeStamp,
+						Field.Store.NO, Field.Index.NOT_ANALYZED));
+				doc.add(new Field(SearchService.DATE_STAMP, CompressionTools.compressString(timeStamp), Field.Store.YES));
+				
+				String ref= "---INDEX-CREATED---";
+				doc.add(new Field(SearchService.FIELD_REFERENCE,
+						CompressionTools.compressString(ref),
+						Field.Store.YES));
+				doc.add(new Field(SearchService.FIELD_REFERENCE,
+						ref, Field.Store.NO,
+						Field.Index.NOT_ANALYZED));
+				
 				indexWrite.addDocument(doc);
 			} else {
 				log.error("Couldn't get indexWriter to add document!");
@@ -873,10 +762,10 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 			{
 				if (log.isDebugEnabled())
 				{
-					log.debug("Closing Index Writer With " + indexWrite.docCount()
+					log.debug("Closing Index Writer With " + indexWrite.maxDoc()
 							+ " documents");
 					Directory d = indexWrite.getDirectory();
-					String[] s = d.list();
+					String[] s = d.listAll();
 					log.debug("Directory Contains ");
 					for (int i = 0; i < s.length; i++)
 					{

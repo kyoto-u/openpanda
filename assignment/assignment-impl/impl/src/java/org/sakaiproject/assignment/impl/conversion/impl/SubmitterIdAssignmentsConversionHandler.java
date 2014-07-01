@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/SubmitterIdAssignmentsConversionHandler.java $
- * $Id: SubmitterIdAssignmentsConversionHandler.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/SubmitterIdAssignmentsConversionHandler.java $
+ * $Id: SubmitterIdAssignmentsConversionHandler.java 110665 2012-07-24 14:18:50Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -95,15 +95,8 @@ public class SubmitterIdAssignmentsConversionHandler implements SchemaConversion
 
 		try
 		{
-			List<String> submitters = sax.getSubmitters();
-			if(submitters == null || submitters.isEmpty())
-			{
-				updateRecord.setString(1, null);
-			}
-			else
-			{
-				updateRecord.setString(1, submitters.get(0));
-			}
+			updateRecord.setString(1, sax.getSubmitterId());
+			
 			String dateSubmitted = sax.getDatesubmitted();
 			if(dateSubmitted == null || dateSubmitted.trim().equals(""))
 			{

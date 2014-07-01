@@ -1,77 +1,43 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>base</artifactId>
-    <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
+    <parent>
+      <groupId>org.sakaiproject</groupId>
+      <artifactId>master</artifactId>
+      <version>10.0</version>
+      <relativePath>../master/pom.xml</relativePath>
+    </parent>
   <name>Sakai Chat Project</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>chat-base</artifactId>
-  <version>2.9.3</version>
+  <version>10.0</version>
   <packaging>pom</packaging>
-  <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/chat/branches/sakai-2.9.x</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/chat/branches/sakai-2.9.x</developerConnection>
-    <url>https://source.sakaiproject.org/svn/chat/branches/sakai-2.9.x</url>
-  </scm>
+
   <modules>
     <module>chat-api/api</module>
-    <module>chat-help</module>
     <module>chat-impl/impl</module>
     <module>chat-impl/pack</module>
     <module>chat-tool/tool</module>
   </modules>
+
+  <scm>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/chat/trunk</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/chat/trunk</developerConnection>
+    <url>https://source.sakaiproject.org/svn/chat/trunk</url>
+  </scm>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.sakaiproject.message</groupId>
-        <artifactId>sakai-message-impl</artifactId>
-        <version>${sakai.message.version}</version>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>sakai-chat-api</artifactId>
+        <version>${project.version}</version>
+	<scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-chat-impl</artifactId>
         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.presence</groupId>
-        <artifactId>sakai-presence-util</artifactId>
-        <version>${sakai.presence.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.courier</groupId>
-        <artifactId>sakai-courier-util</artifactId>
-        <version>${sakai.courier.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.site</groupId>
-        <artifactId>sakai-mergedlist-util</artifactId>
-        <version>${sakai.site.version}</version>
-      </dependency>
-<!-- JSF dependencies -->
-      <dependency>
-        <groupId>org.sakaiproject.jsf</groupId>
-        <artifactId>jsf-tool</artifactId>
-        <version>${sakai.jsf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.jsf</groupId>
-        <artifactId>jsf-app</artifactId>
-        <version>${sakai.jsf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.jsf</groupId>
-        <artifactId>jsf-widgets-sun-depend</artifactId>
-        <version>${sakai.jsf.version}</version>
-        <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.velocity</groupId>
-        <artifactId>sakai-velocity-tool</artifactId>
-        <version>${sakai.velocity-tool.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

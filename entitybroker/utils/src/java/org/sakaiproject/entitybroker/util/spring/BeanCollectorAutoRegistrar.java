@@ -1,6 +1,6 @@
 /**
- * $Id: BeanCollectorAutoRegistrar.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/utils/src/java/org/sakaiproject/entitybroker/util/spring/BeanCollectorAutoRegistrar.java $
+ * $Id: BeanCollectorAutoRegistrar.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/utils/src/java/org/sakaiproject/entitybroker/util/spring/BeanCollectorAutoRegistrar.java $
  * BeanCollectorAutoRegistrar.java - entity-broker - Apr 15, 2008 4:29:18 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-util/src/main/java/org/sakaiproject/util/BaseResourceProperties.java $
- * $Id: BaseResourceProperties.java 81527 2010-08-19 13:55:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-util/src/main/java/org/sakaiproject/util/BaseResourceProperties.java $
+ * $Id: BaseResourceProperties.java 124158 2013-05-16 15:37:05Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,7 @@
 
 package org.sakaiproject.util;
 
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -472,6 +473,13 @@ public class BaseResourceProperties implements ResourceProperties, SerializableP
 
 	} // getTimeProperty
 
+	
+	public Date getDateProperty(String name) throws EntityPropertyNotDefinedException, EntityPropertyTypeException
+	{
+		Time time = getTimeProperty(name);
+		return new Date(time.getTime());
+	}
+	
 	/**
 	 * Access a named property as a User.
 	 * 

@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/StatsManagerTest.java $
- * $Id: StatsManagerTest.java 78669 2010-06-21 13:55:23Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/StatsManagerTest.java $
+ * $Id: StatsManagerTest.java 307309 2014-03-20 19:44:14Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,7 @@
 package org.sakaiproject.sitestats.test;
 
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.easymock.EasyMock;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentTypeImageService;
 import org.sakaiproject.event.api.Event;
@@ -52,6 +53,7 @@ import org.sakaiproject.sitestats.api.report.ReportManager;
 import org.sakaiproject.sitestats.impl.StatsManagerImpl;
 import org.sakaiproject.sitestats.impl.StatsUpdateManagerImpl;
 import org.sakaiproject.sitestats.test.data.FakeData;
+import org.sakaiproject.sitestats.test.mocks.FakeEventRegistryService;
 import org.sakaiproject.sitestats.test.mocks.FakeServerConfigurationService;
 import org.sakaiproject.sitestats.test.mocks.FakeSite;
 import org.sakaiproject.time.api.Time;
@@ -70,6 +72,7 @@ public class StatsManagerTest extends AbstractAnnotationAwareTransactionalTests 
 	private FakeServerConfigurationService	M_scs;
 	private ContentHostingService			M_chs;
 	private ContentTypeImageService			M_ctis;
+	private FakeEventRegistryService		M_ers;
 	
 	// Spring configuration	
 	public void setStatsManager(StatsManager M_sm) {
@@ -80,6 +83,9 @@ public class StatsManagerTest extends AbstractAnnotationAwareTransactionalTests 
 	}
 	public void setServerConfigurationService(FakeServerConfigurationService M_scs) {
 		this.M_scs = M_scs;
+	}
+	public void setEventRegistryService(FakeEventRegistryService M_ers) {
+		this.M_ers = M_ers;
 	}
 	public void setDb(DB db) {
 		this.db = db;
@@ -127,8 +133,6 @@ public class StatsManagerTest extends AbstractAnnotationAwareTransactionalTests 
 		expect(M_ss.getSite(FakeData.SITE_A_ID)).andStubReturn(siteA);
 		expect(M_ss.isUserSite(FakeData.SITE_A_ID)).andStubReturn(false);
 		expect(M_ss.isSpecialSite(FakeData.SITE_A_ID)).andStubReturn(false);
-		//expect(siteA.getCreatedTime()).andStubReturn(timeA).anyTimes();
-		expect(siteA.getCreatedTime()).andStubReturn((Time)anyObject());
 		
 		// Site B has tools {TOOL_CHAT}, has {user-a}, created 2 months ago
 		FakeSite siteB = new FakeSite(FakeData.SITE_B_ID, FakeData.TOOL_CHAT);
@@ -136,9 +140,7 @@ public class StatsManagerTest extends AbstractAnnotationAwareTransactionalTests 
 		((FakeSite)siteB).setMembers(new HashSet<String>(Arrays.asList(FakeData.USER_A_ID)));
 		expect(M_ss.getSite(FakeData.SITE_B_ID)).andStubReturn(siteB);
 		expect(M_ss.isUserSite(FakeData.SITE_B_ID)).andStubReturn(false);
-		expect(M_ss.isSpecialSite(FakeData.SITE_B_ID)).andStubReturn(false);	
-		//expect(siteB.getCreatedTime()).andStubReturn(timeB).anyTimes();
-		expect(siteB.getCreatedTime()).andStubReturn((Time)anyObject());
+		expect(M_ss.isSpecialSite(FakeData.SITE_B_ID)).andStubReturn(false);
 
 		if(enableLargeMembershipTest) {
 			// Site C has tools {SiteStats, Chat}, has 2002 users (user-1..user-2002), created 1 month ago
@@ -187,6 +189,8 @@ public class StatsManagerTest extends AbstractAnnotationAwareTransactionalTests 
 		((StatsManagerImpl)M_sm).setCountFilesUsingCHS(false);
 		((StatsUpdateManagerImpl)M_sum).setSiteService(M_ss);
 		((StatsUpdateManagerImpl)M_sum).setStatsManager(M_sm);
+		
+		M_ers.setStatsManager(M_sm);
 	}
 
 	// run this before each test starts and as part of the transaction

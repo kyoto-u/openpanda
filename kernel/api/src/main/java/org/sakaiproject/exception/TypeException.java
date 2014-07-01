@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/exception/TypeException.java $
- * $Id: TypeException.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/exception/TypeException.java $
+ * $Id: TypeException.java 107067 2012-04-13 15:20:04Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,17 +26,10 @@ package org.sakaiproject.exception;
  * TypeException is thrown whenever type mismatch occurs.
  * </p>
  */
-public class TypeException extends Exception
+public class TypeException extends SakaiException
 {
-	private String m_id = null;
-
 	public TypeException(String id)
 	{
-		m_id = id;
-	}
-
-	public String toString()
-	{
-		return super.toString() + " id=" + m_id;
+		super(id);
 	}
 }

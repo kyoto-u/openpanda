@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/data/FakeData.java $
- * $Id: FakeData.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/data/FakeData.java $
+ * $Id: FakeData.java 116373 2012-11-14 18:40:48Z matthew.buckett@it.ox.ac.uk $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,8 +21,10 @@ package org.sakaiproject.sitestats.test.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.sakaiproject.sitestats.api.StatsManager;
 import org.sakaiproject.sitestats.api.event.EventInfo;
@@ -57,7 +59,7 @@ public class FakeData {
 	public final static String					EVENT_CONTENTDEL	= "content.delete";
 	
 	// EVENT LIST & EVENT MAP
-	public final static List<String>			EVENTIDS			= new ArrayList<String>();
+	public final static Set<String>				EVENTIDS			= new HashSet<String>();
 	public final static List<ToolInfo>			EVENT_REGISTRY		= new ArrayList<ToolInfo>();
 	public final static List<ToolInfo>			EVENT_REGISTRY_RES	= new ArrayList<ToolInfo>();
 	public final static List<ToolInfo>			EVENT_REGISTRY_CHAT	= new ArrayList<ToolInfo>();
@@ -67,6 +69,7 @@ public class FakeData {
 		EVENTIDS.add(EVENT_CONTENTREAD); 
 		EVENTIDS.add(EVENT_CONTENTREV); 
 		EVENTIDS.add(EVENT_CONTENTDEL); 
+		EVENTIDS.add(StatsManager.SITEVISIT_EVENTID);
 	};
 	public final static Map<String, ToolInfo>	EVENTID_TOOL_MAP	= new HashMap<String, ToolInfo>();
 	static{

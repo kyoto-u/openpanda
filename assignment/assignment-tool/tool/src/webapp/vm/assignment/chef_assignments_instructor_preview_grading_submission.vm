@@ -1,9 +1,8 @@
-<!-- $Id: chef_assignments_instructor_preview_grading_submission.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_preview_grading_submission.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
 <!-- start:  chef_assignments_instructor_preview_grading_submission.vm -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_preview_grading_submission.vm,v 1.5 2005/05/16 02:26:05 zqian.umich.edu Exp $ -->
-#parse("/vm/assignment/assignment_macros.vm")
-<div class="portletBody" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
-	<ul class="navIntraTool actionToolBar" role="menu">
+<div class="portletBody">
+	<ul class="navIntraTool actionToolBar">
 		#set($prevAction=false)
 		#if ($allowAddAssignment)
 				#set($prevAction=true)
@@ -160,8 +159,12 @@
 			#end
 			#if ($size == 0)
 			#else
-				<h4> 
-					$tlang.getString("gen.stuatt")
+				<h4>
+					#if ($submissionType == 5)
+						$tlang.getString("gen.stuatt.single")
+					#else
+						$tlang.getString("gen.stuatt")
+					#end
 				</h4>	
 				<ul class="attachList indnt1">
 					#foreach ($attachment in $submission.SubmittedAttachments) 

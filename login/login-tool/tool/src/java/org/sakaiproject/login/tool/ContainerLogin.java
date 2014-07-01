@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/login/tags/sakai-2.9.3/login-tool/tool/src/java/org/sakaiproject/login/tool/ContainerLogin.java $
- * $Id: ContainerLogin.java 101197 2011-11-30 01:38:12Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/login/tags/sakai-10.0/login-tool/tool/src/java/org/sakaiproject/login/tool/ContainerLogin.java $
+ * $Id: ContainerLogin.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: audioRecording.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+* $Id: audioRecording.jsp 307261 2014-03-20 00:42:33Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -47,11 +47,11 @@
 <%@ include file="/jsf/author/item/itemHeadings.jsp" %>
 <h:form id="itemForm">
 <p class="act">
-  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
-  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getPoolOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getPoolOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
@@ -76,7 +76,7 @@
   <!-- 1 POINTS -->
    <div class="shorttext">
     <h:outputLabel value="#{authorMessages.answer_point_value}" />
-    <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" onchange="toPoint(this.id);">
+    <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" disabled="#{author.isEditPoolFlow}" onchange="toPoint(this.id);">
 <f:validateDoubleRange minimum="0.00"/>
 </h:inputText><br/>
     <h:message for="answerptr" styleClass="validate"/>
@@ -111,7 +111,6 @@
 
   <h:outputLabel for="noattempts" value="#{authorMessages.number_of_attempts} : #{authorMessages.number_of_attempts_indic}" />
   <h:selectOneMenu id="noattempts" value="#{itemauthor.currentItem.numAttempts}" required="true">
-  <f:selectItem itemLabel="#{authorMessages.select}" itemValue=""/>
   <f:selectItem itemLabel="#{authorMessages.unlimited}" itemValue="9999"/> <%-- 9999 indicates unlimited --%>
   <f:selectItem itemLabel="1" itemValue="1"/>
   <f:selectItem itemLabel="2" itemValue="2"/>
@@ -129,7 +128,7 @@
 
   <!-- 5 PART -->
 
-  <h:panelGrid columns="3" columnClasses="shorttext" rendered="#{itemauthor.target == 'assessment'}">
+  <h:panelGrid columns="3" columnClasses="shorttext" rendered="#{itemauthor.target == 'assessment' && !author.isEditPoolFlow}">
    <f:verbatim>&nbsp;</f:verbatim>
    <h:outputLabel value="#{authorMessages.assign_to_p} " />
    <h:selectOneMenu id="assignToPart" value="#{itemauthor.currentItem.selectedSection}">
@@ -182,11 +181,11 @@
 </div>
 
 <p class="act">
-  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>
-  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{authorMessages.button_save}" action="#{itemauthor.currentItem.getPoolOutcome}" styleClass="active">
+  <h:commandButton rendered="#{itemauthor.target=='questionpool'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getPoolOutcome}" styleClass="active">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener" />
   </h:commandButton>

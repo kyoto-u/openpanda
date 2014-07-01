@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages.panels;
 
 import java.util.Collections;
@@ -140,6 +139,8 @@ public class ComposeNewMessage extends Panel {
 		//autocompletefield
 		final ObjectAutoCompleteField<Person, String> autocompleteField = builder.build("toField", new PropertyModel<String>(newMessage, "to"));
 		toField = autocompleteField.getSearchTextField();
+		toField.setMarkupId("messagerecipientinput");
+		toField.setOutputMarkupId(true);
 		toField.add(new AttributeModifier("class", true, new Model<String>("formInputField")));
 		toField.setRequired(true);
 		form.add(autocompleteField);
@@ -147,12 +148,16 @@ public class ComposeNewMessage extends Panel {
 		//subject
 		form.add(new Label("subjectLabel", new ResourceModel("message.subject")));
 		final TextField<String> subjectField = new TextField<String>("subjectField", new PropertyModel<String>(newMessage, "subject"));
+		subjectField.setMarkupId("messagesubjectinput");
+		subjectField.setOutputMarkupId(true);
 		subjectField.add(new RecipientEventBehavior("onfocus"));
 		form.add(subjectField);
 		
 		//body
 		form.add(new Label("messageLabel", new ResourceModel("message.message")));
 		final TextArea<String> messageField = new TextArea<String>("messageField", new PropertyModel<String>(newMessage, "message"));
+		messageField.setMarkupId("messagebodyinput");
+		messageField.setOutputMarkupId(true);
 		messageField.setRequired(true);
 		messageField.add(new RecipientEventBehavior("onfocus"));
 		form.add(messageField);
@@ -201,6 +206,7 @@ public class ComposeNewMessage extends Panel {
 				
 				formFeedback.setVisible(true);
 				target.addComponent(formFeedback);
+				
             }
 			
 			protected void onError(AjaxRequestTarget target, Form form) {

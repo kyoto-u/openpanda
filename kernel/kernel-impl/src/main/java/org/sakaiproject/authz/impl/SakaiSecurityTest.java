@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SakaiSecurityTest.java $
- * $Id: SakaiSecurityTest.java 52923 2008-09-29 22:01:38Z ian@caret.cam.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SakaiSecurityTest.java $
+ * $Id: SakaiSecurityTest.java 309209 2014-05-06 16:01:08Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@
 package org.sakaiproject.authz.impl;
 
 import org.sakaiproject.authz.api.AuthzGroupService;
+import org.sakaiproject.authz.api.FunctionManager;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.memory.api.MemoryService;
@@ -91,4 +92,9 @@ public class SakaiSecurityTest extends SakaiSecurity
 	{
 		return null;
 	}
+
+    @Override
+    protected FunctionManager functionManager() {
+        return null;
+    }
 }

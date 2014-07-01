@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/basiclti-impl/src/java/org/sakaiproject/basiclti/impl/BasicLTISecurityServiceImpl.java $
- * $Id: BasicLTISecurityServiceImpl.java 128165 2013-08-04 00:14:49Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/basiclti-impl/src/java/org/sakaiproject/basiclti/impl/BasicLTISecurityServiceImpl.java $
+ * $Id: BasicLTISecurityServiceImpl.java 309356 2014-05-08 21:13:08Z enietzel@anisakai.com $
  * 
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,6 +50,7 @@ import org.sakaiproject.entity.api.HttpAccess;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
@@ -276,7 +278,30 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 
 						   String refId = ref.getId();
 						   String [] retval = null;
-						   if ( refId.startsWith("content:") && refId.length() > 8 ) 
+						   if ( refId.startsWith("deploy:") && refId.length() > 7 )  
+						   {
+						       if ("!admin".equals(ref.getContext()) ) 
+						       {
+							       throw new EntityPermissionException(SessionManager.getCurrentSessionUserId(), "basiclti", ref.getReference());
+						       }
+							   Map<String,Object> deploy = null;
+							   String deployStr = refId.substring(7);
+							   Long deployKey = foorm.getLongKey(deployStr);
+							   if ( deployKey >= 0 ) deploy = ltiService.getDeployDao(deployKey);
+                               String placementId = req.getParameter("placement");
+                               // System.out.println("deployStr="+deployStr+" deployKey="+deployKey+" placementId="+placementId);
+                               // System.out.println(deploy);
+                               Long reg_state = foorm.getLongKey(deploy.get(LTIService.LTI_REG_STATE));
+                               if ( reg_state == 0 ) 
+                               { 
+                                   retval = SakaiBLTIUtil.postRegisterHTML(deployKey, deploy, rb, placementId);
+                               } 
+                               else
+                               { 
+                                   retval = SakaiBLTIUtil.postReRegisterHTML(deployKey, deploy, rb, placementId);
+                               } 
+						   } 
+						   else if ( refId.startsWith("content:") && refId.length() > 8 ) 
 						   {
 							   Map<String,Object> content = null;
 							   Map<String,Object> tool = null;
@@ -327,10 +352,41 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 									doSplash(req, res, splash, rb);
 									return;
 							   }
-							   retval = SakaiBLTIUtil.postLaunchHTML(content, tool, rb);
+							   retval = SakaiBLTIUtil.postLaunchHTML(content, tool, ltiService, rb);
 						   }
 						   else
 						   {
+								String splashParm = req.getParameter("splash");
+								if ( splashParm == null ) 
+								{
+									ToolConfiguration placement = SiteService.findTool(refId);
+									Properties config = placement == null ? null : placement.getConfig();
+
+									if ( placement != null ) 
+									{
+										// XSS Note: Only the Administrator can set overridesplash - so we allow HTML
+										String splash = SakaiBLTIUtil.toNull(SakaiBLTIUtil.getCorrectProperty(config,"overridesplash", placement));
+										if ( splash == null ) 
+										{
+											// This may be user-set so no HTML
+											splash = SakaiBLTIUtil.toNull(SakaiBLTIUtil.getCorrectProperty(config,"splash", placement));
+											if ( splash != null ) splash = FormattedText.escapeHtml(splash,false);
+										} 
+
+										// XSS Note: Only the Administrator can set defaultsplash - so we allow HTML
+										if ( splash == null ) 
+										{
+											splash = SakaiBLTIUtil.toNull(SakaiBLTIUtil.getCorrectProperty(config,"defaultsplash", placement));
+										}
+
+										if ( splash != null && splash.trim().length() > 1 )
+										{
+											doSplash(req, res, splash, rb);
+											return;
+										}
+									}
+								}
+
 							   // Get the post data for the placement
 							   retval = SakaiBLTIUtil.postLaunchHTML(refId, rb);
 						   }
@@ -344,6 +400,14 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 							   Event event = LocalEventTrackingService.newEvent(EVENT_BASICLTI_LAUNCH, refstring, ref.getContext(),  false, NotificationService.NOTI_OPTIONAL);
 							   // 2.5 Event call
 							   // Event event = EventTrackingService.newEvent(EVENT_BASICLTI_LAUNCH, refstring, false);
+
+								// SAK-24069 - Extend Sakai session lifetime on LTI tool launch
+								Session session = SessionManager.getCurrentSession(); 
+								if (session !=null) { 
+									int seconds = ServerConfigurationService.getInt(SakaiBLTIUtil.BASICLTI_LAUNCH_SESSION_TIMEOUT, 10800);
+									if ( seconds != 0 ) session.setMaxInactiveInterval(seconds); 
+								} 
+
 							   LocalEventTrackingService.post(event);
 						   } 
 						   catch (Exception e)

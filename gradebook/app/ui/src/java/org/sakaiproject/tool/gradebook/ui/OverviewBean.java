@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: OverviewBean.java 95987 2011-08-01 13:02:57Z aaronz@vt.edu $
+* $Id: OverviewBean.java 133464 2014-01-21 14:48:50Z azeckoski@unicon.net $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,6 +38,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
@@ -96,6 +97,18 @@ public class OverviewBean extends GradebookDependentBean implements Serializable
 		
 		return letterGrade;
 	}
+
+    /**
+     * Controls the display of the "Total Points" column on the overview screen.
+     * DEFAULT: false (Total Points column is not shown)
+     */
+    private Boolean displayTotalPoints;
+    public boolean isDisplayTotalPoints() {
+        if (displayTotalPoints == null) {
+            displayTotalPoints = ServerConfigurationService.getBoolean("gradebook.display.total.points", false);
+        }
+        return displayTotalPoints;
+    }
 
 	protected void init() {
 

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.3/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/worksite/mgt/impl/WorksiteManagerImpl.java $
- * $Id: WorksiteManagerImpl.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.0/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/worksite/mgt/impl/WorksiteManagerImpl.java $
+ * $Id: WorksiteManagerImpl.java 128044 2013-08-01 03:14:24Z botimer@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,8 +57,14 @@ public class WorksiteManagerImpl implements WorksiteManager {
    }
    
    public List getUserSites(Map properties, List siteTypes) {
-      List mySites = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
+      List mySites;
+      if ((properties == null || properties.isEmpty()) && (siteTypes == null || siteTypes.isEmpty())) {
+         mySites = SiteService.getUserSites();
+      }
+      else {
+         mySites = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
             siteTypes, null, properties, org.sakaiproject.site.api.SiteService.SortType.NONE, null);
+      }
 
       if (mySites.size() > 0) {
          Collections.sort(mySites);

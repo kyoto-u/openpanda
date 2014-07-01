@@ -16,7 +16,11 @@
 			      value="#{schedulerTool.schedulerManager.globalTriggerListener.isViewAllSelected ? msgs.select_today : msgs.select_all}"/>		  
 		      <sakai:tool_bar_item
 		        action="#{schedulerTool.processRefreshJobs}"
-			      value="#{msgs.bar_jobs}"/>		            		      
+			      value="#{msgs.bar_jobs}"/>		   
+			  <sakai:tool_bar_item
+		     	action="runningJobs"
+			   	value="#{msgs.running_jobs}"/>
+			           		      
      	  </sakai:tool_bar>           
       	
   	    <sakai:panel_titled title="#{msgs.event_log}">
@@ -59,6 +63,12 @@
                 <h:outputText value="#{msgs.message}"/>
               </f:facet>
               <h:outputText value="#{event.message}"/>
+            </h:column>
+          	<h:column>
+              <f:facet name="header">
+                <h:outputText value="#{msgs.server}"/>
+              </f:facet>
+              <h:outputText value="#{event.serverId}"/>
             </h:column>
           </h:dataTable>
    	    </sakai:panel_titled>

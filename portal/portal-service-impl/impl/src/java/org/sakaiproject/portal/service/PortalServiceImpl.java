@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/PortalServiceImpl.java $
- * $Id: PortalServiceImpl.java 124895 2013-05-23 16:10:02Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/PortalServiceImpl.java $
+ * $Id: PortalServiceImpl.java 122221 2013-04-04 21:24:12Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -64,7 +64,7 @@ import org.sakaiproject.tool.cover.SessionManager;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 124895 $
+ * @version $Rev: 122221 $
  */
 
 public class PortalServiceImpl implements PortalService
@@ -93,6 +93,8 @@ public class PortalServiceImpl implements PortalService
 	private StyleAbleProvider stylableServiceProvider;
 
 	private SiteNeighbourhoodService siteNeighbourhoodService;
+	
+	private String m_portalLinks;
 	
 	private ContentHostingService contentHostingService;
 	
@@ -536,9 +538,23 @@ public class PortalServiceImpl implements PortalService
 	{
 		this.siteNeighbourhoodService = siteNeighbourhoodService;
 	}
+	/* optional portal links for portal header (SAK-22912)
+	 */
+	public String getPortalLinks()
+	{
+		return m_portalLinks;
+	}	
+	
 	
 	public ContentHostingService getContentHostingService() {
 		return contentHostingService;
+	}
+	/**
+	 * @param portalLinks the portal icons to set
+	 */
+	public void setPortalLinks(String portalLinks)
+	{
+		m_portalLinks = portalLinks;
 	}
 
 	public void setContentHostingService(ContentHostingService contentHostingService) {

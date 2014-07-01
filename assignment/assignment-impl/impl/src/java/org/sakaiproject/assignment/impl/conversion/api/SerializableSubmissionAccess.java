@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/api/SerializableSubmissionAccess.java $
- * $Id: SerializableSubmissionAccess.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/api/SerializableSubmissionAccess.java $
+ * $Id: SerializableSubmissionAccess.java 120595 2013-03-01 20:33:37Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -268,6 +268,19 @@ public interface SerializableSubmissionAccess
 	 * @return the submitters
 	 */
 	public List<String> getSubmitters();
+
+	/**
+	 * @return the submitter id
+	 */
+	public String getSubmitterId();
+        /**
+	 * @param id the submitter id to set
+	 */
+	public void setSubmitterId(String id);
+        public void setSubmissionLog(List<String> log);
+        public List<String> getSubmissionLog();
+        public void setGrades(List<String> grades);
+        public List<String> getGrades();
 
 	/**
 	 * @param submitters the submitters to set

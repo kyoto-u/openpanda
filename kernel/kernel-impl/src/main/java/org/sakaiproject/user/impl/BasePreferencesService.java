@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/kernel-impl/src/main/java/org/sakaiproject/user/impl/BasePreferencesService.java $
- * $Id: BasePreferencesService.java 90981 2011-03-31 09:11:03Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/BasePreferencesService.java $
+ * $Id: BasePreferencesService.java 308853 2014-04-25 23:40:21Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,28 +21,12 @@
 
 package org.sakaiproject.user.impl;
 
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.Vector;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.FunctionManager;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.entity.api.Edit;
-import org.sakaiproject.entity.api.Entity;
-import org.sakaiproject.entity.api.EntityManager;
-import org.sakaiproject.entity.api.HttpAccess;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.entity.api.ResourcePropertiesEdit;
+import org.sakaiproject.entity.api.*;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.exception.IdUnusedException;
@@ -51,53 +35,48 @@ import org.sakaiproject.exception.InUseException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.MemoryService;
-import org.sakaiproject.time.api.Time;
+import org.sakaiproject.tool.api.Session;
+import org.sakaiproject.tool.api.SessionBindingEvent;
+import org.sakaiproject.tool.api.SessionBindingListener;
+import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.Preferences;
 import org.sakaiproject.user.api.PreferencesEdit;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.util.BaseResourceProperties;
 import org.sakaiproject.util.BaseResourcePropertiesEdit;
-import org.sakaiproject.util.StorageUser;
+import org.sakaiproject.util.SingleStorageUser;
 import org.sakaiproject.util.StringUtil;
-import org.sakaiproject.tool.api.Session;
-import org.sakaiproject.tool.api.SessionBindingEvent;
-import org.sakaiproject.tool.api.SessionBindingListener;
-import org.sakaiproject.tool.api.SessionManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.*;
 
 /**
  * <p>
  * BasePreferencesService is a Sakai Preferences implementation.
  * </p>
  */
-public abstract class BasePreferencesService implements PreferencesService, StorageUser
+public abstract class BasePreferencesService implements PreferencesService, SingleStorageUser
 {
 	
 
-	/** Our log (commons). */
-	private static Log M_log = LogFactory.getLog(BasePreferencesService.class);
-
-	/** Storage manager for this service. */
-	protected Storage m_storage = null;
-
-	/** The initial portion of a relative access point URL. */
-	protected String m_relativeAccessPoint = null;
-
-	/** The session cache variable for current user's preferences */
-	protected String ATTR_PREFERENCE = "attr_preference";
-	
-	/** The session cache variable for indicating whether the current user's preference was null when last looked */
-	protected String ATTR_PREFERENCE_IS_NULL = "attr_preference_is_null";
-	
 	/**
 	 * Key used to store the locale preferences
 	 */
 	private static final String LOCALE_PREFERENCE_KEY = "sakai:resourceloader";
-	
+	/** Our log (commons). */
+	private static Log M_log = LogFactory.getLog(BasePreferencesService.class);
+	/** Storage manager for this service. */
+	protected Storage m_storage = null;
+	/** The initial portion of a relative access point URL. */
+	protected String m_relativeAccessPoint = null;
+	/** The session cache variable for current user's preferences */
+	protected String ATTR_PREFERENCE = "attr_preference";
+	/** The session cache variable for indicating whether the current user's preference was null when last looked */
+	protected String ATTR_PREFERENCE_IS_NULL = "attr_preference_is_null";
 	/** the cache for Preference objects **/
 	private Cache m_cache;
 	/**********************************************************************************************************************************************************************************************************************************************************
@@ -696,6 +675,149 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 		return "";
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public Entity newResource(Entity container, String id, Object[] others)
+	{
+		return new BasePreferences(id);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Entity newResource(Entity container, Element element)
+	{
+		return new BasePreferences(element);
+	}
+
+	/**********************************************************************************************************************************************************************************************************************************************************
+	 * StorageUser implementation (no container)
+	 *********************************************************************************************************************************************************************************************************************************************************/
+
+	/**
+	 * @inheritDoc
+	 */
+	public Entity newResource(Entity container, Entity other)
+	{
+		return new BasePreferences((Preferences) other);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Edit newResourceEdit(Entity container, String id, Object[] others)
+	{
+		BasePreferences e = new BasePreferences(id);
+		e.activate();
+		return e;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Edit newResourceEdit(Entity container, Element element)
+	{
+		BasePreferences e = new BasePreferences(element);
+		e.activate();
+		return e;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Edit newResourceEdit(Entity container, Entity other)
+	{
+		BasePreferences e = new BasePreferences((Preferences) other);
+		e.activate();
+		return e;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Object[] storageFields(Entity r)
+	{
+		return null;
+	}
+
+	/**********************************************************************************************************************************************************************************************************************************************************
+	 * Storage
+	 *********************************************************************************************************************************************************************************************************************************************************/
+
+	protected interface Storage
+	{
+		/**
+		 * Open.
+		 */
+		public void open();
+
+		/**
+		 * Close.
+		 */
+		public void close();
+
+		/**
+		 * Check if a preferences by this id exists.
+		 *
+		 * @param id
+		 *        The user id.
+		 * @return true if a preferences for this id exists, false if not.
+		 */
+		public boolean check(String id);
+
+		/**
+		 * Get the preferences with this id, or null if not found.
+		 *
+		 * @param id
+		 *        The preferences id.
+		 * @return The preferences with this id, or null if not found.
+		 */
+		public Preferences get(String id);
+
+		/**
+		 * Add a new preferences with this id.
+		 *
+		 * @param id
+		 *        The preferences id.
+		 * @return The locked Preferences object with this id, or null if the id is in use.
+		 */
+		public PreferencesEdit put(String id);
+
+		/**
+		 * Get a lock on the preferences with this id, or null if a lock cannot be gotten.
+		 *
+		 * @param id
+		 *        The preferences id.
+		 * @return The locked Preferences with this id, or null if this records cannot be locked.
+		 */
+		public PreferencesEdit edit(String id);
+
+		/**
+		 * Commit the changes and release the lock.
+		 *
+		 * @param user
+		 *        The edit to commit.
+		 */
+		public void commit(PreferencesEdit edit);
+
+		/**
+		 * Cancel the changes and release the lock.
+		 *
+		 * @param user
+		 *        The edit to commit.
+		 */
+		public void cancel(PreferencesEdit edit);
+
+		/**
+		 * Remove this edit and release the lock.
+		 *
+		 * @param user
+		 *        The edit to remove.
+		 */
+		public void remove(PreferencesEdit edit);
+	}
+
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Preferences implementation
 	 *********************************************************************************************************************************************************************************************************************************************************/
@@ -710,10 +832,14 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 
 		/** The sets of keyed ResourceProperties. */
 		protected Map m_props = null;
+		/** The event code for this edit. */
+		protected String m_event = null;
+		/** Active flag. */
+		protected boolean m_active = false;
 
 		/**
 		 * Construct.
-		 * 
+		 *
 		 * @param id
 		 *        The user id.
 		 */
@@ -735,7 +861,7 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 
 		/**
 		 * Construct from another Preferences object.
-		 * 
+		 *
 		 * @param user
 		 *        The user object to use for values.
 		 */
@@ -746,7 +872,7 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 
 		/**
 		 * Construct from information in XML.
-		 * 
+		 *
 		 * @param el
 		 *        The XML DOM Element definining the user.
 		 */
@@ -786,7 +912,7 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 						if (key.endsWith("AnnouncementService"))
 						{
 							// matches AnnouncementService.APPLICATION_ID
-							key = NotificationService.PREFS_TYPE + "sakai:announcement";	
+							key = NotificationService.PREFS_TYPE + "sakai:announcement";
 						}
 						else if (key.endsWith("ContentHostingService"))
 						{
@@ -848,7 +974,7 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 
 		/**
 		 * Take all values from this object.
-		 * 
+		 *
 		 * @param user
 		 *        The user object to take values from.
 		 */
@@ -893,7 +1019,7 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 				Map.Entry entry = (Map.Entry) it.next();
 				String key = (String) entry.getKey();
 				ResourceProperties properties = (ResourceProperties) entry.getValue();
-				
+
 				// if the props are empty, skip it
 				if (properties.getPropertyNames().next() == null) continue;
 
@@ -990,6 +1116,10 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 			return ((Preferences) obj).getId().equals(getId());
 		}
 
+		/******************************************************************************************************************************************************************************************************************************************************
+		 * Edit implementation
+		 *****************************************************************************************************************************************************************************************************************************************************/
+
 		/**
 		 * @inheritDoc
 		 */
@@ -1013,16 +1143,6 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 
 			return compare;
 		}
-
-		/******************************************************************************************************************************************************************************************************************************************************
-		 * Edit implementation
-		 *****************************************************************************************************************************************************************************************************************************************************/
-
-		/** The event code for this edit. */
-		protected String m_event = null;
-
-		/** Active flag. */
-		protected boolean m_active = false;
 
 		/**
 		 * @inheritDoc
@@ -1057,7 +1177,7 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 
 		/**
 		 * Take all values from this object.
-		 * 
+		 *
 		 * @param user
 		 *        The user object to take values from.
 		 */
@@ -1068,7 +1188,7 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 
 		/**
 		 * Access the event code for this edit.
-		 * 
+		 *
 		 * @return The event code for this edit.
 		 */
 		protected String getEvent()
@@ -1078,7 +1198,7 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 
 		/**
 		 * Set the event code for this edit.
-		 * 
+		 *
 		 * @param event
 		 *        The event code for this edit.
 		 */
@@ -1145,218 +1265,4 @@ public abstract class BasePreferencesService implements PreferencesService, Stor
 		}
 	}
 
-	/**********************************************************************************************************************************************************************************************************************************************************
-	 * Storage
-	 *********************************************************************************************************************************************************************************************************************************************************/
-
-	protected interface Storage
-	{
-		/**
-		 * Open.
-		 */
-		public void open();
-
-		/**
-		 * Close.
-		 */
-		public void close();
-
-		/**
-		 * Check if a preferences by this id exists.
-		 * 
-		 * @param id
-		 *        The user id.
-		 * @return true if a preferences for this id exists, false if not.
-		 */
-		public boolean check(String id);
-
-		/**
-		 * Get the preferences with this id, or null if not found.
-		 * 
-		 * @param id
-		 *        The preferences id.
-		 * @return The preferences with this id, or null if not found.
-		 */
-		public Preferences get(String id);
-
-		/**
-		 * Add a new preferences with this id.
-		 * 
-		 * @param id
-		 *        The preferences id.
-		 * @return The locked Preferences object with this id, or null if the id is in use.
-		 */
-		public PreferencesEdit put(String id);
-
-		/**
-		 * Get a lock on the preferences with this id, or null if a lock cannot be gotten.
-		 * 
-		 * @param id
-		 *        The preferences id.
-		 * @return The locked Preferences with this id, or null if this records cannot be locked.
-		 */
-		public PreferencesEdit edit(String id);
-
-		/**
-		 * Commit the changes and release the lock.
-		 * 
-		 * @param user
-		 *        The edit to commit.
-		 */
-		public void commit(PreferencesEdit edit);
-
-		/**
-		 * Cancel the changes and release the lock.
-		 * 
-		 * @param user
-		 *        The edit to commit.
-		 */
-		public void cancel(PreferencesEdit edit);
-
-		/**
-		 * Remove this edit and release the lock.
-		 * 
-		 * @param user
-		 *        The edit to remove.
-		 */
-		public void remove(PreferencesEdit edit);
-	}
-
-	/**********************************************************************************************************************************************************************************************************************************************************
-	 * StorageUser implementation (no container)
-	 *********************************************************************************************************************************************************************************************************************************************************/
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newContainer(String ref)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newContainer(Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newContainer(Entity other)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newResource(Entity container, String id, Object[] others)
-	{
-		return new BasePreferences(id);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newResource(Entity container, Element element)
-	{
-		return new BasePreferences(element);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Entity newResource(Entity container, Entity other)
-	{
-		return new BasePreferences((Preferences) other);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newContainerEdit(String ref)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newContainerEdit(Element element)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newContainerEdit(Entity other)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newResourceEdit(Entity container, String id, Object[] others)
-	{
-		BasePreferences e = new BasePreferences(id);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newResourceEdit(Entity container, Element element)
-	{
-		BasePreferences e = new BasePreferences(element);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Edit newResourceEdit(Entity container, Entity other)
-	{
-		BasePreferences e = new BasePreferences((Preferences) other);
-		e.activate();
-		return e;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Object[] storageFields(Entity r)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public boolean isDraft(Entity r)
-	{
-		return false;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public String getOwnerId(Entity r)
-	{
-		return null;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Time getDate(Entity r)
-	{
-		return null;
-	}
 }

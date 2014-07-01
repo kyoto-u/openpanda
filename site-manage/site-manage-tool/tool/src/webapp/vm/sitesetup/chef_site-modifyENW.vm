@@ -6,15 +6,38 @@
 		$tlang.getString("multipleTools.custom")
 	</h3>           
 	#if ($alertMessage)
-		<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div>
+		<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div>
 		<div class="clear"></div>
 	#end
-	<p class="instruction">
-		$tlang.getString("multipleTools.custom1")
-	</p>
+	
 	<form name = "toolForm" method = "post" action="#toolForm("SiteAction")">
 		<input type="hidden" name="option" value="add" />
 		<input type="hidden" name="eventSubmit_doAdd_features" value="x" />
+	
+	## customize lti tools
+	#if (!$!ltiTools.isEmpty())
+		<p class="instruction">
+			$tlang.getString("ltiTools.custom.instruction")
+		</p>
+		#foreach($ltiTool in $ltiTools.entrySet())
+			#set($ltiToolId=$ltiTool.getKey())
+			#if (!$!oldLtiTools.containsKey($ltiToolId))
+				## show the input only if the tool is not enabled in the site yet
+				#set($ltiToolValues=$ltiTool.getValue())
+				#set($ltiToolFormInput=$ltiToolValues.get("formInput"))
+				<h4>
+					$ltiToolValues.get("title")
+				</h4>
+				$ltiToolFormInput<br/>
+			#end
+		#end
+	#end
+	
+	## customize multiple tool instances
+	#if ($!state_multiple_tool_instance_selected)
+		<p class="instruction">
+			$tlang.getString("multipleTools.custom1")
+		</p>
 			#foreach($toolId in $!toolRegistrationSelectedList) 
 				## set up a hidden input field for every selected tool except for Email Archive, and other multiple instance of tools
 				#if ($toolId != "sakai.mailbox" && !$!multipleToolIdSet.contains($toolId))
@@ -47,7 +70,7 @@
 							<label for="emailId">
 								$tlang.getString("multipleTools.site")
 							</label>
-							<input type="text" title="$tlang.getString('multipleTools.emailreq')" name="emailId" id="emailId" value="$!emailId" size="15" maxlength="32" />@$serverName
+							<input type="text" title="$tlang.getString('multipleTools.emailreq')" name="emailId" id="emailId" value="$!emailId" size="32" maxlength="32" />@$serverName
 						</p>
 					</div>
 				#end
@@ -139,6 +162,8 @@
 					</select>	
 				</div>
 		#end
+		#end
+		
 		<input type="hidden" name="back" value="$!backIndex" />
 		<input type="hidden" name="templateIndex" value="$!templateIndex" />
 		<input type="hidden" name="continue" value="$continue" />

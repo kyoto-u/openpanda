@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: CourseGradeRecord.java 95103 2011-07-13 15:57:28Z holladay@longsight.com $
+* $Id: CourseGradeRecord.java 130402 2013-10-11 18:54:57Z matthew@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -201,6 +201,11 @@ public class CourseGradeRecord extends AbstractGradeRecord {
 			percentageEarned = Double.valueOf(bdTotalPointsEarned.divide(bdTotalPointsPossible, GradebookService.MATH_CONTEXT).multiply(new BigDecimal("100")).doubleValue());
 		}
 		autoCalculatedGrade = percentageEarned;
+	}
+	
+	//Added by -Qu for totalPoints implementation in GB2 bugid:4371 9/2011
+	public void setCalculatedPointsEarned(double literalTotalPointsEarned){
+		this.calculatedPointsEarned = literalTotalPointsEarned;
 	}
 
 	public void initNonpersistentFields(double totalPointsPossible, double totalPointsEarned, double literalTotalPointsEarned) {

@@ -13,10 +13,10 @@
 			<style type="text/css">
 				@import url("/messageforums-tool/css/msgcntr.css");
 			</style>
-            <script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
+            <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
        		<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
-
+			<sakai:script contextBase="/messageforums-tool" path="/js/messages.js"/>
      <h3><h:outputText value="#{msgs.cdfm_revise_forum_msg}" /></h3>
 
 			<table class="topicBloc topicBlocLone">
@@ -55,7 +55,7 @@
 	            <h:outputText value="#{msgs.cdfm_message}" />
 			<span style="margin-left:3em"><img src="/library/image/silk/table_add.png" />&nbsp;<h:outputText value="#{msgs.cdfm_message_count}" />:&nbsp;<span  id="counttotal"> </span></span>	
 
-	            <sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" value="#{ForumTool.composeBody}" id="df_compose_body" rows="#{ForumTool.editorRows}" cols="120">
+	            <sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" value="#{ForumTool.composeBody}" id="df_compose_body" rows="#{ForumTool.editorRows}" cols="132">
 					<f:validateLength maximum="65000"/>
 				</sakai:inputRichText>
 <%--********************* Attachment *********************--%>	

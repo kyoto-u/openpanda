@@ -1,7 +1,7 @@
 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/jsf/util/SamigoJsfTool.java $
- * $Id: SamigoJsfTool.java 62919 2009-05-26 19:08:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/jsf/util/SamigoJsfTool.java $
+ * $Id: SamigoJsfTool.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  **********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,10 +42,12 @@ import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.Web;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextAttachmentIfc;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+import org.sakaiproject.tool.assessment.ui.bean.author.AnswerBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentSettingsBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
@@ -243,7 +245,15 @@ import org.sakaiproject.tool.assessment.ui.bean.util.EmailBean;
 	  && ("true").equals(toolSession.getAttribute("SENT_TO_FILEPICKER_HELPER"))){
 	 ItemAuthorBean bean = (ItemAuthorBean) ContextUtil.lookupBeanFromExternalServlet(
                                "itemauthor", req, res);
-         bean.setItemAttachment();
+
+	 	 // For EMI Item Attachments	
+	     AnswerBean emiQAComboItem = bean.getCurrentAnswer();
+	     if (emiQAComboItem == null) {
+	    	 bean.setItemAttachment();
+	     }
+	     else {
+	    	 emiQAComboItem.setItemTextAttachment();
+	     }
          toolSession.removeAttribute("SENT_TO_FILEPICKER_HELPER");
       }
 

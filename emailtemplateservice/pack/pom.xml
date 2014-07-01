@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.sakaiproject.emailtemplateservice</groupId>
         <artifactId>emailtemplateservice</artifactId>
-        <version>0.6.3</version>
+        <version>10.0</version>
     </parent>
 
     <name>Sakai Emailtemplateservice Components Package (emailtemplateservice-pack)</name>

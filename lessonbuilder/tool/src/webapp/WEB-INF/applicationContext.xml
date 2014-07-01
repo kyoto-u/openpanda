@@ -19,7 +19,8 @@
  
 
   <bean id="messageSource" 
-	class="org.sakaiproject.lessonbuildertool.util.ResourceLoaderMessageSource"> 
+      class="org.sakaiproject.lessonbuildertool.util.ResourceLoaderMessageSource"
+      depends-on="TLABPostProcessorLoader">
     <property name="basename" value="classpath:messages"/> 
     <property name="cacheSeconds" value="10" /> 
   </bean> 
@@ -63,6 +64,17 @@ simplePageBean.forcedAnon,
 simplePageBean.format,
 simplePageBean.formattedComment,
 simplePageBean.graded,
+simplePageBean.gradebookTitle,
+simplePageBean.groupOwned,
+simplePageBean.addAnswerData,
+simplePageBean.questionType,
+simplePageBean.questionText,
+simplePageBean.questionCorrectText,
+simplePageBean.questionIncorrectText,
+simplePageBean.questionAnswer,
+simplePageBean.questionResponse,
+simplePageBean.questionId,
+simplePageBean.questionShowPoll,
 simplePageBean.hasReleaseDate,
 simplePageBean.height,
 simplePageBean.hidePage,
@@ -74,12 +86,16 @@ simplePageBean.itemId,
 simplePageBean.maxPoints,
 simplePageBean.mimetype,
 simplePageBean.mmUrl,
+simplePageBean.multimediaDisplayType,
+simplePageBean.multimediaMimeType,
 simplePageBean.name,
 simplePageBean.newPageTitle,
 simplePageBean.newWindow,
+simplePageBean.nodownloads,
 simplePageBean.numberOfPages,
 simplePageBean.order,
 simplePageBean.pageTitle,
+simplePageBean.peerEval,
 simplePageBean.points,
 simplePageBean.prerequisite,
 simplePageBean.processMultimedia,
@@ -91,6 +107,11 @@ simplePageBean.removeId,
 simplePageBean.removePage,
 simplePageBean.reorder,
 simplePageBean.required,
+simplePageBean.rubricRow,
+simplePageBean.rubricPeerGrade,
+simplePageBean.rubricSubmissionStatus,
+simplePageBean.rubricTitle,
+simplePageBean.savePeerEvalResult,
 simplePageBean.sGraded,
 simplePageBean.sMaxPoints,
 simplePageBean.selectedAssignment,
@@ -99,6 +120,7 @@ simplePageBean.selectedEntities,
 simplePageBean.selectedEntity,
 simplePageBean.selectedGroups,
 simplePageBean.selectedQuiz,
+simplePageBean.studentSelectedGroups,
 simplePageBean.submit,
 simplePageBean.subpageButton,
 simplePageBean.subpageNext,
@@ -108,11 +130,18 @@ simplePageBean.topictool,
 simplePageBean.updateComments,
 simplePageBean.updateMovie,
 simplePageBean.updateStudent,
+simplePageBean.updateQuestion,
+simplePageBean.answerMultipleChoiceQuestion,
+simplePageBean.answerShortanswerQuestion,
 simplePageBean.updateYoutube,
 simplePageBean.width,
 simplePageBean.youtubeId,
 simplePageBean.youtubeURL,
-simplePageBean.selectPage
+simplePageBean.selectPage,
+simplePageBean.peerEval,
+simplePageBean.peerEvalDueDate,
+simplePageBean.peerEvalOpenDate,
+simplePageBean.peerEvalAllowSelfGrade
 </value>
 </property>
    </bean>
@@ -255,6 +284,7 @@ simplePageBean.selectPage
 				<entry key="application/pdf" value="/library/image/silk/page_white_acrobat.png"/>
 				<entry key="application/x-shockwave-flash" value="/library/image/silk/page_white_flash.png"/>
 				<entry key="video/x-flv" value="/library/image/silk/page_white_flash.png"/>
+                <entry key="video/mp4" value="/library/image/silk/film.png"/>
 				<entry key="text/plain" value="/library/image/silk/page_white_text.png"/>
 				<entry key="text/rtf" value="/library/image/silk/page_white_text.png"/>
 				<entry key="LBWEBSITE" value="/library/image/silk/page_white_world.png"/>
@@ -324,7 +354,49 @@ simplePageBean.selectPage
           <property name="viewParamsClass"
 		    value="org.sakaiproject.lessonbuildertool.tool.view.ExportCCViewParameters" />
 	</bean>
+	
+	<bean
+		parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
+		class="org.sakaiproject.lessonbuildertool.tool.entityproviders.LessonsEntityProvider">
+		
+		<property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
+		<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
+		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
+		<property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager"/>
+		<property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+		<property name="lessonsAccess" ref="org.sakaiproject.lessonbuildertool.service.LessonsAccess" />
+		<property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />
+	</bean>
 
+	<bean id="org.sakaiproject.lessonbuildertool.service.LessonsAccess"
+	class="org.sakaiproject.lessonbuildertool.service.LessonsAccess"
+	init-method="init"
+        destroy-method="destroy">
+	  <property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+	  <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService"/>
+	  <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
+	  <property name="memoryService"><ref bean="org.sakaiproject.memory.api.MemoryService"/></property>
 
+	  <property name="messageLocator" ref="messageLocator"/>
+	  <property name="toolManager" ref="org.sakaiproject.tool.api.ActiveToolManager" />
+	  <property name="sessionManager"><ref bean="org.sakaiproject.tool.api.SessionManager"/></property>
+	  <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+	  <property name="contentHostingService"><ref bean="org.sakaiproject.content.api.ContentHostingService"/></property>
+	  <property name="forumEntity" ref="org.sakaiproject.lessonbuildertool.service.ForumEntity"/>
+	  <property name="quizEntity" ref="org.sakaiproject.lessonbuildertool.service.SamigoEntity"/>
+	  <property name="assignmentEntity" ref="org.sakaiproject.lessonbuildertool.service.AssignmentEntity"/>
+	  <property name="bltiEntity" ref="org.sakaiproject.lessonbuildertool.service.BltiEntity"/>
+	  <property name="gradebookIfc" ref="org.sakaiproject.lessonbuildertool.service.GradebookIfc"/>
+
+	</bean>
+
+    <bean id="org.sakaiproject.lessonbuildertool.service.AjaxServer"
+        class="org.sakaiproject.lessonbuildertool.service.AjaxServer"
+        init-method="init"
+        destroy-method="destroy"
+        singleton="true">
+      <property name="messageSource"><ref bean="messageSource"/></property>
+      <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+    </bean>
 
  </beans>

@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.3/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputRichTextRenderer.java $
-* $Id: InputRichTextRenderer.java 121334 2013-03-16 18:34:34Z ottenhoff@longsight.com $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.0/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputRichTextRenderer.java $
+* $Id: InputRichTextRenderer.java 120900 2013-03-07 20:21:44Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -70,7 +70,7 @@ import java.util.*;
  * <p>Copyright: Copyright (c) 2004 Sakai</p>
  * @author cwen@iu.edu
  * @author Ed Smiley esmiley@stanford.edu (modifications)
- * @version $Id: InputRichTextRenderer.java 121334 2013-03-16 18:34:34Z ottenhoff@longsight.com $
+ * @version $Id: InputRichTextRenderer.java 120900 2013-03-07 20:21:44Z ottenhoff@longsight.com $
  */
 public class InputRichTextRenderer extends Renderer
 {

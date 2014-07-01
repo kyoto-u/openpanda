@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.7.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/FibBean.java $
- * $Id: FibBean.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/MatrixSurveyBean.java $
+ * $Id: MatrixSurveyBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,10 +21,7 @@
 
 package org.sakaiproject.tool.assessment.ui.bean.delivery;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-//import javax.faces.model.SelectItem;
+import java.util.List;
 
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
@@ -32,7 +29,7 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 
 /**
  * @author kimhuang@rutgers.edu
- * $Id: MatrixSurveyBean.java 59684 2009-04-03 23:33:27Z kimhuang@rutgers.edu $
+ * $Id: MatrixSurveyBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 public class MatrixSurveyBean
 {
@@ -108,7 +105,7 @@ public class MatrixSurveyBean
     if (newresp != null)
     {
     	//1. remove all the old selections with the same Itemtextid(row)from ItemGradingDataArray 
-    	ArrayList items = parent.getItemGradingDataArray();
+    	List<ItemGradingData> items = parent.getItemGradingDataArray();
     	for(int i = 0; i<items.size(); i++)
     	{
     		ItemGradingData gradingData = (ItemGradingData) items.get(i);

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-tool/tool/src/java/org/sakaiproject/search/tool/ControllerServlet2.java $
- * $Id: ControllerServlet2.java 70939 2010-01-06 08:18:47Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-tool/tool/src/java/org/sakaiproject/search/tool/ControllerServlet2.java $
+ * $Id: ControllerServlet2.java 118402 2013-01-16 21:32:11Z jbush@rsmart.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,6 +45,7 @@ import org.sakaiproject.search.tool.api.SearchBeanFactory;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolSession;
+import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.ResourceLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -188,6 +189,7 @@ public class ControllerServlet2 extends HttpServlet
 		vc.put("skin", skin);
 		vc.put("sakaiheader", sakaiHeader);
 		vc.put("rlb",rlb);
+        vc.put("currentSiteId",ToolManager.getCurrentPlacement().getContext());
 		vc.put("sakai_tool_placement_id", toolPlacement);
 		vc.put("sakai_tool_placement_id_js", toolPlacementJs);
 		vc.put("serverurl", serverUrl);

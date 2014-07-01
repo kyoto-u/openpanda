@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.1/web-ifp/src/java/org/sakaiproject/portlets/SakaiIFrame.java $
- * $Id: SakaiIFrame.java 123591 2013-05-03 17:17:31Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/web-ifp/src/java/org/sakaiproject/portlets/SakaiIFrame.java $
+ * $Id: SakaiIFrame.java 133795 2014-01-28 22:41:48Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006 The Sakai Foundation.
@@ -69,9 +69,13 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.tool.api.ToolSession;
+
+import javax.servlet.ServletRequest;
+import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 
 // Velocity
 import org.apache.velocity.VelocityContext;
@@ -121,7 +125,7 @@ public class SakaiIFrame extends GenericPortlet {
 	/** The custom height from user input * */
 	protected final static String CUSTOM_HEIGHT = "customNumberField";
 
-	protected final String POPUP = "sakai:popup";
+	protected final String POPUP = "popup";
 	protected final String MAXIMIZE = "sakai:maximize";
 
 	protected final static String TITLE = "title";
@@ -133,6 +137,8 @@ public class SakaiIFrame extends GenericPortlet {
 	private static final int MAX_TITLE_LENGTH = 99;
 
 	private static String ALERT_MESSAGE = "sakai:alert-message";
+
+	public final static String CURRENT_HTTP_REQUEST = "org.sakaiproject.util.RequestFilter.http_request";
 
 	// If the property is final, the property wins.  If it is not final,
 	// the portlet preferences take precedence.
@@ -179,6 +185,10 @@ public class SakaiIFrame extends GenericPortlet {
 
 			// System.out.println("==== doView called ====");
 
+			// Grab that underlying request to get a GET parameter
+			ServletRequest req = (ServletRequest) ThreadLocalManager.get(CURRENT_HTTP_REQUEST);
+			String popupDone = req.getParameter("sakai.popup");
+
 			PrintWriter out = response.getWriter();
 			Placement placement = ToolManager.getCurrentPlacement();
 			response.setTitle(placement.getTitle());
@@ -186,22 +196,62 @@ public class SakaiIFrame extends GenericPortlet {
 			if ( source == null ) source = "";
 			String height = placement.getPlacementConfig().getProperty(HEIGHT);
 			if ( height == null ) height = "1200px";
-			boolean popup = "true".equals(placement.getPlacementConfig().getProperty(POPUP));
 			boolean maximize = "true".equals(placement.getPlacementConfig().getProperty(MAXIMIZE));
 
+			boolean popup = false; // Comes from content item
+			boolean oldPopup = "true".equals(placement.getPlacementConfig().getProperty(POPUP));
+
+			// Retrieve the corresponding content item and tool to check the launch
+			Map<String, Object> content = null;
+			Map<String, Object> tool = null;
+			Long key = getContentIdFromSource(source);
+			if ( key == null ) {
+				out.println(rb.getString("get.info.notconfig"));
+				M_log.warn("Cannot find content id placement="+placement.getId()+" source="+source);
+				return;
+			}
+			try {
+				content = m_ltiService.getContent(key);
+				// If we are supposed to popup (per the content), do so and optionally
+				// copy the calue into the placement to communicate with the portal
+				popup = getLongNull(content.get("newpage")) == 1;
+				if ( oldPopup != popup ) {
+					placement.getPlacementConfig().setProperty(POPUP, popup ? "true" : "false");
+					placement.save();
+				}
+				String launch = (String) content.get("launch");
+				Long tool_id = getLongNull(content.get("tool_id"));
+				if ( launch == null && tool_id != null ) {
+					tool = m_ltiService.getTool(tool_id);
+					launch = (String) tool.get("launch");
+				}
+
+				// Force http:// to pop-up if we are https://
+				String serverUrl = ServerConfigurationService.getServerUrl();
+				if ( request.isSecure() || ( serverUrl != null && serverUrl.startsWith("https://") ) ) {
+					if ( launch != null && launch.startsWith("http://") ) popup = true;
+				}
+			} catch (Exception e) {
+				out.println(rb.getString("get.info.notconfig"));
+				e.printStackTrace();
+				return;
+			}
+
 			if ( source != null && source.trim().length() > 0 ) {
+
 				Context context = new VelocityContext();
 				context.put("tlang", rb);
 				context.put("validator", validator);
 				context.put("source",source);
 				context.put("height",height);
 				sendAlert(request,context);
+				context.put("popupdone", Boolean.valueOf(popupDone != null));
 				context.put("popup", Boolean.valueOf(popup));
 				context.put("maximize", Boolean.valueOf(maximize));
 
 				vHelper.doTemplate(vengine, "/vm/main.vm", context, out);
 			} else {
-				out.println("Not yet configured");
+				out.println(rb.getString("get.info.notconfig"));
 			}
 
 			// System.out.println("==== doView complete ====");
@@ -228,37 +278,34 @@ public class SakaiIFrame extends GenericPortlet {
 			// get current site
 			Placement placement = ToolManager.getCurrentPlacement();
 			String siteId = "";
-			ToolConfiguration toolConfig = SiteService.findTool(placement.getId());
-			if ( toolConfig != null )
-			{
-				siteId = toolConfig.getSiteId();
-			}
+
 			// find the right LTIContent object for this page
-			Map<String,Object> foundContent = null;
-			List<Map<String,Object>> contents = m_ltiService.getContents(null,null,0,0);
-			HashMap<String, Map<String, Object>> linkedLtiContents = new HashMap<String, Map<String, Object>>();
-			for ( Map<String,Object> content : contents ) {
-				String sId = StringUtils.trimToNull((String) content.get(m_ltiService.LTI_SITE_ID));
-				if (sId != null && sId.equals(siteId))
-				{
-					String ltiToolId = content.get(m_ltiService.LTI_TOOL_ID).toString();
-					Map<String, Object> ltiToolValues = m_ltiService.getTool(Long.valueOf(ltiToolId));
-					String toolTitle = (String) ltiToolValues.get(LTIService.LTI_TITLE);
-					if (toolTitle != null && toolTitle.equals(toolConfig.getTitle()))
-					{
-						// we have found the right LTIToolContent for this page
-						foundContent = content;
-						// exit the loop
-						break;
-					}
-				}
+			String source = placement.getPlacementConfig().getProperty(SOURCE);
+			Long key = getContentIdFromSource(source);
+			if ( key == null ) {
+				out.println(rb.getString("get.info.notconfig"));
+				M_log.warn("Cannot find content id placement="+placement.getId()+" source="+source);
+				return;
 			}
-			
-			String foundLtiToolId = foundContent.get(m_ltiService.LTI_TOOL_ID).toString();
-			String[] contentToolModel=m_ltiService.getContentModel(Long.valueOf(foundLtiToolId));
+
+			Map<String, Object> content = m_ltiService.getContent(key);
+			if ( content == null ) {
+				out.println(rb.getString("get.info.notconfig"));
+				M_log.warn("Cannot find content item placement="+placement.getId()+" key="+key);
+				return;
+			}
+
 			// attach the ltiToolId to each model attribute, so that we could have the tool configuration page for multiple tools
-			Map<String, Object> ltiTool = m_ltiService.getTool(Long.valueOf(foundLtiToolId));
-			String formInput=m_ltiService.formInput(foundContent, contentToolModel);
+			String foundLtiToolId = content.get(m_ltiService.LTI_TOOL_ID).toString();
+			Map<String, Object> tool = m_ltiService.getTool(Long.valueOf(foundLtiToolId));
+			if ( tool == null ) {
+				out.println(rb.getString("get.info.notconfig"));
+				M_log.warn("Cannot find tool placement="+placement.getId()+" key="+foundLtiToolId);
+				return;
+			}
+
+			String[] contentToolModel=m_ltiService.getContentModel(Long.valueOf(foundLtiToolId));
+			String formInput=m_ltiService.formInput(content, contentToolModel);
 			context.put("formInput", formInput);
 			
 			vHelper.doTemplate(vengine, "/vm/edit.vm", context, out);
@@ -338,6 +385,24 @@ public class SakaiIFrame extends GenericPortlet {
 	/** Valid digits for custom height from user input **/
 	protected static final String VALID_DIGITS = "0123456789";
 
+	/* Parse the source URL to extract the content identifier */
+	private Long getContentIdFromSource(String source)
+	{
+		int pos = source.indexOf("/content:");
+		if ( pos < 1 ) return null;
+		pos = pos + "/content:".length();
+		if ( pos < source.length() ) {
+			String sContentId = source.substring(pos);
+			try {
+				Long key = new Long(sContentId);
+				return key;
+			} catch (Exception e) {
+				return null;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Check if the string from user input contains any characters other than digits
 	 * 
@@ -352,5 +417,21 @@ public class SakaiIFrame extends GenericPortlet {
 			if (VALID_DIGITS.indexOf(height.charAt(i)) == -1) return false;
 		}
 		return true;
+	}
+
+	private Long getLongNull(Object key) {
+		if (key == null) return null;
+
+		if (key instanceof Number)
+			return new Long(((Number) key).longValue());
+
+		if (key instanceof String) {
+			try {
+				return new Long((String) key);
+			} catch (Exception e) {
+				return null;
+			}
+		}
+		return null;
 	}
 }

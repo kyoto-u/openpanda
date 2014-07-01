@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/content/api/ContentHostingService.java $
- * $Id: ContentHostingService.java 121981 2013-03-30 13:33:08Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/content/api/ContentHostingService.java $
+ * $Id: ContentHostingService.java 130128 2013-10-03 01:15:06Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -437,6 +437,15 @@ public interface ContentHostingService extends EntityProducer
 	 * @return a List of the ContentResource objects.
 	 */
 	public List<ContentResource> getAllResources(String id);
+
+	/**
+	 * Access a List of all the deleted ContentResource objects in this path (and below) which the current user has access.
+	 * 
+	 * @param id
+	 *        A collection id.
+	 * @return a List of the ContentResource objects.
+	 */
+	public List getAllDeletedResources(String id);
 
 	/**
 	 * check permissions for editCollection()
@@ -1164,6 +1173,7 @@ public interface ContentHostingService extends EntityProducer
 	 *            if the resource is a collection.
 	 * @exception InUseException
 	 *            if the resource is locked by someone else.
+	 * @throws ServerOverloadException 
 	 */
 	public void removeResource(String id) throws PermissionException, IdUnusedException, TypeException, InUseException;
 
@@ -1174,6 +1184,7 @@ public interface ContentHostingService extends EntityProducer
 	 *        The ContentResourceEdit object to remove.
 	 * @exception PermissionException
 	 *            if the user does not have permissions to read a containing collection, or to remove this resource.
+	 * @throws ServerOverloadException 
 	 */
 	public void removeResource(ContentResourceEdit edit) throws PermissionException;
 
@@ -1206,6 +1217,7 @@ public interface ContentHostingService extends EntityProducer
 	 *            if copied item is a collection and the new id is already in use or if the copied item is not a collection and a unique id cannot be found in some arbitrary number of attempts (@see MAXIMUM_ATTEMPTS_FOR_UNIQUENESS).
 	 * @exception ServerOverloadException
 	 *            if the server is configured to write the resource body to the filesystem and the save fails.
+	 * @deprecated DO NOT USE THIS, it does not work and will ALWAYS throw an UnsupportedOperationException - https://jira.sakaiproject.org/browse/KNL-1078
 	 */
 	public String rename(String id, String new_id) throws PermissionException, IdUnusedException, TypeException, InUseException,
 			OverQuotaException, InconsistentException, IdUsedException, ServerOverloadException;
@@ -1585,7 +1597,9 @@ public interface ContentHostingService extends EntityProducer
 
 	/**
 	 * Does this resource inherit public view by having it set in a containing folder (not counting it's own setting)?
-	 * 
+	 * <p>Note that if you have a security advisor in place when you call this method, then this method will return true 
+	 * regardless of the actual setting. (KNL-813).
+	 *
 	 * @param id
 	 *        The resource id to check.
 	 * @return true if this resource inherits public view, false if not.
@@ -1924,6 +1938,35 @@ public interface ContentHostingService extends EntityProducer
 	 * @return collection of ContentResource
 	 */
 	public Collection<ContentResource> getContextResourcesOfType(String resourceType, Set<String> contextIds);
+
+
+	/**
+	 * Restore the resource with this resource id.
+	 * 
+	 * @param id
+	 *        The id of the resource.
+	 * @exception PermissionException
+	 *            if the user does not have permissions to read the resource or read through any containing collection.
+	 * @exception IdUnusedException
+	 *            if the resource id is not found.
+	 * @exception TypeException
+	 *            if the resource is a collection.
+	 * @exception InUseException
+	 *            if the resource is locked by someone else.
+	 * @return the ContentResource object found.
+	 */
+	public void restoreResource(String id) throws PermissionException, IdUsedException, IdUnusedException,
+	IdInvalidException, InconsistentException, OverQuotaException, ServerOverloadException, TypeException, InUseException;
+
+	/**
+	 * Permanently remove the resource with this resource id.
+	 * 
+	 * @param id
+	 *        The id of the resource.
+	 * @throws PermissionException 
+	 */
+	public void removeDeletedResource(String resourceId) throws PermissionException, IdUnusedException, TypeException, InUseException; 
+
 
 	/**
 	 * Expand the supplied resource under its parent collection. See KNL-273

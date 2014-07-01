@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -100,7 +100,7 @@ public class BaseDbBinarySingleStorage implements DbSingleStorage
 	protected boolean m_locksAreInTable = true;
 
 	/** The StorageUser to callback for new Resource and Edit objects. */
-	protected StorageUser m_user = null;
+	protected SingleStorageUser m_user = null;
 
 	/**
 	 * Locks, keyed by reference, holding Connections (or, if locks are done
@@ -152,10 +152,8 @@ public class BaseDbBinarySingleStorage implements DbSingleStorage
 	static
 	{
 		databaseBeans = new Hashtable<String, MultiSingleStorageSql>();
-		databaseBeans.put("db2", new MultiSingleStorageSqlDb2(STORAGE_FIELDS));
 		databaseBeans.put("default", new MultiSingleStorageSqlDefault(STORAGE_FIELDS));
 		databaseBeans.put("hsql", new MultiSingleStorageSqlHSql(STORAGE_FIELDS));
-		databaseBeans.put("mssql", new MultiSingleStorageSqlMsSql(STORAGE_FIELDS));
 		databaseBeans.put("mysql", new MultiSingleStorageSqlMySql(STORAGE_FIELDS));
 		databaseBeans.put("oracle", new MultiSingleStorageSqlOracle(STORAGE_FIELDS));
 	}
@@ -178,13 +176,13 @@ public class BaseDbBinarySingleStorage implements DbSingleStorage
 	 *        entry.
 	 * @param user
 	 *        The StorageUser class to call back for creation of Resource and
-	 *        Edit objects.
+	 *        Edit objects. This also needs to implement EntityReader.
 	 * @param sqlService
 	 *        The SqlService.
 	 */
 	public BaseDbBinarySingleStorage(String resourceTableName, String resourceTableIdField,
 			String[] resourceTableOtherFields, boolean locksInDb,
-			String resourceEntryName, StorageUser user, SqlService sqlService)
+			String resourceEntryName, SingleStorageUser user, SqlService sqlService)
 	{
 	    this(resourceTableName, resourceTableIdField, resourceTableOtherFields, locksInDb, resourceEntryName, user, sqlService, null);
 	}
@@ -211,7 +209,7 @@ public class BaseDbBinarySingleStorage implements DbSingleStorage
      *        entry.
      * @param user
      *        The StorageUser class to call back for creation of Resource and
-     *        Edit objects.
+     *        Edit objects. This also needs to implement EntityReader.
      * @param sqlService
      *        The SqlService.
      * @param storage
@@ -219,7 +217,7 @@ public class BaseDbBinarySingleStorage implements DbSingleStorage
      */
     public BaseDbBinarySingleStorage(String resourceTableName, String resourceTableIdField,
 	        String[] resourceTableOtherFields, boolean locksInDb,
-	        String resourceEntryName, StorageUser user, SqlService sqlService,
+	        String resourceEntryName, SingleStorageUser user, SqlService sqlService,
 	        DbSingleStorage storage)
 	{
 	    m_resourceTableName = resourceTableName;

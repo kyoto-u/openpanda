@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-util/util/src/java/org/sakaiproject/portal/util/ErrorReporter.java $
- * $Id: ErrorReporter.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-util/util/src/java/org/sakaiproject/portal/util/ErrorReporter.java $
+ * $Id: ErrorReporter.java 129482 2013-09-10 13:22:40Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -24,8 +24,10 @@ package org.sakaiproject.portal.util;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
+import java.text.DateFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -587,7 +589,7 @@ public class ErrorReporter
 		return sb.toString();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private String requestDisplay(HttpServletRequest request)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -670,11 +672,16 @@ public class ErrorReporter
 			HttpSession session = request.getSession(false);
 			if (session != null)
 			{
+				DateFormat serverLocaleDateFormat = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()); 
 				sb.append(rb.getString("bugreport.session")).append("\n");
 				sb.append(rb.getString("bugreport.session.creation")).append(
 						session.getCreationTime()).append("\n");
 				sb.append(rb.getString("bugreport.session.lastaccess")).append(
 						session.getLastAccessedTime()).append("\n");
+				sb.append(rb.getString("bugreport.session.creationdatetime")).append(
+						serverLocaleDateFormat.format(session.getCreationTime())).append("\n");
+				sb.append(rb.getString("bugreport.session.lastaccessdatetime")).append(
+						serverLocaleDateFormat.format(session.getLastAccessedTime())).append("\n");
 				sb.append(rb.getString("bugreport.session.maxinactive")).append(
 						session.getMaxInactiveInterval()).append("\n");
 				sb.append(rb.getString("bugreport.session.attributes")).append("\n");

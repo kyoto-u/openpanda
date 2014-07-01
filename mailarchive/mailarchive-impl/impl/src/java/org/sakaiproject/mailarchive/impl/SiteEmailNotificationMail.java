@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/SiteEmailNotificationMail.java $
- * $Id: SiteEmailNotificationMail.java 101750 2011-12-14 16:57:18Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.0/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/SiteEmailNotificationMail.java $
+ * $Id: SiteEmailNotificationMail.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

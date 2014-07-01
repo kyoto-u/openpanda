@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/warehouse/tags/sakai-2.9.3/warehouse-impl/impl/src/java/org/sakaiproject/warehouse/util/db/Cascade.java $
-* $Id: Cascade.java 60855 2009-04-22 15:21:19Z aaronz@vt.edu $
+* $URL: https://source.sakaiproject.org/svn/warehouse/tags/sakai-10.0/warehouse-impl/impl/src/java/org/sakaiproject/warehouse/util/db/Cascade.java $
+* $Id: Cascade.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/ShowMediaServlet.java $
- * $Id: ShowMediaServlet.java 88077 2011-02-07 19:24:17Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/ShowMediaServlet.java $
+ * $Id: ShowMediaServlet.java 309213 2014-05-06 16:19:44Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,6 +32,10 @@ import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.ui.bean.shared.PersonBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -39,6 +43,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -46,7 +52,7 @@ import org.apache.commons.logging.LogFactory;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: ShowMediaServlet.java 88077 2011-02-07 19:24:17Z ktsao@stanford.edu $
+ * @version $Id: ShowMediaServlet.java 309213 2014-05-06 16:19:44Z enietzel@anisakai.com $
  */
 
 public class ShowMediaServlet extends HttpServlet
@@ -55,7 +61,8 @@ public class ShowMediaServlet extends HttpServlet
 	 * 
 	 */
 	private static final long serialVersionUID = 2203681863823855810L;
-private static Log log = LogFactory.getLog(ShowMediaServlet.class);
+    private static Log log = LogFactory.getLog(ShowMediaServlet.class);
+    private static final Pattern HTTP_RANGE_PATTERN = Pattern.compile("bytes=(?<start>\\d*)-(?<end>\\d*)");
 
   public ShowMediaServlet()
   {
@@ -135,9 +142,40 @@ private static Log log = LogFactory.getLog(ShowMediaServlet.class);
         res.setContentType("application/octet-stream");
       }
       log.debug("****"+displayType+";filename=\""+mediaData.getFilename()+"\";");
-      res.setHeader("Content-Disposition", displayType+";filename=\""+mediaData.getFilename()+"\";");
 
-      res.setContentLength(fileSize);
+      res.setHeader("Content-Disposition", displayType+";filename=\""+mediaData.getFilename()+"\";");
+      
+      int start = 0;
+      int end = fileSize - 1;
+      int rangeContentLength = end - start + 1;
+      
+      String range = req.getHeader("Range");
+      
+      if (StringUtils.isNotBlank(range)) {
+	      Matcher matcher = HTTP_RANGE_PATTERN.matcher(range);
+	       
+	      if (matcher.matches()) {
+	        String startMatch = matcher.group(1);
+	        start = startMatch.isEmpty() ? start : Integer.valueOf(startMatch);
+	        start = start < 0 ? 0 : start;
+	   
+	        String endMatch = matcher.group(2);
+	        end = endMatch.isEmpty() ? end : Integer.valueOf(endMatch);
+	        end = end > fileSize - 1 ? fileSize - 1 : end;
+	        
+	        rangeContentLength = end - start + 1;
+	      }
+	   
+	      res.setHeader("Content-Range", String.format("bytes %s-%s/%s", start, end, fileSize));
+	      res.setHeader("Content-Length", String.format("%s", rangeContentLength));
+	      res.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
+      }
+      else {
+    	  res.setContentLength(fileSize);
+      }
+      
+      
+
       //** note that res.setContentType() must be called before res.getOutputStream(). see javadoc on this
       FileInputStream inputStream = null;
       BufferedInputStream buf_inputStream = null;
@@ -146,10 +184,8 @@ private static Log log = LogFactory.getLog(ShowMediaServlet.class);
       ByteArrayInputStream byteArrayInputStream = null;
       if (mediaLocation == null || (mediaLocation.trim()).equals("")){
         try{
-          byte[] media = mediaData.getMedia();
-          byteArrayInputStream = new ByteArrayInputStream(media);
+          byteArrayInputStream = new ByteArrayInputStream(mediaData.getMedia());
           buf_inputStream = new BufferedInputStream(byteArrayInputStream);
-          log.debug("**** media.length="+media.length);
         }
         catch(Exception e){
           log.error("****empty media save to DB="+e.getMessage());
@@ -166,20 +202,23 @@ private static Log log = LogFactory.getLog(ShowMediaServlet.class);
 
       }
 
-      //int count=0;
       try{
     	  
     	  buf_outputStream = new BufferedOutputStream(outputStream);
         int i=0;
         if (buf_inputStream != null)  {
-        while ( (i=buf_inputStream.read()) != -1){
-            //System.out.print(i);
-            buf_outputStream.write(i);
-            //count++;
-          }
+        	// skip to the start of the possible range request
+        	buf_inputStream.skip(start); 
+        	
+        	int bytesLeft = rangeContentLength;
+        	byte[] buffer = new byte[1024];
+
+        	while ( (i = buf_inputStream.read(buffer)) != -1 && bytesLeft > 0){
+        		buf_outputStream.write(buffer);
+        		bytesLeft -= i;
+        	}
         }
         log.debug("**** mediaLocation="+mediaLocation);
-        //res.setContentLength(count);
         
         res.flushBuffer();
       }

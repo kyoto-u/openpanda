@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: AuthenticationCacheTest.java 51936 2008-09-07 18:00:01Z ian@caret.cam.ac.uk $
+* $Id: AuthenticationCacheTest.java 309199 2014-05-06 15:36:14Z enietzel@anisakai.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,9 +45,8 @@ import org.sakaiproject.util.IdPwEvidence;
 public class AuthenticationCacheTest extends SakaiKernelTestBase {
 	private static Log log = LogFactory.getLog(AuthenticationCacheTest.class);
 	private static String[] USER_DATA_1 = {"localonly1user", null, "First", "Last1", "local1@edu", "local1password"};
-	private static String[] USER_DATA_2 = {"localonly2user", null, "First", "Last2", "local2@edu", "local2password"};
 	private static IdPwEvidence USER_EVIDENCE_1 = new IdPwEvidence(USER_DATA_1[0], USER_DATA_1[5]);
-
+	private static String[] USER_DATA_2 = {"localonly2user", null, "First", "Last2", "local2@edu", "local2password"};
 	private AuthenticationManager authenticationManager;
 	private AuthenticationCache authenticationCache;
 	private UserDirectoryService userDirectoryService;
@@ -129,26 +128,7 @@ public class AuthenticationCacheTest extends SakaiKernelTestBase {
 			Assert.fail();
 		} catch (AuthenticationException e) {
 		}
-
-		// Test timeout after 5 seconds.
-		int nbrReads = 0;
-		long startTime = System.currentTimeMillis();
-		authentication = authenticationManager.authenticate(USER_EVIDENCE_1);
-		while (nbrReads < 50) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-			// See if the record is still in the cache, tickling the idle timeout
-			// (if any).
-			if (authenticationCache.getAuthentication(USER_EVIDENCE_1.getIdentifier(), USER_EVIDENCE_1.getPassword()) == null) {
-				if (log.isDebugEnabled()) log.debug("cache timed out at " + (System.currentTimeMillis()- startTime) + " ms");
-				break;
-			}
-			nbrReads++;
-		}
-		if (log.isDebugEnabled()) log.debug("Checked cache successfully " + nbrReads + " times before timing out or giving up");
-		Assert.assertTrue(nbrReads < 10);
+        /* removed test that was testing if caching works */
 	}
 
 }

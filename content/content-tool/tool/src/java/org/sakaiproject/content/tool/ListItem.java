@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.3/content-tool/tool/src/java/org/sakaiproject/content/tool/ListItem.java $
- * $Id: ListItem.java 121317 2013-03-16 17:48:43Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.0/content-tool/tool/src/java/org/sakaiproject/content/tool/ListItem.java $
+ * $Id: ListItem.java 308182 2014-04-14 18:35:16Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,6 +38,7 @@ import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.antivirus.api.VirusFoundException;
@@ -72,7 +73,6 @@ import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.entity.cover.EntityManager;
-import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.event.cover.NotificationService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.InUseException;
@@ -109,7 +109,7 @@ import org.sakaiproject.util.Validator;
  */
 public class ListItem
 {
-	/** Resource bundle using current language locale */
+    /** Resource bundle using current language locale */
     private static ResourceLoader rb = new ResourceLoader("content");
 
 	/** Resource bundle using current language locale */
@@ -122,8 +122,12 @@ public class ListItem
 	protected static boolean optionalPropertiesEnabled = false;
 
     protected static final Comparator<ContentEntity> PRIORITY_SORT_COMPARATOR = ContentHostingService.newContentHostingComparator(ResourceProperties.PROP_CONTENT_PRIORITY, true);
+    
+    /** Default content type for unknown extensions. */
+    protected static final String UNKNOWN_TYPE = "application/octet-stream";
 
 	public static final String DOT = "_";
+	private static final String PROP_HIDDEN_TRUE = "true"; // SAK-23044
 
 	/** A long representing the number of milliseconds in one week.  Used for date calculations */
 	public static final long ONE_DAY = 24L * 60L * 60L * 1000L;
@@ -149,8 +153,8 @@ public class ListItem
 	 * @param entity
 	 * @param parent
 	 * @param registry
-	 * @param expandAll
-	 * @param expandedFolders
+	 * @param expandAll Should we expand all the contained collections inside this one.
+	 * @param expandedCollections
 	 * @param items_to_be_moved
 	 * @param items_to_be_copied
 	 * @param depth
@@ -159,10 +163,8 @@ public class ListItem
 	 * @param addFilter TODO
 	 * @return
 	 */
-	public static ListItem getListItem(ContentEntity entity, ListItem parent, ResourceTypeRegistry registry, boolean expandAll, Set<String> expandedFolders, List<String> items_to_be_moved, List<String> items_to_be_copied, int depth, Comparator userSelectedSort, boolean preventPublicDisplay, ContentResourceFilter addFilter)
+	public static ListItem 	getListItem(ContentEntity entity, ListItem parent, ResourceTypeRegistry registry, boolean expandAll, Set<String>expandedCollections, List<String> items_to_be_moved, List<String> items_to_be_copied, int depth, Comparator userSelectedSort, boolean preventPublicDisplay, ContentResourceFilter addFilter)
 	{
-		Set<String> expandedFoldersSync = Collections.synchronizedSet(expandedFolders);
-		
 		ListItem item = null;
 			
 		org.sakaiproject.content.api.ContentHostingService contentService = (org.sakaiproject.content.api.ContentHostingService) ComponentManager.get(org.sakaiproject.content.api.ContentHostingService.class);
@@ -210,9 +212,6 @@ public class ListItem
         	// permissions are determined by group(s)
         	item.setPermissions(ResourcesAction.getPermissions(entity.getId(), null));
         }
-
-        synchronized(expandedFoldersSync)
-        {
 	        if(isCollection)
 	        {
 	        	ContentCollection collection = (ContentCollection) entity;
@@ -234,14 +233,14 @@ public class ListItem
 							{
 								expandAction.initializeAction(item.m_reference);
 								
-					       		expandedFoldersSync.add(entity.getId());
+							expandedCollections.add(entity.getId());
 					       		
 					       		expandAction.finalizeAction(item.m_reference);
 							}
 						}
 					}
 	         	}
-	 			if(expandedFoldersSync.contains(entity.getId()))
+			if(expandedCollections.contains(entity.getId()))
 				{
 					item.setExpanded(true);
 	
@@ -301,7 +300,7 @@ public class ListItem
 							continue;
 						}
 	
-		        		ListItem child = getListItem(childEntity, item, registry, expandAll, expandedFoldersSync, items_to_be_moved, items_to_be_copied, depth + 1, userSelectedSort, preventPublicDisplay, addFilter);
+					ListItem child = getListItem(childEntity, item, registry, expandAll, expandedCollections, items_to_be_moved, items_to_be_copied, depth + 1, userSelectedSort, preventPublicDisplay, addFilter);
 		        		if(items_to_be_copied != null && items_to_be_copied.contains(child.id))
 		        		{
 		        			child.setSelectedForCopy(true);
@@ -323,7 +322,6 @@ public class ListItem
 				//this.members = coll.getMembers();
 				item.setIconLocation( ContentTypeImageService.getContentTypeImage("folder"));
 	        }
-        }
         List<ResourceToolAction> otherActions = ResourcesAction.getActions(entity, item.getPermissions(), registry);
         List<ResourceToolAction> pasteActions = ResourcesAction.getPasteActions(entity, item.getPermissions(), registry, items_to_be_moved, items_to_be_copied);
 
@@ -412,6 +410,7 @@ public class ListItem
 	protected boolean isPubview = false;
 
 	protected boolean hidden;
+	protected boolean hiddenWithAccessibleContent;
 	protected boolean isAvailable;
 	protected boolean useReleaseDate;
 	protected Time releaseDate;
@@ -863,6 +862,12 @@ public class ListItem
 			this.retractDate = retractDate;
 		}
 		this.isAvailable = entity.isAvailable();
+
+		try {
+		    this.hiddenWithAccessibleContent = props.getBooleanProperty(ResourceProperties.PROP_HIDDEN_WITH_ACCESSIBLE_CONTENT);
+		} catch (Exception e) {
+		    this.hiddenWithAccessibleContent = false;
+		}
 		this.htmlFilter = entity.getProperties().getProperty(ResourceProperties.PROP_ADD_HTML);
 		if (this.htmlFilter == null)
 		{
@@ -1257,8 +1262,13 @@ public class ListItem
 			// but do allow changing subfolders within access-user's dropbox.
 			if(allowed && this.isDropbox())
 			{
+			 //Admin can always change dropbox folder name
+			 if (isAdmin) {
+			   allowed = true;
+			 } else {			
 				int depth = ContentHostingService.getDepth(this.id, org.sakaiproject.content.api.ContentHostingService.COLLECTION_DROPBOX);
 				allowed = (depth > 2);
+			}
 			}
 		}
 		
@@ -1351,6 +1361,12 @@ public class ListItem
 		return isPermitted(ContentPermissions.READ);
 	}
 
+        public boolean getCanRevise()
+        {
+                return isPermitted(ContentPermissions.REVISE);
+        } 
+
+
 	/**
      * @return
      */
@@ -1411,7 +1427,9 @@ public class ListItem
 	protected void captureAvailability(ParameterParser params, String index) 
 	{
 		// availability
-		this.hidden = params.getBoolean("hidden" + index);
+		String hiddenParam = params.getString("hidden" + index);
+		this.hidden = PROP_HIDDEN_TRUE.equalsIgnoreCase(hiddenParam);
+		this.hiddenWithAccessibleContent = "hidden_with_accessible_content".equals(hiddenParam);
 		boolean use_start_date = params.getBoolean("use_start_date" + index);
 		boolean use_end_date = params.getBoolean("use_end_date" + index);
 		
@@ -1640,6 +1658,15 @@ public class ListItem
 		}
 		
 	}
+	
+	//Validates a mimetype change
+	protected void validateMimetype() {
+		//If the mime type matches up with a default unknown type, set it to the unknown type
+		if (ContentTypeImageService.getContentTypeImage(null).equals(ContentTypeImageService.getContentTypeImage(this.mimetype))){
+			//Should get this from the api but it's not in there, just in the impl
+			this.mimetype = UNKNOWN_TYPE;
+		}
+	}
 
 	protected void captureMimetypeChange(ParameterParser params, String index) 
 	{
@@ -1660,7 +1687,7 @@ public class ListItem
 				}
 			}
 		}
-		
+		validateMimetype();
 	}
 
 	protected void captureQuota(ParameterParser params, String index) 
@@ -2718,6 +2745,14 @@ public class ListItem
     {
     	this.hidden = hidden;
     }
+	
+	/**
+	 * @return the hiddenWithAccessibleContent
+	 */
+	public boolean isHiddenWithAccessibleContent()
+	{
+		return this.hiddenWithAccessibleContent;
+	}
 
 	/**
 	 * @param hover
@@ -3040,7 +3075,7 @@ public class ListItem
 		//setCopyrightOnEntity(props);
 		setConditionalReleaseOnEntity(props);
 		setAccessOnEntity(edit);
-		setAvailabilityOnEntity(edit);
+		setAvailabilityOnEntity(props, edit);
 		setQuotaOnEntity(props);
 		setHtmlInlineOnEntity(props, edit);
 		
@@ -3170,8 +3205,13 @@ public class ListItem
 	}
 	
 	
-	protected void setAvailabilityOnEntity(GroupAwareEdit edit)
+	protected void setAvailabilityOnEntity(ResourcePropertiesEdit props, GroupAwareEdit edit)
 	{
+		if ( this.hiddenWithAccessibleContent ) {
+			props.addProperty(ResourceProperties.PROP_HIDDEN_WITH_ACCESSIBLE_CONTENT, PROP_HIDDEN_TRUE);
+		} else {
+			props.removeProperty(ResourceProperties.PROP_HIDDEN_WITH_ACCESSIBLE_CONTENT);
+		}
 		edit.setAvailability(hidden, releaseDate, retractDate);
 	}
 	
@@ -3274,7 +3314,7 @@ public class ListItem
 		setCopyrightOnEntity(props);
 		setHtmlFilterOnEntity(props);
 		setAccessOnEntity(edit);
-		setAvailabilityOnEntity(edit);
+		setAvailabilityOnEntity(props, edit);
 		setHtmlInlineOnEntity(props, edit);
 		
 		if(! isUrl() && ! isCollection() && this.mimetype != null)
@@ -3629,6 +3669,29 @@ public class ListItem
 				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_DC_AUDIENCE));
 				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_DC_EDULEVEL));
 				
+				//LOM metadata fields
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_ROLE));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_COVERAGE));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_STATUS));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_DURATION));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_ENGAGEMENT_TYPE));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_LEARNING_RESOURCE_TYPE));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_INTERACTIVITY_LEVEL));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_CONTEXT_LEVEL));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_DIFFICULTY));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_LEARNING_TIME));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_ASSUMED_KNOWLEDGE));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_TECHNICAL_REQUIREMENTS));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_INSTALL_REMARKS));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_OTHER_REQUIREMENTS));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_GRANULARITY_LEVEL));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_STRUCTURE));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_RELATION));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_REVIEWER));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_REVIEW_DATE));
+				dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_LOM_REVIEW_COMMENTS));
+			
+
 				/* Filesystem and file-like mount points */
 				//dc.add(new ResourcesMetadata(ResourcesMetadata.PROPERTY_FSMOUNT_ACTIVE));
 					
@@ -3673,6 +3736,21 @@ public class ListItem
 								}
 							}
 							prop.setValue(name, time);
+						}
+						
+						else if (widget.equals(ResourcesMetadata.WIDGET_DURATION)) {
+							if(properties != null) {
+								String rawValue = properties.getPropertyFormatted(name);
+								if(StringUtils.isNotBlank(rawValue)) {
+																		
+									//split and preserve all tokens, even missing ones
+									//this ensures we have the values in the correct spot of the array
+									//eg 0--0- is [0,"",0,""]
+									String [] values = StringUtils.splitPreserveAllTokens(rawValue, "-");
+									
+									prop.setValue(name, Arrays.asList(values));
+								}
+							}
 						}
 						else
 						{
@@ -3731,6 +3809,10 @@ public class ListItem
 		context.put("DATETIME", ResourcesMetadata.WIDGET_DATETIME);
 		context.put("ANYURI", ResourcesMetadata.WIDGET_ANYURI);
 		context.put("WYSIWYG", ResourcesMetadata.WIDGET_WYSIWYG);
+		
+		context.put("DURATION", ResourcesMetadata.WIDGET_DURATION);
+		
+		context.put("DROPDOWN", ResourcesMetadata.WIDGET_DROPDOWN); 
 
 		context.put("today", TimeService.newTime());
 		
@@ -3831,8 +3913,27 @@ public class ListItem
 						hour = hour % 24;
 						day++;
 					}
-	
+					
 					Time value = TimeService.newTimeLocal(year, month, day, hour, minute, second, millisecond);
+					
+					prop.setValue(0, value);
+				}
+				else if (ResourcesMetadata.WIDGET_DURATION.equals(prop.getWidget())) {
+					int first = params.getInt(prop.getFullname() + "_first" + index, 0);
+					String firstQual = params.getString(prop.getFullname() + "_first_qual" + index);
+					int second = params.getInt(prop.getFullname() + "_second" + index, 0);
+					String secondQual = params.getString(prop.getFullname() + "_second_qual" + index);
+				
+					//set this as a string, specially formatted
+					String formattedValue = first + "-" + firstQual + "-" + second + "-" + secondQual;
+											
+					prop.setValue(0, formattedValue);
+				}
+				else if (ResourcesMetadata.WIDGET_DROPDOWN.equals(prop.getWidget())) {
+					
+					//no index required so just get the prop and store it
+					String value = params.getString(prop.getFullname());
+					
 					prop.setValue(0, value);
 				}
 				else if(ResourcesMetadata.WIDGET_ANYURI.equals(prop.getWidget()))

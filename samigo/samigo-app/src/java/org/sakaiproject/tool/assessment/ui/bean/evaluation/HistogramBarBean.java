@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/HistogramBarBean.java $
- * $Id: HistogramBarBean.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/HistogramBarBean.java $
+ * $Id: HistogramBarBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import org.sakaiproject.tool.assessment.ui.bean.util.Validator;
 
 /**
- * @version $Id: HistogramBarBean.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
+ * @version $Id: HistogramBarBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  * @author Ed Smiley
  */
 public class HistogramBarBean
@@ -44,6 +44,8 @@ private int numStudents;
   private String rangeInfo;
   private String label;
   private Boolean isCorrect;
+  private Long subQuestionSequence;
+  private String title;
   private ItemBarBean[] itemBars;
   
   public void setItemBars(ArrayList<ItemBarBean> items){
@@ -57,8 +59,8 @@ private int numStudents;
   public ItemBarBean[] getItemBars(){
 	  return this.itemBars;
   }
-	  
-  /**
+
+/**
     *
     * @param numStudents int
     */
@@ -164,5 +166,19 @@ private int numStudents;
      return Validator.bcheck(isCorrect, false);
    }
 
+   public Long getSubQuestionSequence() {
+ 	return subQuestionSequence;
+   }
 
+   public void setSubQuestionSequence(Long subQuestionSequence) {
+ 	this.subQuestionSequence = subQuestionSequence;
+   }
+
+   public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 }

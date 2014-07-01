@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/OverviewPage.java $
- * $Id: OverviewPage.java 72182 2009-09-28 11:31:28Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/OverviewPage.java $
+ * $Id: OverviewPage.java 131093 2013-11-04 14:59:26Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,10 +64,6 @@ public class OverviewPage extends BasePage {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.renderJavascriptReference(JQUERYSCRIPT);
-		response.renderJavascriptReference(StatsManager.SITESTATS_WEBAPP + "/script/jquery.ifixpng2.js");
-		StringBuilder onDomReady = new StringBuilder();
-		onDomReady.append("jQuery.ifixpng('"+StatsManager.SITESTATS_WEBAPP+"/images/transparent.gif');");
-		response.renderOnDomReadyJavascript(onDomReady.toString());
 	}
 	
 	private void renderBody() {

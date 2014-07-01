@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.3/src/main/java/org/sakaiproject/mock/service/SiteService.java $
- * $Id: SiteService.java 113355 2012-09-21 18:32:49Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.0/src/main/java/org/sakaiproject/mock/service/SiteService.java $
+ * $Id: SiteService.java 307866 2014-04-07 15:13:58Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,9 +20,11 @@
  **********************************************************************************/
 package org.sakaiproject.mock.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +40,7 @@ import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.IdUsedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.javax.PagingPosition;
+import org.sakaiproject.site.api.AllowedJoinableAccount;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteAdvisor;
@@ -184,8 +187,24 @@ public class SiteService implements org.sakaiproject.site.api.SiteService {
 		return null;
 	}
 
+	public List getUserSites() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List getUserSites(boolean requireDescription) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public List getSites(SelectionType type, Object ofType, String criteria,
 			Map propertyCriteria, SortType sort, PagingPosition page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List getSites(SelectionType type, Object ofType, String criteria,
+			Map propertyCriteria, SortType sort, PagingPosition page, boolean requireDescription) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -374,5 +393,71 @@ public class SiteService implements org.sakaiproject.site.api.SiteService {
 	{
 		return true;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.sakaiproject.site.api.SiteService#getSiteTypeStrings()
+	 */
+	public List<String> getSiteTypeStrings(String type)
+	{
+		return null;
+	}
 
+	/* (non-Javadoc)
+	 * @see org.sakaiproject.site.api.SiteService#getSiteIds(org.sakaiproject.site.api.SiteService.SelectionType, java.lang.Object, java.lang.String, java.util.Map, org.sakaiproject.site.api.SiteService.SortType, org.sakaiproject.javax.PagingPosition)
+	 */
+	public List<String> getSiteIds(SelectionType arg0, Object arg1, String arg2, Map<String, String> arg3, SortType arg4, PagingPosition arg5) {
+	    return new ArrayList<String>(0);
+	}
+
+	public boolean isAllowedToJoin(String id){
+		return false;
+	}
+    
+	public boolean isUserLoggedIn(){
+		return false;
+	}
+    
+    	public String getJoinGroupId(String id){
+		return null;
+	}
+    
+    	public boolean isCurrentUserMemberOfSite(String id){
+		return false;
+	}
+    
+    	public boolean isLimitByAccountTypeEnabled(String id){
+		return false;
+	}
+    
+    	public boolean getBooleanSiteProperty(String id, String propertyName){
+		return false;
+	}	
+    
+    	public LinkedHashSet<String> getAllowedJoinableAccountTypeCategories(){
+		return null;
+	}
+    
+    	public List<String> getAllowedJoinableAccountTypes(){
+		return null;
+	}
+   
+    	public List<AllowedJoinableAccount> getAllowedJoinableAccounts(){
+		return null;
+	}
+    
+    	public boolean isGlobalJoinGroupEnabled(){
+		return false;
+	}
+   
+	public boolean isGlobalJoinExcludedFromPublicListEnabled(){
+		return false;
+	}
+
+	public boolean isGlobalJoinLimitByAccountTypeEnabled(){
+		return false;
+	}
+
+	public boolean isGlobalJoinFromSiteBrowserEnabled(){
+		return false;
+	}
 }

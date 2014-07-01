@@ -113,6 +113,8 @@
 		<property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
 		<property name="toolManager" ref="org.sakaiproject.tool.api.ActiveToolManager" />
 		<property name="localeGetter" ref="requestLocaleProxy" />
+		<property name="lessonsAccess" ref="org.sakaiproject.lessonbuildertool.service.LessonsAccess" />
+		<property name="imageToMimeMap" ref="org.sakaiproject.lessonbuildertool.util.ImageToMimeMap"/>
 	</bean>
 
 	<bean class="org.sakaiproject.lessonbuildertool.tool.producers.LinkTrackerProducer" >
@@ -122,6 +124,7 @@
 		</property>
 		<property name="messageLocator" ref="messageLocator"/>
 		<property name="localeGetter" ref="requestLocaleProxy" />
+		<property name="lessonBuilderAccessService" ref="org.sakaiproject.lessonbuildertool.service.LessonBuilderAccessService" />
 	</bean>
 
 	<bean class="org.sakaiproject.lessonbuildertool.tool.producers.RemovePageProducer" >
@@ -169,7 +172,16 @@
     <bean class="org.sakaiproject.lessonbuildertool.tool.producers.ReloadPageProducer" >
     </bean>
     
-    <bean class="org.sakaiproject.lessonbuildertool.tool.producers.GradingPaneProducer" >
+    <bean class="org.sakaiproject.lessonbuildertool.tool.producers.CommentGradingPaneProducer" >
+		<property name="simplePageBean" ref="simplePageBean" />
+		<property name="simplePageToolDao">
+			<ref bean="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+    	</property>
+    	<property name="messageLocator" ref="messageLocator"/>
+	<property name="localeGetter" ref="requestLocaleProxy" />
+    </bean>
+    
+    <bean class="org.sakaiproject.lessonbuildertool.tool.producers.QuestionGradingPaneProducer" >
 		<property name="simplePageBean" ref="simplePageBean" />
 		<property name="simplePageToolDao">
 			<ref bean="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
@@ -200,6 +212,16 @@
 			<ref bean="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
 		</property>
     </bean>
+    
+	<bean class="org.sakaiproject.lessonbuildertool.tool.producers.PeerEvalStatsProducer" >
+    	<property name="simplePageToolDao">
+			<ref bean="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+		</property>
+		<property name="messageLocator" ref="messageLocator"/>
+		<property name="simplePageBean" ref="simplePageBean" />
+		<property name="showPageProducer" ref="showPageProducer" />
+		<property name="localeGetter" ref="requestLocaleProxy" />
+    </bean>
 
 	<!-- backing beans -->
 	<bean name="simplePageBean" class="org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean" init-method="init">
@@ -221,6 +243,8 @@
 		<property name="gradebookIfc" ref="org.sakaiproject.lessonbuildertool.service.GradebookIfc"/>
 		<property name="memoryService"><ref bean="org.sakaiproject.memory.api.MemoryService"/></property>
 		<property name="lessonBuilderEntityProducer" ref="org.sakaiproject.lessonbuildertool.service.LessonBuilderEntityProducer"/>
+		<property name="lessonsAccess" ref="org.sakaiproject.lessonbuildertool.service.LessonsAccess"/>
+		<property name="lessonBuilderAccessService" ref="org.sakaiproject.lessonbuildertool.service.LessonBuilderAccessService" />
 	</bean>
 	
 	<bean name="gradingBean" class="org.sakaiproject.lessonbuildertool.tool.beans.GradingBean">
@@ -238,12 +262,12 @@
           <property name="response" ref="httpServletResponse" />
 	</bean>
 
-        <bean id="rootHandlerBean" class="org.sakaiproject.lessonbuilder.util.RootHandlerBeanOverride" init-method="handle">
+        <bean id="rootHandlerBean" class="org.sakaiproject.lessonbuildertool.util.RootHandlerBeanOverride" init-method="handle">
 	  <property name="rootHandlerBeanBase" ref="overridedRootHandlerBean"/>
           <property name="reportHandlerHook" ref="reportHandlerHook"/>
 	</bean>
 
-        <bean id="overridedRootHandlerBean" parent="rootHandlerBeanBase" init-method="doNothing" class="org.sakaiproject.lessonbuilder.util.OverridedServletRootHandlerBean">
+        <bean id="overridedRootHandlerBean" parent="rootHandlerBeanBase" init-method="doNothing" class="org.sakaiproject.lessonbuildertool.util.OverridedServletRootHandlerBean">
           <property name="httpServletRequest" ref="httpServletRequest" />
           <property name="httpServletResponse" ref="httpServletResponse" />
         </bean>

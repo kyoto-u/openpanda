@@ -59,6 +59,11 @@
 			<description>contentHostingService</description>
 			<property-name>contentHostingService</property-name>
 			<value>#{Components["org.sakaiproject.content.api.ContentHostingService"]}</value>
+		</managed-property>
+		<managed-property>
+			<description>calendarService</description>
+			<property-name>calendarService</property-name>
+			<value>#{Components["org.sakaiproject.calendar.api.CalendarService"]}</value>
 		</managed-property> 
 	</managed-bean>
 
@@ -121,6 +126,16 @@
       <redirect/>
     </navigation-case>
     <navigation-case>
+      <from-outcome>edit_redirect</from-outcome>
+      <to-view-id>/syllabus/edit_redirect.jsp</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>edit_bulk</from-outcome>
+      <to-view-id>/syllabus/edit_bulk.jsp</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
       <from-outcome>permission_error</from-outcome>
       <to-view-id>/syllabus/permission_error.jsp</to-view-id>
       <redirect/>
@@ -155,8 +170,27 @@
       <redirect/>
     </navigation-case>
     <navigation-case>
-      <from-outcome>edit_redirect</from-outcome>
-      <to-view-id>/syllabus/edit_redirect.jsp</to-view-id>
+      <from-outcome>main</from-outcome>
+      <to-view-id>/syllabus/main.jsp</to-view-id>
+      <redirect/>
+    </navigation-case>
+     <navigation-case>
+      <from-outcome>edit_bulk</from-outcome>
+      <to-view-id>/syllabus/edit_bulk.jsp</to-view-id>
+      <redirect/>
+    </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+    <from-view-id>/syllabus/edit_bulk.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>edit_bulk</from-outcome>
+      <to-view-id>/syllabus/edit_bulk.jsp</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>main_edit</from-outcome>
+      <to-view-id>/syllabus/main_edit.jsp</to-view-id>
       <redirect/>
     </navigation-case>
     <navigation-case>
@@ -192,8 +226,8 @@
   <navigation-rule>
     <from-view-id>/syllabus/edit_redirect.jsp</from-view-id>
     <navigation-case>
-      <from-outcome>main_edit</from-outcome>
-      <to-view-id>/syllabus/main_edit.jsp</to-view-id>
+      <from-outcome>main</from-outcome>
+      <to-view-id>/syllabus/main.jsp</to-view-id>
       <redirect/>
     </navigation-case>
     <navigation-case>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-2.9.3/postem-impl/src/java/org/sakaiproject/component/app/postem/GradebookManagerImpl.java $
- * $Id: GradebookManagerImpl.java 69626 2009-12-09 16:04:51Z wagnermr@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-10.0/postem-impl/src/java/org/sakaiproject/component/app/postem/GradebookManagerImpl.java $
+ * $Id: GradebookManagerImpl.java 125618 2013-06-11 16:41:26Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,7 +61,7 @@ public class GradebookManagerImpl extends HibernateDaoSupport implements
 	public static final String RELEASED = "released";
 
 	public Gradebook createGradebook(String title, String creator,
-			String context, List headings, SortedSet students, Template template) {
+			String context, List headings, SortedSet students, Template template, String fileReference) {
 		if (title == null || creator == null || context == null || headings == null
 				|| students == null) {
 			throw new IllegalArgumentException("Null Argument");
@@ -69,6 +69,8 @@ public class GradebookManagerImpl extends HibernateDaoSupport implements
 
 			Gradebook grades = new GradebookImpl(title, creator, context, headings,
 					students, template);
+
+            grades.setFileReference(fileReference);
 			Iterator si = students.iterator();
 			while (si.hasNext()) {
 				((StudentGradesImpl) si.next()).setGradebook(grades);
@@ -283,7 +285,8 @@ public class GradebookManagerImpl extends HibernateDaoSupport implements
 		getHibernateTemplate().saveOrUpdate(gradebook);
 	}
 
-	public void updateTemplate(Gradebook gradebook, String template) {
+	public void updateTemplate(Gradebook gradebook, String template, String fileReference) {
+		gradebook.setFileReference(fileReference);
 		gradebook.setTemplate(createTemplate(template));
 		getHibernateTemplate().saveOrUpdate(gradebook);
 	}

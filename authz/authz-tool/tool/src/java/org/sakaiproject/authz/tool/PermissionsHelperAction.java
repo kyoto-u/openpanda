@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/authz/tags/sakai-2.9.3/authz-tool/tool/src/java/org/sakaiproject/authz/tool/PermissionsHelperAction.java $
- * $Id: PermissionsHelperAction.java 94052 2011-06-24 10:13:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/authz/tags/sakai-10.0/authz-tool/tool/src/java/org/sakaiproject/authz/tool/PermissionsHelperAction.java $
+ * $Id: PermissionsHelperAction.java 306833 2014-03-05 23:53:29Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -449,6 +449,7 @@ public class PermissionsHelperAction extends VelocityPortletPaneledAction
 				rolesAbilities.put(role.getId(), locks);
 			}
 		}
+		
 
 		context.put("realm", viewEdit != null ? viewEdit : edit);
 		context.put("prefix", prefix);
@@ -510,6 +511,11 @@ public class PermissionsHelperAction extends VelocityPortletPaneledAction
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
 
+		if (!"POST".equals(data.getRequest().getMethod())) {
+			M_log.warn("PermissionsAction.doSave: user did not submit with a POST! IP=" + data.getRequest().getRemoteAddr());
+			return;
+		}
+
 		// only save the view realm's roles
 		AuthzGroup edit = (AuthzGroup) state.getAttribute(STATE_VIEW_REALM_EDIT);
 		if (edit == null)
@@ -569,8 +575,8 @@ public class PermissionsHelperAction extends VelocityPortletPaneledAction
 			{
 				String lock = (String) iLocks.next();
 
-				String checked = data.getParameters().getString(role.getId() + lock);
-				if (checked != null)
+				boolean checked = data.getParameters().getBoolean(role.getId() + lock);
+				if (checked)
 				{
 					// we have an ability! Make sure there's a role
 					Role myRole = edit.getRole(role.getId());

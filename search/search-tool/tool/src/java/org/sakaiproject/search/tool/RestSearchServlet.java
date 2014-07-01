@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-tool/tool/src/java/org/sakaiproject/search/tool/RestSearchServlet.java $
- * $Id: RestSearchServlet.java 59685 2009-04-03 23:36:24Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-tool/tool/src/java/org/sakaiproject/search/tool/RestSearchServlet.java $
+ * $Id: RestSearchServlet.java 118402 2013-01-16 21:32:11Z jbush@rsmart.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,9 +42,12 @@ import org.sakaiproject.search.api.SearchService;
 public class RestSearchServlet extends HttpServlet
 {
 
-	private static final Log log = LogFactory.getLog(RestSearchServlet.class);
+    private static final Log log = LogFactory.getLog(RestSearchServlet.class);
+    public static final String REQUEST_PARAM_CTX = "ctx";
+    public static final String REQUEST_PARAM_SCOPE = "scope";
+    public static final String REQUEST_PARAMETER_Q = "q";
 
-	private SearchService searchService;
+    private SearchService searchService;
 
 	public void init()
 	{
@@ -100,13 +103,48 @@ public class RestSearchServlet extends HttpServlet
 			out.write(sb.toString());
 		} else {
 */
-			String result = searchService.searchXML(request.getParameterMap());
-			response.setContentType("text/xml");
-			Writer out = response.getWriter();
-			out.write(result);
-//		}
+        // /sakai-search-tool/xmlsearch/suggestion
+        String result;
+        String[] parts = request.getRequestURI().split("/");
+        if (parts.length == 4 && "suggestion".equalsIgnoreCase(parts[3])) {
+            boolean searchAllMySites = true;
+            String currentSiteId = null;
+            if (request.getParameter(REQUEST_PARAM_SCOPE) != null) {
+                if ("SITE".equalsIgnoreCase(request.getParameter(REQUEST_PARAM_SCOPE)))  {
+                    searchAllMySites = false;
+                }
+            }
+            if (request.getParameter(REQUEST_PARAM_CTX) != null) {
+                currentSiteId = request.getParameter(REQUEST_PARAM_CTX);
+            }
 
-	}
+            String[] suggestions = searchService.getSearchSuggestions(request.getParameter(REQUEST_PARAMETER_Q), currentSiteId, searchAllMySites);
+            response.setContentType("application/json");
+            result = stringArrayAsJson(suggestions);
+        // /sakai-search-tool/xmlsearch
+        } else {
+			result = searchService.searchXML(request.getParameterMap());
+            response.setContentType("text/xml");
+        }
+        Writer out = response.getWriter();
+        out.write(result);
+
+    }
+
+    private String stringArrayAsJson(String[] strArray) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("[");
+        int i=0;
+        for (String item: strArray) {
+            if (i > 0) {
+                sb.append(",");
+            }
+            sb.append("\"" + item + "\"");
+            i++;
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 
 
 }

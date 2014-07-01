@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.tool.pages;
 
 import java.util.Locale;
@@ -46,8 +45,6 @@ import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.tool.components.LocaleAwareHtmlTag;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
-
-import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 
 public class BasePage extends WebPage implements IHeaderContributor {
@@ -179,6 +176,10 @@ public class BasePage extends WebPage implements IHeaderContributor {
 		if(newMessagesCount == 0) {
 			newMessagesLabel.setVisible(false);
 		}
+		
+		if (!sakaiProxy.isMessagingEnabledGlobally()) {
+			myMessagesLink.setVisible(false);
+		}
 		add(myMessagesLink);
 		
 
@@ -260,39 +261,6 @@ public class BasePage extends WebPage implements IHeaderContributor {
 		HttpServletRequest request = getWebRequestCycle().getWebRequest().getHttpServletRequest();
 		response.renderString((String)request.getAttribute("sakai.html.head"));
 		response.renderOnLoadJavascript("setMainFrameHeight( window.name )");
-		
-		//for jQuery
-		response.renderJavascriptReference("javascript/jquery-1.4.4.min.js");
-			
-		//for datepicker
-		response.renderCSSReference("css/flora.datepicker.css");
-		response.renderJavascriptReference("javascript/jquery.ui.core-1.5.2.min.js");
-		response.renderJavascriptReference("javascript/jquery.datepicker-1.5.2.min.js");
-
-		//for cluetip
-		response.renderCSSReference("css/jquery.cluetip.css");
-		response.renderJavascriptReference("javascript/jquery.dimensions.js");
-		response.renderJavascriptReference("javascript/jquery.hoverIntent.min.js");
-		response.renderJavascriptReference("javascript/jquery.cluetip.js");
-		
-		//for color plugin
-		//response.renderJavascriptReference("javascript/jquery.color.js");
-		
-		//wicketstuff TinyMCE
-		response.renderJavascriptReference(TinyMCESettings.javaScriptReference());
-
-		//response.renderJavascriptReference("javascript/iframe.js");
-		//resize the iframe to fit the contents
-		//response.renderOnLoadJavascript("setMainFrameHeight(window.name);");
-		
-		//add live plugin to listen for markup added after the DOM is ready
-		//response.renderJavascriptReference("javascript/jquery.livequery.js");
-		
-		//for i18n plugin
-		response.renderJavascriptReference("javascript/jquery.i18n.properties-min.js");
-		
-		//for text counter
-		response.renderJavascriptReference("javascript/jquery.apTextCounter.min.js");
 		
 		//Tool additions (at end so we can override if required)
 		response.renderString("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");

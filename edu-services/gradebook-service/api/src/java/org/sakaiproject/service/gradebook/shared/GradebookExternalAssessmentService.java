@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookExternalAssessmentService.java 127788 2013-07-25 18:51:54Z ottenhoff@longsight.com $
+* $Id: GradebookExternalAssessmentService.java 130070 2013-09-30 23:54:12Z matthew@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -119,6 +119,21 @@ public interface GradebookExternalAssessmentService {
 			String title, double points, Date dueDate)
 	        throws GradebookNotFoundException, AssessmentNotFoundException,
             ConflictingAssignmentNameException, AssignmentHasIllegalPointsException;
+    
+    /**
+     *  Update an external assessment
+     * @param gradebookUid
+     * @param externalId
+     * @param externalUrl
+     * @param title
+     * @param points
+     * @param dueDate
+     * @param ungraded
+     * @throws GradebookNotFoundException
+     * @throws AssessmentNotFoundException
+     * @throws ConflictingAssignmentNameException
+     * @throws AssignmentHasIllegalPointsException
+     */
     public void updateExternalAssessment(String gradebookUid, String externalId, String externalUrl,
   			String title, Double points, Date dueDate, Boolean ungraded)
   	        throws GradebookNotFoundException, AssessmentNotFoundException,
@@ -137,23 +152,7 @@ public interface GradebookExternalAssessmentService {
 	public void removeExternalAssessment(String gradebookUid, String externalId)
         throws GradebookNotFoundException, AssessmentNotFoundException;
 
-	/**
-     * Updates an external score for an external assignment in the gradebook.
-     *
-	 * @param gradebookUid
-	 *	The Uid of the gradebook
-	 * @param externalId
-	 *	The external ID of the assignment/assessment
-	 * @param studentUid
-	 *	The unique id of the student
-	 * @param points
-	 *	The number of points earned on this assessment, or null if a score
-	 *	should be removed
-	 */
-//    public void updateExternalAssessmentScore(String gradebookUid, String externalId,
-//			String studentUid, Double points)
-//            throws GradebookNotFoundException, AssessmentNotFoundException;
-	/**
+  /**
    * Updates an external score for an external assignment in the gradebook.
    *
    * @param gradebookUid
@@ -171,11 +170,18 @@ public interface GradebookExternalAssessmentService {
             throws GradebookNotFoundException, AssessmentNotFoundException;
 
 	/**
+	 * 
+	 * @param gradebookUid
+	 * @param externalId
+	 * @param studentUidsToScores
+	 * @throws GradebookNotFoundException
+	 * @throws AssessmentNotFoundException
+	 * 
 	 * @deprecated Replaced by
-	 *		{@link updateExternalAssessmentScoresString(String, String, Map)}
+	 *		{@link updateExternalAssessmentScoresString(String, String, Map<String, String)}
 	 */
 	public void updateExternalAssessmentScores(String gradebookUid,
-		String externalId, Map studentUidsToScores)
+		String externalId, Map<String, Double> studentUidsToScores)
 		throws GradebookNotFoundException, AssessmentNotFoundException;
 
 	/**
@@ -191,9 +197,41 @@ public interface GradebookExternalAssessmentService {
 	 *  should be removed.
 	 */
 	public void updateExternalAssessmentScoresString(String gradebookUid,
-			String externalId, Map studentUidsToScores)
+			String externalId, Map<String, String> studentUidsToScores)
 	throws GradebookNotFoundException, AssessmentNotFoundException;
-
+	
+	/**
+	 * Updates an external comment for an external assignment in the gradebook.
+	 *
+	 * @param gradebookUid
+	 *	The Uid of the gradebook
+	 * @param externalId
+	 *	The external ID of the assignment/assessment
+	 * @param studentUid
+	 *	The unique id of the student
+	 * @param comment
+	 *	The comment to be added to this grade, or null if a comment
+	 *	should be removed
+	 */
+	public void updateExternalAssessmentComment(String gradebookUid,
+			String externalId, String studentUid, String comment )
+					throws GradebookNotFoundException, AssessmentNotFoundException;
+	/**
+	 * Updates a set of external comments for an external assignment in the gradebook.
+	 *
+	 * @param gradebookUid
+	 *	The Uid of the gradebook
+	 * @param externalId
+	 *	The external ID of the assignment/assessment
+	 * @param studentUidsToScores
+	 *	A map whose String keys are the unique ID strings of the students and whose
+	 *  String values are comments or null if the comments
+	 *  should be removed.
+	 */
+	public void updateExternalAssessmentComments(String gradebookUid,
+			String externalId, Map<String, String> studentUidsToComments)
+					throws GradebookNotFoundException, AssessmentNotFoundException;
+	
 	/**
 	 * Check to see if an assignment with the given name already exists
 	 * in the given gradebook. This will give external assessment systems

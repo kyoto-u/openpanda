@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/ReportManagerTest.java $
- * $Id: ReportManagerTest.java 78669 2010-06-21 13:55:23Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/ReportManagerTest.java $
+ * $Id: ReportManagerTest.java 307309 2014-03-20 19:44:14Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,12 +18,6 @@
  */
 package org.sakaiproject.sitestats.test;
 
-
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.getCurrentArguments;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +51,8 @@ import org.sakaiproject.time.api.Time;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.util.ResourceLoader;
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
+
+import static org.easymock.EasyMock.*;
 
 
 public class ReportManagerTest extends AbstractAnnotationAwareTransactionalTests { 
@@ -136,8 +132,6 @@ public class ReportManagerTest extends AbstractAnnotationAwareTransactionalTests
 		expect(M_ss.getSite(FakeData.SITE_A_ID)).andStubReturn(siteA);
 		expect(M_ss.isUserSite(FakeData.SITE_A_ID)).andStubReturn(false);
 		expect(M_ss.isSpecialSite(FakeData.SITE_A_ID)).andStubReturn(false);
-		//expect(siteA.getCreatedTime()).andStubReturn(timeA).anyTimes();
-		expect(siteA.getCreatedTime()).andStubReturn((Time)anyObject());
 		
 		// Site B has tools {TOOL_CHAT}, has {user-a}, created 2 months ago
 		FakeSite siteB = new FakeSite(FakeData.SITE_B_ID, FakeData.TOOL_CHAT);
@@ -145,9 +139,7 @@ public class ReportManagerTest extends AbstractAnnotationAwareTransactionalTests
 		((FakeSite)siteB).setMembers(new HashSet<String>(Arrays.asList(FakeData.USER_A_ID)));
 		expect(M_ss.getSite(FakeData.SITE_B_ID)).andStubReturn(siteB);
 		expect(M_ss.isUserSite(FakeData.SITE_B_ID)).andStubReturn(false);
-		expect(M_ss.isSpecialSite(FakeData.SITE_B_ID)).andStubReturn(false);	
-		//expect(siteB.getCreatedTime()).andStubReturn(timeB).anyTimes();
-		expect(siteB.getCreatedTime()).andStubReturn((Time)anyObject());
+		expect(M_ss.isSpecialSite(FakeData.SITE_B_ID)).andStubReturn(false);
 		
 		// Site 'non_existent_site' doesn't exist
 		expect(M_ss.isUserSite("non_existent_site")).andStubReturn(false);
@@ -173,6 +165,7 @@ public class ReportManagerTest extends AbstractAnnotationAwareTransactionalTests
 		replay(msgs);
 		((FakeEventRegistryService)M_ers).setSiteService(M_ss);
 		((FakeEventRegistryService)M_ers).setToolManager(M_tm);
+		((FakeEventRegistryService)M_ers).setStatsManager(M_sm);
 		((ReportManagerImpl)M_rm).setEventRegistryService(M_ers);
 		((StatsManagerImpl)M_sm).setSiteService(M_ss);
 		//((StatsManagerImpl)M_sm).setContentHostingService(M_chs);
@@ -552,7 +545,7 @@ public class ReportManagerTest extends AbstractAnnotationAwareTransactionalTests
 			// what
 			rp.setWhat(ReportManager.WHAT_EVENTS);
 			rp.setWhatEventSelType(ReportManager.WHAT_EVENTS_BYEVENTS);
-			rp.setWhatEventIds(M_ers.getEventIds());
+			rp.setWhatEventIds(new ArrayList<String>(M_ers.getEventIds()));
 			// when
 			rp.setWhen(ReportManager.WHEN_ALL);
 			// who
@@ -582,7 +575,7 @@ public class ReportManagerTest extends AbstractAnnotationAwareTransactionalTests
 			// what
 			rp.setWhat(ReportManager.WHAT_EVENTS);
 			rp.setWhatEventSelType(ReportManager.WHAT_EVENTS_BYEVENTS);
-			rp.setWhatEventIds(M_ers.getEventIds());
+			rp.setWhatEventIds(new ArrayList<String>(M_ers.getEventIds()));
 			// when
 			rp.setWhen(ReportManager.WHEN_ALL);
 			// who

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-portlet-tool/tool/src/java/org/sakaiproject/portal/portlet/velocity/VelocityPortletRenderEngine.java $
- * $Id: VelocityPortletRenderEngine.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-portlet-tool/tool/src/java/org/sakaiproject/portal/portlet/velocity/VelocityPortletRenderEngine.java $
+ * $Id: VelocityPortletRenderEngine.java 132676 2013-12-17 17:01:38Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -80,8 +80,8 @@ public class VelocityPortletRenderEngine implements PortletRenderEngine
 	{
 		Context vc = ((VelocityPortletRenderContext) rcontext)
 				.getVelocityContext();
-		vengine.getTemplate("defaultskin/macros.vm");
-		vengine.mergeTemplate("defaultskin/" + template + ".vm",
+		vengine.getTemplate("neoskin/macros.vm");
+		vengine.mergeTemplate("neoskin/" + template + ".vm",
 				((VelocityPortletRenderContext) rcontext).getVelocityContext(),
 				out);
 

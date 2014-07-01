@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: RosterBean.java 101702 2011-12-13 18:31:00Z ottenhoff@longsight.com $
+* $Id: RosterBean.java 108030 2012-05-11 15:38:31Z holladay@longsight.com $
 *
 ***********************************************************************************
 *
@@ -10,7 +10,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1073,6 +1073,9 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
         				if (gradeRecord.isCourseGradeRecord()) { 
         				    if (includeCourseGrade) {
         				        score = gradeRecord.getGradeAsPercentage();
+        				        if(((CourseGradeRecord)gradeRecord).getEnteredGrade() != null){
+        				        	score = "*" + score;
+        				        }
         				        if(ServerConfigurationService.getBoolean("gradebook.roster.showCourseGradePoints", false)
         		    					&& ((CourseGrade) gradableObject).getGradebook().getGrade_type() == GradebookService.GRADE_TYPE_POINTS){
         		         			//add total points

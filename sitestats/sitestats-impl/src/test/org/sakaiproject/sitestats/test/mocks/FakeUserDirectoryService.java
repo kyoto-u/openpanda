@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUserDirectoryService.java $
- * $Id: FakeUserDirectoryService.java 75483 2010-03-31 08:26:41Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUserDirectoryService.java $
+ * $Id: FakeUserDirectoryService.java 308855 2014-04-25 23:59:06Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,7 @@ import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.HttpAccess;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.user.api.PasswordPolicyProvider;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserAlreadyDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -248,6 +249,15 @@ public class FakeUserDirectoryService implements UserDirectoryService {
 	}
 
 	public List<User> searchExternalUsers(String criteria, int first, int last){
+		return null;
+	}
+
+    public UserDirectoryService.PasswordRating validatePassword(String password, User user) {
+	return UserDirectoryService.PasswordRating.PASSED_DEFAULT;
+    }
+
+	@Override
+	public PasswordPolicyProvider getPasswordPolicy() {
 		return null;
 	}
 

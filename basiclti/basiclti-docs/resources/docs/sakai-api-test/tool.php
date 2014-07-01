@@ -22,9 +22,9 @@ echo("<p><b>Sakai External Tool API Test Harness</b></p>\n");
 
 $sourcedid = $_REQUEST['lis_result_sourcedid'];
 if (get_magic_quotes_gpc()) $sourcedid = stripslashes($sourcedid);
-$sourcedid = htmlentities($sourcedid);
 
 if ( $context->valid ) {
+   print "<p style=\"color:green\">Launch Validated.<p>\n";
    if ( $_POST['launch_presentation_return_url']) {
      $msg = 'A%20message%20from%20the%20tool%20provider.';
      $error_msg = 'An%20error%20message%20from%20the%20tool%20provider.';
@@ -38,27 +38,59 @@ if ( $context->valid ) {
    $found = false;
     if ( $_POST['lis_result_sourcedid'] && $_POST['lis_outcome_service_url'] ) {
         print "<p>\n";
-        print '<a href="common/tool_provider_outcome.php?sourcedid='.$sourcedid;
+        print '<a href="common/tool_provider_outcome.php?sourcedid='.urlencode($sourcedid);
         print '&key='.urlencode($_POST['oauth_consumer_key']);
         print '&seret=secret';
-        print '&url='.urlencode($_POST['lis_outcome_service_url']).'">';
+        print '&url='.urlencode($_POST['lis_outcome_service_url']);
+        print '&accepted='.urlencode($_POST['ext_outcome_data_values_accepted']).'">';
         print 'Test LTI 1.1 Outcome Service</a>.</p>'."\n";
+		$found = true;
     }
+
+    if ( isset($_POST['custom_result_url']) ) {
+        print "<p>\n";
+        print '<a href="json/result_json.php?url='.urlencode($_POST['custom_result_url']).'">';
+        print 'Test LTI 2.0 Outcome Service</a>.</p>'."\n";
+		$_SESSION['reg_key'] = $_POST['oauth_consumer_key'];
+		$_SESSION['reg_password'] = "secret";
+		$found = true;
+    }
+
+    if ( isset($_POST['custom_ltilink_custom_url']) || isset($_POST['custom_toolproxy_custom_url']) ||
+		isset($_POST['custom_toolproxybinding_custom_url']) ) {
+        print "<p>\n";
+        print '<a href="json/settings_json.php?';
+		if ( isset($_POST['custom_ltilink_custom_url']) ) { 
+			print 'link='.urlencode($_POST['custom_ltilink_custom_url'])."&";
+		}
+		if ( isset($_POST['custom_toolproxy_custom_url']) ) { 
+			print 'proxy='.urlencode($_POST['custom_toolproxy_custom_url'])."&";
+		}
+		if ( isset($_POST['custom_toolproxybinding_custom_url']) ) { 
+			print 'tool='.urlencode($_POST['custom_toolproxybinding_custom_url'])."&";
+		}
+		print 'x=24">';
+        print 'Test LTI 2.0 Settings Service</a>.</p>'."\n";
+		$_SESSION['reg_key'] = $_POST['oauth_consumer_key'];
+		$_SESSION['reg_password'] = "secret";
+		$found = true;
+    }
+
 
     if ( $_POST['context_id'] && $_POST['ext_lori_api_url_xml'] && $_POST['lis_result_sourcedid'] ) {
         print "<p>\n";
-        print '<a href="ext/lori_xml.php?context_id='.htmlentities($_POST['context_id']);
+        print '<a href="ext/lori_xml.php?context_id='.htmlent_utf8($_POST['context_id']);
         print '&lis_result_sourcedid='.urlencode($_POST['lis_result_sourcedid']);
         print '&user_id='.urlencode($_POST['user_id']);
         print '&key='.urlencode($_POST['oauth_consumer_key']);
         print '&url='.urlencode($_POST['ext_lori_api_url_xml']).'">';
-        print 'Test LORI XML API</a>.</p>'."\n";
+        print 'Test Sakai LORI XML API</a>.</p>'."\n";
         $found = true;
     }
 
     if ( $_POST['ext_ims_lis_memberships_id'] && $_POST['ext_ims_lis_memberships_url'] ) {
         print "<p>\n";
-        print '<a href="ext/memberships.php?id='.htmlentities($_POST['ext_ims_lis_memberships_id']);
+        print '<a href="ext/memberships.php?id='.htmlent_utf8($_POST['ext_ims_lis_memberships_id']);
         print '&key='.urlencode($_POST['oauth_consumer_key']);
         print '&url='.urlencode($_POST['ext_ims_lis_memberships_url']).'">';
         print 'Test Sakai Roster API</a>.</p>'."\n";
@@ -69,33 +101,35 @@ if ( $context->valid ) {
         print "<p>\n";
         print '<a href="ext/setoutcome.php?sourcedid='.$sourcedid;
         print '&key='.urlencode($_POST['oauth_consumer_key']);
+        print '&accepted='.urlencode($_POST['ext_outcome_data_values_accepted']);
         print '&url='.urlencode($_POST['ext_ims_lis_basic_outcome_url']).'">';
         print 'Test Sakai Outcome API</a>.</p>'."\n";
 		$found = true;
     } 
     if ( $_POST['ext_ims_lti_tool_setting_id'] && $_POST['ext_ims_lti_tool_setting_url'] ) {
         print "<p>\n";
-        print '<a href="ext/setting.php?id='.htmlentities($_POST['ext_ims_lti_tool_setting_id']);
+        print '<a href="ext/setting.php?id='.htmlent_utf8($_POST['ext_ims_lti_tool_setting_id']);
         print '&key='.urlencode($_POST['oauth_consumer_key']);
         print '&url='.urlencode($_POST['ext_ims_lti_tool_setting_url']).'">';
         print 'Test Sakai Settings API</a>.</p>'."\n";
 		$found = true;
     }
+
     if ( ! $found ) {
-		echo("<p>This launch did not include the necessary settings for any of the ");
-		echo("Sakai External Tool API such as:\n<pre>\n");
-		echo("ext_ims_lis_memberships_url\next_ims_lis_basic_outcome_url\next_ims_lti_tool_setting_url\n");
-		echo("</pre>\n</p>\n");
+		echo("<p>No Services are available for this launch.</p>\n");
 	}
     print "<pre>\n";
     print "Context Information:\n\n";
-    print htmlentities($context->dump());
+    print htmlent_utf8($context->dump());
     print "</pre>\n";
 } else {
     print "<p style=\"color:red\">Could not establish context: ".$context->message."<p>\n";
 }
 print "<p>Base String:<br/>\n";
-print htmlentities($context->basestring);
+print htmlent_utf8($context->basestring);
+print "<br/></p>\n";
+
+echo('<a href="basecheck.php?b='.urlencode($context->basestring).'" target="_blank">Compare This Base String</a><br/>');
 print "<br/></p>\n";
 
 print "<pre>\n";
@@ -103,14 +137,14 @@ print "Raw POST Parameters:\n\n";
 ksort($_POST);
 foreach($_POST as $key => $value ) {
     if (get_magic_quotes_gpc()) $value = stripslashes($value);
-    print htmlentities($key) . "=" . htmlentities($value) . " (".mb_detect_encoding($value).")\n";
+    print htmlent_utf8($key) . "=" . htmlent_utf8($value) . " (".mb_detect_encoding($value).")\n";
 }
 
 print "\nRaw GET Parameters:\n\n";
 ksort($_GET);
 foreach($_GET as $key => $value ) {
     if (get_magic_quotes_gpc()) $value = stripslashes($value);
-    print htmlentities($key) . "=" . htmlentities($value) . " (".mb_detect_encoding($value).")\n";
+    print htmlent_utf8($key) . "=" . htmlent_utf8($value) . " (".mb_detect_encoding($value).")\n";
 }
 print "</pre>";
 

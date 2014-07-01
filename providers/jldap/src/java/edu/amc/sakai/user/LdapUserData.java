@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/jldap/src/java/edu/amc/sakai/user/LdapUserData.java $
- * $Id: LdapUserData.java 75535 2010-04-01 03:48:10Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/jldap/src/java/edu/amc/sakai/user/LdapUserData.java $
+ * $Id: LdapUserData.java 134278 2014-02-08 19:32:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,8 +50,6 @@ public class LdapUserData
 	private String type;
 	
 	private Properties properties;
-
-	private long timeStamp;
 	
 
 	/**
@@ -145,23 +143,6 @@ public class LdapUserData
 	public void setType(String type)
 	{
 		this.type = type;
-	}
-
-	/**
-	 * @return Returns the timeStamp.
-	 */
-	public long getTimeStamp()
-	{
-		return timeStamp;
-	}
-
-	/**
-	 * @param timeStamp
-	 *        The timeStamp to set.
-	 */
-	public void setTimeStamp(long timeStamp)
-	{
-		this.timeStamp = timeStamp;
 	}
 
 	/**

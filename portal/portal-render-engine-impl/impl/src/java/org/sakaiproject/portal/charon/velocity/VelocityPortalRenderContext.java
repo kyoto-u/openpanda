@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.3/portal-render-engine-impl/impl/src/java/org/sakaiproject/portal/charon/velocity/VelocityPortalRenderContext.java $
- * $Id: VelocityPortalRenderContext.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-render-engine-impl/impl/src/java/org/sakaiproject/portal/charon/velocity/VelocityPortalRenderContext.java $
+ * $Id: VelocityPortalRenderContext.java 111844 2012-08-24 20:31:42Z earle.nietzel@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -38,7 +38,7 @@ import org.sakaiproject.portal.api.PortalRenderEngine;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 111844 $
  */
 
 public class VelocityPortalRenderContext implements PortalRenderContext
@@ -96,12 +96,12 @@ public class VelocityPortalRenderContext implements PortalRenderContext
 	{
 		if (o instanceof Map)
 		{
-			sb.append("Property ").append(key).append(":").append(o).append("\n");
+			sb.append("Property ").append(key).append(".v   (Map)").append("\n");
 			dumpMap(sb, key, (Map) o);
 		}
 		else if (o instanceof Collection)
 		{
-			sb.append("Property ").append(key).append(":").append(o).append("\n");
+			sb.append("Property ").append(key).append(".v   (Collection)").append("\n");
 			dumpCollection(sb, key, (Collection) o);
 		}
 		else

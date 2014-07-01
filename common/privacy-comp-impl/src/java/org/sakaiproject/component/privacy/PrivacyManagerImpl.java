@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,16 +21,6 @@
 
 package org.sakaiproject.component.privacy;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.Iterator;
-import java.util.HashSet;
-import java.util.HashMap;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Hibernate;
@@ -38,17 +28,30 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.sakaiproject.api.privacy.PrivacyManager;
+import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.authz.api.AuthzGroupAdvisor;
+import org.sakaiproject.authz.api.AuthzGroupService;
+import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.entity.api.ResourcePropertiesEdit;
+import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.IdUsedException;
+import org.sakaiproject.exception.InUseException;
+import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.hbm.privacy.PrivacyRecordImpl;
+import org.sakaiproject.user.api.Preferences;
+import org.sakaiproject.user.api.PreferencesEdit;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.cover.UserDirectoryService;
-import org.sakaiproject.authz.cover.AuthzGroupService;
-import org.sakaiproject.authz.api.AuthzGroup;
-
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
 
-public class PrivacyManagerImpl extends HibernateDaoSupport implements PrivacyManager
+
+public class PrivacyManagerImpl extends HibernateDaoSupport implements PrivacyManager, AuthzGroupAdvisor
 {
 	private static Log log = LogFactory.getLog(PrivacyManagerImpl.class);
 	
@@ -63,10 +66,21 @@ public class PrivacyManagerImpl extends HibernateDaoSupport implements PrivacyMa
 	private static final String RECORD_TYPE = "recordType";
 	private static final String VIEWABLE = "viewable";
 	
+	private PreferencesService preferencesService;
+	private AuthzGroupService authzGroupService;
+	
 	protected boolean defaultViewable = true;
 	protected Boolean overrideViewable = null;
 	protected boolean userRecordHasPrecedence = true;
 	protected int maxResultSetNumber = 1000;
+	
+	public void init() {
+		authzGroupService.addAuthzGroupAdvisor(this);
+	}
+
+	public void destroy() {
+		authzGroupService.removeAuthzGroupAdvisor(this);
+	}
 
 	public Set findViewable(String contextId, Set userIds)
 	{
@@ -215,7 +229,7 @@ public class PrivacyManagerImpl extends HibernateDaoSupport implements PrivacyMa
   	
   	try
   	{
-  		AuthzGroup realm = AuthzGroupService.getAuthzGroup(contextId);
+  		AuthzGroup realm = authzGroupService.getAuthzGroup(contextId);
   		List users = new ArrayList();
   		users.addAll(UserDirectoryService.getUsers(realm.getUsers()));
   		List siteUserIds = new ArrayList();
@@ -279,7 +293,7 @@ public class PrivacyManagerImpl extends HibernateDaoSupport implements PrivacyMa
 
   	try
   	{
-  		AuthzGroup realm = AuthzGroupService.getAuthzGroup(contextId);
+  		AuthzGroup realm = authzGroupService.getAuthzGroup(contextId);
   		List users = new ArrayList();
   		users.addAll(UserDirectoryService.getUsers(realm.getUsers()));
   		List siteUserIds = new ArrayList();
@@ -400,7 +414,133 @@ public class PrivacyManagerImpl extends HibernateDaoSupport implements PrivacyMa
 		}
 	}
 
+	@Override
+	public void update(AuthzGroup group) {
+		// the authz group is changing
 	
+		if (group == null) {
+			return;
+		}
+
+		// /site/7e7c810d-fbd5-4017-a0bf-76be2d50a79d
+		String[] gIdParts = group.getId().split("/");
+		
+		// only updating site level authz groups
+		if (gIdParts.length == 3 && "site".equals(gIdParts[1])) {
+			String context = "/site/" + gIdParts[2];
+			List<PrivacyRecordImpl> prList = getPrivacyByContextAndType(context, PrivacyManager.USER_RECORD_TYPE);
+			Set<String> grpMembers = new HashSet<String>();
+			
+			grpMembers.addAll(group.getUsers());
+			
+			// ignore members who already have a privacy record for this site
+			for (PrivacyRecordImpl record : prList) {
+				if(!grpMembers.remove(record.getUserId())) {
+					// user is no longer a member of this authz group remove their record
+					removePrivacyObject(record);
+				}
+			}
+
+			// the remaining members will need to lookup their default preference
+			for (String member : grpMembers) {
+				// the default is visible so we only need to update those that are set to hidden
+				String privacy = getDefaultPrivacyState(member);
+				if (PrivacyManager.VISIBLE.equals(privacy)) {
+					setViewableState(context, member, true, PrivacyManager.USER_RECORD_TYPE);
+				} else if (PrivacyManager.HIDDEN.equals(privacy)) {
+					setViewableState(context, member, false, PrivacyManager.USER_RECORD_TYPE);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void groupUpdate(AuthzGroup group, String userId, String roleId) {
+		// nothing to do for groupUpdate
+		return;
+	}
+
+	@Override
+	public void remove(AuthzGroup group) {
+		// when authz groups are removed we cleanup the privacy records
+		
+		if (group == null) {
+			return;
+		}
+
+		// /site/7e7c810d-fbd5-4017-a0bf-76be2d50a79d
+		String[] gIdParts = group.getId().split("/");
+		
+		// only removing site level authz groups
+		if (gIdParts.length == 3 && "site".equals(gIdParts[1])) {
+			String context = "/site/" + gIdParts[2];
+			List<PrivacyRecordImpl> prList = getPrivacyByContextAndType(context, PrivacyManager.USER_RECORD_TYPE);
+
+			for (PrivacyRecordImpl record : prList) {
+				removePrivacyObject(record);
+			}
+		}
+	}
+
+
+	@Override
+	public void setDefaultPrivacyState(String userId, String visibility) {
+		if (userId == null) {
+			log.warn("Cannot set priavacy status for a null userId");
+			return;
+		}
+		
+		if (visibility == null) {
+			visibility = PrivacyManager.VISIBLE;
+		}
+		
+		PreferencesEdit editPref;
+		try {
+			editPref = preferencesService.edit(userId);
+			
+			ResourcePropertiesEdit props = editPref.getPropertiesEdit(PRIVACY_PREFS);
+			props.addProperty(PrivacyManager.DEFAULT_PRIVACY_KEY, visibility);
+
+			preferencesService.commit(editPref);
+		} catch (PermissionException e) {
+			log.warn("You do not have the appropriate permissions to edit preferences for user: " + userId + ". " + e.getMessage());
+		} catch (InUseException e) {
+			log.warn("Preferences for user: " + userId + " are currently being edited. " + e.getMessage());
+		} catch (IdUnusedException e) {
+			try {
+				editPref = preferencesService.add(userId);
+				
+				ResourcePropertiesEdit props = editPref.getPropertiesEdit(PRIVACY_PREFS);
+				props.addProperty(PrivacyManager.DEFAULT_PRIVACY_KEY, visibility);
+
+				preferencesService.commit(editPref);
+			} catch (PermissionException e1) {
+				// TODO Auto-generated catch block
+				log.warn("You do not have the appropriate permissions to edit preferences for user: " + userId + ". " + e1.getMessage());
+			} catch (IdUsedException e1) {
+				log.warn("No preferences for user: " + userId + " found intially, attempted to add new preferences. " + e1.getMessage());
+			}
+		}
+	}
+
+	@Override
+	public String getDefaultPrivacyState(String userId) {
+		String privacy = null;
+		
+		if (userId != null) {
+			Preferences prefs = preferencesService.getPreferences(userId);
+			ResourceProperties props = prefs.getProperties(PRIVACY_PREFS);
+			privacy = props.getProperty(PrivacyManager.DEFAULT_PRIVACY_KEY);
+		}
+		
+		if (privacy == null) {
+			// default privacy is visible
+			privacy = PrivacyManagerImpl.VISIBLE;
+		}
+		
+		return privacy;
+	}
+
 	private PrivacyRecordImpl getPrivacy(final String contextId, final String userId, final String recordType)
 	{
 		if (contextId == null || userId == null || recordType == null)
@@ -415,7 +555,7 @@ public class PrivacyManagerImpl extends HibernateDaoSupport implements PrivacyMa
 			{
 				Query q = session.getNamedQuery(QUERY_BY_USERID_CONTEXTID_TYPEID);
 				q.setCacheable(true);
-				q.setCacheRegion("org.sakaiproject.api.privacy.PrivacyManager.PrivacyQueryCache.queryGetPrivacy");
+				//SAK-26110 q.setCacheRegion("org.sakaiproject.api.privacy.PrivacyManager.PrivacyQueryCache.queryGetPrivacy");
 				q.setParameter(CONTEXT_ID, contextId, Hibernate.STRING);
 				q.setParameter(USER_ID, userId, Hibernate.STRING);
 				q.setParameter(RECORD_TYPE, recordType, Hibernate.STRING);
@@ -669,5 +809,13 @@ public class PrivacyManagerImpl extends HibernateDaoSupport implements PrivacyMa
 	public void setMaxResultSetNumber(int maxResultSetNumber)
 	{
 		this.maxResultSetNumber = maxResultSetNumber;
+	}
+
+	public void setPreferencesService(PreferencesService preferencesService) {
+		this.preferencesService = preferencesService;
+	}
+
+	public void setAuthzGroupService(AuthzGroupService authzGroupService) {
+		this.authzGroupService = authzGroupService;
 	}
 }

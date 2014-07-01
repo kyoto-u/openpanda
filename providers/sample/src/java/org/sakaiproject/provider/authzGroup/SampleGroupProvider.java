@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.3/sample/src/java/org/sakaiproject/provider/authzGroup/SampleGroupProvider.java $
- * $Id: SampleGroupProvider.java 92938 2011-05-17 18:52:01Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/sample/src/java/org/sakaiproject/provider/authzGroup/SampleGroupProvider.java $
+ * $Id: SampleGroupProvider.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

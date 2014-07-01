@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/tool/api/ActiveToolManager.java $
- * $Id: ActiveToolManager.java 83840 2010-10-28 08:00:22Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/tool/api/ActiveToolManager.java $
+ * $Id: ActiveToolManager.java 107506 2012-04-24 13:58:10Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -89,14 +89,7 @@ public interface ActiveToolManager extends ToolManager
 	 * @return The Tool object that has this id, or null if not found.
 	 */
 	ActiveTool getActiveTool(String id);
-	
-	/**
-	 * Get the localized property of a tool
-	 * @param toolId The fully qualified id of a sakai tool.
-	 * @param key The name of the property, for example title or description.
-	 * @return The tool property, null if tool id is invalid.
-	 */
-	String getLocalizedToolProperty(String toolId, String key);
+
 }
 
 

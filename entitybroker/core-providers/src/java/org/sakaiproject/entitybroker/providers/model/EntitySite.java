@@ -1,6 +1,6 @@
 /**
- * $Id: EntitySite.java 51318 2008-08-24 05:28:47Z csev@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/trunk/impl/src/java/org/sakaiproject/entitybroker/providers/EntitySite.java $
+ * $Id: EntitySite.java 307875 2014-04-07 15:40:27Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/EntitySite.java $
  * EntitySite.java - entity-broker - Jun 29, 2008 9:31:10 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@
 
 package org.sakaiproject.entitybroker.providers.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,8 +37,11 @@ import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.RoleAlreadyDefinedException;
+import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
+import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityFieldRequired;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityId;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityLastModified;
@@ -49,7 +53,9 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.time.api.Time;
+import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.util.Web;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -59,7 +65,7 @@ import org.w3c.dom.Element;
  * @author Aaron Zeckoski (azeckoski @ gmail.com)
  */
 @SuppressWarnings("unchecked")
-@ReflectIgnoreClassFields({"createdBy","modifiedBy","properties","propertiesEdit","pages","members","orderedPages","roles","users","groups","url"})
+@ReflectIgnoreClassFields({"createdBy","modifiedBy","properties","propertiesEdit","members","orderedPages","pages", "roles","users","groups","url"})
 public class EntitySite implements Site {
 
     private static final long serialVersionUID = 7526472295622776147L;
@@ -69,7 +75,9 @@ public class EntitySite implements Site {
     @EntityFieldRequired
     private String title;
     private String shortDescription;
+    private String htmlShortDescription;
     private String description;
+    private String htmlDescription;
     private String iconUrl;
     private String iconUrlFull;
     private String infoUrl;
@@ -87,7 +95,6 @@ public class EntitySite implements Site {
     private String owner;
     private long lastModified;
     private String[] userRoles;
-    private boolean softlyDeleted;
 
     private transient List<EntityGroup> siteGroupsList;
 
@@ -127,9 +134,22 @@ public class EntitySite implements Site {
             String iconFullUrl, String infoUrl, String infoUrlFull, boolean joinable,
             String joinerRole, String maintainRole, String skin, boolean published, boolean pubView,
             String type, String providerGroupId, boolean customPageOrdered) {
+        this(title, shortDescription, Web.escapeHtml(shortDescription), description, Web.escapeHtml(description),
+             iconUrl, iconFullUrl, infoUrl, infoUrlFull, joinable,
+             joinerRole, maintainRole, skin, published, pubView, type, providerGroupId, customPageOrdered);
+    }
+
+    public EntitySite(String title,
+            String shortDescription, String htmlShortDescription,
+            String description, String htmlDescription,
+            String iconUrl, String iconFullUrl, String infoUrl, String infoUrlFull, boolean joinable,
+            String joinerRole, String maintainRole, String skin, boolean published, boolean pubView,
+            String type, String providerGroupId, boolean customPageOrdered) {
         this.title = title;
         this.shortDescription = shortDescription;
+        this.htmlShortDescription = htmlShortDescription;
         this.description = description;
+        this.htmlDescription = htmlDescription;
         this.iconUrl = iconUrl;
         this.iconUrlFull = iconFullUrl;
         this.infoUrl = infoUrl;
@@ -152,7 +172,9 @@ public class EntitySite implements Site {
         this.id = site.getId();
         this.title = site.getTitle();
         this.shortDescription = site.getShortDescription();
+        this.htmlShortDescription = site.getHtmlShortDescription();
         this.description = site.getDescription();
+        this.htmlDescription = site.getHtmlDescription();
         this.iconUrl = site.getIconUrl();
         this.infoUrl = site.getInfoUrl();
         this.iconUrlFull = site.getIconUrlFull();
@@ -249,8 +271,13 @@ public class EntitySite implements Site {
         return shortDescription;
     }
 
+    public String getHtmlShortDescription() {
+        return htmlShortDescription;
+    }
+
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+        this.htmlShortDescription = Web.escapeHtml(shortDescription);
     }
 
     @EntitySummary
@@ -258,8 +285,13 @@ public class EntitySite implements Site {
         return description;
     }
 
+    public String getHtmlDescription() {
+        return htmlDescription;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+        this.htmlDescription = Web.escapeHtml(description);
     }
 
     public String getIconUrl() {
@@ -389,6 +421,36 @@ public class EntitySite implements Site {
         return siteGroupsList;
     }
 
+    public List<SitePage> getSitePages() {
+        ArrayList<SitePage> rpgs = new ArrayList<SitePage>(0);
+        if (site != null) {
+            List<SitePage> pages = site.getOrderedPages();
+            rpgs = new ArrayList<SitePage>(pages.size());
+            DeveloperHelperService dhs = (DeveloperHelperService) ComponentManager.get(DeveloperHelperService.class);
+            ToolManager toolManager = (ToolManager) ComponentManager.get(ToolManager.class.getName()); 
+            boolean siteUpdate = false;
+            if (dhs != null && dhs.getCurrentUserId() != null) {
+                siteUpdate = site.isAllowed(dhs.getCurrentUserId(), "site.upd");
+            }
+            for (SitePage sitePage : pages) {
+                // check if current user has permission to see page
+                List<ToolConfiguration> pTools = sitePage.getTools();
+                boolean allowPage = false;
+                for (ToolConfiguration tc : pTools) {
+                    boolean thisTool = toolManager.allowTool(site, tc);
+                    boolean unHidden = siteUpdate || !toolManager.isHidden(tc);
+                    if (thisTool && unHidden) {
+                        allowPage = true;
+                    }
+                }
+                if (allowPage) {
+                    rpgs.add( new EntitySitePage(sitePage) );
+                }
+            }
+        }
+        return rpgs;
+    }
+
     // transient
     public void setSiteGroupsList(List<EntityGroup> siteGroups) {
         this.siteGroupsList = siteGroups;
@@ -406,6 +468,13 @@ public class EntitySite implements Site {
     public SitePage addPage() {
         if (site != null) {
             return site.addPage();
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    public List<SitePage> getPages() {
+        if (site != null) {
+            return site.getPages();
         }
         throw new UnsupportedOperationException();
     }
@@ -499,13 +568,6 @@ public class EntitySite implements Site {
     public SitePage getPage(String arg0) {
         if (site != null) {
             return site.getPage(arg0);
-        }
-        throw new UnsupportedOperationException();
-    }
-
-    public List getPages() {
-        if (site != null) {
-            return site.getPages();
         }
         throw new UnsupportedOperationException();
     }
@@ -782,21 +844,26 @@ public class EntitySite implements Site {
         throw new UnsupportedOperationException();
     }
 
-	public Date getSoftlyDeletedDate() {
-		if (site != null) {
+    public Date getSoftlyDeletedDate() {
+        if (site != null) {
             return site.getSoftlyDeletedDate();
         }
         throw new UnsupportedOperationException();
-	}
+    }
 
-	public boolean isSoftlyDeleted() {
-		return softlyDeleted;
-	}
+    public boolean isSoftlyDeleted() {
+        if (site != null) {
+            return site.isSoftlyDeleted();
+        }
+        throw new UnsupportedOperationException();
+    }
 
-	public void setSoftlyDeleted(boolean arg0) {
-		this.softlyDeleted = arg0;
-		
-	}
+    public void setSoftlyDeleted(boolean flag) {
+        if (site != null) {
+            site.setSoftlyDeleted(flag);
+        }
+        throw new UnsupportedOperationException();
+    }
 
     public Collection<String> getMembersInGroups(Set<String> groupIds) {
         if (site != null) {

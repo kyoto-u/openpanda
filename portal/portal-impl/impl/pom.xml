@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>portal-base</artifactId>
+        <artifactId>portal</artifactId>
         <groupId>org.sakaiproject.portal</groupId>
-        <version>2.9.3</version>
+        <version>10.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -21,6 +21,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.sakaiproject.edu-services.course-management</groupId>
+            <artifactId>coursemanagement-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.sakaiproject.kernel</groupId>
             <artifactId>sakai-kernel-api</artifactId>
         </dependency>
@@ -35,12 +39,10 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>sakai-portal-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>sakai-portal-render-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -80,7 +82,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.8.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -88,9 +90,9 @@
             <artifactId>log4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>au.com.flyingkite</groupId>
-            <artifactId>mobiledetect</artifactId>
-        </dependency>
+			<groupId>au.com.flyingkite</groupId>
+			<artifactId>mobiledetect</artifactId>
+		</dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
@@ -100,6 +102,12 @@
             <artifactId>xom</artifactId>
             <version>1.1</version>
         </dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+
     </dependencies>
 
     <build>

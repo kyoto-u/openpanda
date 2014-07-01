@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Sakai Foundation
+ * Copyright (c) 2008-2012 The Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sakaiproject.profile2.logic;
 
 import java.util.HashMap;
@@ -509,6 +508,15 @@ public interface SakaiProxy {
 	public boolean isProfileGalleryEnabledGlobally();
 	
 	/**
+	 * Is the profile2.messaging.enabled flag set in sakai.properties?
+	 * If not set, default to <code>true</code>.
+	 * 
+	 * @return the status of the profile2.messaging.enabled flag in sakai.properties.
+	 * Returns <code>true</code> by default.
+	 */
+	public boolean isMessagingEnabledGlobally();
+	
+	/**
 	 * Is the profile2.picture.change.enabled flag set in sakai.properties?
 	 * If not set, defaults to true
 	 * 
@@ -639,6 +647,37 @@ public interface SakaiProxy {
 	 * @return
 	 */
 	public String getOfficialImageSource();
+	
+	/**
+	 * Gets the value of the profile2.official.image.directory attribute from sakai.properties.
+	 * If not set, defaults to /official-photos
+	 * 
+	 * This should be specified if profile2.picture.type=official
+	 * 
+	 * @return The root directory where official images are stored
+	 */
+	public String getOfficialImagesDirectory();
+	
+	/**
+	 * Get the value of the profile2.official.image.directory.pattern attribute from sakai.properties.
+	 * If not set, defaults to TWO_DEEP.
+	 * 
+	 * <br />
+	 * Options:
+	 * <ul>
+	 * <li>ONE_DEEP = first letter of a user's eid, then a slash, then the eid suffixed by '.jpg'. 
+	 * For example BASEDIR/a/adrian.jpg, BASEDIR/s/steve.jpg</li>
+	 * <li>TWO_DEEP = first letter of a user's eid, then a slash, then the second letter of the eid 
+	 * followed by a slash and finally the eid suffixed by '.jpg'. 
+	 * For example BASEDIR/a/d/adrian.jpg, BASEDIR/s/t/steve.jpg</li>
+	 * <li>ALL_IN_ONE = all files in the one directory.
+	 * For example BASEDIR/adrian.jpg, BASEDIR/steve.jpg</li>
+	 * </ul>
+	 * 
+	 * This is optional but if you have your images on the filesystem in a pattern that isnt default, you need to set a pattern.
+	 * @return
+	 */
+	public String getOfficialImagesFileSystemPattern();
 	
 	/**
 	 * Gets the value of the profile2.official.image.attribute from sakai.properties
@@ -824,4 +863,53 @@ public interface SakaiProxy {
 	 * @return true or false. 
 	 */
 	public boolean isProfileStatusEnabled();
+
+	/**
+	 * Is the profile2.profile.social.enabled flag set in sakai.properties? 
+	 * If not set, defaults to true.
+	 * 
+	 * @return <code>true</code> if the profile2.profile.social.enabled flag
+	 *         is set, otherwise returns <code>false</code>.
+	 */
+	public boolean isSocialProfileEnabled();
+
+	/**
+	 * Is the profile2.profile.interests.enabled flag set in sakai.properties? 
+	 * If not set, defaults to true.
+	 * 
+	 * @return <code>true</code> if the profile2.profile.interests.enabled flag
+	 *         is set, otherwise returns <code>false</code>.
+	 */
+	public boolean isInterestsProfileEnabled();
+
+	/**
+	 * Is the profile2.profile.staff.enabled flag set in sakai.properties? 
+	 * If not set, defaults to true.
+	 * 
+	 * @return <code>true</code> if the profile2.profile.staff.enabled flag
+	 *         is set, otherwise returns <code>false</code>.
+	 */
+	public boolean isStaffProfileEnabled();
+
+	/**
+	 * Is the profile2.profile.student.enabled flag set in sakai.properties? 
+	 * If not set, defaults to true.
+	 * 
+	 * @return <code>true</code> if the profile2.profile.student.enabled flag
+	 *         is set, otherwise returns <code>false</code>.
+	 */
+	public boolean isStudentProfileEnabled();
+	
+	
+	/**
+	 * Is the profile2.import.images flag set in sakai.properties?
+	 * If not set, defaults to false
+	 * 
+	 * <p>If enabled then at startup profile 2 will attempt to download any profile URLs set 
+	 * and upload them as profile images.
+	 * </p>
+	 * 
+	 * @return true or false
+	 */
+	public boolean isProfileImageImportEnabled();
 }

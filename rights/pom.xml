@@ -2,49 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>base</artifactId>
-    <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
-    <relativePath>../pom.xml</relativePath>
+      <groupId>org.sakaiproject</groupId>
+      <artifactId>master</artifactId>
+      <version>10.0</version>
+      <relativePath>../master/pom.xml</relativePath>
   </parent>
   <name>Sakai Rights Project</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>rights-base</artifactId>
-  <version>2.9.3</version>
+  <version>10.0</version>
   <packaging>pom</packaging>
-  <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/rights/branches/sakai-2.9.x</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/rights/branches/sakai-2.9.x</developerConnection>
-    <url>https://source.sakaiproject.org/svn/rights/branches/sakai-2.9.x</url>
-  </scm>
+
   <modules>
     <module>rights-api/api</module>
     <module>rights-impl/impl</module>
     <module>rights-impl/pack</module>
     <module>rights-tool/tool</module>
   </modules>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.sakaiproject.velocity</groupId>
-        <artifactId>sakai-velocity-tool</artifactId>
-        <version>${sakai.velocity-tool.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.site</groupId>
-        <artifactId>sakai-mergedlist-util</artifactId>
-        <version>${sakai.site.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.presence</groupId>
-        <artifactId>sakai-presence-util</artifactId>
-        <version>${sakai.presence.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.courier</groupId>
-        <artifactId>sakai-courier-util</artifactId>
-        <version>${sakai.courier.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+
+  <scm>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/rights/trunk</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/rights/trunk</developerConnection>
+    <url>https://source.sakaiproject.org/svn/rights/trunk</url>
+  </scm>
+
 </project>

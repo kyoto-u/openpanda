@@ -1,6 +1,6 @@
 /**
- * $Id: EntityHandlerImplTest.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.3/rest/src/test/org/sakaiproject/entitybroker/rest/EntityHandlerImplTest.java $
+ * $Id: EntityHandlerImplTest.java 125663 2013-06-12 13:43:37Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/rest/src/test/org/sakaiproject/entitybroker/rest/EntityHandlerImplTest.java $
  * EntityHandlerImplTest.java - entity-broker - Apr 6, 2008 12:08:39 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -149,7 +149,7 @@ public class EntityHandlerImplTest extends TestCase {
         }
 
         // types that cannot handle the return requested
-        req = new EntityHttpServletRequest("GET", DIRECT_PREFIX + TestData.REF4 + ".xxxx");
+        req = new EntityHttpServletRequest("GET", DIRECT_PREFIX + TestData.REF4 + ".csv");
         res = new EntityHttpServletResponse();
         try {
             entityHandler.handleEntityAccess(req, res, null);

@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.3/presentation/api/src/java/org/theospi/portfolio/presentation/PresentationManager.java $
-* $Id: PresentationManager.java 75800 2010-04-07 21:11:51Z bkirschn@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.0/presentation/api/src/java/org/theospi/portfolio/presentation/PresentationManager.java $
+* $Id: PresentationManager.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,7 +48,7 @@ import org.theospi.portfolio.shared.model.Node;
  * @author John Bush (jbush@rsmart.com)
  * $Header: /opt/CVS/osp2.x/presentation/api/src/java/org/theospi/portfolio/presentation/PresentationManager.java,v 1.5 2005/10/26 23:53:01 jellis Exp $
  * $Revision: 8645 $
- * $Date: 2010-04-08 06:11:51 +0900 (Thu, 08 Apr 2010) $
+ * $Date: 2014-04-29 00:49:48 +0900 (Tue, 29 Apr 2014) $
  */
 
 public interface PresentationManager extends CleanupableService {

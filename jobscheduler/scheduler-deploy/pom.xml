@@ -4,13 +4,13 @@
     <parent>
         <groupId>org.sakaiproject.scheduler</groupId>
         <artifactId>scheduler</artifactId>
-        <version>2.9.3</version>
+        <version>10.0</version>
     </parent>
 
     <name>Sakai Job Scheduler Deploy POM (scheduler-deploy)</name>
     <groupId>org.sakaiproject.scheduler</groupId>
     <artifactId>scheduler-deploy</artifactId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <packaging>pom</packaging>
     
     <description>Scheduler deploy POM.</description>
@@ -22,14 +22,13 @@
     <inceptionYear>2011</inceptionYear>
 
     <modules>
-        <module>assembly</module>
         <module>shared</module>
     </modules>
     
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.opensymphony.quartz</groupId>
+                <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
                 <version>${sakai.quartz.version}</version>
                 <scope>compile</scope>

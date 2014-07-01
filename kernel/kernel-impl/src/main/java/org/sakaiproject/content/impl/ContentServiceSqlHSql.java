@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -75,6 +75,14 @@ public class ContentServiceSqlHSql extends ContentServiceSqlDefault
 		return "insert into CONTENT_DROPBOX_CHANGES (DROPBOX_ID, IN_COLLECTION, LAST_UPDATE) values (? , ? , ?)";
 		// To use the line below instead (preferable), HSQLDB must be >= 1.9
 		//return "merge into CONTENT_DROPBOX_CHANGES using dual on (dual.dummy is not null and CONTENT_DROPBOX_CHANGES.DROPBOX_ID = ?) when not matched then insert (DROPBOX_ID, IN_COLLECTION, LAST_UPDATE) values (?, ?, ?) when matched then update set CONTENT_DROPBOX_CHANGES.IN_COLLECTION = ?, LAST_UPDATE = ?";
+	}
+
+	/**
+	 * returns the sql statement which retrieves the total number of bytes within a site-level collection skiping user folders.
+	 * KNL-1084, SAK-22169
+	 */
+	public String getDropBoxRootQuotaQuerySql() {
+		return "select SUM(FILE_SIZE) from CONTENT_RESOURCE where IN_COLLECTION LIKE ? and not exists (select 1 from SAKAI_USER_ID_MAP where USER_ID = substr(in_collection,length(?)+1,locate('/',substr(in_collection,length(?)+1))-1))";
 	}
 
 }

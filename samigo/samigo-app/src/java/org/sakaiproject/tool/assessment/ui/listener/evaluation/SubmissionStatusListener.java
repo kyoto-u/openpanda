@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/SubmissionStatusListener.java $
- * $Id: SubmissionStatusListener.java 64665 2009-07-13 22:15:45Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/SubmissionStatusListener.java $
+ * $Id: SubmissionStatusListener.java 130512 2013-10-15 23:46:40Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,7 +62,7 @@ import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFa
 
 /**
  * <p>Description: Action Listener for displaying Submission Status for anonymnous grading</p>
- * @version $Id: SubmissionStatusListener.java 64665 2009-07-13 22:15:45Z ktsao@stanford.edu $
+ * @version $Id: SubmissionStatusListener.java 130512 2013-10-15 23:46:40Z ktsao@stanford.edu $
  */
 
 public class SubmissionStatusListener
@@ -240,6 +240,7 @@ public class SubmissionStatusListener
           results.setLastInitial("A");
         results.setIdString(agent.getIdString());
         results.setAgentEid(agent.getEidString());
+        results.setAgentDisplayId(agent.getDisplayIdString());
         results.setRole((String)userRoles.get(agentid));
         results.setRetakeAllowed(getRetakeAllowed(agent.getIdString(), studentGradingSummaryDataMap, retakeAssessment));
         if (useridMap.containsKey(agentid) ) {
@@ -324,6 +325,7 @@ public class SubmissionStatusListener
       }
       results.setIdString(agent.getIdString());
       results.setAgentEid(agent.getEidString());
+      results.setAgentDisplayId(agent.getDisplayIdString());
       results.setRole((String)userRoles.get(studentid));
       results.setRetakeAllowed(getRetakeAllowed(agent.getIdString(), studentGradingSummaryDataMap, retakeAssessment));
       retakeAssessment.setStudentGradingSummaryDataMap(studentGradingSummaryDataMap);

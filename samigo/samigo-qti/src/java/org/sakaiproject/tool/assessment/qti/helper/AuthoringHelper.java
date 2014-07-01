@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/helper/AuthoringHelper.java $
- * $Id: AuthoringHelper.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/AuthoringHelper.java $
+ * $Id: AuthoringHelper.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,6 +41,8 @@ import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.*;
+import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.tool.cover.ToolManager;
 import org.xml.sax.SAXException;
 
 
@@ -93,7 +95,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley esmiley@stanford.edu
  * @author Shastri, Rashmi <rshastri@iupui.edu>
- * @version $Id: AuthoringHelper.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * @version $Id: AuthoringHelper.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 public class AuthoringHelper
 {
@@ -545,6 +547,9 @@ public class AuthoringHelper
       return false;
   }
 
+  protected String getAgentString(){
+	  return AgentFacade.getAgentString();
+  }
 
   public AssessmentFacade createImportedAssessment(Document document, String unzipLocation, String templateId, boolean isRespondus, ArrayList failedMatchingQuestions, String siteId)
   {
@@ -554,7 +559,7 @@ public class AuthoringHelper
     try
     {
       // we need to know who we are
-      String me = AgentFacade.getAgentString();
+      String me = getAgentString();
 
       // create the assessment
       ExtractionHelper exHelper = new ExtractionHelper(this.qtiVersion);
@@ -669,17 +674,14 @@ public class AuthoringHelper
         {
           log.debug("items=" + itemList.size());
           Item itemXml = (Item) itemList.get(itm);
-          Map itemMap = exHelper.mapItem(itemXml, isRespondus);
 
           ItemFacade item = new ItemFacade();
-          if (itemMap != null) {
-        	  try {
-        		  exHelper.updateItem(item, itemMap, isRespondus);
-        	  }
-        	  catch (RespondusMatchingException rme) {
-        		  if (failedMatchingQuestions != null) {
-        			  failedMatchingQuestions.add(itm + 1);
-        		  }
+          try {
+        	  exHelper.updateItem(item, itemXml, isRespondus);
+          }
+          catch (RespondusMatchingException rme) {
+        	  if (failedMatchingQuestions != null) {
+        		  failedMatchingQuestions.add(itm + 1);
         	  }
           }
           // make sure required fields are set
@@ -721,6 +723,11 @@ public class AuthoringHelper
       // Assessment Attachment
       exHelper.makeAssessmentAttachmentSet(assessment);
 
+      String siteTitle = SiteService.getSite(ToolManager.getCurrentPlacement().getContext()).getTitle();
+      if(siteTitle != null && !siteTitle.equals(assessment.getAssessmentAccessControl().getReleaseTo())){
+          assessment.getAssessmentAccessControl().setReleaseTo(siteTitle);
+      }
+
       assessmentService.saveAssessment(assessment);
       return assessment;
     }
@@ -757,7 +764,18 @@ public class AuthoringHelper
  	  // create the questionpool as an assessment
  	  ExtractionHelper exHelper = new ExtractionHelper(this.qtiVersion);
  	  ItemService itemService = new ItemService();
- 	  Assessment assessmentXml = new Assessment(document);
+ 	  // we need to remove a default namespace if present
+  	  Document removeNamespace = exHelper.getTransformDocument(exHelper.REMOVE_NAMESPACE_TRANSFORM);
+  	  Document flatNamespaceXml = XmlUtil.transformDocument(document, removeNamespace);
+  	  Assessment assessmentXml = new Assessment(flatNamespaceXml);
+
+  	  // validate xml first
+  	  boolean success = validateImportXml(flatNamespaceXml);
+  	  if (!success) {
+  		  throw( new RuntimeException("Invalid QTI XML format."));
+  	  }
+  	  // else continue;
+
  	  Map assessmentMap = exHelper.mapAssessment(assessmentXml);
  	  String title = (String) assessmentMap.get("title");
  	  
@@ -813,10 +831,9 @@ public class AuthoringHelper
            {
                log.debug("items=" + itemList.size());
                Item itemXml = (Item) itemList.get(itm);
-               Map itemMap = exHelper.mapItem(itemXml);
 
                ItemFacade item = new ItemFacade();
-               exHelper.updateItem(item, itemMap);
+               exHelper.updateItem(item, itemXml);
                // make sure required fields are set
                item.setCreatedBy(me);
                item.setCreatedDate(questionpool.getLastModified());
@@ -863,8 +880,7 @@ public class AuthoringHelper
       // create the item
       ExtractionHelper exHelper = new ExtractionHelper(this.qtiVersion);
       Item itemXml = new Item(document, QTIVersion.VERSION_1_2);
-      Map itemMap = exHelper.mapItem(itemXml);
-      exHelper.updateItem(item, itemMap);
+      exHelper.updateItem(item, itemXml);
       ItemService itemService = new ItemService();
       itemService.saveItem(item);
     }

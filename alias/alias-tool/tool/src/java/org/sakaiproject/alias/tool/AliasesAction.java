@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/alias/tags/sakai-2.9.3/alias-tool/tool/src/java/org/sakaiproject/alias/tool/AliasesAction.java $
- * $Id: AliasesAction.java 121814 2013-03-27 00:13:43Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/alias/tags/sakai-10.0/alias-tool/tool/src/java/org/sakaiproject/alias/tool/AliasesAction.java $
+ * $Id: AliasesAction.java 307522 2014-03-26 22:47:32Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -332,7 +332,9 @@ public class AliasesAction extends PagedResourceActionII
 	public void doSave(RunData data, Context context)
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-
+		if (!"POST".equals(data.getRequest().getMethod())) {
+			return;
+		}
 		// read the form - if rejected, leave things as they are
 		if (!readAliasForm(data, state)) return;
 
@@ -420,6 +422,9 @@ public class AliasesAction extends PagedResourceActionII
 	public void doRemove_confirmed(RunData data, Context context)
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+		if (!"POST".equals(data.getRequest().getMethod())) {
+			return;
+		}
 
 		// get the alias
 		AliasEdit alias = (AliasEdit) state.getAttribute("alias");

@@ -1,7 +1,6 @@
-<!-- $Id: chef_assignments_instructor_view_assignment.vm 125640 2013-06-11 22:13:24Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_view_assignment.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
 <!-- start: chef_assignments_instructor_view_assignment.vm  -->
-#parse("/vm/assignment/assignment_macros.vm")
-<div class="portletBody" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
+<div class="portletBody">
 	#if ($taggable && $allowAddAssignment)
 		#if (!$activityHelpers.isEmpty())
 		<ul class="navIntraTool actionToolBar">
@@ -29,9 +28,9 @@
 		## show assignment content
 		<p class="discTria">
 			<a href="#" onclick="location='#toolLink("AssignmentAction" "doHide_view_assignment")'; return false;" title="$tlang.getString("gen.hidassinf")">
-				<img src="#imageLink("sakai/collapse.gif")" alt="$tlang.getString("gen.open")" border="0" width="13" height="13" />
-			</a>
-			 $tlang.getString("gen.settfor") "$validator.escapeHtml($assignment.title)"
+				<img src="#imageLink("sakai/collapse.gif")" alt="$tlang.getString("gen.hidassinf")" border="0" width="13" height="13" />
+    			$tlang.getString("gen.settfor") "$validator.escapeHtml($assignment.title)"
+			 </a>
 		</p>
 		<table class="itemSummary" border="0" summary="$tlang.getString("gen.viewasstablesummary")">
 			<tr>
@@ -92,6 +91,39 @@
 					</td>
 				</tr>
 			#end
+			<tr> 
+				<th>
+					$tlang.getString("gen.groupassignment")
+				</th>
+				<td>
+					#if ($assignment.isGroup())
+					$tlang.getString("gen.yes")
+					#else
+					$tlang.getString("gen.no")
+					#end
+				</td>
+			</tr>
+			<tr>
+				<th>
+					$tlang.getString("gen.visible")
+				</th>
+				<td>
+					#set($count=1)
+					#set($for="")
+					#foreach ($group in $assignment.Groups)
+						#set($groupFound=false)
+						#set($groupFound=$!site.getGroup($group))
+						#if($!groupFound)
+							#if ($count>1)
+								#set($for=$for.concat(", "))
+							#end
+							#set($for= $for.concat($groupFound.Title))
+							#set($count=$count+1)
+						#end
+					#end
+					$validator.escapeHtml($!for)
+				</td>
+			</tr>
 			<tr> 
 				<th>
 					$tlang.getString("gen.stusub")
@@ -223,8 +255,9 @@
 			## hide the assignment content
 			<p class="discTria">
 				<a href="#" onclick="location='#toolLink("AssignmentAction" "doShow_view_assignment")'; return false;" title="$tlang.getString("viewassig.shoassinf")">	
-				<img src="#imageLink("sakai/expand.gif")" alt="$tlang.getString("gen.open")" border="0" width="13" height="13" align="top"  /></a>
+				<img src="#imageLink("sakai/expand.gif")" alt="$tlang.getString("viewassig.shoassinf")" border="0" width="13" height="13" align="top"  />
 				$tlang.getString("gen.settfor") "$validator.escapeHtml($assignment.title)"
+				</a>
 			</p>	
 		#end
 		## student view
@@ -234,8 +267,9 @@
 		#if (!$hideStudentViewFlag)
 			<p class="discTria">
 				<a href="#" onclick="location='#toolLink("AssignmentAction" "doHide_view_student_view")'; return false;">
-				<img src="#imageLink("sakai/collapse.gif")" alt="$tlang.getString("gen.open")" border="0" width="13" height="13" align="top" /></a>
+				<img src="#imageLink("sakai/collapse.gif")" alt="$tlang.getString("gen.open")" border="0" width="13" height="13" align="top" />
 				$tlang.getString("gen.stuvieof") "$validator.escapeHtml($assignment.title)"
+				</a>
 			</p>
 			<div class="inopPanel">
 				<table class ="itemSummary" cellspacing="0" cellpadding ="0" summary="$tlang.getString("gen.viewasstablesummary")">
@@ -387,7 +421,11 @@
 								$tlang.getString("viewassig.theassall3") 
 						#end
 						<h4>
-							$tlang.getString("gen.att")
+							#if ($submissionType == 5)
+								$tlang.getString("gen.att.single")
+							#else
+								$tlang.getString("gen.att")
+							#end
 						</h4>
 						<p class="instruction">$tlang.getString("gen.noatt")</p> 
 						<p class="act">
@@ -406,8 +444,9 @@
 		#else
 			<p class="discTria">
 				<a href="#" onclick="location='#toolLink("AssignmentAction" "doShow_view_student_view")'; return false;">
-				<img src="#imageLink("sakai/expand.gif")" alt="$tlang.getString("gen.open")" border="0" width="13" height="13" align="top" /></a>
+				<img src="#imageLink("sakai/expand.gif")" alt="$tlang.getString("gen.open")" border="0" width="13" height="13" align="top" />
 				$tlang.getString("gen.stuvieof") "$validator.escapeHtml($assignment.title)"
+				</a>
 			</p>	
 
 		#end

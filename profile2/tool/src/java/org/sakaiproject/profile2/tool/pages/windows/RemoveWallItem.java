@@ -1,4 +1,19 @@
 /**
+ * Copyright (c) 2008-2012 The Sakai Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://www.osedu.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
  * 
  */
 package org.sakaiproject.profile2.tool.pages.windows;
@@ -65,7 +80,7 @@ public class RemoveWallItem extends Panel {
 		final Label text;
 		if (false == wallItem.getCreatorUuid().equals(userUuid)) {
 			text = new Label("text", new StringResourceModel(
-					"text.wall.remove", null, new Object[]{ sakaiProxy.getUserDisplayName(wallItem.getCreatorUuid()) } ));
+					"text.wall.remove.other", null, new Object[]{ sakaiProxy.getUserDisplayName(wallItem.getCreatorUuid()) } ));
 		} else {
 			text = new Label("text", new StringResourceModel("text.wall.remove.mine", null, new Object[]{ } ));
 		}
@@ -91,7 +106,7 @@ public class RemoveWallItem extends Panel {
 		final AttributeModifier accessibilityLabel;
 		if (false == wallItem.getCreatorUuid().equals(userUuid)) {
 			accessibilityLabel = new AttributeModifier(
-					"title", true, new StringResourceModel("accessibility.wall.remove", null, new Object[]{ } ));
+					"title", true, new StringResourceModel("accessibility.wall.remove.other", null, new Object[]{ } ));
 		} else {
 			accessibilityLabel = new AttributeModifier(
 					"title", true, new StringResourceModel("accessibility.wall.remove.mine", null, new Object[]{ } ));

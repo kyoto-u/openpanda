@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/com/corejsf/UploadRenderer.java $
-* $Id: UploadRenderer.java 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/com/corejsf/UploadRenderer.java $
+* $Id: UploadRenderer.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
 ***********************************************************************************
 * Copyright (c) 2004 Sun Microsystems from the Java Series, Core Java ServerFaces
 * source freely distributable.
@@ -12,7 +12,7 @@
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-*       http://www.osedu.org/licenses/ECL-2.0
+*       http://www.opensource.org/licenses/ECL-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -86,7 +86,7 @@ public class UploadRenderer extends Renderer {
     Long maxSize = (Long)((ServletContext)external.getContext()).getAttribute("FILEUPLOAD_SIZE_MAX");
      // RU - typo. Stanford agrees, so this should be FINR
     if (item!=null && item.getSize()/1000 > maxSize.intValue()){
-      ((ServletContext)external.getContext()).setAttribute("TEMP_FILEUPLOAD_SIZE", new Long(item.getSize()/1000));
+      ((ServletContext)external.getContext()).setAttribute("TEMP_FILEUPLOAD_SIZE", Long.valueOf(item.getSize()/1000));
       ((EditableValueHolder) component).setSubmittedValue("SizeTooBig:" + item.getName());
       return;
     }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/helper/AuthoringHelper.java $
- * $Id: AuthoringHelper.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/AttachmentHelper.java $
+ * $Id: AttachmentHelper.java 110817 2012-07-26 20:19:30Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,8 +57,11 @@ public class AttachmentHelper {
 		ByteArrayOutputStream byteArrayOutputStream = null;
 		byte content[];
 		int count = 0;
-
+			
 		try {
+			fullFilePath = URLDecoder.decode(fullFilePath, "UTF-8");
+			filename = URLDecoder.decode(filename, "UTF-8");
+			
 			if (mimeType.equalsIgnoreCase("text/url")) {
 				content = filename.getBytes();
 				filename = filename.replaceAll("http://","http:__");

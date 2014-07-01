@@ -118,13 +118,6 @@ function removeDHTMLMask(){
     jQuery('#portalMask').remove();
 }
 
-/* Copyright (c) 2010 Brandon Aaron (http://brandonaaron.net)
- * Licensed under the MIT License (LICENSE.txt).
- *
- * Version 2.1.2
- */
-(function(a){a.fn.bgiframe=(a.browser.msie&&/msie 6\.0/i.test(navigator.userAgent)?function(d){d=a.extend({top:"auto",left:"auto",width:"auto",height:"auto",opacity:true,src:"javascript:false;"},d);var c='<iframe class="bgiframe"frameborder="0"tabindex="-1"src="'+d.src+'"style="display:block;position:absolute;z-index:-1;'+(d.opacity!==false?"filter:Alpha(Opacity='0');":"")+"top:"+(d.top=="auto"?"expression(((parseInt(this.parentNode.currentStyle.borderTopWidth)||0)*-1)+'px')":b(d.top))+";left:"+(d.left=="auto"?"expression(((parseInt(this.parentNode.currentStyle.borderLeftWidth)||0)*-1)+'px')":b(d.left))+";width:"+(d.width=="auto"?"expression(this.parentNode.offsetWidth+'px')":b(d.width))+";height:"+(d.height=="auto"?"expression(this.parentNode.offsetHeight+'px')":b(d.height))+';"/>';return this.each(function(){if(a(this).children("iframe.bgiframe").length===0){this.insertBefore(document.createElement(c),this.firstChild)}})}:function(){return this});a.fn.bgIframe=a.fn.bgiframe;function b(c){return c&&c.constructor===Number?c+"px":c}})(jQuery);
-
 //For SAK-13987
 //For SAK-16162
 //Just use the EB current.json as the session id rather than trying to do a search/replace
@@ -153,9 +146,9 @@ var setup_timeout_config = function(){
 }
 
 var poll_session_data = function(){
+    //Need to append Date.getTime as sakai still uses jquery pre 1.2.1 which doesn't support the cache: false parameter.
     jQuery.ajax({
-        url: "/direct/session/" + sessionId + ".json?auto=true", //auto=true makes it not refresh the session lastaccessedtime
-        cache: false,
+        url: "/direct/session/" + sessionId + ".json?auto=true&_=" + (new Date()).getTime(), //auto=true makes it not refresh the session lastaccessedtime
         dataType: "json",
         success: function(data){
             //get the maxInactiveInterval in the same ms
@@ -238,7 +231,6 @@ function show_timeout_alert(min){
     else {
         var dialog = timeoutDialogFragment.replace("{0}", min);
         jQuery("body").append(dialog);
-        jQuery('#timeout_alert_body').css('top', (f_scrollTop() + 100) + "px");
     }
 }
 
@@ -354,17 +346,20 @@ function showToolMenu(e, xOffset){
     else {
         $('#otherSiteTools').remove();
         var subsubmenu = "<ul id=\"otherSiteTools\" class=\"" + classId + "\" role=\"menu\">";
-        var siteURL = '/direct/site/' + classId + '/pages.json';
+        var siteURL = '/direct/site/' + classId + '/pages.json' + '?locale=' + portal.locale;
         scroll(0, 0)
         var pos = jqObj.offset();
         var maxToolsInt = parseInt($('#maxToolsInt').text());
         var maxToolsText = $('#maxToolsAnchor').text();
-        var goToSite = '<li class=\"otherSiteTool\"><span><a role=\"menuitem\" class=\"icon-sakai-see-all-tools\" href=\"' + portal.portalPath + '/site/' + classId + '\" title=\"' + maxToolsText + '\">' + maxToolsText + '</a></span></li>';
+        var goToSite = '<li class=\"otherSiteTool\"><span><a role=\"menuitem\" href=\"' + portal.portalPath + '/site/' + classId + '\" title=\"' + maxToolsText + '\"><span class=\"toolMenuIcon icon-sakai-see-all-tools\"> </span>' + maxToolsText + '</a></span></li>';
         jQuery.getJSON(siteURL, function(data){
             $.each(data, function(i, item){
                 if (i <= maxToolsInt) {
-                    if (item.tools.length === 1) {
-                        subsubmenu = subsubmenu + '<li class=\"otherSiteTool\"><span><a role=\"menuitem\" class=\"icon-' + item.tools[0].toolId.replace(/\./gi, '-') + '\" href=\"' + item.tools[0].url + "\" title=\"" + item.title + "\">" + item.title + "</a></span></li>";
+                    var safeItemTitle = $('<p></p>').text(item.title).html();
+                    if (item.toolpopup) {
+                        subsubmenu = subsubmenu + '<li class=\"otherSiteTool\"><span><a role=\"menuitem\"  href=\"' + item.tools[0].url + "?sakai.popup=yes\" title=\"" + safeItemTitle + "\" onclick=\"window.open('" + item.toolpopupurl + "');\"><span class=\"toolMenuIcon icon-" + item.tools[0].toolId.replace(/\./gi, '-') + "\"> </span>" + safeItemTitle + "</a></span></li>";
+                    } else if (item.tools.length === 1) {
+                        subsubmenu = subsubmenu + '<li class=\"otherSiteTool\"><span><a role=\"menuitem\"  href=\"' + item.tools[0].url + "\" title=\"" + safeItemTitle + "\"><span class=\"toolMenuIcon icon-" + item.tools[0].toolId.replace(/\./gi, '-') + "\"> </span>" + safeItemTitle + "</a></span></li>";
                     }
                 }
                 
@@ -421,8 +416,12 @@ jQuery(document).ready(function(){
     
     // prepend site title to tool title
     // here as reminder to work on an actual breadcrumb integrated with neo style tool updates
-    var siteTitle = ($('.nav-selected span:first').text())
+    //var siteTitle = ($('.nav-selected span:first').text())
+    var siteTitle = portal.siteTitle;
     if (siteTitle) {
+	if (portal.shortDescription) {
+	    siteTitle = siteTitle + " ("+portal.shortDescription+")"
+	}
         $('.portletTitle h2').prepend('<span class=\"siteTitle\">' + siteTitle + ':</span> ')
     }
     
@@ -477,7 +476,7 @@ jQuery(document).ready(function(){
     });
     
     //bind directurl checkboxes
-    jQuery('a.tool-directurl').cluetip({
+    if ( jQuery('a.tool-directurl').length ) jQuery('a.tool-directurl').cluetip({
     	local: true,
     	arrows: true,
 		cluetipClass: 'jtip',
@@ -526,8 +525,7 @@ var setupSiteNav = function(){
         $(this).prev('ul').slideDown('fast')
      });
 
-
-    $('.topnav > li.nav-menu > a').live('keydown', function(e){
+	fixTopNav = function(e){
         if (e.keyCode == 40) { // downarrow
             e.preventDefault();
             jQuery('#selectSite').hide();
@@ -539,7 +537,16 @@ var setupSiteNav = function(){
             $(this).parent().children('a').focus();
             $(this).slideUp('fast');
         }
-    });
+    }
+
+	// SAK-25505 - Switch from live() to on()
+	// $( "a.offsite" ).live( "click", function() {
+	// $('.topnav > li.nav-menu > a').live('keydown', function(e){
+	if ( $(document).on ) {
+		$(document).on('keydown', '.topnav > li.nav-menu > a', fixTopNav);
+	} else {
+		$('.topnav > li.nav-menu > a').live('keydown', fixTopNav);
+	}
     
     jQuery("ul.topnav > li").mouseleave(function(){
         $(this).find('ul').slideUp('fast')
@@ -566,16 +573,19 @@ var setupSiteNav = function(){
             var siteId = jqObjDrop.attr('data');
             var maxToolsInt = parseInt($('#maxToolsInt').text());
             var maxToolsText = $('#maxToolsAnchor').text();
-            var goToSite = '<li class=\"submenuitem\"><span><a role=\"menuitem\" class=\"icon-sakai-see-all-tools\" href=\"' + portal.portalPath + '/site/' + siteId + '\" title=\"' + maxToolsText + '\">' + maxToolsText + '</a></span></li>';
-            var siteURL = '/direct/site/' + jqObjDrop.attr('data') + '/pages.json';
+            var goToSite = '<li class=\"submenuitem\"><a role=\"menuitem\" href=\"' + portal.portalPath + '/site/' + siteId + '\" title=\"' + maxToolsText + '\"><span class=\"toolMenuIcon icon-sakai-see-all-tools\"></span>' + maxToolsText + '</a></li>';
+            var siteURL = '/direct/site/' + jqObjDrop.attr('data') + '/pages.json' + '?locale=' + portal.locale;
             jQuery.ajax({
                 url: siteURL,
                 dataType: "json",
                 success: function(data){
                     $.each(data, function(i, item){
+                    	var safeItemTitle = $('<p></p>').text(item.title).html();
                         if (i <= maxToolsInt) {
-                            if (item.tools.length === 1) {
-                                navsubmenu = navsubmenu + '<li class=\"submenuitem\" ><span><a role=\"menuitem\" class=\"icon-' + item.tools[0].toolId.replace(/\./gi, '-') + '\" href=\"' + item.tools[0].url + "\" title=\"" + item.title + "\">" + item.title + "</a></span></li>";
+                            if (item.toolpopup) {
+                                navsubmenu = navsubmenu + '<li class=\"submenuitem\" ><span><a role=\"menuitem\" href=\"' + item.tools[0].url + "?sakai.popup=yes\" title=\"" + safeItemTitle + "\" onclick=\"window.open('" + item.toolpopupurl + "');\"><span class=\"toolMenuIcon icon-" + item.tools[0].toolId.replace(/\./gi, '-') + "\"></span>" + safeItemTitle + "</a></span></li>";
+                            } else if (item.tools.length === 1) {
+                                navsubmenu = navsubmenu + '<li class=\"submenuitem\" ><span><a role=\"menuitem\" href=\"' + item.tools[0].url + "\" title=\"" + safeItemTitle + "\"><span class=\"toolMenuIcon icon-" + item.tools[0].toolId.replace(/\./gi, '-') + "\"></span>" + safeItemTitle + "</a></span></li>";
                             }
                         }
                     });

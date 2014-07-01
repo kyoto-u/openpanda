@@ -1,95 +1,62 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.sakaiproject</groupId>
+    <artifactId>master</artifactId>
+    <version>10.0</version>
+    <relativePath>../master/pom.xml</relativePath>
+  </parent>
 
-    <parent>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>master</artifactId>
-        <version>2.9.3</version>
-		<relativePath>../master/pom.xml</relativePath>
-    </parent>
+  <name>Sakai Job Scheduler Project (base pom)</name>
+  <groupId>org.sakaiproject.scheduler</groupId>
+  <artifactId>scheduler</artifactId>
+  <version>10.0</version>
+  <packaging>pom</packaging>
 
-    <name>Sakai Job Scheduler Project (base pom)</name>
-    <groupId>org.sakaiproject.scheduler</groupId>
-    <artifactId>scheduler</artifactId>
-    <version>2.9.3</version>
-    <packaging>pom</packaging>
+  <modules>
+    <module>scheduler-api</module>
+    <module>scheduler-deploy</module>
+    <module>scheduler-component</module>
+    <module>scheduler-component-shared</module>
+    <module>scheduler-events-model</module>
+    <module>scheduler-tool</module>
+  </modules>
 
+  <profiles>
+    <profile>
+      <id>testing</id>
+      <activation>
+        <property>
+          <name>!maven.test.skip</name>
+        </property>
+      </activation>
+      <modules>
+        <module>scheduler-test-component</module>
+        <module>scheduler-test-component-shared</module>
+      </modules>
+    </profile>
+	<profile>
+		<id>remove-10</id>
 		<modules>
-				<module>scheduler-api</module>
-				<module>scheduler-deploy</module>
-				<module>scheduler-component</module>
-				<module>scheduler-component-shared</module>
-				<module>scheduler-events-model</module>
-				<module>scheduler-tool</module>
+			<module>scheduler-configurable-job-test-component</module>
+			<module>scheduler-configurable-job-test-component-shared</module>
 		</modules>
+	</profile>
+  </profiles>
 
-    <profiles>
-         <profile>
-            <id>testing</id>
-            <activation>
-                <property>
-                    <name>!maven.test.skip</name>
-                </property>
-            </activation>
-            <modules>
-                <module>scheduler-test-component</module>
-                <module>scheduler-test-component-shared</module>
-            </modules>
-         </profile>
-    </profiles>
+  <scm>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/jobscheduler/trunk</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/jobscheduler/trunk</developerConnection>
+    <url>https://source.sakaiproject.org/svn/jobscheduler/trunk</url>
+  </scm>
 
-    <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/jobscheduler/tags/scheduler-2.9.3</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/jobscheduler/tags/scheduler-2.9.3</developerConnection>
-        <url>https://source.sakaiproject.org/svn/jobscheduler/tags/scheduler-2.9.3</url>
-    </scm>
-    
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.8</version>
-                <reportSets>
-                    <reportSet>
-                        <id>aggregate</id>
-                        <configuration>
-                            <aggregate>true</aggregate>
-                            <source>1.5</source>
-                            <encoding>UTF-8</encoding>
-                            <links>
-                                <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-                                <link>http://java.sun.com/products/servlet/2.3/javadoc/</link>
-                            </links>
-                            <breakiterator>true</breakiterator>
-                            <verbose>false</verbose>
-                            <maxmemory>512m</maxmemory>
-                            <additionalJOption>
-                                -J-Xms168m -J-Xmx512m -J-XX:PermSize=128m -J-XX:NewSize=64m
-                            </additionalJOption>
-                        </configuration>
-                        <reports>
-                            <report>aggregate</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
-    
-    <repositories> 
-		<repository> 
-			<id>sonatype-nexus-snapshots</id> 
-			<name>Sonatype Nexus Snapshots</name> 
-			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
-			<releases> 
-				<enabled>false</enabled> 
-			</releases> 
-			<snapshots> 
-				<enabled>true</enabled> 
-			</snapshots> 
-		</repository> 
-	</repositories>
-	
+  <distributionManagement>
+    <site>
+      <id>sakai-site</id>
+      <name>Sakai release Site</name>
+      <url>scpexe://source.sakaiproject.org/var/www/html/release/scheduler/${project.version}</url>
+    </site>
+  </distributionManagement>
+
 </project>

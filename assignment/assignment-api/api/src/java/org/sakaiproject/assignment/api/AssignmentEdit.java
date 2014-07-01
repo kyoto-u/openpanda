@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.3/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentEdit.java $
- * $Id: AssignmentEdit.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentEdit.java $
+ * $Id: AssignmentEdit.java 128106 2013-08-02 14:34:11Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,6 +37,15 @@ import org.sakaiproject.user.api.User;
 public interface AssignmentEdit extends Assignment, Edit
 {
 	/**
+	 * Set if this a group submission type of Assignment.
+	 * 
+	 * @param boolean -
+	 *        is a group submission assignment.
+	 */
+        public void setGroup(boolean group);
+	
+        
+        /**
 	 * Set the reference of the AssignmentContent of this Assignment.
 	 * 
 	 * @param String -
@@ -67,6 +76,14 @@ public interface AssignmentEdit extends Assignment, Edit
 	 *        The Time at which the Assignment is due.
 	 */
 	public void setDueTime(Time dueTime);
+
+	/**
+         * Set the time at which the assignment is visible; may be null.
+         *
+         * @param visibleTime -
+         *        The Time at which the Assignment is visible.
+         */
+        public void setVisibleTime(Time visibleTime);
 
 	/**
 	 * Set the drop dead time after which responses to this assignment are considered late; may be null.
@@ -165,4 +182,23 @@ public interface AssignmentEdit extends Assignment, Edit
 	 *        The Assignment's order.
 	 */
 	public void setPosition_order(int position_order);
+	
+	/**
+	 * Does this Assignment allow using the peer assessment?
+	 * 
+	 * @param allow -
+	 *        true if the Assignment allows peer assessment, false otherwise?
+	 */
+	public void setAllowPeerAssessment(boolean allow);
+
+	public void setPeerAssessmentPeriod(Time time);
+
+	public void setPeerAssessmentAnonEval(boolean anonEval);
+
+	public void setPeerAssessmentStudentViewReviews(boolean studentViewReviews);
+
+	public void setPeerAssessmentNumReviews(int numReviews);
+
+	public void setPeerAssessmentInstructions(String instructions);
+
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.3/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/SectionDecorator.java $
- * $Id: SectionDecorator.java 99053 2011-10-07 11:54:52Z bkirschn@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.0/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/SectionDecorator.java $
+ * $Id: SectionDecorator.java 124760 2013-05-21 15:17:30Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,7 +43,9 @@ import org.sakaiproject.section.api.coursemanagement.Meeting;
 import org.sakaiproject.tool.section.jsf.JsfUtil;
 import org.sakaiproject.tool.section.jsf.RowGroupable;
 import org.sakaiproject.util.ResourceLoader;
-
+import org.sakaiproject.time.cover.TimeService;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
 /**
  * Decorates a CourseSection for use in the instructor's (and TA's) page views.
  *
@@ -53,6 +58,7 @@ public class SectionDecorator implements RowGroupable,Serializable, Comparable{
 
     public static final int NAME_TRUNCATION_LENGTH = 20;
     public static final int LOCATION_TRUNCATION_LENGTH = 15;
+    public static final String READ_ONLY_SECTION_CATEGORIES = "section.info.readonly.section.categories";
 
     protected CourseSection section;
     protected String categoryForDisplay;
@@ -66,6 +72,10 @@ public class SectionDecorator implements RowGroupable,Serializable, Comparable{
     /* Whether this decorator should show the number of spots available as a negative
       * number or zero when the section is overenrolled */
     protected boolean showNegativeSpots;
+
+    // SAK-23495
+    protected boolean readOnly;
+    private static Set<String> readOnlyCategories;
 
     /**
      * Creates a SectionDecorator from a vanilla CourseSection.
@@ -81,6 +91,17 @@ public class SectionDecorator implements RowGroupable,Serializable, Comparable{
                 decoratedMeetings.add(new MeetingDecorator((Meeting)iter.next()));
             }
         }
+        if (readOnlyCategories == null) {
+            readOnlyCategories = new HashSet<String>();
+            ServerConfigurationService serverConfigurationService = (ServerConfigurationService) ComponentManager.get(ServerConfigurationService.class);
+            if (serverConfigurationService != null) {
+                String[] readOnlySectionCategories = serverConfigurationService.getStrings(READ_ONLY_SECTION_CATEGORIES);
+                if (readOnlySectionCategories != null) {
+                    readOnlyCategories = new HashSet<String>(Arrays.asList(readOnlySectionCategories));
+                }
+            }
+        }
+        this.readOnly = readOnlyCategories.contains(section.getCategory());  
     }
 
     /**
@@ -115,6 +136,9 @@ public class SectionDecorator implements RowGroupable,Serializable, Comparable{
         // Needed for serialization
     }
 
+    public boolean isReadOnly() {
+    	return readOnly;
+    }
     public List getInstructorNames() {
         return instructorNames;
     }
@@ -485,6 +509,7 @@ public class SectionDecorator implements RowGroupable,Serializable, Comparable{
             // Start time
             ResourceLoader rl = new ResourceLoader();
             DateFormat df = new SimpleDateFormat(JsfUtil.TIME_PATTERN_LONG, rl.getLocale());
+            df.setTimeZone(TimeService.getLocalTimeZone());
             sb.append(" ");
             if(meeting.getStartTime() != null) {
                 sb.append(df.format(new Date(meeting.getStartTime().getTime())).toLowerCase());

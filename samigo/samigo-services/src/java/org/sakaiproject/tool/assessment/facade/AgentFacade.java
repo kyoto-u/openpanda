@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/AgentFacade.java $
- * $Id: AgentFacade.java 9497 2006-05-15 23:46:05Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AgentFacade.java $
+ * $Id: AgentFacade.java 130512 2013-10-15 23:46:40Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,18 +25,13 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.sakaiproject.tool.assessment.data.ifc.shared.AgentDataIfc;
+import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
+import org.sakaiproject.tool.assessment.integration.helper.ifc.AgentHelper;
 import org.sakaiproject.tool.assessment.osid.shared.impl.AgentImpl;
 import org.sakaiproject.tool.assessment.osid.shared.impl.IdImpl;
-import org.sakaiproject.tool.assessment.integration.helper.ifc.AgentHelper;
-import org.sakaiproject.tool.assessment.integration.context.
-  IntegrationContextFactory;
 
 /**
  * <p>Description: Facade for agent.
@@ -66,8 +61,10 @@ private static Log log = LogFactory.getLog(AgentFacade.class);
   private String agentString;
   private String eid;
   private boolean accessViaUrl;
+  private String displayId;
+    private String displayIdString;
 
-  /**
+    /**
    * Create AgentFacade for agent Id
    * @param agentId the agent Id
    */
@@ -76,6 +73,7 @@ private static Log log = LogFactory.getLog(AgentFacade.class);
     agent = new AgentImpl(agentId, null, new IdImpl(agentId));
     agentString = agentId;
     eid = helper.getEid(agentId);
+    displayId = helper.getDisplayId(agentId);
   }
 
   /**
@@ -87,7 +85,7 @@ private static Log log = LogFactory.getLog(AgentFacade.class);
     String agentId = helper.getAgentString(AgentHelper.UNASSIGNED_AGENT_STRING);
     agent = new AgentImpl(agentId, null, new IdImpl(agentId));
     agentString = agentId;
-    eid = helper.getEid(AgentHelper.UNASSIGNED_AGENT_STRING); 
+    eid = helper.getEid(AgentHelper.UNASSIGNED_AGENT_STRING);
   }
 
   /**
@@ -379,15 +377,37 @@ log.debug("agentfacade.getEid(agentS) agentString = " + agentString);
   }
 
   @Override
-  public boolean equals(Object obj) {
-	  if (obj instanceof AgentFacade) {
-		  if (((AgentFacade)obj).agentString.equals(this.agentString))
-			  return true;
-		  else
-			  return false;
-	  }
-
-	  return false;
+  public int hashCode() {
+	  final int prime = 31;
+	  int result = 1;
+	  result = prime * result
+			  + ((agentString == null) ? 0 : agentString.hashCode());
+	  return result;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+	  if (this == obj)
+		  return true;
+	  if (obj == null)
+		  return false;
+	  if (getClass() != obj.getClass())
+		  return false;
+	  AgentFacade other = (AgentFacade) obj;
+	  if (agentString == null) {
+		  if (other.agentString != null)
+			  return false;
+	  } else if (!agentString.equals(other.agentString))
+		  return false;
+	  return true;
+  }
+
+    public static String getDisplayId() {
+        AgentFacade facade =new AgentFacade();
+        return facade.displayId;
+    }
+
+    public String getDisplayIdString() {
+        return helper.getDisplayId(agentString);
+    }
 }

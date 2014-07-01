@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.3/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ExternalLogicStubb.java $
- * $Id: ExternalLogicStubb.java 94048 2011-06-24 09:33:53Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.0/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ExternalLogicStubb.java $
+ * $Id: ExternalLogicStubb.java 134302 2014-02-10 14:26:43Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,6 +30,7 @@ import java.util.TimeZone;
 import org.sakaiproject.poll.logic.ExternalLogic;
 import org.sakaiproject.poll.logic.test.TestDataPreload;
 import org.sakaiproject.poll.model.PollRolePerms;
+import org.sakaiproject.poll.model.Vote;
 import org.sakaiproject.tool.api.ToolSession;
 
 public class ExternalLogicStubb implements ExternalLogic {
@@ -186,6 +187,11 @@ public class ExternalLogicStubb implements ExternalLogic {
 		return false;
 	}
 
+	public boolean isShowPublicAccess() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	public boolean isMobileBrowser() {
 		// TODO Auto-generated method stub
 		return false;
@@ -195,4 +201,14 @@ public class ExternalLogicStubb implements ExternalLogic {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public void registerStatement(String pollText, Vote vote) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void registerStatement(String pollText, boolean newPoll) {
+        // TODO Auto-generated method stub
+    }
 }

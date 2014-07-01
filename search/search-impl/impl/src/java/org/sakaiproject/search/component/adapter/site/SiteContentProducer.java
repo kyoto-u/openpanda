@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.3/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/site/SiteContentProducer.java $
- * $Id: SiteContentProducer.java 77879 2010-05-24 11:22:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/site/SiteContentProducer.java $
+ * $Id: SiteContentProducer.java 118402 2013-01-16 21:32:11Z jbush@rsmart.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -423,20 +423,7 @@ public class SiteContentProducer implements EntityContentProducer
 		Entity entity = reference.getEntity();
 		if (entity instanceof Site)
 		{
-			Site s = (Site) entity;
-			if (s.isPublished() && s.isPubView())
-			{
-				return ".auth";
-			}
-			else if (s.isPublished() && s.isJoinable())
-			{
-				return ".anon";
-			}
-			else
-			{
-				// make unjoinable sites as private
-				return ".private";
-			}
+			return entity.getId();
 		}
 		return null;
 		

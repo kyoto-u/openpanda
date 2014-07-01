@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.3/news-api/api/src/java/org/sakaiproject/news/api/NewsService.java $
- * $Id: NewsService.java 59692 2009-04-03 23:47:17Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.0/news-api/api/src/java/org/sakaiproject/news/api/NewsService.java $
+ * $Id: NewsService.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,10 +21,10 @@
 
 package org.sakaiproject.news.api;
 
-import java.util.List;
-
-import org.sakaiproject.javax.Filter;
 import org.sakaiproject.entity.api.EntityProducer;
+import org.sakaiproject.javax.Filter;
+
+import java.util.List;
 
 /**
  * <p>
@@ -38,13 +38,6 @@ public interface NewsService extends EntityProducer
 
 	/** This string starts the references to resources in this service. */
 	public static final String REFERENCE_ROOT = "/news";
-
-	/**
-	 * Retrieves a list of rss feeds that are being used.
-	 * 
-	 * @return A list of NewsChannel objects (possibly empty).
-	 */
-	public List getChannels();
 
 	/**
 	 * Retrieves a NewsChannel object indexed by a URL.

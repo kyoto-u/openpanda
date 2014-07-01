@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.3/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/DbMailArchiveService.java $
- * $Id: DbMailArchiveService.java 101750 2011-12-14 16:57:18Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.0/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/DbMailArchiveService.java $
+ * $Id: DbMailArchiveService.java 131324 2013-11-07 20:22:01Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,7 +38,7 @@ import org.sakaiproject.message.api.MessageChannelEdit;
 import org.sakaiproject.message.api.MessageEdit;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.util.BaseDbDoubleStorage;
-import org.sakaiproject.util.StorageUser;
+import org.sakaiproject.util.DoubleStorageUser;
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.util.Xml;
 import org.w3c.dom.Document;
@@ -185,7 +185,7 @@ public class DbMailArchiveService extends BaseMailArchiveService
 	}
 
 	/**********************************************************************************************************************************************************************************************************************************************************
-	 * BaseMessageService extensions
+	 * BaseMessage extensions
 	 *********************************************************************************************************************************************************************************************************************************************************/
      
 	/**
@@ -211,7 +211,7 @@ public class DbMailArchiveService extends BaseMailArchiveService
 		 * @param user
 		 *        The StorageUser class to call back for creation of Resource and Edit objects.
 		 */
-		public DbStorage(StorageUser user)
+		public DbStorage(DoubleStorageUser user)
 		{
 			super(m_cTableName, "CHANNEL_ID", m_rTableName, "MESSAGE_ID", "CHANNEL_ID", "MESSAGE_DATE", "OWNER", "DRAFT",
 					"PUBVIEW", FIELDS, SEARCH_FIELDS, m_locksInDb, "channel", "message", user, m_sqlService);

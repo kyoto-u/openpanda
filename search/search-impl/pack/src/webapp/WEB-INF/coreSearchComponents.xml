@@ -12,7 +12,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,10 +22,10 @@
  *
  **********************************************************************************/
 -->
-<beans>
+<beans default-lazy-init="true">
  
 
-  <bean id="org.sakaiproject.search.api.SearchService"
+  <bean id="org.sakaiproject.search.component.service.impl.SearchServiceImpl"
     class="org.sakaiproject.search.component.service.impl.SearchServiceImpl" 
     init-method="init" >
     
@@ -67,7 +67,7 @@
     </property>
   </bean> 
      
-  <bean id="org.sakaiproject.search.api.SearchIndexBuilder"
+  <bean id="org.sakaiproject.search.component.service.impl.SearchIndexBuilderImpl"
     class="org.sakaiproject.search.component.service.impl.SearchIndexBuilderImpl" 
     init-method="init" >
     <property name="searchBuilderItemDao"><ref bean="searchBuilderItemDao" /></property>
@@ -138,7 +138,9 @@
 	If you have an RDF service, you can uncomment this 
     <property name="rdfSearchService"><ref bean="org.sakaiproject.search.api.rdf.RDFSearchService" /></property>
     -->
-    
+    <property name="searchService">
+    	<ref bean="org.sakaiproject.search.api.SearchService"/>
+    </property>
     <property name="dataSource">
       <ref bean="javax.sql.DataSource"/>      
     </property>

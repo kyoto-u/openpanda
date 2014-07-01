@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/qti/helper/item/ItemHelperIfc.java $
- * $Id: ItemHelperIfc.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/item/ItemHelperIfc.java $
+ * $Id: ItemHelperIfc.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,8 +24,11 @@
 package org.sakaiproject.tool.assessment.qti.helper.item;
 
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.qti.asi.Item;
 
@@ -34,7 +37,7 @@ import org.sakaiproject.tool.assessment.qti.asi.Item;
  * <p>Copyright: Copyright (c) 2005</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley esmiley@stanford.edu
-   * @version $Id: ItemHelperIfc.java 9274 2006-05-10 22:50:48Z daisyf@stanford.edu $
+   * @version $Id: ItemHelperIfc.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 
 public interface ItemHelperIfc
@@ -51,7 +54,9 @@ public interface ItemHelperIfc
   public static final long ITEM_MCMC_SS = TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION.longValue();
   public static final long ITEM_TF = TypeIfc.TRUE_FALSE.longValue();
   public static final long ITEM_MATCHING = TypeIfc.MATCHING.longValue();
+  public static final long ITEM_EMI = TypeIfc.EXTENDED_MATCHING_ITEMS.longValue();
   public static final long ITEM_MXSURVEY = TypeIfc.MATRIX_CHOICES_SURVEY.longValue();
+  public static final long ITEM_CALCQ = TypeIfc.CALCULATED_QUESTION.longValue(); // CALCULATED_QUESTION
 
   public String[] itemTypes =
     {
@@ -66,9 +71,12 @@ public interface ItemHelperIfc
     "Fill In the Blank",
     "Numeric Response",
     "Matching",
+    "Extended Matching Items",
     "Matrix Choices Survey",
+    "Calculated Question", // CALCULATED_QUESTION
   };
 
+  
   /**
    * Get Item Xml for a given item type as a Long .
    * @param type item type as a Long  
@@ -122,14 +130,14 @@ public interface ItemHelperIfc
    * @param score
    * @param itemXml
    */
-  public void addMaxScore(Float score, Item itemXml);
+  public void addMaxScore(Double score, Item itemXml);
 
   /**
    * Add maximum score to item XML
    * @param score
    * @param itemXml
    */
-  public void addMinScore(Float score, Item itemXml);
+  public void addMinScore(Double score, Item itemXml);
 
   /**
    * Flags an answer as correct.
@@ -169,15 +177,44 @@ public interface ItemHelperIfc
    * @param itemXml
    * @param itemText text to be updated
    */
-  public void setItemTexts(ArrayList itemTextList, Item itemXml);
-
+  public void setItemTexts(List<ItemTextIfc> itemTextList, Item itemXml);
+	
+  /**
+   * Set the label for the item.
+   * @param itemLabel
+   * @param itemXml
+   */
+  public void setItemLabel(String itemLabel, Item itemXml);
+  
   /**
    * Set the (usually instructional text) for trhe item.
    * @param itemText
    * @param itemXml
    */
   public void setItemText(String itemText, Item itemXml);
+  
+  /**
+   * Set the (usually instructional text) for the item for the specified flow.
+   * @param itemText
+   * @param itemXml
+   */
+  public void setItemText(String itemText, String flowClass, Item itemXml);
 
+  /**
+   * Set the presentation label.
+   * 
+   * @param presentationLabel
+   * @param itemXml
+   */
+  public void setPresentationLabel(String presentationLabel, Item itemXml);
+  
+  /**
+   * Set the public void Presentation Flow Response Ident
+   * @param presentationFlowResponseIdent
+   * @param itemXml
+   */
+  public void setPresentationFlowResponseIdent(String presentationFlowResponseIdent, Item itemXml);
+  
   /**
    * @param itemXml
    * @return type as string
@@ -188,11 +225,13 @@ public interface ItemHelperIfc
    * Set the answer texts for item.
    * @param itemTextList the text(s) for item
    */
-  public void setAnswers(ArrayList itemTextList, Item itemXml);
+  public void setAnswers(List<ItemTextIfc> itemTextList, Item itemXml);
 
   /**
    * Set the feedback texts for item.
    * @param itemTextList the text(s) for item
    */
-  public void setFeedback(ArrayList itemTextList, Item itemXml);
+  public void setFeedback(List<ItemTextIfc> itemTextList, Item itemXml);
+
+  public void setAttachments(Set<? extends AttachmentIfc> attachmentSet, Item item);
 }

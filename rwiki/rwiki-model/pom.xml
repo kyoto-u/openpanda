@@ -5,7 +5,7 @@
   <parent>
     <artifactId>rwiki-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.3</version>
+    <version>10.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>sakai-rwiki-model</name>
@@ -52,7 +52,7 @@
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate</artifactId>
+      <artifactId>hibernate-core</artifactId>
       <type>jar</type>
     </dependency>
   </dependencies>

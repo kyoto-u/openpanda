@@ -23,8 +23,11 @@
 
 	<h:form id="calendarForm">
 	<h:panelGroup>
-       <sakai:tool_bar rendered="#{CalBean.userId ne null}">
-			<sakai:tool_bar_item action="#{MenuBean.processPreferences}" value="#{msgs.menu_prefs}" immediate="true" />
+		<sakai:tool_bar rendered="#{CalBean.userId ne null && CalBean.preferencesVisible}">
+			<h:commandLink action="#{MenuBean.processPreferences}" >
+				<h:outputText value="#{CalBean.accessibleOptionsLink}" escape="false"/>
+            </h:commandLink>
+			<sakai:tool_bar_item rendered="#{MenuBean.subscribeEnabled}" action="#{MenuBean.processSubscribe}" value="#{msgs['java.opaque_subscribe']}" immediate="true" />
 		</sakai:tool_bar>
     </h:panelGroup>
 	    
@@ -40,9 +43,9 @@
 			</f:subview>
 			<%--</h:panelGroup>--%>
 	        <h:panelGroup style="text-align: right; white-space: nowrap; display: block ">
-	        	<h:commandButton value=" < " actionListener="#{CalBean.prev}" immediate="true"/>
-	        	<h:commandButton value="#{msgs.today}" actionListener="#{CalBean.currDay}" immediate="true"/>
-	        	<h:commandButton value=" > " actionListener="#{CalBean.next}" immediate="true"/>
+                <f:verbatim><fieldset><legend></f:verbatim><h:outputText value="#{msgs.previous}"/><f:verbatim></legend></f:verbatim><h:commandButton value=" < " actionListener="#{CalBean.prev}" immediate="true"/><f:verbatim></fieldset></f:verbatim>
+                <h:commandButton value="#{msgs.today}" actionListener="#{CalBean.currDay}" immediate="true"/>
+                <f:verbatim><fieldset><legend></f:verbatim><h:outputText value="#{msgs.next}"/><f:verbatim></legend></f:verbatim><h:commandButton value=" > " actionListener="#{CalBean.next}" immediate="true"/><f:verbatim></fieldset></f:verbatim>
 	        </h:panelGroup>
 		</h:panelGrid>
 		
@@ -167,7 +170,13 @@
 		<h:panelGroup id="div_selected_event" rendered="#{CalBean.viewingSelectedEvent}" style="width:100%; padding-top: 10px; display: block">
 			<f:verbatim><h4></f:verbatim><h:outputText value="#{CalBean.selectedEvent.displayName}"/><f:verbatim></h4></f:verbatim>
 			
-			<h:panelGrid id="panel_selected_event" styleClass="sectionContainerNav" style="width:100%; padding-top: 5px;" columns="2" columnClasses="calTop,calTop"> 		
+			<h:panelGrid id="panel_selected_event_error" styleClass="sectionContainerNav" style="width:100%; padding-top: 5px;" columns="1" columnClasses="calTop" rendered="#{CalBean.selectedEvent.openDateError}">
+				<h:outputText value="#{msgs['java.alert.opendate']}" styleClass="alertMessage"/>
+				<h:panelGroup styleClass="act" style="display: block">
+					<h:commandButton value="#{msgs.back}" actionListener="#{CalBean.backToEventList}" immediate="true"/>
+				</h:panelGroup>
+			</h:panelGrid>
+			<h:panelGrid id="panel_selected_event" styleClass="sectionContainerNav" style="width:100%; padding-top: 5px;" columns="2" columnClasses="calTop,calTop" rendered="#{not CalBean.selectedEvent.openDateError}"> 		
 				<h:outputLabel for="date" value="#{msgs.date}" />
 		        <h:outputText id="date" value="#{CalBean.selectedEvent.date}" />
 				<h:outputLabel for="type" value="#{msgs.type}" />

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/tool/assessment/facade/TypeFacadeQueries.java $
- * $Id: TypeFacadeQueries.java 9273 2006-05-10 22:34:28Z daisyf@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/TypeFacadeQueries.java $
+ * $Id: TypeFacadeQueries.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,13 +26,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.hibernate.Hibernate;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.osid.shared.Type;
 import org.sakaiproject.tool.assessment.data.dao.shared.TypeD;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
@@ -81,10 +79,20 @@ public class TypeFacadeQueries extends HibernateDaoSupport implements TypeFacade
      * This method return Type with a specified typeId, used by
      * ItemFacade.getItemType()
      * @param typeId
-     * @return org.osid.shared.Type
+     * @return org.osid.shared.Type or null if no types of that id
      */
     public Type getTypeById(Long typeId){
+    	//pbd hack
+    	List typeList = getAllTypes();
+    	this.typeFacadeMap = createTypeFacadeMapById(typeList);
+    	
+    	// end pbd hack
 	TypeFacade typeFacade = getTypeFacadeById(typeId);
+	//SAM-1792 this could be a request for an unkown type
+	if (typeFacade == null) {
+		log.warn("Unable to find Item Type: " + typeId.toString());
+		return null;
+	}
 	TypeExtension type = new TypeExtension(typeFacade.getAuthority(),
 					       typeFacade.getDomain(),
 					       typeFacade.getKeyword(),

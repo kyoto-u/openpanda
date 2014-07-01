@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/ExportResponsesBean.java $
- * $Id: ExportResponsesBean.java 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/ExportResponsesBean.java $
+ * $Id: ExportResponsesBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,6 +48,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.jsf.model.PhaseAware;
 import org.sakaiproject.tool.assessment.jsf.convert.AnswerSurveyConverter;
 import org.sakaiproject.tool.assessment.services.GradingService;
@@ -71,7 +72,6 @@ public class ExportResponsesBean implements Serializable, PhaseAware {
 	 */
 	private static final long serialVersionUID = 2854656853283125977L;
 	/**
-	 * gopalrc - Jan 2008
 	 * Marks the beginning of each new sheet.
 	 * If absent, treat as a single-sheet workbook. 
 	 */
@@ -163,15 +163,7 @@ public class ExportResponsesBean implements Serializable, PhaseAware {
 	
 	public void exportExcel(ActionEvent event){
         log.debug("exporting as Excel: assessment id =  " + getAssessmentId());
-        
-        /*
-        SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(), 
-        		getDownloadFileName(), 
-        		new SpreadsheetDataFileWriterXls());
-		*/
-        
-        // changed from above by gopalrc - Jan 2008
-        // to allow local customization of spreadsheet output
+        // allow local customization of spreadsheet output
         FacesContext faces = FacesContext.getCurrentInstance();
         HttpServletResponse response = (HttpServletResponse)faces.getExternalContext().getResponse();
         response.reset();	// Eliminate the added-on stuff
@@ -185,13 +177,10 @@ public class ExportResponsesBean implements Serializable, PhaseAware {
     	TotalScoresBean totalScores = (TotalScoresBean) ContextUtil.lookupBean("totalScores");
     	Map useridMap = totalScores.getUserIdMap(TotalScoresBean.CALLED_FROM_EXPORT_LISTENER);
     	
-        // gopalrc Dec 2007
         HistogramListener histogramListener = new HistogramListener();
   	  	Iterator detailedStats = histogramListener.getDetailedStatisticsSpreadsheetData(assessmentId).iterator(); 
-  	  	//boolean showPartAndTotalScoreSpreadsheetColumns = (Boolean) detailedStats.next();
   	  	detailedStats.next();
   	  	boolean showPartAndTotalScoreSpreadsheetColumns = true;
-  	  	//boolean showDiscriminationColumn = (Boolean) detailedStats.next();
   		boolean showDetailedStatisticsSheet = (Boolean) detailedStats.next();
   	  	
   	  	String audioMessage = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages","audio_message");
@@ -227,7 +216,6 @@ public class ExportResponsesBean implements Serializable, PhaseAware {
   	  	}
 
         PublishedAssessmentService pubService = new PublishedAssessmentService();
-  	  	// gopalrc - Nov 2007
         if (showPartAndTotalScoreSpreadsheetColumns) {
 	  	  	int numberOfSections = pubService.getPublishedSectionCount(Long.valueOf(assessmentId)).intValue();
 	  	  	if (numberOfSections > 1) {
@@ -246,21 +234,18 @@ public class ExportResponsesBean implements Serializable, PhaseAware {
   	  	
   	    list.add(0,headerList);
   	  	
-        // gopalrc - Jan 2008 - New Sheet Marker
   		ArrayList<Object> newSheetList;
   	  	newSheetList = new ArrayList<Object>();
   	  	newSheetList.add(NEW_SHEET_MARKER);
   	  	newSheetList.add(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages","responses"));
   	  	list.add(0, newSheetList);
 
-        // gopalrc - Jan 2008 - New Sheet Marker
   	  	if (showDetailedStatisticsSheet) {
   	  		newSheetList = new ArrayList<Object>();
   	  		newSheetList.add(NEW_SHEET_MARKER);
   	  		newSheetList.add(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages","item_analysis"));
   	  		list.add(newSheetList);
 
-  	  		// gopalrc Dec 2007
         	while (detailedStats.hasNext()) {
         		list.add((List)detailedStats.next());
         	}
@@ -371,8 +356,20 @@ public class ExportResponsesBean implements Serializable, PhaseAware {
 		CellStyle boldStyle = wb.createCellStyle();
 		Font font = wb.createFont();
 		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		String fontName = ServerConfigurationService.getString("spreadsheet.font");
+		if (fontName != null) {
+			font.setFontName(fontName);
+		}
 		boldStyle.setFont(font);
 		CellStyle headerStyle = boldStyle;
+
+		CellStyle cellStyle = null;
+		if (fontName != null) {
+			font = wb.createFont();
+			font.setFontName(fontName);
+			cellStyle = wb.createCellStyle();
+			cellStyle.setFont(font);
+		}
 		
 		Sheet sheet = null;
 
@@ -418,7 +415,7 @@ public class ExportResponsesBean implements Serializable, PhaseAware {
 							data = colIter.next();
 						}
 						else {
-							cell = createCell(row, colPos++, null);
+							cell = createCell(row, colPos++, cellStyle);
 						}
 						if (data != null) {
 							if (data instanceof Double) {

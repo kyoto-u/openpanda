@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.sakaiproject.deploy</groupId>
         <artifactId>deploy</artifactId>
-        <version>2.9.3</version>
+        <version>10-SNAPSHOT</version>
     </parent>
 
     <name>Sakai Deploy: shared/lib</name>
@@ -26,7 +26,6 @@
     </properties>
 
     <dependencies>
-    
         <!-- Required by Tomcat 7.  Can be dropped once it's confirmed that JSF-related tools are bundling it up in their webapps. -->
         <dependency>
             <groupId>commons-el</groupId>
@@ -39,13 +38,35 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
-            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
-        
+
+        <!-- emailtemplateservice dependency (emailtemplateservice-assembly 
+            -> shared/lib) ETS shared-deploy pom now deploys it -->
+
+        <!--
+        <dependency>
+            <groupId>org.simpleframework</groupId>
+            <artifactId>simple-xml</artifactId>
+            <version>2.3.6</version>
+            <scope>compile</scope>
+        </dependency>
+        -->
+
+        <!-- required by a number of projects.  Job scheduler shared-deploy now deploys it -->
+        <!--
+        <dependency>
+            <groupId>org.opensymphony.quartz</groupId>
+            <artifactId>quartz</artifactId>
+            <version>1.6.6</version>
+            <scope>compile</scope>
+        </dependency>
+        -->
+
         <!-- The kernel assembly includes these jars (transitive dependencies 
             of hibernate-3.2.7.ga) despite the fact that the kernel does not explicitly 
             define these jars as dependencies. -->
+        
         <dependency>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/select/SelectActionListener.java $
- * $Id: SelectActionListener.java 127213 2013-07-18 14:23:03Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/select/SelectActionListener.java $
+ * $Id: SelectActionListener.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,11 +27,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.HashSet;
 
-import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
@@ -47,9 +46,7 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessCont
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
-import org.sakaiproject.tool.assessment.facade.AssessmentGradingFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacadeQueries;
 import org.sakaiproject.tool.assessment.services.GradingService;
@@ -58,8 +55,8 @@ import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServ
 import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.DeliveryBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.DeliveryBeanie;
-import org.sakaiproject.tool.assessment.ui.bean.shared.PersonBean;
 import org.sakaiproject.tool.assessment.ui.bean.select.SelectAssessmentBean;
+import org.sakaiproject.tool.assessment.ui.bean.shared.PersonBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.BeanSort;
 import org.sakaiproject.util.ResourceLoader;
@@ -69,7 +66,7 @@ import org.sakaiproject.util.ResourceLoader;
  * <p>Purpose:  this module creates the lists of published assessments for the select index
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: SelectActionListener.java 127213 2013-07-18 14:23:03Z ottenhoff@longsight.com $
+ * @version $Id: SelectActionListener.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 
 public class SelectActionListener
@@ -208,7 +205,7 @@ public class SelectActionListener
     HashSet<Long> recentSubmittedIds = new HashSet<Long>();
     select.setHasAnyAssessmentRetractForEdit(false);
     for (int k = 0; k < recentSubmittedList.size(); k++) {
-    	AssessmentGradingFacade g = (AssessmentGradingFacade)
+    	AssessmentGradingData g = (AssessmentGradingData)
     	recentSubmittedList.get(k);
     	recentSubmittedIds.add(g.getPublishedAssessmentId());
     }
@@ -219,7 +216,7 @@ public class SelectActionListener
     	hasHighest = false;
     	hasMultipleSubmission = false;
 
-    	AssessmentGradingFacade g = (AssessmentGradingFacade)
+    	AssessmentGradingData g = (AssessmentGradingData)
     	recentSubmittedList.get(k);
 
         DeliveryBeanie delivery = new DeliveryBeanie();
@@ -319,39 +316,38 @@ public class SelectActionListener
     
     String lastPublishedAssessmentId = "";
     HashMap averageScoreMap = new HashMap();
-    float totalScores= 0f;
+    double totalScores= 0d;
 	int totalSubmissions= 0;
-	float averageScore = 0f;
+	double averageScore = 0d;
     
 	for (int i = 0; i < averageScoreAssessmentGradingList.size(); i++)
 	{
 		DeliveryBeanie db = (DeliveryBeanie) averageScoreAssessmentGradingList.get(i);
 		if ((lastPublishedAssessmentId != null && lastPublishedAssessmentId.equals(db.getAssessmentId())) || averageScoreAssessmentGradingList.size() == 1) {
-			totalScores += Float.parseFloat(db.getFinalScore());
+			totalScores += Double.parseDouble(db.getFinalScore());
 			totalSubmissions++;
 			if (i == averageScoreAssessmentGradingList.size() - 1) {
 				averageScore = totalScores/totalSubmissions;
-				averageScoreMap.put(db.getAssessmentId(), Float.valueOf(averageScore));
+				averageScoreMap.put(db.getAssessmentId(), Double.valueOf(averageScore));
 			}
 		}
 		else {
 			if (i > 0) {
 				averageScore = totalScores/totalSubmissions;
-				averageScoreMap.put(lastPublishedAssessmentId, Float.valueOf(averageScore));
+				averageScoreMap.put(lastPublishedAssessmentId, Double.valueOf(averageScore));
 			}
 			lastPublishedAssessmentId = db.getAssessmentId(); 
-			totalScores = Float.parseFloat(db.getFinalScore());
+			totalScores = Double.parseDouble(db.getFinalScore());
 			totalSubmissions = 1;
 			
 			if (i == averageScoreAssessmentGradingList.size() - 1) {
 				averageScore = totalScores/totalSubmissions;
-				averageScoreMap.put(db.getAssessmentId(), Float.valueOf(averageScore));
+				averageScoreMap.put(db.getAssessmentId(), Double.valueOf(averageScore));
 			}
 		}
 	}
     
     /// --mustansar
-    GradingService service = new GradingService();
     ArrayList reviewableList=new ArrayList();
     ArrayList recordedList=new ArrayList();
     Iterator it=submittedAssessmentGradingList.iterator();
@@ -712,7 +708,7 @@ public class SelectActionListener
 	  return false;
   }
   
-  private String hasStats(AssessmentGradingFacade a, HashMap feedbackHash){
+  private String hasStats(AssessmentGradingData a, HashMap feedbackHash){
     String hasStats = "false";
 
     AssessmentFeedbackIfc f= (AssessmentFeedbackIfc)feedbackHash.get(a.getPublishedAssessmentId());
@@ -727,12 +723,12 @@ public class SelectActionListener
     return hasStats;
   }
 
-  private String showScore(AssessmentGradingFacade a,
+  private String showScore(AssessmentGradingData a,
                            String hasFeedback, HashMap feedbackHash){
     String showScore = "na";
     // must meet 2 conditions: hasFeedback==true && feedback.getShowStudentScore()==true
     AssessmentFeedbackIfc f= (AssessmentFeedbackIfc)feedbackHash.get(a.getPublishedAssessmentId());
-    if (f!=null){
+    if (f!=null && f.getFeedbackComponentOption()!=null) { 
       boolean showScorecore = (Boolean.TRUE).equals(f.getShowStudentScore()) || Integer.valueOf(1).equals(f.getFeedbackComponentOption());
       if (showScorecore && "show".equals(hasFeedback))
         showScore = "show";
@@ -796,7 +792,7 @@ public class SelectActionListener
 	      return null;
 	  }
   
-  private boolean getHasAssessmentBeenModified(SelectAssessmentBean select, AssessmentGradingFacade g, HashMap publishedAssessmentHash){
+  private boolean getHasAssessmentBeenModified(SelectAssessmentBean select, AssessmentGradingData g, HashMap publishedAssessmentHash){
 	    PublishedAssessmentFacade p = (PublishedAssessmentFacade)publishedAssessmentHash.
 	        get(g.getPublishedAssessmentId());
 	    if (p != null) {

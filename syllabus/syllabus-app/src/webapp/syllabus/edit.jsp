@@ -4,13 +4,66 @@
 <%@ taglib uri="http://sakaiproject.org/jsf/syllabus" prefix="syllabus" %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
 <f:view>
-
 <jsp:useBean id="msgs" class="org.sakaiproject.util.ResourceLoader" scope="session">
 	<jsp:setProperty name="msgs" property="baseName" value="org.sakaiproject.tool.syllabus.bundle.Messages"/>
 </jsp:useBean>
 
 	<sakai:view_container title="#{msgs.title_edit}">
 		<sakai:view_content>
+
+<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
+<link rel="stylesheet" href="/library/js/jquery/ui/1.10.3/css/ui-lightness/jquery-ui-1.10.3.custom.min.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+
+
+<script type="text/javascript">
+  $(function() {
+    $('.dateInput').datetimepicker({
+    	hour: 8,
+		timeFormat: "hh:mm tt",
+		currentText: "<h:outputText value="#{msgs.now}"/>",
+		closeText: "<h:outputText value="#{msgs.done}"/>",
+		amNames: ['<h:outputText value="#{msgs.am}"/>', '<h:outputText value="#{msgs.am2}"/>'],
+		pmNames: ['<h:outputText value="#{msgs.pm}"/>', '<h:outputText value="#{msgs.pm2}"/>'],
+		timeText: "<h:outputText value="#{msgs.time}"/>",
+		hourText: "<h:outputText value="#{msgs.hour}"/>",
+		minuteText: "<h:outputText value="#{msgs.minute}"/>",
+		monthNames: ["<h:outputText value="#{msgs.jan}"/>",
+					  "<h:outputText value="#{msgs.feb}"/>",
+					  "<h:outputText value="#{msgs.mar}"/>",
+					  "<h:outputText value="#{msgs.apr}"/>",
+					  "<h:outputText value="#{msgs.may}"/>",
+					  "<h:outputText value="#{msgs.jun}"/>",
+					  "<h:outputText value="#{msgs.jul}"/>",
+					  "<h:outputText value="#{msgs.aug}"/>",
+					  "<h:outputText value="#{msgs.sep}"/>",
+					  "<h:outputText value="#{msgs.oct}"/>",
+					  "<h:outputText value="#{msgs.nov}"/>",
+					  "<h:outputText value="#{msgs.dec}"/>"],
+		dayNames: ["<h:outputText value="#{msgs.sunday}"/>",
+							"<h:outputText value="#{msgs.monday}"/>",
+							"<h:outputText value="#{msgs.tuesday}"/>",
+							"<h:outputText value="#{msgs.wednesday}"/>",
+							"<h:outputText value="#{msgs.thursday}"/>",
+							"<h:outputText value="#{msgs.friday}"/>",
+							"<h:outputText value="#{msgs.saturday}"/>"],
+		dayNamesMin: ["<h:outputText value="#{msgs.sun}"/>",
+							"<h:outputText value="#{msgs.mon}"/>",
+							"<h:outputText value="#{msgs.tue}"/>",
+							"<h:outputText value="#{msgs.wed}"/>",
+							"<h:outputText value="#{msgs.thu}"/>",
+							"<h:outputText value="#{msgs.fri}"/>",
+							"<h:outputText value="#{msgs.sat}"/>"],
+		beforeShow: function (textbox, instance) {
+			            instance.dpDiv.css({
+			                    marginLeft: textbox.offsetWidth + 'px'
+			          });
+		
+	}
+	});
+  });
+ </script>
 			<h:outputText value="#{SyllabusTool.alertMessage}" styleClass="alertMessage" rendered="#{SyllabusTool.alertMessage != null}" />
 			<h:messages styleClass="alertMessage" rendered="#{!empty facesContext.maximumSeverity}" />
 			<h:form>
@@ -104,6 +157,40 @@
 					  </h:column>
 					</syllabus:syllabus_table>
 					
+					<!-- Date -->
+					<h4>
+						<h:outputText value="#{msgs.dateheader}"/>
+					</h4>
+					<h:outputText value="#{msgs.invalid_dates}" styleClass="alertMessage" 
+									rendered="#{SyllabusTool.displayDateError}"/>
+					<h:panelGrid columns="1" styleClass="jsfFormTable">
+						<h:panelGroup styleClass="shorttext">
+							<h:outputLabel for="dataStartDate">
+								<h:outputText value="#{msgs.startdatetitle}"/>
+							</h:outputLabel>
+							<h:inputText styleClass="dateInput datInputStart" value="#{SyllabusTool.syllabusDataStartDate}" id="dataStartDate"/>
+							<f:verbatim><img src="/library/image/silk/calendar_view_month.png" onclick="$('.datInputStart').focus();"/></f:verbatim>
+						</h:panelGroup>
+						<h:panelGroup styleClass="shorttext">
+							<h:outputLabel for="dataEndDate">
+								<h:outputText value="#{msgs.enddatetitle}"/>
+							</h:outputLabel>
+							<h:inputText styleClass="dateInput datInputEnd" value="#{SyllabusTool.syllabusDataEndDate}" id="dataEndDate"/>
+							<f:verbatim><img src="/library/image/silk/calendar_view_month.png" onclick="$('.datInputEnd').focus();"/></f:verbatim>
+						</h:panelGroup>
+						<h:panelGroup styleClass="shorttext" rendered="#{SyllabusTool.calendarExistsForSite}">
+							<h:selectBooleanCheckbox id="linkCalendar" value="#{SyllabusTool.syllabusDataLinkCalendar}" />
+							<h:outputLabel for="linkCalendar">
+								<h:outputText value="#{msgs.linkcalendartitle}"/>
+							</h:outputLabel>
+							<h:outputText value="#{msgs.invalid_calendar}" styleClass="alertMessage" 
+									rendered="#{SyllabusTool.displayCalendarError}"/>
+						</h:panelGroup>
+					</h:panelGrid>
+					
+				<h4>
+					<h:outputText value="#{msgs.notificationheader}"/>
+				</h4>
 				<h:panelGrid columns="1" styleClass="jsfFormTable">
 					<h:panelGroup styleClass="shorttext">
 						<h:outputLabel for="list1">

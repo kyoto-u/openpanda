@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/test/org/sakaiproject/tool/assessment/business/entity/helper/AuthoringHelperTest.java $
-* $Id: AuthoringHelperTest.java 113402 2012-09-21 20:39:56Z ottenhoff@longsight.com $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/test/org/sakaiproject/tool/assessment/business/entity/helper/AuthoringHelperTest.java $
+* $Id: AuthoringHelperTest.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
 ***********************************************************************************
 *
  * Copyright (c) 2004-2005, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ import org.sakaiproject.tool.assessment.qti.util.XmlUtil;
  * <p> </p>
  * <p> </p>
  * @author Ed Smiley esmiley@stanford.edu
- * @version $Id: AuthoringHelperTest.java 113402 2012-09-21 20:39:56Z ottenhoff@longsight.com $
+ * @version $Id: AuthoringHelperTest.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 
 public class AuthoringHelperTest {
@@ -154,7 +154,7 @@ public class AuthoringHelperTest {
       assessment.setLastModifiedBy(me);
       assessment.setLastModifiedDate(assessment.getCreatedDate());
       assessment.setTypeId(TypeIfc.QUIZ);
-      assessment.setStatus(new Integer(1));
+      assessment.setStatus(Integer.valueOf(1));
 
       // process each section and each item within each section
       List sectionList = exHelper.getSectionXmlList(assessmentXml);
@@ -179,9 +179,9 @@ public class AuthoringHelperTest {
         section.setLastModifiedBy(me);
         section.setLastModifiedDate(assessment.getCreatedDate());
         section.setTypeId(TypeIfc.DEFAULT_SECTION);
-        section.setStatus(new Integer(1));
+        section.setStatus(Integer.valueOf(1));
         // set the sequence
-        section.setSequence(new Integer(sec + 1));
+        section.setSequence(Integer.valueOf(sec + 1));
 //        // add the section to the assessment
 //        section.setAssessmentId(assessment.getAssessmentId());//many to one
 //        section.setAssessment(assessment);
@@ -196,7 +196,7 @@ public class AuthoringHelperTest {
           log.debug("ITEM MAP=" + itemMap);
 
           ItemFacade item = new ItemFacade();
-          exHelper.updateItem(item, itemMap);
+          exHelper.updateItem(item, itemXml, itemMap);
           // make sure required fields are set
           item.setCreatedBy(me);
           item.setCreatedDate(assessment.getCreatedDate());
@@ -205,7 +205,7 @@ public class AuthoringHelperTest {
           log.debug("ITEM TYPE IS: " +item.getTypeId());
           item.setStatus(ItemDataIfc.ACTIVE_STATUS);
           // assign the next sequence number
-          item.setSequence(new Integer(itm + 1));
+          item.setSequence(Integer.valueOf(itm + 1));
           // add item to section
           item.setSection(section);// one to many
           section.addItem(item);// many to one
@@ -286,7 +286,7 @@ public class AuthoringHelperTest {
       Item itemXml = new Item(document, QTIVersion.VERSION_1_2);
       Map itemMap = exHelper.mapItem(itemXml);
 //      log.debug("ITEM MAP=" + itemMap);
-      exHelper.updateItem(item, itemMap);
+      exHelper.updateItem(item, itemXml, itemMap);
       //ItemService itemService = new ItemService();
       log.info("updating item");
 //      itemService.saveItem(item);

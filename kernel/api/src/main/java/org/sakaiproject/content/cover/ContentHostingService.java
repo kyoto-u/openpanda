@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.3/api/src/main/java/org/sakaiproject/content/cover/ContentHostingService.java $
- * $Id: ContentHostingService.java 79513 2010-07-15 20:13:54Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/content/cover/ContentHostingService.java $
+ * $Id: ContentHostingService.java 130683 2013-10-21 14:52:02Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,10 +27,18 @@ import java.util.Set;
 import org.sakaiproject.antivirus.api.VirusFoundException;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentResource;
+import org.sakaiproject.exception.IdInvalidException;
+import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.IdUsedException;
+import org.sakaiproject.exception.InUseException;
+import org.sakaiproject.exception.InconsistentException;
+import org.sakaiproject.exception.OverQuotaException;
 import org.sakaiproject.content.api.ContentResourceFilter;
 import org.sakaiproject.content.api.GroupAwareEdit;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.exception.ServerOverloadException;
+
 import org.sakaiproject.exception.TypeException;
 
 /**
@@ -681,6 +689,9 @@ public class ContentHostingService
 		service.moveIntoFolder(param0, param1);
 	}
 
+	/**
+	 * @deprecated DO NOT USE THIS, it does not work and will ALWAYS throw an UnsupportedOperationException - https://jira.sakaiproject.org/browse/KNL-1078
+	 */
 	public static void rename(java.lang.String param0, java.lang.String param1)
 			throws org.sakaiproject.exception.PermissionException, org.sakaiproject.exception.IdUnusedException,
 			org.sakaiproject.exception.TypeException, org.sakaiproject.exception.InUseException,
@@ -829,7 +840,7 @@ public class ContentHostingService
 		org.sakaiproject.content.api.ContentHostingService service = getInstance();
 		if (service == null) return null;
 
-		return service.findResources(type, primaryMimeType, subMimeType);
+		return service.findResources(type, primaryMimeType, subMimeType, contextIds);
 	}
   
 	public static java.util.List findResources(String type, String primaryMimeType, String subMimeType)
@@ -1110,6 +1121,24 @@ public class ContentHostingService
 		if (service == null) return null;
 		
 		return service.getResourcesOfType(resourceType, pageSize, page);
+	}
+
+	public static void restoreResource(String resourceId) throws PermissionException, IdUsedException, IdUnusedException, 
+		IdInvalidException, InconsistentException, OverQuotaException, ServerOverloadException, TypeException, InUseException 
+	{
+    	org.sakaiproject.content.api.ContentHostingService service = getInstance();
+		if (service == null) return ;
+		
+		service.restoreResource(resourceId);
+	}
+
+	public static void removeDeletedResource(String resourceId) throws PermissionException, 
+			IdUnusedException, TypeException, InUseException 
+	{
+    	org.sakaiproject.content.api.ContentHostingService service = getInstance();
+		if (service == null) return ;
+		
+		service.removeDeletedResource(resourceId);
 	}
 
 	/**

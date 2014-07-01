@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,13 +28,13 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.app.messageforums.Attachment;
 import org.sakaiproject.api.app.messageforums.Message;
 import org.sakaiproject.api.app.messageforums.MessageForumsMessageManager;
+import org.sakaiproject.api.app.messageforums.Rank;
+ 
 import org.sakaiproject.tool.cover.SessionManager;
-import org.sakaiproject.tool.messageforums.DiscussionForumTool;
+import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.cover.UserDirectoryService;
 
-
-
-/**
+/** 
  * @author <a href="mailto:rshastri@iupui.edu">Rashmi Shastri</a>
  * @author Chen Wen
  *
@@ -42,7 +42,7 @@ import org.sakaiproject.user.cover.UserDirectoryService;
 public class DiscussionMessageBean
 {
 	
-  private static final Log LOG = LogFactory.getLog(DiscussionForumTool.class);
+  private static final Log LOG = LogFactory.getLog(DiscussionMessageBean.class);
 
   private boolean selected;
   private Message message;
@@ -60,8 +60,28 @@ public class DiscussionMessageBean
   private boolean revise;
   private boolean userCanDelete;
   private boolean userCanEmail;
-  
+  //Move Threads
+  private boolean selected_move;
+  private boolean moved;
+  private int authorPostCount;
+  private Rank authorRank = null;
 
+  public Rank getAuthorRank() {
+    return authorRank;
+  }
+
+  public void setAuthorRank(Rank aRank) {
+    authorRank = aRank;
+  }
+
+  public void setAuthorPostCount(String userEid) {
+    int authorCount = messageManager.findAuthoredMessageCountForStudent(userEid);
+    authorPostCount = authorCount;
+  }
+
+  public int getAuthorPostCount() {
+    return authorPostCount;
+  }
 
   private MessageForumsMessageManager messageManager;
 
@@ -71,7 +91,14 @@ public class DiscussionMessageBean
     this.messageManager = messageManager; 
   }
 
+  public void setMoved(boolean b) {
+    moved = b;
+  }
  
+  public boolean isMoved() {
+    return moved;
+  }
+
 
   /**
    * @return Returns the selected.
@@ -91,7 +118,21 @@ public class DiscussionMessageBean
     this.selected = selected;
   }
 
+  /**
+   * @return Returns the selected threads to move.
+   */
+  public boolean isSelected_move()
+  {
+    return selected_move;
+  }
 
+  /**
+   * @param selected_move:  The selected threads to set.
+   */
+  public void setSelected_move(boolean selected)
+  {
+    this.selected_move = selected;
+  }
 
   /**
    * @return Returns the msg.
@@ -367,4 +408,9 @@ LOG.debug("... before return getAuthorEmail(): userEmail = " + userEmail);
 		
 		return userEmail;
 	}
+	
+	public String getAuthorEid(){
+		String userEid = this.getMessage().getCreatedBy();
+ 		return userEid;
+	}	
 }

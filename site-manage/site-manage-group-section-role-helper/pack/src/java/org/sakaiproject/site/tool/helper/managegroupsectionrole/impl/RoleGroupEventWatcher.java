@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -210,7 +210,7 @@ public class RoleGroupEventWatcher implements Observer
 				try
 				{
 					String realmId = ref.getId();
-					if (realmId.indexOf(SiteService.GROUP_SUBTYPE) == -1 && realmId.startsWith("/" + SiteService.SITE_SUBTYPE + "/"))
+					if (realmId != null && realmId.indexOf(SiteService.GROUP_SUBTYPE) == -1 && realmId.startsWith("/" + SiteService.SITE_SUBTYPE + "/"))
 					{
 						// not for group realm update, only for site realm updates
 						String siteId = realmId.replace(SiteService.REFERENCE_ROOT + "/", "");
@@ -225,7 +225,7 @@ public class RoleGroupEventWatcher implements Observer
 						for (Object g : site.getGroups())
 						{
 							ResourceProperties properties = ((Group) g).getProperties();
-							if (properties.getProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED) != null && properties.getProperty(SiteConstants.GROUP_PROP_ROLE_PROVIDERID) != null)
+							if (properties.getProperty(((Group) g).GROUP_PROP_WSETUP_CREATED) != null && properties.getProperty(SiteConstants.GROUP_PROP_ROLE_PROVIDERID) != null)
 							{
 								needSave = true;
 								

@@ -1,27 +1,31 @@
 <!-- resources/sakai_create_uploads.vm, use with org.sakaiproject.tool.content.ResourcesHelperAction.java -->
+<script src="/sakai-content-tool/js/modernizr.custom.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/library/js/dropzone/3.8.4/css/dropzone.css">
 <div class="portletBody specialLink">
 	<h3>
 		$tlang.getString("create.uploads")
 	</h3>
+    <div class="breadCrumb">
+    <h4>
+        $tlang.getString("gen.location")
+        ##<img src = "#imageLink($contentTypeImageService.getContentTypeImage("folder"))" border="0"  alt="$tlang.getString("gen.folder")" />
+        #foreach ($folder in $model.collectionPath)
+            $validator.escapeHtml($folder.name) /
+        #end
+        </h4>
+    </div>
+
 	#if ($itemAlertMessage)
 		<div class="messageValidation">$itemAlertMessage</div>
 		<div style="display:block;clear:both" ></div>
 	#end
+    <div id="tradUploadWrapper" class="fallback">
         #if($instr_uploads)
 		<p class="instruction">
-			$instr_uploads
+			$instr_uploads #if($dragAndDrop)<strong><a href="#" id="dndUploadSwitcher">$tlang.getString("link.switch.to.dnd")</a></strong>#end
 		</p>
          #end
 
-	<div class="breadCrumb">
-	<h4>
-		$tlang.getString("gen.location")
-		##<img src = "#imageLink($contentTypeImageService.getContentTypeImage("folder"))" border="0"  alt="$tlang.getString("gen.folder")" />
-		#foreach ($folder in $model.collectionPath)
-			$validator.escapeHtml($folder.name) /
-		#end
-		</h4>
-	</div>
 	<form name="addContentForm" id="addContentForm" method="post" action="#toolForm("ResourcesHelperAction")"  enctype="multipart/form-data">
 		<input type="hidden" name="pipe-init-id" id="pipe-init-id" value="$!{pipe-init-id}" />
 		<input type="hidden" name="requestStateId" id="requestStateId" value="$!{requestStateId}" />
@@ -64,7 +68,8 @@
 		</p>
 		#if ($model.resourceTypeDef.hasNotificationDialog())
 			#if($model.isDropbox())
-				#if($model.userIsMaintainer() || $dropboxNotificationAllowed)
+			 	## SAK-18932 show email checkbox only when possible to use it
+				#if($dropboxNotificationAllowed)
 					<p class="act">
 						<input type="checkbox" name="notify_dropbox" id="notify_dropbox" value="true" /> 
 						<label for="notify_dropbox">
@@ -100,7 +105,7 @@
 		#end
 		
 		<p class="act">
-			<input type="button" class="active" name="savechanges" id="saveChanges" disabled="true" onclick="javascript:showNotif('submitnotifxxx','saveChanges','addContentForm');document.getElementById('addContentForm').action='#toolLinkParam("ResourcesHelperAction" "doUpload" "flow=save&sakai_csrf_token=$validator.escapeUrl($sakai_csrf_token)")';submitform('addContentForm');" value="$tlang.getString("label.finupl")" accesskey="s" />
+			<input type="button" class="active" name="savechanges" id="saveChanges" disabled="true" onclick="javascript:showNotif('submitnotifxxx','saveChanges','addContentForm');document.getElementById('addContentForm').action='#toolLinkParam("ResourcesHelperAction" "doUpload" "flow=save")';submitform('addContentForm');" value="$tlang.getString("label.finupl")" accesskey="s" />
 			<input type="button" name="cancel" onclick="javascript:document.getElementById('addContentForm').action='#toolLink("ResourcesHelperAction" "doCancel")';submitform('addContentForm');" value="$tlang.getString("label.cancel")" accesskey="x" />
 			<span id="submitnotifxxx" class="messageProgress" style="visibility:hidden">$tlang.getString("processmessage.file")</span>
 		</p>
@@ -111,5 +116,131 @@
 		#end
 		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
+    </div>
+    #if($dragAndDrop)
+        <div id="dragDropWrapper">
+        <div id="fileUploaderDesc" class="instruction">
+            <p>$tlang.getString("label.dragDescription") <strong><a href="#" id="tradUploadSwitcher">$tlang.getString("link.switch.to.upload")</a></strong></p>
+        </div>
+        <form name="dropzone-form" action="#toolLink("ResourcesHelperAction" "doPost")&flow=save" class="dropzone" id="file-uploader">
+        	<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+            <div class="dz-default dz-message">$tlang.getString("label.dragZoneMessage")</div>
+        </form>
+		<p class="act">
+			<input type="button" name="finish" id="finish" disabled=true
+			onclick="javascript:document.getElementById('addContentForm').action='#toolLink("ResourcesHelperAction" "doFinishUpload")';" 
+			 value="$tlang.getString("label.continue")" accesskey="x" />
+			
+			<input type="button" name="cancel" 
+			onclick="javascript:document.getElementById('addContentForm').action='#toolLink("ResourcesHelperAction" "doCancel")';submitform('addContentForm');" 
+			value="$tlang.getString("label.cancel")" accesskey="x" />
+			
+		</p>
+    #end
+
 </div>
 #parse("/vm/resources/sakai_properties_scripts.vm")
+#if($dragAndDrop)
+<script src="/library/js/dropzone/3.8.4/dropzone.js" type="text/javascript"></script>
+<script type="text/javascript">
+Dropzone.options.fileUploader = {
+  // do not change these values as the dropzone logic depends on these values
+  autoProcessQueue: false,
+  parallelUploads: 1,
+  uploadMultiple: false,
+  addRemoveLinks: true,
+  maxFilesize: $uploadMaxSize, // MB
+  //SAK-25747
+  dictFallbackMessage: "$tlang.getString("dragndrop.dictFallbackMessage")",
+  dictFallbackText: "$tlang.getString("dragndrop.dictFallbackText")",
+  dictFileTooBig: "$tlang.getString("dragndrop.dictFileTooBig")",
+  dictInvalidFileType: "$tlang.getString("dragndrop.dictInvalidFileType")",
+  dictResponseError: "$tlang.getString("dragndrop.dictResponseError")",
+  dictCancelUpload: "$tlang.getString("dragndrop.dictCancelUpload")",
+  dictCancelUploadConfirmation: "$tlang.getString("dragndrop.dictCancelUploadConfirmation")",
+  dictRemoveFile: "$tlang.getString("dragndrop.dictRemoveFile")",
+  dictMaxFilesExceeded: "$tlang.getString("dragndrop.dictMaxFilesExceeded")",
+  dictFolderUploadError: "$tlang.getString("dragndrop.dictFolderUploadError")",
+  
+    init: function() {
+      var status;
+    
+      this.on("removedfile", function() {
+  	    if (!this.getQueuedFiles().length) {
+  	       document.getElementById("finish").disabled=true;
+  	    }
+      });
+
+      this.on("complete", function(file) {
+      	var queuedFiles = this.getQueuedFiles();
+      	
+      	// don't process any more files if there is an error 
+      	if(queuedFiles.length > 0 && status === Dropzone.SUCCESS) {
+      	  this.processFile(queuedFiles.shift());
+      	}
+      });
+
+      this.on("queuecomplete", function() {
+        if(status === Dropzone.SUCCESS) {
+          document.getElementById('addContentForm').submit();
+        }
+      });
+
+      this.on("drop", function() {
+      	document.getElementById("finish").disabled=false;
+      });
+
+      this.on("addedfile", function() {
+      	document.getElementById("finish").disabled=false;
+      });
+
+	  this.on("sending", function(file, xhr, formData) {
+		formData.append("fullPath",file.fullPath);
+      });
+      
+      this.on("error", function(file, message, xhr) {
+        status = file.status;
+  	    document.getElementById("finish").disabled=true;
+      });
+       
+      this.on("success", function(file, responseText, e) {
+        status = file.status;
+        file.previewTemplate.appendChild(document.createTextNode(responseText));
+      });
+       
+       
+      var submitButton = document.querySelector("#finish");
+      var dz = this;
+      submitButton.addEventListener("click", function() {
+    	  submitButton.disabled=true;
+	      dz.processQueue(); // Tell Dropzone to process all queued files.
+	  });
+    }
+ };
+</script>
+<script type="text/javascript">
+    //use a small custom build of modernizer to detect if
+    // current browser can do dnd uploads, swap the two interfaces.
+    if(Modernizr.draganddrop && window.FileReader){
+        $('#tradUploadWrapper').hide();
+        $('#dragDropWrapper').show();
+    }
+    else {
+        $('#tradUploadWrapper').show();
+        $('#dragDropWrapper').hide();
+    }
+    $('#dndUploadSwitcher').click(function(e){
+        e.preventDefault();
+        $('#tradUploadWrapper').fadeOut();
+        $('#dragDropWrapper').fadeIn();
+        
+    });
+    $('#tradUploadSwitcher').click(function(e){
+        e.preventDefault();
+        $('#tradUploadWrapper').fadeIn();
+        $('#dragDropWrapper').fadeOut();
+
+    })
+    
+</script>
+#end

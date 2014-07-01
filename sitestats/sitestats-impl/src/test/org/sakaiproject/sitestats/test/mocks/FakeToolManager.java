@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeToolManager.java $
- * $Id: FakeToolManager.java 79314 2010-07-10 13:10:54Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeToolManager.java $
+ * $Id: FakeToolManager.java 307875 2014-04-07 15:40:27Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -134,4 +134,17 @@ public class FakeToolManager implements ToolManager {
 		return false;
 	}
 
+	@Override
+	public String getLocalizedToolProperty(String toolId, String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+    public boolean isHidden(Placement placement) {
+        return false;
+    }
+
+    public boolean allowTool(Site site, Placement placement) {
+        return true;
+    }
 }

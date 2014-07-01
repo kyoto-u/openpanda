@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SelectionBean.java $
- * $Id: SelectionBean.java 73974 2010-02-23 00:50:51Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SelectionBean.java $
+ * $Id: SelectionBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,19 +21,18 @@
 
 package org.sakaiproject.tool.assessment.ui.bean.delivery;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
  * This is the JSF backing bean for delivery, used for TF and MC questions
  * 
- * $Id: SelectionBean.java 73974 2010-02-23 00:50:51Z ktsao@stanford.edu $
+ * $Id: SelectionBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  */
 public class SelectionBean {
 
@@ -49,7 +48,6 @@ public class SelectionBean {
 
 	private String feedback;
 
-	private String responseId;
 
 	public ItemContentsBean getItemContentsBean() {
 		return parent;
@@ -82,7 +80,7 @@ public class SelectionBean {
 				data = new ItemGradingData();
 				data.setPublishedItemId(parent.getItemData().getItemId());
 				data.setPublishedItemTextId(itemText.getId());
-				ArrayList items = parent.getItemGradingDataArray();
+				List<ItemGradingData> items = parent.getItemGradingDataArray();
 				items.add(data);
 				parent.setItemGradingDataArray(items);
 			}
