@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/SampleDataLoader.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/SampleDataLoader.java $
  * $Id: SampleDataLoader.java 98974 2011-10-05 09:41:28Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

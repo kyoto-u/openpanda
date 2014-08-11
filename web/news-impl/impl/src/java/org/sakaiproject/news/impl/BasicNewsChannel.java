@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.0/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsChannel.java $
- * $Id: BasicNewsChannel.java 97330 2011-08-23 21:49:34Z darolmar@upvnet.upv.es $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.1/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsChannel.java $
+ * $Id: BasicNewsChannel.java 117284 2012-12-06 14:05:35Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -345,10 +346,12 @@ public class BasicNewsChannel implements NewsChannel
 		return m_pubdate;
 	}
 	public Date getPubdateInDateFormat(){
-		if ((m_pubdate!=null)&&(m_pubdate!=""))
-			return new Date(m_pubdate);
-		else
-			return new Date();
+		if (m_pubdate!=null) {
+			try {
+				return DateFormat.getInstance().parse(m_pubdate);
+			} catch (ParseException e) {}
+		}
+		return new Date();
 	}
 
 	public String getLastbuilddate()
@@ -356,10 +359,12 @@ public class BasicNewsChannel implements NewsChannel
 		return m_lastbuilddate;
 	}
 	public Date getLastbuilddateInDateFormat(){
-		if ((m_lastbuilddate!=null)&&(m_lastbuilddate!=""))
-			return new Date(m_lastbuilddate);
-		else
-			return new Date();
+		if (m_lastbuilddate!=null) {
+			try {
+				return DateFormat.getInstance().parse(m_lastbuilddate);
+			} catch (ParseException e) {}
+		}
+		return new Date();
 	}
 
 	public String getImageUrl()

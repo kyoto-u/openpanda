@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/AjaxLazyLoadImage.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/AjaxLazyLoadImage.java $
  * $Id: AjaxLazyLoadImage.java 89243 2011-03-03 11:19:15Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

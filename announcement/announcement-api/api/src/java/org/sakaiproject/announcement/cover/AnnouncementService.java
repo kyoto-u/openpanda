@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-api/api/src/java/org/sakaiproject/announcement/cover/AnnouncementService.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.1/announcement-api/api/src/java/org/sakaiproject/announcement/cover/AnnouncementService.java $
  * $Id: AnnouncementService.java 100702 2011-11-11 23:45:37Z yorkadam@umich.edu $
  ***********************************************************************************
  *

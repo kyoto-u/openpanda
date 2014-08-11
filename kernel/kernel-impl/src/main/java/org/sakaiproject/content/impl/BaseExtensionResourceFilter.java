@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/BaseExtensionResourceFilter.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/BaseExtensionResourceFilter.java $
  * $Id: BaseExtensionResourceFilter.java 71665 2010-01-20 14:19:33Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

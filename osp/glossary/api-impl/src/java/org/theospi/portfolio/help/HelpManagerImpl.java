@@ -466,6 +466,7 @@ public class HelpManagerImpl extends HibernateDaoSupport
 	{
 
 		SAXBuilder builder = new SAXBuilder();
+		builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // SAK-23131
 
 		try {
 		   Document document	= builder.build(new InputStreamReader(inStream));

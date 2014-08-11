@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/SectionManagerHibernateImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/SectionManagerHibernateImpl.java $
  * $Id: SectionManagerHibernateImpl.java 93245 2011-05-25 11:31:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

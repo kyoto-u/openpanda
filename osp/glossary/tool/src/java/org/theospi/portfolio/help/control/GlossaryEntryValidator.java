@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/glossary/tool/src/java/org/theospi/portfolio/help/control/GlossaryEntryValidator.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.1/glossary/tool/src/java/org/theospi/portfolio/help/control/GlossaryEntryValidator.java $
 * $Id: GlossaryEntryValidator.java 83138 2010-10-07 14:22:28Z aaronz@vt.edu $
 ***********************************************************************************
 *

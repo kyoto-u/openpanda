@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/CourseImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/CourseImpl.java $
  * $Id: CourseImpl.java 93245 2011-05-25 11:31:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/SearchIndexBuilderWorkerImpl.java $
- * $Id: SearchIndexBuilderWorkerImpl.java 113399 2012-09-21 20:34:07Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/SearchIndexBuilderWorkerImpl.java $
+ * $Id: SearchIndexBuilderWorkerImpl.java 118571 2013-01-22 16:40:50Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -736,7 +736,10 @@ public class SearchIndexBuilderWorkerImpl implements Runnable, SearchIndexBuilde
 		catch (Exception ex)
 		{
 			log.error("Failed to register node ", ex);
-			connection.rollback();
+			if (connection != null) 
+			{
+				connection.rollback();
+			}
 		}
 		finally
 		{
@@ -1137,7 +1140,10 @@ public class SearchIndexBuilderWorkerImpl implements Runnable, SearchIndexBuilde
 		{
 			try
 			{
-				connection.rollback();
+				if (connection != null) 
+				{
+					connection.rollback();
+				}
 			}
 			catch (SQLException e)
 			{

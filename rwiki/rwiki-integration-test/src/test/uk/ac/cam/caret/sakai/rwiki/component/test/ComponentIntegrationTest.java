@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-integration-test/src/test/uk/ac/cam/caret/sakai/rwiki/component/test/ComponentIntegrationTest.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.1/rwiki-integration-test/src/test/uk/ac/cam/caret/sakai/rwiki/component/test/ComponentIntegrationTest.java $
  * $Id: ComponentIntegrationTest.java 33828 2007-08-10 15:15:36Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

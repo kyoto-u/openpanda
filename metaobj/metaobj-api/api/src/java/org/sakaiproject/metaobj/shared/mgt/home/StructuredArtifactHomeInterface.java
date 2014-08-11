@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/mgt/home/StructuredArtifactHomeInterface.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.1/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/mgt/home/StructuredArtifactHomeInterface.java $
  * $Id: StructuredArtifactHomeInterface.java 65328 2009-07-29 18:49:51Z bkirschn@umich.edu $
  ***********************************************************************************
  *

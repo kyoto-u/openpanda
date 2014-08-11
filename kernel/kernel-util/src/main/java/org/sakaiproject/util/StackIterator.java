@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/StackIterator.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/StackIterator.java $
  * $Id: StackIterator.java 101696 2011-12-13 14:44:36Z aaronz@vt.edu $
  ***********************************************************************************
  *

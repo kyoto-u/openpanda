@@ -10,7 +10,7 @@
   
 
 <!--
-$Id: submissionStatus.jsp 100007 2011-10-19 19:31:05Z ktsao@stanford.edu $
+$Id: submissionStatus.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -33,7 +33,7 @@ $Id: submissionStatus.jsp 100007 2011-10-19 19:31:05Z ktsao@stanford.edu $
 -->
 
 <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText
         value="#{evaluationMessages.sub_status}" /></title>

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.0/courier-api/api/src/java/org/sakaiproject/courier/cover/PresenceUpdater.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.1/courier-api/api/src/java/org/sakaiproject/courier/cover/PresenceUpdater.java $
  * $Id: PresenceUpdater.java 101763 2011-12-14 19:43:07Z botimer@umich.edu $
  ***********************************************************************************
  *

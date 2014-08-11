@@ -40,6 +40,7 @@ public class QtiImport {
     String maxattempts = "1";
     String siteId = null;
     boolean usesPatternMatch = false;
+    boolean usesCurriculum = false;
 
     class Pair {
 	String left;
@@ -1581,6 +1582,10 @@ public class QtiImport {
     }
 
 
+    public boolean getUsesCurriculum() {
+	return usesCurriculum;
+    }
+
     public boolean mainproc (InputStream i, PrintWriter o, boolean isBank, String base, String s, SimplePageBean b) throws IOException {
 
         out = o;
@@ -1591,6 +1596,8 @@ public class QtiImport {
 	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 	try {
+	    factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+	    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 
 	    DocumentBuilder builder = factory.newDocumentBuilder();
 	    document = builder.parse(i);
@@ -1618,7 +1625,6 @@ public class QtiImport {
 			    Node e = getFirstByName(item, "fieldentry");
 			    String entry = (e == null ? null : getNodeText(e));			    
 
-			    System.out.println("metadata " + label + " " + entry);
 			    if ("qmd_feedbackpermitted".equals(label))
 				feedbackpermitted = "yes".equalsIgnoreCase(entry);
 			    else if ("qmd_timelimit".equals(label))
@@ -1631,7 +1637,6 @@ public class QtiImport {
 		    }
 		}
 	    }
-	    System.out.println("final " + feedbackpermitted + "::" + timelimit + "::" + allowlate + "::" + maxattempts);
 
 	    Node section;
 	    int numsections;
@@ -1663,6 +1668,10 @@ public class QtiImport {
 		    String newtitle = getAttribute(section, "title");
 		    if (newtitle == null || newtitle.equals(""))
 			newtitle = "Respondus Converted Questions";
+
+		    Node md = getFirstByName(item, "itemmetadata");
+		    if (md != null && getFirstByName(md, "curriculumStandardsMetadataSet") != null)
+			usesCurriculum = true;
 
 		    // for the moment can only write one section
 		    if (false) {

@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/PagerRenderer.java $
-* $Id: PagerRenderer.java 105547 2012-03-06 18:38:11Z ottenhoff@longsight.com $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.1/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/PagerRenderer.java $
+* $Id: PagerRenderer.java 118053 2013-01-03 15:19:40Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -181,6 +181,12 @@ public class PagerRenderer extends Renderer
 	{
 		if (!render) return;
 		
+		//SAK-22812 wrap each button with a fieldset and legend, for accessibility
+		out.startElement("fieldset", null);
+		out.startElement("legend", null);
+		out.writeText(title, null);
+		out.endElement("legend");
+		
 		out.startElement("input", null);
 		out.writeAttribute("type", "submit", null);
 		out.writeAttribute("name", name, null);
@@ -197,6 +203,7 @@ public class PagerRenderer extends Renderer
 			out.writeAttribute("disabled", "disabled", null);
 		}
 		out.endElement("input");
+		out.endElement("fieldset");
 		out.write("\n");
 	}
 	

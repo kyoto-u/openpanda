@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-tool/tool/src/java/org/sakaiproject/search/tool/api/SearchBean.java $
- * $Id: SearchBean.java 68247 2009-10-23 14:15:51Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-tool/tool/src/java/org/sakaiproject/search/tool/api/SearchBean.java $
+ * $Id: SearchBean.java 118572 2013-01-22 16:42:42Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -197,4 +197,10 @@ public interface SearchBean
 	
 	String getSuggestionUrl();
 	
+	/**
+	 * SRCH-96
+	 * whether the node is search server or not
+	 * @return
+	 */
+	boolean isSearchServer();
 }

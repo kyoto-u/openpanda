@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/CommonCartridgeFileParser.java $
- * $Id: CommonCartridgeFileParser.java 79981 2010-07-28 11:40:12Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/CommonCartridgeFileParser.java $
+ * $Id: CommonCartridgeFileParser.java 118449 2013-01-17 21:03:19Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -167,7 +168,11 @@ public class CommonCartridgeFileParser extends IMSFileParser {
 
 		    try {
                 fis = new FileInputStream(pathToData + File.separator + descriptorFilename);
-				docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+				DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+				builderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+				builderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+				builderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+				docBuilder = builderFactory.newDocumentBuilder();
 			    doc = (Document) docBuilder.parse(fis);
 			} catch (FileNotFoundException e) {
                 M_log.warn("getDescriptor() file not found: " + pathToData + File.separator + descriptorFilename);

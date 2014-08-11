@@ -1,7 +1,7 @@
 /**********************************************************************************
 
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.0/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
- * $Id: SiteAction.java 113355 2012-09-21 18:32:49Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.1/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
+ * $Id: SiteAction.java 118854 2013-01-25 16:43:41Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1322,38 +1322,33 @@ public class SiteAction extends PagedResourceActionII {
 			// make sure auto-updates are enabled
 			Hashtable views = new Hashtable();
 			if (SecurityService.isSuperUser()) {
-				views.put(rb.getString("java.allmy"), rb
-						.getString("java.allmy"));
-				views.put(rb.getFormattedMessage("java.sites", new Object[]{rb.getString("java.my")}), rb.getString("java.my"));
-				for (int sTypeIndex = 0; sTypeIndex < sTypes.size(); sTypeIndex++) {
-					String type = (String) sTypes.get(sTypeIndex);
-					views.put(rb.getFormattedMessage("java.sites", new Object[]{type}), type);
-				}
-				List<String> moreTypes = siteTypeProvider.getTypesForSiteList();
-				if (!moreTypes.isEmpty())
-				{
-					for(String mType : moreTypes)
-					{
-						views.put(rb.getFormattedMessage("java.sites", new Object[]{mType}), mType);
-					}
-				}
-				
-				if (state.getAttribute(STATE_VIEW_SELECTED) == null) {
-					state.setAttribute(STATE_VIEW_SELECTED, rb
-							.getString("java.allmy"));
-				}
 				context.put("superUser", Boolean.TRUE);
 			} else {
 				context.put("superUser", Boolean.FALSE);
-				views.put(rb.getString("java.allmy"), rb
-						.getString("java.allmy"));
-
-				// default view
-				if (state.getAttribute(STATE_VIEW_SELECTED) == null) {
-					state.setAttribute(STATE_VIEW_SELECTED, rb
-							.getString("java.allmy"));
+			}
+			views.put(SiteConstants.SITE_TYPE_ALL, rb.getString("java.allmy"));
+			views.put(SiteConstants.SITE_TYPE_MYWORKSPACE, rb.getFormattedMessage("java.sites", new Object[]{rb.getString("java.my")}));
+			for (int sTypeIndex = 0; sTypeIndex < sTypes.size(); sTypeIndex++) {
+				String type = (String) sTypes.get(sTypeIndex);
+				views.put(type, rb.getFormattedMessage("java.sites", new Object[]{type}));
+			}
+			List<String> moreTypes = siteTypeProvider.getTypesForSiteList();
+			if (!moreTypes.isEmpty())
+			{
+				for(String mType : moreTypes)
+				{
+					views.put(mType, rb.getFormattedMessage("java.sites", new Object[]{mType}));
 				}
 			}
+			// default view
+			if (state.getAttribute(STATE_VIEW_SELECTED) == null) {
+				state.setAttribute(STATE_VIEW_SELECTED, SiteConstants.SITE_TYPE_ALL);
+			}
+			
+			// sort the keys in the views lookup
+			List<String> viewKeys = Collections.list(views.keys());
+			Collections.sort(viewKeys);
+			context.put("viewKeys", viewKeys);
 			context.put("views", views);
 
 			if (state.getAttribute(STATE_VIEW_SELECTED) != null) {
@@ -2083,18 +2078,19 @@ public class SiteAction extends PagedResourceActionII {
 					"activeInactiveUser", Boolean.FALSE.toString());
 			if (activeInactiveUser.equalsIgnoreCase("true")) {
 				context.put("activeInactiveUser", Boolean.TRUE);
-                // UVa add realm object to context so we can provide last modified time
-                realmId = SiteService.siteReference(site.getId());
-                try {
-                        AuthzGroup realm = AuthzGroupService.getAuthzGroup(realmId);
-                        context.put("realmModifiedTime",realm.getModifiedTime().toStringLocalFullZ());
-                } catch (GroupNotDefinedException e) {
-                        M_log.warn(this + "  IdUnusedException " + realmId);
-                }
 			} else {
 				context.put("activeInactiveUser", Boolean.FALSE);
 			}
 
+			// UVa add realm object to context so we can provide last modified time
+            realmId = SiteService.siteReference(site.getId());
+            try {
+                    AuthzGroup realm = AuthzGroupService.getAuthzGroup(realmId);
+                    context.put("realmModifiedTime",realm.getModifiedTime().toStringLocalFullZ());
+            } catch (GroupNotDefinedException e) {
+                    M_log.warn(this + "  IdUnusedException " + realmId);
+            }
+            
 			return (String) getContext(data).get("template") + TEMPLATE[12];
 
 		case 13:
@@ -2682,6 +2678,7 @@ public class SiteAction extends PagedResourceActionII {
 				
 			if (site != null) {
 				context.put("site", site);
+				context.put("siteTitle", site.getTitle());
 
 				List providerCourseList = (List) state
 						.getAttribute(SITE_PROVIDER_COURSE_LIST);
@@ -3869,14 +3866,14 @@ public class SiteAction extends PagedResourceActionII {
 				// admin-type of user
 				String view = (String) state.getAttribute(STATE_VIEW_SELECTED);
 				if (view != null) {
-					if (view.equals(rb.getString("java.allmy"))) {
+					if (view.equals(SiteConstants.SITE_TYPE_ALL)) {
 						// search for non-user sites, using
 						// the criteria
 						size = SiteService
 								.countSites(
 										org.sakaiproject.site.api.SiteService.SelectionType.NON_USER,
 										null, search, null);
-					} else if (view.equals(rb.getString("java.my"))) {
+					} else if (view.equals(SiteConstants.SITE_TYPE_MYWORKSPACE)) {
 						// search for a specific user site
 						// for the particular user id in the
 						// criteria - exact match only
@@ -3907,7 +3904,7 @@ public class SiteAction extends PagedResourceActionII {
 
 				String view = (String) state.getAttribute(STATE_VIEW_SELECTED);
 				if (view != null) {
-					if (view.equals(rb.getString("java.allmy"))) {
+					if (view.equals(SiteConstants.SITE_TYPE_ALL)) {
 						view = null;
 						// add my workspace if any
 						if (userWorkspaceSite != null) {
@@ -3923,6 +3920,14 @@ public class SiteAction extends PagedResourceActionII {
 								.countSites(
 										org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
 										null, search, null);
+					} else if (view.equals(SiteConstants.SITE_TYPE_MYWORKSPACE)) {
+						// get the current user MyWorkspace site
+						try {
+							SiteService.getSite(SiteService
+									.getUserSiteId(userId));
+							size++;
+						} catch (IdUnusedException e) {
+						}
 					} else {
 						// search for specific type of sites
 						size += SiteService
@@ -3976,7 +3981,7 @@ public class SiteAction extends PagedResourceActionII {
 				// admin-type of user
 				String view = (String) state.getAttribute(STATE_VIEW_SELECTED);
 				if (view != null) {
-					if (view.equals(rb.getString("java.allmy"))) {
+					if (view.equals(SiteConstants.SITE_TYPE_ALL)) {
 						// search for non-user sites, using the
 						// criteria
 						return SiteService
@@ -3984,7 +3989,7 @@ public class SiteAction extends PagedResourceActionII {
 										org.sakaiproject.site.api.SiteService.SelectionType.NON_USER,
 										null, search, null, sortType,
 										new PagingPosition(first, last));
-					} else if (view.equalsIgnoreCase(rb.getString("java.my"))) {
+					} else if (view.equalsIgnoreCase(SiteConstants.SITE_TYPE_MYWORKSPACE)) {
 						// search for a specific user site for
 						// the particular user id in the
 						// criteria - exact match only
@@ -4019,7 +4024,7 @@ public class SiteAction extends PagedResourceActionII {
 				}
 				String view = (String) state.getAttribute(STATE_VIEW_SELECTED);
 				if (view != null) {
-					if (view.equals(rb.getString("java.allmy"))) {
+					if (view.equals(SiteConstants.SITE_TYPE_ALL)) {
 						view = null;
 						// add my workspace if any
 						if (userWorkspaceSite != null) {
@@ -4037,9 +4042,15 @@ public class SiteAction extends PagedResourceActionII {
 												org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
 												null, search, null, sortType,
 												new PagingPosition(first, last)));
+					}
+					else if (view.equals(SiteConstants.SITE_TYPE_MYWORKSPACE)) {
+						// get the current user MyWorkspace site
+						try {
+							rv.add(SiteService.getSite(SiteService.getUserSiteId(userId)));
+						} catch (IdUnusedException e) {
+						}
 					} else {
-						rv
-								.addAll(SiteService
+						rv.addAll(SiteService
 										.getSites(
 												org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
 												view, search, null, sortType,
@@ -5043,6 +5054,9 @@ public class SiteAction extends PagedResourceActionII {
 		} else if ("norosters".equals(option)) {
 			state.setAttribute(STATE_TEMPLATE_INDEX, "13");
 		}
+		else if (option.equalsIgnoreCase("change_user")) {  // SAK-22915
+			doChange_user(data);
+		}
 		else if (option.equalsIgnoreCase("change")) {
 			// change term
 			String termId = params.getString("selectTerm");
@@ -5630,6 +5644,10 @@ public class SiteAction extends PagedResourceActionII {
 
 		// get the request email from configuration
 		String requestEmail = getSetupRequestEmailAddress();
+		
+		// get the request replyTo email from configuration
+		String requestReplyToEmail = getSetupRequestReplyToEmailAddress();
+		
 		if (requestEmail != null) {
 			String officialAccountName = ServerConfigurationService
 					.getString("officialAccountName", "");
@@ -5721,7 +5739,7 @@ public class SiteAction extends PagedResourceActionII {
 					if (requireAuthorizer)
 					{
 						// 1. email to course site authorizer
-						boolean result = userNotificationProvider.notifyCourseRequestAuthorizer(instructorId, requestEmail, term != null? term.getTitle():"", requestSectionInfo, title, id, additional, productionSiteName);
+						boolean result = userNotificationProvider.notifyCourseRequestAuthorizer(instructorId, requestEmail, requestReplyToEmail, term != null? term.getTitle():"", requestSectionInfo, title, id, additional, productionSiteName);
 						if (!result)
 						{
 							// append authorizer who doesn't received an notification
@@ -6358,6 +6376,15 @@ public class SiteAction extends PagedResourceActionII {
 				M_log.warn(this + ".doMenu_siteinfo_addClass: " + e.getMessage() + termEid, e);
 			}
 		}
+		else
+		{
+			List currentTerms = cms.getCurrentAcademicSessions();
+			if (currentTerms != null && !currentTerms.isEmpty())
+			{
+				// if the term information is missing for the site, assign it to the first current term in list
+				state.setAttribute(STATE_TERM_SELECTED, currentTerms.get(0));
+			}
+		}
 		state.setAttribute(STATE_TEMPLATE_INDEX, "36");
 
 	} // doMenu_siteInfo_addClass
@@ -6426,6 +6453,7 @@ public class SiteAction extends PagedResourceActionII {
 		try {
 			Site site = getStateSite(state);
 			state.setAttribute(STATE_SITE_ACCESS_PUBLISH, Boolean.valueOf(site.isPublished()));
+			state.setAttribute(STATE_SITE_ACCESS_INCLUDE, Boolean.valueOf(site.isPubView()));
 			boolean joinable = site.isJoinable();
 			state.setAttribute(STATE_JOINABLE, Boolean.valueOf(joinable));
 			String joinerRole = site.getJoinerRole();
@@ -9512,6 +9540,18 @@ public class SiteAction extends PagedResourceActionII {
 			M_log.warn(this + " - no 'setup.request' in configuration, using: "+ from);
 		}
 		return from;
+	}
+	
+	/**
+	 * get the setup.request.replyTo setting. If missing, use setup.request setting.
+	 * @return
+	 */
+	private String getSetupRequestReplyToEmailAddress() {
+		String rv = ServerConfigurationService.getString("setup.request.replyTo", null);
+		if (rv == null) {
+			rv = getSetupRequestEmailAddress();
+		}
+		return rv;
 	}
 
 	/**

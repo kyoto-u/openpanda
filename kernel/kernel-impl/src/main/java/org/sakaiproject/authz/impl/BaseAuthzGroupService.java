@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
  * $Id: BaseAuthzGroupService.java 115363 2012-10-31 16:02:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ui/PrivateMessageDecoratedBean.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.1/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ui/PrivateMessageDecoratedBean.java $
  * $Id: PrivateMessageDecoratedBean.java 101365 2011-12-02 20:31:57Z wagnermr@iupui.edu $
  ***********************************************************************************
  *

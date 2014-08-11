@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.0/user-tool/tool/src/java/org/sakaiproject/user/tool/UsersAction.java $
- * $Id: UsersAction.java 105553 2012-03-06 18:50:46Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.1/user-tool/tool/src/java/org/sakaiproject/user/tool/UsersAction.java $
+ * $Id: UsersAction.java 116679 2012-11-21 16:27:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -298,7 +298,7 @@ public class UsersAction extends PagedResourceActionII
 		pagingInfoToContext(state, context);
 
 		// add the search commands
-		addSearchMenus(bar, state);
+		addSearchMenus(bar, state, rb.getString("useact.search"));
 
 		// add the refresh commands
 		addRefreshMenus(bar, state);

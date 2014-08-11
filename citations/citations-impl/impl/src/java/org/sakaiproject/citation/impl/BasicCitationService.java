@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
- * $Id: BasicCitationService.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.1/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
+ * $Id: BasicCitationService.java 118326 2013-01-14 18:29:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -268,7 +268,7 @@ public class BasicCitationService extends BaseCitationService
          */
         public Citation addCitation(String mediatype)
         {
-	        BasicCitation citation = new BasicCitation(mediatype);
+	        Citation citation = new BasicCitation(mediatype);
 	        this.m_citations.put(citation.getId(), citation);
 	        return citation;
         }
@@ -293,7 +293,7 @@ public class BasicCitationService extends BaseCitationService
 				Iterator it = original.iterator();
 				while(it.hasNext())
 				{
-					BasicCitation citation = (BasicCitation) it.next();
+					Citation citation = (Citation) it.next();
 					BasicCitation newCite = new BasicCitation();
 					newCite.copy(citation);
 					copy.add(newCite);

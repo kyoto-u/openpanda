@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.0/tool/src/java/org/sakaiproject/cheftool/menu/MenuImpl.java $
- * $Id: MenuImpl.java 59691 2009-04-03 23:46:45Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.1/tool/src/java/org/sakaiproject/cheftool/menu/MenuImpl.java $
+ * $Id: MenuImpl.java 116679 2012-11-21 16:27:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -59,7 +59,7 @@ public class MenuImpl implements Menu
 
 	/** The menu's flag for whether to display disabled entries */
 	protected boolean m_showDisabled = false;
-
+	
 	// CHEF 1.x support
 	public final static String CONTEXT_ACTION = "action";
 
@@ -335,6 +335,12 @@ public class MenuImpl implements Menu
 		return m_showDisabled;
 
 	} // getShowdisabled
+	
+	@Override
+	public String getAccessibilityLabel() {
+		//not currently used in this class
+		return null;
+	}
 
 } // class Menu
 

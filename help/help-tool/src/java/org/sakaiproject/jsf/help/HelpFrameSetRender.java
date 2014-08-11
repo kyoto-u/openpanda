@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.0/help-tool/src/java/org/sakaiproject/jsf/help/HelpFrameSetRender.java $
- * $Id: HelpFrameSetRender.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.1/help-tool/src/java/org/sakaiproject/jsf/help/HelpFrameSetRender.java $
+ * $Id: HelpFrameSetRender.java 117701 2012-12-14 14:29:21Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -49,7 +49,7 @@ import org.sakaiproject.util.ResourceLoader;
 
 /**
  * render help frame set 
- * @version $Id: HelpFrameSetRender.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * @version $Id: HelpFrameSetRender.java 117701 2012-12-14 14:29:21Z ottenhoff@longsight.com $
  */
 public class HelpFrameSetRender extends Renderer
 {
@@ -111,7 +111,12 @@ public class HelpFrameSetRender extends Renderer
     HelpManager manager  = (HelpManager) binding.getValue(context);    
                   
     if(manager.getWelcomePage() == null) {
-    	writer.write("<FRAME src=\"content.hlp?docId=" + welcomepage + "\" name=\"content\">");
+        if (welcomepage == DEFAULT_WELCOME_PAGE) {
+      	  writer.write("<FRAME src=\"content.hlp?docId=" + welcomepage + "\" name=\"content\">");
+        } else {
+          writer.write("<FRAME src=\"" + welcomepage + "\" name=\"content\">");
+        }
+
     }
     else {
       writer.write("<FRAME src=\"content.hlp?docId=" + manager.getWelcomePage() + "\" name=\"content\">");             

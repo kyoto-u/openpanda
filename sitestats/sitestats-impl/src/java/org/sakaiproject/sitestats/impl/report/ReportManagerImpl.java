@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/report/ReportManagerImpl.java $
- * $Id: ReportManagerImpl.java 80659 2010-08-03 13:31:24Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/report/ReportManagerImpl.java $
+ * $Id: ReportManagerImpl.java 116955 2012-11-29 05:07:53Z steve.swinsburg@gmail.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -680,6 +680,9 @@ public class ReportManagerImpl extends HibernateDaoSupport implements ReportMana
 		
 		// Add the column headers
 		int ix = 0;
+		if(isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_SITE)){
+            headerRow.createCell(ix++).setCellValue(msgs.getString("th_site"));
+        }
 		if(isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_USER)) {
 			headerRow.createCell(ix++).setCellValue(msgs.getString("th_id"));
 			headerRow.createCell(ix++).setCellValue(msgs.getString("th_user"));
@@ -723,6 +726,15 @@ public class ReportManagerImpl extends HibernateDaoSupport implements ReportMana
 			HSSFRow row = sheet.createRow(sheet.getLastRowNum() + 1);
 			Stat se = i.next();
 			ix = 0;
+			if (isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_SITE)) {
+                try {
+                    Site site = M_ss.getSite(se.getSiteId());
+                    row.createCell(ix++).setCellValue(site.getTitle());
+                } catch (IdUnusedException e) {
+                    logger.debug("can't find site with id: " + se.getSiteId());
+                    row.createCell(ix++).setCellValue(se.getSiteId().toString());
+                }
+            }
 			if(isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_USER)) {
 				String userId = se.getUserId();
 				String userEid = null;
@@ -778,6 +790,8 @@ public class ReportManagerImpl extends HibernateDaoSupport implements ReportMana
 			if(isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_LASTDATE)) {
 				row.createCell(ix++).setCellValue(se.getDate().toString());			
 			}
+            if(report.getReportDefinition().getReportParams().getSiteId() != null && !"".equals(report.getReportDefinition().getReportParams().getSiteId())) {
+            }
 			if(isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_TOTAL)) {
 				row.createCell(ix++).setCellValue(se.getCount());		
 			}
@@ -837,7 +851,14 @@ public class ReportManagerImpl extends HibernateDaoSupport implements ReportMana
 		boolean isFirst = true;
 
 		// Add the headers
+		if(isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_SITE)){
+            appendQuoted(sb, msgs.getString("th_site"));
+            isFirst = false;
+        }
 		if(isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_USER)) {
+			 if(!isFirst) {
+				sb.append(",");
+			}
 			appendQuoted(sb, msgs.getString("th_id"));
 			sb.append(",");
 			appendQuoted(sb, msgs.getString("th_user"));
@@ -922,8 +943,22 @@ public class ReportManagerImpl extends HibernateDaoSupport implements ReportMana
 		while (i.hasNext()){
 			Stat se = i.next();
 			isFirst = true;
+			//site
+			if(isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_SITE)){
+                try {
+                    Site site = M_ss.getSite(se.getSiteId());
+                    appendQuoted(sb, site.getTitle());
+                } catch (IdUnusedException e) {
+                    logger.debug("can't find site with id: " +se.getSiteId());
+                    appendQuoted(sb, se.getSiteId());
+                }
+                isFirst=false;
+            }
 			// user
 			if(isReportColumnAvailable(report.getReportDefinition().getReportParams(), StatsManager.T_USER)) {
+				if(!isFirst) {
+					sb.append(",");
+				}
 				String userId = se.getUserId();
 				String userEid = null;
 				String userName = null;			

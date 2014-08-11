@@ -1,6 +1,6 @@
 /**
  * $Id: LazyResponseOutputStream.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/http/LazyResponseOutputStream.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/java/org/sakaiproject/entitybroker/util/http/LazyResponseOutputStream.java $
  * LazyOutputStream.java - entity-broker - Aug 15, 2008 7:52:58 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

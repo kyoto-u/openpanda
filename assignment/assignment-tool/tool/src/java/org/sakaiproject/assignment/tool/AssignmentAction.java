@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
- * $Id: AssignmentAction.java 112290 2012-09-11 17:44:18Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.1/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
+ * $Id: AssignmentAction.java 118846 2013-01-25 16:29:32Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  *
@@ -1297,7 +1297,8 @@ public class AssignmentAction extends PagedResourceActionII
 		context.put("contentTypeImageService", state.getAttribute(STATE_CONTENT_TYPE_IMAGE_SERVICE));
 		context.put("currentTime", TimeService.newTime());
 
-		boolean allowSubmit = AssignmentService.allowAddSubmission((String) state.getAttribute(STATE_CONTEXT_STRING));
+		// SAK-21525 - Groups were not being queried for authz
+		boolean allowSubmit = AssignmentService.allowAddSubmissionCheckGroups((String) state.getAttribute(STATE_CONTEXT_STRING),assignment);
 		if (!allowSubmit)
 		{
 			addAlert(state, rb.getString("not_allowed_to_submit"));
@@ -1649,6 +1650,7 @@ public class AssignmentAction extends PagedResourceActionII
 		context.put("contextString", contextString);
 		context.put("user", state.getAttribute(STATE_USER));
 		context.put("service", AssignmentService.getInstance());
+		context.put("AuthzGroupService", AuthzGroupService.getInstance());
 		context.put("TimeService", TimeService.getInstance());
 		context.put("LongObject", Long.valueOf(TimeService.newTime().getTime()));
 		context.put("currentTime", TimeService.newTime());
@@ -2190,6 +2192,17 @@ public class AssignmentAction extends PagedResourceActionII
 							status = "selected";
 						}
 					}
+					
+					// check with the state variable
+					if ( state.getAttribute(AssignmentService.PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT) != null)
+					{
+						String associatedAssignment = ((String) state.getAttribute(AssignmentService.PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT));
+						if (associatedAssignment.equals(gaId))
+						{
+							status ="selected";
+						}
+					}
+					
 					gradebookAssignmentsSelectedDisabled.put(gaId, status);
 					
 					
@@ -9135,6 +9148,8 @@ public class AssignmentAction extends PagedResourceActionII
 
 		// remove content-review setting
 		state.removeAttribute(NEW_ASSIGNMENT_USE_REVIEW_SERVICE);
+		
+		state.removeAttribute(AssignmentService.PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
 
 	} // resetNewAssignment
 

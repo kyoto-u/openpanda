@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/site/impl/DbSiteService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/site/impl/DbSiteService.java $
  * $Id: DbSiteService.java 96605 2011-08-08 12:38:07Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

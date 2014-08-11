@@ -1,6 +1,6 @@
 /**
  * $Id: EntityViewAccessProviderMock.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/mocks/src/java/org/sakaiproject/entitybroker/mocks/EntityViewAccessProviderMock.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/mocks/src/java/org/sakaiproject/entitybroker/mocks/EntityViewAccessProviderMock.java $
  * EntityViewAccessProviderMock.java - entity-broker - Apr 11, 2008 4:31:51 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

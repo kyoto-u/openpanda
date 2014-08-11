@@ -266,7 +266,7 @@ public class UserNotificationProviderImpl implements UserNotificationProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean notifyCourseRequestAuthorizer(String instructorId, String requestEmail, String termTitle, String requestSectionInfo, String siteTitle, String siteId, String additionalInfo, String serverName)
+	public boolean notifyCourseRequestAuthorizer(String instructorId, String requestEmail, String replyToEmail, String termTitle, String requestSectionInfo, String siteTitle, String siteId, String additionalInfo, String serverName)
 	{
 		try {
 			User instructor = userDirectoryService.getUserByEid(instructorId);
@@ -278,7 +278,7 @@ public class UserNotificationProviderImpl implements UserNotificationProvider {
 			String to = instructor.getEmail();	
 			String from = requestEmail;
 			String headerTo = to;
-			String replyTo = requestEmail;
+			String replyTo = replyToEmail;
 			
 			User currentUser = userDirectoryService.getCurrentUser();
 			String currentUserDisplayName = currentUser!=null?currentUser.getDisplayName():"";

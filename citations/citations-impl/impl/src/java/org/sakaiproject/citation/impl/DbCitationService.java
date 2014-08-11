@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/DbCitationService.java $
- * $Id: DbCitationService.java 98468 2011-09-21 02:49:36Z jimeng@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.1/citations-impl/impl/src/java/org/sakaiproject/citation/impl/DbCitationService.java $
+ * $Id: DbCitationService.java 118326 2013-01-14 18:29:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -267,7 +267,7 @@ public class DbCitationService extends BaseCitationService
 			while(nameIt.hasNext())
 			{
 				String name = (String) nameIt.next();
-				Object value = citation.getCitationProperty(name);
+				Object value = citation.getCitationProperty(name, false);
 				if(value instanceof List)
 				{
 					List list = (List) value;
@@ -397,7 +397,7 @@ public class DbCitationService extends BaseCitationService
         protected Citation createCitation(String mediatype)
         {
            	// need to create a citation (referred to below as "edit")
-        	BasicCitation edit = new BasicCitation(mediatype);
+        	Citation edit = new BasicCitation(mediatype);
 
 			String statement = "insert into " + m_citationTableName + " (" + m_citationTableId + ", PROPERTY_NAME, PROPERTY_VALUE) values ( ?, ?, ? )";
 
@@ -416,7 +416,7 @@ public class DbCitationService extends BaseCitationService
 			while(nameIt.hasNext())
 			{
 				String name = (String) nameIt.next();
-				Object value = edit.getCitationProperty(name);
+				Object value = edit.getCitationProperty(name, false);
 
 				fields[1] = name;
 				fields[2] = value;
@@ -602,7 +602,7 @@ public class DbCitationService extends BaseCitationService
 				Iterator it = original.iterator();
 				while(it.hasNext())
 				{
-					BasicCitation citation = (BasicCitation) it.next();
+					Citation citation = (Citation) it.next();
 					BasicCitation newCite = new BasicCitation(citation.getSchema().getIdentifier());
 					newCite.copy(citation);
 					copy.add(newCite);

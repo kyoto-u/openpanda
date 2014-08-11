@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponent.java $
  * $Id: SessionComponent.java 83604 2010-10-21 15:52:09Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

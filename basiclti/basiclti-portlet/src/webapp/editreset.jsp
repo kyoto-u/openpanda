@@ -1,5 +1,5 @@
 <%--
-    $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0/basiclti-portlet/src/webapp/editreset.jsp $
+    $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/basiclti-portlet/src/webapp/editreset.jsp $
     $Id: editreset.jsp 91704 2011-04-12 21:33:53Z csev@umich.edu $
 
     Copyright (c) 2009 The Sakai Foundation

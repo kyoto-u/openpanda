@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-hbm/src/java/org/sakaiproject/component/app/messageforums/MembershipItem.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.1/messageforums-hbm/src/java/org/sakaiproject/component/app/messageforums/MembershipItem.java $
  * $Id: MembershipItem.java 72374 2010-01-25 12:34:04Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

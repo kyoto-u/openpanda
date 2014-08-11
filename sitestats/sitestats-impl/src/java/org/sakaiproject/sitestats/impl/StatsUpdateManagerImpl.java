@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsUpdateManagerImpl.java $
- * $Id: StatsUpdateManagerImpl.java 97032 2011-08-16 13:27:22Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsUpdateManagerImpl.java $
+ * $Id: StatsUpdateManagerImpl.java 117121 2012-12-03 22:58:52Z steve.swinsburg@gmail.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -1490,9 +1490,13 @@ public class StatsUpdateManagerImpl extends HibernateDaoSupport implements Runna
 		// get all registered events
 		List<String> registeredEvents = M_ers.getEventIds();
 		// add site visit events
-		registeredEvents.add(StatsManager.SITEVISIT_EVENTID);
+		if (!registeredEvents.contains(StatsManager.SITEVISIT_EVENTID)) {
+			registeredEvents.add(StatsManager.SITEVISIT_EVENTID);
+		}
 		if(M_sm.isEnableSitePresences()) {
-			registeredEvents.add(StatsManager.SITEVISITEND_EVENTID);
+			if (!registeredEvents.contains(StatsManager.SITEVISITEND_EVENTID)) {
+				registeredEvents.add(StatsManager.SITEVISITEND_EVENTID);
+			}
 		}
 		
 		return registeredEvents;

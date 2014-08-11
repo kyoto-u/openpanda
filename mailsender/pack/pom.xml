@@ -4,8 +4,8 @@
     
 	<parent>
 		<groupId>org.sakaiproject.mailsender</groupId>
-		<artifactId>mailsender-base</artifactId>
-		<version>1.7.1</version>
+		<artifactId>mailsender</artifactId>
+		<version>1.7.2</version>
 	</parent>
     
 	<name>Sakai Mail Sender Components Pack</name>

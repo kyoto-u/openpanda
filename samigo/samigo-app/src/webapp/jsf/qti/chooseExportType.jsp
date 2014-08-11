@@ -27,12 +27,12 @@
 --%>
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{authorImportExport.export_a} #{authorImportExport.dash} #{assessmentBean.title}" /></title>
       </head>
       <body onload="<%= request.getAttribute("html.body.onload") %>">
-<script style="text/JavaScript">
+<script type="text/JavaScript">
 function getSelectedType(qtiUrl, cpUrl){
  var tables= document.getElementsByTagName("TABLE");
   for (var i = 0; i < tables.length; i++) {

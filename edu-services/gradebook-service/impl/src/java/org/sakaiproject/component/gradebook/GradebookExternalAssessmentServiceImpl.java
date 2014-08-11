@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookExternalAssessmentServiceImpl.java 104526 2012-02-09 08:16:49Z miguel.carro@samoo.es $
+* $Id: GradebookExternalAssessmentServiceImpl.java 118509 2013-01-19 18:27:46Z nbotimer@unicon.net $
 *
 ***********************************************************************************
 *
@@ -21,16 +21,19 @@
 **********************************************************************************/
 package org.sakaiproject.component.gradebook;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.DecimalFormat;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -537,6 +540,45 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
 		return result;
 	}
 
+	public Map<String, String> getExternalAssignmentsForCurrentUser(String gradebookUid)
+		throws GradebookNotFoundException
+	{
+		final Gradebook gradebook = getGradebook(gradebookUid);
+		Map<String, String> allAssignments = new HashMap<String, String>();
+		for (ExternalAssignmentProvider provider : getExternalAssignmentProviders().values()) {
+			String appKey = provider.getAppKey();
+			List<String> assignments = provider.getExternalAssignmentsForCurrentUser(gradebookUid);
+			for (String externalId : assignments) {
+				allAssignments.put(externalId, appKey);
+			}
+		}
+		return allAssignments;
+	}
+
+	public Map<String, List<String>> getVisibleExternalAssignments(String gradebookUid, Collection<String> studentIds)
+		throws GradebookNotFoundException
+	{
+		final Gradebook gradebook = getGradebook(gradebookUid);
+		Map<String, Set<String>> visible = new HashMap<String, Set<String>>();
+		for (String studentId : studentIds) {
+			visible.put(studentId, new HashSet<String>());
+		}
+
+		for (ExternalAssignmentProvider provider : getExternalAssignmentProviders().values()) {
+			Map<String, List<String>> externals = provider.getAllExternalAssignments(gradebookUid, studentIds);
+			for (String studentId : externals.keySet()) {
+				if (visible.containsKey(studentId)) {
+					visible.get(studentId).addAll(externals.get(studentId));
+				}
+			}
+		}
+
+		Map<String, List<String>> visibleList = new HashMap<String, List<String>>();
+		for (String studentId : visible.keySet()) {
+			visibleList.put(studentId, new ArrayList<String>(visible.get(studentId)));
+		}
+		return visibleList;
+	}
 
 	public void setExternalAssessmentToGradebookAssignment(final String gradebookUid, final String externalId) {
         final Assignment assignment = getExternalAssignment(gradebookUid, externalId);

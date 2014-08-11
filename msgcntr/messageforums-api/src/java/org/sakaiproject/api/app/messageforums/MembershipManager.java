@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/MembershipManager.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.1/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/MembershipManager.java $
  * $Id: MembershipManager.java 103261 2012-01-18 21:02:25Z wagnermr@iupui.edu $
  ***********************************************************************************
  *

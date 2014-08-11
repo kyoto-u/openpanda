@@ -1,5 +1,5 @@
 /*
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/webapp/script/common.js $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-tool/src/webapp/script/common.js $
  * $Id: common.js 72181 2009-09-28 11:28:47Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

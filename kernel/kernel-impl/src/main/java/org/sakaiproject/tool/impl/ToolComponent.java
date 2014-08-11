@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ToolComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ToolComponent.java $
  * $Id: ToolComponent.java 82078 2010-09-03 06:40:31Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

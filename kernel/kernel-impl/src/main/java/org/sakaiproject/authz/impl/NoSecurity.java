@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/NoSecurity.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/authz/impl/NoSecurity.java $
  * $Id: NoSecurity.java 80357 2010-07-30 09:54:41Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

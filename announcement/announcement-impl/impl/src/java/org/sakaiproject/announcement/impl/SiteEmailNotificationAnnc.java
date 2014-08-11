@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/SiteEmailNotificationAnnc.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.1/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/SiteEmailNotificationAnnc.java $
  * $Id: SiteEmailNotificationAnnc.java 113238 2012-09-20 20:44:07Z gjthomas@iupui.edu $
  ***********************************************************************************
  *

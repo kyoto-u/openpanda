@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AssessmentSettingsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AssessmentSettingsBean.java $
  * $Id: AssessmentSettingsBean.java 110188 2012-07-06 18:32:26Z nbotimer@unicon.net $
  ***********************************************************************************
  *

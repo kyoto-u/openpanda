@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesBrowseItem.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.1/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesBrowseItem.java $
  * $Id: ResourcesBrowseItem.java 74314 2010-03-06 09:59:55Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

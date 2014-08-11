@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: editAssessment.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
+* $Id: editAssessment.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -30,7 +30,7 @@
 --%>
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <!-- for sam-939 -->
       <style type="text/css">
@@ -47,7 +47,7 @@
       <title><h:outputText value="#{authorMessages.create_modify_a}" /></title>
       <samigo:script path="/js/authoring.js"/>
 
-<script style="text/JavaScript">
+<script type="text/JavaScript">
 <%@ include file="/js/samigotree.js" %>
 
 <!--

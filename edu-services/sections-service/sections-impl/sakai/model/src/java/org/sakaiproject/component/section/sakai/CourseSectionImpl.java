@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/CourseSectionImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/CourseSectionImpl.java $
  * $Id: CourseSectionImpl.java 91333 2011-04-05 12:46:30Z aaronz@vt.edu $
  ***********************************************************************************
  *

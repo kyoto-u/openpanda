@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCLearningApplicationResourceTranslator.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCLearningApplicationResourceTranslator.java $
  * $Id: CCLearningApplicationResourceTranslator.java 67593 2009-10-11 10:57:49Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

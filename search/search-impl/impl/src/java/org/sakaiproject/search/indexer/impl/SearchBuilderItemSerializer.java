@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/SearchBuilderItemSerializer.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/SearchBuilderItemSerializer.java $
  * $Id: SearchBuilderItemSerializer.java 70879 2010-01-04 13:04:36Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

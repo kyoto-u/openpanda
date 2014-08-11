@@ -1,6 +1,6 @@
 /**
  * $Id: EntityDataUtils.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/EntityDataUtils.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/java/org/sakaiproject/entitybroker/util/EntityDataUtils.java $
  * EntityDataUtils.java - entity-broker - Aug 11, 2008 2:58:03 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

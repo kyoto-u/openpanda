@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/test/org/sakaiproject/search/mock/MockSearchService.java $
- * $Id: MockSearchService.java 68164 2009-10-20 20:48:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/test/org/sakaiproject/search/mock/MockSearchService.java $
+ * $Id: MockSearchService.java 118572 2013-01-22 16:42:42Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -397,4 +397,8 @@ public class MockSearchService implements SearchService
 		return null;
 	}
 	
+	public boolean isSearchServer()
+	{
+		return false;
+	}
 }

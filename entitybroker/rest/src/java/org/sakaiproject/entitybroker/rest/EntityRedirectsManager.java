@@ -1,6 +1,6 @@
 /**
  * $Id: EntityRedirectsManager.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityRedirectsManager.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/rest/src/java/org/sakaiproject/entitybroker/rest/EntityRedirectsManager.java $
  * EntityRedirectsManager.java - entity-broker - Jul 26, 2008 9:58:00 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

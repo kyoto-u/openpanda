@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.0/tool/src/java/org/sakaiproject/cheftool/PagedResourceActionII.java $
- * $Id: PagedResourceActionII.java 83413 2010-10-19 16:48:58Z zqian@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.1/tool/src/java/org/sakaiproject/cheftool/PagedResourceActionII.java $
+ * $Id: PagedResourceActionII.java 116679 2012-11-21 16:27:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -213,6 +213,21 @@ public abstract class PagedResourceActionII extends VelocityPortletPaneledAction
 	{
 		bar.add(new MenuDivider());
 		bar.add(new MenuField(FORM_SEARCH, "toolbar", "doSearch", (String) state.getAttribute(STATE_SEARCH)));
+		bar.add(new MenuEntry(rb_praII.getString("sea.sea"), null, true, MenuItem.CHECKED_NA, "doSearch", "toolbar"));
+		if (state.getAttribute(STATE_SEARCH) != null)
+		{
+			bar.add(new MenuEntry(rb_praII.getString("sea.cleasea"), "doSearch_clear"));
+		}
+
+	} // addSearchMenus
+	
+	/**
+	 * Add the menus for search, including accessibility title
+	 */
+	protected void addSearchMenus(Menu bar, SessionState state, String accessibilityLabel)
+	{
+		bar.add(new MenuDivider());
+		bar.add(new MenuField(FORM_SEARCH, "toolbar", "doSearch", (String) state.getAttribute(STATE_SEARCH), accessibilityLabel));
 		bar.add(new MenuEntry(rb_praII.getString("sea.sea"), null, true, MenuItem.CHECKED_NA, "doSearch", "toolbar"));
 		if (state.getAttribute(STATE_SEARCH) != null)
 		{

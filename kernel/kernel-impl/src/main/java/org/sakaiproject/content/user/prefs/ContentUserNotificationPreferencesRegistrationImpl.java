@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/user/prefs/ContentUserNotificationPreferencesRegistrationImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/content/user/prefs/ContentUserNotificationPreferencesRegistrationImpl.java $
  * $Id: ContentUserNotificationPreferencesRegistrationImpl.java 88101 2011-02-08 15:06:26Z chmaurer@iupui.edu $
  ***********************************************************************************
  *

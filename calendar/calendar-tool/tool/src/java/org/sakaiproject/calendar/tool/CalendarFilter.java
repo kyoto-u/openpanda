@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarFilter.java $
- * $Id: CalendarFilter.java 74466 2010-03-09 10:43:47Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.1/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarFilter.java $
+ * $Id: CalendarFilter.java 118329 2013-01-14 18:33:48Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -147,6 +147,8 @@ class CalendarFilter
 	 */
 	synchronized public String getEndingListViewDateString()
 	{
+		LIST_VIEW_DATE_FORMAT.setTimeZone(TimeService.getLocalTimeZone());
+
 		return LIST_VIEW_DATE_FORMAT.format(
 			new Date(endingListViewDate.getTime()));
 	}
@@ -201,6 +203,8 @@ class CalendarFilter
 	 */
 	synchronized public String getStartingListViewDateString()
 	{
+		LIST_VIEW_DATE_FORMAT.setTimeZone(TimeService.getLocalTimeZone());
+
 		return LIST_VIEW_DATE_FORMAT.format(
 			new Date(startingListViewDate.getTime()));
 	}
@@ -412,6 +416,8 @@ class CalendarFilter
 		StringBuilder errorMessage)
 	{
 		Date startDate, endDate;
+
+		LIST_VIEW_DATE_FORMAT.setTimeZone(TimeService.getLocalTimeZone());
 
 		try
 		{

@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/providers/ReportDefsProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/providers/ReportDefsProvider.java $
  * $Id: ReportDefsProvider.java 78669 2010-06-21 13:55:23Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.0/presence-api/api/src/java/org/sakaiproject/presence/cover/PresenceService.java $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.1/presence-api/api/src/java/org/sakaiproject/presence/cover/PresenceService.java $
  * $Id: PresenceService.java 62524 2009-05-17 19:18:14Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

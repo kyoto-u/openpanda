@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PageHandler.java $
- * $Id: PageHandler.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PageHandler.java $
+ * $Id: PageHandler.java 118537 2013-01-21 16:35:17Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -50,7 +50,7 @@ import org.sakaiproject.tool.api.ToolException;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 118537 $
  */
 public class PageHandler extends BasePortalHandler
 {
@@ -155,6 +155,8 @@ public class PageHandler extends BasePortalHandler
 		// start the response
 		PortalRenderContext rcontext = portal.startPageContext(siteType, title, page
 				.getSkin(), req);
+		
+		addLocale(rcontext, site);
 
 		includePage(rcontext, res, req, session, page, toolContextPath, "contentFull");
 

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/log/impl/Log4jConfigurationManager.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/log/impl/Log4jConfigurationManager.java $
  * $Id: Log4jConfigurationManager.java 94961 2011-07-11 04:55:26Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

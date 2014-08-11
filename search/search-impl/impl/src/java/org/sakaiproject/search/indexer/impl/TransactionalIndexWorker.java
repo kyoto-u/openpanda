@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/TransactionalIndexWorker.java $
- * $Id: TransactionalIndexWorker.java 85874 2010-12-02 10:11:39Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/TransactionalIndexWorker.java $
+ * $Id: TransactionalIndexWorker.java 118569 2013-01-22 16:38:35Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -336,10 +336,7 @@ public class TransactionalIndexWorker implements IndexWorker
 										filterNull(ref), Field.Store.COMPRESS,
 										Field.Index.NOT_ANALYZED));
 
-								doc.add(new Field(SearchService.FIELD_CONTEXT,
-										filterNull(sep.getSiteId(ref)),
-										Field.Store.COMPRESS, Field.Index.NOT_ANALYZED));
-								
+															
 								// add last part of the index as this is the filename
 								String idIndex = sep.getId(ref);
 								if (idIndex != null && idIndex.indexOf("/") > 0) {
@@ -348,13 +345,13 @@ public class TransactionalIndexWorker implements IndexWorker
 								idIndex = filterPunctuation(idIndex);
 								
 								doc.add(new Field(SearchService.FIELD_CONTENTS,
-										idIndex, Field.Store.COMPRESS,
+										idIndex, Field.Store.NO,
 										Field.Index.ANALYZED, Field.TermVector.YES));
 
 								// add the title 
 								String title = filterPunctuation(sep.getTitle(ref));
 								doc.add(new Field(SearchService.FIELD_CONTENTS,
-										title, Field.Store.COMPRESS,
+										title, Field.Store.NO,
 										Field.Index.ANALYZED, Field.TermVector.YES));
 
 								if (sep.isContentFromReader(ref))

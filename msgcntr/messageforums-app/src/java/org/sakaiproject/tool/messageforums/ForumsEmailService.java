@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.1/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
  * $Id: ForumsEmailService.java 103318 2012-01-19 21:11:45Z wagnermr@iupui.edu $
  ***********************************************************************************
  *

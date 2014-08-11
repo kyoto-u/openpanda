@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/DBHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/DBHelper.java $
  * $Id: DBHelper.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

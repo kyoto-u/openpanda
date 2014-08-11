@@ -28,11 +28,10 @@
 --%>
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{questionPoolMessages.q_mgr}"/></title>
 <script type="text/JavaScript">
-<!--
 <%@ include file="/js/samigotree.js" %>
 
 	function checkUpdate() {
@@ -70,7 +69,6 @@
 	  	}
 	}
 
-//-->
 </script>
       </head>
 <body onload="collapseAllRows();flagRows();disabledButton();<%= request.getAttribute("html.body.onload") %>">

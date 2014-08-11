@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/wizard/api-impl/src/java/org/theospi/portfolio/wizard/mgt/impl/WizardManagerImpl.java $
-* $Id: WizardManagerImpl.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.1/wizard/api-impl/src/java/org/theospi/portfolio/wizard/mgt/impl/WizardManagerImpl.java $
+* $Id: WizardManagerImpl.java 118450 2013-01-17 21:05:56Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -1335,6 +1335,7 @@ public class WizardManagerImpl extends HibernateDaoSupport
    private boolean readWizardXML(Wizard wizard, InputStream inStream, Map importData) throws ImportException
    {
       SAXBuilder builder = new SAXBuilder();
+      builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // SAK-23131
       Map evaluatorsMap = (Map)importData.get(IMPORT_EVALUATORS_KEY);
       //Map stylesMap = (Map)importData.get(IMPORT_STYLES_KEY);
 

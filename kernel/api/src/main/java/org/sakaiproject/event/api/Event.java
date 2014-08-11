@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/event/api/Event.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/event/api/Event.java $
  * $Id: Event.java 78628 2010-06-17 17:32:27Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

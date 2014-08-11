@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: exportItem.jsp 84154 2010-11-02 21:05:12Z lydial@stanford.edu $
+<!-- $Id: exportItem.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -28,7 +28,7 @@
 --%>
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <%-- designed to be in  popup window --%>
       <head>
       <%= request.getAttribute("html.head") %>

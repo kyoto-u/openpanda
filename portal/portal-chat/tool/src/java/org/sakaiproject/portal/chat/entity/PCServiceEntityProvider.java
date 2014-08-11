@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.sakaiproject.component.api.ComponentManager;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.email.api.EmailService;
@@ -285,6 +286,12 @@ public class PCServiceEntityProvider extends AbstractEntityProvider implements R
 		
 		String message = (String) params.get("message");
 		if(message == null) throw new IllegalArgumentException("You must supply a message");
+		
+		// Sanitise the message. XSS attacks. Unescape single quotes. They are valid.
+		message = StringEscapeUtils.escapeHtml4(
+							StringEscapeUtils.escapeEcmaScript(message)).replaceAll("\\\\'","'");
+		
+		//message = message.replaceAll("\\\\'","'");
 
         addMessageToMap(new UserMessage(currentUser.getId(), to, message));
 			

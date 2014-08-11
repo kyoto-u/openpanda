@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/antivirus/impl/ClamAVScanner.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/antivirus/impl/ClamAVScanner.java $
  * $Id: ClamAVScanner.java 83094 2010-10-05 06:58:49Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

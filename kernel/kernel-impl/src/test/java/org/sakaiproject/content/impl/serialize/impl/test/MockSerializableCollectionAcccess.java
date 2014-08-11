@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/test/java/org/sakaiproject/content/impl/serialize/impl/test/MockSerializableCollectionAcccess.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/test/java/org/sakaiproject/content/impl/serialize/impl/test/MockSerializableCollectionAcccess.java $
  * $Id: MockSerializableCollectionAcccess.java 63375 2009-06-08 14:23:19Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

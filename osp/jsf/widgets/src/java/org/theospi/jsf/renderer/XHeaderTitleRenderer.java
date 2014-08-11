@@ -1,6 +1,6 @@
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/jsf/widgets/src/java/org/theospi/jsf/renderer/XHeaderTitleRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.1/jsf/widgets/src/java/org/theospi/jsf/renderer/XHeaderTitleRenderer.java $
 * $Id: XHeaderTitleRenderer.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
 ***********************************************************************************
 *

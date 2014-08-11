@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-api/src/java/org/sakaiproject/section/api/exception/MembershipException.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/sections-service/sections-api/src/java/org/sakaiproject/section/api/exception/MembershipException.java $
  * $Id: MembershipException.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

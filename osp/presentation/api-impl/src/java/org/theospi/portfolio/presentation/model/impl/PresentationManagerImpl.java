@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/presentation/api-impl/src/java/org/theospi/portfolio/presentation/model/impl/PresentationManagerImpl.java $
-* $Id: PresentationManagerImpl.java 87441 2011-01-20 21:14:11Z chmaurer@iupui.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.1/presentation/api-impl/src/java/org/theospi/portfolio/presentation/model/impl/PresentationManagerImpl.java $
+* $Id: PresentationManagerImpl.java 118450 2013-01-17 21:05:56Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -2076,6 +2076,7 @@ public class PresentationManagerImpl extends HibernateDaoSupport
                   
          Document doc = new Document();
          SAXBuilder saxBuilder = new SAXBuilder();
+         saxBuilder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // SAK-23131
          try {
             doc = saxBuilder.build(propNode.getInputStream());
          } catch (JDOMException e) {

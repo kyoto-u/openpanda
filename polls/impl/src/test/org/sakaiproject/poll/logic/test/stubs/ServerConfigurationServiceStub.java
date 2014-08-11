@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ServerConfigurationServiceStub.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.1/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ServerConfigurationServiceStub.java $
  * $Id: ServerConfigurationServiceStub.java 98102 2011-09-13 02:44:48Z aaronz@vt.edu $
  ***********************************************************************************
  *

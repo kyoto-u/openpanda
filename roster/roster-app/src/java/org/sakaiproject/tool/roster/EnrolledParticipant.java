@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.0/roster-app/src/java/org/sakaiproject/tool/roster/EnrolledParticipant.java $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.1/roster-app/src/java/org/sakaiproject/tool/roster/EnrolledParticipant.java $
  * $Id: EnrolledParticipant.java 68421 2009-10-30 19:43:19Z gjthomas@iupui.edu $
  ***********************************************************************************
  *

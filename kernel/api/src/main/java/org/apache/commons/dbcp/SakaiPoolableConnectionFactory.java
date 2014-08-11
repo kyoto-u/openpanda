@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/apache/commons/dbcp/SakaiPoolableConnectionFactory.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/apache/commons/dbcp/SakaiPoolableConnectionFactory.java $
  * $Id: SakaiPoolableConnectionFactory.java 82454 2010-09-21 14:37:35Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/SanslanContentDigester.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/SanslanContentDigester.java $
  * $Id: SanslanContentDigester.java 68303 2009-10-27 20:26:31Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

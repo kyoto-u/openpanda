@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/filter/impl/SearchSecurityFilter.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/filter/impl/SearchSecurityFilter.java $
  * $Id: SearchSecurityFilter.java 68200 2009-10-22 12:38:08Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/authz/api/SecurityService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/authz/api/SecurityService.java $
  * $Id: SecurityService.java 80446 2010-08-01 08:24:07Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

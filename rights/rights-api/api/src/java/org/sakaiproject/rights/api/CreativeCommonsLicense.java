@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rights/tags/sakai-2.9.0/rights-api/api/src/java/org/sakaiproject/rights/api/CreativeCommonsLicense.java $
+ * $URL: https://source.sakaiproject.org/svn/rights/tags/sakai-2.9.1/rights-api/api/src/java/org/sakaiproject/rights/api/CreativeCommonsLicense.java $
  * $Id: CreativeCommonsLicense.java 59682 2009-04-03 23:31:05Z arwhyte@umich.edu $
  ***********************************************************************************
  *

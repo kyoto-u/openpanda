@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/WorksiteHandler.java $
- * $Id: WorksiteHandler.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/WorksiteHandler.java $
+ * $Id: WorksiteHandler.java 118537 2013-01-21 16:35:17Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -22,12 +22,16 @@
 package org.sakaiproject.portal.charon.handlers;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.portal.api.Portal;
@@ -37,12 +41,13 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.ToolException;
+import org.sakaiproject.util.ResourceLoader;
 
 /**
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 110562 $
+ * @version $Rev: 118537 $
  * 
  */
 public class WorksiteHandler extends PageHandler
@@ -52,6 +57,8 @@ public class WorksiteHandler extends PageHandler
 	private static final String INCLUDE_PAGE_NAV = "include-page-nav";
 
 	private static final String URL_FRAGMENT = "worksite";
+	
+	private static final Log log = LogFactory.getLog(WorksiteHandler.class);
 
 	public WorksiteHandler()
 	{
@@ -152,6 +159,8 @@ public class WorksiteHandler extends PageHandler
 		String siteType = portal.calcSiteType(siteId);
 		PortalRenderContext rcontext = portal.startPageContext(siteType, title, site
 				.getSkin(), req);
+		
+		addLocale(rcontext, site);
 
 		includeWorksite(rcontext, res, req, session, site, page, toolContextPath,
 				getUrlFragment());

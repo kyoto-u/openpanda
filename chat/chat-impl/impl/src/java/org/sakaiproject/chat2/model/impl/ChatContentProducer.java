@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.0/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatContentProducer.java $
+* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.1/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatContentProducer.java $
 * $Id: ChatContentProducer.java 84052 2010-11-02 15:00:40Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

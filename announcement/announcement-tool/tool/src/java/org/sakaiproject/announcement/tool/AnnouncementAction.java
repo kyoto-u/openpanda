@@ -1,6 +1,6 @@
  /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
- * $Id: AnnouncementAction.java 114412 2012-10-16 15:12:45Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.1/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
+ * $Id: AnnouncementAction.java 116673 2012-11-21 16:13:57Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1193,8 +1193,14 @@ public class AnnouncementAction extends PagedResourceActionII
 
 		AnnouncementActionState state = (AnnouncementActionState) getState(portlet, rundata, AnnouncementActionState.class);
 
-		SortedIterator sortedMessageIterator = new SortedIterator(messageList.iterator(), new AnnouncementComparator(state
-				.getCurrentSortedBy(), state.getCurrentSortAsc()));
+		SortedIterator sortedMessageIterator;
+		//For Announcement in User's MyWorkspace, the sort order for announcement is by date SAK-22667
+		if (isOnWorkspaceTab()){
+			sortedMessageIterator = new SortedIterator(messageList.iterator(), new AnnouncementComparator(SORT_DATE, state.getCurrentSortAsc()));
+		} else {
+			sortedMessageIterator = new SortedIterator(messageList.iterator(), new AnnouncementComparator(state
+					.getCurrentSortedBy(), state.getCurrentSortAsc()));
+		}
 		
 		while (sortedMessageIterator.hasNext())
 			showMessagesList.add((AnnouncementMessage) sortedMessageIterator.next());

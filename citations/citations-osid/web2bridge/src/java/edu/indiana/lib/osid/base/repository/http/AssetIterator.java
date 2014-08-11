@@ -10,7 +10,7 @@ import java.lang.*;
 import java.util.*;
 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/base/repository/http/AssetIterator.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.1/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/base/repository/http/AssetIterator.java $
  * $Id: AssetIterator.java 61129 2009-04-24 18:52:39Z ssmail@indiana.edu $
  **********************************************************************************
  *

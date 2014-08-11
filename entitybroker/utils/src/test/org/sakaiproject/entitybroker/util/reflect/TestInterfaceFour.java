@@ -1,6 +1,6 @@
 /**
  * $Id: TestInterfaceFour.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/test/org/sakaiproject/entitybroker/util/reflect/TestInterfaceFour.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/test/org/sakaiproject/entitybroker/util/reflect/TestInterfaceFour.java $
  * TestInterfaceFour.java - entity-broker - May 5, 2008 1:29:50 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

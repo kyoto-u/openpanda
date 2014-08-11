@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/event/api/UsageSessionService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/event/api/UsageSessionService.java $
  * $Id: UsageSessionService.java 94880 2011-07-08 14:20:32Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/exception/KernelConfigurationError.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/exception/KernelConfigurationError.java $
  * $Id: KernelConfigurationError.java 89336 2011-03-07 08:55:55Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

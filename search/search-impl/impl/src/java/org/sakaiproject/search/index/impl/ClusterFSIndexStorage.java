@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/index/impl/ClusterFSIndexStorage.java $
- * $Id: ClusterFSIndexStorage.java 91034 2011-04-01 09:46:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/index/impl/ClusterFSIndexStorage.java $
+ * $Id: ClusterFSIndexStorage.java 118571 2013-01-22 16:40:50Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -293,7 +293,10 @@ public class ClusterFSIndexStorage extends BaseIndexStorage
 		{
 			try
 			{
-				indexSearcher.close();
+				if (indexSearcher != null)
+				{
+					indexSearcher.close();
+				}
 			}
 			catch (Exception ex)
 			{
@@ -307,7 +310,9 @@ public class ClusterFSIndexStorage extends BaseIndexStorage
 		{
 			try
 			{
-				indexSearcher.close();
+				if (indexSearcher != null) {
+					indexSearcher.close();
+				}
 			}
 			catch (Exception ex)
 			{
@@ -373,7 +378,7 @@ public class ClusterFSIndexStorage extends BaseIndexStorage
 						if (diagnostics)
 						{
 							log
-									.info("Current Segment not suitable, generating new segment "
+									.info("Curre	nt Segment not suitable, generating new segment "
 											+ (currentSegment.isDeleted() ? "deleted,"
 													: "")
 											+ (!currentSegment.isClusterSegment() ? "non-cluster,"

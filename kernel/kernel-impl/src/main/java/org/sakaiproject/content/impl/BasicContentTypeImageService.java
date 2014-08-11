@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/BasicContentTypeImageService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/BasicContentTypeImageService.java $
  * $Id: BasicContentTypeImageService.java 79318 2010-07-11 12:41:18Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

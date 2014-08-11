@@ -112,6 +112,10 @@
 	border-width: 2px;
 	width: 97%;
 }
+.fake-disabled {
+	color: #999 !important;
+	text-decoration: underline;
+}
 .disabled:link {
 	color: #cccccc
 }
@@ -369,7 +373,16 @@ img {
 	border-bottom: 1px solid black
 }
 .topBorder td {
-	border-top: 1px solid black
+	border-top: 3px solid white
+}
+.first-row {
+   background-color: #e8e8e8
+}
+.first-row td {
+   padding: 0px;
+}
+.details-row td {
+   padding-left: 2em
 }
 .gradingarea {
 	margin-left: 1em;

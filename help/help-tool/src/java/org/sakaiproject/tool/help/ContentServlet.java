@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.0/help-tool/src/java/org/sakaiproject/tool/help/ContentServlet.java $
- * $Id: ContentServlet.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.1/help-tool/src/java/org/sakaiproject/tool/help/ContentServlet.java $
+ * $Id: ContentServlet.java 117701 2012-12-14 14:29:21Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -46,7 +46,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * Content Servlet serves help documents to document frame.
- * @version $Id: ContentServlet.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * @version $Id: ContentServlet.java 117701 2012-12-14 14:29:21Z ottenhoff@longsight.com $
  */
 public class ContentServlet extends HttpServlet
 {
@@ -79,7 +79,7 @@ public class ContentServlet extends HttpServlet
           
        	  resource = getHelpManager().getResourceByDocId(docId);
           //Possibly a fileURL
-          if (resource == null && docId.indexOf('/') > 0) {
+          if (resource == null && docId.indexOf('/') >= 0) {
         	  if (M_log.isDebugEnabled())
         		  M_log.debug("Adding new resource:"+docId);
         	  resource = getHelpManager().createResource();

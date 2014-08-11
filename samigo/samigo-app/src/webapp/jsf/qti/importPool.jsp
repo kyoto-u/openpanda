@@ -9,8 +9,8 @@
 
 <!-- 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/webapp/jsf/qti/importPool.jsp $
- * $Id: importPool.jsp 98993 2011-10-05 19:29:59Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/webapp/jsf/qti/importPool.jsp $
+ * $Id: importPool.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -31,7 +31,7 @@
 -->
 
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{authorImportExport.import_qp}" /></title>
       </head>

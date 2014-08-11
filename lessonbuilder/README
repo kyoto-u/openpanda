@@ -77,6 +77,78 @@ you will want to create the indices using
 You may get an error because there is one index created by
 the first sql script.
 
+DATABASE UPDATES WITH AUTODDL
+
+When moving from an old version to a new one, the easiest approach
+is to have auto.ddl on. In that case, the update should happen
+automatically. Unfortunately a few changes can't happen automatically.
+So you may find files in ./components/src/ddl/mysql for specific
+changes, e.g.
+
+./components/src/ddl/mysql/simplepage.pre29-to29.sql
+
+Comments at the start of the files will give more detalis. We
+hope that they will be harmless if used when they are not needed,
+but the comments will note that.
+
+
+DATABASE UPDATES WITHOUT AUTODDL
+
+When moving from an old version to a new one, you need to do two
+separate things: (1) things that Hibernate would do if auto.ddl
+were on and (2) other changes.
+
+Starting with the 2.9 release of Sakai, we will include update scripts
+that do what Hibernate would do, e.g.
+
+hbm/src/ddl/mysql/lessonbuilder-2.9.0-2.10.0.sql
+
+These scripts are not perfect. They will only work if you are going 
+between two versions of Lessons that shipped with a Sakai release.
+
+In other situations, you can make your own update script. There is a
+script, schemaupdate, that reads lessonbuilder.sql for the old version
+and the new version, and produces a file that will update your schema
+from one to the other.
+
+You'll want to go to hbm/src/ddl and do "mvn clean install sakai:deploy"
+That will read the hibernate files and produce the following file
+that has all the declarations that Hibernate would use:
+
+hbm/src/ddl/mysql/lessonbuilder.sql 
+
+Then go to your new surce, do the same thing, and put the copy from
+the old source here:
+
+hbm/src/ddl/old/mysql/lessonbuilder.sql 
+
+Then run
+
+hbm/src/ddl/old/schemaupdate
+
+This will produce an update script for you in
+
+hbm/src/ddl/mysql/
+
+So to update without auto.ddl, 
+
+1. generate and load the update script (or if you're going between two
+versions shipped with Sakai starting with 2.9, use the update scrip I
+supply).
+
+2. Use the follwoing to upgrade indices.
+
+./components/src/ddl/mysql/simplepage.sql
+
+3. Look for  any other scripts in ./components/src/ddl/mysql that
+apply to your change, e.g.
+
+./components/src/ddl/mysql/simplepage.pre29-to29.sql
+
+However we're going to try and avoid special scripts like that
+in the future if possible.
+
+
 TOMCAT
 
 We strongly recommend using "-Dfile.encoding=UTF-8" in JAVAOPTS for Tomcat. 

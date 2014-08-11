@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/ContentHostingComparator.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/ContentHostingComparator.java $
  * $Id: ContentHostingComparator.java 86746 2011-01-01 18:50:25Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *

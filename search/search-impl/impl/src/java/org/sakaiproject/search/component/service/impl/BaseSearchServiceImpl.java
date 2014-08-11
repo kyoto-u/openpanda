@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/BaseSearchServiceImpl.java $
- * $Id: BaseSearchServiceImpl.java 95585 2011-07-25 16:12:07Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/BaseSearchServiceImpl.java $
+ * $Id: BaseSearchServiceImpl.java 118570 2013-01-22 16:39:59Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -427,8 +427,14 @@ public abstract class BaseSearchServiceImpl implements SearchService
 					{
 						log.debug("Got " + h.length() + " hits"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
+					String context = null;
+					if (contexts != null && contexts.size() > 0)
+					{
+						//seeing events doesn't support multi context use the first
+						context = contexts.get(0);
+					}
 					eventTrackingService.post(eventTrackingService.newEvent(EVENT_SEARCH,
-							EVENT_SEARCH_REF + textQuery.toString(), true,
+							EVENT_SEARCH_REF + textQuery.toString(), context, true,
 							NotificationService.PREF_IMMEDIATE));
 					return new SearchListImpl(h, textQuery, start, end, 
 							getAnalyzer(), filter, searchIndexBuilder, this);

@@ -1,5 +1,5 @@
 <%--
-    $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0/basiclti-portlet/src/webapp/edit.jsp $
+    $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/basiclti-portlet/src/webapp/edit.jsp $
     $Id: edit.jsp 94143 2011-06-27 16:00:57Z csev@umich.edu $
     
     Copyright (c) 2009 The Sakai Foundation

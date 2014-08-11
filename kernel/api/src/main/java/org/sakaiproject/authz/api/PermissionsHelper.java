@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/authz/api/PermissionsHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/authz/api/PermissionsHelper.java $
  * $Id: PermissionsHelper.java 94049 2011-06-24 09:47:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

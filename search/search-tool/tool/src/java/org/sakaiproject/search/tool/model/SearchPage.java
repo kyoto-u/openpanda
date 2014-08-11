@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-tool/tool/src/java/org/sakaiproject/search/tool/model/SearchPage.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-tool/tool/src/java/org/sakaiproject/search/tool/model/SearchPage.java $
  * $Id: SearchPage.java 59685 2009-04-03 23:36:24Z arwhyte@umich.edu $
  ***********************************************************************************
  *

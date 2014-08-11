@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/DbUserService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/user/impl/DbUserService.java $
  * $Id: DbUserService.java 101900 2011-12-15 16:34:00Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

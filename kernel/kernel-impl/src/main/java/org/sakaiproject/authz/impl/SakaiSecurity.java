@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SakaiSecurity.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SakaiSecurity.java $
  * $Id: SakaiSecurity.java 95741 2011-07-27 15:18:20Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

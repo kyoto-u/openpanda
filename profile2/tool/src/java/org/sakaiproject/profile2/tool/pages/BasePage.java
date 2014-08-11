@@ -42,6 +42,7 @@ import org.sakaiproject.profile2.logic.ProfilePrivacyLogic;
 import org.sakaiproject.profile2.logic.ProfileSearchLogic;
 import org.sakaiproject.profile2.logic.ProfileWallLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
+import org.sakaiproject.profile2.tool.components.LocaleAwareHtmlTag;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
 
@@ -101,6 +102,9 @@ public class BasePage extends WebPage implements IHeaderContributor {
 		
 		//set Locale - all pages will inherit this.
 		setUserPreferredLocale();
+		
+		//PRFL-791 set base HTML lang attribute
+		add(new LocaleAwareHtmlTag("html")); 
 		
 		//get currentUserUuid
 		String currentUserUuid = sakaiProxy.getCurrentUserId();
@@ -331,7 +335,7 @@ public class BasePage extends WebPage implements IHeaderContributor {
 	 * Disable a page nav link (PRFL-468)
 	 */
 	protected void disableLink(Link<Void> l) {
-		l.add(new AttributeAppender("class", new Model<String>("current-tab"), " "));
+		l.add(new AttributeAppender("class", new Model<String>("current"), " "));
 		l.setEnabled(false);
 	}
 	

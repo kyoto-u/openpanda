@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/manager-api/src/java/org/sakaiproject/api/common/manager/LifeCycleAware.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/manager-api/src/java/org/sakaiproject/api/common/manager/LifeCycleAware.java $
  * $Id: LifeCycleAware.java 96488 2011-08-05 23:43:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *

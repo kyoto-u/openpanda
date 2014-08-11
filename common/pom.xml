@@ -10,14 +10,14 @@
 
     <name>Sakai Common Project</name>
     <groupId>org.sakaiproject.common</groupId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <artifactId>common</artifactId>
     <packaging>pom</packaging>
 
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/common/tags/common-1.2.0</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/common/tags/common-1.2.0</developerConnection>
-        <url>https://source.sakaiproject.org/svn/common/tags/common-1.2.0</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/common/tags/common-1.2.1</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/common/tags/common-1.2.1</developerConnection>
+        <url>https://source.sakaiproject.org/svn/common/tags/common-1.2.1</url>
     </scm>
 
     <modules>
@@ -52,84 +52,84 @@
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-common-composite-component</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-common-manager-api</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-common-type-api</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-common-edu-person-api</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-common-composite-component-data</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-privacy-hbm</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-privacy-api</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-privacy-impl</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>archive-api</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>archive-impl2</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>archive-impl</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>import-impl</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-import-content</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>common-cartridge</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
                 <artifactId>sakai-archive-import</artifactId>
-                <version>1.2.0</version>
+                <version>1.2.1</version>
             </dependency>
 
             <!-- external dependencies -->

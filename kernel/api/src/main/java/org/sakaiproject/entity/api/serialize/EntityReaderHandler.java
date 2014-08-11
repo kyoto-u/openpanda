@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/entity/api/serialize/EntityReaderHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/entity/api/serialize/EntityReaderHandler.java $
  * $Id: EntityReaderHandler.java 79497 2010-07-15 15:33:23Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

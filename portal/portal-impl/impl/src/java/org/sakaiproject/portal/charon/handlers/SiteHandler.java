@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/SiteHandler.java $
- * $Id: SiteHandler.java 113889 2012-10-02 13:53:54Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/SiteHandler.java $
+ * $Id: SiteHandler.java 118537 2013-01-21 16:35:17Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -66,7 +66,7 @@ import org.sakaiproject.util.ResourceLoader;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 113889 $
+ * @version $Rev: 118537 $
  */
 public class SiteHandler extends WorksiteHandler
 {
@@ -283,10 +283,7 @@ public class SiteHandler extends WorksiteHandler
 		// should we consider a frameset ?
 		boolean doFrameSet = includeFrameset(rcontext, res, req, session, page);
 				
-				
-		Locale locale = setSiteLanguage(site);	
-        rcontext.put("locale", locale.toString());			
-				
+		addLocale(rcontext, site);
 		
 		includeSiteNav(rcontext, req, session, siteId);
 
@@ -823,51 +820,6 @@ public class SiteHandler extends WorksiteHandler
 			if (framesetRequested) rcontext.put("sakaiFrameSetRequested", Boolean.TRUE);
 		}
 		return framesetRequested;
-	}
-	
-	/**
-	 * *
-	 * 
-	 * @return Locale based on its string representation (language_region)
-	 */
-	private Locale getLocaleFromString(String localeString)
-	{
-		String[] locValues = localeString.trim().split("_");
-		if (locValues.length >= 3)
-			return new Locale(locValues[0], locValues[1], locValues[2]); // language, country, variant
-		else if (locValues.length == 2)
-			return new Locale(locValues[0], locValues[1]); // language, country
-		else if (locValues.length == 1)
-			return new Locale(locValues[0]); // language
-		else
-			return Locale.getDefault();
-	}
-	
-		
-	private Locale setSiteLanguage(Site site)
-	{
-		ResourceLoader rl = new ResourceLoader();
-				
-		ResourcePropertiesEdit props = site.getPropertiesEdit();
-				
-		String locale_string = props.getProperty("locale_string");
-						
-		Locale loc;
-				
-		// if no language was specified when creating the site, set default language to session
-		if(locale_string == null || locale_string == "")
-		{					
-			loc = rl.setContextLocale(null);
-		}
-		
-		// if you have indicated a language when creating the site, set selected language to session
-		else
-		{				
-			Locale locale = getLocaleFromString(locale_string);			
-			loc = rl.setContextLocale(locale);			
-		}
-
-        return loc;
 	}
 
 }

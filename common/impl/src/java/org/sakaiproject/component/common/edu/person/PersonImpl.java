@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/impl/src/java/org/sakaiproject/component/common/edu/person/PersonImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/impl/src/java/org/sakaiproject/component/common/edu/person/PersonImpl.java $
  * $Id: PersonImpl.java 96488 2011-08-05 23:43:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *

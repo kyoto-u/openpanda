@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-util/util/src/java/org/sakaiproject/util/CalendarReferenceToChannelConverter.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.1/calendar-util/util/src/java/org/sakaiproject/util/CalendarReferenceToChannelConverter.java $
  * $Id: CalendarReferenceToChannelConverter.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

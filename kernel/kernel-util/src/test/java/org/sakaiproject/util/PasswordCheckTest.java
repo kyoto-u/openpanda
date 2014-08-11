@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/test/java/org/sakaiproject/util/PasswordCheckTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/test/java/org/sakaiproject/util/PasswordCheckTest.java $
  * $Id: PasswordCheckTest.java 67352 2009-10-08 08:31:23Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

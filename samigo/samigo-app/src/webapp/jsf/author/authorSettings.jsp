@@ -6,7 +6,7 @@
 
 
 <!--
-* $Id: authorSettings.jsp 99095 2011-10-10 17:41:58Z ktsao@stanford.edu $
+* $Id: authorSettings.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -31,7 +31,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{assessmentSettingsMessages.sakai_assessment_manager} #{assessmentSettingsMessages.dash} #{assessmentSettingsMessages.settings}" /></title>
       <samigo:script path="/jsf/widget/hideDivision/hideDivision.js"/>
@@ -41,8 +41,7 @@
       <samigo:script path="/js/authoring.js"/>
 
 
-<script style="text/JavaScript">
-<!--
+<script type="text/JavaScript">
 function validateUrl(){
   var list =document.getElementsByTagName("input");
   for (var i=0; i<list.length; i++){
@@ -300,9 +299,6 @@ function setBlockDivs()
    //document.forms[0].elements['assessmentSettingsAction:blockDivs'].value = "_id224";
    document.forms[0].elements['assessmentSettingsAction:blockDivs'].value = blockDivs;
 }
-
-
-//-->
 </script>
 
 
@@ -1019,8 +1015,7 @@ function setBlockDivs()
 </h:form>
 <!-- end content -->
 </div>
-         <script style="text/JavaScript">retainHideUnhideStatus('none');showHideReleaseGroups();</script>
-
+         <script type="text/JavaScript">retainHideUnhideStatus('none');showHideReleaseGroups();</script>
       </body>
     </html>
   </f:view>

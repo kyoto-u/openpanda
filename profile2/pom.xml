@@ -7,7 +7,7 @@
 	<artifactId>profile2</artifactId>
 		
 	<packaging>pom</packaging>
-	<version>1.5.0</version>
+	<version>1.5.1</version>
 	
 	<parent>
 		<groupId>org.sakaiproject</groupId>
@@ -187,12 +187,12 @@
     </licenses>
 	
     <properties>
-    	<wicket.version>1.4.13</wicket.version>
+    	<wicket.version>1.4.20</wicket.version>
     	<log4j.version>1.2.14</log4j.version>
     	<slf4j.version>1.4.2</slf4j.version>
     	<twitter4j.version>2.1.2</twitter4j.version>
-    	<wicketstuff.tinymce.version>1.4.13</wicketstuff.tinymce.version>
-    	<wicketstuff.objectautocomplete.version>1.4.13</wicketstuff.objectautocomplete.version>
+    	<wicketstuff.tinymce.version>1.4.20</wicketstuff.tinymce.version>
+    	<wicketstuff.objectautocomplete.version>1.4.20</wicketstuff.objectautocomplete.version>
     	<genericdao.version>0.9.18</genericdao.version>
     	<commons.codec.version>1.4</commons.codec.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -320,9 +320,17 @@
 	    <module>pack</module>
 	    <module>tool</module>
 	    <module>assembly</module>
-	    <module>deploy</module>
 	    <module>bundle</module>
 	</modules>
+	
+	<profiles>
+		<profile>
+			<id>cafe</id>
+			<modules>
+				<module>deploy</module>
+			</modules>
+    	</profile>
+  	</profiles>
     
     <issueManagement>
         <system>JIRA</system>
@@ -330,9 +338,9 @@
     </issueManagement>
     
     <scm>
-    	<connection>scm:svn:https://source.sakaiproject.org/svn/profile2/tags/profile2-1.5.0</connection>
-    	<developerConnection>scm:svn:https://source.sakaiproject.org/svn/profile2/tags/profile2-1.5.0</developerConnection>
-    	<url>https://source.sakaiproject.org/svn/profile2/tags/profile2-1.5.0</url>
+    	<connection>scm:svn:https://source.sakaiproject.org/svn/profile2/tags/profile2-1.5.1</connection>
+    	<developerConnection>scm:svn:https://source.sakaiproject.org/svn/profile2/tags/profile2-1.5.1</developerConnection>
+    	<url>https://source.sakaiproject.org/svn/profile2/tags/profile2-1.5.1</url>
   	</scm>
     
     <build>

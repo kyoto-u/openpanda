@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/webservices/tags/webservices-1.1.0/util/src/java/org/sakaiproject/axis/util/XMLMap.java $
- * $Id: XMLMap.java 60054 2009-04-14 16:40:13Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/webservices/tags/webservices-1.1.1/util/src/java/org/sakaiproject/axis/util/XMLMap.java $
+ * $Id: XMLMap.java 118448 2013-01-17 20:59:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.TreeMap;
 import java.util.Iterator;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -122,7 +123,11 @@ public class XMLMap {
     private static Document documentFromString(String input)
     {
 	try{
-            DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            builderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            builderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            builderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            DocumentBuilder parser = builderFactory.newDocumentBuilder();
             Document document = parser.parse(new ByteArrayInputStream(input.getBytes()));
 	    return document;
 	} catch (Exception e) {

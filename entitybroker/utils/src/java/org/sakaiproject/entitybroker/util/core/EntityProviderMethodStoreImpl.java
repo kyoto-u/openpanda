@@ -1,6 +1,6 @@
 /**
  * $Id: EntityProviderMethodStoreImpl.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/core/EntityProviderMethodStoreImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/java/org/sakaiproject/entitybroker/util/core/EntityProviderMethodStoreImpl.java $
  * EntityProviderMethodStore.java - entity-broker - Jan 13, 2009 11:02:43 AM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

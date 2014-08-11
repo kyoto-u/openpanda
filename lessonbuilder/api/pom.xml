@@ -4,8 +4,8 @@
 
     <parent>
         <groupId>org.sakaiproject.lessonbuilder</groupId>
-        <artifactId>sakai-lessonbuildertool-tool-base</artifactId>
-        <version>1.4.0</version>
+        <artifactId>lessonbuilder</artifactId>
+        <version>1.4.1</version>
     </parent>
 
     <name>sakai-lessonbuildertool-api</name>

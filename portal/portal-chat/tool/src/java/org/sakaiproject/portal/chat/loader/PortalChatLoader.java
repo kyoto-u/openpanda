@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-chat/tool/src/java/org/sakaiproject/portal/chat/loader/PortalChatLoader.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.1/portal-chat/tool/src/java/org/sakaiproject/portal/chat/loader/PortalChatLoader.java $
  * $Id: PortalChatLoader.java 114410 2012-10-16 15:10:39Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

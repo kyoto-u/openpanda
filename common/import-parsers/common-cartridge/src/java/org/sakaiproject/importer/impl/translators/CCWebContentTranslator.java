@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCWebContentTranslator.java $
- * $Id: CCWebContentTranslator.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCWebContentTranslator.java $
+ * $Id: CCWebContentTranslator.java 118449 2013-01-17 21:03:19Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -23,9 +23,6 @@ package org.sakaiproject.importer.impl.translators;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.sakaiproject.importer.api.IMSResourceTranslator;
 import org.sakaiproject.importer.api.Importable;

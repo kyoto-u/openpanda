@@ -19,6 +19,7 @@
 		min-height:325px;
 	}
 	html>body #outer{height:auto}
+	.pageTitle{width:auto !important;}
 </style>
 <script type="text/javascript" rsf:id="iframeJavascript">
 function resizeiframe(id) {
@@ -106,7 +107,7 @@ function resizeiframe(id) {
 		  
 		  &nbsp;
 		  <span rsf:id="gradingSpan" class="gradingarea">
-		  		<a href="#" rsf:id="gradingBack" style="margin-right:2px;" class="usebutton">&#60;</a><img class="statusImg" src="$context/images/no-status.png" id="statusImg" height="16px" width="16px" alt=""></img><span style="*vertical-align:13%"  rsf:id="msg=simplepage.comments-points"></span><span style="display:none" class="uuidBox" rsf:id="commentsUUID"></span><span style="display:none" class="pointsSpan" rsf:id="commentPoints"></span> <input rsf:id="studentPointsBox"  id="studentPointsBox" type="text" style="font-size:100%"  size="3"></input> <a class="usebutton" href="#" rsf:id="msg=simplepage.submit" style="*vertical-align:13%;margin-right:.5em" id="submit-grading"></a> <a href="#" rsf:id="gradingForward" class="usebutton">&#62;</a>
+		  		<a href="#" rsf:id="gradingBack" style="margin-right:2px;" class="usebutton grading-nextprev">&#60;</a><img class="statusImg" src="$context/images/no-status.png" id="statusImg" height="16px" width="16px" alt=""></img><span style="*vertical-align:13%"  rsf:id="msg=simplepage.comments-points"></span><span style="display:none" class="uuidBox" rsf:id="commentsUUID"></span><span style="display:none" class="pointsSpan" rsf:id="commentPoints"></span> <input rsf:id="studentPointsBox"  id="studentPointsBox" type="text" style="font-size:100%"  size="3"></input> / <span rsf:id="topmaxpoints"></span> <a class="usebutton" href="#" rsf:id="msg=simplepage.submit" style="*vertical-align:13%;margin-right:.5em" id="submit-grading"></a> <a href="#" rsf:id="gradingForward" class="usebutton grading-nextprev">&#62;</a>
 		  </span>
 		  </h2>
 		</div>
@@ -167,11 +168,11 @@ function resizeiframe(id) {
 		  </span>
 		  
 		  <span rsf:id="toppage-descrip">
-		    <a href="#" rsf:id="new-page" id="new-page"><span rsf:id="msg=simplepage.new-page"></span></a> 
-		    <span role="menuitem"  rsf:id="msg=simplepage.newpage-descrip"></span>
+		    <a href="#" role="menuitem" rsf:id="new-page" id="new-page"><span rsf:id="msg=simplepage.new-page"></span></a> 
+		    <span rsf:id="msg=simplepage.newpage-descrip"></span>
 		    <br />
-		    <a href="#" rsf:id="import-cc" id="import-cc"><span rsf:id="msg=simplepage.import_cc_button"></span></a>
-		    <span role="menuitem" rsf:id="msg=simplepage.importcc-descrip"></span>
+		    <a href="#" role="menuitem" rsf:id="import-cc" id="import-cc"><span rsf:id="msg=simplepage.import_cc_button"></span></a>
+		    <span rsf:id="msg=simplepage.importcc-descrip"></span>
 		    <br />
 		  </span>
 		  
@@ -219,7 +220,8 @@ function resizeiframe(id) {
 					    <div rsf:id="link-div:" class="link-div">
                                               <img rsf:id="item-icon" height="16" width="16" alt="" style="position:relative; top:3px; margin-right:2px"/>
 					      <a class="itemlink" href="#" rsf:id="link" style="width:36px"><span rsf:id="link-note" class="offscreen"></span><span rsf:id="link-text" class="link-text itemtext"></span></a>
-					      <span rsf:id="link-button-span" class="navIntraTool" style="background-color:transparent;border:none"><a href="#" class="usebutton" rsf:id="link-button"><span rsf:id="link-button-note" class="offscreen"></span><span rsf:id="link-button-text" class="link-text"></span></a></span>
+					      <span><span rsf:id="link-fake-note" class="offscreen"></span><span rsf:id="link-fake" class="link-text itemtext fake-disabled"></span></span>
+					      <span rsf:id="link-button-span" class="navIntraTool" style="background-color:transparent;border:none"><a href="#" class="usebutton" rsf:id="link-button"><span rsf:id="link-button-text" class="link-text"></span></a><span rsf:id="link-button-fake" class="usebutton link-text fake-disabled"></span><span rsf:id="link-button-note" class="offscreen"></span><span rsf:id="link-button-fake-note" class="offscreen"></span></span>
 					      <a class="itemcopylink" href="#" rsf:id="copylink"><span class="itemcopytext"  rsf:id="copylinktext"></span></a>
 					      <span rsf:id="item-group-titles" class="item-group-titles"></span>
 					    </div>
@@ -468,7 +470,7 @@ function resizeiframe(id) {
     			// "emitJavascriptCall" method will be placed here by RSF
 		</script>
 
-		<div rsf:id="dialogDiv">
+		<div rsf:id="dialogDiv" style="display:none" >
 			<div id="messages">
 			  <p rsf:id="msg=simplepage.require_submit_assessment" id="simplepage.require_submit_assessment"></p>
 			  <p rsf:id="msg=simplepage.require_submit_assignment" id="simplepage.require_submit_assignment"></p>
@@ -511,7 +513,7 @@ function resizeiframe(id) {
 				<form action="#" rsf:id="subpage-form">
 					<p class="shorttext required">
 						<span class="reqStar">*</span>
-						<label rsf:id="subpage-label" for="subpage-title"></label>
+						<label class="pageTitle" rsf:id="subpage-label" for="subpage-title"></label>
 				 		<input type="text" name="subpage-title" id="subpage-title" rsf:id="subpage-title" maxlength="99" length="30" /><br />
 					</p>
 				
@@ -805,6 +807,17 @@ function resizeiframe(id) {
 					    </span>
 					  </div>
 
+					  <p rsf:id="assignmsg" style="margin-bottom:0px"></p>
+					  <input type="hidden" name="assigntool" rsf:id="assigntool" />
+					  <span rsf:id="assigntools"/>
+					  <div>
+					    <span rsf:id="assigntoolitem:">
+					      <input type="radio" rsf:id="assigntoolbox" id="assigntoolbox" />
+					      <label for="assigntoolbox" rsf:id="assigntoollabel"></label><br />
+					    </span>
+					  </div>
+
+
 					  <p>
 					    <input class="bold" type="submit" id="import-cc-submit" rsf:id="import-cc-submit" />
 					    <input type="submit" rsf:id="mm-cancel" onclick="closeImportCcDialog(); return false" />
@@ -828,7 +841,7 @@ function resizeiframe(id) {
 				<form action="#" rsf:id="title-form" enctype="multipart/form-data">
 					<p class="shorttext required">
 						<span class="reqStar">*</span>
-						<label rsf:id="pageTitleLabel" for="pageTitle">Page Title</label>
+						<label class="pageTitle" rsf:id="pageTitleLabel" for="pageTitle">Page Title</label>
 						<input rsf:id="pageTitle" maxlength="99" id="pageTitle" /><br />
 					</p>
 					
@@ -896,7 +909,7 @@ function resizeiframe(id) {
 				<form action="#" rsf:id="new-page-form">
 					<p class="shorttext required">
 						<span class="reqStar">*</span>
-						<label rsf:id="msg=simplepage.new-page-title" for="newPage"></label>
+						<label class="pageTitle" rsf:id="msg=simplepage.new-page-title" for="newPage"></label>
 						<input rsf:id="newPage" id="newPage" /><br />
 					</p>
 					

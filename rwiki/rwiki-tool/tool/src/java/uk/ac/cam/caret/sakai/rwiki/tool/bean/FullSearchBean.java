@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/FullSearchBean.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.1/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/FullSearchBean.java $
  * $Id: FullSearchBean.java 79108 2010-07-06 18:04:55Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

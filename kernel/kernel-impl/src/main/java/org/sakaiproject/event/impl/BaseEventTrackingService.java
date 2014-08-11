@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseEventTrackingService.java $
- * $Id: BaseEventTrackingService.java 92107 2011-04-22 11:17:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseEventTrackingService.java $
+ * $Id: BaseEventTrackingService.java 117696 2012-12-14 14:24:13Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -634,6 +634,15 @@ public abstract class BaseEventTrackingService implements EventTrackingService
 				}
 			}
 			
+			// KNL-997
+			String uId = sessionManager().getCurrentSessionUserId();
+			if (uId == null)
+			{
+				uId = "?";
+			}
+			setUserId(uId);
+			
+			
 		}
 
 		/**
@@ -657,6 +666,14 @@ public abstract class BaseEventTrackingService implements EventTrackingService
 			m_modify = modify;
 			m_priority = priority;
 			m_context = context;
+			
+			// KNL-997
+			String uId = sessionManager().getCurrentSessionUserId();
+			if (uId == null)
+			{
+				uId = "?";
+			}
+			setUserId(uId);
 		}
 		
 		/**

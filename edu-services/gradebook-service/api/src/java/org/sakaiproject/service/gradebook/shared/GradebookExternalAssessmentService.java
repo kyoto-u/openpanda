@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookExternalAssessmentService.java 100087 2011-10-24 22:07:22Z aaronz@vt.edu $
+* $Id: GradebookExternalAssessmentService.java 118509 2013-01-19 18:27:46Z nbotimer@unicon.net $
 *
 ***********************************************************************************
 *
@@ -22,6 +22,8 @@
 package org.sakaiproject.service.gradebook.shared;
 
 import java.util.Date;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -230,6 +232,26 @@ public interface GradebookExternalAssessmentService {
 	 * @param userId The user ID to check
 	 */
 	public boolean isExternalAssignmentVisible(String gradebookUid, String externalId, String userId)
+		throws GradebookNotFoundException;
+
+	/**
+	 * Retrieve all assignments for a gradebook that are marked as externally
+	 * maintained and are visible to the current user.
+	 *
+	 * @param gradebookUid The gradebook's unique identifier
+	 * @return A map from the externalId of each activity to the providerAppKey
+	 */
+	public Map<String, String> getExternalAssignmentsForCurrentUser(String gradebookUid)
+		throws GradebookNotFoundException;
+
+	/**
+	 * Retrieve a list of all visible, external assignments
+	 *
+	 * @param gradebookUid The gradebook's unique identifier
+	 * @param studentIds The collection of student IDs for which to retrieve assignments
+	 * @return A map from the student ID to all visible, external activity IDs
+	 */
+	public Map<String, List<String>> getVisibleExternalAssignments(String gradebookUid, Collection<String> studentIds)
 		throws GradebookNotFoundException;
 
 	/**

@@ -1,6 +1,6 @@
 /**
  * $Id: EntityContent.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/api/src/java/org/sakaiproject/entitybroker/entityprovider/annotations/EntityContent.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/annotations/EntityContent.java $
  * EntitySummary.java - entity-broker - Apr 13, 2008 12:17:49 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

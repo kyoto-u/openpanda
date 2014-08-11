@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/BaseResourceProperties.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/BaseResourceProperties.java $
  * $Id: BaseResourceProperties.java 81527 2010-08-19 13:55:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

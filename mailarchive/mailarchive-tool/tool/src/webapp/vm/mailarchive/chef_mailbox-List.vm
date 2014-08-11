@@ -38,7 +38,7 @@
 				<input type="hidden" name="eventSubmit_doSearch" id="eventSubmit_doSearch" value="Search for emails" />
 				<a href="#" title="$tlang.getString('lis.search')" onclick="location = '#toolLink("$action" "doSearch")'+buildQueryString('toolbar');document.getElementById('submitnotifwrap').style.visibility='visible';return false;" style="text-decoration:none !important"><input type="button" value="$tlang.getString('lis.search')" /></a>
 				#if (($!search) && (!$search.equals("")))
-					<a href="#" title="Search" onclick="location = '#toolLink("$action" "doSearch_clear")';return false;" style="text-decoration:none !important"><input type="button" value="$tlang.getString('lis.clear')" /></a>
+					<a href="#" title="$tlang.getString('lis.clear')" onclick="location = '#toolLink("$action" "doSearch_clear")';return false;" style="text-decoration:none !important"><input type="button" value="$tlang.getString('lis.clear')" /></a>
 				#end
 				<div id="submitnotifwrap" style="padding:6px 0;visibility:hidden"><span id="submitnotif">$tlang.getString("lis.searchnotif")</span></div>								
 			</div>
@@ -61,7 +61,7 @@
 				#if ($pagesize != 0)
 					#if ($goPPButton == "true")
 						<form name="firstpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
-							<fielset><legend>$tlang.getString("list.first")</legend><input type="submit" name="eventSubmit_doList_first" value="|&lt;" title="$tlang.getString("list.first")" /></fielset>
+							<fieldset><legend>$tlang.getString("list.first")</legend><input type="submit" name="eventSubmit_doList_first" value="|&lt;" title="$tlang.getString("list.first")" /></fieldset>
 							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#else
@@ -109,7 +109,7 @@
 					#end
 					#if ($goNPButton == "true")
 						<form name="lastpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
-							<fieldset><legend>$tlang.getString("list.last")</legend><input type="submit" name="eventSubmit_doList_last" value="&gt;|" title="$tlang.getString("list.last")" />
+							<fieldset><legend>$tlang.getString("list.last")</legend><input type="submit" name="eventSubmit_doList_last" value="&gt;|" title="$tlang.getString("list.last")" /></fieldset>
 							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#else

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.0/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusManagerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.1/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusManagerImpl.java $
  * $Id: SyllabusManagerImpl.java 92712 2011-05-09 18:11:49Z gjthomas@iupui.edu $
  ***********************************************************************************
  *

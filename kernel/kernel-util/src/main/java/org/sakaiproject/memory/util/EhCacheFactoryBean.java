@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/memory/util/EhCacheFactoryBean.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/memory/util/EhCacheFactoryBean.java $
  * $Id: EhCacheFactoryBean.java 114481 2012-10-17 15:11:19Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

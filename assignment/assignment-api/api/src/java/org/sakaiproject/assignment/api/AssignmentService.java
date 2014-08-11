@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
- * $Id: AssignmentService.java 112290 2012-09-11 17:44:18Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.1/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
+ * $Id: AssignmentService.java 118512 2013-01-19 18:32:03Z nbotimer@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.sakaiproject.entity.api.EntityProducer;
 import org.sakaiproject.exception.IdInvalidException;
@@ -263,6 +264,15 @@ public interface AssignmentService extends EntityProducer
 	 * @return True if the current User is allowed to add an AssignmentSubmission, false if not.
 	 */
 	public boolean allowAddSubmission(String context);
+	
+	/**
+	 * SAK-21525
+	 * 
+	 * @param context
+	 * @param assignment - An Assignment object. Needed for the groups to be checked.
+	 * @return
+	 */
+	public boolean allowAddSubmissionCheckGroups(String context, Assignment assignment);
 
 	/**
 	 * Get the List of Users who can addSubmission() for this assignment.
@@ -671,6 +681,16 @@ public interface AssignmentService extends EntityProducer
 	 * @return List All the Assignments will be listed
 	 */
 	public List getListAssignmentsForContext(String context);
+
+	/**
+	 * Retrieve a map of Assignments to a list of User IDs of those who
+	 * may submit each assignment. This map is filtered to only those
+	 * assignments that can be viewed by the current user.
+	 *
+	 * @param context the Site ID to search
+	 * @return All submittable Assignments in the site mapped to the User IDs of those who can submit them.
+	 */
+	public Map<Assignment, List<String>> getSubmittableAssignmentsForContext(String context);
 
 	/**
 	 * Access a User's AssignmentSubmission to a particular Assignment.

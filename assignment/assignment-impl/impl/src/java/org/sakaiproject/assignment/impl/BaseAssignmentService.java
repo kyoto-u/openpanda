@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
- * $Id: BaseAssignmentService.java 115407 2012-11-01 13:41:17Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.1/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
+ * $Id: BaseAssignmentService.java 118579 2013-01-22 16:56:33Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -41,6 +41,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
+import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -72,6 +73,7 @@ import org.sakaiproject.assignment.taggable.api.AssignmentActivityProducer;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzPermissionException;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
+import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.cover.AuthzGroupService;
 import org.sakaiproject.authz.cover.FunctionManager;
 import org.sakaiproject.authz.cover.SecurityService;
@@ -390,6 +392,39 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		return true;
 
 	}// unlockCheck
+	
+	/**
+	 * SAK-21525 Groups need to be queried, not just the site.
+	 * 
+	 * @param lock The security function to be checked, 'asn.submit' for example.
+	 * @param resource The resource to be accessed
+	 * @param assignment An Assignment object. We use this for the group checks.
+	 * @return
+	 */
+	protected boolean unlockCheckWithGroups(String lock, String resource, Assignment assignment)
+	{
+		Collection groupIds = assignment.getGroups();
+		
+		if(groupIds != null && groupIds.size() > 0)
+		{
+			Iterator i = groupIds.iterator();
+			while(i.hasNext())
+			{
+				String groupId = (String) i.next();
+				boolean isAllowed
+					= AuthzGroupService.isAllowed(
+							SessionManager.getCurrentSessionUserId(),lock,groupId);
+				
+				if(isAllowed) return true;
+			}
+			
+			return false;
+		}
+		else
+		{
+			return SecurityService.unlock(lock, resource);
+		}
+	}// unlockCheckWithGroups
 
 	/**
 	 * Check security permission.
@@ -968,6 +1003,59 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 
 	}// getAssignment
 
+	/**
+	 * Check visibility of an assignment for a given user. We consider an
+	 * an assignment to be visible to the user if it has been opened and is
+	 * not deleted. However, we allow access to deleted assignments if the
+	 * user has already made a submission for the assignment.
+	 *
+	 * Note that this method does not check permissions at all. It should
+	 * already be established that the user is permitted to access this
+	 * assignment.
+	 *
+	 * @param assignment the assignment to check
+	 * @param userId the user for whom to check
+	 * @return true if the assignment is available (open, not deleted) or
+	 *         submitted by the specified user; false otherwise
+	 */
+	private boolean isAvailableOrSubmitted(Assignment assignment, String userId)
+	{
+		// After 2.9, there is a getSubmission signature that takes a String userId.
+		// For 2.9, we use a real user object because the new method supports group submissions, which are not in 2.9
+		User user = null;
+		try
+		{
+			user = UserDirectoryService.getUser(userId);
+		}
+		catch (UserNotDefinedException e)
+		{
+			if (M_log.isDebugEnabled())
+			{
+				M_log.debug("isAvailableOrSubmitted called with nonexistent user: " + userId);
+			}
+			return false;
+		}
+
+		boolean accessible = false;
+		String deleted = assignment.getProperties().getProperty(ResourceProperties.PROP_ASSIGNMENT_DELETED);
+		if (deleted == null || "".equals(deleted))
+		{
+			// show not deleted, not draft, opened assignments
+			Time openTime = assignment.getOpenTime();
+			if (openTime != null && TimeService.newTime().after(openTime) && !assignment.getDraft())
+			{
+				accessible = true;
+			}
+		}
+		else if (deleted.equalsIgnoreCase(Boolean.TRUE.toString()) && (assignment.getContent().getTypeOfSubmission() != Assignment.NON_ELECTRONIC_ASSIGNMENT_SUBMISSION)
+				&& getSubmission(assignment.getReference(), user) != null)
+		{
+			// and those deleted but not non-electronic assignments but the user has made submissions to them
+			accessible = true;
+		}
+		return accessible;
+	}
+
 	private Assignment checkAssignmentAccessibleForUser(Assignment assignment, String currentUserId) throws PermissionException {
 		
 		if (assignment.getAccess() == Assignment.AssignmentAccess.GROUPED)
@@ -984,24 +1072,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			// always return for users can add assignent in the context
 			return assignment;
 		}
-		else
+		else if (isAvailableOrSubmitted(assignment, currentUserId))
 		{
-			String deleted = assignment.getProperties().getProperty(ResourceProperties.PROP_ASSIGNMENT_DELETED);
-			if (deleted == null || "".equals(deleted))
-			{
-				// show not deleted, not draft, opened assignments
-				Time openTime = assignment.getOpenTime();
-				if (openTime != null && TimeService.newTime().after(openTime) && !assignment.getDraft())
-				{
-					return assignment;
-				}
-			}
-			else if (deleted.equalsIgnoreCase(Boolean.TRUE.toString()) && (assignment.getContent().getTypeOfSubmission() != Assignment.NON_ELECTRONIC_ASSIGNMENT_SUBMISSION) 
-					&& getSubmission(assignment.getReference(), UserDirectoryService.getCurrentUser()) != null)
-			{
-				// and those deleted but not non-electronic assignments but the user has made submissions to them
-				return assignment;
-			}
+			return assignment;
 		}
 		throw new PermissionException(currentUserId, SECURE_ACCESS_ASSIGNMENT, assignment.getReference());
 	}
@@ -1134,37 +1207,221 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				// }
 			}
 			
-			// check for the allowed groups of the current end use if we need it, and only once
-			Collection allowedGroups = null;
-			Site site = null;
-			try
-			{
-				site = SiteService.getSite(context);
-			}
-			catch (IdUnusedException e)
-			{
-				M_log.warn(" assignments(String, String) " + e.getMessage() + " context=" + context);
-			}
-			
-			for (int x = 0; x < assignments.size(); x++)
-			{
-				Assignment tempAssignment = (Assignment) assignments.get(x);
-				try
-				{
-					if (checkAssignmentAccessibleForUser(tempAssignment, userId) != null)
-					{
-						rv.add(tempAssignment);
-					}
-				}
-				catch (PermissionException e)
-				{
-					// remove the PermissionException log message, since it is not necessary to log this message and it is possible to cause large message volume in production log file 
-					//M_log.warn(" assignments(String, String) user don't have permission to get assignment " + tempAssignment.getReference() + " context=" + context);
-				}
-			}
+			// check for the site and group permissions of these assignments as well as visibility (release time, etc.)
+			rv = getAccessibleAssignments(assignments, context, userId);
 		}
 
 		return rv;
+	}
+
+	/**
+	 * Filter a list of assignments to those that the supplied user can access.
+	 *
+	 * This method is primarily provided to be called from assignments() for
+	 * set-based efficiency over iteration in building a list of assignments
+	 * for a given user.
+	 *
+	 * There are a few ways that we consider an assignment to be accessible:
+	 * 1. The user can add assignments to the site, or
+	 * 2. The assignment is grouped and the user can view assignments in at
+	 *    least one of those groups, or
+	 * 3. The assignment is ungrouped and the user can view assignments in
+	 *    the site
+	 * An additional state check applies, which is that the assignment is
+	 * not visible if it is deleted, except when the user has made a
+	 * submission for it already or can add (manage) assignments.
+	 *
+	 * These rules were extracted from assignments() and we are enforcing
+	 * them here for a set, rather than a single assignment.
+	 *
+	 * This is a somewhat awkward signature; it should really either have just the
+	 * assignments list or just the siteId, but the other methods are not refactored
+	 * now. Namely, getAssignments calls assignments, which has some cache specifics
+	 * and other items that would need to be refactored very carefully. Rather than
+	 * potentially changing the behavior subtly, this only replaces the iterative
+	 * permissions checks with set-based ones.
+	 *
+	 * @param assignments a list of assignments to filter; must all be from the same site
+	 * @param siteId the Site ID for all assignments
+	 * @param userId the user whose access should be checked for the assignments
+	 * @return a list of the assignments that are accessible; will never be null but may be empty
+	 */
+	protected List<Assignment> getAccessibleAssignments(List<Assignment> assignments, String siteId, String userId)
+	{
+		// Make sure that everything is from the specified site
+		List<Assignment> siteAssignments = filterAssignmentsBySite(assignments, siteId);
+
+		// Check whether the user can add assignments for the site.
+		// If so, return the full list.
+		String siteRef = SiteService.siteReference(siteId);
+		boolean allowAdd = SecurityService.unlock(userId, SECURE_ADD_ASSIGNMENT, siteRef);
+		if (allowAdd)
+		{
+			return siteAssignments;
+		}
+
+		// Partition the assignments into grouped and ungrouped for access checks
+		List<List<Assignment>> partitioned = partitionAssignments(siteAssignments);
+		List<Assignment> grouped = partitioned.get(0);
+		List<Assignment> ungrouped = partitioned.get(1);
+
+		List<Assignment> permitted = new ArrayList<Assignment>();
+
+		// Check the user's site permissions and collect all of the ungrouped
+		// assignments if the user has permission
+		boolean allowSiteGet = SecurityService.unlock(userId, SECURE_ACCESS_ASSIGNMENT, siteRef);
+		if (allowSiteGet)
+		{
+			permitted.addAll(ungrouped);
+		}
+
+		// Collect grouped assignments that the user can access
+		permitted.addAll(filterGroupedAssignmentsForAccess(grouped, siteId, userId));
+
+		// Filter for visibility/submission state
+		List<Assignment> visible = filterAssignmentsByVisibility(permitted, userId);
+
+		// We are left with the original list filtered by site/group permissions and visibility/submission state
+		return visible;
+	}
+
+	/**
+	 * Filter a list of assignments to those in a given site.
+	 *
+	 * @param assignments the list of assignments to filter; none may be null
+	 * @param siteId the site ID to use to filter
+	 * @return a new list with only the assignments that belong to the site;
+	 *         never null, but empty if the site doesn't exist, the assignments
+	 *         list is empty, or none of the assignments belong to the site
+	 */
+	protected List<Assignment> filterAssignmentsBySite(List<Assignment> assignments, String siteId)
+	{
+		List<Assignment> filtered = new ArrayList<Assignment>();
+		if (siteId == null)
+		{
+			return filtered;
+		}
+
+		try
+		{
+			SiteService.getSite(siteId);
+		}
+		catch (IdUnusedException e)
+		{
+			return filtered;
+		}
+
+		for (Assignment assignment : assignments)
+		{
+			if (assignment != null && siteId.equals(assignment.getContext()))
+			{
+				filtered.add(assignment);
+			}
+		}
+		return filtered;
+	}
+
+	/**
+	 * Partition a list of assignments into those that are grouped and ungrouped.
+	 *
+	 * @param assignments the list of assignments to inspect and partition
+	 * @return a two-element list containing List<Assignment> in both indexes;
+	 *         the first is the grouped assignments, the second is ungrouped;
+	 *         never null, always two elements, neither list is null;
+	 *         any null assignments will be omitted in the final lists
+	 */
+	protected List<List<Assignment>> partitionAssignments(List<Assignment> assignments)
+	{
+		List<Assignment> grouped = new ArrayList<Assignment>();
+		List<Assignment> ungrouped = new ArrayList<Assignment>();
+		for (Assignment assignment : assignments)
+		{
+			if (assignment != null && assignment.getAccess() == Assignment.AssignmentAccess.GROUPED)
+			{
+				grouped.add(assignment);
+			}
+			else
+			{
+				ungrouped.add(assignment);
+			}
+		}
+
+		List<List<Assignment>> partitioned = new ArrayList<List<Assignment>>();
+		partitioned.add(grouped);
+		partitioned.add(ungrouped);
+		return partitioned;
+	}
+
+	/**
+	 * Filter a list of grouped assignments by permissions based on a given site. Note that
+	 * this does not consider the assignment or submission state, only permissions.
+	 *
+	 * @param assignments the list of assignments to filter; should all be grouped and from the same site
+	 * @param siteId the site to which all of the assignments belong
+	 * @param userId the user for which group permissions should be checked
+	 * @return a new list of assignments, containing those supplied that the user
+	 *         can access, based on permission to view the assignment in one or more of its
+	 *         groups, permission to add assignments in the site, or permission to
+	 *         view assignments in all of the site's groups; never null but may be empty
+	 *
+	 */
+	protected List<Assignment> filterGroupedAssignmentsForAccess(List<Assignment> assignments, String siteId, String userId)
+	{
+		List<Assignment> filtered = new ArrayList<Assignment>();
+
+		// Short-circuit to save the group query if we can't make a reasonable check
+		if (assignments == null || assignments.isEmpty() || siteId == null || userId == null)
+		{
+			return filtered;
+		}
+
+		// Collect the groups where the user is permitted to view assignments
+		// and the groups covered by the assignments, then check the
+		// intersection to keep only visible assignments.
+		Collection<Group> allowedGroups = (Collection<Group>) getGroupsAllowGetAssignment(siteId, userId);
+		Set<String> allowedGroupRefs = new HashSet<String>();
+		for (Group group : allowedGroups)
+		{
+			allowedGroupRefs.add(group.getReference());
+		}
+
+		for (Assignment assignment : assignments)
+		{
+			for (String groupRef : (Collection<String>) assignment.getGroups())
+			{
+				if (allowedGroupRefs.contains(groupRef))
+				{
+					filtered.add(assignment);
+					break;
+				}
+			}
+		}
+		return filtered;
+	}
+
+	/**
+	 * Filter a list of assignments based on visibility (open time, deletion, submission, etc.)
+	 * for a specified user. Note that this only considers assignment and submission state and
+	 * does not consider permissions so the assignments should have already been checked for
+	 * permissions for the given user.
+	 *
+	 * @param assignments the list of assignments to filter
+	 * @param userId the user for whom to check visibility; should be permitted to
+	 *               access all of the assignments
+	 * @return a new list containing those supplied that the user may access, based
+	 *         on visibility; never null but may be empty
+	 */
+	protected List<Assignment> filterAssignmentsByVisibility(List<Assignment> assignments, String userId)
+	{
+		List<Assignment> visible = new ArrayList<Assignment>();
+		for (Assignment assignment : assignments)
+		{
+			if (assignment != null && isAvailableOrSubmitted(assignment, userId))
+			{
+				visible.add(assignment);
+			}
+		}
+		return visible;
 	}
 
 	/**
@@ -2127,8 +2384,23 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		String key = submissionReference(context, submissionId, assignmentId);
 
 		M_log.debug(this + " ADD SUBMISSION : SUB REF : " + key);
+		
+		Assignment assignment = null;
+		
+		try
+		{
+			assignment = getAssignment(assignmentId);
+		}
+		catch(IdUnusedException iue)
+		{
+			// A bit terminal, this.
+		}
 
-		unlock(SECURE_ADD_ASSIGNMENT_SUBMISSION, key);
+		// SAK-21525
+		if(!unlockCheckWithGroups(SECURE_ADD_ASSIGNMENT_SUBMISSION, key,assignment))
+		{
+			throw new PermissionException(SessionManager.getCurrentSessionUserId(), SECURE_ADD_ASSIGNMENT_SUBMISSION, key);
+		}
 
 		M_log.debug(this + " ADD SUBMISSION : UNLOCKED");
 
@@ -2615,7 +2887,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		buffer.append(rb.getString("noti.site.title") + " " + siteTitle + newline);
 		buffer.append(rb.getString("noti.site.id") + " " + siteId +newline + newline);
 		// assignment title and due date
-		buffer.append(rb.getString("assignment") + " " + a.getTitle()+newline);
+		buffer.append(rb.getString("assignment.title") + " " + a.getTitle()+newline);
 		buffer.append(rb.getString("noti.assignment.duedate") + " " + a.getDueTime().toStringLocalFull()+newline + newline);
 		// submitter name and id
 		User[] submitters = s.getSubmitters();
@@ -3103,6 +3375,64 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		
 		return assignmentsForContextAndUser(context, userId);
 
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Map<Assignment, List<String>> getSubmittableAssignmentsForContext(String context)
+	{
+		Map<Assignment, List<String>> submittable = new HashMap<Assignment, List<String>>();
+		if (!allowGetAssignment(context))
+		{
+			// no permission to read assignment in context
+			return submittable;
+		}
+
+		Site site = null;
+		try {
+			site = SiteService.getSite(context);
+		} catch (IdUnusedException e) {
+			if (M_log.isDebugEnabled()) {
+				M_log.debug("Could not retrieve submittable assignments for nonexistent site: " + context);
+			}
+		}
+		if (site == null)
+		{
+			return submittable;
+		}
+
+		Set<String> siteSubmitterIds = AuthzGroupService.getUsersIsAllowed(
+				SECURE_ADD_ASSIGNMENT_SUBMISSION, Arrays.asList(site.getReference()));
+		Map<String, Set<String>> groupIdUserIds = new HashMap<String, Set<String>>();
+		for (Group group : site.getGroups()) {
+			String groupRef = group.getReference();
+			for (Member member : group.getMembers()) {
+				if (member.getRole().isAllowed(SECURE_ADD_ASSIGNMENT_SUBMISSION)) {
+					if (!groupIdUserIds.containsKey(groupRef)) {
+						groupIdUserIds.put(groupRef, new HashSet<String>());
+					}
+					groupIdUserIds.get(groupRef).add(member.getUserId());
+				}
+			}
+		}
+
+		List<Assignment> assignments = (List<Assignment>) getAssignments(context);
+		for (Assignment assignment : assignments) {
+			Set<String> userIds = new HashSet<String>();
+			if (assignment.getAccess() == Assignment.AssignmentAccess.GROUPED) {
+				for (String groupRef : (Collection<String>) assignment.getGroups()) {
+					if (groupIdUserIds.containsKey(groupRef)) {
+						userIds.addAll(groupIdUserIds.get(groupRef));
+					}
+				}
+			} else {
+				userIds.addAll(siteSubmitterIds);
+			}
+			submittable.put(assignment, new ArrayList(userIds));
+		}
+
+		return submittable;
 	}
 
 	/**
@@ -3797,6 +4127,23 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	}
 	
 	/**
+	 * SAK-21525
+	 * 
+	 * @param context
+	 * @param assignment - An Assignment object. Needed for the groups to be checked.
+	 * @return
+	 */
+	public boolean allowAddSubmissionCheckGroups(String context, Assignment assignment)
+	{
+		// check security (throws if not permitted)
+		String resourceString = getAccessPoint(true) + Entity.SEPARATOR + "s" + Entity.SEPARATOR + context + Entity.SEPARATOR;
+
+		M_log.debug(this + " allowAddSubmission with resource string : " + resourceString);
+
+		return unlockCheckWithGroups(SECURE_ADD_ASSIGNMENT_SUBMISSION, resourceString, assignment);
+	}
+	
+	/**
 	 * Get the List of Users who can addSubmission() for this assignment.
 	 * 
 	 * @param assignmentReference -
@@ -3884,7 +4231,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	 */
 	public List allowAddAnySubmissionUsers(String context)
 	{
-		List rv = new ArrayList();
+		List<String> rv = new Vector();
 		
 		try
 		{
@@ -5910,15 +6257,21 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							p.clear();
 							p.addAll(oAssignment.getProperties());
 							
-							// one more touch on the gradebook-integration link
-							if (StringUtils.trimToNull(p.getProperty(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT)) != null)
-							{
-								// assignments are imported as drafts;
-								// mark the integration with "add" for now, later when user posts the assignment, the corresponding assignment will be created in gradebook.
-								p.removeProperty(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
-								p.addProperty(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK, GRADEBOOK_INTEGRATION_ADD);
+							// one more touch on the gradebook-integration link	 
+							String associatedGradebookAssignment = StringUtils.trimToNull(p.getProperty(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT));
+							if (associatedGradebookAssignment != null) {
+								// see if the old assignment's associated gradebook item is an internal gradebook entry or externally defined
+								boolean isExternalAssignmentDefined = m_gradebookExternalAssessmentService.isExternalAssignmentDefined(oAssignment.getContent().getContext(), associatedGradebookAssignment);
+								if (isExternalAssignmentDefined)
+								{
+									// if this is an external defined (came from assignment)
+									// mark the link as "add to gradebook" for the new imported assignment, since the assignment is still of draft state
+									//later when user posts the assignment, the corresponding assignment will be created in gradebook.	 
+									p.removeProperty(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);	 
+									p.addProperty(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK, GRADEBOOK_INTEGRATION_ADD);
+							    }
 							}
-							
+
 							// remove the link btw assignment and announcement item. One can announce the open date afterwards
 							p.removeProperty(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE);
 							p.removeProperty("new_assignment_open_date_announced");
@@ -6150,7 +6503,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	public boolean canSubmit(String context, Assignment a)
 	{
 		// return false if not allowed to submit at all
-		if (!allowAddSubmission(context)) return false;
+		if (!allowAddSubmissionCheckGroups(context, a)) return false;
 		
 		String userId = SessionManager.getCurrentSessionUserId();
 

@@ -258,6 +258,7 @@ public class SimplePageBean {
 	private String redirectViewId = null;
 	private String quiztool = null;
 	private String topictool = null;
+	private String assigntool = null;
 	
 	private Integer editPrivs = null;
 	private String currentSiteId = null;
@@ -517,6 +518,11 @@ public class SimplePageBean {
 	public void setQuiztool(String q) {
 	    if (q != null)
 		quiztool = q;
+	}
+
+	public void setAssigntool(String q) {
+	    if (q != null)
+		assigntool = q;
 	}
 
 	public void setTopictool(String q) {
@@ -2308,19 +2314,21 @@ public class SimplePageBean {
 					i.setName(selectedObject.getTitle());
 				    }
 				    // reset assignment-specific stuff
-				    if (selectedObject.getDueDate() != null)
-					i.setDescription("(" + messageLocator.getMessage("simplepage.due") + " " + df.format(selectedObject.getDueDate()) + ")");
-				    else
-					i.setDescription(null);
+				    // Because we don't update the due date when it changes, this raises more
+				    // problems than it fixes. It's also done only for assignments and not tests
+				    //	if (selectedObject.getDueDate() != null)
+				    //	 i.setDescription("(" + messageLocator.getMessage("simplepage.due") + " " + df.format(selectedObject.getDueDate()) + ")");
+				    //  else
+				    // i.setDescription(null);
 				    update(i);
 				}
 			    } else {
 				// no, add new item
 				i = appendItem(selectedAssignment, selectedObject.getTitle(), SimplePageItem.ASSIGNMENT);
-				if (selectedObject.getDueDate() != null)
-				    i.setDescription("(" + messageLocator.getMessage("simplepage.due") + " " + df.format(selectedObject.getDueDate()) + ")");
-				else
-				    i.setDescription(null);
+				//if (selectedObject.getDueDate() != null)
+				//  i.setDescription("(" + messageLocator.getMessage("simplepage.due") + " " + df.format(selectedObject.getDueDate()) + ")");
+				//else
+				i.setDescription(null);
 				update(i);
 			    }
 			    return "success";
@@ -2445,16 +2453,26 @@ public class SimplePageBean {
 	    return ret;
 	}
 
+    // too much existing code to convert to throw at the moment
         public String getItemGroupString (SimplePageItem i, LessonEntity entity, boolean nocache) {
-	    StringBuilder ret = new StringBuilder("");
-	    Collection<String> groups = null;
+	    String groups = null;
 	    try {
-		groups = getItemGroups (i, entity, nocache);
+		groups = getItemGroupStringOrErr (i, entity, nocache);
 	    } catch (IdUnusedException exp) {
 		// unfortunately some uses aren't user-visible, so it's this or
 		// add error handling to all callers
 		return "";
 	    }
+	    return groups;
+	}
+
+    // use this one in the future
+        public String getItemGroupStringOrErr (SimplePageItem i, LessonEntity entity, boolean nocache)
+	           throws IdUnusedException{
+	    StringBuilder ret = new StringBuilder("");
+	    Collection<String> groups = null;
+	    // may throw IdUnUsed
+	    groups = getItemGroups (i, entity, nocache);
 	    if (groups == null)
 		return "";
 	    for (String g: groups) {
@@ -2533,8 +2551,18 @@ public class SimplePageBean {
 	   }
 
 	   // only here for object types with underlying entities
-	   if (entity == null || !entity.objectExists())
+	   boolean exists = false;
+	   try {
+	       pushAdvisorAlways();  // assignments won't let the student look
+	       if (entity != null)
+		   exists = entity.objectExists();
+	   } finally {
+	       popAdvisor();
+	   }
+
+	   if (!exists) {
 	       throw new IdUnusedException(i.toString());
+	   }
 
 	   // in principle the groups are stored in a SimplePageGroup if we
 	   // are doing access control, and in the tool if not. We can
@@ -2551,9 +2579,15 @@ public class SimplePageBean {
 		   ret = Arrays.asList(groups.split(","));
 	       else 
 		   ;  // leave ret as an empty list
-	   } else
+	   } else {
 	       // not under our control, use list from tool
-	       ret = entity.getGroups(nocache);	       
+	       try {
+		   pushAdvisorAlways();
+		   ret = entity.getGroups(nocache); // assignments won't let a student see
+	       } finally {
+		   popAdvisor();
+	       }
+	   }
 
 	   if (ret == null)
 	       groupCache.put(i.getSakaiId(), "*", DEFAULT_EXPIRATION);
@@ -3669,8 +3703,9 @@ public class SimplePageBean {
 		    return true;
 		}
 		Boolean ret = visibleCache.get(item.getId());
-		if (ret != null)
+		if (ret != null) {
 		    return (boolean)ret;
+		}
 
 		// item is page, and it is hidden or not released
 		if (item.getType() == SimplePageItem.PAGE) {
@@ -4709,13 +4744,20 @@ public class SimplePageBean {
 			    quizobject = q;
 		    }
 		    
+		    LessonEntity assignobject = null;
+		    for (LessonEntity q = assignmentEntity; q != null; q = q.getNextEntity()) {
+			if (q.getToolId().equals(assigntool))
+			    assignobject = q;
+		    }
+		    
+
 		    LessonEntity topicobject = null;
 		    for (LessonEntity q = forumEntity; q != null; q = q.getNextEntity()) {
 			if (q.getToolId().equals(topictool))
 			    topicobject = q;
 		    }
 
-		    parser.parse(new PrintHandler(this, cartridgeLoader, simplePageToolDao, quizobject, topicobject, bltiEntity));
+		    parser.parse(new PrintHandler(this, cartridgeLoader, simplePageToolDao, quizobject, topicobject, bltiEntity, assignobject));
 		    setTopRefresh();
 		} catch (Exception e) {
 		    setErrKey("simplepage.cc-error", "");
@@ -5166,6 +5208,14 @@ public class SimplePageBean {
 		return map;
 	}
 	
+	private void pushAdvisorAlways() {
+	    securityService.pushAdvisor(new SecurityAdvisor() {
+		    public SecurityAdvice isAllowed(String userId, String function, String reference) {
+			return SecurityAdvice.ALLOWED;
+		    }
+		});
+	}
+
 	private boolean pushAdvisor() {
 		if(getCurrentPage().getOwner() != null) {
 			securityService.pushAdvisor(new SecurityAdvisor() {
@@ -5268,7 +5318,6 @@ public class SimplePageBean {
 					String title = getPage(page.getPageId()).getTitle() + " Student Page Comments (item:" + page.getId() + ")";
 					boolean add = gradebookIfc.addExternalAssessment(getCurrentSiteId(), "lesson-builder:page-comment:" + page.getId(), null,
 							title, points, null, "Lesson Builder");
-					
 					// The assessment couldn't be added
 					if(!add) {
 						setErrMessage(messageLocator.getMessage("simplepage.no-gradebook"));

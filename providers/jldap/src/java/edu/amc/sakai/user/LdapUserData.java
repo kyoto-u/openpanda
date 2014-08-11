@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/jldap/src/java/edu/amc/sakai/user/LdapUserData.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.1/jldap/src/java/edu/amc/sakai/user/LdapUserData.java $
  * $Id: LdapUserData.java 75535 2010-04-01 03:48:10Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

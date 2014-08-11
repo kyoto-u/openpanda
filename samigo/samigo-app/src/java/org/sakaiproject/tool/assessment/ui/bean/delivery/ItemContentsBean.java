@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ItemContentsBean.java $
- * $Id: ItemContentsBean.java 100051 2011-10-21 13:04:11Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ItemContentsBean.java $
+ * $Id: ItemContentsBean.java 117007 2012-11-29 19:17:31Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import javax.faces.model.SelectItem;
 
 import javax.faces.model.SelectItem;
 import javax.faces.context.ExternalContext;
@@ -989,6 +990,16 @@ public class ItemContentsBean implements Serializable {
 		}
 	}	
 
+	public List<SelectItem> getSelectItemPartsMC() {
+		List<SelectItem> selectItemParts = new ArrayList<SelectItem>();
+		
+		for(SelectionBean selection: selectionArray) {			
+			selectItemParts.add(new SelectItem(selection.getAnswerId(), ""));
+		}
+		
+		return selectItemParts;
+	}
+ 
 	public ArrayList getAnswers()
 	{
 		return answers;

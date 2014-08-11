@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.0/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatManager.java $
+ * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.1/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatManager.java $
  * $Id: ChatManager.java 100608 2011-11-09 22:16:05Z jbush@rsmart.com $
  ***********************************************************************************
  *

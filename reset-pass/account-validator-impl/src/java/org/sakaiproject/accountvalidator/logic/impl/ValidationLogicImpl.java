@@ -1,6 +1,6 @@
 /**
- * $Id: ValidationLogicImpl.java 93859 2011-06-16 21:03:22Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.0/account-validator-impl/src/java/org/sakaiproject/accountvalidator/logic/impl/ValidationLogicImpl.java $
+ * $Id: ValidationLogicImpl.java 118574 2013-01-22 16:45:50Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.1/account-validator-impl/src/java/org/sakaiproject/accountvalidator/logic/impl/ValidationLogicImpl.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -238,8 +238,9 @@ public class ValidationLogicImpl implements ValidationLogic {
 			log.debug("no account found!");
 			return false;
 		} else {
-			
-			if (va.getValidationReceived() == null && va.getValidationSent().after(validationDeadline)) {
+			if(ValidationAccount.STATUS_EXPIRED.equals((va.getStatus()))){
+				return true;
+			}else if (va.getValidationReceived() == null && va.getValidationSent().after(validationDeadline)) {
 				log.debug("validation sent still awaiting reply");
 				return true;
 			} else if (va.getValidationReceived() == null && va.getValidationSent().before(validationDeadline)) {
@@ -398,11 +399,12 @@ public class ValidationLogicImpl implements ValidationLogic {
 		replacementValues.put("support.email", serverConfigurationService.getString("support.email"));
 		replacementValues.put("institution", serverConfigurationService.getString("ui.institution"));
 		String templateKey = getTemplateKey(accountStatus);
-		
+
 		
 		
 		emailTemplateService.sendRenderedMessages(templateKey , userReferences, replacementValues, serverConfigurationService.getString("support.email"), serverConfigurationService.getString("support.email"));
 		v.setValidationSent(new Date());
+		v.setStatus(ValidationAccount.STATUS_SENT);
 		
 		/*if (ValidationAccount.ACCOUNT_STATUS_PASSWORD_RESET == accountStatus.intValue()) {
 			//A password reset doesn't invalidate confirmation
@@ -663,7 +665,6 @@ public class ValidationLogicImpl implements ValidationLogic {
 		replacementValues.put("memberSites", sb.toString());
 		
 		String templateKey = getTemplateKey(account.getAccountStatus());
-		
 		
 		
 		emailTemplateService.sendRenderedMessages(templateKey , userReferences, replacementValues, serverConfigurationService.getString("support.email"), serverConfigurationService.getString("support.email"));

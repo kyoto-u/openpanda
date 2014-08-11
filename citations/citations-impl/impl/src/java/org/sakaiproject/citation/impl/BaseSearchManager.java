@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseSearchManager.java $
- * $Id: BaseSearchManager.java 100441 2011-11-03 17:31:05Z jimeng@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.1/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseSearchManager.java $
+ * $Id: BaseSearchManager.java 117702 2012-12-14 14:30:43Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -2598,7 +2598,8 @@ public class BaseSearchManager implements SearchManager, Observer
 		try
 		{
 			return ( m_configService.getSiteConfigGoogleBaseUrl()
-					+ "?linkurl_base="
+					+ "?sciui=2&as_sdt=0,15&"
+					+ "linkurl_base="
 					+ java.net.URLEncoder.encode( serverUrl +
 							Entity.SEPARATOR +
 							SERVLET_NAME +

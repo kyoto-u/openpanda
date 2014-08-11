@@ -1,6 +1,6 @@
 /**
  * $Id: ClaimLocator.java 81430 2010-08-18 14:12:46Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.0/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/ClaimLocator.java $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.1/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/ClaimLocator.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.0/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsService.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.1/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsService.java $
  * $Id: BasicNewsService.java 105548 2012-03-06 18:42:10Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

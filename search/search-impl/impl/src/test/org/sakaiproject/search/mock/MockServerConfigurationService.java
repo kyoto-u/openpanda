@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/test/org/sakaiproject/search/mock/MockServerConfigurationService.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/test/org/sakaiproject/search/mock/MockServerConfigurationService.java $
  * $Id: MockServerConfigurationService.java 98101 2011-09-13 02:44:40Z aaronz@vt.edu $
  ***********************************************************************************
  *

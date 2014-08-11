@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: editPool.jsp 100464 2011-11-04 13:50:46Z aaronz@vt.edu $
+<!-- $Id: editPool.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -28,14 +28,13 @@
 --%>
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{questionPoolMessages.edit_p}"/></title>
 
 <%@ include file="/js/delivery.js" %>
 
 <script type="text/JavaScript">
-<!--
 var textcheckall="<h:outputText value="#{questionPoolMessages.t_checkAll}"/>";
 var textuncheckall="<h:outputText value="#{questionPoolMessages.t_uncheckAll}"/>";
 <%@ include file="/js/samigotree.js" %>
@@ -45,9 +44,6 @@ function textCounter(field, maxlimit) {
         if (field.value.length > maxlimit) // if too long...trim it!
                 field.value = field.value.substring(0, maxlimit);
 }
-
-//-->
-
 
 </script>
       </head>

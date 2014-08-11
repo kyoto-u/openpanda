@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ItemAddListener.java $
- * $Id: ItemAddListener.java 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ItemAddListener.java $
+ * $Id: ItemAddListener.java 118684 2013-01-23 19:13:51Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1739,7 +1739,8 @@ public class ItemAddListener
 		  if (afteropen.length>1) {
 			  //	 must have text in between {}
 			  String[] lastpart = afteropen[1].split("\\}");
-			  list.add(lastpart[0]);
+			  String answer = FormattedText.convertFormattedTextToPlaintext(lastpart[0].replaceAll("&lt;.*?&gt;", ""));
+			  list.add(answer);
 		  }
 	  }
 	  else {
@@ -1747,15 +1748,18 @@ public class ItemAddListener
 			  if (i == 0) {
 				  String[] firstpart = tokens[i].split("\\{");
 				  if (firstpart.length>1) {
-					  list.add(firstpart[1]);
+					  String answer = FormattedText.convertFormattedTextToPlaintext(firstpart[1].replaceAll("&lt;.*?&gt;", ""));
+					  list.add(answer);
 				  }
 			  }
 			  else if (i == (tokens.length - 1)) {
 				  String[] lastpart = tokens[i].split("\\}");
-				  list.add(lastpart[0]);
+				  String answer = FormattedText.convertFormattedTextToPlaintext(lastpart[0].replaceAll("&lt;.*?&gt;", ""));
+				  list.add(answer);
 			  }
 			  else {
-				  list.add(tokens[i]);
+				  String answer = FormattedText.convertFormattedTextToPlaintext(tokens[i].replaceAll("&lt;.*?&gt;", ""));
+				  list.add(answer);
 			  }
 		  }
 	  } // token.length>1

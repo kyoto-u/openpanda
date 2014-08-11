@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.0/message-api/api/src/java/org/sakaiproject/message/api/Message.java $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.1/message-api/api/src/java/org/sakaiproject/message/api/Message.java $
  * $Id: Message.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
  ***********************************************************************************
  *

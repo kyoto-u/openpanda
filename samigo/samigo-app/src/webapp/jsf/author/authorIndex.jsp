@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
    
 <!--
-* $Id: authorIndex.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
+* $Id: authorIndex.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
 <%--
 **********************************************************************************
 *
@@ -30,7 +30,7 @@
 --%>
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{authorFrontDoorMessages.auth_front_door}" /></title>
       </head>
@@ -42,7 +42,7 @@
 <script type="text/javascript" src="/samigo-app/js/jquery-ui-1.7.2.custom.min.js"></script>
 <script type="text/javascript" src="/samigo-app/js/jquery.tablesorter.js"></script>
 <link type="text/css" href="/samigo-app/css/ui-lightness/jquery-ui-1.7.2.custom.css" rel="stylesheet" media="all"/>
-<script style="text/JavaScript">
+<script type="text/JavaScript">
 
 function clickPendingSelectActionLink(field){
 var insertlinkid= field.id.replace("pendingSelectAction", "pendingHiddenlink");

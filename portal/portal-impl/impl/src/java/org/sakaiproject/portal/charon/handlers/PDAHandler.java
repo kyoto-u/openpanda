@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PDAHandler.java $
- * $Id: PDAHandler.java 113317 2012-09-21 16:45:11Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PDAHandler.java $
+ * $Id: PDAHandler.java 117287 2012-12-06 14:10:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -23,6 +23,7 @@ package org.sakaiproject.portal.charon.handlers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -50,6 +51,7 @@ import org.sakaiproject.tool.api.ToolException;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.ActiveToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.Web;
 
@@ -57,7 +59,7 @@ import org.sakaiproject.util.Web;
  * 
  * @author csev
  * @since Sakai 2.4
- * @version $Rev: 113317 $
+ * @version $Rev: 117287 $
  * 
  */
 @SuppressWarnings("deprecation")
@@ -293,6 +295,13 @@ public class PDAHandler extends PageHandler
 
 				// Add any device specific information to the context
 				portal.setupMobileDevice(req, rcontext);
+				
+				ResourceLoader rl = new ResourceLoader();
+				Locale locale = rl.setContextLocale(null);
+				String localeString = locale.getLanguage();
+				String country = locale.getCountry();
+				if(country.length() > 0) localeString += "-" + country;
+				rcontext.put("locale", localeString);
 
 				// Optionally buffer tool content to eliminate iFrames
 				boolean bc = bufferContent(req, res, session, parts, toolId, rcontext);

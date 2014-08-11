@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/test/java/org/sakaiproject/content/impl/test/MockContentResource.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/test/java/org/sakaiproject/content/impl/test/MockContentResource.java $
  * $Id: MockContentResource.java 65808 2009-08-13 07:24:15Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

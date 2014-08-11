@@ -7,7 +7,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: submitted.jsp 113416 2012-09-21 21:06:36Z ottenhoff@longsight.com $
+* $Id: submitted.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -29,12 +29,12 @@
 --%>
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{deliveryMessages.submission}" /></title>
       </head>
 
-<script style="text/JavaScript">
+<script type="text/JavaScript">
 function reviewAssessment(field){
 var insertlinkid= field.id.replace("reviewAssessment", "hiddenlink");
 var newindex = 0;

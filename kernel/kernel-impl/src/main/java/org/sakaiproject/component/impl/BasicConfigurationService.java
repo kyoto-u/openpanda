@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/component/impl/BasicConfigurationService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/component/impl/BasicConfigurationService.java $
  * $Id: BasicConfigurationService.java 109792 2012-06-28 13:42:54Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

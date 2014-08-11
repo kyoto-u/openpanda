@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.0/news-api/api/src/java/org/sakaiproject/news/api/NewsItemEnclosure.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.1/news-api/api/src/java/org/sakaiproject/news/api/NewsItemEnclosure.java $
  * $Id: NewsItemEnclosure.java 59692 2009-04-03 23:47:17Z arwhyte@umich.edu $
  ***********************************************************************************
  *

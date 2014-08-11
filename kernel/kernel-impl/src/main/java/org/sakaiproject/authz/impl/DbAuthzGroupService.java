@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/DbAuthzGroupService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/authz/impl/DbAuthzGroupService.java $
  * $Id: DbAuthzGroupService.java 113883 2012-10-02 11:51:32Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

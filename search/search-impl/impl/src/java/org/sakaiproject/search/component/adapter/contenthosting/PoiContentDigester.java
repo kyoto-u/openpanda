@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/PoiContentDigester.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/PoiContentDigester.java $
  * $Id: PoiContentDigester.java 73517 2010-02-15 13:35:25Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

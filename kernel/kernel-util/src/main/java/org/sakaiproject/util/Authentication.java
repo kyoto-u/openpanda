@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/Authentication.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/Authentication.java $
  * $Id: Authentication.java 113397 2012-09-21 20:33:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

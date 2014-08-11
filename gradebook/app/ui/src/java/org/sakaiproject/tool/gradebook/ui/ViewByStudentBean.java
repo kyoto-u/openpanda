@@ -19,6 +19,7 @@ package org.sakaiproject.tool.gradebook.ui;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -523,18 +524,30 @@ public class ViewByStudentBean extends EnrollmentTableBean implements Serializab
     	}
 
 		i = gradeRows.iterator();
-		while (i.hasNext()) {
-			Assignment assignment = ((AssignmentGradeRow)i.next()).getAssociatedAssignment();
-			GradebookExternalAssessmentService gext = getGradebookExternalAssessmentService();
-			if (assignment.isExternallyMaintained()) {
-				if (gext.isExternalAssignmentGrouped(gradebook.getUid(), assignment.getExternalId())) {
-					if (!gext.isExternalAssignmentVisible(gradebook.getUid(), assignment.getExternalId(), getUserUid())) {
-						i.remove();
-					}
+		GradebookExternalAssessmentService gext = getGradebookExternalAssessmentService();
+		Map<String, String> externalAssignments = null;
+		if (isInstructorView) {
+			Map<String, List<String>> visible = gext.getVisibleExternalAssignments(gradebook.getUid(), Arrays.asList(studentUid));
+			if (visible.containsKey(studentUid)) {
+				externalAssignments = new HashMap<String, String>();
+				for (String externalId : visible.get(studentUid)) {
+					//FIXME: Take one of the following options for consistency:
+					//        1. Strip off the appKey from the single-user query
+					//        2. Add a layer to the all-user return to identify the appKey
+					externalAssignments.put(externalId, "");
 				}
 			}
+		} else {
+			externalAssignments = gext.getExternalAssignmentsForCurrentUser(gradebook.getUid());
 		}
 
+		while (i.hasNext()) {
+			Assignment assignment = ((AssignmentGradeRow)i.next()).getAssociatedAssignment();
+
+			if (assignment.isExternallyMaintained() && !externalAssignments.containsKey(assignment.getExternalId())) {
+				i.remove();
+			}
+		}
     	
     	if (!sortColumn.equals(Category.SORT_BY_WEIGHT)) {
 	    	Collections.sort(gradeRows, (Comparator)columnSortMap.get(sortColumn));

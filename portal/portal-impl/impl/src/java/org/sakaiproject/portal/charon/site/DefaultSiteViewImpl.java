@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/DefaultSiteViewImpl.java $
- * $Id: DefaultSiteViewImpl.java 110955 2012-07-31 22:43:29Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/DefaultSiteViewImpl.java $
+ * $Id: DefaultSiteViewImpl.java 116672 2012-11-21 16:12:39Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -225,7 +225,7 @@ public class DefaultSiteViewImpl extends AbstractSiteViewImpl
 		}
 		List<Map> l = siteHelper.convertSitesToMaps(request, mySites, prefix,
 				currentSiteId, myWorkspaceSiteId,
-				/* includeSummary */false, /* expandSite */true,
+				/* includeSummary */false, /* expandSite */false,
 				/* resetTools */"true".equals(serverConfigurationService
 						.getString(Portal.CONFIG_AUTO_RESET)),
 				/* doPages */true, /* toolContextPath */null, loggedIn);

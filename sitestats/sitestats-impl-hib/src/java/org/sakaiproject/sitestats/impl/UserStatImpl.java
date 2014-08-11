@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/UserStatImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/UserStatImpl.java $
  * $Id: UserStatImpl.java 97032 2011-08-16 13:27:22Z steve.swinsburg@gmail.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

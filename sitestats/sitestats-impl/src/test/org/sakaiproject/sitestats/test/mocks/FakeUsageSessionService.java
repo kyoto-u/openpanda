@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUsageSessionService.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUsageSessionService.java $
  * $Id: FakeUsageSessionService.java 77502 2010-05-17 08:14:13Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

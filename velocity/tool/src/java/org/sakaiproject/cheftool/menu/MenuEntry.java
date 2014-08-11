@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.0/tool/src/java/org/sakaiproject/cheftool/menu/MenuEntry.java $
- * $Id: MenuEntry.java 59691 2009-04-03 23:46:45Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.1/tool/src/java/org/sakaiproject/cheftool/menu/MenuEntry.java $
+ * $Id: MenuEntry.java 116679 2012-11-21 16:27:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -53,7 +53,7 @@ public class MenuEntry implements MenuItem
 
 	/** The checked status (@see MenuItem for values). */
 	protected int m_checked = CHECKED_NA;
-
+	
 	/**
 	 * Construct a menu.
 	 */
@@ -283,6 +283,12 @@ public class MenuEntry implements MenuItem
 		return false;
 
 	} // getIsField
+
+	@Override
+	public String getAccessibilityLabel() {
+		//not currently used in this class
+		return null;
+	}
 
 } // MenuEntry
 

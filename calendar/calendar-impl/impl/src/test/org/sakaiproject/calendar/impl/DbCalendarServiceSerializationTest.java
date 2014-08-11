@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-impl/impl/src/test/org/sakaiproject/calendar/impl/DbCalendarServiceSerializationTest.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.1/calendar-impl/impl/src/test/org/sakaiproject/calendar/impl/DbCalendarServiceSerializationTest.java $
  * $Id: DbCalendarServiceSerializationTest.java 96443 2011-08-05 13:44:02Z csev@umich.edu $
  ***********************************************************************************
  *

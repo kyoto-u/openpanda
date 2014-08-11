@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/conversion/Type1BlobCollectionConversionHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/conversion/Type1BlobCollectionConversionHandler.java $
  * $Id: Type1BlobCollectionConversionHandler.java 60847 2009-04-22 14:51:46Z aaronz@vt.edu $
  ***********************************************************************************
  *

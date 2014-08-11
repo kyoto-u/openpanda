@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseNotificationService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseNotificationService.java $
  * $Id: BaseNotificationService.java 111988 2012-08-30 18:07:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/report/fop/LibraryURIResolver.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/report/fop/LibraryURIResolver.java $
  * $Id: LibraryURIResolver.java 72182 2009-09-28 11:31:28Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**
  * $Id: EntityEncodingException.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/api/src/java/org/sakaiproject/entitybroker/exception/EntityEncodingException.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/api/src/java/org/sakaiproject/entitybroker/exception/EntityEncodingException.java $
  * EntityEncodingException.java - entity-broker - Apr 30, 2008 5:33:26 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

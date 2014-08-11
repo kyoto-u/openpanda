@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.0/tool/src/java/org/sakaiproject/cheftool/menu/MenuField.java $
- * $Id: MenuField.java 59691 2009-04-03 23:46:45Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.1/tool/src/java/org/sakaiproject/cheftool/menu/MenuField.java $
+ * $Id: MenuField.java 116679 2012-11-21 16:27:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -45,6 +45,22 @@ public class MenuField implements MenuItem
 	/** The action to perform. */
 	protected String m_action = null;
 
+	/** Optional accessibility info that can be set **/
+	protected String m_accessibilityLabel = null;
+	
+	/**
+	 * Construct.
+	 */
+	public MenuField(String name, String form, String action, String value, String accessibilityLabel)
+	{
+		m_name = name;
+		m_form = form;
+		m_action = action;
+		m_value = value;
+		m_accessibilityLabel = accessibilityLabel;
+
+	} // MenuField
+	
 	/**
 	 * Construct.
 	 */
@@ -233,6 +249,11 @@ public class MenuField implements MenuItem
 		return true;
 
 	} // getIsField
+	
+	@Override
+	public String getAccessibilityLabel() {
+		return m_accessibilityLabel;
+	}
 
 } // MenuField
 

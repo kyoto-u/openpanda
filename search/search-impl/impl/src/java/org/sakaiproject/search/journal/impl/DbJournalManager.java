@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/DbJournalManager.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/DbJournalManager.java $
  * $Id: DbJournalManager.java 95581 2011-07-25 15:06:10Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

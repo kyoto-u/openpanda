@@ -7,8 +7,8 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
- * $Id: publishAssessment.jsp 115369 2012-10-31 16:11:04Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
+ * $Id: publishAssessment.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -28,7 +28,7 @@
  **********************************************************************************/
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{assessmentSettingsMessages.check_settings_and_add_notification}" /></title>
       </head>
@@ -267,7 +267,6 @@
 <f:verbatim><p></p></f:verbatim>
 
 <script type="text/JavaScript">
-<!--
 var clicked = 'false';
 function toggle(){
   if (clicked == 'false'){
@@ -296,7 +295,6 @@ function clearText2(){
     entered = 'true'
   }
 }
-//-->
 </script>
 
 

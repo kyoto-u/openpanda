@@ -1,6 +1,6 @@
 /**
  * $Id: AbstractEntityPropertiesService.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/core/AbstractEntityPropertiesService.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/java/org/sakaiproject/entitybroker/util/core/AbstractEntityPropertiesService.java $
  * EntityProviderProperties.java - entity-broker - Jul 18, 2008 6:20:19 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

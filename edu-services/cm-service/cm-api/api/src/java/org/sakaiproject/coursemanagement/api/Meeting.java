@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/Meeting.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/Meeting.java $
  * $Id: Meeting.java 67136 2009-10-03 11:56:22Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

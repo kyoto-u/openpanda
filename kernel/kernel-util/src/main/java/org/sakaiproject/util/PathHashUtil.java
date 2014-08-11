@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $HeadURL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/PathHashUtil.java $
+ * $HeadURL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/PathHashUtil.java $
  * $Id: PathHashUtil.java 101656 2011-12-12 22:40:28Z aaronz@vt.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeEventRegistryService.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeEventRegistryService.java $
  * $Id: FakeEventRegistryService.java 96802 2011-08-11 12:57:41Z steve.swinsburg@gmail.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

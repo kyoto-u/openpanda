@@ -470,6 +470,7 @@ public class GuidanceManagerImpl extends HibernateDaoSupport implements Guidance
    protected void importGuidance(String siteId, InputStream is, Map guidanceMap)
       throws IOException {
       SAXBuilder builder = new SAXBuilder();
+      builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // SAK-23131
       Document document	= null;
 
       byte []bytes = readStreamToBytes(is);

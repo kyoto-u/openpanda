@@ -1,6 +1,6 @@
 /**
  * $Id: EntityPropertiesServiceSpringImpl.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/spring/EntityPropertiesServiceSpringImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/java/org/sakaiproject/entitybroker/util/spring/EntityPropertiesServiceSpringImpl.java $
  * EntityProviderProperties.java - entity-broker - Jul 18, 2008 6:20:19 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

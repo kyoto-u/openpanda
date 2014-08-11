@@ -1,6 +1,6 @@
 /**
  * $Id: EntityViewAccessProviderManagerImpl.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/access/EntityViewAccessProviderManagerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/java/org/sakaiproject/entitybroker/util/access/EntityViewAccessProviderManagerImpl.java $
  * EntityViewAccessProviderImpl.java - entity-broker - Apr 11, 2008 11:55:45 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

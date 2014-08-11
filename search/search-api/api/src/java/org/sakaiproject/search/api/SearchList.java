@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-api/api/src/java/org/sakaiproject/search/api/SearchList.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-api/api/src/java/org/sakaiproject/search/api/SearchList.java $
  * $Id: SearchList.java 68152 2009-10-20 13:37:43Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

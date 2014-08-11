@@ -9,8 +9,8 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/webapp/jsf/author/publishedSettings.jsp $
- * $Id: publishedSettings.jsp 100462 2011-11-04 13:45:06Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/webapp/jsf/author/publishedSettings.jsp $
+ * $Id: publishedSettings.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 Sakai Foundation
@@ -30,7 +30,7 @@
  **********************************************************************************/
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{assessmentSettingsMessages.sakai_assessment_manager} #{assessmentSettingsMessages.dash} #{assessmentSettingsMessages.settings}" /></title>
       <samigo:script path="/jsf/widget/colorpicker/colorpicker.js"/>
@@ -42,7 +42,7 @@
       </head>
     <body onload="<%= request.getAttribute("html.body.onload") %>">
 
-<script style="text/JavaScript">
+<script type="text/JavaScript">
 function updateItemNavigation(isFromItemNavigation)
 {
   var inputhidden = document.getElementById("assessmentSettingsAction:itemNavigationUpdated");
@@ -980,8 +980,7 @@ function uncheckOther(field){
 <!-- end content -->
 <f:verbatim></div></f:verbatim>
 
-        <script style="text/JavaScript">retainHideUnhideStatus('none');showHideReleaseGroups();</script>
-        
+        <script type="text/JavaScript">retainHideUnhideStatus('none');showHideReleaseGroups();</script>
       </body>
     </html>
   </f:view>

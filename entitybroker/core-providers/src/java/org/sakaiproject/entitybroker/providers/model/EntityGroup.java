@@ -1,6 +1,6 @@
 /**
  * $Id: EntityGroup.java 81276 2010-08-14 09:25:37Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/EntityGroup.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/EntityGroup.java $
  * EntitySite.java - entity-broker - Jun 29, 2008 9:31:10 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 Sakai Foundation

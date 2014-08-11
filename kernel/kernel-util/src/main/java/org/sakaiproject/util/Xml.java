@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/Xml.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/Xml.java $
  * $Id: Xml.java 90064 2011-03-19 12:04:59Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

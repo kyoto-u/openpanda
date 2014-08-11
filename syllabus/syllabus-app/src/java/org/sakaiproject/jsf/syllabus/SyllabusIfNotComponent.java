@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.0/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIfNotComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.1/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIfNotComponent.java $
  * $Id: SyllabusIfNotComponent.java 59687 2009-04-03 23:44:40Z arwhyte@umich.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/common-composite-component/src/java/org/sakaiproject/component/common/edu/person/SakaiPersonObserver.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/common-composite-component/src/java/org/sakaiproject/component/common/edu/person/SakaiPersonObserver.java $
  * $Id: SakaiPersonObserver.java 81049 2010-08-11 07:19:10Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

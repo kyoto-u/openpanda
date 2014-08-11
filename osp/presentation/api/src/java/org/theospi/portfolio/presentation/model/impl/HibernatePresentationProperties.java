@@ -85,6 +85,7 @@ public class HibernatePresentationProperties implements UserType {
       elementBean.setDeferValidation(true);
       ByteArrayInputStream in = new ByteArrayInputStream(bytes);
       SAXBuilder saxBuilder = new SAXBuilder();
+      saxBuilder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // SAK-23131
       try {
          Document doc = saxBuilder.build(in);
          elementBean.setBaseElement(doc.getRootElement());

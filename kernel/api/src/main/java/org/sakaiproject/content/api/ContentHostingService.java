@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/content/api/ContentHostingService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/content/api/ContentHostingService.java $
  * $Id: ContentHostingService.java 99118 2011-10-10 21:40:15Z aaronz@vt.edu $
  ***********************************************************************************
  *

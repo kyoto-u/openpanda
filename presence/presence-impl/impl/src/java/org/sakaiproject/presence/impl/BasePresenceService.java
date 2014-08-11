@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.0/presence-impl/impl/src/java/org/sakaiproject/presence/impl/BasePresenceService.java $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.1/presence-impl/impl/src/java/org/sakaiproject/presence/impl/BasePresenceService.java $
  * $Id: BasePresenceService.java 101764 2011-12-14 19:44:28Z botimer@umich.edu $
  ***********************************************************************************
  *

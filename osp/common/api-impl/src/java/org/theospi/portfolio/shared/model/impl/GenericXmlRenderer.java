@@ -65,6 +65,7 @@ public class GenericXmlRenderer implements PresentableObjectHome {
 
    protected Element getObjectStructureRoot(){
       SAXBuilder builder = new SAXBuilder();
+      builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // SAK-23131
       InputStream is = null;
       try {
          is = getClass().getResourceAsStream(getObjectStructure());

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.0/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsItem.java $
- * $Id: BasicNewsItem.java 97330 2011-08-23 21:49:34Z darolmar@upvnet.upv.es $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.1/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsItem.java $
+ * $Id: BasicNewsItem.java 117284 2012-12-06 14:05:35Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -21,6 +21,8 @@
 
 package org.sakaiproject.news.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Date;
 
@@ -115,10 +117,12 @@ public class BasicNewsItem implements NewsItem
 
 	} // getPubdate
 	public Date getPubdateInDateFormat(){
-		if ((m_pubdate!=null) && (m_pubdate!=""))
-			return new Date(m_pubdate);
-		else 
-			return new Date();
+		if (m_pubdate!=null) {
+			try {
+				return DateFormat.getInstance().parse(m_pubdate);
+			} catch (ParseException e) {}
+		}
+		return new Date();
 	}
 	/**
 	 * Access the URL where the complete story can be found.

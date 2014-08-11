@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: deliverAssessment.jsp 115294 2012-10-29 23:26:07Z ktsao@stanford.edu $
+* $Id: deliverAssessment.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -30,7 +30,7 @@
 --%>
 -->
   <f:view>
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
 	  <script type="text/javascript" src="/samigo-app/js/saveForm.js"></script>	  	  
       <title> <h:outputText value="#{delivery.assessmentTitle}"/>

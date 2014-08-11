@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/authz/api/AuthzGroup.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/authz/api/AuthzGroup.java $
  * $Id: AuthzGroup.java 81275 2010-08-14 09:24:56Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

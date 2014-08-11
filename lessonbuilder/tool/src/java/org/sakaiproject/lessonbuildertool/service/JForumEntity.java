@@ -45,6 +45,8 @@ import org.sakaiproject.tool.api.ActiveTool;
 import org.sakaiproject.tool.cover.ActiveToolManager;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.component.cover.ServerConfigurationService;             
+import org.sakaiproject.component.cover.ComponentManager;
+
 import org.sakaiproject.lessonbuildertool.service.LessonSubmission;
 import org.sakaiproject.db.cover.SqlService;
 import org.sakaiproject.db.api.SqlReader;
@@ -78,7 +80,9 @@ public class JForumEntity implements LessonEntity, ForumInterface {
 
     public void init() {
 
-	if (toolManager.getTool("sakai.jforum.tool") != null)
+	// they changed the capitalization, so check for both
+	if (ComponentManager.get("org.etudes.api.app.jforum.JforumService") != null ||
+	    ComponentManager.get("org.etudes.api.app.jforum.JForumService") != null)
 	    haveJforum = true;
 	System.out.println("JforumEntity init: haveJforum = " + haveJforum);
     }

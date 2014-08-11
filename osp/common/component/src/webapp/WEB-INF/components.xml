@@ -476,23 +476,6 @@
       </property>
    </bean>
 
-   <bean id="org.theospi.portfolio.worksite.mgt.impl.SiteEventListener"
-      class="org.theospi.portfolio.worksite.mgt.impl.SiteEventListener"
-      init-method="init" lazy-init="false">
-      <property name="sessionFactory">
-         <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
-      </property>
-      <property name="entityManager">
-         <ref bean="org.sakaiproject.entity.api.EntityManager"/>
-      </property>
-      <property name="siteHelperTools">
-         <list>
-            <value>osp.style</value>
-            <value>osp.presLayout</value>
-         </list>
-      </property>
-   </bean>
-
    <bean name="org.springframework.web.servlet.HandlerInterceptor.openSessionInView"
       class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
       <property name="sessionFactory">

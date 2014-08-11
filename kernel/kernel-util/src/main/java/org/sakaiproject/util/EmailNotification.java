@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/EmailNotification.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/EmailNotification.java $
  * $Id: EmailNotification.java 101657 2011-12-13 00:04:51Z aaronz@vt.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/sample/src/java/org/sakaiproject/provider/authzGroup/SampleGroupProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.1/sample/src/java/org/sakaiproject/provider/authzGroup/SampleGroupProvider.java $
  * $Id: SampleGroupProvider.java 92938 2011-05-17 18:52:01Z aaronz@vt.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/BasicAuth.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/BasicAuth.java $
  * $Id: BasicAuth.java 111987 2012-08-30 18:04:53Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

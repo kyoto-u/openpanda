@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/SakaiOsidLoader.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.1/citations-impl/impl/src/java/org/sakaiproject/citation/impl/SakaiOsidLoader.java $
  * $Id: SakaiOsidLoader.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

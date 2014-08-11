@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.0/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/StudentSectionDecorator.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.1/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/StudentSectionDecorator.java $
  * $Id: StudentSectionDecorator.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

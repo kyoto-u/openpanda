@@ -4,22 +4,22 @@
   <parent>
     <artifactId>kernel</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>Sakai Kernel Component Package</name>
   <groupId>org.sakaiproject.kernel</groupId>
   <artifactId>sakai-kernel-component</artifactId>
-  <version>1.3.0</version>
+  <version>1.3.1</version>
   <organization>
     <name>Sakai Foundation</name>
     <url>http://sakaiproject.org/</url>
   </organization>
   <inceptionYear>2003</inceptionYear>
   <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-component</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-component</developerConnection>
-    <url>https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-component</url>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-component</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-component</developerConnection>
+    <url>https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-component</url>
   </scm>
 
   <packaging>sakai-component</packaging>

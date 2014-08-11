@@ -84,6 +84,7 @@ import org.sakaiproject.lessonbuildertool.service.LessonEntity;
 import org.sakaiproject.lessonbuildertool.service.QuizEntity;
 import org.sakaiproject.lessonbuildertool.service.ForumInterface;
 import org.sakaiproject.lessonbuildertool.service.BltiInterface;
+import org.sakaiproject.lessonbuildertool.service.AssignmentInterface;
 import org.sakaiproject.component.cover.ComponentManager;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -122,12 +123,16 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
   private static final String CC_WEBCONTENT="webcontent";
   private static final String CC_WEBLINK0="imswl_xmlv1p0";
   private static final String CC_WEBLINK1="imswl_xmlv1p1";
+  private static final String CC_WEBLINK2="imswl_xmlv1p2";
   private static final String CC_TOPIC0="imsdt_xmlv1p0";
   private static final String CC_TOPIC1="imsdt_xmlv1p1";
+  private static final String CC_TOPIC2="imsdt_xmlv1p2";
   private static final String CC_ASSESSMENT0="imsqti_xmlv1p2/imscc_xmlv1p0/assessment";
   private static final String CC_ASSESSMENT1="imsqti_xmlv1p2/imscc_xmlv1p1/assessment";
+  private static final String CC_ASSESSMENT2="imsqti_xmlv1p2/imscc_xmlv1p2/assessment";
   private static final String CC_QUESTION_BANK0="imsqti_xmlv1p2/imscc_xmlv1p0/question-bank";
   private static final String CC_QUESTION_BANK1="imsqti_xmlv1p2/imscc_xmlv1p1/question-bank";
+  private static final String CC_QUESTION_BANK2="imsqti_xmlv1p2/imscc_xmlv1p2/question-bank";
   private static final String CC_BLTI0="imsbasiclti_xmlv1p0";
   private static final String CC_BLTI1="imsbasiclti_xmlv1p1";
   private static final boolean all = false;
@@ -147,17 +152,19 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
   private LessonEntity quiztool = null;
   private LessonEntity topictool = null;
   private LessonEntity bltitool = null;
+  private LessonEntity assigntool = null;
   private Set<String>roles = null;
   boolean usesRole = false;
   boolean usesMentor = false;
   boolean usesPatternMatch = false;
+  boolean usesCurriculum = false;
 
     // this is the CC file name for all files added
   private Set<String> filesAdded = new HashSet<String>();
     // this is the CC file name (of the XML file) -> Sakaiid for non-file items
   private Map<String,String> itemsAdded = new HashMap<String,String>();
 
-  public PrintHandler(SimplePageBean bean, CartridgeLoader utils, SimplePageToolDao dao, LessonEntity q, LessonEntity l, LessonEntity b) {
+  public PrintHandler(SimplePageBean bean, CartridgeLoader utils, SimplePageToolDao dao, LessonEntity q, LessonEntity l, LessonEntity b, LessonEntity a) {
       super();
       this.utils = utils;
       this.simplePageBean = bean;
@@ -166,6 +173,7 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
       this.quiztool = q;
       this.topictool = l;
       this.bltitool = b;
+      this.assigntool = a;
   }
 
   public void setAssessmentDetails(String the_ident, String the_title) {
@@ -299,7 +307,7 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 			 " href " + resource.getAttributeValue(HREF));
 
       String type = resource.getAttributeValue(TYPE);
-      boolean isBank = type.equals(CC_QUESTION_BANK0) || type.equals(CC_QUESTION_BANK1);
+      boolean isBank = type.equals(CC_QUESTION_BANK0) || type.equals(CC_QUESTION_BANK1) || type.equals(CC_QUESTION_BANK2);
 
       boolean hide = false;
       Iterator mdroles = resource.getDescendants(new ElementFilter("intendedEndUserRole", ns.lom_ns()));
@@ -348,11 +356,21 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 		      item.setDescription(simplePageBean.getMessageLocator().getMessage("simplepage.import_cc_lessonplan"));
 		  else if (intendedUse.equals("syllabus"))
 		      item.setDescription(simplePageBean.getMessageLocator().getMessage("simplepage.import_cc_syllabus"));
+		  else if (assigntool != null && intendedUse.equals("assignment")) {
+		      AssignmentInterface a = (AssignmentInterface) assigntool;
+		      // file hasn't been written yet to contenthosting. A2 requires it to be there
+		      addFile(resource.getAttributeValue(HREF));
+		      String assignmentId = a.importObject(title, sakaiId, mime); // sakaiid for assignment
+		      if (assignmentId!= null) {
+			 item = simplePageToolDao.makeItem(page.getPageId(), seq, SimplePageItem.ASSIGNMENT, assignmentId, title);
+			 sakaiId = assignmentId;
+		      }
+		  }
 	      }
 	      simplePageBean.saveItem(item);
 	      sequences.set(top, seq+1);
 	  }
-	  else if (type.equals(CC_WEBLINK0) || type.equals(CC_WEBLINK1)) {
+	  else if (type.equals(CC_WEBLINK0) || type.equals(CC_WEBLINK1) || type.equals(CC_WEBLINK2)){
 	      String filename = getFileName(resource);
 	      Element linkXml =  parser.getXML(loader, filename);
 	      Namespace linkNs = ns.link_ns();
@@ -384,7 +402,7 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 		  sequences.set(top, seq+1);
 	      }
 	      
-	  } else if (topictool != null && ( type.equals(CC_TOPIC0) || type.equals(CC_TOPIC1))) {
+	  } else if (topictool != null && ( type.equals(CC_TOPIC0) || type.equals(CC_TOPIC1) || type.equals(CC_TOPIC2))){
 	      String filename = getFileName(resource);
 	      Element topicXml =  parser.getXML(loader, filename);
 	      Namespace topicNs = ns.topic_ns();
@@ -435,8 +453,8 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	      }
 
 	  } else if (quiztool != null && (
-		     type.equals(CC_ASSESSMENT0) || type.equals(CC_ASSESSMENT1) ||
-		     type.equals(CC_QUESTION_BANK0) || type.equals(CC_QUESTION_BANK1))) {
+		  type.equals(CC_ASSESSMENT0) || type.equals(CC_ASSESSMENT1) || type.equals (CC_ASSESSMENT2) ||
+		  type.equals(CC_QUESTION_BANK0) || type.equals(CC_QUESTION_BANK1) || type.equals(CC_QUESTION_BANK2))) {
 
 	      String fileName = getFileName(resource);
 	      String sakaiId = null;
@@ -462,6 +480,8 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 		      boolean thisUsesPattern = imp.mainproc(instream, outwriter, isBank, base, siteId, simplePageBean);
 		      if (thisUsesPattern)
 			  usesPatternMatch = true;
+		      if (imp.getUsesCurriculum())
+			  usesCurriculum = true;
 		  } catch (Exception e) {
 		      e.printStackTrace();
 		  }
@@ -473,6 +493,8 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 		      DocumentBuilderFactory builderFactory =
 			  DocumentBuilderFactory.newInstance();
 		      builderFactory.setNamespaceAware(true);
+		      builderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+		      builderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 		      DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
 		      Document document = documentBuilder.parse(inputStream);
 
@@ -571,9 +593,19 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	  System.err.println("start manifest");
   }
 
+  public void checkCurriculum(Element the_xml) {
+      Element md = the_xml.getChild("curriculumStandardsMetadataSet",ns.csmd_ns());
+      if (md != null) {
+	  if (md.getChild("curriculumStandardsMetadata",ns.csmd_ns()) != null) {
+	      usesCurriculum = true;
+	  }
+      }
+  }
+
   public void setManifestXml(Element the_xml) {
       if (all)
 	  System.err.println("manifest xml: "+the_xml);
+
   }
 
   public void endManifest() {
@@ -584,6 +616,8 @@ public class PrintHandler extends DefaultHandler implements AssessmentHandler, D
 	     (usesMentor ? simplePageBean.getMessageLocator().getMessage("simplepage.cc-uses-mentor") : null));
       if (usesPatternMatch)
 	  simplePageBean.setErrKey("simplepage.import_cc_usespattern", null);
+      if (usesCurriculum)
+	  simplePageBean.setErrKey("simplepage.cc-uses-curriculum", null);
 
   }
 

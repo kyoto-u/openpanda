@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/CourseManagementServiceFederatedImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/CourseManagementServiceFederatedImpl.java $
  * $Id: CourseManagementServiceFederatedImpl.java 83967 2010-11-01 11:25:23Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/webapp/scripts/stateswitcher.js $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.1/rwiki-tool/tool/src/webapp/scripts/stateswitcher.js $
  * $Id: stateswitcher.js 67378 2009-10-08 15:52:19Z gsilver@umich.edu $
  ***********************************************************************************
  *

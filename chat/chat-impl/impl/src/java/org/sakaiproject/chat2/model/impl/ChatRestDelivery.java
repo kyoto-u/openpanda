@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.0/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatRestDelivery.java $
+ * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.1/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatRestDelivery.java $
  * $Id: ChatRestDelivery.java 78161 2010-05-30 18:58:10Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

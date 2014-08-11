@@ -1,6 +1,6 @@
 /**
- * $Id: ValidationProducer.java 93859 2011-06-16 21:03:22Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.0/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/producers/ValidationProducer.java $
+ * $Id: ValidationProducer.java 118574 2013-01-22 16:45:50Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.1/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/producers/ValidationProducer.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -133,6 +133,10 @@ ViewParamsReporter, ActionResultInterceptor {
 			} else if (ValidationAccount.STATUS_CONFIRMED.equals((va.getStatus()))) {
 				Object[] args = new Object[]{ vvp.tokenId};
 				tml.addMessage(new TargettedMessage("msg.alreadyValidated", args, TargettedMessage.SEVERITY_ERROR));
+				return;
+			} else if (ValidationAccount.STATUS_EXPIRED.equals((va.getStatus()))){
+				Object[] args = new Object[]{ vvp.tokenId};
+				tml.addMessage(new TargettedMessage("msg.expiredValidation", args, TargettedMessage.SEVERITY_ERROR));
 				return;
 			}
 		} else {

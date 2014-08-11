@@ -1,6 +1,6 @@
 /**
  * $Id: ValidationAccount.java 81590 2010-08-20 15:09:07Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.0/account-validator-api/src/java/org/sakaiproject/accountvalidator/model/ValidationAccount.java $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.1/account-validator-api/src/java/org/sakaiproject/accountvalidator/model/ValidationAccount.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

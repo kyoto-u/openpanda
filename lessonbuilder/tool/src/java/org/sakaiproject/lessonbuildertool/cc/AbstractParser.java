@@ -51,7 +51,12 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
+
 import org.jdom.output.XMLOutputter;
+
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import java.io.StringBufferInputStream;
 
 public abstract class AbstractParser {
 
@@ -67,8 +72,21 @@ public abstract class AbstractParser {
   private static final String PROT_NAME ="protected";
   private static final Namespace AUTH_NS = Namespace.getNamespace("auth", "http://www.imsglobal.org/xsd/imsccauth_v1p0");
   
+    // This will disable all external entities. The ones we really care
+    // about are file:. We could check the IDs and allow some forms, e.g.
+    // http. For the moment we're disabling them all.
+
+  public static class NoOpEntityResolver implements EntityResolver {
+      public InputSource resolveEntity(String publicId, String systemId) {
+	  return new InputSource(new StringBufferInputStream(""));
+      }
+  }
+
   static {
     builder=new SAXBuilder();
+    // the normal feature approach doesn't seem to work.
+    // this will disable processing of external entities. internal still work
+    builder.setEntityResolver(new NoOpEntityResolver());
   }
   
   // set by Parser
@@ -77,9 +95,9 @@ public abstract class AbstractParser {
   public void
   processDependencies(DefaultHandler the_handler,
                       Element the_resource) throws ParseException {
-    for (Iterator iter=the_resource.getChildren(DEPENDENCY, ns.cc_ns()).iterator(); iter.hasNext();) {
+      for (Iterator iter=the_resource.getChildren(DEPENDENCY, the_handler.getNs().cc_ns()).iterator(); iter.hasNext();) {
       String target=((Element)iter.next()).getAttributeValue(IDREF);
-      Element resource=findResource(target,the_resource.getParentElement());
+      Element resource=findResource(the_handler.getNs(),target,the_resource.getParentElement());
       the_handler.startDependency(the_resource.getAttributeValue(ID),target);
       processResource(resource, the_handler);
       the_handler.endDependency();
@@ -89,7 +107,7 @@ public abstract class AbstractParser {
   public void
   processFiles(DefaultHandler the_handler,
                Element the_resource) {
-    for (Iterator iter=the_resource.getChildren(FILE, ns.cc_ns()).iterator(); iter.hasNext();) {
+      for (Iterator iter=the_resource.getChildren(FILE, the_handler.getNs().cc_ns()).iterator(); iter.hasNext();) {
       the_handler.addFile(((Element)iter.next()).getAttributeValue(HREF));
     }
   }
@@ -97,12 +115,14 @@ public abstract class AbstractParser {
   public void
   processResourceMetadata(DefaultHandler the_handler,
                           Element the_resource) throws ParseException {
-    if (the_resource.getChild(METADATA, ns.cc_ns())!=null) {
-      Element md=the_resource.getChild(METADATA, ns.cc_ns()).getChild(MD_ROOT, ns.lom_ns());
-      if (md!=null) {    
-        the_handler.setResourceMetadataXml(md);
+      Element md = the_resource.getChild(METADATA, the_handler.getNs().cc_ns());
+      if (md != null) {
+	 the_handler.checkCurriculum(md);
+	 md=the_resource.getChild(METADATA, the_handler.getNs().cc_ns()).getChild(MD_ROOT, the_handler.getNs().lom_ns());
+	 if (md!=null) {    
+	     the_handler.setResourceMetadataXml(md);
+	 }
       }
-    }
   }
   
   public Element
@@ -110,7 +130,7 @@ public abstract class AbstractParser {
          String the_file) throws IOException, ParseException {
     Element result=null;
     try {
-      result=builder.build(the_cartridge.getFile(the_file)).getRootElement();
+	result=builder.build(the_cartridge.getFile(the_file)).getRootElement();
       XMLOutputter outputter = new XMLOutputter();
       //      try {
 	  //	  outputter.output(result, System.out);       
@@ -118,8 +138,7 @@ public abstract class AbstractParser {
       //      catch (IOException e) {
       //	  System.err.println("output problem " + e);
       //      }
-
-    } catch (JDOMException e) {
+    } catch (Exception e) {
       throw new ParseException(e);
     }
     return result;
@@ -128,16 +147,25 @@ public abstract class AbstractParser {
   public void
   processResource(Element the_resource,
                   DefaultHandler handler) throws ParseException {
+      try {
     handler.startResource(the_resource.getAttributeValue(ID), isProtected(the_resource));
     handler.setResourceXml(the_resource);
     processResourceMetadata(handler, the_resource);
     processFiles(handler, the_resource);
     processDependencies(handler, the_resource);
     handler.endResource();
+      } catch (Exception e) {
+	  e.printStackTrace();
+          if (the_resource == null)
+              System.out.println("processresouce the item null");
+          else
+              System.out.println("processresource failed " + the_resource.getAttributeValue(ID));
+
+      };
   }
   
   public Element
-  findResource(String the_identifier, Element the_resources) throws ParseException {
+  findResource(Ns ns, String the_identifier, Element the_resources) throws ParseException {
     Element result=null;
     try {
       String query=RESOURCE_QUERY.replaceFirst("xxx", the_identifier);

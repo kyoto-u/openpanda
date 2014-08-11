@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.0/tool-api/src/java/org/sakaiproject/cheftool/api/MenuItem.java $
- * $Id: MenuItem.java 59691 2009-04-03 23:46:45Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.1/tool-api/src/java/org/sakaiproject/cheftool/api/MenuItem.java $
+ * $Id: MenuItem.java 116679 2012-11-21 16:27:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005 2006, 2006, 2008 The Sakai Foundation
@@ -138,4 +138,10 @@ public interface MenuItem
 	 * @return True if the item is a field, false if not.
 	 */
 	boolean getIsField();
+	
+	/**
+	 * Get the optional label that may be set by components to provide accessiblity information, eg alt tags, title attributes etc
+	 * @return the value
+	 */
+	String getAccessibilityLabel();
 }

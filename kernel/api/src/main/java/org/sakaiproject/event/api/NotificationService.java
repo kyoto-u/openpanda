@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/event/api/NotificationService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/event/api/NotificationService.java $
  * $Id: NotificationService.java 82736 2010-09-24 13:51:48Z chmaurer@iupui.edu $
  ***********************************************************************************
  *

@@ -84,7 +84,8 @@ public class GradingPaneProducer implements ViewComponentProducer, ViewParamsRep
 		backParams.setItemId(params.pageItemId);
 		backParams.setPath("log");
 		
-                UIOutput.make(tofill, "html").decorate(new UIFreeAttributeDecorator("lang", localeGetter.get().getLanguage()));        
+                UIOutput.make(tofill, "html").decorate(new UIFreeAttributeDecorator("lang", localeGetter.get().getLanguage()))
+		    .decorate(new UIFreeAttributeDecorator("xml:lang", localeGetter.get().getLanguage()));        
 
 		UIInternalLink.make(tofill, "back-link", "Go Back", backParams);
 		
@@ -174,6 +175,10 @@ public class GradingPaneProducer implements ViewComponentProducer, ViewParamsRep
 			UIOutput.make(tofill, "noEntriesWarning");
 		}
 		
+		UIOutput.make(tofill, "clickToSubmit", messageLocator.getMessage("simplepage.update-points")).
+			    decorate(new UIFreeAttributeDecorator("title", 
+								  messageLocator.getMessage("simplepage.update-points")));
+
 		for(SimpleUser user : simpleUsers) {
 			UIBranchContainer branch = UIBranchContainer.make(tofill, "student-row:");
 			
@@ -216,7 +221,7 @@ public class GradingPaneProducer implements ViewComponentProducer, ViewParamsRep
 			UIOutput.make(branch, "pointsBox").
 			    decorate(new UIFreeAttributeDecorator("title", 
 				    messageLocator.getMessage("simplepage.grade-for-student").replace("{}", user.displayName)));
-			UIOutput.make(branch, "maxpoints", " / " + commentItem.getGradebookPoints());
+			UIOutput.make(branch, "maxpoints", " / " + (params.studentContentItem?commentItem.getAltPoints() : commentItem.getGradebookPoints()));
 			UIOutput.make(branch, "clickToExpand", messageLocator.getMessage("simplepage.click-to-expand")).
 			    decorate(new UIFreeAttributeDecorator("title", 
 				    messageLocator.getMessage("simplepage.expand-for-student").replace("{}", user.displayName)));

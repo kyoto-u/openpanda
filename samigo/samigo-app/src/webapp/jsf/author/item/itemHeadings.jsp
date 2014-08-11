@@ -2,7 +2,7 @@
 Headings for item edit pages, needs to have msg=AuthorMessages.properties.
 --%>
 <!--
-* $Id: itemHeadings.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
+* $Id: itemHeadings.jsp 116508 2012-11-16 22:39:47Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -24,7 +24,6 @@ Headings for item edit pages, needs to have msg=AuthorMessages.properties.
 --%>
 -->
 <script type="text/JavaScript">
-<!--
 function changeTypeLink(field){
 
 var newindex = 0;
@@ -38,7 +37,6 @@ for (i=0; i<document.links.length; i++) {
 document.links[newindex].onclick();
 }
 
-//-->
 </script>
 <h:form id="itemFormHeading">
 <%-- The following hidden fields echo some of the data in the item form

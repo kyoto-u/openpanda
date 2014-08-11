@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/sidebar.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.1/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/sidebar.jsp $
  * $Id: sidebar.jsp 20869 2007-02-01 16:52:40Z ian@caret.cam.ac.uk $
  **********************************************************************************/
 -->

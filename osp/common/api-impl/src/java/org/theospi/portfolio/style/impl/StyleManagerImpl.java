@@ -490,6 +490,7 @@ public class StyleManagerImpl extends HibernateDaoSupport
    protected void importStyle(String siteId, InputStream is, Map styleMap)
          throws IOException {
       SAXBuilder builder = new SAXBuilder();
+      builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // SAK-23131
       Document document = null;
    
       byte []bytes = readStreamToBytes(is);

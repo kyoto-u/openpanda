@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: templateEditor.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
+<!-- $Id: templateEditor.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -30,7 +30,7 @@
 -->
 
   <f:view> 
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{templateMessages.template_editor}" /></title>
       <samigo:script path="/jsf/widget/hideDivision/hideDivision.js"/>
