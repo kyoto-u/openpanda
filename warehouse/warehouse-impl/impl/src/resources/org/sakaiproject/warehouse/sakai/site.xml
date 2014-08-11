@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+
+<!--
+  File from uPortal2.0 by JASIG. Modified and adapted to OSPI by <a
+  href="felipeen@udel.edu">Luis F.C. Mendes</a> - University of
+  Delaware
+-->
+<!-- $Revision: 1.19 $ -->
+
+<tables>
+
+   <table>
+     <name>dw_sites</name>
+     <desc>contains all the worksites that are in the system</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+        <column>
+          <name>type</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+        <column>
+          <name>title</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+     </columns>
+     <not-null>title</not-null>
+     <primary-key>id</primary-key>
+   </table>
+   
+   <table>
+     <name>dw_site_users</name>
+     <desc>contains all the users of the worksites in the system</desc>
+     <columns>
+        <column>
+          <name>site_id</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+        <column>
+          <name>user_id</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+          <column>
+          <name>user_eid</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+          <column>
+          <name>user_display_id</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+          <column>
+          <name>role</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+        <column>
+          <name>permission</name>
+          <type>INTEGER</type>
+        </column>
+     </columns>
+     <not-null>user_id</not-null>
+     <primary-key>site_id</primary-key>
+     <primary-key>user_id</primary-key>
+   </table>
+
+
+
+<!--  Don't think we need this index as that column is a PK
+   <index>
+     <index-name>FK4440EC9296D518</index-name>
+     <table-name>dw_sites</table-name>
+     <column>id</column>
+   </index>
+-->
+</tables>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.matrix" title="Matrices" description="Create and use a structured, guided ePortfolio matrix">
+
+      <category name="sakai.main" />
+      <category name="project" />
+      <category name="portfolio" />
+      <category name="course" />
+      <category name="myworkspace" />
+
+       <keyword name="matrix" />
+       <keyword name="review" />
+       <keyword name="reviewer" />
+       <keyword name="reflect" />
+       <keyword name="reflection" />
+
+       <configuration name="theospi.resetUrl"
+            value="/member/viewMatrix.osp" />
+       <configuration name="theospi.toolListenerId"
+            value="org.theospi.portfolio.security.mgt.ToolPermissionManager.scaffolding" /> 
+            
+            <!-- 
+      <configuration name="functions.require" 
+                     value="" /> 
+                 -->
+                     
+      <!-- institutionSite says if it is an institution site  -->
+      <configuration name="institutionSite" value="false"/>
+            
+	</tool>
+
+</registration>

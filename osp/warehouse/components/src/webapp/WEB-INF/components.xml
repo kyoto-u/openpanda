@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+    <import resource="wizard-components.xml"/>
+    <import resource="glossary-components.xml"/>
+    <import resource="presentation-components.xml"/>
+    <import resource="scaffolding-components.xml"/>
+    <import resource="matrix-components.xml"/>
+    <import resource="guidance-components.xml"/>
+
+
+    <!--  **************************************************************************
+    ********************************************************************************
+         style Child Task
+    -->
+
+    <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.style"
+          class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+            <list>
+                <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id"/>
+
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>name</value>
+                    </property>
+                </bean>
+
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>description</value>
+                    </property>
+                </bean>
+
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>globalState</value>
+                    </property>
+                </bean>
+
+                <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+                    <property name="propertyName">
+                        <value>styleFile</value>
+                    </property>
+                </bean>
+
+                <bean class="org.sakaiproject.warehouse.impl.AgentPropertyAccess">
+                    <property name="propertyName">
+                        <value>owner</value>
+                    </property>
+                </bean>
+
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>created</value>
+                    </property>
+                </bean>
+
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>modified</value>
+                    </property>
+                </bean>
+
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>siteId</value>
+                    </property>
+                </bean>
+
+            </list>
+        </property>
+        <property name="insertStmt">
+            <value>insert into dw_wizard_style
+                (id, name, description, globalState, styleFile, owner, created, modified, siteId)
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            </value>
+        </property>
+        <property name="clearStmt">
+            <value>delete from dw_wizard_style</value>
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.common.review"
+          class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+            <list>
+                <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id"/>
+                <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+                    <property name="propertyName">
+                        <value>reviewContent</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>siteId</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>parent</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>deviceId</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>type</value>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="insertStmt">
+            <value>insert into dw_review_items
+                (id, review_content_id, site_id, parent_id, review_device_id, review_type)
+                values (?, ?, ?, ?, ?, ?)
+            </value>
+        </property>
+        <property name="clearStmt">
+            <value>delete from dw_review_items</value>
+        </property>
+    </bean>
+
+    <bean
+            id="org.sakaiproject.warehouse.service.WarehouseTask.reviewItems"
+            class="org.theospi.portfolio.warehouse.osp.common.ReviewItemsWarehouseTask"
+            init-method="init" singleton="true">
+        <property name="dataSource">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource"/>
+        </property>
+        <property name="dataWarehouseManager">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager"/>
+        </property>
+        <property name="tableDdlResource">
+            <value>/org/theospi/portfolio/warehouse/osp/common.xml</value>
+        </property>
+        <property name="reviewManager">
+            <ref bean="org.theospi.portfolio.review.mgt.ReviewManager"/>
+        </property>
+        <property name="task">
+            <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.common.review"/>
+        </property>
+    </bean>
+
+    <bean
+            id="org.sakaiproject.warehouse.service.WarehouseTask.style"
+            class="org.theospi.portfolio.warehouse.osp.style.StyleWarehouseTask"
+            init-method="init" singleton="true">
+        <property name="dataSource">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource"/>
+        </property>
+        <property name="dataWarehouseManager">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager"/>
+        </property>
+        <property name="styleManager">
+            <ref bean="org.theospi.portfolio.style.mgt.StyleManager"/>
+        </property>
+        <property name="task">
+            <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.style"/>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!--  legacy ProfileManger bean, used by the Profile tool directly -->
+    <bean id="org.sakaiproject.api.app.profile.LegacyProfileManager"
+        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+	    <property name="transactionManager">
+	      <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
+	    </property>
+	    <property name="transactionAttributes">
+	      <props>
+	        <prop key="*">PROPAGATION_REQUIRED</prop>
+	      </props>
+	    </property>
+	    <property name="target">
+	    	<bean class="org.sakaiproject.component.app.profile.LegacyProfileManagerImpl" init-method="init">
+		        <property name="sakaiPersonManager">
+		            <ref bean="org.sakaiproject.api.common.edu.person.SakaiPersonManager"/>
+		        </property>
+		        <property name="userDirectoryService">
+		            <ref bean="org.sakaiproject.user.api.UserDirectoryService"/>
+		        </property>
+		        <property name="serverConfigurationService">
+		        	<ref bean="org.sakaiproject.component.api.ServerConfigurationService"/>
+		        </property>
+		        
+	    	</bean>
+	    </property>
+	</bean>
+	
+	<!-- ProfileManager is now a proxy bean, delegating to the bean with class name set set via "profile.manager.integration.bean" in sakai.properties -->
+	<bean id="org.sakaiproject.api.app.profile.ProfileManager" class="org.sakaiproject.component.app.profile.ProfileManagerImpl" init-method="init" />
+	
+</beans>

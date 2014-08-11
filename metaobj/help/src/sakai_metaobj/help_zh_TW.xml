@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+   <bean id="forms_overview" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_overview_zh_TW</value></property>
+      <property name="name"><value>表單：概述</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_overview_zh_TW.html</value></property>
+      <property name="defaultForTool"><value>sakai.metaobj</value></property>
+   </bean>
+
+   <bean id="forms_resources" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_resources_zh_TW</value></property>
+      <property name="name"><value>表單工具和資源工具</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_resources_zh_TW.html</value></property>
+   </bean>
+
+   <bean id="forms_list" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_list_zh_TW</value></property>
+      <property name="name"><value>存取表單清單</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_list_zh_TW.html</value></property>
+   </bean>
+
+   <bean id="forms_create" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_create_zh_TW</value></property>
+      <property name="name"><value>建立表單</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_create_zh_TW.html</value></property>
+   </bean>
+
+   <bean id="forms_view" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_view_zh_TW</value></property>
+      <property name="name"><value>檢視表單</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_view_zh_TW.html</value></property>
+   </bean>
+
+   <bean id="forms_change" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_change_zh_TW</value></property>
+      <property name="name"><value>更改表單</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_change_zh_TW.html</value></property>
+   </bean>
+
+   <bean id="forms_publish" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_publish_zh_TW</value></property>
+      <property name="name"><value>公開表單</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_publish_zh_TW.html</value></property>
+   </bean>
+
+   <bean id="forms_publish_request" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_publish_request_zh_TW</value></property>
+      <property name="name"><value>請求全域公開表單</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_publish_request_zh_TW.html</value></property>
+   </bean>
+
+   <bean id="forms_publish_global" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_publish_global_zh_TW</value></property>
+      <property name="name"><value>全域公開表單</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_publish_global_zh_TW.html</value></property>
+   </bean>
+
+   <bean id="forms_exportimport" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_exportimport_zh_TW</value></property>
+      <property name="name"><value>匯出和匯入表單</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_exportimport_zh_TW.html</value></property>
+   </bean>
+
+   <bean id="forms_perms" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>forms_perms_zh_TW</value></property>
+      <property name="name"><value>更改權限</value></property>
+      <property name="location"><value>/sakai_metaobj/forms_perms_zh_TW.html</value></property>
+   </bean>
+
+    <bean id="org.sakaiproject.api.app.help.TableOfContents"
+          class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name"><value>root</value></property>
+      <property name="categories">
+         <list>
+            <bean id="ospMatrixCategory" class="org.sakaiproject.component.app.help.model.CategoryBean">
+               <property name="name"><value>表單</value></property>
+               <property name="resources">
+                  <list>
+                     <ref bean="forms_overview"/>
+                     <ref bean="forms_resources"/>
+                     <ref bean="forms_list"/>
+                     <ref bean="forms_create"/>
+                     <ref bean="forms_view"/>
+                     <ref bean="forms_change"/>
+                     <ref bean="forms_publish"/>
+                     <ref bean="forms_publish_request"/>
+                     <ref bean="forms_publish_global"/>
+                     <ref bean="forms_exportimport"/>
+                     <ref bean="forms_perms"/>
+                  </list>
+               </property>
+            </bean>
+           </list>
+         </property>
+       </bean>
+</beans>

@@ -1,0 +1,122 @@
+
+<!-- ************* Reflection Area Start ************* --> 
+<c:if test="${(cell.scaffoldingCell.reflectionDevice != null && !cell.scaffoldingCell.wizardPageDefinition.defaultReflectionForm) 
+|| (cell.scaffoldingCell.scaffolding.reflectionDevice != null && cell.scaffoldingCell.wizardPageDefinition.defaultReflectionForm)}">
+	<tr>
+		<td colspan="6"></td>
+	</tr>
+	<tr>
+		<th colspan="2">
+			<osp:message key="reflection_section_header" />
+		</th>
+		<th><div class="itemActionHeader"><osp:message key="table_header_actions" /></div></th>
+		<th>&nbsp;</th>
+		<th><osp:message key="table_header_createdBy" /></th>
+		<th><osp:message key="table_header_modified" /></th>
+	</tr>
+	<tr class="cellItemAddLine">
+		<td colspan="2"><osp:message key="reflection_section_header" /></td>
+		<td>
+			<c:if test="${empty reflections && (cell.status == 'READY' or cell.status == 'RETURNED') and readOnlyMatrix != 'true'}">
+				<span class="itemAction" style="font-weight:normal"> 
+						<a href="<osp:url value="osp.review.processor.helper/reviewHelper.osp">
+							   <osp:param name="page_id" value="${cell.wizardPage.id}" />
+							   <osp:param name="org_theospi_portfolio_review_type" value="0" />
+							   <osp:param name="process_type_key" value="page_id" />
+							   <osp:param name="isMatrix" value="${isMatrix}" />
+							   <osp:param name="isWizard" value="${isWizard}" />
+							   <osp:param name="objectId" value="${objectId}" />
+							   <osp:param name="objectTitle" value="${objectTitle}" />
+						       <c:if test="${cell.scaffoldingCell.wizardPageDefinition.defaultReflectionForm}">
+						       		<osp:param name="scaffoldingId" value="${cell.scaffoldingCell.scaffolding.id}" />
+						       </c:if>
+							   </osp:url>">
+						<osp:message key="reflection_create" /></a> 
+				</span>
+			</c:if>	
+		</td>
+		<td colspan="3"></td>
+	</tr>	
+	
+	<c:if test="${empty reflections}">
+		<tr>
+			<td colspan="6">				
+				<p class="instruction indnt2"><osp:message
+					key="reflection_section_empty" />
+				</p>
+			</td>
+		</tr>
+	</c:if>
+	<c:if test="${not empty reflections}">
+		<tr>
+			<td colspan="2">
+				<span class="matrixCellList indnt2">
+						<c:set var="canReflect" value="true" />
+			
+						<img src='/library/image/silk/lightbulb.png' border='0'
+							hspace='0' alt="" />
+						<a
+							href='<c:out value="${reflections[0].reviewContentNode.externalUri}"/>'
+							target="_blank"> <c:out
+							value="${reflections[0].reviewContentNode.displayName}" /> </a>
+							</span>
+							</td>
+							<td nowrap="nowrap">
+						<c:if test="${(cell.status == 'READY' or cell.status == 'RETURNED') and readOnlyMatrix != 'true' && enableReviewEdit}">
+							<span class="itemAction"> 
+								<a href="<osp:url value="osp.review.processor.helper/reviewHelper.osp">
+											   <osp:param name="page_id" value="${cell.wizardPage.id}" />
+											   <osp:param name="org_theospi_portfolio_review_type" value="0" />
+											   <osp:param name="current_review_id" value="${reflections[0].reviewContentNode.resource.id}" />
+											   <osp:param name="process_type_key" value="page_id" />
+											   <c:if test="${cell.scaffoldingCell.wizardPageDefinition.defaultReflectionForm}">
+									       		 <osp:param name="scaffoldingId" value="${cell.scaffoldingCell.scaffolding.id}" />
+									       	   </c:if>
+											   </osp:url>">
+									<osp:message key="reflection_edit" /></a> |
+									
+									<a
+				href="<osp:url value="osp.wizard.page.contents.helper/formDelete.osp">
+							 <osp:param name="page_id" value="${cell.wizardPage.id}" />
+							 <osp:param name="formDefId" value="${cell.scaffoldingCell.reflectionDevice}" />
+							 <osp:param name="current_form_id" value="${reflections[0].reviewContentNode.resource.id}" />
+							 <osp:param name="review_id" value="${reflections[0].id}"/>
+							 <osp:param name="submit" value="deleteReview" />
+							 <c:if test="${cell.scaffoldingCell.wizardPageDefinition.defaultReflectionForm}">
+					       		 <osp:param name="scaffoldingId" value="${cell.scaffoldingCell.scaffolding.id}" />
+				       	   </c:if>
+							 </osp:url>" title='<c:out value="${msgs.delete}"/>'>
+							<c:out value="${msgs.remove}"/></a>
+							</span>
+						</c:if>
+			</td>
+			<td></td>
+			<td>
+				<c:choose>
+					<c:when test="${((wizardCan.evaluate || wizardCan.review) && isWizard == 'true') || (scaffoldingCan.accessUserList || cell.wizardPage.owner.id == currentUser)}">
+						<c:out value="${reflections[0].reviewContentNode.technicalMetadata.owner.displayName}" />
+					</c:when>
+					<c:otherwise>
+						<span title='<c:out value="${msgs.blind_evaluation_tooltip}"/>'>
+							<c:out value="${msgs.blind_evaluation_username}"/>
+						</span>
+					</c:otherwise>
+				</c:choose>		
+			</td>
+			<td>
+				<fmt:formatDate	value="${reflections[0].reviewContentNode.technicalMetadata.lastModified}" pattern="${date_format}" />
+			</td>
+		</tr>
+	</c:if>
+
+	</span>
+	</h4>
+	</div>
+</c:if> <!-- if status is ready --> <%-- TODO omit the following block if the items inside it are not rendered --%>
+
+
+
+<input type="hidden" name="page_id"
+	value="<c:out value="${cell.wizardPage.id}"/>" /> 
+
+<!-- ************* Reflection Area End ************* -->

@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:rsf="http://ponder.org.uk" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Site Page Order</title>
+	<link href="/library/skin/tool_base.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all"/>
+	<link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all"/>
+	<link href="../css/PageList.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" rsf:id="resize"/>
+	<script type="text/javascript" src="/library/js/lib/jquery-1.1.2.js"></script>
+	<script type="text/javascript" src="../js/jquery/iutil.js" rsf:id="scr=rewrite-url"></script>
+	<script type="text/javascript" src="../js/jquery/idrag.js" rsf:id="scr=rewrite-url"></script>
+	<script type="text/javascript" src="../js/jquery/idrop.js" rsf:id="scr=rewrite-url"></script>
+	<script type="text/javascript" src="../js/jquery/isortables.js" rsf:id="scr=rewrite-url"></script>
+	<script type="text/javascript" src="../js/jquery/ikey.js" rsf:id="scr=rewrite-url"></script>
+	<script type="text/javascript" src="../js/orderUtil.js" rsf:id="scr=rewrite-url"></script>
+	<script type="text/javascript" language="JavaScript" src="/library/js/headscripts.js"></script>
+</head>
+
+<body>
+ 	<div id="page-order-body" class="portletBody">
+	 	<div class="navIntraTool">
+			<a href="#" rsf:id="add-link" class="item_control" title="Display Pages Currently Available To Add To This Site" onclick="">Add Page</a>
+		</div>
+		<a href="#" rsf:id="redirect">go back</a>
+		<div rsf:id="content:">
+			<h3 class="alertMessage" id="call-results">
+				<span rsf:id="msg=welcome">Note: Changes to page ordering will not take effect until you click 'Save'. Deleting, Adding or Editing a Page is saved immediately</span>
+			</h3>
+
+			<form rsf:id="pages-form" class="order_action_form">
+				<p class="act">
+					<input rsf:id="save" class="active" value="Save" type="submit" onclick="serialize('sort1');"/>
+					<input rsf:id="revert" value="Cancel" type="submit"/>
+					<input rsf:id="reset" value="Reset" type="submit" onclick="return checkReset();"/>
+				</p>
+	 			<table id="page-list">
+	  				<tr><td>
+						<div class="tool_list">
+							<div id="list-label">
+								<strong rsf:id="msg=curr_pages">Current Pages</strong>
+							</div>
+							<ul tabIndex="2" class="sortable" id="sort1">
+								<li rsf:id="page-row:" id="content:::page-row::" class="sortable_item" title="Click And Drag Pages Into The Order That You Want" >
+									<div class="item_edit_box" style="display: none;">
+										<div>
+											<label rsf:id="page-name-label"for="page-name-input">Title</label>
+											<input rsf:id="page-name-input" class="new_title" id="page-name-input"></input>
+										</div>
+										<div>
+											<label rsf:id="msg=url" for="page-config-input">URL</label>
+											<input rsf:id="page-config-input" id="page-config-input" class="new_config" ></input>
+											<a href="#" onclick="doBrowseLocalContent(this)" rsf:id="browse-link">Browse</a>
+										</div>
+										<a href="#" rsf:id="save-edit-link" onclick="doSaveEdit(this); return false;" title="Save Changes To This Page" alt="Save">
+											<img src="../images/accept.gif" alt="Save changes" /></a>
+										<a href="#" rsf:id="cancel-edit-link" onclick="doCancelEdit(this); return false;" title="Cancel Editing This Page" alt="Cancel">
+											<img src="../images/cancel.gif" alt="Cancel changes" /></a>
+									</div>
+									<div class="item_label_box" rsf:id="page-name"></div>
+									<div class="item_control_box">
+										<a href="#" rsf:id="edit-link" class="item_control" title="Edit This Item" alt="Edit This Page" onclick="showEditPage(this); return false;">
+											<img src="../images/page_white_edit.gif" alt="Edit page title" /></a>
+										<a href="#" rsf:id="hide-link" class="item_control hide_link" title="Hide This Page From Normal Users" alt="hide this page" onclick="doHidePage(this); return false;">
+											<img src="../images/lightbulb.gif" alt="Show page" /></a>
+										<a href="#" rsf:id="show-link" class="item_control show_link" title="Show This Page To Normal Users" alt="show this page" onclick="doShowPage(this); return false;">
+											<img src="../images/lightbulb_off.gif" alt="Hide page" /></a>
+										<a href="#" rsf:id="hide-link-off" class="item_control hide_link" style="display: none" title="Hide This Page From Normal Users" alt="hide this page" onclick="doHidePage(this); return false;">
+											<img src="../images/lightbulb.gif" alt="Hide page" /></a>
+										<a href="#" rsf:id="show-link-off" class="item_control show_link" style="display: none" title="Show This Page To Normal Users" alt="show this page" onclick="doShowPage(this); return false;">
+											<img src="../images/lightbulb_off.gif" alt="Show page" /></a>
+										<img src="../images/indicator.gif" style="display: none" class="indicator"/>
+										<a href="#" rsf:id="del-link" class="item_control" title="Remove This Page" alt="remove this page" onclick="doRemovePage(this); return false;">
+											<img src="../images/cross.gif" alt="Remove page" /></a>
+									</div>
+								</li>
+							</ul>
+							<div id="new-page-buffer" style="display: none;">Nothing at first</div>
+						</div>
+					</td></tr>
+				</table>
+				<input rsf:id="state-init" id="content:::state-init" type="hidden"/>
+				<span id="del-message"><strong rsf:id="msg=del_message" class="hidden"/></span>
+				<span id="exit-message"><strong rsf:id="msg=exit_message" class="hidden"/></span>
+				<span id="reset-message"><strong rsf:id="msg=confirm_reset_message" class="hidden"/></span>
+				<p class="act">
+					<input accesskey ="s" class="active" rsf:id="save" value="Save" type="submit" onclick="serialize('sort1');"/>
+					<input accesskey ="x" rsf:id="revert" value="Cancel" type="submit"/>
+					<input accesskey ="r" rsf:id="reset" value="Reset" type="submit" onclick="return checkReset();"/>
+				</p>					
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		makeSortable('ul.sortable');	
+	</script>
+</body>
+</html>

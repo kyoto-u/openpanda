@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+
+<!--
+  File from uPortal2.0 by JASIG. Modified and adapted to OSPI by <a
+  href="felipeen@udel.edu">Luis F.C. Mendes</a> - University of
+  Delaware
+-->
+<!-- $Revision: 1.19 $ -->
+
+<tables>
+
+   <table>
+   <name>dw_help_glossary</name>
+   <desc>Help Glossary Datawarehouse table
+        This contains the terms for the glossary, worksite, and short description
+   </desc>
+   <columns>
+      <column>
+        <name>id</name>
+        <type>VARCHAR</type>
+        <param>36</param>
+      </column>
+      <column>
+        <name>worksite_id</name>
+        <type>VARCHAR</type>
+        <param>255</param>
+      </column>
+      <column>
+        <name>term</name>
+        <type>VARCHAR</type>
+        <param>255</param>
+      </column>
+      <column>
+        <name>description</name>
+        <type>VARCHAR</type>
+        <param>255</param>
+      </column>
+     </columns>
+   <not-null>id</not-null>
+   <not-null>term</not-null>
+   <not-null>description</not-null>
+   <primary-key>id</primary-key>
+ </table>
+
+    <!-- This table did not show up after build and run -->
+
+ <table>
+   <name>dw_help_glossary_desc</name>
+   <desc>Help Glossary Description Datawarehouse table
+        This is for the long description
+   </desc>
+   <columns>
+      <column>
+        <name>id</name>
+        <type>VARCHAR</type>
+        <param>36</param>
+      </column>
+      <column>
+        <name>entry_id</name>
+        <type>VARCHAR</type>
+        <param>255</param>
+      </column>
+      <!--
+      <column>
+        <name>long_description</name>
+        <type>TEXT</type>
+      </column>
+       -->
+     </columns>
+   <not-null>id</not-null>
+   <primary-key>id</primary-key>
+ </table>
+
+</tables>

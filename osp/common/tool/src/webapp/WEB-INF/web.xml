@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Changed spec level to 2.4 - PAFH 8/10/2006 -->
+<web-app id="WebApp_9" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+   <display-name>osp-common</display-name>
+    <description>OSP Common</description>
+	
+	<!-- Ordering changed PAFH 8/10/2006 -->
+   <context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/components.xml</param-value>
+   </context-param>
+   
+   <context-param>
+       <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+       <param-value>server</param-value>
+   </context-param>
+
+  <!--sakai-->
+   <context-param>
+       <param-name>com.sun.faces.validateXml</param-name>
+       <param-value>true</param-value>
+   </context-param>
+   <context-param>
+       <param-name>com.sun.faces.verifyObjects</param-name>
+       <param-value>true</param-value>
+   </context-param>
+
+    <filter>
+        <filter-name>sakai.request</filter-name>
+        <filter-class>org.sakaiproject.util.RequestFilter</filter-class>
+        <init-param>
+            <param-name>upload.enabled</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.permissions</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+   
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.permissions.new</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.guidance</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.audience</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.guidance.sample</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.synoptic</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+    <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.synoptic.collect.reflect</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.synoptic.design.publish</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>repository</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+   
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.style</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.assign</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>osp.prefs</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>Faces Servlet</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+
+<!--
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>springapp</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    -->
+
+   <servlet>
+       <servlet-name>Faces Servlet</servlet-name>
+       <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+       <load-on-startup> 2 </load-on-startup>
+   </servlet>
+
+   <servlet>
+     <servlet-name>osp.guidance</servlet-name>
+     <servlet-class>org.theospi.portfolio.shared.control.servlet.HelperAwareJsfTool</servlet-class>
+       <init-param>
+           <param-name>path</param-name>
+           <param-value>/guidance</param-value>
+       </init-param>
+
+       <init-param>
+           <param-name>default</param-name>
+           <param-value>tool</param-value>
+       </init-param>
+        <init-param>
+           <param-name>default.last.view</param-name>
+           <param-value>true</param-value>
+       </init-param>
+       <!-- Changed ordering PAFH 8/10/2006 -->
+     <load-on-startup>2</load-on-startup>
+  </servlet>
+
+   <servlet>
+     <servlet-name>osp.audience</servlet-name>
+     <servlet-class>org.theospi.portfolio.shared.control.servlet.HelperAwareJsfTool</servlet-class>
+       <init-param>
+           <param-name>path</param-name>
+           <param-value>/audience</param-value>
+       </init-param>
+
+       <init-param>
+           <param-name>default</param-name>
+           <param-value>tool</param-value>
+       </init-param>
+        <init-param>
+           <param-name>default.last.view</param-name>
+           <param-value>true</param-value>
+       </init-param>
+       <!-- Changed ordering PAFH 8/10/2006 -->
+     <load-on-startup>2</load-on-startup>
+  </servlet>
+
+   <servlet>
+     <servlet-name>osp.guidance.sample</servlet-name>
+     <servlet-class>org.theospi.portfolio.shared.control.servlet.HelperAwareJsfTool</servlet-class>
+       <init-param>
+           <param-name>path</param-name>
+           <param-value>/guidance</param-value>
+       </init-param>
+ 
+       <init-param>
+           <param-name>default</param-name>
+           <param-value>list</param-value>
+       </init-param>
+        <init-param>
+           <param-name>default.last.view</param-name>
+           <param-value>true</param-value>
+       </init-param>
+         <!-- Changed ordering PAFH 8/10/2006 -->
+     <load-on-startup>2</load-on-startup>
+  </servlet>
+
+   <servlet>
+     <servlet-name>osp.synoptic</servlet-name>
+     <servlet-class>org.theospi.portfolio.shared.control.servlet.HelperAwareJsfTool</servlet-class>
+       <init-param>
+           <param-name>path</param-name>
+           <param-value>/list</param-value>
+       </init-param>
+
+       <init-param>
+           <param-name>default</param-name>
+           <param-value>main</param-value>
+       </init-param>
+        <init-param>
+           <param-name>default.last.view</param-name>
+           <param-value>true</param-value>
+       </init-param>
+       <!-- Changed ordering PAFH 8/10/2006 -->
+     <load-on-startup>2</load-on-startup>
+  </servlet>
+    <servlet>
+     <servlet-name>osp.synoptic.collect.reflect</servlet-name>
+     <servlet-class>org.theospi.portfolio.shared.control.servlet.HelperAwareJsfTool</servlet-class>
+       <init-param>
+           <param-name>path</param-name>
+           <param-value>/list</param-value>
+       </init-param>
+
+       <init-param>
+           <param-name>default</param-name>
+           <param-value>main</param-value>
+       </init-param>
+        <init-param>
+           <param-name>default.last.view</param-name>
+           <param-value>true</param-value>
+       </init-param>
+       <!-- Changed ordering PAFH 8/10/2006 -->
+     <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet>
+     <servlet-name>osp.synoptic.design.publish</servlet-name>
+     <servlet-class>org.theospi.portfolio.shared.control.servlet.HelperAwareJsfTool</servlet-class>
+       <init-param>
+           <param-name>path</param-name>
+           <param-value>/list</param-value>
+       </init-param>
+
+       <init-param>
+           <param-name>default</param-name>
+           <param-value>main</param-value>
+       </init-param>
+        <init-param>
+           <param-name>default.last.view</param-name>
+           <param-value>true</param-value>
+       </init-param>
+       <!-- Changed ordering PAFH 8/10/2006 -->
+     <load-on-startup>2</load-on-startup>
+  </servlet>
+  
+   <servlet>
+     <servlet-name>osp.style</servlet-name>
+     <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+       <init-param>
+           <param-name>path</param-name>
+           <param-value></param-value>
+       </init-param>
+
+       <init-param>
+           <param-name>default</param-name>
+           <param-value>listStyle</param-value>
+       </init-param>
+       <init-param>
+           <param-name>default.last.view</param-name>
+           <param-value>true</param-value>
+       </init-param>
+       <!-- Changed ordering PAFH 8/10/2006 -->
+     <load-on-startup>2</load-on-startup>
+  </servlet>
+
+   <servlet>
+     <servlet-name>osp.assign</servlet-name>
+     <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+       <init-param>
+           <param-name>path</param-name>
+           <param-value></param-value>
+       </init-param>
+
+       <init-param>
+           <param-name>default</param-name>
+           <param-value>listAssignment</param-value>
+       </init-param>
+       <init-param>
+           <param-name>default.last.view</param-name>
+           <param-value>true</param-value>
+       </init-param>
+     <load-on-startup>2</load-on-startup>
+   </servlet>
+    
+    <servlet>
+        <servlet-name>osp.prefs</servlet-name>
+        <servlet-class>org.theospi.portfolio.spring.util.SpringToolNoStack</servlet-class>
+        <init-param>
+            <param-name>default</param-name>
+            <param-value>prefs</param-value>
+        </init-param>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value></param-value>
+        </init-param>
+        <init-param>
+            <param-name>default.last.view</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    
+
+   <servlet>
+      <servlet-name>springapp</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+<!--       <servlet-class>org.sakaiproject.metaobj.shared.control.servlet.SakaiComponentDispatchServlet</servlet-class>-->
+		<load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet>
+      <servlet-name>repository</servlet-name>
+      <servlet-class>org.sakaiproject.metaobj.shared.control.servlet.FileDownloadServlet</servlet-class>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+
+   <servlet>
+      <servlet-name>osp.permissions</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value>editPermissions</param-value>
+        </init-param>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value></param-value>
+        </init-param>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+   
+   <servlet>
+      <servlet-name>osp.permissions.new</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value>editPermissions_new</param-value>
+        </init-param>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value></param-value>
+        </init-param>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+
+
+   <listener>
+      <listener-class>org.sakaiproject.util.ContextLoaderListener</listener-class>
+   </listener>
+<!-- 
+   <listener>
+      <listener-class>org.sakaiproject.metaobj.utils.BeanFactory</listener-class>
+   </listener>
+ -->
+    <listener>
+        <listener-class>org.sakaiproject.util.ToolListener</listener-class>
+    </listener>
+<!--     
+    <listener>
+        <listener-class>org.sakaiproject.metaobj.shared.control.SessionListener</listener-class>
+    </listener>
+-->
+
+   <servlet-mapping>
+       <servlet-name>Faces Servlet</servlet-name>
+       <url-pattern>*.jsf</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+     <servlet-name>springapp</servlet-name>
+     <url-pattern>*.osp</url-pattern>
+  </servlet-mapping>
+
+   <servlet-mapping>
+     <servlet-name>repository</servlet-name>
+     <url-pattern>/repository/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

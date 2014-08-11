@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.synoptic" title="Synoptic" description="OSP Synoptic List Tool">
+       <configuration name="test" value="reg-value" />
+
+       <category name="sakai.main" />
+
+       <keyword name="synoptic" />
+       <keyword name="dashboard"/>
+
+      <configuration name="listGenId" value="worksites" />
+      <configuration name="siteTypeList" value="" />
+
+	</tool>
+
+</registration>

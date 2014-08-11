@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+   <xs:element name="contactInfo">
+      <xs:annotation>
+         <xs:documentation source="ospi.label">Contact Information</xs:documentation>
+         <xs:documentation source="ospi.description">Contact Information Structured Data</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="firstName" type="nameType">
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">First Name</xs:documentation>
+                  <xs:documentation source="ospi.description">The person's first name</xs:documentation>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="middle" minOccurs="0">
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">Middle Name</xs:documentation>
+                  <xs:documentation source="ospi.description">The person's middle name</xs:documentation>
+               </xs:annotation>
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="1"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:element>
+            <xs:element name="lastName">
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">Last Name</xs:documentation>
+                  <xs:documentation source="ospi.description">The person's last name</xs:documentation>
+               </xs:annotation>
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="99"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:element>
+            <xs:element name="expires" minOccurs="0">
+               <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                     <xs:maxLength value="19"/>
+                     <xs:minInclusive value="2005-08-19"/>
+                     <xs:maxInclusive value="2006-08-19"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">expires</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="years">
+               <xs:simpleType>
+                  <xs:restriction base="xs:integer">
+                     <xs:maxLength value="11"/>
+                     <xs:minExclusive value="0"/>
+                     <xs:maxInclusive value="100"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">years lived there</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="emails">
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">Email List</xs:documentation>
+                  <xs:documentation source="ospi.description">The person's email addresses</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="email" minOccurs="1" maxOccurs="unbounded">
+                        <xs:annotation>
+                           <xs:documentation source="ospi.label">Email</xs:documentation>
+                           <xs:documentation source="ospi.description">The person's email address</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                           <xs:restriction base="xs:string">
+                              <xs:maxLength value="99"/>
+                              <xs:pattern value=".*@.*"/>
+                           </xs:restriction>
+                        </xs:simpleType>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="phoneNumber" type="phoneType" minOccurs="1" maxOccurs="unbounded">
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">Phone</xs:documentation>
+                  <xs:documentation source="ospi.description">The person's phone number</xs:documentation>
+               </xs:annotation>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <xs:complexType name="phoneType" mixed="false">
+      <xs:sequence>
+         <xs:element name="type" minOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="ospi.label">Type</xs:documentation>
+               <xs:documentation source="ospi.description">The person's phone number type</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="Home"/>
+                  <xs:enumeration value="Work"/>
+                  <xs:enumeration value="Cell"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="number" minOccurs="1" type="xs:string">
+            <xs:annotation>
+               <xs:documentation source="ospi.label">Number</xs:documentation>
+               <xs:documentation source="ospi.description">The person's phone number</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="20"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="contact" minOccurs="0" type="xs:boolean">
+            <xs:annotation>
+               <xs:documentation source="ospi.label">Contact Me Here</xs:documentation>
+               <xs:documentation source="ospi.description">If the person should be contacted at this number</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+
+   <xs:simpleType name="nameType">
+      <xs:restriction base="xs:string">
+         <xs:maxLength value="25"/>
+      </xs:restriction>
+   </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ *********************************************************************************
+  ~  $URL: https://source.sakaiproject.org/svn/content/trunk/content-api/api/src/java/org/sakaiproject/content/api/ContentCollection.java $
+  ~  $Id: ContentCollection.java 8537 2006-05-01 02:13:28Z jimeng@umich.edu $
+  ~ **********************************************************************************
+  ~
+ * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.osedu.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+  ~
+  ~ *********************************************************************************
+  ~
+  -->
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+   <bean id="org.theospi.portfolio.security.model.BeanLoadCollector.integration"
+      class="org.theospi.portfolio.security.model.BeanLoadCollector"
+      singleton="true">
+      <property name="beans">
+         <list>
+            <ref bean="org.theospi.portfolio.security.mgt.ToolPermissionManager.presentation"/>
+            <ref bean="org.theospi.portfolio.security.mgt.ToolPermissionManager.presentationTemplate"/>
+            <ref bean="org.theospi.portfolio.security.mgt.ToolPermissionManager.presentationLayout"/>
+            <ref bean="org.theospi.portfolio.security.mgt.ToolPermissionManager.style"/>
+            <ref bean="org.theospi.portfolio.security.mgt.ToolPermissionManager.glossaryGlobal"/>
+            <ref bean="styleToolPermissionsMap"/>
+            <ref bean="glosasryToolPermissionsMap"/>
+            <ref bean="matrixToolPermissionsMap"/>
+            <ref bean="presentationToolPermissionsMap"/>
+            <ref bean="wizardToolPermissionsMap"/>
+         </list>
+      </property>
+   </bean>
+
+   <!-- setup user and program admin site -->
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminHome"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Admin Site</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Home</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.adminHome" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminResource"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Resources</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Resources</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.adminResources" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminMailbox"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Email Archive</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Email Archive</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.adminMailbox" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminPresentation"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Portfolios</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Portfolio</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.adminPresentation" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminPresentationTemplate"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Portfolio Templates</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Portfolio Templates</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.adminPresentationTemplate" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminLayout"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Portfolio Layouts</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Portfolio Layouts</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.adminLayout" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminStyle"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Styles</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Styles</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.adminStyle" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminReport"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Reports</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Reports</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.adminReport" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminSiteInfo"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Site Info</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Site Info</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.adminSiteInfo" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminGlossaryToAdmin"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Admin Site</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Glossary</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.globalGlossary" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.adminFormsToAdmin"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>Admin Site</value>
+      </property>
+      <property name="worksiteId">
+         <value>PortfolioAdmin</value>
+      </property>
+      <property name="pageName">
+         <value>Forms</value>
+      </property>
+      <property name="layout">
+         <value>0</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.globalForms" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.homePageToExistingUsers"
+      class="org.theospi.portfolio.admin.service.ExistingWorksitePageOption">
+      <property name="label">
+         <value>Existing User Sites</value>
+      </property>
+      <property name="worksiteType">
+         <value>user</value>
+      </property>
+      <property name="pageName">
+         <value>OSP Home</value>
+      </property>
+      <property name="layout">
+         <value>1</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.worksiteHome" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.homePageToUserTemplate"
+      class="org.theospi.portfolio.admin.service.PageOption">
+      <property name="label">
+         <value>User Template</value>
+      </property>
+      <property name="worksiteId">
+         <value>!user</value>
+      </property>
+      <property name="pageName">
+         <value>OSP Home</value>
+      </property>
+      <property name="layout">
+         <value>1</value>
+      </property>
+      <property name="positionFromEnd">
+         <value>0</value>
+      </property>
+      <property name="tools">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.service.ToolOption.worksiteHome" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.worksiteHome"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>osp.synoptic</value>
+      </property>
+      <property name="title">
+         <value>Worksites</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+   			<prop key="listGenId">worksites</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminResources"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>sakai.resources</value>
+      </property>
+      <property name="title">
+         <value>Resources</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminMailbox"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>sakai.mailbox</value>
+      </property>
+      <property name="title">
+         <value>Email Archive</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminPresentation"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>osp.presentation</value>
+      </property>
+      <property name="title">
+         <value>Portfolios</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+            <prop key="theospi.resetUrl">/member/listPresentation.osp</prop>
+            <prop key="theospi.toolListenerId">org.theospi.portfolio.security.mgt.ToolPermissionManager.presentation</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminPresentationTemplate"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>osp.presTemplate</value>
+      </property>
+      <property name="title">
+         <value>Portfolio Templates</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+            <prop key="theospi.resetUrl">/member/listTemplate.osp</prop>
+            <prop key="theospi.toolListenerId">org.theospi.portfolio.security.mgt.ToolPermissionManager.presentationTemplate</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminLayout"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>osp.presLayout</value>
+      </property>
+      <property name="title">
+         <value>Portfolio Layouts</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+            <prop key="theospi.resetUrl">/listLayout.osp</prop>
+            <prop key="theospi.toolListenerId">org.theospi.portfolio.security.mgt.ToolPermissionManager.presentationLayout</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminStyle"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>osp.style</value>
+      </property>
+      <property name="title">
+         <value>Styles</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+            <prop key="theospi.toolListenerId">org.theospi.portfolio.security.mgt.ToolPermissionManager.style</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminForms"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>sakai.metaobj</value>
+      </property>
+      <property name="title">
+         <value>Forms</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminReport"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>sakai.reports</value>
+      </property>
+      <property name="title">
+         <value>Reports</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminHome"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>sakai.iframe.site</value>
+      </property>
+      <property name="title">
+         <value>Worksite Information</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.globalGlossary"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>osp.glossary</value>
+      </property>
+      <property name="title">
+         <value>Glossary</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+            <prop key="theospi.toolListenerId">org.theospi.portfolio.security.mgt.ToolPermissionManager.glossaryGlobal</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.globalForms"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>sakai.metaobj</value>
+      </property>
+      <property name="title">
+         <value>Forms</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.service.ToolOption.adminSiteInfo"
+      class="org.theospi.portfolio.admin.service.ToolOption">
+      <property name="toolId">
+         <value>sakai.siteinfo</value>
+      </property>
+      <property name="title">
+         <value>Site Info</value>
+      </property>
+      <property name="layoutHints">
+         <value>0,0</value>
+      </property>
+      <property name="initProperties">
+         <props>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.intf.SakaiIntegrationPlugin.pages"
+      class="org.theospi.portfolio.admin.service.ToolPageIntegrationPlugin">
+      <property name="siteService">
+         <ref bean="org.sakaiproject.site.api.SiteService"/>
+      </property>
+      <property name="toolManager">
+         <ref bean="org.sakaiproject.tool.api.ActiveToolManager" />
+      </property>
+      <property name="title" value=""/>
+      <property name="description" value=""/>
+      <property name="potentialIntegrations">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminHome"/>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminResource"/>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminMailbox"/>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminPresentation"/>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminPresentationTemplate"/>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminLayout"/>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminStyle"/>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminGlossaryToAdmin"/>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminFormsToAdmin"/>
+            <!-- <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminReport"/> -->
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.adminSiteInfo"/>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.model.IntegrationOption.siteOption"
+      class="org.theospi.portfolio.admin.service.SiteOption">
+      <property name="siteId" value="PortfolioAdmin"/>
+      <property name="siteType" value="portfolioAdmin"/>
+      <property name="siteTitle" value="Portfolio Admin"/>
+      <property name="siteDescription" value="Site for portfolio administration"/>
+      <property name="label" value="Portfolio Admin Site Creation"/>
+      <property name="include" value="true"/>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.intf.SakaiIntegrationPlugin.sites"
+      class="org.theospi.portfolio.admin.service.SiteIntegrationPlugin">
+      <property name="siteService">
+         <ref bean="org.sakaiproject.site.api.SiteService"/>
+      </property>
+      <property name="title" value="Site Creation"/>
+      <property name="description" value="Plugin to create sites"/>
+      <property name="potentialIntegrations">
+         <list>
+            <ref bean="org.theospi.portfolio.admin.model.IntegrationOption.siteOption"/>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.admin.intf.SakaiIntegrationService.common"
+      class="org.theospi.portfolio.admin.service.SakaiIntegrationServiceImpl"
+      singleton="true">
+      <property name="integrationPlugins">
+         <list>
+            <value>org.theospi.portfolio.admin.intf.SakaiIntegrationPlugin.sites</value>
+            <value>org.theospi.portfolio.admin.intf.SakaiIntegrationPlugin.pages</value>
+         </list>
+      </property>
+      <property name="initUsers">
+      	<list>
+      		<value>admin</value>
+      	</list>
+      </property>
+      <property name="pollingInterval"><value>5000</value></property>
+      <property name="schedulerManager">
+         <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager"/>
+      </property>
+      <property name="dependantBeans">
+         <list>
+            <ref bean="org.theospi.portfolio.security.model.SakaiDefaultPermsManager.sakaiTools" />
+            <ref bean="org.theospi.portfolio.security.model.BeanLoadCollector.integration"/>
+         </list>
+      </property>
+      <property name="contentHostingService">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
+      </property>
+      <property name="serverConfigurationService">
+         <ref bean="org.sakaiproject.component.api.ServerConfigurationService"/>
+      </property>
+   </bean>
+   <!-- above: setup user and program admin site -->
+
+</beans>
+

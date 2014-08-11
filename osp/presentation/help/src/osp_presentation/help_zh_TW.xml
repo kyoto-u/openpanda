@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="portfolios_overview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>portfolios_overview_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>學檔 - 概述</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/portfolios_overview_zh_TW.html</value>
+      </property>
+      <property name="defaultForTool">
+         <value>osp.presentation</value>
+      </property>
+   </bean>
+   <bean id="planning_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>planning_a_portfolio_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>策劃學檔</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/planning_a_portfolio_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="accessing_the_portfolios_tool"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>accessing_the_portfolios_tool_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>存取學檔工具</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/accessing_the_portfolios_tool_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="creating_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>creating_a_portfolio_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>建立學檔</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/creating_a_portfolio_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="creating_a_portfolio_based_on_your_own_design"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>creating_a_portfolio_based_on_your_own_design_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>設計您自己的學檔</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/creating_a_portfolio_based_on_your_own_design_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="using_a_template_to_create_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>using_a_template_to_create_a_portfolio_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>建立基於範本的學檔</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/using_a_template_to_create_a_portfolio_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="changing_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_a_portfolio_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>更改學檔</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/changing_a_portfolio_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="publishing_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>publishing_a_portfolio_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>公開學檔</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/publishing_a_portfolio_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="deap"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>deap_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>下載﹙匯出﹚學檔</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/deap_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="deleting_a_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>deleting_a_portfolio_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>刪除學檔</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/deleting_a_portfolio_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="viewing_a_portfolio_and_its_comments"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>viewing_a_portfolio_and_its_comments_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>檢視學檔及其註解</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/viewing_a_portfolio_and_its_comments_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="leaving_a_comment"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>leaving_a_comment_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>新增註解</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/leaving_a_comment_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="managing_comments_on_your_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>managing_comments_on_your_portfolio_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>管理學檔註解</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/managing_comments_on_your_portfolio_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="viewing_comments_on_all_of_your_portfolios"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>viewing_comments_on_all_of_your_portfolios_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>檢視您全部學檔的註解</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/viewing_comments_on_all_of_your_portfolios_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="viewing_your_comments_on_portfolios"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>viewing_your_comments_on_portfolios_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>檢視您為學檔新增的註解</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/viewing_your_comments_on_portfolios_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="seeing_who_has_viewed_your_portfolio"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>seeing_who_has_viewed_your_portfolio_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>檢視已瀏覽學檔的使用者</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/seeing_who_has_viewed_your_portfolio_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="changing_permissions_for_the_portfolios_tool"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_permissions_for_the_portfolios_tool_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>更改權限</value>
+      </property>
+      <property name="location">
+         <value>/osp_presentation/changing_permissions_for_the_portfolios_tool_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean" id="ospPortfolioCategory">
+               <property name="name">
+                 <value>學檔</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="portfolios_overview"/>
+                     <ref bean="planning_a_portfolio"/>
+                     <ref bean="accessing_the_portfolios_tool"/>
+                     <ref bean="creating_a_portfolio"/>
+                     <ref bean="creating_a_portfolio_based_on_your_own_design"/>
+                     <ref bean="using_a_template_to_create_a_portfolio"/>
+                     <ref bean="changing_a_portfolio"/>
+                     <ref bean="publishing_a_portfolio"/>
+                     <ref bean="deap"/>
+                     <ref bean="deleting_a_portfolio"/>
+                     <ref bean="viewing_a_portfolio_and_its_comments"/>
+                     <ref bean="leaving_a_comment"/>
+                     <ref bean="managing_comments_on_your_portfolio"/>
+                     <ref bean="viewing_comments_on_all_of_your_portfolios"/>
+                     <ref bean="viewing_your_comments_on_portfolios"/>
+                     <ref bean="seeing_who_has_viewed_your_portfolio"/>
+                     <ref bean="changing_permissions_for_the_portfolios_tool"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

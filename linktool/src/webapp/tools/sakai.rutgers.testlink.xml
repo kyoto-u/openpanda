@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool
+			id="sakai.rutgers.testlink"
+			title="Link Tool Example"
+			description="Example of the link tool under another tool id and name.">
+
+		<configuration name="url" value="http://nightly2.sakaiproject.org/linktool/linktool.php" />
+		<configuration name="height" value="800" />
+
+		<keyword name="linktool" />
+
+	</tool>
+
+</registration>

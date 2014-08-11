@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+
+   <tlib-version>1.0</tlib-version>
+
+   <jsp-version>1.2</jsp-version>
+
+   <short-name>osp</short-name>
+
+   <uri>http://www.theospi.org</uri>
+
+   <description>osp tag library</description>
+
+   <tag>
+
+      <name>form</name>
+      <tag-class>org.sakaiproject.metaobj.shared.control.tag.FormTag</tag-class>
+      <body-content>JSP</body-content>
+
+      <description>
+			puts various form hidden input fields for sakai
+      </description>
+   </tag>
+
+   <tag>
+      <name>url</name>
+      <tag-class>org.sakaiproject.metaobj.shared.control.tag.SakaiUrlTag</tag-class>
+      <body-content>JSP</body-content>
+      <description>
+	Prints or exposes a URL with optional query parameters
+        (via the c:param tag).
+      </description>
+      <attribute>
+         <name>var</name>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>scope</name>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>value</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>context</name>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>includeParams</name>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>includeQuestion</name>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+      </attribute>
+   </tag>
+
+	 <tag>
+      <name>param</name>
+      <tag-class>org.apache.taglibs.standard.tag.el.core.ParamTag</tag-class>
+      <body-content>JSP</body-content>
+      <description>
+	Adds a parameter to a containing 'import' tag's URL.
+      </description>
+      <attribute>
+         <name>name</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>value</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+   </tag> 
+
+
+   	<!-- Changed rtexprvalue on several tags to true - PAFH 8/11/2006 -->
+   <tag>
+      <name>authZMap</name>
+      <tag-class>org.sakaiproject.metaobj.security.control.tag.AuthZMapTag</tag-class>
+      <body-content>JSP</body-content>
+      <description>
+	exposes a map of the current user's authzs
+      </description>
+      <attribute>
+         <name>qualifier</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>prefix</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>var</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>scope</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>useSite</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+   </tag>
+   <tag>
+      <description>
+        Maps key to localized message and performs parametric replacement
+      </description>
+      <name>message</name>
+      <tag-class>org.sakaiproject.metaobj.shared.control.tag.Message</tag-class>
+      <body-content>JSP</body-content>
+      <attribute>
+         <description>
+Message key to be looked up.
+         </description>
+         <name>key</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <description>
+Localization context in whose resource
+bundle the message key is looked up.
+         </description>
+         <name>bundle</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <description>
+Name of the exported scoped variable
+which stores the localized message.
+         </description>
+         <name>var</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <description>
+Scope of var.
+         </description>
+         <name>scope</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <description>
+Default value if key is not found
+         </description>
+         <name>text</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+   </tag>
+
+   <tag>
+      <name>listScroll</name>
+      <tag-class>org.sakaiproject.metaobj.shared.control.tag.ListScrollTag</tag-class>
+      <body-content>JSP</body-content>
+      <description>
+    Puts the "next" and "prev" buttons on a list page
+      </description>
+      <attribute>
+         <name>listScroll</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>listUrl</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>className</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+   </tag>
+
+   <tag>
+     <name>richTextWrapper</name>
+     <tag-class>org.sakaiproject.metaobj.shared.control.tag.RichTextWrapperTag</tag-class>
+     <body-content>JSP</body-content>
+     <description>
+    Looks up the configuration property "wysiwyg.editor" and then sets up for the appropriate editor (currently fckeditor or htmlarea)
+     </description>
+     <attribute>
+          <name>textAreaId</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The id attribute of the textarea control that will be wrapped with a rich text editor</description>
+      </attribute>
+   </tag>
+
+</taglib>

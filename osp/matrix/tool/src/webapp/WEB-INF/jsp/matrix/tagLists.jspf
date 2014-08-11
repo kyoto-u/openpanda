@@ -1,0 +1,146 @@
+<input type="hidden" name="criteria" value=""/>
+<input type="hidden" name="providerId" value=""/>
+<c:set var="firstFlag" value="true"/>
+<c:forEach var="provider" items="${providers}">
+  <c:if test="${provider.allowViewTags}">
+  	<c:if test="${!firstFlag}">
+  		<br><br>
+  	</c:if>
+  	<div class="navPanel">
+	<div class="viewNav">
+		<c:set var="firstFlag" value="false"/>  	
+	
+    	<h4><c:out value="${provider.provider.simpleTextLabel}"/></h4>
+    </div>
+    <c:choose>
+      <c:when test="${!(empty provider.tags)}">
+
+	  <c:set var="pager" value="${provider.pager}"/>
+
+
+      <c:if test="${pager.totalItems > 5}">
+        <div class="listNav">
+          
+          <div class="instruction">
+            
+            <c:out value="${msgs.tgble_viewing}"/> 
+            <c:out value="${pager.firstItemNumber}"/> - 
+            <c:out value="${pager.lastItemNumber}"/> 
+            <c:out value="${msgs.tgble_of}"/> 
+            <c:out value="${pager.totalItems}"/> 
+            <c:out value="${msgs.tgble_items}"/>
+          </div>
+          <c:choose>
+            <c:when test="${pager.canFirst}">
+              <input type="submit" name="page" value="|&lt;" title='<c:out value="${msgs.tgble_first}"/>'
+                     onclick="document.form.submitAction.value='pageList';
+                              document.form.providerId.value='<c:out value="${provider.provider.id}"/>';
+                              document.form.submit();" />
+            </c:when>
+            <c:otherwise>
+              <input type="submit" value="|&lt;" disabled="disabled" />
+            </c:otherwise>
+          </c:choose>
+          <c:choose>
+            <c:when test="${pager.canPrevious}">
+              <input type="submit" name="page" value="&lt;" title='<c:out value="${msgs.tgble_previous}"/>'
+                     onclick="document.form.submitAction.value='pageList';
+                              document.form.providerId.value='<c:out value="${provider.provider.id}"/>';
+                              document.form.submit();" />
+            </c:when>
+            <c:otherwise>
+              <input type="submit" value="&lt;" disabled="disabled" />
+            </c:otherwise>
+          </c:choose>
+          <select name="pageSize" onchange="document.form.submitAction.value='pageList';
+                                            document.form.providerId.value='<c:out value="${provider.provider.id}"/>';
+                                            document.form.submit();">
+            <c:forEach var="size" items="${pager.pageSizes}">
+              <c:choose>
+                <c:when test="${pager.pageSize == size}">
+                  <option value="<c:out value="${size}"/>" selected="selected">
+                    <c:out value="${msgs.tgble_show}"/> <c:out value="${size}"/>
+                  </option>
+                </c:when>
+                <c:otherwise>
+                  <option value="<c:out value="${size}"/>">
+                    <c:out value="${msgs.tgble_show}"/> <c:out value="${size}"/>
+                  </option>
+                </c:otherwise>
+              </c:choose>
+            </c:forEach>
+          </select>
+          <c:choose>
+            <c:when test="${pager.canNext}">
+              <input type="submit" name="page" value="&gt;" title='<c:out value="${msgs.tgble_next}"/>'
+                     onclick="document.form.submitAction.value='pageList';
+                              document.form.providerId.value='<c:out value="${provider.provider.id}"/>';
+                              document.form.submit();" />
+            </c:when>
+            <c:otherwise>
+              <input type="submit" value="&gt;" disabled="disabled" />
+            </c:otherwise>
+          </c:choose>
+          <c:choose>
+            <c:when test="${pager.canLast}">
+              <input type="submit" name="page" value="&gt;|" title='<c:out value="${msgs.tgble_last}"/>'
+                     onclick="document.form.submitAction.value='pageList';
+                              document.form.providerId.value='<c:out value="${provider.provider.id}"/>';
+                              document.form.submit();" />
+            </c:when>
+            <c:otherwise>
+              <input type="submit" value="&gt;|" disabled="disabled" />
+            </c:otherwise>
+          </c:choose>
+		</div>
+		</div>
+		</c:if>
+        <table class="listHier lines nolines" border="0" cellspacing="0">
+          <tr>
+            <c:forEach var="column" items="${provider.columns}">
+              <c:choose>
+                <c:when test="${column.sortable}">
+                  <th>
+                    <a title='<c:out value="${column.description}"/>'
+                       href="javascript:document.form.submitAction.value='sortList';
+                                        document.form.providerId.value='<c:out value="${provider.provider.id}"/>';
+                                        document.form.criteria.value='<c:out value="${column.name}"/>';
+                                        document.form.submit();">
+                      <c:out value="${column.displayName}"/> 
+                      <c:if test="${provider.sort.sort == column.name}">
+                        <c:choose>
+                          <c:when test="${provider.sort.ascending}">                    
+                            <img src="/library/image/sakai/sortascending.gif" 
+                                 alt='<c:out value="${msgs.eval_sortbytypeasc}"/>'/>
+                          </c:when>
+                          <c:otherwise>
+                            <img src="/library/image/sakai/sortdescending.gif" 
+                                 alt='<c:out value="${msgs.eval_sortbytypedesc}"/>'/>                    
+                          </c:otherwise>
+                        </c:choose>
+                      </c:if>
+                    </a>
+                  </th>
+                </c:when>
+                <c:otherwise>
+                  <th><c:out value="${column.displayName}"/></th>
+                </c:otherwise>
+              </c:choose>
+            </c:forEach>
+          </tr>
+          <c:forEach var="tag" items="${provider.tags}">
+            <tr>
+              <c:forEach var="field" items="${tag.fields}">
+                <td><c:out escapeXml="false" value="${field}"/></td>
+              </c:forEach>
+            </tr>
+          </c:forEach>
+        </table>
+      </c:when>
+      <c:otherwise>
+      	</div>
+        <div class="information"><c:out value="${msgs.tgble_tags_empty}"/></div>
+      </c:otherwise>
+    </c:choose>
+  </c:if>
+</c:forEach>

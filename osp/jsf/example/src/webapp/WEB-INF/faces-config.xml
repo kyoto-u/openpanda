@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN"
+  "dtd/web-facesconfig_1_0.dtd">
+
+<faces-config>
+
+   <managed-bean>
+      <description>
+         Example backing bean for multiple example pages
+      </description>
+      <managed-bean-name>testBean</managed-bean-name>
+      <managed-bean-class>example.TestBean</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>
+   
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>main</from-outcome>
+			<to-view-id>/samples/main.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+      <navigation-case>
+         <from-outcome>splitArea</from-outcome>
+         <to-view-id>/samples/splitArea.jsp</to-view-id>
+         <redirect />
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>wizardSteps</from-outcome>
+         <to-view-id>/samples/wizardSteps.jsp</to-view-id>
+         <redirect />
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>scrollArea</from-outcome>
+         <to-view-id>/samples/scrollableArea.jsp</to-view-id>
+         <redirect />
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>xheader</from-outcome>
+         <to-view-id>/samples/xheader.jsp</to-view-id>
+         <redirect />
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>page1</from-outcome>
+         <to-view-id>/samples/page1.jsp</to-view-id>
+         <redirect />
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>tabArea</from-outcome>
+         <to-view-id>/samples/tabArea.jsp</to-view-id>
+         <redirect />
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>xmlDocument</from-outcome>
+         <to-view-id>/samples/xmlDocument.jsp</to-view-id>
+         <redirect />
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>testComponent</from-outcome>
+         <to-view-id>/samples/testComponent.jsp</to-view-id>
+         <redirect />
+      </navigation-case>
+
+	</navigation-rule>
+</faces-config>

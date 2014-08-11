@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix.wizardpage.attachments"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+              <property name="propertyName"><value>artifactId</value></property>
+           </bean>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.parentId" />
+           
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_wizard_page_attachments
+                                    (id, artifact_id, wizard_page_id) 
+                                    values (?, ?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_wizard_page_attachments</value>
+     </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix.wizardpage.forms"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+              <property name="propertyName"><value>artifactId</value></property>
+           </bean>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.parentId" />
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>formType</value></property>
+           </bean>
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_wizard_page_forms
+                                    (id, artifact_id, wizard_page_id, form_type) 
+                                    values (?, ?, ?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_wizard_page_forms</value>
+     </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix.wizardpage"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>status</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>pageDefinition</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>modified</value></property>
+           </bean>
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_wizard_page
+                                    (id, status, wizard_page_def_id, modified)
+                                
+                                    values (?, ?, ?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_wizard_page</value>
+     </property>
+     <property name="complexFields" >
+         <list> <!-- TODO: wizard page attachments, and wizard page form -->
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+               <property name="propertyAccess">        
+                  <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                     <property name="propertyName"><value>attachments</value></property>
+                  </bean>
+               </property>
+               <property name="task">
+                   <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix.wizardpage.attachments"/>
+               </property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+               <property name="propertyAccess">   
+                  <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                     <property name="propertyName"><value>pageForms</value></property>
+                  </bean>
+               </property>
+               <property name="task">
+                   <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix.wizardpage.forms"/>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix.cell"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>matrix</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>wizardPage</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>scaffoldingCell</value></property>
+           </bean>
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_matrix_cell
+                                    (id, matrix_id, wizard_page_id, scaffolding_cell_id)
+                                                                        values (?, ?, ?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_matrix_cell</value>
+     </property>
+     <property name="complexFields" >
+         <list>
+         </list>
+      </property>
+   </bean>
+
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.owner" />   
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>scaffolding</value></property>
+           </bean>
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_matrix
+                                    (id, owner, scaffolding_id)
+                                    values (?, ?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_matrix</value>
+     </property>
+     <property name="complexFields" >
+         <list>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+               <property name="propertyAccess">               
+                  <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                     <property name="propertyName"><value>cells</value></property>
+                  </bean>
+               </property>
+               <property name="task">
+                 <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix.cell"/>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   
+   
+    <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix.tool"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>scaffolding</value></property>
+           </bean>
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_matrix_tool
+                                    (id, scaffolding_id) values (?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_matrix_tool</value>
+     </property>
+     <property name="complexFields" >
+         <list>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+               <property name="propertyAccess">               
+                  <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                     <property name="propertyName"><value>matrix</value></property>
+                  </bean>
+               </property>
+               <property name="task">
+                   <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix"/>
+               </property>
+            </bean>                     
+         </list>
+      </property>
+   </bean>
+   
+   <bean
+       id="org.sakaiproject.warehouse.service.WarehouseTask.matrix"
+       class="org.theospi.portfolio.warehouse.osp.matrix.MatrixWarehouseTask"
+       init-method="init" singleton="true">
+       <property name="dataSource">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource" />
+       </property>
+       <property name="dataWarehouseManager">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager" />
+       </property>
+       <property name="tableDdlResource">
+           <value>/org/theospi/portfolio/warehouse/osp/matrix.xml</value>
+       </property>
+       <property name="matrixManager">
+           <ref bean="matrixManager" />
+       </property>
+       <property name="task">
+           <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix"/>
+       </property>
+   </bean>
+   
+
+</beans>

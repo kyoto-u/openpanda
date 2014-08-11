@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="org.sakaiproject.calendar.api.CalendarService"
+			class="org.sakaiproject.calendar.impl.DbCalendarService"
+			init-method="init"
+			destroy-method="destroy"
+			singleton="true">
+		<property name="memoryService"><ref bean="org.sakaiproject.memory.api.MemoryService"/></property>
+		<property name="sqlService"><ref bean="org.sakaiproject.db.api.SqlService"/></property>
+		<property name="entityManager"><ref bean="org.sakaiproject.entity.api.EntityManager"/></property>
+ 		<property name="serverConfigurationService"><ref bean="org.sakaiproject.component.api.ServerConfigurationService"/></property>
+		<property name="idManager"><ref bean="org.sakaiproject.id.api.IdManager"/></property>
+ 		<property name="containerTableName"><value>CALENDAR_CALENDAR</value></property>
+ 		<property name="resourceTableName"><value>CALENDAR_EVENT</value></property>
+ 		<property name="caching"><value>false</value></property>
+ 		<property name="locksInDb"><value>false</value></property>
+ 		<property name="autoDdl"><value>${auto.ddl}</value></property>
+	</bean>
+	
+	<bean id="org.sakaiproject.calendar.api.CalendarImporterService"
+		class="org.sakaiproject.calendar.impl.GenericCalendarImporter"
+		init-method="init"
+		destroy-method="destroy"
+		singleton="true">
+		<property name="calendarService"><ref bean="org.sakaiproject.calendar.api.CalendarService"/></property>
+		<property name="timeService"><ref bean="org.sakaiproject.time.api.TimeService"/></property>
+	</bean>
+	
+	<bean id="org.sakaiproject.calendar.api.ExternalCalendarSubscriptionService"
+		class="org.sakaiproject.calendar.impl.BaseExternalCalendarSubscriptionService"
+		init-method="init" destroy-method="destroy"
+		singleton="true">
+		<property name="calendarService"><ref bean="org.sakaiproject.calendar.api.CalendarService"/></property>
+ 		<property name="serverConfigurationService"><ref bean="org.sakaiproject.component.api.ServerConfigurationService"/></property>
+		<property name="entityManager"><ref bean="org.sakaiproject.entity.api.EntityManager"/></property>
+		<property name="siteService"><ref bean="org.sakaiproject.site.api.SiteService"/></property>
+		<property name="calendarImporterService"><ref bean="org.sakaiproject.calendar.api.CalendarImporterService"/></property>
+	</bean>
+
+</beans>

@@ -1,0 +1,72 @@
+/* Styles for the xheader */    
+.xheader {
+/*  background-color:#eee;
+*/  color:#555;
+	font-weight: bold;
+	font-size:1.2em;
+     vertical-align: middle;
+	  padding:.3em 0;
+	  margin:.5em 0	
+
+ }
+ .xhItalics {
+     background-color:#808080;
+     color:#FFFFFF;
+     font-size: 17px;
+     font-style: italic;
+ }
+ .xhSmallFont {
+     background-color:#808080;
+     color:#FFFFFF;
+     font-size: 14px;
+ }
+ .theUnderArea {
+     border-color: #808080;
+     border-style: solid;
+     border-width: thick;        
+ }
+    
+    
+/* Styles for the wizardSteps */    
+   td.previous_state {color: #B7BBC2;}
+   div.previous_state {color: #000000; background-image: url("/osp-jsf-resource/wizardSteps/images/wizard_circle_g.png");
+      background-repeat: no-repeat; background-position: center; text-align: center; height: 20px;}
+   td.current_state {color: #000000;}
+   div.current_state {color: #FFFFFF; background-image: url("/osp-jsf-resource/wizardSteps/images/wizard_circle_b.png");
+      background-repeat: no-repeat; background-position: center; text-align: center; height: 20px;}
+   td.next_state {color: #000000;}
+   div.next_state {color: #000000; background-image: url("/osp-jsf-resource/wizardSteps/images/wizard_circle_w.png");
+      background-repeat: no-repeat; background-position: center; text-align: center; height: 20px;}
+   td.disabled_state {color: #FF0000;}
+   div.disabled_state {color: #000000; background-image: url("/osp-jsf-resource/wizardSteps/images/wizard_circle_r.png");
+      background-repeat: no-repeat; background-position: center; text-align: center; height: 20px;}
+
+ .osp_tab {
+    border-color: #808080;
+     border-style: solid;
+     border-width: thin;
+     background-color: #B7BBC2;
+ }
+ .osp_tab_selected {
+    border-color: #B0B0B0;
+     border-style: solid;
+     border-width: thin;
+     background-color: #D7DBD2;
+ }
+ 
+ .osp_required_field {
+   color:#FF0000;
+ }
+ .drawerBorder {
+	margin:0;
+	padding:0;
+	
+ }
+ .drawerBorder table {
+	margin:0;
+ }
+
+/*complex lists - principal column nowrap (used in jsf columnClasses)*/
+.nowrap{
+	white-space: nowrap;
+} 

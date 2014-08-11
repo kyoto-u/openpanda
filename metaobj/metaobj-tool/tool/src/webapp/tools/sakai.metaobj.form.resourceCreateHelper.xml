@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<registration>
+
+   <tool id="sakai.metaobj.form.resourceCreateHelper" title="Resource Form Create Helper" description="Resource Form Create Helper">
+      <configuration name="test" value="reg-value"/>
+
+      <category name="sakai.helper"/>
+   </tool>
+
+</registration>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="freeform_template.xsl"?>
+<ospiPresentation>
+   <layout>
+      <artifact>
+         <metaData>
+            <id>85eb4142-f5e6-4ec7-8069-ceebdf6e2180</id>
+            <displayName>mod_layout.xml</displayName>
+            <type>
+               <id>file</id>
+               <description>file</description>
+            </type>
+            <repositoryNode>
+               <created>Tue Nov 15 13:47:44 GMT-05:00 2005</created>
+               <modified>Tue Nov 15 13:47:44 GMT-05:00 2005</modified>
+               <size>2235</size>
+               <mimeType>
+                  <primary>text</primary>
+                  <sub>xml</sub>
+               </mimeType>
+            </repositoryNode>
+         </metaData>
+         <fileArtifact>
+            <uri>layout.xhtml</uri>
+         </fileArtifact>
+      </artifact>
+   </layout>
+   <navigation>
+      <nextPage>
+         <artifact>
+            <metaData>
+               <id>1</id>
+               <displayName>Page One</displayName>
+               <type>
+                  <id>page</id>
+                  <description>Presentation Page</description>
+               </type>
+            </metaData>
+            <fileArtifact>
+               <uri>viewPresentation.osp?id=6CCDD5B0F6C171C5632FD59EEC2FCFB0&amp;page=1</uri>
+            </fileArtifact>
+         </artifact>
+      </nextPage>
+   </navigation>
+   <regions>
+      <region id="region_5" type="form">
+         <itemProperties>
+            <contentType>9A232524D5A1231015AE4C3563E6F11C</contentType>
+         </itemProperties>
+         <artifact>
+            <metaData>
+               <id>772bd4f7-9c53-4784-002f-9def2f8072e9</id>
+               <displayName>My Contact Info</displayName>
+               <type>
+                  <id>file</id>
+                  <description>file</description>
+               </type>
+               <repositoryNode>
+                  <created>Tue Nov 15 10:09:00 GMT-05:00 2005</created>
+                  <modified>Tue Nov 15 10:09:00 GMT-05:00 2005</modified>
+                  <size>412</size>
+                  <mimeType>
+                     <primary>application</primary>
+                     <sub>x-osp</sub>
+                  </mimeType>
+               </repositoryNode>
+            </metaData>
+            <structuredData>
+               <contactInfo>
+                  <firstName>Chris</firstName>
+                  <middle/>
+                  <lastName>Maurer</lastName>
+                  <expires>2005-11-15</expires>
+                  <emails>
+                     <email>chmaurer@iupui.edu</email>
+                     <email/>
+                     <email/>
+                  </emails>
+                  <phoneNumber>
+                     <type>Work</type>
+                     <number>2781755</number>
+                     <contact>true</contact>
+                  </phoneNumber>
+               </contactInfo>
+            </structuredData>
+            <schema>
+               <element name="contactInfo">
+                  <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <xs:documentation source="ospi.label">Contact Information</xs:documentation>
+                     <xs:documentation source="ospi.description">Contact Information Structured Data</xs:documentation>
+                  </xs:annotation>
+                  <children>
+                     <element name="firstName">
+                        <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                           <xs:documentation source="ospi.label">First Name</xs:documentation>
+                           <xs:documentation source="ospi.description">The person's first name</xs:documentation>
+                        </xs:annotation>
+                     </element>
+                     <element name="middle">
+                        <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                           <xs:documentation source="ospi.label">Middle Name</xs:documentation>
+                           <xs:documentation source="ospi.description">The person's middle name</xs:documentation>
+                        </xs:annotation>
+                     </element>
+                     <element name="lastName">
+                        <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                           <xs:documentation source="ospi.label">Last Name</xs:documentation>
+                           <xs:documentation source="ospi.description">The person's last name</xs:documentation>
+                        </xs:annotation>
+                     </element>
+                     <element name="expires"/>
+                     <element name="emails">
+                        <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                           <xs:documentation source="ospi.label">Email List</xs:documentation>
+                           <xs:documentation source="ospi.description">The person's email addresses</xs:documentation>
+                        </xs:annotation>
+                        <children>
+                           <element name="email">
+                              <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                                 <xs:documentation source="ospi.label">Email</xs:documentation>
+                                 <xs:documentation source="ospi.description">The person's email address</xs:documentation>
+                              </xs:annotation>
+                           </element>
+                        </children>
+                     </element>
+                     <element name="phoneNumber">
+                        <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                           <xs:documentation source="ospi.label">Phone</xs:documentation>
+                           <xs:documentation source="ospi.description">The person's phone number</xs:documentation>
+                        </xs:annotation>
+                        <children>
+                           <element name="type">
+                              <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                                 <xs:documentation source="ospi.label">Type</xs:documentation>
+                                 <xs:documentation source="ospi.description">The person's phone number type</xs:documentation>
+                              </xs:annotation>
+                           </element>
+                           <element name="number">
+                              <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                                 <xs:documentation source="ospi.label">Number</xs:documentation>
+                                 <xs:documentation source="ospi.description">The person's phone number</xs:documentation>
+                              </xs:annotation>
+                           </element>
+                           <element name="contact">
+                              <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                                 <xs:documentation source="ospi.label">Contact Me Here</xs:documentation>
+                                 <xs:documentation source="ospi.description">If the person should be contacted at this number</xs:documentation>
+                              </xs:annotation>
+                           </element>
+                        </children>
+                     </element>
+                  </children>
+               </element>
+            </schema>
+         </artifact>
+      </region>
+      <region id="region_4" type="link">
+         <itemProperties>
+            <contentType>page</contentType>
+            <linkTarget>_parent</linkTarget>
+         </itemProperties>
+         <artifact>
+            <metaData>
+               <id>2</id>
+               <displayName>Page Two</displayName>
+               <type>
+                  <id>page</id>
+                  <description>Presentation Page</description>
+               </type>
+            </metaData>
+            <fileArtifact>
+               <uri>viewPresentation.osp?id=6CCDD5B0F6C171C5632FD59EEC2FCFB0&amp;page=2</uri>
+            </fileArtifact>
+         </artifact>
+      </region>
+      <region id="region_3" type="inline">
+         <itemProperties>
+            <contentType>fileArtifact</contentType>
+            <itemWidth>300</itemWidth>
+            <itemHeight>250</itemHeight>
+         </itemProperties>
+         <artifact>
+            <metaData>
+               <id>b4203bc3-7a5b-4ea6-001c-98850049725c</id>
+               <displayName>layout.JPG</displayName>
+               <type>
+                  <id>file</id>
+                  <description>file</description>
+               </type>
+               <repositoryNode>
+                  <created>Fri Nov 11 11:11:56 GMT-05:00 2005</created>
+                  <modified>Fri Nov 11 11:11:56 GMT-05:00 2005</modified>
+                  <size>44303</size>
+                  <mimeType>
+                     <primary>image</primary>
+                     <sub>jpeg</sub>
+                  </mimeType>
+               </repositoryNode>
+            </metaData>
+            <fileArtifact>
+               <uri>http://localhost:8080/access/ospPresentation/4184eeb4-9a41-4f59-0087-2878baad16fc/6CCDD5B0F6C171C5632FD59EEC2FCFB0/content/group/4184eeb4-9a41-4f59-0087-2878baad16fc/layout.JPG</uri>
+            </fileArtifact>
+         </artifact>
+      </region>
+      <region id="region_2" sequence="0" type="text">
+         <itemProperties/>
+         <value>This is item number one</value>
+      </region>
+      <region id="region_2" sequence="1" type="text">
+         <itemProperties/>
+         <value>This is item number two</value>
+      </region>
+      <region id="region_2" sequence="2" type="text">
+         <itemProperties/>
+         <value>This is item number three</value>
+      </region>
+      <region id="region_1" type="richtext">
+         <itemProperties/>
+         <value>This is the &lt;strong&gt;formatted&lt;/strong&gt; title text</value>
+      </region>
+   </regions>
+</ospiPresentation>

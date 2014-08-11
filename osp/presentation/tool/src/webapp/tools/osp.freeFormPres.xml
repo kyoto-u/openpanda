@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.freeFormPres" title="Free Form Presentation"
+      description="OSP Free Form Presentation Helper Tool">
+      <configuration name="test" value="reg-value" />
+      <category name="sakai.helper" />
+	</tool>
+
+</registration>

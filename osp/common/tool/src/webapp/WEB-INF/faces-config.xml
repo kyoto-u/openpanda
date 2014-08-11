@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<!-- =========== FACES CONFIGURATION FILE ================================== -->
+
+<faces-config>
+   <!-- Example custom JSF component used only in this tool -->
+
+
+   <application>
+     <message-bundle>org.theospi.portfolio.common.bundle.Messages</message-bundle>
+     <locale-config>
+       <default-locale>en</default-locale>
+	   <supported-locale>nl</supported-locale>
+     </locale-config>
+   </application>
+
+	<validator>
+		<validator-id>
+			org.sakaiproject.gradebook.jsf.validator.RichTextValidator
+		</validator-id>
+		<validator-class>
+			org.theospi.portfolio.shared.tool.RichTextValidator
+		</validator-class>
+	</validator>
+
+   <!-- =================== Tool Beans ============== -->
+
+   <managed-bean>
+      <description>GuidanceTool</description>
+      <managed-bean-name>guidance</managed-bean-name>
+      <managed-bean-class>org.theospi.portfolio.guidance.tool.GuidanceTool</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+
+      <managed-property>
+         <description>Service Dependency: guidanceManager</description>
+         <property-name>guidanceManager</property-name>
+         <value>#{Components["org.theospi.portfolio.guidance.mgt.GuidanceManager"]}</value>
+      </managed-property>
+      
+      <managed-property>
+         <description>Service Dependency: contentHostingService</description>
+         <property-name>contentHostingService</property-name>
+         <value>#{Components["org.sakaiproject.content.api.ContentHostingService"]}</value>
+      </managed-property>
+
+   </managed-bean>
+
+   <managed-bean>
+      <description>AudienceTool</description>
+      <managed-bean-name>audience</managed-bean-name>
+      <managed-bean-class>org.theospi.portfolio.security.tool.AudienceTool</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+
+      <managed-property>
+         <description>Service Dependency: idManager</description>
+         <property-name>idManager</property-name>
+         <value>#{Components["idManager"]}</value>
+      </managed-property>
+
+      <managed-property>
+         <description>Service Dependency: authzManager</description>
+         <property-name>authzManager</property-name>
+         <value>#{Components["authzManager"]}</value>
+      </managed-property>
+      
+      
+      <managed-property>
+         <description>Service Dependency: worksiteManager</description>
+         <property-name>worksiteManager</property-name>
+         <value>#{Components["org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"]}</value>
+      </managed-property>
+
+      <managed-property>
+         <description>Service Dependency: agentManager</description>
+         <property-name>agentManager</property-name>
+         <value>#{Components["agentManager"]}</value>
+      </managed-property>
+
+      <managed-property>
+         <description>Service Dependency: siteService</description>
+         <property-name>siteService</property-name>
+         <value>#{Components["org.sakaiproject.site.api.SiteService"]}</value>
+      </managed-property>
+
+      <managed-property>
+         <description>Service Dependency: toolManager</description>
+         <property-name>toolManager</property-name>
+         <value>#{Components["org.sakaiproject.tool.api.ActiveToolManager"]}</value>
+      </managed-property>
+
+	
+   </managed-bean>
+
+    
+
+   
+   <managed-bean>
+      <description>ListTool</description>
+      <managed-bean-name>ListTool</managed-bean-name>
+      <managed-bean-class>org.theospi.portfolio.list.tool.ListTool</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+
+      <!-- a service dependency property - for the ToolService -->
+      <managed-property>
+         <description>Service Dependency: ToolServiceName</description>
+         <property-name>listService</property-name>
+         <value>#{Components["org.theospi.portfolio.list.intf.ListService"]}</value>
+      </managed-property>
+
+   </managed-bean>
+
+
+   <navigation-rule>
+     <from-view-id>/audience/tool.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>browse</from-outcome>
+         <to-view-id>/audience/browse.jsp</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+     <from-view-id>/audience/browse.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>main</from-outcome>
+         <to-view-id>/audience/tool.jsp</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule>
+
+   <navigation-rule>
+     <from-view-id>/guidance/tool.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>list</from-outcome>
+         <to-view-id>/guidance/list.jsp</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+     <from-view-id>/guidance/list.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>tool</from-outcome>
+         <to-view-id>/guidance/tool.jsp</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule>
+
+   <navigation-rule>
+     <from-view-id>/list/main.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>options</from-outcome>
+         <to-view-id>/list/options.jsp</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+     <from-view-id>/list/options.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>main</from-outcome>
+         <to-view-id>/list/main.jsp</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule>
+   
+  
+	<managed-bean>
+		<description>
+			Dynamic Resource Bundle Loader
+		</description>
+		<managed-bean-name>common_msgs</managed-bean-name>
+		<managed-bean-class>org.sakaiproject.util.ResourceLoader</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<description>Bundle baseName</description>
+			<property-name>baseName</property-name>
+			<value>org.theospi.portfolio.common.bundle.Messages</value>
+		</managed-property>
+	</managed-bean>
+
+</faces-config>

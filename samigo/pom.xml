@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+    <parent>
+        <groupId>org.sakaiproject.purepoms</groupId>
+        <artifactId>sakai-edu-tool</artifactId>
+        <version>2.8.7</version>
+    </parent>
+	
+	<name>Sakai Samigo Project (base POM)</name>
+	<groupId>org.sakaiproject.samigo</groupId>
+	<artifactId>samigo</artifactId>
+	<version>2.8.7-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	 <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sakai.common.version>1.1.8</sakai.common.version>
+        <sakai.edu-services.version>1.1.7</sakai.edu-services.version>
+        <sakai.jsf.version>2.8.5</sakai.jsf.version>
+    </properties>
+	
+	<modules>
+		<module>samigo-api</module>
+		<module>samigo-app</module>
+        <module>samigo-assembly</module>
+		<module>samigo-audio</module>
+		<module>samigo-help</module>
+		<module>samigo-hibernate</module>
+		<module>samigo-pack</module>
+		<module>samigo-qti</module>
+		<module>samigo-services</module>
+		<module>samigo-cp</module>
+		<module>samigo-archive/sam-handlers</module>
+		<module>samlite-impl</module>
+	</modules>
+	
+	<scm>
+		<connection>scm:svn:https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x</connection>
+		<developerConnection>scm:svn:https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x</developerConnection>
+		<url>https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x</url>
+	</scm>
+	
+	<distributionManagement>
+        <site>
+            <id>sakai-site</id>
+            <name>Sakai release Site</name>
+            <url>scpexe://source.sakaiproject.org/var/www/html/release/samigo/${project.version}</url>
+        </site>
+    </distributionManagement>
+    
+    <repositories>
+        <repository>
+            <id>sakai-maven2</id>
+            <name>Sakai Maven Repository</name>
+            <layout>default</layout>
+            <url>http://source.sakaiproject.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>sakai-maven2-snapshots</id>
+            <name>Sakai Maven Repo Snapshots</name>
+            <layout>default</layout>
+            <url>http://source.sakaiproject.org/maven2-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>default</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <url>http://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Sakai Plugin Repo</id>
+            <url>http://source.sakaiproject.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+	
+	<dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.sakaiproject.samigo</groupId>
+                <artifactId>samigo-api</artifactId>
+                <version>${project.version}</version>
+                <type>jar</type>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.samigo</groupId>
+                <artifactId>samigo-audio</artifactId>
+                <version>${project.version}</version>
+                <type>jar</type>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.samigo</groupId>
+                <artifactId>samigo-cp</artifactId>
+                <version>${project.version}</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.samigo</groupId>
+                <artifactId>samigo-hibernate</artifactId>
+                <version>${project.version}</version>
+                <type>jar</type>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.samigo</groupId>
+                <artifactId>samigo-qti</artifactId>
+                <version>${project.version}</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.samigo</groupId>
+                <artifactId>samigo-services</artifactId>
+                <version>${project.version}</version>
+                <type>jar</type>
+                <scope>provided</scope>
+            </dependency>
+            <!-- Samigo Lite -->
+            <dependency>
+                <groupId>org.sakaiproject.samigo</groupId>
+                <artifactId>samlite-impl</artifactId>
+                <version>${project.version}</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.edu-services.sections</groupId>
+                <artifactId>sections-impl-standalone</artifactId>
+                <version>${sakai.edu-services.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- Sakai-embedded version -->
+            <dependency>
+                <groupId>org.sakaiproject.edu-services.sections</groupId>
+                <artifactId>sections-impl</artifactId>
+                <version>${sakai.edu-services.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-tool</artifactId>
+                <version>${sakai.jsf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-app</artifactId>
+                <version>${sakai.jsf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-widgets-sun-depend</artifactId>
+                <version>${sakai.jsf.version}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-spreadsheet</artifactId>
+                <version>${sakai.jsf.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <debug>true</debug>
+                    <links>
+                        <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+                    </links>
+                    <breakiterator>true</breakiterator>
+                    <verbose>false</verbose>
+                    <aggregate>true</aggregate>
+                    <maxmemory>512m</maxmemory>
+                    <additionalJOption>-J-Xms168m -J-Xmx512m -J-XX:PermSize=128m -J-XX:NewSize=64m</additionalJOption>
+                </configuration>
+            </plugin>
+            <!-- Retest this plugin; currently causes release plugin to fail -->
+            <!--
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>1.1</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>dependency-updates-report</report>
+                            <report>plugin-updates-report</report>
+                            <report>property-updates-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            -->
+        </plugins>
+    </reporting>
+</project>

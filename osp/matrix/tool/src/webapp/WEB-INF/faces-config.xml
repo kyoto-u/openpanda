@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<!-- =========== FACES CONFIGURATION FILE ================================== -->
+
+<faces-config>
+   <!-- Example custom JSF component used only in this tool -->
+
+   <application>
+     <message-bundle>org.theospi.portfolio.matrix.bundle.Messages</message-bundle>
+     <locale-config>
+       <default-locale>en</default-locale>
+     </locale-config>
+   </application>
+
+   <!-- =================== Tool Beans ============== -->
+
+   <managed-bean>
+      <description>MatrixLinkTool</description>
+      <managed-bean-name>matrixLinkTool</managed-bean-name>
+      <managed-bean-class>org.theospi.portfolio.matrix.jsf.MatrixLinkTool</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+
+      <managed-property>
+         <description>Service Dependency: matrixManager</description>
+         <property-name>matrixManager</property-name>
+         <value>#{Components["matrixManager"]}</value>
+      </managed-property>
+
+      <managed-property>
+         <description>Service Dependency: idManager</description>
+         <property-name>idManager</property-name>
+         <value>#{Components["idManager"]}</value>
+      </managed-property>
+
+      <managed-property>
+         <description>Service Dependency: authManager</description>
+         <property-name>authManager</property-name>
+         <value>#{Components["authManager"]}</value>
+      </managed-property>
+      
+      <managed-property>
+         <description>Service Dependency: authzManager</description>
+         <property-name>authzManager</property-name>
+         <value>#{Components["authzManager"]}</value>
+      </managed-property>
+      
+      <managed-property>
+         <description>Service Dependency: agentManager</description>
+         <property-name>agentManager</property-name>
+         <value>#{Components["agentManager"]}</value>
+      </managed-property>
+      
+      <managed-property>
+         <description>Service Dependency: worksiteManager</description>
+         <property-name>worksiteManager</property-name>
+         <value>#{Components["org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"]}</value>
+      </managed-property>      
+      <managed-property>
+         <description>Service Dependency: siteService</description>
+         <property-name>siteService</property-name>
+         <value>#{Components["org.sakaiproject.site.api.SiteService"]}</value>
+      </managed-property>      
+      <managed-property>
+         <description>Service Dependency: sessionManager</description>
+         <property-name>sessionManager</property-name>
+         <value>#{Components["org.sakaiproject.tool.api.SessionManager"]}</value>
+      </managed-property>      
+      <managed-property>
+         <description>Service Dependency: taggingManager</description>
+         <property-name>taggingManager</property-name>
+         <value>#{Components["org.sakaiproject.taggable.api.TaggingManager"]}</value>
+      </managed-property>      
+      <managed-property>
+         <description>Service Dependency: siteAssocManager</description>
+         <property-name>siteAssocManager</property-name>
+         <value>#{Components["org.sakaiproject.siteassociation.api.SiteAssocManager"]}</value>
+      </managed-property>      
+      <managed-property>
+         <description>Service Dependency: linkManager</description>
+         <property-name>linkManager</property-name>
+         <value>#{Components["org.sakaiproject.taggable.api.LinkManager"]}</value>
+      </managed-property>      
+      
+   </managed-bean>
+<!-- 
+   <navigation-rule>
+     <from-view-id>/freeForm/preview.jsp</from-view-id>
+     <navigation-case>
+       <from-outcome>main</from-outcome>
+       <to-view-id>/freeForm/tool.jsp</to-view-id>
+       <redirect/>
+     </navigation-case>
+   </navigation-rule>   
+   -->
+	<managed-bean>
+		<description>
+			Dynamic Resource Bundle Loader
+		</description>
+		<managed-bean-name>matrix_msgs</managed-bean-name>
+		<managed-bean-class>org.sakaiproject.util.ResourceLoader</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<description>Bundle baseName</description>
+			<property-name>baseName</property-name>
+			<value>org.theospi.portfolio.matrix.bundle.Messages</value>
+		</managed-property>
+	</managed-bean>
+
+</faces-config>

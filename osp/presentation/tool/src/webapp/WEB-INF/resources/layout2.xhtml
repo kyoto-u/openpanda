@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:osp="http://www.osportfolio.org/OspML"
+      xml:lang="en" lang="en">
+   <head>
+      <title>OSP Presentation Page Layout Example</title>
+   </head>
+   <body>
+      <table border="1">
+         <tr>
+            <td colspan="2">
+               <osp:region id="region_1">
+                  <osp:texttype helpText="type rich text header here" isRichText="true" />
+               </osp:region>
+            </td>
+         </tr>
+         <tr>
+            <td rowspan="2">
+               <ul>
+                  <osp:sequence maxOccurs="0" firstChild="region_2">
+                     <li>
+                        <osp:region id="region_2">
+                           <osp:texttype minOccurs="0" helpText="type new item here" />
+                        </osp:region>
+                     </li>
+                  </osp:sequence>
+               </ul>
+            </td>
+            <td>
+               <osp:region id="region_3">
+                  <osp:texttype minOccurs="1" helpText="type content here" isRichText="true" />
+               </osp:region>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <osp:region id="region_4">
+                  <osp:texttype minOccurs="1" helpText="type content here" isRichText="true"/>
+               </osp:region>
+            </td>
+         </tr>
+         <tr>
+            <td colspan="2">
+               <osp:region id="region_5">
+                  <osp:texttype helpText="footer line" />
+               </osp:region>
+            </td>
+         </tr>
+      </table>
+   </body>
+</html>

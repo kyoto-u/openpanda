@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+
+<!--
+  File from uPortal2.0 by JASIG. Modified and adapted to OSPI by <a
+  href="felipeen@udel.edu">Luis F.C. Mendes</a> - University of
+  Delaware
+-->
+<!-- $Revision: 1.19 $ -->
+
+<tables>
+
+   <table>
+       <name>dw_guidance</name>
+       <desc>Guidance Datawarehouse table</desc>
+       <columns>
+          <column>
+            <name>id</name>
+            <type>VARCHAR</type>
+            <param>36</param>
+          </column>
+          <column>
+            <name>description</name>
+            <type>VARCHAR</type>
+            <param>255</param>
+          </column>
+          <column>
+            <name>site_id</name>
+            <type>VARCHAR</type>
+            <param>36</param>
+          </column>
+          <column>
+            <name>securityQualifier</name>
+            <type>VARCHAR</type>
+            <param>255</param>
+          </column>
+          <column>
+            <name>securityViewFunction</name>
+            <type>VARCHAR</type>
+            <param>255</param>
+          </column>
+          <column>
+            <name>securityEditFunction</name>
+            <type>VARCHAR</type>
+            <param>255</param>
+          </column>
+        </columns>
+       <not-null>id</not-null>
+       <not-null>site_id</not-null>
+       <not-null>securityViewFunction</not-null>
+       <not-null>securityEditFunction</not-null>
+       <primary-key>id</primary-key>
+   </table>
+
+   <!-- This table did not show up after build and run -->
+
+   <table>
+       <name>dw_guidance_item</name>
+       <desc>Guidance Item Datawarehouse table</desc>
+       <columns>
+          <column>
+            <name>id</name>
+            <type>VARCHAR</type>
+            <param>36</param>
+          </column>
+          <column>
+            <name>type</name>
+            <type>VARCHAR</type>
+            <param>255</param>
+          </column>
+          <!--
+          <column>
+            <name>text</name>
+            <type>TEXT</type>
+          </column>
+           -->
+          <column>
+            <name>guidance_id</name>
+            <type>VARCHAR</type>
+            <param>36</param>
+          </column>
+          </columns>
+       <not-null>id</not-null>
+       <not-null>guidance_id</not-null>
+       <primary-key>id</primary-key>
+     </table>
+
+     <table>
+       <name>dw_guidance_item_file</name>
+       <desc>Guidance Item File Datawarehouse table</desc>
+       <columns>
+          <column>
+            <name>id</name>
+            <type>VARCHAR</type>
+            <param>36</param>
+          </column>
+          <column>
+            <name>baseReference</name>
+            <type>VARCHAR</type>
+            <param>255</param>
+          </column>
+          <column>
+            <name>fullReference</name>
+            <type>VARCHAR</type>
+            <param>255</param>
+          </column>
+          <column>
+            <name>item_id</name>
+            <type>VARCHAR</type>
+            <param>36</param>
+          </column>
+          </columns>
+       <not-null>id</not-null>
+       <not-null>item_id</not-null>
+       <primary-key>id</primary-key>
+     </table>
+
+   <index>
+     <index-name>FK605DDBA7BE2FA762</index-name>
+    <table-name>dw_guidance_item</table-name>
+    <column>guidance_id</column>
+   </index>
+
+   <index>
+     <index-name>FK297703147E22B9C7</index-name>
+     <table-name>dw_guidance_item_file</table-name>
+     <column>item_id</column>
+   </index>
+   <table>
+     <name>dw_review_items</name>
+     <desc>The reviews (Review, Evaluation, Reflection)</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>review_content_id</name> <!-- the filled out form -->
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>site_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>parent_id</name> <!-- this links back to the Wizard Page Id -->
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>review_device_id</name> <!-- the form being filled out -->
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>review_type</name> <!-- the form being filled out -->
+          <type>INTEGER</type>
+        </column>
+        <column>
+          <name>securityQualifier</name> <!-- the form being filled out -->
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>securityViewFunction</name> <!-- the form being filled out -->
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>securityEditFunction</name> <!-- the form being filled out -->
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <not-null>parent_id</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+
+   <index>
+     <index-name>FK4240ED2786D510</index-name>
+     <table-name>dw_review_items</table-name>
+     <column>parent_id</column>
+   </index>
+
+</tables>

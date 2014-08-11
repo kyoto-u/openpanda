@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="osp-portal.xsl"?>
+<html xml:lang="en" lang="en">
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+<link media="all" rel="stylesheet" type="text/css" href="/library/skin/default/portal.css"/>
+<meta content="text/css" http-equiv="Content-Style-Type"/>
+<title>SakaiOrWhatever:12345:Meta Object</title>
+<script src="/library/js/headscripts.js" language="JavaScript" type="text/javascript"/>
+</head>
+<body class="portalBody">
+<a accesskey="c" title="jump to content" class="skip" href="#tocontent">jump to content</a>
+<a accesskey="l" title="jump to tools list" class="skip" href="#toolmenu">jump to tools list</a>
+<a accesskey="w" title="jump to worksite list" class="skip" href="#sitetabs">jump to worksite list</a>
+<div  class="siteNavBlock">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mast-head">
+<tr>
+<td class="left">
+<img alt="Logo" title="Logo" src="/library/skin/default/images/logo_inst.gif"/>
+</td>
+<td class="middle">
+<img alt="Banner" title="Banner" src="/library/skin/default/images/banner_inst.gif"/>
+</td>
+<td class="mast-head-r right">
+<a title="Logout" target="_parent" href="/osp-portal/logout">
+                  Logout
+               </a>
+</td>
+</tr>
+</table>
+<div class="tabHolder project">
+<table cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td class="tabCell">
+<a name="sitetabs" class="skip" id="sitetabs"/>
+<h1 class="skip">Worksites begin here</h1>
+<ul id="tabNavigation">
+<li>
+<a target="_parent" href="/osp-portal/site/~admin" title="Administration Workspace">Administration Workspace</a>
+</li>
+<li class="selectedTab">
+<a href="#">12345</a>
+</li>
+<li>
+<a target="_parent" href="/osp-portal/site/bc5b1aa2-c53b-4fd1-0017-f91eef511e65" title="23456">23456</a>
+</li>
+<li>
+<a target="_parent" href="/osp-portal/site/9607661f-f3aa-4938-8005-c3ffaa228c6c" title="34567">34567</a>
+</li>
+<li>
+<a target="_parent" href="/osp-portal/site/00d59c99-f934-4508-00e0-643839e638c4" title="asfafd">asfafd</a>
+</li>
+<li>
+<a target="_parent" href="/osp-portal/site/847f2906-36e9-4320-80b9-8d7217a72ff2" title="test">test</a>
+</li>
+<li>
+<a target="_parent" href="/osp-portal/site/5c53d193-bc6e-4daa-0090-e48106ccd06f" title="test2">test2</a>
+</li>
+<li class="fixTabsIE" style="display:none;border-width:0">
+<a href="javascript:void(0);">#x20;</a>
+</li>
+</ul>
+</td>
+<td class="selectCell">
+<span class="skip">To operate the combo box, first press Alt+Down Arrow to open it, and then use the up and down arrow keys to scroll through the options. </span>
+<select onSelect="&#10;onchange=&quot;if (this.options[this.selectedIndex].value != '') { parent.location = this.options[this.selectedIndex].value; } else { this.selectedIndex = 0; }&quot;&#10;                     ">
+<option selected="selected" value="">- more -</option>
+</select>
+</td>
+</tr>
+</table>
+<div id="tabBottom" class="divColor">
+<br/>
+</div>
+</div>
+</div>
+<div class="project" id="container">
+<div  id="sidebar" class="divColor">
+<div id="divLogo">
+<p id="siteType">project</p>
+</div>
+<a name="toolmenu" class="skip" id="toolmenu"/>
+<h1 class="skip">Tools begin here</h1>
+<div id="leftnavlozenge">
+<ul>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/e4f45d96-d121-4d1f-007e-344f7832b993">Home</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/919c95ad-ef0e-4128-00bf-cd4d57a96890">Glossary</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/deec0dac-b652-40e1-0042-1b1d386ecbc3">Guidance Sample</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/0ca02c18-f847-484e-8074-0a3c20ab745a">Matrix</a>
+</li>
+<li>
+<a href="#" class="selected" accesskey="1">Meta Object</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/613ac9ab-9b9e-4abd-0006-c00a9754a318">OSP 2.0 JSF Tags</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/7e15f992-561d-4cf3-0013-63ef4147a15c">OSP Reports 2.1</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/68a4f110-3e3d-4d66-803d-94fc28fbda22">OSP Wizard</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/a317fa8c-c2c1-4ed0-80a0-d722ebea9e1f">Presentation</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/3aff7f40-84b1-4866-80a9-a9a57f29a62c">Presentation Layout</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/38374a1b-dc08-44c9-801e-9f61ab98275b">Presentation Template</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/30e46c7d-543c-4828-00a9-54498b6fab97">Resources</a>
+</li>
+<li>
+<a accesskey="0" href="/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/b67f10b8-2a8b-4678-80fb-8fad0e115919">Site Info</a>
+</li>
+<li>
+<a onkeypress="window.open('http://localhost:8080/portal/help/main','Help','resize=yes,toolbar=no,scrollbars=yes, width=800,height=600')" onclick="window.open('http://localhost:8080/portal/help/main','Help','resize=yes,toolbar=no,scrollbars=yes, width=800,height=600')" href="javascript:;" accesskey="h">Help</a>
+</li>
+</ul>
+</div>
+</div>
+<h1  class="skip">Content begins here</h1>
+<a  name="tocontent" class="skip" id="tocontent"/>
+<div  id="content">
+<div>
+<div class="portletTitleWrap">
+<iframe scrolling="no" marginheight="0" marginwidth="0" frameborder="0" width="99%"
+   height="22" class="portletTitleIframe" title="a" name="Title" id="Title" src="http://www.javasoft.com" >
+</iframe>
+</div>
+<div class="portletMainWrap">
+<iframe scrolling="auto" marginheight="0" marginwidth="0" frameborder="0" width="100%"
+   height="50" class="portletMainIframe" title="a" name="Main" id="Main" src="http://www.javasoft.com" >
+</iframe>
+</div>
+</div>
+</div>
+<div>
+<div  id="footer" align="center">
+<div align="center" class="footerExtNav">
+	|
+	<a href="https://localhost/portal/site/!gateway">Gateway</a> |
+	<a target="_blank" href="http://sakaiproject.org/cms">The Sakai Project</a> |
+	</div>
+<div id="footerInfo">
+<span class="skip">Opens in a new window</span>
+<a target="_blank" href="http://sakaiproject.org">
+<img alt="Powered by Sakai" src="/library/image/sakai_powered.gif" border="0"/>
+</a>
+<br/>
+<span class="sakaiCopyrightInfo">(c) 2003, 2004, 2005 sakaiproject.org. All rights reserved.<br/>
+		SakaiOrWhatever - TRUNK - Sakai TRUNK - Server "localhost"</span>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

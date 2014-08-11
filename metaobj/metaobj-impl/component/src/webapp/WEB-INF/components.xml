@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+   <bean id="idManager" class="org.sakaiproject.metaobj.shared.mgt.IdManagerImpl">
+   </bean>
+
+   <bean id="authManager" class="org.sakaiproject.metaobj.security.impl.sakai.AuthnManager">
+      <property name="ospiIdManager">
+         <ref bean="idManager"/>
+      </property>
+   </bean>
+
+   <bean id="agentManager" class="org.sakaiproject.metaobj.security.impl.sakai.AgentManager">
+      <property name="ospiIdManager">
+         <ref bean="idManager"/>
+      </property>
+      <property name="directoryService">
+         <ref bean="org.sakaiproject.user.api.UserDirectoryService"/>
+      </property>
+   </bean>
+
+   <bean id="structuredArtifactManagerHibernateMappings"
+      class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
+      <property name="mappingResources">
+         <list>
+            <value>org/sakaiproject/metaobj/shared/mgt/StructuredArtifactDefinition.hbm.xml</value>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.security.AuthorizationFacade"
+      class="org.sakaiproject.metaobj.security.impl.AuthzShim">
+      <property name="realmService">
+         <ref bean="org.sakaiproject.authz.api.AuthzGroupService"/>
+      </property>
+      <property name="userDirectoryService">
+         <ref bean="org.sakaiproject.user.api.UserDirectoryService"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.ArtifactFinder.fileArtifact"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.FileArtifactFinder">
+      <property name="contentHostingService">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
+      </property>
+      <property name="agentManager">
+         <ref bean="agentManager"/>
+      </property>
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+      <property name="contentResourceHome">
+         <ref bean="org.sakaiproject.metaobj.shared.mgt.ReadableObjectHome.contentResource"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.ArtifactFinder.default"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.WrappedStructuredArtifactFinder">
+      <property name="contentHostingService">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
+      </property>
+      <property name="agentManager">
+         <ref bean="agentManager"/>
+      </property>
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+      <property name="contentResourceHome">
+         <ref bean="org.sakaiproject.metaobj.shared.mgt.ReadableObjectHome.contentResource"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.ArtifactFinder.structuredArtifacts"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.StructuredArtifactFinder">
+      <property name="contentHostingService">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
+      </property>
+      <property name="agentManager">
+         <ref bean="agentManager"/>
+      </property>
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+      <property name="contentResourceHome">
+         <ref bean="org.sakaiproject.metaobj.shared.mgt.ReadableObjectHome.contentResource"/>
+      </property>
+      <property name="homeFactory"><ref bean="homeFactory"/></property>
+   </bean>
+
+   <bean id="artifactFinderManager" class="org.sakaiproject.metaobj.shared.mgt.ArtifactFinderManagerImpl">
+      <property name="finders">
+         <map>
+            <entry key="fileArtifact">
+               <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinder.fileArtifact"/>
+            </entry>
+         </map>
+      </property>
+      <!-- default finder, if can't find a finder in the finder list this one is used -->
+      <property name="artifactFinder">
+         <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinder.default"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"
+      class="org.sakaiproject.metaobj.worksite.mgt.impl.WorksiteManagerImpl">
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+   </bean>
+
+   <bean id="structuredArtifactDefinitionManagerTarget"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.StructuredArtifactDefinitionManagerImpl"
+      init-method="init"
+      singleton="true">
+      <property name="sessionFactory">
+         <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+      </property>
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+      <property name="authzManager">
+         <ref bean="org.sakaiproject.metaobj.security.AuthorizationFacade"/>
+      </property>
+      <property name='worksiteManager'>
+         <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
+      </property>
+      <property name="contentHosting">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
+      </property>
+      <property name="toolManager">
+         <ref bean="org.sakaiproject.tool.api.ToolManager"/>
+      </property>
+      <property name="artifactFinder">
+         <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinder.default"/>
+      </property>
+      <property name="globalSites">
+         <list>
+            <value>~admin</value>
+            <value>!admin</value>
+         </list>
+      </property>
+      <property name="globalSiteTypes">
+         <list>
+            <value>portfolioAdmin</value>
+         </list>
+      </property>
+      <property name="expressionMax"><value>999</value></property>
+      <property name="securityService"><ref bean="org.sakaiproject.authz.api.SecurityService"/></property>
+      <property name="formConsumers"><list/></property>
+      <property name="structuredArtifactFinder">
+           <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinder.structuredArtifacts"/>
+      </property>
+      <property name="autoDdl"><value>${auto.ddl}</value></property>
+   </bean>
+
+   <bean id="structuredArtifactDefinitionManager"
+      class="org.sakaiproject.springframework.transaction.interceptor.ConstructedTransactionProxyFactoryBean"
+      singleton="true">
+      <constructor-arg index="0">
+         <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
+      </constructor-arg>
+      <constructor-arg index="1">
+         <bean class="org.sakaiproject.metaobj.shared.mgt.impl.StructuredArtifactDefinitionManagerImpl">
+            <property name="sessionFactory">
+               <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+            </property>
+         </bean>
+      </constructor-arg>
+      <constructor-arg index="2">
+         <props>
+            <prop key="*">PROPAGATION_REQUIRED</prop>
+         </props>
+      </constructor-arg>
+      <property name="target">
+         <ref bean="structuredArtifactDefinitionManagerTarget"/>
+      </property>
+   </bean>
+
+   <bean id="dbXmlHomeFactory" class="org.sakaiproject.metaobj.shared.mgt.factories.DbXmlHomeFactoryImpl">
+      <property name="structuredArtifactDefinitionManager">
+         <ref bean="structuredArtifactDefinitionManager"/>
+      </property>
+   </bean>
+
+   <bean id="xmlHomeFactory" class="org.sakaiproject.metaobj.shared.mgt.factories.XmlHomeFactoryImpl">
+      <property name="homes">
+         <map>
+         </map>
+      </property>
+   </bean>
+
+   <bean id="mapHomeFactory" class="org.sakaiproject.metaobj.shared.mgt.factories.MapHomeFactoryImpl">
+      <property name="homes">
+         <map>
+            <entry key="fileArtifact">
+               <ref bean="org.sakaiproject.metaobj.shared.mgt.ReadableObjectHome.contentResource"/>
+            </entry>
+         </map>
+      </property>
+   </bean>
+
+   <bean id="homeFactory" class="org.sakaiproject.metaobj.shared.mgt.HomeFactoryImpl">
+      <property name="homeFactories">
+         <list>
+            <ref bean="xmlHomeFactory"/>
+            <ref bean="mapHomeFactory"/>
+            <ref bean="dbXmlHomeFactory"/>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="fieldValueWrapperFactory" class="org.sakaiproject.metaobj.shared.mgt.factories.FieldValueWrapperFactoryImpl">
+      <property name="wrappedClassNamesMap">
+         <props>
+            <prop key="java.util.Date">org.sakaiproject.metaobj.shared.model.DateBean</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.mgt.PortalParamManager"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.PortalParamManagerImpl">
+      <property name="parameters">
+         <list>
+            <value>pid</value>
+            <value>panelId</value>
+         </list>
+      </property>
+
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.mgt.StructuredArtifactValidationService"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.StructuredArtifactValidationServiceImpl"
+      singleton="true">
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.mgt.ReadableObjectHome.contentResource"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.ContentResourceHome">
+      <property name="homeFactory">
+         <ref bean="dbXmlHomeFactory"/>
+      </property>
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.content.api.ContentResourceFilter.metaobjFile"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+      <property name="viewAll">
+         <value>true</value>
+      </property>
+      <property name="mimeTypes">
+         <list>
+            <!-- <value>text/xml</value> -->
+         </list>
+      </property>
+      <property name="acceptedExtensions">
+         <list>
+            <value>xsd</value>
+         </list>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.content.api.ContentResourceFilter.metaobjFile.xsl"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+      <property name="viewAll">
+         <value>true</value>
+      </property>
+      <property name="mimeTypes">
+         <list>
+            <!-- <value>text/xml</value> -->
+         </list>
+      </property>
+      <property name="acceptedExtensions">
+         <list>
+            <value>xsl</value>
+            <value>xslt</value>
+         </list>
+      </property>
+   </bean>
+
+
+   <bean id="org.sakaiproject.content.api.ContentResourceFilter.formUploadStyleFile"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+      <property name="viewAll">
+         <value>true</value>
+      </property>
+      <property name="mimeTypes">
+         <list>
+         	<!-- 
+            <value>application/zip</value>
+            <value>application/x-zip-compressed</value>
+             -->
+         </list>
+      </property>
+      <property name="acceptedExtensions">
+         <list>
+            <value>zip</value>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.entity.api.HttpAccess.metaobj"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.MetaobjHttpAccess"
+      singleton="true" init-method="init">
+   </bean>
+
+   <bean id="org.sakaiproject.entity.api.EntityProducer.metaobj"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.MetaobjEntityProducer"
+      init-method="init"
+      destroy-method="destroy"
+      singleton="true">
+      <property name="entityManager">
+         <ref bean="org.sakaiproject.entity.api.EntityManager"/>
+      </property>
+      <property name="httpAccess">
+         <ref bean="org.sakaiproject.entity.api.HttpAccess.metaobj"/>
+      </property>
+      <property name="structuredArtifactDefinitionManager">
+         <ref bean="structuredArtifactDefinitionManager"/>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.entity.api.HttpAccess.metaobjContent"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.MetaobjContentHttpAccess"
+      singleton="true" init-method="init">
+      <property name="structuredArtifactDefinitionManager" ref="structuredArtifactDefinitionManager" />
+   </bean>
+   
+   <bean id="org.sakaiproject.entity.api.EntityProducer.metaobjContent"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.MetaobjContentEntityProducer"
+      init-method="init"
+      destroy-method="destroy"
+      singleton="true">
+      <property name="entityManager">
+         <ref bean="org.sakaiproject.entity.api.EntityManager"/>
+      </property>
+      <property name="httpAccess">
+         <ref bean="org.sakaiproject.entity.api.HttpAccess.metaobjContent"/>
+      </property>
+      <property name="structuredArtifactDefinitionManager">
+         <ref bean="structuredArtifactDefinitionManager"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.content.api.ResourceType.metaobj"
+      class="org.sakaiproject.metaobj.registry.FormResourceType"
+      init-method="init"
+      singleton="true">
+      <property name="resourceTypeRegistry">
+         <ref bean="org.sakaiproject.content.api.ResourceTypeRegistry" />
+      </property>
+      <property name="structuredArtifactDefinitionManager">
+         <ref bean="structuredArtifactDefinitionManager" />
+      </property>
+   </bean>
+   
+   <bean id="UpdateSchemaHashJob"
+      class="org.sakaiproject.metaobj.job.UpdateSchemaHashJob">
+      <property name="structuredArtifactDefinitionManager">
+         <ref bean="structuredArtifactDefinitionManager" />
+      </property>
+   </bean>
+   
+   <bean
+      id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.scheduler.updateSchemaHash"
+      class="org.sakaiproject.component.app.scheduler.jobs.SpringStatefulJobBeanWrapper"
+      singleton="true" init-method="init">
+      <property name="beanId">
+         <value>UpdateSchemaHashJob</value>
+      </property>
+      <property name="jobName">
+         <value>Update Metaobj Schema Hashes</value>
+      </property>
+      <property name="schedulerManager">
+         <ref
+            bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+      </property>
+   </bean>
+
+</beans>

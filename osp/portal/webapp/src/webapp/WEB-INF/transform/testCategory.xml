@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="toolCategory.xsl"?>
+<toolCategory>
+   <roles>
+      <role id="maintain"/>
+   </roles>
+   <category order="0" selected="false">
+      <layoutFile>../category/collectReflect.xhtml</layoutFile>
+      <key>org.theospi.portfolio.portal.model.ToolCategory.uncategorized</key>
+      <description/>
+      <url><![CDATA[/osp-portal/category/04b104a4-dafd-4e08-8081-0a931d984a18/org.theospi.portfolio.portal.model.ToolCategory.uncategorized]]></url>
+      <pages>
+         <page layout="0" order="0" selected="false" toolId="sakai.resources">
+            <title><![CDATA[Home]]></title>
+            <url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/e4f45d96-d121-4d1f-007e-344f7832b993]]></url>
+            <columns>
+               <column index="0">
+                  <tools>
+                     <tool>
+                        <url><![CDATA[/osp-portal/tool/bb571e85-3caf-4152-0068-29e591a27305?panel=Main]]></url>
+                        <titleUrl><![CDATA[/osp-portal/title/bb571e85-3caf-4152-0068-29e591a27305]]></titleUrl>
+                     </tool>
+                  </tools>
+               </column>
+               <column index="1">
+                  <tools/>
+               </column>
+            </columns>
+         </page>
+         <page layout="0" order="0" selected="true" toolId="osp.matrix">
+            <title><![CDATA[Glossary]]></title>
+            <url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/919c95ad-ef0e-4128-00bf-cd4d57a96890]]></url>
+            <columns>
+               <column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/2f1125e9-7e0f-4b7c-007e-b29c967c33b5?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/2f1125e9-7e0f-4b7c-007e-b29c967c33b5]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns></page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[Guidance Sample]]></title>
+            <url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/deec0dac-b652-40e1-0042-1b1d386ecbc3]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/09406bb8-59e5-41c8-8077-cf8e25e249e7?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/09406bb8-59e5-41c8-8077-cf8e25e249e7]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[Matrix]]></title>
+            <url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/0ca02c18-f847-484e-8074-0a3c20ab745a]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/f69dbebe-6018-42db-00d6-b73560137006?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/f69dbebe-6018-42db-00d6-b73560137006]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[Meta Object]]></title><url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/8f65fd4e-545e-4f7c-80e1-ac6f5f5a3063]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/9cc8037a-7b6f-4899-80ca-84c3f1bb24a9?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/9cc8037a-7b6f-4899-80ca-84c3f1bb24a9]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[OSP 2.0 JSF Tags]]></title><url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/613ac9ab-9b9e-4abd-0006-c00a9754a318]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/667fa5b8-072a-44ca-0007-252814773e0c?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/667fa5b8-072a-44ca-0007-252814773e0c]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[OSP Reports 2.1]]></title><url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/7e15f992-561d-4cf3-0013-63ef4147a15c]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/0498a596-551a-4a7b-8007-de361dae1a08?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/0498a596-551a-4a7b-8007-de361dae1a08]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[OSP Wizard]]></title><url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/68a4f110-3e3d-4d66-803d-94fc28fbda22]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/e902287b-2990-4001-80ea-7dc2f0c65970?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/e902287b-2990-4001-80ea-7dc2f0c65970]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[Presentation]]></title><url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/a317fa8c-c2c1-4ed0-80a0-d722ebea9e1f]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/ccdfa945-3b13-4e9a-80d9-bfff87a28284?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/ccdfa945-3b13-4e9a-80d9-bfff87a28284]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[Presentation Layout]]></title><url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/3aff7f40-84b1-4866-80a9-a9a57f29a62c]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/28a256ce-b9ed-4435-0001-a52b706b27c9?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/28a256ce-b9ed-4435-0001-a52b706b27c9]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[Presentation Template]]></title><url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/38374a1b-dc08-44c9-801e-9f61ab98275b]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/bb452d19-c486-450d-001a-c4a94cb4653a?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/bb452d19-c486-450d-001a-c4a94cb4653a]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[Resources]]></title><url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/30e46c7d-543c-4828-00a9-54498b6fab97]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/0a93e71f-ee8c-418f-0081-d18c52e6db49?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/0a93e71f-ee8c-418f-0081-d18c52e6db49]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+
+         </page>
+         <page layout="0" order="0" selected="false"><title><![CDATA[Site Info]]></title><url><![CDATA[/osp-portal/site/04b104a4-dafd-4e08-8081-0a931d984a18/page/b67f10b8-2a8b-4678-80fb-8fad0e115919]]></url><columns><column index="0"><tools><tool><url><![CDATA[/osp-portal/tool/dc73d5e2-c2f0-497c-80e0-e1c1c9ff6d83?panel=Main]]></url><titleUrl><![CDATA[/osp-portal/title/dc73d5e2-c2f0-497c-80e0-e1c1c9ff6d83]]></titleUrl></tool></tools></column><column index="1"><tools/></column></columns>
+
+         </page>
+
+      </pages>
+
+   </category>
+</toolCategory>

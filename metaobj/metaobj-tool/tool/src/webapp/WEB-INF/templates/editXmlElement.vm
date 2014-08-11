@@ -1,0 +1,707 @@
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+
+<%@ taglib prefix="spring" uri="/spring" %>
+
+
+
+
+
+
+
+#macro ( editXmlField $field $fieldName )
+
+    <tr>
+
+      <td class="chefLabel">
+
+   #if (${field.schema.children.size()} == 0 )
+
+      <span 
+
+         #if ($field.schema.minOccurs > 0 && $field.schema.objectType.name != 'java.lang.Boolean')
+
+         class="chefRequiredInline"
+
+         #end      
+
+         >
+
+         #if ($field.annotations.containsKey("label"))
+
+            $field.annotations.label  
+
+         #else 
+
+            $field.fieldName
+
+         #end
+
+         </span>    
+
+   #end
+
+      </td>
+
+      <spring:bind path="bean.${field.fieldNamePath}">
+
+   #if (${field.schema.maxOccurs} != 1)
+
+        <td>        
+
+         <c:forEach var="item" items="${status.value}">
+
+         
+
+            #editFieldInputBox( $field $fieldName )            
+
+            <br/>
+
+         </c:forEach>
+
+            #editFieldInputBox( $field $fieldName )
+
+         </td>
+
+
+         <td>
+
+           <p class="act">
+
+            <input type="submit" name="updateList" alignment="center" value="Update">
+
+           </p>
+
+  
+
+           <font color="red">
+
+              <c:forEach var="errorMessage" items="${status.errorMessages}">
+
+                  <c:out value="${errorMessage}"/><br/>
+
+              </c:forEach>
+
+           </font>        
+
+        </td>
+
+   #else
+
+        <td>
+
+            <c:set var="item" value="${status.value}"/>
+
+            #editFieldInputBox( $field $fieldName )
+
+           <font color="red"><c:out value="${status.errorMessage}"/></font>
+
+        </td>
+
+   #end   
+
+      </spring:bind>
+
+
+
+    </tr>
+
+
+
+#end
+
+
+
+
+
+#macro ( dateField $field $fieldName )
+
+
+
+<spring:bind path="bean.${field.fieldNamePath}">
+
+      <osp:dateSelect daySelectId="${field.fieldNamePath}.day"
+
+                      yearSelectId="${field.fieldNamePath}.year"
+
+                      monthSelectId="${field.fieldNamePath}.month"
+
+                      selectedDate="${status.value.date}"
+
+                      />
+
+        <font color="red"><c:out value="${status.errorMessage}"/></font>
+
+</spring:bind>
+
+      
+
+#end
+
+
+
+#set ($statusStart = '${status.value')
+
+#set ($itemStart = '${item')
+
+
+
+#macro ( enumField $field $fieldName )
+
+        <select name="${field.fieldNamePath}">
+
+           <option value="">none</option>
+
+   #foreach($enumElement in $field.schema.enumeration)
+
+              <option value="$enumElement"
+
+         <c:if test="$itemStart == '$enumElement'}">selected </c:if>
+
+              >$enumElement</option>
+
+   #end
+
+        </select> 
+
+#end
+
+
+
+#macro ( booleanField $field $fieldName )
+
+            <input type="checkbox" 
+
+               name="${field.fieldNamePath}_checkBox" 
+
+               value="true" 
+
+               <c:if test="${item}">checked</c:if>
+
+               onChange="form['${field.fieldNamePath}'].value=this.checked" 
+
+               />                    
+
+            <input type="hidden" name="${field.fieldNamePath}"
+
+               value="<c:out value="${item}"/>" />
+
+#end
+
+
+
+#macro ( editFieldInputBox $field $fieldName )
+
+#if ($field.schema.objectType.name == 'java.lang.Boolean')
+
+   #booleanField( $field $fieldName )
+
+#else
+
+#if ($field.schema.hasEnumerations())
+
+   #enumField( $field $fieldName )
+
+#else
+
+#if ($field.schema.objectType.name == 'java.util.Date')
+
+   #dateField( $field $fieldName )
+
+#else        
+
+ #if ($field.schema.type.maxLength >= 100 || $field.schema.type.maxLength == -1)
+
+   <textarea cols="40" rows="5" name="${field.fieldNamePath}" 
+
+      #if ($field.schema.type.maxLength != -1)
+
+      onkeyup="limitChar(this,${field.schema.type.maxLength})" 
+
+      #end
+
+      ><c:out value="${item}"/></textarea>
+
+ #else
+
+          <input type="text" name="${field.fieldNamePath}" value="<c:out value="${item}"/>" 
+
+   #if ($field.schema.type.maxLength != -1)
+
+      #if ($field.schema.type.maxLength > 50)
+
+         size="50"
+
+      #else
+
+         size="$field.schema.type.maxLength"
+
+      #end
+
+         maxlength="$field.schema.type.maxLength"
+
+   #end      
+
+          >
+
+ #end
+
+#end
+
+#end
+
+#end
+
+#end
+
+
+
+
+
+#macro ( editComplexXmlField $field $fieldName )
+
+    <tr>
+
+      <td colspan="2">   
+
+
+
+<fieldset>
+
+   <legend>
+
+         <span 
+
+   #if (${field.schema.maxOccurs} != 1 )
+
+         #if ($field.schema.minOccurs > 0 && $field.schema.objectType.name != 'java.lang.Boolean')
+
+            class="chefRequiredInline"
+
+         #end      
+
+   #end
+
+         >
+
+      #if ($field.annotations.containsKey("label"))
+
+         $field.annotations.label  
+
+      #else 
+
+         $field.fieldName
+
+      #end      
+
+      </span>
+
+   </legend>
+
+
+
+
+
+#if (${field.schema.maxOccurs} == 1 )
+
+   <table>
+
+   #foreach($childField in $field.fields)
+
+      #if (${childField.fields.size()} > 0 )
+
+         #editComplexXmlField( $childField ${childField.fieldNamePath} )
+
+      #end
+
+      #if (${childField.schema.dataNode})
+
+         #editXmlField( $childField ${childFieldName.fieldNamePath} )
+
+      #end
+
+   #end 
+
+   </table>   
+
+#else
+
+   <table class="chefFlatListViewTable">
+
+   <thead>
+
+   <tr>
+
+      <th scope="col">Action</th>
+
+      #foreach($childField in $field.fields)
+
+         #if (${childField.schema.dataNode})
+
+            <th scope="col">
+
+               #if ($childField.annotations.containsKey("label"))
+
+                  $childField.annotations.label  
+
+               #else 
+
+                  $childField.fieldName
+
+               #end    
+
+            </th>
+
+         #end
+
+      #end    
+
+   </tr>
+
+   </thead>
+
+   <tbody>
+
+<spring:bind path="bean.${field.fieldNamePath}">
+
+
+
+   <c:forEach var="item" items="${status.value}" varStatus="itemLoopStatus">
+
+      <tr>
+
+         <td>
+
+
+
+            <a href="javascript:document.forms[0].childPath.value='${field.fieldNamePath}';
+
+                      document.forms[0].editButton.value='Edit';document.forms[0].removeButton.value='';
+
+                      document.forms[0].childIndex.value='<c:out value="${itemLoopStatus.index}"/>';document.forms[0].submit();">
+
+               edit</a>
+
+            <a href="javascript:document.forms[0].childPath.value='${field.fieldNamePath}';
+
+                      document.forms[0].removeButton.value='Remove';document.forms[0].editButton.value='';
+
+                      document.forms[0].childIndex.value='<c:out value="${itemLoopStatus.index}"/>';document.forms[0].submit();">
+
+               remove</a>
+
+
+
+           
+
+         </td>
+
+      #foreach($childField in $field.fields)
+
+         #if (${childField.schema.dataNode})
+
+         <td>
+
+            <c:out value="$itemStart.${childField.fieldName}}"/>
+
+         </td>
+
+         #end
+
+      #end    
+
+      </tr>
+
+   </c:forEach>
+
+   </tbody>
+
+   </table>
+
+<p class="act">
+
+   <input type="submit" name="addButton" alignment="center" value="Add New" 
+
+      onClick="this.form.childPath.value='${field.fieldNamePath}';return true">
+
+</p>
+
+   <font color="red"><c:out value="${status.errorMessage}"/></font>
+
+   
+
+</spring:bind>
+
+   
+
+#end
+
+
+
+         </fieldset>
+
+      </td>
+
+    </tr>
+
+   
+
+#end
+
+
+
+
+
+
+	<h3>
+
+		Editing       
+
+		#if ($schema.annotations.containsKey("label"))
+
+         $schema.annotations.label  
+
+      #else 
+
+         $schema.description
+
+      #end
+
+	</h3>
+
+   
+
+<div class ="chefPortletContent">
+
+
+
+   <div class="chefPageviewTitle">
+
+      #if ($schema.annotations.containsKey("label"))
+
+         $schema.annotations.label  
+
+      #else 
+
+         $schema.description
+
+      #end    
+
+                (required fields are noted with an <span class="chefRequiredInline">&nbsp;</span>)
+
+      #if ($instruction != "")
+
+         <br/><br/>$instruction
+
+      #end
+
+
+
+   </div>
+
+
+
+
+
+<form method="post" action="<c:out value="${action}"/>" > 
+
+<osp:form/>
+
+
+
+<fieldset>
+
+<legend>
+
+#if ($schema.annotations.containsKey("label"))
+
+   $schema.annotations.label  
+
+#else 
+
+   $schema.description
+
+#end
+
+</legend>
+
+
+
+<table class="chefEditItem">
+
+
+
+  
+
+#set ($formActionStart = '${formAction')
+
+#if ($schema.isDocumentRoot())
+
+
+
+<c:choose>
+
+<c:when test="$formActionStart == 'Report'}">
+
+	<input type="hidden" name="displayName" value="displayName" size="50" 
+
+		maxlength="1024"/>
+
+</c:when>
+
+<c:otherwise>
+
+
+
+
+
+    <tr>
+
+      <td class="chefLabel" width="500">
+
+         <span class="chefRequiredInline">
+
+         Display&nbsp;Name
+
+         </span>
+
+      </td>
+
+      <spring:bind path="bean.displayName">
+
+        <td>
+
+          <input type="text" name="displayName" value="<c:out value="${status.value}"/>" 
+
+            size="50"
+
+            maxlength="1024"
+
+             />
+
+          <font color="red"><c:out value="${status.errorMessage}"/></font>
+
+        </td>
+
+      </spring:bind>
+
+    </tr>
+
+</c:otherwise>
+
+</c:choose>
+
+#end
+
+
+
+  
+
+#foreach($field in $schema.fields)
+
+   #if (${field.fields.size()} > 0 )
+
+      #editComplexXmlField( $field ${field.fieldName} )
+
+   #end
+
+   #if (${field.schema.dataNode})
+
+      #editXmlField( $field ${field.fieldName} )
+
+   #end
+
+#end    
+
+    
+
+  </table>
+
+  
+
+  
+
+  
+
+   <spring:bind path="bean.artifactId">
+
+     <c:if test="$statusStart != null}">
+
+      <input type="hidden" name="artifactId" value="<c:out value="${status.value}"/>"/>
+
+     </c:if>
+
+   </spring:bind>
+
+  <input type="hidden" name="artifactType" value="<c:out value="${param.artifactType}"/>"/>
+
+  <input type="hidden" name="schema" value="<c:out value="${param.artifactType}"/>"/>
+
+  <input type="hidden" name="parentId" value="<c:out value="${parentId}"/>"/>
+
+  <input type="hidden" name="childPath" value=""/>
+
+  <input type="hidden" name="childIndex" value=""/>
+
+  <input type="hidden" name="editButton" value="" />
+
+  <input type="hidden" name="removeButton" value="" />
+
+
+
+<p class="act">
+
+
+
+#if ($schema.isDocumentRoot())  
+
+
+
+<c:choose>
+
+<c:when test="$formActionStart == 'Preview'}">
+
+	<input type="submit" name="verify" alignment="center" value="Verify"/>
+
+	<input type="button" name="goBack" alignment="center" value="Go Back" onclick="location.href='<osp:url value="/admin/addStructuredArtifactDefinition.osp"/>'"/>
+
+</c:when>
+
+<c:when test="$formActionStart == 'Report'}">
+
+	<input type="submit" name="submitButton" alignment="center" value="Run Report"/>
+
+   <input type="button" name="cancel" value="Cancel" onclick="window.document.location='<osp:url value="repositoryUpdate.osp"/>'" />
+
+</c:when>
+
+<c:otherwise>
+
+	<input type="submit" name="submitButton" alignment="center" value="Save"/>
+
+   <input type="button" name="cancel" value="Cancel" onclick="window.document.location='<osp:url value="repositoryUpdate.osp"/>'" />
+
+</c:otherwise>
+
+</c:choose>
+
+
+
+#else
+
+  <input type="submit" name="updateNestedButton" alignment="center" value="Update"/>
+
+  <input type="submit" name="cancelNestedButton" value="Cancel" />
+
+#end
+
+</p>
+
+  </fieldset>
+
+
+
+</form>
+
+
+
+</div>

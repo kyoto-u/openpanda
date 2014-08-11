@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	Notes:
+	
+	Each report MUST have a different idString.  This is how saved reports are
+	linked back to the report definition
+    
+-->
+<beans>    
+    <bean id="matrixPendingDirectDB"
+        class="org.sakaiproject.reports.model.ReportDefinition">
+
+        <property name="idString">
+            <value>11112222-3333-4444-5551-666697779193</value>
+        </property>
+        <property name="usesWarehouse"><value>false</value></property>
+        <property name="title">
+            <value>
+                Pending Cell Report
+            </value>
+        </property>
+        <property name="query">
+           <list>
+              <value><![CDATA[
+                    select osp_scaffolding.title, osp_scaffolding.readyColor, osp_scaffolding.pendingColor, osp_scaffolding.lockedColor, osp_scaffolding.completedColor,
+                        FIRST_NAME, LAST_NAME, eid USERID, osp_matrix.owner matrix_userId, status, 
+                        osp_scaffolding_criteria.seq_num criterion_sequence,
+                            crit_label.description criterion_description,
+                        osp_scaffolding_levels.seq_num level_sequence,
+                            level_label.description level_description, 
+                        osp_scaffolding_cell.rootcriterion_id,
+                        osp_review.review_content_id review_artifact
+                    FROM osp_scaffolding 
+                    JOIN sakai_site_user ON osp_scaffolding.worksiteId = sakai_site_user.site_id 
+                    JOIN sakai_user_id_map ON sakai_site_user.user_id=sakai_user_id_map.USER_ID
+                    JOIN sakai_user ON sakai_user_id_map.USER_ID=sakai_user.USER_ID
+                    LEFT JOIN osp_matrix ON sakai_site_user.user_id = osp_matrix.owner AND osp_matrix.scaffolding_id = osp_scaffolding.id
+                    LEFT JOIN osp_matrix_cell ON osp_matrix.id = osp_matrix_cell.matrix_id
+                    LEFT JOIN osp_wizard_page ON osp_matrix_cell.wizard_page_id = osp_wizard_page.id
+                    LEFT JOIN osp_scaffolding_cell ON osp_matrix_cell.scaffolding_cell_id = osp_scaffolding_cell.id
+
+                    LEFT JOIN osp_scaffolding_criteria ON osp_scaffolding_cell.rootcriterion_id = osp_scaffolding_criteria.elt
+                    LEFT JOIN osp_matrix_label crit_label ON osp_scaffolding_criteria.elt=crit_label.id
+                    LEFT JOIN osp_scaffolding_levels ON osp_scaffolding_cell.level_id = osp_scaffolding_levels.elt
+                    LEFT JOIN osp_matrix_label level_label ON osp_scaffolding_levels.elt=level_label.id
+
+                    LEFT JOIN osp_review ON osp_matrix_cell.wizard_page_id = osp_review.id
+                                where osp_scaffolding.id=?
+                
+                    ORDER BY userId, level_sequence, criterion_sequence
+                    ]]>
+              </value>
+           </list>
+        </property>
+        <property name="resultProcessors">
+           <list>
+              <ref bean="org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumnupper" />
+           </list>
+        </property>
+        <property name="keywords">
+            <value>CIG user portfolio etc</value>
+        </property>
+        <property name="description">
+            <value>
+                Matrix, student, criteria, level, status, one of reviewers defined for cell
+            </value>
+        </property>
+        <property name="siteType">
+            <value>admin,project,course,portfolioAdmin,portfolio</value>
+        </property>
+        <property name="defaultXsl">
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/theospi/portfolio/reports/xsl/osp/matrix/PendingSubmissionDDB.1.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                    <property name="title"><value>Pending Submission</value></property>
+                </bean>
+        </property>
+
+        <property name="reportDefinitionParams">
+            <list>
+                <bean class="org.sakaiproject.reports.model.ReportDefinitionParam">
+                    <property name="title"><value>Choose a Matrix</value></property>
+                    <property name="paramName"><value>matrixId</value></property>
+                    <property name="description"><value>To choose a matrix</value></property>
+                    <property name="type"><value>string</value></property>
+                    <property name="valueType"><value>sql</value></property>
+                    <property name="value"><value>SELECT id, title FROM osp_scaffolding WHERE worksiteId = '{worksiteid}' AND publishedBy IS NOT NULL</value></property>
+                </bean>
+            </list>
+        </property>
+        <property name="xsls">
+            <list>
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/theospi/portfolio/reports/xsl/osp/matrix/PendingSubmissionDDB.1.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                    <property name="title"><value>Pending Submission</value></property>
+                </bean>
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/theospi/portfolio/reports/xsl/osp/matrix/PendingEvaluationDDB.1.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                    <property name="title"><value>Pending Evaluation</value></property>
+                </bean>
+            </list>
+        </property>
+
+    </bean>
+    
+</beans>

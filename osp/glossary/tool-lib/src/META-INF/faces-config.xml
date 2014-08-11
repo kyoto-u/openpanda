@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<!-- This registers the OSP 2.0 JSF widgets (Tags, Components, and Renderers) -->
+<faces-config>
+
+    <!-- =================== Components ============== -->
+
+    <component>
+        <component-type>org.theospi.help.Glossary</component-type>
+        <component-class>org.theospi.portfolio.help.jsf.component.GlossaryComponent</component-class>
+    </component>
+
+   
+    <!-- =================== Renderers ============== -->
+
+    <render-kit>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.help.Glossary</renderer-type>
+            <renderer-class>org.theospi.portfolio.help.jsf.renderer.GlossaryRenderer</renderer-class>
+        </renderer>
+
+
+    </render-kit>
+
+    <!-- =================== Converters ============== -->
+
+</faces-config>

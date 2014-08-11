@@ -1,0 +1,640 @@
+UNKNOWN {
+    FONT-SIZE: 0.8em;
+    COLOR: #FF0000;
+    FONT-FAMILY: Verdana;
+    BACKGROUND-COLOR: #ffffff;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+/*-------------------- Comments Setup --------------------------------*/
+div.ospComments {
+    background-color: #FFFFFF;
+    margin: 15px;
+    padding: 10px;
+    vertical-align: top;
+    border-top: 1px dashed #CC9900;
+}
+
+.ospComments h1 {
+}
+
+.ospComments h2 {
+    font-family: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #CC9900;
+}
+
+.ospComments h3 {
+    font-family: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    font-weight: normal;
+    color: Black;
+}
+
+.ospComments h4 {
+    text-indent: 20px;
+    color: green;
+}
+
+.ospComments h4 a:hover {
+    color: #51698D;
+    text-decoration: underline;
+}
+
+.ospComments h5 {
+}
+
+.ospComments p {
+    margin-left: 30px;
+}
+
+.ospComments .pipe {
+    color: #51698D;
+}
+
+.ospComments table tr td {
+    background-color: #FFFFFF;
+    margin: 0px;
+    padding: 0px;
+    vertical-align: top;
+}
+
+div.ospEmbedded {
+    border: 1px solid #AAAAAA;
+    padding-left: 2px;
+    padding-left: 2px;
+}
+
+.title {
+    FONT-SIZE: medium;
+    COLOR: #000000;
+    FONT-FAMILY: Verdana
+}
+
+.error_message {
+    font-family: Verdana, Verdana, Verdana, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    color: #FF0000
+}
+
+TABLE.header-table {
+    background-color: #5b5b98;
+    width: 50%
+}
+
+TD.header-info-small {
+    height: 30px;
+    color: #ffffff;
+    font-size: .8em;
+    font-family: Verdana, Verdana, Verdana, sans-serif;
+}
+
+TD.header-info {
+    COLOR: #ffffff;
+    font-size: 12pt;
+    font-family: Verdana, Verdana, Verdana, sans-serif;
+}
+
+TD.header-item {
+    COLOR: #000000;
+    font-weight: bold;
+    font-size: .8em;
+    font-family: Verdana, Verdana, Verdana, sans-serif;
+}
+
+TD.reviewer-cell {
+    border-color: #000000;
+    border-spacing: 2px;
+    border-width: 1px;
+    border-style: solid;
+    padding: 5px;
+}
+
+.matrixTable {
+    width: 100%;
+}
+TD.matrix-RETURNED, INPUT.matrix-RETURNED { background-color: #6633CC;}
+
+.matrixLegendTable {
+    width: auto;
+}
+
+.matrixLegendTable td {
+    width: 2em;
+}
+
+TD.matrix-cell-border {
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+}
+
+TD.matrix-COMPLETE, INPUT.matrix-COMPLETE {
+    background-color: #a6c7ea;
+    cursor:pointer;
+}
+
+TD.matrix-PENDING, INPUT.matrix-PENDING {
+    background-color: #f7ef84;
+    cursor:pointer;
+}
+
+TD.matrix-READY, INPUT.matrix-READY {
+    background-color: #86f283;
+    cursor:pointer;
+}
+
+TD.matrix-LOCKED, INPUT.matrix-LOCKED {
+    background-color: #ac326b;
+    cursor:pointer;
+}
+
+TD.matrixLegend-border {
+    border: 1px solid black;
+}
+
+TH.matrix-column-heading {
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    font-family: Verdana, Verdana, Verdana, sans-serif;
+    font-size: 10pt;
+    width: 10%;
+}
+
+TH.matrix-column-footer {
+    border-left: 2px solid black;
+    font-family: Verdana, Verdana, Verdana, sans-serif;
+    font-size: 10pt;
+    width: 10%;
+}
+
+TH.matrix-row-heading {
+    height: 50px;
+    border-bottom: 2px solid black;
+    font-family: Verdana, Verdana, Verdana, sans-serif;
+    font-size: 10pt;
+    width: 10%;
+}
+
+TH.reviewer-heading {
+    background-color: #ffff99;
+    font-weight: bold;
+    text-decoration: underline;
+    color: #0000ff;
+    font-family: Verdana, Verdana, Verdana, sans-serif;
+    font-size: 10pt;
+    border-color: #000000;
+    border-spacing: 2px;
+    border-width: 1px;
+    border-style: solid;
+    height: 35px;
+    vertical-align: bottom;
+    padding: 5px;
+}
+
+.matrixColumnDefault {
+    color: #000000;
+}
+
+.matrixRowDefault {
+    color: #000000;
+}
+/* These should be the same as the above font colors, this class is used when
+ * displaying the color swatch for the color picker
+ */
+.matrixColumnFontAsBGDefault {
+    background-color: #000000;
+}
+
+.matrixRowFontAsBGDefault {
+    background-color: #000000;
+}
+
+IMG.middle-aligned {
+    vertical-align: middle
+}
+
+TD.barUsed {
+    background-color: #b9d05a;
+}
+
+TD.barFree {
+    background-color: #ffffff;
+}
+
+TABLE.progressBar {
+    border: 1px solid black;
+}
+
+TABLE.quota {
+    font-size: smaller;
+}
+/* table rows, alternating row colors - used in "present_step2.htm" */
+.alternating td {
+    padding: 10px;
+}
+
+.alternating .bg {
+    background-color: #EAEAE7;
+}
+
+.alternating h3 {
+    margin-top: 3px;
+    margin-bottom: 0px;
+}
+
+.alternating .underline td {
+    border-bottom: 1px dotted gray;
+}
+
+.alternating .red {
+    color: red;
+}
+
+.alternating .gray {
+    color: gray;
+}
+
+.alternating .button {
+    font-size: smaller;
+    margin-bottom: 2px;
+    width: 80px;
+}
+
+show {
+    visibility: visible;
+}
+
+hide {
+    visibility: hidden;
+}
+
+INPUT.colorBox {
+    border: 1px solid black;
+    width: 32px;
+    height: 16px;
+    margin-left: 20px;
+}
+
+.colorBox {
+    width: 8em;
+    border: 1px solid black;
+    padding: .1em .5em
+}
+
+.colorBoxNone {
+    width: 8em;
+    border: 1px solid black;
+    padding: .1em 1.5em;
+    background: #eee url(../img/inact.gif) top left repeat-x;
+    color: #000;
+    padding: .1em .5em
+}
+/*give some boxes in matrix/wizards some definition*/
+.bordered-l {
+    border: 1px solid #bbb
+}
+
+.xheader {
+    /*  background-color:#eee;
+     */
+    color: gray !important;
+    font-weight: bold;
+    font-size: 1.2em;
+    vertical-align: middle;
+    padding: .3em 0;
+}
+
+.fieldsetVis {
+    border: 1px solid #ccc;
+    padding: 1em
+}
+
+.fieldsetVis legend {
+    border: 1px solid #ccc;
+    font-size: 120%;
+    color: gray;
+    padding: .3em
+}
+
+.wizardSupportTableHead {
+    text-align: right !important;
+}
+
+.matrixCellList {
+    width: 100%;
+    margin: 1em 0
+}
+
+.matrixCellList tr:hover {
+    background: #ffc
+}
+
+.matrixCellList th {
+    padding: .4em .2em;
+    border-bottom: 2px solid #aaa;
+    border-top: 2px solid #aaa;
+    background: #ddd;
+    font-weight: bold;
+    text-align: left
+}
+
+.matrixCellList td {
+    padding: .4em .2em;
+    text-align: left
+}
+
+.matrixCellList tr.cellItemAddLine, .matrixCellList tr.cellItemAddLine:hover {
+    background: #eee
+}
+
+.matrixCellList h4, .matrixCellList h5, .matrixCellList h6 {
+    font-weight: normal;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    color: #000
+}
+
+.matrixCellList .itemAction a, .matrixCellList .itemAction a:link {
+    padding: .2em .3em 1px 0;
+    white-space: nowrap;
+}
+
+.matrixCellList th div.itemActionHeader {
+	margin-left:0.5em !important;
+}
+/*new new new new*/
+.tabNav {
+    padding: 3px 0;
+    margin: 1.5em 3px 0 3px;
+    border-bottom: 1px solid #ccc;
+    list-style-type: none;
+    text-align: left; /*set to left, center, or right to align the menu as desired*/
+}
+
+.tabNav li {
+    display: inline;
+    margin: 0;
+}
+
+.tabNav li a, .tabNav li span {
+    text-decoration: none !important;
+    padding: 3px 7px;
+    margin-right: 3px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background-color: #fff;
+		outline:none
+}
+
+.tabNav li a, .tabNav li a:visited {
+    background: #fff url(../img/tab-back.png) bottom left repeat-x;
+		color:#777 !important;
+		text-decoration:none !important
+		
+}
+.tabNav li a:hover {
+	color:#333 !important;    
+}
+
+
+.tabNav li.selected span { /*selected tab effect*/
+    position: relative;
+    top: 1px;
+    font-weight: bold;
+    padding-top: 4px;
+    background-color: #fff;
+		color:#555
+}
+.tabNavPanel{
+	background:#fff;
+	border-width:0 1px 1px 1px;
+	border-color:#ccc;
+	border-style: solid;
+	padding:1em;
+    margin: 0 3px;
+}
+.smallNavIntraTool{
+	margin:0 3px;padding:0;
+	font-weight:bold
+}
+
+.smallNavIntraTool li{
+	display:inline;
+	list-style:none;
+	padding:0
+}
+.smallNavIntraTool li.selected{
+	
+	}
+.smallNavIntraTool li span{
+	border-left:1px solid #ccc;
+	padding: 0 5px 0 7px
+}
+.smallNavIntraTool li.firstItem span{
+	border:0
+	}
+	
+.ospTable th{
+	background:transparent !important;
+	color:#777;
+#	text-transform:uppercase;
+	border:0 !important;
+	padding-right: 2em !important;
+}
+.ospTable td{
+	background:#F7F5F2;
+	padding:6px !important;	
+	vertical-align:middle !important;
+}
+.ospTable td.even{
+		background:#EFEDE6	
+}
+
+body{
+	/*background:#EFEDE6 !important*/
+}
+.navPanel{
+	background:transparent !important
+}
+.ospTable .makeMenuChild{
+	margin-left:-6em !important;
+	width:10em !important;
+}
+
+.inlineMenu{
+	list-style:none;
+	margin:0;
+	padding:0
+
+}
+.inlineMenu .menuOpen{
+	color:blue;
+	margin:0;
+	padding:0 15px 0 0;
+	background:url(../img/collapse.gif) center right no-repeat;
+}
+.inlineMenu .makeMenuChild{
+	list-style: none;
+	padding:0;
+	width:auto;
+	margin:0 0 0 5em; 
+}
+.inlineMenu .makeMenuChild li{
+	margin:.3em 3px;
+	white-space: nowrap;
+}
+.commentsList{
+	margin:1em 0;padding:0
+}
+.commentsList li{
+	list-style: none;
+	padding:0;
+	margin:0;
+}
+.commentsList li div.commentMetadata{
+	height:25px;
+	line-height:25px;
+	vertical-align: middle;
+	padding:0 1em;
+	background:#eee url(../img/comment-metadata-back.gif) top left no-repeat
+}
+.commentsList li div.commentMetadata h4{
+	color:#000
+}
+.commentsList div.commentBody{
+	padding:1em
+}
+ul.multSelectHolder{
+	list-style:none;
+	padding:0;
+	margin:0;
+	border:1px solid #ccc
+}
+ul.multSelectHolder li{
+	vertical-align: middle;
+	padding:0;
+	margin:0;
+}
+ul.multSelectHolder li.odd{
+	background:#eee
+}
+ul.multSelectHolder li.selected{
+	background:#cef
+}
+ul.multSelectHolder li label{
+	margin:0;
+	padding:3px;
+	display:block;
+	cursor:pointer
+}
+
+ul.oversize{
+	border: 1px solid #ccc;
+	height: 12em;
+	overflow: auto
+}
+
+
+.messageError,.messageValidation,.messageConfirmation,.messageSuccess,.messageInformation,.messageInstruction{/*common to all messages types*/ margin:.5em 0;padding:3px .3em 3px 2em;background-position:3px 4px;background-repeat:no-repeat;height:100%;overflow:hidden;clear:both}
+.messageError{background-image:url(../img/exclamation.png);background-color:#fbb;border:1px solid #c00}
+.messageValidation{background-image:url(../img/error.png);background-color:#fee;border:1px solid #f55}
+.messageConfirmation{background-image:url(../img/asterisk_orange.png);background-color:#ffe;border:1px solid #b71}
+.messageSuccess{background-image:url(../img/accept.png);background-color:#dec;border:1px solid #9c6}
+.messageInformation{background-image:url(../img/bell.png);background-color:#eee;border:1px solid #ccc;color:#000}
+.messageInstruction{background-color:#fff;color:#555;padding:3px .3em 3px 0}
+h4.message,h5.message,h6.message,p.message{font-size:1em;float:left;width:90%;padding:0 0 .2em 0;margin:0}
+p.message{font-size:1em}
+ul.message{list-style:none;width:90%;margin:0;padding:0;float:left;background-position:3px 3px !important;background-repeat:no-repeat}
+ul.message li{list-style:none;margin:0;padding:0 0 5px 0}
+p.closeMe{float:right;width:2em;cursor:pointer;text-align:right;margin:0;padding:0;clear:right}
+em.closeMe{font-style:normal;cursor:pointer;padding-left:1em}
+.messageContent{clear:both;margin-top:2em}
+.messageError .messageError,.messageValidation .messageValidation,.messageInformation .messageInformation,.messageConfirmation .messageConfirmation,.messageSuccess .messageSuccess,.messageInstruction .messageInstruction{background-image:none;border:none;padding-left:0}
+
+#presentationName {
+    color:#555555;
+    font-family:Arial,Helvetica,sans-serif;
+    margin:1em 0.5em 0;
+    padding:0;
+    margin:0;
+    font-weight:bold;
+    font-size: 1.2em;
+}
+
+#presentationName .editableText {
+    font-weight:bold;
+    font-size: 1.2em;
+}
+
+#presentationName .inlineEdit {
+    font-weight:bold;
+    font-size: 1.2em;
+    margin:1em 0 0;
+}
+
+.editableActive{
+	padding:4px !important; 
+	background:#cef
+}
+
+.presentationTypeGroup{
+	border:1px solid #ccc;
+	margin:1em 0;
+	padding:1em;
+	list-style:none;
+}
+ .presentationElementGroup{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+ .presentationElement{
+ 		border:1px solid #ccc;
+		margin:0 0 1em 0;
+		padding:.5em
+	}
+.presentationElement .listNav{
+	background:transparent;border:1px solid #fff;width:35%;padding:0 4px 4px;text-align:left;
+}
+.presentationElement .listNav:hover{
+	background:#ffc;border:1px solid #ccc;width:35%;padding:0 4px 4px;text-align:left;
+}
+
+.presentationTypeGroup li{
+	list-style:none;
+}
+
+.presentationTypeGroup label{font-size:1.1em}
+.presentationTypeGroup p, .presentationTypeGroup a{
+	padding-left:1.7em;
+	margin:0 inherit;
+}
+.quickLinkInfo{height:2em;line-height:1.2em;	}
+
+/*iconized links*/
+.addSmall,.addUsersSmall, .removeSmall{
+	display:inline-block;
+	padding-left:18px;
+	height:17px;
+}
+.addSmall{
+	background:url(../img/add.png) no-repeat;
+	}
+.addUsersSmall{
+	background:url(../img/group_add.png) no-repeat;
+	}
+.removeSmall{
+	background:url(../img/user_delete.png) no-repeat;
+}
+.shareEmail{
+	display:inline-block;
+	padding-left:18px;
+	background:url(/library/image/silk/email_go.png) no-repeat;
+}
+

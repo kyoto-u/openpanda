@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+   <bean id="idManager" class="org.sakaiproject.metaobj.shared.mgt.IdManagerImpl">
+   </bean>
+
+   <bean id="authManager" class="org.sakaiproject.metaobj.security.impl.sakai.AuthnManager">
+      <property name="ospiIdManager">
+         <ref bean="idManager"/>
+      </property>
+   </bean>
+
+   <bean id="agentManager" class="org.sakaiproject.metaobj.security.impl.sakai.AgentManager">
+      <property name="ospiIdManager">
+         <ref bean="idManager"/>
+      </property>
+   </bean>
+
+   <bean id="fieldValueWrapperFactory" class="org.sakaiproject.metaobj.shared.mgt.factories.FieldValueWrapperFactoryImpl">
+      <property name="wrappedClassNamesMap">
+         <props>
+            <!--prop key="java.util.Date">org.sakaiproject.metaobj.shared.model.DateBean</prop-->
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.mgt.StructuredArtifactValidationService"
+      class="org.sakaiproject.metaobj.shared.mgt.impl.StructuredArtifactValidationServiceImpl"
+      singleton="true">
+   </bean>
+
+
+</beans>

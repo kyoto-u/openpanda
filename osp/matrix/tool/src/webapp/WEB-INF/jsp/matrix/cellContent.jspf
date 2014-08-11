@@ -1,0 +1,55 @@
+<table class="listHier" cellspacing="0" >
+      <thead>
+         <tr>
+            <th scope="col"><c:out value="${msgs.table_header_title}"/></th>
+            <th scope="col"><c:out value="${msgs.table_header_size}"/></th>
+            <th scope="col"><c:out value="${msgs.table_header_createdBy}"/></th>
+            <th scope="col"><c:out value="${msgs.table_header_modified}"/></th>
+         </tr>
+      </thead>
+      <tbody>
+
+         <c:forEach var="node" items="${nodes}">
+            <c:if test="${node.fileType == allowedNodeType or allowedNodeType == ''}" >
+            <c:set var="canReflect" value="true"/>
+
+            <tr>
+               <td>
+                  <a href='<c:out value="${node.externalUri}"/>' target="_blank" ><c:out value="${node.name}"/></a>
+                  <c:if test="${cell.status == 'READY' and readOnlyMatrix != 'true' and node.fileType == allowedNodeType}">
+                      <div class="itemAction">
+                          <a href="<osp:url value="cellFormPicker.osp">
+                              <osp:param name="page_id" value="${cell.wizardPage.id}" />
+                              <osp:param name="createFormAction" value="${cellFormDef.id}" />
+                              <osp:param name="current_form_id" value="${node.resource.id}" />
+                              </osp:url>"><c:out value="${msgs.edit}"/></a>
+                      </div>
+                  </c:if>
+               </td>
+               <td>
+                  <c:choose>
+                     <c:when test="${node.technicalMetadata.size > 1024 * 1024}">
+                        <fmt:formatNumber value="${node.technicalMetadata.size / (1024 * 1024)}" maxFractionDigits="1"/><c:out value="${msgs.text_MB}"/>
+                     </c:when>
+                     <c:when test="${node.technicalMetadata.size > 1024}">
+                        <fmt:formatNumber value="${node.technicalMetadata.size / (1024)}"  maxFractionDigits="1"/><c:out value="${msgs.text_KB}"/>
+                     </c:when>
+                     <c:when test="${node.technicalMetadata.size > 0}">
+                        <fmt:formatNumber value="${node.technicalMetadata.size}" />
+                     </c:when>
+                  </c:choose>
+               </td>
+               <td>
+                  <c:out value="${node.technicalMetadata.owner.displayName}"/>
+               </td>
+               <td>
+                  <fmt:formatDate value="${node.technicalMetadata.lastModified}" pattern="MM-dd-yyyy" />
+               </td>
+            </tr>
+            </c:if>
+         </c:forEach>
+         <c:if test="${canReflect != 'true'}">
+            <tr><td><c:out value="${msgs.text_noResourceItems}"/></td></tr>
+         </c:if>
+      </tbody>
+   </table> <!-- End the file list table -->

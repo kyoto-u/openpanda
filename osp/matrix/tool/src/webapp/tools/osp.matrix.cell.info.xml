@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.matrix.cell.info" title="Matrix Cell Info Helper"
+    	description="For getting details from a matrix cell.">
+
+	    <category name="sakai.helper" />
+            
+	</tool>
+
+</registration>

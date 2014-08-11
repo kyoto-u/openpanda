@@ -1,0 +1,6 @@
+ <sakai:button_bar>
+   <sakai:button_bar_item action="#{freeForm.processActionSave}"
+      value="#{msgs.button_saveEdit}"  accesskey="s" />
+   <sakai:button_bar_item action="#{freeForm.processActionCancel}"
+      value="#{msgs.button_cancel}"  accesskey="x" />
+ </sakai:button_bar>

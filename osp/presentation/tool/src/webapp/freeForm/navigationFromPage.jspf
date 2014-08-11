@@ -1,0 +1,9 @@
+
+  <sakai:button_bar>
+  <sakai:button_bar_item action="#{freeForm.currentPage.pagePropertiesSaved}" id="saveButton"
+      value="#{msgs.save_changes}" rendered="#{freeForm.currentPage.base.title != null}" accesskey="s" styleClass="active"/>
+   <sakai:button_bar_item action="#{freeForm.currentPage.pagePropertiesSaved}" id="addButton"
+      value="#{msgs.add_page}" rendered="#{freeForm.currentPage.base.title == null}"  accesskey="s" styleClass="active"/>
+   <sakai:button_bar_item action="#{freeForm.processActionCancelPage}" value="#{msgs.cancel}" id="cancelButton" immediate="true"
+   		accesskey="x" />
+   </sakai:button_bar>

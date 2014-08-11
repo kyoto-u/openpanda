@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+   <xs:element name="work-history">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="institution-organization" minOccurs="0">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="50"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">institution / organization</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="supervisor">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="50"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">supervisor</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="street-address-1">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="50"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">street address 1</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="street-address-2">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="50"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">street address 2</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="city" minOccurs="0">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="50"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">city</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="state">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="50"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">state</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="zip">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="10"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">zip</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="country">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="50"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">country</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="phone">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="10"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">phone</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="start-date" minOccurs="0">
+               <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                     <xs:maxLength value="19"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">start date</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="end-date" minOccurs="0">
+               <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                     <xs:maxLength value="19"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">end date</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="starting-salary">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="50"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">starting salary</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="ending-salary">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="50"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">ending salary</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="description" minOccurs="0">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="25"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">description</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>
+

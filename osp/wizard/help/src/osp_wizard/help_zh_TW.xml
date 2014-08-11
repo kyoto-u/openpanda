@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="wizards_overview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>wizards_overview_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>精靈：概述</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/wizards_overview_zh_TW.html</value>
+      </property>
+      <property name="defaultForTool">
+         <value>osp.wizard</value>
+      </property>
+   </bean>
+   <bean id="designing_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>designing_a_wizard_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>設計精靈</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/designing_a_wizard_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="building_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>building_a_wizard_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>建立精靈</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/building_a_wizard_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="changing_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_a_wizard_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>更改精靈</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/changing_a_wizard_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="deleting_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>deleting_a_wizard_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>刪除精靈</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/deleting_a_wizard_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="publishing_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>publishing_a_wizard_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>公開精靈</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/publishing_a_wizard_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="exporting_and_importing_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>exporting_and_importing_a_wizard_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>匯出和匯入精靈</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/exporting_and_importing_a_wizard_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="providing_formative_feedback_on_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>providing_formative_feedback_on_a_wizard_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>為精靈提供格式化回饋意見</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/providing_formative_feedback_on_a_wizard_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="changing_permissions_for_the_wizards_tool"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_permissions_for_the_wizards_tool_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>更改權限</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/changing_permissions_for_the_wizards_tool_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="fspcaw"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>fspcaw_zh_TW</value>
+      </property>
+      <property name="name">
+         <value>填寫精靈</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/fspcaw_zh_TW.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean"
+                  id="ospWizardCategory">
+               <property name="name">
+                  <value>精靈</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="wizards_overview"/>
+                     <ref bean="designing_a_wizard"/>
+                     <ref bean="building_a_wizard"/>
+                     <ref bean="changing_a_wizard"/>
+                     <ref bean="deleting_a_wizard"/>
+                     <ref bean="publishing_a_wizard"/>
+                     <ref bean="exporting_and_importing_a_wizard"/>
+                     <ref bean="providing_formative_feedback_on_a_wizard"/>
+                     <ref bean="changing_permissions_for_the_wizards_tool"/>
+                     <ref bean="fspcaw"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+
+	<tlib-version>1.0</tlib-version>
+
+	<jsp-version>1.2</jsp-version>
+
+	<short-name>osp common</short-name>
+
+	<uri>http://www.theospi.org/common</uri>
+
+	<description>osp common tag library</description>
+
+   <tag>
+   	<!-- Changed rtexprvalue on several tags to true - PAFH 8/11/2006 -->
+     <name>authZMap</name>
+     <tag-class>org.theospi.portfolio.security.control.tag.AuthZMapTag</tag-class>
+     <body-content>JSP</body-content>
+     <description>
+    exposes a map of the current user's authzs
+     </description>
+     <attribute>
+         <name>qualifier</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>prefix</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>var</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>scope</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+      <attribute>
+          <name>useSite</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+      </attribute>
+   </tag>
+
+   <tag>
+     <name>contentTypeMap</name>
+     <tag-class>org.theospi.portfolio.shared.control.tag.ContentTypeMapTag</tag-class>
+     <body-content>JSP</body-content>
+     <description>
+    exposes a map of the file types: images, names and extensions
+     </description>
+     <attribute>
+         <name>fileType</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+         <name>mapType</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+     </attribute>
+   </tag>
+   
+   <tag>
+      <name>dateSelect</name>
+      <tag-class>org.theospi.portfolio.shared.control.tag.DateSelectTag</tag-class>
+      <body-content>JSP</body-content>
+      <description>The standard way to setup a date selection widget.
+      Creates a drop-down date selection, as well as a pop-up date selection
+      </description>
+      <attribute>
+          <name>yearSelectId</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The name and id attribute of the year selection dropdown list (html SELECT tag)</description>
+      </attribute>
+      <attribute>
+          <name>monthSelectId</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The name and id attribute of the month selection dropdown list (html SELECT tag)</description>
+      </attribute>
+      <attribute>
+          <name>daySelectId</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The name and id attribute of the day selection dropdown list (html SELECT tag)</description>
+      </attribute>
+      <attribute>
+          <name>earliestYear</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The earliest year to display in the year dropdown (2002 for example)</description>
+      </attribute>
+      <attribute>
+          <name>latestYear</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The latest year to display in the year dropdown (2005 for examlple)</description>
+      </attribute>
+      <attribute>
+          <name>selectedDate</name>
+          <required>false</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The date selected</description>
+      </attribute>
+   </tag>
+   <tag>
+      <name>dateSelectPopup</name>
+      <tag-class>org.theospi.portfolio.shared.control.tag.DateSelectPopupTag</tag-class>
+      <description>The standard way to instantiate a popup calendar widget that allows the user to select a date</description>
+      <body-content>JSP</body-content>
+      <attribute>
+          <name>yearSelectId</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The name and id attribute of the year selection dropdown list (html SELECT tag)</description>
+      </attribute>
+      <attribute>
+          <name>monthSelectId</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The name and id attribute of the month selection dropdown list (html SELECT tag)</description>
+      </attribute>
+      <attribute>
+          <name>daySelectId</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+         <description>The name and id attribute of the day selection dropdown list (html SELECT tag)</description>
+      </attribute>
+   </tag>
+   
+</taglib>

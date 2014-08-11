@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.theospi.portfolio.style.model" default-lazy="false">   
+   
+   <class name="Style" table="osp_style">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="name" type="string" column="name" not-null="false"/>
+      <property name="description" type="string" column="description" not-null="false"/>
+      <property name="globalState" type="int" not-null="true"/>
+      <property name="owner" type="org.sakaiproject.metaobj.shared.mgt.AgentUserType" column="owner_id" not-null="true"/>
+      <property name="styleFile" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="style_file_id"/>
+      <property name="siteId" type="string" update="true" length="99" column="site_id" not-null="false"/>
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+      <property name="modified" type="java.util.Date" update="true" not-null="true"/>
+      <property name="styleHash" column="style_hash" type="string"/>
+   </class> 
+   
+   <query name="findSiteStyles">
+      from Style s where s.siteId = ? and s.owner = ? 
+   </query>
+   
+   <query name="findPublishedStyles">
+      from Style s where s.globalState = ? or (s.siteId = ? and s.owner = ? ) 
+   </query>
+   
+   <query name="findStyles">
+      from Style s
+   </query>
+   
+   <query name="findByNullStyleHash">   	
+		from Style s where s.styleHash is null
+	</query>
+	
+   <query name="findMatchingStyle">   	
+		from Style s where (s.globalState = ? or s.siteId = ?) and s.styleHash = ?
+	</query>
+   
+</hibernate-mapping>

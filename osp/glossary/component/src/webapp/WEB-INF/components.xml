@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+   <bean id="ospHelpHibernateMappings"
+      class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
+      <property name="mappingResources">
+         <list>
+            <value>org/theospi/portfolio/help/model/impl/HelpImpl.hbm.xml</value>
+         </list>
+		</property>
+   </bean>
+
+   <bean id="helpManagerTarget" class="org.theospi.portfolio.help.HelpManagerImpl">
+      <property name="sessionFactory">
+         <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+      </property>
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="worksiteManager">
+         <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
+      </property>
+      <property name="toolManager">
+         <ref bean="org.sakaiproject.tool.api.ActiveToolManager"/>
+      </property>
+      <property name="authzManager"><ref bean="authzManager"/></property>
+      <property name="glossary"><ref bean="glossary"/></property>
+      <property name="contentHosting">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService" />
+      </property>
+      <property name="agentManager">
+         <ref bean="agentManager" />
+      </property>
+      <property name="globalSites">
+         <list>
+            <value>~admin</value>
+            <value>!admin</value>
+         </list>
+      </property>
+      <property name="globalSiteTypes">
+         <list>
+            <value>portfolioAdmin</value>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.help.model.GlossaryTarget"
+      class="org.theospi.portfolio.help.model.DbGlossary"
+      init-method="init" lazy-init="false">
+      <property name="sessionFactory">
+         <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+      </property>
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="url"><value>/osp-glossary-tool/glossary.osp</value></property>
+      <property name="schedulerManager">
+         <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager"/>
+      </property>
+   </bean>
+
+   <bean id="helpManager"
+      class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+      singleton="true">
+      <property name="transactionManager">
+        <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
+      </property>
+      <property name="target">
+         <ref bean="helpManagerTarget"/>
+      </property>
+      <property name="transactionAttributes">
+         <props>
+            <prop key="*">PROPAGATION_REQUIRED</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="glossary"
+      class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+      singleton="true">
+      <property name="transactionManager">
+        <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
+      </property>
+      <property name="target">
+         <ref bean="org.theospi.portfolio.help.model.GlossaryTarget"/>
+      </property>
+      <property name="transactionAttributes">
+         <props>
+            <prop key="*">PROPAGATION_REQUIRED</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.security.mgt.ToolPermissionManager.glossary"
+      class="org.theospi.portfolio.security.model.SimpleToolPermissionManager" init-method="init">
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="permissionManager">
+         <ref bean="org.theospi.portfolio.security.mgt.PermissionManager" />
+      </property>
+      <property name="agentManager"><ref bean="agentManager" /></property>
+      <property name="permissionEditName"><value>glossary</value></property>
+      <property name="defaultPermissions">
+         <map>
+            <entry>
+               <key><ref bean="org.theospi.portfolio.security.model.CrossRealmRoleWrapper.maintain"/></key>
+               <list>
+                  <value>osp.help.glossary.delete</value>
+                  <value>osp.help.glossary.add</value>
+                  <value>osp.help.glossary.edit</value>
+                  <value>osp.help.glossary.export</value>
+               </list>
+            </entry>
+         </map>
+      </property>
+      <property name="functions">
+         <list>
+            <value>osp.help.glossary.delete</value>
+            <value>osp.help.glossary.add</value>
+            <value>osp.help.glossary.edit</value>
+            <value>osp.help.glossary.export</value>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.security.mgt.ToolPermissionManager.glossaryGlobal"
+      class="org.theospi.portfolio.security.model.QualifiedSimpleToolPermissionManager" >
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="qualifier"><value>theospi.help.glossary.global</value></property>
+      <property name="permissionManager">
+         <ref bean="org.theospi.portfolio.security.mgt.PermissionManager" />
+      </property>
+      <property name="agentManager"><ref bean="agentManager" /></property>
+      <property name="permissionEditName"><value>glossary</value></property>
+      <property name="defaultPermissions">
+         <map>
+            <entry>
+               <key><ref bean="org.theospi.portfolio.security.model.CrossRealmRoleWrapper.maintain"/></key>
+               <list>
+                  <value>osp.help.glossary.delete</value>
+                  <value>osp.help.glossary.add</value>
+                  <value>osp.help.glossary.edit</value>
+                  <value>osp.help.glossary.export</value>
+               </list>
+            </entry>
+         </map>
+      </property>
+      <property name="functions">
+         <list>
+            <value>osp.help.glossary.delete</value>
+            <value>osp.help.glossary.add</value>
+            <value>osp.help.glossary.edit</value>
+            <value>osp.help.glossary.export</value>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="glosasryToolPermissionsMap"
+      class="org.theospi.portfolio.security.mgt.impl.AddPermissionTool"
+      init-method="init" lazy-init="false"  >
+      <property name="manager">
+         <ref bean="org.theospi.portfolio.security.mgt.PermissionManager"/>
+      </property>
+      <property name="additionalTools">
+         <map>
+            <entry key="glossary">
+               <ref bean="org.theospi.portfolio.security.mgt.ToolPermissionManager.glossary"/>
+            </entry>
+         </map>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.content.api.ContentResourceFilter.glossaryStyleFile"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+      <property name="viewAll"><value>true</value></property>
+      <property name="mimeTypes">
+         <list>
+         </list>
+      </property>
+      <property name="acceptedExtensions">
+         <list>
+            <value>zip</value>
+            <value>xml</value>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.entity.api.EntityProducer.ospGlossary"
+      class="org.theospi.portfolio.help.impl.GlossaryEntityProducer"
+      init-method="init"
+      destroy-method="destroy"
+      singleton="true">
+      <property name="entityManager">
+         <ref bean="org.sakaiproject.entity.api.EntityManager"/>
+      </property>
+      <property name="httpAccess">
+         <ref bean="org.sakaiproject.entity.api.HttpAccess.ospGlossary" />
+      </property>
+      <property name="glossary"><ref bean="glossary" /></property>
+   </bean>
+   
+   <bean id="org.sakaiproject.entity.api.HttpAccess.ospGlossary"
+      class="org.theospi.portfolio.help.impl.GlossaryHttpAccess">
+      <property name="authzManager"><ref bean="authzManager"/></property>
+   </bean>
+</beans>

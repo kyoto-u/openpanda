@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<!--
+  File from uPortal2.0 by JASIG. Modified and adapted to OSPI by <a
+  href="felipeen@udel.edu">Luis F.C. Mendes</a> - University of
+  Delaware
+-->
+<!-- $Revision: 1.19 $ -->
+
+<tables>
+
+   <table>
+     <name>dw_session</name>
+     <desc>contains session information</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+        <column>
+          <name>server</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+        <column>
+          <name>userId</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+         <column>
+          <name>ip</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+        <column>
+          <name>user_agent</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+        <column>
+          <name>startTime</name>
+          <type>TIMESTAMP</type>
+        </column>
+          <column>
+          <name>endTime</name>
+          <type>TIMESTAMP</type>
+        </column>
+         <column>
+          <name>durationSeconds</name>
+          <type>INTEGER</type>
+        </column>
+     </columns>
+   </table>
+</tables>

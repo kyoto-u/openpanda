@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<!-- This registers the OSP 2.0 JSF widgets (Tags, Components, and Renderers) -->
+<faces-config>
+
+    <!-- =================== Components ============== -->
+
+    <component>
+        <component-type>org.theospi.ScrollableArea</component-type>
+        <component-class>org.theospi.jsf.component.ScrollableAreaComponent</component-class>
+    </component>
+
+    <component>
+        <component-type>org.theospi.SplitArea</component-type>
+        <component-class>org.theospi.jsf.component.SplitAreaComponent</component-class>
+    </component>
+
+    <component>
+        <component-type>org.theospi.SplitSection</component-type>
+        <component-class>org.theospi.jsf.component.SplitSectionComponent</component-class>
+    </component>
+
+    <component>
+        <component-type>org.theospi.WizardSteps</component-type>
+        <component-class>org.theospi.jsf.component.WizardStepsComponent</component-class>
+    </component>
+
+    <component>
+        <component-type>org.theospi.WizardStep</component-type>
+        <component-class>org.theospi.jsf.component.WizardStepComponent</component-class>
+    </component>
+
+    <component>
+        <component-type>org.theospi.XHeader</component-type>
+        <component-class>org.theospi.jsf.component.XHeaderComponent</component-class>
+    </component>
+
+    <component>
+        <component-type>org.theospi.XHeaderTitle</component-type>
+        <component-class>org.theospi.jsf.component.XHeaderTitleComponent</component-class>
+    </component>
+
+    <component>
+        <component-type>org.theospi.XHeaderDrawer</component-type>
+        <component-class>org.theospi.jsf.component.XHeaderDrawerComponent</component-class>
+    </component>
+    
+    <component>
+        <component-type>org.theospi.TabArea</component-type>
+        <component-class>org.theospi.jsf.component.TabAreaComponent</component-class>
+    </component>
+    
+    <component>
+        <component-type>org.theospi.Tab</component-type>
+        <component-class>org.theospi.jsf.component.TabComponent</component-class>
+    </component>
+
+   <component>
+       <component-type>org.theospi.TabActionArea</component-type>
+       <component-class>org.theospi.jsf.component.TabActionAreaComponent</component-class>
+   </component>
+   
+   <component>
+      <component-type>org.theospi.FormLabel</component-type>
+       <component-class>org.theospi.jsf.component.FormLabelComponent</component-class>
+   </component>
+
+   <component>
+      <component-type>org.theospi.XmlDocument</component-type>
+       <component-class>org.theospi.jsf.component.XmlDocumentComponent</component-class>
+   </component>
+
+   <component>
+      <component-type>org.theospi.TestComponent</component-type>
+       <component-class>org.theospi.jsf.component.TestComponent</component-class>
+   </component>
+   
+    <!-- =================== Renderers ============== -->
+
+    <render-kit>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.ScrollableArea</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.ScrollableAreaRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.SplitArea</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.SplitAreaRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.SplitSection</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.SplitSectionRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.WizardSteps</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.WizardStepsRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.WizardStep</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.WizardStepRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.XHeader</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.XHeaderRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.XHeaderTitle</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.XHeaderTitleRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.XHeaderDrawer</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.XHeaderDrawerRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.TabArea</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.TabAreaRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.Tab</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.TabRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>javax.faces.Output</component-family>
+            <renderer-type>org.theospi.TabActionArea</renderer-type>
+            <renderer-class>org.theospi.jsf.renderer.TabActionAreaRenderer</renderer-class>
+        </renderer>
+
+       <renderer>
+           <component-family>javax.faces.Output</component-family>
+           <renderer-type>org.theospi.FormLabel</renderer-type>
+           <renderer-class>org.theospi.jsf.renderer.FormLabelRenderer</renderer-class>
+       </renderer>
+
+       <renderer>
+           <component-family>org.theospi.xml</component-family>
+           <renderer-type>org.theospi.XmlDocument</renderer-type>
+           <renderer-class>org.theospi.jsf.renderer.XmlDocumentRenderer</renderer-class>
+       </renderer>
+
+       <renderer>
+           <component-family>javax.faces.Output</component-family>
+           <renderer-type>org.theospi.TestComponent</renderer-type>
+           <renderer-class>org.theospi.jsf.renderer.TestComponentRenderer</renderer-class>
+       </renderer>
+
+    </render-kit>
+
+    <!-- =================== Converters ============== -->
+
+</faces-config>

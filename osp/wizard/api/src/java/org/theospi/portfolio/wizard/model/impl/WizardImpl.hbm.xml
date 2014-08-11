@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.theospi.portfolio.wizard.model" default-lazy="false">
+  
+   <joined-subclass name="Wizard" extends="org.theospi.portfolio.shared.model.ObjectWithWorkflow" 
+         table="osp_wizard">
+      <key column="id"/>
+      <property name="owner" column="owner_id" not-null="true"
+         type="org.sakaiproject.metaobj.shared.mgt.AgentUserType"/>
+      <property name="name" type="string" column="name" not-null="false"/>
+      <property name="description" type="string" column="description" length="1024" not-null="false"/>
+      <property name="keywords" type="string" column="keywords" length="1024" not-null="false"/>
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+      <property name="modified" type="java.util.Date" update="true" not-null="true"/>
+      <property name="siteId" type="string" update="false" length="99" column="site_id" not-null="true"/>
+      <property name="guidanceId" column="guidance_id" not-null="false" length="36"
+         type="org.sakaiproject.metaobj.shared.IdType"/>
+
+      <property name="published" type="boolean" column="published" not-null="false"/>
+      <property name="preview" type="boolean" column="preview" not-null="false"/>
+      
+      <property name="type" type="string" column="wizard_type" not-null="false"/>
+      <many-to-one name="style" column="style_id" not-null="false" class="org.theospi.portfolio.style.model.Style"/>
+      <property name="exposedPageId" type="string" length="36" column="exposed_page_id" not-null="false"/>
+      <many-to-one name="rootCategory"
+         class="org.theospi.portfolio.wizard.model.WizardCategory" column="root_category"
+         cascade="all" unique="true" />
+      <property name="sequence" type="int" column="seq_num" not-null="false"/>
+      <property name="generalFeedbackOption" type="int" column="generalFeedbackOption" not-null="true"/>
+      <property name="itemFeedbackOption" type="int" column="itemFeedbackOption" not-null="true"/>
+      <property name="reviewerGroupAccess" type="int" column="reviewerGroupAccess" not-null="true"/>
+   </joined-subclass>
+
+   <class name="WizardPageSequence" table="osp_wizard_page_sequence">
+      <cache usage="nonstrict-read-write"/>
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="sequence" type="int" column="seq_num" not-null="false"/>
+
+      <many-to-one name="category" column="category_id"
+          not-null="true" class="WizardCategory" cascade="none" />
+
+      <many-to-one name="wizardPageDefinition"
+         class="org.theospi.portfolio.matrix.model.WizardPageDefinition" column="wiz_page_def_id"
+         cascade="all" unique="true" />
+   </class>
+
+   <class name="WizardCategory" table="osp_wizard_category">
+      <cache usage="nonstrict-read-write"/>
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+
+      <property name="title" type="string" column="name" not-null="false"/>
+      <property name="description" type="string" column="description" not-null="false"/>
+      <property name="keywords" type="string" column="keywords" not-null="false"/>
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+      <property name="modified" type="java.util.Date" update="true" not-null="true"/>
+
+      <many-to-one name="wizard" column="wizard_id"
+          not-null="false" class="Wizard" cascade="none" />
+
+      <many-to-one name="parentCategory" column="parent_category_id"
+          not-null="false" class="WizardCategory" cascade="none" />
+
+      <property name="sequence" type="int" column="seq_num" not-null="false"/>
+
+      <list name="childPages" cascade="all"
+          inverse="true" lazy="false">
+          <cache usage="nonstrict-read-write"/>
+          <key column="category_id" />
+          <index column="seq_num" />
+          <one-to-many class="WizardPageSequence" />
+      </list>
+
+      <list name="childCategories" cascade="all"
+          inverse="true" lazy="false">
+          <cache usage="nonstrict-read-write"/>
+          <key column="parent_category_id" />
+          <index column="seq_num" />
+          <one-to-many class="WizardCategory" />
+      </list>
+
+   </class>
+
+   <class name="CompletedWizard" table="osp_completed_wizard">
+      <cache usage="nonstrict-read-write"/>
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+
+      <property name="owner" column="owner_id" not-null="true"
+         type="org.sakaiproject.metaobj.shared.mgt.AgentUserType"/>
+
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+      <property name="lastVisited" type="java.util.Date" not-null="true"/>
+
+      <property name="status" type="java.lang.String" />
+
+      <many-to-one name="wizard" column="wizard_id"
+          not-null="false" class="Wizard" cascade="none" />
+
+      <many-to-one name="rootCategory"
+         class="CompletedWizardCategory" column="root_category"
+         cascade="all" unique="true" />
+
+   </class>
+
+   <class name="CompletedWizardCategory" table="osp_completed_wiz_category">
+      <cache usage="nonstrict-read-write"/>
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+
+      <many-to-one name="wizard" column="completed_wizard_id"
+          not-null="false" class="CompletedWizard" cascade="none" />
+
+      <many-to-one name="category" column="category_id"
+          not-null="false" class="WizardCategory" cascade="none" />
+
+      <property name="expanded" type="boolean" column="expanded" not-null="false"/>
+
+      <property name="sequence" type="int" column="seq_num" not-null="false"/>
+
+      <many-to-one name="parentCategory" column="parent_category_id"
+          not-null="false" class="CompletedWizardCategory" cascade="none" />
+
+      <list name="childPages" cascade="all"
+          inverse="true" lazy="false">
+          <cache usage="nonstrict-read-write"/>
+          <key column="completed_category_id" />
+          <index column="seq_num" />
+          <one-to-many class="CompletedWizardPage" />
+      </list>
+
+      <list name="childCategories" cascade="all"
+          inverse="true" lazy="false">
+          <cache usage="nonstrict-read-write"/>
+          <key column="parent_category_id" />
+          <index column="seq_num" />
+          <one-to-many class="CompletedWizardCategory" />
+      </list>
+   </class>
+
+   <class name="CompletedWizardPage" table="osp_completed_wizard_page">
+      <cache usage="nonstrict-read-write"/>
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+
+      <many-to-one name="category" column="completed_category_id"
+          not-null="false" class="CompletedWizardCategory" cascade="none" />
+
+      <many-to-one name="wizardPageDefinition" column="wizard_page_def_id"
+          not-null="false" class="WizardPageSequence" cascade="none" />
+
+      <many-to-one name="wizardPage" column="wizard_page_id"
+         not-null="false" class="org.theospi.portfolio.matrix.model.WizardPage"
+         cascade="all" unique="true" />
+
+      <property name="sequence" type="int" column="seq_num" not-null="false"/>
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+      <property name="lastVisited" type="java.util.Date" not-null="false"/>
+
+   </class>
+
+</hibernate-mapping>

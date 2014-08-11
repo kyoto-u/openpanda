@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+
+   <bean id="ospPresentationHibernateMappings"
+      class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
+      <property name="mappingResources">
+         <list>
+            <value>org/theospi/portfolio/presentation/model/impl/PresentationImpl.hbm.xml</value>
+         </list>
+		</property>
+   </bean>
+
+   <bean id="presentationToolPermissionsMap"
+      class="org.theospi.portfolio.security.mgt.impl.AddPermissionTool"
+      init-method="init" lazy-init="false" singleton="true" >
+      <property name="manager">
+         <ref bean="org.theospi.portfolio.security.mgt.PermissionManager"/>
+      </property>
+      <property name="additionalTools">
+         <map>
+            <entry key="presentationLayout">
+               <ref bean="org.theospi.portfolio.security.mgt.ToolPermissionManager.presentationLayout"/>
+            </entry>
+            <entry key="presentationTemplate">
+               <ref bean="org.theospi.portfolio.security.mgt.ToolPermissionManager.presentationTemplate"/>
+            </entry>
+            <entry key="presentation">
+               <ref bean="org.theospi.portfolio.security.mgt.ToolPermissionManager.presentation"/>
+            </entry>
+         </map>
+      </property>
+   </bean>
+   
+   <bean id="org.theospi.portfolio.style.mgt.AdditionalStyleConsumer.presentation"
+      class="org.theospi.portfolio.style.mgt.AdditionalStyleConsumer"
+      init-method="init" singleton="true">
+      <property name="styleManager"><ref bean="org.theospi.portfolio.style.mgt.StyleManager"/></property>
+      <property name="additionalConsumers">
+         <list>
+            <ref bean="presentationManager" />
+         </list>
+      </property>
+   </bean>
+   
+   <bean id="presentationManager"
+      class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+      singleton="true">
+      <property name="transactionManager">
+        <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
+      </property>
+      <property name="target">
+         <ref bean="presentationManagerTarget"/>
+      </property>
+      <property name="transactionAttributes">
+         <props>
+            <prop key="*">PROPAGATION_REQUIRED</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.ArtifactFinder.fileArtifactPresentation"
+      parent="org.sakaiproject.metaobj.shared.ArtifactFinder.fileArtifact"
+      class="org.sakaiproject.metaobj.shared.mgt.ContentWrappedArtifactFinder" />
+
+   <bean id="org.sakaiproject.metaobj.shared.ArtifactFinderManager.presentation"
+      class="org.sakaiproject.metaobj.shared.mgt.WrappedArtifactFinderManager">
+      <property name="base">
+         <ref bean="artifactFinderManager"/>
+      </property>
+      <property name="substitutions">
+         <map>
+            <entry key="fileArtifact">
+               <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinder.fileArtifactPresentation" />
+            </entry>
+         </map>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.entity.api.HttpAccess.ospPresentationLayout"
+      class="org.theospi.portfolio.presentation.model.impl.LayoutHttpAccess">
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+      <property name="presentationManager">
+         <ref bean="presentationManager"/>
+      </property>
+      <property name="authzManager">
+         <ref bean="authzManager"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.entity.api.EntityProducer.ospPresentationLayout"
+      class="org.theospi.portfolio.presentation.model.impl.LayoutEntityProducer"
+      init-method="init"
+		destroy-method="destroy"
+		singleton="true">
+      <property name="entityManager">
+         <ref bean="org.sakaiproject.entity.api.EntityManager"/>
+      </property>
+      <property name="httpAccess">
+         <ref bean="org.sakaiproject.entity.api.HttpAccess.ospPresentationLayout" />
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.entity.api.HttpAccess.ospPresentation"
+      class="org.theospi.portfolio.presentation.model.impl.PresentationHttpAccess">
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+      <property name="presentationManager">
+         <ref bean="presentationManager"/>
+      </property>
+      <property name="authzManager">
+         <ref bean="authzManager"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.entity.api.EntityProducer.ospPresentation"
+      class="org.theospi.portfolio.presentation.model.impl.PresentationContentEntityProducer"
+      init-method="init"
+		destroy-method="destroy"
+		singleton="true">
+      <property name="entityManager">
+         <ref bean="org.sakaiproject.entity.api.EntityManager"/>
+      </property>
+      <property name="httpAccess">
+         <ref bean="org.sakaiproject.entity.api.HttpAccess.ospPresentation" />
+      </property>
+      <property name="presentationManager">
+         <ref bean="presentationManager"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.mgt.AdditionalFormConsumers.presentation"
+      class="org.sakaiproject.metaobj.shared.mgt.AdditionalFormConsumers"
+      init-method="init" singleton="true">
+      <property name="manager"><ref bean="structuredArtifactDefinitionManager"/></property>
+      <property name="additionalConsumers">
+         <list>
+            <ref bean="presentationManager" />
+         </list>
+      </property>
+   </bean>
+
+   <bean id="presentationManagerTarget"
+      class="org.theospi.portfolio.presentation.model.impl.PresentationManagerImpl"
+      singleton="true" init-method="init">
+      <property name="importFolderName"><value>Imported Presentations' Files</value></property>
+      <property name="lockManager">
+         <ref bean="org.sakaiproject.content.api.LockManager"/>
+      </property>
+      <property name="authnManager"><ref bean="authManager"/></property>
+      <property name="sessionFactory">
+         <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
+      </property>
+      <property name="agentManager">
+         <ref bean="agentManager"/>
+      </property>
+      <property name="authzManager">
+         <ref bean="authzManager"/>
+      </property>
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+      <property name="homeFactory">
+         <ref bean="homeFactory"/>
+      </property>
+      <property name="artifactFinderManager">
+         <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinderManager.presentation"/>
+      </property>
+      <property name="worksiteManager">
+         <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
+      </property>
+      <property name="contentHosting">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
+      </property>
+      <property name="securityService">
+         <ref bean="org.sakaiproject.authz.api.SecurityService"/>
+      </property>
+      <property name="structuredArtifactDefinitionManager">
+         <ref bean="structuredArtifactDefinitionManager"/>
+      </property>
+      <property name="tempPresDownloadDir"><value>${sakai.home}/tempPresDownloadDir/</value></property>
+      <property name="initializedServices">
+         <list>
+            <ref bean="org.sakaiproject.authz.api.AuthzGroupService"/>
+            <ref bean="org.theospi.portfolio.security.model.BeanLoadCollector.common" />
+         </list>
+      </property>
+      <property name="definedLayouts">
+         <list>
+            <bean class="org.theospi.portfolio.presentation.model.impl.PresentationLayoutWrapper">
+               <property name="idValue"><value>contentOverText</value></property>
+               <property name="name"><value>Content Over Text</value></property>
+               <property name="description"><value>Content Over Text Layout File</value></property>
+               <property name="layoutFileLocation">
+                  <value>/org/theospi/portfolio/presentation/layouts/contentOverText.xhtml</value>
+               </property>
+               <property name="previewFileLocation">
+                  <value>/org/theospi/portfolio/presentation/layouts/contentOverText.jpg</value>
+               </property>
+               <property name="previewFileName"><value>contentOverText.jpg</value></property>
+               <property name="previewFileType"><value>image/jpeg</value></property>
+            </bean>
+            <bean class="org.theospi.portfolio.presentation.model.impl.PresentationLayoutWrapper">
+               <property name="idValue"><value>twoColumn</value></property>
+               <property name="name"><value>Two Column</value></property>
+               <property name="description"><value>Two Column Layout File</value></property>
+               <property name="layoutFileLocation">
+                  <value>/org/theospi/portfolio/presentation/layouts/2column.xhtml</value>
+               </property>
+               <property name="previewFileLocation">
+                  <value>/org/theospi/portfolio/presentation/layouts/2column.jpg</value>
+               </property>
+               <property name="previewFileName"><value>2column.jpg</value></property>
+               <property name="previewFileType"><value>image/jpeg</value></property>
+            </bean>
+            <bean class="org.theospi.portfolio.presentation.model.impl.PresentationLayoutWrapper">
+               <property name="idValue"><value>simpleRichText</value></property>
+               <property name="name"><value>Simple HTML</value></property>
+               <property name="description"><value>Single HTML Layout File</value></property>
+               <property name="layoutFileLocation">
+                  <value>/org/theospi/portfolio/presentation/layouts/simple800x600.xhtml</value>
+               </property>
+               <property name="previewFileLocation">
+                  <value>/org/theospi/portfolio/presentation/layouts/Simplehtml.jpg</value>
+               </property>
+               <property name="previewFileName"><value>Simplehtml.jpg</value></property>
+               <property name="previewFileType"><value>image/jpeg</value></property>
+            </bean>
+         </list>
+      </property>
+      <property name="globalSites">
+         <list>
+            <value>~admin</value>
+            <value>!admin</value>
+            <value>PortfolioAdmin</value>
+         </list>
+      </property>
+      <property name="globalSiteTypes">
+         <list>
+         </list>
+      </property>
+      <property name="autoDdl"><value>${auto.ddl}</value></property>
+      <property name="portfolioPropertyFormConversion"><value>true</value></property>
+      <property name="eventService">
+      	<ref bean="org.theospi.event.EventService"/>
+      </property>
+   </bean>
+
+   <bean id="presentationAuthz" class="org.theospi.portfolio.presentation.PresentationAuthorizerImpl">
+      <property name="presentationManager"><ref bean="presentationManager"/></property>
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="functions">
+         <list>
+            <bean id="org.sakaiproject.content.api.ContentHostingService.EVENT_RESOURCE_READ"
+               class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.VIEW_PRESENTATION"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.VIEW_PRESENTATION</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.COMMENT_PRESENTATION"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.COMMENT_PRESENTATION</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.CREATE_TEMPLATE"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.CREATE_TEMPLATE</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.EDIT_TEMPLATE"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.EDIT_TEMPLATE</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.PUBLISH_TEMPLATE"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.PUBLISH_TEMPLATE</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.DELETE_TEMPLATE"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.DELETE_TEMPLATE</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.COPY_TEMPLATE"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.COPY_TEMPLATE</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.EXPORT_TEMPLATE"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.EXPORT_TEMPLATE</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.CREATE_PRESENTATION"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.CREATE_PRESENTATION</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.EDIT_PRESENTATION"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.EDIT_PRESENTATION</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.DELETE_PRESENTATION"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.DELETE_PRESENTATION</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.CREATE_LAYOUT"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.CREATE_LAYOUT</value>
+               </property>
+            </bean>
+            <!-- Not sure if we want to have copy
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.COPY_LAYOUT"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.COPY_LAYOUT</value>
+               </property>
+            </bean>
+            -->
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.DELETE_LAYOUT"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.DELETE_LAYOUT</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.EDIT_LAYOUT"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.EDIT_LAYOUT</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.PUBLISH_LAYOUT"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.PUBLISH_LAYOUT</value>
+               </property>
+            </bean>
+            <bean id="org.theospi.portfolio.presentation.PresentationFunctionConstants.SUGGEST_PUBLISH_LAYOUT"
+               class="org.sakaiproject.metaobj.utils.ioc.FieldRetrievingFactoryBean">
+               <property name="staticField">
+                  <value>org.theospi.portfolio.presentation.PresentationFunctionConstants.SUGGEST_PUBLISH_LAYOUT</value>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.security.app.AdditionalAppAuthorizers.presentation"
+      class="org.theospi.portfolio.security.app.AdditionalAppAuthorizers"
+      init-method="init" singleton="true">
+      <property name="authzManager"><ref bean="authzManager"/></property>
+      <property name="additionalAppAuthorizers">
+         <list>
+            <bean class="org.theospi.portfolio.security.app.OrderedAuthorizer">
+               <property name="order"><value>3</value></property>
+               <property name="authorizer"><ref bean="presentationAuthz"/></property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.security.mgt.ToolPermissionManager.presentation"
+      class="org.theospi.portfolio.security.model.CleanupPermissionManager"
+       singleton="true" init-method="init">
+
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="service"><ref bean="presentationManager"/></property>
+      <property name="authzManager"><ref bean="authzManager"/></property>
+      <property name="permissionManager">
+         <ref bean="org.theospi.portfolio.security.mgt.PermissionManager" />
+      </property>
+      <property name="agentManager"><ref bean="agentManager" /></property>
+      <property name="permissionEditName"><value>presentation</value></property>
+      <property name="defaultPermissions">
+         <map>
+            <entry>
+               <key><ref bean="org.theospi.portfolio.security.model.CrossRealmRoleWrapper.maintain"/></key>
+               <list>
+                  <value>osp.presentation.create</value>
+                  <value>osp.presentation.edit</value>
+                  <value>osp.presentation.delete</value>
+                  <value>osp.presentation.copy</value>
+                  <value>osp.presentation.comment</value>
+               </list>
+            </entry>
+            <entry>
+               <key><ref bean="org.theospi.portfolio.security.model.CrossRealmRoleWrapper.access"/></key>
+               <list>
+                  <value>osp.presentation.create</value>
+                  <value>osp.presentation.copy</value>
+                  <value>osp.presentation.comment</value>
+               </list>
+            </entry>
+            <entry>
+               <key><ref bean="org.theospi.portfolio.security.model.CrossRealmRoleWrapper.review"/></key>
+               <list>
+                  <value>osp.presentation.copy</value>
+                  <value>osp.presentation.comment</value>
+               </list>
+            </entry>
+            <entry>
+               <key><ref bean="org.theospi.portfolio.security.model.CrossRealmRoleWrapper.evaluate"/></key>
+               <list>
+                  <value>osp.presentation.copy</value>
+                  <value>osp.presentation.comment</value>
+               </list>
+            </entry>
+         </map>
+      </property>
+      <property name="functions">
+         <list>
+            <value>osp.presentation.delete</value>
+            <value>osp.presentation.comment</value>
+            <value>osp.presentation.create</value>
+            <value>osp.presentation.review</value>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.security.mgt.ToolPermissionManager.presentationTemplate"
+      class="org.theospi.portfolio.security.model.SimpleSitePermissionManager"
+       singleton="true" init-method="init">
+
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="permissionManager">
+         <ref bean="org.theospi.portfolio.security.mgt.PermissionManager" />
+      </property>
+      <property name="agentManager"><ref bean="agentManager" /></property>
+      <property name="permissionEditName"><value>presentationTemplate</value></property>
+      <property name="functionPrefix"><value>osp.presentation.template</value></property>
+      <property name="defaultPermissions">
+         <map>
+            <entry>
+               <key><ref bean="org.theospi.portfolio.security.model.CrossRealmRoleWrapper.maintain"/></key>
+               <list>
+                  <value>osp.presentation.template.copy</value>
+                  <value>osp.presentation.template.publish</value>
+                  <value>osp.presentation.template.delete</value>
+                  <value>osp.presentation.template.create</value>
+                  <value>osp.presentation.template.edit</value>
+                  <value>osp.presentation.template.export</value>
+               </list>
+            </entry>
+         </map>
+      </property>
+      <property name="functions">
+         <list>
+            <value>osp.presentation.template.copy</value>
+            <value>osp.presentation.template.publish</value>
+            <value>osp.presentation.template.delete</value>
+            <value>osp.presentation.template.create</value>
+            <value>osp.presentation.template.edit</value>
+            <value>osp.presentation.template.export</value>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="org.theospi.portfolio.security.mgt.ToolPermissionManager.presentationLayout"
+      class="org.theospi.portfolio.security.model.SimpleSitePermissionManager"
+       singleton="true" init-method="init">
+
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="permissionManager">
+         <ref bean="org.theospi.portfolio.security.mgt.PermissionManager" />
+      </property>
+      <property name="agentManager"><ref bean="agentManager" /></property>
+      <property name="permissionEditName"><value>presentationLayout</value></property>
+      <property name="functionPrefix"><value>osp.presentation.layout</value></property>
+      <property name="defaultPermissions">
+         <map>
+            <entry>
+               <key><ref bean="org.theospi.portfolio.security.model.CrossRealmRoleWrapper.maintain"/></key>
+               <list>
+                  <value>osp.presentation.layout.publish</value>
+                  <value>osp.presentation.layout.delete</value>
+                  <value>osp.presentation.layout.create</value>
+                  <value>osp.presentation.layout.edit</value>
+                  <value>osp.presentation.layout.suggestPublish</value>
+               </list>
+            </entry>
+            <entry>
+               <key><ref bean="org.theospi.portfolio.security.model.CrossRealmRoleWrapper.access"/></key>
+               <list>
+                  <value>osp.presentation.layout.create</value>
+                  <value>osp.presentation.layout.delete</value>
+                  <value>osp.presentation.layout.edit</value>
+               </list>
+            </entry>
+         </map>
+      </property>
+      <property name="functions">
+         <list>
+            <value>osp.presentation.layout.publish</value>
+            <value>osp.presentation.layout.delete</value>
+            <value>osp.presentation.layout.create</value>
+            <value>osp.presentation.layout.edit</value>
+            <value>osp.presentation.layout.suggestPublish</value>
+         </list>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.content.api.ContentResourceFilter.layoutFile"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+      <property name="viewAll"><value>true</value></property>
+      <property name="mimeTypes">
+         <list>
+         </list>
+      </property>
+      <property name="acceptedExtensions">
+         <list>
+            <value>xhtml</value>
+         </list>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.content.api.ContentResourceFilter.layoutImageFile"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+      <property name="viewAll"><value>true</value></property>
+      <property name="mimeTypes">
+         <list>
+            <value>image</value>
+         </list>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.content.api.ContentResourceFilter.xslFile"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+      <property name="viewAll">
+         <value>true</value>
+      </property>
+      <property name="mimeTypes">
+         <list>
+         </list>
+      </property>
+      <property name="acceptedExtensions">
+         <list>
+            <value>xsl</value>
+            <value>xslt</value>
+         </list>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.content.api.ContentResourceFilter.templateImportFile"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+      <property name="viewAll"><value>true</value></property>
+      <property name="mimeTypes">
+         <list>
+         </list>
+      </property>
+      <property name="acceptedExtensions">
+         <list>
+            <value>zip</value>
+         </list>
+      </property>
+   </bean>
+
+   <!-- is this used ???
+   <bean id="org.theospi.portfolio.list.intf.ListGenerator.portfolios"
+      class="org.theospi.portfolio.presentation.model.impl.PresentationListGenerator" init-method="init">
+      <property name="presentationManager">
+         <ref bean="presentationManager"/>
+      </property>
+      <property name="listGeneratorId"><value>portfolios</value></property>
+      <property name="authnManager"><ref bean="authManager"/></property>
+      <property name="authzManager"><ref bean="authzManager"/></property>
+      <property name="listGenerator"><ref bean="org.theospi.portfolio.list.intf.ListGenerator.portfolios"/></property>
+      <property name="worksiteManager">
+         <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
+      </property>
+      <property name="listService"><ref bean="org.theospi.portfolio.list.intf.ListService"/></property>
+      <property name="columnConfig">
+      	<list>
+      		<bean class="org.theospi.portfolio.list.model.ColumnConfig">
+      			<property name="columnName"><value>title</value></property>
+      			<property name="defaultSelected"><value>true</value></property>
+      			<property name="sortable"><value>true</value></property>
+      			<property name="defaultSort"><value>true</value></property>
+      			<property name="defaultSortDirection"><value>1</value></property>
+      		</bean>
+      		<bean class="org.theospi.portfolio.list.model.ColumnConfig">
+      			<property name="columnName"><value>description</value></property>
+      			<property name="defaultSelected"><value>true</value></property>
+      		</bean>
+      		<bean class="org.theospi.portfolio.list.model.ColumnConfig">
+      			<property name="columnName"><value>owner.displayName</value></property>
+      			<property name="defaultSelected"><value>true</value></property>
+      			<property name="sortable"><value>true</value></property>
+      		</bean>
+      		<bean class="org.theospi.portfolio.list.model.ColumnConfig">
+      			<property name="columnName"><value>site.title</value></property>
+      			<property name="defaultSelected"><value>true</value></property>
+      			<property name="sortable"><value>true</value></property>
+      		</bean>
+      		<bean class="org.theospi.portfolio.list.model.ColumnConfig">
+      			<property name="columnName"><value>modified</value></property>
+      			<property name="defaultSelected"><value>true</value></property>
+      			<property name="sortable"><value>true</value></property>
+      		</bean>
+      	</list>
+      </property>
+   </bean>
+   -->
+   
+</beans>

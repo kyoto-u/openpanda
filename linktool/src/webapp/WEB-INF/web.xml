@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_9" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>sakai-rutgers-linktool</display-name>
+    <description>Sakai link to external applications</description>
+
+    <filter>
+        <filter-name>sakai.request</filter-name>
+        <filter-class>org.sakaiproject.util.RequestFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>sakai.rutgers.linktool</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>sakai.rutgers.testlink</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+    <!-- 
+       This is a sample tool highlighting how to add a pre-configured linktool.
+       see also the rsn.linktool.pentaho.xml sample tool registration file
+    -->
+    <!--
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>rsn.linktool.pentaho</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    -->
+
+<!-- 
+     need ContextLoaderListener to load applicationContext.xml, 
+     which we need to bring in the EntityProducer
+-->
+
+<!--
+    <context-param>
+                <param-name>contextConfigLocation</param-name>
+                <param-value>/WEB-INF/local.xml</param-value>
+        </context-param>
+
+        <context-param>
+                <param-name>contextSharedLocation</param-name>
+                <param-value>/WEB-INF/components.xml</param-value>
+        </context-param>
+
+-->
+
+    <listener>
+        <listener-class>org.sakaiproject.util.ContextLoaderListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>sakai.rutgers.linktool</servlet-name>
+        <servlet-class>org.sakaiproject.tool.rutgers.LinkTool</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>sakai.rutgers.testlink</servlet-name>
+        <servlet-class>org.sakaiproject.tool.rutgers.LinkTool</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- 
+       This is a sample tool highlighting how to add a pre-configured linktool.
+       see also the rsn.linktool.pentaho.xml sample tool registration file
+    -->
+    <!--
+    <servlet>
+        <servlet-name>rsn.linktool.pentaho</servlet-name>
+        <servlet-class>org.sakaiproject.tool.rutgers.LinkTool</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    -->
+
+    <servlet-mapping>
+        <servlet-name>sakai.rutgers.linktool</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+        <listener-class>org.sakaiproject.util.ToolListener</listener-class>
+    </listener>
+
+</web-app>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<registration>
+
+   <tool id="osp.assign" title="Assignments"
+      description="OSP Assignment Helper Tool">
+
+      <category name="sakai.helper" />
+   </tool>
+
+</registration>

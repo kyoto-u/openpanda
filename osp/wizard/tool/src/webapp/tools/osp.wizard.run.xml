@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<registration>
+
+   <tool id="osp.wizard.run" title="Wizard Runner" description="OSP Wizard RunHelper Tool">
+
+       <category name="sakai.helper" />
+
+<!-- 
+       <configuration name="theospi.resetUrl"
+            value="/wizard.osp" />
+       -->
+   </tool>
+
+</registration>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.site.type" title="Site Type" description="OSP Site Type Navigation Helper Tool">
+       <configuration name="test" value="reg-value" />
+
+       <category name="sakai.helper" />
+
+	</tool>
+
+</registration>

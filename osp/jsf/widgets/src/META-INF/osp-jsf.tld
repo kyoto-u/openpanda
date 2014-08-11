@@ -1,0 +1,1021 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+
+  <tlib-version>1.9</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>osp</short-name>
+  <uri>http://www.theospi.org/jsf/osp</uri>
+  <description><![CDATA[
+  
+    This tag library contains OSP 2.1 JavaServer Faces
+    component tags for creating user interface elements specified in the
+    <a href="http://portfolios.itd.depaul.edu/ospi/Prototypes/OSPGuidePrototypes.htm" target="_blank">OSP Prototypes</a>.
+    
+    A primary goal is to not have any actual html.
+   
+    <style>
+      span.tag {  color: #008000;      }
+      span.param  {  color: #800080;      }
+      span.value  {  color: #000080;      }
+    </style>
+    
+  ]]></description>
+  
+  <tag>
+    <name>xheader</name>
+    <tag-class>org.theospi.jsf.tag.XHeaderTag</tag-class>
+    <body-content>JSP</body-content>
+    <description><![CDATA[
+    
+       An e(x)pandable header.  This tag renders a bar across the defined area.
+       
+       <br><br>
+       <span class="tag">&lt;ospx:xheader</span>
+         <span="param">rendered</span> = <span class="value">"true/false"</span>&gt;<br>
+         &nbsp; &nbsp; &nbsp; &nbsp; This inner text is what goes into the under area.<br>
+       <span class="tag">&lt;/ospx:xheader&gt</span>
+       
+    ]]></description>
+    
+    
+    <attribute>
+      <name>rendered</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[
+      
+        Flag indicating whether or not this component should be rendered
+          (during Render Response Phase), or processed on any subsequent
+          form submit.
+          
+        <br><br>
+        Default: true;
+        
+      ]]></description>
+    </attribute>
+
+     <attribute>
+       <name>id</name>
+       <required>false</required>
+       <rtexprvalue>false</rtexprvalue>
+       <description><![CDATA[
+
+          the id of the header
+
+       ]]></description>
+     </attribute>
+  </tag>
+  
+  <tag>
+    <name>xheadertitle</name>
+    <tag-class>org.theospi.jsf.tag.XHeaderTitleTag</tag-class>
+    <body-content>JSP</body-content>
+    <description><![CDATA[
+    
+       An e(x)pandable header title
+       
+       <br><br>
+       <span class="tag">&lt;ospx:xheadertitle</span>
+         <span="param">id</span> = <span class="value">"titleAreaId"</span>
+         <span="param">cssclass</span> = <span class="value">"titleCssClass"</span>
+         <span="param">rendered</span> = <span class="value">"true/false"</span>&gt;<br>
+         &nbsp; &nbsp; &nbsp; &nbsp; This inner text is what goes into the title<br>
+       <span class="tag">&lt;/ospx:xheadertitle&gt</span>
+       
+    ]]></description>
+
+    <attribute>
+      <name>cssclass</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         css class for the title bar.  This defaults to "xheader" style class
+         
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         the id of the title area
+         
+      ]]></description>
+    </attribute>
+
+
+     <attribute>
+       <name>rendered</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+       <description><![CDATA[
+
+         Flag indicating whether or not this component should be rendered
+           (during Render Response Phase), or processed on any subsequent
+           form submit.
+
+         <br><br>
+         Default: true;
+
+       ]]></description>
+     </attribute>
+
+     <attribute>
+       <name>value</name>
+       <required>false</required>
+       <rtexprvalue>false</rtexprvalue>
+       <description><![CDATA[
+
+         The title of the header.  This title will be clickable.  Anything
+         under the header will be not be in the clickable area.
+
+       ]]></description>
+     </attribute>
+
+  </tag>
+  
+  <tag>
+    <name>xheaderdrawer</name>
+    <tag-class>org.theospi.jsf.tag.XHeaderDrawerTag</tag-class>
+    <body-content>JSP</body-content>
+    <description><![CDATA[
+    
+       An e(x)pandable header drawer, the area that is expandable
+       
+       <br><br>
+       <span class="tag">&lt;ospx:xheader</span>
+         <span="param">initiallyexpanded</span> = <span class="value">"true/false/yes/no"</span>
+         <span="param">id</span> = <span class="value">"UnderAreaId"</span>
+         <span="param">cssclass</span> = <span class="value">"underAreaClass"</span>
+         <span="param">rendered</span> = <span class="value">"true/false"</span>&gt;<br>
+         &nbsp; &nbsp; &nbsp; &nbsp; This inner text is what goes into the under area.<br>
+       <span class="tag">&lt;/ospx:xheader&gt</span>
+       
+    ]]></description>
+    
+    
+    <attribute>
+      <name>initiallyexpanded</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         tell the drawer to be initially open.  by default it is closed when not specified
+        
+      ]]></description>
+    </attribute>
+    
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+        id of the drawer
+        
+      ]]></description>
+    </attribute>
+    
+    
+    <attribute>
+      <name>cssclass</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+        the css class that the drawer receives
+        
+      ]]></description>
+    </attribute>
+    
+    
+    <attribute>
+      <name>rendered</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[
+      
+        Flag indicating whether or not this component should be rendered
+          (during Render Response Phase), or processed on any subsequent
+          form submit.
+          
+        <br><br>
+        Default: true;
+        
+      ]]></description>
+    </attribute>
+    
+  </tag>
+  
+  
+  
+  
+  <tag>
+    <name>scrollablearea</name>
+    <tag-class>org.theospi.jsf.tag.ScrollableAreaTag</tag-class>
+    <body-content>JSP</body-content>
+    <description><![CDATA[
+    
+       An e(x)pandable header.  This tag renders a bar across the defined area.  The innerHTML gets
+       placed into the the under area.  There can also be (tbd) button tags in the innerHTML which are placed next to the 
+       right hand side of the bar.<br><br>
+       
+       There is javascript associated with this tag to open and close the under area.
+       
+       <br><br>
+       
+       the top, left, right, and bottom are the binding to the containing area.  
+       These default to 0px thus expanding the scroll area to the containing element.
+       If height or width are set, then the respective axis right or bottom 
+          will be ignored.
+          
+       <br><br>
+       if the scrollXStyle and scrollYStyle are left blank, then the div gets an overflow:auto
+       if one is present with values of either "scroll" or "auto" then the other gets "hidden"
+       if both are present then those values are used
+       
+       <br><br>
+       <span class="tag">&lt;ospx:scrollableArea</span> 
+         <span="param">id</span> = <span class="value">"theDivID</span>
+         <span="param">scrollXStyle</span> = <span class="value">"visible/scroll/hidden/auto"</span>
+         <span="param">scrollYStyle</span> = <span class="value">"visible/scroll/hidden/auto"</span>
+         <span="param">width</span> = <span class="value">"200px"</span>
+         <span="param">height</span> = <span class="value">"95%"</span>
+         <span="param">cssclass</span> = <span class="value">"cssClass"</span>
+         <span="param">rendered</span> = <span class="value">"true/false"</span>&gt;<br>
+         &nbsp; &nbsp; &nbsp; &nbsp; This inner text is what goes into the scrollable area.<br>
+       <span class="tag">&lt;/ospx:scrollableArea&gt</span>
+       
+     ]]></description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         The title of the bar
+         
+      ]]></description>
+    </attribute>
+    
+    <attribute>
+      <name>scrollXStyle</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         values = {"visible", "scroll", "hidden", "auto"}
+         
+      ]]></description>
+    </attribute>
+    
+    <attribute>
+      <name>scrollYStyle</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         values = {"visible", "scroll", "hidden", "auto"}
+         
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         The width of the scroll area.  This should be in "px" or percentage "%".
+         
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         The height of the scroll area, required.  This should be in "px" or percentage "%".
+         
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>cssclass</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         This is the class that the scroll area gets
+         
+      ]]></description>
+    </attribute>
+    
+    <attribute>
+      <name>rendered</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[
+      
+        Flag indicating whether or not this component should be rendered
+          (during Render Response Phase), or processed on any subsequent
+          form submit.
+          
+      ]]></description>
+    </attribute>
+  </tag>
+  
+  
+  
+  
+  
+  <tag>
+    <name>splitarea</name>
+    <tag-class>org.theospi.jsf.tag.SplitAreaTag</tag-class>
+    <body-content>JSP</body-content>
+    <description><![CDATA[
+    
+      this is to divide an area in two.
+      there needs to be attributes that define a border per side for structure
+      <br><br>
+       <span class="tag">&lt;ospx:splitarea</span> 
+         <span="param">direction</span> = <span class="value">"vertical/horizontal/x/y"</span>
+         <span="param">width</span> = <span class="value">"500/95%"</span>
+         <span="param">height</span> = <span class="value">"90%"</span>
+         <span="param">rendered</span> = <span class="value">"true/false"</span>&gt;<br><br>
+         
+         &nbsp;  &nbsp; &nbsp; &nbsp;
+           <span class="tag">&lt;ospx:splitsection</span> 
+             <span="param">cssclass</span> = <span class="value">"cssClass"</span>
+             <span="param">size</span> = <span class="value">"200/20%"</span>
+             <span="param">id</span> = <span class="value">"wrapperId"</span>
+             <span="param">rendered</span> = <span class="value">"true/false"</span>
+           <span class="tag">&gt</span>
+           This is the content of the cell
+           <span class="tag">&lt;/ospx:splitsection</span><span class="tag">&gt</span><br>
+           
+             &nbsp;  &nbsp; &nbsp; &nbsp;
+           <span class="tag">&lt;ospx:splitsection</span> 
+             <span="param">cssclass</span> = <span class="value">"cssClass"</span>
+             <span="param">size</span> = <span class="value">"200/20%"</span>
+             <span="param">id</span> = <span class="value">"wrapperId"</span>
+             <span="param">rendered</span> = <span class="value">"true/false"</span>
+           <span class="tag">&gt</span>
+           This is the content of the cell
+           <span class="tag">&lt;/ospx:splitsection</span><span class="tag">&gt</span>
+           <br><br>
+           <span class="tag">&lt;/ospx:splitarea</span><span class="tag">&gt</span>
+       
+    ]]></description>
+
+    <attribute>
+      <name>direction</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         tells which direction to be divided.
+         "horizontal" splits the x axis in two by placing a vertical partition.
+         "vertical" splits the y axis in two by placing a horizontal partition.
+         
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         the total width of the area
+         
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+         the total height of the area
+         
+      ]]></description>
+    </attribute>
+    
+    <attribute>
+      <name>rendered</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[
+      
+        Flag indicating whether or not this component should be rendered
+          (during Render Response Phase), or processed on any subsequent
+          form submit.
+          
+      ]]></description>
+    </attribute>
+     <attribute>
+       <name>id</name>
+       <required>false</required>
+       <rtexprvalue>false</rtexprvalue>
+       <description><![CDATA[
+
+          the id of the splitter
+
+       ]]></description>
+     </attribute>
+  </tag>
+  
+  
+  
+  
+  
+   <tag>  
+    <name>splitsection</name>  
+    <tag-class>org.theospi.jsf.tag.SplitSectionTag</tag-class>  
+    <body-content>JSP</body-content>
+    <description><![CDATA[
+
+         This places the divider in the split view.  This MUST be found only inside 
+         the <ospx:splitarea> tag
+      <br><br>
+       <span class="tag">&lt;ospx:splitsection</span> 
+         <span="param">cssclass</span> = <span class="value">"cssClass"</span>
+         <span="param">size</span> = <span class="value">"200/20%"</span>
+         <span="param">id</span> = <span class="value">"wrapperId"</span>
+         <span="param">rendered</span> = <span class="value">"true/false"</span>
+       <span class="tag">&gt</span>
+       This is the content of the cell
+       <span class="tag">&lt;/ospx:splitsection</span><span class="tag">&gt</span>
+       
+    ]]></description>
+
+    <attribute>
+      <name>cssclass</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+
+         places this class into the section
+ 
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>size</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+
+         This gives the section a specific size, dependent upon the 
+         split area direction.  This takes a number in pixels or a percent.
+ 
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>align</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+
+         This is a passthrough variable to the td.
+ 
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>valign</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+
+         This is a passthrough variable to the td.
+ 
+      ]]></description>
+    </attribute>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+
+         Specifies the id of the surrounding tag of each section
+ 
+      ]]></description>
+    </attribute>
+    
+    <attribute>
+      <name>rendered</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[
+      
+        Flag indicating whether or not this component should be rendered
+          (during Render Response Phase), or processed on any subsequent
+          form submit.
+          
+      ]]></description>
+    </attribute>
+  </tag>
+  
+  
+  
+  
+  
+   <tag>  
+    <name>tabArea</name>  
+    <tag-class>org.theospi.jsf.tag.TabAreaTag</tag-class>  
+    <body-content>JSP</body-content>  
+    <description><![CDATA[
+    
+         This is to select between multiple related views. 
+      <br><br>
+       <span class="tag">&lt;ospx:tabarea</span> 
+         <span="param">direction</span> = <span class="value">"vertical/horizontal"</span>
+         <span="param">rendered</span> = <span class="value">"true false"</span>&gt;<br>
+       &nbsp; &nbsp; &nbsp; &nbsp; 
+       <span class="tag">&lt;ospx:tab</span> 
+         <span="param">title</span> = <span class="value">"Tab Title"</span>
+         <span="param">selected</span> = <span class="value">"true/false"</span>
+         <span="param">disabled</span> = <span class="value">"true/false"</span>
+         <span="param">id</span> = <span class="value">"TabID"</span> /&gt</span><br>
+         &nbsp; &nbsp; &nbsp; &nbsp;  ...<br>
+       <span class="tag">&lt;/ospx:tabarea&gt</span>
+       
+    ]]></description>  
+  
+    <attribute>
+      <name>direction</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+      <description><![CDATA[
+      
+         vertical/horizontal  
+         
+      ]]></description>  
+    </attribute>
+
+    <attribute>
+        <name>width</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>
+            <![CDATA[
+
+        the total width of the area.  the tabs plus the content
+        
+      ]]>
+        </description>
+    </attribute>
+
+    <attribute>
+        <name>height</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>
+            <![CDATA[
+
+        the total height of the area.  the tabs plus the content
+        
+      ]]>
+        </description>
+    </attribute>
+    
+    <attribute>
+      <name>rendered</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[
+      
+        Flag indicating whether or not this component should be rendered
+          (during Render Response Phase), or processed on any subsequent
+          form submit.
+          
+      ]]></description>
+    </attribute>
+      <attribute>
+        <name>id</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description><![CDATA[
+
+           the id of the area
+
+        ]]></description>
+      </attribute>
+  </tag>
+  
+  
+  
+  
+  
+   <tag>  
+    <name>tab</name>  
+    <tag-class>org.theospi.jsf.tag.TabTag</tag-class>  
+    <body-content>JSP</body-content>  
+    <description><![CDATA[
+    
+       this will display a single tab
+      <br><br>
+       <span class="tag">&lt;ospx:tab</span> 
+         <span="param">title</span> = <span class="value">"Tab Title"</span>
+         <span="param">selected</span> = <span class="value">"true/false"</span>
+         <span="param">disabled</span> = <span class="value">"true/false"</span>
+         <span="param">id</span> = <span class="value">"TabID"</span> /&gt</span>
+         
+    ]]></description>
+  
+    <attribute>
+      <name>title</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+      <description><![CDATA[
+
+        the title of the tab
+        
+      ]]></description>  
+    </attribute>
+
+    <attribute>
+        <name>cssclass</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>
+            <![CDATA[
+
+        this is the css class given to the buttons
+        
+      ]]>
+        </description>
+    </attribute>
+
+    <attribute>
+      <name>selected</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+      <description><![CDATA[
+
+        this will indicate that this tab is selected
+        
+      ]]></description>  
+    </attribute>
+  
+    <attribute>
+      <name>disabled</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+      <description><![CDATA[
+      
+        this will disable the tag
+        
+      ]]></description>  
+    </attribute>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+        The tab will get this id, if it is a button, then the name will
+        also be this attributes value
+        
+      ]]></description>
+    </attribute>
+    
+    <attribute>
+      <name>rendered</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[
+      
+        Flag indicating whether or not this component should be rendered
+          (during Render Response Phase), or processed on any subsequent
+          form submit.
+          
+      ]]></description>
+    </attribute>
+  </tag>
+  
+  <tag>  
+    <name>tabActionArea</name>  
+    <tag-class>org.theospi.jsf.tag.TabActionAreaTag</tag-class>  
+    <body-content>JSP</body-content>  
+    <description><![CDATA[
+    
+       this will display a single tab
+      <br><br>
+       <span class="tag">&lt;ospx:tab</span> 
+         <span="param">title</span> = <span class="value">"Tab Title"</span>
+         <span="param">selected</span> = <span class="value">"true/false"</span>
+         <span="param">disabled</span> = <span class="value">"true/false"</span>
+         <span="param">id</span> = <span class="value">"TabID"</span> /&gt</span>
+         
+    ]]></description>
+   
+    <attribute>
+      <name>disabled</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+      <description><![CDATA[
+      
+        this will disable the tag
+        
+      ]]></description>  
+    </attribute>
+    
+    <attribute>
+      <name>rendered</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[
+      
+        Flag indicating whether or not this component should be rendered
+          (during Render Response Phase), or processed on any subsequent
+          form submit.
+          
+      ]]></description>
+    </attribute>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+        The tab will get this id, if it is a button, then the name will
+        also be this attributes value
+        
+      ]]></description>
+    </attribute>
+  </tag>
+  
+  
+  
+  
+  
+  <tag>
+   <name>wizardSteps</name>
+   <tag-class>org.theospi.jsf.tag.WizardStepsTag</tag-class>
+   <body-content>JSP</body-content>
+   <description><![CDATA[
+   
+       Container tag for the wizard steps
+      <br><br>
+       <span class="tag">&lt;ospx:wizardSteps</span> 
+         <span="param">id</span> = <span class="value">"componentID"</span>&gt;<br>
+       
+       <span class="tag">&lt;ospx:wizardStep</span> 
+         <span="param">title</span> = <span class="value">"Tab Title"</span>
+         <span="param">selected</span> = <span class="value">"true/false"</span>
+         <span="param">disabled</span> = <span class="value">"true/false"</span>
+         <span="param">id</span> = <span class="value">"TabID"</span> /&gt</span><br>
+         &nbsp; &nbsp; &nbsp; &nbsp;  ...<br>
+       <span class="tag">&lt;/ospx:wizardSteps&gt</span>
+       
+   ]]></description>
+   <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+        Component id of this component.
+        
+      ]]></description>    
+   </attribute>
+   <attribute>
+     <name>currentStep</name>
+     <required>true</required>
+     <rtexprvalue>false</rtexprvalue>
+     <description><![CDATA[
+      
+        Zero-based index of the current step.
+        
+      ]]></description>
+   </attribute>
+  </tag>
+  
+  <tag>
+   <name>wizardStep</name>
+   <tag-class>org.theospi.jsf.tag.WizardStepTag</tag-class>
+   <body-content>empty</body-content>
+   <description><![CDATA[
+   
+      Wizard step.  Should be contained in an ospx:wizardSteps tag
+      <br><br>
+       <span class="tag">&lt;ospx:wizardStep</span> 
+         <span="param">label</span> = <span class="value">"label of step"</span>
+         <span="param">id</span> = <span class="value">"TabID"</span>
+         <span class="tag">/&gt</span>
+         
+   ]]></description>
+   <attribute>
+      <name>label</name>
+      <description><![CDATA[
+      
+         Text to be displayed
+      
+      ]]></description>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+   </attribute>
+   <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+        Component id of this component.
+        
+      ]]></description>
+    </attribute>
+    <attribute>
+      <name>rendered</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description><![CDATA[
+      
+        Flag indicating whether or not this component should be rendered
+          (during Render Response Phase), or processed on any subsequent
+          form submit.
+          
+      ]]></description>
+    </attribute>
+        <attribute>
+      <name>disabled</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>
+      <description><![CDATA[
+      
+        this will disable the tag
+        
+      ]]></description>  
+    </attribute>
+  </tag>
+
+   <tag>
+      <name>formLabel</name>
+      <tag-class>org.theospi.jsf.tag.FormLabelTag</tag-class>
+      <description>Tag for a form label</description>
+      <body-content>JSP</body-content>
+      <attribute>
+         <name>valueRequired</name>
+         <description><![CDATA[
+      
+            Is the value required?
+      
+         ]]></description>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>displayCharOnRight</name>
+         <description><![CDATA[
+      
+            Should the Required indicator be displayed to the right
+            of the label text?  Default is false (display on the left)
+      
+         ]]></description>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>id</name>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+         <description><![CDATA[
+         
+           Component id of this component.
+           
+         ]]></description>
+      </attribute>
+      <attribute>
+         <name>rendered</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+         <description><![CDATA[
+         
+           Flag indicating whether or not this component should be rendered
+             (during Render Response Phase), or processed on any subsequent
+             form submit.
+             
+         ]]></description>
+      </attribute>
+      <attribute>
+         <name>disabled</name>  
+         <required>false</required>  
+         <rtexprvalue>false</rtexprvalue>
+         <description><![CDATA[
+         
+           this will disable the tag
+           
+         ]]></description>  
+      </attribute>
+   </tag>
+
+   <tag>
+    <name>xmlDocument</name>
+    <tag-class>org.theospi.jsf.tag.XmlDocumentTag</tag-class>
+    <body-content>empty</body-content>
+    <description><![CDATA[
+
+         renders an xml document with a particular tag handler
+         factory
+
+    ]]></description>
+      <attribute>
+         <name>factory</name>
+         <description><![CDATA[
+
+            The org.theospi.jsf.intf.XmlTagFactory implementation that
+            will be used to process custom tags that are encountered in the
+            xml document.
+
+         ]]></description>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>xmlFile</name>
+         <description><![CDATA[
+
+            A java.io.InputStream for reading the xml document.
+
+         ]]></description>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+      </attribute>
+      <attribute>
+         <name>xmlFileId</name>
+         <description><![CDATA[
+
+         Id that can be used to determine if xml file has changed        
+
+         ]]></description>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+      </attribute>
+    <attribute>
+       <name>id</name>
+       <required>false</required>
+       <rtexprvalue>false</rtexprvalue>
+       <description><![CDATA[
+
+         Component id of this component.
+
+       ]]></description>
+     </attribute>
+      <attribute>
+        <name>rendered</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description><![CDATA[
+
+          Flag indicating whether or not this component should be rendered
+            (during Render Response Phase), or processed on any subsequent
+            form submit.
+
+        ]]></description>
+      </attribute>
+      <attribute>
+        <name>var</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description><![CDATA[
+
+        The variable for children to use to get at their data
+
+        ]]></description>
+      </attribute>
+   </tag>
+   
+   <tag>
+     <name>test</name>
+     <tag-class>org.theospi.jsf.tag.TestComponentTag</tag-class>
+     <body-content>JSP</body-content>
+     <description><![CDATA[
+
+     Just a convient place for testing output tag stuff, not for real use.
+
+     ]]></description>
+
+   </tag>
+   
+</taglib
+>

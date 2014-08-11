@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>base</artifactId>
+    <groupId>org.sakaiproject</groupId>
+    <version>2.8-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <name>Sakai Library Project</name>
+  <groupId>org.sakaiproject</groupId>
+  <artifactId>reference-base</artifactId>
+  <packaging>pom</packaging>
+  <scm>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/library/trunk</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/library/trunk</developerConnection>
+    <url>https://source.sakaiproject.org/svn/library/trunk</url>
+  </scm>
+  <modules>
+    <module>library</module>
+  </modules>
+</project>

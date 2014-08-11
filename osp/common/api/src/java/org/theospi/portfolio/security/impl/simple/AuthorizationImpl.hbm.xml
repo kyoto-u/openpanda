@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.theospi.portfolio.security">
+
+   <class name="Authorization" table="osp_authz_simple" lazy="false" batch-size="10">
+      <cache usage="nonstrict-read-write"/>
+
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdGenerator"/>
+      </id>
+      <property name="qualifier" length="255" type="org.sakaiproject.metaobj.shared.IdType" column="qualifier_id" not-null="true"/>
+      <property name="agent" column="agent_id"
+         not-null="true" type="org.sakaiproject.metaobj.shared.mgt.AgentUserType"/>
+      <property name="function" length="255" type="string" column="function_name" not-null="true"/>
+   </class>
+
+   <query name="getAuthorization">
+      from Authorization w where agent_id=? and function_name=? and qualifier_id=?
+   </query>
+
+   <query name="byId">
+      from Authorization w where qualifier_id=?
+   </query>
+
+   <query name="byFunction">
+      from Authorization w where function_name=?
+   </query>
+
+   <query name="byFunctionAndId">
+      from Authorization w where function_name=? and qualifier_id=?
+   </query>
+
+   <query name="byAgent">
+      from Authorization w where agent_id=?
+   </query>
+
+   <query name="byAgentAndId">
+      from Authorization w where agent_id=? and qualifier_id=?
+   </query>
+
+   <query name="byAgentAndFunction">
+      from Authorization w where agent_id=? and function_name=?
+   </query>
+
+</hibernate-mapping>

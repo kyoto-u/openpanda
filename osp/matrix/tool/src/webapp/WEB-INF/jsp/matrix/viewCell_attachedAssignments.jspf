@@ -1,0 +1,42 @@
+<!-- *********** Attached Assignments Area Start ******** -->
+	<c:if test="${not empty assignments}">
+		<tr class="cellItemAddLine">
+			<td colspan="4">
+			<h4><osp:message key="hdr.assignment" /></h4>
+			</td>
+		</tr>
+
+		<c:forEach var="assign" items="${assignments}" varStatus="loopStatus">
+			<tr>
+				<td colspan="4">
+				<h5 class="indnt2">
+				<c:if test="${assign.submitted && assign.timeSubmitted!=null}">
+					<img border="0" src="/library/image/silk/page_white_edit.png"
+						alt="" />
+
+					<a
+						href="<osp:url value="viewAssign.osp">
+                            <osp:param name="assign_ref" value="${assign.reference}" />
+                            <osp:param name="page_id" value="${cellBean.cell.wizardPage.id}" />
+                            <osp:param name="returnView" value="${returnView}" />
+                            <osp:param name="isMatrix" value="${isMatrix}" />
+                            <osp:param name="isWizard" value="${isWizard}" />
+                            </osp:url>">
+					<c:out value="${assign.assignment.title}" /> </a>
+				</c:if> 
+				<c:if test="${!assign.submitted || assign.timeSubmitted==null}">
+					<c:out value="${assign.assignment.title}" />
+				</c:if>
+				</h5>
+				&nbsp;&nbsp; <span class="textPanelFooter">(<osp:message
+					key="hdr.submitted" />: <c:out
+					value="${assign.timeSubmittedString}" /> - <osp:message
+					key="hdr.status" />: <c:out value="${assign.status}" /> <c:if
+					test="${assign.gradeReleased}"> - <osp:message
+						key="hdr.grade" />: <c:out value="${assign.grade}" />
+				</c:if>)</span></td>
+			</tr>
+		</c:forEach>
+	</c:if>
+	
+	<!-- *********** Attached Assignments Area End ******** -->

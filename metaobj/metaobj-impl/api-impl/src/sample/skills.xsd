@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   elementFormDefault="qualified"
+   targetNamespace="http://www.rsmart.com">
+   <xs:element name="skills">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="description" minOccurs="0">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:maxLength value="65535"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">description</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="years-experience">
+               <xs:simpleType>
+                  <xs:restriction base="xs:integer">
+                     <xs:maxLength value="11"/>
+                  </xs:restriction>
+               </xs:simpleType>
+               <xs:annotation>
+                  <xs:documentation source="ospi.label">years experience</xs:documentation>
+                  <xs:documentation source="ospi.description"/>
+               </xs:annotation>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>
+

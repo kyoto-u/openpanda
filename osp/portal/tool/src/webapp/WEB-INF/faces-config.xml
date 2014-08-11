@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<!-- =========== FACES CONFIGURATION FILE ================================== -->
+
+<faces-config>
+   <!-- Example custom JSF component used only in this tool -->
+
+   <component>
+      <component-type>org.theospi.portfolio.portal.component.ToolCategoryComponent</component-type>
+       <component-class>org.theospi.portfolio.portal.component.ToolCategoryComponent</component-class>
+   </component>
+
+   <component>
+      <component-type>org.theospi.portfolio.portal.component.ToolComponent</component-type>
+       <component-class>org.theospi.portfolio.portal.component.ToolComponent</component-class>
+   </component>
+
+   <application>
+     <message-bundle>org.theospi.portfolio.portal.messages</message-bundle>
+     <locale-config>
+       <default-locale>en</default-locale>
+     </locale-config>
+   </application>
+
+   <!-- =================== Tool Beans ============== -->
+
+   <managed-bean>
+      <description>SiteTypeTool</description>
+      <managed-bean-name>siteType</managed-bean-name>
+      <managed-bean-class>org.theospi.portfolio.portal.tool.SiteTypeTool</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+
+      <managed-property>
+         <description>Service Dependency: portalManager</description>
+         <property-name>portalManager</property-name>
+         <value>#{Components["org.theospi.portfolio.portal.intf.PortalManager"]}</value>
+      </managed-property>
+
+   </managed-bean>
+
+   <managed-bean>
+      <description>ToolCategoryTool</description>
+      <managed-bean-name>toolCategory</managed-bean-name>
+      <managed-bean-class>org.theospi.portfolio.portal.tool.ToolCategoryTool</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+
+      <managed-property>
+         <description>Service Dependency: portalManager</description>
+         <property-name>portalManager</property-name>
+         <value>#{Components["org.theospi.portfolio.portal.intf.PortalManager"]}</value>
+      </managed-property>
+
+      <managed-property>
+         <description>Service Dependency: tag factory</description>
+         <property-name>factory</property-name>
+         <value>#{Components["org.theospi.jsf.intf.XmlTagFactory.toolCategory"]}</value>
+      </managed-property>
+
+   </managed-bean>
+
+   <!--navigation-rule>
+     <from-view-id>/audience/tool.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>browse</from-outcome>
+         <to-view-id>/audience/browse.jsp</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule>
+   <navigation-rule>
+     <from-view-id>/audience/browse.jsp</from-view-id>
+      <navigation-case>
+         <from-outcome>main</from-outcome>
+         <to-view-id>/audience/tool.jsp</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule-->
+
+</faces-config>

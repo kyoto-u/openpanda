@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**Note**
+When changins some of the structures in this file, also be sure to change the 
+appropriate structures in the 
+matrix/api-impl/src/resources/org/theospi/portfolio/matrix/matrix-structure.xml file as well
+
+ valid values for type attribute are: collection, artifact, object
+ if not specified object is assumed
+ 
+ Use isNested="true" when you have nested objects
+ So, if childCategories can contain other childCategories, just put an isNested
+   so you don't have to keep embedding them
+ -->
+<completedWizard class="org.theospi.portfolio.wizard.model.CompletedWizard">
+   <rootCategory class="org.theospi.portfolio.wizard.model.CompletedWizardCategory">
+      <childPages type="collection" class="org.theospi.portfolio.wizard.model.CompletedWizardPage">
+         <wizardPage class="org.theospi.portfolio.matrix.model.WizardPage">
+            <attachments type="collection" class="org.theospi.portfolio.matrix.model.Attachment">
+               <artifactId type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+               </artifactId>
+            </attachments>
+            <pageForms type="collection" class="org.theospi.portfolio.matrix.model.WizardPageForm">
+               <artifactId type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+               </artifactId>
+            </pageForms>
+            <pageDefinition class="org.theospi.portfolio.matrix.model.WizardPageDefinition">
+               <guidance class="org.theospi.portfolio.guidance.model.Guidance">
+                  <items type="collection" class="org.theospi.portfolio.guidance.model.GuidanceItem">
+                     <attachments type="collection" class="org.theospi.portfolio.guidance.model.GuidanceItemAttachment">
+                     </attachments>
+                  </items>
+               </guidance>
+            </pageDefinition>
+	         <reflections type="collection" class="org.theospi.portfolio.review.model.Review">
+			   	<reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+			      </reviewContent>
+			   </reflections>
+			   <evaluations type="collection" class="org.theospi.portfolio.review.model.Review">
+			   	<reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+			      </reviewContent>
+			   </evaluations>
+			   <feedback type="collection" class="org.theospi.portfolio.review.model.Review">
+			   	<reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+			      </reviewContent>
+			   </feedback>
+         </wizardPage>
+      </childPages>
+      <childCategories type="collection" class="org.theospi.portfolio.wizard.model.CompletedWizardCategory" isNested="true">
+         <category class="org.theospi.portfolio.wizard.model.WizardCategory">
+         </category>
+          <childPages type="collection" class="org.theospi.portfolio.wizard.model.CompletedWizardPage">
+            <wizardPage class="org.theospi.portfolio.matrix.model.WizardPage">
+            <attachments type="collection" class="org.theospi.portfolio.matrix.model.Attachment">
+               <artifactId type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+               </artifactId>
+            </attachments>
+            <pageForms type="collection" class="org.theospi.portfolio.matrix.model.WizardPageForm">
+               <artifactId type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+               </artifactId>
+            </pageForms>
+            <pageDefinition class="org.theospi.portfolio.matrix.model.WizardPageDefinition">
+               <guidance class="org.theospi.portfolio.guidance.model.Guidance">
+                  <items type="collection" class="org.theospi.portfolio.guidance.model.GuidanceItem">
+                     <attachments type="collection" class="org.theospi.portfolio.guidance.model.GuidanceItemAttachment">
+                     </attachments>
+                  </items>
+               </guidance>
+            </pageDefinition>
+               <reflections type="collection" class="org.theospi.portfolio.review.model.Review">
+                  <reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+                  </reviewContent>
+               </reflections>
+               <evaluations type="collection" class="org.theospi.portfolio.review.model.Review">
+                  <reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+                  </reviewContent>
+               </evaluations>
+               <feedback type="collection" class="org.theospi.portfolio.review.model.Review">
+                  <reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+                  </reviewContent>
+               </feedback>
+         </wizardPage>
+      </childPages>
+      </childCategories>
+   </rootCategory>
+   <owner class="org.sakaiproject.metaobj.shared.model.Agent"></owner>
+   <wizard class="org.theospi.portfolio.wizard.model.Wizard">
+      <guidance class="org.theospi.portfolio.guidance.model.Guidance">
+         <items type="collection" class="org.theospi.portfolio.guidance.model.GuidanceItem">
+            <attachments type="collection" class="org.theospi.portfolio.guidance.model.GuidanceItemAttachment">
+            </attachments>
+         </items>
+      </guidance>
+   </wizard>
+	<reflections type="collection" class="org.theospi.portfolio.review.model.Review">
+		<reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+   	</reviewContent>
+	</reflections>
+	<evaluations type="collection" class="org.theospi.portfolio.review.model.Review">
+		<reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+	   </reviewContent>
+	</evaluations>
+	<feedback type="collection" class="org.theospi.portfolio.review.model.Review">
+		<reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+	   </reviewContent>
+	</feedback>
+</completedWizard>

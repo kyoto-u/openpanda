@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**Note**
+When changins some of the structures in this file, also be sure to change the 
+appropriate structures in the 
+wizard/api-impl/src/resources/org/theospi/portfolio/wizard/wizard-structure.xml file as well
+
+ valid values for type attribute are: collection, artifact, object
+ if not specified object is assumed
+ 
+ -->
+<matrix class="org.theospi.portfolio.matrix.model.Matrix">
+   <scaffolding class="org.theospi.portfolio.matrix.model.Scaffolding">
+      <levels type="collection" class="org.theospi.portfolio.matrix.model.Level">
+      </levels>
+      <criteria type="collection" class="org.theospi.portfolio.matrix.model.Criteria">
+      </criteria>
+      <additionalForms type="collection" />
+      <attachments type="collection" class="String">
+      		<attachment class="String" />
+      </attachments>
+   </scaffolding>
+   <cells type="collection" class="org.theospi.portfolio.matrix.model.Cell">
+      <scaffoldingCell class="org.theospi.portfolio.matrix.model.ScaffoldingCell">
+         <rootCriterion class="org.theospi.portfolio.matrix.model.Criterion"/>
+         <level class="org.theospi.portfolio.matrix.model.Level"/>
+      </scaffoldingCell>
+      <wizardPage class="org.theospi.portfolio.matrix.model.WizardPage">
+         <attachments type="collection" class="org.theospi.portfolio.matrix.model.Attachment">
+            <artifactId type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+            </artifactId>
+         </attachments>
+         <pageForms type="collection" class="org.theospi.portfolio.matrix.model.WizardPageForm">
+            <artifactId type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+            </artifactId>
+         </pageForms>
+         <pageDefinition class="org.theospi.portfolio.matrix.model.WizardPageDefinition">
+            <guidance class="org.theospi.portfolio.guidance.model.Guidance">
+               <items type="collection" class="org.theospi.portfolio.guidance.model.GuidanceItem">
+                  <attachments type="collection" class="org.theospi.portfolio.guidance.model.GuidanceItemAttachment">
+                  </attachments>
+               </items>
+            </guidance>
+            <additionalForms type="collection" />
+      		<attachments type="collection" class="string" />
+         </pageDefinition>
+         <reflections type="collection" class="org.theospi.portfolio.review.model.Review">
+		   	<reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+		      </reviewContent>
+		   </reflections>
+		   <evaluations type="collection" class="org.theospi.portfolio.review.model.Review">
+		   	<reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+		      </reviewContent>
+		   </evaluations>
+		   <feedback type="collection" class="org.theospi.portfolio.review.model.Review">
+		   	<reviewContent type="artifact" class="org.sakaiproject.metaobj.shared.model.Id">
+		      </reviewContent>
+		   </feedback>
+      </wizardPage>
+   </cells>
+   <owner class="org.sakaiproject.metaobj.shared.model.Agent"></owner>
+</matrix>

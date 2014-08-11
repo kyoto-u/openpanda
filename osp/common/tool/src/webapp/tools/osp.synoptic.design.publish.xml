@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.synoptic.design.publish" title="Design and Publish" description="OSP Synoptic List Tool">
+       <category name="sakai.main" />
+
+       <keyword name="synoptic" />
+       <keyword name="dashboard"/>
+
+       <configuration name="listGenId" value="portfolios" />
+
+	</tool>
+
+</registration>

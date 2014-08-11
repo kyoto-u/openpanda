@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+    <bean id="org.sakaiproject.warehouse.sakai.assignment.AssignmentWarehouseService"
+          class="org.sakaiproject.warehouse.sakai.assignment.AssignmentWarehouseService">
+        <property name="siteService">
+            <ref bean="org.sakaiproject.site.api.SiteService"/>
+        </property>
+        <property name="assService">
+            <ref bean="org.sakaiproject.assignment.api.AssignmentService"></ref>
+        </property>
+        <property name="siteTypes">
+            <list>
+                <value>course</value>
+                <value>project</value>
+            </list>
+        </property>
+        <property name="roles">
+            <list>
+                <value>Student</value>
+                <value>access</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="org.sakaiproject.warehouse.sakai.assignment.intf.PropertyAccess.assignment_id"
+          class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+        <property name="propertyName">
+            <value>assignment_id</value>
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.warehouse.sakai.assignment.ChildWarehouseTask.assignment"
+          class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+            <list>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>user_id</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>assignment_id</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>course_title</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>assignment_title</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>assignment_status</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>assignment_grade</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>student_first_name</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>student_last_name</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>school</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>district</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>class_year</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>advisor</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>course_term</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>course_code</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>course_section</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>instructor</value>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="insertStmt">
+            <value>insert into dw_assignment_status
+                (user_id, assignment_id, course_title, assignment_title, assignment_status,
+                assignment_grade, student_first_name, student_last_name,
+                school,district,class_year,advisor,course_term,
+                course_code,course_section,instructor) values
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            </value>
+        </property>
+        <property name="clearStmt">
+            <value>delete from dw_assignment_status</value>
+        </property>
+    </bean>
+
+    <bean
+            id="org.sakaiproject.warehouse.sakai.assignment.WarehouseTask.assignmentStatus"
+            class="org.sakaiproject.warehouse.sakai.assignment.AssignmentWarehouseTask"
+            init-method="init" singleton="true">
+        <property name="dataSource">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource"/>
+        </property>
+        <property name="dataWarehouseManager">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager"/>
+        </property>
+        <property name="tableDdlResource">
+            <value>/org/sakaiproject/warehouse/sakai/assignment.xml</value>
+        </property>
+        <property name="task">
+            <ref bean="org.sakaiproject.warehouse.sakai.assignment.ChildWarehouseTask.assignment"/>
+        </property>
+        <property name="assignmentDWService">
+            <ref bean="org.sakaiproject.warehouse.sakai.assignment.AssignmentWarehouseService"/>
+        </property>
+    </bean>
+
+
+</beans>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+	  
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.guidance.item.file"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+           <list>
+              <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+              
+              <bean class="org.sakaiproject.warehouse.impl.ReferenceHolderPropertyAccess">
+                 <property name="propertyName"><value>baseReference</value></property>
+              </bean>
+              
+              <bean class="org.sakaiproject.warehouse.impl.ReferenceHolderPropertyAccess">
+                 <property name="propertyName"><value>fullReference</value></property>
+              </bean>
+              
+                         
+              <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+                 <property name="propertyName"><value>item</value></property>
+              </bean>
+               
+            </list>
+        </property>
+        <property name="insertStmt">
+           <value>insert into dw_guidance_item_file
+                            (id, baseReference, fullReference, item_id)
+                                            values (?, ?, ?, ?)
+           </value>
+        </property>
+        <property name="clearStmt">
+           <value>delete from dw_guidance_item_file</value>
+        </property> 
+   </bean>
+    
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.guidance.item"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+           <list>
+              <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>type</value></property>
+              </bean>
+              <!-- field:text goes here , its of type TEXT
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>siteId</value></property>
+              </bean>
+              -->
+                         
+              <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+                 <property name="propertyName"><value>guidance</value></property>
+              </bean>
+               
+            </list>
+        </property>
+        <property name="insertStmt">
+           <value>insert into dw_guidance_item
+                            (id, type <!-- , text -->, guidance_id)
+                                            values (?, ? <!--, ?-->, ?)
+           </value>
+        </property>
+        <property name="clearStmt">
+           <value>delete from dw_guidance_item</value>
+        </property>
+        <property name="complexFields" >
+            <list>       
+               <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">               
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>attachments</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.guidance.item.file"/>
+                  </property>
+               </bean>                  
+            </list>
+         </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.guidance"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+           <list>
+              <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>description</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>siteId</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+                 <property name="propertyName"><value>securityQualifier</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>securityViewFunction</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>securityEditFunction</value></property>
+              </bean>
+            </list>
+        </property>
+        <property name="insertStmt">
+           <value>insert into dw_guidance
+                            (id, description, site_id, securityQualifier, securityViewFunction,
+                                     securityEditFunction)
+                                            values (?, ?, ?, ?, ?, ?)
+           </value>
+        </property>
+        <property name="clearStmt">
+           <value>delete from dw_guidance</value>
+        </property>
+        <property name="complexFields" >
+            <list>
+               <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">               
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>items</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.guidance.item"/>
+                  </property>
+               </bean>
+            </list>
+         </property>
+   </bean>
+   
+	<bean
+       id="org.sakaiproject.warehouse.service.WarehouseTask.guidance"
+       class="org.theospi.portfolio.warehouse.osp.presentation.GuidanceWarehouseTask"
+       init-method="init" singleton="true">
+       <property name="dataSource">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource" />
+       </property>
+       <property name="dataWarehouseManager">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager" />
+       </property>
+       <property name="tableDdlResource">
+           <value>/org/theospi/portfolio/warehouse/osp/common.xml</value>
+       </property>
+       <property name="guidanceManager">
+           <ref bean="org.theospi.portfolio.guidance.mgt.GuidanceManager" />
+       </property>
+       <property name="task">
+           <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.guidance" />
+       </property>
+   </bean>
+
+</beans>

@@ -1,0 +1,503 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<name>Profile2</name>
+	<groupId>org.sakaiproject.profile2</groupId>
+	<artifactId>profile2</artifactId>
+	<version>1.4.13-SNAPSHOT</version>
+    <packaging>pom</packaging>
+	
+	<parent>
+		<groupId>org.sakaiproject.purepoms</groupId>
+		<artifactId>sakai-commons-tool</artifactId>
+		<version>2.8.7</version>
+	</parent>
+	
+	<organization>
+        <name>The Sakai Foundation</name>
+        <url>http://www.sakaiproject.org</url>
+    </organization>
+    
+    <inceptionYear>2008</inceptionYear>
+	
+	<developers>
+		<developer>
+			<name>Steve Swinsburg</name>
+			<email>steve.swinsburg@gmail.com</email>
+			<organization>The Australian National University</organization>
+			<timezone>10</timezone>
+		</developer>
+		<developer>
+			<name>Adrian Fish</name>
+			<email>a.fish@lancaster.ac.uk</email>
+			<organization>Lancaster University, Centre for e-Science</organization>
+			<timezone>0</timezone>
+		</developer>
+		<developer>
+			<name>Daniel Robinson</name>
+			<email>d.b.robinson@lancaster.ac.uk</email>
+			<organization>Lancaster University, Centre for e-Science</organization>
+			<timezone>0</timezone>
+		</developer>
+	</developers>
+	
+	<contributors>
+		<contributor>
+			<name>Mark Breuker</name>
+			<email>mbreuker@loi.nl</email>
+			<roles>
+				<role>Translation - Dutch (nl)</role>
+				<role>Issue reporting</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Mike Ozornin</name>
+			<email>mike.ozornin@gmail.com</email>
+			<roles>
+				<role>Translation - Russian (ru)</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Nuno Fernandes</name>
+			<email>nuno@ufp.edu.pt</email>
+			<roles>
+				<role>Translation - Portuguese (pt_PT)</role>
+				<role>Issue reporting</role>
+				<role>Contributed patches</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Yuanhua Qu</name>
+			<email>yq12@txstate.edu</email>
+			<roles>
+				<role>Contributed patches</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Shoji Kajita</name>
+			<email>kajita@nagoya-u.jp</email>
+			<roles>
+				<role>Translation - Japanese (ja)</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Denny</name>
+			<email>denny.denny@anu.edu.au</email>
+			<roles>
+				<role>Translation - Indonesian (in_ID)</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Gao Jun</name>
+			<email>gaojun@fudan.edu.cn</email>
+			<roles>
+				<role>Translation - Simplified Chinese (zh_CN)</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Jean-Fran\u00E7ois L\u00E9v\u00EAque</name>
+			<email>jean-francois.leveque@upmc.fr</email>
+			<roles>
+				<role>Translation - French (fr_FR)</role>
+				<role>Issue reporting</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Fr\u00E9d\u00E9ric Dooremont</name>
+			<email>Frederic.Dooremont@univ-littoral.fr</email>
+			<roles>
+				<role>Translation - French (fr_FR)</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Laure Alba</name>
+			<email>laure.alba@univ-littoral.fr</email>
+			<roles>
+				<role>Translation - French (fr_FR)</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Thierry Peze</name>
+			<email>tierry.peze@univ-littoral.fr</email>
+			<roles>
+				<role>Translation - French (fr_FR)</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Brain Richwine</name>
+			<email>brichwin@indiana.edu</email>
+			<roles>
+				<role>Accessibility Review</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Mary Stores</name>
+			<email>mstores@indiana.edu</email>
+			<roles>
+				<role>Accessibility Review</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Seth Theriault</name>
+			<email>slt@columbia.edu</email>
+			<roles>
+				<role>Issue reporting</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Robert Long</name>
+			<email>relong@svsu.edu</email>
+			<roles>
+				<role>Issue reporting</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Johan Zaxmy</name>
+			<email>johan.zaxmy@his.se</email>
+			<roles>
+				<role>Issue reporting</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Chris Dunstall</name>
+			<email>cdunstall@csu.edu.au</email>
+			<roles>
+				<role>Testing</role>
+				<role>Branch merges</role>
+			</roles>
+		</contributor>
+        <contributor>
+            <name>Anthony Whyte</name>
+            <email>arwhyte@umich.edu</email>
+            <roles>
+                <role>POM plumbing</role>
+            </roles>
+        </contributor>
+	</contributors>
+
+    <licenses>
+        <license>
+            <name>Educational Community License, Version 2.0</name>
+            <url>http://www.osedu.org/licenses/ECL-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+	
+	<repositories>
+		<repository>
+			<id>sakai-maven</id>
+			<name>Sakai Maven Repo</name>
+			<layout>default</layout>
+			<url>http://source.sakaiproject.org/maven2</url>
+			<releases>
+                <enabled>true</enabled>
+            </releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+      		<id>sakai-maven2-snapshots</id>
+      		<name>Sakai Maven Repo</name>
+      		<layout>default</layout>
+      		<url>http://source.sakaiproject.org/maven2-snapshots</url>
+      		<releases>
+                <enabled>false</enabled>
+            </releases>
+      		<snapshots>
+        		<enabled>true</enabled>
+      		</snapshots>
+    	</repository>
+    	<repository>
+            <id>default</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <url>http://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+	</repositories>
+	
+	<distributionManagement>
+        <site>
+            <id>sakai-site</id>
+            <name>Sakai release Site</name>
+            <url>scpexe://source.sakaiproject.org/var/www/html/release/profile2/${project.version}</url>
+        </site>
+    </distributionManagement>
+	    
+    <properties>
+    	<wicket.version>1.4.20</wicket.version>
+    	<log4j.version>1.2.14</log4j.version>
+    	<slf4j.version>1.4.2</slf4j.version>
+    	<twitter4j.version>3.0.5</twitter4j.version>
+    	<wicketstuff.tinymce.version>1.4.20</wicketstuff.tinymce.version>
+    	<wicketstuff.objectautocomplete.version>1.4.20</wicketstuff.objectautocomplete.version>
+        <sakai.common.version>1.1.8</sakai.common.version>
+    	<sakai.ets.version>0.5.7</sakai.ets.version>
+    	<quartz.version>1.6.6</quartz.version>
+    	<genericdao.version>0.9.18</genericdao.version>
+    	<commons.codec.version>1.4</commons.codec.version>
+    	<legacy.profile.api.version>2.8.5</legacy.profile.api.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <search-api.version>1.3.7</search-api.version>
+		<entitybroker.version>1.4.6</entitybroker.version>
+		<yuicompressor.plugin.version>0.9</yuicompressor.plugin.version>
+		<lombok.version>0.11.0</lombok.version>
+	</properties>
+    
+    <!-- Profile2 related dependencies -->
+	<dependencyManagement>
+		<dependencies>
+			
+			<!-- internal -->
+			<dependency>
+      			<groupId>org.sakaiproject.profile2</groupId>
+      			<artifactId>profile2-api</artifactId>
+      			<version>${project.version}</version>
+      			<scope>provided</scope>
+    		</dependency>
+    		<dependency>
+      			<groupId>org.sakaiproject.profile2</groupId>
+      			<artifactId>profile2-impl</artifactId>
+      			<version>${project.version}</version>
+      			<scope>runtime</scope>
+    		</dependency>
+    		<dependency>
+      			<groupId>org.sakaiproject.profile2</groupId>
+      			<artifactId>profile2-util</artifactId>
+      			<version>${project.version}</version>
+    		</dependency>
+    		<dependency>
+                <groupId>org.sakaiproject.profile2</groupId>
+                <artifactId>profile2-bundle</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+    		
+    		<!-- external -->
+			<dependency>
+      			<groupId>org.twitter4j</groupId>
+      			<artifactId>twitter4j-core</artifactId>
+      			<version>${twitter4j.version}</version>
+    		</dependency>
+    		<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket</artifactId>
+				<version>${wicket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-extensions</artifactId>
+				<version>${wicket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.wicket</groupId>
+				<artifactId>wicket-spring</artifactId>
+				<version>${wicket.version}</version>
+	    	</dependency>
+	    	<dependency>
+	    		<groupId>org.wicketstuff</groupId>
+  				<artifactId>tinymce</artifactId>
+  				<version>${wicketstuff.tinymce.version}</version>
+  			</dependency>
+  			<dependency>
+			    <groupId>org.wicketstuff</groupId>
+			    <artifactId>htmlvalidator</artifactId>
+			    <version>${wicketstuff.htmlvalidator.version}</version>
+			</dependency>
+  			<dependency>
+	    		<groupId>org.wicketstuff</groupId>
+  				<artifactId>objectautocomplete</artifactId>
+  				<version>${wicketstuff.objectautocomplete.version}</version>
+  			</dependency>
+			<dependency>
+				<groupId>org.opensymphony.quartz</groupId>
+				<artifactId>quartz</artifactId>
+				<version>${quartz.version}</version>
+				<scope>provided</scope>
+			</dependency>
+	        <dependency>
+	            <groupId>org.sakaiproject</groupId>
+	            <artifactId>generic-dao</artifactId>
+	            <version>${genericdao.version}</version>
+	        </dependency>
+	        	<dependency>
+      			<groupId>commons-codec</groupId>
+      			<artifactId>commons-codec</artifactId>
+      			<version>${commons.codec.version}</version>
+   			</dependency> 
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.opencsv</groupId>
+				<artifactId>opencsv</artifactId>
+				<version>2.3</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
+			</dependency>
+   			
+		    <dependency>
+    			<groupId>org.sakaiproject.emailtemplateservice</groupId>
+    			<artifactId>emailtemplateservice-api</artifactId>
+    			<version>${sakai.ets.version}</version>
+    			<scope>provided</scope>
+    		</dependency>
+
+            <dependency>
+                <groupId>org.sakaiproject.search</groupId>
+                <artifactId>search-api</artifactId>
+                <version>${search-api.version}</version>
+            </dependency>
+		    
+		    <!-- legacy dependency-->
+		    <dependency>
+		      	<groupId>org.sakaiproject.profile</groupId>
+  				<artifactId>profile-api</artifactId>
+  				<version>${legacy.profile.api.version}</version>
+		      	<scope>provided</scope>
+		    </dependency>
+		    
+		    <!--  testing dependencies -->
+		    
+		    
+  	
+    	</dependencies>
+    </dependencyManagement>
+
+ 	<modules>
+	    <module>api</module>
+	    <module>help</module>
+	    <module>impl</module>
+	    <module>util</module>
+	    <module>pack</module>
+	    <module>tool</module>
+	    <module>assembly</module>
+	    <module>bundle</module>
+	</modules>
+	
+	<profiles>
+		<profile>
+			<id>cafe</id>
+			<modules>
+				<module>deploy</module>
+			</modules>
+    	</profile>
+  	</profiles>
+    
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://jira.sakaiproject.org/browse/PRFL</url>
+    </issueManagement>
+    
+    <scm>
+    	<connection>scm:svn:https://source.sakaiproject.org/svn/profile2/branches/profile2-1.4.x</connection>
+    	<developerConnection>scm:svn:https://source.sakaiproject.org/svn/profile2/branches/profile2-1.4.x</developerConnection>
+    	<url>https://source.sakaiproject.org/svn/profile2/branches/profile2-1.4.x</url>
+  	</scm>
+    
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven2-central-repo</id>
+			<name>Maven2 Central Repo</name>
+			<url>http://repo1.maven.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>Sakai Plugin Repo</id>
+			<url>http://source.sakaiproject.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<name>oss.sonatype.org - github-releases</name>
+			<id>oss.sonatype.org-github-releases</id>
+			<url>http://oss.sonatype.org/content/repositories/github-releases</url>
+		</pluginRepository>
+	</pluginRepositories>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.5.0</version>
+                <configuration>
+                    <basedir>${basedir}</basedir>
+                    <header>https://source.sakaiproject.org/svn/sakai/trunk/ECLv2-header-template.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>false</aggregate>
+                    <includes>
+                        <include>**/org/sakaiproject/**/*.java</include>
+                        <include>**/org/sakaiproject/**/*.html</include>
+                        <include>**/test/**/*.java</include>
+                        <include>src/webapp/css/profile2-help.css</include>
+                        <include>src/webapp/css/profile2-profile-entity.css</include>
+                        <include>src/webapp/css/profile2.css</include>
+                        <include>src/webapp/javascript/profile2.js</include>
+                    </includes>
+                    <excludes>
+                        <exclude>target/**</exclude>
+                        <exclude>m2-target/**</exclude>
+                        <exclude>**/*.doc</exclude>
+                        <exclude>**/*.properties</exclude>
+                        <exclude>**/*.txt</exclude>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.sql</exclude>
+                    </excludes>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>${project.inceptionYear}-2010</year>
+                        <holder>The Sakai Foundation</holder>
+                    </properties>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <!-- Disable: plugin ${year} variable causes build failure if a single year is encountered.  -->
+                <!--
+                <executions>
+                    <execution>
+                        <id>check-headers</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                -->
+            </plugin>
+        </plugins>
+    </build>
+</project>

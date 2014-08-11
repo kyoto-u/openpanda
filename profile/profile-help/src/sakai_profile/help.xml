@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+   <bean id="modifyProfile" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>aqze</value></property>
+      <property name="name"><value>Review or modify profile</value></property>
+      <property name="location"><value>/sakai_profile/aqze.html</value></property>
+      <property name="defaultForTool"><value>sakai.profile</value></property>
+   </bean>
+   
+   <bean id="searchUserProfile" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>ardb</value></property>
+      <property name="name"><value>Search for a user's profile</value></property>
+      <property name="location"><value>/sakai_profile/ardb.html</value></property>
+   </bean>
+
+   <bean id="addPictureProfile" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>aror</value></property>
+      <property name="name"><value>Add a picture to your profile</value></property>
+      <property name="location"><value>/sakai_profile/aror.html</value></property>
+   </bean>
+   
+    <bean id="org.sakaiproject.api.app.help.TableOfContents" 
+          class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name"><value>root</value></property>
+      <property name="categories">
+         <list>
+            <bean id="resourceCategory" class="org.sakaiproject.component.app.help.model.CategoryBean">
+               <property name="name"><value>Profile</value></property>
+               <property name="resources">
+                  <list>
+                     <ref bean="modifyProfile"/>
+                     <ref bean="searchUserProfile"/>
+                     <ref bean="addPictureProfile"/>
+                  </list>
+               </property>
+            </bean>
+           </list>
+         </property>
+       </bean>
+</beans>

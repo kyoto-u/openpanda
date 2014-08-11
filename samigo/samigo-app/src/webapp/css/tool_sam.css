@@ -1,0 +1,256 @@
+
+.treefolder {
+ background-repeat: no-repeat;
+ height: 17px;
+ width: 26px;
+}
+
+.treedoc {
+ background-image: url(../images/file.gif);
+ background-repeat: no-repeat;
+ height: 17px;
+ width: 26px;
+}
+
+.actionHeader{ 
+  overflow: hidden;
+  width:100%;
+  background:#eec;
+  padding:0
+
+ }
+.actionHeader h3 h4 h5{ 
+  float:left;
+  margin:.3em
+ }
+
+.actionHeader div{ 
+  float:right;
+  padding:.3em
+}
+
+/*
+.navModeQuestion
+{background-color:#CCC;text-align:left;padding:.3em;vertical-align:middle font-size:1.2ems}
+*/
+.navViewAction {
+background-color:#CCC;
+text-align:left;
+padding:.3em;
+vertical-align: bottom;
+font-size:1.2em
+}
+
+.textTable
+{vertical-align:top;margin-left:2em}
+
+.number {
+  width:23px;
+  height:23px;
+        FONT-WEIGHT: bold;
+        COLOR:#FFFFFF;
+        background-image: url(../images/circle.gif);
+        vertical-align: middle;
+        background-repeat: no-repeat;
+        padding-left: 7px;
+        padding-right: 2px;
+        height: 32px;
+        width: 32px;
+        float: left;
+}
+
+
+/* moved h#text,alignRight from main.css  */
+.h3text {
+ font-size: 1.2em;
+ font-weight: bold;
+}
+.h4text {
+ font-size: 1.0em;
+ font-weight: bold;
+}
+.h5text {
+ font-size: 0.8em;
+ font-weight: bold;
+}
+
+
+.navList{
+        text-align: right;
+}
+.navView{
+        text-align: left;
+}
+
+.validate{
+	color:red;
+}
+
+.toggle_link_container{
+	text-align:right;
+}
+.toggle_link{
+	font-size:85%;
+	border-right:1px solid #ddd;
+	border-left:1px solid #ddd;
+	border-top:1px solid #ddd;		
+	margin-bottom:0px;
+}
+
+.simple_text_area{
+	margin-top:0px;
+}
+/*
+	OVERRIDE NAV CONTROL SAKAI CSS DEFINITIONS FOR NOW.
+	They don't handle our situation, with search filters bottom-aligned
+	on the left and paging controls on the right.
+*/
+.samLeftNav  {
+	vertical-align:bottom;
+    text-align:left;
+}
+.samRightNav  {
+	vertical-align:bottom;
+    text-align:right;
+}
+
+/* added gopalrc - Jan 2008  */
+.detailedStatsCorrectAnswerText {
+    font-weight: bold;
+}
+
+.new_assessment 
+{
+	color: #555555;
+	font-weight: bold;
+}
+
+/* added gopalrc - Jan 2008  */
+.detailedStatsCorrectAnswerText {
+    font-weight: bold;
+}
+
+.prePopulateText 
+{
+	color:gray;
+}
+
+.textBelowHeader {
+	padding: .5em 0 0 0;
+}
+
+.selectAction {
+	width: 10%;
+}
+
+.titlePending {
+	width: 77%;
+}
+
+.titlePub {
+	width: 30%;
+}
+
+.lastModified {
+	width: 13%;
+}
+
+.releaseTo {
+	width: 11%;
+}
+
+.inProgress {
+	width: 9%;
+}
+
+.submitted {
+	width: 9%;
+}
+
+.releaseDate {
+	width: 9%;
+}
+
+.dueDate {
+	width: 9%;
+}
+
+.listAssessments th{
+	background-color: #ddd;
+	border: 1px solid #999;
+}
+
+.makeInfo {
+	border: 1px solid #666; 
+	background-color: #FFFDD2;
+	position: absolute; 
+	top: 0px; 
+	left: 30px;
+	text-indent: 0em;
+	margin-top: 0.4em;
+	margin-left: -1.2em;
+	max-height: 250px; /* if div >= to this max-height value, will override with scrollDescription class b/c IE scrollbar issues */
+	white-space: nowrap;
+}
+
+.info {
+	position: relative;
+}
+
+.whiteSpaceNoWrap {
+	white-space: nowrap;
+}
+
+table.settings {
+    border: 1px solid #bbb;
+}
+ 	  	 
+.samigo-linear-access-warning {
+ 	background-color: #FAFAD6;
+ 	border: 1px solid #F6D87D;
+ 	margin: 0px 10px 10px 10px;
+ 	padding: 5px;
+ 	border-radius: 5px;
+ 	color: #404040;
+ 	font-family: Arial,Helvetica,sans-serif;
+}
+
+.notification {
+    color: #555;
+    font-size: 110%;
+    font-weight: bold;
+}
+
+/* Nav ========================================*/
+
+.navIntraTool li, .itemAction li {
+        display: inline;
+        margin: 0;
+        margin-left: -.5em;
+        padding: 0 1em;
+}
+
+.navIntraTool li span.separator {
+    margin-left: 1em;
+    margin-right: -1.5em;
+}
+
+.itemAction li {
+        margin-left: 0;
+        padding: 0 .3em;
+}
+
+.navIntraTool a, .navIntraTool a:link{
+        margin: 0;
+        padding: 0;
+}
+
+li.last {
+        border: 0 none;
+}
+
+.answerkeyFeedbackCommentLabel {
+	FONT-WEIGHT: bold;
+    COLOR:#860000;
+} 
+

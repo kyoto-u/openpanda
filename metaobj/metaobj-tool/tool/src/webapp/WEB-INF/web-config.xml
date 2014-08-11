@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+
+<beans default-lazy-init="true">
+   <!--
+     - This bean provides explicit View mappings in a resource bundle instead of the
+     - default InternalResourceViewResolver. It fetches the view mappings from
+     - localized "views_xx" classpath files, i.e. "/WEB-INF/classes/views.properties"
+     - or "/WEB-INF/classes/views_de.properties".
+     -
+     - Symbolic view names returned by Controllers will be resolved by this bean
+     - using the respective properties file, which defines arbitrary mappings between
+     - view names and resources.
+     -->
+   <bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+      <property name="basename">
+         <value>views</value>
+      </property>
+   </bean>
+
+   <bean id="resourceResolver" class="org.sakaiproject.metaobj.utils.xml.ResourceUriResolver">
+      <property name="contentHostingService">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
+      </property>
+   </bean>
+
+
+   <!--
+  - This bean resolves specific types of exception to corresponding error views.
+   - The default behaviour of DispatcherServlet is to propagate all exceptions to the
+   - servlet container: This will happen here with all other types of exception.
+   -->
+   <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+      <property name="exceptionMappings">
+         <props>
+            <prop key="org.sakaiproject.metaobj.security.AuthorizationFailedException">authzFailed</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.control.servlet.RequestSetupFilter"
+      class="org.sakaiproject.metaobj.shared.control.servlet.SakaiComponentFilter">
+      <property name="multipartResolver">
+         <ref bean="multipartResolver"/>
+      </property>
+   </bean>
+
+   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+      <property name="basename">
+         <value>messages</value>
+      </property>
+   </bean>
+
+   <bean id="localeResolver" class="org.sakaiproject.spring.util.SakaiLocaleResolver">
+   </bean>
+
+   <bean name="openSessionInViewInterceptor"
+      class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+      <property name="sessionFactory">
+         <ref bean="sessionFactory"/>
+      </property>
+      <property name="flushMode">
+         <bean id="org.springframework.orm.hibernate3.HibernateAccessor.FLUSH_EAGER"
+            class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+      </property>
+   </bean>
+
+   <!-- This is used by the template view to add common beans to the model -->
+   <bean id="commonModelController" class="org.sakaiproject.metaobj.utils.mvc.impl.CommonModelControllerImpl">
+   </bean>
+
+   <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+      <property name="lazyInitHandlers">
+         <value>true</value>
+      </property>
+      <property name="interceptors">
+         <list>
+            <!-- check for session timeout, give pretty error page is timed out -->
+            <ref bean="org.sakaiproject.metaobj.shared.control.CheckForTimeout"/>
+            <!-- causes Hibernate Session to surround Request-->
+            <!--ref bean="openSessionInViewInterceptor"/-->
+            <!-- puts 'sakai_skin' into request as an attribute -->
+            <ref bean="org.springframework.web.servlet.HandlerInterceptor.SakaiStyleSheetInterceptor"/>
+         </list>
+      </property>
+      <property name="mappings">
+         <props>
+            <prop key="/editPermissions.osp">editPermissionsController</prop>
+            <prop key="/title.osp">titleController</prop>
+            <prop key="/refreshHomes.osp">refreshHomesController</prop>
+            <prop key="/addStructuredArtifactDefinition.osp">addStructuredArtifactDefinitionController</prop>
+            <prop key="/listStructuredArtifactDefinitions.osp">listStructuredArtifactDefinitionsController</prop>
+            <prop key="/editStructuredArtifactDefinition.osp">editStructuredArtifactDefinitionController</prop>
+            <prop key="/importStructuredArtifactDefinition.osp">importStructuredArtifactDefinitionController</prop>
+            <prop key="/confirmSADPublish.osp">publishStructuredArtifactDefinitionController</prop>
+            <prop key="/confirmSADDelete.osp">deleteStructuredArtifactDefinitionController</prop>            
+            <prop key="/formView.osp">formViewController</prop>
+            <prop key="/formHelper.osp">formHelperController</prop>
+            <prop key="/formCreateHelper.osp">formCreateHelperController</prop>
+            <prop key="/formEditHelper.osp">formEditHelperController</prop>
+            <prop key="/formResourceCreateHelper.osp">chooseFormTypeHelperController</prop>
+            <prop key="/formUsage.osp">formUsageController</prop>
+         </props>
+      </property>
+   </bean>
+
+   <!-- check for session timeout, give pretty error page is timed out -->
+   <bean id="org.sakaiproject.metaobj.shared.control.CheckForTimeout"
+      class="org.sakaiproject.metaobj.shared.control.CheckForTimeout">
+      <property name="authenticationManager">
+         <ref bean="authManager"/>
+      </property>
+      <property name="timeoutUrl">
+         <value>${system.baseUrl}/timeout.html</value>
+      </property>
+      <!-- do not apply interceptor to these servlet paths -->
+      <property name="ignoreList">
+         <list>
+            <value>/title.osp</value>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="idCustomEditor" class="org.sakaiproject.metaobj.shared.mgt.IdCustomEditor">
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+   </bean>
+
+   <bean id="idListCustomEditor" class="org.sakaiproject.metaobj.shared.mgt.IdListCustomEditor">
+      <property name="idManager">
+         <ref bean="idManager"/>
+      </property>
+   </bean>
+
+   <!--bean id="fieldValueWrapperFactory" class="org.sakaiproject.metaobj.shared.mgt.factories.FieldValueWrapperFactory" >
+      <property name="wrappedClassNamesMap">
+         <props>
+            <prop key="java.util.Date">org.sakaiproject.metaobj.shared.model.DateBean</prop>
+         </props>
+      </property>
+   </bean-->
+
+   <!-- This is used by the template view as default settings -->
+   <bean id="defaultTemplateDef" class="org.sakaiproject.metaobj.utils.mvc.impl.SimpleBeanWrapper">
+      <property name="wrappedBean">
+         <props>
+            <!--
+                        <prop key="_rightMenu">/WEB-INF/jsp/rightMenu.jsp</prop>
+                        <prop key="_leftMenu">/WEB-INF/jsp/leftMenu.jsp</prop>
+                        <prop key="_header">/WEB-INF/jsp/header.jsp</prop>
+                        <prop key="_footer">/WEB-INF/jsp/footer.jsp</prop>
+            -->
+            <prop key="_template">/WEB-INF/jsp/template.jsp</prop>
+         </props>
+      </property>
+   </bean>
+
+</beans>

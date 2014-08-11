@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+   <bean id="styleValidator" class="org.theospi.portfolio.style.tool.StyleValidator"/>
+
+   <bean id="listStyleController" class="org.sakaiproject.metaobj.utils.mvc.impl.servlet.ViewControllerImpl">
+      <property name="controller">
+         <bean class="org.theospi.portfolio.style.tool.ListStyleController">
+            <property name="styleManager"><ref bean="org.theospi.portfolio.style.mgt.StyleManager"/></property>
+            <property name="authManager"><ref bean="authManager"/></property>
+            <property name="agentManager"><ref bean="agentManager"/></property>
+            <property name="authzManager"><ref bean="authzManager"/></property>
+            <property name="idManager"><ref bean="idManager"/></property>
+            <property name="worksiteManager">
+               <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
+            </property>
+            <property name="listScrollIndexer">
+               <ref bean="org.sakaiproject.metaobj.utils.mvc.intf.ListScrollIndexer"/>
+            </property>
+         </bean>
+      </property>
+      <property name="customTypedEditors">
+         <list>
+            <ref bean="idCustomEditor"/>
+         </list>
+      </property>
+      <property name="screenMappings">
+         <props>
+            <prop key="success">listStyle</prop>
+         </props>
+      </property>
+      <property name="commandName"><value>styles</value></property>
+      <property name="commandClass"><value>java.util.ArrayList</value></property>
+   </bean>
+   
+   <bean id="addStyleController" class="org.sakaiproject.metaobj.utils.mvc.impl.servlet.FormControllerImpl">
+      <property name="controller">
+         <bean class="org.theospi.portfolio.style.tool.AddStyleController">
+            <property name="styleManager"><ref bean="org.theospi.portfolio.style.mgt.StyleManager" /></property>
+            <property name="authManager"><ref bean="authManager" /></property>
+            <property name="idManager"><ref bean="idManager"/></property>
+            <property name="entityManager">
+               <ref bean="org.sakaiproject.entity.api.EntityManager"/>
+            </property>
+            <property name="sessionManager">
+               <ref bean="org.sakaiproject.tool.api.SessionManager"/>
+            </property>
+            <property name="contentHosting">
+               <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
+            </property>
+            <property name="worksiteManager">
+               <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
+            </property>
+         </bean>
+      </property>
+      <property name="screenMappings">
+         <props>
+            <prop key="success">listStyleRedirect</prop>
+            <prop key="pickStyleFiles">filePickerRedirect</prop>
+         </props>
+      </property>
+      <property name="customTypedEditors">
+         <list>
+            <ref bean="idCustomEditor"/>
+         </list>
+      </property>
+      <property name="validator"><ref bean="styleValidator"/></property>
+      <property name="commandName"><value>style</value></property>
+      <property name="commandClass"><value>org.theospi.portfolio.style.model.Style</value></property>
+      <property name="formView"><value>addStyle</value></property>
+   </bean>
+   
+   <bean id="selectStyleController" class="org.sakaiproject.metaobj.utils.mvc.impl.servlet.ViewControllerImpl">
+      <property name="controller">
+         <bean class="org.theospi.portfolio.style.tool.SelectStyleController">
+            <property name="styleManager"><ref bean="org.theospi.portfolio.style.mgt.StyleManager" /></property>
+            <property name="idManager"><ref bean="idManager"/></property>
+         </bean>
+      </property>
+      <property name="customTypedEditors">
+         <list>
+            <ref bean="idCustomEditor"/>
+         </list>
+      </property>
+      <property name="screenMappings">
+         <props>
+            <prop key="success">helperDone</prop>
+         </props>
+      </property>
+      <property name="commandName"><value>style</value></property>
+      <property name="commandClass"><value>org.theospi.portfolio.style.model.Style</value></property>
+   </bean>
+   
+   <bean id="publishStyleController" class="org.sakaiproject.metaobj.utils.mvc.impl.servlet.ViewControllerImpl">
+      <property name="controller">
+         <bean class="org.theospi.portfolio.style.tool.PublishStyleController">
+            <property name="styleManager"><ref bean="org.theospi.portfolio.style.mgt.StyleManager" /></property>
+            <property name="idManager"><ref bean="idManager"/></property>
+            <property name="authzManager"><ref bean="authzManager"/></property>
+            <property name="authManager"><ref bean="authManager"/></property>
+            <property name="worksiteManager">
+               <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
+            </property>
+            <property name="listScrollIndexer">
+               <ref bean="org.sakaiproject.metaobj.utils.mvc.intf.ListScrollIndexer"/>
+            </property>
+         </bean>
+      </property>
+      <property name="customTypedEditors">
+         <list>
+            <ref bean="idCustomEditor"/>
+         </list>
+      </property>
+      <property name="screenMappings">
+         <props>
+            <prop key="success">listStyleRedirect</prop>
+         </props>
+      </property>
+      <property name="commandName"><value>style</value></property>
+      <property name="commandClass"><value>org.theospi.portfolio.style.model.Style</value></property>
+   </bean>
+   
+   <bean id="deleteStyleController" class="org.sakaiproject.metaobj.utils.mvc.impl.servlet.ViewControllerImpl">
+      <property name="controller">
+         <bean class="org.theospi.portfolio.style.tool.DeleteStyleController">
+            <property name="styleManager"><ref bean="org.theospi.portfolio.style.mgt.StyleManager" /></property>
+            <property name="idManager"><ref bean="idManager"/></property>
+            <property name="authzManager"><ref bean="authzManager"/></property>
+            <property name="authManager"><ref bean="authManager"/></property>
+            <property name="worksiteManager">
+               <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
+            </property>
+            <property name="listScrollIndexer">
+               <ref bean="org.sakaiproject.metaobj.utils.mvc.intf.ListScrollIndexer"/>
+            </property>
+         </bean>
+      </property>
+      <property name="customTypedEditors">
+         <list>
+            <ref bean="idCustomEditor"/>
+         </list>
+      </property>
+      <property name="screenMappings">
+         <props>
+            <prop key="success">listStyleRedirect</prop>
+         </props>
+      </property>
+      <property name="commandName"><value>style</value></property>
+      <property name="commandClass"><value>org.theospi.portfolio.style.model.Style</value></property>
+   </bean>
+
+</beans>

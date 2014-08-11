@@ -1,0 +1,2 @@
+drop table metaobj_form_def cascade constraints;
+create table metaobj_form_def (id varchar2(36 char) not null, description varchar2(255 char), documentRoot varchar2(255 char) not null, owner varchar2(255 char) not null, created timestamp not null, modified timestamp not null, systemOnly number(1,0) not null, externalType varchar2(255 char) not null, siteId varchar2(255 char), siteState number(10,0) not null, globalState number(10,0) not null, schemaData long raw not null, instruction clob, schema_hash varchar2(255 char), primary key (id));

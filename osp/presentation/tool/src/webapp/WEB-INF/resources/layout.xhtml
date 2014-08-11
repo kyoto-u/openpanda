@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:osp="http://www.osportfolio.org/OspML"
+      xml:lang="en" lang="en">
+   <head>
+      <title>OSP Presentation Page Layout Example</title>
+      <link href="/library/skin/tool_base.css"
+          type="text/css"
+          rel="stylesheet"
+          media="all" />
+    <link href="/library/skin/default/tool.css"
+          type="text/css"
+          rel="stylesheet"
+          media="all" />
+      
+   </head>
+   <body>
+      <table border="1">
+         <tr>
+            <td colspan="2">
+               <osp:region id="region_1">
+                  <osp:texttype helpText="Click to add title" isRichText="true" />
+               </osp:region>
+            </td>
+         </tr>
+         <tr>
+            <td rowspan="2">
+               <ul>
+                  <osp:sequence maxOccurs="0" firstChild="region_2">
+                     <li>
+                        <osp:region id="region_2">
+                           <osp:texttype minOccurs="0" helpText="Click to add text" />
+                        </osp:region>
+                     </li>
+                  </osp:sequence>
+               </ul>
+            </td>
+            <td>
+               <osp:region id="region_3">
+                  <osp:inlinetype minOccurs="1" helpText="Click to add content">
+                     <osp:include name="" />
+                     <osp:exclude name="" />
+                  </osp:inlinetype>
+               </osp:region>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <osp:region id="region_4">
+                  <osp:linktype minOccurs="1" helpText="Click to add content">
+                     <osp:include name="" />
+                     <osp:exclude name="" />
+                  </osp:linktype>
+               </osp:region>
+            </td>
+         </tr>
+         <tr>
+            <td colspan="2">
+               <osp:region id="region_5">
+                  <osp:linktype helpText="Click to add a link">
+                     <osp:include name="" />
+                     <osp:exclude name="" />
+                  </osp:linktype>
+               </osp:region>
+            </td>
+         </tr>
+      </table>
+   </body>
+</html>

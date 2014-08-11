@@ -1,0 +1,11 @@
+<!-- $Id: assignment_macros.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- start:  assignment_macros.vm -->
+#macro( propertyDetails $props )
+	<span class="textPanelFooter">(
+	#if (!$props.getBooleanProperty($props.NamePropIsCollection))
+		$props.getPropertyFormatted($props.NamePropContentLength);
+	#end
+	$props.getPropertyFormatted($props.NamePropCreationDate)
+	)</span>
+#end
+<!-- end:  assignment_macros.vm -->

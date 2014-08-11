@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<!--
+  File from uPortal2.0 by JASIG. Modified and adapted to OSPI by <a
+  href="felipeen@udel.edu">Luis F.C. Mendes</a> - University of
+  Delaware
+-->
+<!-- $Revision: 1.19 $ -->
+
+<tables>
+
+   <table>
+     <name>dw_users</name>
+     <desc>contains all the users that are in the system</desc>
+     <columns>
+        <column>
+          <name>user_id</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+         <column>
+          <name>user_eid</name>
+          <type>VARCHAR</type>
+          <param>99</param>
+        </column>
+        <column>
+          <name>email</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>email_lc</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+          <column>
+          <name>type</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+         <column>
+          <name>first_name</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+         <column>
+          <name>last_name</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+     </columns>
+     <not-null>user_id</not-null>
+     <primary-key>user_id</primary-key>
+   </table>   
+
+</tables>

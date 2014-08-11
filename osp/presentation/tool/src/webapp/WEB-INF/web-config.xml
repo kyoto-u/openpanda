@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+
+<beans default-lazy-init="true">
+
+   <bean id="org.sakaiproject.metaobj.utils.mvc.intf.ListScrollIndexer"
+      class="org.sakaiproject.metaobj.utils.mvc.impl.ListScrollIndexerImpl">
+      <property name="perPage"><value>10</value></property>
+   </bean>
+
+   <bean id="org.springframework.web.servlet.HandlerInterceptor.SakaiStyleSheetInterceptor"
+      class="org.sakaiproject.metaobj.shared.control.SakaiStyleSheetInterceptor">
+      <property name="worksiteManager">
+         <ref bean="org.sakaiproject.metaobj.worksite.mgt.WorksiteManager"/>
+      </property>
+   </bean>
+   
+	<!--
+	  - This bean provides explicit View mappings in a resource bundle instead of the
+	  - default InternalResourceViewResolver. It fetches the view mappings from
+	  - localized "views_xx" classpath files, i.e. "/WEB-INF/classes/views.properties"
+	  - or "/WEB-INF/classes/views_de.properties".
+	  -
+	  - Symbolic view names returned by Controllers will be resolved by this bean
+	  - using the respective properties file, which defines arbitrary mappings between
+	  - view names and resources.
+	  -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename"><value>views</value></property>
+	</bean>
+
+	<!--
+	  - This bean resolves specific types of exception to corresponding error views.
+		- The default behaviour of DispatcherServlet is to propagate all exceptions to the
+		- servlet container: This will happen here with all other types of exception.
+		-->
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.sakaiproject.metaobj.security.AuthorizationFailedException">authzFailed</prop>
+			</props>
+		</property>
+	</bean>
+
+   <bean id="org.sakaiproject.metaobj.shared.control.servlet.RequestSetupFilter"
+         class="org.sakaiproject.metaobj.shared.control.servlet.SakaiComponentFilter">
+      <property name="multipartResolver">
+         <ref bean="multipartResolver"/>
+      </property>
+   </bean>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename"><value>org.theospi.portfolio.presentation.bundle.Messages</value></property>
+	</bean>
+
+   <bean id="localeResolver" class="org.sakaiproject.spring.util.SakaiLocaleResolver">
+   </bean>
+
+   <bean name="openSessionInViewInterceptor"
+      class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+      <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+      <property name="flushMode">
+         <bean id="org.springframework.orm.hibernate3.HibernateAccessor.FLUSH_EAGER"
+            class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+      </property>
+  </bean>
+
+   <!-- This is used by the template view to add common beans to the model -->
+   <bean id="commonModelController" class="org.sakaiproject.metaobj.utils.mvc.impl.CommonModelControllerImpl" >
+   </bean>
+
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="lazyInitHandlers">
+           <value>true</value>
+        </property>
+        <property name="interceptors">
+            <list>
+               <!-- check for session timeout, give pretty error page is timed out -->
+               <ref bean="org.sakaiproject.metaobj.shared.control.CheckForTimeout"/>
+               <!-- causes Hibernate Session to surround Request-->
+               <ref bean="org.springframework.web.servlet.HandlerInterceptor.openSessionInView"/>
+               <!-- puts 'sakai_skin' into request as an attribute -->
+               <ref bean="org.springframework.web.servlet.HandlerInterceptor.SakaiStyleSheetInterceptor"/>
+            </list>
+        </property>
+        <property name="mappings">
+            <props>
+               <prop key="/viewPresentation.osp">viewPresentationController</prop>
+
+               <prop key="/deleteComment.osp">deleteCommentController</prop>
+               <prop key="/updateCommentVisibility.osp">updateCommentVisibilityController</prop>
+               <prop key="/listComments.osp">listCommentsController</prop>
+               <prop key="/listPresentation.osp">listPresentationController</prop>
+               <prop key="/PresentationStats.osp">viewPresentationStatsController</prop>
+               <prop key="/listSelectRedirect.osp">listRedirectController</prop>
+               <prop key="/previewTemplate.osp">previewTemplateController</prop>
+               
+               <!-- presentation links -->
+               <prop key="/publishTemplate.osp">publishTemplateController</prop>
+
+               <prop key="/importTemplate.osp">importTemplateController</prop>
+               <prop key="/addTemplate.osp">addTemplateController</prop>
+               <prop key="/copyTemplate.osp">copyTemplateController</prop>
+               <prop key="/editTemplateFile.osp">editTemplateFileController</prop>
+               <prop key="/deleteTemplateFile.osp">deleteTemplateFileController</prop>
+               <prop key="/listTemplate.osp">listTemplateController</prop>
+               <prop key="/deleteTemplate.osp">deleteTemplateController</prop>
+               <prop key="/editTemplate.osp">addTemplateController</prop>
+               <prop key="/deleteItemDefinition.osp">deleteItemDefinitionController</prop>
+               <prop key="/editItemDefinition.osp">editItemDefinitionController</prop>
+               
+               <prop key="/createPresentation.osp">createPresentationController</prop>
+               <prop key="/editPresentation.osp">editPresentationController</prop>
+               <prop key="/editOptions.osp">editOptionsController</prop>
+               <prop key="/editContent.osp">editContentController</prop>
+               <prop key="/updatePresentation.osp">updatePresentationController</prop>
+               <prop key="/editPresentationForm.osp">editPresentationFormController</prop>
+                              
+               <prop key="/deletePresentation.osp">deletePresentationController</prop>
+               <prop key="/sharePresentation.osp">sharePresentationController</prop>
+               <prop key="/sharePresentationMore.osp">sharePresentationMoreController</prop>
+               <prop key="/hidePresentation.osp">hidePresentationController</prop>
+               <prop key="/copyPresentation.osp">copyPresentationController</prop> <!-- SAK-17351 -->
+               <prop key="/reviewPresentation.osp">reviewPresentationController</prop>
+               <prop key="/addComment.osp">addCommentController</prop>
+               <prop key="/js/htmlarea/popups/insertImage.osp">insertImageController</prop>
+
+               <prop key="notifyViewersRedirect.osp">notifyViewersController</prop>
+               
+               <!--  presentation layout -->
+               <prop key="/listLayout.osp">listLayoutController</prop>
+               <prop key="/addLayout.osp">addLayoutController</prop>
+               <prop key="/editLayout.osp">addLayoutController</prop>
+               <prop key="/deleteLayout.osp">deleteLayoutController</prop>
+               <prop key="/publishLayout.osp">publishLayoutController</prop>
+               <prop key="/selectLayout.osp">selectLayoutController</prop>
+               
+            </props>
+        </property>
+    </bean>
+
+   <!-- check for session timeout, give pretty error page is timed out -->
+    <bean id="org.sakaiproject.metaobj.shared.control.CheckForTimeout"
+          class="org.sakaiproject.metaobj.shared.control.CheckForTimeout">
+      <property name="authenticationManager"><ref bean="authManager"/></property>
+      <property name="timeoutUrl"><value>${system.baseUrl}/timeout.html</value></property>
+      <!-- do not apply interceptor to these servlet paths -->
+      <property name="ignoreList">
+         <list>
+            <value>/title.osp</value>
+         </list>
+      </property>
+    </bean>
+
+   <bean id="idCustomEditor" class="org.sakaiproject.metaobj.shared.mgt.IdCustomEditor">
+       <property name="idManager"><ref bean="idManager"/></property>
+   </bean>
+
+   <bean id="idListCustomEditor" class="org.sakaiproject.metaobj.shared.mgt.IdListCustomEditor">
+       <property name="idManager"><ref bean="idManager"/></property>
+   </bean>
+
+   <!--bean id="fieldValueWrapperFactory" class="org.sakaiproject.metaobj.shared.mgt.factories.FieldValueWrapperFactory" >
+      <property name="wrappedClassNamesMap">
+         <props>
+            <prop key="java.util.Date">org.sakaiproject.metaobj.shared.model.DateBean</prop>
+         </props>
+      </property>
+   </bean-->
+
+   <!-- This is used by the template view as default settings -->
+   <bean id="defaultTemplateDef" class="org.sakaiproject.metaobj.utils.mvc.impl.SimpleBeanWrapper" >
+      <property name="wrappedBean">
+         <props>
+<!--
+            <prop key="_rightMenu">/WEB-INF/jsp/rightMenu.jsp</prop>
+            <prop key="_leftMenu">/WEB-INF/jsp/leftMenu.jsp</prop>
+            <prop key="_header">/WEB-INF/jsp/header.jsp</prop>
+            <prop key="_footer">/WEB-INF/jsp/footer.jsp</prop>
+-->
+            <prop key="_template">/WEB-INF/jsp/template.jsp</prop>
+         </props>
+      </property>
+   </bean>
+   
+   <bean id="ospConfig" class="org.sakaiproject.metaobj.utils.Config">
+      <property name="properties">
+         <props>
+            <prop key="baseUrl">${system.baseUrl}</prop>
+            <prop key="allowGuests">true</prop>
+            <prop key="institutionName">OSP</prop>
+            <prop key="institutionFullName">Open Source Portfolio</prop>
+         </props>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.metaobj.utils.mvc.intf.VelocityEngineFactory" 
+      class="org.sakaiproject.metaobj.utils.mvc.impl.LocalVelocityConfigurer">
+      <property name="resourceLoaderPath"><value>WEB-INF/templates/</value></property>
+      <property name="velocityProperties">
+         <props>
+            <prop key="velocimacro.permissions.allowInline">true</prop>
+            <prop key="velocimacro.permissions.allow.inline.local.scope">true</prop>
+            <prop key="velocimacro.library.autoreload">true</prop>
+            <prop key="runtime.log.logsystem.class">org.apache.velocity.runtime.log.NullLogSystem</prop>
+         </props>
+      </property>
+   </bean>
+
+</beans>

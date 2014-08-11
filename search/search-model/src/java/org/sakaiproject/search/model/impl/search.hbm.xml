@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+  <!-- 
+/**********************************************************************************
+ * $URL:  $
+ * $Id:  $
+ ***********************************************************************************
+ *
+ * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.osedu.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ **********************************************************************************/
+  -->
+  <hibernate-mapping package="org.sakaiproject.search.model.impl">
+      
+      <class name="org.sakaiproject.search.model.impl.SearchBuilderItemImpl"
+          table="searchbuilderitem" 
+          optimistic-lock="version">
+          <id name="id" unsaved-value="null" >
+              <column name="id" length="64" not-null="true"/>
+              <generator class="uuid.hex" />
+          </id>
+          <!-- the last update to the record used for optimistic locks -->    
+          <version name="version" type="timestamp" unsaved-value="null"/>
+          <!-- this is the resource string -->
+          <property 
+              name="name" 
+              column="name" 
+              not-null="true" 
+              index="isearchbuilderitem_name" 
+              type="string" 
+              unique="true" 
+              length="255" />
+          <property 
+              name="context" 
+              column="context" 
+              not-null="true" 
+              index="isearchbuilderitem_ctx" 
+              type="string" 
+              unique="false" 
+              length="255" />
+          <!-- the action to perform add, update, delete -->
+          <property name="searchaction" 
+              column="searchaction" 
+              type="int" 
+              index="isearchbuilderitem_act" />
+          <!-- the state of the record, pending, completed -->
+          <property name="searchstate" 
+              column="searchstate" 
+              type="int" 
+              index="isearchbuilderitem_sta" />
+          <property name="itemscope" 
+              column="itemscope" 
+              type="int" 
+              index="isearchbuilderitem_sco" />
+      </class>
+      
+      <class name="org.sakaiproject.search.model.impl.SearchWriterLockImpl"
+          table="searchwriterlock" >
+          
+          <id name="id" unsaved-value="null"  >
+              <column name="id" length="64" not-null="true"/>
+              <generator class="uuid.hex" />
+              
+          </id>
+          
+          <!-- this is the lock name -->
+          <property 
+              name="lockkey" 
+              column="lockkey" 
+              not-null="true" 
+              index="isearchwriterlock_lk" 
+              type="string" 
+              unique="true" 
+              length="64" />
+          <!-- this is uuid of the node that holds the lock -->
+          <property name="nodename" 
+              column="nodename"
+              type="string"
+              length="64" />
+          <property name="expires" 
+              column="expires"
+              type="timestamp"
+              not-null="true" />
+ 
+      </class>
+      
+ 
+      
+      <class name="org.sakaiproject.search.model.impl.SearchClusterImpl"
+          table="search_segments" >
+          <!-- this is the segment name -->
+          <id name="name" unsaved-value="null"  >
+              <column name="name_" length="254" not-null="true"/>
+          </id>
+          <property 
+              name="version" 
+              column="version_" 
+              not-null="true" 
+              type="long" />
+          <property 
+              name="size" 
+              column="size_" 
+              not-null="true" 
+              type="long" />
+             <!-- the size is ste to generate the correct storage pattern -->
+          <property 
+              name="packet" 
+              column="packet_" 
+              type="blob" 
+              length="100000000" />
+ 
+      </class>
+          
+      
+      
+      
+  </hibernate-mapping>
+  

@@ -1,0 +1,42 @@
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+<%@ taglib prefix="spring" uri="/spring" %>
+
+<h1>List ${schema.schemaName}</h1>
+  <table width="95%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
+    <tr>
+      <td>&nbsp;</td>
+
+#set ($output = '${bean')
+
+#foreach($field in $schema.fields)
+
+   #if (${field.fields.size()} == 0 )
+      <td>${field.fieldName}</td>
+   #end
+#end
+
+    </tr>
+
+  <c:forEach var="bean" items="${beans}">
+    <TR>
+      <TD>
+         <a href='<osp:url value="editXmlElement.osp"/>&ospObjectId=<c:out value="${bean.ospObjectId}"/>&schema=${schema.fieldName}'>edit</a>
+         <a href='<osp:url value="deleteXmlElement.osp"/>&ospObjectId=<c:out value="${bean.ospObjectId}"/>&schema=${schema.fieldName}'>delete</a>
+      </TD>
+      
+#foreach($field in $schema.fields)
+   #if (${field.fields.size()} == 0 )
+      #if ($field.schema.objectType.name == 'java.util.Date')
+      <TD>
+      <fmt:formatDate value="$output.${field.fieldName}.date}" pattern="EEE, MMM d, yyyy"/>
+      </TD>
+      #else
+      <TD><c:out value="$output.${field.fieldName}}" /></TD>
+      #end
+   #end
+#end
+    </TR>
+  </c:forEach>
+  </table>
+  <br>
+<a href="<osp:url value="addXmlElement.osp?schema=${schema.schemaName}"/>">Add ${schema.schemaName}</a>

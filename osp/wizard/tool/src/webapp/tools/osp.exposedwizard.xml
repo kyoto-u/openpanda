@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.exposedwizard" title="Exposed OSP Wizard" description="Exposed OSP Wizard Tool">
+      
+      <keyword name="wizard" />
+       <keyword name="help"/>
+
+       <configuration name="osp.exposedwizard.wizard.id"
+            value="" />
+	</tool>
+
+</registration>

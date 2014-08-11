@@ -1,0 +1,187 @@
+##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/sitesetup/chef_site-newSiteFeatures.vm,v 1.1 2005/04/14 20:22:06 ggolden.umich.edu Exp $ -->
+<script type="text/javascript" language="JavaScript" src="/library/js/jquery.js"></script>
+<script type="text/javascript">
+      $(document).ready(function() {
+          $(".listHier :checked").parents("tr").addClass("selectedSelected");
+					$(".listHier :checkbox").click(function(){
+			            if (this.checked) {
+										$(this).parents("tr").addClass("selectedSelected");
+			            }
+									else{
+										$(this).parents("tr").removeClass("selectedSelected");
+									}
+			        });
+
+      });
+
+
+</script>
+<div class="portletBody">
+	#if ($!isProjectSite)
+		<h3>
+			$tlang.getString("feat.project.tools")
+		</h3>
+	#elseif ($!isCourseSite)
+		<h3>
+			$tlang.getString("feat.course.tools")
+		</h3>
+	#else
+		<h3>
+			$tlang.getString("feat.other.tools")
+		</h3>
+	#end
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div>#end
+	<p class="step">
+		$tlang.getString("feat.choose")
+	</p>
+	<form name="featuresForm" action="#toolForm("$action")" method="post">
+		<input type="hidden" name="option" value="add" />
+		<input type="hidden" name="eventSubmit_doAdd_features" value="x" />                                     
+			<table class="listHier lines nolines" cellspacing="0" summary="$tlang.getString("feat.tools.list.summary")"  style="width:auto">
+				#if ($!defaultTools.indexOf($!homeToolId) != -1)
+					<tr style="display:none">
+						<td>
+						<input type="hidden" name="selectedTools" value="$!homeToolId" />
+						</td>
+					</tr>
+				#end
+				<tr id="row-home">
+					<td>
+						<input type="checkbox" name="selectedTools" value="$!homeToolId" id="home"
+							#if ($check_home)
+								checked="checked"
+							#end
+							#if ($!defaultTools.indexOf($!homeToolId) != -1)
+								checked="checked" disabled="disabled"
+							#end
+						/>
+					</td>
+					<td>
+						<label for="home">
+							$tlang.getString("java.home")
+							## only show when title is customized
+							#if ($!allowPageOrderHelper)
+								#set($currentTitle = $validator.escapeHtml($!toolRegistrationTitleList.get($!homeToolId)))
+								#if (!$currentTitle.equals($tlang.getString("java.home")))
+									($currentTitle)
+								#end
+							#end
+						</label>
+					</td>	
+					<td>
+						$tlang.getString("feat.forv")
+					</td>
+				</tr>
+				#set ($rowCount=0)
+				#foreach($tool in $toolRegistrationList)
+				#set ($rowCount=$rowCount + 1)
+					#set($toolId = $tool.getId())
+					#if ($!defaultTools.indexOf($toolId) != -1)
+					<tr style="display:none">
+						<td>
+						<input type="hidden" name="selectedTools" value="$toolId" />
+							
+						</td>
+					</tr>
+					#end
+					<tr	id="row-$rowCount">
+						<td>
+							<input type="checkbox" name="selectedTools" value="$toolId" id="$toolId"
+								#if ($!defaultTools.indexOf($toolId) != -1)
+									checked="checked" disabled="disabled"
+								#else
+##									onchange="this.checked ? document.getElementById('row-$rowCount').className='selectedSelected' :document.getElementById('row-$rowCount').className=''"
+									#if($toolRegistrationSelectedList)
+									#foreach($tId in $toolRegistrationSelectedList)
+											#if ($tId == $toolId)
+												checked="checked"
+											#end
+										#end
+									#end
+								#end
+							/>
+						</td>
+						<td>
+								<label for="$toolId">
+									#if ($!multipleToolIdTitleMap.containsKey($toolId))
+										#set($title = $validator.escapeHtml($!multipleToolIdTitleMap.get($toolId)))
+									#else
+										#set($title=$validator.escapeHtml($tool.getTitle()))
+									#end
+									$title
+									## only shown then title is customized
+									#if ($!allowPageOrderHelper)
+										#set($currentTitle = $validator.escapeHtml($!toolRegistrationTitleList.get($toolId)))
+										#if (!$currentTitle.equals($title))
+											($currentTitle)
+										#end
+									#end
+								</label>
+						</td>
+						<td>
+								$tool.getDescription()
+								#if ($!multipleToolIdTitleMap.containsKey($toolId))
+									#set($properties = $!multipleToolConfiguration.get($toolId))
+									#if (!$properties.isEmpty())
+										## show configurations
+										(#foreach ($property in $!properties.keySet())
+											$property = $validator.escapeHtml($properties.get($property)) 
+										#end)
+									#end
+								#end
+						</td>
+					</tr>	
+				#end
+			</table>
+		#if (!$existSite && $sites.size() > 0)	
+			<h4>
+				$tlang.getString("feat.reuse")
+			</h4>
+			<p class="checkbox">
+				<input type="radio" id="import_no" name="import" value="FALSE" #if(!$import)checked="checked"#end onclick="document.featuresForm.importSites.disabled=true;" />
+				<label for="import_no">
+					$tlang.getString("feat.thanks")
+				</label>
+			</p>
+			<p class="checkbox">
+				<input type="radio" id="import_yes" name="import" value="TRUE" #if($import)checked="checked"#end onclick="document.featuresForm.importSites.disabled=false;" />
+				<label for="import_yes">
+					$tlang.getString("feat.yesfrom")
+				</label>
+			</p>
+			<select name="importSites" class="indnt2" id="importSites" size="5" multiple="multiple" #if(!$import)disabled="disabled"#end >
+				#foreach	($site in $sites)
+					#set($siteSelected = false)
+					#foreach($s in $importSites.keys())
+						#if ($s.Id == $site.Id)
+							#set($siteSelected = true)
+						#end
+					#end
+					<option value="$site.getId()" #if ($siteSelected)selected="selected"#end>$validator.escapeHtml($site.getTitle())</option>
+				#end
+			</select>
+			<p class="instruction">
+				$tlang.getString("feat.note")
+			</p>
+		#end
+		<input type="hidden" name="back" value="$!backIndex" />
+		<input type="hidden" name="templateIndex" value="$!templateIndex" />
+		<p class="act">
+			<input type="button" name="Continue" 
+					value="$tlang.getString('gen.continue')"
+					accesskey="s"
+					class="active"
+					onclick="document.featuresForm.option.value='continue';javascript:document.featuresForm.submit();" />
+			#if (!$!existSite)
+			<input type="button" value="$tlang.getString('gen.back')" 
+					name="Back" 
+					accesskey="b"
+					onclick="document.featuresForm.option.value='back';javascript:document.featuresForm.submit();" />
+			#end
+			<input type="button" value="$tlang.getString('gen.cancel')" 
+					name="Cancel"
+					accesskey="x"
+					onclick="document.featuresForm.option.value='cancel';javascript:document.featuresForm.submit();" />
+		</p>
+	</form>
+</div>

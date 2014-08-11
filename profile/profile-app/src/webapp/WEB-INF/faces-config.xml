@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
+<faces-config>
+    <application>
+        <message-bundle>org.sakaiproject.tool.profile.bundle.Messages</message-bundle>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>de</supported-locale>
+            <supported-locale>fr</supported-locale>
+            <supported-locale>es</supported-locale>
+        </locale-config>
+    </application>
+    <navigation-rule>
+        <from-view-id>/profile/*</from-view-id>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/profile/edit.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/profile/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>displaySearchedProfile</from-outcome>
+            <to-view-id>/profile/displaySearchedProfile.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>permissionException</from-outcome>
+            <to-view-id>/profile/permissionException.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <!-- =================== Profile Image Servlet ============== -->
+    <managed-bean>
+        <description>Profile Image Servlet</description>
+        <managed-bean-name>ProfileImageServlet</managed-bean-name>
+        <managed-bean-class> org.sakaiproject.tool.profile.ProfileImageServlet </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <description>Bean Dependency: Profile Manager</description>
+            <property-name>profileService</property-name>
+            <value> #{Components["org.sakaiproject.api.app.profile.LegacyProfileManager"]} </value>
+        </managed-property>
+    </managed-bean>
+    <!-- =================== Tool Beans ============== -->
+    <managed-bean>
+        <description>Profile Tool</description>
+        <managed-bean-name>ProfileTool</managed-bean-name>
+        <managed-bean-class>org.sakaiproject.tool.profile.ProfileTool</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <!-- a service dependency property - for the ProfileService -->
+        <managed-property>
+            <description>Profile Service</description>
+            <property-name>profileService</property-name>
+            <value>#{Components["org.sakaiproject.api.app.profile.LegacyProfileManager"]}</value>
+        </managed-property>
+    </managed-bean>
+    <managed-bean>
+        <description>Search Tool</description>
+        <managed-bean-name>SearchTool</managed-bean-name>
+        <managed-bean-class>org.sakaiproject.tool.profile.SearchTool</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <!-- a service dependency property - for the ProfileService -->
+        <managed-property>
+            <description>Profile Service</description>
+            <property-name>profileService</property-name>
+            <value>#{Components["org.sakaiproject.api.app.profile.LegacyProfileManager"]}</value>
+        </managed-property>
+    </managed-bean>
+    <managed-bean>
+            <description>
+                    Dynamic Resource Bundle Loader
+            </description>
+            <managed-bean-name>msgs</managed-bean-name>
+            <managed-bean-class>org.sakaiproject.util.ResourceLoader</managed-bean-class>
+            <managed-bean-scope>session</managed-bean-scope>
+            <managed-property>
+                    <description>Bundle baseName</description>
+                    <property-name>baseName</property-name>
+                    <value>org.sakaiproject.tool.profile.bundle.Messages</value>
+            </managed-property>
+    </managed-bean>
+    <component>
+        <component-type>ProfileDisplayHTML</component-type>
+        <component-class>org.sakaiproject.jsf.profile.ProfileDisplayHTMLComponent</component-class>
+    </component>
+    <render-kit>
+        <renderer>
+            <component-family>ProfileDisplayHTML</component-family>
+            <renderer-type>ProfileDisplayHTMLRender</renderer-type>
+            <renderer-class>org.sakaiproject.jsf.profile.ProfileDisplayHTMLRender</renderer-class>
+        </renderer>
+    </render-kit>
+</faces-config>

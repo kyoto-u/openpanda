@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<registration>
+
+   <tool id="osp.review.processor" title="Review Processor" description="OSP Review Processor Helper Tool">
+
+       <category name="sakai.helper" />
+<!-- 
+       <configuration name="theospi.resetUrl"
+            value="/wizardPage.osp" />
+     -->  
+   </tool>
+
+</registration>

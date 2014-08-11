@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.exposedmatrix" title="Exposed OSP Matrix" description="Exposed OSP Matrix Tool">
+      
+      <keyword name="matrix" />
+       <keyword name="help"/>
+       
+       <configuration name="osp.exposedmatrix.scaffolding.id"
+            value="" />
+
+	</tool>
+
+</registration>

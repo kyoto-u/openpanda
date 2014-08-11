@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Changed spec level to 2.4 PAFH 8/22/2006 -->
+<web-app id="WebApp_9" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>osp-portal</display-name>
+    <description>Sakai2 style OSP portal: XSTL</description>
+
+    <filter>
+        <filter-name>sakai.request</filter-name>
+        <filter-class>org.sakaiproject.util.RequestFilter</filter-class>
+        <!-- Portal URLs encode the placement, so we don't need it added -->
+        <init-param>
+            <param-name>tool.placement</param-name>
+            <param-value>none</param-value>
+        </init-param>
+        <!-- Don't parse file uploads in the portal, since a tool may handle this itself. -->
+        <init-param>
+            <param-name>upload.enabled</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <!-- MUST set character encoding in the portal, before parameters are read. -->
+        <init-param>
+            <param-name>encoding.enabled</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.portal.xslt</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+    <servlet>
+        <servlet-name>osp.portal.xslt</servlet-name>
+        <servlet-class>org.theospi.portfolio.portal.web.XsltPortal</servlet-class>
+       <init-param>
+          <param-name>transform</param-name>
+          <param-value>/WEB-INF/transform/osp-portal.xsl</param-value>
+          <!--param-value>/WEB-INF/transform/passthrough.xsl</param-value-->
+       </init-param>
+       <init-param>
+          <param-name>transformToolCategory</param-name>
+          <param-value>/WEB-INF/transform/toolCategory.xsl</param-value>
+       </init-param>
+       <init-param>
+          <param-name>categoryBasePath</param-name>
+          <param-value>/WEB-INF/category</param-value>
+       </init-param>
+       <load-on-startup>1</load-on-startup>
+    </servlet>
+
+<!-- http://jira.sakaiproject.org/jira/browse/SAK-14404
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/library/*</url-pattern>
+    </servlet-mapping>
+-->
+
+    <servlet-mapping>
+        <servlet-name>osp.portal.xslt</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>

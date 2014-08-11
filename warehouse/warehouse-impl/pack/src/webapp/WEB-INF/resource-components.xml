@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.repository.lock"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+           <list>
+              <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>assest</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>qualifier</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>active</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>system</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>reason</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>dateAdded</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>dateRemoved</value></property>
+              </bean>
+           </list>
+        </property>
+        <property name="insertStmt">
+           <value>insert into dw_content_resource_lock
+                            (id, asset_id, qualifier_id, is_active, is_system, reason,
+                            date_added, date_removed)
+                                            values (?, ?, ?, ?, ?, ?, ?, ?)
+           </value>
+        </property>
+        <property name="clearStmt">
+           <value>delete from dw_content_resource_lock</value>
+        </property>
+   </bean>
+
+   <!--  **************************************************************************
+   ********************************************************************************
+        Content Resource Child Task
+   -->
+
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.contentResources"
+      class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.ResourceUuidPropertyAccess">
+               <property name="contentHostingService">
+                  <ref bean="org.sakaiproject.content.api.ContentHostingService" />
+               </property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>id</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.ResourceTypePropertyAccess"/>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.ResourceTypePropertyAccess">
+               <property name="subType"><value>true</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.MimeTypePropertyAccess"/>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.MimeTypePropertyAccess">
+               <property name="subType"><value>true</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.ResourceParentPropertyAccess">
+               <property name="contentHostingService">
+                  <ref bean="org.sakaiproject.content.api.ContentHostingService" />
+               </property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.StringResourcePropertyAccess">
+               <property name="propertyName"><value>namePropCreator</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.StringResourcePropertyAccess">
+               <property name="propertyName"><value>namePropModifiedBy</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.StringResourcePropertyAccess">
+               <property name="propertyName"><value>namePropDescription</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.StringResourcePropertyAccess">
+               <property name="propertyName"><value>namePropCopyrightChoice</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.StringResourcePropertyAccess">
+               <property name="propertyName"><value>namePropCopyright</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>contentLength</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.DateResourcePropertyAccess">
+               <property name="propertyName"><value>namePropCreationDate</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.DateResourcePropertyAccess">
+               <property name="propertyName"><value>namePropModifiedDate</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.StringResourcePropertyAccess">
+               <property name="propertyName"><value>namePropDisplayName</value></property>
+            </bean>
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_resource
+                  (id, uri, resource_type, sub_type, primary_mime_type, sub_mime_type, parent_collection,
+                  created_by, modified_by, description, copyright_choice, copyright, content_length,
+                  created, modified, display_name)
+               values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_resource</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.contentResourceCollection"
+      class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.ResourceUuidPropertyAccess">
+            	<property name="contentHostingService">
+            		<ref bean="org.sakaiproject.content.api.ContentHostingService" />
+            	</property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>id</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.ResourceParentPropertyAccess">
+               <property name="contentHostingService">
+                  <ref bean="org.sakaiproject.content.api.ContentHostingService" />
+               </property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.StringResourcePropertyAccess">
+               <property name="propertyName"><value>namePropCreator</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.StringResourcePropertyAccess">
+               <property name="propertyName"><value>namePropModifiedBy</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.sakai.resource.StringResourcePropertyAccess">
+               <property name="propertyName"><value>namePropDisplayName</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>bodySizeK</value></property>
+            </bean>
+             <bean class="org.sakaiproject.warehouse.sakai.resource.ResourceSizePropertyAccess">
+               <property name="contentHostingService">
+                  <ref bean="org.sakaiproject.content.api.ContentHostingService" />
+               </property>
+            </bean>
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_resource_collection
+                  (id, uri, parent_collection, created_by, modified_by, display_name, space_used, space_available)
+               values (?, ?, ?, ?, ?, ?, ?, ?)</value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_resource_collection</value>
+      </property>
+   </bean>
+
+
+
+   <bean
+       id="org.sakaiproject.warehouse.service.WarehouseTask.contentResources"
+       class="org.sakaiproject.warehouse.sakai.resource.ContentResourceWarehouseTask"
+       init-method="init" singleton="true">
+       <property name="dataSource">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource" />
+       </property>
+       <property name="dataWarehouseManager">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager" />
+       </property>
+       <property name="tableDdlResource">
+           <value>/org/sakaiproject/warehouse/sakai/resource.xml</value>
+       </property>
+       <property name="contentHostingService">
+           <ref bean="org.sakaiproject.content.api.ContentHostingService" />
+       </property>
+       <property name="task">
+           <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.contentResources" />
+       </property>
+   </bean>
+
+   <bean
+       id="org.sakaiproject.warehouse.service.WarehouseTask.contentResourceCollection"
+       class="org.sakaiproject.warehouse.sakai.resource.ContentResourceCollectionWarehouseTask"
+       init-method="init" singleton="true">
+       <property name="dataSource">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource" />
+       </property>
+       <property name="dataWarehouseManager">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager" />
+       </property>
+       <property name="contentHostingService">
+           <ref bean="org.sakaiproject.content.api.ContentHostingService" />
+       </property>
+       <property name="task">
+           <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.contentResourceCollection" />
+       </property>
+   </bean>
+</beans>

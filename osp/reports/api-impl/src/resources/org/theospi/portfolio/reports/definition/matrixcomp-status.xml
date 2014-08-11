@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	Notes:
+	
+	Each report MUST have a different idString.  This is how saved reports are
+	linked back to the report definition
+    
+-->
+<beans>    
+    <bean id="matrixStatusReport-123" class="org.sakaiproject.reports.model.ReportDefinition">
+
+        <property name="idString">
+            <value>matrixStatusReport-123</value>
+        </property>
+        <property name="usesWarehouse"><value>true</value></property>
+        <property name="usesWizard"><value>true</value></property>
+        <property name="title">
+            <value>
+                Matrix Status Report
+            </value>
+        </property>
+        <property name="query">
+           <list>
+              <value>
+              	<![CDATA[
+SELECT sc.id scaffolding_id, sc.title, scr.description criteria, sl.description level, d.status, count(distinct d.id) total
+FROM dw_wizard_page d, dw_scaffolding_cell scc, dw_scaffolding_levels sl, dw_scaffolding sc, dw_scaffolding_criteria scr, sakai_realm_rl_gr srr, dw_site_users su, dw_matrix m
+where scc.wizardpagedef_id = d.wizard_page_def_id and sl.id = scc.level_id and sc.id = scc.scaffolding_id and scr.scaffolding_id = sc.id and scc.rootcriterion_id = scr.id
+and m.owner = su.user_id and su.user_id = srr.user_id and srr.role_key in (?) and sc.id = ? and su.site_id = '{worksiteid}'
+GROUP BY sc.id, sc.title, scr.description, sl.description, d.status
+ORDER BY scr.sequencenumber, sl.description, d.status
+              	]]>
+              </value>
+              <value>
+              	<![CDATA[
+SELECT id scaffolding_id,title,worksiteid,count(distinct su.user_id) users
+FROM dw_scaffolding d, dw_site_users su, sakai_realm_rl_gr srr
+where worksiteid = '{worksiteid}' and su.site_id = d.worksiteid and su.user_id = srr.user_id and role_key in (?) and d.id = ?
+group by id,title,worksiteid
+              	]]>
+              </value>
+              <value>
+              	<![CDATA[
+ select distinct realm_function.role_key role_id, realm_role.role_name
+ from   sakai_realm_rl_fn as realm_function, sakai_realm_role as realm_role
+ where  realm_function.role_key in (?) and realm_role.role_key = realm_function.role_key and realm_function.realm_key in
+        (select sakai_realm.realm_key
+         from   sakai_realm, dw_scaffolding
+         where  sakai_realm.realm_id = concat('/site/', '{worksiteid}') and dw_scaffolding.id = ? and dw_scaffolding.worksiteid = '{worksiteid}')
+ order by realm_role.role_name
+              	]]>
+              </value>
+              <value>
+                    <!-- get the matrix row (criteria) labels -->
+                    <![CDATA[
+select   'rows', id, scaffolding_id, sequenceNumber, description, color, textColor
+from     dw_scaffolding_criteria
+where    description in (?) or scaffolding_id = ?
+order by scaffolding_id, sequenceNumber
+                    ]]>
+              </value>
+              <value>
+                    <!-- get the matrix column (level) labels -->
+                    <![CDATA[
+select   'columns', id, scaffolding_id, sequenceNumber, description, color, textColor
+from     dw_scaffolding_levels
+where    description in (?) or scaffolding_id = ?
+order by scaffolding_id, sequenceNumber
+                    ]]>
+              </value>
+           </list>
+        </property>
+        <property name="resultProcessors">
+           <list>
+              <ref bean="org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumnupper" />
+           </list>
+        </property>
+        <property name="keywords">
+            <value>matrix status report</value>
+        </property>
+        <property name="description">
+            <value>
+                Matrix Status Report
+            </value>
+        </property>
+        <property name="siteType">
+            <value>admin,project,course,portfolio</value>
+        </property>
+        <property name="userRoles">
+			<list>
+  				<value>Instructor</value> 
+  				<value>admin</value> 
+  			</list>
+  		</property>
+        <property name="defaultXsl">
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/theospi/portfolio/reports/xsl/osp/MatrixCompStatus.2.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                    <property name="title"><value>Presentation Report</value></property>
+                </bean>
+        </property>
+        <property name="reportDefinitionParams">
+            <list>
+                <bean class="org.sakaiproject.reports.model.ReportDefinitionParam">
+                    <property name="title"><value>Choose Role</value></property>
+                    <property name="paramName"><value>roleId</value></property>
+                    <property name="description"><value>Choose role for this site.</value></property>
+                    <property name="type"><value>int</value></property>
+                    <property name="valueType"><value>multisql</value></property>
+                    <property name="value"><value>SELECT DISTINCT realm_function.role_key, realm_role.role_name FROM sakai_realm_rl_fn as realm_function, sakai_realm_role as realm_role WHERE realm_role.role_key = realm_function.role_key and realm_function.realm_key in (select sakai_realm.realm_key from sakai_realm where  sakai_realm.realm_id = concat('/site/', '{worksiteid}')) order by realm_role.role_name</value></property>
+                </bean>
+                <bean class="org.sakaiproject.reports.model.ReportDefinitionParam">
+                    <property name="title"><value>Choose Matrix</value></property>
+                    <property name="paramName"><value>matrixId</value></property>
+                    <property name="description"><value>Choose a matrix for this site.</value></property>
+                    <property name="type"><value>string</value></property>
+                    <property name="valueType"><value>sql</value></property>
+                    <property name="value"><value>SELECT id, title FROM dw_scaffolding d WHERE worksiteid = '{worksiteid}' ORDER BY title</value></property>
+                </bean>
+            </list>
+        </property>
+        <property name="xsls">
+            <list>
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/theospi/portfolio/reports/xsl/osp/MatrixCompStatus.2.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                    <property name="title"><value>Matrix Status Report</value></property>
+                </bean>
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/theospi/portfolio/reports/xsl/osp/Passthrough.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                    <property name="title"><value>Passthrough</value></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<web-app id="WebApp_9" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+    <display-name>osp-jsf-example</display-name>
+    <description>Example OSP 2.0 JSF Widgets Webapp</description>
+    
+    <!-- Faces Servlet -->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup> 2 </load-on-startup>
+    </servlet>
+
+    <!-- Faces Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+
+   <!-- Sakai request filter, mapped to anything that goes to the faces servlet -->
+    <filter>
+        <filter-name>sakai.request</filter-name>
+        <filter-class>org.sakaiproject.util.RequestFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    
+    <listener>
+        <listener-class>org.sakaiproject.util.ToolListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.sakaiproject.util.ContextLoaderListener</listener-class>
+    </listener>
+ 
+ 	<!-- Sakai JSF Tool Servlet -->
+
+    <servlet>
+        <servlet-name>osp.sample.jsf.widgets</servlet-name>
+        <servlet-class>org.sakaiproject.jsf.util.JsfTool</servlet-class>
+        <init-param>
+            <param-name>default</param-name>
+            <param-value>main</param-value>
+        </init-param>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value>/samples</param-value>
+        </init-param>
+        <init-param>
+            <param-name>default.last.view</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <jsp-config>
+        <!--
+         Prelude and coda for standalone web application.
+         To eliminate "head" and "body" tags, making the application output suitable
+         as a portlet or for embedding, replace prelude with "link" tags
+         for any required CSS or JavaScript files and remove the coda.
+        -->
+       <jsp-property-group>
+          <url-pattern>*.jsp</url-pattern>
+          <include-prelude>/include/head.inc</include-prelude>
+          <include-coda>/include/foot.inc</include-coda>
+        </jsp-property-group>
+    </jsp-config>
+
+</web-app>
+
+
+

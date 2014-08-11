@@ -1,0 +1,52 @@
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://sakaiproject.org/jsf/sakai" prefix="sakai" %>
+<%@ taglib uri="http://www.theospi.org/jsf/osp" prefix="ospx" %>
+
+  <ospx:xheader>
+      <ospx:xheadertitle id="wizardTitle" value="#{msgs.wizard_title}: #{wizard.current.base.name}" />
+      <ospx:xheaderdrawer initiallyexpanded="true" cssclass="drawerBorder">
+          <ospx:splitarea direction="horizontal" width="100%">
+             <ospx:splitsection size="475" valign="top">
+               <h:outputLabel for="description" id="descriptionLabel" value="#{msgs.wizard_description}" />
+               <h:outputText id="description_spacer" value="<br>" escape="false" />
+               <h:outputText id="description" value="#{wizard.current.base.description}" />
+               <h:outputText id="description_break" value="<br><br>" escape="false" />
+               <h:outputLabel for="keywords" id="keywordsLabel" value="#{msgs.wizard_keywords}" />
+               <h:outputText id="keywords_spacer" value="<br>" escape="false" />
+               <h:outputText id="keywords" value="#{wizard.current.base.keywords}" />
+             </ospx:splitsection>
+             <ospx:splitsection valign="top">
+               <h:outputLabel for="modified" id="modifiedLabel" value="#{msgs.wizard_modified}" />
+               <h:outputText id="modified_spacer" value="<br>" escape="false" />
+               <h:outputText id="modified" value="#{wizard.current.base.modified}" />
+             </ospx:splitsection>
+         </ospx:splitarea>
+         <f:subview id="guidance"  rendered="#{wizard.current.guidanceAvailable}">
+            <sakai:panel_titled title="#{msgs.instruction_title}" >
+               <ospx:splitarea direction="horizontal" width="100%">
+                <ospx:splitsection size="475" valign="top">
+                  <h:outputText value="#{wizard.current.instruction.text}" escape="false" />
+                </ospx:splitsection>
+                <ospx:splitsection valign="top">
+                  <sakai:flat_list value="#{wizard.current.instruction.attachments}" var="material">
+                     <h:column>
+                        <f:facet name="header">
+                           <h:outputText value="#{msgs.attachments}"/>
+                        </f:facet>
+                        <h:outputLink title="#{material.displayName}"
+                           value="#{material.fullReference.base.url}" target="_new">
+                           <h:outputText value="#{material.displayName}"/>
+                        </h:outputLink>
+                     </h:column>
+                  </sakai:flat_list>
+                </ospx:splitsection>
+               </ospx:splitarea>
+               <sakai:button_bar>
+                  <sakai:button_bar_item id="guidance" value="#{msgs.more_guidance}"
+                     action="#{wizard.processActionViewGuidance}" immediate="true" />
+               </sakai:button_bar>
+            </sakai:panel_titled>
+         </f:subview>
+      </ospx:xheaderdrawer>
+  </ospx:xheader>

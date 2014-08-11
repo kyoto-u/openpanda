@@ -1,0 +1,128 @@
+<!-- ************* Evaluation Area Start ************* --> 
+
+<c:if
+	test="${((((isWizard != 'true' && matrixCanEvaluate) || (isWizard == 'true' && wizardCan.evaluate)) && 
+	((cell.scaffoldingCell.evaluationDevice != null && !cell.scaffoldingCell.wizardPageDefinition.defaultEvaluationForm) 
+		|| (cell.scaffoldingCell.scaffolding.evaluationDevice != null && cell.scaffoldingCell.wizardPageDefinition.defaultEvaluationForm))) && cell.status == 'PENDING') || 
+		not empty evaluations }">
+	<c:if test="${((cell.wizardPage.owner.id == currentUser && 
+					((!cell.scaffoldingCell.wizardPageDefinition.hideEvaluations && !cell.scaffoldingCell.wizardPageDefinition.defaultEvaluationForm) 
+		|| (!cell.scaffoldingCell.scaffolding.hideEvaluations && cell.scaffoldingCell.wizardPageDefinition.defaultEvaluationForm))) || cell.wizardPage.owner.id != currentUser) || isWizard == 'true'}">
+		
+		<tr>
+			<td colspan="6"></td>
+		</tr>
+		<tr>
+			<th colspan="2">
+				<osp:message key="eval_items_section_header" />
+			</th>
+			<th><div class="itemActionHeader"><osp:message key="table_header_actions" /></div></th>
+			<th>&nbsp;</th>
+			<th><osp:message key="table_header_createdBy" /></th>
+			<th><c:out value="${msgs.table_header_modified}" /></th>
+		</tr>
+		<tr class="cellItemAddLine">
+			<td colspan="2"><osp:message key="eval_items_section_header" /></td>
+			<td>
+				<span class="itemAction">
+					<c:if
+						test="${(((isWizard != 'true' && matrixCanEvaluate) || (isWizard == 'true' && wizardCan.evaluate)) && 
+						((cell.scaffoldingCell.evaluationDevice != null && !cell.scaffoldingCell.wizardPageDefinition.defaultEvaluationForm) 
+							|| (cell.scaffoldingCell.scaffolding.evaluationDevice != null && cell.scaffoldingCell.wizardPageDefinition.defaultEvaluationForm))) && cell.status == 'PENDING'}">
+						<a class="TB_hideControl"
+							href="<osp:url value="osp.review.processor.helper/reviewHelper.osp">
+								    <osp:param name="page_id" value="${cell.wizardPage.id}" />
+									<osp:param name="org_theospi_portfolio_review_type" value="1" />
+									<osp:param name="process_type_key" value="page_id" />
+									<osp:param name="isWizard" value="${isWizard}" />
+									<osp:param name="objectId" value="${objectId}" />
+									<osp:param name="objectTitle" value="${objectTitle}" />
+									<c:if test="${cell.scaffoldingCell.wizardPageDefinition.defaultEvaluationForm}">
+								       		<osp:param name="scaffoldingId" value="${cell.scaffoldingCell.scaffolding.id}" />
+								    </c:if>
+									</osp:url>">
+							<osp:message key="add_evaluation" />
+						</a>
+					</c:if>
+				 </span>
+			</td>
+			<td colspan="3"></td>
+		</tr>
+
+		<c:if test="${ cell.status == 'PENDING' and empty evaluations}">
+			<tr>
+				<td colspan="6">						
+					<span class="instruction indnt2">
+						<c:out value="${msgs.evaluation_section_empty}" />
+					</span> 
+				</td>
+			</tr>
+		</c:if>
+
+
+		<c:if test="${not empty evaluations}">
+	
+			<c:forEach var="object" items="${evaluations}" varStatus="loopStatus">
+				<tr>
+					<td colspan="2">
+					<h5><span class="indnt2"> <img
+						src='/library/image/silk/tick.png' border='0' hspace='0' alt="" />
+						<c:if test="${object.reviewContentNode.technicalMetadata.owner.id == currentUser || (scaffoldingCan.viewEvalOther && isWizard != 'true') || (wizardCan.evaluate && isWizard == 'true') || cell.wizardPage.owner.id == currentUser}">
+							<a href='<c:out value="${object.reviewContentNode.externalUri}"/>'
+								target="_blank"> 
+						</c:if>
+							<c:out value="${object.reviewContentNode.displayName}" />
+						<c:if test="${object.reviewContentNode.technicalMetadata.owner.id == currentUser || (scaffoldingCan.viewEvalOther && isWizard != 'true') || (wizardCan.evaluate && isWizard == 'true') || cell.wizardPage.owner.id == currentUser}">
+							</a>
+						</c:if>
+					 </span></h5>
+					</td>
+					<td nowrap="nowrap">
+					<div class="itemAction">
+					<!-- Allow Reviewers to edit/delete Evaluations -->
+					<c:if
+						test="${((isWizard != 'true' && matrixCanEvaluate) || (isWizard == 'true' && wizardCan.evaluate)) && cell.status != 'COMPLETE'
+						        && enableReviewEdit && object.reviewContentNode.technicalMetadata.owner.id == currentUser }">
+						<a
+							href="<osp:url value="osp.review.processor.helper/reviewHelper.osp">
+									<osp:param name="page_id" value="${cell.wizardPage.id}" />
+									<osp:param name="org_theospi_portfolio_review_type" value="1" />
+									<osp:param name="current_review_id" value="${object.reviewContentNode.resource.id}" />
+									<osp:param name="process_type_key" value="page_id" />
+									<c:if test="${cell.scaffoldingCell.wizardPageDefinition.defaultEvaluationForm}">
+							       			<osp:param name="scaffoldingId" value="${cell.scaffoldingCell.scaffolding.id}" />
+							          	</c:if>
+								  </osp:url>"
+							title='<c:out value="${msgs.edit}"/>'> 
+									<c:out value="${msgs.edit}"/></a>
+								|
+						<a
+							href="<osp:url value="osp.wizard.page.contents.helper/formDelete.osp">
+									 <osp:param name="page_id" value="${cell.wizardPage.id}" />
+									 <osp:param name="formDefId" value="${cell.scaffoldingCell.reviewDevice}" />
+									 <osp:param name="current_form_id" value="${object.reviewContentNode.resource.id}" />
+									 <osp:param name="review_id" value="${object.id}"/>
+									 <osp:param name="submit" value="deleteReview" />
+									 <c:if test="${cell.scaffoldingCell.wizardPageDefinition.defaultEvaluationForm}">
+							       			<osp:param name="scaffoldingId" value="${cell.scaffoldingCell.scaffolding.id}" />
+							          	</c:if>
+									 </osp:url>"
+							title='<c:out value="${msgs.delete}"/>'>
+									<c:out value="${msgs.remove}"/>
+						</a>
+					</c:if>
+					</div>
+				</td>
+         		<td></td>
+				<td><c:out
+					value="${object.reviewContentNode.technicalMetadata.owner.displayName}" />
+				</td>
+				<td><fmt:formatDate
+					value="${object.reviewContentNode.technicalMetadata.lastModified}"
+					pattern="${date_format}" /></td>
+				</tr>
+			</c:forEach>
+		</c:if>
+	</c:if>
+</c:if>
+ <!-- ************* Evaluation Area End ************* -->

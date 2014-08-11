@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+
+<!--
+  File from uPortal2.0 by JASIG. Modified and adapted to OSPI by <a
+  href="felipeen@udel.edu">Luis F.C. Mendes</a> - University of
+  Delaware
+-->
+<!-- $Revision: 1.19 $ -->
+
+<tables>
+   
+   
+   <table>
+     <name>dw_matrix</name>
+     <desc>Matrix Datawarehouse table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>owner</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>scaffolding_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <not-null>scaffolding_id</not-null>
+     <not-null>owner</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+
+   <table>
+     <name>dw_matrix_cell</name>
+     <desc>Matrix Cell Datawarehouse table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>matrix_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>wizard_page_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>scaffolding_cell_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <not-null>matrix_id</not-null>
+     <not-null>wizard_page_id</not-null>
+     <not-null>scaffolding_cell_id</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+
+   <table>
+     <name>dw_wizard_page</name>
+     <desc>Matrix Cell Datawarehouse table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>status</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>wizard_page_def_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>modified</name>
+          <type>TIMESTAMP</type>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <not-null>wizard_page_def_id</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+
+   <table>
+     <name>dw_wizard_page_attachments</name>
+     <desc>Wizard Page Attachments Data warehouse table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>artifact_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>wizard_page_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <not-null>wizard_page_id</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+
+   <table>
+     <name>dw_wizard_page_forms</name>
+     <desc>Wizard Page Forms Data warehouse table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>artifact_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>wizard_page_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>form_type</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <not-null>wizard_page_id</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+   <table>
+     <name>dw_metaobj_form_def</name>
+     <desc>Metaobj Form Definition table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>description</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>documentRoot</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>owner</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>created</name>
+          <type>TIMESTAMP</type>
+        </column>
+        <column>
+          <name>modified</name>
+          <type>TIMESTAMP</type>
+        </column>
+        <column>
+          <name>systemOnly</name>
+          <type>TINYINT</type>
+        </column>
+        <column>
+          <name>externalType</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+         <column>
+          <name>siteId</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>siteState</name>
+          <type>INTEGER</type>
+        </column>
+         <column>
+          <name>globalState</name>
+          <type>INTEGER</type>
+        </column>
+       <!--
+        <column>
+          <name>instruction</name>
+          <type>TEXT</type>
+        </column>
+        -->
+     </columns>
+     <not-null>id</not-null>
+     <not-null>documentRoot</not-null>
+     <not-null>owner</not-null>
+     <not-null>created</not-null>
+     <not-null>modified</not-null>
+     <not-null>systemOnly</not-null>
+     <not-null>externalType</not-null>
+     <not-null>siteState</not-null>
+     <not-null>globalState</not-null>
+     <not-null>schemaData</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+
+   <index>
+    <index-name>FK5A17205459517621</index-name>
+    <table-name>dw_matrix</table-name>
+    <column>scaffolding_id</column>
+   </index>
+
+   <index>
+    <index-name>FK8C1D366D9AAD0C05</index-name>
+    <table-name>dw_matrix_cell</table-name>
+    <column>scaffolding_cell_id</column>
+   </index>
+   <index>
+    <index-name>FK8C1D366D3E503659</index-name>
+    <table-name>dw_matrix_cell</table-name>
+    <column>matrix_id</column>
+   </index>
+    <index>
+    <index-name>FK8C1D366DFE6D91AF</index-name>
+    <table-name>dw_matrix_cell</table-name>
+    <column>wizard_page_id</column>
+   </index>
+
+
+</tables>

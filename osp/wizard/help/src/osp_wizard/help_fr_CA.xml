@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="wizards_overview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>wizards_overview</value>
+      </property>
+      <property name="name">
+         <value>Wizards: Overview</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/wizards_overview.html</value>
+      </property>
+      <property name="defaultForTool">
+         <value>osp.wizard</value>
+      </property>
+   </bean>
+   <bean id="designing_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>designing_a_wizard</value>
+      </property>
+      <property name="name">
+         <value>Designing a Wizard</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/designing_a_wizard.html</value>
+      </property>
+   </bean>
+   <bean id="building_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>building_a_wizard</value>
+      </property>
+      <property name="name">
+         <value>Building a Wizard</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/building_a_wizard.html</value>
+      </property>
+   </bean>
+   <bean id="changing_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_a_wizard</value>
+      </property>
+      <property name="name">
+         <value>Changing a Wizard</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/changing_a_wizard.html</value>
+      </property>
+   </bean>
+   <bean id="deleting_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>deleting_a_wizard</value>
+      </property>
+      <property name="name">
+         <value>Deleting a Wizard</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/deleting_a_wizard.html</value>
+      </property>
+   </bean>
+   <bean id="publishing_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>publishing_a_wizard</value>
+      </property>
+      <property name="name">
+         <value>Publishing a Wizard</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/publishing_a_wizard.html</value>
+      </property>
+   </bean>
+   <bean id="exporting_and_importing_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>exporting_and_importing_a_wizard</value>
+      </property>
+      <property name="name">
+         <value>Exporting and Importing</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/exporting_and_importing_a_wizard.html</value>
+      </property>
+   </bean>
+   <bean id="providing_formative_feedback_on_a_wizard"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>providing_formative_feedback_on_a_wizard</value>
+      </property>
+      <property name="name">
+         <value>Providing Formative Feedback</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/providing_formative_feedback_on_a_wizard.html</value>
+      </property>
+   </bean>
+   <bean id="changing_permissions_for_the_wizards_tool"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_permissions_for_the_wizards_tool</value>
+      </property>
+      <property name="name">
+         <value>Changing Permissions</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/changing_permissions_for_the_wizards_tool.html</value>
+      </property>
+   </bean>
+   <bean id="fspcaw"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>fspcaw</value>
+      </property>
+      <property name="name">
+         <value>Completing a Wizard</value>
+      </property>
+      <property name="location">
+         <value>/osp_wizard/fspcaw.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean"
+                  id="ospWizardCategory">
+               <property name="name">
+                  <value>Wizards</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="wizards_overview"/>
+                     <ref bean="designing_a_wizard"/>
+                     <ref bean="building_a_wizard"/>
+                     <ref bean="changing_a_wizard"/>
+                     <ref bean="deleting_a_wizard"/>
+                     <ref bean="publishing_a_wizard"/>
+                     <ref bean="exporting_and_importing_a_wizard"/>
+                     <ref bean="providing_formative_feedback_on_a_wizard"/>
+                     <ref bean="changing_permissions_for_the_wizards_tool"/>
+                     <ref bean="fspcaw"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

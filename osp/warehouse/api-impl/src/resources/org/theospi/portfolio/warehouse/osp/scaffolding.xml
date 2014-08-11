@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+
+<!--
+  File from uPortal2.0 by JASIG. Modified and adapted to OSPI by <a
+  href="felipeen@udel.edu">Luis F.C. Mendes</a> - University of
+  Delaware
+-->
+<!-- $Revision: 1.19 $ -->
+
+<tables>
+
+
+   <table>
+     <name>dw_scaffolding</name>
+     <desc>Scaffolding Datawarehouse table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>ownerId</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>title</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>description</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>worksiteId</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>published</name>
+          <type>TINYINT</type>
+        </column>
+        <column>
+          <name>publishedBy</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>publishedDate</name>
+          <type>TIMESTAMP</type>
+        </column>
+        <column>
+          <name>columnLabel</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>rowLabel</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>readyColor</name>
+          <type>VARCHAR</type>
+          <param>7</param>
+        </column>
+        <column>
+          <name>pendingColor</name>
+          <type>VARCHAR</type>
+          <param>7</param>
+        </column>
+        <column>
+          <name>completedColor</name>
+          <type>VARCHAR</type>
+          <param>7</param>
+        </column>
+        <column>
+          <name>lockedColor</name>
+          <type>VARCHAR</type>
+          <param>7</param>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <not-null>ownerId</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+   <table>
+     <name>dw_scaffolding_cell</name>
+     <desc>Scaffolding cell Datawarehouse table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>rootcriterion_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>level_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>scaffolding_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>wizardPageDef_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <not-null>scaffolding_id</not-null>
+     <not-null>wizardPageDef_id</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+   <table>
+     <name>dw_scaffolding_criteria</name>
+     <desc>Scaffolding Criterion Datawarehouse table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>scaffolding_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>sequenceNumber</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>description</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>color</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>textColor</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+   <table>
+     <name>dw_scaffolding_levels</name>
+     <desc>Scaffolding Levels Datawarehouse table</desc>
+     <columns>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>scaffolding_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>sequenceNumber</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>description</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+        <column>
+          <name>color</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>textColor</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+     </columns>
+     <not-null>id</not-null>
+     <primary-key>id</primary-key>
+   </table>
+
+   <table>
+     <name>dw_scaffolding_cell_evaluators</name>
+     <desc>Scaffolding Cell Evaluators Data warehouse table</desc>
+     <columns>
+        <column>
+          <name>scaffolding_cell_id</name>
+          <type>VARCHAR</type>
+          <param>36</param>
+        </column>
+        <column>
+          <name>id</name>
+          <type>VARCHAR</type>
+          <param>255</param>
+        </column>
+     </columns>
+     <not-null>scaffolding_cell_id</not-null>
+   </table>
+
+
+
+   <index>
+     <index-name>FK184EAE6880F1F7B4</index-name>
+     <table-name>dw_scaffolding_cell_evaluators</table-name>
+     <column>scaffolding_cell_id</column>
+   </index>
+   <index>
+     <index-name>FK184EAE6880F1F7B6</index-name>
+     <table-name>dw_scaffolding_cell</table-name>
+     <column>level_id</column>
+   </index>
+   <index>
+     <index-name>FK184EAE68C604760E</index-name>
+     <table-name>dw_scaffolding_cell</table-name>
+     <column>scaffolding_id</column>
+   </index>
+   <index>
+     <index-name>FK184EAE685827115B</index-name>
+     <table-name>dw_scaffolding_cell</table-name>
+     <column>rootcriterion_id</column>
+   </index>
+
+   <index>
+     <index-name>FK4EBCD0F5C604760E</index-name>
+     <table-name>dw_scaffolding_levels</table-name>
+     <column>scaffolding_id</column>
+   </index>
+
+</tables>

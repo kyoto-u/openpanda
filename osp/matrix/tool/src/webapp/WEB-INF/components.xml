@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<!--
+1=springapp-servlet.xml
+2=web-config.xml
+3=matrix-web-config.xml
+-->
+
+  <import resource="springapp-servlet.xml"/>	
+  <import resource="web-config.xml"/>	
+  <import resource="matrix-web-config.xml"/>	
+
+</beans>

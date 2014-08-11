@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool
+			id="osp.sample.jsf.widgets"
+			title="OSP 2.0 JSF Tags"
+			description="Individual examples of the OSP 2.0 JSF tags.">
+
+		<category name="sakai.sample" />
+
+		<configuration name="help.button" value="false" />
+
+	</tool>
+
+</registration>

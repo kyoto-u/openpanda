@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>sakai-hybrid-tool</display-name>
+    <description>Sakai 2/3 Hybrid Project</description>
+
+    <filter>
+        <filter-name>sakai.request</filter-name>
+        <filter-class>org.sakaiproject.util.RequestFilter</filter-class>
+				<init-param>
+					<!-- change the context to /portal instead of /sakai-hybrid-tool -->
+					<param-name>context</param-name>
+					<param-value>portal</param-value>
+				</init-param>
+    </filter>
+
+    <filter>
+        <filter-name>sakai.trusted</filter-name>
+        <filter-class>org.sakaiproject.hybrid.util.TrustedLoginFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>sakai.trusted</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>sakai.hybrid.SitesServlet</servlet-name>
+        <servlet-class>org.sakaiproject.hybrid.tool.SitesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>sakai.hybrid.SiteVisitToolPlacementServlet</servlet-name>
+        <servlet-class>org.sakaiproject.hybrid.tool.SiteVisitToolPlacementServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>sakai.hybrid.SitesServlet</servlet-name>
+        <url-pattern>/sites</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>sakai.hybrid.SiteVisitToolPlacementServlet</servlet-name>
+        <url-pattern>/site</url-pattern>
+    </servlet-mapping>
+
+</web-app>

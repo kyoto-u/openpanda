@@ -1,0 +1,40 @@
+/*
+toggler needs
+*/
+.toggleAnchor {
+    border: 1px solid #cef;
+    background: #cef !important;
+    padding: 5px !important;
+    cursor: pointer;
+	outline:none;
+}
+ .toggleAnchor:hover{
+    border: 1px solid #9cf;
+}
+.toggledContent {
+    margin: 0;
+    border: 2px solid #cef;
+    border-top: none;
+    padding: .5em
+}
+#templateSettings, #siteTypeList{
+	padding:.5em;
+	background:#eee;
+	width:50em;
+	-webkit-border-radius:5px;
+   -moz-border-radius:5px; 
+}
+#siteTypeList p {
+	border:none;
+	padding:.1em 0;
+	margin:5px !important
+}
+dl.defList{
+	margin:0;padding:0;
+}
+dl.defList dt, dl.defList dd{
+	padding:5px 0
+}
+dl.defList dd{
+	padding:5px 1em
+}

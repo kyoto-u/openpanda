@@ -1,0 +1,166 @@
+<!--
+
+    Copyright (c) 2008-2010 The Sakai Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+                http://www.osedu.org/licenses/ECL-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
+      xml:lang="en"  
+      lang="en"> 
+       
+<body>
+<wicket:extend>
+	
+	<div id="pageWrapper">
+	
+		<!-- 
+		<div id="leftPanel">
+	    
+	    </div>
+		-->
+		
+		<div id="fullWidth">
+                        
+            <!--  search by name form -->
+            <div class="mainSectionContentForm">
+	            <h3 wicket:id="sbnHeading" class="header icon search">[searchByNameHeading]</h3>
+	            
+	            <form wicket:id="sbnForm" class="profileForm">
+					<table class="profileContent">
+						
+						<tr>
+							<td class="label" wicket:id="sbnNameLabel">[sbnNameLabel]</td>
+							<td class="content">
+								<input type="text" wicket:id="searchName" class="formInputField" wicket:message="title:text.search.byname.tooltip" />
+							</td>
+							<td class="toolTip"><span wicket:id="sbnNameToolTip">[searchToolTip]</span></td>
+						</tr>
+						
+					</table>
+					
+					<div class="pageFormButtons">
+						<input type="submit" wicket:id="sbnSubmit" value="Search" />
+					</div>
+					
+					<!-- work around for IE and single form element submit with Enter button, PRFL-378 -->
+					<input type="text" style="display:none;" />
+				</form>	
+			</div>
+			
+			
+			<!--  search by interest form -->
+			<div class="mainSectionContentForm" style="margin-top: 10px;">
+				<h3 wicket:id="sbiHeading" class="header icon search">[searchByInterestHeading]</h3>
+				
+				<form wicket:id="sbiForm" class="profileForm">
+					<table class="profileContent">
+						
+						<tr>
+							<td class="label" wicket:id="sbiInterestLabel">[sbiInterestLabel]</td>
+							<td class="content">
+								<input type="text" wicket:id="searchInterest" class="formInputField" wicket:message="title:text.search.byinterest.tooltip" />
+							</td>
+							<td class="toolTip"><span wicket:id="sbiInterestToolTip">[searchToolTip]</span></td>
+						</tr>
+						
+					</table>
+					
+					<div class="pageFormButtons">
+						<input type="submit" wicket:id="sbiSubmit" value="Search" />
+					</div>
+					
+					<!-- work around for IE and single form element submit with Enter button, PRFL-378 -->
+					<input type="text" style="display:none;" />
+					
+				</form>	
+			</div>
+			
+			<!--  results -->
+			<div wicket:id="numSearchResultsContainer">
+				<div wicket:id="numSearchResults" class="search-results-header" tabindex="0">No results or 1-5 of 20 results</div>
+				<form wicket:id="clearResults">
+					<input type="submit" wicket:id="clearButton" value="Clear"/>
+				</form>
+			</div>
+			
+			<div class="search-results-wrap" wicket:id="searchResultsContainer">
+				<div wicket:id="searchResultsNavigator" class="pager">[search results navigator]</div>
+				<div class="search-result" wicket:id="searchResults">
+					<a wicket:id="searchResultPhotoWrap">
+						<img class="search-result-img" wicket:id="searchResultPhoto"/>
+					</a>
+			    	
+			    	<div class="search-result-info-wrap">
+			    		<a href="#" wicket:id="searchResultProfileLink"><span wicket:id="searchResultName" class="search-result-info-name" tabindex="0">[name]</span></a>
+			    		<span wicket:id="searchResultStatus" class="status-msg">status</span>
+			    	</div>
+			    	<div class="search-result-actions-wrap">
+			    		<ul class="search-result-actions">
+			    			<li wicket:id="connectionContainer"><a wicket:id="connectionLink" class="icon connection-add"><span wicket:id="connectionLabel" tabindex="0">add as a friend</span></a></li>
+			    			<li wicket:id="viewFriendsContainer"><a wicket:id="viewFriendsLink" class="icon connections"><span wicket:id="viewFriendsLabel" tabindex="0">view friends</span></a></li>
+			    		</ul>
+			    	</div>
+			    	
+			  	</div>
+			</div>
+			
+			<div wicket:id="connectionWindow"></div>	
+			
+			
+			
+			
+			
+				
+					
+		</div>
+		
+		<!-- <div id="rightPanel"></div> -->
+	
+	
+	</div>
+	
+	<!--  general Search scripting -->
+	<script type="text/javascript">
+
+		//init
+		$(document).ready(function(){ 
+			//resize iframe
+			setMainFrameHeight(window.name);
+
+		});
+
+		$(document).ready(function() {
+			$('.sakai-wicket-iconwithtooltip').cluetip({
+				local: true,
+				showTitle: false,
+				attribute: 'rel',
+				cursor: 'pointer',
+				cluetipClass: 'jtip',
+				arrows: true,
+				hoverIntent: true
+			});	
+			
+		});
+
+	
+	</script>
+
+	
+</wicket:extend>
+</body>
+</html>
+

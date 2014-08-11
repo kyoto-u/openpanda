@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.permissions" title="Permissions" description="OSP Permissions Helper Tool">
+       <configuration name="test" value="reg-value" />
+
+       <category name="sakai.helper" />
+
+       <configuration name="theospi.resetUrl"
+            value="/member/editPermissions.osp" />
+       
+	</tool>
+
+</registration>

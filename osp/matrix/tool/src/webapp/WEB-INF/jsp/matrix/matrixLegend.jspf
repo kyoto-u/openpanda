@@ -1,0 +1,24 @@
+<h4><c:out value="${msgs.matrix_legend}"/></h4>
+<table class="matrixLegendTable"  border="0" cellspacing="10" summary="<c:out value="${msgs.matrix_legend}"/>">
+   <tr> 
+      <td>&nbsp;</td>
+      <td class="matrixLegend-border matrix-READY">&nbsp;</td>
+      <td><c:out value="${msgs.matrix_legend_ready}"/></td>
+      <td class="matrixLegend-border matrix-COMPLETE">&nbsp;</td>
+      <td><c:out value="${msgs.matrix_legend_completed}"/></td>
+   </tr>
+   <tr> 
+      <td>&nbsp;</td>
+      <td class="matrixLegend-border matrix-PENDING">&nbsp;</td>
+      <td><c:out value="${msgs.matrix_legend_pending}"/></td>
+      <td class="matrixLegend-border matrix-LOCKED">&nbsp;</td>
+      <td><c:out value="${msgs.matrix_legend_locked}"/></td>
+   </tr>
+   <tr>
+   	  <td>&nbsp;</td>
+      <td class="matrixLegend-border matrix-RETURNED">&nbsp;</td>
+      <td><c:out value="${msgs.matrix_legend_returned}"/></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+   </tr>
+</table>

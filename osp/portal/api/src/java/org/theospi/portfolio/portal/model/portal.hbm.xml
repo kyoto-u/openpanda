@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.theospi.portfolio.portal.model">
+
+   <class name="SiteType" table="osp_portal_site_type" lazy="false" batch-size="1">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdentifiableIdGenerator"/>
+      </id>
+
+      <property name="key" type="string" column="type_key" not-null="true" unique="true"/>
+      <property name="name" type="string" column="type_name" not-null="false"/>
+      <property name="description" type="string" column="type_description" not-null="false"/>
+      <property name="skin" type="string" column="skin" not-null="false"/>
+      <property name="firstCategory" type="int" not-null="true"/>
+      <property name="lastCategory" type="int" not-null="true"/>
+      <property name="order" type="int" column="type_order" not-null="true"/>
+      <property name="hidden" type="boolean" column="hidden" not-null="false"/>
+      <property name="displayTab" type="boolean" column="display_tab" not-null="false"/>
+
+      <list name="toolCategories" lazy="false" cascade="all">
+         <key column="site_type_id" />
+         <index column="category_index"/>
+         <one-to-many class="ToolCategory" />
+      </list>
+
+      <list name="specialSites" table="osp_portal_special_sites" cascade="all" lazy="false">
+         <key column="site_type_id"/>
+         <index column="site_index"/>
+         <element column="site_type" type="string"/>
+      </list>
+
+   </class>
+
+   <class name="ToolCategory" table="osp_portal_tool_category" lazy="false" batch-size="1">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdentifiableIdGenerator"/>
+      </id>
+
+      <property name="key" type="string" column="type_key" not-null="true" unique="true"/>
+      <property name="description" type="string" column="type_description" not-null="false"/>
+      <property name="order" type="int" column="category_order" not-null="false"/>
+      <property name="homePagePath" type="string" column="home_page_path" not-null="false"/>
+
+      <map name="pages" lazy="true" table="osp_portal_category_pages" cascade="all" >
+         <key column="category_id"/>
+         <index column="page_locale" type="string" />
+         <element column="page" type="binary" length="2147483647"/>
+      </map>
+
+      <map name="tools" lazy="false" cascade="all" >
+         <key column="category_id"/>
+         <index column="tool_id" type="string" />
+         <one-to-many class="ToolType" />
+      </map>
+
+   </class>
+
+   <class name="ToolType" lazy="false" table="osp_portal_tool_type" batch-size="1">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdentifiableIdGenerator"/>
+      </id>
+
+      <property name="qualifierType" type="string" column="qualifier_type" not-null="false" />
+
+      <list name="functions" table="osp_portal_tool_functions" cascade="all" lazy="false">
+         <key column="tool_type_id"/>
+         <index column="function_index"/>
+         <element column="function_name" type="string"/>
+      </list>
+
+   </class>
+
+</hibernate-mapping>

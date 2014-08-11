@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+	
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding.cell.evaluators"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.parentId" />
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_scaffolding_cell_evaluators
+                            (scaffolding_cell_id, id)  values (?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_scaffolding_cell_evaluators</value>
+     </property>
+   </bean>  
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding.levels"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>scaffolding</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>sequenceNumber</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>description</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>color</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>textColor</value></property>
+           </bean>
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_scaffolding_levels
+                            (id, scaffolding_id, sequenceNumber, 
+                            description, color, textColor)  values 
+                            (?, ?, ?, ?, ?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_scaffolding_levels</value>
+     </property>
+   </bean>  
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding.critria"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+         <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>scaffolding</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>sequenceNumber</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>description</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>color</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>textColor</value></property>
+           </bean>
+           
+         </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_scaffolding_criteria
+                            (id, scaffolding_id, sequenceNumber, 
+                            description, color, textColor)  values 
+                            (?, ?, ?, ?, ?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_scaffolding_criteria</value>
+     </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding.cell"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>rootCriterion</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>level</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>scaffolding</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>wizardPageDefinition</value></property>
+           </bean>
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_scaffolding_cell
+                            (id, rootcriterion_id, level_id, scaffolding_id, wizardPageDef_id)
+                                            values (?, ?, ?, ?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_scaffolding_cell</value>
+     </property>     
+     <property name="complexFields" >
+         <list>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">
+                <property name="propertyAccess">
+                  <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                     <property name="propertyName"><value>evaluators</value></property>
+                  </bean>
+               </property>
+               <property name="task">
+                    <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding.cell.evaluators" />
+               </property> 
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+               <property name="propertyAccess">               
+                  <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                     <property name="propertyName"><value>wizardPageDefinition</value></property>
+                  </bean>
+               </property>
+               <property name="task">
+                   <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.page.definition"/>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding"
+     class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+     <property name="fields">
+        <list>
+           <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+           <bean class="org.sakaiproject.warehouse.impl.AgentPropertyAccess">
+              <property name="propertyName"><value>owner</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>title</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>description</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+              <property name="propertyName"><value>worksiteId</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>published</value></property>
+           </bean> 
+           <bean class="org.sakaiproject.warehouse.impl.AgentPropertyAccess">
+              <property name="propertyName"><value>publishedBy</value></property>
+           </bean>            
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>publishedDate</value></property>
+           </bean>                   
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>columnLabel</value></property>
+           </bean>
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>rowLabel</value></property>
+           </bean>             
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>readyColor</value></property>
+           </bean>            
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>pendingColor</value></property>
+           </bean> 
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>completedColor</value></property>
+           </bean> 
+           <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>lockedColor</value></property>
+           </bean>          
+        </list>
+     </property>
+     <property name="insertStmt">
+        <value>insert into dw_scaffolding
+                                    (id, ownerId, title, description, worksiteId,
+                                     published, publishedBy, publishedDate, columnLabel, rowLabel, readyColor, 
+                                     pendingColor, completedColor, lockedColor)
+                                    values (?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?)
+        </value>
+     </property>
+     <property name="clearStmt">
+        <value>delete from dw_scaffolding</value>
+     </property>
+    <property name="complexFields" >
+         <list> 
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">
+                <property name="propertyAccess">
+                  <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                     <property name="propertyName"><value>scaffoldingCells</value></property>
+                  </bean>
+               </property>
+               <property name="task">
+                    <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding.cell" />
+               </property> 
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+               <property name="propertyAccess">               
+                  <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                     <property name="propertyName"><value>levels</value></property>
+                  </bean>
+               </property>
+               <property name="task">
+                   <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding.levels"/>
+               </property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+               <property name="propertyAccess">               
+                  <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                     <property name="propertyName"><value>criteria</value></property>
+                  </bean>
+               </property>
+               <property name="task">
+                   <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding.critria"/>
+               </property>
+            </bean>
+         </list>
+      </property>           
+   </bean> 
+   
+    <bean
+          id="org.sakaiproject.warehouse.service.WarehouseTask.scaffolding"
+          class="org.theospi.portfolio.warehouse.osp.matrix.ScaffoldingWarehouseTask"
+          init-method="init" singleton="true">
+          <property name="dataSource">
+              <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource" />
+          </property>
+          <property name="dataWarehouseManager">
+              <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager" />
+          </property>
+          <property name="tableDdlResource">
+              <value>/org/theospi/portfolio/warehouse/osp/scaffolding.xml</value>
+          </property>
+          <property name="matrixManager">
+              <ref bean="matrixManager" />
+          </property>
+          <property name="task">
+              <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.scaffolding" />
+          </property>
+      </bean>
+
+   
+   
+   
+   
+   
+   
+   
+
+</beans>

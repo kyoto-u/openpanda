@@ -1,0 +1,13 @@
+<classpath>
+  <classpathentry kind="src" path="src/java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/sakaiproject/common/sakai-common-edu-person-api/1.0.0-beta02-SNAPSHOT/sakai-common-edu-person-api-1.0.0-beta02-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/sakaiproject/common/sakai-common-manager-api/1.0.0-beta02-SNAPSHOT/sakai-common-manager-api-1.0.0-beta02-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/sakaiproject/common/sakai-common-type-api/1.0.0-beta02-SNAPSHOT/sakai-common-type-api-1.0.0-beta02-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/sakaiproject/kernel/sakai-component-manager/1.1.0-beta04-SNAPSHOT/sakai-component-manager-1.1.0-beta04-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/sakaiproject/kernel/sakai-kernel-api/1.1.0-beta04-SNAPSHOT/sakai-kernel-api-1.1.0-beta04-SNAPSHOT.jar"/>
+  <classpathentry kind="src" path="/sakai-profile-api"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+</classpath>

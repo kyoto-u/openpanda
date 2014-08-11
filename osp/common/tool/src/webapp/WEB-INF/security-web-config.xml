@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+   <bean id="editPermissionsController" class="org.sakaiproject.metaobj.utils.mvc.impl.servlet.FormControllerImpl">
+      <property name="controller">
+         <bean class="org.theospi.portfolio.security.control.PermissionsController">
+            <property name="permissionManager">
+               <ref bean="org.theospi.portfolio.security.mgt.PermissionManager" />
+            </property>
+            <property name="securityService">
+         		<ref bean="org.sakaiproject.authz.api.SecurityService"/>
+      		</property>
+         </bean>
+      </property>
+      <property name="screenMappings">
+         <props>
+         </props>
+      </property>
+      <property name="customTypedEditors">
+         <list>
+            <ref bean="idCustomEditor"/>
+            <bean class="org.theospi.portfolio.security.model.impl.PermissionsCustomEditor">
+               <property name="agentManager"><ref bean="agentManager" /></property>
+            </bean>
+         </list>
+      </property>
+      <property name="commandName"><value>permissionsEdit</value></property>
+      <property name="commandClass"><value>org.theospi.portfolio.security.model.PermissionsEdit</value></property>
+      <property name="formView"><value>editPermissions</value></property>
+   </bean>
+   
+   <bean id="editPermissionsNewController" class="org.sakaiproject.metaobj.utils.mvc.impl.servlet.FormControllerImpl">
+      <property name="controller">
+         <bean class="org.theospi.portfolio.security.control.PermissionsController">
+            <property name="permissionManager">
+               <ref bean="org.theospi.portfolio.security.mgt.PermissionManager" />
+            </property>            
+            <property name="securityService">
+         		<ref bean="org.sakaiproject.authz.api.SecurityService"/>
+      		</property>
+         </bean>
+      </property>
+      <property name="screenMappings">
+         <props>
+         </props>
+      </property>
+      <property name="customTypedEditors">
+         <list>
+            <ref bean="idCustomEditor"/>
+            <bean class="org.theospi.portfolio.security.model.impl.PermissionsCustomEditor">
+               <property name="agentManager"><ref bean="agentManager" /></property>
+            </bean>
+         </list>
+      </property>
+      <property name="commandName"><value>permissionsEdit</value></property>
+      <property name="commandClass"><value>org.theospi.portfolio.security.model.PermissionsEdit</value></property>
+      <property name="formView"><value>editPermissions_new</value></property>
+   </bean>
+
+</beans>

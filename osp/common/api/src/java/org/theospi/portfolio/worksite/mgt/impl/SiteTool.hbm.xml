@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping
+   package="org.theospi.portfolio.worksite.model">
+
+   <class name="SiteTool" table="osp_site_tool">
+      <id name="id" length="40" type="org.sakaiproject.metaobj.shared.IdType">
+         <generator class="org.sakaiproject.metaobj.shared.IdGenerator"/>
+      </id>
+      <property name="siteId" length="99" column="site_id" not-null="false"/>
+      <property name="toolId" length="36" column="tool_id" not-null="false"/>
+      <property name="listenerId" column="listener_id" not-null="false"/>                  
+   </class>
+   
+   <query name="bySiteAndTool">
+      from SiteTool where site_id=? and tool_id=?
+   </query>
+   
+   <query name="bySite">
+      from SiteTool where site_id=?
+   </query>
+
+</hibernate-mapping>

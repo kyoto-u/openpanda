@@ -1,0 +1,213 @@
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+#macro ( dateField $field $fieldName )
+    <td>
+      <spring:bind path="presentation.properties.${field.fieldNamePath}.day">
+      date:
+      <input type="text" name="properties.${field.fieldNamePath}.day" value="<c:out value="${status.value}"/>"
+         size="4" />
+      <font color="red"><c:out value="${status.errorMessage}"/></font>
+      </spring:bind>   
+      <spring:bind path="presentation.properties.${field.fieldNamePath}.month">
+      month:
+      <input type="text" name="properties.${field.fieldNamePath}.month" value="<c:out value="${status.value}"/>"
+         size="4" />
+      <font color="red"><c:out value="${status.errorMessage}"/></font>
+      </spring:bind>   
+      <spring:bind path="presentation.properties.${field.fieldNamePath}.year">
+      year:
+      <input type="text" name="properties.${field.fieldNamePath}.year" value="<c:out value="${status.value}"/>"
+         size="4" />
+      <font color="red"><c:out value="${status.errorMessage}"/></font>
+      </spring:bind> 
+      <spring:bind path="presentation.properties.${field.fieldNamePath}">
+         <font color="red"><c:out value="${status.errorMessage}"/></font>
+      </spring:bind>
+   </td>
+#end
+
+#set ($statusStart = '${status.value')
+
+#macro ( enumField $field $fieldName )
+      <spring:bind path="presentation.properties.${field.fieldNamePath}">
+        <td>
+        <select name="properties.${field.fieldNamePath}">
+           <option value="">none</option>
+#foreach($enumElement in $field.schema.enumeration)
+           <option value="$enumElement"
+      <c:if test="$statusStart == '$enumElement'}">selected </c:if>
+           >$enumElement</option>
+#end
+        </select>
+        </td>
+        <td align="left">
+          <font color="red"><c:out value="${status.errorMessage}"/></font>
+        </td>
+      </spring:bind>
+#end
+
+#macro ( booleanField $field $fieldName )
+      <spring:bind path="presentation.properties.${field.fieldNamePath}">
+        <td>
+            <input type="checkbox" 
+               name="<c:out value="${status.expression}"/>_checkBox"
+               value="true" 
+               <c:if test="${status.value}">checked</c:if>
+               onChange="form['<c:out value="${status.expression}"/>'].value=this.checked" 
+               />                    
+            <input type="hidden" name="<c:out value="${status.expression}"/>"
+               value="<c:out value="${status.value}"/>" />
+        </td>
+        <td align="left">
+          <font color="red"><c:out value="${status.errorMessage}"/></font>
+        </td>
+      </spring:bind>
+#end
+
+
+#macro ( editXmlField $field $fieldName )
+
+    <tr>
+      <td alignment="right" >
+      #if ($field.annotations.containsKey("label"))
+         $field.annotations.label  
+      #else 
+         $field.fieldName
+      #end    
+   #if ($field.schema.minOccurs > 0)
+         <font color="#FF0000">*</font>
+   #end      
+      :</td>
+#if ($field.schema.objectType.name == 'java.lang.Boolean')
+   #booleanField( $field $fieldName )
+#else
+#if ($field.schema.hasEnumerations())
+   #enumField( $field $fieldName )
+#else
+#if ($field.schema.objectType.name == 'java.util.Date')
+   #dateField( $field $fieldName )
+#else        
+      <spring:bind path="presentation.properties.${field.fieldNamePath}">
+        <td>
+ #if ($field.schema.type.maxLength >= 100 || $field.schema.type.maxLength == -1)
+   <textarea cols="80" rows="5" name="properties.${field.fieldNamePath}" id="properties.${field.fieldNamePath}"
+      #if ($field.schema.type.maxLength != -1)
+      onkeyup="limitChar(this,${field.schema.type.maxLength})" 
+      #end
+      ><c:out value="${status.value}"/></textarea>
+      
+      #if ($field.annotations.containsKey("isRichText") && $field.annotations.isRichText == 'true')
+      	<osp:richTextWrapper textAreaId="properties.${field.fieldNamePath}" />
+      #end    
+      
+      
+ #else
+          <input type="text" name="properties.${field.fieldNamePath}" value="<c:out value="${status.value}"/>"
+   #if ($field.schema.type.maxLength != -1)
+      #if ($field.schema.type.maxLength > 50)
+         size="50"
+      #else
+         size="$field.schema.type.maxLength"
+      #end
+         maxlength="$field.schema.type.maxLength"
+   #end      
+          >
+ #end
+        </td>
+        <td align="left">
+          <font color="red"><c:out value="${status.errorMessage}"/></font>
+        </td>
+      </spring:bind>
+#end
+#end
+#end
+    </tr>
+
+#end
+
+#macro ( editComplexXmlField $field $fieldName )
+
+    <tr>
+      <td alignment="left" valign="top">
+      #if ($field.annotations.containsKey("label"))
+         $field.annotations.label  
+      #else 
+         $field.fieldName
+      #end    
+      </td>
+      <td>
+         <table>
+#foreach($childField in $field.fields)
+   #if (${childField.fields.size()} > 0 )
+      #editComplexXmlField( $childField ${childField.fieldNamePath} )
+   #else
+      #editXmlField( $childField ${childFieldName.fieldNamePath} )
+   #end
+#end    
+         </table>
+      </td>
+    </tr>
+
+#end
+
+<c:set var="targetPrevious" value="_target1"/>
+<c:set var="targetNext" value="_target3"/>
+<c:set var="step" value="2"/>
+<%@ include file="/WEB-INF/jsp/presentation/wizardHeader.inc" %>
+<form method="POST" name="wizardform" action="addPresentation.osp" onsubmit="return true;">
+<osp:form/>
+<input type="hidden" name="direction" value=""/>
+<table>
+<tr>
+<td>
+&nbsp;
+</td>
+<td>
+<table border="0" cellspacing="0" cellpadding="5">
+
+   <tr> 
+      <td colspan="2">
+         <b>Edit Presentation Properties  
+          (required fields are noted with an <font color="#FF0000">*</font><font color="#000000">)</font></b></font>
+      </td>
+   </tr>
+
+
+#foreach($field in $schema.fields)
+   #if (${field.fields.size()} > 0 )
+      #editComplexXmlField( $field ${field.fieldName} )
+   #else
+      #editXmlField( $field ${field.fieldName} )
+   #end
+#end    
+   
+  </table>
+</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>
+
+  <spring:hasBindErrors name="presentation.properties">
+    <!--<font color="red"><b>Please fix all errors!</b></font>-->
+  </spring:hasBindErrors>
+   
+</td>
+</tr>
+<!--
+<tr>
+<td>&nbsp;</td>
+<td>
+  <input type="hidden" name="schema" value="${schema.schemaName}"/>
+
+  <input type="submit" alignment="center" value="Save">
+  <input type="submit" name="_target2" value="Continue"/>
+  <input type="submit" name="_target0" value="Back"/>
+</td>
+</tr>
+-->
+</table>
+<c:set var="suppress_submit" value="true" />
+<%@ include file="/WEB-INF/jsp/presentation/wizardFooter.inc" %>
+</form>

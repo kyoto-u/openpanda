@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<registration>
+
+  <!-- 
+       This is a sample tool highlighting how to add a pre-configured linktool.
+       The "urlProp" specifies a property ("rsn.linktool.pentaho.url") that must be configured in
+       the sakai.properties file, for example:
+       rsn.linktool.pentaho.url=http://localhost:8080/pentaho/j_spring_linktool_security_check
+  -->
+  <!--
+  <tool
+      id="rsn.linktool.pentaho"
+      title="Pentaho Reports"
+      description="This will link your site to the Pentaho Reporting Engine">
+
+    <configuration name="urlProp" value="rsn.linktool.pentaho.url" />
+    <configuration name="trustedService" value="true" />
+    <configuration name="height" value="1000px" />
+    
+    <keyword name="linktool" />
+    
+    <category name="portfolio"/>
+    <category name="course"/>
+    <category name="project"/>
+    
+    <configuration name="functions.require" value="site.upd" /> 
+  </tool>
+  -->
+</registration>

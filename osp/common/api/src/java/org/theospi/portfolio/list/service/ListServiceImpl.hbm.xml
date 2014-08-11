@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.theospi.portfolio.list.model">
+   <!-- is this table still used -->
+
+   <class name="ListConfig" table="osp_list_config">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdGenerator"/>
+      </id>
+      <property name="owner"              type="org.sakaiproject.metaobj.shared.mgt.AgentUserType" column="owner_id"         not-null="true" />
+      <property name="toolId" length="36" type="org.sakaiproject.metaobj.shared.IdType"            column="tool_id"          not-null="false"/>
+      <property name="title"              type="string"                                            column="title"            not-null="false"/>
+      <property name="height"             type="java.lang.Integer"                                                           not-null="false"/>
+      <property name="rows"               type="java.lang.Integer"                                 column="numRows"          not-null="false"/>
+      <property name="selectedColumns"    type="org.theospi.portfolio.list.model.ColumnsType"      column="selected_columns" not-null="true" />
+   </class>
+   
+   
+   <query name="loadCurrentConfig">
+      from ListConfig where owner=? and toolId=?
+   </query>
+
+</hibernate-mapping>

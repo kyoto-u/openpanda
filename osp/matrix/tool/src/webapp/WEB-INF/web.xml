@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Changed spec level to 2.4 - PAFH 8/21/2006 -->
+<web-app id="WebApp_9a" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/components.xml</param-value>
+   </context-param>
+   
+   <display-name>osp-matrix</display-name>
+    <description>OSP Matrix</description>
+
+    <filter>
+        <filter-name>sakai.request</filter-name>
+        <filter-class>org.sakaiproject.util.RequestFilter</filter-class>
+        <init-param>
+            <param-name>upload.enabled</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>osp.matrix</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>osp.matrix.link</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>osp.matrix.cell.info</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+ 
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>osp.evaluation</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.wizard.page</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+   
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.wizard.page.contents</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.wizard.page.def</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+   <filter-mapping>
+       <filter-name>sakai.request</filter-name>
+       <servlet-name>osp.review.processor</servlet-name>
+       <dispatcher>REQUEST</dispatcher>
+       <dispatcher>FORWARD</dispatcher>
+       <dispatcher>INCLUDE</dispatcher>
+   </filter-mapping>
+
+   <servlet>
+       <servlet-name>Faces Servlet</servlet-name>
+       <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+       <load-on-startup>2</load-on-startup>
+   </servlet>
+
+   <servlet>
+      <servlet-name>springapp</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+<!--       <servlet-class>org.sakaiproject.metaobj.shared.control.servlet.SakaiComponentDispatchServlet</servlet-class>-->
+		<load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet>
+      <servlet-name>osp.matrix</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value>listScaffolding</param-value>
+        </init-param>
+      <init-param>
+          <param-name>path</param-name>
+          <param-value></param-value>
+      </init-param>
+      <init-param>
+          <param-name>default.last.view</param-name>
+          <param-value>false</param-value>
+      </init-param>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+
+   <servlet>
+      <servlet-name>osp.matrix.link</servlet-name>
+      <servlet-class>org.theospi.portfolio.matrix.util.MatrixJsfTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value>jsfLinkScaffolding</param-value>
+        </init-param>
+      <init-param>
+          <param-name>path</param-name>
+          <param-value>/WEB-INF/jsp/matrix/taggable</param-value>
+      </init-param>
+      <init-param>
+          <param-name>default.last.view</param-name>
+          <param-value>false</param-value>
+      </init-param>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+   
+   <servlet>
+      <servlet-name>osp.matrix.cell.info</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value>viewCellInformation</param-value>
+        </init-param>
+      <init-param>
+          <param-name>path</param-name>
+          <param-value></param-value>
+      </init-param>
+      <init-param>
+          <param-name>default.last.view</param-name>
+          <param-value>false</param-value>
+      </init-param>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+
+   <servlet>
+      <servlet-name>osp.evaluation</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value>listEvaluationItems</param-value>
+        </init-param>
+      <init-param>
+          <param-name>path</param-name>
+          <param-value></param-value>
+      </init-param>
+      <init-param>
+          <param-name>default.last.view</param-name>
+          <param-value>false</param-value>
+      </init-param>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+   
+   <servlet>
+      <servlet-name>repository</servlet-name>
+      <servlet-class>org.sakaiproject.metaobj.shared.control.servlet.FileDownloadServlet</servlet-class>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+
+   <servlet>
+      <servlet-name>osp.wizard.page</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value>wizardPage</param-value>
+        </init-param>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value></param-value>
+        </init-param>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+
+   <servlet>
+      <servlet-name>osp.wizard.page.contents</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value></param-value>
+        </init-param>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value></param-value>
+        </init-param>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+   
+   <servlet>
+      <servlet-name>osp.wizard.page.def</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value>wizardPageDefinition</param-value>
+        </init-param>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value></param-value>
+        </init-param>
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+   
+   <servlet>
+      <servlet-name>osp.review.processor</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+      <init-param>
+            <param-name>default</param-name>
+            <param-value></param-value>
+        </init-param>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value></param-value>
+        </init-param>
+      <init-param>
+          <param-name>default.last.view</param-name>
+          <param-value>false</param-value>
+      </init-param>
+	<!-- Changed ordering - PAFH 8/21/2006 -->
+      <load-on-startup>2</load-on-startup>
+   </servlet>
+   
+   <servlet>
+      <servlet-name>osp.exposedmatrix</servlet-name>
+      <servlet-class>org.sakaiproject.spring.util.SpringTool</servlet-class>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value></param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>default</param-name>
+            <param-value>viewMatrix</param-value>
+        </init-param>
+         <init-param>
+            <param-name>default.last.view</param-name>
+            <param-value>false</param-value>
+        </init-param>
+	<!-- Changed ordering - PAFH 8/21/2006 -->
+      <load-on-startup>2</load-on-startup>
+      
+   </servlet>
+   
+   <servlet>
+        <servlet-name>
+            osp.matrixcell.entityaccess
+        </servlet-name>
+        <servlet-class>
+            org.theospi.portfolio.matrix.util.RedirectingMatrixCellEntityServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+   <listener>
+      <listener-class>org.sakaiproject.util.ContextLoaderListener</listener-class>
+   </listener>
+<!-- 
+   <listener>
+      <listener-class>org.sakaiproject.metaobj.utils.BeanFactory</listener-class>
+   </listener>
+ -->
+    <listener>
+        <listener-class>org.sakaiproject.util.ToolListener</listener-class>
+    </listener>
+<!--     
+    <listener>
+        <listener-class>org.sakaiproject.metaobj.shared.control.SessionListener</listener-class>
+    </listener>
+-->
+
+    <servlet-mapping>
+      <servlet-name>springapp</servlet-name>
+      <url-pattern>*.osp</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+       <servlet-name>Faces Servlet</servlet-name>
+       <url-pattern>*.jsf</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+     <servlet-name>repository</servlet-name>
+     <url-pattern>/repository/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

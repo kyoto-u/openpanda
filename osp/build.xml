@@ -1,0 +1,19 @@
+<project name="osp2.x" default="anon-generate">
+
+      <target name="anon-generate">
+          <cvschangelog command="checkout"
+            cvsroot=":pserver:anonymous@internal.rsmart.com:/root"
+            destfile="changelog.xml"
+            start="23 Sep 2005"
+            end="3 Oct 2005"
+         />
+           <style in="changelog.xml"
+                  out="changelog.txt"
+                  style="changelog.txt.xsl">
+              <param name="title" expression="new changelog"/>
+             <param name="module" expression="osp2.x"/>
+             <param name="cvsweb" expression="http://cvs.theospi.org:12443/changelog/osp2"/>
+           </style>
+         <!--delete file="${dist.dir}/changelog.xml"/-->
+   </target>
+</project>

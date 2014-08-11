@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="sakai.help" title="Help Documentation" description="The Sakai Help Tool">
+
+		<category name="sakai.help" />
+
+		<!-- generic help collections -->
+		<configuration name="help.collections" 
+			value="sakai_iframe_myworkspace,sakai_menubar,sakai_course_sites,sakai_permissions,sakai_accessibility,sakai_editor" 
+			type="final" />	
+
+	</tool>
+	
+</registration>

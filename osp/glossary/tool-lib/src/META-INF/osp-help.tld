@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+
+	<tlib-version>1.0</tlib-version>
+
+	<jsp-version>1.2</jsp-version>
+
+	<short-name>osp</short-name>
+
+	<uri>http://www.theospi.org/help</uri>
+
+	<description>osp help tag library</description>
+
+   <tag>
+
+		<name>glossary</name>
+		<tag-class>org.theospi.portfolio.help.control.GlossaryTag</tag-class>
+		<body-content>JSP</body-content>
+
+		<description>
+			Matches keywords in the body to those in the glossary.
+         Places links around the keywords to the glossary entries.
+         The glossary entry text is also avaible via a hover.
+         Linking or hovering can be turned on/off using the link and hover attributes.
+         Linking is on by default, hover is off be default.
+         Hovering requires the follow two lines be placed in the jsp:
+         By default all occurances of the word are linked, this can be overridden
+         using the firstOnly attribute.  If set to true then only the first
+         occurance will be linked to the glossary.
+
+         &lt;script language="JavaScript" src="/osp-common-tool/js/eport.js"&gt;&lt;/script&gt;
+         &lt;div id="tooltip" style="position:absolute;visibility:hidden;border:1px solid black;font-size:10px;layer-background-color:lightyellow;background-color:lightyellow;padding:1px"&gt;&lt;/div&gt;
+
+		</description>
+
+		<attribute>
+			<name>hover</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+
+      <attribute>
+         <name>link</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+
+      <attribute>
+         <name>firstOnly</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+
+	</tag>
+
+</taglib>

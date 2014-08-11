@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool id="osp.matrix.link" title="Matrix Links Helper"
+    	description="For linking objects with personal, course, and/or program matrices.">
+
+	    <category name="sakai.helper" />
+            
+	</tool>
+
+</registration>

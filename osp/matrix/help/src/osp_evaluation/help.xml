@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="evaluations_overview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>evaluations_overview</value>
+      </property>
+      <property name="name">
+         <value>Evaluations Overview</value>
+      </property>
+      <property name="location">
+         <value>/osp_evaluation/evaluations_overview.html</value>
+      </property>
+      <property name="defaultForTool">
+      	<value>osp.evaluation</value>
+      </property>
+   </bean>
+   <bean id="evaluations_evaluating_submitted_work"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>evaluations_evaluating_submitted_work</value>
+      </property>
+      <property name="name">
+         <value>Evaluating Submitted Work</value>
+      </property>
+      <property name="location">
+         <value>/osp_evaluation/evaluations_evaluating_submitted_work.html</value>
+      </property>
+   </bean>
+   <bean id="evaluations_changing_permissions"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>evaluations_changing_permissions</value>
+      </property>
+      <property name="name">
+         <value>Changing Permissions</value>
+      </property>
+      <property name="location">
+         <value>/osp_evaluation/evaluations_changing_permissions.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean"
+                  id="evaluationsCategory">
+               <property name="name">
+                  <value>Evaluations</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="evaluations_overview"/>
+                     <ref bean="evaluations_evaluating_submitted_work"/>
+                     <ref bean="evaluations_changing_permissions"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

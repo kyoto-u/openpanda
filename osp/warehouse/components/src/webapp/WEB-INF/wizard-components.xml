@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+	  
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.support.item"
+           class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+              <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+              <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+                  <property name="propertyName"><value>wizard</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+                  <property name="propertyName"><value>item</value></property>
+              </bean>
+       
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                  <property name="propertyName"><value>genericType</value></property>
+              </bean>
+                    
+       
+             <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>contentType</value></property>
+             </bean>
+   
+         </list>
+      </property>
+      <property name="insertStmt">
+           <value>insert into dw_wizard_support_item
+                    (id, wizard_id, item_id, generic_type, content_type)
+                        values (?, ?, ?, ?,?)
+           </value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_wizard_support_item</value>
+      </property> 
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.completed.page"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>category</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>wizardPageDefinition</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>wizardPage</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>sequence</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>created</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>lastVisited</value></property>
+            </bean>
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_wizard_completed_page
+                    (id, completed_category_id, wizard_page_def_id, wizard_page_id, seq_num, created, lastVisited)
+                        values (?, ?, ?, ?, ?, ?, ?)
+                      
+         </value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_wizard_completed_page</value>
+      </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.completed.category"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>wizard</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>category</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>parentCategory</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>expanded</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>sequence</value></property>
+            </bean>
+
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_wizard_completed_category
+                    (id, completed_wizard_id, category_id, parent_category_id, expanded, seq_num)
+                        values (?, ?, ?, ?, ?, ?)
+                      
+         </value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_wizard_completed_category</value>
+      </property>
+      <property name="complexFields" >
+         <list>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">               
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>childCategories</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.completed.category"/>
+                  </property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">               
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>childPages</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.completed.page"/>
+                  </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   
+   
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.completed"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+            <bean class="org.sakaiproject.warehouse.impl.AgentPropertyAccess">
+               <property name="propertyName"><value>owner</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>created</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>lastVisited</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>status</value></property>
+            </bean>
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.parentId" />
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>rootCategory</value></property>
+            </bean>
+
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_wizard_completed
+                    (id, owner_id, created, lastVisited, status, wizard_id, root_category)
+                        values (?, ?, ?, ?, ?, ?, ?)
+                      
+         </value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_wizard_completed</value>
+      </property>
+      <property name="complexFields" >
+         <list>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">               
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>rootCategory</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.completed.category"/>
+                  </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.page.definition.additional.forms"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.parentId" />
+            <bean class="org.sakaiproject.warehouse.impl.SelfPropertyAccess" />
+            <bean class="org.sakaiproject.warehouse.service.ItemIndexInParentPropertyAccess" />
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_wizard_page_def_add_forms
+                    (wizard_page_def_id, form_def_id, seq_num)
+                        values (?, ?, ?)
+                      
+         </value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_wizard_page_def_add_forms</value>
+      </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.page.definition"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>initialStatus</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>title</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>description</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>siteId</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>guidance</value></property>
+            </bean>
+
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_wizard_page_def
+                    (id, initialStatus, title, description, site_id, guidance_id)
+                        values (?, ?, ?, ?, ?, ?)
+                      
+         </value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_wizard_page_def</value>
+      </property>
+      <property name="complexFields" >
+         <list>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+               <property name="propertyAccess">
+                  <bean class="org.sakaiproject.warehouse.impl.SelfPropertyAccess" />
+               </property>
+               <property name="task">
+                  <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.workflow"/>
+               </property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">               
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>additionalForms</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.page.definition.additional.forms"/>
+                  </property>
+            </bean> <!--
+               <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>style</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.style"/>
+                  </property>
+               </bean> -->
+         </list>
+      </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.page.sequence"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.parentId" />
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>wizardPageDefinition</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>sequence</value></property>
+            </bean>
+
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_wizard_page_sequence
+                    (id, category_id, wiz_page_def_id, seq_num)
+                        values (?, ?, ?, ?)
+                      
+         </value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_wizard_page_sequence</value>
+      </property>
+      <property name="complexFields" >
+         <list>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">               
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>wizardPageDefinition</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.page.definition"/>
+                  </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.category"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+            
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>title</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>description</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>keywords</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>created</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>modified</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>wizard</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+               <property name="propertyName"><value>parentCategory</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>sequence</value></property>
+            </bean>
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_wizard_category
+                    (id, title, description, keywords, created, modified, wizard_id, 
+                     parent_category_id, seq_num)
+                        values (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                      
+         </value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_wizard_category</value>
+      </property>
+      <property name="complexFields" >
+         <list>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">               
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>childPages</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.page.sequence"/>
+                  </property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">               
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>childCategories</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.category"/>
+                  </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.workflow"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+      <property name="fields">
+         <list>
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+            <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+               <property name="propertyName"><value>reflectionDevice</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>reflectionDeviceType</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+               <property name="propertyName"><value>evaluationDevice</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>evaluationDeviceType</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+               <property name="propertyName"><value>reviewDevice</value></property>
+            </bean>
+            <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+               <property name="propertyName"><value>reviewDeviceType</value></property>
+            </bean>
+         </list>
+      </property>
+      <property name="insertStmt">
+         <value>insert into dw_workflow_parent
+                    (id, reflection_device_id, reflection_device_type, 
+                     evaluation_device_id, evaluation_device_type,
+                     review_device_id, review_device_type)
+                        values (?, ?, ?,  ?, ?,  ?, ?)
+                      
+         </value>
+      </property>
+      <property name="clearStmt">
+         <value>delete from dw_workflow_parent</value>
+      </property>
+   </bean>
+   
+   
+   <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard"
+        class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+           <list>
+              <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id" />
+              <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.owner" />
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>name</value></property>
+              </bean>
+              
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                 <property name="propertyName"><value>description</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>keywords</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>created</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>modified</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>siteId</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+              <property name="propertyName"><value>guidanceId</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>published</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>type</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>exposedPageId</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.IdentifiableObjectPropertyAccess">
+              <property name="propertyName"><value>rootCategory</value></property>
+              </bean>
+              <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+              <property name="propertyName"><value>sequence</value></property>
+              </bean>
+            </list>
+        </property>
+        <property name="insertStmt">
+           <value>insert into dw_wizard
+                            (id, owner_id, name, description, keywords, created, modified,
+                            site_id, guidance_id, published, wizard_type, exposed_page_id,
+                            root_category, seq_num)
+                          values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           </value>
+        </property>
+        <property name="clearStmt">
+           <value>delete from dw_wizard</value>
+        </property>     
+        <property name="complexFields" >
+            <list>
+               <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">
+                     <bean class="org.sakaiproject.warehouse.impl.SelfPropertyAccess" />
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.workflow"/>
+                  </property>
+               </bean>
+               <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>rootCategory</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.category"/>
+                  </property>
+               </bean>
+               <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">
+                     <bean class="org.theospi.portfolio.warehouse.osp.wizard.CompletedWizardsPropertyAccess">
+                        <property name="wizardManager">
+                           <ref bean="org.theospi.portfolio.wizard.mgt.WizardManager" />
+                        </property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.completed"/>
+                  </property>
+               </bean>  <!--
+               <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">            
+                  <property name="propertyAccess">
+                     <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                        <property name="propertyName"><value>style</value></property>
+                     </bean>
+                  </property>
+                  <property name="task">
+                     <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard.style"/>
+                  </property>
+               </bean> -->
+            </list>
+         </property>
+   </bean>
+   
+   <bean
+       id="org.sakaiproject.warehouse.service.WarehouseTask.wizard"
+       class="org.theospi.portfolio.warehouse.osp.wizard.WizardWarehouseTask"
+       init-method="init" singleton="true">
+       <property name="dataSource">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource" />
+       </property>
+       <property name="dataWarehouseManager">
+           <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager" />
+       </property>
+       <property name="tableDdlResource">
+           <value>/org/theospi/portfolio/warehouse/osp/wizard.xml</value>
+       </property>
+       <property name="wizardManager">
+           <ref bean="org.theospi.portfolio.wizard.mgt.WizardManager" />
+       </property>
+       <property name="task">
+           <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.wizard" />
+       </property>
+   </bean>
+    <bean
+           id="org.sakaiproject.warehouse.service.WarehouseTask.wizardPage"
+           class="org.theospi.portfolio.warehouse.osp.matrix.WizardPageWarehouseTask"
+           init-method="init" singleton="true">
+           <property name="dataSource">
+               <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource" />
+           </property>
+           <property name="dataWarehouseManager">
+               <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager" />
+           </property>
+           <property name="tableDdlResource">
+               <value>/org/theospi/portfolio/warehouse/osp/matrix.xml</value>
+           </property>
+           <property name="matrixManager">
+               <ref bean="matrixManager" />
+           </property>
+           <property name="task">
+               <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.matrix.wizardpage" />
+           </property>
+       </bean>
+      
+</beans>

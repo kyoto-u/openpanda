@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   <bean id="portfolio_layouts_overview"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>portfolio_layouts_overview</value>
+      </property>
+      <property name="name">
+         <value>Portfolio Layouts: Overview</value>
+      </property>
+      <property name="location">
+         <value>/osp_preslayout/portfolio_layouts_overview.html</value>
+      </property>
+      <property name="defaultForTool">
+      	<value>osp.presLayout</value>
+      </property>
+   </bean>
+   <bean id="adding_a_layout"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>adding_a_layout</value>
+      </property>
+      <property name="name">
+         <value>Adding a Layout</value>
+      </property>
+      <property name="location">
+         <value>/osp_preslayout/adding_a_layout.html</value>
+      </property>
+   </bean>
+   <bean id="changing_a_layout"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_a_layout</value>
+      </property>
+      <property name="name">
+         <value>Changing a Layout</value>
+      </property>
+      <property name="location">
+         <value>/osp_preslayout/changing_a_layout.html</value>
+      </property>
+   </bean>
+   <bean id="deleting_a_layout"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>deleting_a_layout</value>
+      </property>
+      <property name="name">
+         <value>Deleting a Layout</value>
+      </property>
+      <property name="location">
+         <value>/osp_preslayout/deleting_a_layout.html</value>
+      </property>
+   </bean>
+   <bean id="requesting_that_a_layout_be_published_globally"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>requesting_that_a_layout_be_published_globally</value>
+      </property>
+      <property name="name">
+         <value>Requesting that a Layout Be Published Globally</value>
+      </property>
+      <property name="location">
+         <value>/osp_preslayout/requesting_that_a_layout_be_published_globally.html</value>
+      </property>
+   </bean>
+   <bean id="publishing_a_layout_globally"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>publishing_a_layout_globally</value>
+      </property>
+      <property name="name">
+         <value>Publishing a Layout Globally</value>
+      </property>
+      <property name="location">
+         <value>/osp_preslayout/publishing_a_layout_globally.html</value>
+      </property>
+   </bean>
+   <bean id="changing_permissions_for_the_portfolio_layouts_tool"
+         class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId">
+         <value>changing_permissions_for_the_portfolio_layouts_tool</value>
+      </property>
+      <property name="name">
+         <value>Changing Permissions</value>
+      </property>
+      <property name="location">
+         <value>/osp_preslayout/changing_permissions_for_the_portfolio_layouts_tool.html</value>
+      </property>
+   </bean>
+   <bean id="org.sakaiproject.api.app.help.TableOfContents"
+         class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name">
+         <value>root</value>
+      </property>
+      <property name="categories">
+         <list>
+            <bean class="org.sakaiproject.component.app.help.model.CategoryBean"
+                  id="ospPortfoliolayoutsCategory">
+               <property name="name">
+                  <value>Portfolio Layouts</value>
+               </property>
+               <property name="resources">
+                  <list>
+                     <ref bean="portfolio_layouts_overview"/>
+                     <ref bean="adding_a_layout"/>
+                     <ref bean="changing_a_layout"/>
+                     <ref bean="deleting_a_layout"/>
+                     <ref bean="requesting_that_a_layout_be_published_globally"/>
+                     <ref bean="publishing_a_layout_globally"/>
+                     <ref bean="changing_permissions_for_the_portfolio_layouts_tool"/>
+                  </list>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

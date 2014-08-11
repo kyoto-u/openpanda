@@ -1,0 +1,447 @@
+Linktool is intended for calling external applications, e.g. written in PHP.
+It requires the application to be able to do web services calls back to Sakai.
+Other than that, it is very light-weight.
+
+There are two modes: install as tool, and call via URL
+
+SETUP
+
+The first time you deploy this, two keys will be placed in the Linktool
+configuration directory. This defaults to the Sakai home directory inside
+tomcat (e.g. /usr/local/tomcat/sakai), as returned by 
+ServerConfigurationService.getSakaiHomePath(). 
+
+In clustered configurations, you will need to use the same key and salt on 
+all app servers. To do this, specify a shared location which all app servers 
+can read (and the first app server to start up can write to) using the 
+sakai.properties setting linktool.home, e.g.
+
+linktool.home=/data/sakai/config/
+
+The file names are sakai.rutgers.linktool.privkey and sakai.rutgers.linktool.salt. 
+The session authorization objects are signed with this key, and they 
+should work on all systems. If you somehow lose these keys, new ones 
+will be generated. This will invalidate all existing session authorization 
+objects. You may actually want to delete the keys and recreate them now 
+and then, to force everyone to reissue all of the session authorization objects.
+
+LinkTool uses SakaiSigning.jws which is part of the sakai-axis webservices package
+(webapps/sakai-axis). To enable Linktool's webservices, yuo need to specify the
+sakai.properties setting
+
+linktool.enabled=true
+
+Note that you do not need to set webservices.allowlogin. That controls login
+using the login function in SakaiLogin.jws.
+
+If you want import from archive to work, in 
+common/archive-impl/pack/src/webapp/WEB-INF/components.xml
+add to mergeFilteredSakaiServices
+<value>LinkToolEntityProducer</value>
+
+If you want to be able to copy linktools from an old site
+to a new one, you'll need to make sure that linktool or some tool based
+on it is not hidden, since the user will need to choose all tools that
+they want copied.
+
+
+INSTALL AS TOOL
+
+Use this if you want your external application to look like any other
+Sakai tool. If you simply deploy the tool, it will make itself available
+to be enabled in sites. 
+
+Once the tool is installed in a site, you must set at least one parameter, 
+the URL. These parameters are most easily set via the setup screen. A Setup 
+link appears at the top of the frame for any user who is allowed to update 
+the site. 
+
+The default URL is a verification script from samples/linktool.php running at
+
+http://nightly2.sakaiproject.org/linktool/linktool.php
+
+If your server is configured correctly, the script will display at the bottom:
+
+"All correct - the verification request was authorized by the callback web service."
+
+Here are the parameters you can set in Setup:
+
+   url - required. This is the URL of your application. You may add
+additional arguments to the URL, e.g.
+
+http://some.domain/remoteapp.php?key1=value1&key2=value2
+
+Linktool will add some arguments, as indicated below, and include a signature
+for the entire URL.
+
+   height - optional. This is a javascript height definition, which must
+include a unit. It is the height of the window used for the application,
+in pixels. It defaults to 600.
+
+   page title - optional. This is not strictly speaking a parameter of
+the tool. Entering data into this field will cause page on which the
+tool has been installed to be renamed. ("Page title" is the label for
+the tool which appears in the site's menubar, and at the top of the tool frame).
+
+See below for how to preconfigure an instance of the tool so that site owners
+don't need to fill in the url and height.
+
+CALL VIA URL
+
+Use this if you need to call the external application from a Sakai page.
+This is typically used to add functionality to an existing Sakai tool.
+The URL should look like this:
+
+   https://YOURSITE/sakai-rutgers-linktool?site=XXXXXX&url=https://YOURAPP
+
+XXXXXX is the ID of the site. Typically this will be supplied by the
+Sakai page that has this URL. If your vm or jsp doesn't have access to
+the site ID, it is possible to derive it from the current URL in
+javascript.
+
+https://yourapp is the URL of your application. You can include additional
+arguments by adding them to the URL, e.g.
+
+   https://YOURSITE/sakai-rutgers-linktool?site=XXXXXX&url=https://YOURAPP&key1=value1&key2=value2
+
+Linktool will add some arguments, as indicated below.
+
+HOW LINKTOOL CALLS YOUR APPLICATION
+
+Linktool first derives some key information, which we believe all
+applications are likely to need. It calls the URL you have
+defined, with the following arguments:
+
+  user - this is username. In fact, it is what Sakai calls the
+"Enterprise ID." That is that user-visible version of the username.
+There is also an internal version of the username, which is often a
+unique generated object. Most applications won't want to use
+it. However if a user changes their username, "user" will change,
+while that internal name will not. When moving from versions older
+than 2.2 to version 2.2 of Sakai, existing users will have an internal
+name that is the same as their enterprise ID. However new users will
+get a unique, generated internal name.
+   The user information comes from the session.  If you
+are using Linktool as a tool, Sakai will obviously know the current
+username. If you are calling it as a URL, Sakai will look at your
+Sakai session cookie, and pull the username out of the session.
+Obviously this will only work if the current browser has already
+logged into Sakai. 
+
+  internaluser - this is the generated username mentioned above.
+In the implementation for Sakai 2.1 this is always the same as user.
+
+  site - If you are using Linktool as a tool, this is the user's
+current site, which is the site in which Linktool is installed. If you
+are calling it as a URL, you will need to pass the site name, as
+indicated above. We verify that the user actually has access to the
+site, to avoid spoofing.
+
+  placement - If you are using Linktool as a tool, this is the tool's 
+placement id, which is unique for each instance of the tool. This 
+can be used to have more than one instance of Linktool in a site,
+while still allowing remote applications to distinguish between the
+instances. If called as a URL, placement is "none".
+
+  role - This is the user's role in the site. It is a string, which
+depends upon the roles configured for the site. Default role names
+are Student, Teaching Assistant and Instructor for course sites, and
+access and maintain for project sites. However, sites could have
+different role names. If you're dealing with grading or other functions 
+like that, it's probably safer to use isUserAbleToGradeStudent from 
+SakaiGradebook.jws to check permissions. If the user is viewing the
+site in a different role using the "View As" feature (see SAK-7924),
+the role will be the user's effective role at the time, rather than
+the user's permanent role in the site.
+
+  session - This is an encrypted version of the session ID for the
+current session. See below for how it is used.
+
+  serverurl - This is the url to call back to the server. To be
+secure, this must be SSL, and your software must check the certificate.
+This is needed because PHP applications may talk to more than one
+Sakai implementation. When you get a call, you'll need to talk to
+web services on the specific Sakai server that called you.  This
+URL is normally serverUrl in sakai.properties. However if necessary
+you can override it using sakai.rutgers.linktool.serverUrl.
+
+  time - internal Java ms time, used to prevent replays. You
+must call testsign within 30 sec, or the check will fail.
+
+  sign - This is a digital signature. This is necessary because
+your application needs to be assured that the specified user has
+actually logged in properly. Without this, anyone could go to your
+site and claim to be any user. It is critical for you to check
+the digital signature.
+
+To check the digital signature, call testsign from SakaiSigning.jws.
+Here is a sample call from PHP, with error processing omitted.
+
+  require_once('SOAP/Client.php');
+  $wsdl=new SOAP_WSDL("$url/SakaiSigning.jws?wsdl", array("timeout" => 360));
+  if (!$wsdl)
+     ....
+
+  $myProxy=$wsdl->getProxy();
+  if (!$myProxy)
+    ....
+
+  $result=$myProxy->testsign($_SERVER['QUERY_STRING']);
+  if ($result != "success")
+    ....
+
+This code simply passes the entire list of arguments back to Sakai for
+verification. Because your code doesn't do any processing of the
+arguments, Linktool could change the digital signature technology without
+requiring you to change your code.
+
+Note by the way that a time stamp is included in the arguments. 
+This protects against someone capturing a web transaction and
+using it later. The argument list is only valid for 30 sec.
+
+There are several web services implementations available for PHP. This
+example uses the SOAP implementation for PEAR. PEAR is a system for
+adding extensions to PHP. To use it, you must build PHP with PEAR
+support (--with-pear). In addition to adding support to PHP, the PEAR
+installation adds an executable program called "pear" to /usr/bin or
+/usr/local/bin. This program is used to fetch and install PEAR
+extensions. E.g. to install SOAP, you type "pear install SOAP". That
+fetches SOAP over the network and installs it. See
+http://pear.php.net/package/SOAP.
+
+NOTE: sessions in Sakai timout after 60 min of inactivity by default.
+If a user goes to an external application, and that application does
+its own session management, Sakai will not know there's any
+activity going on. Thus after 60 min, the Sakai session will time
+out. If this is not desirable, you can periodically call
+touchsession:
+
+  $sessionid = strip_tags($_GET['session']);
+
+  $result=$myProxy->touchsession($sessionid);
+  if ($result != "success")
+    ....
+
+Session is passed to your application in the initial call. It is 
+an encrypted version of a Sakai session id. touchsession will
+make Sakai reset the inactivity timer. Note that you can pass
+touchsession a list of encrypted session ID's, separated by commas.
+That will allow a large-scale application to update multiple
+sessions at once, thus improving efficency.
+
+You may wonder why we pass an encrypted session ID. Passing a user's
+session ID would allow a remote application access to all of the user's
+information in all sites that the user belonged to, which is not 
+something that untrusted applications should be able to do (for
+example, in the U.S. it could lead to violations of FERPA privacy 
+restrictions).
+
+
+CODING STANDARDS
+
+The code to set up the proxy, i.e.
+
+  $wsdl=new SOAP_WSDL("$url/SakaiSigning.jws?wsdl", array("timeout" => 360));
+  $myProxy=$wsdl->getProxy();
+
+is fairly expensive. If possible, you should this once for each .jws
+file you're going to use, and save the wsdl structure globally for use
+in all calls to that jws file.
+
+Also, creating sessions is fairly expensive. You should avoid doing
+getsession any more often than necessary. The first time a user connects 
+to your application, you should get all the necessary sessions, and 
+store their IDs in the PHP session.
+
+If you use the same privileged user for all sessions, consider
+getting a single session for that privileged user, and saving it for
+use everywhere. However sessions do not necessarily last forever, so
+if you get any errors, you can do checkSession(id) from
+SakaiSession.jws. It will return either a string describing the
+attributes of the session, or "Session Null". If you get Session Null,
+you will have to try reestablishing the session.
+
+Note that the session privilege objects are only valid for a
+specific Sakai installation. Consider keeping your session authorization 
+objects in a data structured that is indexed by Sakai site. 
+Then you will only present an authorization object to the site it 
+applies to. This is necessary to avoid having a rogue site find out 
+authorization objects for another site.
+
+
+PRECONFIGURING AN INSTANCE OF THE TOOL
+
+The instructions above are intended for site owners to use the tool on
+an ad hoc basis to go a site they maintain. If you have external tools
+that are used regularly, you will probably want to create an instance
+of the Link Tool that is preconfigured to go to that external tool.
+Then site owners can install it just like any other Sakai tool, and not
+have to worry about configuring it.
+
+To do this, you will need to edit src/webapp/WEB-INF/web.xml, and add
+a file in src/webapp/tools/. If you rebuild and redeploy Sakai,
+the new instance will be added to the site tools menu.
+
+[This is done automatically by "maven sakai", for the web server that
+maven knows about. For other web servers, do "maven sakai" and then
+copy the new version of sakai-rutgers-linktool.war on top of the
+existing one in the webapp directory of the server. If you don't
+want to do a full redeploy, you can add the new .xml file to
+webapp/tools and then update web.xml. Make sure you do it in that
+order. Changing web.xml will cause Sakai to reload the context.]
+
+src/webapp/WEB-INF/web.xml: You need to duplicate the existing
+filter-mapping and servlet declarations. E.g. if you want to add
+a tool "testlink" you might add the following:
+
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>sakai.rutgers.testlink</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>sakai.rutgers.testlink</servlet-name>
+        <servlet-class>org.sakaiproject.tool.rutgers.LinkTool</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+These are identical to the original declarations, except that the
+servlet name has been changed.
+
+Now you need to add a file sakai.rutgers.testlink.xml. The name
+should be the same as the servlet name you used above, with .xml
+added to the end. You can start with sakai.rutgers.linktool.xml,
+and change the things you need. E.g.
+
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool
+			id="sakai.rutgers.testlink"
+			title="Test Link"
+			description="A test of the link tool.">
+
+		<configuration name="url" value="https://rulink.rutgers.edu/testlink.php" />
+		<configuration name="height" value="600px" />
+                <category name="course" />
+                <category name="project" />
+
+		<keyword name="linktool" />
+
+	</tool>
+
+</registration>
+
+Note these changed parameters:
+
+  id - must match the servlet name used in web.xml
+
+  title - this is the title for the tool that will appear in the
+site menubar (left margin) when someone adds it to the site
+
+  description - this will appear in the Site Info or Worksite Setup 
+tools menu to describe the tool
+
+  url and height - as above; points to the external tool
+
+  category - these declarations allow it in both course and
+project sites. You can remove one or both. If you remove both, an
+administrator will need to add it to the site (unless you give
+users access to site editor).
+
+  keyword - must be "linktool". This is how the site export,
+import and copy code figures out which tools need to use
+linktool's code.
+
+
+ACCESSING SAKAI SESSIONS FROM YOUR APPLICATION
+
+Most applications will need to use web services for some purpose, e.g.
+adding grades to a gradebook. Most web services calls require a
+session ID. Most calls will only let you do what the owner of the
+session can do. Thus we need a way for applications to get access
+to sessions owned by a variety of people:
+
+ * the site owner, to do things like grading
+ * an administrator, to create users and sites, or to do grading for
+   lots of sites
+ * the currently logged in user, to find out things about the user do
+   things on their behalf.
+
+Thus Link Tool provides a web services call "getsession". It creates a 
+session and returns the ID of that session.
+
+The problem is how to verify that the application has the rights to
+create a session for a specific purpose. For that Link Tool provides signed
+session privilege objects.  Here's a typical object:
+
+  user=hedrick&sign=16e....
+
+If you present this object to getsession, it will create a session
+owned by hedrick. sign= is a digital signature, which verifies that
+the object is authorized.  There's currently one other form of 
+session privilege object:
+
+  currentuser&sign=78a10...
+
+This indicates that a session should be created for the current end
+user.
+
+There are two forms of call to getsession
+
+  $result=$myProxy->getsession($_SERVER['QUERY_STRING'], $obj);
+  $result=$myProxy->getsession($obj);
+
+where $obj is one of the session privilege objects. 
+
+In clustered configurations where Sakai is running behind a load balancer, 
+the session returned is only valid for a specific application server. To 
+ensure that subsequent calls by applications use the application server on 
+which the session is valid, either configure the load-balancer to use 
+IP-address-based load balancing for calls to /sakai-axis/ webservices, or 
+if individual application servers can be accessed through direct URLs 
+bypassing the load balancer, use these forms of getsession which return a 
+comma-separated session id and server URL. The server URL should be used for
+subsequent webservices calls using the given session id.
+
+  $result=$myProxy->getSessionToServer($_SERVER['QUERY_STRING'], $obj);
+  $result=$myProxy->getSessionToServer($obj);
+
+These methods require the sakai.properties setting webservices.directurl
+to be configured for each application server (for example in local.properties).
+See http://jira.sakaiproject.org/jira/browse/SAK-14335 and 
+http://jira.sakaiproject.org/jira/browse/SAK-13393 for more details.
+
+If you supply the query string it is checked, except that the time is not 
+checked. That's because this operation might reasonably be done long after
+the initial connection (e.g. at the end when you're about to report
+grades). At that point the time might be past. For this reason,
+you should always do testsign at the beginning, even if you're going
+to do getsession with both arguments.
+
+The only time you need to pass the query string is when the object is
+of the form "currentuser..." In that case we need to know who the
+current user is. That comes from the initial query string.
+
+If $result is a string, it will be a session ID. Errors result in Axis
+error objects, which are not simple strings.
+
+Currently anyone who can get into the setup mode of Link Tool can  
+generate a session privilege object for themselves.
+
+This should allow people to do small-scale applications that access
+sites that they own. Link Tool does not permit them to generate objects
+for other users, or currentuser objects. Those would permit them to
+compromise the privacy of other users.
+
+Admin-equivalent users have the ability to generate session privilege 
+objects for any user, and for currentuser, in the Link Tool Setup page.
+
+Currentuser should only be given to applications that you trust, since 
+it allows the application to become any user for which the application 
+can present a valid query string. Potentially that could be any user 
+that has ever used the application.

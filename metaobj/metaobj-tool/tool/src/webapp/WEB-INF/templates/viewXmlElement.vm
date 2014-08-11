@@ -1,0 +1,408 @@
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+
+
+<%@ taglib prefix="spring" uri="/spring" %>
+
+
+
+
+
+#set ($itemStart = '${item')
+
+
+
+
+
+#macro ( viewDateField $field $fieldName )
+
+
+   <fmt:formatDate value="${output}['${field.fieldNamePathReadOnly}'].date}" pattern="MM-dd-yyyy"/>
+
+
+#end
+
+
+
+
+
+#macro ( viewXmlField $field $fieldName )
+
+
+
+
+
+    <tr>
+
+
+      <td alignment="right" width="20%">
+
+
+      #if ($field.annotations.containsKey("label"))
+
+
+         $field.annotations.label  
+
+
+      #else 
+
+
+         $field.fieldName
+
+
+      #end    
+
+
+      :</td>
+
+
+#if ($field.schema.objectType.name == 'java.util.Date')
+
+
+        <td width="20%">
+
+
+   #viewDateField( $field $fieldName )
+
+
+        </td>
+
+
+#else
+
+
+   #if (${field.schema.maxOccurs} != 1)
+
+
+        <td>        
+
+
+         <c:forEach var="item" items="${output}['${field.fieldNamePathReadOnly}']}">
+
+
+            <c:out value="${item}"/>
+
+
+            <br/>
+
+
+         </c:forEach>
+
+
+         </td>
+
+
+   #else
+
+
+        <td width="20%">
+
+
+          <c:out value="${output}['${field.fieldNamePathReadOnly}']}"/>
+
+
+        </td>
+
+
+   #end
+
+
+#end
+
+
+    </tr>
+
+
+
+
+
+#end
+
+
+
+
+
+#macro ( viewComplexXmlField $field $fieldName )
+
+
+  
+
+
+    <tr>
+
+
+      <td alignment="left" valign="top">
+
+
+         $field.fieldName
+
+
+      </td>
+
+
+   #if (${field.schema.maxOccurs} != 1)
+
+
+      <td>
+
+
+         <table class="chefFlatListViewTable">
+
+
+         <thead>
+
+
+            <tr>
+
+
+      #foreach($childField in $field.fields)
+
+
+         #if (${childField.schema.dataNode})
+
+
+            <th scope="col">
+
+
+               #if ($childField.annotations.containsKey("label"))
+
+
+                  $childField.annotations.label  
+
+
+               #else 
+
+
+                  $childField.fieldName
+
+
+               #end    
+
+
+            </th>
+
+
+         #end
+
+
+      #end    
+
+
+            </tr>
+
+
+         </thead>
+
+
+         <tbody>
+
+
+            <c:forEach var="item" items="${output}['${field.fieldNamePathReadOnly}']}">
+
+
+               <tr>
+
+
+               #foreach($childField in $field.fields)
+
+
+                  #if (${childField.schema.dataNode})
+
+
+                  <td>
+
+
+                     <c:out value="$itemStart['${childField.fieldName}']}"/>
+
+
+                  </td>
+
+
+                  #end
+
+
+               #end    
+
+
+               </tr>
+
+
+            </c:forEach>
+
+
+         </tbody>
+
+
+         </table>
+
+
+      </td>
+
+
+   #else
+
+
+      <td>
+
+
+         <table>
+
+
+#foreach($childField in $field.fields)
+
+
+   #if (${childField.fields.size()} > 0 )
+
+
+      #viewComplexXmlField( $childField ${childField.fieldNamePath} )
+
+
+   #else
+
+
+      #viewXmlField( $childField ${childFieldName.fieldNamePath} )
+
+
+   #end
+
+
+#end    
+
+
+         </table>
+
+
+      </td>
+
+
+   #end
+
+
+    </tr>
+
+
+#end
+
+
+<%@ include file="../repository/repositoryHeader.inc" %>
+
+
+
+
+
+  <table border="0" cellspacing="0" cellpadding="5">
+
+
+  
+
+
+#set ($output = '${bean')
+
+
+
+
+
+   <tr> 
+
+
+      <td colspan="2">
+
+
+         <b>View  
+
+
+#if ($schema.parent.annotations.containsKey("label"))
+
+
+   $schema.parent.annotations.label  
+
+
+#else 
+
+
+   $schema.description
+
+
+#end
+
+
+</b>
+
+
+      </td>
+
+
+   </tr>
+
+
+
+
+
+    <tr>
+
+
+      <td alignment="right" width="20%">
+
+
+         Display Name:</td>
+
+
+        <td width="20%">
+
+
+          <c:out value="${bean.displayName}"/>
+
+
+        </td>
+
+
+    </tr>
+
+
+  
+
+
+#foreach($field in $schema.fields)
+
+
+   #if (${field.fields.size()} > 0 )
+
+
+      #viewComplexXmlField( $field ${field.fieldName} )
+
+
+   #else
+
+
+      #viewXmlField( $field ${field.fieldName} )
+
+
+   #end
+
+
+#end    
+
+
+
+
+
+<tr>
+
+
+   <td>
+
+
+      <input type="button" name="back" value="Back" onclick="window.document.location='<osp:url value="repositoryUpdate.osp"/>'" />
+
+
+   </td>
+
+
+</tr>
+
+
+
+
+
+  </table>
+
+

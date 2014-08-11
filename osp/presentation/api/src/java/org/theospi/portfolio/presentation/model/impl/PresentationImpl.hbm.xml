@@ -1,0 +1,345 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.theospi.portfolio.presentation.model" default-lazy="false">
+
+   <class name="PresentationTemplate" table="osp_presentation_template">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="name" type="string" column="name" not-null="false"/>
+      <property name="description" type="string" column="description" not-null="false"/>
+      <property name="includeHeaderAndFooter" type="boolean" column="includeHeaderAndFooter" not-null="false"/>
+      <property name="published" type="boolean" column="published" not-null="false"/>
+      <property name="owner" type="org.sakaiproject.metaobj.shared.mgt.AgentUserType" column="owner_id" not-null="true"/>
+      <property name="renderer" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="renderer"/>
+      <property name="markup" length="4000" type="string" column="markup"/>
+      <property name="propertyPage" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="propertyPage"/>
+      <property name="propertyFormType" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="propertyFormType" />
+      <property name="documentRoot" type="string" column="documentRoot"/>
+      <set name="items" cascade="all-delete-orphan" inverse="true" lazy="false">
+         <key column="template_id"/>
+         <one-to-many class="PresentationItemDefinition"/>
+      </set>
+      <set name="files" cascade="all-delete-orphan" inverse="true" lazy="false">
+         <key column="template_id"/>
+         <one-to-many class="TemplateFileRef"/>
+      </set>
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+      <property name="modified" type="java.util.Date" update="true" not-null="true"/>
+      <property name="siteId" type="string" update="false" length="99" column="site_id" not-null="true"/>
+   </class>
+
+   <class name="PresentationItemDefinition" table="osp_presentation_item_def">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="name" type="string" column="name" not-null="false"/>
+      <property name="title" type="string" column="title" not-null="false"/>
+      <property name="description" type="string" column="description" not-null="false"/>
+      <property name="allowMultiple" type="boolean" column="allowMultiple" not-null="false"/>
+      <property name="type" type="string" column="type"/>
+      <property name="externalType" type="string" column="external_type"/>
+      <property name="sequence" type="int" column="sequence_no" not-null="false"/>
+      <many-to-one name="presentationTemplate" column="template_id" not-null="true" class="PresentationTemplate"/>
+      <set name="mimeTypes" cascade="all" table="osp_pres_itemdef_mimetype" lazy="true">
+         <key column="item_def_id"/>
+         <composite-element class="org.theospi.portfolio.shared.model.ItemDefinitionMimeType">
+            <property name="primary" column="primaryMimeType" length="36" type="string" not-null="false"/>
+            <property name="secondary" column="secondaryMimeType" length="36" type="string" not-null="false"/>
+         </composite-element>
+      </set>
+   </class>
+
+   <class name="TemplateFileRef" table="osp_template_file_ref">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="fileId" column="file_id" length="36" />
+      <property name="fileType" column="file_type_id" length="36" />
+      <property name="usage" type="string" column="usage_desc" not-null="false"/>
+      <many-to-one name="presentationTemplate" column="template_id" not-null="true" class="PresentationTemplate"/>
+   </class>
+
+   <class name="Presentation" table="osp_presentation">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="owner" column="owner_id" not-null="true"
+         type="org.sakaiproject.metaobj.shared.mgt.AgentUserType"/>
+      <many-to-one name="template" column="template_id" not-null="true" class="PresentationTemplate"/>
+      <property name="name" type="string" column="name" not-null="false"/>
+      <property name="description" type="string" column="description" not-null="false"/>
+      <property name="isDefault" type="boolean" column="isDefault" not-null="false"/>
+      <property name="isPublic" type="boolean" column="isPublic" not-null="false"/>
+      <property name="isCollab" type="boolean" column="isCollab" not-null="false"/>
+      <property name="presentationType" type="string" column="presentationType" not-null="true"/>
+      <property name="expiresOn" type="java.util.Date" not-null="false"/>
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+      <property name="modified" type="java.util.Date" update="true" not-null="true"/>
+      <property name="allowComments" type="boolean" column="allowComments" not-null="false"/>
+      <property name="siteId" type="string" update="false" length="99" column="site_id" not-null="true"/>
+      <property name="properties" type="org.theospi.portfolio.presentation.model.impl.HibernatePresentationProperties"
+         not-null="false" column="properties"/>
+      <property name="propertyForm" type="org.sakaiproject.metaobj.shared.IdType" length="36" column="property_form" />
+
+	  <many-to-one name="layout" column="layout_id" not-null="false" class="PresentationLayout"/>
+      <many-to-one name="style" column="style_id" not-null="false" class="org.theospi.portfolio.style.model.Style"/>
+      <property name="advancedNavigation" column="advanced_navigation" type="boolean" not-null="false" />
+      <set name="items" table="osp_presentation_item" lazy="false" >
+         <key column="presentation_id"/>
+         <composite-element class="PresentationItem">
+            <property name="artifactId" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="artifact_id" not-null="true"/>
+            <many-to-one name="definition" column="item_definition_id" not-null="true" class="PresentationItemDefinition"/>
+         </composite-element>
+      </set>
+      <property name="toolId"
+         type="string"
+         column="tool_id"
+         length="36"
+         not-null="false"/>
+   </class>
+
+   <class name="PresentationComment" table="osp_presentation_comment">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="title" type="string" column="title" not-null="true"/>
+      <property name="comment" column="commentText" length="1024" not-null="false"/>
+      <property name="creator" column="creator_id" not-null="true"
+         type="org.sakaiproject.metaobj.shared.mgt.AgentUserType"/>
+      <many-to-one name="presentation" column="presentation_id" not-null="true" class="Presentation"/>
+      <property name="visibility" type="byte" not-null="true"/>
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+   </class>
+
+
+   <class name="PresentationLog" table="osp_presentation_log">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="viewer" column="viewer_id" not-null="true"
+         type="org.sakaiproject.metaobj.shared.mgt.AgentUserType"/>
+      <many-to-one name="presentation" column="presentation_id" not-null="true" class="Presentation"/>
+      <property name="viewDate" column="view_date" type="java.util.Date" update="false" not-null="false"/>
+   </class>
+   
+   <class name="PresentationLayout" table="osp_presentation_layout">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="name" type="string" column="name" not-null="true"/>
+      <property name="description" type="string" column="description" not-null="false"/>
+      <property name="globalState" type="int" not-null="true"/>
+      <property name="owner" type="org.sakaiproject.metaobj.shared.mgt.AgentUserType" column="owner_id" not-null="true"/>
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+      <property name="modified" type="java.util.Date" update="true" not-null="true"/>
+      <property name="xhtmlFileId" type="org.sakaiproject.metaobj.shared.IdType" column="xhtml_file_id" length="36" not-null="true"/>
+      <property name="previewImageId" type="org.sakaiproject.metaobj.shared.IdType" column="preview_image_id" length="36" not-null="false"/>
+      <property name="toolId" type="string" column="tool_id" length="36" not-null="false"/>
+      <property name="siteId" type="string" update="false" length="99" column="site_id" not-null="false"/>
+   </class>
+   
+   <class name="PresentationPage" table="osp_presentation_page">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+      </id>
+      <property name="title" column="title" type="string" not-null="false" />
+      <property name="description" column="description" type="string" not-null="false" />
+      <property name="keywords" column="keywords" type="string" not-null="false" />
+      <many-to-one name="presentation" column="presentation_id" not-null="true" class="Presentation"/>
+      <many-to-one name="layout" column="layout_id" not-null="true" class="PresentationLayout"/>
+      <many-to-one name="style" column="style_id" not-null="false" class="org.theospi.portfolio.style.model.Style"/>
+      <property name="sequence" type="int" column="seq_num" not-null="false"/>
+      <set name="regions" lazy="false" inverse="true" cascade="all-delete-orphan">
+         <key column="presentation_page_id" />
+         <one-to-many class="PresentationPageRegion" />
+      </set>
+      <property name="created" type="java.util.Date" update="false" not-null="true"/>
+      <property name="modified" type="java.util.Date" update="true" not-null="true"/>
+      
+   </class>
+
+   <class name="PresentationPageRegion" table="osp_presentation_page_region">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdGenerator"/>
+      </id>
+      <many-to-one name="page" column="presentation_page_id" not-null="true" class="PresentationPage"/>
+      <property name="regionId" type="string" column="region_id" not-null="true" />
+      <property name="type" column="type" type="string" not-null="false" />
+      <property name="helpText" column="help_text" type="string" not-null="false" />
+      <list name="items" lazy="false" inverse="true" cascade="all-delete-orphan">
+         <key column="presentation_page_region_id" />
+         <index column="seq_num" />
+         <one-to-many class="PresentationPageItem" />
+      </list>
+   </class>
+
+   <class name="PresentationPageItem" table="osp_presentation_page_item">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdGenerator"/>
+      </id>
+      <many-to-one name="region" column="presentation_page_region_id" not-null="true" class="PresentationPageRegion"/>
+      <property name="type" column="type" type="string" not-null="false" />
+      <property name="value" column="value" type="string" not-null="false" length="2147483647" />
+      <property name="regionItemSeq" column="seq_num" type="int" not-null="true" />
+      <set name="properties" lazy="false" inverse="true" cascade="all">
+         <key column="presentation_page_item_id" />
+         <one-to-many class="PresentationItemProperty" />
+      </set>
+   </class>
+   
+   <class name="PresentationItemProperty" table="osp_presentation_item_property">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdGenerator"/>
+      </id>
+      <many-to-one name="item" column="presentation_page_item_id" not-null="true" class="PresentationPageItem"/>
+      <property name="key" column="property_key" type="string" not-null="true"/>
+      <property name="value" column="property_value" type="string" not-null="false"/>
+   </class>
+   
+   <query name="findPortfolioByTemplate">
+		from Presentation where template_id=?
+   </query>
+   
+   <query name="findTemplateByOwnerAndSite">
+		from PresentationTemplate where owner=? and siteId=? Order by name
+   </query>
+         
+   <query name="findTemplateByOwner">
+		from PresentationTemplate where owner=? Order by name
+   </query>
+      
+   <query name="findPublishedTemplates">
+		from PresentationTemplate where published=? and owner!=? Order by name
+   </query>
+      
+   <query name="findPublishedTemplatesBySite">
+		from PresentationTemplate where published=? and owner!=? and siteId=? Order by name
+   </query>
+      
+   <query name="findAllPublishedTemplatesBySite">
+		from PresentationTemplate where published=? and siteId=? Order by name
+   </query>
+      
+   <query name="findPublicPortfolios">
+		from Presentation where isPublic != 0
+   </query>
+      
+   <query name="findPublicPortfoliosBySite">
+		from Presentation where isPublic != 0 and siteId=?
+   </query>
+      
+   <query name="findPublicPortfoliosExclusive">
+		from Presentation p where p.isPublic != 0 and p.id not in (:hiddenId)
+   </query>
+      
+   <query name="findPublicPortfoliosInclusive">
+		from Presentation p where p.isPublic != 0 and p.id in (:hiddenId)
+   </query>
+      
+   <query name="findPublicPortfoliosByToolExclusive">
+		from Presentation p where p.isPublic != 0 and p.toolId=:toolId and p.id not in (:hiddenId)
+   </query>
+      
+   <query name="findPublicPortfoliosByToolInclusive">
+		from Presentation p where p.isPublic != 0 and p.toolId=:toolId and p.id in (:hiddenId)
+   </query>
+      
+   <query name="findPortfolios">
+		from Presentation
+   </query>
+      
+   <query name="findTemplates">
+		from PresentationTemplate
+   </query>
+      
+   <query name="findLayouts">
+		from PresentationLayout
+   </query>
+      
+   <query name="findLogsByPortfolio">
+		from PresentationLog where presentation_id=? ORDER BY view_date DESC
+   </query>
+      
+   <query name="findPortfolioByLogID">
+		from PresentationLog where id=?
+   </query>
+      
+   <query name="findLayoutsByOwner">
+		from PresentationLayout where owner=? and siteId=? Order by name
+   </query>
+      
+   <query name="findPublishedLayouts">
+		from PresentationLayout where globalState=? Order by name
+   </query>
+      
+   <query name="findGlobalLayouts">
+		from PresentationLayout where globalState=? or globalState=? Order by name
+   </query>
+      
+   <query name="findPortfolioPagesByPortfolio">
+		from PresentationPage page where page.presentation.id=? order by seq_num
+   </query>
+      
+   <query name="findPortfolioPagesByPortfolioAndSequence">
+		from PresentationPage page where page.presentation.id=? and page.sequence=?
+   </query>
+      
+   <query name="findPortfolioPagesByStyle">
+		from PresentationPage pp where pp.style.id=?
+   </query>
+      
+   <query name="findPortfoliosByStyle">
+		from Presentation p where p.style.id=? 
+   </query>
+   
+   <query name="findTemplatesForConversion">
+   	from PresentationTemplate t where t.propertyPage != null and t.propertyFormType = null 
+   </query>
+   
+   <query name="findPortfoliosForConversion">
+   	from Presentation p where p.properties != null and p.propertyForm = null 
+   </query>
+   
+   <query name="findPortfolioByOwnerInclusive">
+		from Presentation p where owner=:owner and p.id in ( :hiddenId ) Order by p.name
+   </query>
+   
+   <query name="findPortfolioByOwnerAndToolInclusive">
+		from Presentation p where owner=:owner and toolId=:toolId and p.id in ( :hiddenId ) Order by p.name
+   </query>
+   <query name="findPortfolioByOwnerExclusive">
+		from Presentation p where owner=:owner and p.id not in ( :hiddenId ) Order by p.name
+   </query>
+   
+   <query name="findPortfolioByOwnerAndToolExclusive">
+		from Presentation p where owner=:owner and toolId=:toolId and p.id not in ( :hiddenId ) Order by p.name
+   </query>
+
+   <query name="findPortfoliosUnrestrictedInclusive">
+   	from Presentation p where p.toolId=:toolId and p.id in ( :hiddenId )
+   </query>
+   
+   <query name="findPortfoliosUnrestrictedExclusive">
+   	from Presentation p where p.toolId=:toolId and p.id not in ( :hiddenId )
+   </query>
+   
+   <query name="findPortfoliosByToolInclusive">
+   	from Presentation p where p.toolId=:toolId and p.id in ( :id ) and p.id in ( :hiddenId )
+   </query>
+   
+   <query name="findPortfoliosByToolExclusive">
+   	from Presentation p where p.toolId=:toolId and p.id in ( :id ) and p.id not in ( :hiddenId )
+   </query>
+   
+   <query name="findPortfoliosInclusive">
+   	from Presentation p where p.id in ( :id ) and p.id in ( :hiddenId )
+   </query>
+   
+   <query name="findPortfoliosExclusive">
+   	from Presentation p where p.id in ( :id ) and p.id not in ( :hiddenId )
+   </query>
+   
+</hibernate-mapping>

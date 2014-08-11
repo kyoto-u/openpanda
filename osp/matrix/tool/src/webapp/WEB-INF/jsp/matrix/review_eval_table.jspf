@@ -1,0 +1,24 @@
+<table class="listHier" cellspacing="0" >
+   <thead>
+      <tr>
+        <th scope="col"><c:out value="${msgs.table_header_title}"/></th>
+        <th scope="col"><c:out value="${msgs.table_header_createdBy}"/></th>
+        <th scope="col"><c:out value="${msgs.table_header_creationDate}"/></th>
+      </tr>
+   </thead>
+   <tbody>
+      <c:forEach var="object" items="${objectList}" varStatus="loopStatus">
+         <tr>
+            <td>
+               <a href='<c:out value="${object.reviewContentNode.externalUri}"/>' target="_blank" ><c:out value="${object.reviewContentNode.displayName}"/></a>            
+            </td>
+            <td>
+               <c:out value="${object.reviewContentNode.technicalMetadata.owner.displayName}" />
+            </td>
+            <td>
+               <fmt:formatDate value="${object.reviewContentNode.technicalMetadata.creation}" pattern="MM-dd-yyyy" />
+            </td>
+         </tr>
+      </c:forEach>
+   </tbody>
+</table>

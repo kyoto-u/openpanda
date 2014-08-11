@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+    <!-- The "slow" connection pool for streaming downloads from db -->
+    <bean id="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource"
+          parent="javax.sql.BaseDataSource">
+
+        <!--  The initial number of connections that are created when the pool is started. -->
+        <property name="initialSize">
+            <value>0</value>
+        </property>
+
+        <!-- The maximum number of active connections that can be allocated from this pool at the same time, or zero for no limit. -->
+        <property name="maxActive">
+            <value>5</value>
+        </property>
+
+        <!-- The maximum number of active connections that can remain idle in the pool, without extra ones being released, or zero for no limit. -->
+        <property name="maxIdle">
+            <value>1</value>
+        </property>
+
+        <!-- The minimum number of active connections that can remain idle in the pool, without extra ones being created, or 0 to create none. -->
+        <property name="minIdle">
+            <value>0</value>
+        </property>
+
+    </bean>
+
+    <bean id="org.sakaiproject.warehouse.service.DataWarehouseManager"
+          class="org.sakaiproject.warehouse.impl.DataWarehouseManagerImpl"
+          singleton="true">
+        <property name="tasks">
+            <list>
+            </list>
+        </property>
+        <property name="securityService">
+            <ref bean="org.sakaiproject.authz.api.SecurityService"/>
+        </property>
+       <property name="autoDdl"><value>${auto.ddl}</value></property>
+    </bean>
+
+    <!-- commonly used fields -->
+    <bean id="org.sakaiproject.warehouse.service.PropertyAccess.id"
+          class="org.sakaiproject.warehouse.impl.IdPropertyAccess">
+        <property name="propertyName">
+            <value>id</value>
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.warehouse.service.PropertyAccess.parentId"
+          class="org.sakaiproject.warehouse.impl.BaseParentPropertyAccess">
+        <property name="base">
+            <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id"/>
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.warehouse.service.PropertyAccess.owner"
+          class="org.sakaiproject.warehouse.impl.AgentPropertyAccess">
+        <property name="propertyName">
+            <value>owner</value>
+        </property>
+    </bean>
+    <!-- start other stuff -->
+
+
+    <!--  Metaobj Stuff Starts here -->
+    <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.structured.artifact.def"
+          class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+            <list>
+                <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.id"/>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>description</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>documentRoot</value>
+                    </property>
+                </bean>
+                <ref bean="org.sakaiproject.warehouse.service.PropertyAccess.owner"/>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>created</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>modified</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>systemOnly</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>externalType</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>siteId</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>siteState</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>globalState</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>schema</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>instruction</value>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="insertStmt">
+            <value>insert into dw_metaobj_form_def
+                (id, description, documentRoot, owner, created, modified, systemOnly, externalType,
+                siteId, siteState, globalState, schemaData, instruction)
+
+                values (?, ?, ?, ?, ?, ?, ?, ?)
+            </value>
+        </property>
+        <property name="clearStmt">
+            <value>delete from dw_metaobj_form_def</value>
+        </property>
+    </bean>
+
+    <import resource="assignment-components.xml"/>
+    <import resource="resource-components.xml"/>
+
+
+    <!--  **************************************************************************
+    ********************************************************************************
+         worksite Child Task
+    -->
+    <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.worksite.membership"
+          class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+            <list>
+                <bean class="org.sakaiproject.warehouse.impl.BaseParentPropertyAccess">
+                    <property name="base">
+                        <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                            <property name="propertyName">
+                                <value>id</value>
+                            </property>
+                        </bean>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>userId</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>userEid</value>
+                    </property>
+                </bean>
+               <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                   <property name="propertyName">
+                       <value>userDisplayId</value>
+                   </property>
+               </bean>
+               <bean class="org.sakaiproject.warehouse.impl.NestedPropertyAccess">
+                   <property name="propertyPath">
+                       <value>role.id</value>
+                   </property>
+               </bean>
+            </list>
+        </property>
+        <property name="insertStmt">
+            <value>insert into dw_site_users
+                (site_id, user_id, user_eid, user_display_id, role)
+                values (?, ?, ?, ?, ?)
+            </value>
+        </property>
+        <property name="clearStmt">
+            <value>delete from dw_site_users</value>
+        </property>
+        <property name="complexFields">
+            <list>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.worksite"
+          class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+            <list>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>id</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>type</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>title</value>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="insertStmt">
+            <value>insert into dw_sites
+                (id, type, title)
+                values (?, ?, ?)
+            </value>
+        </property>
+        <property name="clearStmt">
+            <value>delete from dw_sites</value>
+        </property>
+        <property name="complexFields">
+            <list>
+                <bean class="org.sakaiproject.warehouse.impl.ChildFieldWrapper">
+                    <property name="propertyAccess">
+                        <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                            <property name="propertyName">
+                                <value>members</value>
+                            </property>
+                        </bean>
+                    </property>
+                    <property name="task">
+                        <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.worksite.membership"/>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.session"
+          class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+            <list>
+                 <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>id</value>
+                    </property>
+                </bean>
+                 <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>server</value>
+                    </property>
+                </bean>
+                 <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>user</value>
+                    </property>
+                </bean>
+                 <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>ip</value>
+                    </property>
+                </bean>
+                 <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>userAgent</value>
+                    </property>
+                </bean>
+                 <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>start</value>
+                    </property>
+                </bean>
+                 <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>end</value>
+                    </property>
+                </bean>
+                 <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>duration</value>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="insertStmt">
+            <value>insert into dw_session (id, server, userId, ip, user_agent, startTime, endTime, durationSeconds)
+                values (?, ?, ?, ?, ?, ?, ?, ?)
+            </value>
+        </property>
+        <property name="clearStmt">
+            <value>delete from dw_session</value>
+        </property>
+
+    </bean>
+
+       <bean id="org.sakaiproject.warehouse.service.ChildWarehouseTask.user"
+          class="org.sakaiproject.warehouse.impl.BaseChildWarehouseTask">
+        <property name="fields">
+            <list>
+
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>userId</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>userEid</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>email</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>emailLc</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>firstName</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>lastName</value>
+                    </property>
+                </bean>
+                <bean class="org.sakaiproject.warehouse.impl.BeanPropertyAccess">
+                    <property name="propertyName">
+                        <value>type</value>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="insertStmt">
+            <value>insert into dw_users
+                (user_id, user_eid, email, email_lc, first_name, last_name, type)
+                values (?, ?, ?, ?, ?, ?, ?)
+            </value>
+        </property>
+        <property name="clearStmt">
+            <value>delete from dw_users</value>
+        </property>
+        <property name="complexFields">
+            <list>
+            </list>
+        </property>
+    </bean>
+    <!--  **************************************************************************
+    ********************************************************************************
+         - list of users and names and such
+         -
+    -->
+
+    <bean id="org.sakaiproject.warehouse.service.WarehouseTask.worksite"
+          class="org.sakaiproject.warehouse.sakai.site.WorksiteWarehouseTask"
+          init-method="init" singleton="true">
+        <property name="dataSource">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource"/>
+        </property>
+        <property name="dataWarehouseManager">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager"/>
+        </property>
+        <property name="tableDdlResource">
+            <value>/org/sakaiproject/warehouse/sakai/site.xml</value>
+        </property>
+        <property name="siteService">
+            <ref bean="org.sakaiproject.site.api.SiteService"/>
+        </property>
+        <property name="task">
+            <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.worksite"/>
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.warehouse.service.WarehouseTask.session"
+          class="org.sakaiproject.warehouse.sakai.session.SessionWarehouseTask"
+          init-method="init" singleton="true">
+        <property name="dataSource">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource"/>
+        </property>
+        <property name="dataWarehouseManager">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager"/>
+        </property>
+        <property name="tableDdlResource">
+            <value>/org/sakaiproject/warehouse/sakai/session.xml</value>
+        </property>
+        <property name="timeService"><ref bean="org.sakaiproject.time.api.TimeService"/></property>
+        <property name="sqlService"><ref bean="org.sakaiproject.db.api.SqlService"/></property>
+        <property name="task">
+            <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.session"/>
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.sakaiDataWarehouse"
+          class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+          singleton="true" init-method="init">
+        <property name="beanId">
+            <value>org.sakaiproject.warehouse.service.DataWarehouseManager</value>
+        </property>
+        <property name="jobName">
+            <value>Data Warehouse Update</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager"/>
+        </property>
+    </bean>
+    <bean id="org.sakaiproject.warehouse.service.WarehouseTask.user"
+         class="org.sakaiproject.warehouse.sakai.user.UserWarehouseTask"
+         init-method="init" singleton="true">
+        <property name="dataSource">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource"/>
+        </property>
+        <property name="dataWarehouseManager">
+            <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager"/>
+        </property>
+        <property name="tableDdlResource">
+            <value>/org/sakaiproject/warehouse/sakai/users.xml</value>
+        </property>
+        <property name="sqlService"><ref bean="org.sakaiproject.db.api.SqlService"/></property>
+        <property name="task">
+            <ref bean="org.sakaiproject.warehouse.service.ChildWarehouseTask.user"/>
+        </property>
+    </bean>
+</beans>

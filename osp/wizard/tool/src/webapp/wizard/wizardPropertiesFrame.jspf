@@ -1,0 +1,26 @@
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://sakaiproject.org/jsf/sakai" prefix="sakai" %>
+<%@ taglib uri="http://www.theospi.org/jsf/osp" prefix="ospx" %>
+
+  <ospx:xheader>
+      <ospx:xheadertitle id="wizardTitle" value="#{msgs.wizard_title}: #{wizard.current.base.name}" />
+      <ospx:xheaderdrawer initiallyexpanded="false" cssclass="drawerBorder">
+          <ospx:splitarea direction="horizontal" width="100%">
+             <ospx:splitsection size="475" valign="top">
+               <h:outputLabel for="description" id="descriptionLabel" value="#{msgs.wizard_description}" />
+               <h:outputText id="description_spacer" value="<br>" escape="false" />
+               <h:outputText id="description" value="#{wizard.current.base.description}" />
+               <h:outputText id="description_break" value="<br><br>" escape="false" />
+               <h:outputLabel for="keywords" id="keywordsLabel" value="#{msgs.wizard_keywords}" />
+               <h:outputText id="keywords_spacer" value="<br>" escape="false" />
+               <h:outputText id="keywords" value="#{wizard.current.base.keywords}" />
+             </ospx:splitsection>
+             <ospx:splitsection valign="top">
+               <h:outputLabel for="modified" id="modifiedLabel" value="#{msgs.wizard_modified}" />
+               <h:outputText id="modified_spacer" value="&nbsp;" escape="false" />
+               <h:outputText id="modified" value="#{wizard.current.base.modified}" />
+             </ospx:splitsection>
+         </ospx:splitarea>
+      </ospx:xheaderdrawer>
+  </ospx:xheader>

@@ -1,0 +1,1 @@
+<h:outputText value="Here's some content for the third tab."/>

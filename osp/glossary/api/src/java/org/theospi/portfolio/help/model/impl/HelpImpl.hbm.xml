@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.theospi.portfolio.help.model">
+
+   <class name="GlossaryEntry" table="osp_help_glossary" lazy="true">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdGenerator"/>
+      </id>
+      <property name="worksiteId" type="string" column="worksite_id" not-null="false"/>
+      <property name="term" type="string" column="term" not-null="true"/>
+      <property name="description" type="string" column="description" not-null="true"/>
+   </class>
+
+   <class name="GlossaryDescription" table="osp_help_glossary_desc">
+      <id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+         <generator class="org.sakaiproject.metaobj.shared.IdGenerator"/>
+      </id>
+      <property name="entryId" column="entry_id" type="org.sakaiproject.metaobj.shared.IdType"/>
+      <property name="longDescription" column="long_description" type="text" />
+   </class>
+   
+   
+   <query name="loadDescription">
+      from GlossaryDescription where entryId = ?
+   </query>
+   
+   <query name="findTerms">
+      from GlossaryEntry where lower(term)=lower(?) AND (worksiteId=? or worksiteId is null)
+   </query>
+   
+	<query name="findAllSiteTerms">
+      from GlossaryEntry where worksiteId=? Order by term
+   </query>
+   
+	<query name="findAllTerms">
+      from GlossaryEntry Order by term
+   </query>
+   
+	<query name="findGlobalTerms">
+		from GlossaryEntry where worksiteId is null Order by term
+   </query>
+   
+	<query name="findByPhrase">
+		from GlossaryEntry where term like(?) AND (worksiteId=? or worksiteId is null)
+   </query>   
+
+</hibernate-mapping>
+

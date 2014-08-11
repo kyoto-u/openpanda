@@ -1,0 +1,784 @@
+<!-- $Id: chef_assignments_instructor_list_submissions.vm 107301 2012-04-17 05:41:33Z steve.swinsburg@gmail.com $ -->
+<!-- start: chef_assignments_instructor_list_submissions.vm  -->
+##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_list_submissions.vm,v 1.10 2005/06/14 16:07:00 zqian.umich.edu Exp $ -->
+#parse("/vm/assignment/assignment_macros.vm")
+<link href="/sakai-assignment-tool/css/assignment.css" type="text/css" rel="stylesheet" media="all" />
+<script type="text/javascript" src="/library/js/jquery.js"></script>
+<script type="text/javascript"  src="/sakai-assignment-tool/js/assignments.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        setupToggleAreas('toggleAnchor', 'toggledContent', false, 'fast');
+
+		$('#submissionList input:checkbox').click(function(){
+			  if ( $("#submissionList input:checked").length ===0){
+				hideAllowResubmission()
+				}
+			else{
+				showAllowResubmission()
+			}
+		});    
+	});
+    
+    function showAllowResubmission()
+    {
+		document.getElementById('allowResubmission_shown').style.display="inline";
+    	document.getElementById('allowResubmission_hidden').style.display="none";
+		$('#allowResubmission_shownInner').addClass('highLightBlock').fadeIn(2000,function(){
+			$(this).removeClass('highLightBlock')
+		});
+    	document.getElementById('allowResToggle').value="checked";
+    	resizeFrame('grow');
+    }
+    
+    function hideAllowResubmission()
+    {
+		$('#allowResubmission_shownInner').fadeOut('fast', function() {
+			document.getElementById('allowResubmission_shown').style.display="none";
+    		document.getElementById('allowResubmission_hidden').style.display="inline";
+    		document.getElementById('allowResToggle').value="";
+		  });
+
+    }
+    
+    function toggleSelectAll(caller, elementName)
+    {
+					var newValue = caller.checked;
+					var elements = document.getElementsByName(elementName);
+			
+					if(elements)
+					{
+						for(var i = 0; i < elements.length; i++)
+						{
+							elements[i].checked = newValue;
+						}
+					}
+   	}
+
+
+</script>
+
+<div class="portletBody" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
+	<ul class="navIntraTool actionToolBar" role="menu">
+		#set($prevAction=false)
+		#if ($allowAddAssignment)
+			#set($prevAction=true)
+			<li  class="firstToolBarItem" role="menuitem">
+				<span><a href="#toolLink("$action" "doNew_assignment")" title="$!tlang.getString("new")">$!tlang.getString("new")</a></span>
+			</li>	
+		#end
+		<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+			<span><a href="#toolLinkParam("$action" "doView" "view=lisofass1")" title="$!tlang.getString('lisofass1')">$!tlang.getString('lisofass1')</a></span>
+		</li>			
+		#if ($withGrade && $!allowGradeSubmission)
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+				<span><a href="#toolLinkParam("$action" "doView" "view=grarep")" title="$!tlang.getString("gen.grarep")">$!tlang.getString("gen.grarep")</a></span>
+			</li>	
+		#end
+			#if (!$!view.equals('stuvie'))
+				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+					<span><a href="#toolLinkParam("$action" "doView" "view=stuvie")" title="$!tlang.getString("gen.stuvie")">$!tlang.getString("gen.stuvie")</a></span>
+				</li>	
+			#else
+				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem" aria-disabled="true">			
+					<span class="current">$!tlang.getString("gen.stuvie")</span>
+				</li>	
+			#end
+		#if (($allowAllGroups) && ($assignmentscheck))
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+				<span><a href="#toolLink("$action" "doReorder")" title="$tlang.getString('gen.reorder')">$tlang.getString('gen.reorder')</a></span>
+			</li>	
+		#end
+		#if ($allowUpdateSite)
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+				<span><a href="#toolLink("$action" "doPermissions")" title="$tlang.getString('permis')">$tlang.getString('permis')</a></span>
+			</li>
+			#if ($enableViewOption)	
+				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end  role="menuitem">
+					<span><a href="#toolLink("$action" "doOptions")" title="$tlang.getString('options')">$tlang.getString('options')</a></span>
+				</li>
+			#end	
+		#end
+	</ul>
+	<h3>
+		$validator.escapeHtml($assignment.getTitle())<span class="highlight"> - $!tlang.getString('gen.subm2') </span>
+	</h3>
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $validator.escapeHtml($alertMessage)</div><div class="clear"></div>#end
+	## reminder of submission download url
+	#if ($download_url_reminder) 
+		<div class="messageInformation">
+			<h4>$download_url_reminder</h4>
+			<p>
+				<a target="_blank" href="$download_url_link">$download_url_link_label</a>
+			</p>
+		</div>
+	#end
+		<form name="viewForm" id="viewForm" class="inlineForm" method="post" action="#toolForm("AssignmentAction")">
+			<input type="hidden" name="assignmentId" id = "assignmentId" value=$validator.escapeUrl($!assignment.Reference) />
+			<input type="hidden" name="option" id="option" value="x" />
+			<input type="hidden" name="eventSubmit_doView_submission_list_option" value="x" />
+			## show the view by group choice when there is at least one group defined
+			<div class="navPanel">
+				<div class="viewNav">
+					#if ($!groups.hasNext())
+						<div class="instruction">
+							$tlang.getString("view_instruction") 
+						</div>
+						<label for="view">
+							$tlang.getString("gen.view2")
+						</label>
+						<span class="skip">$tlang.getString("newassig.selectmessage")</span>
+						<select id="view" name="view" size="1" tabindex="3" onchange="document.getElementById('option').value='changeView';document.viewForm.submit();return false;">
+							#if (!$showSubmissionByFilterSearchOnly)
+								<option value="all" #if($!view.equals("all"))selected="selected"#end >$tlang.getString('gen.viewallgroupssections')</option>
+							#else
+								<option value="" >$tlang.getString('please_select_group')</option>
+							#end
+							#foreach($aGroup in $groups)
+								<option value="$!aGroup.Reference" #if($!view.equals($!aGroup.Reference))selected="selected"#end >$validator.escapeHtml($aGroup.Title)</option>
+							#end
+						</select>
+					#end
+					<p />
+					<label for="$form_search" class="skip">$tlang.getString("search")</label>
+					<input value="$validator.escapeHtml($searchString)" name="search" id="search" type="text" class="searchField"  size="20" />
+					<input type="button" value="$tlang.getString('search')" 
+						onclick="document.getElementById('option').value='search';document.viewForm.submit();return false;" />
+					#if (($!searchString) && (!$searchString.equals("")))
+						<input type="button" class="button" value="$tlang.getString("search_clear")" 
+							onclick="document.getElementById('option').value='clearSearch';document.viewForm.submit();return false;" />
+					#end
+				</div>
+			</div>
+		#set ($submissionType = $assignment.getContent().getTypeOfSubmission())
+			#set ($showMsg = false)
+			#set ($showMsg = $!allMsgNumber)
+			#if (!$!showMsg || $showMsg ==0)
+				<div class="allPurpose">
+					<br/>
+					$tlang.getString("nostudent_searchview")
+				</div>
+			#else
+				<div class="listNav">
+						## download all
+							<a href="" onclick="javascript:document.getElementById('option').value='download';document.viewForm.submit();return false;" title="$!tlang.getString('downall')">$!tlang.getString('downall')</a>
+						## upload all
+							|  <a href="" onclick="javascript:document.getElementById('option').value='upload';document.viewForm.submit();return false;" title="$!tlang.getString('uploadall.title')">$!tlang.getString('uploadall.title')</a>
+						|  <a href="" onclick="javascript:document.getElementById('option').value='releaseGrades';document.viewForm.submit();return false;" 
+						#if ($withGrade)
+							title="$!tlang.getString('relgrad')">$!tlang.getString('relgrad')</a>
+						#else
+							title="$!tlang.getString('relcommented')">$!tlang.getString('relcommented')</a>
+						#end
+						#if ($taggable)
+							#foreach ($provider in $providers)
+								#set ($helperInfo = false)
+								#set ($helperInfo = $provider.provider.getItemsHelperInfo($activity.Reference))
+								#if ($helperInfo)
+									|  <a href="#toolLinkParam("$action" "doHelp_items" "activityRef=$validator.escapeUrl($activity.Reference)&providerId=$validator.escapeUrl($provider.provider.id)")" title="$!helperInfo.description">$!helperInfo.name</a>
+								#end
+							#end
+						#end
+				</div>	
+				#set ($gradeType = $assignment.getContent().TypeOfGrade)
+			#end
+		</form>
+		#set ($submissionType = $assignment.getContent().getTypeOfSubmission())
+		#set ($showMsg = false)
+		#set ($showMsg = $!allMsgNumber)
+		#if (!$!showMsg || $showMsg ==0)
+		#else
+		<div class="navPanel">
+			<div class="viewNav">
+							#set ($gradeType = $assignment.getContent().TypeOfGrade)
+				<form name="defaultGradeForm" class="inlineForm" method="post" action="#toolForm($action)">
+					<input type="hidden" name="$!form_action" value="setScore" />
+					<label for="defaultGrade_1" style="display:block" class="textPanelFooter">$!form_label</label>
+					##for non-point-based grading, choose the default grade from drop-down
+					#if ($!gradeType != 3)
+						<select id="defaultGrade_1" name="defaultGrade" size="1" >
+							<option value="">$tlang.getString("non.submission.grade.select")</option>
+							#if ($!gradeType == 1)
+								<option value="gen.nograd" #if($!defaultGrade && $!defaultGrade.equals("gen.nograd"))selected="selected"#end>$tlang.getString("gen.nograd")</option>
+							#elseif ($!gradeType == 2)
+								#foreach ($i in $letterGradeOptions)
+									<option value="$i" #if($!defaultGrade && $!defaultGrade.equals($i))selected="selected"#end>$i</option>
+								#end
+							#elseif ($!gradeType == 4)
+								#foreach ($i in ["Pass", "Fail"])
+									<option value="$i" #if($!defaultGrade && $!defaultGrade.equals($i))selected="selected"#end>$i</option>
+								#end
+							#elseif ($!gradeType == 5)
+								<option value="Checked" #if($!defaultGrade && $!defaultGrade.equals("Checked"))selected="selected"#end>$tlang.getString("gen.checked")</option>
+							#end
+						</select>
+					#else
+						## instructor needs to type in default points in point-based-grading
+						<input type="text" id="defaultGrade_2" name="defaultGrade" value="$!defaultGrade" size="5" />
+					#end
+					<input type="button" accesskey="a" class="active"  name="apply" value="$tlang.getString('gen.applygrade')" onclick="document.defaultGradeForm.submit();" title="$tlang.getString("gen.applygrade")" />
+				</form>
+			</div>
+			<div class="listNav">
+				<div class="instruction">
+					$tlang.getString("gen.viewing") $topMsgPos - $btmMsgPos $tlang.getString("gen.of") $allMsgNumber $tlang.getString("gen.items")
+				</div>
+				#if ($pagesize != 0)
+					#if ($goFPButton == "true")
+						<form name="firstpageForm" class="inlineForm"  method="post" action="#toolForm("$action")">
+							<fieldset><legend>$tlang.getString("gen.first")</legend><input type="submit" name="eventSubmit_doList_first" value="|&lt;" title="$tlang.getString("gen.first")" /></fieldset>
+						</form>
+					#else
+						<form name="firstpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							<fieldset><legend>$tlang.getString("gen.first")</legend><input type="submit" name="eventSubmit_doList_first" value="|&lt;" disabled="disabled" /></fieldset>
+						</form>
+					#end
+					#if ($goPPButton == "true")
+						<form name="prevpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							<fieldset><legend>$tlang.getString('gen.previous') $pagesize</legend><input type="submit" name="eventSubmit_doList_prev" value="&lt;" title="$tlang.getString('gen.previous') $pagesize" accesskey="p" /></fieldset>
+						</form>
+					#else
+						<form name="prevpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							<fieldset><legend>$tlang.getString('gen.previous') $pagesize</legend><input type="submit" name="eventSubmit_doList_prev" value="&lt;" disabled="disabled" /></fieldset>
+						</form>
+					#end
+				#end	
+				<form name="pagesizeForm" class="inlineForm" method="post" action="#toolForm("$action")">
+					<input type="hidden" name="eventSubmit_doChange_pagesize" value="changepagesize" />
+					<label for="selectPageSize" class="skip">$tlang.getString("newassig.selectmessage")</label>
+					<select id="selectPageSize" name="selectPageSize" onchange="document.pagesizeForm.submit();">
+						#foreach ($i in $!pagesizes)
+							<option value="$i" #if($pagesize == $i) selected="selected" #end>$tlang.getString("list.show") $i $tlang.getString("list.itemsper")</option>
+						#end
+					</select>
+				</form>
+				#if ($pagesize != 0)
+					#if ($goNPButton == "true")
+						<form name="nextpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							<fieldset><legend>$tlang.getString('gen.next') $pagesize</legend><input type="submit" name="eventSubmit_doList_next" value="&gt;" title="$tlang.getString('gen.next') $pagesize" accesskey="n" /></fieldset>
+						</form>
+					#else
+						<form name="nextpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							<fieldset><legend>$tlang.getString('gen.next') $pagesize</legend><input type="submit" name="eventSubmit_doList_next" value="&gt;" disabled="disabled" /></fieldset>
+						</form>
+					#end
+					#if ($goLPButton == "true")
+						<form name="lastpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							<fieldset><legend>$tlang.getString('gen.last')</legend><input type="submit" name="eventSubmit_doList_last" value=">&gt;" title="$tlang.getString('gen.last')" /></fieldset>
+						</form>
+					#else
+						<form name="lastpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							<fieldset><legend>$tlang.getString('gen.last')</legend><input type="submit" name="eventSubmit_doList_last" value=">&gt;" disabled="disabled" /></fieldset>
+						</form>
+					#end
+				#end
+			</div>
+		</div>
+		<form name= "listSubmissionsForm" action="#toolForm("AssignmentAction")" method="post">
+			<input type="hidden" name="assignmentId" value="$assignment.Reference" />
+			
+			## model answer
+			#if($allowViewModelAnswer)
+			<h4  id="toggleModel" class="toggleAnchor specialLink"><img alt="expand" class="expand" src="/library/image/sakai/expand.gif" /><img alt="collapse" class="collapse" src="/library/image/sakai/collapse.gif" />$tlang.getString('modelAnswer')</h4>
+			<div class="model toggledContent">
+					<p>$validator.escapeHtml($!assignmentModelAnswerItem.getText())</p>
+					#set ($mAttachments = $!assignmentModelAnswerItem.getAttachmentObjectSet())
+						<ul class="attachList">
+							#set ($size = 0)
+							#set ($props = false)
+							#foreach ($attachment in $!mAttachments) 
+								#set ($props = $attachment.Properties) 
+								#if ($!props)
+									#set ($size = $size + 1)
+								#end
+							#end
+							#if ($size == 0)
+								<p class="instruction">$tlang.getString("gen.noatt")</p>
+							#else
+								#foreach ($attachment in $mAttachments)
+									#set ($props = false)
+									#set ($props = $attachment.Properties) 
+									#if ($!props)
+									<li>
+										#if ($props.getBooleanProperty($props.NamePropIsCollection))
+											<img src = "#imageLink($contentTypeImageService.getContentTypeImage("folder"))" border="0" alt="$tlang.getString("gen.folatt")" />
+										#else
+											<img src = "#imageLink($contentTypeImageService.getContentTypeImage($props.getProperty($props.NamePropContentType)))" border="0" alt="$tlang.getString("gen.filatt")" />
+										#end
+										<a href="$attachment.Url" target="_blank">$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))</a>						
+										#propertyDetails($props)
+									</li>
+									#end
+							#end
+					#end
+					</ul>
+				</div>
+			#end
+			#if ($!allowReadAssignmentNoteItem)
+				<h4  id="toggleNotes" class="toggleAnchor specialLink"><img alt="expand" class="expand" src="/library/image/sakai/expand.gif" /><img alt="collapse" class="collapse" src="/library/image/sakai/collapse.gif" />$tlang.getString('note.label')</h4>
+				<div class="notes toggledContent">
+					$validator.escapeHtml($!assignmentNoteItem.getNote())
+				</div>
+			#end
+			##all purpose
+			#if ($!allowViewAllPurposeItem)
+			<h4  id="toggleAllPurpose" class="toggleAnchor specialLink"><img alt="expand" class="expand" src="/library/image/sakai/expand.gif" /><img alt="collapse" class="collapse" src="/library/image/sakai/collapse.gif" />$tlang.getString('allPurpose')</h4>
+			<div class="allPurpose toggledContent">
+					<p>$validator.escapeHtml($!assignmentAllPurposeItem.getTitle())</p>
+					<p>$validator.escapeHtml($!assignmentAllPurposeItem.getText())</p>
+					#set ($aAttachments = $!assignmentAllPurposeItem.getAttachmentObjectSet())
+						<ul class="attachList">
+							#set ($size = 0)
+							#set ($props = false)
+							#foreach ($attachment in $!aAttachments) 
+								#set ($props = $attachment.Properties) 
+								#if ($!props)
+									#set ($size = $size + 1)
+								#end
+							#end
+							#if ($size == 0)
+								<p class="instruction">$tlang.getString("gen.noatt")</p>
+							#else
+								#foreach ($attachment in $aAttachments)
+									#set ($props = false)
+									#set ($props = $attachment.Properties) 
+									#if ($!props)
+									<li>
+										#if ($props.getBooleanProperty($props.NamePropIsCollection))
+											<img src = "#imageLink($contentTypeImageService.getContentTypeImage("folder"))" border="0" alt="$tlang.getString("gen.folatt")" />
+										#else
+											<img src = "#imageLink($contentTypeImageService.getContentTypeImage($props.getProperty($props.NamePropContentType)))" border="0" alt="$tlang.getString("gen.filatt")" />
+										#end
+										<a href="$attachment.Url" target="_blank">$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))</a>						
+										#propertyDetails($props)
+									</li>
+									#end
+							#end
+					#end
+					</ul>
+				</div>
+			#end
+			<div id="allowResubmission_hidden" #if (!$!showAllowResubmission && $!value_SubmissionType != 4)style="display:block"#else style="display:none"#end>
+				<input type="hidden" name = "allowResToggle" id = "allowResToggle" value="checked" />
+				<p class="discTria">
+					<a href="#" onclick="javascript:showAllowResubmission();">
+					<img src="#imageLink("sakai/expand.gif")" alt="$tlang.getString("allowResubmission.show")" border="0" width="13" height="13" align="top" /></a>
+						$tlang.getString("allowResubmission.label")
+				</p>
+			</div>
+			<div id="allowResubmission_shown" #if ($!showAllowResubmission && $!value_SubmissionType != 4)style="display:block"#else style="display:none"#end>
+				<p class="discTria">
+					<a href="#" onclick="javascript:hideAllowResubmission();">
+					<img src="#imageLink("sakai/collapse.gif")" alt="$tlang.getString("allowResubmission.hide")" border="0" width="13" height="13" align="top" /></a>
+						$tlang.getString("allowResubmission.label")
+				</p>
+				<div id="allowResubmission_shownInner" style="display:none">
+				 <p class="instruction">
+				  $tlang.getString("allowResubmission.instruction")
+				 </p>
+				 ##show it only for those assignments not of type non-electronic submission
+							<p class="shorttext" id="allowResubmitNumber">
+								<label for="allowResubmitNumber">
+									$tlang.getString("allow.resubmit.number")
+								</label>
+								<select name="$name_allowResubmitNumber" id="allowResubmitNumber" onchange="if (document.getElementById('allowResubmitNumber').value!=0 && document.getElementById('allowResubmitTime') !=null){document.getElementById('allowResubmitTime').style.display = 'block';}else {document.getElementById('allowResubmitTime').style.display = 'none';}">
+									#foreach ($i in [1..10])
+										<option value="$i" #if($i==$!value_allowResubmitNumber)selected="selected"#end>
+											$i
+										</option>
+									#end
+									<option value="-1" #if($!value_allowResubmitNumber == -1)selected="selected"#end>$tlang.getString("allow.resubmit.number.unlimited")</option>
+								</select>
+							</p>
+							<p class="shorttext" id="allowResubmitTime" style="$!resubmitStyle">
+								## only show date selection when allowed to resubmit
+								<label for="$name_ResubmitMonth">
+									$tlang.getString("gen.acesubunt")
+								</label>
+								#chef_dateselectionwidget($name_ResubmitYear $name_ResubmitMonth $name_ResubmitDay $!value_year_from $!value_year_to $value_ResubmitYear $value_ResubmitMonth $value_ResubmitDay $dateFormat "")
+								$tlang.getString("gen.at") 
+								<select name="$name_ResubmitHour" id="$name_ResubmitHour">
+									#foreach ($i in [1..12])
+										#if ($i == $value_ResubmitHour)
+											<option value="$i" selected="selected">$i</option>
+										#else
+											<option value="$i">$i</option>
+										#end
+									#end
+								</select>
+								<select name="$name_ResubmitMin" id="$name_ResubmitMin">
+									#foreach ($i in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
+										<option value="$i" #if($i == $value_ResubmitMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
+									#end
+								</select>
+								<select name="$name_ResubmitAMPM" id="$name_ResubmitAMPM">
+									#foreach ($i in ["AM", "PM"])
+										#if ($i == $value_ResubmitAMPM)
+											<option value="$i" selected="selected">$i</option>
+										#else
+											<option value="$i">$i</option>
+										#end
+									#end
+								</select>
+								## for save the resubmission choice
+								<div class="act">
+									<input type="submit" class="active" name="eventSubmit_doSave_resubmission_option" value="$tlang.getString("update")" accesskey="s" />
+								</div>
+							</p>
+						</div>	
+			</div>
+			## show all submission
+			<table class="listHier lines nolines" id ="submissionList" cellpadding="0" cellspacing="0" summary="$tlang.getString("gen.viewassliststudentsummary")">
+				<tr>
+					<th id="selectResubmit" class="smallCol">
+						<input type="checkbox" name="toggleAllSelectAllowResubmit" value="" id="toggleAllSelectAllowResubmit" onclick="javascript:toggleSelectAll(this, 'selectedAllowResubmit')" />
+					</th> 
+					<th id="attachment" class="attach">
+						<img src="#imageLink("sakai/attachments.gif")" border="0" alt="$tlang.getString("gen.att")" width="15" height="15" />
+					</th>
+					<th id="studentname">
+						<a href="#" onclick="location='#toolLinkParam("AssignmentAction" "doSort_grade_submission" "criteria=$!sort_lastName")'; return false;"   title="$tlang.getString("gen.sorbylas")">
+							$tlang.getString("gen.student")
+							#if ($sortedBy.equals($!sort_lastName)) 
+								#if ($sortedAsc.equals("true")) 
+									<img id="sortascendinglastname" src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString("gen.sorasc")" /> 
+								#else 
+									<img id="sortdescendinglastname" src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString("gen.sordes")" /> 
+								#end 
+							#end 
+						</a>
+					</th>
+					<th id="submitted">
+						<a href="#" onclick="location='#toolLinkParam("AssignmentAction" "doSort_grade_submission" "criteria=$!sort_submitTime")'; return false;"  title="$tlang.getString("listsub.sorbysub")">
+							$tlang.getString("gen.subm4")
+							#if ($sortedBy.equals($!sort_submitTime)) 
+								#if ($sortedAsc.equals("true")) 
+									<img id="sort_ascending_submittime" src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString("gen.sorasc")" /> 
+								#else 
+									<img id="sort_descending_submit_time" src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString("gen.sordes")" /> 
+								#end 
+							#end 
+						</a>
+					</th>
+					<th id="status">
+						<a href="#" onclick="location='#toolLinkParam("AssignmentAction" "doSort_grade_submission" "criteria=$!sort_submitStatus")'; return false;"  title="$tlang.getString("list.sorbysta")">
+							$tlang.getString("gen.status")
+							#if ($sortedBy.equals($!sort_submitStatus)) 
+								#if ($sortedAsc.equals("true")) 
+									<img id="sort_ascending_status" src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString("gen.sorasc")" /> 
+								#else 
+									<img id="sort_descending_status" src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString("gen.sordes")" /> 
+								#end 
+							#end 
+						</a>
+					</th>
+					#if ($withGrade)
+						<th id="grade">
+							<a href="#" onclick="location='#toolLinkParam("AssignmentAction" "doSort_grade_submission" "criteria=$!sort_submitGrade")'; return false;"  title="$tlang.getString("gen.sorbygra")">
+								$tlang.getString("gen.gra")
+								#if ($sortedBy.equals($!sort_submitGrade)) 
+									#if ($sortedAsc.equals("true")) 
+										<img id="sort_ascending_grade" src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString("gen.sorasc")" /> 
+									#else 
+										<img id="sort_descending_grade" src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString("gen.sordes")" /> 
+									#end 
+								#end 
+							</a>
+						</th>
+					#end	
+					#if ($allowReviewService && $assignment.getContent().AllowReviewService)
+						<th id="reviewService">
+							<a href="#" onclick="location='#toolLinkParam("AssignmentAction" "doSort_grade_submission" "criteria=$!sort_submitReview")'; return false;" onkeypress="location='#toolLinkParam("AssignmentAction" "doSort_grade_submission" "criteria=$!sort_submitReview")'; return false;" title="$tlang.getString("gen.sorbyreview")">
+								$tlang.getString("gen.rev")
+								#if ($sortedBy.equals($!sort_submitReview)) 
+									#if ($sortedAsc.equals("true")) 
+										<img id="sort_ascending_review" src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString("gen.sorasc")" /> 
+									#else 
+										<img id="sort_descending_review" src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString("gen.sordes")" /> 
+									#end 
+								#end 
+							</a>
+						</td>
+					#end
+					<th id="gradereleased">
+						<a href="#" onclick="location='#toolLinkParam("AssignmentAction" "doSort_grade_submission" "criteria=$!sort_submitReleased")'; return false;"  title="$tlang.getString("listsub.sorbyrel")">
+							$tlang.getString("gen.relea")
+							#if ($sortedBy.equals($!sort_submitReleased)) 
+								#if ($sortedAsc.equals("true")) 
+									<img id="sort_ascending_released" src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString("gen.sorasc")" /> 
+								#else 
+									<img id="sort_descending_released" src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString("gen.sordes")" /> 
+								#end 
+							#end 
+						</a>
+					</th>
+				</tr>
+				#foreach ($userSubmission in $userSubmissions)
+					#set($submission=false)
+					#set($submission = $userSubmission.Submission)
+					#set($siteUser=false)
+					#set($siteUser = $userSubmission.User)
+					#set($submitterId = $!siteUser.getId())
+					#set($submitterName=$!siteUser.sortName)
+					#set($submitterDisplayId=$!siteUser.getDisplayId())
+					#if ($!submitterDisplayId)
+						##attach the displayId
+						#set($submitterName=$submitterName.concat(" (").concat($submitterDisplayId).concat(")"))
+					#end
+					#set($submitTime=false)
+					#set($returnedTime=false)
+					#if ($!submission)## && $submission.submitted) 
+						#set($returnedTime = $submission.getTimeReturned())
+						#set($submitTime = $submission.getTimeSubmitted())
+						<tr>
+							<td headers="allowResubmit" class="screenOnly smallCol">
+								#set($userId = $!siteUser)
+								<input type="checkbox" name="selectedAllowResubmit" value="$!submitterId" id="check_$submitterId" />
+							</td>
+							<td headers="attachment" class="attach">
+							 #set($size=0)
+								#set ($props = false)
+								#foreach ($attachment in $submission.SubmittedAttachments) 
+									#set ($props = $attachment.Properties) 
+									#if ($!props)
+										#set ($size = $size + 1)
+									#end
+								#end
+								#if ($size > 0)
+									<img src="#imageLink("sakai/attachments.gif")" border="0" alt="$tlang.getString("gen.att")" width="15" height="15" />
+								#end
+							</td>
+							<td headers="studentname">
+								#if ($taggable)
+									#if (!$!submission.submitted)
+										#set($submittedText = $!submission.submittedText)
+										#set($submittedAttachments = $submission.submittedAttachments)
+										#if ($!submittedText.length() > 0 || $!submittedAttachments.size() > 0 )
+										<span class="highlight">$tlang.getString("gen.dra2") </span>
+										#end
+									#end
+									$validator.escapeHtml($submitterName)
+									<div class="itemAction">
+										<a href="#toolLinkParam("AssignmentAction" "doGrade_submission" "assignmentId=$validator.escapeUrl($assignment.Reference)&submissionId=$validator.escapeUrl($submission.Reference)")" title="$tlang.getString("listsub.grasub")">$!tlang.getString("gen.assign.gra")<span class="skip">:$validator.escapeHtml($submitterName)</span></a>
+										#foreach ($provider in $providers)
+											#set ($item = $producer.getItem($submission, $siteUser.getId()))
+											#set ($helperInfo = false)
+											#set ($helperInfo = $provider.provider.getItemHelperInfo($item.reference))
+											#if ($helperInfo)
+												| <a href="#toolLinkParam("$action" "doHelp_item" "itemRef=$validator.escapeUrl($item.reference)&providerId=$validator.escapeUrl($provider.provider.id)")" title="$!helperInfo.description">$!helperInfo.name</a>
+											#end
+										#end
+									</div>
+								#else
+									<a href="#toolLinkParam("AssignmentAction" "doGrade_submission" "assignmentId=$validator.escapeUrl($assignment.Reference)&submissionId=$validator.escapeUrl($submission.Reference)")" title="$tlang.getString("listsub.grasub")">
+										#if (!$!submission.submitted)
+											#set($submittedText = $!submission.submittedText)
+											#set($submittedAttachments = $submission.submittedAttachments)
+											#if ($!submittedText.length() > 0 || $!submittedAttachments.size() > 0 )
+											<span class="highlight">$tlang.getString("gen.dra2") </span>
+											#end
+										#end
+										$validator.escapeHtml($submitterName)
+									</a>
+								#end
+							</td>
+							<td headers="submitted">
+									#if ($!submission)
+										#if($!submitTime)$submitTime.toStringLocalFull()#end
+										#if ($!submitTime && $submitTime.after($assignment.DueTime))
+											<span class="highlight">$tlang.getString("gen.late2")</span> 
+										#end
+									#else
+										$tlang.getString("listsub.nosub")
+									#end
+							</td>
+							<td headers="status">
+								$submission.getStatus()
+							</td>
+							#if ($withGrade)
+								<td headers="grade">
+									#if($!submission)
+										$submission.getGradeDisplay()
+									#end
+								</td>
+							#end	
+							#if ($allowReviewService && $assignment.getContent().AllowReviewService)
+								<td headers="reviewService">
+								 #if ($submission.getReviewScore() == -1 || $submission.getReviewScore() == -2)
+								 	$tlang.getString("review.noreport")
+								 #else
+								 <a href="$submission.getReviewReport()" target="_blank" title="View report: score $submission.getReviewScore()">
+								 <img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
+								 </a>
+								 #end
+									
+								</td>
+							#end
+							<td headers="gradereleased">
+								#if ($submission.getGradeReleased())
+									<img src="#imageLink("sakai/checkon.gif")" alt="$tlang.getString("gen.open")" border="0" width="17" height="13" align="top" />
+								#else
+									<img src="#imageLink("sakai/checkoff.gif")" alt="$tlang.getString("gen.open")" border="0" width="15" height="15" align="top" />
+								#end
+							</td>
+						</tr>
+					#else
+						## no submission for the user yet
+						<tr> 
+							<td headers="attachment" class="attach">
+								&nbsp;
+							</td>
+							<td headers="studentname">
+								$!siteUser.sortName
+							</td>
+							<td headers="submitted">
+								&nbsp;
+							</td>
+							<td headers="status">
+								$tlang.getString("listsub.nosub")
+							</td>
+							#if ($withGrade)
+								<td headers="grade">
+									&nbsp;
+								</td>
+							#end
+							<td headers="gradereleased">
+								&nbsp;
+							</td>
+						</tr>
+					#end
+				#end
+			</table>
+		</form>
+	#end
+	
+	## assignment details
+	<h3  id="toggleModel" class="toggleAnchor specialLink"><img alt="expand" class="expand" src="/library/image/sakai/expand.gif" /><img alt="collapse" class="collapse" src="/library/image/sakai/collapse.gif" />$tlang.getString("gen.assdet")</h3>
+	<div class="toggledContent">
+	<table class="itemSummary" border="0" cellspacing="0" summary="$tlang.getString("gen.theassinf")">
+		<tr> 
+			<th>
+				$tlang.getString("gen.asstit")
+			</th>
+			<td>
+				$validator.escapeHtml($assignment.title)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				$tlang.getString("gen.creby")
+			</th>
+			<td>
+				$validator.escapeHtml($!creator) ($assignment.TimeCreated.toStringLocalFull())
+			</td>
+		</tr>
+		<tr>
+			<th>
+				$tlang.getString("gen.mod")
+			</th>
+			<td>
+				$assignment.TimeLastModified.toStringLocalFull()
+			</td>
+		</tr>
+		<tr> 
+			<th>
+				$tlang.getString("gen.open")
+			</th>
+			<td>
+				$assignment.OpenTime.toStringLocalFull()
+			</td>
+		</tr>
+		<tr> 
+			<th>
+					$tlang.getString("gen.due")
+			</th>
+			<td>
+				$assignment.DueTime.toStringLocalFull()
+			</td>
+		</tr>
+		#set ($closeDate = $assignment.getCloseTime())
+		#if ($!closeDate)
+			<tr> 
+				<th>
+					$tlang.getString("gen.acesubunt")
+				</th>
+				<td>
+					$assignment.CloseTime.toStringLocalFull()
+				</td>
+			</tr>
+		#end
+		<tr> 
+			<th>
+				$tlang.getString("gen.stusub")
+			</th>
+			<td>
+				$submissionTypeTable.get($submissionType)
+			</td>
+		</tr>
+		<tr valign="top"> 
+			<th>
+				$tlang.getString("gen.grasca")
+			</th>
+			<td>
+				## get gradeScale
+				#set ($gradeScale = $assignment.getContent().getTypeOfGradeString($assignment.getContent().getTypeOfGrade()))
+				$gradeScale
+				#if ($!gradeType == 3)
+					($tlang.getString("grade.max") $assignment.getContent().getMaxGradePointDisplay())
+				#end
+			</td>
+		</tr>
+		<tr> 
+			<th>
+				$tlang.getString("gen.honple")
+			</th>
+			<td> 
+				#if ($assignment.getContent().HonorPledge == 1)
+					$tlang.getString("gen.no")
+				#else
+					$tlang.getString("gen.yes")
+				#end
+			</td>
+		</tr>
+	</table>	
+	
+	#if ($assignment.getContent().getInstructions().length()==0)
+	#else
+		<h4>$tlang.getString("gen.assinf")</h4>
+		<div class="textPanel">$validator.escapeHtmlFormattedText($assignment.getContent().getInstructions())</div>
+	#end
+	#set ($size = 0)
+	#set ($attachments = $assignment.getContent().Attachments)
+	#set ($props = false)
+	#foreach ($attachment in $attachments) 
+		#set ($props = $attachment.Properties) 
+		#if ($!props)
+			#set ($size = $size + 1)
+		#end
+	#end
+	#if ($size == 0)
+	#else
+		<h4>$tlang.getString("gen.att")</h4>
+		<ul class="attachList indnt1">
+			#foreach ($attachment in $attachments) 
+				#set ($props = false)
+				#set ($props = $attachment.Properties) 
+				#if ($!props)
+					<li>
+						#if ($props.getBooleanProperty($props.NamePropIsCollection))
+							<img src = "#imageLink($contentTypeImageService.getContentTypeImage("folder"))" border="0" alt="$tlang.getString("gen.folatt")" />
+						#else
+							<img src = "#imageLink($contentTypeImageService.getContentTypeImage($props.getProperty($props.NamePropContentType)))" border="0" alt="$tlang.getString("gen.filatt")" />
+						#end
+						<a href="$attachment.Url" target="_blank">$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))</a>						
+						#propertyDetails($props)
+					</li>
+				#end
+			#end
+		</ul>
+	#end
+	#if ($taggable)
+	   	#parse ("/vm/assignment/chef_assignments_tags_list.vm")
+	#end
+	</div>	
+</div>
+<!-- end: chef_assignments_instructor_list_submissions.vm  -->

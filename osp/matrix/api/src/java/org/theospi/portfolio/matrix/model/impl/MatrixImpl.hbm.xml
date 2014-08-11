@@ -1,0 +1,279 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.theospi.portfolio.matrix.model" default-lazy="false">
+
+    <class name="Matrix" table="osp_matrix" lazy="true">
+       <cache usage="nonstrict-read-write"/>
+        <id name="id" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" column="id">
+            <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator" />
+        </id>
+        <property name="owner" not-null="true"
+        		type="org.sakaiproject.metaobj.shared.mgt.AgentUserType" />
+        <many-to-one name="scaffolding" column="scaffolding_id"
+            not-null="true" class="Scaffolding" cascade="none"/>
+        <set name="cells" cascade="all-delete-orphan" inverse="true"
+            lazy="true">
+            <key column="matrix_id" />
+            <one-to-many class="Cell" />
+        </set>
+
+    </class>
+
+    <class name="Cell" table="osp_matrix_cell" lazy="true">
+       <cache usage="nonstrict-read-write"/>
+        <id name="id" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" column="id">
+            <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator" />
+        </id>
+        <many-to-one name="matrix" column="matrix_id" not-null="true"
+            class="Matrix" />
+        <many-to-one name="wizardPage" class="WizardPage" column="wizard_page_id"
+           cascade="all" unique="true" />
+        <many-to-one name="scaffoldingCell" column="scaffolding_cell_id"
+            class="ScaffoldingCell" cascade="none" />
+
+    </class>
+
+   <class name="WizardPage" table="osp_wizard_page" lazy="false">
+      <cache usage="nonstrict-read-write"/>
+       <id name="id" length="36"
+           type="org.sakaiproject.metaobj.shared.IdType" column="id">
+           <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator" />
+       </id>
+       
+       <property name="owner" not-null="true"
+            type="org.sakaiproject.metaobj.shared.mgt.AgentUserType" />
+
+       <property name="status" type="java.lang.String" />
+       <set name="attachments" cascade="all-delete-orphan"
+           inverse="true" lazy="false">
+          <cache usage="nonstrict-read-write"/>
+           <key column="page_id" />
+           <one-to-many class="Attachment" />
+       </set>
+
+       <many-to-one name="pageDefinition" column="wiz_page_def_id"
+           class="WizardPageDefinition" cascade="none" lazy="false" />
+
+       <set name="pageForms" cascade="all-delete-orphan"
+           inverse="true" lazy="false">
+           <cache usage="nonstrict-read-write"/>
+           <key column="page_id" />
+           <one-to-many class="WizardPageForm" />
+       </set>
+       <property name="modified" type="java.util.Date" update="true" not-null="false"/>
+       
+   </class>
+
+	<class name="Attachment" table="osp_wiz_page_attachment" lazy="true">
+      <cache usage="nonstrict-read-write"/>
+        <id name="id" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" column="id">
+            <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator" />
+        </id>
+        <property name="artifactId" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" />
+        <many-to-one name="wizardPage" column="page_id" not-null="true"
+            class="WizardPage" cascade="none" />
+        		
+    </class>
+    
+   <class name="WizardPageForm" table="osp_wiz_page_form" lazy="true">
+      <cache usage="nonstrict-read-write"/>
+        <id name="id" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" column="id">
+            <generator class="org.sakaiproject.metaobj.shared.IdGenerator" />
+        </id>
+        <property name="artifactId" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" />
+        <many-to-one name="wizardPage" column="page_id" not-null="true"
+            class="WizardPage" cascade="none" />
+        <property name="formType" length="36" type="string" />
+
+    </class>
+
+   <class name="Label" table="osp_matrix_label" discriminator-value="?">
+      <cache usage="nonstrict-read-write"/>
+        <id name="id" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" column="id">
+            <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator" />
+        </id>
+        <discriminator type="character">
+         <column name="type" length="1" index="IDX_MATRIX_LABEL"/>
+        </discriminator>
+        <property name="description" type="java.lang.String" />
+        <property name="color" type="java.lang.String" length="7" />
+        <property name="textColor" type="java.lang.String" length="7" />
+        <subclass name="Level" discriminator-value="L" />
+        <subclass name="Criterion" discriminator-value="C" />
+    </class>
+
+    
+
+    <class name="ScaffoldingCell" table="osp_scaffolding_cell" lazy="true" >
+      <cache usage="nonstrict-read-write"/>
+    	<id name="id" length="36" type="org.sakaiproject.metaobj.shared.IdType" column="id">
+			<generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator"/>
+    	</id>
+    	<many-to-one name="rootCriterion" column="rootcriterion_id" class="Criterion"/>
+      <many-to-one name="level" column="level_id" class="Level"/>
+    	<many-to-one name="scaffolding" column="scaffolding_id" not-null="true" class="Scaffolding"/>
+      <set name="cells" cascade="all-delete-orphan" inverse="true"
+            lazy="true">
+            <key column="scaffolding_cell_id" />
+            <one-to-many class="Cell" />
+        </set>
+       <many-to-one name="wizardPageDefinition" class="WizardPageDefinition" column="wiz_page_def_id"
+          cascade="all" unique="true" />
+
+    </class>
+    
+    <class name="org.theospi.portfolio.shared.model.ObjectWithWorkflow" 
+         table="osp_workflow_parent">
+      <cache usage="nonstrict-read-write"/>
+        <id name="id" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" column="id">
+            <generator class="org.theospi.portfolio.shared.model.IdentifiableIdGenerator" />
+        </id>
+
+        <property name="reflectionDevice" column="reflection_device_id" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType"/>
+        <property name="reflectionDeviceType" type="string" column="reflection_device_type" />
+        <property name="evaluationDevice" column="evaluation_device_id" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType"/>
+        <property name="evaluationDeviceType" type="string" column="evaluation_device_type" />
+        <property name="reviewDevice" column="review_device_id" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType"/>
+        <property name="reviewDeviceType" type="string" column="review_device_type" />
+        <set name="evalWorkflows" cascade="all,delete" inverse="true" lazy="false" >
+           <key column="parent_id" />
+           <one-to-many class="org.theospi.portfolio.workflow.model.Workflow" />
+        </set>
+         
+    </class>
+    
+    <joined-subclass name="Scaffolding" table="osp_scaffolding" lazy="true" 
+    	extends="org.theospi.portfolio.shared.model.ObjectWithWorkflow">
+    	<key column="id"/>
+         <property name="owner" column="ownerId" not-null="true"
+            type="org.sakaiproject.metaobj.shared.mgt.AgentUserType" />
+        <property name="title" type="java.lang.String" />
+        <property name="description" type="text" />
+        <property name="worksiteId" type="org.sakaiproject.metaobj.shared.IdType" />
+        <list name="levels" lazy="true" inverse="false" cascade="all-delete-orphan"
+            table="osp_scaffolding_levels">
+            <key column="scaffolding_id" />
+            <index column="seq_num" />
+            <many-to-many class="Level" />
+        </list>
+        <list name="criteria" lazy="true" inverse="false" cascade="all-delete-orphan"
+        		table="osp_scaffolding_criteria">
+            <key column="scaffolding_id" />
+            <index column="seq_num" />
+            <many-to-many class="Criterion" />
+        </list>
+        
+		<set name="scaffoldingCells" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="scaffolding_id" />
+            <one-to-many class="ScaffoldingCell" />
+        </set>
+        
+        <property name="generalFeedbackOption" type="int" not-null="true" />
+        <property name="itemFeedbackOption" type="int" not-null="true" />
+        <property name="preview" type="boolean" not-null="true" />
+        <property name="published" type="boolean" />
+        <property name="publishedBy" type="org.sakaiproject.metaobj.shared.mgt.AgentUserType" />
+        <property name="publishedDate" type="java.util.Date" />
+        <property name="modifiedDate" type="java.util.Date" />
+        <property name="columnLabel" type="java.lang.String" not-null="true" />
+        <property name="rowLabel" type="java.lang.String" not-null="true" />
+        <property name="readyColor" type="java.lang.String" not-null="false" length="7"/>
+        <property name="pendingColor" type="java.lang.String" not-null="false" length="7"/>
+        <property name="completedColor" type="java.lang.String" not-null="false" length="7"/>
+        <property name="lockedColor" type="java.lang.String" not-null="false" length="7"/>
+        <property name="returnedColor" type="java.lang.String" not-null="false" length="7"/>
+        <property name="workflowOption" type="int" not-null="true" />
+        <property name="allowRequestFeedback" type="boolean" column="allowRequestFeedback"  not-null="false"/>
+        <property name="hideEvaluations" type="boolean" column="hideEvaluations"  not-null="false"/>
+        <property name="defaultFormsMatrixVersion" type="boolean" column="defaultFormsMatrixVersion"  not-null="false"/>
+        
+        <set name="matrix" cascade="all-delete-orphan" inverse="true"
+            lazy="true">
+            <key column="scaffolding_id" />
+            <one-to-many class="Matrix" />
+        </set>
+        <property name="exposedPageId" type="string" length="36" column="exposed_page_id" not-null="false"/>
+        
+        <list name="additionalForms" cascade="all-delete-orphan"
+           inverse="false" lazy="false" table="osp_scaffolding_form_defs">
+           <key column="id" />
+           <index column="seq_num" />
+           <element column="form_def_id" type="string"/>
+       </list>
+        
+        <list name="attachments" cascade="all-delete-orphan"
+           inverse="false" lazy="false" table="osp_scaffolding_attachments">
+           <key column="id" />
+           <index column="seq_num" />
+           <element column="artifact_id" type="string"/>
+        </list>
+        
+        <many-to-one name="style" column="style_id" not-null="false" class="org.theospi.portfolio.style.model.Style"/>
+    </joined-subclass>
+ 
+   <joined-subclass name="WizardPageDefinition" table="osp_wizard_page_def"
+         extends="org.theospi.portfolio.shared.model.ObjectWithWorkflow">
+      <key column="id"/>
+      <property name="initialStatus" type="java.lang.String" />
+      <set name="pages" cascade="all-delete-orphan" inverse="true"
+            lazy="true">
+         <cache usage="nonstrict-read-write"/>
+         <key column="wiz_page_def_id" />
+         <one-to-many class="WizardPage" />
+      </set>
+
+      <property name="title" type="string" column="name" not-null="false"/>
+      <property name="description" type="text" column="description" not-null="false"/>
+      
+      <property name="suppressItems" column="SUPPRESS_ITEMS" type="boolean" not-null="false"/>
+    
+      <property name="siteId" type="string" column="site_id" />
+
+      <property name="guidance" column="guidance_id" not-null="false"
+        type="org.theospi.portfolio.guidance.mgt.GuidanceUserType"/>
+
+      <list name="additionalForms" cascade="all-delete-orphan"
+           inverse="false" lazy="false" table="osp_scaffolding_cell_form_defs">
+           <cache usage="nonstrict-read-write"/>
+           <key column="wiz_page_def_id" />
+           <index column="seq_num" />
+           <element column="form_def_id" type="string"/>
+       </list>
+      
+      <list name="attachments" cascade="all-delete-orphan"
+           inverse="false" lazy="false" table="osp_wiz_page_def_attachments">
+           <key column="wiz_page_def_id" />
+           <index column="seq_num" />
+           <element column="artifact_id" type="string"/>
+       </list>
+      
+      <many-to-one name="style" column="style_id" not-null="false" class="org.theospi.portfolio.style.model.Style"/> 
+      
+                
+      <property name="defaultCustomForm" type="boolean" column="defaultCustomForm"  not-null="false"/>
+      <property name="defaultReflectionForm" type="boolean" column="defaultReflectionForm"  not-null="false"/>
+      <property name="defaultFeedbackForm" type="boolean" column="defaultFeedbackForm"  not-null="false"/>
+      <property name="defaultReviewers" type="boolean" column="defaultReviewers"  not-null="false"/> 
+      <property name="defaultEvaluationForm" type="boolean" column="defaultEvaluationForm"  not-null="false"/> 
+      <property name="defaultEvaluators" type="boolean" column="defaultEvaluators"  not-null="false"/>    
+      
+      <property name="allowRequestFeedback" type="boolean" column="allowRequestFeedback"  not-null="false"/>
+      <property name="hideEvaluations" type="boolean" column="hideEvaluations"  not-null="false"/>
+      <property name="type" type="string" column="type" not-null="true" length="1"/>
+         
+   </joined-subclass>
+
+</hibernate-mapping>

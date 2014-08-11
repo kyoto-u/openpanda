@@ -1,0 +1,199 @@
+<!-- ***** show the attached resources ***** -->
+
+	<c:if test="${!cell.scaffoldingCell.suppressItems}">
+
+		<tr class="cellItemAddLine">
+			<td colspan="2"><h4><c:out value="${msgs.attachments}" /></h4></td>
+			<td>
+			<c:choose>
+				<c:when
+					test="${(cell.status == 'READY' or cell.status == 'RETURNED') and readOnlyMatrix != 'true' && !cell.scaffoldingCell.suppressItems}">
+					<div class="itemAction"><%-- these should be links below--%>
+					<c:choose>
+						<c:when test="${empty cellBean.nodes}">
+							<a
+								href="<osp:url value="osp.wizard.page.contents.helper/attachToCell.osp">
+							<osp:param name="page_id" value="${cell.wizardPage.id}"/></osp:url>"
+								onClick="javascript:stopEvents(event); document.form.method='GET';">
+							<c:out value="${msgs.action_addItems}" /> </a>
+						</c:when>
+						<c:otherwise>
+							<a
+								href="<osp:url value="osp.wizard.page.contents.helper/attachToCell.osp">
+							 <osp:param name="page_id" value="${cell.wizardPage.id}"/>
+							 </osp:url>"
+								onclick="javascript:stopEvents(event); document.form.method='GET';">
+							<c:out value="${msgs.action_manageItems}" /> </a>
+						</c:otherwise>
+					</c:choose></div>
+				</c:when>
+			</c:choose>
+			</td>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+	</c:if>
+	<c:if
+		test="${empty cellBean.nodes &&   !cell.scaffoldingCell.suppressItems}">
+		<tr>
+
+			<td colspan="6">
+			<p class="instruction indnt2"><fmt:message
+				key="other_items_header_none" /></p>
+			</td>
+		</tr>
+	</c:if>
+
+	<c:forEach var="node" items="${cellBean.nodes}" varStatus="loopStatus">
+		<c:set var="canReflect" value="true" />
+
+		<tr>
+			<td colspan="2">
+			<h5><span class="indnt2"> <img border="0"
+				title="<c:out value="${hover}" />"
+				alt="<c:out value="${node.name}"/>"
+				src="/library/image/<osp-c:contentTypeMap 
+				  fileType="${node.mimeType}" mapType="image" 
+				  />" />
+			<a href='<c:out value="${node.externalUri}"/>' target="_blank"> <c:out
+				value="${node.name}" /> </a> <span class="textPanelFooter">( <c:choose>
+				<c:when test="${node.technicalMetadata.size > 1024 * 1024}">
+					<fmt:formatNumber
+						value="${node.technicalMetadata.size / (1024 * 1024)}"
+						maxFractionDigits="1" />
+					<c:out value="${msgs.text_MB}" />
+				</c:when>
+				<c:when test="${node.technicalMetadata.size > 1024}">
+					<fmt:formatNumber value="${node.technicalMetadata.size / (1024)}"
+						maxFractionDigits="1" />
+					<c:out value="${msgs.text_KB}" />
+				</c:when>
+				<c:when test="${node.technicalMetadata.size > 0}">
+					<fmt:formatNumber value="${node.technicalMetadata.size}" />
+				</c:when>
+			</c:choose> )</span> </span></h5>
+			</td>
+			<td style="white-space: nowrap">
+			<div class="itemAction"><c:if
+				test="${(cell.status == 'READY' or cell.status == 'RETURNED') and readOnlyMatrix != 'true'}">
+				<a
+					href="<osp:url value="osp.wizard.page.contents.helper/resourceDelete.osp">
+						   <osp:param name="page_id" value="${cell.wizardPage.id}"/>
+						   <osp:param name="resource_id" value="${node.id}"/>
+						   <osp:param name="submit" value="delete"/>
+						   </osp:url>"
+					onclick="javascript:stopEvents(event)"
+					title='<c:out value="${msgs.remove}"/>'> 
+					<c:out value="${msgs.remove}"/></a>
+					<c:set var="hasFirstAction" value="true"/>
+			</c:if> 
+			<c:set var="aggIndex" value="${loopStatus.index+numCellForms}"/>
+			
+			<c:if
+				test="${((isWizard != 'true' && matrixCanReview) || (isWizard == 'true' && wizardCan.review)) && 
+						((cell.scaffoldingCell.reviewDevice != null && !cell.scaffoldingCell.wizardPageDefinition.defaultFeedbackForm) 
+									|| (cell.scaffoldingCell.scaffolding.reviewDevice != null && cell.scaffoldingCell.wizardPageDefinition.defaultFeedbackForm)) 
+						&& allowItemFeedback[aggIndex]}">
+				<c:if test="${hasFirstAction == 'true'}">
+				|
+				</c:if> <a class="TB_hideControl"
+					href="<osp:url value="osp.review.processor.helper/reviewHelper.osp">
+                          <osp:param name="page_id" value="${cell.wizardPage.id}" />
+                          <osp:param name="org_theospi_portfolio_review_type" value="2" />
+                          <osp:param name="process_type_key" value="page_id" />
+                          <osp:param name="isWizard" value="${isWizard}" />
+                          <osp:param name="objectId" value="${objectId}" />
+                          <osp:param name="objectTitle" value="${objectTitle}" />
+                          <osp:param name="itemId" value="${node.id}" />
+                          <c:if test="${cell.scaffoldingCell.wizardPageDefinition.defaultFeedbackForm}">
+				       		<osp:param name="scaffoldingId" value="${cell.scaffoldingCell.scaffolding.id}" />
+				          </c:if>
+                          </osp:url>"><osp:message
+					key="item_review" /></a>
+			</c:if></div>
+			</td>
+			<td></td>
+			<td>
+				<c:choose>
+					<c:when test="${((wizardCan.evaluate || wizardCan.review) && isWizard == 'true') || (scaffoldingCan.accessUserList || cell.wizardPage.owner.id == currentUser)}">
+						<c:out value="${node.technicalMetadata.owner.displayName}" />
+					</c:when>
+					<c:otherwise>
+						<span title='<c:out value="${msgs.blind_evaluation_tooltip}"/>'>
+							<c:out value="${msgs.blind_evaluation_username}"/>
+						</span>
+					</c:otherwise>
+				</c:choose>	
+			</td>
+			<td><fmt:formatDate
+				value="${node.technicalMetadata.lastModified}"
+				pattern="${date_format}" /></td>
+		</tr>
+
+		<!-- ************* Attached Resources Review (Feedback) Area Start ************* -->
+		<c:set var="feedbackHeader" value="false" />
+		<c:forEach var="object" items="${reviews}" varStatus="loopStatus">
+			<c:if test="${object.itemId == node.id}">
+
+				<tr>
+					<td colspan="2">
+						<h6><span class="indnt3"> <img
+							src='/library/image/silk/comment.gif' border='0' hspace='0' alt="" />
+							<c:if test="${object.reviewContentNode.technicalMetadata.owner.id == currentUser || (scaffoldingCan.viewFeedbackOther && isWizard != 'true') || ((wizardCan.evaluate || wizardCan.review) && isWizard == 'true') || cell.wizardPage.owner.id == currentUser}">
+								<a href='<c:out value="${object.reviewContentNode.externalUri}"/>'
+									target="_blank">
+							</c:if>
+								 <c:out value="${object.reviewContentNode.displayName}" />
+							<c:if test="${object.reviewContentNode.technicalMetadata.owner.id == currentUser || (scaffoldingCan.viewFeedbackOther && isWizard != 'true') || ((wizardCan.evaluate || wizardCan.review) && isWizard == 'true') || cell.wizardPage.owner.id == currentUser}">
+								</a> 
+							</c:if>
+							</span>
+						</h6>
+					</td>
+					<td nowrap="nowrap">
+						<!-- Allow Reviewers to edit/delete feedback -->
+						<c:if
+							test="${((isWizard != 'true' && matrixCanReview) || (isWizard == 'true' && wizardCan.review))
+							        && enableReviewEdit && object.reviewContentNode.technicalMetadata.owner.id == currentUser }">
+							<a
+								href="<osp:url value="osp.review.processor.helper/reviewHelper.osp">
+										<osp:param name="page_id" value="${cell.wizardPage.id}" />
+										<osp:param name="org_theospi_portfolio_review_type" value="2" />
+										<osp:param name="current_review_id" value="${object.reviewContentNode.resource.id}" />
+										<osp:param name="review_id" value="${object.id}"/>
+										<osp:param name="process_type_key" value="page_id" />
+										<c:if test="${cell.scaffoldingCell.wizardPageDefinition.defaultFeedbackForm}">
+							       			<osp:param name="scaffoldingId" value="${cell.scaffoldingCell.scaffolding.id}" />
+							          	</c:if>
+										</osp:url>"
+								title='<c:out value="${msgs.edit}"/>'> 
+										<c:out value="${msgs.edit}"/></a>
+										 |
+								 <a
+								href="<osp:url value="osp.wizard.page.contents.helper/formDelete.osp">
+										<osp:param name="page_id" value="${cell.wizardPage.id}" />
+										<osp:param name="formDefId" value="${cell.scaffoldingCell.reviewDevice}" />
+										<osp:param name="current_form_id" value="${object.reviewContentNode.resource.id}" />
+										<osp:param name="review_id" value="${object.id}"/>
+										<osp:param name="submit" value="deleteReview" />
+										<c:if test="${cell.scaffoldingCell.wizardPageDefinition.defaultFeedbackForm}">
+							       			<osp:param name="scaffoldingId" value="${cell.scaffoldingCell.scaffolding.id}" />
+							          	</c:if>
+										</osp:url>"
+								title='<c:out value="${msgs.delete}"/>'>
+										<c:out value="${msgs.remove}"/>
+								 </a>
+							 </c:if>
+					</td>
+					<td></td>
+					<td><c:out
+						value="${object.reviewContentNode.technicalMetadata.owner.displayName}" />
+					</td>
+					<td><fmt:formatDate
+						value="${object.reviewContentNode.technicalMetadata.lastModified}"
+						pattern="${date_format}" /></td>
+				</tr>
+			</c:if>
+		</c:forEach>
+
+		<!-- ************* Attached Resources Review (Feedback) Area End ************* -->
+	</c:forEach>

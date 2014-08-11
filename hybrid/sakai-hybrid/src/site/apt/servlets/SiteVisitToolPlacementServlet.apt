@@ -1,0 +1,323 @@
+  ------
+  Sites Servlet
+  ------
+  Lance Speelmon
+  ------
+  2010-12-20
+  ------
+
+  ~~ Licensed to the Sakai Foundation (SF) under one
+  ~~ or more contributor license agreements.  See the NOTICE file
+  ~~ distributed with this work for additional information
+  ~~ regarding copyright ownership.  The SF licenses this file
+  ~~ to you under the Apache License, Version 2.0 (the
+  ~~ "License"); you may not use this file except in compliance
+  ~~ with the License.  You may obtain a copy of the License at
+  ~~
+  ~~   http://www.apache.org/licenses/LICENSE-2.0
+  ~~
+  ~~ Unless required by applicable law or agreed to in writing,
+  ~~ software distributed under the License is distributed on an
+  ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~~ KIND, either express or implied.  See the License for the
+  ~~ specific language governing permissions and limitations
+  ~~ under the License.
+
+  ~~ NOTE: For help with the syntax of this file, see:
+  ~~ http://maven.apache.org/doxia/references/apt-format.html
+
+SiteVisitToolPlacementServlet
+
+  Retrieves the list of tools and placements for a given site that can be accessed by the current user. 
+  
+* Bindings
+
+  URL Pattern: <<</sakai-hybrid/site>>>
+
+* Methods
+
+** GET
+
+  Get the list of tools and placements for a given site that can be accessed by the current user. 
+  Data is returned as <<<application/json>>> in all cases.
+
+*** Parameters
+
+  * <<siteId>>
+  
+    Required. <<<String>>> The Sakai 2 site identifier.
+    
+*** Status Codes
+
+  * <<200>>
+  
+    Request has been processed successfully.
+  
+  * <<400>>
+    
+    Bad request; missing siteId parameter.
+    
+  * <<403>>
+
+    The current user does not have permissions to access the site for given siteId.
+
+  * <<404>>
+
+    A site could not be found for given siteId.
+
+  * <<500>>
+  
+    Error while processing request.
+
+*** Sample Output
+
+  * e.g. <<</sakai-hybrid/site?siteId=!admin>>>
+  
++------------------------------------------------------------------------------
+{
+    "principal":"admin",
+    "site":
+    {
+        "title":"Administration Workspace",
+        "id":"!admin",
+        "pages":
+        [
+            {
+                "id":"!admin-100",
+                "name":"Home",
+                "layout":0,
+                "number":1,
+                "popup":false,
+                "iconclass":"icon-sakai-motd",
+                "tools":
+                [
+                    {
+                        "url":"!admin-110",
+                        "title":"Message Of The Day"
+                    },
+                    {
+                        "url":"!admin-120",
+                        "title":"My Workspace Information Display"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-200",
+                "name":"Users",
+                "layout":0,
+                "number":2,
+                "popup":false,
+                "iconclass":"icon-sakai-users",
+                "tools":
+                [
+                    {
+                        "url":"!admin-210",
+                        "title":"Users"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-250",
+                "name":"Aliases",
+                "layout":0,
+                "number":3,
+                "popup":false,
+                "iconclass":"icon-sakai-aliases",
+                "tools":
+                [
+                    {
+                        "url":"!admin-260",
+                        "title":"Aliases"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-300",
+                "name":"Sites",
+                "layout":0,
+                "number":4,
+                "popup":false,
+                "iconclass":"icon-sakai-sites",
+                "tools":
+                [
+                    {
+                        "url":"!admin-310",
+                        "title":"Sites"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-350",
+                "name":"Realms",
+                "layout":0,
+                "number":5,
+                "popup":false,
+                "iconclass":"icon-sakai-realms",
+                "tools":
+                [
+                    {
+                        "url":"!admin-355",
+                        "title":"Realms"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-360",
+                "name":"Worksite Setup",
+                "layout":0,
+                "number":6,
+                "popup":false,
+                "iconclass":"icon-sakai-sitesetup",
+                "tools":
+                [
+                    {
+                        "url":"!admin-365",
+                        "title":"Worksite Setup"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-400",
+                "name":"Announcements",
+                "layout":0,
+                "number":7,
+                "popup":false,
+                "iconclass":"icon-sakai-announcements",
+                "tools":
+                [
+                    {
+                        "url":"!admin-410",
+                        "title":"Announcements"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-500",
+                "name":"Resources",
+                "layout":0,
+                "number":8,
+                "popup":false,
+                "iconclass":"icon-sakai-resources",
+                "tools":
+                [
+                    {
+                        "url":"!admin-510",
+                        "title":"Resources"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-600",
+                "name":"Online",
+                "layout":0,
+                "number":9,
+                "popup":false,
+                "iconclass":"icon-sakai-online",
+                "tools":
+                [
+                    {
+                        "url":"!admin-610",
+                        "title":"Online"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-700",
+                "name":"Memory",
+                "layout":0,
+                "number":10,
+                "popup":false,
+                "iconclass":"icon-sakai-memory",
+                "tools":
+                [
+                    {
+                        "url":"!admin-710",
+                        "title":"Memory"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-900",
+                "name":"Site Archive",
+                "layout":0,
+                "number":11,
+                "popup":false,
+                "iconclass":"icon-sakai-archive",
+                "tools":
+                [
+                    {
+                        "url":"!admin-910",
+                        "title":"Site Archive"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-1000",
+                "name":"Job Scheduler",
+                "layout":0,
+                "number":12,
+                "popup":false,
+                "iconclass":"icon-sakai-scheduler",
+                "tools":
+                [
+                    {
+                        "url":"!admin-1010",
+                        "title":"Job Scheduler"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-1100",
+                "name":"Become User",
+                "layout":0,
+                "number":13,
+                "popup":false,
+                "iconclass":"icon-sakai-su",
+                "tools":
+                [
+                    {
+                        "url":"!admin-1110",
+                        "title":"Become User"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-1200",
+                "name":"User Membership",
+                "layout":0,
+                "number":14,
+                "popup":false,
+                "iconclass":"icon-sakai-usermembership",
+                "tools":
+                [
+                    {
+                        "url":"!admin-1210",
+                        "title":"User Membership"
+                    }
+                ]
+            },
+            {
+                "id":"!admin-1205",
+                "name":"Email template administration",
+                "layout":0,
+                "number":15,
+                "popup":false,
+                "iconclass":"icon-sakai-emailtemplateservice",
+                "tools":
+                [
+                    {
+                        "url":"!admin-1211",
+                        "title":"Email template administration"
+                    }
+                ]
+            }
+        ],
+        "roles":
+        [
+            {
+                "id":"admin"
+            }
+        ]
+    }
+}
++------------------------------------------------------------------------------
