@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/RWikiServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/RWikiServlet.java $
  * $Id: RWikiServlet.java 81708 2010-08-24 04:46:04Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

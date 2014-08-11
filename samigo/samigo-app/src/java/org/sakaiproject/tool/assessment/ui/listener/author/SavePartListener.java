@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePartListener.java $
- * $Id: SavePartListener.java 92517 2011-05-02 21:12:41Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePartListener.java $
+ * $Id: SavePartListener.java 97332 2011-08-23 22:23:15Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -66,7 +66,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: SavePartListener.java 92517 2011-05-02 21:12:41Z ktsao@stanford.edu $
+ * @version $Id: SavePartListener.java 97332 2011-08-23 22:23:15Z ktsao@stanford.edu $
  */
 
 public class SavePartListener
@@ -112,11 +112,11 @@ public class SavePartListener
     AssessmentService assessmentService = null;
     SectionFacade section = null;
     if (isEditPendingAssessmentFlow) {
-    	EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "sectionId=" + sectionId, true));
+    	EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", sectionId=" + sectionId, true));
     	assessmentService = new AssessmentService();
     }
     else {
-    	EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.revise", "sectionId=" + sectionId, true));
+    	EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", sectionId=" + sectionId, true));
     	assessmentService = new PublishedAssessmentService();
     }
     
@@ -156,12 +156,13 @@ public class SavePartListener
     }
     log.debug("**** section title ="+section.getTitle());
     log.debug("**** title ="+title);
-    // if (title != null & !title.equals(""))  // There is no spec saying we don't allow empty string for title , SAK-4211
+    
+    // title, description, and question ordering are editable for both pending and publish assessments
     if (title != null)
       section.setTitle(title);
     section.setDescription(description);
-
-    // TODO: Need to save Type, Question Ordering, and Metadata
+	if (!("".equals(sectionBean.getQuestionOrdering())))
+	  section.addSectionMetaData(SectionDataIfc.QUESTIONS_ORDERING, sectionBean.getQuestionOrdering());
 
     if (isEditPendingAssessmentFlow) {
     	if (!("".equals(sectionBean.getKeyword())))
@@ -172,10 +173,6 @@ public class SavePartListener
 
     	if (!("".equals(sectionBean.getRubric())))
     		section.addSectionMetaData(SectionMetaDataIfc.RUBRICS, TextFormat.convertPlaintextToFormattedTextNoHighUnicode(log, sectionBean.getRubric()));
-
-    	if (!("".equals(sectionBean.getQuestionOrdering())))
-    		section.addSectionMetaData(SectionDataIfc.QUESTIONS_ORDERING, sectionBean.getQuestionOrdering());
-
 
     	if (!("".equals(sectionBean.getType())))  {
     		section.addSectionMetaData(SectionDataIfc.AUTHOR_TYPE, sectionBean.getType());
@@ -256,7 +253,7 @@ public class SavePartListener
     assessmentBean.setAssessment(assessment);
     assessmentService.updateAssessmentLastModifiedInfo(assessment);
     
-    EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "sectionId=" + section.getSectionId(), true));
+    EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", sectionId=" + section.getSectionId(), true));
   }
 
   public SectionFacade addPart(String assessmentId){

@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/SakaiPagingNavigator.java $
- * $Id: SakaiPagingNavigator.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/SakaiPagingNavigator.java $
+ * $Id: SakaiPagingNavigator.java 87931 2011-02-02 12:12:01Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -79,7 +79,7 @@ public class SakaiPagingNavigator extends AjaxPagingNavigator {
 	{
 		if (get("first") == null)
 		{
-			setModel(new CompoundPropertyModel(this));
+			setDefaultModel(new CompoundPropertyModel(this));
 			
 			// Get the row number selector
 			add(newRowNumberSelector(getPageable()));

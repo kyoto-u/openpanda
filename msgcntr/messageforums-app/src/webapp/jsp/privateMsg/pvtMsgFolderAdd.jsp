@@ -18,12 +18,14 @@
 				  <h:outputText value="#{msgs.cdfm_required}"/> <h:outputText value="#{msgs.pvt_star}" styleClass="reqStarInline"/>
 				</div>
 			   
-			   <h:messages styleClass="alertMessage" id="errorMessages" />
+			   <h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}" />
 			 
- <h:panelGrid styleClass="jsfFormTable" columns="2" summary="layout">
+ <h:panelGrid styleClass="jsfFormTable" columns="2">
 			  <h:panelGroup styleClass="shorttext required">
+			      <h:outputLabel for="title">
 				  <h:outputText value="#{msgs.pvt_star}" styleClass="reqStar"/>
-				  <h:outputLabel for="title" value="#{msgs.pvt_folder_title}"/>
+				  <h:outputText  value="#{msgs.pvt_folder_title}"/>
+				  </h:outputLabel>
 			  </h:panelGroup>
 				<h:panelGroup styleClass="shorttext ">
 				<h:inputText id="title" value="#{PrivateMessagesTool.addFolder}" />

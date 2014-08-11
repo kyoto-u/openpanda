@@ -20,7 +20,7 @@
 	}
 	function openSampleCopyrightWindow() 
 	{
-	  window.open("$copyright_alert_url","SampleCopyrightAlert","scrollbars=no,menubar=no,height=400,width=700,resizable=no,toolbar=no,location=no,status=no");
+	  window.open("$copyright_alert_url","SampleCopyrightAlert","scrollbars=yes,menubar=no,height=400,width=700,resizable=no,toolbar=no,location=no,status=no");
 	  return false;
 	}
 	function openMoreInfoCopyrightWindow(selectId) 
@@ -28,7 +28,7 @@
 	  var selectElement = document.getElementById(selectId);
 	  var url = selectElement.options[selectElement.selectedIndex].title;
 	  if (!url) url = "$fairuseurl"; 
-	  if (url && url!="") window.open(url,"MoreInfoCopyrightWindow","scrollbars=no,menubar=no,height=400,width=700,resizable=no,toolbar=no,location=no,status=no");
+	  if (url && url!="") window.open(url,"MoreInfoCopyrightWindow","scrollbars=yes,menubar=no,height=400,width=700,resizable=no,toolbar=no,location=no,status=no");
 	  return false;
 	}
 	function hideOptionalProperties(index, metadataGroup)
@@ -75,6 +75,10 @@
 				else if(link.id.match(/^removeTrigger${DOT}\d+$/))
 				{
 					link.onclick = handleRemoveFileItem;
+				}
+				else if(link.id.match(/^ezproxyTrigger${DOT}\d+$/))
+				{
+				  link.onclick = handleAddEZProxyPrefix;
 				}
 				else if(link.id.match(/^showMetadata_[\S]+${DOT}\d+$/))
 				{
@@ -327,6 +331,29 @@
 			}
 		}
 		return false;
+	}
+	function handleAddEZProxyPrefix(evt)
+	{
+	evt = (typeof(evt)!= 'undefined') ? evt : ((typeof(event) != 'undefined') ? event : null);
+        if(evt)
+        {
+	  var element = (typeof(evt.target) != 'undefined') ? evt.target : ((typeof(evt.srcElement) != 'undefined') ? evt.srcElement : null);
+	  if(element)
+	   {
+	     element = (element.id && element.id.lastIndexOf(DOT) >= 0) ? element : element.parentNode;
+	     
+	     var dot = element.id.lastIndexOf("$DOT");
+	     if(dot >= 0)
+	     {
+	       var index = element.id.substr(dot + 1);
+	       var content_field = document.getElementById('content_'+index);
+	       if (content_field.value.indexOf('$ezproxyPrefix') == -1) {
+	         content_field.value = '$ezproxyPrefix'+content_field.value;
+	       }
+	     }
+	   }
+        }
+	return false;
 	}
 	function togglePropertiesDiv(evt)
 	{
@@ -1056,11 +1083,11 @@
 		if(selectElement && selectElement.value)
 		{
 			var selection = selectElement.selectedIndex;
-			var selectionText = selectElement.options[selection].text;
+			var selectionValue = selectElement.options[selection].value;
 			var copyrightDiv = document.getElementById("copyright_status${DOT}" + index );
 			if(copyrightDiv)
 			{
-				if(selectionText == "${USE_THIS_COPYRIGHT}")
+				if(selectionValue == "${USE_THIS_COPYRIGHT}")
 				{
 					copyrightDiv.style.display="block";
 					resizeFrame('grow');
@@ -1476,6 +1503,23 @@
 		}
 		
 	}
+	
+	//handles showing either the short url or the full url, depending on the state of the checkbox 
+	//(if configured, otherwise returns url as-is as according to the url shortening entity provder)
+	function toggleShortUrlOutput(defaultUrl) {		
+		
+		if(jQuery('#doShortUrl').is(':checked')) {
+			jQuery.ajax({
+				url:'/direct/url/shorten?path='+encodeURI(defaultUrl),
+				success: function(shortUrl) {
+					jQuery('#fileURLHolder').val(shortUrl);
+				}
+			}); 
+		} else {
+			jQuery('#fileURLHolder').val(defaultUrl);
+		}
+	}
+	jQuery('#shortUrlLoader').hide();
 	
 	
 	attachEventHandlers();

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/log/impl/Log4jConfigurationManager.java $
- * $Id: Log4jConfigurationManager.java 63293 2009-06-04 11:41:57Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/log/impl/Log4jConfigurationManager.java $
+ * $Id: Log4jConfigurationManager.java 94961 2011-07-11 04:55:26Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 Sakai Foundation
@@ -263,7 +263,7 @@ public abstract class Log4jConfigurationManager implements LogConfigurationManag
 		}
 		else
 		{
-			M_log.warn("invalid log level: ignorning: " + level);
+			M_log.warn("invalid log level: ignoring: " + level);
 			return false;
 		}
 

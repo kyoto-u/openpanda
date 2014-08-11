@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/conditions/impl/BaseConditionService.java $
- * $Id: BaseConditionService.java 93237 2011-05-24 19:15:29Z zach@aeroplanesoftware.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/conditions/impl/BaseConditionService.java $
+ * $Id: BaseConditionService.java 93233 2011-05-24 19:04:44Z zach@aeroplanesoftware.com $
  ***********************************************************************************
  *
  * Copyright (c) 2008, 2009, 2010 Sakai Foundation

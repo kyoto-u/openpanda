@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/component-manager/src/main/java/org/sakaiproject/component/impl/SpringCompMgr.java $
- * $Id: SpringCompMgr.java 69279 2009-11-27 14:44:01Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/component-manager/src/main/java/org/sakaiproject/component/impl/SpringCompMgr.java $
+ * $Id: SpringCompMgr.java 101726 2011-12-13 22:32:57Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -28,10 +28,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ComponentManager;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.api.ServerConfigurationService.ConfigData;
 import org.sakaiproject.util.ComponentsLoader;
 import org.sakaiproject.util.SakaiApplicationContext;
 import org.sakaiproject.util.SakaiComponentEvent;
@@ -110,7 +114,10 @@ public class SpringCompMgr implements ComponentManager {
 	/**
 	 * Initialize the component manager.
 	 * 
-	 * @param lateRefresh
+	 * @param lateRefresh If <code>true</code> then don't refresh the application context
+	 * but leave it up to the caller, this is useful when running tests as it means you 
+	 * can change the application context before everything gets setup. In production 
+	 * systems it should be <code>false</code>.
 	 */
 	public void init(boolean lateRefresh) {
 		if (m_ac != null)
@@ -138,8 +145,7 @@ public class SpringCompMgr implements ComponentManager {
 
 		// if configured (with the system property CLOSE_ON_SHUTDOWN set),
 		// create a shutdown task to close when the JVM closes
-		// (otherwise we will close in removeChildAc() when the last child is
-		// gone)
+		// (otherwise we will close in removeChildAc() when the last child is gone)
 		if (System.getProperty(CLOSE_ON_SHUTDOWN) != null) {
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				public void run() {
@@ -153,16 +159,46 @@ public class SpringCompMgr implements ComponentManager {
 				// get the singletons loaded
 				m_ac.refresh();
 				m_ac.publishEvent(new SakaiComponentEvent(this, SakaiComponentEvent.Type.STARTED));
-			} catch (Throwable t) {
-				if (Boolean.valueOf(System.getProperty(SHUTDOWN_ON_ERROR,
-						"false"))) {
-					M_log.fatal(t.getMessage(), t);
+			} catch (Exception e) {
+				if (Boolean.valueOf(System.getProperty(SHUTDOWN_ON_ERROR, "false"))) {
+					M_log.fatal(e.getMessage(), e);
 					M_log.fatal("Shutting down JVM");
 					System.exit(1);
 				} else {
-					M_log.warn(t.getMessage(), t);
+					M_log.warn(e.getMessage(), e);
 				}
 			}
+		}
+
+		// dump the configuration values out
+		try {
+		    final ServerConfigurationService scs = (ServerConfigurationService) this.get(ServerConfigurationService.class);
+		    if (scs != null) {
+	            ConfigData cd = scs.getConfigData();
+	            M_log.info("Configuration loaded "+cd.getTotalConfigItems()+" values, "+cd.getRegisteredConfigItems()+" registered");
+	            if (scs.getBoolean("config.dump.to.log", false)) {
+	                // output the config logs now and then output then again in 120 seconds
+	                M_log.info("Configuration values:\n" + cd.toString());
+	                Timer timer = new Timer(true);
+	                timer.schedule(new TimerTask() {
+	                    @Override
+	                    public void run() {
+	                        M_log.info("Configuration values: (delay 1):\n" + scs.getConfigData().toString());
+	                    }
+	                }, 120*1000);
+	                timer.schedule(new TimerTask() {
+	                    @Override
+	                    public void run() {
+	                        M_log.info("Configuration values: (delay 2):\n" + scs.getConfigData().toString());
+	                    }
+	                }, 300*1000);
+	            }
+		    } else {
+		        // probably testing so just say we cannot dump the config
+	            M_log.warn("Configuration: Unable to get and dump out the registered server config values because no ServerConfigurationService is available - this is OK if this is part of a test, this is very bad otherwise");
+		    }
+		} catch (Exception e) {
+		    M_log.error("Configuration: Unable to get and dump out the registered server config values (config.dump.to.log): "+e, e);
 		}
 	}
 
@@ -185,10 +221,11 @@ public class SpringCompMgr implements ComponentManager {
 			component = m_ac.getBean(iface.getName(), iface);
 		} catch (NoSuchBeanDefinitionException e) {
 			// This is an expected outcome, we don't usually want logs
-			if (M_log.isDebugEnabled())
+			if (M_log.isDebugEnabled()) {
 				M_log.debug("get(" + iface.getName() + "): " + e, e);
-		} catch (Throwable t) {
-			M_log.warn("get(" + iface.getName() + "): ", t);
+			}
+		} catch (Exception e) {
+			M_log.warn("get(" + iface.getName() + "): ", e);
 		}
 
 		return component;
@@ -204,10 +241,11 @@ public class SpringCompMgr implements ComponentManager {
 			component = m_ac.getBean(ifaceName);
 		} catch (NoSuchBeanDefinitionException e) {
 			// This is an expected outcome, we don't usually want logs
-			if (M_log.isDebugEnabled())
+			if (M_log.isDebugEnabled()) {
 				M_log.debug("get(" + ifaceName + "): " + e, e);
-		} catch (Throwable t) {
-			M_log.warn("get(" + ifaceName + "): ", t);
+			}
+		} catch (Exception e) {
+			M_log.warn("get(" + ifaceName + "): ", e);
 		}
 
 		return component;

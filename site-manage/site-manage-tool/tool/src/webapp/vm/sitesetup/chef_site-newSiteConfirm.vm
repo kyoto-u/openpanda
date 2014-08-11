@@ -235,6 +235,22 @@
 				</td>
 			</tr>
  			<tr>
+			
+			
+			<tr>
+				<th>
+					$tlang.getString("sitediconf.language")
+				</th>
+				<td>					
+					#if ($locale_string_selected == "")
+						<span class="instruction">$tlang.getString("newsc.language.none")</span>
+					#else
+						$validator.escapeHtml($locale_string_selected.getDisplayName())
+					#end						
+				</td>
+			</tr>
+			
+			
 			<tr>
 					<th colspan="2">
 						<h4>
@@ -290,6 +306,7 @@
 			/>
 			<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 		</div>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>
 

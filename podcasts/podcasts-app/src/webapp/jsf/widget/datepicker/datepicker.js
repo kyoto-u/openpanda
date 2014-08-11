@@ -10,7 +10,7 @@
 //    Contact us at sales@softcomplex.com if you have any programming task you
 //    want to be handled by professionals. Our typical hourly rate is $20.
 
-// Sakai project: $Id: datepicker.js 14691 2006-09-15 12:36:27Z ajpoland@iupui.edu $
+// Sakai project: $Id: datepicker.js 93866 2011-06-17 20:12:28Z ottenhoff@longsight.com $
 
 // if two digit year input dates after this year considered 20 century.
 var NUM_CENTYEAR = 90;// sakai, changed to 90

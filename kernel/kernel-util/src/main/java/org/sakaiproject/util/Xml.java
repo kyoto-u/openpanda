@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/Xml.java $
- * $Id: Xml.java 91044 2011-04-01 11:42:18Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/Xml.java $
+ * $Id: Xml.java 90064 2011-03-19 12:04:59Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation

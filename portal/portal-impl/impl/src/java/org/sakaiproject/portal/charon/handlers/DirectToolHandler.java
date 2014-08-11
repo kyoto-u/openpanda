@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/DirectToolHandler.java $
- * $Id: DirectToolHandler.java 68687 2009-11-09 16:45:06Z chmaurer@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/DirectToolHandler.java $
+ * $Id: DirectToolHandler.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,7 +51,7 @@ import org.sakaiproject.util.Web;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 68687 $
+ * @version $Rev: 110562 $
  * 
  */
 public class DirectToolHandler extends BasePortalHandler
@@ -134,8 +134,7 @@ public class DirectToolHandler extends BasePortalHandler
 		}
 
 		// Reset the tool state if requested
-		if ("true".equals(req.getParameter(portalService.getResetStateParam()))
-				|| "true".equals(portalService.getResetState()))
+		if (portalService.isResetRequested(req))
 		{
 			Session s = SessionManager.getCurrentSession();
 			ToolSession ts = s.getToolSession(placementId);

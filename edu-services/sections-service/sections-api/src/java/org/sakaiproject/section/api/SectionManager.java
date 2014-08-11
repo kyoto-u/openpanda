@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/sections-service/sections-api/src/java/org/sakaiproject/section/api/SectionManager.java $
- * $Id: SectionManager.java 94218 2011-06-29 12:32:28Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-api/src/java/org/sakaiproject/section/api/SectionManager.java $
+ * $Id: SectionManager.java 93245 2011-05-25 11:31:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Calendar;
 
 import org.sakaiproject.section.api.coursemanagement.Course;
 import org.sakaiproject.section.api.coursemanagement.CourseSection;
@@ -529,5 +530,12 @@ public interface SectionManager {
 	public ExternalIntegrationConfig getConfiguration(Object obj);
 
 	public static final String CONFIGURATION_KEY="section.info.integration";
-
+	/**
+	* Determines when the section options are open to students.
+	*
+	* @param courseUuid
+	* @return
+	*/
+	public Calendar getOpenDate(String courseUid);
+	public void setOpenDate(String courseUuid,Calendar openDate);
 }

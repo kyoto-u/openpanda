@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/cm-service/cm-impl/hibernate-impl/hibernate/src/java/org/sakaiproject/coursemanagement/impl/SectionCmImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-impl/hibernate-impl/hibernate/src/java/org/sakaiproject/coursemanagement/impl/SectionCmImpl.java $
  * $Id: SectionCmImpl.java 67136 2009-10-03 11:56:22Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

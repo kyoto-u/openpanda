@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/PortalSiteHelperImpl.java $
- * $Id: PortalSiteHelperImpl.java 95475 2011-07-21 15:06:41Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/PortalSiteHelperImpl.java $
+ * $Id: PortalSiteHelperImpl.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,6 +41,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.alias.api.Alias;
 import org.sakaiproject.alias.cover.AliasService;
+import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.user.cover.PreferencesService;
@@ -79,7 +81,7 @@ import org.sakaiproject.util.Web;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 95475 $
+ * @version $Rev: 110562 $
  */
 @SuppressWarnings("deprecation")
 public class PortalSiteHelperImpl implements PortalSiteHelper
@@ -92,6 +94,8 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 	private final String PROP_PARENT_ID = SiteService.PROP_PARENT_ID;
 
 	private static final String PROP_HTML_INCLUDE = "sakai:htmlInclude";
+
+	private static final String PROP_MENU_CLASS = "sakai:menuClass";
 
 	protected final static String CURRENT_PLACEMENT = "sakai:ToolComponent:current.placement";
 
@@ -337,6 +341,7 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 						.equals(myWorkspaceSiteId))));
  		int siteTitleMaxLength = ServerConfigurationService.getInt("site.title.maxlength", 25);
 		String titleStr = s.getTitle();
+		String fullTitle = titleStr;
 		if ( titleStr != null )
 		{
 			titleStr = titleStr.trim();
@@ -351,6 +356,7 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			titleStr = titleStr.trim();
 		}
 		m.put("siteTitle", Web.escapeHtml(titleStr));
+		m.put("fullTitle", Web.escapeHtml(fullTitle));
 		m.put("siteDescription", Web.escapeHtml(s.getDescription()));
 		m.put("shortDescription", Web.escapeHtml(s.getShortDescription()));
 		String siteUrl = Web.serverUrl(req)
@@ -508,6 +514,7 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 		boolean published = site.isPublished();
 		String type = site.getType();
 
+		theMap.put("siteId", site.getId());
 		theMap.put("pageNavPublished", Boolean.valueOf(published));
 		theMap.put("pageNavType", type);
 		theMap.put("pageNavIconUrl", iconUrl);
@@ -524,6 +531,7 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 
 		List<Map> l = new ArrayList<Map>();
 
+		String addMoreToolsUrl = null;
 		for (Iterator i = pages.iterator(); i.hasNext();)
 		{
 
@@ -543,16 +551,6 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			if (doPages || p.isPopUp())
 			{
 				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("isPage", Boolean.valueOf(true));
-				m.put("current", Boolean.valueOf(current));
-				m.put("ispopup", Boolean.valueOf(p.isPopUp()));
-				m.put("pagePopupUrl", pagePopupUrl);
-				m.put("pageTitle", Web.escapeHtml(p.getTitle()));
-				m.put("jsPageTitle", Web.escapeJavascript(p.getTitle()));
-				m.put("pageId", Web.escapeUrl(p.getId()));
-				m.put("jsPageId", Web.escapeJavascript(p.getId()));
-				m.put("pageRefUrl", pagerefUrl);
-
 				StringBuffer desc = new StringBuffer();
 
 				boolean hidden = false;
@@ -574,8 +572,28 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 						if ( t.getTool() == null ) continue;
 						desc.append(t.getTool().getDescription());
 						tCount++;
+						if ( "sakai.siteinfo".equals(t.getToolId()) ) {
+							addMoreToolsUrl = Web.returnUrl(req, "/site/" + Web.escapeUrl(site.getId()) + "/page/" + Web.escapeUrl(p.getId()) + "?sakai_action=doMenu_edit_site_tools&panel=Shortcut" );
+						}
 					}
+					// Won't work with mutliple tools per page
+					if ( tCount > 1 ) addMoreToolsUrl = null; 
 				}
+
+				boolean siteUpdate = SecurityService.unlock("site.upd", site.getReference());
+				if ( ! siteUpdate ) addMoreToolsUrl = null;
+
+				if ( ! ServerConfigurationService.getBoolean("portal.experimental.addmoretools", false) ) addMoreToolsUrl = null;
+
+				m.put("isPage", Boolean.valueOf(true));
+				m.put("current", Boolean.valueOf(current));
+				m.put("ispopup", Boolean.valueOf(p.isPopUp()));
+				m.put("pagePopupUrl", pagePopupUrl);
+				m.put("pageTitle", Web.escapeHtml(p.getTitle()));
+				m.put("jsPageTitle", Web.escapeJavascript(p.getTitle()));
+				m.put("pageId", Web.escapeUrl(p.getId()));
+				m.put("jsPageId", Web.escapeJavascript(p.getId()));
+				m.put("pageRefUrl", pagerefUrl);
 				
 				// TODO: Should have Web.escapeHtmlAttribute()
 				String description = desc.toString().replace("\"","&quot;");
@@ -589,6 +607,11 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 					String menuClass = firstTool.getToolId();
 					menuClass = "icon-" + menuClass.replace('.', '-');
 					m.put("menuClass", menuClass);
+					Properties tmp = firstTool.getConfig();
+					if ( tmp != null ) {
+						String mc = tmp.getProperty(PROP_MENU_CLASS);
+						if ( mc != null && mc.length() > 0 ) m.put("menuClassOverride", mc);
+					}
 				}
 				else
 				{
@@ -624,6 +647,11 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 					String menuClass = placement.getToolId();
 					menuClass = "icon-" + menuClass.replace('.', '-');
 					m.put("menuClass", menuClass);
+					Properties tmp = placement.getConfig();
+					if ( tmp != null ) {
+						String mc = tmp.getProperty(PROP_MENU_CLASS);
+						if ( mc != null && mc.length() > 0 ) m.put("menuClassOverride", mc);
+					}
 					// this is here to allow the tool reorder to work if requried.
 					m.put("_placement", placement);
 					l.add(m);
@@ -635,6 +663,13 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 		if (pageFilter != null)
 		{
 			l = pageFilter.filterPlacements(l, site);
+		}
+
+		if ( addMoreToolsUrl != null ) {
+			theMap.put("pageNavAddMoreToolsUrl", addMoreToolsUrl);
+			theMap.put("pageNavCanAddMoreTools", true);
+		} else {
+			theMap.put("pageNavCanAddMoreTools", false);
 		}
 
 		theMap.put("pageNavTools", l);
@@ -656,7 +691,7 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 		// which may be true or false.
 				
 		boolean showPresence;
-		String globalShowPresence = ServerConfigurationService.getString("display.users.present");
+		String globalShowPresence = ServerConfigurationService.getString("display.users.present","true");
 				
 		if ("never".equals(globalShowPresence)) {
 			showPresence = false;
@@ -970,10 +1005,11 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 	 * @param site
 	 * @return
 	 */
-	private List getPermittedPagesInOrder(Site site)
+	public List getPermittedPagesInOrder(Site site)
 	{
 		// Get all of the pages
 		List pages = site.getOrderedPages();
+ 		boolean siteUpdate = SecurityService.unlock("site.upd", site.getReference());
 
 		List newPages = new ArrayList();
 
@@ -990,7 +1026,8 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 				ToolConfiguration placement = (ToolConfiguration) iPt.next();
 
 				boolean thisTool = allowTool(site, placement);
-				if (thisTool) allowPage = true;
+				boolean unHidden = siteUpdate || ! isHidden(placement);
+				if (thisTool && unHidden) allowPage = true;
 			}
 			if (allowPage) newPages.add(p);
 		}

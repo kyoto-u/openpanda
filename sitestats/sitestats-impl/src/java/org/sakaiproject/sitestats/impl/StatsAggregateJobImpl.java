@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsAggregateJobImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsAggregateJobImpl.java $
  * $Id: StatsAggregateJobImpl.java 82272 2010-09-15 11:52:52Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

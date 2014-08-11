@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/PreferencesPage.java $
- * $Id: PreferencesPage.java 78669 2010-06-21 13:55:23Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/PreferencesPage.java $
+ * $Id: PreferencesPage.java 87931 2011-02-02 12:12:01Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -77,7 +77,7 @@ public class PreferencesPage extends BasePage {
 		}
 		boolean allowed = Locator.getFacade().getStatsAuthz().isUserAbleToViewSiteStats(siteId);
 		if(allowed) {
-			setModel(new CompoundPropertyModel(this));
+			setDefaultModel(new CompoundPropertyModel(this));
 			renderBody();
 		}else{
 			setResponsePage(NotAuthorizedPage.class);

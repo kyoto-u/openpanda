@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreUpdateListener.java $
- * $Id: TotalScoreUpdateListener.java 93733 2011-06-10 19:35:08Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreUpdateListener.java $
+ * $Id: TotalScoreUpdateListener.java 113420 2012-09-21 21:34:06Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -40,6 +40,7 @@ import javax.faces.event.ActionListener;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.math.util.MathUtils;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
@@ -59,7 +60,7 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: TotalScoreUpdateListener.java 93733 2011-06-10 19:35:08Z ktsao@stanford.edu $
+ * @version $Id: TotalScoreUpdateListener.java 113420 2012-09-21 21:34:06Z ottenhoff@longsight.com $
  */
 
 public class TotalScoreUpdateListener
@@ -113,6 +114,30 @@ public class TotalScoreUpdateListener
       StringBuffer idList = new StringBuffer(" ");
   	  String err = "";
   	  boolean isAnonymousGrading = false;
+
+  	  String applyToUngraded = bean.getApplyToUngraded().trim();
+  	  if(applyToUngraded != null && !"".equals(applyToUngraded)){
+  		  try{
+  			  Float.valueOf(applyToUngraded).floatValue();
+  			  ArrayList allAgents = bean.getAllAgentsDirect();
+  			  iter = allAgents.iterator();
+  			  while(iter.hasNext()){
+  				  AgentResults agentResults = (AgentResults) iter.next();
+  				  if (agentResults.getAssessmentGradingId().equals(Long.valueOf(-1)) || agentResults.getSubmittedDate() == null) {
+  					  agentResults.setTotalOverrideScore(applyToUngraded+"");
+  				  }
+  			  }
+  			  iter = allAgents.iterator();
+  			  bean.setApplyToUngraded("");
+  		  }catch (Exception e) {
+  			  FacesContext context = FacesContext.getCurrentInstance();
+  			  String err2 = (String) ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "number_format_error_user_id_apply");
+  			  context.addMessage(null,  new FacesMessage(err2));
+  			  return true;
+  		  }
+  		  bean.setApplyToUngraded("");
+  	  }
+
 
   	  if (bean.getPublishedAssessment() != null 
   			  && bean.getPublishedAssessment().getEvaluationModel() != null
@@ -243,7 +268,7 @@ public class TotalScoreUpdateListener
     	  return true;
       }
 
-    return true;
+      return true;
   }
 
   private boolean needUpdate(AgentResults agentResults, HashMap map, StringBuilder newScoreString) throws NumberFormatException{
@@ -293,7 +318,7 @@ public class TotalScoreUpdateListener
       log.debug("***newIsLate = " + newIsLate);
       log.debug("***oldComments = " + oldComments);
       log.debug("***newComments = " + newComments);
-      if (oldScore==newScore && newIsLate.equals(oldIsLate) && 
+      if (MathUtils.equalsIncludingNaN(oldScore, newScore, 0.0001) && newIsLate.equals(oldIsLate) && 
     		  ((newComments!=null && newComments.equals(oldComments)) 
         		   || (newComments==null && oldComments==null)
         		   // following condition will happen when there is no comments (null) and user clicks on SubmissionId.

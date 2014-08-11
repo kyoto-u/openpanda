@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/qti/XMLDisplay.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/qti/XMLDisplay.java $
  * $Id: XMLDisplay.java 73450 2010-02-11 22:02:29Z ktsao@stanford.edu $
  ***********************************************************************************
  *

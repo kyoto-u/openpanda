@@ -8,11 +8,12 @@
 <f:view>
 <sakai:view toolCssHref="/messageforums-tool/css/msgcntr.css">
     <h:form id="msgForum" rendered="#{!ForumTool.selectedForum.forum.draft || ForumTool.selectedForum.forum.createdBy == ForumTool.userId}">
-  		<script type="text/javascript" src="/library/js/jquery.js"></script>
+		<script type="text/javascript" src="/library/js/jquery/1.4.2/jquery-1.4.2.min.js"></script>
   		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
     	<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
 <!--jsp/discussionForum/forum/dfForumDetail.jsp-->
 
+			<h:outputText styleClass="showMoreText"  style="display:none" value="#{msgs.cdfm_show_more_full_description}"  />
 
 
 		<h3 class="specialLink" style="margin-bottom:1em">
@@ -24,7 +25,7 @@
 			      <f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
 			      <h:outputText value="#{ForumTool.selectedForum.forum.title}" />
 		</h3>
-		<h:panelGrid columns="1" summary="layout" styleClass="forumHeader specialLink">
+		<h:panelGrid columns="1" styleClass="forumHeader specialLink">
 			<h:panelGroup>
 				<h:outputText styleClass="highlight title" id="draft" value="#{msgs.cdfm_draft}" rendered="#{ForumTool.selectedForum.forum.draft == 'true'}"/>
 				<h:outputText id="draft_space" value=" -  " rendered="#{ForumTool.selectedForum.forum.draft == 'true'}" styleClass="title"/>
@@ -41,6 +42,12 @@
 				                 title=" #{msgs.cdfm_forum_settings}">
 					  <f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
 				  </h:commandLink>
+				  <h:outputText  value=" | " rendered="#{ForumTool.instructor}"/>
+					<h:commandLink action="#{mfStatisticsBean.processActionStatisticsByTopic}" immediate="true" rendered="#{ForumTool.instructor}">
+	  				    <f:param value="" name="topicId"/>
+	  				    <f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+	  				    <h:outputText value="#{msgs.cdfm_button_bar_grade}" />
+		          	</h:commandLink>
 				<%--
 				<h:outputText  value=" | "   rendered="#{ForumTool.selectedForum.changeSettings}"/>
 				<h:outputText  value=" Delete "  styleClass="todo"  rendered="#{ForumTool.selectedForum.changeSettings}"/>
@@ -87,7 +94,7 @@
 		  
 		<h:dataTable id="topics"  rendered="#{!empty ForumTool.selectedForum.topics}" value="#{ForumTool.selectedForum.topics}" var="topic" width="100%"  cellspacing="0" cellpadding="0">
 			<h:column rendered="#{! topic.nonePermission}">
-				<h:panelGrid columns="1" summary="layout" width="100%"  styleClass="topicBloc specialLink"  cellspacing="0" cellpadding="0">
+				<h:panelGrid columns="1" width="100%"  styleClass="topicBloc specialLink"  cellspacing="0" cellpadding="0">
           <h:panelGroup>
 
 						<h:graphicImage url="/images/folder.gif" alt="Topic Folder" rendered="#{topic.unreadNoMessages == 0 }" styleClass="topicIcon" style="margin-right:.5em"/>
@@ -110,7 +117,7 @@
 
 
 				  	<h:outputText id="topic_moderated" value="#{msgs.cdfm_topic_moderated_flag}" styleClass="textPanelFooter" rendered="#{topic.moderated == 'true'}" />
-    	      <h:outputText value=" #{msgs.cdfm_closeb}"styleClass="textPanelFooter" rendered="#{topic.isRead}" />
+    	      <h:outputText value=" #{msgs.cdfm_closeb}" styleClass="textPanelFooter" rendered="#{topic.isRead}" />
 
 						<h:outputText styleClass="childrenNew" value=" #{msgs.cdfm_newflagparent}"  rendered="#{topic.unreadNoMessages > 0 }" />
 
@@ -121,9 +128,22 @@
 							<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
 						</h:commandLink>
 
-												
 						<h:outputText  value=" | "   rendered="#{topic.changeSettings}" />
-						<h:commandLink action="#{ForumTool.processActionDeleteTopicMainConfirm}" id="delete_confirm" value="#{msgs.cdfm_button_bar_delete}" 
+						<h:commandLink action="#{ForumTool.processActionDuplicateTopicMainConfirm}" id="duplicate_confirm" value="#{msgs.cdfm_duplicate_topic}" 
+							 rendered="#{ForumTool.selectedForum.newTopic}">							
+									<f:param value="#{topic.topic.id}" name="topicId"/>
+									<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+							</h:commandLink>
+							
+						<h:outputText  value=" | " rendered="#{ForumTool.instructor}"/>
+						<h:commandLink action="#{mfStatisticsBean.processActionStatisticsByTopic}" immediate="true" rendered="#{ForumTool.instructor}">
+		  				    <f:param value="#{topic.topic.id}" name="topicId"/>
+		  				    <f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+		  				    <h:outputText value="#{msgs.cdfm_button_bar_grade}" />
+			          	</h:commandLink>
+                                    			
+						<h:outputText  value=" | "   rendered="#{topic.changeSettings}" />
+						<h:commandLink action="#{ForumTool.processActionDeleteTopicMainConfirm}" id="delete_confirm" value="#{msgs.cdfm_button_bar_delete_topic}" 
 							accesskey="d" rendered="#{topic.changeSettings}">							
 									<f:param value="#{topic.topic.id}" name="topicId"/>
 									<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
@@ -156,7 +176,7 @@
 					<mf:htmlShowArea  id="topic_fullDescription" hideBorder="true"	 value="#{topic.topic.extendedDescription}" />
 		 			<%--  <sakai:inputRichText rows="5" cols="110" buttonSet="none"  readonly="true" showXPath="false" id="topic_extended_description" value="#{topic.topic.extendedDescription}" rendered="#{topic.readFullDesciption}"/> --%>
 				
-							<h:dataTable styleClass="listHier" value="#{topic.attachList}" var="eachAttach" rendered="#{!empty topic.attachList}" style="font-size:.9em;width:auto;margin-left:1em" border="0" cellpadding="3" cellspacing="0" columnClasses="attach,bogus" summary="layout">
+							<h:dataTable styleClass="listHier attachListTable" value="#{topic.attachList}" var="eachAttach" rendered="#{!empty topic.attachList}" style="font-size:.9em;width:auto;margin-left:1em" border="0" cellpadding="3" cellspacing="0" columnClasses="attach,bogus">
 					  <h:column>
 									<h:graphicImage url="/images/attachment.gif" />
 						</h:column>
@@ -180,10 +200,12 @@
   }
 %>
 			<script type="text/javascript">
+
 			function resize(){
   				mySetMainFrameHeight('<%= org.sakaiproject.util.Web.escapeJavascript(thisId)%>');
   			}
 			</script> 
+<h:outputText escape="false" value="<script type='text/javascript'>$(document).ready(function() {setupLongDesc()});</script>"  rendered="#{!ForumTool.showShortDescription}"/>
 	 </h:form>
 	 <h:outputText value="#{msgs.cdfm_insufficient_privileges_view_forum}" rendered="#{ForumTool.selectedForum.forum.draft && ForumTool.selectedForum.forum.createdBy != ForumTool.userId}" />
     </sakai:view>

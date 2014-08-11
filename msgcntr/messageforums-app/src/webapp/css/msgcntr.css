@@ -64,6 +64,7 @@
 	/*	short description whenever one occurs - do not use padding */
 	display: block;
 	margin: .5em 0;
+    font-size:.85em;
 }
 .messageNew{
 	color: #000;
@@ -101,6 +102,13 @@
 	padding-left:18px;
 	background: #eee url(../images/silk/arrow_down.png) center left no-repeat;
 }
+.markAllAsRead {
+	border:1px solid #ccc;
+	padding:3px;
+	padding-left:30px;
+	background: #eee url(../images/markAsRead.gif)  5px center no-repeat;
+}
+
 .topicIcon{
 /*	display:none; 	comment to hide blue or orange speech balloons by topics in Forum list view */
 }
@@ -148,6 +156,7 @@
 	padding-bottom: 0;
 }
 .messagesThreaded tbody tr td div.hierItemBlock .textPanel{
+	clear: both;
 	width: 60%;
 }
 .titleBarBorder{
@@ -286,6 +295,7 @@ table.messageActions td{
 }
 /*PART $ MESSAGE TYPES */
 .messageAlert{
+    list-style: none;
 	background: #FFEEEE url(../images/exclamation.gif) 5px 5px no-repeat;
 	border: 1px solid #FF5555;
 	color: #FF5555;
@@ -355,36 +365,66 @@ td div.title{
 .attachPanel td.attach{
 	width: 1em;
 }
-.permissionPanel{
-	/*permission panel in template settings, forum settings, topic settings*/
+.permissionTable {
+	width: 675px;	
 }
+.permissionRoleLabel {
+	display:inline-block;
+	width:14em;
+}
+.permissionRow {
+	padding: .25em;
+	border: 1px solid #C0C0C0;
+	display:block;
+}
+.permissionPanel > table {
+	padding-top: .3em;
+}
+
 .permissionPanel td{
+	padding-left: 1em;
+	vertical-align:top;
 }
-.permissionPanel .colored td{
-	padding-left: .3em;
-	padding-right: 3em;
-	background: #ffe;
+
+.permissionPanel .checkbox {
+	display:block;
+	border: none;
 }
-.permissionPanel .last{
-	border-bottom: 1px solid #eee;
+
+.permissionRadioGroup {
+	border: 1px solid #aaa;
+	display:block;
+	padding:.3em;
 }
-.permissionPanel td.first{
-	border-left: 1px solid #eee;
+
+.permissionRow .ui-icon { display: inline-block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; vertical-align:bottom; }
+.permissionRow .ui-icon { width: 16px; height: 16px; background-image: url(ui-lightness/images/ui-icons_222222_256x240.png); }
+.permissionRow .ui-icon-triangle-1-s { background-position: -64px -16px; }
+.permissionRow .ui-icon-triangle-1-e { background-position: -32px -16px; }
+.permissionRow .ui-accordion-content { background: #eee; border: 1px solid #ccc; }
+.permissionRow .ui-accordion-header { 
+	background: #eee; 
+	border-radius: 4px;
+	cursor:pointer;
+	margin-left: 4em;
+	padding: .1em .4em .1em 0;
+	border: 1px solid #ccc;
+	display:inline-block;
+	height: 1.75em;
 }
-.permissionPanel td.second{
-	border-right: 1px solid #eee;
+.permissionRow .ui-accordion-header:hover { 
+	border: 1px solid #666;
 }
-.permissionPanel .blank td{
-	border: none !important;
+.permissionRow .ui-accordion-header.ui-state-active {
+	border-radius: 4px 4px 0 0;
+	position:relative;
+	top: 1px;
+	border-bottom:none;
 }
-.permissionPanel .header td{
-	border-bottom: 1px solid #eee;
-	border-right: none;
-	border-left: none;
+.permissionRow .ui-accordion-header.ui-state-active:hover {
+	border-bottom:none;
 }
-.permissionPanel tr:hover{
-	background: #fff !important;
-}
+
 table.discTria{
 	/*some adjustments to sakai discTria - to make whole clickable looking*/
 	border: none;
@@ -465,6 +505,9 @@ table.discTria:hover{
 .messageMetadata span.md{
 	border-bottom:1px solid #ccc;
 }
+a .textPanelFooter{
+	color: inherit;
+}
 
 .lastRevise{
 	margin:.3em 0;
@@ -484,4 +527,75 @@ form{margin-bottom:0;}
 	margin-bottom:3px
 }
 .messageCommentBody{
+}
+.calWidget{
+    vertical-align:middle;
+}
+.calWidget img{
+     vertical-align:middle;
+     margin-right:3em
+}
+.authorImage {
+	float: left;
+	display: block;
+	text-align: center;
+	padding-right: .25em;
+	padding-bottom: .3em;
+}
+.listHier .authorImage img{	
+	max-width: 8em;
+	max-height: 5em;
+}
+.singleMessage .authorImage img{	
+	max-width: 5em;
+	max-height: 4em;
+}
+img.authorImage {
+	display: inline-block;
+	float: none;
+	max-width: 3.5em;
+	max-height: 2.5em;
+	width: auto !important;
+	vertical-align: bottom !important;
+}
+.moreMenuLink span{
+    padding-right:15px;
+    background:transparent url(../images/silk/bullet_arrow_down.png) bottom right no-repeat;
+    
+}    
+.moreMenu{
+    background:#fff;
+    list-style:none;
+    margin:0;
+    padding:0px;
+    border:1px solid #ccc;
+}
+.moreMenu li{
+    
+}
+.moreMenu li a{
+    display:block;
+    padding:5px;
+}
+.moreMenu li a:hover{
+    background:#eee;
+    text-decoration:none;
+}
+.qtip-content{
+	max-height: 200px;
+	overflow: auto !important;
+}
+.profile2-profile{
+	width: 500px !important;
+}
+.profile2-profile-content{
+	width: 270px !important;
+}
+.createTopicsForGroupsPanel {
+    margin-left: 3em;
+    margin-top: 0.3em;
+    display: block;
+}
+.navIntraTool li span a img,.navIntraTool li {
+    vertical-align: middle;
 }

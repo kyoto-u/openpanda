@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EventRegistryServiceImpl.java $
- * $Id: EventRegistryServiceImpl.java 79126 2010-07-07 10:57:44Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EventRegistryServiceImpl.java $
+ * $Id: EventRegistryServiceImpl.java 101440 2011-12-06 07:29:54Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -63,6 +63,7 @@ public class EventRegistryServiceImpl implements EventRegistry, EventRegistrySer
 	/** Event Registries */
 	private FileEventRegistry			fileEventRegistry			= null;
 	private EntityBrokerEventRegistry	entityBrokerEventRegistry	= null;
+	private List<String> 				serverEventIds				= new ArrayList<String>();
 
 	/** Caching */
 	private Cache						eventRegistryCache			= null;
@@ -402,6 +403,15 @@ public class EventRegistryServiceImpl implements EventRegistry, EventRegistrySer
 			anonymousToolEventIds = null;
 			LOG.debug("EventRegistry expired. Reloading...");
 		}
+	}
+
+	
+	public List<String> getServerEventIds() {
+		return serverEventIds;
+	}
+	
+	public void setServerEventIds(List<String> eventIds) {
+		this.serverEventIds=eventIds;
 	}
 
 }

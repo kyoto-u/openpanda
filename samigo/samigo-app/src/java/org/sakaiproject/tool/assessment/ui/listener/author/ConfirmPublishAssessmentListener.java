@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmPublishAssessmentListener.java $
- * $Id: ConfirmPublishAssessmentListener.java 121656 2013-03-22 19:13:51Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmPublishAssessmentListener.java $
+ * $Id: ConfirmPublishAssessmentListener.java 107866 2012-05-04 20:51:28Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -35,6 +35,7 @@ import javax.faces.event.ActionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
@@ -60,7 +61,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: ConfirmPublishAssessmentListener.java 121656 2013-03-22 19:13:51Z ktsao@stanford.edu $
+ * @version $Id: ConfirmPublishAssessmentListener.java 107866 2012-05-04 20:51:28Z ktsao@stanford.edu $
  */
 
 public class ConfirmPublishAssessmentListener
@@ -161,6 +162,23 @@ public class ConfirmPublishAssessmentListener
     	error=true;
     }
     
+    // SAM-1088
+    // if late submissions not allowed and retract date is null, set retract date to due date
+    if (assessmentSettings.getLateHandling() != null && AssessmentAccessControlIfc.NOT_ACCEPT_LATE_SUBMISSION.toString().equals(assessmentSettings.getLateHandling()) &&
+    		retractDate == null && dueDate != null && assessmentSettings.getAutoSubmit()) {
+    	retractDate = dueDate;
+    	assessmentSettings.setRetractDate(dueDate);
+    }
+    // if auto-submit is enabled, make sure retract date is set
+    if (assessmentSettings.getAutoSubmit() && retractDate == null) {
+    	String autoSubmitEnabled = ServerConfigurationService.getString("samigo.autoSubmit.enabled");
+  	  	if ("true".equalsIgnoreCase(autoSubmitEnabled)) {
+  	  		String dateError4 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","retract_required_with_auto_submit");
+  	  		context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, dateError4, null));
+  	  		error=true;
+  	  	}
+    }
+
     if (!isFromActionSelect) {
     	if (assessmentSettings.getReleaseTo().equals(AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS)) {
     		String[] groupsAuthorized = assessmentSettings.getGroupsAuthorizedToSave(); //getGroupsAuthorized();
@@ -291,7 +309,7 @@ public class ConfirmPublishAssessmentListener
     String toGradebook = assessmentSettings.getToDefaultGradebook();
     try{
 	if (toGradebook!=null && toGradebook.equals(EvaluationModelIfc.TO_DEFAULT_GRADEBOOK.toString()) &&
-	    gbsHelper.isAssignmentDefined(assessmentName, g)){
+	    gbsHelper.isAssignmentDefined(assessmentSettings.getTitle(), g)){
         String gbConflict_err= ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages" , "gbConflict_error");
         context.addMessage(null,new FacesMessage(gbConflict_err));
         error=true;
@@ -303,16 +321,16 @@ public class ConfirmPublishAssessmentListener
    
     if (!isFromActionSelect) {
     	// To convertFormattedTextToPlaintext for the fields that have been through convertPlaintextToFormattedTextNoHighUnicode
-    	assessmentSettings.setTitle(FormattedText.convertFormattedTextToPlaintext(assessment.getTitle()));
-    	assessmentSettings.setAuthors(FormattedText.convertFormattedTextToPlaintext(assessment.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.AUTHORS)));
-    	assessmentSettings.setFinalPageUrl(FormattedText.convertFormattedTextToPlaintext(assessment.getAssessmentAccessControl().getFinalPageUrl()));
-    	assessmentSettings.setBgColor(FormattedText.convertFormattedTextToPlaintext(assessment.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.BGCOLOR)));
-    	assessmentSettings.setBgImage(FormattedText.convertFormattedTextToPlaintext(assessment.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.BGIMAGE)));
-    	assessmentSettings.setKeywords(FormattedText.convertFormattedTextToPlaintext(assessment.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.KEYWORDS)));
-    	assessmentSettings.setObjectives(FormattedText.convertFormattedTextToPlaintext(assessment.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.OBJECTIVES)));
-    	assessmentSettings.setRubrics(FormattedText.convertFormattedTextToPlaintext(assessment.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.RUBRICS)));
-    	assessmentSettings.setUsername(FormattedText.convertFormattedTextToPlaintext(assessment.getAssessmentAccessControl().getUsername()));
-    	assessmentSettings.setPassword(FormattedText.convertFormattedTextToPlaintext(assessment.getAssessmentAccessControl().getPassword()));
+    	assessmentSettings.setTitle(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getTitle()));
+    	assessmentSettings.setAuthors(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getAuthors()));
+    	assessmentSettings.setFinalPageUrl(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getFinalPageUrl()));
+    	assessmentSettings.setBgColor(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getBgColor()));
+    	assessmentSettings.setBgImage(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getBgImage()));
+    	assessmentSettings.setKeywords(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getKeywords()));
+    	assessmentSettings.setObjectives(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getObjectives()));
+    	assessmentSettings.setRubrics(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getRubrics()));
+    	assessmentSettings.setUsername(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getUsername()));
+    	assessmentSettings.setPassword(FormattedText.convertFormattedTextToPlaintext(assessmentSettings.getPassword()));
     }
     
     if (error){

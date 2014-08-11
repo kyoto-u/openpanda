@@ -87,7 +87,7 @@
   --%>  
 <%--   <sakai:instruction_message value=" Last saved: " />
    <sakai:instruction_message value="#{wizard.lastSavedId}" /> --%>
-   <sakai:messages />
+   <sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
    	<t:div styleClass="success" forceId="true" id="prefsSiteSavedDiv" style="display:none"><h:outputText value="#{msgs.prefs_saved_site}" /></t:div>	
 	<t:div styleClass="success" forceId="true" id="prefsAllSavedDiv" style="display:none"><h:outputText value="#{msgs.prefs_saved_all}" /></t:div>	
    

@@ -1,6 +1,6 @@
 /**
- * $Id: ServiceTestManager.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/test/org/sakaiproject/entitybroker/rest/ServiceTestManager.java $
+ * $Id: ServiceTestManager.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/test/org/sakaiproject/entitybroker/rest/ServiceTestManager.java $
  * TestManager.java - entity-broker - Jul 23, 2008 6:27:29 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -29,6 +29,7 @@ import org.sakaiproject.entitybroker.mocks.HttpServletAccessProviderManagerMock;
 import org.sakaiproject.entitybroker.mocks.data.TestData;
 
 import org.sakaiproject.entitybroker.providers.EntityPropertiesService;
+import org.sakaiproject.entitybroker.providers.ExternalIntegrationProvider;
 import org.sakaiproject.entitybroker.rest.EntityActionsManager;
 import org.sakaiproject.entitybroker.rest.EntityBatchHandler;
 import org.sakaiproject.entitybroker.rest.EntityDescriptionManager;
@@ -38,6 +39,7 @@ import org.sakaiproject.entitybroker.rest.EntityRedirectsManager;
 
 import org.sakaiproject.entitybroker.util.core.EntityPropertiesServiceSimple;
 import org.sakaiproject.entitybroker.util.core.EntityProviderMethodStoreImpl;
+import org.sakaiproject.entitybroker.util.external.ExternalIntegrationProviderMock;
 import org.sakaiproject.entitybroker.util.request.RequestGetterImpl;
 import org.sakaiproject.entitybroker.util.request.RequestStorageImpl;
 
@@ -77,6 +79,7 @@ public class ServiceTestManager {
 
     public EntityBrokerManagerImpl entityBrokerManager;
     public EntityBrokerImpl entityBroker;
+    public ExternalIntegrationProvider externalIntegrationProvider;
 
     public EntityActionsManager entityActionsManager;
     public EntityEncodingManager entityEncodingManager;
@@ -112,6 +115,7 @@ public class ServiceTestManager {
 
     public void initializeCoreServiceMocks() {
         requestGetter = new RequestGetterImpl();
+        externalIntegrationProvider = new ExternalIntegrationProviderMock();
         entityPropertiesService = new EntityPropertiesServiceSimple();
         httpServletAccessProviderManager = new HttpServletAccessProviderManagerMock();
         entityViewAccessProviderManager = new EntityViewAccessProviderManagerMock();
@@ -119,7 +123,7 @@ public class ServiceTestManager {
 
         requestStorage = new RequestStorageImpl(requestGetter);
         entityActionsManager = new EntityActionsManager(entityProviderMethodStore);
-        entityRedirectsManager = new EntityRedirectsManager(entityProviderMethodStore, requestStorage);
+        entityRedirectsManager = new EntityRedirectsManager(entityBrokerManager, entityProviderMethodStore, requestStorage);
         entityProviderManager = new EntityProviderManagerImpl(requestStorage, requestGetter, entityPropertiesService, entityProviderMethodStore);
 
         entityProviderManager.registerEntityProvider(td.entityProvider1);
@@ -144,7 +148,7 @@ public class ServiceTestManager {
         entityProviderManager.registerEntityProvider(td.entityProviderS1);
         // add new providers here
 
-        entityBrokerManager = new EntityBrokerManagerImpl(entityProviderManager, entityPropertiesService, entityViewAccessProviderManager);
+        entityBrokerManager = new EntityBrokerManagerImpl(entityProviderManager, entityPropertiesService, entityViewAccessProviderManager, externalIntegrationProvider);
         entityBroker = new EntityBrokerImpl(entityProviderManager, entityBrokerManager, requestStorage);
     }
 

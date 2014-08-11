@@ -1,39 +1,39 @@
-<!-- $Id: chef_assignments_instructor_student_list_submissions.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_student_list_submissions.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_student_list_submissions.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_student_list_submissions.vm,v 1.8 2005/05/28 03:04:35 ggolden.umich.edu Exp $ -->
-<div class="portletBody" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
-		<ul class="navIntraTool actionToolBar" role="menu">
+<div class="portletBody">
+		<ul class="navIntraTool actionToolBar">
 			#set($prevAction=false)
 			#if ($allowAddAssignment)
 				#set($prevAction=true)
-				<li  class="firstToolBarItem" role="menuitem">
+				<li  class="firstToolBarItem">
 					<span><a href="#toolLink("$action" "doNew_assignment")" title="$!tlang.getString("new")">$!tlang.getString("new")</a></span>
 				</li>
-				<li role="menuitem" aria-disabled="true">	
+				<li>	
 					<span class="current">$!tlang.getString("lisofass1")</span>
 				</li>	
 			#end
 			#if ($withGrade && $!allowGradeSubmission)
-				<li #if ($prevAction==false) class="firstToolBarItem"  #set($prevAction=true) #end  role="menuitem">
+				<li #if ($prevAction==false) class="firstToolBarItem"  #set($prevAction=true) #end>
 					<span><a href="#toolLinkParam("$action" "doView" "view=grarep")" title="$!tlang.getString("gen.grarep")">$!tlang.getString("gen.grarep")</a></span>
 				</li>			
 			#end
 			#if ($allowAddAssignment)
-				<li #if ($prevAction==false) class="firstToolBarItem"  #set($prevAction=true) #end   role="menuitem">
+				<li #if ($prevAction==false) class="firstToolBarItem"  #set($prevAction=true) #end>
 					<span><a href="#toolLinkParam("$action" "doView" "view=stuvie")" title="$!tlang.getString("gen.stuvie")">$!tlang.getString("gen.stuvie")</a></span>
 				</li>	
 			#end
 			#if (($allowAllGroups) && ($assignmentscheck))
-				<li #if ($prevAction==false) class="firstToolBarItem"  #set($prevAction=true) #end   role="menuitem">				
+				<li #if ($prevAction==false) class="firstToolBarItem"  #set($prevAction=true) #end>				
 					<span><a href="#toolLink("$action" "doReorder")" title="$tlang.getString('gen.reorder')">$tlang.getString('gen.reorder')</a></span>
 				</li>	
 			#end
 			#if ($allowUpdateSite)
-				<li #if ($prevAction==false) class="firstToolBarItem"  #set($prevAction=true) #end role="menuitem">				
+				<li #if ($prevAction==false) class="firstToolBarItem"  #set($prevAction=true) #end>				
 					<span><a href="#toolLink("$action" "doPermissions")" title="$tlang.getString('permis')">$tlang.getString('permis')</a></span>
 				</li>
 				#if ($enableViewOption)		
-					<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end  role="menuitem">
+					<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 						<span><a href="#toolLink("$action" "doOptions")" title="$tlang.getString('options')">$tlang.getString('options')</a></span>
 					</li>
 				#end	
@@ -61,6 +61,7 @@
 						<option value="lisofass1" >$!tlang.getString('lisofass1')</option>
 						<option value="lisofass2" selected="selected" >$!tlang.getString('lisofass2')</option>
 					</select>
+					<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 				</form>
 			</div>
 		</div>	
@@ -128,6 +129,13 @@
 										<td headers="assignment">
 											<h5>
 												<a href="#toolLinkParam("AssignmentAction" "doGrade_submission" "assignmentId=$validator.escapeUrl($assignment.Reference)&submissionId=$validator.escapeUrl($submission.Reference)&option=lisofass2")" title="$validator.limit($validator.escapeHtml($assignment.Title), 40)">$validator.limit($validator.escapeHtml($assignment.Title), 40)</a>
+                                                #if ($allowAddAssignment && $allowSubmitByInstructor)
+                                                <div class="itemAction">
+                                                    <a href="#toolLinkParam("AssignmentAction" "doView_submission" "assignmentReference=$validator.escapeUrl($assignment.Reference)&submitterId=$validator.escapeUrl($member.id)")">
+                                                    $tlang.getString("subasstudent")
+                                                    </a>
+                                                </div>
+                                                #end
 											</h5>
 										</td>
 										<td headers="submitted">
@@ -135,6 +143,11 @@
 												$!submission.TimeSubmitted.toStringLocalFull()
 												#if ($submission.getTimeSubmitted().after($assignment.DueTime))<span class="highlight">$tlang.getString("gen.late2")</span>
 												#end
+												#set ($submitterId = false)
+												#set ($submitterId = $!submission.getProperties().getProperty("submitted_user_id"))
+												#if ($!submitterId)
+												   <br />by $userService.getUser($submitterId).getDisplayName()
+											#end
 											#end
 											&nbsp;
 										</td>
@@ -175,6 +188,7 @@
 					#end
 				</table>
 			#end
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>	
 	#end
 </div>

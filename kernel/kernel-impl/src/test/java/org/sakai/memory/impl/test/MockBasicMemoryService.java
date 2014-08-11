@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockBasicMemoryService.java $
- * $Id: MockBasicMemoryService.java 89397 2011-03-08 08:49:12Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockBasicMemoryService.java $
+ * $Id: MockBasicMemoryService.java 88354 2011-02-11 09:12:55Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation

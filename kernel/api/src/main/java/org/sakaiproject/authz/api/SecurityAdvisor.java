@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/authz/api/SecurityAdvisor.java $
- * $Id: SecurityAdvisor.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/authz/api/SecurityAdvisor.java $
+ * $Id: SecurityAdvisor.java 96671 2011-08-09 14:15:56Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -23,8 +23,13 @@ package org.sakaiproject.authz.api;
 
 /**
  * <p>
- * SecurityAdvisor is a stackable policy process that is given a chance to determine if a security question can be answered, over the logic of the SecurityService component.
+ * SecurityAdvisor is a stackable policy process that is given a chance to determine if a security
+ * question can be answered,over the logic of the SecurityService component. The advisors at the 
+ * top of the stack are consulted first (added last).
  * </p>
+ * @see SecurityService#pushAdvisor(SecurityAdvisor)
+ * @see SecurityService#popAdvisor(SecurityAdvisor)
+ * @see SecurityService#hasAdvisors()
  */
 public interface SecurityAdvisor
 {

@@ -1,6 +1,6 @@
 /**
- * $Id: DirectServlet.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/utils/src/java/org/sakaiproject/entitybroker/util/servlet/DirectServlet.java $
+ * $Id: DirectServlet.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/servlet/DirectServlet.java $
  * Example.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -42,6 +42,8 @@ import org.sakaiproject.entitybroker.providers.EntityRequestHandler;
  * @author Aaron Zeckoski (aaron@caret.cam.ac.uk)
  */
 public abstract class DirectServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
 
     protected transient EntityRequestHandler entityRequestHandler;
     public void setEntityRequestHandler(EntityRequestHandler entityRequestHandler) {

@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsManagerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsManagerImpl.java $
  * $Id: StatsManagerImpl.java 78671 2010-06-21 15:20:56Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

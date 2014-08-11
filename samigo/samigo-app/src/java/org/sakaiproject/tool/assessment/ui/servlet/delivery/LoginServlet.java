@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/LoginServlet.java $
- * $Id: LoginServlet.java 114496 2012-10-17 18:33:18Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/LoginServlet.java $
+ * $Id: LoginServlet.java 114442 2012-10-16 18:29:30Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -61,7 +61,7 @@ import org.sakaiproject.user.cover.UserDirectoryService;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: LoginServlet.java 114496 2012-10-17 18:33:18Z ktsao@stanford.edu $
+ * @version $Id: LoginServlet.java 114442 2012-10-16 18:29:30Z ktsao@stanford.edu $
  */
 
 public class LoginServlet
@@ -186,6 +186,30 @@ public class LoginServlet
           path = "/jsf/delivery/beginTakingAssessment_viaurl.faces";
         }
         // Assessment is currently not available (eg., retracted for edit, due date has passed, submission limit has been reached, etc)
+        else if ("assessmentNotAvailable".equals(nextAction)){
+        	path = "/jsf/delivery/assessmentNotAvailable.faces";
+        }
+        else if ("isRetracted".equals(nextAction)){
+        	path = "/jsf/delivery/isRetracted.faces";
+        }
+        else if ("isRetractedForEdit".equals(nextAction)){
+        	path = "/jsf/delivery/isRetractedForEdit.faces";
+        }
+        else if ("discrepancyInData".equals(nextAction)){
+        	path = "/jsf/delivery/discrepancyInData.faces";
+        }
+        else if ("assessmentHasBeenSubmitted".equals(nextAction)){
+        	path = "/jsf/delivery/assessmentHasBeenSubmitted.faces";
+        }
+        else if ("noSubmissionLeft".equals(nextAction)){
+        	path = "/jsf/delivery/noSubmissionLeft.faces";
+        }
+        else if ("noLateSubmission".equals(nextAction)){
+        	path = "/jsf/delivery/noLateSubmission.faces";
+        }
+        else if ("timeExpired".equals(nextAction)){
+        	path = "/jsf/delivery/timeExpired.faces";
+        }
         else {
         	path = "/jsf/delivery/assessmentNotAvailable.faces";
         }

@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/gradebook/branches/sakai-2.8.x/app/ui/src/java/org/sakaiproject/tool/gradebook/jsf/NontrailingDoubleConverter.java $
+* $URL: https://source.sakaiproject.org/svn/gradebook/tags/sakai-2.9.0/app/ui/src/java/org/sakaiproject/tool/gradebook/jsf/NontrailingDoubleConverter.java $
 * $Id: NontrailingDoubleConverter.java 74420 2010-03-08 14:19:15Z wagnermr@iupui.edu $
 ***********************************************************************************
 *

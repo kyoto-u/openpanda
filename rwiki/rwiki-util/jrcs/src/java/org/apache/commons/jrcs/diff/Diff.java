@@ -84,7 +84,7 @@ import org.apache.commons.jrcs.util.ToString;
  * may be used. If no algorithm is specififed, a default algorithm is used.
  * </p>
  * 
- * @version $Revision: 84671 $ $Date: 2006-04-12 18:30:19 +0100 (Wed, 12 Apr
+ * @version $Revision: 84222 $ $Date: 2006-04-12 18:30:19 +0100 (Wed, 12 Apr
  *          2006) $
  * @author <a href="mailto:juanco@suigeneris.org">Juanco Anez</a>
  * @see Delta

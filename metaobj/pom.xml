@@ -1,37 +1,83 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>base</artifactId>
-    <groupId>org.sakaiproject</groupId>
-    <version>2.8-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-  <name>Sakai MetaObj Project</name>
-  <groupId>org.sakaiproject</groupId>
-  <artifactId>metaobj-base</artifactId>
-  <packaging>pom</packaging>
-  <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/metaobj/trunk</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/metaobj/trunk</developerConnection>
-    <url>https://source.sakaiproject.org/svn/metaobj/trunk</url>
-  </scm>
-  <modules>
-    <module>metaobj-api/api</module>
-    <module>metaobj-impl/api-impl</module>
-    <module>metaobj-impl/component</module>
-    <module>metaobj-tool</module>
-    <module>metaobj-tool/tool</module>
-    <module>metaobj-util/tool-lib</module>
-    <module>help</module>
-  </modules>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
         <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-metaobj-impl</artifactId>
-        <version>2.8-SNAPSHOT</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+        <artifactId>master</artifactId>
+        <version>2.9.0</version>
+		<relativePath>../master/pom.xml</relativePath>
+    </parent>
+
+    <name>sakai-metaobj base pom</name>
+    <groupId>org.sakaiproject.metaobj</groupId>
+    <artifactId>metaobj-base</artifactId>
+    <version>2.9.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>metaobj-api/api</module>
+        <module>metaobj-assembly</module>
+        <module>metaobj-impl/api-impl</module>
+        <module>metaobj-impl/component</module>
+        <module>metaobj-tool</module>
+        <module>metaobj-tool/tool</module>
+        <module>metaobj-util/tool-lib</module>
+        <module>help</module>
+    </modules>
+
+    <scm>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.9.x</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.9.x</developerConnection>
+        <url>https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.9.x</url>
+    </scm>
+
+    <distributionManagement>
+        <site>
+            <id>sakai-site</id>
+            <name>Sakai release Site</name>
+            <url>scpexe://source.sakaiproject.org/var/www/html/release/metaobj/${project.version}</url>
+        </site>
+    </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>sakai-metaobj-api</artifactId>
+                <version>2.9.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>sakai-metaobj-impl</artifactId>
+                <version>2.9.0</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>sakai-metaobj-tool-lib</artifactId>
+                <version>2.9.0</version>
+            </dependency>
+            <dependency>
+                <groupId>jta</groupId>
+                <artifactId>jta</artifactId>
+                <version>h2.1.8</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+    <repositories> 
+		<repository> 
+			<id>sonatype-nexus-snapshots</id> 
+			<name>Sonatype Nexus Snapshots</name> 
+			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
+			<releases> 
+				<enabled>false</enabled> 
+			</releases> 
+			<snapshots> 
+				<enabled>true</enabled> 
+			</snapshots> 
+		</repository> 
+	</repositories>
+    
 </project>

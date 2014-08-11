@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
@@ -8,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: audioRecording.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+* $Id: audioRecording.jsp 93662 2011-06-09 19:06:38Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -78,7 +77,7 @@
    <div class="shorttext">
     <h:outputLabel value="#{authorMessages.answer_point_value}" />
     <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" onchange="toPoint(this.id);">
-<f:validateDoubleRange/>
+<f:validateDoubleRange minimum="0.00"/>
 </h:inputText><br/>
     <h:message for="answerptr" styleClass="validate"/>
   </div>

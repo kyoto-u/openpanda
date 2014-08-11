@@ -57,7 +57,7 @@
 </ul>	
 			<div class="tabNavPanel">
 				<sakai:instruction_message value="#{msgs.instructions_freeForm}"/>
-				<sakai:messages/>
+				<sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
 		
 				
 		

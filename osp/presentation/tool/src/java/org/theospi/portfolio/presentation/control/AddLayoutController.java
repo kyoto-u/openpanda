@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/presentation/tool/src/java/org/theospi/portfolio/presentation/control/AddLayoutController.java $
-* $Id: AddLayoutController.java 85788 2010-12-01 19:16:22Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/presentation/tool/src/java/org/theospi/portfolio/presentation/control/AddLayoutController.java $
+* $Id: AddLayoutController.java 85378 2010-11-23 17:35:53Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation

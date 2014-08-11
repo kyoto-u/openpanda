@@ -1,6 +1,8 @@
+var shoppingOptOut = false;
 // Shopping Period JS
 $(document).ready(function(){
-
+	shoppingOptOut = false;
+	
 	//if view DA access is enabled, set up the fields:
 	if($('#viewDelegatedAccessUsers')){
 		$.getJSON("/direct/delegated_access/access/site/" + $('#siteId').html() + ".json",
@@ -33,31 +35,14 @@ $(document).ready(function(){
 		$.getJSON("/direct/delegated_access/" + $('#siteId').html() + ".json",
 			function(response){
 				var data = response.data;
-			
-				//add auth options
-				$.getJSON("/direct/delegated_access/shoppingOptions/authorization.json", 
-					function(response){
-						for (var i=0; i<response.delegated_access_collection.length; i++) {
-							if(response.delegated_access_collection[i].key === data.shoppingAuth){
-								$('#shoppingVisibility')
-									.append($("<option selected></option>")
-									.attr("value",response.delegated_access_collection[i].key)
-									.text(response.delegated_access_collection[i].value));
-							}else{
-								$('#shoppingVisibility')
-									.append($("<option></option>")
-									.attr("value",response.delegated_access_collection[i].key)
-									.text(response.delegated_access_collection[i].value));
-							}
-						}
-					}
-				);
 				
 				//add role options
 				$.getJSON("/direct/delegated_access/shoppingOptions/roles.json", 
 					function(response){
 						for (var i=0; i<response.delegated_access_collection.length; i++) {
-							if(response.delegated_access_collection[i].key === data.shoppingRealm + ":" + data.shoppingRole){
+							if(response.delegated_access_collection[i].key === data.shoppingRealm + ":" + data.shoppingRole
+									|| response.delegated_access_collection.length == 1){
+								//if this is the selected option or the only option, then select it
 								$('#shoppingRole')
 									.append($("<option selected></option>")
 									.attr("value",response.delegated_access_collection[i].key)
@@ -68,6 +53,11 @@ $(document).ready(function(){
 									.attr("value",response.delegated_access_collection[i].key)
 									.text(response.delegated_access_collection[i].value));
 							}
+						}
+						if(response.delegated_access_collection.length == 1){
+							//hide the Role option since there is only one option to select and its pre-selected:
+							$('#shoppingRole').hide();
+							$("label[for='shoppingRole']").hide();
 						}
 					}
 				);
@@ -75,24 +65,42 @@ $(document).ready(function(){
 				$.getJSON("/direct/delegated_access/shoppingOptions/tools.json", 
 					function(response){
 						for (var i=0; i<response.delegated_access_collection.length; i++) {
-							if($.inArray(response.delegated_access_collection[i].key, data.shoppingShowTools) >= 0){
-								$('#showTools')
+							
+							//Auth Tools:
+							if($.inArray(response.delegated_access_collection[i].key, data.shoppingShowAuthTools) >= 0){
+								$('#showAuthTools')
 									.append($("<option selected></option>")
 									.attr("value",response.delegated_access_collection[i].key)
 									.text(response.delegated_access_collection[i].value));
 							}else{
-								$('#showTools')
+								$('#showAuthTools')
+									.append($("<option></option>")
+									.attr("value",response.delegated_access_collection[i].key)
+									.text(response.delegated_access_collection[i].value));
+							}
+							
+							//Public Tools:
+							if($.inArray(response.delegated_access_collection[i].key, data.shoppingShowPublicTools) >= 0){
+								$('#showPublicTools')
+									.append($("<option selected></option>")
+									.attr("value",response.delegated_access_collection[i].key)
+									.text(response.delegated_access_collection[i].value));
+							}else{
+								$('#showPublicTools')
 									.append($("<option></option>")
 									.attr("value",response.delegated_access_collection[i].key)
 									.text(response.delegated_access_collection[i].value));
 							}
 						}
+						setShoppingToolOptionsEnabled();
+						$('#showPublicTools').change(function (){
+							setShoppingToolOptionsEnabled();
+						});
 					}
 				);
 			
 	            
 	            $('#shoppingVisibilityDiv').show();
-	            $('#shoppingVisibility').val(data.shoppingAuth);
 	            
 	            if (data.shoppingStartDate != undefined && data.shoppingStartDate != ""){
 	                var shoppingStartDate = new Date(parseInt(data.shoppingStartDate));
@@ -120,6 +128,13 @@ $(document).ready(function(){
 					$("#viewShoppingInstructions").show();
 					$('#shoppingPeriodOverride').attr('checked', false);
 				}
+	            
+	            if(data.revokeInstructorPublicOpt){
+	            	$('#showPublicTools').addClass("shoppingSettingDisabled");
+	            }
+	            //set any disabled classes to disabled
+	            $(".shoppingSettingDisabled").attr("disabled", true);
+	            
 	            resizeFrame('grow');
 		    }
 		);
@@ -149,16 +164,26 @@ $(document).ready(function(){
 			    	shoppingRole = "";
 			    }
 	            var data = {
-	                'shoppingAuth'      : $('#shoppingVisibility option:selected').val(),
 	                'shoppingStartDate' : start,
 	                'shoppingEndDate'   : end,
 	                'shoppingRealm'     : shoppingRealm,
 	                'shoppingRole'      : shoppingRole,
-	                'shoppingShowTools' : $('#showTools').val(),
+	                'shoppingShowAuthTools' : $('#showAuthTools').val(),
+	                'shoppingShowPublicTools' : $('#showPublicTools').val(),
 	                'directAccess': document.getElementById('shoppingPeriodOverride').checked
 	            };
 	            var form = $('form[name=editParticipantForm]');
 	
+	            //check show tools is either selected or that the user has already been warned, if not, return false
+	            if(!shoppingOptOut
+	            		&& data.directAccess
+	            		&& (data.shoppingShowAuthTools === null || data.shoppingShowAuthTools[0] === "")
+	            		&& (data.shoppingShowPublicTools === null || data.shoppingShowPublicTools[0] === "")
+	            		&& document.getElementById("showToolsWarning").style.display === "none"){
+	            	document.getElementById("showToolsWarning").style.display = '';
+	            	return false;
+	            }
+	            
 	            $.ajax({
 	                type: 'POST',
 	                url: "/direct/delegated_access/" + $('#siteId').html() + ".json",
@@ -179,12 +204,15 @@ $(document).ready(function(){
 
 function setShoppingSettingsDisabled(disabled){
 	$(".shoppingSetting").attr("disabled", disabled);
+	//always set these to disabled
+	$(".shoppingSettingDisabled").attr("disabled", true);
 }
 
 function optOutOfShoppingPeriod(){
 	$('#shoppingPeriodOverride').attr('checked', true);
 	$('.shoppingSetting').attr('value', '');
 	setShoppingSettingsDisabled(false)
+	shoppingOptOut = true;
 }
 
 
@@ -205,4 +233,25 @@ function resizeFrame(updown){
     else {
         // throw( "resizeFrame did not get the frame (using name=" + window.name + ")" );
     }
+}
+
+function setShoppingToolOptionsEnabled(){
+	$("#showPublicTools option").each(function () {
+		var pubToolId = $(this).val();
+		var pubSelected = $(this)[0].selected;
+		if("" !== pubToolId){
+			$("#showAuthTools option").each(function () {
+				if(pubToolId === $(this).val()){
+					if(pubSelected){
+						$(this)[0].selected = false;
+						$(this).attr('disabled', true)
+					}else{
+						$(this).attr('disabled', false)
+					}
+					return false;
+				}
+			});
+		}
+	});
+
 }

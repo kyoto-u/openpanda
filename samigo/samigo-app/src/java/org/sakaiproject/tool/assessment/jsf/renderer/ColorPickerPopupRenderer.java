@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/ColorPickerPopupRenderer.java $
- * $Id: ColorPickerPopupRenderer.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/ColorPickerPopupRenderer.java $
+ * $Id: ColorPickerPopupRenderer.java 96503 2011-08-06 00:29:39Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -134,7 +134,7 @@ public class ColorPickerPopupRenderer extends Renderer
     writer.write("</select>\n");
     writer.write("</td></tr>\n");
     writer.write("<tr><td align=\"center\">\n");
-    writer.write("<script language=\"JavaScript\">\n");
+    writer.write("<script type=\"text/javascript\">\n");
     writer.write("	var P = opener.TCP;\n");
     writer.write("	onload = \"P.show(P.initPalette)\";\n");
     writer.write(

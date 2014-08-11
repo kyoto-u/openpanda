@@ -16,20 +16,19 @@
 
 package org.sakaiproject.profile2.util;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.io.InputStream;
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -37,18 +36,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
+import org.imgscalr.Scalr;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class ProfileUtils {
 
@@ -70,6 +68,9 @@ public class ProfileUtils {
 		allowedTypes.add("image/x-png");
 		allowedTypes.add("image/pjpeg");
 		allowedTypes.add("image/jpg");
+		
+		//add more here as required, BUT also add them below. 
+		//You will need to check ImageIO for the informal names.
 
 		if(allowedTypes.contains(contentType)) {
 			return true;
@@ -78,77 +79,76 @@ public class ProfileUtils {
 		return false;
 	}
 	
-	
-
 	/**
-	 * Scale an image so one side is a maximum of maxSize in pixels.
+	 * Helper to get the informal format name that is used by ImageIO.
+	 * We have access to the mimetype so we can map them.
+	 * 
+	 * <p>If no valid mapping is found, it will default to "jpg".
+	 * 
+	 * @param mimeType the mimetype of the original image, eg image/jpeg
+	 */
+	public static String getInformalFormatForMimeType(String mimeType){
+		Map<String,String> formats = new HashMap<String,String>();
+		formats.put("image/jpeg", "jpg");
+		formats.put("image/gif", "gif");
+		formats.put("image/png", "png");
+		formats.put("image/x-png", "png");
+		formats.put("image/pjpeg", "jpg");
+		formats.put("image/jpg", "jpg");
+		
+		String format = formats.get(mimeType);
+		
+		if(format != null) {
+			return format;
+		}
+		return "jpg";
+	}
+	
+	/**
+	 * Scale an image so it is fit within a give width and height, whilst maintaining its original proportions 
 	 *
 	 * @param imageData		bytes of the original image
-	 * @param maxSize		maximum dimension in px that the image should have on any one side
+	 * @param maxSize		maximum dimension in px
 	 */
-	public static byte[] scaleImage(byte[] imageData, int maxSize) {
-	
-	    log.debug("Scaling image..."); 
-	
-	    // Get the image 
-	    Image inImage = new ImageIcon(imageData).getImage();
-	
-	    // Determine the scale (we could change this to only determine scale from one dimension, ie the width only?)
-	    double scale = (double) maxSize / (double) inImage.getHeight(null);
-	    if (inImage.getWidth(null) > inImage.getHeight(null)) {
-	        scale = (double) maxSize / (double) inImage.getWidth(null);
-	    }
-	    
-	    /*
-	    log.debug("===========Image scaling============");
-	    log.debug("WIDTH: " + inImage.getWidth(null));
-	    log.debug("HEIGHT: " + inImage.getHeight(null));
-	    log.debug("SCALE: " + scale);
-	    log.debug("========End of image scaling========");
-	    */
-	
-	    //if image is smaller than desired image size (ie scale is larger) just return the original image bytes
-	    if (scale >= 1.0d) {
-	    	return imageData;
-	    }
-	    
-	    
-	
-	    // Determine size of new image.
-	    // One of the dimensions should equal maxSize.
-	    int scaledW = (int) (scale * inImage.getWidth(null));
-	    int scaledH = (int) (scale * inImage.getHeight(null));
-	
-	    // Create an image buffer in which to paint on.
-	    BufferedImage outImage = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
-	
-	    // Set the scale.
-	    AffineTransform tx = new AffineTransform();
-	
-	    //scale
-	    tx.scale(scale, scale);
-	
-	    // Paint image.
-	    Graphics2D g2d = outImage.createGraphics();
-	    g2d.setRenderingHint(
-	            RenderingHints.KEY_ANTIALIASING,
-	            RenderingHints.VALUE_ANTIALIAS_ON
-	        );
-	    g2d.drawImage(inImage, tx, null);
-	    g2d.dispose();
-	
-	    // JPEG-encode the image
-	    // and write to file.
-	    ByteArrayOutputStream os = new ByteArrayOutputStream();
-	    try { 
-	    	JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(os);
-	    	encoder.encode(outImage);
-	    	os.close();
-	    	log.debug("Scaling done."); 
-	    } catch (IOException e) {
-	    	log.error("Scaling image failed."); 
-	    }
-	    return os.toByteArray();
+	public static byte[] scaleImage(byte[] imageData, int maxSize, String mimeType) {
+		
+		InputStream in = null;
+		byte[] scaledImageBytes = null;
+		try {
+			//convert original image to inputstream
+			in = new ByteArrayInputStream(imageData);
+			
+			//original buffered image
+			BufferedImage originalImage = ImageIO.read(in);
+			
+			//scale the image using the imgscalr library
+			BufferedImage scaledImage = Scalr.resize(originalImage, maxSize);
+			
+			//convert BufferedImage to byte array
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(scaledImage, getInformalFormatForMimeType(mimeType), baos);
+			baos.flush();
+			scaledImageBytes = baos.toByteArray();
+			baos.close();
+			
+		} catch (Exception e) {
+			log.error("Scaling image failed.", e);
+		}
+		
+		
+		finally {
+			if (in != null) {
+				try {
+					in.close();
+					log.debug("Image stream closed."); 
+				}
+				catch (IOException e) {
+					log.error("Error closing image stream: ", e); 
+				}
+			}
+		}
+		
+		return scaledImageBytes;
 	}
 	
 	/**
@@ -192,10 +192,20 @@ public class ProfileUtils {
 	        log.debug("Profile.convertStringToDate(): Input date string: " + dateStr); 
 	        log.debug("Profile.convertStringToDate(): Converted date: " + date.toString()); 
 			return date;
-		} catch (Exception e) {
+		} catch (ParseException e) {
 			log.error("Profile.convertStringToDate() failed. " + e.getClass() + ": " + e.getMessage());  
 			return null;
 		}       
+	}
+	
+	/**
+	 * Strip the year from a given date (actually just sets it to 1)
+	 * 
+	 * @param date	original date
+	 * @return
+	 */
+	public static Date stripYear(Date date){
+		return DateUtils.setYears(date, 1);
 	}
 	
 	/**
@@ -381,22 +391,6 @@ public class ProfileUtils {
 	}
 	
 	/**
-	 * Strips string of HTML, escaping anything that is left to return plain text.
-	 * 
-	 * <p>Deals better with poorly formed HTML than just stripHtml and is best for XSS protection, not for storing actual data.
-	 * 
-	 * @param s The string to process
-	 * @return
-	 */
-	public static String stripAndCleanHtml(String s) {
-		//Attempt to strip HTML. This doesn't work on poorly formatted HTML though
-		String stripped = FormattedText.convertFormattedTextToPlaintext(s);
-		
-		//so we escape anything that is left
-		return StringEscapeUtils.escapeHtml(stripped);
-	}
-	
-	/**
 	 * Trims text to the given maximum number of displayed characters.
 	 * Supports HTML and preserves formatting. 
 	 * 
@@ -512,19 +506,104 @@ public class ProfileUtils {
 	}
 	
 	/**
-	 * Determine how many iterations are needed to get through a list, in chunks
-	 * @param total	total number of items
-	 * @param divisor	amount per set
-	 * @return	number of iterations needed
+	 * Calculate an MD5 hash of a string
+	 * @param s	String to hash
+	 * @return	MD5 hash as a String
 	 */
-	public static int getIterations(int total, int divisor){
-		
-		BigDecimal[] d = new BigDecimal(total).divideAndRemainder(new BigDecimal(divisor));
-		//if no remainder, we had an exact value so only return the number
-		if(d[1].equals(BigDecimal.ZERO)){
-			return d[0].intValue();
-		}
-		//otherwise, return number required +1 (to account for remainder)
-		return d[0].intValue()+1;
+	public static String calculateMD5(String s){
+		return DigestUtils.md5Hex(s);
 	}
+	
+	/**
+	 * Creates a square avatar image by taking a segment out of the centre of the original image and resizing to the appropriate dimensions
+	 * 
+	 * @param imageData		original bytes of the image
+	 * @param mimeType		mimetype of image
+	 * @return
+	 */
+	public static byte[] createAvatar(byte[] imageData, String mimeType) {
+		
+		InputStream in = null;
+		byte[] outputBytes = null;
+		try {
+			//convert original image to inputstream
+			in = new ByteArrayInputStream(imageData);
+			
+			//original buffered image
+			BufferedImage originalImage = ImageIO.read(in);
+			
+			//OPTION 1
+			//determine the smaller side of the image and use that as the size of the cropped square
+			//to be taken out of the centre
+			//then resize to the avatar size =80 square.
+			
+			int smallestSide = originalImage.getWidth();
+			if(originalImage.getHeight() < originalImage.getWidth()) {
+				smallestSide = originalImage.getHeight();
+			}
+			
+			if(log.isDebugEnabled()){
+				log.debug("smallestSide:" + smallestSide);
+			}
+			
+			int startX = (originalImage.getWidth() / 2) - (smallestSide/2);
+			int startY = (originalImage.getHeight() / 2) - (smallestSide/2);
+			
+			//OPTION 2 (unused)
+			//determine a percentage of the original image which we want to keep, say 90%.
+			//then figure out the dimensions of the box and crop to that.
+			//then resize to the avatar size =80 square.
+					
+			//int percentWidth = (originalImage.getWidth() / 100) * 90;
+			//int startX = (originalImage.getWidth() / 2) - (percentWidth/2);
+			//int percentHeight = (originalImage.getHeight() / 100) * 90;
+			//int startY = (originalImage.getHeight() / 2) - (percentHeight/2);
+			//log.debug("percentWidth:" + percentWidth);
+			//log.debug("percentHeight:" + percentHeight);
+			//so it is square, we can only use one dimension for both side, so choose the smaller one
+			//int croppedSize = percentWidth;
+			//if(percentHeight < percentWidth) {
+			//	croppedSize = percentHeight;
+			//}
+			//log.debug("croppedSize:" + croppedSize);
+		
+			if(log.isDebugEnabled()){
+				log.debug("originalImage.getWidth():" + originalImage.getWidth());
+				log.debug("originalImage.getHeight():" + originalImage.getHeight());
+				log.debug("startX:" + startX);
+				log.debug("startY:" + startY);	
+			}
+			
+			//crop to these bounds and starting positions
+			BufferedImage croppedImage = Scalr.crop(originalImage, startX, startY, smallestSide, smallestSide);
+
+			//now resize it to the desired avatar size
+			BufferedImage scaledImage = Scalr.resize(croppedImage, 80);
+			
+			//convert BufferedImage to byte array
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(scaledImage, getInformalFormatForMimeType(mimeType), baos);
+			baos.flush();
+			outputBytes = baos.toByteArray();
+			baos.close();
+			
+		} catch (Exception e) {
+			log.error("Cropping and scaling image failed.", e);
+		}
+		
+		finally {
+			if (in != null) {
+				try {
+					in.close();
+					log.debug("Image stream closed."); 
+				}
+				catch (IOException e) {
+					log.error("Error closing image stream: ", e); 
+				}
+			}
+		}
+		
+		return outputBytes;
+	}
+	
 }

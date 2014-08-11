@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/kerberos/src/java/org/sakaiproject/component/kerberos/user/UsernamePasswordCallback.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/kerberos/src/java/org/sakaiproject/component/kerberos/user/UsernamePasswordCallback.java $
  * $Id: UsernamePasswordCallback.java 68832 2009-11-12 18:33:29Z slt@columbia.edu $
  ***********************************************************************************
  *

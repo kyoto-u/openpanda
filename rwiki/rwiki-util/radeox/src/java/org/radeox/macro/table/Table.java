@@ -38,7 +38,7 @@ import org.radeox.macro.Repository;
  * A Table implementation primarly for the table macro
  * 
  * @author stephan
- * @version $Id: Table.java 84671 2010-11-12 18:27:24Z arwhyte@umich.edu $
+ * @version $Id: Table.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  */
 
 public class Table

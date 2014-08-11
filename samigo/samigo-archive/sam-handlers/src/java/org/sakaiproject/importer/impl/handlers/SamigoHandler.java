@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-archive/sam-handlers/src/java/org/sakaiproject/importer/impl/handlers/SamigoHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-archive/sam-handlers/src/java/org/sakaiproject/importer/impl/handlers/SamigoHandler.java $
  * $Id: SamigoHandler.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
  ***********************************************************************************
  *

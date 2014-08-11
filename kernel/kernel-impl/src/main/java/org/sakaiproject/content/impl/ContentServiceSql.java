@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/impl/ContentServiceSql.java $
- * $Id: ContentServiceSql.java 108118 2012-05-15 02:01:58Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/ContentServiceSql.java $
+ * $Id: ContentServiceSql.java 113300 2012-09-21 15:49:06Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -155,7 +155,7 @@ public interface ContentServiceSql
 	 * returns the sql statement which retrieves the total number of bytes within a site-level collection (context) in the CONTENT_RESOURCE table.
 	 */
 	String getQuotaQuerySql();
-	String getDropBoxQuotaQuerySql();
+
 	/**
 	 * returns the sql statement which retrieves the RESOURCE_ID and XML values for all entries in the specified table where file-size is null.
 	 */

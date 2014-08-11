@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/AppletRenderer.java $
-* $Id: AppletRenderer.java 84785 2010-11-16 16:33:44Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/AppletRenderer.java $
+* $Id: AppletRenderer.java 84295 2010-11-04 17:47:54Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -43,7 +43,7 @@ import java.util.StringTokenizer;
  * <p>Copyright: Copyright (c) 2005</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: AppletRenderer.java 84785 2010-11-16 16:33:44Z arwhyte@umich.edu $
+ * @version $Id: AppletRenderer.java 84295 2010-11-04 17:47:54Z ottenhoff@longsight.com $
  */
 
 public class AppletRenderer

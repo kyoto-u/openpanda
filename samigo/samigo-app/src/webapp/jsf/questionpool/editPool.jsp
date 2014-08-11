@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: editPool.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+<!-- $Id: editPool.jsp 100464 2011-11-04 13:50:46Z aaronz@vt.edu $
 <%--
 ***********************************************************************************
 *
@@ -34,13 +34,21 @@
 
 <%@ include file="/js/delivery.js" %>
 
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 var textcheckall="<h:outputText value="#{questionPoolMessages.t_checkAll}"/>";
 var textuncheckall="<h:outputText value="#{questionPoolMessages.t_uncheckAll}"/>";
 <%@ include file="/js/samigotree.js" %>
 <%@ include file="/js/authoring.js" %>
+
+function textCounter(field, maxlimit) {
+        if (field.value.length > maxlimit) // if too long...trim it!
+                field.value = field.value.substring(0, maxlimit);
+}
+
 //-->
+
+
 </script>
       </head>
 
@@ -69,26 +77,37 @@ var textuncheckall="<h:outputText value="#{questionPoolMessages.t_uncheckAll}"/>
 <h3 class="insColor insBak insBor">
 <h:outputText value="#{questionPoolMessages.qp}#{questionPoolMessages.column} #{questionpool.currentPool.displayName}"/>
 </h3>
-<h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+<h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
 <h:outputText rendered="#{questionpool.importToAuthoring == 'true'}" value="#{questionPoolMessages.msg_imp_editpool}"/>
  <div class="tier2">
 <h:panelGrid columns="2" columnClasses="shorttext">
   <h:outputLabel for="namefield" value="#{questionPoolMessages.p_name}"/>
-  <h:inputText readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt()" id="namefield" size="30" value="#{questionpool.currentPool.displayName}" />
+  <h:inputText readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt()" id="namefield" size="30" maxlength="255" value="#{questionpool.currentPool.displayName}" />
   <h:outputLabel for="ownerfield" value="#{questionPoolMessages.creator}"/>
   <h:outputText id="ownerfield" value="#{questionpool.currentPool.owner}"/>
 
   <h:outputLabel rendered="!#{questionpool.currentPool.showParentPools}"  for="orgfield" value="#{questionPoolMessages.dept}"/>
-  <h:inputText readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt() "id="orgfield" size="30"  value="#{questionpool.currentPool.organizationName}" rendered="!#{questionpool.currentPool.showParentPools}"/>
+  <h:inputText readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt() " id="orgfield" size="30" maxlength="255" value="#{questionpool.currentPool.organizationName}" rendered="!#{questionpool.currentPool.showParentPools}"/>
     
   <h:outputLabel rendered="!#{questionpool.currentPool.showParentPools}" for="descfield" value="#{questionPoolMessages.desc}" />
-  <h:inputTextarea readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt()" id="descfield" rendered="!#{questionpool.currentPool.showParentPools}" value="#{questionpool.currentPool.description}" cols="30" rows="5"/>
+  <h:inputTextarea readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt();textCounter(this,255);" id="descfield" rendered="!#{questionpool.currentPool.showParentPools}" value="#{questionpool.currentPool.description}" cols="40" rows="6"
+                  onblur="textCounter(this,255);"
+                  onclick="textCounter(this,255);"
+                  ondblclick="textCounter(this,255);"
+                  onfocus="textCounter(this,255);"
+                  onkeyup="textCounter(this,255);"
+                  onkeypress="textCounter(this,255);"
+                  onmouseup="textCounter(this,255);"
+                  onmousemove="textCounter(this,255);"
+                  onmouseout="textCounter(this,255);"
+                  onmouseover="textCounter(this,255);"
+/>
 
   <h:outputLabel for="objfield" value="#{questionPoolMessages.obj} " rendered="!#{questionpool.currentPool.showParentPools}"/>
-  <h:inputText readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt()" id="objfield" size="30"  value="#{questionpool.currentPool.objectives}" rendered="!#{questionpool.currentPool.showParentPools}"/>
+  <h:inputText readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt()" id="objfield" size="30" maxlength="255" value="#{questionpool.currentPool.objectives}" rendered="!#{questionpool.currentPool.showParentPools}"/>
 
   <h:outputLabel for="keyfield" value="#{questionPoolMessages.keywords} " rendered="!#{questionpool.currentPool.showParentPools}" />
-  <h:inputText readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt()" id="keyfield" size="30" value="#{questionpool.currentPool.keywords}" rendered="!#{questionpool.currentPool.showParentPools}" />
+  <h:inputText readonly="#{questionpool.importToAuthoring == 'true' || questionpool.owner!=questionpool.currentPool.owner}" onchange="inIt()" id="keyfield" size="30" maxlength="255" value="#{questionpool.currentPool.keywords}" rendered="!#{questionpool.currentPool.showParentPools}" />
 
   <h:inputHidden id="createdDate" value="#{questionpool.currentPool.dateCreated}">
   <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -137,9 +156,9 @@ var textuncheckall="<h:outputText value="#{questionPoolMessages.t_uncheckAll}"/>
 <h:panelGrid width="100%" columns="2" columnClasses="h3text,navList">
 <h:panelGroup >
 <h:outputText value="#{questionpool.currentPool.numberOfQuestions}"/>
-<h:outputText rendered ="#{questionpool.currentPool.numberOfQuestions >1}"value=" #{questionPoolMessages.qs}"/>
-<h:outputText rendered ="#{questionpool.currentPool.numberOfQuestions ==1}"value=" #{questionPoolMessages.q}"/>
-<h:outputText rendered ="#{questionpool.currentPool.numberOfQuestions ==0}"value=" #{questionPoolMessages.qs}"/>
+<h:outputText rendered ="#{questionpool.currentPool.numberOfQuestions >1}" value=" #{questionPoolMessages.qs}"/>
+<h:outputText rendered ="#{questionpool.currentPool.numberOfQuestions ==1}" value=" #{questionPoolMessages.q}"/>
+<h:outputText rendered ="#{questionpool.currentPool.numberOfQuestions ==0}" value=" #{questionPoolMessages.qs}"/>
 </h:panelGroup>
 <h:commandLink title="#{questionPoolMessages.t_addQuestion}" rendered="#{questionpool.importToAuthoring != 'true'}" id="addQlink" immediate="true" action="#{questionpool.selectQuestionType}">
   <h:outputText id="addq" value="#{questionPoolMessages.add}"/>

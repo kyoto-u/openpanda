@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/branches/emailtemplateservice-0.5.x/impl/logic/src/java/org/sakaiproject/emailtemplateservice/util/TextTemplateLogicUtils.java $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.0/impl/logic/src/java/org/sakaiproject/emailtemplateservice/util/TextTemplateLogicUtils.java $
  * $Id: TextTemplateLogicUtils.java 81586 2010-08-20 13:38:36Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

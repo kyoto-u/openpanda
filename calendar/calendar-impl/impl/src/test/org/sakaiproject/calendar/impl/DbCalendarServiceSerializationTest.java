@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-impl/impl/src/test/org/sakaiproject/calendar/impl/DbCalendarServiceSerializationTest.java $
- * $Id: DbCalendarServiceSerializationTest.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-impl/impl/src/test/org/sakaiproject/calendar/impl/DbCalendarServiceSerializationTest.java $
+ * $Id: DbCalendarServiceSerializationTest.java 96443 2011-08-05 13:44:02Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -287,6 +287,13 @@ public class DbCalendarServiceSerializationTest extends TestCase
 				// TODO Auto-generated method stub
 				return null;
 			}
+
+			public int dbWriteCount(String sql, Object[] fields, String lastField, Connection callerConnection, boolean failQuiet) 
+
+			{
+				// TODO Auto-generated method stub
+				return -1;
+			}
 			
 		};
 		timeService = new TimeService() {
@@ -397,6 +404,12 @@ public class DbCalendarServiceSerializationTest extends TestCase
 			{
 				// TODO Auto-generated method stub
 				return null;
+			}
+
+			public int dbWriteCount(String sql, Object[] fields, String lastField, Connection callerConnection, boolean failQuiet)
+			{
+				// TODO Auto-generated method stub
+				return -1;
 			}
 			
 		};

@@ -34,7 +34,7 @@
 <script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
 </f:verbatim>
 
-<sakai:messages/>
+<sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
 
 <h:form id="mainForm">
     

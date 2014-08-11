@@ -1,7 +1,7 @@
 /*
  * *********************************************************************************
- *  $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/DeleteStructuredArtifactDefinitionController.java $
- *  $Id: DeleteStructuredArtifactDefinitionController.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ *  $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/DeleteStructuredArtifactDefinitionController.java $
+ *  $Id: DeleteStructuredArtifactDefinitionController.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  * **********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -25,6 +25,7 @@
 package org.sakaiproject.metaobj.shared.control;
 
 import org.sakaiproject.metaobj.shared.SharedFunctionConstants;
+import org.sakaiproject.metaobj.shared.model.Agent;
 import org.sakaiproject.metaobj.shared.model.PersistenceException;
 import org.sakaiproject.metaobj.shared.model.StructuredArtifactDefinitionBean;
 import org.sakaiproject.metaobj.utils.mvc.intf.LoadObjectController;
@@ -41,20 +42,30 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class DeleteStructuredArtifactDefinitionController extends PublishStructuredArtifactDefinitionController
-   implements LoadObjectController {
+implements LoadObjectController {
 
-   public ModelAndView handleRequest(Object requestModel, Map request, Map session, Map application, Errors errors) {
-      StructuredArtifactDefinitionBean sad = (StructuredArtifactDefinitionBean) requestModel;
-      checkPermission(SharedFunctionConstants.DELETE_ARTIFACT_DEF);
-      try {
-         getStructuredArtifactDefinitionManager().delete(sad);
-      }
-      catch (PersistenceException e) {
-         errors.rejectValue(e.getField(), e.getErrorCode(), e.getErrorInfo(),
-               e.getDefaultMessage());
-      }
-      return prepareListView(request, sad.getId().getValue());
-   }
+	public ModelAndView handleRequest(Object requestModel, Map request, Map session, Map application, Errors errors) {
+		StructuredArtifactDefinitionBean sad = (StructuredArtifactDefinitionBean) requestModel;
+
+		boolean isAllowed = isAllowed(SharedFunctionConstants.DELETE_ARTIFACT_DEF);
+		Agent currentAgent = getAuthManager().getAgent();
+
+		if (isAllowed || currentAgent.getId().getValue().equals(sad.getOwner().getId().getValue())) {
+			try {
+
+				getStructuredArtifactDefinitionManager().delete(sad);
+			}
+			catch (PersistenceException e) {
+				errors.rejectValue(e.getField(), e.getErrorCode(), e.getErrorInfo(),
+						e.getDefaultMessage());
+			}
+		}
+		else {
+			errors.rejectValue("id", "not_allowed", new Object[] {},
+					"Not allowed to delete");
+		}
+		return prepareListView(request, sad.getId().getValue());
+	}
 
 
 }

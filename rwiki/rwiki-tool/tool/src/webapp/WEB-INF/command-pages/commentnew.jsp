@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/commentnew.jsp $
- * $Id: commentnew.jsp 89369 2011-03-07 17:01:04Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/commentnew.jsp $
+ * $Id: commentnew.jsp 89292 2011-03-04 17:01:13Z savithap@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

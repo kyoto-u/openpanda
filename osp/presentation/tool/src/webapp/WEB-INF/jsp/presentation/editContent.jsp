@@ -248,7 +248,7 @@ $(document).ready(function() {
 						<c:otherwise>
 							<c:set var="selectBox"><c:out value="${status.expression}"/><c:out value="${loopCounter.index}"/></c:set>
 								<div class="navPanel" style="background:transparent;">
-									<div class="viewNav"style="background:transparent;width:60%">
+									<div class="viewNav" style="background:transparent;width:60%">
 										<h3 style="margin:0;padding:0;"><c:out
 											value="${itemDefinition.title}" /></h3>
 										<c:if test="${not empty itemDefinition.description}">

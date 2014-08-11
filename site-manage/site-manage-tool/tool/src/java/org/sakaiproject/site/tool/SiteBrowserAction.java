@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/branches/sakai-2.8.x/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteBrowserAction.java $
- * $Id: SiteBrowserAction.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.0/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteBrowserAction.java $
+ * $Id: SiteBrowserAction.java 92943 2011-05-17 19:38:38Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation

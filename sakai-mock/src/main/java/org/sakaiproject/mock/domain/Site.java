@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/branches/mock-2.8.x/src/main/java/org/sakaiproject/mock/domain/Site.java $
- * $Id: Site.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.0/src/main/java/org/sakaiproject/mock/domain/Site.java $
+ * $Id: Site.java 101436 2011-12-06 03:04:14Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -21,6 +21,7 @@
 package org.sakaiproject.mock.domain;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -102,6 +103,21 @@ public class Site extends AuthzGroup implements org.sakaiproject.site.api.Site {
 		}
 		return groupsWithMember;
 	}
+
+    public Collection<String> getMembersInGroups(Set<String> groupIds) {
+        Collection<Group> siteGroups = getGroups();
+        Collection<String> membersInGroups = new HashSet<String>();
+        for (Group group : siteGroups) {
+            if (groupIds == null || // null groupIds includes all groups in the site
+                    groupIds.contains(group.getId())) {
+                Set<org.sakaiproject.authz.api.Member> members = group.getMembers();
+                for (org.sakaiproject.authz.api.Member member : members) {
+                    membersInGroups.add(member.getUserId());
+                }
+            }
+        }
+        return membersInGroups;
+    }
 
 	public String getIconUrlFull() {
 		return iconUrl;
@@ -278,6 +294,21 @@ public class Site extends AuthzGroup implements org.sakaiproject.site.api.Site {
 
 	public void setPages(List<Page> pages) {
 		this.pages = pages;
+	}
+
+	public Date getSoftlyDeletedDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isSoftlyDeleted() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void setSoftlyDeleted(boolean arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

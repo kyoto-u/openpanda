@@ -25,7 +25,7 @@
 
 	<sakai:view_content>
 
-		<h:messages showSummary="false" showDetail="true" />
+		<h:messages showSummary="false" showDetail="true" rendered="#{!empty facesContext.maximumSeverity}"/>
 	
 		<sakai:flat_list value="#{ListTool.entries}" var="co">
 			<h:column rendered="#{ListTool.selectedColumns[0].base.selected}">

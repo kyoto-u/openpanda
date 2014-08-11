@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/questionpool/QuestionPoolBean.java $
- * $Id: QuestionPoolBean.java 84423 2010-11-05 23:25:47Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/questionpool/QuestionPoolBean.java $
+ * $Id: QuestionPoolBean.java 113417 2012-09-21 21:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.text.Collator;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -67,7 +70,7 @@ import org.sakaiproject.event.cover.EventTrackingService;
 /**
  * This holds question pool information.
  *
- * $Id: QuestionPoolBean.java 84423 2010-11-05 23:25:47Z ktsao@stanford.edu $
+ * $Id: QuestionPoolBean.java 113417 2012-09-21 21:08:11Z ottenhoff@longsight.com $
  */
 public class QuestionPoolBean implements Serializable
 {
@@ -220,7 +223,21 @@ public class QuestionPoolBean implements Serializable
 	  public int compare(Object o1, Object o2) {
 		  QuestionPoolFacade i1 = (QuestionPoolFacade)o1;
 		  QuestionPoolFacade i2 = (QuestionPoolFacade)o2;
-		  return i1.getTitle().compareToIgnoreCase(i2.getTitle());
+		  if (i1 == null && i2 != null) {
+			  return 1;
+		  }
+		  if (i2 == null && i1 != null) {
+			  return -1;
+		  }
+		  if (i2 == null && i1 == null) {
+			  return 0;
+		  }		  
+		  RuleBasedCollator collator_ini = (RuleBasedCollator)Collator.getInstance();
+		  try {
+			RuleBasedCollator collator= new RuleBasedCollator(collator_ini.getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+			return collator.compare(i1.getTitle(), i2.getTitle());
+		  } catch (ParseException e) {}
+		  return Collator.getInstance().compare(i1.getTitle(), i2.getTitle());
 	  }
   }
 

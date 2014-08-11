@@ -1,6 +1,6 @@
 /**
- * $Id: EntityBrokerServletTest.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/test/org/sakaiproject/entitybroker/rest/jetty/EntityBrokerServletTest.java $
+ * $Id: EntityBrokerServletTest.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/test/org/sakaiproject/entitybroker/rest/jetty/EntityBrokerServletTest.java $
  * DSpaceKernelServletFilterTest.java - DSpace2 - Oct 30, 2008 1:59:18 PM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

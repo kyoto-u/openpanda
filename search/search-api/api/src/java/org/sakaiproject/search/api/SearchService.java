@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-api/api/src/java/org/sakaiproject/search/api/SearchService.java $
- * $Id: SearchService.java 118820 2013-01-25 03:39:20Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-api/api/src/java/org/sakaiproject/search/api/SearchService.java $
+ * $Id: SearchService.java 75617 2010-04-05 09:51:02Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -81,16 +81,19 @@ public interface SearchService extends Diagnosable
 	public static final String FIELD_TOOL = "tool";
 
 	/**
-	 * Search Field The title of the entity
+	 * Seadch Field The title of the entity
 	 */
 	public static final String FIELD_TITLE = "title";
 
 	/**
-	 * Search Field (term vector, not full contents) The contents of the Entity
-	 * Note the contents of the docuement are not stored in the index so the {@link EntityContentProducer} getContent method should be 
-	 * called to retrieve the content
+	 * Searhc Field (term vector, not full contents) The contents of the Entity
 	 */
 	public static final String FIELD_CONTENTS = "contents";
+
+	/**
+	 * Search Field The context of the Entity
+	 */
+	public static final String FIELD_CONTEXT = "context";
 
 	/**
 	 * Search Field The tool subtype of the entity
@@ -291,10 +294,4 @@ public interface SearchService extends Diagnosable
 	 */
 	public String getSearchSuggestion(String searchString);
 	
-	/**
-	 * SRCH-96
-	 * whether the current server is of search server or not
-	 * @return
-	 */
-	boolean isSearchServer();
 }

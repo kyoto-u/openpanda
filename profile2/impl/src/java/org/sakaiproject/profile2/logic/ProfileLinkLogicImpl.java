@@ -3,6 +3,8 @@ package org.sakaiproject.profile2.logic;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Setter;
+
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.profile2.util.ProfileConstants;
 
@@ -22,6 +24,7 @@ public class ProfileLinkLogicImpl implements ProfileLinkLogic {
 		if(currentUserUuid == null) {
 			throw new SecurityException("Must be logged in.");
 		}
+		// TODO do we want to set ProfileConstants.WICKET_PARAM_TAB here?
 		return sakaiProxy.getDirectUrlToUserProfile(currentUserUuid, null);
 	}
 	
@@ -40,13 +43,34 @@ public class ProfileLinkLogicImpl implements ProfileLinkLogic {
 		if(sakaiProxy.isUsingNormalPortal()){
 			Map<String,String> vars = new HashMap<String,String>();
 			vars.put(ProfileConstants.WICKET_PARAM_USERID, userUuid);
+			vars.put(ProfileConstants.WICKET_PARAM_TAB, "" + ProfileConstants.TAB_INDEX_PROFILE);
 			extraParams = getFormattedStateParamForWicketTool(ProfileConstants.WICKET_PAGE_PROFILE_VIEW, vars);
 		}
 		
 		return sakaiProxy.getDirectUrlToUserProfile(currentUserUuid, extraParams);
 	}
 
-	
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getInternalDirectUrlToUserWall(String userUuid, String wallItemId) {
+		String currentUserUuid = sakaiProxy.getCurrentUserId();
+		if(currentUserUuid == null) {
+			throw new SecurityException("Must be logged in.");
+		}
+		
+		//link direct to ViewProfile page and add in the user param
+		String extraParams = null;
+		if(sakaiProxy.isUsingNormalPortal()){
+			Map<String,String> vars = new HashMap<String,String>();
+			vars.put(ProfileConstants.WICKET_PARAM_USERID, userUuid);
+			vars.put(ProfileConstants.WICKET_PARAM_WALL_ITEM, wallItemId);
+			vars.put(ProfileConstants.WICKET_PARAM_TAB, "" + ProfileConstants.TAB_INDEX_WALL);
+			extraParams = getFormattedStateParamForWicketTool(ProfileConstants.WICKET_PAGE_PROFILE_VIEW, vars);
+		}
+		
+		return sakaiProxy.getDirectUrlToUserProfile(currentUserUuid, extraParams);
+	}
 	
 	/**
  	* {@inheritDoc}
@@ -130,6 +154,20 @@ public class ProfileLinkLogicImpl implements ProfileLinkLogic {
 	/**
  	 * {@inheritDoc}
  	 */
+	public String getEntityLinkToProfileWall(String userUuid) {
+		StringBuilder url = new StringBuilder();
+		url.append(getEntityLinkBase());
+		url.append(ProfileConstants.LINK_ENTITY_WALL);
+		if(StringUtils.isNotBlank(userUuid)) {
+			url.append("/");
+			url.append(userUuid);
+		}
+		return url.toString();
+	}
+	
+	/**
+ 	 * {@inheritDoc}
+ 	 */
 	/*
 	public String generateTinyUrl(final String url) {
 		return tinyUrlService.generateTinyUrl(url);
@@ -186,10 +224,7 @@ public class ProfileLinkLogicImpl implements ProfileLinkLogic {
 		return base.toString();
 	}
 	
-	
+	@Setter
 	private SakaiProxy sakaiProxy;
-	public void setSakaiProxy(SakaiProxy sakaiProxy) {
-		this.sakaiProxy = sakaiProxy;
-	}
 	
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/federating/src/java/org/sakaiproject/provider/user/FilterUserDirectoryProvider.java $
- * $Id: FilterUserDirectoryProvider.java 96823 2011-08-11 15:31:53Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/federating/src/java/org/sakaiproject/provider/user/FilterUserDirectoryProvider.java $
+ * $Id: FilterUserDirectoryProvider.java 96822 2011-08-11 15:30:03Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -79,7 +79,7 @@ import org.sakaiproject.user.api.UsersShareEmailUDP;
  * </pre>
  * 
  * @author Ian Boston, Andrew Thornton, Daniel Parry, Raad
- * @version $Revision: 96823 $
+ * @version $Revision: 96822 $
  */
 public class FilterUserDirectoryProvider implements UserDirectoryProvider, ExternalUserSearchUDP, UsersShareEmailUDP
 {

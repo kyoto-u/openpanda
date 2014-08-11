@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/user/prefs/ContentUserNotificationPreferencesRegistrationImpl.java $
- * $Id: ContentUserNotificationPreferencesRegistrationImpl.java 88122 2011-02-08 17:40:10Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/user/prefs/ContentUserNotificationPreferencesRegistrationImpl.java $
+ * $Id: ContentUserNotificationPreferencesRegistrationImpl.java 88101 2011-02-08 15:06:26Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2010 The Sakai Foundation

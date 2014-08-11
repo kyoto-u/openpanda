@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponent.java $
- * $Id: SessionComponent.java 83849 2010-10-28 13:09:19Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponent.java $
+ * $Id: SessionComponent.java 83604 2010-10-21 15:52:09Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation

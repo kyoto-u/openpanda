@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/branches/sakai-2.8.x/courier-api/api/src/java/org/sakaiproject/courier/api/Delivery.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.0/courier-api/api/src/java/org/sakaiproject/courier/api/Delivery.java $
  * $Id: Delivery.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/wizard/api/src/java/org/theospi/portfolio/wizard/taggable/api/WizardActivityProducer.java $
+ * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/wizard/api/src/java/org/theospi/portfolio/wizard/taggable/api/WizardActivityProducer.java $
  * $Id: WizardActivityProducer.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
  ***********************************************************************************
  *

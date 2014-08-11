@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rights/branches/sakai-2.8.x/rights-api/api/src/java/org/sakaiproject/rights/api/RightsHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/rights/tags/sakai-2.9.0/rights-api/api/src/java/org/sakaiproject/rights/api/RightsHelper.java $
  * $Id: RightsHelper.java 59682 2009-04-03 23:31:05Z arwhyte@umich.edu $
  ***********************************************************************************
  *

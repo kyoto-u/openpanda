@@ -14,7 +14,7 @@
 <f:view>
 <sakai:view>
    <sakai:view_title value="#{common_msgs.guidance_title}"/>
-   <sakai:messages />
+   <sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
 
 <h:form>
 	<f:subview id="instructionSV" rendered="#{(guidance.current.instruction.base.text != '' && guidance.current.instruction.base.text != null) || not empty guidance.current.instruction.attachments}">

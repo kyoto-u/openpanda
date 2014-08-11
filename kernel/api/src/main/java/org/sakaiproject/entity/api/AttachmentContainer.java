@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/entity/api/AttachmentContainer.java $
- * $Id: AttachmentContainer.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/entity/api/AttachmentContainer.java $
+ * $Id: AttachmentContainer.java 93399 2011-06-01 11:31:40Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -38,5 +38,5 @@ public interface AttachmentContainer
 	 * 
 	 * @return An copy of the List of attachments (containing Reference objects) (may be empty).
 	 */
-	List getAttachments();
+	List<Reference> getAttachments();
 }

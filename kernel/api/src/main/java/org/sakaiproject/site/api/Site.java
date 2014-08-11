@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/site/api/Site.java $
- * $Id: Site.java 82036 2010-09-01 13:40:34Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/site/api/Site.java $
+ * $Id: Site.java 101392 2011-12-05 15:07:25Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -23,9 +23,12 @@ package org.sakaiproject.site.api;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.entity.api.Edit;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.user.api.User;
@@ -229,6 +232,15 @@ public interface Site extends Edit, Comparable, Serializable, AuthzGroup
 	 */
 	Collection<Group> getGroupsWithMemberHasRole(String userId, String role);
 
+    /**
+     * Get user IDs of members of a set of groups in this site
+     * 
+     * @param groupIds IDs of authZ groups (AuthzGroup selection criteria),
+     *      a null groupIds includes all groups in the site, an empty set includes none of them
+     * @return collection of user IDs who are in (members of) a set of site groups
+     */
+    Collection<String> getMembersInGroups(Set<String> groupIds);
+
 	/**
 	 * Does the site have any groups defined?
 	 * 
@@ -346,6 +358,7 @@ public interface Site extends Edit, Comparable, Serializable, AuthzGroup
 
 	/**
 	 * Add a new group. The Id is generated, the rest of the fields can be set using calls to the Group object returned.
+	 * NOTE: the title must be set before saving
 	 */
 	Group addGroup();
 
@@ -371,4 +384,22 @@ public interface Site extends Edit, Comparable, Serializable, AuthzGroup
 	 *        true if the site has a custom page ordering, false if not.
 	 */
 	void setCustomPageOrdered(boolean custom);
+	
+	/**
+	 * Is this site softly deleted and hence queued for a hard delete?
+	 * @return true if it has been softly deleted
+	 */
+	boolean isSoftlyDeleted();
+	
+	/**
+	 * If softly deleted, the date that occurred
+	 * @return date if it has been softly deleted
+	 */
+	Date getSoftlyDeletedDate();
+	
+	/**
+	 * Set params for this site as softly deleted
+	 * @param flag true or false
+	 */
+	void setSoftlyDeleted(boolean flag);
 }

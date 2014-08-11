@@ -17,7 +17,11 @@
 	<h:form id="msgForum" rendered="#{!ForumTool.selectedTopic.topic.draft || ForumTool.selectedTopic.topic.createdBy == ForumTool.userId}">
 
 		<!--jsp/discussionForum/message/dfViewThread.jsp-->
-       		<script type="text/javascript" src="/library/js/jquery.js"></script>
+       		<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
+       		<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
+  			<sakai:script contextBase="/messageforums-tool" path="/js/dialog.js"/>
+			<sakai:script contextBase="/messageforums-tool" path="/js/jquery.qtip.js"/>
+  			<link rel="stylesheet" type="text/css" href="/messageforums-tool/css/dialog.css" />	
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 		<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
 		
@@ -48,6 +52,7 @@
 			});
 		});
 		</script>	
+		
 		// element into which the value gets insert and retrieved from
 		<span class="highlight"  id="maxthreaddepth" class="skip"><h:outputText value="#{msgs.cdfm_maxthreaddepth}" /></span>
 //--%>
@@ -56,6 +61,9 @@
  			$(document).ready(function() {
 				setupMessageNav('messagePending');
 				setupMessageNav('messageNew');
+				if ($('div.hierItemBlock').length > 2){
+					$('.itemNav').clone().addClass('specialLink').appendTo('form')
+				}
 			});
 </script>		
 		<sakai:tool_bar separator="#{msgs.cdfm_toolbar_separator}">
@@ -74,7 +82,7 @@
 					<h:graphicImage url="/../../library/image/silk/printer.png" alt="#{msgs.print_friendly}" title="#{msgs.print_friendly}" />
 				</h:outputLink>
  		</sakai:tool_bar>
-			<h:panelGrid columns="2" summary="layout" width="100%" styleClass="specialLink">
+			<h:panelGrid columns="2" width="100%" styleClass="specialLink">
 			    <h:panelGroup>
 					<f:verbatim><div class="specialLink"><h3></f:verbatim>
 			      <h:commandLink action="#{ForumTool.processActionHome}" value="#{msgs.cdfm_message_forums}" title=" #{msgs.cdfm_message_forums}"
@@ -116,17 +124,24 @@
 					 </h:commandLink>
 				 </h:panelGroup>
 			</h:panelGrid>
-
-				 <%@include file="dfViewSearchBarThread.jsp"%>
 		
-		<h:outputText value="#{msgs.cdfm_no_unread_messages}" rendered="#{empty ForumTool.selectedThread}" styleClass="instruction" style="display:block;"/>
+	  	<f:verbatim>
+			<div id="dialogDiv" title="Grade Messages" style="display:none">
+	    		<iframe id="dialogFrame" name="dialogFrame" width="100%" height="100%" frameborder="0"></iframe>
+	    	</div>
+		</f:verbatim>
+		
+				 <%@ include file="dfViewSearchBarThread.jsp"%>
+		
+		<h:outputText value="#{msgs.cdfm_postFirst_warning}" rendered="#{ForumTool.needToPostFirst}" styleClass="messageAlert"/>
+		<h:outputText value="#{msgs.cdfm_no_unread_messages}" rendered="#{empty ForumTool.selectedThread && !ForumTool.needToPostFirst}" styleClass="instruction" style="display:block;"/>
 		<div id="messNavHolder" style="clear:both;"></div>
 		<%--rjlowe: Expanded View to show the message bodies, but not threaded --%>
 		<h:dataTable id="expandedMessages" value="#{ForumTool.selectedThread}" var="message" rendered="#{!ForumTool.threaded}"
    	 		styleClass="listHier messagesFlat specialLink" cellpadding="0" cellspacing="0" width="100%" columnClasses="bogus">
 			<h:column>
 			
-				<%@include file="dfViewThreadBodyInclude.jsp" %>
+				<%@ include file="dfViewThreadBodyInclude.jsp" %>
 			</h:column>
 		</h:dataTable>
 		
@@ -134,7 +149,7 @@
 		<mf:hierDataTable id="expandedThreadedMessages" value="#{ForumTool.selectedThread}" var="message" rendered="#{ForumTool.threaded}"
    	 		noarrows="true" styleClass="listHier messagesThreaded specialLink" border="0" cellpadding="0" cellspacing="0" width="100%" columnClasses="bogus">
 			<h:column id="_msg_subject">
-				<%@include file="dfViewThreadBodyInclude.jsp" %>
+				<%@ include file="dfViewThreadBodyInclude.jsp" %>
 			</h:column>
 		</mf:hierDataTable>
 				
@@ -156,5 +171,8 @@
 	
 	</h:form>
 	<h:outputText value="#{msgs.cdfm_insufficient_privileges_view_topic}" rendered="#{ForumTool.selectedTopic.topic.draft && ForumTool.selectedTopic.topic.createdBy != ForumTool.userId}" />
+	
+				 
+	
 </sakai:view>
 </f:view>

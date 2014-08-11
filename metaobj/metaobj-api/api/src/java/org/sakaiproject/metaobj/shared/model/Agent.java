@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/model/Agent.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/model/Agent.java $
  * $Id: Agent.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
  ***********************************************************************************
  *

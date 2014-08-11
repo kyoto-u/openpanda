@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sakaiproject.lessonbuilder</groupId>
+        <artifactId>sakai-lessonbuildertool-tool-base</artifactId>
+        <version>1.4.0</version>
+    </parent>
+
+    <name>sakai-lessonbuildertool-tool</name>
+    <groupId>org.sakaiproject.lessonbuilder</groupId>
+    <artifactId>sakai-lessonbuildertool-tool</artifactId>
+    <packaging>war</packaging>
+
+    <description>This project creates a WAR containing the Lesson Builder Tool for Sakai.</description>
+
+    <repositories>
+        <repository>
+            <id>caret-dev</id>
+            <name>Caret Dev Repo</name>
+            <layout>default</layout>
+            <url>http://www2.caret.cam.ac.uk/maven2dev</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+<!-- 
+  To enable YAFT, MNEME, and Assignments 2, uncomment the repository, dependencies and plugin below.
+  Look for all comment blocks that start with OPTIONAL. Remove that whole line, and the matching close
+ -->
+
+<!-- OPTIONAL
+        <repository>
+            <id>local-hack</id>
+            <name>Backup API copies</name>
+            <layout>default</layout>
+	    <url>http://sakai.rutgers.edu/stats/repos</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+-->
+
+    </repositories>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.sakaiproject.basiclti</groupId>
+            <artifactId>basiclti-api</artifactId>
+            <version>${sakai.basiclti.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.sakaiproject.kernel</groupId>
+            <artifactId>sakai-kernel-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.kernel</groupId>
+            <artifactId>sakai-component-manager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.kernel</groupId>
+            <artifactId>sakai-kernel-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${sakai.assignment.groupId}</groupId>
+            <artifactId>sakai-assignment-api</artifactId>
+            <version>${sakai.assignment.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.edu-services.gradebook</groupId>
+            <artifactId>gradebook-service-api</artifactId>
+        </dependency>
+	<dependency>
+            <groupId>org.sakaiproject.entitybroker</groupId>
+            <artifactId>entitybroker-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.entitybroker</groupId>
+            <artifactId>entitybroker-utils</artifactId>
+            <version>${sakai.entitybroker.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>sakai-lessonbuildertool-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.msgcntr</groupId>
+            <artifactId>messageforums-api</artifactId>
+            <version>${sakai.msgcntr.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.msgcntr</groupId>
+            <artifactId>messageforums-hbm</artifactId>
+            <version>${sakai.msgcntr.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.samigo</groupId>
+            <artifactId>samigo-api</artifactId>
+            <version>${sakai.samigo.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.samigo</groupId>
+            <artifactId>samigo-hibernate</artifactId>
+            <version>${sakai.samigo.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.samigo</groupId>
+            <artifactId>samigo-qti</artifactId>
+            <version>${sakai.samigo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sakaiproject.samigo</groupId>
+            <artifactId>samigo-services</artifactId>
+            <version>${sakai.samigo.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+        </dependency>
+        <!-- Required for hibernate 3 HQL queries -->
+        <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>uk.org.ponder.sakairsf</groupId>
+            <artifactId>sakairsf</artifactId>
+            <version>${sakairsf.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>uk.org.ponder.sakairsf</groupId>
+            <artifactId>SakaiRSFComponents-evolvers</artifactId>
+            <version>${sakairsf.components.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>uk.org.ponder.sakairsf</groupId>
+            <artifactId>SakaiRSFComponents-templates</artifactId>
+            <version>${sakairsf.components.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>uk.org.ponder.rsfutil</groupId>
+            <artifactId>RSFComponents-templates</artifactId>
+            <version>${rsfutil.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+	  <groupId>commons-fileupload</groupId>
+	  <artifactId>commons-fileupload</artifactId>
+        </dependency>
+
+
+<!-- OPTIONAL
+        <dependency>
+            <groupId>org.sakaiproject.yaft</groupId>
+            <artifactId>yaft-api</artifactId>
+            <version>${sakai.yaft.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency> 
+	  <groupId>org.etudes.mneme</groupId>
+	  <artifactId>etudes-mneme-api</artifactId> 
+          <version>${sakai.mneme.version}</version> 
+	  <scope>${sakai.mneme.scope}</scope> 
+	</dependency> 
+
+	<dependency>
+            <groupId>org.sakaiproject.assignment2</groupId>
+            <artifactId>sakai-assignment2-api</artifactId>
+		<version>1.0-rc-1</version>
+            <scope>provided</scope>
+        </dependency>
+
+-->
+    </dependencies>
+
+    <build>
+
+<!-- OPTIONAL
+      <plugins>
+	<plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>1.7</version>
+          <executions>
+            <execution>
+              <id>add-source</id>
+              <phase>generate-sources</phase>
+              <goals>
+		<goal>add-source</goal>
+              </goals>
+              <configuration>
+		<sources>
+                  <source>opt-src/java</source>
+		</sources>
+              </configuration>
+            </execution>
+	    <execution>
+              <id>add-resource</id>
+              <phase>generate-resources</phase>
+              <goals>
+		<goal>add-resource</goal>
+              </goals>
+              <configuration>
+		<resources>
+                  <resource>
+                    <directory>opt-src/webapp/WEB-INF</directory>
+                    <targetPath>${project.build.directory}/sakai-lessonbuildertool-tool-${project.version}/WEB-INF</targetPath>
+                  </resource>
+              </resources>
+            </configuration>
+          </execution>
+          </executions>
+	</plugin>
+      </plugins>
+-->
+
+        <resources>
+            <resource>
+                <directory>${basedir}/src/resources</directory>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>

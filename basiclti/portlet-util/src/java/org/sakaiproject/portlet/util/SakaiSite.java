@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x/portlet-util/src/java/org/sakaiproject/portlet/util/SakaiSite.java $
- * $Id: SakaiSite.java 70086 2009-11-09 22:29:00Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0/portlet-util/src/java/org/sakaiproject/portlet/util/SakaiSite.java $
+ * $Id: SakaiSite.java 98512 2011-09-22 17:59:08Z csev@umich.edu $
  *
  * Copyright (c) 2005-2009 The Sakai Foundation
  *
@@ -27,43 +27,43 @@ import java.net.URLEncoder;
  */
 public class SakaiSite {
 
-        public String id = null;
+	public String id = null;
 
-        public String title = null;
+	public String title = null;
 
-        public String host = null;
+	public String host = null;
 
-        public String session = null; // Session is optional
-	
-        public String toolId  = null; 
+	public String session = null; // Session is optional
 
-        public String toolTitle  = null; 
+	public String toolId  = null; 
 
-        public String toString() {
-            return title;
-        }
+	public String toolTitle  = null; 
 
-        public String toStringFull() {
-            return "title=" + title + " url=" + getUrl() + " toolTitle=" + toolTitle + " toolUrl=" + getToolUrl();
-        }
+	public String toString() {
+		return title;
+	}
 
-        // TODO: UrlEncode
-        public String getUrl() {
-	    if ( id == null ) return "null";
-            String retval = host + "/portal/worksite/" + URLEncoder.encode(id);
-            if (session != null)
-                retval = retval + "?sakai.session="
-                        + URLEncoder.encode(session);
-            return retval;
-        }
+	public String toStringFull() {
+		return "title=" + title + " url=" + getUrl() + " toolTitle=" + toolTitle + " toolUrl=" + getToolUrl();
+	}
 
-        // TODO: UrlEncode
-        public String getToolUrl() {
-            if ( toolId == null ) return "null";
-            String retval = host + "/portal/page/" + URLEncoder.encode(toolId);
-            if (session != null)
-                retval = retval + "?sakai.session="
-                        + URLEncoder.encode(session);
-            return retval;
-        }
+	// TODO: UrlEncode
+	public String getUrl() {
+		if ( id == null ) return "null";
+		String retval = host + "/portal/worksite/" + URLEncoder.encode(id);
+		if (session != null)
+			retval = retval + "?sakai.session="
+				+ URLEncoder.encode(session);
+		return retval;
+	}
+
+	// TODO: UrlEncode
+	public String getToolUrl() {
+		if ( toolId == null ) return "null";
+		String retval = host + "/portal/page/" + URLEncoder.encode(toolId);
+		if (session != null)
+			retval = retval + "?sakai.session="
+				+ URLEncoder.encode(session);
+		return retval;
+	}
 }

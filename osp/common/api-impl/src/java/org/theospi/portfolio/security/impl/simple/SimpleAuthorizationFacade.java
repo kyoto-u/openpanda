@@ -236,7 +236,6 @@ public class SimpleAuthorizationFacade extends HibernateDaoSupport implements Au
       }
       
       try {
-         getHibernateTemplate().setCacheQueries(true);
          return (Authorization) safePopList(getHibernateTemplate().findByNamedQuery("getAuthorization",
             new Object[]{agent.getId().getValue(), function, id.getValue()}));
       } catch (HibernateObjectRetrievalFailureException e) {
@@ -325,7 +324,6 @@ public class SimpleAuthorizationFacade extends HibernateDaoSupport implements Au
     * @jira OSP-323 PostgreSQL Table Creation
     */
    protected List findById(Id id) {
-      getHibernateTemplate().setCacheQueries(true);
       return getHibernateTemplate().findByNamedQuery("byId",
          new Object[]{id.getValue()});
    }
@@ -334,7 +332,6 @@ public class SimpleAuthorizationFacade extends HibernateDaoSupport implements Au
     * @jira OSP-323 PostgreSQL Table Creation
     */
    protected List findByFunction(String function) {
-      getHibernateTemplate().setCacheQueries(true);
       return getHibernateTemplate().findByNamedQuery("byFunction",
          new Object[]{function});
    }
@@ -343,7 +340,6 @@ public class SimpleAuthorizationFacade extends HibernateDaoSupport implements Au
     * @jira OSP-323 PostgreSQL Table Creation
     */
    protected List findByFunctionId(String function, Id id) {
-      getHibernateTemplate().setCacheQueries(true);
       return getHibernateTemplate().findByNamedQuery("byFunctionAndId",
          new Object[]{function, id.getValue()});
    }
@@ -352,7 +348,6 @@ public class SimpleAuthorizationFacade extends HibernateDaoSupport implements Au
     * @jira OSP-323 PostgreSQL Table Creation
     */
    protected List findByAgent(Agent agent) {
-      getHibernateTemplate().setCacheQueries(true);
       return getHibernateTemplate().findByNamedQuery("byAgent",
          new Object[]{agent.getId().getValue()});
    }
@@ -361,7 +356,6 @@ public class SimpleAuthorizationFacade extends HibernateDaoSupport implements Au
     * @jira OSP-323 PostgreSQL Table Creation
     */
    protected List findByAgentId(Agent agent, Id id) {
-      getHibernateTemplate().setCacheQueries(true);
       return getHibernateTemplate().findByNamedQuery("byAgentAndId",
          new Object[]{agent.getId().getValue(), id.getValue()});
    }
@@ -370,7 +364,6 @@ public class SimpleAuthorizationFacade extends HibernateDaoSupport implements Au
     * @jira OSP-323 PostgreSQL Table Creation
     */
    protected List findByAgentFunction(Agent agent, String function) {
-      getHibernateTemplate().setCacheQueries(true);
       return getHibernateTemplate().findByNamedQuery("byAgentAndFunction",
          new Object[]{agent.getId().getValue(), function});
    }

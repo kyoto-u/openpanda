@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/branches/sakai-2.8.x/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
  * $Id: BasicCitationService.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

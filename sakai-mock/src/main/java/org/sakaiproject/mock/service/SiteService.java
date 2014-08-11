@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/branches/mock-2.8.x/src/main/java/org/sakaiproject/mock/service/SiteService.java $
- * $Id: SiteService.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.0/src/main/java/org/sakaiproject/mock/service/SiteService.java $
+ * $Id: SiteService.java 113355 2012-09-21 18:32:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -71,6 +71,10 @@ public class SiteService implements org.sakaiproject.site.api.SiteService {
 		return true;
 	}
 
+	public boolean allowAddPortfolioSite() {
+		return true;
+	}
+	
 	public boolean allowAddSite(String id) {
 		return true;
 	}
@@ -353,6 +357,20 @@ public class SiteService implements org.sakaiproject.site.api.SiteService {
 	 * @see org.sakaiproject.site.api.SiteService#allowAddCourseSite()
 	 */
 	public boolean allowAddCourseSite()
+	{
+		return true;
+	}
+
+
+	public List<Site> getSoftlyDeletedSites() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sakaiproject.site.api.SiteService#allowAddProjectSite()
+	 */
+	public boolean allowAddProjectSite()
 	{
 		return true;
 	}

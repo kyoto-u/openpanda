@@ -18,6 +18,7 @@ package org.sakaiproject.profile2.logic;
 
 import java.util.List;
 
+import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.profile2.model.BasicPerson;
 import org.sakaiproject.profile2.model.CompanyProfile;
 import org.sakaiproject.profile2.model.Person;
@@ -50,14 +51,14 @@ public interface ProfileLogic {
 	public UserProfile getUserProfile(String userUuid);
 	
 	/**
-	 * Persist a UserProfile
+	 * Persist a SakaiPerson object and send an email notification, if required.
 	 * 
-	 * <p>Not yet implemented, will return false.</p>
+	 * <p>Note that this may eventually change to UserProfile, when SakaiPerson is reimplemented.
 	 * 
-	 * @param userProfile	UserProfile obj, can only save own.
+	 * @param sp	SakaiPerson obj
 	 * @return	
 	 */
-	public boolean saveUserProfile(UserProfile userProfile);
+	public boolean saveUserProfile(SakaiPerson sp);
 	
 	/**
 	 * Adds a new company profile to the database.
@@ -107,31 +108,7 @@ public interface ProfileLogic {
 	 * @return
 	 */
 	public boolean saveSocialNetworkingInfo(SocialNetworkingInfo socialNetworkingInfo);
-	
-	
-	/**
-	 * Find all users that match the search string in either name or email. 
-	 * 
-	 * <p>Searches SakaiPerson, UserDirectorySerice internal users as well as external users if your
-	 * provider supports SearchExternalUsersUDP.</p>
-	 * 
-	 * <p>This list is automatically cleaned for non-existent users by way of UserDirectoryService.getUsers.</p>
-	 * 
-	 * @param search 	string to search for
-	 * @return List 	Persons
-	 */
-	public List<Person> findUsersByNameOrEmail(String search);
-
-	/**
-	 * Find all users that match the search string in any of the relevant SakaiPerson fields
-	 *
-	 * <p>This list is automatically cleaned for non-existent users by way of UserDirectoryService.getUsers.</p>
-	 * 
-	 * @param search 	string to search for
-	 * @return List 	Persons
-	 */
-	public List<Person> findUsersByInterest(String search);
-	
+		
 	/**
 	 * Get a BasicPerson
 	 * @param userUuid

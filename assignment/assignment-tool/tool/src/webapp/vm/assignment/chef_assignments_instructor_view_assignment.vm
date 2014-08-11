@@ -1,19 +1,19 @@
-<!-- $Id: chef_assignments_instructor_view_assignment.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_view_assignment.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_view_assignment.vm  -->
 #parse("/vm/assignment/assignment_macros.vm")
 <div class="portletBody" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
 	#if ($taggable && $allowAddAssignment)
 		#if (!$activityHelpers.isEmpty())
-		<ul class="navIntraTool actionToolBar" role="menu">
+		<ul class="navIntraTool actionToolBar">
 				#set ($first = true)
 				#foreach ($helperInfo in $activityHelpers)
 					#if (!$first)
-					<li  class="firstToolBarItem" role="menuitem">
+					<li  class="firstToolBarItem">
 						<span><a href="#toolLinkParam("$action" "doHelp_activity" "activityRef=$validator.escapeUrl($activity.reference)&providerId=$validator.escapeUrl($helperInfo.provider.id)")" title="$!helperInfo.description">$!helperInfo.name</a></span>
 					</li>	
 					#else
 						#set ($first = false)
-						<li role="menuitem">						
+						<li>						
 							<span><a href="#toolLinkParam("$action" "doHelp_activity" "activityRef=$validator.escapeUrl($activity.reference)&providerId=$validator.escapeUrl($helperInfo.provider.id)")" title="$!helperInfo.description">$!helperInfo.name</a></span>
 						</li>	
 					#end
@@ -205,7 +205,11 @@
 							#else
 								<img src = "#imageLink($contentTypeImageService.getContentTypeImage($props.getProperty($props.NamePropContentType)))" border="0" alt="$tlang.getString("gen.filatt")" />
 							#end
-							<a href="$attachment.Url" target="_blank">$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))</a>						
+							#if ($decoratedUrlMap)
+								<a href="$decoratedUrlMap.get($attachment.Url)" target="_blank">$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))</a>
+							#else
+								<a href="$attachment.Url" target="_blank">$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))</a>
+							#end
 							#propertyDetails($props)
 						</li>
 					#end
@@ -352,7 +356,11 @@
 									#else
 										<img src = "#imageLink($contentTypeImageService.getContentTypeImage($props.getProperty($props.NamePropContentType)))" border="0" alt="$tlang.getString("gen.filatt")" />
 									#end
-									<a href="$attachment.Url" target="_blank">$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))</a>						
+									#if ($decoratedUrlMap)
+										<a href="$decoratedUrlMap.get($attachment.Url)" target="_blank">$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))</a>
+									#else
+										<a href="$attachment.Url" target="_blank">$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))</a>
+									#end
 									#propertyDetails($props)
 								</li>
 							#end
@@ -389,7 +397,7 @@
 					## if honor pledge is required
 					#if ($assignment.getContent().HonorPledge != 1) 
 						<p class="checkbox">
-							<label for="yes">$tlang.getString("gen.honple2")</label>
+							<label for="yes">$honor_pledge_text</label>
 							<input name="Yes" type="checkbox" id="yes" value="" disabled="disabled" /><br />
 							$tlang.getString("gen.youmus")
 						</p>	
@@ -411,6 +419,7 @@
 				<input type="submit" accesskey="x" name="eventSubmit_doDone_view_assignment" value="$tlang.getString("gen.backtolist")" class="active"  />
 		#end
 		</p>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>
 <!-- end: chef_assignments_instructor_view_assignment.vm  -->

@@ -384,6 +384,38 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
       return (List)getHibernateTemplate().execute(hcb);
     }
     
+    public List<Message> findAuthoredMessagesForStudentByTopicId(final String studentId, final Long topicId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findReadMessagesForCurrentStudentByTopicId()");
+
+    	HibernateCallback hcb = new HibernateCallback() {
+    		public Object doInHibernate(Session session) throws HibernateException, SQLException {
+    			Query q = session.getNamedQuery("findAuthoredMessagesForStudentByTopicId");
+    			q.setParameter("contextId", getContextId(), Hibernate.STRING);
+    			q.setParameter("userId", studentId, Hibernate.STRING);
+    			q.setParameter("topicId", topicId, Hibernate.LONG);
+    			return q.list();
+    		}
+    	};
+
+    	return (List)getHibernateTemplate().execute(hcb);
+    }
+
+    public List<Message> findAuthoredMessagesForStudentByForumId(final String studentId, final Long forumId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findAuthoredMessagesForStudentByForumId()");
+
+    	HibernateCallback hcb = new HibernateCallback() {
+    		public Object doInHibernate(Session session) throws HibernateException, SQLException {
+    			Query q = session.getNamedQuery("findAuthoredMessagesForStudentByForumId");
+    			q.setParameter("contextId", getContextId(), Hibernate.STRING);
+    			q.setParameter("userId", studentId, Hibernate.STRING);
+    			q.setParameter("forumId", forumId, Hibernate.LONG);
+    			return q.list();
+    		}
+    	};
+
+    	return (List)getHibernateTemplate().execute(hcb);
+    }
+    
     public List<Object[]> findAuthoredMessageCountForAllStudents() {
     	if (LOG.isDebugEnabled()) LOG.debug("findAuthoredMessageCountForAllStudents executing");
     	
@@ -391,6 +423,36 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
             public Object doInHibernate(Session session) throws HibernateException, SQLException {
                 Query q = session.getNamedQuery("findAuthoredMessageCountForAllStudents");
                 q.setParameter("contextId", getContextId(), Hibernate.STRING);
+                return q.list();
+            }
+        };
+
+        return (List)getHibernateTemplate().execute(hcb);        
+    }
+    
+    public List<Object[]> findAuthoredMessageCountForAllStudentsByTopicId(final Long topicId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findAuthoredMessageCountForAllStudentsByTopicId executing");
+    	
+        HibernateCallback hcb = new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Query q = session.getNamedQuery("findAuthoredMessageCountForAllStudentsByTopicId");
+                q.setParameter("contextId", getContextId(), Hibernate.STRING);
+                q.setParameter("topicId", topicId, Hibernate.LONG);
+                return q.list();
+            }
+        };
+
+        return (List)getHibernateTemplate().execute(hcb);        
+    }
+    
+    public List<Object[]> findAuthoredMessageCountForAllStudentsByForumId(final Long forumId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findAuthoredMessageCountForAllStudentsByForumId executing");
+    	
+        HibernateCallback hcb = new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Query q = session.getNamedQuery("findAuthoredMessageCountForAllStudentsByForumId");
+                q.setParameter("contextId", getContextId(), Hibernate.STRING);
+                q.setParameter("forumId", forumId, Hibernate.LONG);
                 return q.list();
             }
         };
@@ -459,6 +521,38 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
       return (List)getHibernateTemplate().execute(hcb);
     }
     
+    public List<Message> findReadMessagesForStudentByTopicId(final String studentId, final Long topicId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findReadMessagesForCurrentStudentByTopicId()");
+
+    	HibernateCallback hcb = new HibernateCallback() {
+    		public Object doInHibernate(Session session) throws HibernateException, SQLException {
+    			Query q = session.getNamedQuery("findReadMessagesForStudentByTopicId");
+    			q.setParameter("contextId", getContextId(), Hibernate.STRING);
+    			q.setParameter("userId", studentId, Hibernate.STRING);
+    			q.setParameter("topicId", topicId, Hibernate.LONG);
+    			return q.list();
+    		}
+    	};
+
+    	return (List)getHibernateTemplate().execute(hcb);
+    }
+    
+    public List<Message> findReadMessagesForStudentByForumId(final String studentId, final Long forumId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findReadMessagesForStudentByForumId()");
+
+    	HibernateCallback hcb = new HibernateCallback() {
+    		public Object doInHibernate(Session session) throws HibernateException, SQLException {
+    			Query q = session.getNamedQuery("findReadMessagesForStudentByForumId");
+    			q.setParameter("contextId", getContextId(), Hibernate.STRING);
+    			q.setParameter("userId", studentId, Hibernate.STRING);
+    			q.setParameter("forumId", forumId, Hibernate.LONG);
+    			return q.list();
+    		}
+    	};
+
+    	return (List)getHibernateTemplate().execute(hcb);
+    }
+    
     public List<Object[]> findReadMessageCountForAllStudents() {
     	if (LOG.isDebugEnabled()) LOG.debug("findReadMessageCountForAllStudentsInSite executing");
     	
@@ -466,6 +560,36 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
             public Object doInHibernate(Session session) throws HibernateException, SQLException {
                 Query q = session.getNamedQuery("findReadMessageCountForAllStudents");
                 q.setParameter("contextId", getContextId(), Hibernate.STRING);
+                return q.list();
+            }
+        };
+
+        return (List)getHibernateTemplate().execute(hcb);        
+    }
+    
+    public List<Object[]> findReadMessageCountForAllStudentsByTopicId(final Long topicId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findReadMessageCountForAllStudentsByTopicId executing");
+    	
+        HibernateCallback hcb = new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Query q = session.getNamedQuery("findReadMessageCountForAllStudentsByTopicId");
+                q.setParameter("contextId", getContextId(), Hibernate.STRING);
+                q.setParameter("topicId", topicId, Hibernate.LONG);
+                return q.list();
+            }
+        };
+
+        return (List)getHibernateTemplate().execute(hcb);        
+    }
+    
+    public List<Object[]> findReadMessageCountForAllStudentsByForumId(final Long forumId) {
+    	if (LOG.isDebugEnabled()) LOG.debug("findReadMessageCountForAllStudentsByForumId executing");
+    	
+        HibernateCallback hcb = new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Query q = session.getNamedQuery("findReadMessageCountForAllStudentsByForumId");
+                q.setParameter("contextId", getContextId(), Hibernate.STRING);
+                q.setParameter("forumId", forumId, Hibernate.LONG);
                 return q.list();
             }
         };
@@ -503,7 +627,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
      */
     public int findViewableMessageCountByTopicId(final Long topicId) {
         if (topicId == null) {
-            LOG.error("findViewableMessageCountByTopicId failed with topicId: " + topicId);
+            LOG.error("findViewableMessageCountByTopicId failed with topicId: null");
             throw new IllegalArgumentException("Null Argument");
         }
 
@@ -545,7 +669,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     */
    public int findUnreadViewableMessageCountByTopicIdByUserId(final Long topicId, final String userId) {
        if (topicId == null) {
-           LOG.error("findUnreadViewableMessageCountByTopicIdByUserId failed with topicId: " + topicId + " and userid: " + userId);
+           LOG.error("findUnreadViewableMessageCountByTopicIdByUserId failed with topicId: null and userid: " + userId);
            throw new IllegalArgumentException("Null Argument");
        }
 
@@ -560,7 +684,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     */
    public int findUnreadViewableMessageCountByTopicId(final Long topicId) {
        if (topicId == null) {
-           LOG.error("findUnreadViewableMessageCountByTopicId failed with topicId: " + topicId);
+           LOG.error("findUnreadViewableMessageCountByTopicId failed with topicId: null");
            throw new IllegalArgumentException("Null Argument");
        }
 
@@ -574,7 +698,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     
     public int findReadMessageCountByTopicId(final Long topicId) {
         if (topicId == null) {
-            LOG.error("findReadMessageCountByTopicId failed with topicId: " + topicId);
+            LOG.error("findReadMessageCountByTopicId failed with topicId: Null");
             throw new IllegalArgumentException("Null Argument");
         }
 
@@ -620,7 +744,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
      */
     public int findReadViewableMessageCountByTopicId(final Long topicId) {
         if (topicId == null) {
-            LOG.error("findReadViewableMessageCountByTopicId failed with topicId: " + topicId);
+            LOG.error("findReadViewableMessageCountByTopicId failed with topicId: null");
             throw new IllegalArgumentException("Null Argument");
         }
 
@@ -632,7 +756,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     
     public List findMessagesByTopicId(final Long topicId) {
         if (topicId == null) {
-            LOG.error("findMessagesByTopicId failed with topicId: " + topicId);
+            LOG.error("findMessagesByTopicId failed with topicId: null");
             throw new IllegalArgumentException("Null Argument");
         }
 
@@ -651,7 +775,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     
     public List findUndeletedMessagesByTopicId(final Long topicId) {
         if (topicId == null) {
-            LOG.error("findUndeletedMessagesByTopicId failed with topicId: " + topicId);
+            LOG.error("findUndeletedMessagesByTopicId failed with topicId: null");
             throw new IllegalArgumentException("Null Argument");
         }
 
@@ -670,7 +794,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     
     public int findMessageCountByTopicId(final Long topicId) {
         if (topicId == null) {
-            LOG.error("findMessageCountByTopicId failed with topicId: " + topicId);
+            LOG.error("findMessageCountByTopicId failed with topicId: null");
             throw new IllegalArgumentException("Null Argument");
         }
 
@@ -680,6 +804,25 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
             public Object doInHibernate(Session session) throws HibernateException, SQLException {
                 Query q = session.getNamedQuery("findMessageCountByTopicId");
                 q.setParameter("topicId", topicId, Hibernate.LONG);
+                return q.uniqueResult();
+            }
+        };
+
+        return ((Integer) getHibernateTemplate().execute(hcb)).intValue();        
+    }
+    
+    public int findMessageCountByForumId(final Long forumId) {
+        if (forumId == null) {
+            LOG.error("findMessageCountByForumId failed with forumId: " + forumId);
+            throw new IllegalArgumentException("Null Argument");
+        }
+
+        LOG.debug("findMessageCountByForumId executing with forumId: " + forumId);
+
+        HibernateCallback hcb = new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Query q = session.getNamedQuery("findMessageCountByForumId");
+                q.setParameter("forumId", forumId, Hibernate.LONG);
                 return q.uniqueResult();
             }
         };
@@ -1025,7 +1168,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
         message.setDraft(Boolean.FALSE);
         message.setHasAttachments(Boolean.FALSE);
         
-        LOG.info("message " + message.getUuid() + " created successfully");
+        LOG.debug("message " + message.getUuid() + " created successfully");
         return message;        
     }
 
@@ -1046,7 +1189,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
         message.setDraft(Boolean.FALSE);
         message.setHasAttachments(Boolean.FALSE);
 
-        LOG.info("message " + message.getUuid() + " created successfully");
+        LOG.debug("message " + message.getUuid() + " created successfully");
         return message;        
     }
 
@@ -1058,7 +1201,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
         attachment.setModified(new Date());
         attachment.setModifiedBy(getCurrentUser());
 
-        LOG.info("attachment " + attachment.getUuid() + " created successfully");
+        LOG.debug("attachment " + attachment.getUuid() + " created successfully");
         return attachment;        
     }
 
@@ -1068,6 +1211,10 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
 
     public void saveMessage(Message message, boolean logEvent) {
     	saveMessage(message, logEvent, ToolManager.getCurrentTool().getId(), getCurrentUser(), getContextId());
+    }
+    
+    public void saveMessage(Message message, boolean logEvent, boolean ignoreLockedTopicForum) {
+        saveMessage(message, logEvent, ToolManager.getCurrentTool().getId(), getCurrentUser(), getContextId(), ignoreLockedTopicForum);
     }
     
     public void saveMessage(Message message, boolean logEvent, String toolId, String userId, String contextId){
@@ -1133,7 +1280,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
         	}           
         }
         
-        LOG.info("message " + message.getId() + " saved successfully");
+        LOG.debug("message " + message.getId() + " saved successfully");
         
     }
 
@@ -1172,7 +1319,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("message " + id + " deleted successfully");
+        LOG.debug("message " + id + " deleted successfully");
     }
     
     public Message getMessageById(final Long messageId) {        
@@ -1252,7 +1399,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
     public void markMessageApproval(Long messageId, boolean approved)
     {
     	if (messageId == null) {
-            LOG.error("markMessageApproval failed with messageId: " + messageId);
+            LOG.error("markMessageApproval failed with messageId: null");
             throw new IllegalArgumentException("Null Argument");
         }
 
@@ -1586,7 +1733,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
 	public List getPendingMsgsInSiteByMembership(final List membershipList)
 	{   	
 		if (membershipList == null) {
-            LOG.error("getPendingMsgsInSiteByMembership failed with membershipList: " + membershipList);
+            LOG.error("getPendingMsgsInSiteByMembership failed with membershipList: null");
             throw new IllegalArgumentException("Null Argument");
         }
 		
@@ -1655,7 +1802,7 @@ public class MessageForumsMessageManagerImpl extends HibernateDaoSupport impleme
 	public List getPendingMsgsInTopic(final Long topicId)
 	{
 		if (topicId == null) {
-            LOG.error("getPendingMsgsInTopic failed with topicId: " + topicId);
+            LOG.error("getPendingMsgsInTopic failed with topicId: null");
             throw new IllegalArgumentException("Null Argument");
         }
 

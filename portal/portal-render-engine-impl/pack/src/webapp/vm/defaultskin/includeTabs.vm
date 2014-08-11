@@ -2,26 +2,37 @@
 ## the Site Tabs part of the standard view
 ##
 ##
+#if ( ${pageColumn0Tools} ) 
+  #foreach ( $tool in $pageColumn0Tools ) 
+    #if ( $tool.breadcrumbs ) 
+       #set ($portalBreadCrumbs = $tool.breadcrumbs ) 
+    #end
+  #end
+#end
+#foreach ( $site in $tabsSites.tabsSites)
+  #if (${site.isCurrentSite} and  $site.isChild )
+    #set ($portalPwd = $site.pwd)
+  #end
+#end
 <!-- START from includeTabs.vm -->
 			<!-- start includeTabs -->
 			<div class="${tabsCssClass}">
 				<div id="siteNav">
 					<div id="linkNav">
-						<a id="sitetabs" class="skip" name="sitetabs"></a>
-							<h1 class="skip">${rloader.sit_worksiteshead}</h1>
+							<h1 class="skip" id="sitetabs">${rloader.sit_worksiteshead}</h1>
 							<ul id="siteLinkList">
 						#foreach ( $site in $tabsSites.tabsSites ) 
 							#if (${site.isCurrentSite})
 								#if (${site.isMyWorkspace})
 							<li class="selectedTab"><a href="#"><span>${rloader.sit_mywor}</span></a></li>
 								#else
-							<li class="selectedTab"><a href="#"><span>${site.siteTitle}</span></a></li>
+							<li class="selectedTab"><a href="#"><span title="${site.fullTitle}">${site.siteTitle}</span></a></li>
 								#end
 							#else
 								#if (${site.isMyWorkspace})
 							<li><a href="${site.siteUrl}" title="${rloader.sit_mywor}"><span>${rloader.sit_mywor}</span></a></li>
 								#else
-							<li><a href="${site.siteUrl}" title="${site.siteTitle}"><span>${site.siteTitle}</span></a></li>
+							<li><a href="${site.siteUrl}" title="${site.fullTitle}"><span>${site.siteTitle}</span></a></li>
 								#end
 							#end
 						#end
@@ -37,7 +48,7 @@
 						<select onchange="if (this.options[this.selectedIndex].value != '') { parent.location = this.options[this.selectedIndex].value; } else { this.selectedIndex = 0; }">
 							<option value="" selected="selected">${rloader.sit_more}</option>
 						#foreach( $site in $tabsSites.tabsMoreSites )
-							<option title="${site.siteTitle}" value="${site.siteUrl}">${site.siteTitle}</option> 
+							<option title="${site.fullTitle}" value="${site.siteUrl}">${site.siteTitle}</option> 
 						#end	
 						</select>
 					</div>
@@ -92,7 +103,7 @@
 									<span>${rloader.sit_mywor}</span>
 								</a></li>
 							#else
-								<li><a href="${site.siteUrl}" title="${site.siteTitle}">
+								<li><a href="${site.siteUrl}" title="${site.fullTitle}">
 									<span>${site.siteTitle}</span>
 								</a></li>
 							#end
@@ -106,32 +117,45 @@
 				#end
 	
 			</div> <!-- /tabsCssClass -->
-				#foreach ( $site in $tabsSites.tabsSites)
- 					#if (${site.isCurrentSite})
-    					#if ( $site.isChild )
+                                #if ( $portalBreadCrumbs or $portalPwd ) 
       			<ul id="siteHierarchy"> 
-     					 	#set ($tabTotal =0)
-      						#foreach ( $pwd in $site.pwd )
-          						#set ($tabTotal =$tabTotal + 1)       
-                                                #end
-     					 	#set ($tabCountBread =0)
-      						#foreach ( $pwd in $site.pwd )
-          						#set ($tabCountBread =$tabCountBread + 1)       
+     					#set ($tabTotal =0)
+      					#foreach ( $pwd in $portalPwd )
+          					#set ($tabTotal =$tabTotal + 1)       
+                                        #end
+      					#foreach ( $crumb in $portalBreadCrumbs )
+          					#set ($tabTotal = $tabTotal + 1)       
+                                        #end
+     				 	#set ($tabCountBread =0)
+      					#foreach ( $pwd in $portalPwd )
+          					#set ($tabCountBread =$tabCountBread + 1)       
           			<li>
-          						#if ($tabCountBread > 1)
+          					#if ($tabCountBread > 1)
                 		<span class="breadSeparator">${rloader.bread_separator}</span>
-          						#end
-          						## note: keep all the tags in this block in the same line 
-							#if ($tabCountBread == $tabTotal )
+          					#end
+          					## note: keep all the tags in this block in the same line 
+						#if ($tabCountBread == $tabTotal )
                 		<a href="${pwd.siteUrl}" title="${pwd.siteTitle}" class="lastBreadCrumb"><span>${pwd.siteTitle}</span></a>
-							#else
+						#else
                 		<a href="${pwd.siteUrl}" title="${pwd.siteTitle}"><span>${pwd.siteTitle}</span></a>
-							#end
+						#end
                   	</li>
-      						#end
+      					#end
+      					#foreach ( $pwd in $portalBreadCrumbs )
+          					#set ($tabCountBread =$tabCountBread + 1)       
+          			<li>
+          					#if ($tabCountBread > 1)
+                		<span class="breadSeparator">${rloader.bread_separator}</span>
+          					#end
+          					## note: keep all the tags in this block in the same line 
+						#if ($tabCountBread == $tabTotal )
+                		<a href="${pwd.siteUrl}" title="${pwd.siteTitle}" class="lastBreadCrumb"><span>${pwd.siteTitle}</span></a>
+						#else
+                		<a href="${pwd.siteUrl}" title="${pwd.siteTitle}"><span>${pwd.siteTitle}</span></a>
+						#end
+                  	</li>
+      					#end
       			</ul>
-   						 #end
-  					#end
 				#end
 <!-- end includeTabs -->
 <!-- END from includeTabs.vm -->

@@ -5,7 +5,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: sessionWillTimeout.jsp 59354 2009-03-31 17:11:55Z arwhyte@umich.edu $
+* $Id: sessionWillTimeout.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -42,7 +42,7 @@
   </h3>
   <%-- Clicking OK will renew the session but ignoring will lead to session expiration. --%>
   <h:form id="ok">
-  <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+   <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
    <h:commandButton value="#{authorMessages.button_ok}" type="submit"
      style="act" action="select" />
   </h:form>

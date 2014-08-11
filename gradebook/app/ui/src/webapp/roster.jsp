@@ -1,14 +1,36 @@
 <f:view>
-	<script type="text/javascript" src="/library/js/jquery.js"></script>
+	<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
+	<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/spreadsheetUI.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/dialog.js"></script>
+			<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/dialog.css" />
+			
+	<%
+	  	String thisId = request.getParameter("panel");
+	  	if (thisId == null) 
+	  	{
+	    	thisId = "Main" + org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement().getId();
+	 	}	
+	%>
+	<script type="text/javascript">
+		var iframeId = '<%= org.sakaiproject.util.Web.escapeJavascript(thisId)%>';
+	</script>
+	
+	<sakai:flowState bean="#{rosterBean}" />			
+			
+	
+    
+   
+		    
 	<div class="portletBody">
 	  <h:form id="gbForm">
 		<t:aliasBean alias="#{bean}" value="#{rosterBean}">
-			<%@include file="/inc/appMenu.jspf"%>
+			<%@ include file="/inc/appMenu.jspf"%>
 		</t:aliasBean>
-
-		<sakai:flowState bean="#{rosterBean}" />
-
+		
+		<div id="dialogDiv" title="Grade Messages" style="display:none;">
+			   <iframe id="dialogFrame" name="dialogFrame" width="100%" height="100%" frameborder="0"></iframe>
+	    </div>
 
 		<h2>
 			<h:outputText value="#{msgs.roster_page_title}"/>
@@ -23,6 +45,13 @@
 				id="exportCsv"
 				value="#{msgs.roster_export_csv}"
 				actionListener="#{rosterBean.exportCsv}"
+				rendered="#{!rosterBean.emptyEnrollments}"
+				style="float: right;  margin-left: 15px;"
+				/>
+			<h:commandButton
+				id="exportPdf"
+				value="#{msgs.roster_export_pdf}"
+				actionListener="#{rosterBean.exportPdf}"
 				rendered="#{!rosterBean.emptyEnrollments}"
 				style="float: right"
 				/>
@@ -48,7 +77,7 @@
 		</h:panelGrid>
 
 		<t:aliasBean alias="#{bean}" value="#{rosterBean}">
-			<%@include file="/inc/filterPagingRoster.jspf"%>
+			<%@ include file="/inc/filterPagingRoster.jspf"%>
 		</t:aliasBean>
 
 		<gbx:spreadsheetUI 
@@ -96,6 +125,9 @@
 		<h:panelGroup>
 			<h:outputText value="#{msgs.roster_footnote_symbol2}" />
 			<h:outputText value="#{msgs.roster_footnote_legend2}" />
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:outputText value="#{msgs.roster_footnote_legend3}" />
 		</h:panelGroup>
 	</h:panelGrid>
 	</div>

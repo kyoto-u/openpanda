@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/event/api/UsageSessionService.java $
- * $Id: UsageSessionService.java 89394 2011-03-08 08:39:11Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/event/api/UsageSessionService.java $
+ * $Id: UsageSessionService.java 94880 2011-07-08 14:20:32Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -43,6 +43,9 @@ public interface UsageSessionService
 
 	/** Name for the event of logging out. */
 	public static final String EVENT_LOGOUT = "user.logout";
+	
+	/** Name for the CSRF token session attribute */
+	public static final String SAKAI_CSRF_SESSION_ATTRIBUTE = "sakai.csrf.token";
 
 	/**
 	 * Name for the session key to retrieve the UsageSession.

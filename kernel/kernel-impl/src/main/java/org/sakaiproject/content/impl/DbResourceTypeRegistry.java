@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbResourceTypeRegistry.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbResourceTypeRegistry.java $
  * $Id: DbResourceTypeRegistry.java 76913 2010-05-01 09:47:33Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

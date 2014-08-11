@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/CourseManagementServiceHibernateImpl.java $
- * $Id: CourseManagementServiceHibernateImpl.java 86133 2010-12-08 08:14:58Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/CourseManagementServiceHibernateImpl.java $
+ * $Id: CourseManagementServiceHibernateImpl.java 83759 2010-10-26 14:51:22Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation

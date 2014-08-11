@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/memory/impl/MemCache.java $
- * $Id: MemCache.java 89857 2011-03-16 07:13:36Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/memory/impl/MemCache.java $
+ * $Id: MemCache.java 93282 2011-05-26 15:17:24Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -587,6 +587,7 @@ public class MemCache implements Cache, Observer
 
 		if (disabled()) return;
 
+		// We could get things wrong here.
 		final Object value = get(key);
 		boolean found = cache.remove(key);
 

@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/presentation/api-impl/src/java/org/theospi/portfolio/presentation/model/impl/PresentationManagerImpl.java $
-* $Id: PresentationManagerImpl.java 87521 2011-01-24 20:57:54Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/presentation/api-impl/src/java/org/theospi/portfolio/presentation/model/impl/PresentationManagerImpl.java $
+* $Id: PresentationManagerImpl.java 87441 2011-01-20 21:14:11Z chmaurer@iupui.edu $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1306,7 +1306,7 @@ public class PresentationManagerImpl extends HibernateDaoSupport
          queryBuf.append( " tool_id = :toolId and" );
       }
       queryBuf.append( " creator_id = :creatorId" );
-      queryBuf.append( " ORDER BY " + orderBy + " " + sortBy.getDirection() );;
+      queryBuf.append( " ORDER BY " + orderBy + " " + sortBy.getDirection() );
 
       Session session = getSession();
 

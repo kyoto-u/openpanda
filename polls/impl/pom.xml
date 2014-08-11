@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.sakaiproject.polls</groupId>
         <artifactId>polls</artifactId>
-        <version>1.4.7-SNAPSHOT</version>
+        <version>1.5.0</version>
     </parent>
 
     <name>Sakai Polls Implementation Module (polls-impl)</name>
@@ -21,6 +21,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>polls-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.kernel</groupId>
@@ -123,15 +124,14 @@
             <artifactId>oro</artifactId>
             <version>2.0.8</version>
         </dependency>
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
+	<dependency>
+	  <groupId>net.sf.ehcache</groupId>
+	  <artifactId>ehcache-core</artifactId>
+	</dependency>
+	<dependency>
+	  <groupId>org.slf4j</groupId>
+   	  <artifactId>slf4j-log4j12</artifactId>
+	  </dependency>
     </dependencies>
 
     <build>
@@ -171,13 +171,6 @@
             </plugin>
         </plugins>
         <testResources>
-            <testResource>
-                <directory>${basedir}/../pack/src/webapp/WEB-INF</directory>
-                <includes>
-                    <include>spring-hibernate.xml</include>
-                    <include>logic-support.xml</include>
-                </includes>
-            </testResource>
             <testResource>
                 <directory>${basedir}/src/test</directory>
                 <includes>

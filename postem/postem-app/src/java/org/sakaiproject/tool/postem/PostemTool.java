@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/postem/branches/sakai-2.8.x/postem-app/src/java/org/sakaiproject/tool/postem/PostemTool.java $
- * $Id: PostemTool.java 79178 2010-07-08 07:17:00Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-2.9.0/postem-app/src/java/org/sakaiproject/tool/postem/PostemTool.java $
+ * $Id: PostemTool.java 104735 2012-02-15 20:59:49Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -465,11 +465,9 @@ public class PostemTool {
 	
 	public static void populateMessage(FacesMessage.Severity severity,
 			String messageId, Object[] args) {
-		ApplicationFactory factory = (ApplicationFactory) FactoryFinder
-				.getFactory(FactoryFinder.APPLICATION_FACTORY);
-		factory.getApplication().setMessageBundle(messageBundle);
-		FacesContext.getCurrentInstance().addMessage(null,
-				MessageUtils.getMessage(severity, messageId, args));
+		final ResourceLoader rb = new ResourceLoader(messageBundle);
+		FacesContext.getCurrentInstance().addMessage(null, 
+		        new FacesMessage(rb.getFormattedMessage(messageId, args)));
 	}
 	
 	protected static void clearMessages() {

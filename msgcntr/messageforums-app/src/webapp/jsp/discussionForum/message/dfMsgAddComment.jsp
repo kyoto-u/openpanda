@@ -19,7 +19,7 @@
 				<h:outputText	value="#{ForumTool.selectedTopic.topic.title}" />
 			</h4>
 			
-			<h:messages globalOnly="true" infoClass="success" errorClass="alertMessage" />
+			<h:messages globalOnly="true" infoClass="success" errorClass="alertMessage" rendered="#{! empty facesContext.maximumSeverity}" />
 			  
 		<div class="singleMessage">
 			<h:outputText value="#{ForumTool.selectedMessage.message.title}"  styleClass="title"/>
@@ -29,7 +29,7 @@
 			</h:outputText>
 			<h:outputText value=" #{msgs.cdfm_closeb}" styleClass="textPanelFooter"/>
 					<%-- Attachments --%>
-			<h:dataTable value="#{ForumTool.selectedMessage.attachList}"	var="eachAttach"  cellpadding="3" cellspacing="0" columnClasses="attach,bogus" summary="layout"  style="font-size:.9em;width:auto;margin-left:1em" border="0"  rendered="#{!empty ForumTool.selectedMessage.attachList}">
+			<h:dataTable value="#{ForumTool.selectedMessage.attachList}"	var="eachAttach"  cellpadding="3" cellspacing="0" columnClasses="attach,bogus" style="font-size:.9em;width:auto;margin-left:1em" border="0"  rendered="#{!empty ForumTool.selectedMessage.attachList}">
 						<h:column	rendered="#{!empty ForumTool.selectedMessage.message.attachments}">
 						<sakai:contentTypeMap fileType="#{eachAttach.attachment.attachmentType}" mapType="image" var="imagePath" pathPrefix="/library/image/"/>									
 						<h:graphicImage id="exampleFileIcon" value="#{imagePath}" />				

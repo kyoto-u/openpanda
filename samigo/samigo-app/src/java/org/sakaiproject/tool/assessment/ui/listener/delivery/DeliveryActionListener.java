@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/DeliveryActionListener.java $
- * $Id: DeliveryActionListener.java 118940 2013-01-29 00:45:29Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/DeliveryActionListener.java $
+ * $Id: DeliveryActionListener.java 114111 2012-10-08 23:28:24Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -20,6 +20,7 @@
  **********************************************************************************/
 
 
+
 package org.sakaiproject.tool.assessment.ui.listener.delivery;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.faces.context.FacesContext;
@@ -37,11 +39,18 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
+
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.event.cover.NotificationService;
+import org.sakaiproject.tool.assessment.data.dao.assessment.Answer;
+import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
@@ -60,6 +69,9 @@ import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
+import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
+import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI.Phase;
+import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI.PhaseStatus;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.ContentsDeliveryBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.DeliveryBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.FeedbackComponent;
@@ -69,12 +81,14 @@ import org.sakaiproject.tool.assessment.ui.bean.delivery.ItemContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.MatchingBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.SectionContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.SelectionBean;
+import org.sakaiproject.tool.assessment.ui.bean.delivery.MatrixSurveyBean;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.StudentScoresBean;
 import org.sakaiproject.tool.assessment.ui.bean.shared.PersonBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.ui.model.delivery.TimedAssessmentGradingModel;
 import org.sakaiproject.tool.assessment.ui.queue.delivery.TimedAssessmentQueue;
 import org.sakaiproject.tool.assessment.ui.web.session.SessionUtil;
+import org.sakaiproject.tool.assessment.util.FormatException;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 
@@ -83,7 +97,7 @@ import org.sakaiproject.util.ResourceLoader;
  * <p>Purpose:  this module creates the lists of published assessments for the select index
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: DeliveryActionListener.java 118940 2013-01-29 00:45:29Z steve.swinsburg@gmail.com $
+ * @version $Id: DeliveryActionListener.java 114111 2012-10-08 23:28:24Z ktsao@stanford.edu $
  */
 
 public class DeliveryActionListener
@@ -128,7 +142,7 @@ public class DeliveryActionListener
       }
       // Clear elapsed time, set not timed out
       clearElapsedTime(delivery);
-
+ 
       // set show student score
       setShowStudentScore(delivery, publishedAssessment);
       setShowStudentQuestionScore(delivery, publishedAssessment);
@@ -230,6 +244,25 @@ public class DeliveryActionListener
               delivery.setGraderComment(agData.getComments());
               delivery.setAssessmentGradingId(agData.getAssessmentGradingId());
               delivery.setOutcome("takeAssessment");
+              delivery.setSecureDeliveryHTMLFragment( "" );
+              delivery.setBlockDelivery( false );
+              
+              SecureDeliveryServiceAPI secureDelivery = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI();
+              if ( secureDelivery.isSecureDeliveryAvaliable() ) {
+            	  
+            	  String moduleId = publishedAssessment.getAssessmentMetaDataByLabel( SecureDeliveryServiceAPI.MODULE_KEY );
+            	  if ( moduleId != null && ! SecureDeliveryServiceAPI.NONE_ID.equals( moduleId ) ) {
+              		  
+            		  HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            		  PhaseStatus status = secureDelivery.validatePhase(moduleId, Phase.ASSESSMENT_REVIEW, publishedAssessment, request );
+            		  delivery.setSecureDeliveryHTMLFragment( 
+            				  secureDelivery.getHTMLFragment(moduleId, publishedAssessment, request, Phase.ASSESSMENT_REVIEW, status, new ResourceLoader().getLocale() ) );             		 
+            		  if ( PhaseStatus.FAILURE == status )  {           			 
+            			  delivery.setOutcome( "secureDeliveryError" );
+            			  delivery.setBlockDelivery( true );
+            		  }
+            	  }                 	  
+              }  
               break;
  
       case 4: // Grade assessment
@@ -351,7 +384,7 @@ public class DeliveryActionListener
             			  int timeRemaining = Integer.parseInt(delivery.getTimeLimit()) - Integer.parseInt(delivery.getTimeElapse());
             			  eventRef.append(timeRemaining);
             		  }
-            		  EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.take", eventRef.toString(), true));
+            		  EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.take", "siteId=" + AgentFacade.getCurrentSiteId() + ", " + eventRef.toString(), true));
             	  }
             	  else if (action == DeliveryBean.TAKE_ASSESSMENT_VIA_URL) {
             		  StringBuffer eventRef = new StringBuffer("publishedAssessmentId=");
@@ -367,7 +400,7 @@ public class DeliveryActionListener
             		  }
             		  PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
             		  String siteId = publishedAssessmentService.getPublishedAssessmentOwner(Long.valueOf(delivery.getAssessmentId()));
-            		  EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.take.via_url", eventRef.toString(), siteId, true, NotificationService.NOTI_REQUIRED));
+            		  EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.take.via_url", "siteId=" + AgentFacade.getCurrentSiteId() + ", " + eventRef.toString(), siteId, true, NotificationService.NOTI_REQUIRED));
             	  }
               }
               else {
@@ -1047,7 +1080,8 @@ public class DeliveryActionListener
     if (item.getTypeId().equals(TypeIfc.ESSAY_QUESTION) ||
         item.getTypeId().equals(TypeIfc.FILE_UPLOAD) ||
         item.getTypeId().equals(TypeIfc.MULTIPLE_CHOICE_SURVEY) ||
-        item.getTypeId().equals(TypeIfc.AUDIO_RECORDING))
+        item.getTypeId().equals(TypeIfc.AUDIO_RECORDING) ||
+        item.getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY))
     {
       itemBean.setFeedback(item.getGeneralItemFeedback());
     }
@@ -1104,6 +1138,8 @@ public class DeliveryActionListener
     	}
     	//log.debug("correctAnswers: " + correctAnswers);
     	
+    	//check if there's wrong answer in the answer list, matrix survey question won't affect it, since the answer is always right, 
+    	//so don't need to check the matrix survey question
     	while (iterAnswer.hasNext())
     	{
     		
@@ -1122,10 +1158,15 @@ public class DeliveryActionListener
     		  }
     		  else if (item.getTypeId().equals(TypeIfc.FILL_IN_NUMERIC)) {
     			  GradingService gs = new GradingService();
-    			  boolean correctanswer = gs.getFINResult( data,   item,  publishedAnswerHash);
-    			  if (!correctanswer){
-    				  haswronganswer =true;
-      		    	break;
+    			  try {
+    				  boolean correctanswer = gs.getFINResult( data,   item,  publishedAnswerHash);
+    				  if (!correctanswer){
+        				  haswronganswer =true;
+        				  break;
+    				  }
+    			  }
+    			  catch (FormatException e) {
+    				  log.debug("should not come to here");
     			  }
     		  }
     		  else if  ((item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) )||(item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION) )||(item.getTypeId().equals(TypeIfc.MATCHING) )){
@@ -1135,12 +1176,10 @@ public class DeliveryActionListener
     		    	break;
     		    }
       		    else if (answer !=null) {  
-      		    	// for matching, if no selection has been made, answer = null.  we dont want to increment mcmc_match_counter if answer is null
-      		    	
+      		    	// for matching, if no selection has been made, answer = null.  
+      		    	//we don't want to increment mcmc_match_counter if answer is null
       		    	mcmc_match_counter++;
       		    }
-    			  	
- 
     		  }
     		  else {
     			  // for other question types, tf, mcsc, mcmc and matching
@@ -1206,8 +1245,11 @@ public class DeliveryActionListener
       Iterator key2 = null;
 
       // Never randomize Fill-in-the-blank or Numeric Response, always randomize matching
-      if (randomize && !(item.getTypeId().equals(TypeIfc.FILL_IN_BLANK)||item.getTypeId().equals(TypeIfc.FILL_IN_NUMERIC)) || item.getTypeId().equals(TypeIfc.MATCHING))
-          {
+      if (randomize && !(item.getTypeId().equals(TypeIfc.FILL_IN_BLANK)||
+    		  item.getTypeId().equals(TypeIfc.FILL_IN_NUMERIC) || 
+    		  item.getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY)) ||
+    		  item.getTypeId().equals(TypeIfc.MATCHING))
+      {
             ArrayList shuffled = new ArrayList();
             Iterator i1 = text.getAnswerArraySorted().iterator();
             while (i1.hasNext())
@@ -1260,7 +1302,8 @@ public class DeliveryActionListener
             && (item.getTypeId().equals(TypeIfc.MULTIPLE_CHOICE) ||
                 item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) ||
                 item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION) ||
-                item.getTypeId().equals(TypeIfc.MULTIPLE_CHOICE_SURVEY)))
+                item.getTypeId().equals(TypeIfc.MULTIPLE_CHOICE_SURVEY) ||
+                item.getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY)))
         {
           // Ignore, it's a null answer
         }
@@ -1342,6 +1385,7 @@ public class DeliveryActionListener
               key += ", " + answer.getText();
             }
           }
+          //myanswers will get the answer even for matrix and multiple choices survey
           myanswers.add(answer);
         }
       }
@@ -1478,10 +1522,14 @@ public class DeliveryActionListener
     }
     else if (item.getTypeId().equals(TypeIfc.ESSAY_QUESTION)) 
     {
-      String responseText = itemBean.getResponseText();
-      // SAK-17021
-      // itemBean.setResponseText(FormattedText.convertFormattedTextToPlaintext(responseText));
-      itemBean.setResponseText(ContextUtil.stringWYSIWYG(responseText));
+    	String responseText = itemBean.getResponseText();
+    	// SAK-17021
+    	// itemBean.setResponseText(FormattedText.convertFormattedTextToPlaintext(responseText));
+    	itemBean.setResponseText(ContextUtil.stringWYSIWYG(responseText));
+    }
+    else if (item.getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY))
+    {
+    	populateMatrixChoices(item, itemBean, publishedAnswerHash);
     }
     
     return itemBean;
@@ -1811,6 +1859,84 @@ public class DeliveryActionListener
     bean.setFinArray(fins);
   }
 
+  public void populateMatrixChoices(ItemDataIfc item, ItemContentsBean bean, HashMap publishedAnswerHash){
+
+	  ArrayList matrixArray = new ArrayList();
+
+	  List<Integer> columnIndexList = new ArrayList<Integer>();
+	  ArrayList itemTextArray = item.getItemTextArraySorted();
+	  ArrayList answerArray = ((ItemTextIfc)itemTextArray.get(0)).getAnswerArraySorted(); 
+	  MatrixSurveyBean mbean = null;
+
+	  List<String> stringList = new ArrayList<String>();
+
+	  for(int i=0; i<answerArray.size(); i++){
+		  String str = ((AnswerIfc) answerArray.get(i)).getText();
+
+		  if(str!=null && str.trim().length()>0) {
+			  stringList.add(str);
+		  }
+	  }
+
+	  for (int k=0; k<stringList.size(); k++){
+		  columnIndexList.add(new Integer(k));
+	  }	
+
+	  String [] columnChoices = stringList.toArray(new String[stringList.size()]);
+	  List<ItemTextIfc> iList = new ArrayList<ItemTextIfc>();
+
+	  for (int i=0; i<itemTextArray.size(); i++)
+	  {
+		  String str = ((ItemTextIfc) itemTextArray.get(i)).getText();
+		  if (str!=null && str.trim().length()>0)
+			  iList.add((ItemTextIfc)itemTextArray.get(i));
+	  }
+
+	  for(int i=0; i<iList.size(); i++)
+	  {	
+		  ItemTextIfc text = iList.get(i);
+		  ArrayList answers = ((ItemTextIfc)itemTextArray.get(i)).getAnswerArraySorted();
+		  List<AnswerIfc> alist = new ArrayList<AnswerIfc>();
+		  List<String> slist = new ArrayList<String>();
+		  for(int j= 0; j<answers.size(); j++)
+		  {
+			  if ((AnswerIfc)answers.get(j) != null && !"".equals(((AnswerIfc)answers.get(j)).getText().trim()))	{
+				  alist.add((AnswerIfc)answers.get(j));
+				  slist.add(((AnswerIfc)answers.get(j)).getId().toString());
+			  }
+		  }
+		  AnswerIfc [] answerIfcs =alist.toArray(new AnswerIfc[alist.size()]);
+		  String[] answerSid = slist.toArray(new String[slist.size()]);
+		  mbean = new MatrixSurveyBean();
+		  mbean.setItemText(text);
+		  mbean.setItemContentsBean(bean);
+		  mbean.setAnswerArray(answerIfcs);
+		  mbean.setAnswerSid(answerSid);
+		  ArrayList itemGradingArray = bean.getItemGradingDataArray();
+		  for (int k=0; k< itemGradingArray.size(); k++)
+		  {
+			  ItemGradingData data = (ItemGradingData)itemGradingArray.get(k);
+			  if((data.getPublishedItemTextId()).longValue() == text.getId().longValue()){
+				  mbean.setItemGradingData(data);
+				  if (data.getPublishedAnswerId() != null)
+					  mbean.setResponseId(data.getPublishedAnswerId().toString());
+				  break;
+			  }
+		  }
+		  matrixArray.add(mbean);
+	  }
+	  bean.setColumnArray(columnChoices);
+	  bean.setColumnIndexList(columnIndexList);
+	  bean.setMatrixArray(matrixArray);
+	  bean.setForceRanking(Boolean.parseBoolean(item.getItemMetaDataByLabel(ItemMetaDataIfc.FORCE_RANKING)));
+	  if (item.getItemMetaDataByLabel(ItemMetaDataIfc.MX_SURVEY_RELATIVE_WIDTH) != null)
+	  {
+		  bean.setRelativeWidth(Integer.parseInt(item.getItemMetaDataByLabel(ItemMetaDataIfc.MX_SURVEY_RELATIVE_WIDTH)));
+	  }
+	  bean.setAddComment(Boolean.parseBoolean(item.getItemMetaDataByLabel(ItemMetaDataIfc.ADD_COMMENT_MATRIX)));
+	  bean.setCommentField(item.getItemMetaDataByLabel(ItemMetaDataIfc.MX_SURVEY_QUESTION_COMMENTFIELD));
+  }
+
   /**
    * Tests that malformed FIN text does not create an excessive number of loops.
    * Quickie test, nice to have: refine, move to JUnit.
@@ -1901,7 +2027,7 @@ public class DeliveryActionListener
 
   public String getPublishedAssessmentId(DeliveryBean delivery){
     String id = ContextUtil.lookupParam("publishedId");
-    if (id == null || id.equals("")){
+    if (id == null || id.equals("") || id.equals("null")){    
       id = delivery.getAssessmentId();
     }
     return id;
@@ -2165,11 +2291,20 @@ public class DeliveryActionListener
 	    //boolean zeroTimeElapsed = false;
 	    /*
 	    boolean acceptLateSubmission = AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.equals(delivery.getPublishedAssessment().getAssessmentAccessControl().getLateHandling());
+	    int timeLimit = Integer.parseInt(delivery.getPublishedAssessment().getAssessmentAccessControl().getTimeLimit().toString());
+		// due date
 	    if (delivery.getDueDate() != null && !acceptLateSubmission) {
 	    	int timeBeforeDue  = Math.round((float)(delivery.getDueDate().getTime() - (new Date()).getTime())/1000.0f); //in sec
-	    	int timeLimit = Integer.parseInt(delivery.getPublishedAssessment().getAssessmentAccessControl().getTimeLimit().toString());
-			if (timeBeforeDue < timeLimit && fromBeginAssessment) {
-				//zeroTimeElapsed = true;
+	    	if (timeBeforeDue < timeLimit && fromBeginAssessment) {
+				delivery.setTimeElapse("0");
+				timedAG.setBeginDate(new Date());
+				return;
+			}
+	    }
+	    // retract date
+	    if (delivery.getRetractDate() != null) {
+	    	int timeBeforeRetract  = Math.round((float)(delivery.getRetractDate().getTime() - (new Date()).getTime())/1000.0f); //in sec
+	    	if (timeBeforeRetract < timeLimit && fromBeginAssessment) {
 				delivery.setTimeElapse("0");
 				timedAG.setBeginDate(new Date());
 				return;

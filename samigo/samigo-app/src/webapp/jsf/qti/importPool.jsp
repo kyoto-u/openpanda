@@ -9,8 +9,8 @@
 
 <!-- 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/webapp/jsf/qti/importPool.jsp $
- * $Id: importPool.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/webapp/jsf/qti/importPool.jsp $
+ * $Id: importPool.jsp 98993 2011-10-05 19:29:59Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -44,9 +44,9 @@
    <h3><h:outputText  value="#{authorImportExport.import_qp}" /></h3>
     <div class="tier1">
      <div class="form_label">
-      <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+      <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
       <%-- currently import pool mirrors import assessment --%>
-      <h:outputText value="#{authorImportExport.import_instructions}"/>
+      <h:outputText value="#{authorImportExport.import_pool_instructions}" escape="false"/>
     </div>
     <br />
    <div class="tier2">

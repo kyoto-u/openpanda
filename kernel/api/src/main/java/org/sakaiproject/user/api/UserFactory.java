@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/user/api/UserFactory.java $
- * $Id: UserFactory.java 93366 2011-05-31 10:59:47Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/user/api/UserFactory.java $
+ * $Id: UserFactory.java 93365 2011-05-31 10:55:48Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation

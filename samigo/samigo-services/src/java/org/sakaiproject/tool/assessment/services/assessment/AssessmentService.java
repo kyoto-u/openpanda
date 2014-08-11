@@ -21,6 +21,9 @@
 
 package org.sakaiproject.tool.assessment.services.assessment;
 
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -495,7 +498,9 @@ public class AssessmentService {
 				}
 
 				//update meta data for date:
-				section.addSectionMetaData(SectionDataIfc.QUESTIONS_RANDOM_DRAW_DATE, new Date().toString());
+				//We need this in a standard format so it can be parsed later. This is ISO8601 format -DH
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
+				section.addSectionMetaData(SectionDataIfc.QUESTIONS_RANDOM_DRAW_DATE, df.format(new Date()));
 
 				saveOrUpdateSection(section);
 			}else{
@@ -818,27 +823,27 @@ public class AssessmentService {
 	/** These characters are not allowed in a resource id */
 	public static final String INVALID_CHARS_IN_RESOURCE_ID = "^/\\{}[]()%*?#&=\n\r\t\b\f";
 
-	protected static final String MAP_TO_A = "‰ŠˆŒ€?‡‡";
+	protected static final String MAP_TO_A = "Â‰ÂŠÂˆÂŒÂ€?Â‡Â‡";
 
-	protected static final String MAP_TO_B = "§§";
+	protected static final String MAP_TO_B = "Â§Â§";
 
-	protected static final String MAP_TO_C = "‚?¢¢";
+	protected static final String MAP_TO_C = "Â‚?Â¢Â¢";
 
-	protected static final String MAP_TO_E = "Ž?‘?ƒ¾®®";
+	protected static final String MAP_TO_E = "ÂŽ?Â‘?ÂƒÂ¾Â®Â®";
 
-	protected static final String MAP_TO_I = "•”“’’";
+	protected static final String MAP_TO_I = "Â•Â”Â“Â’Â’";
 
-	protected static final String MAP_TO_L = "££";
+	protected static final String MAP_TO_L = "Â£Â£";
 
-	protected static final String MAP_TO_N = "–„„";
+	protected static final String MAP_TO_N = "Â–Â„Â„";
 
-	protected static final String MAP_TO_O = "™š˜…——";
+	protected static final String MAP_TO_O = "Â™ÂšÂ˜Â…Â—Â—";
 
-	protected static final String MAP_TO_U = "Ÿž?†œœ";
+	protected static final String MAP_TO_U = "ÂŸÂž?Â†ÂœÂœ";
 
-	protected static final String MAP_TO_Y = "Ø´??";
+	protected static final String MAP_TO_Y = "Ã˜Â´??";
 
-	protected static final String MAP_TO_X = "???¤©»¨±?«µ¦À?";
+	protected static final String MAP_TO_X = "???Â¤Â©Â»Â¨Â±?Â«ÂµÂ¦Ã€?";
 
 	/**
 	 * These characters are allowed; but if escapeResourceName() is called, they are escaped (actually, removed) Certain characters cause problems with filenames in certain OSes - so get rid of these characters in filenames
@@ -961,11 +966,7 @@ public class AssessmentService {
 		}
 
 	}
-		/**
-		 * Get the siteid for the given assesment
-		 * @param assessmentId
-		 * @return
-		 */
+	
 	  public String getAssessmentSiteId(String assessmentId){
 		    return PersistenceService.getInstance().getAssessmentFacadeQueries().getAssessmentSiteId(assessmentId);
 	  }
@@ -980,5 +981,16 @@ public class AssessmentService {
 
 	  public static ContentHostingService getContentHostingService(){
 		  return (ContentHostingService) ComponentManager.get(ContentHostingService.class.getName());
+	  }
+	  
+	  public List getFavoriteColChoicesbyAgent(String fromContext) {
+		  try {
+			  return PersistenceService.getInstance().getFavoriteColChoicesFacadeQueries()
+			  .getFavoriteColChoicesByAgent(fromContext);
+		  } catch (Exception e) {
+			  log.error(e);
+			  throw new RuntimeException(e);
+		  }
+
 	  }
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/common/api-impl/src/java/org/theospi/portfolio/review/impl/ReviewManagerImpl.java $
-* $Id: ReviewManagerImpl.java 85788 2010-12-01 19:16:22Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/common/api-impl/src/java/org/theospi/portfolio/review/impl/ReviewManagerImpl.java $
+* $Id: ReviewManagerImpl.java 98915 2011-10-03 18:23:59Z botimer@umich.edu $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -129,6 +129,20 @@ public class ReviewManagerImpl extends HibernateDaoSupport implements ReviewMana
        List reviews = getHibernateTemplate().findByNamedQuery(query, params);
        populateReviews(parentId, siteId, producer, reviews);
        return reviews;
+    }
+
+    public List<Review> getReviewsByMatrix(String matrixId) {
+        Id id = getIdManager().getId(matrixId);
+        List<Review> reviews = (List<Review>) getHibernateTemplate().findByNamedQuery("getReviewsByMatrix",
+                new Object[] {id});
+        return reviews;
+    }
+
+    public List<Review> getReviewsByMatrixAndType(String matrixId, int type) {
+        Id id = getIdManager().getId(matrixId);
+        List<Review> reviews = (List<Review>) getHibernateTemplate().findByNamedQuery("getReviewsByMatrixAndType",
+                new Object[] {id, type});
+        return reviews;
     }
 
     protected void populateReviews(String parentId, String siteId, String producer, List reviews) {

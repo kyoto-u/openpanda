@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/RedirectView.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/RedirectView.java $
  * $Id: RedirectView.java 66630 2009-09-18 16:56:31Z bkirschn@umich.edu $
  ***********************************************************************************
  *

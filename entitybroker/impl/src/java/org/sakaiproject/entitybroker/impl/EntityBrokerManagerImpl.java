@@ -1,6 +1,6 @@
 /**
- * $Id: EntityBrokerManagerImpl.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/impl/src/java/org/sakaiproject/entitybroker/impl/EntityBrokerManagerImpl.java $
+ * $Id: EntityBrokerManagerImpl.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/impl/src/java/org/sakaiproject/entitybroker/impl/EntityBrokerManagerImpl.java $
  * EntityBrokerManager.java - entity-broker - Jul 22, 2008 11:33:39 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -78,8 +78,8 @@ import org.sakaiproject.entitybroker.util.request.RequestUtils;
  * @author Aaron Zeckoski (azeckoski @ gmail.com)
  */
 public class EntityBrokerManagerImpl implements EntityBrokerManager {
-    public static String SVN_REVISION = "$Revision: 83385 $";
-    public static String SVN_LAST_UPDATE = "$Date: 2010-10-19 23:39:04 +0900 (Tue, 19 Oct 2010) $";
+    public static String SVN_REVISION = "$Revision: 104995 $";
+    public static String SVN_LAST_UPDATE = "$Date: 2012-02-24 00:32:56 +0900 (Fri, 24 Feb 2012) $";
 
     public String getVersionInfo() {
         return "MANAGER:: SVN: " + SVN_REVISION + " : " + SVN_LAST_UPDATE;
@@ -147,21 +147,33 @@ public class EntityBrokerManagerImpl implements EntityBrokerManager {
 		return maxJSONLevel;
 	}
 
-    private String servletContext;
-    public String getServletContext() {
-        if (this.servletContext == null) {
-            return RequestUtils.getServletContext(null);
-        }
-        return this.servletContext;
-    }
+    private String defaultServletContext = RequestUtils.getServletContext(null);
+    /**
+     * We have to do something fairly tricky here because we really need this to be handled
+     * on a per thread basis (or at least a per servlet basis anyway) so we need to store the "default"
+     * and then also store a threadlocal for each servlet to set and fallback if the TL is not set,
+     * what a giant PITA but this should allow multiple servlets to instantiate the EB handlers
+     */
+    private final ThreadLocal<String> localServletContext = new ThreadLocal<String>();
     /* (non-Javadoc)
      * @see org.sakaiproject.entitybroker.EntityBrokerManager#setServletContext(java.lang.String)
      */
     public void setServletContext(String servletContext) {
         if (servletContext != null) {
-            this.servletContext = servletContext;
-           // System.out.println("Setting the manager servlet context to: " + servletContext);
+            this.localServletContext.set(servletContext);
+        } else {
+            this.localServletContext.set(null);
         }
+    }
+    /* (non-Javadoc)
+     * @see org.sakaiproject.entitybroker.EntityBrokerManager#getServletContext()
+     */
+    public String getServletContext() {
+        String context = this.defaultServletContext;
+        if (this.localServletContext != null && this.localServletContext.get() != null) {
+            context = this.localServletContext.get();
+        }
+        return context;
     }
 
 
@@ -563,7 +575,7 @@ public class EntityBrokerManagerImpl implements EntityBrokerManager {
      * @param params
      * @return a list of entities OR empty list if none found for the given reference
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected List<?> internalGetEntities(EntityReference ref, Search search, Map<String, Object> params) {
         if (ref == null) {
             throw new IllegalArgumentException("No reference supplied for entity collection resolution, ref was null");

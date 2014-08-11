@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/login/branches/sakai-2.8.x/login-tool/tool/src/java/org/sakaiproject/login/filter/NakamuraAuthenticationFilter.java $
- * $Id: NakamuraAuthenticationFilter.java 86544 2010-12-15 19:16:49Z lance@indiana.edu $
+ * $URL: https://source.sakaiproject.org/svn/login/tags/sakai-2.9.0/login-tool/tool/src/java/org/sakaiproject/login/filter/NakamuraAuthenticationFilter.java $
+ * $Id: NakamuraAuthenticationFilter.java 86543 2010-12-15 19:14:58Z lance@indiana.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation

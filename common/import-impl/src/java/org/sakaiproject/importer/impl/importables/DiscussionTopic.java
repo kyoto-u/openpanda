@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/import-impl/src/java/org/sakaiproject/importer/impl/importables/DiscussionTopic.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/import-impl/src/java/org/sakaiproject/importer/impl/importables/DiscussionTopic.java $
  * $Id: DiscussionTopic.java 67590 2009-10-11 10:34:36Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

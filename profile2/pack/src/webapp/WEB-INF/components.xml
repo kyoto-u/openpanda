@@ -34,7 +34,8 @@
 		<property name="sessionFactory" ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
 	</bean>
         
-	<!--  register the DAO as a transactional interceptor. Use the classloader proxy from gendao because this is a protected DAO -->
+	<!--  register the DAO as a transactional interceptor. Use the classloader proxy from gendao because this is a protected DAO
+-->
 	<bean id="org.sakaiproject.profile2.dao.ProfileDao"
 		class="org.sakaiproject.genericdao.springutil.CurrentClassLoaderTxProxyFactoryBean">		
 		<property name="transactionManager" ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
@@ -58,6 +59,7 @@
     	<property name="statusLogic" ref="org.sakaiproject.profile2.logic.ProfileStatusLogic" />
     	<property name="connectionsLogic" ref="org.sakaiproject.profile2.logic.ProfileConnectionsLogic" />
     	<property name="converter" ref="org.sakaiproject.profile2.conversion.ProfileConverter" />
+    	<property name="linkLogic" ref="org.sakaiproject.profile2.logic.ProfileLinkLogic" />
 	</bean>
 	
 	<!-- ProfileLinkLogic -->
@@ -75,6 +77,7 @@
     	<property name="dao" ref="org.sakaiproject.profile2.dao.ProfileDao" />
     	<property name="sakaiProxy" ref="org.sakaiproject.profile2.logic.SakaiProxy" />
     	<property name="cacheManager" ref="org.sakaiproject.profile2.cache.CacheManager" />
+    	<property name="connectionsLogic" ref="org.sakaiproject.profile2.logic.ProfileConnectionsLogic" />
     </bean>
     
     <!-- ProfilePreferencesLogic -->
@@ -148,6 +151,34 @@
     	<property name="sakaiProxy" ref="org.sakaiproject.profile2.logic.SakaiProxy" />
     </bean>
     
+    <!-- ProfileWallLogic -->
+    <bean id="org.sakaiproject.profile2.logic.ProfileWallLogic"
+    	class="org.sakaiproject.profile2.logic.ProfileWallLogicImpl">
+    		<property name="connectionsLogic" ref="org.sakaiproject.profile2.logic.ProfileConnectionsLogic" />
+    		<property name="dao" ref="org.sakaiproject.profile2.dao.ProfileDao" />
+    		<property name="privacyLogic" ref="org.sakaiproject.profile2.logic.ProfilePrivacyLogic" />
+    		<property name="sakaiProxy" ref="org.sakaiproject.profile2.logic.SakaiProxy" />
+        	<property name="preferencesLogic" ref="org.sakaiproject.profile2.logic.ProfilePreferencesLogic" />
+        	<property name="linkLogic" ref="org.sakaiproject.profile2.logic.ProfileLinkLogic" />
+    </bean>
+    
+    <!-- ProfileSearchLogic -->
+	<bean id="org.sakaiproject.profile2.logic.ProfileSearchLogic"
+		class="org.sakaiproject.profile2.logic.ProfileSearchLogicImpl"
+		init-method="init" singleton="true" depends-on="org.sakaiproject.profile2.cache.search">
+		<property name="profileLogic" ref="org.sakaiproject.profile2.logic.ProfileLogic" />
+		<property name="connectionsLogic" ref="org.sakaiproject.profile2.logic.ProfileConnectionsLogic" />
+		<property name="dao" ref="org.sakaiproject.profile2.dao.ProfileDao" />
+		<property name="sakaiProxy" ref="org.sakaiproject.profile2.logic.SakaiProxy" />
+		<property name="cacheManager" ref="org.sakaiproject.profile2.cache.CacheManager" />
+	</bean>
+	
+	    <!-- ProfileWorksiteLogic -->
+    <bean id="org.sakaiproject.profile2.logic.ProfileWorksiteLogic"
+    	class="org.sakaiproject.profile2.logic.ProfileWorksiteLogicImpl">
+    		<property name="sakaiProxy" ref="org.sakaiproject.profile2.logic.SakaiProxy" />
+    </bean>
+    
     <!-- CacheManager -->
     <bean id="org.sakaiproject.profile2.cache.CacheManager"
     	class="org.sakaiproject.profile2.cache.CacheManagerImpl">
@@ -176,13 +207,16 @@
 	        <value>org/sakaiproject/profile2/hbm/ProfileImageOfficial.hbm.xml</value>
 	        <value>org/sakaiproject/profile2/hbm/ProfileKudos.hbm.xml</value>
 	        <value>org/sakaiproject/profile2/hbm/ExternalIntegrationInfo.hbm.xml</value>
+	        <value>org/sakaiproject/profile2/hbm/WallItem.hbm.xml</value>
+	        <value>org/sakaiproject/profile2/hbm/WallItemComment.hbm.xml</value>
 	      </list>
 	    </property>
 
   	</bean>
   	
 	
-	<!-- Legacy bean that implements the original ProfileManager interface -->
+	<!-- Legacy bean that implements the original ProfileManager interface
+-->
 	<bean id="org.sakaiproject.profile2.legacy.ProfileManager" class="org.sakaiproject.profile2.legacy.ProfileManagerImpl" init-method="init" destroy-method="destroy">
        
         <property name="profileLogic">
@@ -204,16 +238,22 @@
         		<value>org/sakaiproject/profile2/emailtemplates/template-messageReply.xml</value>
         		<value>org/sakaiproject/profile2/emailtemplates/template-connectionRequest.xml</value>
         		<value>org/sakaiproject/profile2/emailtemplates/template-connectionConfirm.xml</value>
-				
-				<value>org/sakaiproject/profile2/emailtemplates/template-messageNew_sv_SE.xml</value>
-				<value>org/sakaiproject/profile2/emailtemplates/template-messageReply_sv_SE.xml</value>
-				<value>org/sakaiproject/profile2/emailtemplates/template-connectionRequest_sv_SE.xml</value>
-				<value>org/sakaiproject/profile2/emailtemplates/template-connectionConfirm_sv_SE.xml</value>
+        		<value>org/sakaiproject/profile2/emailtemplates/template-wallEventNew.xml</value>
+        		<value>org/sakaiproject/profile2/emailtemplates/template-wallPostMyWallNew.xml</value>
+        		<value>org/sakaiproject/profile2/emailtemplates/template-wallPostConnectionWallNew.xml</value>
+        		<value>org/sakaiproject/profile2/emailtemplates/template-wallStatusNew.xml</value>
+        		<value>org/sakaiproject/profile2/emailtemplates/template-worksiteNew.xml</value>
+        		<value>org/sakaiproject/profile2/emailtemplates/template-profileChangeNotification.xml</value>
         		
         		<value>org/sakaiproject/profile2/emailtemplates/template-messageNew_zh_CN.xml</value>
 				<value>org/sakaiproject/profile2/emailtemplates/template-messageReply_zh_CN.xml</value>
 				<value>org/sakaiproject/profile2/emailtemplates/template-connectionRequest_zh_CN.xml</value>
 				<value>org/sakaiproject/profile2/emailtemplates/template-connectionConfirm_zh_CN.xml</value>
+				
+				<value>org/sakaiproject/profile2/emailtemplates/template-messageNew_sv_SE.xml</value>
+				<value>org/sakaiproject/profile2/emailtemplates/template-messageReply_sv_SE.xml</value>
+				<value>org/sakaiproject/profile2/emailtemplates/template-connectionRequest_sv_SE.xml</value>
+				<value>org/sakaiproject/profile2/emailtemplates/template-connectionConfirm_sv_SE.xml</value>
       		</list>      
     	</constructor-arg>
   	</bean>
@@ -257,7 +297,7 @@
     
     <!-- kudos cache: ttl=12 hours -->
     <bean id="org.sakaiproject.profile2.cache.kudos"
-        class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        class="org.sakaiproject.memory.util.EhCacheFactoryBean">
         <property name="cacheManager">
             <ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
         </property>
@@ -273,7 +313,7 @@
     
     <!--  preferences cache -->
     <bean id="org.sakaiproject.profile2.cache.preferences"
-        class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        class="org.sakaiproject.memory.util.EhCacheFactoryBean">
         <property name="cacheManager">
             <ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
         </property>
@@ -289,7 +329,7 @@
     
     <!--  privacy cache -->
     <bean id="org.sakaiproject.profile2.cache.privacy"
-        class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        class="org.sakaiproject.memory.util.EhCacheFactoryBean">
         <property name="cacheManager">
             <ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
         </property>
@@ -302,10 +342,24 @@
         <property name="timeToLive" value="3600" />
 		<property name="timeToIdle" value="3600" />
     </bean>
-
+    
+    <!--  search cache -->
+    <bean id="org.sakaiproject.profile2.cache.search"
+        class="org.sakaiproject.memory.util.EhCacheFactoryBean">
+        <property name="cacheManager">
+            <ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
+        </property>
+        <property name="cacheName">
+            <value>org.sakaiproject.profile2.cache.search</value>
+        </property>
+        <property name="maxElementsInMemory" value="10000" />
+        <property name="diskPersistent" value="true" />
+        <property name="eternal" value="true" />
+    </bean>
+    
     <!--  connections cache: ttl=6 hours-->
     <bean id="org.sakaiproject.profile2.cache.connections"
-        class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        class="org.sakaiproject.memory.util.EhCacheFactoryBean">
         <property name="cacheManager">
             <ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
         </property>
@@ -319,7 +373,8 @@
 		<property name="timeToIdle" value="21600" />
     </bean>
     
-    <!-- ProfileService facade (supports clients of pre 1.4 Profile2 API. See https://jira.sakaiproject.org/browse/PRFL-551 -->
+    <!-- ProfileService facade (supports clients of pre 1.4 Profile2 API. See https://jira.sakaiproject.org/browse/PRFL-551
+-->
 	<bean id="org.sakaiproject.profile2.service.ProfileService"
     	class="org.sakaiproject.profile2.service.ProfileServiceImpl">
     	<property name="connectionsLogic" ref="org.sakaiproject.profile2.logic.ProfileConnectionsLogic" />

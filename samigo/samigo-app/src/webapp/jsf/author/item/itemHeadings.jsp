@@ -2,7 +2,7 @@
 Headings for item edit pages, needs to have msg=AuthorMessages.properties.
 --%>
 <!--
-* $Id: itemHeadings.jsp 93731 2011-06-10 19:29:51Z ktsao@stanford.edu $
+* $Id: itemHeadings.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -23,7 +23,7 @@ Headings for item edit pages, needs to have msg=AuthorMessages.properties.
 **********************************************************************************/
 --%>
 -->
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 function changeTypeLink(field){
 
@@ -151,8 +151,8 @@ listener set selectFromQuestionPool, eliminating the rendered attribute
 <h:commandLink id="hiddenlink" action="#{itemauthor.doit}" value="">
 </h:commandLink>
 
-<h:message rendered="#{questionpool.importToAuthoring == 'true' && itemauthor.target == 'assessment'}" for="changeQType1" infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
-<h:message rendered="#{questionpool.importToAuthoring == 'false' && itemauthor.target == 'assessment'}" for="changeQType2" infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+<h:message rendered="#{questionpool.importToAuthoring == 'true' && itemauthor.target == 'assessment'}" for="changeQType1" infoClass="messageSamigo" warnClass="validation" errorClass="messageSamigo" fatalClass="messageSamigo"/>
+<h:message rendered="#{questionpool.importToAuthoring == 'false' && itemauthor.target == 'assessment'}" for="changeQType2" infoClass="messageSamigo" warnClass="messageSamigo" errorClass="messageSamigo" fatalClass="messageSamigo"/>
 </div>
 <!-- SUBHEADING -->
 <p class="navModeAction">
@@ -173,6 +173,7 @@ listener set selectFromQuestionPool, eliminating the rendered attribute
      <h:outputText rendered="#{itemauthor.currentItem.itemType== 7}" value="#{authorMessages.audio_recording}"/>
      <h:outputText rendered="#{itemauthor.currentItem.itemType== 6}" value="#{authorMessages.file_upload}"/>
      <h:outputText rendered="#{itemauthor.currentItem.itemType== 10}" value="#{authorMessages.import_from_q}"/>
+     <h:outputText rendered="#{itemauthor.currentItem.itemType== 13}" value="#{authorMessages.matrix_choices_surv}"/>
    </b>
  </span>
  <span class="rightNav">
@@ -201,7 +202,7 @@ listener set selectFromQuestionPool, eliminating the rendered attribute
   </h:commandLink>
 --%>
  </span>
-   <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+    <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
 </p>
 </div>
 </h:form>

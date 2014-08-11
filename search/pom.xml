@@ -2,24 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.sakaiproject.purepoms</groupId>
-        <artifactId>sakai-standard-tool</artifactId>
-        <version>2.8.7</version>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>master</artifactId>
+        <version>2.9.0</version>
+		<relativePath>../master/pom.xml</relativePath>
     </parent>
     <name>Sakai Search Project</name>
     <groupId>org.sakaiproject.search</groupId>
     <artifactId>search</artifactId>
-    <version>1.3.8-SNAPSHOT</version>
+    <version>1.4.0</version>
     <packaging>pom</packaging>
     
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/search/branches/search-1.3.x</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/search/branches/search-1.3.x</developerConnection>
-        <url>https://source.sakaiproject.org/svn/search/branches/search-1.3.x</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/search/tags/search-1.4.0</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/search/tags/search-1.4.0</developerConnection>
+        <url>https://source.sakaiproject.org/svn/search/tags/search-1.4.0</url>
     </scm>
     
     <profiles>
@@ -60,109 +57,32 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.sakaiproject.search</groupId>
-                <artifactId>search-api</artifactId>
-                <version>${project.version}</version>
-                <type>jar</type>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.search</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>search-model</artifactId>
                 <version>${project.version}</version>
                 <type>jar</type>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject.search</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>search-impl</artifactId>
                 <version>${project.version}</version>
                 <type>jar</type>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject.search</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>search-util</artifactId>
                 <version>${project.version}</version>
                 <type>jar</type>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject.search</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>search-adapters-impl</artifactId>
                 <version>${project.version}</version>
                 <type>jar</type>
             </dependency>
-            <!--
-                remove BELOW HERE after search is updated to point to
-                newer version of sakai master poms
-            -->
-            <dependency>
-                <groupId>org.sakaiproject.entitybroker</groupId>
-                <artifactId>entitybroker-utils</artifactId>
-                <version>1.4.5</version>
-            </dependency>
-            <!-- remove ABOVE HERE -->
         </dependencies>
     </dependencyManagement>
     
-    <distributionManagement>
-        <site>
-            <id>sakai-site</id>
-            <name>Sakai release Site</name>
-            <url>scpexe://source.sakaiproject.org/var/www/html/release/search/${project.version}</url>
-        </site>
-    </distributionManagement>
-    
-    <pluginRepositories>
-        <pluginRepository>
-            <id>Sakai Plugin Repo</id>
-            <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-    
-    <repositories>
-        <repository>
-            <id>sakai-maven2</id>
-            <name>Sakai Maven Repository</name>
-            <layout>default</layout>
-            <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>sakai-maven2-snapshots</id>
-            <name>Sakai Maven Repo Snapshots</name>
-            <layout>default</layout>
-            <url>http://source.sakaiproject.org/maven2-snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>default</id>
-            <name>Maven Repository Switchboard</name>
-            <layout>default</layout>
-            <url>http://repo1.maven.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <developers>
         <developer>
             <id>david.horwitz@uct.ac.za</id>
@@ -257,9 +177,9 @@
                 </configuration> </plugin>
             -->
             <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-				<version>2.3</version>
+                <version>2.3</version>
                 <configuration>
                     <aggregate>true</aggregate>
                 </configuration>
@@ -315,20 +235,16 @@
                     </tags>
                 </configuration>
             </plugin>
-            <!-- Build errors encountered during release: could not find resource src/site/checkstyle.xml   
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
-                    <configLocation>src/site/checkstyle.xml</configLocation>
+                    <configLocation> src/site/checkstyle.xml </configLocation>
                 </configuration>
-                -->
                 <!--
                     <xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
                 -->
-            <!--
             </plugin>
-            -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
@@ -398,4 +314,19 @@
             </plugins>
         </pluginManagement>
     </build>
+    
+    <repositories> 
+		<repository> 
+			<id>sonatype-nexus-snapshots</id> 
+			<name>Sonatype Nexus Snapshots</name> 
+			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
+			<releases> 
+				<enabled>false</enabled> 
+			</releases> 
+			<snapshots> 
+				<enabled>true</enabled> 
+			</snapshots> 
+		</repository> 
+	</repositories>
+	
 </project>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ServerConfigurationServiceStub.java $
- * $Id: ServerConfigurationServiceStub.java 66331 2009-09-08 11:31:32Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ServerConfigurationServiceStub.java $
+ * $Id: ServerConfigurationServiceStub.java 98102 2011-09-13 02:44:48Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -168,5 +168,25 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    public <T> T getConfig(String name, T defaultValue) {
+        return (T) properties.get(name);
+    }
+
+    public ConfigItem getConfigItem(String name) {
+        return null;
+    }
+
+    public ConfigData getConfigData() {
+        return null;
+    }
+
+    public ConfigItem registerConfigItem(ConfigItem configItem) {
+        return null;
+    }
+
+    public void registerListener(ConfigurationListener configurationListener) {
+        
+    }
 
 }

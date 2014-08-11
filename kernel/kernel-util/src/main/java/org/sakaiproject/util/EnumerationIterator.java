@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/EnumerationIterator.java $
- * $Id: EnumerationIterator.java 63898 2009-06-20 09:46:13Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/EnumerationIterator.java $
+ * $Id: EnumerationIterator.java 101696 2011-12-13 14:44:36Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -28,8 +28,9 @@ import java.util.Iterator;
  * <p>
  * EnumerationIterator is an iterator over an enumeration.
  * </p>
- * @deprecated use Commons-Collection EnumerationIterator
+ * @deprecated use commons-collection instead, this will be removed after 2.9 - Dec 2011
  */
+@Deprecated 
 public class EnumerationIterator implements Iterator
 {
 	/** The enumeration over which this iterates. */

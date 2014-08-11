@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/common/tool-lib/src/java/org/theospi/portfolio/shared/control/ContentResourceUriResolver.java $
-* $Id: ContentResourceUriResolver.java 95391 2011-07-20 00:49:22Z botimer@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/common/tool-lib/src/java/org/theospi/portfolio/shared/control/ContentResourceUriResolver.java $
+* $Id: ContentResourceUriResolver.java 95389 2011-07-20 00:39:11Z botimer@umich.edu $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation

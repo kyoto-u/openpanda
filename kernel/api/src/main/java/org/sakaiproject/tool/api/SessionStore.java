@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/tool/api/SessionStore.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/tool/api/SessionStore.java $
  * $Id: SessionStore.java 59307 2009-03-30 16:10:16Z arwhyte@umich.edu $
  ***********************************************************************************
  *

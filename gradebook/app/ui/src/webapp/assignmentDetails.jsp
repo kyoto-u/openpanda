@@ -11,9 +11,9 @@
 		<sakai:flowState bean="#{assignmentDetailsBean}" />
 
 		<t:aliasBean alias="#{bean}" value="#{assignmentDetailsBean}">
-			<%@include file="/inc/appMenu.jspf"%>
+			<%@ include file="/inc/appMenu.jspf"%>
 		
-			<%@include file="/inc/breadcrumb.jspf" %>
+			<%@ include file="/inc/breadcrumb.jspf" %>
 		</t:aliasBean> 
 
 		<h3><h:outputText value="#{msgs.assignment_details_page_title}"/></h3>
@@ -125,10 +125,10 @@
 		<h4><h:outputText value="#{msgs.assignment_details_grading_table}"/></h4>
 		<div class="indnt1">
 
-		<%@include file="/inc/globalMessages.jspf"%>
+		<%@ include file="/inc/globalMessages.jspf"%>
 
 		<t:aliasBean alias="#{bean}" value="#{assignmentDetailsBean}">
-			<%@include file="/inc/filterPaging.jspf"%>
+			<%@ include file="/inc/filterPaging.jspf"%>
 		</t:aliasBean>
 		
 		<div id="buttonDiv1" class="act gbButtonBar">
@@ -214,7 +214,7 @@
 				</f:facet>
 
 				<t:div>
-					<h:panelGroup rendered="#{!assignmentDetailsBean.assignment.externallyMaintained && scoreRow.userCanGrade}">
+					<h:panelGroup rendered="#{!scoreRow.droppedFromGrade && !assignmentDetailsBean.assignment.externallyMaintained && scoreRow.userCanGrade}">
 						<h:inputText id="Score" value="#{scoreRow.score}" size="6" 
 							 rendered="#{assignmentDetailsBean.gradeEntryByPoints || assignmentDetailsBean.gradeEntryByPercent}"
 							 style="text-align:right;" onkeypress="return submitOnEnter(event, 'gbForm:saveButton');">
@@ -242,6 +242,22 @@
 						</h:outputText>
 						<h:outputText value="#{msgs.score_null_placeholder}" 
 							 rendered="#{assignmentDetailsBean.gradeEntryByLetter && scoreRow.letterScore == null}" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{scoreRow.droppedFromGrade && !assignmentDetailsBean.assignment.externallyMaintained && scoreRow.userCanGrade}">
+						<h:inputText id="Score2" value="#{scoreRow.score}" size="6" 
+							 rendered="#{assignmentDetailsBean.gradeEntryByPoints || assignmentDetailsBean.gradeEntryByPercent}"
+							 style="text-align:right;text-decoration:line-through" onkeypress="return submitOnEnter(event, 'gbForm:saveButton');">
+							<f:converter converterId="org.sakaiproject.gradebook.jsf.converter.NONTRAILING_DOUBLE" />
+							<f:validateDoubleRange minimum="0"/>
+							<f:validator validatorId="org.sakaiproject.gradebook.jsf.validator.ASSIGNMENT_GRADE"/>
+						</h:inputText>
+            			<h:outputText value="#{assignmentDetailsBean.localizedPercentInput}" rendered="#{assignmentDetailsBean.gradeEntryByPercent}"
+              				style="margin-left: 5px;" />
+						<h:inputText id="LetterScore2" value="#{scoreRow.letterScore}" size="6" 
+							 rendered="#{assignmentDetailsBean.gradeEntryByLetter}"
+							 style="text-align:right;" onkeypress="return submitOnEnter(event, 'gbForm:saveButton');">
+							<f:converter converterId="org.sakaiproject.gradebook.jsf.converter.LETTER_GRADE_CONVERTER" />
+						</h:inputText>
 					</h:panelGroup>
 				</t:div>
 			</h:column>
@@ -273,7 +289,7 @@
 		</t:dataTable>
 
 		<t:aliasBean alias="#{bean}" value="#{assignmentDetailsBean}">
-			<%@include file="/inc/gradingEventLogs.jspf"%>
+			<%@ include file="/inc/gradingEventLogs.jspf"%>
 		</t:aliasBean>
 
 		<p class="instruction">

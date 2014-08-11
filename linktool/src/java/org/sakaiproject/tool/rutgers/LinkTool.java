@@ -416,6 +416,7 @@ public class LinkTool extends HttpServlet
          } catch (NumberFormatException e) {
         	 //nothing realy to do
          }
+         
       }
       
       // now generate the page

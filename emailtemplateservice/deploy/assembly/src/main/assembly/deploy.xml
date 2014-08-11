@@ -8,8 +8,8 @@
     <dependencySets>
         <dependencySet>
             <outputDirectory>shared/lib/</outputDirectory>
-            <useTransitiveDependencies>false</useTransitiveDependencies>
-            <useProjectArtifact>false</useProjectArtifact>
+            <useTransitiveDependencies>false
+            </useTransitiveDependencies>
             <includes>
                 <include>org.sakaiproject.emailtemplateservice:emailtemplateservice-api:jar:*</include>
                 <include>org.simpleframework:simple-xml:jar:*</include>
@@ -19,7 +19,6 @@
         <dependencySet>
             <outputDirectory>components/emailtemplateservice-pack</outputDirectory>
             <useTransitiveDependencies>false</useTransitiveDependencies>
-            <useProjectArtifact>false</useProjectArtifact>
             <includes>
                 <include>org.sakaiproject.emailtemplateservice:emailtemplateservice-pack:war:*</include>
             </includes>
@@ -29,11 +28,18 @@
             <outputDirectory>webapps/</outputDirectory>
             <outputFileNameMapping>${artifact.artifactId}.war</outputFileNameMapping>
             <useTransitiveDependencies>false</useTransitiveDependencies>
-            <useProjectArtifact>false</useProjectArtifact>
             <includes>
                  <include>org.sakaiproject.emailtemplateservice:emailtemplateservice-tool:war:*</include>
             </includes>
             <unpack>false</unpack>
         </dependencySet>
     </dependencySets>
+    <fileSets>
+        <fileSet>
+            <outputDirectory></outputDirectory>
+            <includes>
+                <include>${project.basedir}/README*</include>
+            </includes>
+        </fileSet>
+    </fileSets>
 </assembly>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/user/api/UserDirectoryService.java $
- * $Id: UserDirectoryService.java 81577 2010-08-20 08:04:44Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/user/api/UserDirectoryService.java $
+ * $Id: UserDirectoryService.java 95733 2011-07-27 14:28:36Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -256,6 +256,7 @@ public interface UserDirectoryService extends EntityProducer
 	 * @param email
 	 *        The email address string.
 	 * @return A Collection (User) of user objects which have this email address (may be empty).
+	 *         It will not return <code>null</code>.
 	 */
 	Collection<User> findUsersByEmail(String email);
 

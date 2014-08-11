@@ -10,10 +10,17 @@
 		<dependencySet>
 			<outputDirectory>shared/lib</outputDirectory>
 			<useTransitiveDependencies>false</useTransitiveDependencies>
-			<useProjectArtifact>false</useProjectArtifact>
 			<includes>
 				<include>org.sakaiproject.contentreview:*:jar:*</include>
 			</includes>
 		</dependencySet>
 	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<outputDirectory></outputDirectory>
+			<includes>
+				<include>${project.basedir}/README*</include>
+			</includes>
+		</fileSet>
+	</fileSets>
 </assembly>

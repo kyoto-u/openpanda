@@ -41,7 +41,7 @@
 <h:form id="saveForLater">
 <!-- DONE BUTTON FOR PREVIEW -->
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
  <f:verbatim></div></f:verbatim>
@@ -53,7 +53,7 @@
 </h3>
 <br/>
   <!-- content... -->
-  <h:panelGroup styleClass="validation">
+  <h:panelGroup styleClass="messageSamigo2">
   <h:panelGrid border="0">
       <h:outputText value="#{deliveryMessages.save_for_later_warning_1}" escape="false"/>
       <h:outputText value="#{deliveryMessages.save_for_later_warning_2}" escape="false"/>
@@ -75,7 +75,7 @@
 </div>
 <!-- DONE BUTTON IN PREVIEW -->
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
 <f:verbatim></div></f:verbatim>

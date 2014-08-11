@@ -144,7 +144,7 @@ font-size:1.2em
 }
 
 .titlePending {
-	width: 77%;
+	width: 67%;
 }
 
 .titlePub {
@@ -152,27 +152,31 @@ font-size:1.2em
 }
 
 .lastModified {
-	width: 13%;
+	width: 23%;
 }
 
 .releaseTo {
 	width: 11%;
 }
 
+.status {
+	width: 8%;
+}
+
 .inProgress {
-	width: 9%;
+	width: 6%;
 }
 
 .submitted {
-	width: 9%;
+	width: 6%;
 }
 
 .releaseDate {
-	width: 9%;
+	width: 8%;
 }
 
 .dueDate {
-	width: 9%;
+	width: 8%;
 }
 
 .listAssessments th{
@@ -205,16 +209,6 @@ table.settings {
     border: 1px solid #bbb;
 }
  	  	 
-.samigo-linear-access-warning {
- 	background-color: #FAFAD6;
- 	border: 1px solid #F6D87D;
- 	margin: 0px 10px 10px 10px;
- 	padding: 5px;
- 	border-radius: 5px;
- 	color: #404040;
- 	font-family: Arial,Helvetica,sans-serif;
-}
-
 .notification {
     color: #555;
     font-size: 110%;
@@ -249,8 +243,171 @@ li.last {
         border: 0 none;
 }
 
+#samigo-create-container {
+	width: 100%;
+	overflow: hidden;
+	margin-bottom: 20px;
+	height: 180px;
+}
+#samigo-create-new {
+	background-color: #F0F0F0;
+	float: left;
+	width: 40%;
+	padding: 12px;
+	height: 180px;
+}
+#samigo-create-new h4 {
+	margin: 0 0 8px;
+}
+#samigo-create-or {
+	float: left;
+	width: 10%;
+	text-align: center;
+	vertical-align: middle;
+	height: 180px;
+	line-height: 140px;
+}
+#samigo-create-import {
+	background-color: #F3F3F3;
+	float: left;
+	width: 40%;
+	padding: 20px;
+	height: 180px;
+}
+#tabs {
+	padding: 0;
+}
+ul.ui-tabs-nav {
+	border-bottom: 2px solid #828282;
+}
+ul.ui-tabs-nav li span.samigo-tab-sub {
+	text-decoration: none !important;
+	font-weight: normal !important;
+	color: #000000;
+}
+ul.ui-tabs-nav li a {
+	text-decoration: none !important;
+	color: #0A72AE;
+}
+ul.ui-tabs-nav li.ui-tabs-selected a {
+	color: #000000;
+}
+#authorIndexForm\:import {
+	display: block;
+	margin-top: 12px;
+}
+#authorIndexForm\:createnew {
+	margin-top: 12px;
+}
+tr.list-row-even td, tr.list-row-odd td {
+	border-bottom: 1px solid #C6C6C6;
+	padding-top: 8px;
+}
+#assessment-status-limiter {
+	margin-bottom: 12px;
+}
+#tabs #assessment-status-limiter a.active {
+	font-weight: bold;
+	text-decoration: none !important;
+	color: #000000;
+}
+#tabs, #tabs .ui-widget-content {
+	border-width: 0;
+	background: none;
+}
+#tabs .ui-widget-content a {
+	color: #0080C0;
+	text-decoration: none;
+}
+#tabs .ui-widget-content a:hover {
+	text-decoration: underline;
+}
+
+tbody tr td.center{
+    text-align: center; /*centers radio buttons beneath column headings in matrix type survey questions */
+}
+
+a.hideDivision {
+    color: inherit;
+    text-decoration: none;
+}
+
 .answerkeyFeedbackCommentLabel {
 	FONT-WEIGHT: bold;
     COLOR:#860000;
 } 
+
+.messageSamigo {
+	background: #FFEEEE url(../images/exclamation.png) 5px 4px no-repeat;
+	border: 1px solid #b11;
+	display: block;
+	width: 80%;
+	font-size: 1em;
+	clear: both;
+	color: black;
+	margin: 5px 0;
+	padding: 1px 5px 1px 25px;
+}
+
+.messageSamigo2 {
+	background: #FFEEEE url(../images/error.png) 5px 5px no-repeat;
+	border: 1px solid #b11;
+	display: block;
+	width: 80%;
+	font-size: 1em;
+	clear: both;
+	color: black;
+	margin: 5px 0;
+	padding: 5px 5px 5px 25px;
+}
+
+.messageSamigo3 {
+	background: #FFEEEE url(../images/exclamation.png) 5px 2px no-repeat;
+	border: 1px solid #b11;
+	display: block;
+	width: 80%;
+	font-size: 1em;
+	clear: both;
+	color: black;
+	margin: 5px 0;
+	padding: 3px 5px 3px 25px;
+}
+
+
+.previewMessage {
+	background: url(../images/info.gif) 5px 5px no-repeat;
+	border: 1px solid grey;
+	display: block;
+	width: 80%;
+	font-size: 1em;
+	clear: both;
+	color: grey;
+	margin: 5px 0;
+	padding: 5px 5px 5px 25px;
+}
+
+.saCharCount {
+    border: 1px solid #bbb;
+}
+
+.samigo-linear-access-warning {
+    background-color: #FAFAD6;
+    border: 1px solid #F6D87D;
+    margin: 0px 10px 10px 10px;
+    padding: 5px;
+    border-radius: 5px;
+    color: #404040;
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+.submissionInfoCol1{
+    width: 200px; 
+}
+
+.submissionInfoCol2{
+    width: 650px; 
+}
+
+
+
 

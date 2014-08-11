@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/ServerWidePage.java $
- * $Id: ServerWidePage.java 72176 2009-09-24 13:51:01Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/pages/ServerWidePage.java $
+ * $Id: ServerWidePage.java 87931 2011-02-02 12:12:01Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -87,7 +87,7 @@ public class ServerWidePage extends BasePage {
 		
 		// model
 		report = new ServerWideModel();
-		setModel(new CompoundPropertyModel(this));
+		setDefaultModel(new CompoundPropertyModel(this));
 		
 		Form form = new Form("serverWideReportForm");
 		add(form);

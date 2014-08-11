@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/optimize/impl/OptimizeIndexOperation.java $
- * $Id: OptimizeIndexOperation.java 88271 2011-02-09 22:16:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/optimize/impl/OptimizeIndexOperation.java $
+ * $Id: OptimizeIndexOperation.java 85592 2010-11-30 08:11:26Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation

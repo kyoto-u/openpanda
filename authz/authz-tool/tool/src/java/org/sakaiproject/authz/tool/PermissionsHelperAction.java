@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/authz/branches/sakai-2.8.x/authz-tool/tool/src/java/org/sakaiproject/authz/tool/PermissionsHelperAction.java $
- * $Id: PermissionsHelperAction.java 87202 2011-01-13 17:50:32Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/authz/tags/sakai-2.9.0/authz-tool/tool/src/java/org/sakaiproject/authz/tool/PermissionsHelperAction.java $
+ * $Id: PermissionsHelperAction.java 94052 2011-06-24 10:13:01Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -24,7 +24,6 @@ package org.sakaiproject.authz.tool;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -110,9 +109,6 @@ public class PermissionsHelperAction extends VelocityPortletPaneledAction
 	/** State attribute for permission description */
 	public static final String STATE_PERMISSION_DESCRIPTIONS = "permission.descriptions";
 
-	/** the prefix to permission title for permission description entry in bundle file */
-	public static final String PREFIX_PERMISSION_DESCRIPTION = "desc-";
-
 	/** Modes. */
 	public static final String MODE_MAIN = "main";
 
@@ -197,6 +193,7 @@ public class PermissionsHelperAction extends VelocityPortletPaneledAction
 		String targetRef = (String) toolSession.getAttribute(PermissionsHelper.TARGET_REF);
 		String description = (String) toolSession.getAttribute(PermissionsHelper.DESCRIPTION);
 		String rolesRef = (String) toolSession.getAttribute(PermissionsHelper.ROLES_REF);
+		
 		if (rolesRef == null) rolesRef = targetRef;
 
 		toolSession.setAttribute(STARTED, Boolean.valueOf(true));
@@ -214,7 +211,7 @@ public class PermissionsHelperAction extends VelocityPortletPaneledAction
 		state.setAttribute(STATE_PREFIX, prefix);
 
 		// ... set the ResourceLoader object
-		state.setAttribute(STATE_PERMISSION_DESCRIPTIONS, toolSession.getAttribute("permissionDescriptions"));
+		state.setAttribute(STATE_PERMISSION_DESCRIPTIONS, toolSession.getAttribute(PermissionsHelper.PERMISSION_DESCRIPTION));
 		
 		// start the helper
 		state.setAttribute(STATE_MODE, MODE_MAIN);
@@ -386,14 +383,14 @@ public class PermissionsHelperAction extends VelocityPortletPaneledAction
 			
 			// get function description from passed in HashMap
 			// output permission descriptions
-			HashMap<String, String> functionDescriptions = (HashMap<String, String>) state.getAttribute(STATE_PERMISSION_DESCRIPTIONS);
+			Map<String, String> functionDescriptions = (Map<String, String>) state.getAttribute(STATE_PERMISSION_DESCRIPTIONS);
 			if (functionDescriptions != null)
 			{
 				Set keySet = functionDescriptions.keySet();
 				for(Object function : functions)
 				{
 					String desc = (String) function;
-					String descKey = PREFIX_PERMISSION_DESCRIPTION + function;
+					String descKey = PermissionsHelper.PREFIX_PERMISSION_DESCRIPTION + function;
 					if (keySet.contains(descKey))
 					{
 						// use function description

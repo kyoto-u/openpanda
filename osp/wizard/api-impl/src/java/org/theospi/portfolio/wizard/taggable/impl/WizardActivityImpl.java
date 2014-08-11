@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/wizard/api-impl/src/java/org/theospi/portfolio/wizard/taggable/impl/WizardActivityImpl.java $
- * $Id: WizardActivityImpl.java 85788 2010-12-01 19:16:22Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/wizard/api-impl/src/java/org/theospi/portfolio/wizard/taggable/impl/WizardActivityImpl.java $
+ * $Id: WizardActivityImpl.java 112290 2012-09-11 17:44:18Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -109,5 +109,15 @@ public class WizardActivityImpl implements TaggableActivity {
 		if (!def.getType().equals(WizardPageDefinition.WPD_MATRIX_TYPE))
 			retValue = messages.getString("wizard_type");
 		return retValue;
+	}
+
+	public String getActivityDetailUrlParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean getUseDecoration() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

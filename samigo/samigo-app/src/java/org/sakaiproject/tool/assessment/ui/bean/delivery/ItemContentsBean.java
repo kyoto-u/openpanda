@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ItemContentsBean.java $
- * $Id: ItemContentsBean.java 107743 2012-05-01 17:39:37Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ItemContentsBean.java $
+ * $Id: ItemContentsBean.java 100051 2011-10-21 13:04:11Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.faces.model.SelectItem;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -125,7 +126,7 @@ public class ItemContentsBean implements Serializable {
 
 	private ArrayList finArray;
 
-	private ArrayList selectionArray;
+	private ArrayList<SelectionBean> selectionArray;
 
 	private String key;
 
@@ -147,12 +148,36 @@ public class ItemContentsBean implements Serializable {
 										// score
 
 	private boolean showStudentQuestionScore;
+	
+	private boolean isInvalidFinInput;
+	
+	private boolean isInvalidSALengthInput;
 
+	private String saCharCount;
+	
 	private String pointsDisplayString;
 
 	private List itemGradingAttachmentList;
 	
 	private Long itemGradingIdForFilePicker;
+	
+	/* sam-939*/
+	private boolean forceRanking;
+
+	private int relativeWidth;
+
+	private ArrayList matrixArray;
+
+	//private String[] columnChoices;
+
+	private List<Integer> columnIndexList;
+
+	private String[] columnArray;
+
+	private String commentField;
+	private boolean addComment;
+	private String studentComment;
+
 	
 	public ItemContentsBean() {
 	}
@@ -376,7 +401,7 @@ public class ItemContentsBean implements Serializable {
 		Iterator iter = itemgradingdataArray.iterator();
 		int itemgradingsize =itemgradingdataArray.size();
 		int publishedanswer_notnull = 0;
-		if (getItemData().getTypeId().toString().equals("9")) 
+		if (getItemData().getTypeId().equals(TypeIfc.MATCHING)) 
 			// SAM-776: Every choice has to be filled in before a question is considered answered 
 		{
 			while (iter.hasNext()) {
@@ -395,8 +420,10 @@ public class ItemContentsBean implements Serializable {
 		else {
 		while (iter.hasNext()) {
 			ItemGradingData data = (ItemGradingData) iter.next();
-			if (getItemData().getTypeId().toString().equals("8")
-					|| getItemData().getTypeId().toString().equals("11")) // SAM-330
+			if (getItemData().getTypeId().equals(TypeIfc.ESSAY_QUESTION)
+					|| getItemData().getTypeId().equals(TypeIfc.FILL_IN_BLANK)
+					|| getItemData().getTypeId().equals(TypeIfc.FILL_IN_NUMERIC) // SAM-330
+					) 
 			{
 				if (data.getAnswerText() != null
 						&& !data.getAnswerText().equals("")) {
@@ -773,6 +800,10 @@ public class ItemContentsBean implements Serializable {
 		}
 	}
 	
+	public String getResponseTextPlain() {
+		return FormattedText.convertFormattedTextToPlaintext(getResponseText());
+	}
+
 	public String getResponseTextForDisplay() {
 		log.debug("itemcontentbean.getResponseText");
 		try {
@@ -782,6 +813,7 @@ public class ItemContentsBean implements Serializable {
 				ItemGradingData data = (ItemGradingData) iter.next();
 				response = data.getAnswerText();
 			}
+
 			if (response!=null){
 				response = response.replaceAll("(\r\n|\r)", "<br/>");
 				return response;
@@ -792,6 +824,10 @@ public class ItemContentsBean implements Serializable {
 			e.printStackTrace();
 			return responseText;
 		}
+	}
+
+	public void setResponseTextPlain(String presponseId) {
+		setResponseText(presponseId);
 	}
 
 	public void setResponseText(String presponseId) {
@@ -854,10 +890,109 @@ public class ItemContentsBean implements Serializable {
 		selectionArray = newArray;
 	}
 
-  public ArrayList getAnswers()
-  {
-    return answers;
-  }
+	public ArrayList getMatrixArray() {
+		return matrixArray;
+	}
+
+	public void setMatrixArray(ArrayList newArray) {
+		matrixArray = newArray;
+	}
+
+
+	public List<Integer> getColumnIndexList(){
+		return columnIndexList;
+	}
+
+	public void setColumnIndexList(List<Integer> columnIndexList){
+		this.columnIndexList = columnIndexList;
+	}
+
+	public String[] getColumnArray(){
+		return columnArray;
+	}
+
+	public void setColumnArray(String[] columnArray){
+		this.columnArray = columnArray;
+	}
+
+	public boolean getForceRanking(){
+		return this.forceRanking;
+	}
+
+	public void setForceRanking(boolean forceRanking){
+		this.forceRanking = forceRanking;
+	}
+
+	public int getRelativeWidth(){
+		return this.relativeWidth;
+	}
+
+	public void setRelativeWidth(int param) {
+		this.relativeWidth = param;
+	}
+
+	public boolean getAddComment(){
+		return this.addComment;
+	}
+
+	public void setAddComment(boolean param){
+		this.addComment = param;
+	}
+	
+	public String getCommentField(){
+		return this.commentField;
+	}
+
+	public void setCommentField(String param){
+		this.commentField = param;
+	}
+
+	public String getStudentComment() {
+		try {
+			String comment = studentComment;
+			Iterator iter = getItemGradingDataArray().iterator();
+			if (iter.hasNext()) {
+				ItemGradingData data = (ItemGradingData) iter.next();
+				comment = data.getAnswerText();
+			}
+			return comment;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return studentComment;
+		}
+	}
+
+	public void setStudentComment(String param){
+		try {
+			studentComment = param;
+			Iterator iter = getItemGradingDataArray().iterator();
+			if (!iter.hasNext()
+					&& (param == null || param.equals(""))) {
+				return;
+			}
+			ItemGradingData data = null;
+			if (iter.hasNext()) {
+				data = (ItemGradingData) iter.next();
+			} else {
+				data = new ItemGradingData();
+				data.setPublishedItemId(itemData.getItemId());
+				ItemTextIfc itemText = (ItemTextIfc) itemData.getItemTextSet()
+				.toArray()[0];
+				data.setPublishedItemTextId(itemText.getId());
+				ArrayList items = new ArrayList();
+				items.add(data);
+				setItemGradingDataArray(items);
+			}
+			data.setAnswerText(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+
+	public ArrayList getAnswers()
+	{
+		return answers;
+	}
 
 	public void setAnswers(ArrayList list) {
 		answers = list;
@@ -1165,7 +1300,7 @@ public class ItemContentsBean implements Serializable {
                                      "new value " + score);
                   answer.setScore(score);
               }
-              EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "itemId=" + itemData.getItemId(), true));
+              EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", itemId=" + itemData.getItemId(), true));
           }
           itemService.saveItem(item);
           itemData.setScore(score);
@@ -1229,5 +1364,31 @@ public class ItemContentsBean implements Serializable {
 	  this.itemGradingIdForFilePicker = itemGradingIdForFilePicker;
   }
 
+  
+  public void setIsInvalidFinInput(boolean isInvalidFinInput) {
+	  this.isInvalidFinInput = isInvalidFinInput;
+  }
+
+  public boolean getIsInvalidFinInput() {
+	  return isInvalidFinInput;
+  }  
+
+  public void setIsInvalidSALengthInput(boolean isInvalidSALengthInput) {
+	  this.isInvalidSALengthInput = isInvalidSALengthInput;
+  }
+
+  public boolean getIsInvalidSALengthInput() {
+	  return isInvalidSALengthInput;
+  }  
+  
+  public String getSaCharCount() {
+	  return saCharCount;
+  }
+
+  public void setSaCharCount(String saCharCount)
+  {
+	  this.saCharCount = saCharCount;
+  }
+  
 }
 

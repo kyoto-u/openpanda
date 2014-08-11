@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/branches/emailtemplateservice-0.5.x/api/src/java/org/sakaiproject/emailtemplateservice/model/EmailTemplate.java $
- * $Id: EmailTemplate.java 96035 2011-08-02 12:09:54Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.0/api/src/java/org/sakaiproject/emailtemplateservice/model/EmailTemplate.java $
+ * $Id: EmailTemplate.java 113208 2012-09-20 16:05:02Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright 2006, 2007 Sakai Foundation
@@ -34,7 +34,10 @@ import org.simpleframework.xml.Element;
 public class EmailTemplate implements java.io.Serializable {
 
 	// Fields
-
+	/**
+	 * The locale used to indicate the default locale
+	 */
+	public static final String DEFAULT_LOCALE = "default";
 	/**
 	 * 
 	 */

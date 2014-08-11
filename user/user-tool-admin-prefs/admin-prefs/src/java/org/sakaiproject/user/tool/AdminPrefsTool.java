@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/branches/sakai-2.8.x/user-tool-admin-prefs/admin-prefs/src/java/org/sakaiproject/user/tool/AdminPrefsTool.java $
- * $Id: AdminPrefsTool.java 59690 2009-04-03 23:46:22Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.0/user-tool-admin-prefs/admin-prefs/src/java/org/sakaiproject/user/tool/AdminPrefsTool.java $
+ * $Id: AdminPrefsTool.java 111996 2012-08-30 19:53:13Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

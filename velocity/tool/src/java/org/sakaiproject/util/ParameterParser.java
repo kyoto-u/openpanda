@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/branches/sakai-2.8.x/tool/src/java/org/sakaiproject/util/ParameterParser.java $
- * $Id: ParameterParser.java 95922 2011-07-29 18:56:28Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.0/tool/src/java/org/sakaiproject/util/ParameterParser.java $
+ * $Id: ParameterParser.java 94951 2011-07-10 06:18:52Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

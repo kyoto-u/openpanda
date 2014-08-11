@@ -1,6 +1,6 @@
 /**
- * $Id: EntityEncodingManagerTest.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/test/org/sakaiproject/entitybroker/rest/EntityEncodingManagerTest.java $
+ * $Id: EntityEncodingManagerTest.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/test/org/sakaiproject/entitybroker/rest/EntityEncodingManagerTest.java $
  * EntityHandlerImplTest.java - entity-broker - Apr 6, 2008 12:08:39 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -137,6 +137,34 @@ public class EntityEncodingManagerTest extends TestCase {
         assertTrue(encoded.contains("A"));
         assertTrue(encoded.contains("B"));
 
+    }
+
+    /**
+     * Testing for http://jira.sakaiproject.org/browse/SAK-19197 (xml encoding)
+     * Items with spaces will not encode correctly and will cause an exception, they 
+     * have to be fixed at the provider level
+     */
+    public void testSpaceEncoding() {
+        EntityData ed = null;
+
+        // test encoding weird stuff
+        Map<String, Object> map = new ArrayOrderedMap<String, Object>();
+        map.put("A1", "aaron one");
+        map.put("C&3", "minerva three");
+        map.put("B 2", "becky two");
+        ed = new EntityData(map);
+        /* fixed in 0.9.15 reflectutils
+        try {
+            entityEncodingManager.encodeEntity(TestData.PREFIX4, Formats.XML, ed, null);
+            fail("Could not encode spaces");
+        } catch (UnsupportedOperationException e) {
+            assertNotNull(e.getMessage());
+        }*/
+        String encoded = entityEncodingManager.encodeEntity(TestData.PREFIX4, Formats.XML, ed, null);
+        assertNotNull(encoded);
+        assertTrue(encoded.contains("aaron one"));
+        assertTrue(encoded.contains("becky two"));
+        assertTrue(encoded.contains("minerva three"));
     }
 
     /**

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/branches/sakai-2.8.x/citations-impl/impl/src/java/org/sakaiproject/citation/impl/CitationListAccessServlet.java $
- * $Id: CitationListAccessServlet.java 106860 2012-04-12 05:50:19Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/CitationListAccessServlet.java $
+ * $Id: CitationListAccessServlet.java 105583 2012-03-06 20:02:39Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation

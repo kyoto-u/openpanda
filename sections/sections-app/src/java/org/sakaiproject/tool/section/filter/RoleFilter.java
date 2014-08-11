@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/branches/sakai-2.8.x/sections-app/src/java/org/sakaiproject/tool/section/filter/RoleFilter.java $
- * $Id: RoleFilter.java 94217 2011-06-29 12:30:46Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.0/sections-app/src/java/org/sakaiproject/tool/section/filter/RoleFilter.java $
+ * $Id: RoleFilter.java 93246 2011-05-25 11:32:14Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -118,6 +118,8 @@ public class RoleFilter implements Filter {
 				isAuthorized = true;
 			} else if (authz.isViewOwnSectionsAllowed(userUid, siteContext)
 					&& authzFilterConfigBean.getViewOwnSections().contains(pageName)) {
+				isAuthorized = true;
+			} else if (pageName.contains("closed")) {
 				isAuthorized = true;
 			}
 

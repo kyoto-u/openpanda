@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/branches/sakai-2.8.x/site-association-util/util/src/java/org/sakaiproject/siteassociation/tool/servlet/SiteAssocJsfTool.java $
- * $Id: SiteAssocJsfTool.java 84789 2010-11-16 16:54:35Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.0/site-association-util/util/src/java/org/sakaiproject/siteassociation/tool/servlet/SiteAssocJsfTool.java $
+ * $Id: SiteAssocJsfTool.java 84579 2010-11-10 19:06:20Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007 The Sakai Foundation.

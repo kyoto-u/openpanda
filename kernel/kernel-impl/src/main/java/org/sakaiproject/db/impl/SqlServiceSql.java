@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/db/impl/SqlServiceSql.java $
- * $Id: SqlServiceSql.java 96107 2011-08-02 17:06:39Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/db/impl/SqlServiceSql.java $
+ * $Id: SqlServiceSql.java 95806 2011-07-28 03:29:27Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/branches/sakai-2.8.x/help-component/src/java/org/sakaiproject/component/app/help/SizedList.java $
- * $Id: SizedList.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.0/help-component/src/java/org/sakaiproject/component/app/help/SizedList.java $
+ * $Id: SizedList.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,14 +23,15 @@ package org.sakaiproject.component.app.help;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
- * size list
- * @version $Id: SizedList.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * A List that won't grow any larger that the specified size.
+ * 
+ * @version $Id: SizedList.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  */
-public class SizedList extends ArrayList
+public class SizedList<T> extends ArrayList<T>
 {
+  private static final long serialVersionUID = 1L;
   private int size = -1;
 
   /**
@@ -51,10 +52,12 @@ public class SizedList extends ArrayList
     this.size = size;
   }
 
-  /** 
+  /**
+   * Add an item to the list, if the list is already full then and item is also removed from the
+   * end of the list. 
    * @see java.util.Collection#add(java.lang.Object)
    */
-  public boolean add(Object item)
+  public boolean add(T item)
   {
     if (this.contains(item))
     {
@@ -71,11 +74,10 @@ public class SizedList extends ArrayList
   /** 
    * @see java.util.Collection#addAll(java.util.Collection)
    */
-  public boolean addAll(Collection c)
+  public boolean addAll(Collection<? extends T> c)
   {
-    for (Iterator i = c.iterator(); i.hasNext();)
-    {
-      add(i.next());
+    for (T name : c) {
+      add(name);
     }
     return true;
   }

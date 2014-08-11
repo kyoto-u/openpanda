@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: copyPool.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+<!-- $Id: copyPool.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -32,7 +32,7 @@
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{questionPoolMessages.copy_p}"/></title>
                         <!-- stylesheet and script widgets -->
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 <%@ include file="/js/samigotree.js" %>
 //-->
@@ -42,8 +42,8 @@
 <!-- content... -->
  <div class="portletBody">
 <h:form id="copyPool">
-<h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
-
+<h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+ 
 <h3>
 <h:outputText rendered="#{questionpool.actionType == 'pool'}" value="#{questionPoolMessages.copy_p}"/>
 <h:outputText rendered="#{questionpool.actionType == 'item'}" value="#{questionPoolMessages.copy_q}"/>

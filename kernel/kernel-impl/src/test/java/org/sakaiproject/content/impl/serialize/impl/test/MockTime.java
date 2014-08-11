@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/test/java/org/sakaiproject/content/impl/serialize/impl/test/MockTime.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/test/java/org/sakaiproject/content/impl/serialize/impl/test/MockTime.java $
  * $Id: MockTime.java 75359 2010-03-27 10:49:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

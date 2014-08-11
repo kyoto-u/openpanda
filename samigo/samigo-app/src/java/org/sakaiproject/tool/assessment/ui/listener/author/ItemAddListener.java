@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ItemAddListener.java $
- * $Id: ItemAddListener.java 84423 2010-11-05 23:25:47Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ItemAddListener.java $
+ * $Id: ItemAddListener.java 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -38,6 +38,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,6 +58,7 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
+import org.sakaiproject.tool.assessment.services.FinFormatException;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.ItemFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedItemFacade;
@@ -78,6 +80,9 @@ import org.sakaiproject.tool.assessment.ui.bean.questionpool.QuestionPoolDataBea
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.TextFormat;
 import org.sakaiproject.util.FormattedText;
+
+import org.sakaiproject.tool.assessment.data.dao.assessment.FavoriteColChoices;
+import org.sakaiproject.tool.assessment.data.dao.assessment.FavoriteColChoicesItem;
 
 /**
  * <p>Title: Samigo</p>
@@ -210,9 +215,34 @@ public class ItemAddListener
 		}    	
     }
 	
-    if (!saveItem(itemauthorbean)){
-	throw new RuntimeException("failed to saveItem.");
-    }
+    if (iType.equals(TypeFacade.MATRIX_CHOICES_SURVEY.toString())){
+    	if (isRowEmpty()){
+    		err=ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","row_field_empty");
+    		context.addMessage(null,new FacesMessage(err));
+    		item.setOutcome("matrixChoicesSurveyItem");
+    		item.setPoolOutcome("matrixChoicesSurveyItem");
+    		return;
+    	}
+    	if (isColumnslessthan2()) {
+    		err=ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","less_than_two_columns");
+    		context.addMessage(null,new FacesMessage(err));
+    		item.setOutcome("matrixChoicesSurveyItem");
+    		item.setPoolOutcome("matrixChoicesSurveyItem");
+    		return;
+    	}
+    } 
+
+	try {
+		saveItem(itemauthorbean);
+	}
+	catch (FinFormatException e) {
+		err=ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","fin_invalid_characters_error");
+	    context.addMessage(null,new FacesMessage(err));
+	    item.setOutcome("fillInNumericItem");
+	    item.setPoolOutcome("fillInNumericItem");
+	    return;
+	}
+
     item.setOutcome("editAssessment");
     item.setPoolOutcome("editPool");
     itemauthorbean.setItemTypeString("");
@@ -457,11 +487,33 @@ public class ItemAddListener
         }
     }
     
-  
+    public boolean isRowEmpty() {
+    	ItemAuthorBean itemauthorbean = (ItemAuthorBean) ContextUtil.lookupBean("itemauthor");
+    	ItemBean item =itemauthorbean.getCurrentItem();
 
-  public boolean saveItem(ItemAuthorBean itemauthor) {
+    	String text=item.getRowChoices();
+    	if (text != null && text.trim().length() == 0)
+    		return true;
+    	else if (text == null)
+    		return true;
+    	return false;
+
+    }
+
+    public boolean isColumnslessthan2(){
+    	ItemAuthorBean itemauthorbean = (ItemAuthorBean) ContextUtil.lookupBean("itemauthor");
+    	ItemBean item =itemauthorbean.getCurrentItem();
+
+    	String text=item.getColumnChoices();
+    	String[] columns;
+    	columns = text.split(System.getProperty("line.separator"));
+    	if(columns.length < 2)
+    		return true;	
+    	return false;
+    }
+
+  public void saveItem(ItemAuthorBean itemauthor) throws FinFormatException{
     boolean update = false;
-    try {
       ItemBean bean = itemauthor.getCurrentItem();
       ItemFacade item;
       AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
@@ -476,11 +528,11 @@ public class ItemAddListener
       isPendingOrPool = isEditPendingAssessmentFlow || isFromQuestionPool;
       ItemService delegate;
       if (isPendingOrPool) {
-    	  EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "itemId=" + itemauthor.getItemId(), true));
+    	  EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", itemId=" + itemauthor.getItemId(), true));
       	  delegate = new ItemService();
       }
       else {
-    	  EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.revise", "itemId=" + itemauthor.getItemId(), true));
+    	  EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", itemId=" + itemauthor.getItemId(), true));
       	  delegate = new PublishedItemService();
       }
       // update not working yet, delete, then add
@@ -515,7 +567,7 @@ public class ItemAddListener
       item.setLastModifiedDate(new Date());
 
       if (bean.getInstruction() != null) {
-        // for matching
+        // for matching and matrix Survey
         item.setInstruction(bean.getInstruction());
       }
       // update hasRationale
@@ -559,13 +611,17 @@ public class ItemAddListener
               }
       }
       else {
-        	//prepare itemText, including answers
-            if (!item.getTypeId().equals(TypeFacade.MATCHING)) {
-              item.setItemTextSet(prepareText(item, bean, itemauthor));
-            }
-            else {
-              item.setItemTextSet(prepareTextForMatching(item, bean, itemauthor));
-            }
+    	  //prepare itemText, including answers
+    	  if (item.getTypeId().equals(TypeFacade.MATCHING)) {
+    		  item.setItemTextSet(prepareTextForMatching(item, bean, itemauthor));
+    	  }
+    	  else if(item.getTypeId().equals(TypeFacade.MATRIX_CHOICES_SURVEY)) {
+    		  item.setItemTextSet(prepareTextForMatrixChoice(item, bean, itemauthor));
+    	  }
+    	  else {
+    		  item.setItemTextSet(prepareText(item, bean, itemauthor));
+    	  }
+    	  
             // prepare MetaData
             item.setItemMetaDataSet(prepareMetaData(item, bean));
 
@@ -719,6 +775,32 @@ public class ItemAddListener
 
         }
 
+        // prepare saving column choice to favorites (SAM_FAVORITECOLCHOICES_T and SAM_FAVORITECOLCHOICESITEM_T)
+        // and save
+        if (bean.getAddToFavorite()){
+        	FavoriteColChoices favorite = new FavoriteColChoices();
+        	favorite.setFavoriteName(bean.getFavoriteName().trim());
+        	//find the agentId
+        	favorite.setOwnerStringId(AgentFacade.getAgentString());
+
+        	String[] temp = bean.getColumnChoices().split(System.getProperty("line.separator"));
+        	//remove the empty string
+        	List<String> stringList = new ArrayList<String>();
+
+        	for(String string : temp) {
+        		if(string != null && string.trim().length() > 0) {
+        			stringList.add(string);
+        		}
+        	}
+        	temp = stringList.toArray(new String[stringList.size()]);
+        	for(int i=0; i<temp.length; i++){
+        		FavoriteColChoicesItem favoriteChoiceItem = new FavoriteColChoicesItem(StringUtils.chomp(temp[i]),new Integer(i));
+        		favoriteChoiceItem.setFavoriteChoice(favorite);
+        		favorite.getFavoriteItems().add(favoriteChoiceItem);
+        	}
+        	delegate.saveFavoriteColumnChoices(favorite);
+        }
+
         QuestionPoolService qpdelegate = new QuestionPoolService();
 	// removed the old pool-item mappings
           if ( (bean.getOrigPool() != null) && (!bean.getOrigPool().equals(""))) {
@@ -753,91 +835,137 @@ public class ItemAddListener
       }
       // sorry, i need this for item attachment, used by SaveItemAttachmentListener. 
       itemauthor.setItemId(item.getItemId().toString());
-      return true;
-    }
-    catch (RuntimeException e) {
-      e.printStackTrace();
-      return false;
-    }
   }
 
   private HashSet prepareTextForMatching(ItemFacade item, ItemBean bean,
-			ItemAuthorBean itemauthor) {
-		// looping through matchItemBean
-		ArrayList matchItemBeanList = bean.getMatchItemBeanList();
-		HashSet textSet = new HashSet();
-		Iterator choiceiter = matchItemBeanList.iterator();
-		while (choiceiter.hasNext()) {
+		  ItemAuthorBean itemauthor) {
+	  // looping through matchItemBean
+	  ArrayList matchItemBeanList = bean.getMatchItemBeanList();
+	  HashSet textSet = new HashSet();
+	  Iterator choiceiter = matchItemBeanList.iterator();
+	  while (choiceiter.hasNext()) {
 
-			MatchItemBean choicebean = (MatchItemBean) choiceiter.next();
+		  MatchItemBean choicebean = (MatchItemBean) choiceiter.next();
 
-			ItemText choicetext = new ItemText();
-			choicetext.setItem(item.getData()); // all set to the same
-												// ItemFacade
-			choicetext.setSequence(choicebean.getSequence());
+		  ItemText choicetext = new ItemText();
+		  choicetext.setItem(item.getData()); // all set to the same
+		  // ItemFacade
+		  choicetext.setSequence(choicebean.getSequence());
 
-			choicetext.setText(stripPtags(choicebean.getChoice()));
+		  choicetext.setText(stripPtags(choicebean.getChoice()));
 
-			// need to loop through matches for in matchItemBean list
-			// and add all possible matches to this choice
+		  // need to loop through matches for in matchItemBean list
+		  // and add all possible matches to this choice
 
-			// log.info(
-			Iterator answeriter = matchItemBeanList.iterator();
-			HashSet answerSet = new HashSet();
-			Answer answer = null;
-			while (answeriter.hasNext()) {
+		  // log.info(
+		  Iterator answeriter = matchItemBeanList.iterator();
+		  HashSet answerSet = new HashSet();
+		  Answer answer = null;
+		  while (answeriter.hasNext()) {
 
-				MatchItemBean answerbean = (MatchItemBean) answeriter.next();
+			  MatchItemBean answerbean = (MatchItemBean) answeriter.next();
 
-				if (answerbean.getSequence().equals(choicebean.getSequence())) {
-					answer = new Answer(choicetext, stripPtags(answerbean
-							.getMatch()), answerbean.getSequence(), AnswerBean
-							.getChoiceLabels()[answerbean.getSequence()
-							.intValue() - 1], Boolean.TRUE, null, Float.valueOf(
-							bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+			  if (answerbean.getSequence().equals(choicebean.getSequence())) {
+				  answer = new Answer(choicetext, stripPtags(answerbean
+						  .getMatch()), answerbean.getSequence(), AnswerBean
+						  .getChoiceLabels()[answerbean.getSequence()
+						                     .intValue() - 1], Boolean.TRUE, null, Float.valueOf(
+						                    		 bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
 
-					// only add feedback for correct pairs
-					HashSet answerFeedbackSet = new HashSet();
-					answerFeedbackSet.add(new AnswerFeedback(answer,
-							AnswerFeedbackIfc.CORRECT_FEEDBACK,
-							stripPtags(answerbean.getCorrMatchFeedback())));
-					answerFeedbackSet.add(new AnswerFeedback(answer,
-							AnswerFeedbackIfc.INCORRECT_FEEDBACK,
-							stripPtags(answerbean.getIncorrMatchFeedback())));
-					answer.setAnswerFeedbackSet(answerFeedbackSet);
+				  // only add feedback for correct pairs
+				  HashSet answerFeedbackSet = new HashSet();
+				  answerFeedbackSet.add(new AnswerFeedback(answer,
+						  AnswerFeedbackIfc.CORRECT_FEEDBACK,
+						  stripPtags(answerbean.getCorrMatchFeedback())));
+				  answerFeedbackSet.add(new AnswerFeedback(answer,
+						  AnswerFeedbackIfc.INCORRECT_FEEDBACK,
+						  stripPtags(answerbean.getIncorrMatchFeedback())));
+				  answer.setAnswerFeedbackSet(answerFeedbackSet);
 
-				} else {
-					answer = new Answer(choicetext, stripPtags(answerbean
-							.getMatch()), answerbean.getSequence(), AnswerBean
-							.getChoiceLabels()[answerbean.getSequence()
-							.intValue() - 1], Boolean.FALSE, null,  Float.valueOf(
-							bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
-				}
+			  } else {
+				  answer = new Answer(choicetext, stripPtags(answerbean
+						  .getMatch()), answerbean.getSequence(), AnswerBean
+						  .getChoiceLabels()[answerbean.getSequence()
+						                     .intValue() - 1], Boolean.FALSE, null,  Float.valueOf(
+						                    		 bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+			  }
 
-				// record answers for all combination of pairs
+			  // record answers for all combination of pairs
 
-				HashSet answerFeedbackSet = new HashSet();
-				answerFeedbackSet.add(new AnswerFeedback(answer,
-						AnswerFeedbackIfc.CORRECT_FEEDBACK,
-						stripPtags(answerbean.getCorrMatchFeedback())));
-				answerFeedbackSet.add(new AnswerFeedback(answer,
-						AnswerFeedbackIfc.INCORRECT_FEEDBACK,
-						stripPtags(answerbean.getIncorrMatchFeedback())));
-				answer.setAnswerFeedbackSet(answerFeedbackSet);
+			  HashSet answerFeedbackSet = new HashSet();
+			  answerFeedbackSet.add(new AnswerFeedback(answer,
+					  AnswerFeedbackIfc.CORRECT_FEEDBACK,
+					  stripPtags(answerbean.getCorrMatchFeedback())));
+			  answerFeedbackSet.add(new AnswerFeedback(answer,
+					  AnswerFeedbackIfc.INCORRECT_FEEDBACK,
+					  stripPtags(answerbean.getIncorrMatchFeedback())));
+			  answer.setAnswerFeedbackSet(answerFeedbackSet);
+			  answerSet.add(answer);
 
-				//
-				answerSet.add(answer);
+		  }
+		  choicetext.setAnswerSet(answerSet);
+		  textSet.add(choicetext);
 
-			}
-			choicetext.setAnswerSet(answerSet);
-			textSet.add(choicetext);
+	  }
+	  return textSet;
+  }
 
-		}
-		return textSet;
-	}
+  private String[] returnMatrixChoices(ItemBean bean,String str){
+
+	  String[] result=null,temp=null;
+	  if ("row".equals(str))
+		  temp = bean.getRowChoices().split(System.getProperty("line.separator"));
+	  else 
+		  temp = bean.getColumnChoices().split(System.getProperty("line.separator"));
+
+	  //remove the empty string
+	  List<String> stringList = new ArrayList<String>();
+
+	  for(String string : temp) {
+		  if(string != null && string.trim().length() > 0) {
+			  stringList.add(string);
+		  }
+	  }
+	  temp = stringList.toArray(new String[stringList.size()]);	  
+	  result = new String[temp.length];
+	  for (int i=0; i<temp.length;i++){
+		  //remove new line
+		  result[i] = StringUtils.chomp(temp[i]);
+	  }
+
+	  return result;
+
+  }
+  private HashSet prepareTextForMatrixChoice(ItemFacade item, ItemBean bean,
+		  ItemAuthorBean itemauthor) {
+	  // looping through row and column choices
+	  String[] rowChoices = returnMatrixChoices(bean,"row");
+	  String[] columnChoices = returnMatrixChoices(bean,"column");
+
+	  bean.setInstruction(bean.getItemText());
+	  item.getData().setInstruction(bean.getItemText());
+	  HashSet textSet = new HashSet();
+
+	  for(int i = 0; i<rowChoices.length;i++)
+	  {
+		  ItemText itemText = new ItemText();
+		  itemText.setItem(item.getData());
+		  itemText.setSequence(Long.valueOf(i+1));
+		  itemText.setText(rowChoices[i]);
+		  HashSet answerSet = new HashSet();
+		  Answer answer = null;
+		  for(int j=0; j< columnChoices.length;j++){
+			  answer = new Answer(itemText,columnChoices[j],Long.valueOf(j+1),null, null, null, Float.valueOf(bean.getItemScore()), Float.valueOf(0f), Float.valueOf(bean.getItemDiscount()));
+			  answerSet.add(answer);
+		  }
+		  itemText.setAnswerSet(answerSet);
+		  textSet.add(itemText);
+	  }
+	  return textSet;
+  }
 
 	private HashSet prepareText(ItemFacade item, ItemBean bean,
-			ItemAuthorBean itemauthor) {
+			ItemAuthorBean itemauthor) throws FinFormatException {
 		HashSet textSet = new HashSet();
 		HashSet answerSet1 = new HashSet();
 
@@ -930,7 +1058,7 @@ public class ItemAddListener
 			String entiretext = bean.getItemText();
 			String processedText [] = processFIBFINText(entiretext);
 			text1.setText(processedText[0]);;
-			Object[] fibanswers = getFIBFINanswers(processedText[1]).toArray();
+			Object[] fibanswers = getFIBanswers(processedText[1]).toArray();
 			for (int i = 0; i < fibanswers.length; i++) {
 				String oneanswer = (String) fibanswers[i];
 				Answer answer1 = new Answer(text1, oneanswer, Long.valueOf(i + 1),
@@ -949,7 +1077,7 @@ public class ItemAddListener
 			String entiretext = bean.getItemText();
 			String processedText [] = processFIBFINText(entiretext);
 			text1.setText(processedText[0]);;
-			Object[] finanswers = getFIBFINanswers(processedText[1]).toArray();
+			Object[] finanswers = getFINanswers(processedText[1]).toArray();
 			for (int i = 0; i < finanswers.length; i++) {
 				String oneanswer = (String) finanswers[i];
 				Answer answer1 = new Answer(text1, oneanswer, Long.valueOf(i + 1),
@@ -1029,7 +1157,7 @@ public class ItemAddListener
 		return textSet;
 	} 
 
-  private Set preparePublishedText(ItemFacade item, ItemBean bean, ItemService delegate) {
+  private Set preparePublishedText(ItemFacade item, ItemBean bean, ItemService delegate) throws FinFormatException{
 
 	  if (item.getTypeId().equals(TypeFacade.TRUE_FALSE)) {
 		  preparePublishedTextForTF(item, bean);
@@ -1053,6 +1181,9 @@ public class ItemAddListener
 	  }
 	  else if (item.getTypeId().equals(TypeFacade.MATCHING)) {
 		  preparePublishedTextForMatching(item, bean, delegate);
+	  }
+	  else if(item.getTypeId().equals(TypeFacade.MATRIX_CHOICES_SURVEY)) {
+		  preparePublishedTextForMatrixSurvey(item,bean,delegate);
 	  }
 	  // for file Upload and audio recording
 	  else {
@@ -1142,7 +1273,7 @@ public class ItemAddListener
 	  }
   }
   
-  private void preparePublishedTextForFIBFIN(ItemFacade item, ItemBean bean, ItemService delegate, boolean isFIB) {
+  private void preparePublishedTextForFIBFIN(ItemFacade item, ItemBean bean, ItemService delegate, boolean isFIB) throws FinFormatException{
 		Set answerSet = null;
 		Set textSet = item.getItemTextSet();
 		ItemTextIfc text = null;
@@ -1155,7 +1286,12 @@ public class ItemAddListener
 			text = (ItemTextIfc) iter.next();
 			text.setText(updatedText);
 			Object[] answers;
-			answers = getFIBFINanswers(processedText[1]).toArray();
+			if (isFIB) {
+				answers = getFIBanswers(entiretext).toArray();
+			}
+			else {
+				answers = getFINanswers(entiretext).toArray();
+			}
 			int newAnswersSize = answers.length;
 			int i = 0;
 			HashSet toBeRemovedSet = new HashSet();
@@ -1468,6 +1604,19 @@ public class ItemAddListener
 		set.add(new ItemMetaData(item.getData(),
 				ItemMetaDataIfc.MUTUALLY_EXCLUSIVE_FOR_FIB, Boolean
 						.toString(wellformatted)));
+		// sam-939
+		set.add(new ItemMetaData(item.getData(),
+				ItemMetaDataIfc.FORCE_RANKING, Boolean
+				.toString(bean.getForceRanking())));
+		set.add(new ItemMetaData(item.getData(),
+				ItemMetaDataIfc.ADD_COMMENT_MATRIX, Boolean
+				.toString(bean.getAddComment())));
+		set.add(new ItemMetaData(item.getData(),
+				ItemMetaDataIfc.MX_SURVEY_QUESTION_COMMENTFIELD, bean.getCommentField()));
+
+		set.add(new ItemMetaData(item.getData(),
+				ItemMetaDataIfc.MX_SURVEY_RELATIVE_WIDTH, Integer.toString( bean.getRelativeWidth())));
+
 		// Do we need Mutually exclusive for numeric responses, what about
 		// questions like
 		// the Square root of 4 is {2|-2} and {2|-2}.
@@ -1554,11 +1703,34 @@ public class ItemAddListener
 		  else if (itemMetaData.getLabel().equals(ItemMetaDataIfc.POOLID)){
 			  itemMetaData.setEntry(bean.getSelectedPool());
 		  }
+		  else if (itemMetaData.getLabel().equals(ItemMetaDataIfc.FORCE_RANKING)){
+			  itemMetaData.setEntry(Boolean.toString(bean.getForceRanking()));
+		  }
+		  else if (itemMetaData.getLabel().equals(ItemMetaDataIfc.MX_SURVEY_RELATIVE_WIDTH)){
+			  itemMetaData.setEntry(Integer.toString(bean.getRelativeWidth()));
+		  }
+		  else if (itemMetaData.getLabel().equals(ItemMetaDataIfc.ADD_COMMENT_MATRIX)){
+			  itemMetaData.setEntry(Boolean.toString(bean.getAddComment()));
+		  }
+		  else if (itemMetaData.getLabel().equals(ItemMetaDataIfc.MX_SURVEY_QUESTION_COMMENTFIELD)){
+			  itemMetaData.setEntry(bean.getCommentField());
+		  }
 	  }
 	  return itemMetaDataSet;
 	}
+  
+  private void preparePublishedTextForMatrixSurvey(ItemFacade item,
+		  ItemBean bean, ItemService delegate){
+	  Set textSet = item.getItemTextSet();
+	  Iterator textIter = textSet.iterator();
+	  HashMap itemTextMap = new HashMap();
+	  while (textIter.hasNext()) {
+		  ItemTextIfc itemText = (ItemTextIfc) textIter.next();
+		  itemTextMap.put(itemText.getSequence(), itemText);
+	  }  
+  }
 
-  private static ArrayList getFIBFINanswers(String entiretext) {
+  private static ArrayList getFIBanswers(String entiretext) {
 	  String fixedText = entiretext.replaceAll("&nbsp;", " "); // replace &nbsp to " " (instead of "") just want to reserve the original input
 	  String[] tokens = fixedText.split("[\\}][^\\{]*[\\{]");
 	  ArrayList list = new ArrayList();
@@ -1591,6 +1763,73 @@ public class ItemAddListener
 	  return list;
 
   }
+
+  private static ArrayList getFINanswers(String entiretext) throws FinFormatException {
+	  String fixedText = entiretext.replaceAll("&nbsp;", " "); // replace &nbsp to " " (instead of "") just want to reserve the original input
+	  String[] tokens = fixedText.split("[\\}][^\\{]*[\\{]");
+	  ArrayList list = new ArrayList();
+	  if (tokens.length==1) {
+		  String[] afteropen= tokens[0].split("\\{");
+		  if (afteropen.length>1) {
+			  // must have text in between {}
+			  String[] lastpart = afteropen[1].split("\\}");
+			  list.add(lastpart[0]);
+		  }
+	  }
+	  else {
+		  for (int i = 0; i < tokens.length; i++) {
+			  if (i == 0) {
+				  String[] firstpart = tokens[i].split("\\{");
+				  if (firstpart.length>1) {
+					  list.add(firstpart[1]);
+				  }
+			  }
+			  else if (i == (tokens.length - 1)) {
+				  String[] lastpart = tokens[i].split("\\}");
+				  list.add(lastpart[0]);
+			  }
+			  else {
+				  list.add(tokens[i]);
+			  }
+		  }
+	  } // token.length>1
+
+	  return list;
+
+  }
+
+  /*
+  private static boolean isValidFINAnswer(String answer){
+	  String processedAnswer = "";
+	  if (answer.indexOf("|") == -1) {
+		  processedAnswer = answer.replaceAll(" ", "").replaceAll(",", ".");
+		  // Test if it is a valid Float
+		  try {
+			  Float.parseFloat(processedAnswer); 
+		  }
+		  catch (NumberFormatException e) {
+			  return false;
+		  }
+		  return true;
+	  }
+
+	  String[] tokens = answer.split("\\|");
+	  if (tokens.length != 2) {
+		  return false;
+	  }
+	  for (int i = 0; i < 2; i++) {
+		  String tmpAnswer = tokens[i].replaceAll(" ", "").replaceAll(",", ".");
+		  // Test if it is a valid Float
+		  try {
+			  Float.parseFloat(tmpAnswer);
+		  }
+		  catch (NumberFormatException e) {
+			  return false;
+		  }
+	  }
+	  return true;
+  }
+  */
   
   /**
    ** returns if the multile choice label is the correct choice,
@@ -1684,7 +1923,7 @@ public class ItemAddListener
      String entiretext = bean.getItemText();
      String processedText [] = processFIBFINText(entiretext);
      log.debug("processedText[1]=" + processedText[1]);
-     Object[] fibanswers = getFIBFINanswers(processedText[1]).toArray();
+     Object[] fibanswers = getFIBanswers(processedText[1]).toArray();
       List blanklist = new  ArrayList();
       for (int i = 0; i < fibanswers.length; i++) {
     	log.debug("fibanswers[" + i + "]=" + fibanswers[i]);
@@ -1781,44 +2020,44 @@ public class ItemAddListener
 	  // label is null because we don't use labels in survey
 	  if (ItemMetaDataIfc.SURVEY_YES.equals(scalename)) {
 		  choices = new String[2];
-		  choices[0] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","no");
-		  choices[1] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","yes");
+		  choices[0] = "st_yes";
+		  choices[1] = "st_no";
 	  }
 
 	  if (ItemMetaDataIfc.SURVEY_AGREE.equals(scalename)) {
 		  choices = new String[2];
-		  choices[0] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","disagree");
-		  choices[1] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","agree");
+		  choices[0] = "st_disagree";
+		  choices[1] = "st_agree";
 	  }
 	  if (ItemMetaDataIfc.SURVEY_UNDECIDED.equals(scalename)) {
 		  choices = new String[3];
-		  choices[0] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","disagree");
-		  choices[1] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","undecided");
-		  choices[2] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","agree");
+		  choices[0] = "st_disagree";
+		  choices[1] = "st_undecided";
+		  choices[2] = "st_agree";
 	  }
 
 	  if (ItemMetaDataIfc.SURVEY_AVERAGE.equals(scalename)) {
 		  choices = new String[3];
-		  choices[0] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","below_average");
-		  choices[1] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","average");
-		  choices[2] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","above_average");
+		  choices[0] = "st_below_average";
+		  choices[1] = "st_average";
+		  choices[2] = "st_above_average";
 	  }
 	  if (ItemMetaDataIfc.SURVEY_STRONGLY_AGREE.equals(scalename)) {
 		  choices = new String[5];
-		  choices[0] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","strongly_disagree");
-		  choices[1] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","disagree");
-		  choices[2] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","undecided");
-		  choices[3] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","agree");
-		  choices[4] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","strongly_agree");
+		  choices[0] = "st_strongly_disagree";
+		  choices[1] = "st_disagree";
+		  choices[2] = "st_undecided";
+		  choices[3] = "st_agree";
+		  choices[4] = "st_strongly_agree";
 	  }
 
 	  if (ItemMetaDataIfc.SURVEY_EXCELLENT.equals(scalename)) {
 		  choices = new String[5];
-		  choices[0] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","unacceptable");
-		  choices[1] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","below_average");
-		  choices[2] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","average");
-		  choices[3] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","above_average");
-		  choices[4] = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages","excellent");
+		  choices[0] = "st_unacceptable";
+		  choices[1] = "st_below_average";
+		  choices[2] = "st_average";
+		  choices[3] = "st_above_average";
+		  choices[4] = "st_excellent";
 	  }
 	  if (ItemMetaDataIfc.SURVEY_5.equals(scalename)) {
 		  choices = new String[5];

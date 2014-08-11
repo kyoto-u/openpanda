@@ -62,5 +62,22 @@
 		from StructuredArtifactDefinitionBean a where schema is ?
 	</query>
 
+   <query name="findAvailableHomes">
+      from StructuredArtifactDefinitionBean where (globalState = ? or siteId = ?) and systemOnly != true
+   </query>
+   
+   <query name="findAvailableHomesIncludeHidden">
+      from StructuredArtifactDefinitionBean where globalState = ? or siteId = ?
+   </query>
+   
+   <query name="findAvailableWorksiteHomes">
+      from StructuredArtifactDefinitionBean where (globalState != ? and siteId = ?) and systemOnly != true
+   </query>
+   
+   <query name="findAvailableWorksiteHomesIncludeHidden">
+      from StructuredArtifactDefinitionBean where globalState != ? and siteId = ?)
+   </query>
+   
+
 	
 </hibernate-mapping>

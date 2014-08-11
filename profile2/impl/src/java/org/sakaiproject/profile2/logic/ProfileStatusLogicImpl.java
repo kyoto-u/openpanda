@@ -3,11 +3,14 @@ package org.sakaiproject.profile2.logic;
 import java.util.Calendar;
 import java.util.Date;
 
+import lombok.Setter;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.sakaiproject.profile2.dao.ProfileDao;
 import org.sakaiproject.profile2.model.ProfilePrivacy;
 import org.sakaiproject.profile2.model.ProfileStatus;
+import org.sakaiproject.profile2.types.PrivacyType;
 import org.sakaiproject.profile2.util.ProfileUtils;
 
 /**
@@ -36,11 +39,8 @@ public class ProfileStatusLogicImpl implements ProfileStatusLogic {
 		//if not same, check privacy
         if(!StringUtils.equals(userUuid, currentUserUuid)) {
 		
-        	//friend?
-        	boolean friend = connectionsLogic.isUserXFriendOfUserY(userUuid, currentUserUuid);
-		
         	//check allowed
-        	if(!privacyLogic.isUserXStatusVisibleByUserY(userUuid, privacy, currentUserUuid, friend)){
+        	if(!privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_MYSTATUS)){
         		return null;
         	}
         }
@@ -142,24 +142,16 @@ public class ProfileStatusLogicImpl implements ProfileStatusLogic {
 	
 	
 	
-	
+	@Setter
 	private SakaiProxy sakaiProxy;
-	public void setSakaiProxy(SakaiProxy sakaiProxy) {
-		this.sakaiProxy = sakaiProxy;
-	}
 	
+	@Setter
 	private ProfilePrivacyLogic privacyLogic;
-	public void setPrivacyLogic(ProfilePrivacyLogic privacyLogic) {
-		this.privacyLogic = privacyLogic;
-	}
 	
+	@Setter
 	private ProfileConnectionsLogic connectionsLogic;
-	public void setConnectionsLogic(ProfileConnectionsLogic connectionsLogic) {
-		this.connectionsLogic = connectionsLogic;
-	}
 	
+	@Setter
 	private ProfileDao dao;
-	public void setDao(ProfileDao dao) {
-		this.dao = dao;
-	}
+	
 }

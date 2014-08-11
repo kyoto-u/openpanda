@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SakaiSecurity.java $
- * $Id: SakaiSecurity.java 80446 2010-08-01 08:24:07Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SakaiSecurity.java $
+ * $Id: SakaiSecurity.java 95741 2011-07-27 15:18:20Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -197,8 +197,7 @@ public abstract class SakaiSecurity implements SecurityService
 		// if the user has site modification rights in the "!admin" site, welcome aboard!
 		else
 		{
-			// TODO: string constants stolen from site -ggolden
-			if (authzGroupService().isAllowed(userId, "site.upd", "/site/!admin"))
+			if (authzGroupService().isAllowed(userId, SiteService.SECURE_UPDATE_SITE, "/site/!admin"))
 			{
 				rv = true;
 			}

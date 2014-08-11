@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/branches/sakai-2.8.x/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/PodcastPermissionsServiceImpl.java $
- * $Id: PodcastPermissionsServiceImpl.java 59679 2009-04-03 23:27:51Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.0/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/PodcastPermissionsServiceImpl.java $
+ * $Id: PodcastPermissionsServiceImpl.java 89238 2011-03-03 10:20:55Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -29,15 +29,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.app.podcasts.PodcastPermissionsService;
 import org.sakaiproject.authz.api.Member;
-import org.sakaiproject.authz.api.SecurityAdvisor;
-import org.sakaiproject.authz.api.SecurityAdvisor.SecurityAdvice;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.content.api.ContentEntity;
+import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.GroupAwareEntity;
 import org.sakaiproject.content.api.GroupAwareEntity.AccessMode;
-import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.exception.IdUnusedException;
-import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/impl/CollectionAccessFormatter.java $
- * $Id: CollectionAccessFormatter.java 106525 2012-04-04 12:42:12Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/CollectionAccessFormatter.java $
+ * $Id: CollectionAccessFormatter.java 93865 2011-06-17 13:22:53Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 Sakai Foundation

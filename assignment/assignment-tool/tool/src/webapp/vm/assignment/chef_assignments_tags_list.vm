@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_tags_list.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_tags_list.vm 94881 2011-07-08 14:22:21Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_tags_list.vm  -->
 <script type="text/javascript" language="JavaScript">
 
@@ -135,5 +135,6 @@ iframeId = '$iframeId';
 			#end
 		#end
 	#end
+	<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 </form>
 <!-- end: chef_assignments_tags_list.vm  -->

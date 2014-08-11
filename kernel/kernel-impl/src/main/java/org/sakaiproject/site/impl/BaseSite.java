@@ -24,6 +24,8 @@ package org.sakaiproject.site.impl;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -168,6 +170,11 @@ public class BaseSite implements Site
 
 	private BaseSiteService siteService;
 
+	/** Softly deleted data */
+	protected boolean m_isSoftlyDeleted = false;
+	protected Date m_softlyDeletedDate = null;
+
+	
 	/**
 	 * Construct.
 	 * 
@@ -470,7 +477,8 @@ public class BaseSite implements Site
 			String description, String iconUrl, String infoUrl, String skin,
 			boolean published, boolean joinable, boolean pubView, String joinRole,
 			boolean isSpecial, boolean isUser, String createdBy, Time createdOn,
-			String modifiedBy, Time modifiedOn, boolean customPageOrdered)
+			String modifiedBy, Time modifiedOn, boolean customPageOrdered,
+			boolean isSoftlyDeleted, Date softlyDeletedDate)
 	{
 		this.siteService = siteService;
 
@@ -509,6 +517,11 @@ public class BaseSite implements Site
 
 		m_pagesLazy = true;
 		m_groupsLazy = true;
+		
+		// soft site deletions - new sites get defaults
+		m_isSoftlyDeleted = isSoftlyDeleted;
+		m_softlyDeletedDate = softlyDeletedDate;
+		
 	}
 
 	/**
@@ -540,6 +553,11 @@ public class BaseSite implements Site
 		m_type = other.m_type;
 		m_pubView = other.m_pubView;
 		m_customPageOrdered = other.m_customPageOrdered;
+		
+		//site copies keep soft site deletion flags
+		m_isSoftlyDeleted = other.m_isSoftlyDeleted;
+		m_softlyDeletedDate = other.m_softlyDeletedDate;
+		
 		if (exact)
 		{
 			m_createdUserId = other.m_createdUserId;
@@ -840,6 +858,23 @@ public class BaseSite implements Site
 	/**
 	 * {@inheritDoc}
 	 */
+    public Collection<String> getMembersInGroups(Set<String> groupIds) {
+        @SuppressWarnings("unchecked")
+        Collection<Group> siteGroups = getGroups();
+		HashSet<String> siteGroupRefs = new HashSet<String>(siteGroups.size());
+        for (Group group : siteGroups) {
+            if (groupIds == null || // null groupIds includes all groups in the site
+                    groupIds.contains(group.getId())) {
+                siteGroupRefs.add(group.getReference());
+            }
+        }
+        Collection<String> membersInGroups = AuthzGroupService.getAuthzUsersInGroups(siteGroupRefs);
+		return membersInGroups;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public Collection getGroupsWithMember(String userId)
 	{
 		Collection siteGroups = getGroups();
@@ -1116,34 +1151,29 @@ public class BaseSite implements Site
 		return false;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	public boolean equals(Object obj)
-	{
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (obj instanceof Site)
-		{
-			return ((Site) obj).getId().equals(getId());
-		}
-        // NOTE: findbugs considers this bad prcatice
-		else if (obj instanceof String) {
-	        // compare to strings as id
-			return ((String) obj).equals(getId());
-		}
-
-		return false;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BaseSite other = (BaseSite) obj;
+		if (m_id == null) {
+			if (other.m_id != null)
+				return false;
+		} else if (!m_id.equals(other.m_id))
+			return false;
+		return true;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	public int hashCode()
-	{
-		return getId().hashCode();
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((m_id == null) ? 0 : m_id.hashCode());
+		return result;
 	}
 
 	/**
@@ -1677,6 +1707,24 @@ public class BaseSite implements Site
 		if (changed) m_azgChanged = true;
 		return changed;
 	}
+
+	public boolean isSoftlyDeleted() {
+		return m_isSoftlyDeleted;
+	}
+	
+	public Date getSoftlyDeletedDate() {
+		return m_softlyDeletedDate;
+	}
+	
+	public void setSoftlyDeleted(boolean flag) {
+		m_isSoftlyDeleted = flag;
+		if(flag) {
+			m_softlyDeletedDate = new Date();
+		} else {
+			m_softlyDeletedDate = null;
+		}
+	}
+
 
 
 }

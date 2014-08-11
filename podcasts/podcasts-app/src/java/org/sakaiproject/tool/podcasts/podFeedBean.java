@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/branches/sakai-2.8.x/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podFeedBean.java $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.0/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podFeedBean.java $
  * $Id: podFeedBean.java 59679 2009-04-03 23:27:51Z arwhyte@umich.edu $
  ***********************************************************************************
  *

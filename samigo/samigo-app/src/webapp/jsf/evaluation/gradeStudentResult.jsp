@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
@@ -10,7 +9,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-$Id: gradeStudentResult.jsp 100008 2011-10-19 19:35:07Z ktsao@stanford.edu $
+$Id: gradeStudentResult.jsp 113413 2012-09-21 21:03:19Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -34,6 +33,16 @@ $Id: gradeStudentResult.jsp 100008 2011-10-19 19:35:07Z ktsao@stanford.edu $
   <f:view>
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head><%= request.getAttribute("html.head") %>
+      <style type="text/css">
+        .TableColumn {
+          text-align: center
+        }
+        .TableClass {
+          border-style: dotted;
+          border-width: 0.5px;
+          border-color: light grey;
+        }
+      </style>
       <title><h:outputText
         value="#{commonMessages.total_scores}" /></title>
     <samigo:script path="/jsf/widget/hideDivision/hideDivision.js" />
@@ -42,7 +51,7 @@ $Id: gradeStudentResult.jsp 100008 2011-10-19 19:35:07Z ktsao@stanford.edu $
   <body onload="hideUnhideAllDivsExceptFirst('none');;<%= request.getAttribute("html.body.onload") %>">
 <!-- $Id:  -->
 <!-- content... -->
-<script>
+<script type="text/javascript">
 function toPoint(id)
 {
   var x=document.getElementById(id).value
@@ -96,14 +105,14 @@ function toPoint(id)
     </h:commandLink>
   </p>
 
-  <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+  <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
 
 <f:verbatim><h4></f:verbatim>
 <h:outputText value="#{totalScores.assessmentName}" escape="false"/>
 <f:verbatim></h4></f:verbatim>
 <div class="tier3">
 <h:panelGrid columns="2">
-   <h:outputText value="#{deliveryMessages.comment}#{deliveryMessages.column}"/>
+   <h:outputText value="#{evaluationMessages.comment_for_student}#{deliveryMessages.column}"/>
    <h:inputTextarea value="#{studentScores.comments}" rows="3" cols="30"/>
    </h:panelGrid>
 </div>
@@ -227,11 +236,16 @@ function toPoint(id)
                 <%@ include file="/jsf/delivery/item/deliverTrueFalse.jsp" %>
               </f:subview>
             </h:panelGroup>
+            <h:panelGroup rendered="#{question.itemData.typeId == 13}">
+              <f:subview id="deliverMatrixChoicesSurvey">
+                <%@ include file="/jsf/delivery/item/deliverMatrixChoicesSurvey.jsp" %>
+              </f:subview>
+            </h:panelGroup>
           <f:verbatim></div></f:verbatim>
 
           <f:verbatim><div class="tier2"></f:verbatim>
           <h:panelGrid columns="2" border="0" >
-            <h:outputText value="#{deliveryMessages.comment}#{deliveryMessages.column}"/>
+            <h:outputText value="#{evaluationMessages.comment_for_student}#{deliveryMessages.column}"/>
             <h:inputTextarea value="#{question.gradingComment}" rows="3" cols="30"/>
             <h:outputText value=" "/>
     	    <%@ include file="/jsf/evaluation/gradeStudentResultAttachment.jsp" %>
@@ -244,7 +258,11 @@ function toPoint(id)
 </div>
 
 <h:outputText value="#{author.updateFormTime}" />
-<h:inputHidden value="#{author.currentFormTime}" />
+<h:inputHidden id="currentFormTime" value="#{author.currentFormTime}" />
+<%
+  org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean author = (org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean) session.getAttribute("author");
+  out.println("<script>document.getElementById('editStudentResults:currentFormTime').value = " + author.getCurrentFormTime() + ";</script>");
+%>
 
 <h:panelGroup rendered="#{totalScores.anonymous eq 'false' && studentScores.email != null && studentScores.email != '' && email.fromEmailAddress != null && email.fromEmailAddress != ''}">
   <h:outputText value="<a href=\"mailto:" escape="false" />

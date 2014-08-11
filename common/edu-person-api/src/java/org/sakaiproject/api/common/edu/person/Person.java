@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/edu-person-api/src/java/org/sakaiproject/api/common/edu/person/Person.java $
- * $Id: Person.java 96489 2011-08-05 23:47:39Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/edu-person-api/src/java/org/sakaiproject/api/common/edu/person/Person.java $
+ * $Id: Person.java 96488 2011-08-05 23:43:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -52,14 +52,14 @@ public interface Person extends Persistable
 	public void setTypeUuid(String typeUuid);
 
 	/**
-	 * Common name. According to RFC 2256, "This is the X.500 commonName attribute, which contains a name of an object. If the object corresponds to a person, it is typically the person's full name.”
+	 * Common name. According to RFC 2256, "This is the X.500 commonName attribute, which contains a name of an object. If the object corresponds to a person, it is typically the person's full name.
 	 * 
 	 * @return
 	 */
 	public String getCommonName();
 
 	/**
-	 * Common name. According to RFC 2256, "This is the X.500 commonName attribute, which contains a name of an object. If the object corresponds to a person, it is typically the person's full name.”
+	 * Common name. According to RFC 2256, "This is the X.500 commonName attribute, which contains a name of an object. If the object corresponds to a person, it is typically the person's full name.
 	 */
 	public void setCommonName(String commonName);
 

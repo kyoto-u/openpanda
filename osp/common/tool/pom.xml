@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>osp-common</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>2.8-SNAPSHOT</version>
+    <version>2.9.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>osp-common-tool</artifactId>
@@ -50,15 +50,15 @@
       <artifactId>osp-common-tool-lib</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject</groupId>
+      <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject</groupId>
+      <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-impl</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject</groupId>
+      <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-tool-lib</artifactId>
     </dependency>
     <dependency>
@@ -164,9 +164,8 @@
       <artifactId>jstl</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.transaction</groupId>
+      <groupId>jta</groupId>
       <artifactId>jta</artifactId>
-      <version>1.0.1B</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

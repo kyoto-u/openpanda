@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/model/OspRole.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/model/OspRole.java $
  * $Id: OspRole.java 77238 2010-05-07 12:02:52Z botimer@umich.edu $
  ***********************************************************************************
  *

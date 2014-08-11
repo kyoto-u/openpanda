@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/SiteEmailNotificationRWiki.java $
- * $Id: SiteEmailNotificationRWiki.java 62986 2009-05-28 09:57:23Z s.swinsburg@lancaster.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/SiteEmailNotificationRWiki.java $
+ * $Id: SiteEmailNotificationRWiki.java 104719 2012-02-15 15:54:58Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -280,7 +280,7 @@ public class SiteEmailNotificationRWiki extends SiteEmailNotification {
 		String realm = props.getProperty(RWikiEntity.RP_REALM);
 		String localName = NameHelper.localizeName(pageName, realm);
 
-		String subjectHeader = Messages
+		String subjectHeader = "Subject: " + Messages
 				.getString("SiteEmailNotificationRWiki.27") + localName + Messages.getString("SiteEmailNotificationRWiki.28"); //$NON-NLS-1$ //$NON-NLS-2$
 		// the Subject
 		rv.add(subjectHeader);

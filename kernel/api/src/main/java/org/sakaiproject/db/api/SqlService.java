@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/db/api/SqlService.java $
- * $Id: SqlService.java 85594 2010-11-30 08:29:08Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/db/api/SqlService.java $
+ * $Id: SqlService.java 96442 2011-08-05 13:40:52Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -370,4 +370,23 @@ public interface SqlService
 	 * @return
 	 */
 	Connection dbReadLock(String sql, SqlReader reader);
+
+	/**
+	 * Execute the "write/update" sql - no response, using a set of fields from an array plus one more as params and connection.
+	 * 
+	 * @param sql
+	 *        The sql statement.
+	 * @param fields
+	 *        The array of fields for parameters.
+	 * @param lastField
+	 *        The value to bind to the last parameter in the sql statement.
+	 * @param callerConnection
+	 *        The connection to use.
+	 * @param failQuiet
+	 *        If true, don't log errors from statement failure
+	 * @return the number of records affected or -1 if something goes wrong if not due to unique constraint 
+	 * violation or duplicate key (i.e. the record already exists) OR we are instructed to fail quiet.
+	 */
+	int dbWriteCount(String sql, Object[] fields, String lastField, Connection callerConnection, boolean failQuiet);
+
 }

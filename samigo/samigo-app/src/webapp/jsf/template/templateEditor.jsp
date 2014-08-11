@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: templateEditor.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+<!-- $Id: templateEditor.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -74,7 +74,7 @@
      <h:outputText value="#{template.templateName}"/>
 </h3>
  <h:outputText escape="false" value="#{templateMessages.template_instructions}"/>
- <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+ <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
   <!-- *** GENERAL TEMPLATE INFORMATION *** -->
   <div class="tier1">
 <p>
@@ -99,11 +99,11 @@
 
 
       <h:outputLabel for="template_title" value="#{templateMessages.template_title}"/>
-      <h:inputText id="template_title" value="#{template.templateName}" size="30"/>
+      <h:inputText id="template_title" value="#{template.templateName}" size="30" maxlength="255"/>
 
 
       <h:outputLabel for="author" value="#{templateMessages.author_opt}"/>
-      <h:inputText id="author" value="#{template.templateAuthor}" size="30"/>
+      <h:inputText id="author" value="#{template.templateAuthor}" size="30" maxlength="255"/>
 
       <!-- WYSIWYG -->
 
@@ -193,6 +193,10 @@
       <h:selectBooleanCheckbox id="secondary_id_pw"
         value="#{template.valueMap.passwordRequired_isInstructorEditable}"/>
       <h:outputLabel for="secondary_id_pw" value="#{templateMessages.secondary_id_pw}"/>
+
+      <h:selectBooleanCheckbox id="locked_browser" rendered="#{template.secureDeliveryAvailable}"
+        value="#{template.valueMap.lockedBrowser_isInstructorEditable}"/>
+      <h:outputLabel for="locked_browser" value="#{templateMessages.locked_browser}" rendered="#{template.secureDeliveryAvailable}"/>
 
     </h:panelGrid>
      </div></div>
@@ -684,7 +688,7 @@
 </h:form>
 <!-- end content -->
 </div>
-<script type="text/javascript" language="JavaScript">hideUnhideAllDivsWithWysiwyg('none');</script>
+<script type="text/javascript">hideUnhideAllDivsWithWysiwyg('none');</script>
       </body>
     </html>
   </f:view>

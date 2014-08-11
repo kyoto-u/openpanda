@@ -27,7 +27,7 @@
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 				<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
 				<%--//designNote:  if layout="table" is needed,  need rendered attr here so that no empty tables  are put in the response - leaving undefined here so that it reverts to layout="list" --%> 
-				<h:messages globalOnly="true" infoClass="success" errorClass="alertMessage" />  		
+				<h:messages globalOnly="true" infoClass="success" errorClass="alertMessage" rendered="#{! empty facesContext.maximumSeverity}"/>  		
   
   		  <%-- include hide division here so that pvtArea can be used w/o div in isolated view --%>	
   		  <mf:forumHideDivision title="#{msgs.pvtarea_name}" id="_test_div" 
@@ -46,13 +46,13 @@
 		
 			<h:inputHidden id="mainOrHp" value="main" />
         
-   	    	<%@include file="privateMsg/pvtArea.jsp"%>
+   	    	<%@ include file="privateMsg/pvtArea.jsp"%>
         </mf:forumHideDivision>
 
 
 		<%-- include hide division here so that dfArea can be used w/o div within Forums tool --%>        
 		<mf:forumHideDivision title="#{msgs.cdfm_discussion_forums}" id="_test_div" >
-	        <%@include file="discussionForum/area/dfArea.jsp"%>
+	        <%@ include file="discussionForum/area/dfArea.jsp"%>
         	<h:inputHidden id="mainOrForumOrTopic" value="main" />
 
     	</mf:forumHideDivision>

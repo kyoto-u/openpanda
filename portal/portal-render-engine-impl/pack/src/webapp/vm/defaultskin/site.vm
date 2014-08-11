@@ -3,11 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 #parse("/vm/defaultskin/includeStandardHead.vm")
 <body class="portalBody">
+  <noscript><div id="portal_js_warn">${rloader.sit_noscript_message}</div></noscript> 
 	#if (${portal_add_mobile_link})<div  id="mobile-portal-link"><a href="/portal/pda/?force.login=yes">${rloader.sit_switch_mobile}</a></div>#end
 #if ( $pageTop )
 <script type="text/javascript" language="JavaScript">
 	var sakaiPortalWindow = "";
-	</script>
+  $(document).ready(function() {
+     setupSkipNav();
+  });
+</script>
 #end
 <!-- END Header -->
 #if (!${loginTopLogin})
@@ -49,15 +53,17 @@
 			</a>
 		#end
 
-			<a href="#tocontent"  class="skip" title="${rloader.sit_jumpcontent}" accesskey="c">
+			<a href="#tocontent"  class="skip internalSkip" title="${rloader.sit_jumpcontent}" accesskey="c">
 			${rloader.sit_jumpcontent}
 			</a>
-			<a href="#totoolmenu"  class="skip" title="${rloader.sit_jumptools}" accesskey="l">
+			<a href="#totoolmenu"  class="skip internalSkip" title="${rloader.sit_jumptools}" accesskey="l">
 				${rloader.sit_jumptools}
 			</a>
-			<a href="#sitetabs" class="skip" title="${rloader.sit_jumpworksite}" accesskey="w">
-				${rloader.sit_jumpworksite}
-			</a>
+			#if (${tabsSites} )
+				<a href="#sitetabs" class="skip internalSkip" title="${rloader.sit_jumpworksite}" accesskey="w">
+					${rloader.sit_jumpworksite}
+				</a>
+			#end
 		</div>
 		#if (${tabsSites} )
 		<div id="headerMax">

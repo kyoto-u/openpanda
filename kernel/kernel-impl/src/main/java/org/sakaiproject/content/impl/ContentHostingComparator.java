@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/impl/ContentHostingComparator.java $
- * $Id: ContentHostingComparator.java 78879 2010-06-29 17:43:48Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/ContentHostingComparator.java $
+ * $Id: ContentHostingComparator.java 86746 2011-01-01 18:50:25Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -54,6 +54,13 @@ public class ContentHostingComparator implements Comparator
 	 */
 	boolean m_smart_sort = true;
 	
+	/**
+	 * That object is used to allow locale-sensitive ordering. 
+	 */
+	private static final Collator collator = Collator.getInstance();
+	
+	
+	
 	public ContentHostingComparator(String property, boolean  ascending) {
 		this(property, ascending, true);
 	}
@@ -69,6 +76,10 @@ public class ContentHostingComparator implements Comparator
 		m_property = property;
 		m_ascending = ascending;
 		m_smart_sort = is_smart;
+		
+		//sets the collator properties
+		 collator.setDecomposition(Collator.CANONICAL_DECOMPOSITION);
+		 collator.setStrength(Collator.PRIMARY);
 
 	} // ContentHostingComparator
 
@@ -194,7 +205,7 @@ public class ContentHostingComparator implements Comparator
 	 */
 	public int compareLikeMacFinder(String s1, String s2) {
 		if (! (containsDigits(s1) || containsDigits(s2))) {
-			return s1.compareTo(s2);
+			return collator.compare(s1,s2);
 		}
 		
 		/*
@@ -216,12 +227,12 @@ public class ContentHostingComparator implements Comparator
 			}
 			int v = 0;
 			if (c1[i].getClass().getName().equals("java.lang.String") && c2[i].getClass().getName().equals("java.lang.String")) {
-				v = c1[i].toString().compareToIgnoreCase((c2[i].toString()));
+				v = collator.compare(c1[i].toString(),c2[i].toString());
 			} else if (c1[i].getClass().equals(c2[i].getClass())) {
 				v = c1[i].compareTo(c2[i]);
 			}
 			else {
-				v = c1[i].toString().compareToIgnoreCase((c2[i].toString()));
+				v = collator.compare(c1[i].toString(),c2[i].toString());
 			}
 			if (v != 0) {
 				return v;

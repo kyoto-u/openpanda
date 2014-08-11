@@ -1,6 +1,6 @@
 /**
- * $Id: EntityBatchHandler.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBatchHandler.java $
+ * $Id: EntityBatchHandler.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBatchHandler.java $
  * EntityBatchHandler.java - entity-broker - Dec 18, 2008 11:40:39 AM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -37,9 +37,12 @@ import org.azeckoski.reflectutils.ArrayUtils;
 import org.azeckoski.reflectutils.map.ArrayOrderedMap;
 import org.sakaiproject.entitybroker.EntityBrokerManager;
 import org.sakaiproject.entitybroker.EntityView;
+import org.sakaiproject.entitybroker.entityprovider.EntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.exception.EntityException;
 import org.sakaiproject.entitybroker.providers.EntityRequestHandler;
+import org.sakaiproject.entitybroker.providers.ExternalIntegrationProvider;
+import org.sakaiproject.entitybroker.rest.caps.BatchProvider;
 import org.sakaiproject.entitybroker.util.http.EntityHttpServletRequest;
 import org.sakaiproject.entitybroker.util.http.EntityHttpServletResponse;
 import org.sakaiproject.entitybroker.util.http.HttpClientWrapper;
@@ -58,6 +61,9 @@ import org.sakaiproject.entitybroker.util.request.RequestUtils;
  * @author Aaron Zeckoski (azeckoski @ gmail.com)
  */
 public class EntityBatchHandler {
+
+    public static final String CONFIG_BATCH_ENABLE = "entitybroker.batch.enable";
+    public static final boolean CONFIG_BATCH_DEFAULT = false;
 
     private static final String HEADER_BATCH_STATUS = "batchStatus";
     private static final String HEADER_BATCH_ERRORS = "batchErrors";
@@ -85,11 +91,51 @@ public class EntityBatchHandler {
      * note that after construction, the entityRequestHandler must be set also
      */
     public EntityBatchHandler(EntityBrokerManager entityBrokerManager,
-            EntityEncodingManager entityEncodingManager) {
+            EntityEncodingManager entityEncodingManager,
+            ExternalIntegrationProvider externalIntegrationProvider) {
         super();
         this.entityBrokerManager = entityBrokerManager;
         this.entityEncodingManager = entityEncodingManager;
+        this.externalIntegrationProvider = externalIntegrationProvider;
+        init();
     }
+
+    private EntityProvider batchEP = null;
+
+    public void init() {
+        // register the batch EP handler
+        if (this.externalIntegrationProvider.getConfigurationSetting(CONFIG_BATCH_ENABLE, CONFIG_BATCH_DEFAULT)) {
+            batchEP = new BatchProvider() {
+                public String getEntityPrefix() {
+                    return EntityRequestHandler.BATCH;
+                }
+                public String getBaseName() {
+                    return getEntityPrefix();
+                }
+                public ClassLoader getResourceClassLoader() {
+                    return EntityDescriptionManager.class.getClassLoader();
+                }
+                public String[] getHandledOutputFormats() {
+                    return EntityEncodingManager.HANDLED_OUTPUT_FORMATS;
+                }
+            };
+            this.entityBrokerManager.getEntityProviderManager().registerEntityProvider(batchEP);
+        } else {
+            // batch provider is disabled so do not show the docs for it - this empty on purpose
+        }
+    }
+
+    public void destroy() {
+        System.out.println("INFO: EntityBatchHandler: destroy()");
+        if (batchEP != null) {
+            try {
+                this.entityBrokerManager.getEntityProviderManager().unregisterEntityProvider(batchEP);
+            } catch (RuntimeException e) {
+                System.out.println("WARN: EntityBatchHandler: Unable to unregister the batch provider: " + e);
+            }
+        }
+    }
+
 
     private EntityBrokerManager entityBrokerManager;
     public void setEntityBrokerManager(EntityBrokerManager entityBrokerManager) {
@@ -101,6 +147,11 @@ public class EntityBatchHandler {
         this.entityEncodingManager = entityEncodingManager;
     }
 
+    private ExternalIntegrationProvider externalIntegrationProvider;
+    public void setExternalIntegrationProvider(ExternalIntegrationProvider externalIntegrationProvider) {
+        this.externalIntegrationProvider = externalIntegrationProvider;
+    }
+
     /**
      * Can only set this after the class is constructed since it forms a circular dependency,
      * this is being set by the setter/constructor in the EntityHandlerImpl
@@ -110,29 +161,12 @@ public class EntityBatchHandler {
         this.entityRequestHandler = entityRequestHandler;
     }
 
-    // allow the servlet name to be more flexible
-    private String servletContext;
     private String getServletContext() {
-        if (this.servletContext == null) {
-            setServletContext(null); // set defaults
-        }
-        return this.servletContext;
+        return this.entityBrokerManager.getServletContext();
     }
 
-    public void setServletContext(String servletContext) {
-        if (servletContext == null) {
-            servletContext = RequestUtils.getServletContext(null);
-        }
-        this.servletContext = servletContext;
-        this.servletBatch = servletContext + EntityRequestHandler.SLASH_BATCH;
-    }
-
-    private String servletBatch;
     private String getServletBatch() {
-        if (this.servletBatch == null) {
-            setServletContext(null); // set defaults
-        }
-        return this.servletBatch;
+        return getServletContext() + EntityRequestHandler.SLASH_BATCH;
     }
 
     /**
@@ -146,9 +180,14 @@ public class EntityBatchHandler {
             throw new IllegalArgumentException("Could not process batch: invalid arguments, no args can be null (view="+view+",req="+req+",res="+res+")");
         }
 
-        // set up the servlet context if this is the first time
-        if (this.servletContext == null) {
-            setServletContext( RequestUtils.getServletContext(req) );
+        if (!externalIntegrationProvider.getConfigurationSetting(CONFIG_BATCH_ENABLE, CONFIG_BATCH_DEFAULT)) {
+            //log.info("Batch provider is disabled by default/property. See SAK-22619");
+            try {
+                res.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, "Batch provider is disabled by sakai config: "+CONFIG_BATCH_ENABLE+"=false. Enable this config setting with "+CONFIG_BATCH_ENABLE+"=true to enable batch handling. See SAK-22619 for details.");
+            } catch (IOException e) {
+                throw new RuntimeException("Cannot send error: res.sendError: "+e, e);
+            }
+            return;
         }
 
         // first find out which METHOD we are dealing with
@@ -508,7 +547,7 @@ public class EntityBatchHandler {
                 }
                 entityURL = redirectURL;
                 // check that the redirect is not external
-                if ( entityURL.startsWith(servletContext) ) {
+                if ( entityURL.startsWith(getServletContext()) ) {
                     // internal
                     entityRequest.setPathString(redirectURL);
                     entityResponse.reset();

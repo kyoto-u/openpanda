@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/type-api/src/java/org/sakaiproject/api/common/type/UnsupportedTypeException.java $
- * $Id: UnsupportedTypeException.java 96489 2011-08-05 23:47:39Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/type-api/src/java/org/sakaiproject/api/common/type/UnsupportedTypeException.java $
+ * $Id: UnsupportedTypeException.java 96488 2011-08-05 23:43:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -27,7 +27,7 @@ package org.sakaiproject.api.common.type;
  * @author <a href="mailto:lance@indiana.edu">Lance Speelmon</a>
  * @see {@link java.lang.Error}
  */
-public class UnsupportedTypeException extends Error
+public class UnsupportedTypeException extends Exception
 {
 	private static final long serialVersionUID = 3258132466203242544L;
 

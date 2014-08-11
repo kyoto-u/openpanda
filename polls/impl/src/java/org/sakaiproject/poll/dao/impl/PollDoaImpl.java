@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/impl/src/java/org/sakaiproject/poll/dao/impl/PollDoaImpl.java $
- * $Id: PollDoaImpl.java 60214 2009-04-17 13:50:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/impl/src/java/org/sakaiproject/poll/dao/impl/PollDoaImpl.java $
+ * $Id: PollDoaImpl.java 94973 2011-07-11 13:10:28Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -39,6 +39,7 @@ public class PollDoaImpl extends HibernateGeneralGenericDao implements PollDao {
         log.debug("init");
     }
     
+    @SuppressWarnings("unchecked")
     public int getDisctinctVotersForPoll(Poll poll) {
 
         Query q = null;

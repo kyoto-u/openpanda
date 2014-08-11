@@ -1,6 +1,6 @@
 /**
- * $Id: HttpRESTUtils.java 93868 2011-06-17 22:49:45Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/utils/src/java/org/sakaiproject/entitybroker/util/http/HttpRESTUtils.java $
+ * $Id: HttpRESTUtils.java 91416 2011-04-06 19:02:46Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/http/HttpRESTUtils.java $
  * HttpUtils.java - entity-broker - Jul 20, 2008 11:42:19 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: matching.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+* $Id: matching.jsp 98501 2011-09-21 21:20:44Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -45,7 +45,7 @@
       <!-- AUTHORING -->
       <samigo:script path="/js/authoring.js"/>
 <%--
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 <%@ include file="/js/authoring.js" %>
 //-->
@@ -99,7 +99,7 @@
   <div class="tier2">
    <div class="shorttext"> <h:outputLabel value="#{authorMessages.answer_point_value}" />
     <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" onchange="toPoint(this.id);">
-<f:validateDoubleRange/>
+<f:validateDoubleRange minimum="0.00"/>
 </h:inputText>
 <br/><h:message for="answerptr" styleClass="validate"/>
   </div>
@@ -118,7 +118,7 @@
 
   <!-- 2a ATTACHMENTS -->
   <%@ include file="/jsf/author/item/attachment.jsp" %>
-
+  
   <!-- 3 ANSWER -->
   <div class="longtext"> <h:outputLabel value="#{authorMessages.create_pairing} " /></div>
 <div class="tier2">

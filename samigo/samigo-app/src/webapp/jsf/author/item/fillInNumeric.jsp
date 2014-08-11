@@ -72,7 +72,7 @@
 <div class="tier2">
   <div class="shorttext"><h:outputLabel value="#{authorMessages.answer_point_value}" />
   <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" onchange="toPoint(this.id);">
-    <f:validateDoubleRange />
+    <f:validateDoubleRange minimum="0.00"/>
   </h:inputText>
  <br/>  <h:message for="answerptr" styleClass="validate"/>
  </div>
@@ -80,20 +80,34 @@
 <%-- 2 QUESTION TEXT --%>
   <div class="longtext"> <h:outputLabel value="#{authorMessages.q_text}" />
   <br/></div>
-<div class="tier2">
-  <h:outputText value="#{authorMessages.note_place_curly_fin}" />
-  <br/>
-  <h:outputText value="#{authorMessages.for_example_curly_fin}" />
-  <br/>
-  <h:outputText value="#{authorMessages.note_insert_pipe_fin}" />
-  <br/>
-  <h:outputText value="#{authorMessages.for_example_pipe_fin}" />
-  <br/>
+
+<f:verbatim><div class="tier2"></f:verbatim>
+<h:panelGrid columns="1" border="0">
+    <h:outputText value="#{authorMessages.defining_answers}<br/>#{authorMessages.note_defining_answers}" escape="false"/>
+    <h:outputText value=" " escape="false"/>
+    
+    <h:panelGrid columns="2" border="0">
+        <h:outputText value=" " escape="false"/>
+        <h:outputText value="#{authorMessages.range}<br/>#{authorMessages.range_example}" escape="false"/>
+        <h:outputText value=" " escape="false"/>
+        <h:outputText value="#{authorMessages.scientific_notataion}<br/>#{authorMessages.scientific_notataion_example}" escape="false"/>
+        <h:outputText value=" " escape="false"/>
+        <h:outputText value="#{authorMessages.complex_numbers}<br/>#{authorMessages.complex_numbers_example}" escape="false"/>
+    </h:panelGrid >   
+    
+    <h:outputText value=" " escape="false"/>
+    <h:outputText value="#{authorMessages.accepted_characters}<br/>
+        #{authorMessages.note_accepted_fin_1}<br/>
+        #{authorMessages.note_accepted_fin_2}<br/>
+        #{authorMessages.note_accepted_fin_3}" escape="false"/>
+</h:panelGrid > 
+<f:verbatim></div></f:verbatim>
   
-  <h:panelGrid>
+   <h:panelGrid>
    <samigo:wysiwyg
      rows="140" value="#{itemauthor.currentItem.itemText}" hasToggle="yes">
     <f:validateLength maximum="60000"/>
+    <f:validator validatorId="finQuestionValidator"/>
    </samigo:wysiwyg>
   </h:panelGrid>
  <br />

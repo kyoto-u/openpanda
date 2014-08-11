@@ -1,7 +1,7 @@
 /*
  * *********************************************************************************
- *  $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/tag/RichTextWrapperTag.java $
- *  $Id: RichTextWrapperTag.java 83375 2010-10-19 13:58:18Z arwhyte@umich.edu $
+ *  $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/tag/RichTextWrapperTag.java $
+ *  $Id: RichTextWrapperTag.java 83363 2010-10-18 19:52:53Z botimer@umich.edu $
  * **********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

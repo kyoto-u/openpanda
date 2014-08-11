@@ -12,7 +12,7 @@
    				<sakai:view_title value="#{msgs.manage_wizard_status}"/>
    			</f:subview>
 			
-   			<sakai:messages />
+   			<sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
    			<f:subview id="dropDown">
 				<p class="shorttext">
    				<h:outputLabel value="#{msgs.legend_changeStatusTo}" for="newStatus" />

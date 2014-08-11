@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/ScriptRenderer.java $
-* $Id: ScriptRenderer.java 84785 2010-11-16 16:33:44Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/ScriptRenderer.java $
+* $Id: ScriptRenderer.java 84295 2010-11-04 17:47:54Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -40,7 +40,7 @@ import org.sakaiproject.jsf.util.RendererUtil;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: ScriptRenderer.java 84785 2010-11-16 16:33:44Z arwhyte@umich.edu $
+ * @version $Id: ScriptRenderer.java 84295 2010-11-04 17:47:54Z ottenhoff@longsight.com $
  */
 
 public class ScriptRenderer extends Renderer

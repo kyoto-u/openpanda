@@ -351,8 +351,14 @@ public class AddPollProducer implements ViewComponentProducer,NavigationCaseRepo
 	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
 		// OptionViewParameters outgoing = (OptionViewParameters) result.resultingView;
 		// SAK-14726 : Start BugFix
-		LOG.debug("actionReturn is of type " + actionReturn.getClass());
+		if (LOG.isDebugEnabled() && actionReturn != null) {
+			LOG.debug("actionReturn is of type " + actionReturn.getClass());
+		}
 
+		if (actionReturn == null) {
+			return;
+		}
+		
 		Poll poll = null;
 		
 		if(actionReturn instanceof org.sakaiproject.poll.model.Poll) {
@@ -362,7 +368,7 @@ public class AddPollProducer implements ViewComponentProducer,NavigationCaseRepo
 
 			PollViewParameters ecvp = (PollViewParameters) incoming;
 
-			if(null == ecvp || null == ecvp.id || "New 0".equals(ecvp.id)) {
+			if(null == ecvp || null == ecvp.id ) {
 				return;
 
 			} else {

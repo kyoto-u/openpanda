@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/com/corejsf/UploadRenderer.java $
-* $Id: UploadRenderer.java 75058 2010-03-23 17:17:04Z lydial@stanford.edu $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/com/corejsf/UploadRenderer.java $
+* $Id: UploadRenderer.java 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
 ***********************************************************************************
 * Copyright (c) 2004 Sun Microsystems from the Java Series, Core Java ServerFaces
 * source freely distributable.
@@ -87,7 +87,7 @@ public class UploadRenderer extends Renderer {
      // RU - typo. Stanford agrees, so this should be FINR
     if (item!=null && item.getSize()/1000 > maxSize.intValue()){
       ((ServletContext)external.getContext()).setAttribute("TEMP_FILEUPLOAD_SIZE", new Long(item.getSize()/1000));
-      ((EditableValueHolder) component).setSubmittedValue("SizeTooBig");
+      ((EditableValueHolder) component).setSubmittedValue("SizeTooBig:" + item.getName());
       return;
     }
 

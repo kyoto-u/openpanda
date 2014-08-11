@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: EnrollmentOnlyConfigurationTest.java 52131 2008-09-11 19:26:36Z ray@media.berkeley.edu $
+* $Id: EnrollmentOnlyConfigurationTest.java 109820 2012-06-28 15:29:55Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -8,7 +8,7 @@
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *       http://www.osedu.org/licenses/ECL-2.0
  *

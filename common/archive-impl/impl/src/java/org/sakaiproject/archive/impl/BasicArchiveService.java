@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/archive-impl/impl/src/java/org/sakaiproject/archive/impl/BasicArchiveService.java $
- * $Id: BasicArchiveService.java 84776 2010-11-16 16:02:38Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/archive-impl/impl/src/java/org/sakaiproject/archive/impl/BasicArchiveService.java $
+ * $Id: BasicArchiveService.java 84140 2010-11-02 19:59:39Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

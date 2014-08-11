@@ -71,7 +71,7 @@ public class EntitySite implements Site {
     private String shortDescription;
     private String description;
     private String iconUrl;
-    private String iconFullUrl;
+    private String iconUrlFull;
     private String infoUrl;
     private String infoUrlFull;
     private boolean joinable;
@@ -87,6 +87,7 @@ public class EntitySite implements Site {
     private String owner;
     private long lastModified;
     private String[] userRoles;
+    private boolean softlyDeleted;
 
     private transient List<EntityGroup> siteGroupsList;
 
@@ -130,7 +131,7 @@ public class EntitySite implements Site {
         this.shortDescription = shortDescription;
         this.description = description;
         this.iconUrl = iconUrl;
-        this.iconFullUrl = iconFullUrl;
+        this.iconUrlFull = iconFullUrl;
         this.infoUrl = infoUrl;
         this.infoUrlFull = infoUrlFull;
         this.joinable = joinable;
@@ -154,6 +155,7 @@ public class EntitySite implements Site {
         this.description = site.getDescription();
         this.iconUrl = site.getIconUrl();
         this.infoUrl = site.getInfoUrl();
+        this.iconUrlFull = site.getIconUrlFull();
         this.joinable = site.isJoinable();
         this.joinerRole = site.getJoinerRole();
         this.skin = site.getSkin();
@@ -327,15 +329,8 @@ public class EntitySite implements Site {
         this.type = type;
     }
 
-    public String getIconFullUrl() {
-        if (site != null) {
-            return site.getIconUrlFull();
-        }
-        return iconFullUrl;
-    }
-
-    public void setIconFullUrl(String iconFullUrl) {
-        this.iconFullUrl = iconFullUrl;
+    public void setIconUrlFull(String iconUrlFull) {
+        this.iconUrlFull = iconUrlFull;
     }
 
     public String getMaintainRole() {
@@ -469,7 +464,7 @@ public class EntitySite implements Site {
         if (site != null) {
             return site.getIconUrlFull();
         }
-        throw new UnsupportedOperationException();
+        return this.iconUrlFull;
     }
 
     public User getModifiedBy() {
@@ -783,6 +778,29 @@ public class EntitySite implements Site {
         if (site != null) {
             site.removeRoles();
             return;
+        }
+        throw new UnsupportedOperationException();
+    }
+
+	public Date getSoftlyDeletedDate() {
+		if (site != null) {
+            return site.getSoftlyDeletedDate();
+        }
+        throw new UnsupportedOperationException();
+	}
+
+	public boolean isSoftlyDeleted() {
+		return softlyDeleted;
+	}
+
+	public void setSoftlyDeleted(boolean arg0) {
+		this.softlyDeleted = arg0;
+		
+	}
+
+    public Collection<String> getMembersInGroups(Set<String> groupIds) {
+        if (site != null) {
+            return site.getMembersInGroups(groupIds);
         }
         throw new UnsupportedOperationException();
     }

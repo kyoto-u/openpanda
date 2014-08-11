@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x/basiclti-common/src/java/org/sakaiproject/basiclti/util/ShaUtil.java $
- * $Id: ShaUtil.java 81595 2010-08-20 19:55:25Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0/basiclti-common/src/java/org/sakaiproject/basiclti/util/ShaUtil.java $
+ * $Id: ShaUtil.java 109820 2012-06-28 15:29:55Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2010 The Sakai Foundation
  *
@@ -72,9 +72,9 @@ public class ShaUtil {
 	}
 
 	public static void main(String[] args) {
-		final String sample1 = "12345:/sites/foo/bar !@#$%^&*()_+|}{\":?><[]\';/.,'联＂挨Ε患协窃夜况瑺ǐ蠈赌汽律局巢调脥沤";
-		final String sample2 = "12345:/sites/foo/bar !@#$%^&*()_+|}{\":?><[]\';/.,'联＂挨Ε患协窃夜况瑺ǐ蠈赌汽律局巢调脥沤";
-		final String sample3 = "12345:/sites/foo/bar !@#$%^&*()_+|}{\":?><[]\';/.,'联＂挨Ε患协窃夜况瑺ǐ蠈赌汽律局巢调脥排";
+		final String sample1 = "12345:/sites/foo/bar !@#$%^&*()_+|}{\":?><[]\';/.,'脕陋拢垄掳陇娄楼禄录脨颅脟脭脪鹿驴枚卢聽篓芦脧聦露脛漏煤脝没脗脡戮脰鲁虏碌梅脙聧脜陆";
+		final String sample2 = "12345:/sites/foo/bar !@#$%^&*()_+|}{\":?><[]\';/.,'脕陋拢垄掳陇娄楼禄录脨颅脟脭脪鹿驴枚卢聽篓芦脧聦露脛漏煤脝没脗脡戮脰鲁虏碌梅脙聧脜陆";
+		final String sample3 = "12345:/sites/foo/bar !@#$%^&*()_+|}{\":?><[]\';/.,'脕陋拢垄掳陇娄楼禄录脨颅脟脭脪鹿驴枚卢聽篓芦脧聦露脛漏煤脝没脗脡戮脰鲁虏碌梅脙聧脜脜";
 		final String sample1Hash = sha1Hash(sample1);
 		final String sample2Hash = sha1Hash(sample2);
 		final String sample3Hash = sha1Hash(sample3);

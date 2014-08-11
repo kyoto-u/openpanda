@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/XLSTChangesHandler.java $
- * $Id: XLSTChangesHandler.java 84672 2010-11-12 18:29:04Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/XLSTChangesHandler.java $
+ * $Id: XLSTChangesHandler.java 84224 2010-11-03 13:43:07Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

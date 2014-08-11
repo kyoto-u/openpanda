@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/branches/sakai-2.8.x/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podHomeBean.java $
- * $Id: podHomeBean.java 100621 2011-11-10 01:57:17Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.0/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podHomeBean.java $
+ * $Id: podHomeBean.java 100092 2011-10-25 12:54:56Z bkirschn@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -32,10 +32,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -51,10 +49,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.api.app.podcasts.PodcastService;
 import org.sakaiproject.api.app.podcasts.PodcastPermissionsService;
+import org.sakaiproject.api.app.podcasts.PodcastService;
+import org.sakaiproject.api.app.podcasts.exception.PodcastException;
 import org.sakaiproject.authz.api.PermissionsHelper;
-import org.sakaiproject.authz.cover.FunctionManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.entity.api.Entity;
@@ -72,10 +70,7 @@ import org.sakaiproject.exception.OverQuotaException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.site.api.Site;
-import org.sakaiproject.site.api.SitePage;
-import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
-import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
@@ -926,13 +921,13 @@ public class podHomeBean {
 			catch (EntityPropertyNotDefinedException e) {
 				LOG.error("EntityPropertyNotDefinedException while attempting to fill selectedPodcast property "
 								+ " for site " + podcastService.getSiteId() + ". SKIPPING..." + e.getMessage(), e);
-				throw new Error(e);
+				throw new PodcastException(e);
 
 			} 
 			catch (EntityPropertyTypeException e) {
 				LOG.error("EntityPropertyTypeException while attempting to fill selectedPodcast property "
 								+ " for site " + podcastService.getSiteId() + ". SKIPPING..." + e.getMessage(), e);
-				throw new Error(e);
+				throw new PodcastException(e);
 
 			}
 			catch (IdUnusedException e) {
@@ -1345,7 +1340,7 @@ public class podHomeBean {
 			catch (InconsistentException e) {
 				LOG.error("InconsistentException while attempting to actually add the new podcast "
 								+ " for site " + podcastService.getSiteId() + ". " + e.getMessage(), e);
-				throw new Error(e);
+				throw new PodcastException(e);
 
 			} 
 			catch (IdInvalidException e) {

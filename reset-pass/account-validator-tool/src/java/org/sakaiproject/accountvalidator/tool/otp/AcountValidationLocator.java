@@ -1,6 +1,6 @@
 /**
- * $Id: AcountValidationLocator.java 101441 2011-12-06 09:00:14Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/branches/reset-pass-2.8.x/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/AcountValidationLocator.java $
+ * $Id: AcountValidationLocator.java 93859 2011-06-16 21:03:22Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.0/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/AcountValidationLocator.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

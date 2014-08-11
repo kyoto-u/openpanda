@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/branches/sakai-2.8.x/roster-app/src/java/org/sakaiproject/tool/roster/RosterStatus.java $
- * $Id: RosterStatus.java 107154 2012-04-16 23:29:18Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.0/roster-app/src/java/org/sakaiproject/tool/roster/RosterStatus.java $
+ * $Id: RosterStatus.java 105573 2012-03-06 19:39:54Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation

@@ -3,15 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>sakai-standard-tool</artifactId>
-        <groupId>org.sakaiproject.purepoms</groupId>
-        <version>2.8.7</version>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>master</artifactId>
+        <version>2.9.0</version>
+		<relativePath>../master/pom.xml</relativePath>
     </parent>
 
     <name>Sakai SiteStats</name>
     <groupId>org.sakaiproject.sitestats</groupId>
     <artifactId>sitestats</artifactId>
-    <version>2.2.5-SNAPSHOT</version><!-- sitestats.version -->
+    <version>2.3.0</version><!-- sitestats.version -->
     <description>SiteStats is a tool for Sakai for showing site usage statistics.</description>
     <url>http://confluence.sakaiproject.org/confluence/display/STAT</url>
     <inceptionYear>2006</inceptionYear>
@@ -33,12 +34,8 @@
         <fop.version>1.0</fop.version>
         <poi.version>3.7</poi.version>
         <jfreechart.version>1.0.5</jfreechart.version>
-        <sakai.sakai-mock.version>2.8.5</sakai.sakai-mock.version>
-        <sakai.jobscheduler.version>2.8.4</sakai.jobscheduler.version>
-        <sst.wicket.version>1.3.7</sst.wicket.version>
+        <sst.wicket.version>1.4.9</sst.wicket.version>
         <sst.slf4j.version>1.4.3</sst.slf4j.version>
-        <!-- <perftests.includes /> -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <!-- Project modules -->
@@ -52,7 +49,7 @@
         <module>sitestats-help</module>
         <module>sitestats-assembly</module>
     </modules>
-    
+
     <!-- Project developers -->
     <developers>
         <developer>
@@ -106,86 +103,26 @@
             </roles>
             <timezone>-5</timezone>
         </developer>
+         <developer>
+            <id>steve.swinsburg</id>
+            <name>Steve Swinsburg</name>
+            <url>https://confluence.sakaiproject.org/display/~steve.swinsburg</url>
+            <roles>
+                <role>Contributor</role>
+            </roles>
+            <timezone>+10</timezone>
+        </developer>
     </developers>
     
     <!-- Source code repository location -->
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x</developerConnection>
-        <url>http://source.sakaiproject.org/viewsvn/sitestats/branches/sitestats-2.2.x</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0</developerConnection>
+        <url>http://source.sakaiproject.org/viewsvn/sitestats/tags/sitestats-2.3.0</url>
     </scm>
     
-    <!-- Distribution Management -->
-    <distributionManagement>
-        <site>
-            <id>sakai-site</id>
-            <name>Sakai release Site</name>
-            <url>scpexe://source.sakaiproject.org/var/www/html/release/sitestats/${project.version}</url>
-        </site>
-    </distributionManagement>
-    
     <!-- Project repositories -->
-	<pluginRepositories>
-        <pluginRepository>
-            <id>maven2-central-repo</id>
-            <name>Maven2 Central Repo</name>
-            <url>http://repo1.maven.org/maven2/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>Sakai Plugin Repo</id>
-            <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-    
     <repositories>
-        <repository>
-            <id>sakai-maven2</id>
-            <name>Sakai Maven Repository</name>
-            <layout>default</layout>
-            <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>sakai-maven2-snapshots</id>
-            <name>Sakai Maven Repo Snapshots</name>
-            <layout>default</layout>
-            <url>http://source.sakaiproject.org/maven2-snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>default</id>
-            <name>Maven Repository Switchboard</name>
-            <layout>default</layout>
-            <url>http://repo1.maven.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
         <repository>
             <id>jboss</id>
             <name>Jboss Repository for Maven</name>
@@ -209,6 +146,17 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+		<repository> 
+			<id>sonatype-nexus-snapshots</id> 
+			<name>Sonatype Nexus Snapshots</name> 
+			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
+			<releases> 
+				<enabled>false</enabled> 
+			</releases> 
+			<snapshots> 
+				<enabled>true</enabled> 
+			</snapshots> 
+		</repository> 
     </repositories>
 
     <!-- JIRA -->
@@ -221,7 +169,7 @@
     <licenses>
         <license>
             <name>Educational Community License, Version 2.0</name>
-            <url>http://www.osedu.org/licenses/ECL-2.0</url>
+            <url>http://www.opensource.org/licenses/ECL-2.0</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -249,49 +197,28 @@
         <dependencies>
             <!-- SiteStats -->
             <dependency>
-                <groupId>org.sakaiproject.sitestats</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>sitestats-api</artifactId>
                 <version>${project.version}</version>
                 <type>jar</type>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject.sitestats</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>sitestats-bundle</artifactId>
                 <version>${project.version}</version>
                 <type>jar</type>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject.sitestats</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>sitestats-impl</artifactId>
                 <version>${project.version}</version>
                 <type>jar</type>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject.sitestats</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>sitestats-impl-hib</artifactId>
                 <version>${project.version}</version>
-                <type>jar</type>
-                <scope>provided</scope>
-            </dependency>
-            
-            <!-- Sakai other -->
-            <dependency>
-                <groupId>org.sakaiproject.mock</groupId>
-                <artifactId>sakai-mock</artifactId>
-                <version>${sakai.sakai-mock.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject.scheduler</groupId>
-                <artifactId>scheduler-api</artifactId>
-                <version>${sakai.jobscheduler.version}</version>
-                <type>jar</type>
-                <scope>provided</scope>
-            </dependency>
-			<dependency>
-                <groupId>org.sakaiproject.scheduler</groupId>
-                <artifactId>scheduler-component-shared</artifactId>
-                <version>${sakai.jobscheduler.version}</version>
                 <type>jar</type>
                 <scope>provided</scope>
             </dependency>
@@ -428,18 +355,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <systemProperties>
+                    <systemPropertyVariables>
                         <!-- Pass through important service-integration 
                             test properties. -->
-                        <property>
-                            <name>maven.tomcat.home</name>
-                            <value>${maven.tomcat.home}</value>
-                        </property>
-                        <property>
-                            <name>test.sakai.home</name>
-                            <value>${test.sakai.home}</value>
-                        </property>
-                    </systemProperties>
+						<maven.tomcat.home>${maven.tomcat.home}</maven.tomcat.home>
+						<test.sakai.home>${test.sakai.home}</test.sakai.home>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <!-- Comment out; causes build failures when Jenkins fails to find external template -->
@@ -491,40 +412,12 @@
             </plugin>
             -->
         </plugins>
+        
     </build>
 
     <!-- Reporting (mvn site) -->
     <reporting>
         <plugins>
-            <!-- JavaDocs: mvn javadoc:javadoc -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
-                <reportSets>
-                  <reportSet>
-                    <id>aggregate</id>
-                    <configuration>
-                      <aggregate>true</aggregate>
-            		      <source>1.5</source>
-                      <encoding>UTF-8</encoding>
-	                    <links>
-                        <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-                        <link>http://java.sun.com/products/servlet/2.3/javadoc/</link>
-                      </links>
-                      <breakiterator>true</breakiterator>
-                      <verbose>false</verbose>
-                      <maxmemory>512m</maxmemory>
-                      <additionalJOption>
-                        -J-Xms168m -J-Xmx512m -J-XX:PermSize=128m -J-XX:NewSize=64m
-                      </additionalJOption>
-                    </configuration>
-                    <reports>
-                      <report>aggregate</report>
-                    </reports>
-                  </reportSet>
-                </reportSets>   
-            </plugin>
             <!-- FindBugs: mvn findbugs:findbugs -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -555,7 +448,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.5.1</version>
                 <configuration>
                     <formats>
                         <format>html</format>

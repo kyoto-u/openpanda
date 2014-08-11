@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/GenericCalendarImporter.java $
- * $Id: GenericCalendarImporter.java 87582 2011-01-25 18:35:24Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/GenericCalendarImporter.java $
+ * $Id: GenericCalendarImporter.java 87328 2011-01-15 12:45:53Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

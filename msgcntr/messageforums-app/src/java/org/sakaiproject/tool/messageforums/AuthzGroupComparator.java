@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/branches/msgcntr-2.8.x/messageforums-app/src/java/org/sakaiproject/tool/messageforums/AuthzGroupComparator.java $
- * $Id: AuthzGroupComparator.java 59677 2009-04-03 23:19:29Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-app/src/java/org/sakaiproject/tool/messageforums/AuthzGroupComparator.java $
+ * $Id: AuthzGroupComparator.java 89079 2011-02-25 08:10:59Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -30,7 +30,7 @@ import org.sakaiproject.authz.api.Role;
 
 public class AuthzGroupComparator implements Comparator {
 
-	private Log LOG = LogFactory.getLog(DiscussionForumTool.class);
+	private static Log LOG = LogFactory.getLog(DiscussionForumTool.class);
 
 	private String m_property = null;
 

@@ -1,6 +1,6 @@
 /**
- * $Id: RequestUtilsTest.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/utils/src/test/org/sakaiproject/entitybroker/util/request/RequestUtilsTest.java $
+ * $Id: RequestUtilsTest.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/test/org/sakaiproject/entitybroker/util/request/RequestUtilsTest.java $
  * RequestUtilsTest.java - entity-broker - Jul 28, 2008 7:55:59 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/ConcurrentSearchIndexBuilderWorkerImpl.java $
- * $Id: ConcurrentSearchIndexBuilderWorkerImpl.java 102143 2011-12-19 11:01:32Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/ConcurrentSearchIndexBuilderWorkerImpl.java $
+ * $Id: ConcurrentSearchIndexBuilderWorkerImpl.java 102142 2011-12-19 10:58:54Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

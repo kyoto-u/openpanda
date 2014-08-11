@@ -1,6 +1,6 @@
 /**
- * $Id: EntityBrokerRESTServiceManager.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBrokerRESTServiceManager.java $
+ * $Id: EntityBrokerRESTServiceManager.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBrokerRESTServiceManager.java $
  * TestManager.java - entity-broker - Jul 23, 2008 6:27:29 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -28,6 +28,7 @@ import org.sakaiproject.entitybroker.entityprovider.EntityProviderMethodStore;
 import org.sakaiproject.entitybroker.entityprovider.extension.RequestGetterWrite;
 import org.sakaiproject.entitybroker.entityprovider.extension.RequestStorageWrite;
 import org.sakaiproject.entitybroker.providers.EntityPropertiesService;
+import org.sakaiproject.entitybroker.providers.ExternalIntegrationProvider;
 
 
 /**
@@ -62,6 +63,7 @@ public class EntityBrokerRESTServiceManager {
     private EntityProviderMethodStore entityProviderMethodStore;
     private HttpServletAccessProviderManager httpServletAccessProviderManager;
     private EntityViewAccessProviderManager entityViewAccessProviderManager;
+    private ExternalIntegrationProvider externalIntegrationProvider;
 
     // services we are starting up
     private EntityActionsManager entityActionsManager;
@@ -80,6 +82,7 @@ public class EntityBrokerRESTServiceManager {
         this.entityProviderManager = entityBrokerManager.getEntityProviderManager();
         this.entityProviderMethodStore = entityBrokerManager.getEntityProviderMethodStore();
         this.entityViewAccessProviderManager = entityBrokerManager.getEntityViewAccessProviderManager();
+        this.externalIntegrationProvider = entityBrokerManager.getExternalIntegrationProvider();
     }
 
     protected EntityBrokerRESTServiceManager() { }
@@ -124,18 +127,20 @@ public class EntityBrokerRESTServiceManager {
                 || this.entityPropertiesService == null
                 || this.entityProviderManager == null
                 || this.entityProviderMethodStore == null
+                || this.externalIntegrationProvider == null
                 || this.entityViewAccessProviderManager == null) {
             throw new IllegalArgumentException("Main services must all be set and non-null!");
         }
         // initialize all the parts
         entityActionsManager = new EntityActionsManager(entityProviderMethodStore);
-        entityRedirectsManager = new EntityRedirectsManager(entityProviderMethodStore, requestStorage);
+        entityRedirectsManager = new EntityRedirectsManager(entityBrokerManager, 
+                entityProviderMethodStore, requestStorage);
 
         entityDescriptionManager = new EntityDescriptionManager(entityViewAccessProviderManager,
                 httpServletAccessProviderManager, entityProviderManager, entityPropertiesService,
                 entityBrokerManager, entityProviderMethodStore);
         entityEncodingManager = new EntityEncodingManager(entityProviderManager, entityBrokerManager);
-        entityBatchHandler = new EntityBatchHandler(entityBrokerManager, entityEncodingManager);
+        entityBatchHandler = new EntityBatchHandler(entityBrokerManager, entityEncodingManager, externalIntegrationProvider);
 
         entityRequestHandler = new EntityHandlerImpl(entityProviderManager,
                 entityBrokerManager, entityEncodingManager, entityDescriptionManager,
@@ -167,6 +172,7 @@ public class EntityBrokerRESTServiceManager {
         this.entityRESTProvider.destroy();
         this.entityRESTProvider = null;
         this.entityRequestHandler = null;
+        this.entityBatchHandler.destroy();
         this.entityBatchHandler = null;
         this.entityEncodingManager = null;
         this.entityDescriptionManager.destroy();

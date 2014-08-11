@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/impl/LockManagerImpl.java $
- * $Id: LockManagerImpl.java 71665 2010-01-20 14:19:33Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/LockManagerImpl.java $
+ * $Id: LockManagerImpl.java 84737 2010-11-15 08:57:23Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -71,7 +71,7 @@ public class LockManagerImpl extends HibernateDaoSupport implements LockManager
 	{
 		try
 		{
-			getHibernateTemplate().setCacheQueries(true);
+			
 			return (Lock) safePopList(getHibernateTemplate().findByNamedQuery("getLock", new Object[] { assetId, qualifierId }));
 		}
 		catch (HibernateSystemException e)
@@ -133,7 +133,7 @@ public class LockManagerImpl extends HibernateDaoSupport implements LockManager
 		}
 		try
 		{
-			getHibernateTemplate().setCacheQueries(true);
+			
 			locks = getHibernateTemplate().findByNamedQuery("activeByAsset", assetId);
 		}
 		catch (HibernateObjectRetrievalFailureException e)
@@ -182,7 +182,6 @@ public class LockManagerImpl extends HibernateDaoSupport implements LockManager
 		}
 		try
 		{
-			getHibernateTemplate().setCacheQueries(true);
 			locks = getHibernateTemplate().findByNamedQuery("activeByQualifier", qualifier);
 		}
 		catch (HibernateObjectRetrievalFailureException e)

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/branches/sakai-2.8.x/message-impl/impl/src/java/org/sakaiproject/message/impl/BaseMessageService.java $
- * $Id: BaseMessageService.java 106850 2012-04-12 05:00:56Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.0/message-impl/impl/src/java/org/sakaiproject/message/impl/BaseMessageService.java $
+ * $Id: BaseMessageService.java 101371 2011-12-04 07:38:10Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -121,7 +121,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 	protected Cache m_channelCache = null;
 
 	/** A bunch of caches for messages: keyed by channel id, the cache is keyed by message reference. (if m_caching) */
-	protected Hashtable m_messageCaches = null;
+	protected Hashtable<String, Cache> m_messageCaches = null;
 	
 	private static final String CHANNEL_PROP = "channel";
 	private static final String PROPERTIES = "properties";
@@ -313,7 +313,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 	 */
 	public void setCaching(String value)
 	{
-		m_caching = new Boolean(value).booleanValue();
+		m_caching = Boolean.valueOf(value).booleanValue();
 	}
 
 	/** Dependency: EntityManager. */
@@ -354,7 +354,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 								+ REF_TYPE_CHANNEL + Entity.SEPARATOR);
 
 				// make the table to hold the message caches
-				m_messageCaches = new Hashtable();
+				m_messageCaches = new Hashtable<String, Cache>();
 			}
 
 			M_log.info("init(): caching: " + m_caching);
@@ -670,9 +670,9 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 	 * 
 	 * @return a list of MessageChannel (or extension) objects (may be empty).
 	 */
-	public List getChannels()
+	public List<MessageChannel> getChannels()
 	{
-		List channels = new Vector();
+		List<MessageChannel> channels = new Vector<MessageChannel>();
 		if ((!m_caching) || (m_channelCache == null) || (m_channelCache.disabled()))
 		{
 			channels = m_storage.getChannels();
@@ -1146,7 +1146,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 	/**
 	 * {@inheritDoc}
 	 */
-	public List getMessages(String channelRef, Time afterDate, int limitedToLatest, boolean ascending, boolean includeDrafts,
+	public List<Message> getMessages(String channelRef, Time afterDate, int limitedToLatest, boolean ascending, boolean includeDrafts,
 			boolean pubViewOnly) throws PermissionException
 	{
 		// channel read security
@@ -1157,7 +1157,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 
 		// get the channel, no security check
 		MessageChannel c = findChannel(channelRef);
-		if (c == null) return new Vector();
+		if (c == null) return new Vector<Message>();
 
 		// null - no drafts, "*", all drafts, <userId> drafts created by user id only
 		String draftsForId = null;
@@ -1176,7 +1176,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 		if ((!m_caching) || (m_channelCache == null) || (m_channelCache.disabled()))
 		{
 			// get messages filtered by date and count and drafts, in descending (latest first) order
-			List rv = m_storage.getMessages(c, afterDate, limitedToLatest, draftsForId, pubViewOnly);
+			List<Message> rv = m_storage.getMessages(c, afterDate, limitedToLatest, draftsForId, pubViewOnly);
 
 			// if ascending, reverse
 			if (ascending)
@@ -1190,7 +1190,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 		// use the cache
 
 		// get the messages
-		List msgs = ((BaseMessageChannelEdit) c).findFilterMessages(
+		List<Message> msgs = ((BaseMessageChannelEdit) c).findFilterMessages(
 				new MessageSelectionFilter(afterDate, draftsForId, pubViewOnly), ascending);
 
 		// sub-select count
@@ -1216,7 +1216,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 	 *        The context in which to search
 	 * @return A List (String) of channel id for channels withing the context.
 	 */
-	public List getChannelIds(String context)
+	public List<String> getChannelIds(String context)
 	{
 		if ((!m_caching) || (m_channelCache == null) || (m_channelCache.disabled()))
 		{
@@ -1224,9 +1224,9 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 		}
 
 		// use the cache
-		List channels = getChannels();
-		List rv = new Vector();
-		for (Iterator i = channels.iterator(); i.hasNext();)
+		List<MessageChannel> channels = getChannels();
+		List<String> rv = new Vector<String>();
+		for (Iterator<MessageChannel> i = channels.iterator(); i.hasNext();)
 		{
 			MessageChannel channel = (MessageChannel) i.next();
 			if (context.equals(channel.getContext()))
@@ -1276,13 +1276,13 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 					String title = ref.getDescription();
 					MessageHeader messageHead = message.getHeader();
 					String date = messageHead.getDate().toStringLocalFullZ();
-					Integer message_order=messageHead.getMessage_order();
+					//Integer message_order=messageHead.getMessage_order();
 					String from = messageHead.getFrom().getDisplayName();
-					String groups = "";
+					StringBuilder groups = new StringBuilder();
 					Collection gr = messageHead.getGroups();
 					for (Iterator i = gr.iterator(); i.hasNext();)
 					{
-						groups += "<li>" + i.next() + "</li>";
+						groups.append("<li>" + i.next() + "</li>");
 					}
 					String body = message.getBody();
 
@@ -1307,7 +1307,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 					sw.write("<li>From ");
 					sw.write(from);
 					sw.write("</li>");
-					sw.write(groups);
+					sw.write(groups.toString());
 					sw.write("<ul><p>");
 					sw.write(body);
 					sw.write("</p></div></body></html> ");
@@ -1488,11 +1488,11 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 	/**
 	 * {@inheritDoc}
 	 */
-	public Collection getEntityAuthzGroups(Reference ref, String userId)
+	public Collection<String> getEntityAuthzGroups(Reference ref, String userId)
 	{
 		// we could check that the type is one of the message services, but lets just assume it is so we don't need to know them here -ggolden
 
-		Collection rv = new Vector();
+		Collection<String> rv = new Vector<String>();
 
 		// for MessageService messages:
 		// if access set to CHANNEL (or PUBLIC), use the message, channel and site authzGroups.
@@ -1509,7 +1509,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 				rv.add(ref.getReference());
 				
 				boolean grouped = false;
-				Collection groups = null;
+				Collection<String> groups = null;
 
 				// check SECURE_ALL_GROUPS - if not, check if the message has groups or not
 				// TODO: the last param needs to be a ContextService.getRef(ref.getContext())... or a ref.getContextAuthzGroup() -ggolden
@@ -3314,9 +3314,15 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 						String context = m_siteService.siteReference(m_entityManager.newReference(msg1.getReference()).getContext());
 						boolean isViewingAs = (m_securityService.getUserEffectiveRole(context) != null);
 						
+						//its possible the user wasn't found above
+						String userId = "";
+						if (currentUsr != null) {
+							userId = currentUsr.getId();
+						}
+						
 						//convert it into draft, if the associated group is deleted
 						//do not convert it into draft when you are switching from and to view as mode
-						if (currentUsr.getId().equals(header.getFrom().getId())  && !isViewingAs){						
+						if (userId.equals(header.getFrom().getId())  && !isViewingAs){						
 							header.setDraft(true);
 							try {
 								header.clearGroupAccess();
@@ -3455,15 +3461,15 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 		 *        The function to check
 		 * @return The Collection (Group) of groups defined for the context of this channel that the end user has specified permissions in, empty if none.
 		 */
-		protected Collection getGroupsAllowFunction(String function)
+		protected Collection<Group> getGroupsAllowFunction(String function)
 		{
-			Collection rv = new Vector();
+			Collection<Group> rv = new Vector<Group>();
 
 			try
 			{
 				// get the channel's site's groups
 				Site site = m_siteService.getSite(m_context);
-				Collection groups = site.getGroups();
+				Collection<Group> groups = site.getGroups();
 
 				// if the user has SECURE_ALL_GROUPS in the context (site), and the function for the channel (channel,site), or is super, select all site groups
 				if (m_securityService.isSuperUser() || (m_authzGroupService.isAllowed(m_sessionManager.getCurrentSessionUserId(), eventId(SECURE_ALL_GROUPS), m_siteService.siteReference(m_context))
@@ -3475,8 +3481,8 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 				// otherwise, check the groups for function
 
 				// get a list of the group refs, which are authzGroup ids
-				Collection groupRefs = new Vector();
-				for (Iterator i = groups.iterator(); i.hasNext();)
+				Collection<String> groupRefs = new Vector<String>();
+				for (Iterator<Group> i = groups.iterator(); i.hasNext();)
 				{
 					Group group = (Group) i.next();
 					groupRefs.add(group.getReference());
@@ -3487,7 +3493,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 						eventId(function), groupRefs);
 
 				// pick the Group objects from the site's groups to return, those that are in the groupRefs list
-				for (Iterator i = groups.iterator(); i.hasNext();)
+				for (Iterator<Group> i = groups.iterator(); i.hasNext();)
 				{
 					Group group = (Group) i.next();
 					if (groupRefs.contains(group.getReference()))
@@ -3671,7 +3677,6 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 				m_channel.cancelMessage(this);
 			}
 
-			m_channel = null;
 
 		} // finalize
 
@@ -4069,7 +4074,7 @@ public abstract class BaseMessageService implements MessageService, StorageUser,
 			}
 			try
 			{
-				m_draft = new Boolean(el.getAttribute("draft")).booleanValue();
+				m_draft = Boolean.valueOf(el.getAttribute("draft")).booleanValue();
 			}
 			catch (Throwable any)
 			{

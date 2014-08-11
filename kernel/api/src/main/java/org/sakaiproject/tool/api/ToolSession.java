@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/tool/api/ToolSession.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/tool/api/ToolSession.java $
  * $Id: ToolSession.java 66305 2009-09-06 10:14:27Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

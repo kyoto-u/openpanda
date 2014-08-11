@@ -14,7 +14,8 @@
 			class="org.sakaiproject.authz.impl.DbAuthzGroupService"
 			init-method="init"
 			destroy-method="destroy"
-			singleton="true">
+			singleton="true"
+			depends-on="org.sakaiproject.authz.impl.DbAuthzGroupService.realmRoleGroupCache">
 
 		<lookup-method name="sqlService" bean="org.sakaiproject.db.api.SqlService" />
 		<lookup-method name="userDirectoryService" bean="org.sakaiproject.user.api.UserDirectoryService" />
@@ -39,6 +40,7 @@
               <entry key="oracle" ><ref bean="org.sakaiproject.authz.impl.DbAuthzGroupSqlOracle" /></entry>
            </map>
         </property>
+        <property name="memoryService" ref="org.sakaiproject.memory.api.MemoryService"/>
 	</bean>
 
 	<bean id="org.sakaiproject.authz.api.SecurityService"
@@ -64,5 +66,18 @@
 			destroy-method="destroy"
 			singleton="true">
 	</bean>
+
+  <!-- KNL-600 caching for the realm roles groups -->
+  <bean id="org.sakaiproject.authz.impl.DbAuthzGroupService.realmRoleGroupCache" 
+        class="org.sakaiproject.memory.util.EhCacheFactoryBean">
+    <property name="cacheManager" ref="org.sakaiproject.memory.api.MemoryService.cacheManager" />
+    <property name="cacheName" value="org.sakaiproject.authz.impl.DbAuthzGroupService.realmRoleGroupCache" />
+    <property name="maxElementsInMemory" value="5000" />
+    <property name="timeToLive" value="7200" />
+    <property name="timeToIdle" value="7200" />
+    <!-- As the base classes stored in this cache are in impl
+    writing them to disk results in an error see KNL-975 -->
+    <property name="overflowToDisk" value="false" />
+  </bean>
 
 </beans>

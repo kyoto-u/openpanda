@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/Day.java $
- * $Id: Day.java 100622 2011-11-10 02:10:20Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/Day.java $
+ * $Id: Day.java 110619 2012-07-23 14:22:54Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -52,9 +52,10 @@ public class Day implements Serializable {
 	public Day() {
 	}
 
-	public Day(Date date, boolean hasEvents) {
+	public Day(Calendar c, boolean hasEvents) {
 		this.hasEvents = hasEvents;
-		this.date = date;
+		this.date = c.getTime();
+		this.dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
 	}
 
 	public void setDate(Date date) {
@@ -68,11 +69,6 @@ public class Day implements Serializable {
 	}
 
 	public int getDayOfMonth() {
-		if(dayOfMonth == -1 && date != null){
-			Calendar c = Calendar.getInstance();
-			c.setTime(date);
-			dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
-		}
 		return dayOfMonth;
 	}
 

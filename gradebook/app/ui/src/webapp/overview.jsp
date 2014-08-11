@@ -6,7 +6,7 @@
   <div class="portletBody">
 	<h:form id="gbForm">
 	  <t:aliasBean alias="#{bean}" value="#{overviewBean}">
-		<%@include file="/inc/appMenu.jspf"%>
+		<%@ include file="/inc/appMenu.jspf"%>
 	  </t:aliasBean>
 
 	  <sakai:flowState bean="#{overviewBean}" />
@@ -43,7 +43,7 @@
 			</h:panelGroup>	
 		</h:panelGrid>
 
-		<%@include file="/inc/globalMessages.jspf"%>
+		<%@ include file="/inc/globalMessages.jspf"%>
 		
 		<h:panelGroup rendered="#{overviewBean.isLetterGrade}" styleClass="validation">
 		  <h:outputText value="#{msgs.overview_lettergrade1}" rendered="#{overviewBean.isLetterGrade}"/>
@@ -112,6 +112,20 @@
 				</h:panelGroup>
 				
 				<h:outputText value="#{gradebookItem.name}" styleClass="categoryHeading" rendered="#{gradebookItem.isCategory}" />
+				<h:outputText value=" (" rendered="#{gradebookItem.isCategory && (gradebookItem.dropHighest != 0 || gradebookItem.drop_lowest != 0 || gradebookItem.keepHighest != 0)}" />
+            <h:outputFormat value="#{msgs.cat_drop_highest_display}" rendered="#{gradebookItem.isCategory && gradebookItem.dropHighest != 0}" >
+                <f:param value="#{gradebookItem.dropHighest}"/>
+            </h:outputFormat>
+            <h:outputText value="; " rendered="#{gradebookItem.isCategory && (gradebookItem.dropHighest != 0 && gradebookItem.drop_lowest != 0)}" />
+            <h:outputFormat value="#{msgs.cat_drop_lowest_display}" rendered="#{gradebookItem.isCategory && gradebookItem.drop_lowest != 0}" >
+                <f:param value="#{gradebookItem.drop_lowest}"/>
+            </h:outputFormat>
+            
+            <h:outputFormat value="#{msgs.cat_keep_highest_display}" rendered="#{gradebookItem.isCategory && gradebookItem.keepHighest != 0}" >
+                <f:param value="#{gradebookItem.keepHighest}"/>
+            </h:outputFormat>
+            <h:outputText value=")" rendered="#{gradebookItem.isCategory && (gradebookItem.dropHighest != 0 || gradebookItem.drop_lowest != 0 || gradebookItem.keepHighest != 0)}" />
+				
 
 			</h:column>
 			<h:column rendered="#{overviewBean.userAbleToEditAssessments}">

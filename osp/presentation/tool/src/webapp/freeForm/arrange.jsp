@@ -26,7 +26,7 @@
 
    <sakai:view_title value=""/>
    <sakai:instruction_message value="" />
-   <sakai:messages />
+   <sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
 
    <ospx:splitarea direction="horizontal" width="100%">
       <ospx:splitsection size="75%" valign="top">

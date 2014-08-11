@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/import-impl/src/java/org/sakaiproject/importer/impl/IMSFileParser.java $
- * $Id: IMSFileParser.java 118627 2013-01-23 05:41:07Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/import-impl/src/java/org/sakaiproject/importer/impl/IMSFileParser.java $
+ * $Id: IMSFileParser.java 89105 2011-02-26 07:44:58Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,8 +48,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public abstract class IMSFileParser extends ZipFileParser {
-	protected Map resourceMap = new HashMap();
-	protected Map translatorMap = new HashMap();
+	protected Map<String, Node> resourceMap = new HashMap<String, Node>();
+	protected Map<String, IMSResourceTranslator> translatorMap = new HashMap<String, IMSResourceTranslator>();
 	protected Map dependencies = new HashMap();
 	protected Document archiveManifest;
 	protected ResourceHelper resourceHelper;
@@ -65,11 +64,7 @@ public abstract class IMSFileParser extends ZipFileParser {
 	    InputStream fis = null;
         try {
             fis = new FileInputStream(absolutepathToManifest);
-            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-            builderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            builderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            builderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
+            DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             this.archiveManifest = (Document) docBuilder.parse(fis);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
@@ -294,14 +289,14 @@ public abstract class IMSFileParser extends ZipFileParser {
 		translatorMap.put(t.getTypeName(), t);
 	}
 	
-	protected abstract class ResourceHelper implements ManifestResource {
+	protected abstract static class ResourceHelper implements ManifestResource {
 
 		public String getDependency(Node node) {
 			return XPathHelper.getNodeValue("./dependency/@identifierref", node);
 		}
 	}
 	
-	protected abstract class ItemHelper implements ManifestItem {
+	protected abstract static class ItemHelper implements ManifestItem {
 		
 		public String getResourceId(Node itemNode) {
 			return XPathHelper.getNodeValue("./@identifierref", itemNode);
@@ -334,6 +329,6 @@ public abstract class IMSFileParser extends ZipFileParser {
 		}
 	}
 	
-	protected abstract class ManifestHelper implements Manifest {}
+	protected abstract static class ManifestHelper implements Manifest {}
 
 }

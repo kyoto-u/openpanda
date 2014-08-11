@@ -19,7 +19,7 @@
    <sakai:view_title value="#{msgs.add_wizard}"  rendered='#{wizard.current.newWizard}'/>
     
    <sakai:instruction_message value="#{msgs.wizard_type_instructions}" />
-   <sakai:messages />
+   <sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
       <h:panelGrid columns="1" styleClass="jsfFormTable">
 <%--      <h:outputLabel for="type" id="typeLabel" value="#{msgs.wizard_type}" /> --%>
       <h:panelGroup>

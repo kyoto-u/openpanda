@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: removeAssessment.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+* $Id: removeAssessment.jsp 104956 2012-02-22 18:42:29Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -41,7 +41,9 @@
    <h:inputHidden id="assessmentId" value="#{assessmentBean.assessmentId}"/>
    <h3><h:outputText  value="#{authorMessages.remove_assessment_co}" /></h3>
    <div class="validation tier1">
-          <h:outputText value="#{authorMessages.cert_rem_assmt} \"#{assessmentBean.title}\" ?" escape="false"/>
+   		  <h:outputFormat value="#{authorMessages.cert_rem_assmt}" escape="false">
+   		  	<f:param value="#{assessmentBean.title}"></f:param>
+   		  </h:outputFormat>
   </div>
 <p class="act">
        <h:commandButton value="#{commonMessages.remove_action}" type="submit"

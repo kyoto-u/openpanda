@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/memory/impl/MemoryServiceTest.java $
- * $Id: MemoryServiceTest.java 88042 2011-02-05 08:28:41Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/memory/impl/MemoryServiceTest.java $
+ * $Id: MemoryServiceTest.java 86666 2010-12-23 23:29:53Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 Sakai Foundation

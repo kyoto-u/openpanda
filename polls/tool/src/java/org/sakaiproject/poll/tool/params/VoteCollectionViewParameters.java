@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/tool/src/java/org/sakaiproject/poll/tool/params/VoteCollectionViewParameters.java $
- * $Id: VoteCollectionViewParameters.java 83332 2010-10-18 15:27:55Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/tool/src/java/org/sakaiproject/poll/tool/params/VoteCollectionViewParameters.java $
+ * $Id: VoteCollectionViewParameters.java 103685 2012-01-26 22:21:06Z bkirschn@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation

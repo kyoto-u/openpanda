@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AuthorBean.java $
- * $Id: AuthorBean.java 85589 2010-11-29 23:47:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AuthorBean.java $
+ * $Id: AuthorBean.java 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -43,7 +43,7 @@ import org.sakaiproject.component.cover.ServerConfigurationService;
  * General authoring information.
  * @author Ed Smiley
  *
- * @version $Id: AuthorBean.java 85589 2010-11-29 23:47:31Z ktsao@stanford.edu $
+ * @version $Id: AuthorBean.java 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
  */
 public class AuthorBean implements Serializable
 {
@@ -78,6 +78,7 @@ public class AuthorBean implements Serializable
   private boolean inactivePublishedAscending = true;
   private String outcome;
   private String selectActionOutcome;
+  private String importOutcome;
   private boolean showTemplateList;
   private boolean isEditPendingAssessmentFlow = true;
   private String fromPage;
@@ -102,7 +103,9 @@ public class AuthorBean implements Serializable
   private boolean isGradeable;
   private boolean isEditable;
   
+  private boolean justPublishedAnAssessment = false;
   private String protocol;
+  
   
   /**
    * @return the id
@@ -515,6 +518,16 @@ public class AuthorBean implements Serializable
     this.selectActionOutcome = selectActionOutcome;
   }
   
+  public String getImportOutcome()
+  {
+    return importOutcome;
+  }
+
+  public void setImportOutcome(String importOutcome)
+  {
+    this.importOutcome = importOutcome;
+  }
+  
   public boolean getShowTemplateList()
   {
     return showTemplateList;
@@ -751,6 +764,13 @@ public class AuthorBean implements Serializable
 		  return true;
 	  }
 	  return false;
+  }
+  public void setJustPublishedAnAssessment(boolean justPublishedAnAssessment) {
+	  this.justPublishedAnAssessment = justPublishedAnAssessment;
+  }
+
+  public boolean getJustPublishedAnAssessment() {
+	  return justPublishedAnAssessment;
   }
   
   public void setIsErrorInSettings(boolean isErrorInSettings)

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/SectionDataIfc.java $
- * $Id: SectionDataIfc.java 92517 2011-05-02 21:12:41Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/SectionDataIfc.java $
+ * $Id: SectionDataIfc.java 92362 2011-04-27 18:09:53Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation

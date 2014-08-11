@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/api/src/java/org/sakaiproject/poll/util/PollUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/api/src/java/org/sakaiproject/poll/util/PollUtil.java $
  * $Id: PollUtil.java 77660 2010-05-21 14:28:00Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

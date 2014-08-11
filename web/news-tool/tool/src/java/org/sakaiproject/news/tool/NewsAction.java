@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/branches/sakai-2.8.x/news-tool/tool/src/java/org/sakaiproject/news/tool/NewsAction.java $
- * $Id: NewsAction.java 100620 2011-11-10 01:32:44Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.0/news-tool/tool/src/java/org/sakaiproject/news/tool/NewsAction.java $
+ * $Id: NewsAction.java 103566 2012-01-25 18:51:20Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -23,6 +23,7 @@ package org.sakaiproject.news.tool;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 import java.text.DateFormat;
 
@@ -90,17 +91,24 @@ public class NewsAction extends VelocityPortletPaneledAction
 	private static final String FULL_STORY_TEXT = "full_story";
 
 	/** Basic feed access event. */
-	private static final String FEED_ACCESS = "news.read";
+	protected static final String FEED_ACCESS = "news.read";
 	
 	/** Basic feed update event. */
-	private static final String FEED_UPDATE = "news.revise";
+	protected static final String FEED_UPDATE = "news.revise";
+	
+	protected static final String STATE_DETECT_REGISTERED_EVENT = "detectRegisteredEvent";
 	
 	/**
 	 * Populate the state object, if needed.
 	 */
 	protected void initState(SessionState state, VelocityPortlet portlet, JetspeedRunData rundata)
 	{
+        // TODO: we might want to keep this from running for each request - but by letting it we get fresh info each time... -ggolden
+        super.initState(state, portlet, rundata);
+
 		PortletConfig config = portlet.getPortletConfig();
+		
+		Placement placement = ToolManager.getCurrentPlacement();
 
 		// detect that we have not done this, yet
 		if (state.getAttribute(STATE_CHANNEL_TITLE) == null)
@@ -204,9 +212,21 @@ public class NewsAction extends VelocityPortletPaneledAction
 		context.put("dateFormat", df);
 		try 
 		{
-			EventTrackingService.post(EventTrackingService.newEvent(FEED_ACCESS, "/news/site/" +
-				SiteService.getSite(ToolManager.getCurrentPlacement().getContext()).getId() +
-				"/placement/" + SessionManager.getCurrentToolSession().getPlacementId(), false));
+			// tracking event
+			if(state.getAttribute(FEED_ACCESS) == null) {
+				if(state.getAttribute(STATE_DETECT_REGISTERED_EVENT) == null) {
+					// is News tool
+					EventTrackingService.post(EventTrackingService.newEvent(FEED_ACCESS, "/news/site/" +
+						SiteService.getSite(ToolManager.getCurrentPlacement().getContext()).getId() +
+						"/placement/" + SessionManager.getCurrentToolSession().getPlacementId(), false));
+				}
+			}
+			else {
+				// extends News tool
+				EventTrackingService.post(EventTrackingService.newEvent((String)state.getAttribute(FEED_ACCESS), "/news/site/" +
+						SiteService.getSite(ToolManager.getCurrentPlacement().getContext()).getId() +
+						"/placement/" + SessionManager.getCurrentToolSession().getPlacementId(), false));
+			}
 			
 		} 
 		catch (IdUnusedException e)
@@ -381,9 +401,21 @@ public class NewsAction extends VelocityPortletPaneledAction
 
 			try 
 			{
-				EventTrackingService.post(EventTrackingService.newEvent(FEED_UPDATE, "/news/site/" +
-					SiteService.getSite(ToolManager.getCurrentPlacement().getContext()).getId() +
-					"/placement/" + SessionManager.getCurrentToolSession().getPlacementId(), true));
+				// tracking event
+				if(state.getAttribute(FEED_UPDATE) == null) {
+					if(state.getAttribute(STATE_DETECT_REGISTERED_EVENT) == null) {
+						// is News tool
+						EventTrackingService.post(EventTrackingService.newEvent(FEED_UPDATE, "/news/site/" +
+							SiteService.getSite(ToolManager.getCurrentPlacement().getContext()).getId() +
+							"/placement/" + SessionManager.getCurrentToolSession().getPlacementId(), true));
+					}
+				}
+				else {
+					// extends News tool
+					EventTrackingService.post(EventTrackingService.newEvent((String)state.getAttribute(FEED_UPDATE) , "/news/site/" +
+							SiteService.getSite(ToolManager.getCurrentPlacement().getContext()).getId() +
+							"/placement/" + SessionManager.getCurrentToolSession().getPlacementId(), true));
+				}
 				
 			} 
 			catch (IdUnusedException e)

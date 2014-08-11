@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/branches/msgcntr-2.8.x/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/PrivateMessageRecipient.java $
- * $Id: PrivateMessageRecipient.java 59677 2009-04-03 23:19:29Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/PrivateMessageRecipient.java $
+ * $Id: PrivateMessageRecipient.java 88696 2011-02-22 18:20:12Z wagnermr@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -38,6 +38,10 @@ public interface PrivateMessageRecipient
   public Boolean getRead();
 
   public void setRead(Boolean read);
+  
+  public Boolean getBcc();
+  
+  public void setBcc(Boolean bcc);
 
 }
 

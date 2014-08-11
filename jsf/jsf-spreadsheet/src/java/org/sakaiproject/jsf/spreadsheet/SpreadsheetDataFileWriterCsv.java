@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: SpreadsheetDataFileWriterCsv.java 100561 2011-11-08 23:48:00Z steve.swinsburg@gmail.com $
+* $Id: SpreadsheetDataFileWriterCsv.java 98884 2011-10-02 21:10:02Z darolmar@upvnet.upv.es $
 *
 ***********************************************************************************
 *

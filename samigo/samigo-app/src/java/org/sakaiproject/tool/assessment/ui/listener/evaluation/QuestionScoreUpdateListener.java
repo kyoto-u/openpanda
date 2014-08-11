@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreUpdateListener.java $
- * $Id: QuestionScoreUpdateListener.java 87712 2011-01-26 22:55:17Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreUpdateListener.java $
+ * $Id: QuestionScoreUpdateListener.java 113421 2012-09-21 21:42:26Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -39,6 +39,7 @@ import javax.faces.event.ActionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.math.util.MathUtils;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.grading.ItemGradingAttachmentIfc;
@@ -59,7 +60,7 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: QuestionScoreUpdateListener.java 87712 2011-01-26 22:55:17Z ktsao@stanford.edu $
+ * @version $Id: QuestionScoreUpdateListener.java 113421 2012-09-21 21:42:26Z ottenhoff@longsight.com $
  */
 
 public class QuestionScoreUpdateListener
@@ -159,7 +160,8 @@ public class QuestionScoreUpdateListener
           logString.append(", itemGradingId=");
           logString.append(data.getItemGradingId());
           
-          if (newAutoScore != oldAutoScore){
+          // if newAutoScore != oldAutoScore
+          if (!(MathUtils.equalsIncludingNaN(newAutoScore , oldAutoScore, 0.0001))) {
         	data.setAutoScore(Float.valueOf(newAutoScore));
         	logString.append(", newAutoScore=");
             logString.append(newAutoScore);
@@ -174,10 +176,11 @@ public class QuestionScoreUpdateListener
             logString.append(oldComments);
           }
           
-          if (newAutoScore != oldAutoScore || !newComments.equals(oldComments)){
+          // if newAutoScore != oldAutoScore or newComments != oldComments
+          if (!(MathUtils.equalsIncludingNaN(newAutoScore, oldAutoScore, 0.0001)) || !newComments.equals(oldComments)){
             data.setGradedBy(AgentFacade.getAgentString());
             data.setGradedDate(new Date());
-            EventTrackingService.post(EventTrackingService.newEvent("sam.question.score.update", logString.toString(), true));
+            EventTrackingService.post(EventTrackingService.newEvent("sam.question.score.update", "siteId=" + AgentFacade.getCurrentSiteId() + ", " + logString.toString(), true));
             delegate.updateItemScore(data, newAutoScore-oldAutoScore, tbean.getPublishedAssessment());
           }
           
@@ -222,7 +225,7 @@ public class QuestionScoreUpdateListener
 	  if (attachmentList.size() > 0) {
 			gradingService.saveOrUpdateAttachments(attachmentList);
 			EventTrackingService.post(EventTrackingService.newEvent("sam.student.score.update", 
-					"Adding " + attachmentList.size() + " attachments for itemGradingData id = " + itemGradingData.getItemGradingId(), 
+					"siteId=" + AgentFacade.getCurrentSiteId() + ", Adding " + attachmentList.size() + " attachments for itemGradingData id = " + itemGradingData.getItemGradingId(), 
 					true));
 		}
 
@@ -233,7 +236,7 @@ public class QuestionScoreUpdateListener
 		  Long attachmentId = (Long)iter.next();
 		  gradingService.removeItemGradingAttachment(attachmentId.toString());
 		  EventTrackingService.post(EventTrackingService.newEvent("sam.student.score.update", 
-					"Removing attachmentId = " + attachmentId, true));
+				  "siteId=" + AgentFacade.getCurrentSiteId() + ", Removing attachmentId = " + attachmentId, true));
 	  }
 	  bean.setIsAnyItemGradingAttachmentListModified(true);
   }

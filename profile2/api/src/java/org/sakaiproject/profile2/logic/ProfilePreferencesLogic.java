@@ -1,6 +1,7 @@
 package org.sakaiproject.profile2.logic;
 
 import org.sakaiproject.profile2.model.ProfilePreferences;
+import org.sakaiproject.profile2.types.PreferenceType;
 
 /**
  * An interface for dealing with ProfilePreferences in Profile2
@@ -39,12 +40,12 @@ public interface ProfilePreferencesLogic {
 	public boolean savePreferencesRecord(ProfilePreferences profilePreferences);
 	
 	/**
-	 * Is this type of notification to be sent as an email to the given user?
-	 * 
-	 * @param userId 	uuid of user
-	 * @param messageType type of message
-	 * @return
+	 * Does this user have the specific preference enabled? used for querying all of the preferences
+	 * @param userUuid	uuid of the user
+	 * @param type		PreferenceType enum
+	 * @return true if enabled, false if not
+	 * @since 1.5
 	 */
-	public boolean isEmailEnabledForThisMessageType(final String userId, final int messageType);
+	public boolean isPreferenceEnabled(final String userUuid, final PreferenceType type);
 
 }

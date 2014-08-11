@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/StackIterator.java $
- * $Id: StackIterator.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/StackIterator.java $
+ * $Id: StackIterator.java 101696 2011-12-13 14:44:36Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -26,8 +26,10 @@ import java.util.Stack;
 
 /**
  * StackIterator is both a java.util.Iterator and a stack (though not a java.util.Collection)
- *
+ * 
+ * @deprecated use commons-collection instead, this will be removed after 2.9 - Dec 2011
  */
+@Deprecated 
 public class StackIterator<E> implements Iterator<E>
 {
 	protected Stack<E> stack;

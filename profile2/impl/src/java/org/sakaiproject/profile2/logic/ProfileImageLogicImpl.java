@@ -1,9 +1,9 @@
 package org.sakaiproject.profile2.logic;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
+
+import lombok.Setter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -17,6 +17,7 @@ import org.sakaiproject.profile2.model.Person;
 import org.sakaiproject.profile2.model.ProfileImage;
 import org.sakaiproject.profile2.model.ProfilePreferences;
 import org.sakaiproject.profile2.model.ProfilePrivacy;
+import org.sakaiproject.profile2.types.PrivacyType;
 import org.sakaiproject.profile2.util.Messages;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
@@ -43,19 +44,12 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 	/**
  	 * {@inheritDoc}
  	 */
-	public ProfileImage getOfficialProfileImage(String userUuid) {
-		
-		return getOfficialImage(userUuid, new ProfileImage(), getUnavailableImageURL(), StringUtils.equals(userUuid,sakaiProxy.getCurrentUserId()));
-	}
-	
-	/**
- 	 * {@inheritDoc}
- 	 */
 	public ProfileImage getProfileImage(String userUuid, ProfilePreferences prefs, ProfilePrivacy privacy, int size, String siteId) {
 		
 		ProfileImage image = new ProfileImage();
 		boolean allowed = false;
 		boolean isSameUser = false;
+		String officialImageSource;
 		
 		String defaultImageUrl;
 		if (ProfileConstants.PROFILE_IMAGE_THUMBNAIL == size) {
@@ -121,8 +115,7 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		
 		//if not allowed, check privacy record
 		if(!allowed) {
-			boolean friend = connectionsLogic.isUserXFriendOfUserY(userUuid, currentUserUuid);
-			allowed = privacyLogic.isUserXProfileImageVisibleByUserY(userUuid, privacy, currentUserUuid, friend);
+			allowed = privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_PROFILEIMAGE);
 		}
 		
 		//default if still not allowed
@@ -156,6 +149,18 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 			}
 		}
 		
+		//prefs for gravatar, only if enabled
+		if(prefs != null && sakaiProxy.isGravatarImageEnabledGlobally()) {
+			if(prefs.isUseGravatar()){
+				imageType = ProfileConstants.PICTURE_SETTING_GRAVATAR;
+			}
+		}
+		
+		if(log.isDebugEnabled()){
+			log.debug("imageType: " + imageType);
+			log.debug("size: " + size);
+		}
+		
 		//get the image based on the global type/preference
 		switch (imageType) {
 			case ProfileConstants.PICTURE_SETTING_UPLOAD:
@@ -177,7 +182,29 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 			break;
 			
 			case ProfileConstants.PICTURE_SETTING_OFFICIAL: 
-				image = getOfficialImage(userUuid,image,defaultImageUrl,isSameUser);
+				officialImageSource = sakaiProxy.getOfficialImageSource();
+				
+				//check source and get appropriate value
+				if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_URL)){
+					image.setOfficialImageUrl(getOfficialImageUrl(userUuid));
+				} else if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_PROVIDER)){
+					String data = getOfficialImageEncoded(userUuid);
+					if(StringUtils.isBlank(data)) {
+						image.setExternalImageUrl(defaultImageUrl);
+					}
+				}
+				image.setAltText(getAltText(userUuid, isSameUser, true));
+			break;
+			
+			case ProfileConstants.PICTURE_SETTING_GRAVATAR:
+				String gravatarUrl = getGravatarUrl(userUuid);
+				if(StringUtils.isBlank(gravatarUrl)) {
+					image.setExternalImageUrl(defaultImageUrl);
+					image.setAltText(getAltText(userUuid, isSameUser, false));
+				} else {
+					image.setExternalImageUrl(gravatarUrl);
+					image.setAltText(getAltText(userUuid, isSameUser, true));
+				}
 			break;
 			
 			default:
@@ -186,26 +213,6 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 			break;
 				
 		}
-		
-		return image;
-	}
-	
-	private ProfileImage getOfficialImage(String userUuid, ProfileImage image,String defaultImageUrl, boolean isSameUser) {
-		
-		String officialImageSource = sakaiProxy.getOfficialImageSource();
-				
-		//check source and get appropriate value
-		if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_URL)){
-			image.setOfficialImageUrl(getOfficialImageUrl(userUuid));
-		} else if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_PROVIDER)){
-			String data = getOfficialImageEncoded(userUuid);
-			if(StringUtils.isBlank(data)) {
-				image.setExternalImageUrl(defaultImageUrl);
-			} else {
-				image.setOfficialImageEncoded(data);
-			}
-		}
-		image.setAltText(getAltText(userUuid, isSameUser, true));
 		
 		return image;
 	}
@@ -251,13 +258,13 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		 * MAIN PROFILE IMAGE
 		 */
 		//scale image
-		imageBytes = ProfileUtils.scaleImage(imageBytes, ProfileConstants.MAX_IMAGE_XY);
+		byte[] mainImageBytes = ProfileUtils.scaleImage(imageBytes, ProfileConstants.MAX_IMAGE_XY, mimeType);
 		 
 		//create resource ID
 		String mainResourceId = sakaiProxy.getProfileImageResourcePath(userUuid, ProfileConstants.PROFILE_IMAGE_MAIN);
 		
 		//save, if error, log and return.
-		if(!sakaiProxy.saveFile(mainResourceId, userUuid, fileName, mimeType, imageBytes)) {
+		if(!sakaiProxy.saveFile(mainResourceId, userUuid, fileName, mimeType, mainImageBytes)) {
 			log.error("Couldn't add main image to CHS. Aborting.");
 			return false;
 		}
@@ -266,23 +273,39 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		 * THUMBNAIL PROFILE IMAGE
 		 */
 		//scale image
-		imageBytes = ProfileUtils.scaleImage(imageBytes, ProfileConstants.MAX_THUMBNAIL_IMAGE_XY);
+		byte[] thumbnailImageBytes = ProfileUtils.scaleImage(imageBytes, ProfileConstants.MAX_THUMBNAIL_IMAGE_XY, mimeType);
 		 
 		//create resource ID
 		String thumbnailResourceId = sakaiProxy.getProfileImageResourcePath(userUuid, ProfileConstants.PROFILE_IMAGE_THUMBNAIL);
 		log.debug("Profile.ChangeProfilePicture.onSubmit thumbnailResourceId: " + thumbnailResourceId);
 		
 		//save, if error, warn, erase thumbnail reference, and continue (we really only need the main image)
-		if(!sakaiProxy.saveFile(thumbnailResourceId, userUuid, fileName, mimeType, imageBytes)) {
+		if(!sakaiProxy.saveFile(thumbnailResourceId, userUuid, fileName, mimeType, thumbnailImageBytes)) {
 			log.warn("Couldn't add thumbnail image to CHS. Main image will be used instead.");
 			thumbnailResourceId = null;
+		}
+		
+		/*
+		 * AVATAR PROFILE IMAGE
+		 */
+		//scale image
+		byte[] avatarImageBytes = ProfileUtils.createAvatar(imageBytes, mimeType);
+		 
+		//create resource ID
+		String avatarResourceId = sakaiProxy.getProfileImageResourcePath(userUuid, ProfileConstants.PROFILE_IMAGE_AVATAR);
+		log.debug("Profile.ChangeProfilePicture.onSubmit avatarResourceId: " + avatarResourceId);
+		
+		//save, if error, warn, erase avatar reference, and continue (we really only need the main image)
+		if(!sakaiProxy.saveFile(avatarResourceId, userUuid, fileName, mimeType, avatarImageBytes)) {
+			log.warn("Couldn't add avatar image to CHS. Main image will be used instead.");
+			avatarResourceId = null;
 		}
 		
 		/*
 		 * SAVE IMAGE RESOURCE IDS
 		 */
 		//save
-		ProfileImageUploaded profileImage = new ProfileImageUploaded(userUuid, mainResourceId, thumbnailResourceId, true);
+		ProfileImageUploaded profileImage = new ProfileImageUploaded(userUuid, mainResourceId, thumbnailResourceId, avatarResourceId, true);
 		if(dao.addNewProfileImage(profileImage)){
 			log.info("Added a new profile image for user: " + userUuid);
 			return true;
@@ -295,7 +318,7 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean setExternalProfileImage(String userUuid, String url, String thumbnail) {
+	public boolean setExternalProfileImage(String userUuid, String fullSizeUrl, String thumbnailUrl, String avatar) {
 		
 		//check auth and get currentUserUuid
 		String currentUserUuid = sakaiProxy.getCurrentUserId();
@@ -315,7 +338,7 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		}
 		
 		//save
-		ProfileImageExternal externalImage = new ProfileImageExternal(userUuid, url, thumbnail);
+		ProfileImageExternal externalImage = new ProfileImageExternal(userUuid, fullSizeUrl, thumbnailUrl, avatar);
 		if(dao.saveExternalImage(externalImage)) {
 			log.info("Updated external image record for user: " + userUuid); 
 			return true;
@@ -360,7 +383,7 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		// create resource ID
 		String mainResourcePath = sakaiProxy.getProfileGalleryImagePath(userUuid, imageId);
 
-		byte[] scaledImageBytes = ProfileUtils.scaleImage(imageBytes, ProfileConstants.MAX_GALLERY_IMAGE_XY);
+		byte[] scaledImageBytes = ProfileUtils.scaleImage(imageBytes, ProfileConstants.MAX_GALLERY_IMAGE_XY, mimeType);
 		
 		// save image
 		if (!sakaiProxy.saveFile(mainResourcePath, userUuid, fileName, mimeType,scaledImageBytes)) {
@@ -369,7 +392,7 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		}
 
 		// create thumbnail
-		byte[] thumbnailBytes = ProfileUtils.scaleImage(imageBytes, ProfileConstants.MAX_GALLERY_THUMBNAIL_IMAGE_XY);
+		byte[] thumbnailBytes = ProfileUtils.scaleImage(imageBytes, ProfileConstants.MAX_GALLERY_THUMBNAIL_IMAGE_XY, mimeType);
 		String thumbnailResourcePath = sakaiProxy.getProfileGalleryThumbnailPath(userUuid, imageId);
 		sakaiProxy.saveFile(thumbnailResourcePath, userUuid, fileName, mimeType,thumbnailBytes);
 		
@@ -411,7 +434,7 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 	 * {@inheritDoc}
 	 */
 	public boolean removeGalleryImage(String userId, long imageId) {
-		if(userId == null || new Long(imageId) == null){
+		if(userId == null || Long.valueOf(imageId) == null){
 	  		throw new IllegalArgumentException("Null argument in ProfileLogicImpl.removeGalleryImage()"); 
 	  	}
 		
@@ -451,6 +474,25 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		return false;
 	}
 	
+	
+	/**
+ 	 * {@inheritDoc}
+ 	 */
+	public String getGravatarUrl(final String userUuid) {
+		
+		String email = sakaiProxy.getUserEmail(userUuid);
+		if(StringUtils.isBlank(email)){
+			return null;
+		}
+				
+		return ProfileConstants.GRAVATAR_BASE_URL + ProfileUtils.calculateMD5(email) + "?s=200";
+	}
+
+	/**
+	 * Generate the full URL to the default image (either full or thumbnail)
+	 * @param imagePath
+	 * @return
+	 */
 	private String getUnavailableImageURL(String imagePath) {
 		StringBuilder path = new StringBuilder();
 		path.append(sakaiProxy.getServerUrl());
@@ -532,6 +574,14 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 			}
 		}
 		
+		if(size == ProfileConstants.PROFILE_IMAGE_AVATAR) {
+			mtba = sakaiProxy.getResource(profileImage.getAvatarResource());
+			//PRFL-706, if the file is deleted, catch any possible NPE
+			if(mtba == null || mtba.getBytes() == null) {
+				mtba = sakaiProxy.getResource(profileImage.getMainResource());
+			}
+		}
+		
 		return mtba;
 	}
 	
@@ -554,29 +604,43 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		
 		//if none, return null
     	if(externalImage == null) {
-    		return getUnavailableImageURL();
+    		return defaultImageUrl;
     	}
     	
-    	//else return the url for the type they requested
+    	//otherwise get the url for the type they requested
+    	String url = null;
     	if(size == ProfileConstants.PROFILE_IMAGE_MAIN) {
-    		String url = externalImage.getMainUrl();
-    		if(StringUtils.isBlank(url)) {
-    			return defaultImageUrl;
+    		if(log.isDebugEnabled()) {
+    			log.debug("Returning main image url for userId: " + userUuid);
     		}
-    		return url;
+    		url = externalImage.getMainUrl();
     	}
     	
     	if(size == ProfileConstants.PROFILE_IMAGE_THUMBNAIL) {
-    		String url = externalImage.getThumbnailUrl();
-    		if(StringUtils.isBlank(url)) {
-    			url = externalImage.getMainUrl();
-    			if(StringUtils.isBlank(url)) {
-    				return defaultImageUrl;
-    			}
+    		if(log.isDebugEnabled()) {
+    			log.debug("Returning thumb image url for userId: " + userUuid);
     		}
-    		return url;
+    		url = externalImage.getThumbnailUrl();
     	}
     	
+    	if(size == ProfileConstants.PROFILE_IMAGE_AVATAR) {
+    		if(log.isDebugEnabled()) {
+    			log.debug("Returning avatar image url for userId: " + userUuid);
+    		}
+    		url = externalImage.getAvatarUrl();
+    	}
+    	
+    	//if we have a url, return it,
+    	if(StringUtils.isNotBlank(url)){
+    		return url;
+    	} else {
+    		//otherwise fallback
+    		url = externalImage.getMainUrl();
+			if(StringUtils.isBlank(url)) {
+				url = defaultImageUrl;
+			}
+    	}
+    	    	
     	//no url	
     	log.info("ProfileLogic.getExternalProfileImageUrl. No URL for userId: " + userUuid + ", imageType: " + size + ". Returning default.");  
     	return defaultImageUrl;
@@ -675,30 +739,19 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 	
 	
 	
-	
+	@Setter
 	private SakaiProxy sakaiProxy;
-	public void setSakaiProxy(SakaiProxy sakaiProxy) {
-		this.sakaiProxy = sakaiProxy;
-	}
 	
+	@Setter
 	private ProfilePrivacyLogic privacyLogic;
-	public void setPrivacyLogic(ProfilePrivacyLogic privacyLogic) {
-		this.privacyLogic = privacyLogic;
-	}
 	
+	@Setter
 	private ProfileConnectionsLogic connectionsLogic;
-	public void setConnectionsLogic(ProfileConnectionsLogic connectionsLogic) {
-		this.connectionsLogic = connectionsLogic;
-	}
 	
+	@Setter
 	private ProfilePreferencesLogic preferencesLogic;
-	public void setPreferencesLogic(ProfilePreferencesLogic preferencesLogic) {
-		this.preferencesLogic = preferencesLogic;
-	}
 	
+	@Setter
 	private ProfileDao dao;
-	public void setDao(ProfileDao dao) {
-		this.dao = dao;
-	}	
 	
 }

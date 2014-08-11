@@ -8,7 +8,7 @@
 <f:view>
 	<sakai:view title="#{msgs.profile}" rendered="#{ProfileTool.showTool}">
 		<h:form id="displayProfileForm">	 	
-		<%@include file="profileCommonToolBar.jsp"%>
+		<%@ include file="profileCommonToolBar.jsp"%>
 			<!--displaySearchedProfile.jsp -->
 		
 			<table border="0" class="profileTable" cellspacing="0" cellpadding="0" summary="layout">
@@ -40,7 +40,7 @@
 						<profile:profile_display_HTML value="#{SearchTool.profile.profile.otherInformation}"  rendered="#{SearchTool.profile.displayCompleteProfile}"/>
 					</td>	
 					<td class="profileSearch">				
-						<%@include file="searchModule.jsp"%>
+						<%@ include file="searchModule.jsp"%>
 					</td>
 				</tr>
 			</table>	

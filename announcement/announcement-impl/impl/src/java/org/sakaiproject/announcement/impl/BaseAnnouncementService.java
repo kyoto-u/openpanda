@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/branches/sakai-2.8.x/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/BaseAnnouncementService.java $
- * $Id: BaseAnnouncementService.java 106322 2012-03-28 15:03:22Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/BaseAnnouncementService.java $
+ * $Id: BaseAnnouncementService.java 111758 2012-08-23 02:12:09Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -21,28 +21,35 @@
 
 package org.sakaiproject.announcement.impl;
 
-import java.io.Writer;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Vector;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Date;
-import java.text.DateFormat;
 import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.alias.api.Alias;
+import org.sakaiproject.alias.api.AliasService;
 import org.sakaiproject.announcement.api.AnnouncementChannel;
 import org.sakaiproject.announcement.api.AnnouncementChannelEdit;
 import org.sakaiproject.announcement.api.AnnouncementMessage;
@@ -50,18 +57,14 @@ import org.sakaiproject.announcement.api.AnnouncementMessageEdit;
 import org.sakaiproject.announcement.api.AnnouncementMessageHeader;
 import org.sakaiproject.announcement.api.AnnouncementMessageHeaderEdit;
 import org.sakaiproject.announcement.api.AnnouncementService;
-import org.sakaiproject.authz.cover.FunctionManager;
-import org.sakaiproject.authz.cover.SecurityService;
-import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.content.api.ContentHostingService;
-import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.authz.api.FunctionManager;
+import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.entity.api.ContextObserver;
 import org.sakaiproject.entity.api.Edit;
 import org.sakaiproject.entity.api.Entity;
-import org.sakaiproject.entity.api.Summary;
-import org.sakaiproject.entity.api.EntityAccessOverloadException;
-import org.sakaiproject.entity.api.EntityCopyrightException;
 import org.sakaiproject.entity.api.EntityNotDefinedException;
 import org.sakaiproject.entity.api.EntityPermissionException;
 import org.sakaiproject.entity.api.EntityTransferrer;
@@ -87,37 +90,22 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.time.api.Time;
-import org.sakaiproject.time.cover.TimeService;
-import org.sakaiproject.tool.api.Placement;
-import org.sakaiproject.tool.cover.SessionManager;
-import org.sakaiproject.tool.cover.ToolManager;
+import org.sakaiproject.time.api.TimeService;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.util.MergedList;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
-import org.sakaiproject.alias.api.Alias;
-import org.sakaiproject.alias.cover.AliasService;
-
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * <p>
  * BaseAnnouncementService extends the BaseMessageService for the specifics of Announcement.
  * </p>
  */
+
 public abstract class BaseAnnouncementService extends BaseMessageService implements AnnouncementService, ContextObserver,
 		EntityTransferrer, EntityTransferrerRefMigrator
 {
@@ -127,6 +115,8 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 	/** private constants definitions */
 	private final static String SAKAI_ANNOUNCEMENT_TOOL_ID = "sakai.announcements";
 	private final static String ANNOUNCEMENT_CHANNEL_PROPERTY = "channel";
+	private static final String PORTLET_CONFIG_PARM_MERGED_CHANNELS = "mergedAnnouncementChannels";
+
 	
 	/** Messages, for the http access. */
 	protected static ResourceLoader rb = new ResourceLoader("annc-access");
@@ -147,9 +137,46 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 		contentHostingService = service;
 	}
 	
+	private FunctionManager functionManager;
+	public void setFunctionManager(FunctionManager functionManager) {
+		this.functionManager = functionManager;
+	}
+	
+	private AliasService aliasService;	
+	public void setAliasService(AliasService aliasService) {
+		this.aliasService = aliasService;
+	}
+
+	private TimeService timeService;
+	public void setTimeService(TimeService timeService) {
+		this.timeService = timeService;
+		super.setTimeService(timeService);
+	}
+
+	private SessionManager sessionManager;
+	public void setSessionManager(SessionManager sessionManager) {
+		this.sessionManager = sessionManager;
+		super.setSessionManager(sessionManager);
+	}
+	
+	private ToolManager toolManager;
+	public void setToolManager(ToolManager toolManager) {
+		this.toolManager = toolManager;
+		
+	}
+
+	private SecurityService securityService;
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+		super.setSecurityService(securityService);
+	}
+	
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Constructors, Dependencies and their setter methods
 	 *********************************************************************************************************************************************************************************************************************************************************/
+
+	
+
 
 	/** Dependency: NotificationService. */
 	protected NotificationService m_notificationService = null;
@@ -193,17 +220,17 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 			edit.setAction(new SiteEmailNotificationAnnc());
 
 			// register functions
-			FunctionManager.registerFunction(eventId(SECURE_READ));
-			FunctionManager.registerFunction(eventId(SECURE_ADD));
-			FunctionManager.registerFunction(eventId(SECURE_REMOVE_ANY));
-			FunctionManager.registerFunction(eventId(SECURE_REMOVE_OWN));
-			FunctionManager.registerFunction(eventId(SECURE_UPDATE_ANY));
-			FunctionManager.registerFunction(eventId(SECURE_UPDATE_OWN));
-			FunctionManager.registerFunction(eventId(SECURE_ALL_GROUPS));
+			functionManager.registerFunction(eventId(SECURE_READ));
+			functionManager.registerFunction(eventId(SECURE_ADD));
+			functionManager.registerFunction(eventId(SECURE_REMOVE_ANY));
+			functionManager.registerFunction(eventId(SECURE_REMOVE_OWN));
+			functionManager.registerFunction(eventId(SECURE_UPDATE_ANY));
+			functionManager.registerFunction(eventId(SECURE_UPDATE_OWN));
+			functionManager.registerFunction(eventId(SECURE_ALL_GROUPS));
 
 			// Sakai v2.4: UI end says hidden, 'under the covers' says draft
 			// Done so import from old sites causes drafts to 'become' hidden in new sites
-			FunctionManager.registerFunction(eventId(SECURE_READ_DRAFT));
+			functionManager.registerFunction(eventId(SECURE_READ_DRAFT));
 
 			// entity producer registration
 			m_entityManager.registerEntityProducer(this, REFERENCE_ROOT);
@@ -603,7 +630,7 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 				{
 					try
 					{
-						String aliasTarget = AliasService.getTarget(context);
+						String aliasTarget = aliasService.getTarget(context);
 						if (aliasTarget.startsWith(REFERENCE_ROOT)) // only support announcement aliases
 						{
 							parts = StringUtil.split(aliasTarget, Entity.SEPARATOR);
@@ -682,7 +709,7 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 	public String getRssUrl(Reference ref) 
 	{
       String alias = null;
-      List aliasList =  AliasService.getAliases( ref.getReference() );
+      List aliasList =  aliasService.getAliases( ref.getReference() );
 		
       if ( ! aliasList.isEmpty() )
          alias = ((Alias)aliasList.get(0)).getId();
@@ -709,7 +736,7 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 	{
 		final ResourceProperties messageProps = message.getProperties();
 
-		final Time now = TimeService.newTime();
+		final Time now = timeService.newTime();
 		try 
 		{
 			final Time releaseDate = message.getProperties().getTimeProperty(RELEASE_DATE);
@@ -1002,7 +1029,8 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * AnnouncementService implementation
 	 *********************************************************************************************************************************************************************************************************************************************************/
-
+	
+	
 	/**
 	 * Return a specific announcement channel.
 	 * 
@@ -1039,7 +1067,81 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 		return (AnnouncementChannelEdit) addChannel(ref);
 
 	} // addAnnouncementChannel
+	
+	/**
+	 * Return a list of messages from the provided channel (merged flag returns merged messages)
+	 * @param channelReference
+	 *        Channel's reference String
+	 * @param filter
+	 *        A filtering object to accept messages, or null if no filtering is desired.
+	 * @param order
+	 *        Order of messages, ascending if true, descending if false
+	 * @param merged
+	 * 		  flag to include merged channel messages, true returns ALL messages including merged sites/channels
+	 * @return a list of Message objects or specializations of Message objects (may be empty).
+	 * @exception IdUnusedException
+	 *            If this name is not defined for a announcement channel.
+	 * @exception PermissionException
+	 *            if the user does not have read permission to the channel.
+	 * @exception NullPointerException
+	 */
+	public List getMessages(String channelReference,Filter filter, boolean order, boolean merged) throws IdUnusedException, PermissionException, NullPointerException
+	{
+		List<Message> messageList = new Vector();	
+		filter = new PrivacyFilter(filter);  		// filter out drafts this user cannot see
+		Site site = null;
+		String initMergeList = null;
+	
+		try{
+			site = org.sakaiproject.site.cover.SiteService.getSite(getAnnouncementChannel(channelReference).getContext());
 
+			ToolConfiguration tc=site.getToolForCommonId(SAKAI_ANNOUNCEMENT_TOOL_ID);
+			if (tc!=null){
+				initMergeList = tc.getPlacementConfig().getProperty(PORTLET_CONFIG_PARM_MERGED_CHANNELS);	
+			}
+			
+			MergedList mergedAnnouncementList = new MergedList();
+			String[] channelArrayFromConfigParameterValue = null;	
+			
+			//get array of associated channels: similar logic as found in AnnouncementAction.getMessages() for viewing
+			channelArrayFromConfigParameterValue = mergedAnnouncementList.getChannelReferenceArrayFromDelimitedString(channelReference, initMergeList);
+			
+			//get messages for each channel
+			for(int i=0; i<channelArrayFromConfigParameterValue.length;i++)
+			{
+				MessageChannel siteChannel = getAnnouncementChannel(channelArrayFromConfigParameterValue[i]);
+				if (siteChannel != null)
+				{
+					if (allowGetChannel(siteChannel.getReference()))
+					{
+						//merged flag = true then add all channel's messages
+						//merged flag = false only add the calling channel's messages
+						if(merged || siteChannel.getContext().equals(site.getId()))
+								messageList.addAll(siteChannel.getMessages(filter,order));
+					}
+				}
+			}
+			
+			//sort messages
+			Collections.sort(messageList);
+			if (!order)
+			{
+				Collections.reverse(messageList);
+			}			
+		} catch (IdUnusedException e) {
+			M_log.warn(e.getMessage());
+		}
+		catch (PermissionException e) {
+			M_log.warn(e.getMessage());
+		}
+		catch (NullPointerException e) {
+			M_log.warn(e.getMessage());
+		}
+		return messageList;
+
+	} // getMessages
+	
+	
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * ResourceService implementation
 	 *********************************************************************************************************************************************************************************************************************************************************/
@@ -1130,7 +1232,6 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 					boolean toBeImported = true;
 					if (resourceIds != null && resourceIds.size() > 0)
 					{
-						// if there is a list for import assignments, only import those assignments and relative submissions
 						toBeImported = false;
 						for (int m = 0; m < resourceIds.size() && !toBeImported; m++)
 						{
@@ -1139,6 +1240,13 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 								toBeImported = true;
 							}
 						}
+					}
+					
+					// not to import any assignment-generated announcement
+					String assignmentReference = StringUtil.trimToNull(oMessage.getProperties().getProperty(AnnouncementService.ASSIGNMENT_REFERENCE));
+					if (toBeImported && assignmentReference != null)
+					{
+						toBeImported = false;
 					}
 
 					if (toBeImported)
@@ -1193,9 +1301,9 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 												// add the new resource into attachment collection area
 												ContentResource attachment = contentHostingService.addAttachmentResource(
 														Validator.escapeResourceName(oAttachment.getProperties().getProperty(ResourceProperties.PROP_DISPLAY_NAME)), 
-														//ToolManager.getCurrentPlacement().getContext(), 
-														toContext, 	//don't use ToolManager.getCurrentPlacement()!
-														ToolManager.getTool("sakai.announcements").getTitle(), 
+														//toolManager.getCurrentPlacement().getContext(), 
+														toContext, 	//don't use toolManager.getCurrentPlacement()!
+														toolManager.getTool("sakai.announcements").getTitle(), 
 														oAttachment.getContentType(),
 														oAttachment.getContent(), 
 														oAttachment.getProperties());
@@ -1207,8 +1315,8 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 												// add the new resource into resource area
 												ContentResource attachment = contentHostingService.addResource(
 														Validator.escapeResourceName(oAttachment.getProperties().getProperty(ResourceProperties.PROP_DISPLAY_NAME)),
-														//ToolManager.getCurrentPlacement().getContext(), 
-														toContext, //don't use ToolManager.getCurrentPlacement()!
+														//toolManager.getCurrentPlacement().getContext(), 
+														toContext, //don't use toolManager.getCurrentPlacement()!
 														1, 
 														oAttachment.getContentType(), 
 														oAttachment.getContent(), 
@@ -1385,11 +1493,11 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 			AnnouncementMessage msg = (AnnouncementMessage) getMessage(messageId);
 
 			// filter out drafts not by this user (unless this user is a super user or has access_draft ability)
-			if ((msg.getAnnouncementHeader()).getDraft() && (!SecurityService.isSuperUser())
-					&& (!msg.getHeader().getFrom().getId().equals(SessionManager.getCurrentSessionUserId()))
+			if ((msg.getAnnouncementHeader()).getDraft() && (!securityService.isSuperUser())
+					&& (!msg.getHeader().getFrom().getId().equals(sessionManager.getCurrentSessionUserId()))
 					&& (!unlockCheck(SECURE_READ_DRAFT, msg.getReference())))
 			{
-				throw new PermissionException(SessionManager.getCurrentSessionUserId(), SECURE_READ, msg.getReference());
+				throw new PermissionException(sessionManager.getCurrentSessionUserId(), SECURE_READ, msg.getReference());
 			}
 
 			return msg;
@@ -1415,6 +1523,7 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 			return super.getMessages(filter, ascending);
 
 		} // getMessages
+
 		
 		/**
 		 * A (AnnouncementMessageEdit) cover for editMessage. Return a specific channel message, as specified by message name, locked for update. Must commitEdit() to make official, or cancelEdit() when done!
@@ -1706,8 +1815,8 @@ public abstract class BaseAnnouncementService extends BaseMessageService impleme
 			{
 				AnnouncementMessage msg = (AnnouncementMessage) o;
 
-				if ((msg.getAnnouncementHeader()).getDraft() && (!SecurityService.isSuperUser())
-						&& (!msg.getHeader().getFrom().getId().equals(SessionManager.getCurrentSessionUserId()))
+				if ((msg.getAnnouncementHeader()).getDraft() && (!securityService.isSuperUser())
+						&& (!msg.getHeader().getFrom().getId().equals(sessionManager.getCurrentSessionUserId()))
 						&& (!unlockCheck(SECURE_READ_DRAFT, msg.getReference())))
 				{
 					return false;

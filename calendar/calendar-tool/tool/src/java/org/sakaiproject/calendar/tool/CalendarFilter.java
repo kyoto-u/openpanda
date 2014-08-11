@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarFilter.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarFilter.java $
  * $Id: CalendarFilter.java 74466 2010-03-09 10:43:47Z nuno@ufp.edu.pt $
  ***********************************************************************************
  *

@@ -41,16 +41,20 @@ if (thisId == null)
 			});
 		</script>
 <!--jsp/discussionForum/forum/dfForumSettings.jsp-->
-		<sakai:tool_bar_message value="#{msgs.cdfm_delete_forum_title}" />
+		<%--<sakai:tool_bar_message value="#{msgs.cdfm_delete_forum_title}" />--%>
 		<%--//designNote: this just feels weird - presenting somehting that sort of looks like the form used to create the forum (with an editable permissions block!) to comfirm deletion --%>
 		<h:outputText styleClass="messageAlert" value="#{msgs.cdfm_delete_forum}" rendered="#{ForumTool.selectedForum.markForDeletion}" style="display:block" />	
+        <h:outputText styleClass="messageAlert" value="#{msgs.cdfm_duplicate_forum_confirm}" rendered="#{ForumTool.selectedForum.markForDuplication}" style="display:block" />
 		<table class="forumHeader">
 			  <tr>
-					<td>
+					<td><h:messages styleClass="messageAlert" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}" />
 				<h:graphicImage url="/images/silk/lock.png" alt="#{msgs.cdfm_forum_locked}" rendered="#{ForumTool.selectedForum.locked=='true'}"  style="margin-right:.3em"/>
 				<h:graphicImage url="/images/silk/lock_open.png" alt="#{msgs.cdfm_forum_locked}" rendered="#{ForumTool.selectedForum.locked=='false'}"  style="margin-right:.3em"/>
 				<span class="title">
-				    <h:outputText id="forum_title"  value="#{ForumTool.selectedForum.forum.title}"/>
+                    <h:outputText value="#{ForumTool.selectedForum.forum.title}" rendered="#{!ForumTool.selectedForum.markForDuplication}"/>
+				    <h:inputText size="50" value="#{ForumTool.selectedForum.forum.title}" id="forum_title" rendered="#{ForumTool.selectedForum.markForDuplication}">
+                        <f:validateLength minimum="1" maximum="255" />
+                    </h:inputText>
 				</span>
 				<h:outputText   value="#{msgs.cdfm_openb}"/>
 					<h:outputText   value="#{msgs.cdfm_moderated}"  rendered="#{ForumTool.selectedForum.moderated=='true'}" />
@@ -100,6 +104,13 @@ if (thisId == null)
 				<h:panelGroup><h:outputLabel for="moderate_forum"  value="#{msgs.cdfm_moderate_forum}" styleClass="shorttext"/>	</h:panelGroup>
 				<h:panelGroup>
 					<h:selectOneRadio layout="pageDirection" disabled="true" id="moderate_forum"  value="#{ForumTool.selectedForum.moderated}" styleClass="checkbox inlineForm">
+    					<f:selectItem itemValue="true" itemLabel="#{msgs.cdfm_yes}"/>
+    					<f:selectItem itemValue="false" itemLabel="#{msgs.cdfm_no}"/>
+  					</h:selectOneRadio>
+				</h:panelGroup>
+				<h:panelGroup><h:outputLabel for="postFirst_forum"  value="#{msgs.cdfm_postFirst}" styleClass="shorttext"/>	</h:panelGroup>
+				<h:panelGroup>
+					<h:selectOneRadio layout="pageDirection" disabled="true" id="postFirst_forum"  value="#{ForumTool.selectedForum.postFirst}" styleClass="checkbox inlineForm">
     					<f:selectItem itemValue="true" itemLabel="#{msgs.cdfm_yes}"/>
     					<f:selectItem itemValue="false" itemLabel="#{msgs.cdfm_no}"/>
   					</h:selectOneRadio>
@@ -195,25 +206,31 @@ if (thisId == null)
 
 		<div id="permissionReadOnlyW">
 		<div id="permissionReadOnly">	
-      <%@include file="/jsp/discussionForum/permissions/permissions_include.jsp"%>
+      <%@ include file="/jsp/discussionForum/permissions/permissions_include.jsp"%>
 		</div>	
 		</div>
       --%>      
        <div class="act">
-          <h:commandButton id ="revise" rendered="#{!ForumTool.selectedForum.markForDeletion}" 
+          <h:commandButton id ="revise" rendered="#{!ForumTool.selectedForum.markForDeletion && !ForumTool.selectedForum.markForDuplication}" 
                            immediate="true"  action="#{ForumTool.processActionReviseForumSettings}" 
                            value="#{msgs.cdfm_button_bar_revise}" accesskey="r"> 
     	 	  	<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>    	 	  	
           </h:commandButton>
           
           <h:commandButton id="delete_confirm" action="#{ForumTool.processActionDeleteForumConfirm}" 
-                           value="#{msgs.cdfm_button_bar_delete}" rendered="#{!ForumTool.selectedForum.markForDeletion}"
+                           value="#{msgs.cdfm_button_bar_delete_forum}" rendered="#{!ForumTool.selectedForum.markForDeletion && !ForumTool.selectedForum.markForDuplication}"
                            accesskey="">
 	        	<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
           </h:commandButton>
           
           <h:commandButton id="delete" action="#{ForumTool.processActionDeleteForum}" 
-                           value="#{msgs.cdfm_button_bar_delete}" rendered="#{ForumTool.selectedForum.markForDeletion}"
+                           value="#{msgs.cdfm_button_bar_delete_forum}" rendered="#{ForumTool.selectedForum.markForDeletion}"
+                           accesskey="">
+	        	<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+          </h:commandButton>
+          
+          <h:commandButton id="duplicate" action="#{ForumTool.processActionDuplicateForum}" 
+                           value="#{msgs.cdfm_duplicate_forum}" rendered="#{ForumTool.selectedForum.markForDuplication}"
                            accesskey="">
 	        	<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
           </h:commandButton>

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/branches/sakai-2.8.x/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementMessageEdit.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementMessageEdit.java $
  * $Id: AnnouncementMessageEdit.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

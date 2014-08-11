@@ -32,6 +32,7 @@ import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.facade.GradebookFacade;
 import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.cover.ToolManager;
+import org.apache.commons.math.util.MathUtils;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.Site;
@@ -271,9 +272,14 @@ public void removeExternalAssessment(String gradebookUId,
     {
       return;
     }
+    
+    //SAM-1562 We need to round the float score and covert to a double -DH
+    float fScore = MathUtils.round(ag.getFinalScore(), 2);
+    Double score = Float.valueOf(fScore).doubleValue();
+    log.info("rounded:  " + ag.getFinalScore() + " to: " + score.toString() );
     g.updateExternalAssessmentScore(gradebookUId,
       ag.getPublishedAssessmentId().toString(),
-      ag.getAgentId(),  Double.valueOf(ag.getFinalScore().doubleValue()));
+      ag.getAgentId(),  score);
     if (testErrorHandling){
       throw new Exception("Encountered an error in update ExternalAssessmentScore.");
     }

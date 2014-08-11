@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/branches/sakai-2.8.x/announcement-impl/impl/src/java/org/sakaiproject/announcement/user/prefs/AnnouncementUserNotificationPreferencesRegistrationImpl.java $
- * $Id: AnnouncementUserNotificationPreferencesRegistrationImpl.java 83344 2010-10-18 17:56:16Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-impl/impl/src/java/org/sakaiproject/announcement/user/prefs/AnnouncementUserNotificationPreferencesRegistrationImpl.java $
+ * $Id: AnnouncementUserNotificationPreferencesRegistrationImpl.java 82737 2010-09-24 13:52:32Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2010 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/util/TimeUtil.java $
- * $Id: TimeUtil.java 118939 2013-01-29 00:43:24Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/util/TimeUtil.java $
+ * $Id: TimeUtil.java 115368 2012-10-31 16:08:37Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation

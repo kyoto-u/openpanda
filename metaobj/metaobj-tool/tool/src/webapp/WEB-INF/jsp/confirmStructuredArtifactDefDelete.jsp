@@ -1,7 +1,7 @@
 <%--
   ~ *********************************************************************************
-  ~  $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-tool/tool/src/webapp/WEB-INF/jsp/confirmStructuredArtifactDefDelete.jsp $
-  ~  $Id: confirmStructuredArtifactDefDelete.jsp 53133 2008-10-04 13:17:36Z csev@umich.edu $
+  ~  $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-tool/tool/src/webapp/WEB-INF/jsp/confirmStructuredArtifactDefDelete.jsp $
+  ~  $Id: confirmStructuredArtifactDefDelete.jsp 98451 2011-09-20 21:50:29Z botimer@umich.edu $
   ~ **********************************************************************************
   ~
  *  Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

@@ -12,10 +12,13 @@
 	<h:form id="msgForum" styleClass="specialLink">
 
 	<!--jsp/discussionForum/message/dfFlatView.jsp-->
-  		<script type="text/javascript" src="/library/js/jquery.js"></script>
-  		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
+		<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
+		<script type="text/javascript" language="JavaScript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
+		<sakai:script contextBase="/messageforums-tool" path="/js/dialog.js"/>
+  		<link rel="stylesheet" type="text/css" href="/messageforums-tool/css/dialog.css" />
+		<sakai:script contextBase="/messageforums-tool" path="/js/jquery.qtip.js"/>
+		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 		<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>
-
 	<%--//
 		//plugin required below
 		<sakai:script contextBase="/messageforums-tool" path="/js/pxToEm.js"/>
@@ -46,29 +49,31 @@
 		// element into which the value gets insert and retrieved from
 		<span class="highlight"  id="maxthreaddepth" class="skip"><h:outputText value="#{msgs.cdfm_maxthreaddepth}" /></span>
 //--%>
-
+	    	<div id="dialogDiv" title="Grade Messages" style="display:none">
+	    		<iframe id="dialogFrame" name="dialogFrame" width="100%" height="100%" frameborder="0"></iframe>
+	    	</div>
+			
 		<sakai:tool_bar separator="#{msgs.cdfm_toolbar_separator}">
 				<sakai:tool_bar_item value="#{msgs.cdfm_container_title_thread}" action="#{ForumTool.processAddMessage}" id="df_compose_message_dfAllMessages"
 		  			rendered="#{ForumTool.selectedTopic.isNewResponse && !ForumTool.selectedTopic.locked && !ForumTool.selectedForum.locked == 'true'}" />
 		  			
-		  		<h:commandLink action="#{ForumTool.processActionMarkAllAsRead}" rendered="#{ForumTool.selectedTopic.isMarkAsRead}"> 
-   	        		<h:outputText value=" #{msgs.cdfm_mark_all_as_read}" />
-                </h:commandLink>
-                <%--
-		  		<sakai:tool_bar_item action="#{ForumTool.processActionMarkAllAsRead}" value="#{msgs.cdfm_mark_all_as_read}" 
-					rendered="#{ForumTool.selectedTopic.isMarkAsRead}" />
-					--%>
-      			
       			<sakai:tool_bar_item value="#{msgs.cdfm_thread_view}" action="#{ForumTool.processActionDisplayThreadedView}" />
       			
-        		<sakai:tool_bar_item action="#{ForumTool.processActionTopicSettings}" id="topic_setting" value="#{msgs.cdfm_topic_settings}" 
-					rendered="#{ForumTool.selectedTopic.changeSettings}" />
+        		<h:commandLink action="#{ForumTool.processActionTopicSettings}" id="topic_setting" value="#{msgs.cdfm_topic_settings}" 
+					rendered="#{ForumTool.selectedTopic.changeSettings}">
+					<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
+        		</h:commandLink>
 					
+										<h:commandLink action="#{ForumTool.processActionDeleteTopicConfirm}" id="delete_confirm" 
+								value="#{msgs.cdfm_button_bar_delete_topic}" accesskey="d" rendered="#{!ForumTool.selectedTopic.markForDeletion && ForumTool.displayTopicDeleteOption}">
+								<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
+								</h:commandLink>
+
 				<h:outputLink id="print" value="javascript:printFriendly('#{ForumTool.printFriendlyUrl}');">
 					<h:graphicImage url="/../../library/image/silk/printer.png" alt="#{msgs.print_friendly}" title="#{msgs.print_friendly}" />
 				</h:outputLink>
  		</sakai:tool_bar>
-			<h:panelGrid columns="2" summary="layout" width="100%" styleClass="navPanel specialLink">
+			<h:panelGrid columns="2" width="100%" styleClass="navPanel specialLink">
 			    <h:panelGroup>
 					<f:verbatim><div class="breadCrumb specialLink"><h3></f:verbatim>
 			      <h:commandLink action="#{ForumTool.processActionHome}" value="#{msgs.cdfm_message_forums}" title=" #{msgs.cdfm_message_forums}"
@@ -113,12 +118,18 @@
 					setupMessageNav('messagePending');
 				});
  	</script>
-		<div id="messNavHolder" style="clear:both;"></div>
-		<h:outputText   value="#{msgs.cdfm_no_messages}" rendered="#{empty ForumTool.messages}"   styleClass="instruction" style="display:block" />
+
+		<div id="messNavHolder" style="clear:both;">
+				<h:commandLink action="#{ForumTool.processActionMarkAllAsRead}" rendered="#{ForumTool.selectedTopic.isMarkAsRead}" styleClass="markAllAsRead"> 
+					<h:outputText value=" #{msgs.cdfm_mark_all_as_read}" />
+				</h:commandLink>
+		</div>
+		
+		<h:outputText  value="#{msgs.cdfm_no_messages}" rendered="#{empty ForumTool.messages}"   styleClass="instruction" style="display:block" />
 		<mf:hierDataTable id="expandedThreadedMessages" value="#{ForumTool.messages}" var="message" 
    	 		noarrows="true" styleClass="listHier messagesThreaded" cellpadding="0" cellspacing="0" width="100%" columnClasses="bogus">
 			<h:column id="_msg_subject">
-				<%@include file="dfViewThreadBodyInclude.jsp" %>
+				<%@ include file="dfViewThreadBodyInclude.jsp" %>
 			</h:column>
 		</mf:hierDataTable>
 				

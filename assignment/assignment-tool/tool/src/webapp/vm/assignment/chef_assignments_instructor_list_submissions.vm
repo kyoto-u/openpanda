@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_list_submissions.vm 107301 2012-04-17 05:41:33Z steve.swinsburg@gmail.com $ -->
+<!-- $Id: chef_assignments_instructor_list_submissions.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_list_submissions.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_list_submissions.vm,v 1.10 2005/06/14 16:07:00 zqian.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
@@ -57,43 +57,43 @@
 
 </script>
 
-<div class="portletBody" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
-	<ul class="navIntraTool actionToolBar" role="menu">
+<div class="portletBody">
+	<ul class="navIntraTool actionToolBar">
 		#set($prevAction=false)
 		#if ($allowAddAssignment)
 			#set($prevAction=true)
-			<li  class="firstToolBarItem" role="menuitem">
+			<li  class="firstToolBarItem">
 				<span><a href="#toolLink("$action" "doNew_assignment")" title="$!tlang.getString("new")">$!tlang.getString("new")</a></span>
 			</li>	
 		#end
-		<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+		<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 			<span><a href="#toolLinkParam("$action" "doView" "view=lisofass1")" title="$!tlang.getString('lisofass1')">$!tlang.getString('lisofass1')</a></span>
 		</li>			
 		#if ($withGrade && $!allowGradeSubmission)
-			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 				<span><a href="#toolLinkParam("$action" "doView" "view=grarep")" title="$!tlang.getString("gen.grarep")">$!tlang.getString("gen.grarep")</a></span>
 			</li>	
 		#end
 			#if (!$!view.equals('stuvie'))
-				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 					<span><a href="#toolLinkParam("$action" "doView" "view=stuvie")" title="$!tlang.getString("gen.stuvie")">$!tlang.getString("gen.stuvie")</a></span>
 				</li>	
 			#else
-				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem" aria-disabled="true">			
+				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>			
 					<span class="current">$!tlang.getString("gen.stuvie")</span>
 				</li>	
 			#end
 		#if (($allowAllGroups) && ($assignmentscheck))
-			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 				<span><a href="#toolLink("$action" "doReorder")" title="$tlang.getString('gen.reorder')">$tlang.getString('gen.reorder')</a></span>
 			</li>	
 		#end
 		#if ($allowUpdateSite)
-			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 				<span><a href="#toolLink("$action" "doPermissions")" title="$tlang.getString('permis')">$tlang.getString('permis')</a></span>
 			</li>
 			#if ($enableViewOption)	
-				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end  role="menuitem">
+				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 					<span><a href="#toolLink("$action" "doOptions")" title="$tlang.getString('options')">$tlang.getString('options')</a></span>
 				</li>
 			#end	
@@ -181,6 +181,7 @@
 				</div>	
 				#set ($gradeType = $assignment.getContent().TypeOfGrade)
 			#end
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 		#set ($submissionType = $assignment.getContent().getTypeOfSubmission())
 		#set ($showMsg = false)
@@ -205,7 +206,7 @@
 								#end
 							#elseif ($!gradeType == 4)
 								#foreach ($i in ["Pass", "Fail"])
-									<option value="$i" #if($!defaultGrade && $!defaultGrade.equals($i))selected="selected"#end>$i</option>
+									<option value="$i" #if($!defaultGrade && $!defaultGrade.equals($i))selected="selected"#end>#if ($i=="Pass") $tlang.getString("pass") #elseif ($i=="Fail") $tlang.getString("fail") #end</option>
 								#end
 							#elseif ($!gradeType == 5)
 								<option value="Checked" #if($!defaultGrade && $!defaultGrade.equals("Checked"))selected="selected"#end>$tlang.getString("gen.checked")</option>
@@ -216,6 +217,7 @@
 						<input type="text" id="defaultGrade_2" name="defaultGrade" value="$!defaultGrade" size="5" />
 					#end
 					<input type="button" accesskey="a" class="active"  name="apply" value="$tlang.getString('gen.applygrade')" onclick="document.defaultGradeForm.submit();" title="$tlang.getString("gen.applygrade")" />
+					<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 				</form>
 			</div>
 			<div class="listNav">
@@ -226,19 +228,23 @@
 					#if ($goFPButton == "true")
 						<form name="firstpageForm" class="inlineForm"  method="post" action="#toolForm("$action")">
 							<fieldset><legend>$tlang.getString("gen.first")</legend><input type="submit" name="eventSubmit_doList_first" value="|&lt;" title="$tlang.getString("gen.first")" /></fieldset>
+							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#else
 						<form name="firstpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
 							<fieldset><legend>$tlang.getString("gen.first")</legend><input type="submit" name="eventSubmit_doList_first" value="|&lt;" disabled="disabled" /></fieldset>
+							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#end
 					#if ($goPPButton == "true")
 						<form name="prevpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
 							<fieldset><legend>$tlang.getString('gen.previous') $pagesize</legend><input type="submit" name="eventSubmit_doList_prev" value="&lt;" title="$tlang.getString('gen.previous') $pagesize" accesskey="p" /></fieldset>
+							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#else
 						<form name="prevpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
 							<fieldset><legend>$tlang.getString('gen.previous') $pagesize</legend><input type="submit" name="eventSubmit_doList_prev" value="&lt;" disabled="disabled" /></fieldset>
+							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#end
 				#end	
@@ -250,24 +256,29 @@
 							<option value="$i" #if($pagesize == $i) selected="selected" #end>$tlang.getString("list.show") $i $tlang.getString("list.itemsper")</option>
 						#end
 					</select>
+					<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 				</form>
 				#if ($pagesize != 0)
 					#if ($goNPButton == "true")
 						<form name="nextpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
 							<fieldset><legend>$tlang.getString('gen.next') $pagesize</legend><input type="submit" name="eventSubmit_doList_next" value="&gt;" title="$tlang.getString('gen.next') $pagesize" accesskey="n" /></fieldset>
+							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#else
 						<form name="nextpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
 							<fieldset><legend>$tlang.getString('gen.next') $pagesize</legend><input type="submit" name="eventSubmit_doList_next" value="&gt;" disabled="disabled" /></fieldset>
+							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#end
 					#if ($goLPButton == "true")
 						<form name="lastpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
-							<fieldset><legend>$tlang.getString('gen.last')</legend><input type="submit" name="eventSubmit_doList_last" value=">&gt;" title="$tlang.getString('gen.last')" /></fieldset>
+							<fieldset><legend>$tlang.getString('gen.last')</legend><input type="submit" name="eventSubmit_doList_last" value="&gt;|" title="$tlang.getString('gen.last')" /></fieldset>
+							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#else
 						<form name="lastpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
-							<fieldset><legend>$tlang.getString('gen.last')</legend><input type="submit" name="eventSubmit_doList_last" value=">&gt;" disabled="disabled" /></fieldset>
+							<fieldset><legend>$tlang.getString('gen.last')</legend><input type="submit" name="eventSubmit_doList_last" value="&gt;|" disabled="disabled" /></fieldset>
+							<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 						</form>
 					#end
 				#end
@@ -431,6 +442,7 @@
 				<tr>
 					<th id="selectResubmit" class="smallCol">
 						<input type="checkbox" name="toggleAllSelectAllowResubmit" value="" id="toggleAllSelectAllowResubmit" onclick="javascript:toggleSelectAll(this, 'selectedAllowResubmit')" />
+                        <label for="toggleAllSelectAllowResubmit" class="skip">$tlang.getString("allowResubmission.toggleall")</label>
 					</th> 
 					<th id="attachment" class="attach">
 						<img src="#imageLink("sakai/attachments.gif")" border="0" alt="$tlang.getString("gen.att")" width="15" height="15" />
@@ -516,9 +528,11 @@
 					#set($submission=false)
 					#set($submission = $userSubmission.Submission)
 					#set($siteUser=false)
+					#set($submittedBy=false)
 					#set($siteUser = $userSubmission.User)
 					#set($submitterId = $!siteUser.getId())
 					#set($submitterName=$!siteUser.sortName)
+					#set($submittedBy=$userSubmission.SubmittedBy)
 					#set($submitterDisplayId=$!siteUser.getDisplayId())
 					#if ($!submitterDisplayId)
 						##attach the displayId
@@ -532,7 +546,8 @@
 						<tr>
 							<td headers="allowResubmit" class="screenOnly smallCol">
 								#set($userId = $!siteUser)
-								<input type="checkbox" name="selectedAllowResubmit" value="$!submitterId" id="check_$submitterId" />
+								<input type="checkbox" name="selectedAllowResubmit" value="$!submitterId" id="check_$submitterDisplayId" />
+                                <label for="check_$submitterDisplayId" class="skip">$tlang.getString("allowResubmission.select.student") $validator.escapeHtml($submitterName)</label>
 							</td>
 							<td headers="attachment" class="attach">
 							 #set($size=0)
@@ -590,6 +605,9 @@
 									#else
 										$tlang.getString("listsub.nosub")
 									#end
+									#if ($!submittedBy) 
+									<br />by $!submittedBy.sortName
+									#end
 							</td>
 							<td headers="status">
 								$submission.getStatus()
@@ -603,8 +621,10 @@
 							#end	
 							#if ($allowReviewService && $assignment.getContent().AllowReviewService)
 								<td headers="reviewService">
-								 #if ($submission.getReviewScore() == -1 || $submission.getReviewScore() == -2)
-								 	$tlang.getString("review.noreport")
+								 #if ($submission.getReviewScore() == -1)
+                                     <div class="alertMessage" >$!submission.getReviewError()</div>
+                                 #elseif ($submission.getReviewScore() == -2)
+                                     $tlang.getString("review.noreport")  
 								 #else
 								 <a href="$submission.getReviewReport()" target="_blank" title="View report: score $submission.getReviewScore()">
 								 <img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
@@ -648,6 +668,7 @@
 					#end
 				#end
 			</table>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	#end
 	

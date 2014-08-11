@@ -5,7 +5,7 @@ package org.sakaiproject.portal.render.api;
  * 
  * @author ieb
  * @since Sakai 2.2.4
- * @version $Rev: 86928 $
+ * @version $Rev: 86611 $
  */
 public interface RenderResult
 {

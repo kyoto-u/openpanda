@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_grading_submission.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_grading_submission.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
 <!-- start: check_assignments_instructor_grading_submission.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm,v 1.10 2005/06/03 15:32:15 zqian.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
@@ -22,39 +22,39 @@ function handleEnterKeyPress(ev)
 		setupItemNavigator();
     });
 </script>
-<div class="portletBody" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
-<ul class="navIntraTool actionToolBar" role="menu">
+<div class="portletBody">
+<ul class="navIntraTool actionToolBar">
 		#set($prevAction=false)
 		#if ($allowAddAssignment)
 			#set($prevAction=true)
-			<li role="menuitem" class="firstToolBarItem">
+			<li class="firstToolBarItem">
 				<span><a href="#toolLink("$action" "doNew_assignment")" title="$!tlang.getString("new")">$!tlang.getString("new")</a></span>
 			</li>
 		#end
-		<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+		<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 			<span><a href="#" title = "$!tlang.getString('lisofass1')" onclick="javascript:document.gradeForm.onsubmit();document.getElementById('option').value='view';document.getElementById('view').value='lisofass1';document.gradeForm.submit();return false;">$!tlang.getString("lisofass1")</a></span>
 		</li>	
 		#if ($withGrade && $!allowGradeSubmission)
-			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 				<span><a href="#" title="$!tlang.getString('gen.grarep')" onclick="javascript:document.gradeForm.onsubmit();document.getElementById('option').value='view';document.getElementById('view').value='grarep';document.gradeForm.submit();return false;">$!tlang.getString("gen.grarep")</a></span>
 			</li>				
 		#end
 		#if ($allowAddAssignment)
-			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 				<span><a href="#" title="$!tlang.getString('gen.stuvie')" onclick="javascript:document.gradeForm.onsubmit();document.getElementById('option').value='view';document.getElementById('view').value='stuvie';document.gradeForm.submit();return false;">$!tlang.getString("gen.stuvie")</a></span>
 			</li>	
 		#end
 		#if (($allowAllGroups) && ($assignmentscheck))
-			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 				<span><a href="#" title="$tlang.getString('gen.reorder')" onclick="javascript:document.gradeForm.onsubmit();document.getElementById('option').value='reorderNavigation';document.gradeForm.submit();return false;">$tlang.getString('gen.reorder')</a></span>
 			</li>	
 		#end
 		#if ($allowUpdateSite)
-			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+			<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 				<span><a href="#" title="$tlang.getString('permis')" onclick="javascript:document.gradeForm.onsubmit();document.getElementById('option').value='permissions';document.gradeForm.submit();return false;">$tlang.getString('permis')</a></span>
 			</li>
 			#if ($enableViewOption)	
-				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end role="menuitem">
+				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 					<span><a href="#" title="$tlang.getString('options')" onclick="javascript:document.gradeForm.onsubmit();document.getElementById('option').value='options';document.gradeForm.submit();return false;">$tlang.getString('options')</a></span>
 				</li>
 			#end	
@@ -191,8 +191,10 @@ function handleEnterKeyPress(ev)
 							$tlang.getString("review.report")
 						</th>
 							<td>
-							#if (!$submission || $submission.getReviewReport().equalsIgnoreCase("Error"))
-								$tlang.getString("review.notavail")
+							#if (!$submission)
+                                				$tlang.getString("review.notavail")
+                            				#elseif ($submission.getReviewReport().equals("Error"))
+								<div class="alertMessage" >$!submission.getReviewError()</div>
 							#else
 								<img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
 							
@@ -399,6 +401,74 @@ function handleEnterKeyPress(ev)
 						</ul>
 					#end
 				#end
+				#*					<!-- Grade types
+						GRADE_TYPE_NOT_SET: -1; 
+						UNGRADED_GRADE_TYPE: 1; 
+						LETTER_GRADE_TYPE: 2; 
+						SCORE_GRADE_TYPE = 3; 
+						PASS_FAIL_GRADE_TYPE = 4;
+						CHECK_GRADE_TYPE = 5;
+					-->
+*#
+						#if ($withGrade)
+							<div class="highlightPanel" style="width:80%">
+							#if ($allowToGrade)
+								#set ($gradeType = $assignment.getContent().TypeOfGrade)
+								#if ($gradeType == 1)
+									<p class="shorttext">
+										<label for="grade">$tlang.getString("gen.gra2")</label>
+										<input type="hidden" name="$name_grade" value="gen.nograd" />
+										<span class="highlight"> $tlang.getString("gen.nograd")</span>
+									</p>	
+								#elseif ($gradeType == 2)
+									<p class="shorttext">
+										<label for="grade">$tlang.getString("gen.gra2")</label>
+										<select name="$name_grade" id="grade">
+											<option  value="" #if($!value_grade.equals(""))selected="selected"#end>$tlang.getString("non.submission.grade.select")</option>
+											#foreach ($i in $letterGradeOptions)
+												<option  value="$i" #if ($!value_grade.equals($i))selected="selected"#end>$i</option>
+											#end
+										</select>
+									</p>	
+								#elseif ($gradeType == 3)
+									<p class="shorttext">
+										<label for="grade">$tlang.getString("gen.gra2")</label>
+										<input type="text" name="$name_grade" size="5" maxlength="11" value="$!value_grade" id="grade" onkeypress="return handleEnterKeyPress(event);" /> <span class="instruction">($tlang.getString("grade.max") $assignment.getContent().getMaxGradePointDisplay())</span>
+									</p>	
+								#elseif ($gradeType == 4)
+									<p class="shorttext">
+										<label for="grade">$tlang.getString("gen.gra2")</label>
+										<select name="$name_grade" id="grade" >
+											<option  value="" #if($!value_grade.equals(""))selected="selected"#end>$tlang.getString("non.submission.grade.select")</option>
+											#foreach ($i in ["Pass", "Fail"])
+													<option  value="$i" #if ($!value_grade.equalsIgnoreCase($i))selected="selected"#end>#if ($i=="Pass") $tlang.getString("pass") #elseif ($i=="Fail") $tlang.getString("fail") #end</option>
+											#end
+										</select>
+									</p>	
+								#elseif ($gradeType == 5)
+									<p class="checkbox">
+											<input name="$name_grade" type="checkbox" value="Checked" #if ($!value_grade.equals("Checked"))checked="checked"#end id="gradeChecked"  /> <label for="gradeChecked">$tlang.getString("gen.gra2") $tlang.getString("gen.checked")</label>
+									</p>	
+								#end
+							#else
+								## if not allowed to grade, show the current grade instead
+								<input name="$name_grade" type="hidden" value="$!value_grade" />
+								<div class="alertMessage">$!notAllowedToGradeWarning</div>
+								<label for="grade">$tlang.getString("gen.gra2")</label>
+								$!value_grade
+							#end
+							</div>	
+							## the previous grades
+								#set ($previousGrades =  $submission.Properties.getProperty($submission.Properties.getNamePropSubmissionScaledPreviousGrades()))
+								#if ($!previousGrades && $!previousGrades.length() != 0 )
+									<h4 id="toggleGrade" class="toggleAnchor">
+										$tlang.getString("gradingsub.pregra")
+									</h4>
+									<div class="gradecoms  toggledContent">										
+										$previousGrades
+									</div>
+								#end
+					#end
 						<h4>
 							$tlang.getString("gen.instrcomment")
 						</h4>
@@ -493,74 +563,6 @@ function handleEnterKeyPress(ev)
 							#end
 						</div>		
 						#end
-#*					<!-- Grade types
-						GRADE_TYPE_NOT_SET: -1; 
-						UNGRADED_GRADE_TYPE: 1; 
-						LETTER_GRADE_TYPE: 2; 
-						SCORE_GRADE_TYPE = 3; 
-						PASS_FAIL_GRADE_TYPE = 4;
-						CHECK_GRADE_TYPE = 5;
-					-->
-*#
-						#if ($withGrade)
-							<div class="highlightPanel" style="width:80%">
-							#if ($allowToGrade)
-								#set ($gradeType = $assignment.getContent().TypeOfGrade)
-								#if ($gradeType == 1)
-									<p class="shorttext">
-										<label for="grade">$tlang.getString("gen.gra2")</label>
-										<input type="hidden" name="$name_grade" value="gen.nograd" />
-										<span class="highlight"> $tlang.getString("gen.nograd")</span>
-									</p>	
-								#elseif ($gradeType == 2)
-									<p class="shorttext">
-										<label for="grade">$tlang.getString("gen.gra2")</label>
-										<select name="$name_grade" id="grade">
-											<option  value="" #if($!value_grade.equals(""))selected="selected"#end>$tlang.getString("non.submission.grade.select")</option>
-											#foreach ($i in $letterGradeOptions)
-												<option  value="$i" #if ($!value_grade.equals($i))selected="selected"#end>$i</option>
-											#end
-										</select>
-									</p>	
-								#elseif ($gradeType == 3)
-									<p class="shorttext">
-										<label for="grade">$tlang.getString("gen.gra2")</label>
-										<input type="text" name="$name_grade" size="5" maxlength="11" value="$!value_grade" id="grade" onkeypress="return handleEnterKeyPress(event);" /> <span class="instruction">($tlang.getString("grade.max") $assignment.getContent().getMaxGradePointDisplay())</span>
-									</p>	
-								#elseif ($gradeType == 4)
-									<p class="shorttext">
-										<label for="grade">$tlang.getString("gen.gra2")</label>
-										<select name="$name_grade" id="grade" >
-											<option  value="" #if($!value_grade.equals(""))selected="selected"#end>$tlang.getString("non.submission.grade.select")</option>
-											#foreach ($i in ["Pass", "Fail"])
-													<option  value="$i" #if ($!value_grade.equalsIgnoreCase($i))selected="selected"#end>#if ($i=="Pass") $tlang.getString("pass") #elseif ($i=="Fail") $tlang.getString("fail") #end</option>
-											#end
-										</select>
-									</p>	
-								#elseif ($gradeType == 5)
-									<p class="checkbox">
-											<input name="$name_grade" type="checkbox" value="Checked" #if ($!value_grade.equals("Checked"))checked="checked"#end id="gradeChecked"  /> <label for="gradeChecked">$tlang.getString("gen.gra2") $tlang.getString("gen.checked")</label>
-									</p>	
-								#end
-							#else
-								## if not allowed to grade, show the current grade instead
-								<input name="$name_grade" type="hidden" value="$!value_grade" />
-								<div class="alertMessage">$!notAllowedToGradeWarning</div>
-								<label for="grade">$tlang.getString("gen.gra2")</label>
-								$!value_grade
-							#end
-							</div>	
-							## the previous grades
-								#set ($previousGrades =  $submission.Properties.getProperty($submission.Properties.getNamePropSubmissionScaledPreviousGrades()))
-								#if ($!previousGrades.length() != 0 )
-									<h4 id="toggleGrade" class="toggleAnchor">
-										$tlang.getString("gradingsub.pregra")
-									</h4>
-									<div class="gradecoms  toggledContent">										
-										$previousGrades
-									</div>
-								#end
-					#end
 					#if ($nonElectronic)
 						## hidden value for non-electronic submission
 						<input type="hidden" name="$name_allowResubmitNumber" id="allowResubmitNumber" value="0" />
@@ -647,6 +649,7 @@ function handleEnterKeyPress(ev)
 				<div class="messageProgress" style="visibility:hidden;text-align:left">$tlang.getString("gen.proces")</div>
 			</div>
 		</div>	
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>
 <!-- end: check_assignments_instructor_grading_submission.vm  -->

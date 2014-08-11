@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x/portlet-util/src/java/org/sakaiproject/portlet/util/JSPHelper.java $
- * $Id: JSPHelper.java 70086 2009-11-09 22:29:00Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0/portlet-util/src/java/org/sakaiproject/portlet/util/JSPHelper.java $
+ * $Id: JSPHelper.java 98512 2011-09-22 17:59:08Z csev@umich.edu $
  *
  * Copyright (c) 2005-2009 The Sakai Foundation
  *
@@ -32,19 +32,19 @@ import javax.portlet.PortletRequestDispatcher;
  */
 public class JSPHelper {
 
-    public static void sendToJSP(PortletContext pContext, 
-	    RenderRequest request, RenderResponse response,
-            String jspPage) throws PortletException {
-        response.setContentType(request.getResponseContentType());
-        if (jspPage != null && jspPage.length() != 0) {
-            try {
-                PortletRequestDispatcher dispatcher = pContext
-                        .getRequestDispatcher(jspPage);
-                dispatcher.include(request, response);
-            } catch (IOException e) {
-                throw new PortletException("Sakai Dispatch unabble to use "
-                        + jspPage, e);
-            }
-        }
-    }
+	public static void sendToJSP(PortletContext pContext, 
+			RenderRequest request, RenderResponse response,
+			String jspPage) throws PortletException {
+		response.setContentType(request.getResponseContentType());
+		if (jspPage != null && jspPage.length() != 0) {
+			try {
+				PortletRequestDispatcher dispatcher = pContext
+					.getRequestDispatcher(jspPage);
+				dispatcher.include(request, response);
+			} catch (IOException e) {
+				throw new PortletException("Sakai Dispatch unabble to use "
+						+ jspPage, e);
+			}
+		}
+	}
 }

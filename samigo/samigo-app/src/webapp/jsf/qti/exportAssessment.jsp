@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: exportAssessment.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+<!-- $Id: exportAssessment.jsp 84154 2010-11-02 21:05:12Z lydial@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -30,9 +30,8 @@
   <f:view>
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
+      <%= request.getAttribute("html.head") %>
       <%-- designed to be in  popup window --%>
-      <samigo:stylesheet path="/css/tool.css"/>
-      <samigo:stylesheet path="/css/tool_base.css"/>
       <title><h:outputText value="#{authorImportExport.export_a}" /></title>
       </head>
       <body onload="<%= request.getAttribute("html.body.onload") %>">

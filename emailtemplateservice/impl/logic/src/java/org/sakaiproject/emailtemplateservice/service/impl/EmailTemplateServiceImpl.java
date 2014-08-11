@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/branches/emailtemplateservice-0.5.x/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/impl/EmailTemplateServiceImpl.java $
- * $Id: EmailTemplateServiceImpl.java 118618 2013-01-23 03:11:48Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.0/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/impl/EmailTemplateServiceImpl.java $
+ * $Id: EmailTemplateServiceImpl.java 114116 2012-10-09 10:53:35Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright 2006, 2007 Sakai Foundation
@@ -21,6 +21,13 @@
 
 package org.sakaiproject.emailtemplateservice.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,15 +35,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import java.io.InputStream;
-
+import org.apache.commons.lang.LocaleUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.email.api.EmailService;
 import org.sakaiproject.emailtemplateservice.dao.impl.EmailTemplateServiceDao;
@@ -45,19 +51,16 @@ import org.sakaiproject.emailtemplateservice.model.EmailTemplateLocaleUsers;
 import org.sakaiproject.emailtemplateservice.model.RenderedTemplate;
 import org.sakaiproject.emailtemplateservice.service.EmailTemplateService;
 import org.sakaiproject.emailtemplateservice.util.TextTemplateLogicUtils;
-import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.genericdao.api.search.Restriction;
 import org.sakaiproject.genericdao.api.search.Search;
-import org.sakaiproject.i18n.InternationalizedMessages;
-import org.sakaiproject.user.api.Preferences;
+import org.sakaiproject.tool.api.Session;
+import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
-import org.sakaiproject.tool.api.SessionManager;
-import org.sakaiproject.tool.api.Session;
-
 import org.simpleframework.xml.core.Persister;
+import org.springframework.dao.DataIntegrityViolationException;
 
 public class EmailTemplateServiceImpl implements EmailTemplateService {
 
@@ -108,6 +111,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
    }
 
    private EmailTemplate getEmailTemplateNoDefault(String key, Locale locale) {
+	   log.debug("getEmailTemplateNoDefault( " + key +"," + locale);
 	   if (key == null || "".equals(key)) {
 		   throw new IllegalArgumentException("key cannot be null or empty");
 	   }
@@ -117,7 +121,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 		   search.addRestriction( new Restriction("locale", locale.toString()) );
 		   et = dao.findOneBySearch(EmailTemplate.class, search);
 	   } else {
-		   et = dao.findOneBySearch(EmailTemplate.class, new Search("key", key));
+		   Search search = new Search("key", key);
+		   search.addRestriction( new Restriction("locale", EmailTemplate.DEFAULT_LOCALE) );
+		   et = dao.findOneBySearch(EmailTemplate.class, search);
 	   }
 	   return et;
 	}
@@ -143,7 +149,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
          }
       }
       if (et == null) {
-         et = dao.findOneBySearch(EmailTemplate.class, new Search("key", key));
+    	  Search search = new Search("key", key);
+          search.addRestriction( new Restriction("locale", EmailTemplate.DEFAULT_LOCALE) );
+          et = dao.findOneBySearch(EmailTemplate.class, search);
       }
       if (et == null) {
          log.warn("no template found for: " + key + " in locale " + locale );
@@ -155,7 +163,11 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 	public boolean templateExists(String key, Locale locale) {
 		List<EmailTemplate> et = null;
 		Search search = new Search("key", key);
-		search.addRestriction( new Restriction("locale", locale.toString()) );
+		if (locale == null) {
+			search.addRestriction( new Restriction("locale", EmailTemplate.DEFAULT_LOCALE));
+		} else {
+			search.addRestriction( new Restriction("locale", locale.toString()));
+		}
         et = dao.findBySearch(EmailTemplate.class, search);
         if (et != null && et.size() > 0) {
         	return true;
@@ -200,47 +212,64 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
    }
 
    public void saveTemplate(EmailTemplate template) {
+	   //check that fields are set
+	   if (template == null) {
+		   throw new IllegalArgumentException("Template can't be null");
+	   }
+	   
+	   if (template.getKey() == null) {
+		   throw new IllegalArgumentException("Template key can't be null");
+	   }
+	   
+	   if (template.getOwner() == null) {
+		   throw new IllegalArgumentException("Template owner can't be null");
+	   }
+	   
+	   if (template.getSubject() == null) {
+		   throw new IllegalArgumentException("Template subject can't be null");
+	   }
+	   
+	   if (template.getMessage() == null) {
+		   throw new IllegalArgumentException("Template message can't be null");
+	   }
+	   
+	   String locale = template.getLocale(); 
+	   if (locale == null || locale.trim().length() == 0) {
+		   //For backward compatibility set it to default
+		   template.setLocale(EmailTemplate.DEFAULT_LOCALE);
+	   } 
+	   
+	   
       //update the modified date
       template.setLastModified(new Date());
-
-      dao.save(template);
+      try {
+    	  dao.save(template);
+      }
+      catch (DataIntegrityViolationException die) {
+    	  throw new IllegalArgumentException("Key: " + template.getKey() + " and locale: " + template.getLocale() + " in use already", die);
+      }
       log.info("saved template: " + template.getId());
    }
    
    public void updateTemplate(EmailTemplate template) {
 	   template.setLastModified(new Date());
+	   String locale = template.getLocale();
+	   if (locale == null || "".equals(locale)) {
+		   template.setLocale(EmailTemplate.DEFAULT_LOCALE);
+	   }
 	   dao.update(template);
 	   log.info("updated template: " + template.getId());
 	}
 
    protected Locale getUserLocale(String userId) {
-      Locale loc = null;
-      Preferences prefs = preferencesService.getPreferences(userId);
-      ResourceProperties locProps = prefs.getProperties(InternationalizedMessages.APPLICATION_ID);
-      String localeString = locProps.getProperty(InternationalizedMessages.LOCALE_KEY);
+	   Locale loc =  preferencesService.getLocale(userId);
+	   
+	   //the user has no preference set - get the system default
+	   if (loc == null ) {
+		 loc = Locale.getDefault();
+	   }
 
-      if (localeString != null)
-      {			String[] locValues = localeString.split("_");
-      if (locValues.length > 1)
-         loc = new Locale(locValues[0], locValues[1]); // language, country
-      else if (locValues.length == 1) 
-         loc = new Locale(locValues[0]); // just language
-      }
-      //the user has no preference set - get the system default
-      if (loc == null ) {
-         String lang = System.getProperty("user.language");
-         String region = System.getProperty("user.region");
-
-         if (region != null) {
-            log.debug("getting system locale for: " + lang + "_" + region);
-            loc = new Locale(lang,region);
-         } else { 
-            log.debug("getting system locale for: " + lang );
-            loc = new Locale(lang);
-         }
-      }
-
-      return loc;
+	   return loc;
    }
 
 
@@ -404,7 +433,7 @@ public void sendRenderedMessages(String key, List<String> userReferences,
 
 
 private List<User> getUsersEmail(List<String> userIds) {
-	//we have a group of referenc
+	//we have a group of references
 	List<String> ids = new ArrayList<String>(); 
 	
 	for (int i = 0; i < userIds.size(); i++) {
@@ -441,10 +470,11 @@ private List<User> getUsersEmail(List<String> userIds) {
 
 			//check if we have an existing template of this key and locale
 			//its possible the template has no locale set
+			//The locale could also be the Default
 			Locale loc = null;
-			if (template.getLocale() != null) {
-				loc = new Locale(template.getLocale()); 
-			}
+			if (template.getLocale() != null && !"".equals(template.getLocale()) && !EmailTemplate.DEFAULT_LOCALE.equals(template.getLocale())) {
+				loc = LocaleUtils.toLocale(template.getLocale());
+			} 
 			
 			EmailTemplate existingTemplate = getEmailTemplateNoDefault(template.getKey(), loc);
 			if(existingTemplate == null) {
@@ -481,5 +511,62 @@ private List<User> getUsersEmail(List<String> userIds) {
 		}
 	}
 
+	public String exportTemplateAsXml(String key, Locale locale) {
+		
+		EmailTemplate template = getEmailTemplate(key, locale);
+		Persister persister = new Persister();
+		File file = null;
+		String ret = null;
+		try {
+			file = File.createTempFile("emailtemplate", "xml");
+			persister.write(template, file);
+			//read the data
+			ret = readFile(file.getAbsolutePath());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			if (file != null) {
+				if (!file.delete()) {
+					log.warn("error deleting tmp file");
+				}
+			}
+			
+		}
+		
+		
+		
+		
+		return ret;
+	}
+
+	private static String readFile(String path) throws IOException {
+		FileInputStream stream = new FileInputStream(new File(path));
+		try {
+			FileChannel fc = stream.getChannel();
+			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+			/* Instead of using default, pass in a decoder. */
+			return Charset.defaultCharset().decode(bb).toString();
+		}
+		finally {
+			stream.close();
+		}
+	}
+	
+	/**
+	 * Delete all templates in the Database
+	 * Only used in unit tests so not in API
+	 * TODO rewrite for efficiency 
+	 */
+	public void deleteAllTemplates() {
+		log.debug("deleteAllTemplates");
+		List<EmailTemplate> templates = dao.findAll(EmailTemplate.class);
+		for (int i =0; i < templates.size(); i++) {
+			EmailTemplate template = templates.get(i);
+			log.debug("deleting template: " + template.getId());
+			dao.delete(template);
+		}
+	}
 
 }

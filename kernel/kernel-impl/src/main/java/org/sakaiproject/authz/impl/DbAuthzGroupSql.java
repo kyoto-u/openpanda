@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/authz/impl/DbAuthzGroupSql.java $
- * $Id: DbAuthzGroupSql.java 77198 2010-05-06 17:58:38Z bkirschn@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/DbAuthzGroupSql.java $
+ * $Id: DbAuthzGroupSql.java 111798 2012-08-23 20:36:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -31,11 +31,11 @@ public interface DbAuthzGroupSql
 {
 	String getCountRealmFunctionSql();
 
-	String getCountRealmRoleFunctionEndSql(String anonymousRole, String authorizationRole, boolean authorized, String inClause);
+	String getCountRealmRoleFunctionEndSql(String anonymousRoleKey, String authorizationRoleKey, boolean authorized, String inClause);
 
-	String getCountRealmRoleFunctionSql(String anonymousRole, String authorizationRole, boolean authorized);
+	String getCountRealmRoleFunctionSql(String anonymousRoleKey, String authorizationRoleKey, boolean authorized);
 
-	String getCountRealmRoleFunctionSql(String anonymousRole, String authorizationRole, boolean authorized, String inClause);
+	String getCountRealmRoleFunctionSql(String anonymousRoleKey, String authorizationRoleKey, boolean authorized, String inClause);
 
 	String getCountRealmRoleSql();
 	
@@ -140,6 +140,8 @@ public interface DbAuthzGroupSql
 	String getSelectRealmRoleNameSql();
 
 	String getSelectRealmRoleSql();
+	
+	String getSelectRealmRoleKeySql();
 
 	String getSelectRealmRolesSql(String inClause);
 	
@@ -148,4 +150,6 @@ public interface DbAuthzGroupSql
 	String getSelectRealmUpdate();
 
 	String getSelectRealmUserRoleSql(String inClause);
+
+	String getSelectRealmUsersInGroupsSql( String inClause);
 }

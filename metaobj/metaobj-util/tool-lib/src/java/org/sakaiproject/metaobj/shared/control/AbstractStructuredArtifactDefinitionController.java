@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/AbstractStructuredArtifactDefinitionController.java $
- * $Id: AbstractStructuredArtifactDefinitionController.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/AbstractStructuredArtifactDefinitionController.java $
+ * $Id: AbstractStructuredArtifactDefinitionController.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -71,6 +71,17 @@ abstract public class AbstractStructuredArtifactDefinitionController extends Abs
       }
 
    }
+   
+   protected boolean isAllowed(String function) {
+	   boolean isAllowed = false;   
+	   if (getStructuredArtifactDefinitionManager().isGlobal()) {
+		   isAllowed = getAuthzManager().isAuthorized(function, getIdManager().getId(StructuredArtifactDefinitionManager.GLOBAL_SAD_QUALIFIER));
+	   }
+	   else {
+		   isAllowed = getAuthzManager().isAuthorized(function, getIdManager().getId(ToolManager.getCurrentPlacement().getId()));
+	   }
+	   return isAllowed;
+   }
 
    protected Boolean isMaintainer() {
       return new Boolean(getAuthzManager().isAuthorized(WorksiteManager.WORKSITE_MAINTAIN,
@@ -85,6 +96,7 @@ abstract public class AbstractStructuredArtifactDefinitionController extends Abs
       model.put("sites", getUserSites());
       ToolConfiguration tool = getWorksiteManager().getTool(ToolManager.getCurrentPlacement().getId());
       model.put("tool", tool);
+      model.put("currentAgent", getAuthManager().getAgent());
 
       boolean global = getStructuredArtifactDefinitionManager().isGlobal();
       model.put("isGlobal", new Boolean(global));
@@ -106,8 +118,8 @@ abstract public class AbstractStructuredArtifactDefinitionController extends Abs
          types = getStructuredArtifactDefinitionManager().findGlobalHomes();
       }
       else {
-         types = getStructuredArtifactDefinitionManager().findHomes(
-            getWorksiteManager().getCurrentWorksiteId(), true, false);
+         types = getStructuredArtifactDefinitionManager().findAvailableHomes(
+            getWorksiteManager().getCurrentWorksiteId(), getAuthManager().getAgent().getId().getValue(), true, false);
       }
 
       Collections.sort(types);

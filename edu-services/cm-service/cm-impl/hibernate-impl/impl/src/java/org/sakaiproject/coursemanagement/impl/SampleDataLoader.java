@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/SampleDataLoader.java $
- * $Id: SampleDataLoader.java 99129 2011-10-10 22:53:54Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/SampleDataLoader.java $
+ * $Id: SampleDataLoader.java 98974 2011-10-05 09:41:28Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation

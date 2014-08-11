@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/branches/msgcntr-2.8.x/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ui/PrivateMessageDecoratedBean.java $
- * $Id: PrivateMessageDecoratedBean.java 103305 2012-01-19 19:52:46Z wagnermr@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ui/PrivateMessageDecoratedBean.java $
+ * $Id: PrivateMessageDecoratedBean.java 101365 2011-12-02 20:31:57Z wagnermr@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.sakaiproject.api.app.messageforums.Attachment;
 import org.sakaiproject.api.app.messageforums.PrivateMessage;
-
+import org.sakaiproject.util.ResourceLoader;
 
 public class PrivateMessageDecoratedBean 
 {
@@ -178,11 +178,18 @@ public class PrivateMessageDecoratedBean
   public String getRecipientsAsText() {
 	  return msg.getRecipientsAsText();
   }
+  
+  public String getRecipientsAsTextBcc() {
+	  return msg.getRecipientsAsTextBcc();
+  }
 
   public String getAuthor() {
 	  return msg.getAuthor();
   }
-  
+	public String getLabel(){
+		ResourceLoader rl = new ResourceLoader("org.sakaiproject.api.app.messagecenter.bundle.Messages");
+		return rl.getString(msg.getLabel());
+	}
   public boolean getIsPreview() {
 	  return isPreview;
   }

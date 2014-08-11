@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/branches/sakai-2.8.x/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementService.java $
- * $Id: AnnouncementService.java 98125 2011-09-13 15:03:04Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementService.java $
+ * $Id: AnnouncementService.java 100702 2011-11-11 23:45:37Z yorkadam@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -21,12 +21,15 @@
 
 package org.sakaiproject.announcement.api;
 
+import java.util.List;
+
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.IdUsedException;
 import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.javax.Filter;
 import org.sakaiproject.message.api.MessageService;
 
 /**
@@ -104,8 +107,18 @@ public interface AnnouncementService extends MessageService
 	public static final String MOD_DATE = "modDate";
 	
 	/** assignment reference property for announcements       */
-        public static final String ASSIGNMENT_REFERENCE = "assignmentReference";
+    public static final String ASSIGNMENT_REFERENCE = "assignmentReference";
 	
+    /** Event for updating announcement title **/
+    public static final String EVENT_ANNC_UPDATE_TITLE = SECURE_ANNC_ROOT + "revise.title";
+   
+    /** Event for updating announcement access **/
+    public static final String EVENT_ANNC_UPDATE_ACCESS = SECURE_ANNC_ROOT + "revise.access";
+    
+    /** Event for updating announcement availability **/
+    public static final String EVENT_ANNC_UPDATE_AVAILABILITY = SECURE_ANNC_ROOT + "revise.availability";
+    
+    
 	/**
 	 * A (AnnouncementChannel) cover for getChannel() to return a specific announcement channel.
 	 * 
@@ -151,6 +164,8 @@ public interface AnnouncementService extends MessageService
 	
 	/**
 	 * Determine if message viewable based on release/retract dates (if set)
+	 * @param AnnouncementMessage
+	 * @return boolean
 	 */
 	public boolean isMessageViewable(AnnouncementMessage message);
 	
@@ -159,4 +174,24 @@ public interface AnnouncementService extends MessageService
 	 * @param channelRef
 	 */
 	public void clearMessagesCache(String channelRef);
+	
+	/**
+	 * Return a list of messages from the provided channel (merged flag returns merged messages)
+	 * @param channelReference
+	 *        Channel's reference String
+	 * @param filter
+	 *        A filtering object to accept messages, or null if no filtering is desired.
+	 * @param order
+	 *        Order of messages, ascending if true, descending if false
+	 * @param merged
+	 * 		  flag to include merged channel messages, true returns ALL messages including merged sites/channels
+	 * @return a list of Message objects or specializations of Message objects (may be empty).
+	 * @exception IdUnusedException
+	 *            If this name is not defined for a announcement channel.
+	 * @exception PermissionException
+	 *            if the user does not have read permission to the channel.
+	 * @exception NullPointerException
+	 */
+	public List getMessages(String channelReference, Filter filter, boolean order, boolean merged) throws IdUnusedException, PermissionException, NullPointerException;
+	
 }

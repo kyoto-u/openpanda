@@ -193,8 +193,8 @@ function redirectBasedOnSelection(){
 		</div>
 	#end		
 
-			#if ($!termCourseList)
-				#if ($!providerCourseList.size() != 0 || $!requestedCourseList.size() != 0)
+			#if ($!termCourseList && $!termCourseList.size() > 0)
+				#if (($!providerCourseList && $!providerCourseList.size() != 0) || ($!requestedCourseList && $!requestedCourseList.size() != 0))
 					<p class="instruction">$tlang.getString("nscourse.youmay")</p>
 				#end
 				
@@ -206,15 +206,18 @@ function redirectBasedOnSelection(){
 					<table class="listHier lines nolines specialLink" cellpadding="0" cellspacing="0"  summary="$tlang.getString("nscourse.courselist.summary")" border="0" style="width:auto">
 					<tr>	
 					<th colspan="2">
-					$courseObject.title 
+                                        $!courseObject.title ($!courseObject.eid) $!courseObject.description
 					#if ($!courseObject.courseOfferingObjects.size() > 1)
 						(cross-listed)
 						#set($crosslisted=1)	
 					#end
 					</th>
+					<th>
+						$tlang.getString("useOfficialDescription")
+					</th>
 					</tr>
 					#foreach($courseOfferingObject in $courseObject.courseOfferingObjects)
-						<tr class="exclude"><td colspan="2" style="white-space:nowrap">
+						<tr class="exclude"><td colspan="3" style="white-space:nowrap">
 						#if ($providerCourseList) 
 							#set($endKey = $courseNumber + $!courseOfferingObject.sections.size() - $!providerCourseList.size())
 						#else
@@ -268,19 +271,35 @@ function redirectBasedOnSelection(){
 								</td>
 								<td style="white-space:nowrap">
 									<h5>
-									<label for="course$courseNumber">$!sectionObject.title: $!sectionObject.getCategoryDescription()</label>
+									<label for="course$courseNumber">$validator.escapeHtml($sectionObject.title) ($sectionObject.eid) $sectionObject.getCategoryDescription()</label>
 									#if ($!sectionObject.attached)
 										<span class="instruction">($tlang.getString("nscourse.site_exists") <a href="#" onclick="javascript:enableCheckBox($!courseNumber)">$tlang.getString("nscourse.select_anyways")</a>)</span>
 									#end
 									#set ($courseNumber = $courseNumber +1)
 									</h5>
-								</td></tr>
+								</td>
+								<td>
+									#set($sectionDescription=false)
+									#set($sectionDescription=$!sectionObject.description)
+									#if ($!sectionDescription && !$!sectionDescription.isEmpty())
+										<input type="checkbox" name="providerCourseAddDescription" value="$!sectionObject.eid" id="courseDesc$courseNumber" 
+											#if ($!selectedProviderCourseDescription.contains($!sectionObject.eid))
+												checked="checked"
+											#end 
+										/>
+                                        <label for="courseDesc$courseNumber" class="skip">$tlang.getString("useOfficialDescription"): $validator.escapeHtml($sectionObject.title) ($sectionObject.eid) $sectionObject.getCategoryDescription()</label>
+									#end
+								</td>
+								</tr>
 							#end
 						#end
 					#end
 					</table>
 					<p></p>
 				 #end
+			#else
+				## no registered course
+				<p class="instruction">$tlang.getString("noterm_class")</p>
 			#end	
 				## instructor could choose to go to the manual creation page
 				<input  type="hidden" name="manualAdds" value="x" id="manual_add"/>
@@ -309,8 +328,7 @@ function redirectBasedOnSelection(){
 						$tlang.getString("man.please")
 					</p>
 		#end
-
-
+		<p/>
 		<input type="hidden" name="back" value="$!backIndex" />
 		<input id="index" type="hidden" name="templateIndex" value="$!templateIndex" />
 		<input type="hidden" name="option" id="option" value="x" />
@@ -351,6 +369,14 @@ function redirectBasedOnSelection(){
 					value="$tlang.getString('gen.cancel')"
 					onclick="document.addCourseForm.option.value='cancel'; document.addCourseForm.submit(); return false;"
 					/>
+				<input
+					type="button" 
+					accesskey="x"
+					name="Cancel" 
+					id="cancelButton" 
+					value="$tlang.getString('nscourse.no_rosters')"
+					onclick="document.addCourseForm.option.value='norosters'; document.addCourseForm.submit(); return false;"
+					/>
 					<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 				</p>
 			#else
@@ -378,6 +404,7 @@ function redirectBasedOnSelection(){
 				<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 			</p>
 			#end
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 	<script type="text/javascript">
 	// <![CDATA[

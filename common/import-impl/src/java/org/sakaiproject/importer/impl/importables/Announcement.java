@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/import-impl/src/java/org/sakaiproject/importer/impl/importables/Announcement.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/import-impl/src/java/org/sakaiproject/importer/impl/importables/Announcement.java $
  * $Id: Announcement.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

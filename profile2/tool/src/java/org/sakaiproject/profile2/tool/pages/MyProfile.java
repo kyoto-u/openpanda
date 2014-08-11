@@ -17,9 +17,10 @@
 package org.sakaiproject.profile2.tool.pages;
 
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.Cookie;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -30,6 +31,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -53,17 +57,12 @@ import org.sakaiproject.profile2.tool.pages.panels.ChangeProfilePictureUrl;
 import org.sakaiproject.profile2.tool.pages.panels.FriendsFeed;
 import org.sakaiproject.profile2.tool.pages.panels.GalleryFeed;
 import org.sakaiproject.profile2.tool.pages.panels.KudosPanel;
-import org.sakaiproject.profile2.tool.pages.panels.MyBusinessDisplay;
-import org.sakaiproject.profile2.tool.pages.panels.MyContactDisplay;
-import org.sakaiproject.profile2.tool.pages.panels.MyInfoDisplay;
-import org.sakaiproject.profile2.tool.pages.panels.MyInterestsDisplay;
-import org.sakaiproject.profile2.tool.pages.panels.MySocialNetworkingDisplay;
-import org.sakaiproject.profile2.tool.pages.panels.MyStaffDisplay;
+import org.sakaiproject.profile2.tool.pages.panels.MyProfilePanel;
 import org.sakaiproject.profile2.tool.pages.panels.MyStatusPanel;
-import org.sakaiproject.profile2.tool.pages.panels.MyStudentDisplay;
+import org.sakaiproject.profile2.tool.pages.panels.MyWallPanel;
+import org.sakaiproject.profile2.tool.pages.panels.ViewWallPanel;
 import org.sakaiproject.profile2.tool.pages.windows.AddFriend;
 import org.sakaiproject.profile2.util.ProfileConstants;
-import org.sakaiproject.profile2.util.ProfileUtils;
 
 
 public class MyProfile extends BasePage {
@@ -157,7 +156,7 @@ public class MyProfile extends BasePage {
 		
 		//create instance of the UserProfile class
 		//we then pass the userProfile in the constructor to the child panels
-		UserProfile userProfile = new UserProfile();
+		final UserProfile userProfile = new UserProfile();
 				
 		//get rest of values from SakaiPerson and setup UserProfile
 		userProfile.setUserUuid(userUuid);
@@ -446,56 +445,74 @@ public class MyProfile extends BasePage {
 		Panel myStatusPanel = new MyStatusPanel("myStatusPanel", userProfile);
 		add(myStatusPanel);
 		
-		if (sakaiProxy.isProfileFieldsEnabled()) {
-			//info panel - load the display version by default
-			Panel myInfoDisplay = new MyInfoDisplay("myInfo", userProfile);
-			myInfoDisplay.setOutputMarkupId(true);
-			add(myInfoDisplay);
+		List<ITab> tabs = new ArrayList<ITab>();
+		
+		AjaxTabbedPanel tabbedPanel = new AjaxTabbedPanel("myProfileTabs", tabs) {
 			
-			//contact panel - load the display version by default
-			Panel myContactDisplay = new MyContactDisplay("myContact", userProfile);
-			myContactDisplay.setOutputMarkupId(true);
-			add(myContactDisplay);
-			
-			//university staff panel - load the display version by default
-			Panel myStaffDisplay = new MyStaffDisplay("myStaff", userProfile);
-			myStaffDisplay.setOutputMarkupId(true);
-			add(myStaffDisplay);
-			
-			//business panel - load the display version by default
-			Panel myBusinessDisplay;
-			if (sakaiProxy.isBusinessProfileEnabled()) {
-				myBusinessDisplay = new MyBusinessDisplay("myBusiness", userProfile);
-				myBusinessDisplay.setOutputMarkupId(true);
-			} else {
-				myBusinessDisplay = new EmptyPanel("myBusiness");
+			private static final long serialVersionUID = 1L;
+
+			// overridden so we can add tooltips to tabs
+			@Override
+			protected WebMarkupContainer newLink(String linkId, final int index) {
+				WebMarkupContainer link = super.newLink(linkId, index);
+				
+				if (ProfileConstants.TAB_INDEX_PROFILE == index) {
+					link.add(new AttributeModifier("title", true,
+							new ResourceModel("link.tab.profile.tooltip")));
+					
+				} else if (ProfileConstants.TAB_INDEX_WALL == index) {
+					link.add(new AttributeModifier("title", true,
+							new ResourceModel("link.tab.wall.tooltip")));	
+				}
+				return link;
 			}
-			add(myBusinessDisplay);
+		};
+		
+		Cookie tabCookie = getWebRequestCycle().getWebRequest().getCookie(ProfileConstants.TAB_COOKIE);
+		
+		tabs.add(new AbstractTab(new ResourceModel("link.tab.profile")) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Panel getPanel(String panelId) {
+
+				setTabCookie(ProfileConstants.TAB_INDEX_PROFILE);
+				return new MyProfilePanel(panelId, userProfile,
+						sakaiProxy.isBusinessProfileEnabled());
+			}
+
+		});
+		
+		if (true == sakaiProxy.isWallEnabledGlobally()) {
 			
-			//student panel
-			Panel myStudentDisplay = new MyStudentDisplay("myStudent", userProfile);
-			myStudentDisplay.setOutputMarkupId(true);
-			add(myStudentDisplay);
+			tabs.add(new AbstractTab(new ResourceModel("link.tab.wall")) {
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public Panel getPanel(String panelId) {
+
+					setTabCookie(ProfileConstants.TAB_INDEX_WALL);
+					if (true == sakaiProxy.isSuperUser()) {
+						return new MyWallPanel(panelId, userUuid);
+					} else {
+						return new MyWallPanel(panelId);
+					}
+				}
+			});
 			
-			//social networking panel
-			Panel mySocialNetworkingDisplay = new MySocialNetworkingDisplay("mySocialNetworking", userProfile);
-			mySocialNetworkingDisplay.setOutputMarkupId(true);
-			add(mySocialNetworkingDisplay);
-			
-			//interests panel - load the display version by default
-			Panel myInterestsDisplay = new MyInterestsDisplay("myInterests", userProfile);
-			myInterestsDisplay.setOutputMarkupId(true);
-			add(myInterestsDisplay);
-		} else {
-			//PRFL-699 disable profile fields
-			add(new EmptyPanel("myInfo"));
-			add(new EmptyPanel("myContact"));
-			add(new EmptyPanel("myStaff"));
-			add(new EmptyPanel("myBusiness"));
-			add(new EmptyPanel("myStudent"));
-			add(new EmptyPanel("mySocialNetworking"));
-			add(new EmptyPanel("myInterests"));
+			if (true == sakaiProxy.isWallDefaultProfilePage() && null == tabCookie) {
+				
+				tabbedPanel.setSelectedTab(ProfileConstants.TAB_INDEX_WALL);
+			}
 		}
+		
+		if (null != tabCookie) {
+			tabbedPanel.setSelectedTab(Integer.parseInt(tabCookie.getValue()));
+		}
+		
+		add(tabbedPanel);
 		
 		//kudos panel
 		add(new AjaxLazyLoadPanel("myKudos"){
@@ -551,10 +568,7 @@ public class MyProfile extends BasePage {
 			}
 			
 		});
-		
-		
 	}
-	
 	
 	private boolean locked;
 	public boolean isLocked() {

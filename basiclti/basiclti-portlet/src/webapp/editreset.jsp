@@ -1,6 +1,6 @@
 <%--
-    $URL: https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x/basiclti-portlet/src/webapp/editreset.jsp $
-    $Id: editreset.jsp 96705 2011-08-09 17:55:35Z arwhyte@umich.edu $
+    $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0/basiclti-portlet/src/webapp/editreset.jsp $
+    $Id: editreset.jsp 91704 2011-04-12 21:33:53Z csev@umich.edu $
 
     Copyright (c) 2009 The Sakai Foundation
 

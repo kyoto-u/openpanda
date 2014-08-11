@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/branches/sakai-2.8.x/tool/src/java/org/sakaiproject/cheftool/PagedResourceActionII.java $
- * $Id: PagedResourceActionII.java 83993 2010-11-01 17:17:18Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.0/tool/src/java/org/sakaiproject/cheftool/PagedResourceActionII.java $
+ * $Id: PagedResourceActionII.java 83413 2010-10-19 16:48:58Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation

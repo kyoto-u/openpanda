@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeServerConfigurationService.java $
- * $Id: FakeServerConfigurationService.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeServerConfigurationService.java $
+ * $Id: FakeServerConfigurationService.java 98100 2011-09-13 02:44:21Z aaronz@vt.edu $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -175,5 +175,25 @@ public class FakeServerConfigurationService implements ServerConfigurationServic
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    public <T> T getConfig(String name, T defaultValue) {
+        return (T) m.get(name);
+    }
+
+    public ConfigItem getConfigItem(String name) {
+        return null;
+    }
+
+    public ConfigData getConfigData() {
+        return null;
+    }
+
+    public ConfigItem registerConfigItem(ConfigItem configItem) {
+        return null;
+    }
+
+    public void registerListener(ConfigurationListener configurationListener) {
+        
+    }
 
 }

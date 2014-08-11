@@ -66,7 +66,6 @@ import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.authz.cover.AuthzGroupService;
 import org.sakaiproject.component.app.messageforums.MembershipItem;
-import org.sakaiproject.component.app.messageforums.TestUtil;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.ActorPermissionsImpl;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.DBMembershipItemImpl;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.MessageForumsUserImpl;
@@ -425,7 +424,11 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
 	  saveMessage(message, true);
   }
   
-  public void saveMessage(Message message, boolean logEvent)
+  public void saveMessage(Message message, boolean logEvent) {
+      saveMessage(message, logEvent, false);
+  }
+  
+  public void saveMessage(Message message, boolean logEvent, boolean ignoreLockedTopicForum)
   {
     if (LOG.isDebugEnabled())
     {
@@ -444,7 +447,7 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
     	message.setModifiedBy(".anon");
     }
     
-    messageManager.saveMessage(message, logEvent);
+    messageManager.saveMessage(message, logEvent, ignoreLockedTopicForum);
   }
 
   /*
@@ -540,7 +543,7 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
   {
 	  if (topicId == null)
 	  {
-		  LOG.error("approveAllPendingMessages failed with topicId: " + topicId);
+		  LOG.error("approveAllPendingMessages failed with topicId: Null" );
           throw new IllegalArgumentException("Null Argument");
 	  }
 	  List messages = this.getMessagesByTopicId(topicId);
@@ -1754,10 +1757,6 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
     return false;
   }
   
-  private boolean isRoleSwapView()
-  {	 
-	return isRoleSwapView(getContextSiteId());
-  }
   private boolean isRoleSwapView(String siteId)
   {
 	return (securityService.getUserEffectiveRole(siteId) != null);
@@ -2104,7 +2103,7 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
     }
     if (courseMemberMap == null)
     {
-      courseMemberMap = membershipManager.getAllCourseMembers(true, false, true);
+      courseMemberMap = membershipManager.getAllCourseMembers(true, false, true, null);
     }
     return courseMemberMap;
   }
@@ -2466,7 +2465,7 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
   	  }
 
 
-  	  Set<Role> rolesInSite = new HashSet<Role>();
+  	  Set<Role> rolesInSite = null;
   	  Set<Group> groupsInSite = new HashSet<Group>();
 
   	  Site currentSite;

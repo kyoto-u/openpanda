@@ -5,10 +5,10 @@
 		</div>	
 	<div class="clear"> </div>
 		<h:outputText  id="showResult" rendered="#{SearchTool.showSearchResults}" styleClass="crud">
-			<%@include file="searchResults.jsp"%>	
+			<%@ include file="searchResults.jsp"%>	
 		 </h:outputText>
 		  <h:panelGroup id="nomatchfound"  rendered="#{SearchTool.showNoMatchFound}" styleClass="alertMessage"> 
-		   <%@include file="noMatchFound.jsp"%>	
+		   <%@ include file="noMatchFound.jsp"%>	
 		 </h:panelGroup>
 
 

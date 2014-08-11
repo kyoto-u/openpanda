@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/branches/sakai-2.8.x/citations-impl/impl/src/java/org/sakaiproject/citation/impl/DbCitationService.java $
- * $Id: DbCitationService.java 88776 2011-02-23 19:56:32Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/DbCitationService.java $
+ * $Id: DbCitationService.java 98468 2011-09-21 02:49:36Z jimeng@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -37,6 +37,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.citation.api.Citation;
 import org.sakaiproject.citation.api.CitationCollection;
+import org.sakaiproject.citation.api.CitationService;
 import org.sakaiproject.citation.api.Schema;
 import org.sakaiproject.citation.api.Schema.Field;
 import org.sakaiproject.db.api.SqlReader;
@@ -768,8 +769,6 @@ public class DbCitationService extends BaseCitationService
 			edit.setAdded(added);
 
 			String statement = "select CITATION_ID, PROPERTY_NAME, PROPERTY_VALUE from " + m_citationTableName + " where (CITATION_ID = ?)  order by PROPERTY_NAME";
-			String urlStatement = "select CITATION_ID, PROPERTY_NAME, PROPERTY_VALUE from " + m_citationTableName + " where (CITATION_ID = ?)";
-
 			Object fields[] = new Object[1];
 			fields[0] = citationId;
 
@@ -822,17 +821,22 @@ public class DbCitationService extends BaseCitationService
 					{
 						edit.m_preferredUrl = (String) triple.getValue();
 					}
-					else if(isMultivalued(schemaId, name))
+					else if(PROP_DISPLAYNAME.equals(name.trim()))
 					{
-						edit.addPropertyValue(name, triple.getValue());
+						edit.setDisplayName(triple.getValue().toString());
+					}
+					else if (PROP_MEDIATYPE.equals(name))
+					{
+						// Ignore, handled before we started processing properties..
+					}
+					else if (PROP_ADDED.equals(name))
+					{
+						// Ignore, handled before we started processing properties.
 					}
 					else
 					{
+						// Don't need to worry about multivalued propertie
 						edit.setCitationProperty(name, triple.getValue());
-						if(PROP_DISPLAYNAME.equals(name.trim()))
-						{
-							edit.setDisplayName(triple.getValue().toString());
-						}
 					}
 				}
 			}
@@ -906,33 +910,47 @@ public class DbCitationService extends BaseCitationService
 			{
 				String statement = "select SCHEMA_ID, PROPERTY_NAME, PROPERTY_VALUE from " + m_schemaTableName + " where (SCHEMA_ID = ?)";
 
-				schema = new BasicSchema(schemaId);
 
 				Object fields[] = new Object[1];
 				fields[0] = schemaId;
 
 				List triples = m_sqlService.dbRead(statement, fields, new TripleReader());
-
-				Iterator it = triples.iterator();
-				while(it.hasNext())
-				{
-					Triple triple = (Triple) it.next();
-					if(triple.isValid())
-					{
-						if(triple.getName().equals(PROPERTY_HAS_FIELD))
-						{
-							String fieldId = (String) triple.getValue();
-							BasicField field = retrieveSchemaField(schemaId, fieldId);
-							schema.addField(field);
-						}
-						/*
-						 * TODO: else add property??
-						 */
+				
+				if(triples.isEmpty()) {
+					if(CitationService.UNKNOWN_TYPE.equalsIgnoreCase(schemaId)) {
+						// this is just to prevent more recursion if UNKNOWN_TYPE 
+						// schema is missing for some unknown reason
+						schema = new BasicSchema(CitationService.UNKNOWN_TYPE);
+					} else {
+						// this substitutes the UNKNOWN_TYPE schema if the schemaId
+						//  is not the identifier for a known schema
+						schema = (BasicSchema) this.retrieveSchema(CitationService.UNKNOWN_TYPE);
 					}
+				} else {
+				
+					schema = new BasicSchema(schemaId);
+	
+					Iterator it = triples.iterator();
+					while(it.hasNext())
+					{
+						Triple triple = (Triple) it.next();
+						if(triple.isValid())
+						{
+							if(triple.getName().equals(PROPERTY_HAS_FIELD))
+							{
+								String fieldId = (String) triple.getValue();
+								BasicField field = retrieveSchemaField(schemaId, fieldId);
+								schema.addField(field);
+							}
+							/*
+							 * TODO: else add property??
+							 */
+						}
+					}
+					schema.sortFields();
+					ThreadLocalManager.set(schema.getIdentifier(), new BasicSchema(schema));
 				}
 
-				schema.sortFields();
-				ThreadLocalManager.set(schemaId, new BasicSchema(schema));
 			}
 			else
 			{

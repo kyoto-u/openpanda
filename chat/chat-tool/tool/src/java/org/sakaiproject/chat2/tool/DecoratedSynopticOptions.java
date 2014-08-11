@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/chat/branches/sakai-2.8.x/chat-tool/tool/src/java/org/sakaiproject/chat2/tool/DecoratedSynopticOptions.java $
+* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.0/chat-tool/tool/src/java/org/sakaiproject/chat2/tool/DecoratedSynopticOptions.java $
 * $Id: DecoratedSynopticOptions.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
 ***********************************************************************************
 *

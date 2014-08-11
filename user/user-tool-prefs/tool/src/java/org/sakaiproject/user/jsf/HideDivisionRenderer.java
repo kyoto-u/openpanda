@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/branches/sakai-2.8.x/user-tool-prefs/tool/src/java/org/sakaiproject/user/jsf/HideDivisionRenderer.java $
- * $Id: HideDivisionRenderer.java 83342 2010-10-18 17:43:10Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.0/user-tool-prefs/tool/src/java/org/sakaiproject/user/jsf/HideDivisionRenderer.java $
+ * $Id: HideDivisionRenderer.java 111996 2012-08-30 19:53:13Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2010 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ import org.sakaiproject.jsf.util.RendererUtil;
 
 /**
  * @author Chen Wen
- * @version $Id: HideDivisionRenderer.java 83342 2010-10-18 17:43:10Z arwhyte@umich.edu $
+ * @version $Id: HideDivisionRenderer.java 111996 2012-08-30 19:53:13Z ottenhoff@longsight.com $
  *
  */
 public class HideDivisionRenderer extends Renderer

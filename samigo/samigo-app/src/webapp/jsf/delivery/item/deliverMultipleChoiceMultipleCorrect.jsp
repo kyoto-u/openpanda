@@ -1,4 +1,4 @@
-<%-- $Id: deliverMultipleChoiceMultipleCorrect.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+<%-- $Id: deliverMultipleChoiceMultipleCorrect.jsp 96833 2011-08-11 17:04:08Z ktsao@stanford.edu $
 include file for delivering multiple choice questions
 should be included in file importing DeliveryMessages
 --%>
@@ -41,12 +41,14 @@ should be included in file importing DeliveryMessages
       </h:graphicImage>
     </h:column>
     <h:column>
+     <f:verbatim><label></f:verbatim>
      <h:selectBooleanCheckbox value="#{selection.response}"
         disabled="#{delivery.actionString=='reviewAssessment'
                  || delivery.actionString=='gradeAssessment'}" />
      <h:outputText value=" #{selection.answer.label}" escape="false" />
      <h:outputText value="#{deliveryMessages.dot}" rendered="#{selection.answer.label ne ''}" />
      <h:outputText value=" #{selection.answer.text}" escape="false" />
+     <f:verbatim></label></f:verbatim>
     </h:column>
     <h:column>
       <h:panelGroup rendered="#{delivery.feedback eq 'true' &&
@@ -79,7 +81,7 @@ should be included in file importing DeliveryMessages
              && delivery.navigation ne '1' && delivery.displayMardForReview }">
 <h:selectBooleanCheckbox value="#{question.review}" id="mark_for_review" />
 	<h:outputLabel for="mark_for_review" value="#{deliveryMessages.mark}" />
-	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" onkeypress="javascript:window.open('../author/markForReviewTipText.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
+	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
 		<h:outputText  value=" #{assessmentSettingsMessages.whats_this_link}"/>
 	</h:outputLink>
 </h:panelGroup>

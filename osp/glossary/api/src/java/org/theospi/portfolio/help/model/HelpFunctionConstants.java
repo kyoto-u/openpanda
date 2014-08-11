@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/glossary/api/src/java/org/theospi/portfolio/help/model/HelpFunctionConstants.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/glossary/api/src/java/org/theospi/portfolio/help/model/HelpFunctionConstants.java $
 * $Id: HelpFunctionConstants.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
 ***********************************************************************************
 *

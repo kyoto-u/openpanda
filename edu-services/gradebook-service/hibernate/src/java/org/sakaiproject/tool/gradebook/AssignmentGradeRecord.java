@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: AssignmentGradeRecord.java 82200 2010-09-10 04:48:17Z steve.swinsburg@gmail.com $
+* $Id: AssignmentGradeRecord.java 95098 2011-07-13 15:41:35Z holladay@longsight.com $
 *
 ***********************************************************************************
 *
@@ -33,8 +33,13 @@ import org.sakaiproject.service.gradebook.shared.GradebookService;
  *
  * @author <a href="mailto:jholtzman@berkeley.edu">Josh Holtzman</a>
  */
-public class AssignmentGradeRecord extends AbstractGradeRecord {
-    private Double pointsEarned;
+public class AssignmentGradeRecord extends AbstractGradeRecord implements Cloneable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8259092798479256962L;
+	
+	private Double pointsEarned;
     private String letterEarned;
     private String userEnteredGrade;
     private Double percentEarned;
@@ -43,6 +48,43 @@ public class AssignmentGradeRecord extends AbstractGradeRecord {
     private transient BigDecimal earnedWeightedPercentage;
     private transient BigDecimal overallWeight;
     private transient Boolean isDropped;
+    // used for drop highest/lowest score functionality
+    private Boolean droppedFromGrade;
+
+    public static Comparator<AssignmentGradeRecord> numericComparator;
+
+    static{
+    	numericComparator = new Comparator<AssignmentGradeRecord>() {
+            public int compare(AssignmentGradeRecord agr1, AssignmentGradeRecord agr2) {
+                if(agr1 == null && agr2 == null) {
+                    return 0;
+                }
+                if(agr1 == null) {
+                    return -1;
+                }
+                if(agr2 == null) {
+                    return 1;
+                }
+                Double agr1Points = agr1.getPointsEarned();
+                Double agr2Points = agr2.getPointsEarned();
+                
+                if (agr1Points == null && agr2Points == null) {
+                    return 0;
+                }
+                if (agr1Points == null && agr2Points != null) {
+                    return -1;
+                }
+                if (agr1Points != null && agr2Points == null) {
+                    return 1;
+                }
+                try {
+                    return agr1Points.compareTo(agr2Points);
+                } catch(NumberFormatException e) {
+                    return agr1Points.compareTo(agr2Points); // if not number, default to calcComparator functionality
+                }
+            }
+        };
+    }
 
     public AssignmentGradeRecord() {
         super();
@@ -210,6 +252,14 @@ public class AssignmentGradeRecord extends AbstractGradeRecord {
 	public void setUserEnteredGrade(String userEnteredGrade) {
 		this.userEnteredGrade = userEnteredGrade;
 	}
+	
+	public Boolean getDroppedFromGrade() {
+        return this.droppedFromGrade == null ? false : this.droppedFromGrade;
+    }
+
+    public void setDroppedFromGrade(Boolean droppedFromGrade) {
+        this.droppedFromGrade = droppedFromGrade;
+    }
 }
 
 

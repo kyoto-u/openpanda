@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/HelperCommand.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/HelperCommand.java $
  * $Id: HelperCommand.java 58932 2009-03-20 22:09:18Z s.swinsburg@lancaster.ac.uk $
  ***********************************************************************************
  *

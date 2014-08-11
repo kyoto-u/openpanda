@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/PortalServiceImpl.java $
- * $Id: PortalServiceImpl.java 98466 2011-09-21 01:15:44Z botimer@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/PortalServiceImpl.java $
+ * $Id: PortalServiceImpl.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,7 +64,7 @@ import org.sakaiproject.tool.cover.SessionManager;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 98466 $
+ * @version $Rev: 110562 $
  */
 
 public class PortalServiceImpl implements PortalService
@@ -416,7 +416,7 @@ public class PortalServiceImpl implements PortalService
 		return getHandlerMap(portal.getPortalContext(), true);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private Map<String, PortalHandler> getHandlerMap(String portalContext, boolean create)
 	{
 		Map<String, PortalHandler> handlerMap = handlerMaps.get(portalContext);
@@ -545,7 +545,7 @@ public class PortalServiceImpl implements PortalService
 	}
 
 	public Editor getActiveEditor(Placement placement) {
-		String systemEditor = ServerConfigurationService.getString("wysiwyg.editor", "fckeditor");
+		String systemEditor = ServerConfigurationService.getString("wysiwyg.editor", "ckeditor");
 		
 		String activeEditor = systemEditor;
 		if (placement != null) {

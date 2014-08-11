@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-resource/src/webapp/inputRichText/sakai-htmlarea.js $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-resource/src/webapp/inputRichText/sakai-htmlarea.js $
 * $Id: sakai-htmlarea.js 75768 2010-04-07 14:03:10Z arwhyte@umich.edu $
 * Formatted text editing widget within Sakai.
 *
@@ -486,6 +486,6 @@ function resetRichTextEditor(clientId, config) {
 
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-resource/src/webapp/inputRichText/sakai-htmlarea.js $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-resource/src/webapp/inputRichText/sakai-htmlarea.js $
 * $Id: sakai-htmlarea.js 75768 2010-04-07 14:03:10Z arwhyte@umich.edu $
 **********************************************************************************/

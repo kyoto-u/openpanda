@@ -1,5 +1,5 @@
 /*****************************************************************************
- * $URL: https://source.sakaiproject.org/svn/config/branches/sakai-2.8.x/localization/bundles/src/java/org/sakaiproject/localization/util/SiteemaconProperties.java $
+ * $URL: https://source.sakaiproject.org/svn/config/tags/sakai-2.9.0/localization/bundles/src/java/org/sakaiproject/localization/util/SiteemaconProperties.java $
  * $Id: SiteemaconProperties.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  *****************************************************************************
  *

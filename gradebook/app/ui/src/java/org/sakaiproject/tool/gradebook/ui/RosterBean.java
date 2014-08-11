@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: RosterBean.java 107180 2012-04-17 01:06:27Z steve.swinsburg@gmail.com $
+* $Id: RosterBean.java 101702 2011-12-13 18:31:00Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -54,6 +54,7 @@ import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader;
 import org.sakaiproject.jsf.spreadsheet.SpreadsheetDataFileWriterCsv;
 import org.sakaiproject.jsf.spreadsheet.SpreadsheetDataFileWriterXls;
+import org.sakaiproject.jsf.spreadsheet.SpreadsheetDataFileWriterPdf;
 import org.sakaiproject.jsf.spreadsheet.SpreadsheetUtil;
 import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
 import org.sakaiproject.section.api.coursemanagement.User;
@@ -66,10 +67,13 @@ import org.sakaiproject.tool.gradebook.Category;
 import org.sakaiproject.tool.gradebook.CourseGrade;
 import org.sakaiproject.tool.gradebook.CourseGradeRecord;
 import org.sakaiproject.tool.gradebook.GradableObject;
+import org.sakaiproject.tool.gradebook.Gradebook;
 import org.sakaiproject.tool.gradebook.jsf.AssignmentPointsConverter;
 import org.sakaiproject.tool.gradebook.jsf.CategoryPointsConverter;
 import org.sakaiproject.tool.gradebook.jsf.FacesUtil;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.service.gradebook.shared.GradebookService;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 
 /**
  * Backing bean for the visible list of assignments in the gradebook.
@@ -90,6 +94,8 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
     
     private HtmlDataTable originalRosterDataTable = null;
 
+    private boolean selectedCategoryDropsScores;
+    
     public class GradableObjectColumn implements Serializable {
 		private Long id;
 		private String name;
@@ -97,7 +103,9 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 		private Boolean assignmentColumn = false;
 		private Long assignmentId;
 		private Boolean inactive = false;
-
+		private Boolean hideInAllGradesTable = false;
+	        private Boolean hiddenChanged = false;
+		
 		public GradableObjectColumn() {
 		}
 		public GradableObjectColumn(GradableObject gradableObject) {
@@ -107,6 +115,8 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 			assignmentId = getColumnHeaderAssignmentId(gradableObject);
 			assignmentColumn = !gradableObject.isCourseGrade();
 			inactive = (!gradableObject.isCourseGrade() && !((Assignment)gradableObject).isReleased() ? true : false);
+			hideInAllGradesTable = assignmentColumn ? ((Assignment) gradableObject).isHideInAllGradesTable() : false;
+			hiddenChanged = hideInAllGradesTable;
 		}
 
 		@Override
@@ -150,13 +160,23 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 		public void setInactive(Boolean inactive) {
 			this.inactive = inactive;
 		}
+		public Boolean getHideInAllGradesTable() {
+			return hideInAllGradesTable;
+		}
+		public void setHideInAllGradesTable(Boolean hideInAllGradesTable) {
+			this.hideInAllGradesTable = hideInAllGradesTable;
+		}
+		
+		public boolean hasHiddenChanged(){
+			return hiddenChanged != hideInAllGradesTable;
+		}
 	}
 
 	// Controller fields - transient.
 	private transient List studentRows;
 	private transient Map gradeRecordMap;
 	private transient Map categoryResultMap;
-
+	
 	public class StudentRow implements Serializable {
         private EnrollmentRecord enrollment;
 
@@ -196,6 +216,11 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 		
 		//get the selected categoryUID 
 		String selectedCategoryUid = getSelectedCategoryUid();
+		
+		if(selectedCategoryUid != null) {
+		    Category selectedCategory = getSelectedCategory();
+            selectedCategoryDropsScores = selectedCategory.isDropScores();
+		}
 		
 		CourseGrade courseGrade = null;
 		if (isUserAbleToGradeAll()) {
@@ -586,6 +611,9 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 
 				UIColumn col = new UIColumn();
 				col.setId(ASSIGNMENT_COLUMN_PREFIX + colpos);
+				if(columnData.getHideInAllGradesTable()){
+					col.setRendered(false);
+				}
 
 				if(!columnData.getCategoryColumn()){
 	                HtmlCommandSortHeader sortHeader = new HtmlCommandSortHeader();
@@ -608,19 +636,14 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 	
 	                sortHeader.getChildren().add(headerText);
 	                
-	                if(columnData.getAssignmentColumn()){
-		                //<h:commandLink action="assignmentDetails">
-						//	<h:outputText value="Details" />
-						//	<f:param name="assignmentId" value="#{gradableObject.id}"/>
-		                //</h:commandLink>
-		                
+	                if(columnData.getAssignmentColumn()){		                
 		                //get details link
 		                HtmlCommandLink detailsLink = new HtmlCommandLink();
 		                detailsLink.setAction(app.createMethodBinding("#{rosterBean.navigateToAssignmentDetails}", new Class[] {}));
 		                detailsLink.setId(ASSIGNMENT_COLUMN_PREFIX + "hdr_link_" + colpos);
 		                HtmlOutputText detailsText = new HtmlOutputText();
 		                detailsText.setId(ASSIGNMENT_COLUMN_PREFIX + "hdr_details_" + colpos);
-		                detailsText.setValue("<em>"+FacesUtil.getLocalizedString("roster_details")+"</em>");
+		                detailsText.setValue("<em>" + getLocalizedString("roster_details") + "</em>");
 		                detailsText.setEscape(false);
 		                detailsText.setStyle("font-size: 80%");
 		                detailsLink.getChildren().add(detailsText);
@@ -791,10 +814,18 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 		return letterGrade;
 	}
     
+    public void setSelectedCategoryDropsScores(boolean selectedCategoryDropsScores) {
+        this.selectedCategoryDropsScores = selectedCategoryDropsScores;
+    }
+
+    public boolean isSelectedCategoryDropsScores() {
+        return selectedCategoryDropsScores;
+    }
+
     public void exportXlsNoCourseGrade(ActionEvent event){
         if(logger.isInfoEnabled()) logger.info("exporting gradebook " + getGradebookUid() + " as Excel");
         getGradebookBean().getEventTrackingService().postEvent("gradebook.downloadRoster","/gradebook/"+getGradebookId()+"/"+getAuthzLevel());
-        SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false,false), 
+        SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false, false), 
         		getDownloadFileName(getLocalizedString("export_gradebook_prefix")), 
         		new SpreadsheetDataFileWriterXls());
     }
@@ -802,7 +833,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
     public void exportCsvNoCourseGrade(ActionEvent event){
         if(logger.isInfoEnabled()) logger.info("exporting gradebook " + getGradebookUid() + " as CSV");
         getGradebookBean().getEventTrackingService().postEvent("gradebook.downloadRoster","/gradebook/"+getGradebookId()+"/"+getAuthzLevel());
-        SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false,true), 
+        SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false, true), 
         		getDownloadFileName(getLocalizedString("export_gradebook_prefix")), 
         		new SpreadsheetDataFileWriterCsv());
     }
@@ -811,11 +842,11 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
         if(logger.isInfoEnabled()) logger.info("exporting roster as CSV for gradebook " + getGradebookUid());
         getGradebookBean().getEventTrackingService().postEvent("gradebook.downloadRoster","/gradebook/"+getGradebookId()+"/"+getAuthzLevel());
         if (isUserAbleToGradeAll()) {
-        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(true,true), 
+        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(true, true), 
         		getDownloadFileName(getLocalizedString("export_gradebook_prefix")), 
         		new SpreadsheetDataFileWriterCsv());
         } else {
-        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false,true), 
+        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false, true), 
             		getDownloadFileName(getLocalizedString("export_gradebook_prefix")), 
             		new SpreadsheetDataFileWriterCsv());
         }
@@ -826,13 +857,28 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
         String authzLevel = (getGradebookBean().getAuthzService().isUserAbleToGradeAll(getGradebookUid())) ?"instructor" : "TA";
         getGradebookBean().getEventTrackingService().postEvent("gradebook.downloadRoster","/gradebook/"+getGradebookId()+"/"+getAuthzLevel());
         if (isUserAbleToGradeAll()) {
-        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(true,false), 
+        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(true, false), 
         		getDownloadFileName(getLocalizedString("export_gradebook_prefix")), 
         		new SpreadsheetDataFileWriterXls());
         } else {
-        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false,false), 
+        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false, false), 
             		getDownloadFileName(getLocalizedString("export_gradebook_prefix")), 
             		new SpreadsheetDataFileWriterXls());
+        }
+    }
+    
+    public void exportPdf(ActionEvent event){
+        if(logger.isInfoEnabled()) logger.info("exporting roster as Pdf for gradebook " + getGradebookUid());
+        String authzLevel = (getGradebookBean().getAuthzService().isUserAbleToGradeAll(getGradebookUid())) ?"instructor" : "TA";
+        getGradebookBean().getEventTrackingService().postEvent("gradebook.downloadRoster","/gradebook/"+getGradebookId()+"/"+getAuthzLevel());
+        if (isUserAbleToGradeAll()) {
+        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(true, true), 
+        		getDownloadFileName(getLocalizedString("export_gradebook_prefix")), 
+        		new SpreadsheetDataFileWriterPdf());
+        } else {
+        	SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false, true), 
+            		getDownloadFileName(getLocalizedString("export_gradebook_prefix")), 
+            		new SpreadsheetDataFileWriterPdf());
         }
     }
     
@@ -994,6 +1040,12 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
          		colName = ((Assignment)gradableObject).getName() + " [" + nf.format(ptsPossible) + "]";
          	} else if (gradableObject instanceof CourseGrade && includeCourseGrade) {
          		colName = getLocalizedString("roster_course_grade_column_name");
+         		if(ServerConfigurationService.getBoolean("gradebook.roster.showCourseGradePoints", false)
+    					&& ((CourseGrade) gradableObject).getGradebook().getGrade_type() == GradebookService.GRADE_TYPE_POINTS){
+         			colName += " " + getLocalizedString("roster_export_percentage");
+         			//add total points header
+         			headerRow.add(getLocalizedString("roster_course_grade_column_name") + " " + getLocalizedString("roster_export_points"));
+         		}
          	}
 
          	headerRow.add(colName);
@@ -1011,6 +1063,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
         	for (Object gradableObject : gradableObjects) {
         		Object score = null;
         		String letterScore = null;
+        		boolean droppedScore = false;
         		if (studentMap != null) {
         			Long gradableObjectId = ((GradableObject)gradableObject).getId();
         			
@@ -1020,8 +1073,16 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
         				if (gradeRecord.isCourseGradeRecord()) { 
         				    if (includeCourseGrade) {
         				        score = gradeRecord.getGradeAsPercentage();
+        				        if(ServerConfigurationService.getBoolean("gradebook.roster.showCourseGradePoints", false)
+        		    					&& ((CourseGrade) gradableObject).getGradebook().getGrade_type() == GradebookService.GRADE_TYPE_POINTS){
+        		         			//add total points
+        				        	row.add(gradeRecord.getPointsEarned());
+        				        }
         				    }
         				} else {
+        					if(gradeRecord instanceof AssignmentGradeRecord){
+        						droppedScore = ((AssignmentGradeRecord)gradeRecord).getDroppedFromGrade();
+        					}
         					if (getGradeEntryByPoints()) {
         						score = gradeRecord.getPointsEarned();
         					} else if (getGradeEntryByPercent()) {
@@ -1035,11 +1096,13 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
         		if (score != null && score instanceof Double) {
         			score = new Double(FacesUtil.getRoundDown(((Double)score).doubleValue(), 2));
         			// SAK-19849: do NOT localize the score if exporting to Excel. Let Excel localize it!
-					if (localizeScores) {
-						score = nf.format(score);
-					}
+        			if (localizeScores) {
+        				score = nf.format(score);
+        			}
         		}
-    			
+    			if(droppedScore){
+    				score = score.toString() + " (" + getLocalizedString("export_dropped") + ")";
+    			}
         		row.add(score);
         	}
         	spreadsheetData.add(row);
@@ -1060,5 +1123,18 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 		setNav("roster", "false", "false", "false", null);
 		
 		return "assignmentDetails";
+	}
+	
+	public String saveHidden(){
+		for (Iterator listIter = gradableObjectColumns.iterator(); listIter.hasNext();) {
+			GradableObjectColumn col = (GradableObjectColumn) listIter.next();
+			if(col.hasHiddenChanged()){
+				//save
+				Assignment assignment = getGradebookManager().getAssignment(col.getAssignmentId());
+				assignment.setHideInAllGradesTable(col.getHideInAllGradesTable());
+				getGradebookManager().updateAssignment(assignment);
+			}
+		}
+		return null;
 	}
 }

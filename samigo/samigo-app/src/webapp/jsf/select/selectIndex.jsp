@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: selectIndex.jsp 118944 2013-01-29 01:16:41Z steve.swinsburg@gmail.com $
+<!-- $Id: selectIndex.jsp 96503 2011-08-06 00:29:39Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -33,9 +33,12 @@
       <title><h:outputText value="#{selectIndexMessages.page_title}" /></title>
       </head>
       <body onload="<%= request.getAttribute("html.body.onload") %>">
+      
+      <!-- IF A SECURE DELIVERY MODULES ARE AVAILABLE, INJECT THEIR INITIAL HTML FRAGMENTS HERE -->
+	  <h:outputText  value="#{select.secureDeliveryHTMLFragments}" escape="false" />
 
 <!--JAVASCRIPT -->
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 var linksDisabled = 'false';
 function disableLinks(clickedLink){
 	//alert("clickedLink id = " + clickedLink.id);

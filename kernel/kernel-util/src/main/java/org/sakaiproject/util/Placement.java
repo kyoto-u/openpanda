@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/Placement.java $
- * $Id: Placement.java 77420 2010-05-13 12:57:04Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/Placement.java $
+ * $Id: Placement.java 101656 2011-12-12 22:40:28Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -23,8 +23,9 @@ package org.sakaiproject.util;
 
 import java.util.Properties;
 
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.tool.api.Tool;
-import org.sakaiproject.tool.cover.ToolManager;
+import org.sakaiproject.tool.api.ToolManager;
 
 /**
  * <p>
@@ -51,6 +52,23 @@ public class Placement implements org.sakaiproject.tool.api.Placement
 
 	/** The placed tool's id - use if the tool is null. */
 	protected String m_toolId = null;
+
+    private static Object LOCK = new Object();
+
+    private static ToolManager toolManager;
+    protected static ToolManager getToolManager() {
+        if (toolManager == null) {
+            synchronized (LOCK) {
+                ToolManager component = (ToolManager) ComponentManager.get(ToolManager.class);
+                if (component == null) {
+                    throw new IllegalStateException("Unable to find the ToolManager using the ComponentManager");
+                } else {
+                    toolManager = component;
+                }
+            }
+        }
+        return toolManager;
+    }
 
 	/**
 	 * Construct
@@ -169,7 +187,7 @@ public class Placement implements org.sakaiproject.tool.api.Placement
 		if ((m_tool == null) && (m_toolId != null))
 		{
 			// if so, we can try again
-			m_tool = ToolManager.getTool(m_toolId);
+			m_tool = getToolManager().getTool(m_toolId);
 		}
 
 		return m_tool;

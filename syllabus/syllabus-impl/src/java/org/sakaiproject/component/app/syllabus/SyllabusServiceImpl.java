@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/branches/sakai-2.8.x/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusServiceImpl.java $
- * $Id: SyllabusServiceImpl.java 96168 2011-08-02 21:07:31Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.0/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusServiceImpl.java $
+ * $Id: SyllabusServiceImpl.java 95984 2011-08-01 12:19:26Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1164,7 +1164,7 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
 		return toolIds;
 	}
 
-	public void transferCopyEntities(String fromContext, String toContext, List ids){
+	public void transferCopyEntities(String fromContext, String toContext, List<String> ids){
 		transferCopyEntitiesRefMigrator(fromContext, toContext, ids);
 	}
 
@@ -1332,7 +1332,7 @@ public class SyllabusServiceImpl implements SyllabusService, EntityTransferrer, 
 		return SecurityService.unlock(lock, reference);
 	}
 	
-	public void transferCopyEntities(String fromContext, String toContext, List ids, boolean cleanup){
+	public void transferCopyEntities(String fromContext, String toContext, List<String> ids, boolean cleanup){
 		transferCopyEntitiesRefMigrator(fromContext, toContext, ids, cleanup);
 	}
 

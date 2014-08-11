@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/Title.jsp $
- * $Id: Title.jsp 92633 2011-05-05 15:50:03Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/Title.jsp $
+ * $Id: Title.jsp 92371 2011-04-27 19:38:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

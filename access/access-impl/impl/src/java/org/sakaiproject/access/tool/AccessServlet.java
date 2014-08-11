@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/access/branches/sakai-2.8.x/access-impl/impl/src/java/org/sakaiproject/access/tool/AccessServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/access/tags/sakai-2.9.0/access-impl/impl/src/java/org/sakaiproject/access/tool/AccessServlet.java $
  * $Id: AccessServlet.java 74527 2010-03-11 10:06:18Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

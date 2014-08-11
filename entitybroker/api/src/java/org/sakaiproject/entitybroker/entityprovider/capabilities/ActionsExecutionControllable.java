@@ -1,6 +1,6 @@
 /**
  * $Id: ActionsExecutionControllable.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/ActionsExecutionControllable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/ActionsExecutionControllable.java $
  * ActionsExecutable.java - entity-broker - Jul 25, 2008 2:46:26 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

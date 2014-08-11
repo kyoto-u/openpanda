@@ -9,7 +9,8 @@
 </jsp:useBean>
 <f:view>
 	<sakai:view title="#{msgs.cdfm_discussion_forum_settings}" toolCssHref="/messageforums-tool/css/msgcntr.css">
-	<script type="text/javascript" src="/library/js/jquery.js"></script>
+	<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
 	<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>      
 	<script type="text/javascript" src="/messageforums-tool/js/jquery.charcounter.js"> </script>
 	<sakai:script contextBase="/messageforums-tool" path="/js/permissions_header.js"/>
@@ -30,9 +31,7 @@
 	</script> 
 	<script type="text/javascript">
 	function setDatesEnabled(radioButton){
-		$(".openDateSpan").toggle();
-		$(".closeDateSpan").toggle();
-		resize();		
+		$(".calWidget").fadeToggle('slow');
 	}
 
 	function openDateCal(){
@@ -48,6 +47,15 @@
     <h:form id="revise">
 		  <script type="text/javascript">
             $(document).ready(function(){
+				if ($('.gradeSelector').find('option').length ===1){
+					$('.gradeSelector').find('select').hide();
+					$('.gradeSelector').find('.instrWithGrades').hide();
+					$('.gradeSelector').find('.instrWOGrades').show();
+				}
+				$('.displayMore').click(function(e){
+						e.preventDefault();
+						$('.displayMorePanel').fadeIn('slow')
+				})
 				var charRemFormat = $('.charRemFormat').text();
 				$(".forum_shortDescriptionClass").charCounter(255, {
 					container: ".charsRemaining",
@@ -60,7 +68,7 @@
 		  <h:outputText id="instruction"  value="#{msgs.cdfm_settings_instruction}"/>
 		  <h:outputText value="#{msgs.cdfm_info_required_sign}" styleClass="reqStarInline" />
 		</div>
-			<h:messages styleClass="messageAlert" id="errorMessages"  /> 
+			<h:messages styleClass="messageAlert" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}" /> 
      
 			<h:panelGrid columns="1" styleClass="jsfFormTable" columnClasses="shorttext">
 				<h:panelGroup>	
@@ -74,8 +82,10 @@
 					</h:inputText>
 				</h:panelGroup>	
 			</h:panelGrid>
-			<h:panelGrid columns="1"  columnClasses="longtext">
-				<h:panelGroup>
+			<%-- //designNote: rendered attr below should resolve to false only if there is no prior short description
+			 		and if there is server property (TBD) saying not to use it  - below just checking for pre-existing short description--%>
+			<h:panelGrid columns="1"  columnClasses="longtext" rendered="#{ForumTool.showForumShortDescription}">
+				<h:panelGroup >
 					<h:outputText value="" />
 					<%-- //designNote: this label should alert that textarea has a 255 max chars limit --%>
 					<h:outputLabel id="outputLabel1" for="forum_shortDescription"  value="#{msgs.cdfm_shortDescription}"/>	
@@ -95,7 +105,7 @@
 			<%--RTEditor area - if enabled--%>
 			<h:panelGroup rendered="#{! ForumTool.disableLongDesc}">
 				<h:outputText id="outputLabel2" value="#{msgs.cdfm_fullDescription}" style="display:block;padding:.5em 0"/>
-			<sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" rows="12" cols="120" id="df_compose_description" value="#{ForumTool.selectedForum.forum.extendedDescription}">
+			<sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" rows="#{ForumTool.editorRows}" cols="120" id="df_compose_description" value="#{ForumTool.selectedForum.forum.extendedDescription}">
 				<f:validateLength maximum="65000"/>
 			</sakai:inputRichText>
 	      	</h:panelGroup>
@@ -152,56 +162,51 @@
 			</div>
 			<p class="act" style="padding:0 0 1em 0;">
 				<h:commandButton  action="#{ForumTool.processAddAttachmentRedirect}"
-					value="#{msgs.cdfm_button_bar_add_attachment_more_redirect}" 
-					immediate="true" 
+					value="#{msgs.cdfm_button_bar_add_attachment_more_redirect}"  
 					style="font-size:96%"
 					rendered="#{!empty ForumTool.attachments}"/>
 				<h:commandButton  action="#{ForumTool.processAddAttachmentRedirect}"
-					value="#{msgs.cdfm_button_bar_add_attachment_redirect}" 
-					immediate="true" 
+					value="#{msgs.cdfm_button_bar_add_attachment_redirect}"  
 					style="font-size:96%"
 					rendered="#{empty ForumTool.attachments}"
 					/>
 			</p>	
 			</div>		
 			<%--general posting  forum settings --%>
-			<h4 style="margin:0"><h:outputText  value="#{msgs.cdfm_forum_posting}"/></h4>
-			<div style="padding-left:1em">
-			<h:panelGrid columns="2" styleClass="jsfFormTable" style="margin-top:0">
-   			<h:panelGroup>
-					<h:outputText  value="#{msgs.cdfm_lock_forum}" />	
-				</h:panelGroup>
-				<h:panelGroup>
-					<h:selectOneRadio layout="lineDirection"  id="forum_locked"  value="#{ForumTool.selectedForum.locked}"  styleClass="selectOneRadio">
-    					<f:selectItem itemValue="true" itemLabel="#{msgs.cdfm_yes}"/>
-    					<f:selectItem itemValue="false" itemLabel="#{msgs.cdfm_no}"/>
-  					</h:selectOneRadio>
-				</h:panelGroup>
-   			<h:panelGroup styleClass="shorttext">
-					<h:outputText   value="#{msgs.cdfm_moderate_forum}" />	
-				</h:panelGroup>
-				<h:panelGroup>
-					<h:selectOneRadio layout="lineDirection"  id="moderated"  value="#{ForumTool.selectedForum.moderated}" 
-						onclick="javascript:disableOrEnableModeratePerm();"  styleClass="selectOneRadio">
-    					<f:selectItem itemValue="true" itemLabel="#{msgs.cdfm_yes}"/>
-    					<f:selectItem itemValue="false" itemLabel="#{msgs.cdfm_no}"/>
-  					</h:selectOneRadio>
-				</h:panelGroup>
-			</h:panelGrid>
+			<h4 style="margin: 0"><h:outputText
+				value="#{msgs.cdfm_forum_posting}" /></h4>
+			<div class="indnt1">
+				<p class="checkbox">
+					<h:selectBooleanCheckbox
+						title="ForumLocked" value="#{ForumTool.selectedForum.forumLocked}"
+						id="forum_locked">
+					</h:selectBooleanCheckbox> <h:outputLabel for="forum_locked" value="#{msgs.cdfm_lock_forum}" />
+				</p>
+				<p class="checkbox">
+					<h:selectBooleanCheckbox
+						title="Moderated" value="#{ForumTool.selectedForum.forumModerated}"
+						id="moderated">
+					</h:selectBooleanCheckbox> <h:outputLabel for="moderated" value="#{msgs.cdfm_moderate_forum}" />
+				</p>
+				<p class="checkbox">
+					<h:selectBooleanCheckbox
+						title="postFirst" value="#{ForumTool.selectedForum.forumPostFirst}"
+						id="postFirst">
+					</h:selectBooleanCheckbox> <h:outputLabel for="postFirst" value="#{msgs.cdfm_postFirst}" />
+				</p>
 			</div>
-			
 			<h4><h:outputText  value="#{msgs.cdfm_forum_availability}" /></h4>
 			
-			<div style="padding-left:1em">
-			<h:panelGrid columns="1" columnClasses="longtext,checkbox">
+			<div class="indnt1">
+			<h:panelGrid columns="1" columnClasses="longtext,checkbox" cellpadding="0" cellspacing="0">
               <h:panelGroup>
                  <h:selectOneRadio layout="pageDirection" onclick="this.blur()" onchange="setDatesEnabled(this);" disabled="#{not ForumTool.editMode}" id="availabilityRestricted"  value="#{ForumTool.selectedForum.availabilityRestricted}">
                   <f:selectItem itemValue="false" itemLabel="#{msgs.cdfm_forum_avail_show}"/>
                   <f:selectItem itemValue="true" itemLabel="#{msgs.cdfm_forum_avail_date}"/>
                </h:selectOneRadio>
                </h:panelGroup>
-               <h:panelGroup id="openDateSpan" styleClass="indnt2 openDateSpan" style="display: #{ForumTool.selectedForum.availabilityRestricted ? '' : 'none'}">
-               	   <h:outputText value="#{msgs.openDate}: "/>
+               <h:panelGroup id="openDateSpan" styleClass="indnt2 openDateSpan calWidget" style="display: #{ForumTool.selectedForum.availabilityRestricted ? '' : 'none'}">
+               	   <h:outputLabel value="#{msgs.openDate}: " for="openDate"/>
 	               <h:inputText id="openDate" value="#{ForumTool.selectedForum.openDate}"/>
 	               <f:verbatim>
 	               	<a id="openCal" href="javascript:openDateCal();">
@@ -210,9 +215,7 @@
 	               <f:verbatim>
 	               </a>
 	               </f:verbatim>
-              	</h:panelGroup>
-              	<h:panelGroup id="closeDateSpan" styleClass="indnt2 closeDateSpan" style="display: #{ForumTool.selectedForum.availabilityRestricted ? '' : 'none'}">
-              		<h:outputText value="#{msgs.closeDate}: "/>
+              		<h:outputLabel value="#{msgs.closeDate}: " for="closeDate" />
 	               <h:inputText id="closeDate" value="#{ForumTool.selectedForum.closeDate}"/>
 	               <f:verbatim>
 	               	<a id="closeCal" href="javascript:closeDateCal();">
@@ -225,23 +228,44 @@
            </h:panelGrid>
  		</div>
 
-		<div class="instruction" style="padding: 0.5em; margin-top:0.8em;"><h4>
-       			<h:outputText value="#{msgs.cdfm_forum_mark_read}"/>
-       		</h4></div>
-         	<h:panelGrid columns="2" >
-         		<h:panelGroup styleClass="shorttext">
-           			<h:outputLabel for="autoMarkThreadsRead" value="#{msgs.cdfm_auto_mark_threads_read}" styleClass="shorttext"/>
-         		</h:panelGroup>
-         		<h:panelGroup>
-           			<h:selectOneRadio layout="lineDirection" id="autoMarkThreadsRead" value="#{ForumTool.selectedForum.autoMarkThreadsRead}" styleClass="checkbox inlineForm">
-             				<f:selectItem itemValue="true" itemLabel="#{msgs.cdfm_yes}"/>
-             				<f:selectItem itemValue="false" itemLabel="#{msgs.cdfm_no}"/>
-           			</h:selectOneRadio>
-         		</h:panelGroup>
-	       </h:panelGrid>
+		<h4><h:outputText value="#{msgs.cdfm_forum_mark_read}"/></h4>
+			<table><tr><td>
+			<p class="indnt1 checkbox"><h:selectBooleanCheckbox
+				title="autoMarkThreadsRead"
+				value="#{ForumTool.selectedForum.forumAutoMarkThreadsRead}"
+				id="autoMarkThreadsRead">
+			</h:selectBooleanCheckbox> <h:outputLabel for="autoMarkThreadsRead"
+				value="#{msgs.cdfm_auto_mark_threads_read}" /></p>
+				</td></tr></table>
 
- 	 	<%@include file="/jsp/discussionForum/permissions/permissions_include.jsp"%>
-	      
+	      <%--designNote: gradebook assignment - need to finesse this - make aware that functionality exists, but flag that there are no gb assignmetns to select --%>
+				<%--designNote:  How is this a "permission" item? --%>  
+				<h4><h:outputText value="#{msgs.perm_choose_assignment_head}" rendered="#{ForumTool.gradebookExist}" /></h4>
+
+				<h:panelGrid columns="2" rendered="#{ForumTool.gradebookExist}" style="margin-top:.5em;clear:both" styleClass="itemSummary">
+			    <h:panelGroup style="white-space:nowrap;">
+						<h:outputLabel for="forum_assignments" value="#{msgs.perm_choose_assignment}"></h:outputLabel>  
+			      </h:panelGroup>
+				  <h:panelGroup  styleClass="gradeSelector  itemAction actionItem"> 
+						<h:selectOneMenu id="forum_assignments" value="#{ForumTool.selectedForum.gradeAssign}" disabled="#{not ForumTool.editMode}">
+			   	    <f:selectItems value="#{ForumTool.assignments}" />
+			      </h:selectOneMenu>
+						<h:outputText value="#{msgs.perm_choose_assignment_none_f}" styleClass="instrWOGrades" style="display:none;margin-left:0"/>
+						<h:outputText value=" #{msgs.perm_choose_instruction_forum} " styleClass="instrWithGrades" style="margin-left:0;"/>
+						<h:outputLink value="#" style="text-decoration:none" styleClass="instrWithGrades"><h:outputText styleClass="displayMore" value="#{msgs.perm_choose_instruction_more_link}"/></h:outputLink>
+			    </h:panelGroup>
+						<h:panelGroup styleClass="displayMorePanel" style="display:none" >
+			    </h:panelGroup>
+					<h:panelGroup styleClass="itemAction actionItem displayMorePanel" style="display:none" >
+
+						<h:outputText styleClass="displayMorePanel" value="#{msgs.perm_choose_instruction_forum_more}"/>
+			    </h:panelGroup>
+			  </h:panelGrid>
+
+			<%@ include file="/jsp/discussionForum/permissions/permissions_include.jsp"%>
+
+				
+
       <div class="act">
           <h:commandButton action="#{ForumTool.processActionSaveForumSettings}" value="#{msgs.cdfm_button_bar_save_setting}"
           								 rendered="#{!ForumTool.selectedForum.markForDeletion}" accesskey="s"> 
@@ -257,13 +281,13 @@
           </h:commandButton>
 				<%-- // designNote: these next 2 actions  should be available in the list view instead of here --%>
           <h:commandButton id="delete_confirm" action="#{ForumTool.processActionDeleteForumConfirm}" 
-                           value="#{msgs.cdfm_button_bar_delete}" rendered="#{!ForumTool.selectedForum.markForDeletion && ForumTool.displayForumDeleteOption}"
+                           value="#{msgs.cdfm_button_bar_delete_forum}" rendered="#{!ForumTool.selectedForum.markForDeletion && ForumTool.displayForumDeleteOption}"
                            accesskey="d">
 	        	<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
           </h:commandButton>
           
           <h:commandButton id="delete" action="#{ForumTool.processActionDeleteForum}" 
-                           value="#{msgs.cdfm_button_bar_delete}" rendered="#{ForumTool.selectedForum.markForDeletion}"
+                           value="#{msgs.cdfm_button_bar_delete_forum}" rendered="#{ForumTool.selectedForum.markForDeletion}"
                            accesskey="d">
 	        	<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
           </h:commandButton>

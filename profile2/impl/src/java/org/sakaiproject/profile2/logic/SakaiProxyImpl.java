@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Setter;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
@@ -43,14 +45,18 @@ import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.event.api.ActivityService;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.api.NotificationService;
+import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.IdUsedException;
-import org.sakaiproject.exception.ServerOverloadException;
+import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.id.api.IdManager;
 import org.sakaiproject.profile2.model.MimeTypeByteArray;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
+import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.site.api.SiteService.SelectionType;
+import org.sakaiproject.site.api.SiteService.SortType;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.Tool;
@@ -626,8 +632,7 @@ public class SakaiProxyImpl implements SakaiProxy {
  	*/
 	public void sendEmail(final String userId, final String subject, String message) {
 		
-		class EmailSender implements Runnable{
-			private Thread runner;
+		class EmailSender {
 			private String userId;
 			private String subject;
 			private String message;
@@ -644,12 +649,10 @@ public class SakaiProxyImpl implements SakaiProxy {
 				this.userId = userId;
 				this.subject = subject;
 				this.message = message;
-				runner = new Thread(this,"Profile2 EmailSender thread");
-				runner.start();
 			}
 
 			//do it!
-			public synchronized void run() {
+			public void send() {
 				try {
 
 					//get User to send to
@@ -660,14 +663,11 @@ public class SakaiProxyImpl implements SakaiProxy {
 						return;
 					}
 					
-					List<User> receivers = new ArrayList<User>();
-					receivers.add(user);
-					
 					//do it
-					emailService.sendToUsers(receivers, getHeaders(user.getEmail(), subject), formatMessage(subject, message));
+					emailService.sendToUsers(Collections.singleton(user), getHeaders(user.getEmail(), subject), formatMessage(subject, message));
 					
 					log.info("Email sent to: " + userId);
-				} catch (Exception e) {
+				} catch (UserNotDefinedException e) {
 					log.error("SakaiProxy.sendEmail() failed for userId: " + userId + " : " + e.getClass() + " : " + e.getMessage());
 				}
 			}
@@ -738,36 +738,44 @@ public class SakaiProxyImpl implements SakaiProxy {
 		}
 		
 		//instantiate class to format, then send the mail
-		new EmailSender(userId, subject, message);
+		new EmailSender(userId, subject, message).send();
 	}
 	
 	/**
  	* {@inheritDoc}
  	*/
-	public void sendEmail(List<String> userIds, String emailTemplateKey, Map<String,String> replacementValues) {
+	public void sendEmail(List<String> userIds, final String emailTemplateKey, final Map<String,String> replacementValues) {
 		
 		//get list of Users
-		List<User> users = new ArrayList<User>(getUsers(userIds));
-		RenderedTemplate template = null;
+		final List<User> users = new ArrayList<User>(getUsers(userIds));
 		
-		//get the rendered template for each user
-		for(User user : users) {
-			log.error("SakaiProxy.sendEmail() attempting to send email to: " + user.getId());
-			try { 
-				template = emailTemplateService.getRenderedTemplateForUser(emailTemplateKey, user.getReference(), replacementValues); 
-				if (template == null) {
-					log.error("SakaiProxy.sendEmail() no template with key: " + emailTemplateKey);
-					return;	//no template
+		//only ever use one thread whether sending to one user or many users
+		Thread sendMailThread = new Thread() {
+			
+			public void run() {
+				//get the rendered template for each user
+				RenderedTemplate template = null;
+				
+				for(User user : users) {
+					log.info("SakaiProxy.sendEmail() attempting to send email to: " + user.getId());
+					try { 
+						template = emailTemplateService.getRenderedTemplateForUser(emailTemplateKey, user.getReference(), replacementValues); 
+						if (template == null) {
+							log.error("SakaiProxy.sendEmail() no template with key: " + emailTemplateKey);
+							return;	//no template
+						}
+					}
+					catch (Exception e) {
+						log.error("SakaiProxy.sendEmail() error retrieving template for user: " + user.getId() + " with key: " + emailTemplateKey + " : " + e.getClass() + " : " + e.getMessage());
+						continue; //try next user
+					}
+					
+					//send
+					sendEmail(user.getId(), template.getRenderedSubject(), template.getRenderedHtmlMessage());
 				}
 			}
-			catch (Exception e) {
-				log.error("SakaiProxy.sendEmail() error retrieving template for user: " + user.getId() + " with key: " + emailTemplateKey + " : " + e.getClass() + " : " + e.getMessage());
-				continue; //try next user
-			}
-			
-			//send
-			sendEmail(user.getId(), template.getRenderedSubject(), template.getRenderedHtmlMessage());
-		}
+		};
+		sendMailThread.start();
 	}
 	
 	/**
@@ -946,6 +954,24 @@ public class SakaiProxyImpl implements SakaiProxy {
 				"profile2.profile.business.enabled",
 				ProfileConstants.SAKAI_PROP_PROFILE2_PROFILE_BUSINESS_ENABLED);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isWallEnabledGlobally() {
+		return serverConfigurationService.getBoolean(
+				"profile2.wall.enabled",
+				ProfileConstants.SAKAI_PROP_PROFILE2_WALL_ENABLED);		
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isWallDefaultProfilePage() {
+		return serverConfigurationService.getBoolean(
+				"profile2.wall.default",
+				ProfileConstants.SAKAI_PROP_PROFILE2_WALL_DEFAULT);	
+	}
 	
 	/**
  	* {@inheritDoc}
@@ -1019,6 +1045,9 @@ public class SakaiProxyImpl implements SakaiProxy {
 		else if(pictureType.equals(ProfileConstants.PICTURE_SETTING_OFFICIAL_PROP)) {
 			return ProfileConstants.PICTURE_SETTING_OFFICIAL;
 		}
+		//gravatar is not an enforceable setting, hence no block here. it is purely a user preference.
+		//but can be disabled
+		
 		//otherwise return default
 		else {
 			return ProfileConstants.PICTURE_SETTING_DEFAULT;
@@ -1127,7 +1156,9 @@ public class SakaiProxyImpl implements SakaiProxy {
 		props.put("messages", serverConfigurationService.getInt("profile2.privacy.default.messages", ProfileConstants.DEFAULT_PRIVACY_OPTION_MESSAGES));
 		props.put("businessInfo", serverConfigurationService.getInt("profile2.privacy.default.businessInfo", ProfileConstants.DEFAULT_PRIVACY_OPTION_BUSINESSINFO));
 		props.put("myKudos", serverConfigurationService.getInt("profile2.privacy.default.myKudos", ProfileConstants.DEFAULT_PRIVACY_OPTION_MYKUDOS));
+		props.put("myWall", serverConfigurationService.getInt("profile2.privacy.default.myWall", ProfileConstants.DEFAULT_PRIVACY_OPTION_MYWALL));
 		props.put("socialInfo", serverConfigurationService.getInt("profile2.privacy.default.socialInfo", ProfileConstants.DEFAULT_PRIVACY_OPTION_SOCIALINFO));
+		props.put("onlineStatus", serverConfigurationService.getInt("profile2.privacy.default.onlineStatus", ProfileConstants.DEFAULT_PRIVACY_OPTION_ONLINESTATUS));
 
 		return props;
 	}
@@ -1225,13 +1256,7 @@ public class SakaiProxyImpl implements SakaiProxy {
  	*/
 	public String getToolSkinCSS(String skinRepo){
 		
-		String skin = null;
-		try {
-			skin = siteService.findTool(sessionManager.getCurrentToolSession().getPlacementId()).getSkin();			
-		}
-		catch(Exception e) {
-			skin = serverConfigurationService.getString("skin.default");
-		}
+		String skin = siteService.findTool(sessionManager.getCurrentToolSession().getPlacementId()).getSkin();			
 		
 		if(skin == null) {
 			skin = serverConfigurationService.getString("skin.default");
@@ -1330,26 +1355,100 @@ public class SakaiProxyImpl implements SakaiProxy {
 				"profile2.search.maxSearchResultsPerPage",
 				ProfileConstants.DEFAULT_MAX_SEARCH_RESULTS_PER_PAGE);
 	}
+	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public boolean isGravatarImageEnabledGlobally() {
+		return serverConfigurationService.getBoolean("profile2.gravatar.image.enabled", ProfileConstants.SAKAI_PROP_PROFILE2_GRAVATAR_IMAGE_ENABLED);
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isUserAllowedAddSite(String userUuid) {
+		return siteService.allowAddSite(userUuid);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Site addSite(String id, String type) {
+		Site site = null;
+		try {
+			site = siteService.addSite(id, type);
+		} catch (IdInvalidException e) {
+			e.printStackTrace();
+		} catch (IdUsedException e) {
+			e.printStackTrace();
+		} catch (PermissionException e) {
+			e.printStackTrace();
+		}
+		
+		return site;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean saveSite(Site site) {
+		try {
+			siteService.save(site);
+		} catch (IdUnusedException e) {
+			e.printStackTrace();
+			return false;
+		} catch (PermissionException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Site getSite(String siteId) {
+		try {
+			return siteService.getSite(siteId);
+		} catch (IdUnusedException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Site> getUserSites() {
+		return siteService.getSites(SelectionType.ACCESS, null, null, null, SortType.TITLE_ASC, null);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Tool getTool(String id) {
+		return toolManager.getTool(id);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<String> getToolsRequired(String category) {
+		return serverConfigurationService.getToolsRequired(category);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isGoogleIntegrationEnabledGlobally() {
+		return serverConfigurationService.getBoolean("profile2.integration.google.enabled", ProfileConstants.SAKAI_PROP_PROFILE2_GOOGLE_INTEGRATION_ENABLED);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	public boolean isLoggedIn() {
 		return StringUtils.isNotBlank(getCurrentUserId());
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean isProfileFieldsEnabled() {
-		return serverConfigurationService.getBoolean("profile2.profile.fields.enabled", ProfileConstants.SAKAI_PROP_PROFILE2_PROFILE_FIELDS_ENABLED);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean isProfileStatusEnabled() {
-		return serverConfigurationService.getBoolean("profile2.profile.status.enabled", ProfileConstants.SAKAI_PROP_PROFILE2_PROFILE_STATUS_ENABLED);
 	}
 	
 	// PRIVATE METHODS FOR SAKAIPROXY
@@ -1416,76 +1515,49 @@ public class SakaiProxyImpl implements SakaiProxy {
 
 	
 	
-	// INJECT API'S
+	@Setter
 	private ToolManager toolManager;
-	public void setToolManager(ToolManager toolManager) {
-		this.toolManager = toolManager;
-	}
-
+	
+	@Setter
 	private SecurityService securityService;
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
-	}
-
+	
+	@Setter
 	private SessionManager sessionManager;
-	public void setSessionManager(SessionManager sessionManager) {
-		this.sessionManager = sessionManager;
-	}
-
+	
+	@Setter
 	private SiteService siteService;
-	public void setSiteService(SiteService siteService) {
-		this.siteService = siteService;
-	}
-
+	
+	@Setter
 	private UserDirectoryService userDirectoryService;
-	public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
-		this.userDirectoryService = userDirectoryService;
-	}
 	
+	@Setter
 	private SakaiPersonManager sakaiPersonManager;
-	public void setSakaiPersonManager(SakaiPersonManager sakaiPersonManager) {
-		this.sakaiPersonManager = sakaiPersonManager;
-	}
 	
+	@Setter
 	private ContentHostingService contentHostingService;
-	public void setContentHostingService(ContentHostingService contentHostingService) {
-		this.contentHostingService = contentHostingService;
-	}
 	
+	@Setter
 	private EventTrackingService eventTrackingService;
-	public void setEventTrackingService(EventTrackingService eventTrackingService) {
-		this.eventTrackingService = eventTrackingService;
-	}
 	
+	@Setter
 	private EmailService emailService;
-	public void setEmailService(EmailService emailService) {
-		this.emailService = emailService;
-	}
 	
+	@Setter
 	private ServerConfigurationService serverConfigurationService;
-	public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
-		this.serverConfigurationService = serverConfigurationService;
-	}
-
+	
+	@Setter
 	private EmailTemplateService emailTemplateService;
-	public void setEmailTemplateService(EmailTemplateService emailTemplateService) {
-		this.emailTemplateService = emailTemplateService;
-	}
 	
+	@Setter
 	private IdManager idManager;
-	public void setIdManager(IdManager idManager) {
-		this.idManager = idManager;
-	}
 	
+	@Setter
 	private ActivityService activityService;
-	public void setActivityService(ActivityService activityService) {
-		this.activityService = activityService;
-	}
+	
 
 	//INJECT OTHER RESOURCES
+	@Setter
 	private ArrayList<String> emailTemplates;
-	public void setEmailTemplates(ArrayList<String> emailTemplates) {
-		this.emailTemplates = emailTemplates;
-	}
+	
 	
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>citations-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.8-SNAPSHOT</version>
+    <version>2.9.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>sakai-citations-impl</name>
@@ -17,13 +17,9 @@
   <inceptionYear>2003</inceptionYear>
   <packaging>jar</packaging>
   <properties>
-    <deploy.target/>
+    <deploy.target />
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>org.sakaiproject.kernel</groupId>
-      <artifactId>sakai-kernel-util</artifactId>
-    </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
@@ -34,17 +30,16 @@
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
+      <artifactId>sakai-kernel-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.kernel</groupId>
+      <artifactId>sakai-kernel-storage-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-component-manager</artifactId>
     </dependency>
-<!--
-      This has been relocated to sakai-kernel-util
-      org.sakaiproject.kernel.utilsakai-content-util-->
-<!--
-      This has been relocated to sakai-kernel-util
-      org.sakaiproject.kernel.utilsakai-user-util-->
-<!--
-      This has been relocated to sakai-kernel-util
-      org.sakaiproject.kernel.utilsakai-util-->
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-citations-api</artifactId>
@@ -75,31 +70,48 @@
     	<groupId>commons-lang</groupId>
     	<artifactId>commons-lang</artifactId>
     </dependency>
-<!--javax.servletservlet-api${sakai.servletapi.version}-->
-<!--org.sakaiprojectsakai-authz-api${sakai.version}-->
-<!--org.sakaiprojectsakai-entity-api${sakai.version}-->
-<!--org.sakaiprojectsakai-event-api${sakai.version}-->
-<!--org.sakaiprojectsakai-component-api${sakai.version}-->
-<!--org.sakaiprojectsakai-component${sakai.version}-->
-<!--org.sakaiprojectsakai-util-api${sakai.version}-->
-<!--org.sakaiprojectsakai-user-api${sakai.version}-->
-<!--org.sakaiprojectsakai-site-api${sakai.version}-->
-<!--org.sakaiprojectsakai-util${sakai.version}-->
-<!--org.sakaiprojectsakai-db-api${sakai.version}-->
-<!--org.sakaiprojectsakai-tool-api${sakai.version}-->
-<!--org.sakaiprojectsakai-content-api${sakai.version}-->
-<!--org.sakaiprojectsakai-content-util${sakai.version}-->
     <dependency>
-      <groupId>org.sakaiproject</groupId>
+      <groupId>org.sakaiproject.velocity</groupId>
       <artifactId>sakai-velocity-tool</artifactId>
       <version>${sakai.version}</version>
     </dependency>
-<!--org.sakaiprojectsakai-user-util${sakai.version}-->
     <dependency>
       <groupId>net.sf.ehcache</groupId>
       <artifactId>ehcache-core</artifactId>
       <version>${sakai.ehcache.version}</version>
       <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jmock</groupId>
+     <artifactId>jmock-junit3</artifactId>
+      <version>2.5.1</version>
+     <scope>test</scope>
+    </dependency>
+    <dependency>
+     <groupId>org.springframework</groupId>
+      <artifactId>spring</artifactId>
+      <version>2.5.6.SEC01</version>
+     <scope>test</scope>
+    </dependency>
+    <dependency>
+     <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>2.5.6.SEC01</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+	  <groupId>com.thoughtworks.xstream</groupId>
+	  <artifactId>xstream</artifactId>
+	  <version>1.3.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>backport-util-concurrent</groupId>
+    	<artifactId>backport-util-concurrent</artifactId>
+    	<version>2.1</version>
     </dependency>
   </dependencies>
   <build>
@@ -111,14 +123,21 @@
         </includes>
       </resource>
       <resource>
-        <directory>${basedir}/../../citations-util/util/src/bundle</directory>
+        <directory>${basedir}/src/resources</directory>
         <includes>
-          <include>*.properties</include>
-          <include>**/*.properties</include>
+          <include>**/*.xml</include>
         </includes>
       </resource>
     </resources>
 <!-- java source -->
     <sourceDirectory>src/java</sourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>${basedir}/src/test</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </testResource>
+    </testResources>
   </build>
 </project>

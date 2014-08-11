@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/xsltcharon/xsltcharon-portal/xsl-portal/src/java/org/sakaiproject/portal/xsltcharon/impl/XsltRenderContext.java $
- * $Id: XsltRenderContext.java 96707 2011-08-09 17:59:28Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/xsltcharon/xsltcharon-portal/xsl-portal/src/java/org/sakaiproject/portal/xsltcharon/impl/XsltRenderContext.java $
+ * $Id: XsltRenderContext.java 112028 2012-08-31 15:01:43Z earle.nietzel@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -203,7 +203,11 @@ public class XsltRenderContext implements PortalRenderContext {
       Element sites = doc.createElement("sites");
 
       Map tabSites = (Map) context.get("tabsSites");
-      sites.appendChild(createSitesList(doc, tabSites, "tabsSites", "tabsSites"));
+      Element tabsSites = createSitesList(doc, tabSites, "tabsSites", "tabsSites");
+      appendTextElementNode(doc, "tutorial", tabSites.get("tutorial").toString(), tabsSites);
+      appendTextElementNode(doc, "tabsMoreSitesShow", tabSites.get("tabsMoreSitesShow").toString(), tabsSites);
+      sites.appendChild(tabsSites);
+      
       sites.appendChild(createSitesList(doc, tabSites, "tabsMoreSites", "tabsMoreSites"));
 
       if (tabSites.get("tabsMoreSortedTermList") != null) {
@@ -219,10 +223,9 @@ public class XsltRenderContext implements PortalRenderContext {
       Map termsMap = (Map) tabSites.get("tabsMoreTerms");
 
       int index = 0;
-      for (Iterator<String> i=terms.iterator();i.hasNext();) {
+      for (String title : terms) {
          Element siteType = doc.createElement("siteType");
          siteType.setAttribute("order", "" + index);
-         String title = i.next();
          appendTextElementNode(doc, "title", title, siteType);
          siteType.appendChild(createSitesList(doc, termsMap, title, "sites"));
          siteTypes.appendChild(siteType);
@@ -234,6 +237,7 @@ public class XsltRenderContext implements PortalRenderContext {
 
    protected Element createSitesList(Document doc, Map currentContext, String prop, String elementName) {
       Element list = doc.createElement(elementName);
+      
       List<Map> sites = (List<Map>) currentContext.get(prop);
 
       if (sites == null) {
@@ -241,11 +245,11 @@ public class XsltRenderContext implements PortalRenderContext {
       }
 
       int index = 0;
-      for (Iterator<Map> i=sites.iterator();i.hasNext();) {
-         list.appendChild(createSite(doc, i.next(), index));
-         index++;
+      for (Map site : sites) {
+          list.appendChild(createSite(doc, site, index));
+          index++;
       }
-
+     
       return list;
    }
 
@@ -284,7 +288,7 @@ public class XsltRenderContext implements PortalRenderContext {
       site.setAttribute("myWorkspace", siteMap.get("isMyWorkspace").toString());
       site.setAttribute("depth", siteMap.get("depth").toString());
       site.setAttribute("order", "" + index);
-
+      
       if ( siteMap.get("isChild") != null ){
     	  site.setAttribute("isChild", "true");
          site.setAttribute("child", siteMap.get("isChild").toString());
@@ -304,9 +308,40 @@ public class XsltRenderContext implements PortalRenderContext {
       else
          site.setAttribute("child", Boolean.FALSE.toString());
 
+      Map<String, ?> sitePages = (Map<String, ?>) siteMap.get("sitePages");
+      if (sitePages != null) {
+    	  site.appendChild(createSitePages(doc, (List<Map<String, ?>>) sitePages.get("pageNavTools")));
+      }
+      
       return site;
    }
 
+   protected Element createSitePages(Document doc, List<Map<String, ?>> navPages) {
+	   Element pages = doc.createElement("pages");
+	   
+	   if (navPages != null && navPages.size() > 0) {
+		   pages.setAttribute("count", Integer.toString(navPages.size()));
+		   
+		   for (Map<String, ?> navPage : navPages) {
+			   Element page = doc.createElement("page");
+			   page.setAttribute("hidden", navPage.get("hidden").toString());
+			   page.setAttribute("current", navPage.get("current").toString());
+			   page.setAttribute("isPage", navPage.get("isPage").toString());
+			   
+			   appendTextElementNode(doc, "title", navPage.get("pageTitle").toString(), page);
+			   appendTextElementNode(doc, "description", navPage.get("description").toString(), page);
+			   appendTextElementNode(doc, "url", navPage.get("pageRefUrl").toString(), page);
+			   appendTextElementNode(doc, "menuClass", navPage.get("menuClass").toString(), page);
+			   appendTextElementNode(doc, "pageId", navPage.get("pageId").toString(), page);
+			   pages.appendChild(page);
+		   }
+	   } else {
+		   pages.setAttribute("count", "0");
+	   }
+	   
+	   return pages;
+   }
+   
    protected Element createPageCategories(Document doc, List pageTools) throws ToolRenderException {
       Element categories = doc.createElement("categories");
 
@@ -472,11 +507,11 @@ public class XsltRenderContext implements PortalRenderContext {
       if ((Boolean)tool.get("hasRenderResult")) {
          toolElement.setAttribute("renderResult", "true");
          RenderResult result = (RenderResult) tool.get("toolRenderResult");
-
          appendTextElementNode(doc, "resultTitle", result.getTitle(), toolElement);
 
          //SAK-18793 - readDocumentFromString returns null on error; this check prevents NPEs
          String contentStr = result.getContent();
+         
          if (contentStr == null)
          {
              throw new ToolRenderException ("tool xml failed to render and is null");
@@ -526,6 +561,7 @@ public class XsltRenderContext implements PortalRenderContext {
 
       String skinRepo = (String) context.get("logoSkinRepo") + "/" + context.get("logoSkin");
       String helpUrl = null;
+      String tutorial = null;
 
       if (sitePages != null) {
          String presenceUrl = (String) sitePages.get("pageNavPresenceUrl");
@@ -551,12 +587,19 @@ public class XsltRenderContext implements PortalRenderContext {
       String sakaiVersion = (String) context.get("bottomNavSakaiVersion");
       String server = (String) context.get("bottomNavServer");
       String portalPath =  (String) context.get("portalPath");
+      String loggedOutUrl =  (String) context.get("loggedOutUrl");
       String timeoutDialogEnabled = context.get("timeoutDialogEnabled").toString();
       String timeoutDialogWarningSeconds = context.get("timeoutDialogWarningSeconds").toString();
       String portal_allow_auto_minimize = context.get("portal_allow_auto_minimize").toString();
       String portal_allow_minimize_tools = context.get("portal_allow_minimize_tools").toString();
       String portal_allow_minimize_navigation = context.get("portal_allow_minimize_navigation").toString();
       String portal_add_mobile_link = context.get("portal_add_mobile_link").toString();
+      String maxToolsInt = context.get("maxToolsInt").toString();
+      String neoChat = context.get("neoChat").toString();
+      String neoAvatar = context.get("neoAvatar").toString();
+
+      if (context.containsKey("tutorial"))
+    	  tutorial = context.get("tutorial").toString();
 
       String[] bottomNav = getListAsStringArray("bottomNav");
       List poweredByList = (List) context.get("bottomNavPoweredBy");
@@ -576,13 +619,18 @@ public class XsltRenderContext implements PortalRenderContext {
       appendTextElementNode(doc, "server", server, config);
       appendTextElementNode(doc, "helpUrl", helpUrl, config);
       appendTextElementNode(doc, "portalPath", portalPath, config);
+      appendTextElementNode(doc, "loggedOutUrl", loggedOutUrl, config);
       appendTextElementNode(doc, "timeoutDialogWarningSeconds", timeoutDialogWarningSeconds, config);
       appendTextElementNode(doc, "timeoutDialogEnabled", timeoutDialogEnabled, config);
       appendTextElementNode(doc, "portal_allow_auto_minimize", portal_allow_auto_minimize, config);
       appendTextElementNode(doc, "portal_allow_minimize_tools", portal_allow_minimize_tools, config);
       appendTextElementNode(doc, "portal_allow_minimize_navigation", portal_allow_minimize_navigation, config);
       appendTextElementNode(doc, "portal_add_mobile_link", portal_add_mobile_link, config);
-
+      appendTextElementNode(doc, "maxToolsInt", maxToolsInt, config);
+      appendTextElementNode(doc, "neoChat", neoChat, config);
+      appendTextElementNode(doc, "neoAvatar", neoAvatar, config);
+      appendTextElementNode(doc, "tutorial", tutorial, config);
+      
       appendTextElementNodes(doc, bottomNav, config, "bottomNavs", "bottomNav");
 
       for (int i = 0; i < poweredByList.size(); i++) {

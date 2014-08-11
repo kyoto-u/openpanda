@@ -9,17 +9,30 @@
     <sakai:stylesheet path="/css/useDHTMLMore.css"/>
     <sakai:stylesheet path="/css/prefs.css"/>
     <sakai:view_content>
-        <h:form id="prefs_form">
-                
+<f:verbatim> 
 		<script type="text/javascript" language="JavaScript" src="/library/js/jquery.js">//</script>
+		<script type="text/javascript" language="JavaScript" src="/library/js/fluid-latest/InfusionAll.js">//</script> 
 		<script type="text/javascript" language="JavaScript" src="/sakai-user-tool-prefs/js/prefs.js">// </script>
 		<script type="text/javascript">
+			<!--
 			$(document).ready(function(){
 				setupPrefsGen();
 				setupPrefsTabs('sl','sr');				
 			})  
-		</script>
-		
+
+                        function checkReloadTop() {
+                            var name_element = document.getElementById('prefs_form:reloadTop');
+                            check = name_element.value;
+                            if (check == 'true' ) parent.location.reload();
+                        }
+
+			jQuery(document).ready(function () {
+			    setTimeout('checkReloadTop();', 1500);
+			});
+            //-->
+</script>
+</f:verbatim>
+        <h:form id="prefs_form">
               <sakai:tool_bar>
               <%--sakai:tool_bar_item action="#{UserPrefsTool.processActionRefreshFrmEdit}" value="Refresh" /--%>
  		    <sakai:tool_bar_item action="#{UserPrefsTool.processActionNotiFrmEdit}" value="#{msgs.prefs_noti_title}" rendered="#{UserPrefsTool.noti_selection == 1}"/>
@@ -53,7 +66,7 @@
                     </h:panelGroup>
 				</h3>
                 
-                <sakai:messages />
+		    <sakai:messages rendered="#{!empty facesContext.maximumSeverity}" />
     <div id="tab-dhtml-more-sites">
     <div id="top-text">
         <h:outputText value="#{msgs.tab_inst_1_alt}"/> 
@@ -120,9 +133,9 @@
 
                 </p>
 
+                <h:inputHidden id="reloadTop" value="#{UserPrefsTool.reloadTop}" />
         </div>
         </h:form>
-        <sakai:peer_refresh value="#{UserPrefsTool.refreshElement}" />
     
     </sakai:view_content>
     </sakai:view_container>

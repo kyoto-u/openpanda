@@ -11,7 +11,16 @@
 										$(this).parents("tr").removeClass("selectedSelected");
 									}
 			        });
-
+        $('input[name="import"]').click (function(e){
+            if ($(e.target).attr('id') === 'import_yes') {
+                $('#importSitesReq').show();
+                $('#importSites').attr('title', '$tlang.getString("feat.select.title") $tlang.getString("feat.select.title.req")')
+            }
+            else{
+                $('#importSitesReq').hide();
+                $('#importSites').attr('title', '$tlang.getString("feat.select.title")')
+            }
+        })
       });
 
 
@@ -72,6 +81,10 @@
 						$tlang.getString("feat.forv")
 					</td>
 				</tr>
+				## list those extra tools (added outside Site Info tool with tool id not listed as the allowed tool for current site type) as hidded input
+				#foreach($tool in $!extraSelectedToolList)
+					<input type="hidden" name="selectedTools" value="$tool" />
+				#end
 				#set ($rowCount=0)
 				#foreach($tool in $toolRegistrationList)
 				#set ($rowCount=$rowCount + 1)
@@ -133,34 +146,39 @@
 					</tr>	
 				#end
 			</table>
-		#if (!$existSite && $sites.size() > 0)	
-			<h4>
-				$tlang.getString("feat.reuse")
-			</h4>
-			<p class="checkbox">
-				<input type="radio" id="import_no" name="import" value="FALSE" #if(!$import)checked="checked"#end onclick="document.featuresForm.importSites.disabled=true;" />
-				<label for="import_no">
-					$tlang.getString("feat.thanks")
-				</label>
-			</p>
-			<p class="checkbox">
-				<input type="radio" id="import_yes" name="import" value="TRUE" #if($import)checked="checked"#end onclick="document.featuresForm.importSites.disabled=false;" />
-				<label for="import_yes">
-					$tlang.getString("feat.yesfrom")
-				</label>
-			</p>
-			<select name="importSites" class="indnt2" id="importSites" size="5" multiple="multiple" #if(!$import)disabled="disabled"#end >
-				#foreach	($site in $sites)
-					#set($siteSelected = false)
-					#foreach($s in $importSites.keys())
-						#if ($s.Id == $site.Id)
-							#set($siteSelected = true)
-						#end
-					#end
-					<option value="$site.getId()" #if ($siteSelected)selected="selected"#end>$validator.escapeHtml($site.getTitle())</option>
-				#end
-			</select>
-			<p class="instruction">
+		#if (!$existSite && $sites.size() > 0)
+            <fieldset>
+    			<legend>
+    				<h4>$tlang.getString("feat.reuse")</h4>
+    			</legend>
+    			<p class="checkbox">
+    				<input type="radio" id="import_no" name="import" value="FALSE" #if(!$import)checked="checked"#end onclick="document.featuresForm.importSites.disabled=true;" />
+    				<label for="import_no">
+    					$tlang.getString("feat.thanks")
+    				</label>
+    			</p>
+    			<p class="checkbox">
+    				<input type="radio" id="import_yes" name="import" value="TRUE" #if($import)checked="checked"#end onclick="document.featuresForm.importSites.disabled=false;" />
+    				<label for="import_yes">
+    					$tlang.getString("feat.yesfrom")
+    				</label>
+    			</p>
+                <p class="indnt3">
+                <span class="reqStar" style="display:none" id="importSitesReq">*</span>
+    			<select title="$tlang.getString("feat.select.title")" name="importSites" id="importSites" size="5" multiple="multiple" #if(!$import)disabled="disabled"#end style="min-width: 10em " aria-describedby="importSelectInstructions">
+    				#foreach	($site in $sites)
+    					#set($siteSelected = false)
+    					#foreach($s in $importSites.keys())
+    						#if ($s.Id == $site.Id)
+    							#set($siteSelected = true)
+    						#end
+    					#end
+    					<option value="$site.getId()" #if ($siteSelected)selected="selected"#end>$validator.escapeHtml($site.getTitle())</option>
+    				#end
+    			</select>
+                </p>
+            </fieldset>
+			<p class="instruction" id="importSelectInstructions">
 				$tlang.getString("feat.note")
 			</p>
 		#end
@@ -183,5 +201,6 @@
 					accesskey="x"
 					onclick="document.featuresForm.option.value='cancel';javascript:document.featuresForm.submit();" />
 		</p>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>

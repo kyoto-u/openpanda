@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-api/src/java/org/sakaiproject/sitestats/api/event/EventRegistryService.java $
- * $Id: EventRegistryService.java 72280 2010-01-22 10:45:04Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-api/src/java/org/sakaiproject/sitestats/api/event/EventRegistryService.java $
+ * $Id: EventRegistryService.java 96802 2011-08-11 12:57:41Z steve.swinsburg@gmail.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -96,5 +96,11 @@ public interface EventRegistryService {
 	 * @see getEventRegistry()
 	 */
 	public EventFactory getEventFactory();
+	
+	/**
+	 * Get a list of event ids related to global server events. This list is configured via Spring.
+	 * @return List of event ids
+	 */
+	public List<String> getServerEventIds();
 
 }

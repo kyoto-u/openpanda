@@ -1,6 +1,6 @@
 /**
- * $Id: ServiceTestManager.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/impl/src/test/org/sakaiproject/entitybroker/impl/ServiceTestManager.java $
+ * $Id: ServiceTestManager.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/impl/src/test/org/sakaiproject/entitybroker/impl/ServiceTestManager.java $
  * TestManager.java - entity-broker - Jul 23, 2008 6:27:29 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -29,7 +29,9 @@ import org.sakaiproject.entitybroker.entityprovider.extension.RequestStorageWrit
 import org.sakaiproject.entitybroker.impl.entityprovider.EntityProviderManagerImpl;
 import org.sakaiproject.entitybroker.mocks.data.TestData;
 import org.sakaiproject.entitybroker.providers.EntityPropertiesService;
+import org.sakaiproject.entitybroker.providers.ExternalIntegrationProvider;
 import org.sakaiproject.entitybroker.util.core.EntityProviderMethodStoreImpl;
+import org.sakaiproject.entitybroker.util.external.ExternalIntegrationProviderMock;
 
 
 /**
@@ -68,6 +70,7 @@ public class ServiceTestManager {
     public EntityViewAccessProviderManager entityViewAccessProviderManager;
     public EntityMetaPropertiesService entityMetaPropertiesService;
     public EntityTaggingService entityTaggingService;
+    public ExternalIntegrationProvider externalIntegrationProvider;
 
     public TestData td;
     public TestData getTestData() {
@@ -80,6 +83,7 @@ public class ServiceTestManager {
 
     public ServiceTestManager(TestData td, EntityBrokerDao dao) {
         this.td = td;
+        this.externalIntegrationProvider = new ExternalIntegrationProviderMock();
         this.entityBrokerCoreServiceManager = new EntityBrokerCoreServiceManager(dao, true);
 
         // init the variables for the getters
@@ -91,6 +95,7 @@ public class ServiceTestManager {
         this.requestStorage = this.entityBrokerCoreServiceManager.getRequestStorage();
         this.entityProviderManager = (EntityProviderManagerImpl) this.entityBrokerCoreServiceManager.getEntityProviderManager();
         this.entityBrokerManager = (EntityBrokerManagerImpl) this.entityBrokerCoreServiceManager.getEntityBrokerManager();
+        this.entityBrokerManager.setExternalIntegrationProvider(this.externalIntegrationProvider);
         this.entityMetaPropertiesService = this.entityBrokerCoreServiceManager.getEntityMetaPropertiesService();
         this.entityTaggingService = this.entityBrokerCoreServiceManager.getEntityTaggingService();
 

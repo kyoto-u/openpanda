@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/archive/branches/sakai-2.8.x/archive-tool/tool/src/java/org/sakaiproject/archive/tool/ArchiveAction.java $
- * $Id: ArchiveAction.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/archive/tags/sakai-2.9.0/archive-tool/tool/src/java/org/sakaiproject/archive/tool/ArchiveAction.java $
+ * $Id: ArchiveAction.java 90799 2011-03-28 14:06:37Z jean-francois.leveque@upmc.fr $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation

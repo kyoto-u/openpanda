@@ -1,6 +1,6 @@
 /*******************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/xml/XsltFunctions.java $
- * $Id: XsltFunctions.java 103300 2012-01-19 18:44:37Z botimer@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/xml/XsltFunctions.java $
+ * $Id: XsltFunctions.java 103302 2012-01-19 18:57:04Z botimer@umich.edu $
  * **********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -31,6 +31,7 @@ import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentTypeImageService;
+import org.sakaiproject.metaobj.utils.DateWidgetFormat;
 import org.sakaiproject.portal.api.Editor;
 import org.sakaiproject.portal.api.PortalService;
 import org.sakaiproject.tool.api.Placement;
@@ -38,7 +39,6 @@ import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.EditorConfiguration;
 import org.sakaiproject.util.Xml;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.DateWidgetFormat;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.cover.EntityManager;

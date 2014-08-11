@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedItemData.java $
- * $Id: PublishedItemData.java 92509 2011-05-02 18:09:00Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedItemData.java $
+ * $Id: PublishedItemData.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -37,13 +37,10 @@ import org.sakaiproject.tool.assessment.data.dao.shared.TypeD;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
-//import org.sakaiproject.tool.assessment.facade.AgentFacade;
-//import org.sakaiproject.tool.assessment.facade.TypeFacadeQueriesAPI;
-//import org.sakaiproject.tool.assessment.services.GradingService;
-//import org.sakaiproject.tool.assessment.services.PersistenceService;
 
 public class PublishedItemData
     implements java.io.Serializable, ItemDataIfc, Comparable {
@@ -493,7 +490,7 @@ public class PublishedItemData
   */
    public String getText() {
      String text = "";
-     if (getTypeId().equals(TypeIfc.MATCHING))
+     if (getTypeId().equals(TypeIfc.MATCHING) || getTypeId().equals(TypeIfc.MATRIX_CHOICES_SURVEY))
        return instruction;
      Set set = this.getItemTextSet();
      Iterator iter = set.iterator();
@@ -708,5 +705,79 @@ public class PublishedItemData
 
   public void setPartialCreditFlag(Boolean partialCreditFlag) {
 	  this.partialCreditFlag = partialCreditFlag;
+  }
+
+  public String[] getRowChoices(){
+
+	  ArrayList itemTextArray = getItemTextArraySorted();
+
+	  List<String> stringList = new ArrayList<String>();
+
+	  for(int i=0; i<itemTextArray.size();i++) {
+		  String str = ((ItemTextIfc) itemTextArray.get(i)).getText();
+		  if(str!= null && str.trim().length() > 0) {
+			  stringList.add(str);
+		  }
+	  }
+
+	  String [] rowChoices = stringList.toArray(new String[stringList.size()]);
+
+	  return rowChoices;	 
+  }
+  
+  public List<Integer> getColumnIndexList() {
+
+	  List<Integer> columnIndexList = new ArrayList<Integer>();
+	  ArrayList itemTextArray = getItemTextArraySorted();
+	  ArrayList answerArray = ((ItemTextIfc)itemTextArray.get(0)).getAnswerArraySorted();  
+	  List<String> stringList = new ArrayList<String>();
+
+	  for(int i=0; i<answerArray.size();i++) {
+		  String str = ((AnswerIfc) answerArray.get(i)).getText();
+		  if(str!= null && str.trim().length() > 0) {
+			  stringList.add(str);
+		  }
+	  }
+	  for (int k=0; k< stringList.size(); k++){
+		  columnIndexList.add(new Integer(k));
+	  }
+	  return columnIndexList;
+  }
+
+  public String[] getColumnChoices() {
+	  ArrayList itemTextArray = getItemTextArraySorted();
+	  ArrayList answerArray = ((ItemTextIfc)itemTextArray.get(0)).getAnswerArraySorted();   
+	  List<String> stringList = new ArrayList<String>();
+
+	  for(int i=0; i<answerArray.size();i++) {
+		  String str = ((AnswerIfc) answerArray.get(i)).getText();
+		  if(str!= null && str.trim().length() > 0) {
+			  stringList.add(str);
+		  }
+	  }
+	  String [] columnChoices = stringList.toArray(new String[stringList.size()]);
+
+	  return columnChoices;
+
+  }
+
+  public boolean getAddCommentFlag(){
+	  if (getItemMetaDataByLabel(ItemMetaDataIfc.ADD_COMMENT_MATRIX) != null)
+		  return Boolean.parseBoolean(getItemMetaDataByLabel(ItemMetaDataIfc.ADD_COMMENT_MATRIX));
+	  return false;
+  }
+
+  public String getCommentField(){
+	  if (getItemMetaDataByLabel(ItemMetaDataIfc.ADD_COMMENT_MATRIX) != null && getItemMetaDataByLabel(ItemMetaDataIfc.ADD_COMMENT_MATRIX).equalsIgnoreCase("true"))
+		  return (String)(getItemMetaDataByLabel(ItemMetaDataIfc.MX_SURVEY_QUESTION_COMMENTFIELD));
+	  return null;
+  }
+
+  public String getRelativeWidthStyle() {
+	  String width = (String)(getItemMetaDataByLabel(ItemMetaDataIfc.MX_SURVEY_RELATIVE_WIDTH));
+	  if (width != null && Integer.valueOf(width) != 0)
+		  return "width:" + width + "%";
+	  else
+		  return "";
   }
 }

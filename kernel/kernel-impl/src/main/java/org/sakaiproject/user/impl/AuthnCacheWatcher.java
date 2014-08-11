@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/user/impl/AuthnCacheWatcher.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/AuthnCacheWatcher.java $
  * $Id: AuthnCacheWatcher.java 81062 2010-08-11 14:39:44Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

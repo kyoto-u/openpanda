@@ -33,7 +33,7 @@
    <sakai:instruction_message value="Guidance Test Tool" />
    <sakai:instruction_message value=" Last saved: " />
    <sakai:instruction_message value="#{guidance.lastSavedId}" />
-   <sakai:messages />
+   <sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
 
    <h:inputText value="#{guidance.formDisplayName}" />
    <h:inputText value="#{guidance.formTypeId}" />

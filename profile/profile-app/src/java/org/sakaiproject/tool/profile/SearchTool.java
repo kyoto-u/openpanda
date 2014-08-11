@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/profile/branches/profile-2.8.x/profile-app/src/java/org/sakaiproject/tool/profile/SearchTool.java $
+ * $URL: https://source.sakaiproject.org/svn/profile/tags/profile-2.9.0/profile-app/src/java/org/sakaiproject/tool/profile/SearchTool.java $
  * $Id: SearchTool.java 59681 2009-04-03 23:29:54Z arwhyte@umich.edu $
  ***********************************************************************************
  *

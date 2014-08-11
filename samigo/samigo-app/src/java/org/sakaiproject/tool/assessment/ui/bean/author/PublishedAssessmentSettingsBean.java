@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/PublishedAssessmentSettingsBean.java $
- * $Id: PublishedAssessmentSettingsBean.java 85589 2010-11-29 23:47:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/PublishedAssessmentSettingsBean.java $
+ * $Id: PublishedAssessmentSettingsBean.java 107981 2012-05-09 22:07:33Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -50,6 +50,7 @@ import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.spring.SpringBeanLocator;
+import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.data.dao.authz.AuthorizationData;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.FilePickerHelper;
@@ -64,6 +65,7 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIf
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.RegisteredSecureDeliveryModuleIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SecuredIPAddressIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.AuthzQueriesFacadeAPI;
@@ -75,11 +77,13 @@ import org.sakaiproject.tool.assessment.integration.helper.ifc.PublishingTargetH
 import org.sakaiproject.tool.assessment.services.PersistenceService;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
+import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
 import org.sakaiproject.tool.assessment.ui.listener.author.SaveAssessmentAttachmentListener;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.ui.listener.util.TimeUtil;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.util.ResourceLoader;
 
 
 public class PublishedAssessmentSettingsBean
@@ -151,6 +155,10 @@ public class PublishedAssessmentSettingsBean
   private String password;
   private String finalPageUrl;
   private String ipAddresses;
+  private boolean secureDeliveryAvailable;
+  private SelectItem[] secureDeliveryModuleSelections;
+  private String secureDeliveryModule;
+  private String secureDeliveryModuleExitPassword;
 
   // properties of PublishedFeedback
   private String feedbackDelivery; // immediate, on specific date , no feedback
@@ -411,6 +419,23 @@ public class PublishedAssessmentSettingsBean
       server = server.substring(0, index);
       String url = server + extContext.getRequestContextPath();
       this.publishedUrl = url + "/servlet/Login?id=" + this.alias;
+      
+      // secure delivery
+      SecureDeliveryServiceAPI secureDeliveryService = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI(); 
+      this.secureDeliveryAvailable = secureDeliveryService.isSecureDeliveryAvaliable();
+      this.secureDeliveryModuleSelections = getSecureDeliverModuleSelections();
+      this.secureDeliveryModule = (String) values.get( SecureDeliveryServiceAPI.MODULE_KEY );
+      this.secureDeliveryModuleExitPassword = secureDeliveryService.decryptPassword( this.secureDeliveryModule, 
+    		  (String) assessment.getAssessmentMetaDataByLabel( SecureDeliveryServiceAPI.EXITPWD_KEY ) );
+
+      if ( secureDeliveryModule == null ) {
+    	  this.secureDeliveryModule = SecureDeliveryServiceAPI.NONE_ID;
+      }
+      else if ( ! secureDeliveryService.isSecureDeliveryModuleAvailable( secureDeliveryModule ) ) {
+    	  log.warn( "Published assessment " + this.assessmentId + " requires secure delivery module " + this.secureDeliveryModule + 
+    	  			" but module is disabled or no longer installed. Secure delivery module will revert to NONE" );
+    	  secureDeliveryModule = SecureDeliveryServiceAPI.NONE_ID;
+      }
     }
     catch (RuntimeException ex) {
       log.warn(ex.getMessage());
@@ -642,7 +667,18 @@ public class PublishedAssessmentSettingsBean
   }
 
   public void setUnlimitedSubmissions(String unlimitedSubmissions) {
-    this.unlimitedSubmissions = unlimitedSubmissions;
+	  String itemNavigationUpdated = ContextUtil.lookupParam("itemNavigationUpdated");
+	  if (itemNavigationUpdated != null && Boolean.parseBoolean(itemNavigationUpdated)) {
+		  if (itemNavigation != null && "1".equals(itemNavigation)) {
+			  this.unlimitedSubmissions = AssessmentAccessControlIfc.LIMITED_SUBMISSIONS.toString();
+		  }
+		  else {
+			  this.unlimitedSubmissions = unlimitedSubmissions;
+		  }
+	  }
+	  else {
+		  this.unlimitedSubmissions = unlimitedSubmissions;
+	  }
   }
 
   public String getSubmissionsAllowed() {
@@ -650,7 +686,18 @@ public class PublishedAssessmentSettingsBean
   }
 
   public void setSubmissionsAllowed(String submissionsAllowed) {
-      this.submissionsAllowed = submissionsAllowed;
+	  String itemNavigationUpdated = ContextUtil.lookupParam("itemNavigationUpdated");
+	  if (itemNavigationUpdated != null && Boolean.parseBoolean(itemNavigationUpdated)) {
+		  if (itemNavigation != null && "1".equals(itemNavigation)) {
+			  this.submissionsAllowed = "1";
+		  }
+		  else {
+			  this.submissionsAllowed = submissionsAllowed;
+		  }
+	  }
+	  else {
+		  this.submissionsAllowed = submissionsAllowed;
+	  }
   }
 
   public void setLateHandling(String lateHandling) {
@@ -829,6 +876,37 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
     this.scoringType = scoringType;
   }
 
+  public String getSecureDeliveryModule() {
+	  return secureDeliveryModule;
+  }
+
+  public void setSecureDeliveryModule(String secureDeliveryModule) {
+	  this.secureDeliveryModule = secureDeliveryModule;
+  }
+
+  public String getSecureDeliveryModuleExitPassword() {
+	  return secureDeliveryModuleExitPassword;
+  }
+
+  public void setSecureDeliveryModuleExitPassword(String secureDeliveryModuleExitPassword) {
+	  this.secureDeliveryModuleExitPassword = secureDeliveryModuleExitPassword;
+  }
+
+  public void setSecureDeliveryModuleSelections(SelectItem[] secureDeliveryModuleSelections) {
+	  this.secureDeliveryModuleSelections = secureDeliveryModuleSelections;
+  }
+
+  public SelectItem[] getSecureDeliveryModuleSelections() {
+	  return secureDeliveryModuleSelections;
+  }
+
+  public boolean isSecureDeliveryAvailable() {
+	  return secureDeliveryAvailable;
+  }
+
+  public void setSecureDeliveryAvailable(boolean secureDeliveryAvailable) {
+	  this.secureDeliveryAvailable = secureDeliveryAvailable;
+  }
 
   public void setValue(String key, Object value){
     this.values.put(key, value);
@@ -1316,7 +1394,7 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 
 	public void setDisplayFormat(String displayDateFormat) {
 		this.displayDateFormat = displayDateFormat;
-		this.displayFormat = new SimpleDateFormat(displayDateFormat);
+		this.displayFormat = new SimpleDateFormat(displayDateFormat, new ResourceLoader().getLocale());
 	}
 
 	public boolean getIsValidStartDate() {
@@ -1450,12 +1528,19 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 	 * Returns the groups to which this assessment is released
 	 * @return
 	 */
-	public String[] getGroupsAuthorized() {
+	public String[] getGroupsAuthorized(String publishedAssessmentId) {
 		groupsAuthorized = null;
 		AuthzQueriesFacadeAPI authz = PersistenceService.getInstance()
 				.getAuthzQueriesFacade();
+		String id = "";
+		if (publishedAssessmentId != null) {
+			id = publishedAssessmentId;
+		}
+		else {
+			id = getAssessmentId().toString();
+		}
 		List authorizations = authz.getAuthorizationByFunctionAndQualifier(
-				"TAKE_PUBLISHED_ASSESSMENT", getAssessmentId().toString());
+				"TAKE_PUBLISHED_ASSESSMENT", id);
 		if (authorizations != null && authorizations.size() > 0) {
 			groupsAuthorized = new String[authorizations.size()];
 			Iterator authsIter = authorizations.iterator();
@@ -1466,6 +1551,10 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 			}
 		}
 		return groupsAuthorized;
+	}
+	
+	public String[] getGroupsAuthorized() {
+		return getGroupsAuthorized(null);
 	}
 
 	public boolean getIsMarkForReview() {
@@ -1590,6 +1679,21 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 		this.bgImageSelect=bgImageSelect;
 	}
 
+	public SelectItem[] getSecureDeliverModuleSelections() {
+		
+		SecureDeliveryServiceAPI secureDeliveryService = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI(); 
+		Set<RegisteredSecureDeliveryModuleIfc> modules = secureDeliveryService.getSecureDeliveryModules( new ResourceLoader().getLocale() );
+ 		  
+		SelectItem[] selections = new SelectItem[ modules.size() ];
+		int index = 0;
+		for ( RegisteredSecureDeliveryModuleIfc module : modules ) {
+ 
+			selections[index] = new SelectItem( module.getId(), module.getName() );
+			++index;
+		}
+ 		  
+		return selections;
+	}
 }
 
 

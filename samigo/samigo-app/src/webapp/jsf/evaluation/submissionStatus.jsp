@@ -10,7 +10,7 @@
   
 
 <!--
-$Id: submissionStatus.jsp 100008 2011-10-19 19:35:07Z ktsao@stanford.edu $
+$Id: submissionStatus.jsp 100007 2011-10-19 19:31:05Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -44,7 +44,7 @@ $Id: submissionStatus.jsp 100008 2011-10-19 19:35:07Z ktsao@stanford.edu $
 <!-- JAVASCRIPT -->
 <%@ include file="/js/delivery.js" %>
 
-<script>
+<script type="text/javascript">
 /*
 function escapeApostrophe(name) {
 	//alert(name);
@@ -106,20 +106,20 @@ function escapeApostrophe(name) {
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScoreListener" />
     </h:commandLink>
     
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" />
+    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne ''}" />
     
     <h:commandLink title="#{evaluationMessages.t_histogram}" action="histogramScores" immediate="true"
-      rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" >
+      rendered="#{totalScores.firstItem ne ''}" >
       <h:outputText value="#{evaluationMessages.stat_view}" />
       <f:param name="hasNav" value="true"/>
       <f:actionListener
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.HistogramListener" />
     </h:commandLink>
 
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" />
+    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne ''}" />
     
     <h:commandLink title="#{evaluationMessages.t_itemAnalysis}" action="detailedStatistics" immediate="true"
-      rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" >
+      rendered="#{totalScores.firstItem ne ''}" >
       <h:outputText value="#{evaluationMessages.item_analysis}" />
       <f:param name="hasNav" value="true"/>
       <f:actionListener
@@ -136,8 +136,8 @@ function escapeApostrophe(name) {
 
   </p>
 
-  <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
-
+  <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+  
   <div class="tier1">
      <h:outputText value="#{evaluationMessages.max_score_poss}" style="instruction"/>
      <h:outputText value="#{totalScores.maxScore}" style="instruction"/>

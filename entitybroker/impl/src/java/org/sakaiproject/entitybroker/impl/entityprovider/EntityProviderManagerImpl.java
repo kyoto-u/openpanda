@@ -1,6 +1,6 @@
 /**
- * $Id: EntityProviderManagerImpl.java 74838 2010-03-19 18:07:58Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/impl/src/java/org/sakaiproject/entitybroker/impl/entityprovider/EntityProviderManagerImpl.java $
+ * $Id: EntityProviderManagerImpl.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/impl/src/java/org/sakaiproject/entitybroker/impl/entityprovider/EntityProviderManagerImpl.java $
  * EBlogic.java - entity-broker - Apr 15, 2008 4:29:18 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -70,18 +70,11 @@ public class EntityProviderManagerImpl implements EntityProviderManager {
 
     public void init() {
         System.out.println("EntityProviderManagerImpl init");
-        // register the describe and batch prefixes to reserve them
+        // register the describe prefix to reserve them
         registerEntityProvider(
                 new EntityProvider() {
                     public String getEntityPrefix() {
                         return EntityRequestHandler.DESCRIBE;
-                    }
-                }
-        );
-        registerEntityProvider(
-                new EntityProvider() {
-                    public String getEntityPrefix() {
-                        return EntityRequestHandler.BATCH;
                     }
                 }
         );

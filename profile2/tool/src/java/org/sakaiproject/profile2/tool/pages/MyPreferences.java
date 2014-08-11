@@ -23,6 +23,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -39,6 +40,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.sakaiproject.profile2.exception.ProfilePreferencesNotDefinedException;
 import org.sakaiproject.profile2.model.ProfilePreferences;
+import org.sakaiproject.profile2.tool.components.EnablingCheckBox;
 import org.sakaiproject.profile2.tool.components.IconWithClueTip;
 import org.sakaiproject.profile2.tool.pages.panels.TwitterPrefsPane;
 import org.sakaiproject.profile2.util.ProfileConstants;
@@ -48,6 +50,10 @@ public class MyPreferences extends BasePage{
 	private static final Logger log = Logger.getLogger(MyPreferences.class);
 	private transient ProfilePreferences profilePreferences;
 
+	private CheckBox officialImage;
+	private CheckBox gravatarImage;
+	
+	
 	public MyPreferences() {
 		
 		log.debug("MyPreferences()");
@@ -62,14 +68,14 @@ public class MyPreferences extends BasePage{
 		
 		//if null, throw exception
 		if(profilePreferences == null) {
-			throw new ProfilePreferencesNotDefinedException("Couldn't create default preferences record for " + userUuid);
+			throw new ProfilePreferencesNotDefinedException("Couldn't retrieve preferences record for " + userUuid);
 		}
 		
 		//get email address for this user
 		String emailAddress = sakaiProxy.getUserEmail(userUuid);
 		//if no email, set a message into it fo display
 		if(emailAddress == null || emailAddress.length() == 0) {
-			emailAddress = new ResourceModel("preferences.email.none").getObject().toString();
+			emailAddress = new ResourceModel("preferences.email.none").getObject();
 		}
 		
 				
@@ -103,8 +109,8 @@ public class MyPreferences extends BasePage{
 
 		//request emails
 		final RadioGroup<Boolean> emailRequests = new RadioGroup<Boolean>("requestEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "requestEmailEnabled"));
-		emailRequests.add(new Radio<Boolean>("requestsOn", new Model<Boolean>(new Boolean(true))));
-		emailRequests.add(new Radio<Boolean>("requestsOff", new Model<Boolean>(new Boolean(false))));
+		emailRequests.add(new Radio<Boolean>("requestsOn", new Model<Boolean>(Boolean.valueOf(true))));
+		emailRequests.add(new Radio<Boolean>("requestsOff", new Model<Boolean>(Boolean.valueOf(false))));
 		emailRequests.add(new Label("requestsLabel", new ResourceModel("preferences.email.requests")));
 		form.add(emailRequests);
 		
@@ -118,8 +124,8 @@ public class MyPreferences extends BasePage{
 		
 		//confirm emails
 		final RadioGroup<Boolean> emailConfirms = new RadioGroup<Boolean>("confirmEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "confirmEmailEnabled"));
-		emailConfirms.add(new Radio<Boolean>("confirmsOn", new Model<Boolean>(new Boolean(true))));
-		emailConfirms.add(new Radio<Boolean>("confirmsOff", new Model<Boolean>(new Boolean(false))));
+		emailConfirms.add(new Radio<Boolean>("confirmsOn", new Model<Boolean>(Boolean.valueOf(true))));
+		emailConfirms.add(new Radio<Boolean>("confirmsOff", new Model<Boolean>(Boolean.valueOf(false))));
 		emailConfirms.add(new Label("confirmsLabel", new ResourceModel("preferences.email.confirms")));
 		form.add(emailConfirms);
 		
@@ -133,8 +139,8 @@ public class MyPreferences extends BasePage{
 		
 		//new message emails
 		final RadioGroup<Boolean> emailNewMessage = new RadioGroup<Boolean>("messageNewEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "messageNewEmailEnabled"));
-		emailNewMessage.add(new Radio<Boolean>("messageNewOn", new Model<Boolean>(new Boolean(true))));
-		emailNewMessage.add(new Radio<Boolean>("messageNewOff", new Model<Boolean>(new Boolean(false))));
+		emailNewMessage.add(new Radio<Boolean>("messageNewOn", new Model<Boolean>(Boolean.valueOf(true))));
+		emailNewMessage.add(new Radio<Boolean>("messageNewOff", new Model<Boolean>(Boolean.valueOf(false))));
 		emailNewMessage.add(new Label("messageNewLabel", new ResourceModel("preferences.email.message.new")));
 		form.add(emailNewMessage);
 		
@@ -148,13 +154,43 @@ public class MyPreferences extends BasePage{
 		
 		//message reply emails
 		final RadioGroup<Boolean> emailReplyMessage = new RadioGroup<Boolean>("messageReplyEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "messageReplyEmailEnabled"));
-		emailReplyMessage.add(new Radio<Boolean>("messageReplyOn", new Model<Boolean>(new Boolean(true))));
-		emailReplyMessage.add(new Radio<Boolean>("messageReplyOff", new Model<Boolean>(new Boolean(false))));
+		emailReplyMessage.add(new Radio<Boolean>("messageReplyOn", new Model<Boolean>(Boolean.valueOf(true))));
+		emailReplyMessage.add(new Radio<Boolean>("messageReplyOff", new Model<Boolean>(Boolean.valueOf(false))));
 		emailReplyMessage.add(new Label("messageReplyLabel", new ResourceModel("preferences.email.message.reply")));
 		form.add(emailReplyMessage);
 		
 		//updater
 		emailReplyMessage.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+			private static final long serialVersionUID = 1L;
+			protected void onUpdate(AjaxRequestTarget target) {
+            	target.appendJavascript("$('#" + formFeedbackId + "').fadeOut();");
+            }
+        });
+		
+		// new wall item notification emails
+		final RadioGroup<Boolean> wallItemNew = new RadioGroup<Boolean>("wallItemNewEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "wallItemNewEmailEnabled"));
+		wallItemNew.add(new Radio<Boolean>("wallItemNewOn", new Model<Boolean>(Boolean.valueOf(true))));
+		wallItemNew.add(new Radio<Boolean>("wallItemNewOff", new Model<Boolean>(Boolean.valueOf(false))));
+		wallItemNew.add(new Label("wallItemNewLabel", new ResourceModel("preferences.email.wall.new")));
+		form.add(wallItemNew);
+		
+		//updater
+		wallItemNew.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+			private static final long serialVersionUID = 1L;
+			protected void onUpdate(AjaxRequestTarget target) {
+            	target.appendJavascript("$('#" + formFeedbackId + "').fadeOut();");
+            }
+        });
+		
+		// added to new worksite emails
+		final RadioGroup<Boolean> worksiteNew = new RadioGroup<Boolean>("worksiteNewEmailEnabled", new PropertyModel<Boolean>(preferencesModel, "worksiteNewEmailEnabled"));
+		worksiteNew.add(new Radio<Boolean>("worksiteNewOn", new Model<Boolean>(Boolean.valueOf(true))));
+		worksiteNew.add(new Radio<Boolean>("worksiteNewOff", new Model<Boolean>(Boolean.valueOf(false))));
+		worksiteNew.add(new Label("worksiteNewLabel", new ResourceModel("preferences.email.worksite.new")));
+		form.add(worksiteNew);
+		
+		//updater
+		worksiteNew.add(new AjaxFormChoiceComponentUpdatingBehavior() {
 			private static final long serialVersionUID = 1L;
 			protected void onUpdate(AjaxRequestTarget target) {
             	target.appendJavascript("$('#" + formFeedbackId + "').fadeOut();");
@@ -186,38 +222,79 @@ public class MyPreferences extends BasePage{
 		}
 		
 		
-		// OFFICIAL IMAGE SECTION
+		// IMAGE SECTION
+		//only one of these can be selected at a time
 		WebMarkupContainer is = new WebMarkupContainer("imageSettingsContainer");
 		is.setOutputMarkupId(true);
 				
-		//official photo settings
+		// headings
 		is.add(new Label("imageSettingsHeading", new ResourceModel("heading.section.image")));
 		is.add(new Label("imageSettingsText", new ResourceModel("preferences.image.message")));
 
+		//official image
 		//checkbox
 		WebMarkupContainer officialImageContainer = new WebMarkupContainer("officialImageContainer");
 		officialImageContainer.add(new Label("officialImageLabel", new ResourceModel("preferences.image.official")));
-		CheckBox officialImage = new CheckBox("officialImage", new PropertyModel<Boolean>(preferencesModel, "useOfficialImage"));
+		officialImage = new CheckBox("officialImage", new PropertyModel<Boolean>(preferencesModel, "useOfficialImage"));
+		officialImage.setOutputMarkupId(true);
 		officialImageContainer.add(officialImage);
 
 		//updater
 		officialImage.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 			private static final long serialVersionUID = 1L;
 			protected void onUpdate(AjaxRequestTarget target) {
+				
+				//set gravatar to false since we can't have both active
+				gravatarImage.setModelObject(false);
+				target.addComponent(gravatarImage);
+				
             	target.appendJavascript("$('#" + formFeedbackId + "').fadeOut();");
             }
         });
 		is.add(officialImageContainer);
 		
-		//if using official images but alternate choice isn't allowed
-		if(!sakaiProxy.isUsingOfficialImageButAlternateSelectionEnabled()) {
+		//if using official images but alternate choice isn't allowed, hide this section
+		boolean officialImageEnabled = sakaiProxy.isUsingOfficialImageButAlternateSelectionEnabled();
+		if(!officialImageEnabled) {
 			profilePreferences.setUseOfficialImage(false); //set the model false to clear data as well (doesnt really need to do this but we do it to keep things in sync)
+			officialImageContainer.setVisible(false);
+		}
+				
+		//gravatar
+		//checkbox
+		WebMarkupContainer gravatarContainer = new WebMarkupContainer("gravatarContainer");
+		gravatarContainer.add(new Label("gravatarLabel", new ResourceModel("preferences.image.gravatar")));
+		gravatarImage = new CheckBox("gravatarImage", new PropertyModel<Boolean>(preferencesModel, "useGravatar"));
+		gravatarContainer.add(gravatarImage);
+
+		//updater
+		gravatarImage.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+			protected void onUpdate(AjaxRequestTarget target) {
+				
+				//set gravatar to false since we can't have both active
+				officialImage.setModelObject(false);
+            	target.addComponent(officialImage);
+            	
+            	target.appendJavascript("$('#" + formFeedbackId + "').fadeOut();");
+            }
+        });
+		is.add(gravatarContainer);
+		
+		//if gravatar's are disabled, hide this section
+		boolean gravatarEnabled = sakaiProxy.isGravatarImageEnabledGlobally();
+		if(!gravatarEnabled) {
+			profilePreferences.setUseGravatar(false); //set the model false to clear data as well (doesnt really need to do this but we do it to keep things in sync)
+			gravatarContainer.setVisible(false);
+		}
+		
+		//if official image disabled and gravatar disabled, hide the entire container
+		if(!officialImageEnabled && !gravatarEnabled) {
 			is.setVisible(false);
 		}
 		
 		form.add(is);
-		
-		
+
 		
 		// WIDGET SECTION
 		WebMarkupContainer ws = new WebMarkupContainer("widgetSettingsContainer");
@@ -262,6 +339,24 @@ public class MyPreferences extends BasePage{
         });
 		ws.add(galleryFeedContainer);
 		galleryFeedContainer.setVisible(sakaiProxy.isProfileGalleryEnabledGlobally());
+		
+		
+		//online status
+		WebMarkupContainer onlineStatusContainer = new WebMarkupContainer("onlineStatusContainer");
+		onlineStatusContainer.add(new Label("onlineStatusLabel", new ResourceModel("preferences.widget.onlinestatus")));
+		CheckBox onlineStatusSetting = new CheckBox("onlineStatusSetting", new PropertyModel<Boolean>(preferencesModel, "showOnlineStatus"));
+		onlineStatusContainer.add(onlineStatusSetting);
+		//tooltip
+		onlineStatusContainer.add(new IconWithClueTip("onlineStatusToolTip", ProfileConstants.INFO_IMAGE, new ResourceModel("preferences.widget.onlinestatus.tooltip")));
+		
+		//updater
+		onlineStatusSetting.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+			protected void onUpdate(AjaxRequestTarget target) {
+            	target.appendJavascript("$('#" + formFeedbackId + "').fadeOut();");
+            }
+        });
+		ws.add(onlineStatusContainer);		
 		
 		form.add(ws);
 		

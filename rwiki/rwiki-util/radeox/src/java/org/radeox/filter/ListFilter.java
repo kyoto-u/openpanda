@@ -40,7 +40,7 @@ import org.radeox.regex.MatchResult;
  * unnumbered lists, greek lists, alpha lists etc. @credits nested list support
  * by Davor Cubranic @author stephan @team sonicteam
  * 
- * @version $Id: ListFilter.java 99232 2011-10-11 13:32:31Z ottenhoff@longsight.com $
+ * @version $Id: ListFilter.java 98611 2011-09-26 13:08:13Z steve.swinsburg@gmail.com $
  */
 
 public class ListFilter extends LocaleRegexTokenFilter implements CacheFilter

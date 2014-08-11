@@ -34,66 +34,89 @@
 		-->
 		
 		<div id="fullWidth">
-                        
-            <!--  search by name form -->
-            <div class="mainSectionContentForm">
-	            <h3 wicket:id="sbnHeading" class="header icon search">[searchByNameHeading]</h3>
-	            
-	            <form wicket:id="sbnForm" class="profileForm">
-					<table class="profileContent">
-						
-						<tr>
-							<td class="label" wicket:id="sbnNameLabel">[sbnNameLabel]</td>
-							<td class="content">
-								<input type="text" wicket:id="searchName" class="formInputField" wicket:message="title:text.search.byname.tooltip" />
-							</td>
-							<td class="toolTip"><span wicket:id="sbnNameToolTip">[searchToolTip]</span></td>
-						</tr>
-						
-					</table>
-					
-					<div class="pageFormButtons">
-						<input type="submit" wicket:id="sbnSubmit" value="Search" />
-					</div>
-					
-					<!-- work around for IE and single form element submit with Enter button, PRFL-378 -->
-					<input type="text" style="display:none;" />
-				</form>	
-			</div>
-			
-			
-			<!--  search by interest form -->
-			<div class="mainSectionContentForm" style="margin-top: 10px;">
-				<h3 wicket:id="sbiHeading" class="header icon search">[searchByInterestHeading]</h3>
+			<!-- search form -->
+			<div class="mainSectionContentForm">
+				<h3 wicket:id="searchHeading" class="header icon search">[searchHeading]</h3>
 				
-				<form wicket:id="sbiForm" class="profileForm">
+				<form wicket:id="searchForm" class="profileForm">
 					<table class="profileContent">
-						
 						<tr>
-							<td class="label" wicket:id="sbiInterestLabel">[sbiInterestLabel]</td>
+							<td class="label" wicket:id="searchLabel">[searchLabel]</td>
 							<td class="content">
-								<input type="text" wicket:id="searchInterest" class="formInputField" wicket:message="title:text.search.byinterest.tooltip" />
+								<input type="text" wicket:id="searchField" class="formInputField" wicket:message="title:text.search.terms.tooltip" />
 							</td>
-							<td class="toolTip"><span wicket:id="sbiInterestToolTip">[searchToolTip]</span></td>
+							<td class="toolTip"><span wicket:id="searchToolTip">[searchToolTip]</span></td>
 						</tr>
-						
+					</table>
+					
+					<table class="profileContent">
+						<tr wicket:id="searchTypeRadioGroup">
+							<td wicket:id="searchTypeNameLabel">[searchTypeNameLabel]</td>
+							<td>
+								<label>
+									<input type="radio" wicket:id="searchTypeName" />
+									<span class="accessibility-label"><wicket:message key="accessibility.search.byname" /></span>
+								</label>
+							</td>
+							<td wicket:id="searchTypeInterestLabel">[searchTypeInterestLabel]</td>
+							<td>
+								<label>
+									<input type="radio" wicket:id="searchTypeInterest" />
+									<span class="accessibility-label"><wicket:message key="accessibility.search.byinterest" /></span>
+								</label>
+							</td>
+						</tr>
+					</table>
+					<table class="profileContent">
+						<tr>
+							<td class="label" wicket:id="connectionsLabel">[connectionsLabel]</td>
+							<td>
+								<label>
+									<input type="checkbox" wicket:id="connectionsCheckBox"  />
+									<span class="accessibility-label"><wicket:message key="accessibility.search.connections" /></span>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td class="label" wicket:id="worksiteLabel">[worksiteLabel]</td>
+							<td>
+								<label>
+									<input type="checkbox" wicket:id="worksiteCheckBox"  />
+									<span class="accessibility-label"><wicket:message key="accessibility.search.worksite" /></span>
+								</label>
+							</td>
+							<td class="content">
+								<select wicket:id="worksiteChoice" wicket:message="title:accessibility.search.worksite"></select>
+							</td>
+						</tr>
 					</table>
 					
 					<div class="pageFormButtons">
-						<input type="submit" wicket:id="sbiSubmit" value="Search" />
+						<input type="submit" wicket:id="searchSubmit" value="Search" />
 					</div>
 					
 					<!-- work around for IE and single form element submit with Enter button, PRFL-378 -->
 					<input type="text" style="display:none;" />
-					
-				</form>	
+				</form>
+				
+			</div>
+						
+			<!--  search history -->
+			<div wicket:id="searchHistoryContainer" style="margin-top: 10px;">
+				<span wicket:id="searchHistoryLabel">[searchHistoryLabel]</span>
+				<div wicket:id="searchHistoryList">
+					<a href="#" wicket:id="previousSearchLink"><span wicket:id="previousSearchLabel">previousSearchLabel</span></a>
+				</div>
+				<form wicket:id="clearHistory">
+					<input type="submit" wicket:id="clearHistoryButton" style="margin-top: 10px;" value="Clear history"/>
+				</form>
 			</div>
 			
 			<!--  results -->
 			<div wicket:id="numSearchResultsContainer">
 				<div wicket:id="numSearchResults" class="search-results-header" tabindex="0">No results or 1-5 of 20 results</div>
 				<form wicket:id="clearResults">
-					<input type="submit" wicket:id="clearButton" value="Clear"/>
+					<input type="submit" wicket:id="clearButton" style="margin-top: 10px;" value="Clear search"/>
 				</form>
 			</div>
 			
@@ -112,19 +135,17 @@
 			    		<ul class="search-result-actions">
 			    			<li wicket:id="connectionContainer"><a wicket:id="connectionLink" class="icon connection-add"><span wicket:id="connectionLabel" tabindex="0">add as a friend</span></a></li>
 			    			<li wicket:id="viewFriendsContainer"><a wicket:id="viewFriendsLink" class="icon connections"><span wicket:id="viewFriendsLabel" tabindex="0">view friends</span></a></li>
+			    			<li wicket:id="emailContainer"><span><a wicket:id="emailLink" class="icon email-link">email</a></span></li>
+			    			<li wicket:id="websiteContainer"><span><a wicket:id="websiteLink" class="icon website-link">website</a></span></li>
 			    		</ul>
 			    	</div>
-			    	
+			    	<div class="search-result-summary-wrap">
+			    		<div wicket:id="searchResultSummary">summary</div>
+			    	</div>
 			  	</div>
 			</div>
 			
 			<div wicket:id="connectionWindow"></div>	
-			
-			
-			
-			
-			
-				
 					
 		</div>
 		

@@ -14,14 +14,14 @@ response.setContentType("text/html; charset=UTF-8");
 	<%="<script src=\"js/roster.js\"></script>"%>
 		<h:form id="roster_form">
 			<t:aliasBean alias="#{viewBean}" value="#{groupMembership}">
-				<%@include file="inc/nav.jspf" %>
+				<%@ include file="inc/nav.jspf" %>
 			</t:aliasBean>
 
 			<h:outputText value="#{msgs.title_msg_groups}"
 				rendered="#{groupMembership.renderModifyMembersInstructions}" styleClass="instruction"
 				style="display: block;" />
 
-            <%@include file="inc/groupsFilter.jspf" %>
+            <%@ include file="inc/groupsFilter.jspf" %>
 			
 			<t:dataTable cellpadding="0" cellspacing="0"
                          id="rosterTable"

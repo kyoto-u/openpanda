@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/ResourceStatImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/ResourceStatImpl.java $
  * $Id: ResourceStatImpl.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

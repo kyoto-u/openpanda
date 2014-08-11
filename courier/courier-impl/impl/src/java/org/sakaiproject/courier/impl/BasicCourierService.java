@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/branches/sakai-2.8.x/courier-impl/impl/src/java/org/sakaiproject/courier/impl/BasicCourierService.java $
- * $Id: BasicCourierService.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.0/courier-impl/impl/src/java/org/sakaiproject/courier/impl/BasicCourierService.java $
+ * $Id: BasicCourierService.java 109790 2012-06-28 13:36:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -26,20 +26,27 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.courier.api.CourierService;
 import org.sakaiproject.courier.api.Delivery;
+import org.sakaiproject.courier.api.DeliveryProvider;
 import org.sakaiproject.util.StringUtil;
 
 /**
  * <p>
  * BasicCourierService is the implementation for the CourierService.
  * </p>
+ * 
+ * @deprecated The BasicCourierService has stability issues and will be removed
+ * 		in a future release (after 2.10)
+ * 		<a href="https://jira.sakaiproject.org/browse/SAK-22053">SAK-22053</a>
+ *		@see CourierService  
  */
+@Deprecated
 public class BasicCourierService implements CourierService
 {
 	/** Our logger. */
@@ -65,6 +72,7 @@ public class BasicCourierService implements CourierService
 
         protected Object[] locks;
 
+	private List<DeliveryProvider> deliveryProviders = new Vector<DeliveryProvider>();
 
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Dependencies and their setter methods
@@ -261,5 +269,30 @@ public class BasicCourierService implements CourierService
 		if (deliveries == null) return false;
 
 		return (!deliveries.isEmpty());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.sakaiproject.courier.api.CourierService#getDeliveryProviders()
+	 */
+	public List<DeliveryProvider> getDeliveryProviders() {
+		if(M_log.isDebugEnabled()) {
+			M_log.debug("getDeliveryProviders()");
+		}
+		if(deliveryProviders.isEmpty()) {
+			return null;
+		}
+		return new ArrayList<DeliveryProvider>(deliveryProviders );
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.sakaiproject.courier.api.CourierService#registerDeliveryProvider(org.sakaiproject.courier.api.DeliveryProvider)
+	 */
+	public void registerDeliveryProvider(DeliveryProvider provider) {
+		if(M_log.isDebugEnabled()) {
+			M_log.debug("registerDeliveryProvider(DeliveryProvider " + provider + ")");
+		}
+		this.deliveryProviders.add(provider);
 	}
 }

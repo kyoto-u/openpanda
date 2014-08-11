@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/XSLTTransform.java $
- * $Id: XSLTTransform.java 22845 2007-03-18 14:40:50Z ian@caret.cam.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/XSLTTransform.java $
+ * $Id: XSLTTransform.java 109848 2012-06-28 16:50:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -21,24 +21,13 @@
 
 package uk.ac.cam.caret.sakai.rwiki.component.service.impl;
 
-import java.io.OutputStream;
-import java.io.Writer;
-import java.util.Iterator;
-import java.util.Map;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.Result;
 import javax.xml.transform.Templates;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TemplatesHandler;
 import javax.xml.transform.sax.TransformerHandler;
-import javax.xml.transform.stream.StreamResult;
 
-import org.apache.xml.serializer.Serializer;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -56,8 +45,8 @@ public class XSLTTransform
 	private Templates templates = null;
 
 	private SAXTransformerFactory factory = (SAXTransformerFactory) SAXTransformerFactory
-			.newInstance();
-
+			.newInstance("org.apache.xalan.processor.TransformerFactoryImpl", this.getClass().getClassLoader());
+	
 	private SAXParserFactory saxParserFactory = null;
 	/**
 	 * Set the xslt resource.

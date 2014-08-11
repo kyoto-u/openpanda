@@ -8,7 +8,7 @@
          class="org.sakaiproject.portal.xsltcharon.impl.XsltRenderEngine" 
          init-method="springInit" destroy-method="destroy">
       <property name="portalService" ref="org.sakaiproject.portal.api.PortalService"/>      
-      <property name="defaultTransformerPath" value="/WEB-INF/transform/portal.xsl"/>
+      <property name="defaultTransformerPath" value="/WEB-INF/transform/neo-portal.xsl"/>
       <property name="transformerPaths">
          <map>
             <entry key="xml" value="/WEB-INF/transform/passthrough.xsl"/>

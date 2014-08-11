@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/warehouse/branches/sakai-2.8.x/warehouse-impl/impl/src/java/org/sakaiproject/warehouse/impl/IdentifiableObjectPropertyAccess.java $
+* $URL: https://source.sakaiproject.org/svn/warehouse/tags/sakai-2.9.0/warehouse-impl/impl/src/java/org/sakaiproject/warehouse/impl/IdentifiableObjectPropertyAccess.java $
 * $Id: IdentifiableObjectPropertyAccess.java 59691 2009-04-03 23:46:45Z arwhyte@umich.edu $
 ***********************************************************************************
 *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/common/tool-lib/src/java/org/theospi/portfolio/spring/util/SpringToolNoStack.java $
- * $Id: SpringToolNoStack.java 83340 2010-10-18 17:35:36Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/common/tool-lib/src/java/org/theospi/portfolio/spring/util/SpringToolNoStack.java $
+ * $Id: SpringToolNoStack.java 82737 2010-09-24 13:52:32Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2010 The Sakai Foundation

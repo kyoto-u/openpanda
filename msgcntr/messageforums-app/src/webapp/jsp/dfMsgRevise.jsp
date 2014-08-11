@@ -36,7 +36,7 @@
               <h:outputText value="#{msgs.cdfm_required}"/>
               <h:outputText value="#{msgs.cdfm_info_required_sign}" styleClass="reqStarInline" />
 	  </p>
-		<h:messages styleClass="alertMessage" id="errorMessages" />
+		<h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}"/>
 		<h:panelGrid styleClass="jsfFormTable" columns="1" style="width: 100%;">
 			<h:panelGroup>
 				<h:outputLabel for="df_compose_title" style="display:block;float:none;clear:both;padding-bottom:.3em">
@@ -44,6 +44,7 @@
 					<h:outputText value="#{msgs.cdfm_title}" />
 				</h:outputLabel>
 					   <h:inputText value="#{ForumTool.composeTitle}" size="40" required="true" id="df_compose_title">
+						 <f:validator validatorId="MessageTitle" />
 						 <f:validateLength minimum="1" maximum="255"/>
 					   </h:inputText>
 				   </h:panelGroup>
@@ -54,7 +55,7 @@
 	            <h:outputText value="#{msgs.cdfm_message}" />
 			<span style="margin-left:3em"><img src="/library/image/silk/table_add.png" />&nbsp;<h:outputText value="#{msgs.cdfm_message_count}" />:&nbsp;<span  id="counttotal"> </span></span>	
 
-	            <sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" value="#{ForumTool.composeBody}" id="df_compose_body" rows="22" cols="120">
+	            <sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" value="#{ForumTool.composeBody}" id="df_compose_body" rows="#{ForumTool.editorRows}" cols="120">
 					<f:validateLength maximum="65000"/>
 				</sakai:inputRichText>
 <%--********************* Attachment *********************--%>	
@@ -111,14 +112,12 @@
 					rendered="#{empty ForumTool.attachments}"
 						action="#{ForumTool.processAddAttachmentRedirect}" 
 						value="#{msgs.cdfm_button_bar_add_attachment_redirect}" 
-						immediate="true" 
 						accesskey="a" 
 						style="font-size:95%"/>
 				<sakai:button_bar_item
 					rendered="#{!empty ForumTool.attachments}"
 						action="#{ForumTool.processAddAttachmentRedirect}"
 						value="#{msgs.cdfm_button_bar_add_attachment_more_redirect}"
-						immediate="true"
 						accesskey="a"
 						style="font-size:95%"/>
 			 </p>

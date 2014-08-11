@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/TemplateBean.java $
- * $Id: TemplateBean.java 82717 2010-09-24 05:13:04Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/TemplateBean.java $
+ * $Id: TemplateBean.java 98172 2011-09-15 05:39:41Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -31,7 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.business.entity.RecordingData;
+import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 
 /**
@@ -966,4 +968,8 @@ public class TemplateBean implements Serializable
 	  return Boolean.TRUE;
   }
 
+  public boolean isSecureDeliveryAvailable() {
+	  SecureDeliveryServiceAPI secureDeliveryService = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI(); 
+	  return secureDeliveryService.isSecureDeliveryAvaliable();
+  }
 }

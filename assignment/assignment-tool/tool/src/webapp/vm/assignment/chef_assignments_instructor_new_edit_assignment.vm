@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_new_edit_assignment.vm 118797 2013-01-25 01:42:39Z steve.swinsburg@gmail.com $ -->
+<!-- $Id: chef_assignments_instructor_new_edit_assignment.vm 114405 2012-10-16 14:55:16Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_new_edit_assignment.vm  -->
 ##<!-- $Header: Exp $ -->
 ## Assignments - Instructor new Assignment view
@@ -88,35 +88,44 @@ $(document).ready(function() {
 			}
 		}
 	*#
+	
+	function toggleReviewServiceOptions(checked){
+		var section = document.getElementById("reviewServiceOptions");
+		if(checked){
+			section.style.display="block";
+		}else{
+			section.style.display="none";
+		}
+	}
 </script>
 <script type="text/javascript">
 	focus_path = [ '$fField' ];
 </script>
-<div class="portletBody"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
-	<ul class="navIntraTool actionToolBar" role="menu">
+<div class="portletBody">
+	<ul class="navIntraTool actionToolBar">
 		#if ($allowAddAssignment)
-			<li class="firstToolBarItem" role="menuitem" aria-disabled="true">
+			<li class="firstToolBarItem">
 				<span class="current">$!tlang.getString("new")</span>
 			</li>
-			<li role="menuitem">
+			<li>
 				<span><a href="#" title = "$!tlang.getString('lisofass1')" onclick="javascript:document.newAssignmentForm.onsubmit();document.getElementById('option').value='view';document.getElementById('view').value='lisofass1';document.newAssignmentForm.submit();return false;">$!tlang.getString("lisofass1")</a></span>
 			</li>	
 			#if ($withGrade && $!allowGradeSubmission)
-				<li  role="menuitem">
+				<li>
 					<span><a href="#" title="$!tlang.getString('gen.grarep')" onclick="javascript:document.newAssignmentForm.onsubmit();document.getElementById('option').value='view';document.getElementById('view').value='grarep';document.newAssignmentForm.submit();return false;">$!tlang.getString("gen.grarep")</a></span>
 				</li>
 			#end
-				<li  role="menuitem">
+				<li>
 					<span><a href="#" title="$!tlang.getString('gen.stuvie')" onclick="javascript:document.newAssignmentForm.onsubmit();document.getElementById('option').value='view';document.getElementById('view').value='stuvie';document.newAssignmentForm.submit();return false;">$!tlang.getString("gen.stuvie")</a></span>
 				</li>				
 		#end
 		#if (($allowAllGroups) && ($assignmentscheck))
-			<li  role="menuitem">		
+			<li>		
 				<span><a href="#" title="$tlang.getString('gen.reorder')" onclick="javascript:document.newAssignmentForm.onsubmit();document.getElementById('option').value='reorderNavigation';document.newAssignmentForm.submit();return false;">$tlang.getString('gen.reorder')</a></span>
 			</li>
 		#end
 		#if ($allowUpdateSite)
-			<li  role="menuitem">
+			<li>
 				<span><a href="#" title="$tlang.getString('permis')" onclick="javascript:document.newAssignmentForm.onsubmit();document.getElementById('option').value='permissions';document.newAssignmentForm.submit();return false;">$tlang.getString('permis')</a></span>
 			</li>	
 		#end
@@ -474,23 +483,111 @@ $(document).ready(function() {
 				</h4>
 				<div class="checkbox  indnt2">
 					#if ($!value_UseReviewService.equals("true"))
-						<input id="$name_UseReviewService" name="$name_UseReviewService" type="checkbox" value="true" checked="checked" />
+						<input id="$name_UseReviewService" name="$name_UseReviewService" type="checkbox" value="true" checked="checked" onclick="toggleReviewServiceOptions(this.checked)"/>
 					#else
-						<input id="$name_UseReviewService" name="$name_UseReviewService" type="checkbox" value="true" />
+						<input id="$name_UseReviewService" name="$name_UseReviewService" type="checkbox" value="true"  onclick="toggleReviewServiceOptions(this.checked)"/>
 					#end
 					<label for="$name_UseReviewService">
 						$reviewServiceUse
 					</label>
 				</div>
-				<div class="checkbox  indnt2">
-					#if ($!value_AllowStudentView.equals("true"))
-						<input id="$name_AllowStudentView" name="$name_AllowStudentView" type="checkbox" value="true" checked="checked" />
-					#else
-						<input id="$name_AllowStudentView" name="$name_AllowStudentView" type="checkbox" value="true" />
-					#end
-					<label for="$name_AllowStudentView">
-						$tlang.getString("review.allow") 
-					</label>
+				#if ($!value_UseReviewService.equals("true"))
+					<div id="reviewServiceOptions" class="indnt3">
+				#else
+					<div id="reviewServiceOptions" style="display:none" class="indnt3">
+				#end
+				
+					$tlang.getString("content_review.note")
+					
+					$tlang.getString("review.submit.papers.repository")
+					<br/>
+					<div class="indnt1">
+						#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT.contains($name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_NONE))
+							<input type="radio" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO" value="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_NONE" #if($value_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO.equals("$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_NONE"))checked#end/>$tlang.getString("review.submit.papers.repository.none")<br/>
+						#end
+						#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT.contains($name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_STANDARD))
+							<input type="radio" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO" value="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_STANDARD" #if($value_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO.equals("$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_STANDARD"))checked#end/>$tlang.getString("review.submit.papers.repository.standard")<br/>
+						#end
+						#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT.contains($name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_INSITUTION))
+							<input type="radio" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO" value="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_INSITUTION" #if($value_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO.equals("$name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_INSITUTION"))checked#end/>$tlang.getString("review.submit.papers.repository.institution")<br/>
+						#end
+					</div>
+					<br/>
+					$tlang.getString("review.originality.reports")
+					<br/>
+					<div class="indnt1">
+						#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT.contains($name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY))
+							<input type="radio" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO" value="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY" #if($value_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO.equals("$name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY"))checked#end/>$tlang.getString("review.originality.reports.immediately")<br/>
+						#end
+						#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT.contains($name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE))
+							<input type="radio" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO" value="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE" #if($value_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO.equals("$name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE"))checked#end/>$tlang.getString("review.originality.reports.due")<br/>
+						#end
+					</div>
+					<br/>
+					<div class="checkbox">
+						#if ($!value_AllowStudentView.equals("true"))
+							<input id="$name_AllowStudentView" name="$name_AllowStudentView" type="checkbox" value="true" checked="checked" />
+						#else
+							<input id="$name_AllowStudentView" name="$name_AllowStudentView" type="checkbox" value="true" />
+						#end
+						<label for="$name_AllowStudentView">
+							$tlang.getString("review.allow") 
+						</label>
+					</div>
+					<br/>
+					$tlang.getString("review.originality.check")
+					<br/>
+					<div class="indnt1">
+						#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN)
+						<div class="checkbox">			
+							#if ($!value_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN.equals("true"))			
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN" type="checkbox" value="true" checked="checked" />
+							#else
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN" type="checkbox" value="true" />
+							#end
+							<label for="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN">
+								$tlang.getString("review.originality.check.turnitin") 
+							</label>
+						</div>
+						#end
+						#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET)
+						<div class="checkbox">		
+							#if ($!value_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET.equals("true"))				
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET" type="checkbox" value="true" checked="checked" />
+							#else
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET" type="checkbox" value="true" />
+							#end
+							<label for="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET">
+								$tlang.getString("review.originality.check.internet") 
+							</label>
+						</div>
+						#end
+						#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_PUB)
+						<div class="checkbox">						
+							#if ($!value_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_PUB.equals("true"))
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_PUB" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_PUB" type="checkbox" value="true" checked="checked" />
+							#else
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_PUB" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_PUB" type="checkbox" value="true" />
+							#end
+							<label for="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_PUB">
+								$tlang.getString("review.originality.check.pub") 
+							</label>
+						</div>
+						#end
+						#if($show_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INSTITUTION)
+						<div class="checkbox">
+							#if ($!value_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INSTITUTION.equals("true"))						
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INSTITUTION" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INSTITUTION" type="checkbox" value="true" checked="checked" />
+							#else
+								<input id="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INSTITUTION" name="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INSTITUTION" type="checkbox" value="true" />
+							#end
+							<label for="$name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INSTITUTION">
+								$tlang.getString("review.originality.check.institution") 
+							</label>
+						</div>
+						#end
+					</div>
+					</div>
 				</div>
 			</div>
 		#end
@@ -792,10 +889,10 @@ $(document).ready(function() {
 				</td>
 				<td class="itemAction" style="white-space:nowrap">
 					<div id="nomodelanswer"  #if(!$!modelanswer) style="display:block"#else style="display:none" #end>
-						<a id="modelanswer_add" class="extraNodeLink">$tlang.getString("new")</a>
+						<a id="modelanswer_add" class="extraNodeLink">$tlang.getString("new")<span class="skip"> $tlang.getString("modelAnswer")</span></a>
 					</div>
 					<div id="hasmodelanswer"  #if($!modelanswer) style="display:block"#else style="display:none" #end>
-						<a id="modelanswer_edit" class="extraNodeLink">$tlang.getString("gen.revi")</a> | <a id="modelanswer_delete" class="extraNodeLink">$tlang.getString("delet")</a>
+						<a id="modelanswer_edit" class="extraNodeLink">$tlang.getString("gen.revi")<span class="skip"> $tlang.getString("modelAnswer")</span></a> | <a id="modelanswer_delete" class="extraNodeLink">$tlang.getString("delet")<span class="skip"> $tlang.getString("modelAnswer")</span></a>
 						<input id = "modelanswer_to_delete" name = "modelanswer_to_delete" type= "hidden" value = "false" />
 					</div>
 				</td>
@@ -808,11 +905,11 @@ $(document).ready(function() {
 					</td>
 					<td class="itemAction" style="white-space:nowrap">
 						<div id="nonote"  #if(!$!note) style="display:block"#else style="display:none" #end> 
-							<a id="note_add" class="extraNodeLink">$tlang.getString("new")</a>
+							<a id="note_add" class="extraNodeLink">$tlang.getString("new")<span class="skip"> $tlang.getString("note")</span></a>
 						</div>
 						<div id="hasnote"  #if($!note) style="display:block"#else style="display:none" #end>
 							#if ($!allowEditAssignmentNoteItem)
-								<a id="note_edit" class="extraNodeLink">$tlang.getString("gen.revi")</a> | <a id="note_delete" class="extraNodeLink">$tlang.getString("delet")</a>
+								<a id="note_edit" class="extraNodeLink">$tlang.getString("gen.revi")<span class="skip"> $tlang.getString("note")</span></a> | <a id="note_delete" class="extraNodeLink">$tlang.getString("delet")<span class="skip"> $tlang.getString("note")</span></a>
 							#else
 								#if ($!allowReadAssignmentNoteItem)
 									<a id="note_edit" class="extraNodeLink">$tlang.getString("gen.view2")</a>
@@ -829,10 +926,10 @@ $(document).ready(function() {
 				</td>
 				<td class="itemAction" style="white-space:nowrap">
 					<div id="noallPurpose" #if(!$!allPurpose) style="display:block"#else style="display:none" #end>
-						<a id="allPurpose_add" class="extraNodeLink">$tlang.getString("new")</a>
+						<a id="allPurpose_add" class="extraNodeLink">$tlang.getString("new")<span class="skip"> $tlang.getString("allPurpose")</span></a>
 					</div>
 					<div id="hasallPurpose" #if($!allPurpose) style="display:block"#else style="display:none" #end>
-						<a id="allPurpose_edit" class="extraNodeLink">$tlang.getString("gen.revi")</a> | <a id="allPurpose_delete" class="extraNodeLink">$tlang.getString("delet")</a>
+						<a id="allPurpose_edit" class="extraNodeLink">$tlang.getString("gen.revi")<span class="skip"> $tlang.getString("allPurpose")</span></a> | <a id="allPurpose_delete" class="extraNodeLink">$tlang.getString("delet")<span class="skip"> $tlang.getString("allPurpose")</span></a>
 					</div>
 					<input type="hidden" name="value_allPurpose" #if($!allPurpose) value="true" #else value="false" #end />
 					<input id = "allPurpose_to_delete" name = "allPurpose_to_delete" type= "hidden" value = "false" />
@@ -1307,6 +1404,7 @@ $(document).ready(function() {
 							onclick="javascript:document.newAssignmentForm.onsubmit();document.getElementById('option').value='canceledit';document.newAssignmentForm.submit();return false;" />
 				<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 			</div>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 	<script language="JavaScript" type="text/JavaScript">
 		<!--

@@ -56,5 +56,9 @@ public interface SiteHelper {
 	 * Example: Boolean.TRUE.
 	 */
 	static final String SITE_CREATE_CANCELLED = "sakaiproject.sitecreate.cancelled";
-
+	
+	/**
+	 * this is a property name to indicate whether the Site Info tool should log the following user membership change events
+	 */
+	static final String WSETUP_TRACK_USER_MEMBERSHIP_CHANGE = "wsetup.track.user.membership.change";
 }

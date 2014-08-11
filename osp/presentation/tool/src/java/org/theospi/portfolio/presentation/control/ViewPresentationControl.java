@@ -91,6 +91,10 @@ public class ViewPresentationControl extends AbstractPresentationController impl
    private URIResolver uriResolver;
    private static Cache cache = setupCache();
 
+   public static final String XSL_SITE_ID = "sakaiSiteId";
+   public static final String XSL_PRESENTATION_TYPE = "sakaiPresentationType";
+   public static final String XSL_PRESENTATION_ID = "sakaiPresentationId";
+
    private static Cache setupCache() {
       // detailed configuration is in presentation/tool/src/bundle/ehcache.xml,
       // which ends up in tomcat/webapps/osp-presentation-tool/WEB-INF/classes/
@@ -344,6 +348,14 @@ public class ViewPresentationControl extends AbstractPresentationController impl
          Entry entry = (Entry) i.next();
          wrapper.transformer.setParameter(entry.getKey().toString(),entry.getValue().toString());
       }
+
+      wrapper.transformer.setParameter(XSL_SITE_ID, presentation.getSiteId());
+      if (presentation.getIsFreeFormType()) {
+         wrapper.transformer.setParameter(XSL_PRESENTATION_TYPE, presentation.getPresentationType());
+      } else if (presentation.getTemplate() != null) {
+         wrapper.transformer.setParameter(XSL_PRESENTATION_TYPE, presentation.getTemplate().getId().getValue());
+      }
+      wrapper.transformer.setParameter(XSL_PRESENTATION_ID, presentation.getId().getValue());
 
       presentationTemplateCache.put(renderer,wrapper);
 

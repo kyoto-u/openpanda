@@ -25,6 +25,5 @@ public class Dispatcher extends BasePage {
 		super();
 		
 		setResponsePage(new MyProfile());
-		
 	}
 }

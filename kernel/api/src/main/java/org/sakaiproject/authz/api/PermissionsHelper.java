@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/authz/api/PermissionsHelper.java $
- * $Id: PermissionsHelper.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/authz/api/PermissionsHelper.java $
+ * $Id: PermissionsHelper.java 94049 2011-06-24 09:47:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -39,4 +39,10 @@ public interface PermissionsHelper
 
 	/** Set this tool state attribute to the entity reference of the entity which controls the role definitions, if different than the target_ref (leave it unset if target_ref has the roles needed). */
 	static final String ROLES_REF = "sakaiproject.permissions.rolesRef";
+	
+	/** the prefix to permission title for permission description entry in bundle file */
+	public static final String PREFIX_PERMISSION_DESCRIPTION = "desc-";
+	
+	/**	Set this tool state attribute for permission descriptions  **/
+	public static final String PERMISSION_DESCRIPTION = "permissionDescriptions";
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/optimize/shared/impl/OptimizeSharedTransactionListenerImpl.java $
- * $Id: OptimizeSharedTransactionListenerImpl.java 95584 2011-07-25 16:00:46Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/optimize/shared/impl/OptimizeSharedTransactionListenerImpl.java $
+ * $Id: OptimizeSharedTransactionListenerImpl.java 95582 2011-07-25 15:52:41Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation

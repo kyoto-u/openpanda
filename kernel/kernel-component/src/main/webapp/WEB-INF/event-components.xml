@@ -71,8 +71,6 @@
         <property name="tableName">          <value>SAKAI_NOTIFICATION</value>  </property>
         <property name="locksInDb">          <value>false</value>               </property>
         <property name="autoDdl">            <value>${auto.ddl}</value>         </property>
-        <property name="emailToReplyable">   <value>false</value>               </property>
-        <property name="emailFromReplyable"> <value>false</value>               </property>
 	</bean>
 
 	<bean id="org.sakaiproject.event.api.UsageSessionService"
@@ -105,7 +103,7 @@
 	</bean>
 	
     <bean id="org.sakaiproject.event.api.UsageSessionService.recentUserRefresh"
-          class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+          class="org.sakaiproject.memory.util.EhCacheFactoryBean">
        <property name="cacheManager">
            <ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
        </property>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/event/cover/UsageSessionService.java $
- * $Id: UsageSessionService.java 89394 2011-03-08 08:39:11Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/event/cover/UsageSessionService.java $
+ * $Id: UsageSessionService.java 94880 2011-07-08 14:20:32Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -61,6 +61,8 @@ public class UsageSessionService
 	public static java.lang.String EVENT_LOGIN_CONTAINER = org.sakaiproject.event.api.UsageSessionService.EVENT_LOGIN_CONTAINER;
 	
 	public static java.lang.String EVENT_LOGOUT = org.sakaiproject.event.api.UsageSessionService.EVENT_LOGOUT;
+
+	public static java.lang.String SAKAI_CSRF_SESSION_ATTRIBUTE = org.sakaiproject.event.api.UsageSessionService.SAKAI_CSRF_SESSION_ATTRIBUTE;
 
 	public static java.lang.String USAGE_SESSION_KEY = org.sakaiproject.event.api.UsageSessionService.USAGE_SESSION_KEY;
 

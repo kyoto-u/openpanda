@@ -1,6 +1,6 @@
 /**
- * $Id: ExternalIntegrationProviderMock.java 79000 2010-07-02 10:32:15Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/utils/src/java/org/sakaiproject/entitybroker/util/external/ExternalIntegrationProviderMock.java $
+ * $Id: ExternalIntegrationProviderMock.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/external/ExternalIntegrationProviderMock.java $
  * ExternalIntegrationProviderMock.java - entity-broker - Jan 13, 2009 5:52:37 PM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -79,6 +79,14 @@ public class ExternalIntegrationProviderMock implements ExternalIntegrationProvi
      */
     public <T> T findService(Class<T> type) {
         return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getConfigurationSetting(String settingName, T defaultValue) {
+        if ("entitybroker.batch.enable".equals(settingName)) {
+            return ((T) Boolean.TRUE);
+        }
+        return defaultValue;
     }
 
 }

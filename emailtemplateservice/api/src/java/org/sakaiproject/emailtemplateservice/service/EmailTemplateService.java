@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/branches/emailtemplateservice-0.5.x/api/src/java/org/sakaiproject/emailtemplateservice/service/EmailTemplateService.java $
- * $Id: EmailTemplateService.java 82383 2010-09-20 08:40:54Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.0/api/src/java/org/sakaiproject/emailtemplateservice/service/EmailTemplateService.java $
+ * $Id: EmailTemplateService.java 94979 2011-07-11 13:48:53Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -155,6 +155,16 @@ public interface EmailTemplateService {
     * @param templatePaths A List of template path Strings
     */
    public void processEmailTemplates(List<String> templatePaths);
+   
+   
+   /**
+    * Export a given template as xml
+    * @param key
+    * @param locale
+    * @return
+    */
+   public String exportTemplateAsXml(String key, Locale locale);
+   
    
    /**
     * Does a template for the key exist in this locale?

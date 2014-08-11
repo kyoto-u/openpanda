@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/AjaxLazyLoadImage.java $
- * $Id: AjaxLazyLoadImage.java 90289 2011-03-22 09:02:16Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/AjaxLazyLoadImage.java $
+ * $Id: AjaxLazyLoadImage.java 89243 2011-03-03 11:19:15Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -104,7 +104,7 @@ public abstract class AjaxLazyLoadImage extends Panel {
 		add(chartRenderAjaxBehavior);
 		
 		// fields for maximized chart size
-		setModel(new CompoundPropertyModel(this));
+		setDefaultModel(new CompoundPropertyModel(this));
 		form = new Form("chartForm");
 		form.add(new HiddenField("maxWidth"));
 		form.add(new HiddenField("maxHeight"));

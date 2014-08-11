@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_uploadAll.vm 106865 2012-04-12 06:53:21Z steve.swinsburg@gmail.com $ -->
+<!-- $Id: chef_assignments_instructor_uploadAll.vm 104696 2012-02-14 19:54:28Z zqian@umich.edu $ -->
 <!-- start: chef_assignments_instructor_uploadALL.vm  -->
 ## showing the page for preparing upload zip file
 <script language="JavaScript" type="text/JavaScript">
@@ -156,6 +156,7 @@
 				<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 		</p>
 		</div>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 	<script language="JavaScript" type="text/JavaScript">
 		<!--

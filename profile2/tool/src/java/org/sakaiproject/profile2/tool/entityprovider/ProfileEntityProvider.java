@@ -21,25 +21,37 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Setter;
+import lombok.extern.apachecommons.CommonsLog;
+
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.EntityView;
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityCustomAction;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityURLRedirect;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.ActionsExecutable;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.AutoRegisterEntityProvider;
-import org.sakaiproject.entitybroker.entityprovider.capabilities.RESTful;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Createable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Describeable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Inputable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Outputable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Redirectable;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.RequestAware;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Resolvable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Sampleable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Updateable;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.extension.RequestGetter;
-import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.exception.EntityException;
 import org.sakaiproject.entitybroker.exception.EntityNotFoundException;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.entitybroker.util.TemplateParseUtil;
 import org.sakaiproject.profile2.logic.ProfileConnectionsLogic;
 import org.sakaiproject.profile2.logic.ProfileImageLogic;
+import org.sakaiproject.profile2.logic.ProfileLinkLogic;
 import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.BasicConnection;
@@ -49,30 +61,33 @@ import org.sakaiproject.profile2.util.Messages;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 /**
  * This is the entity provider for a user's profile.
  * 
  * @author Steve Swinsburg (s.swinsburg@lancaster.ac.uk)
  *
  */
-public class ProfileEntityProvider extends AbstractEntityProvider implements CoreEntityProvider, AutoRegisterEntityProvider, RESTful, RequestAware {
+@CommonsLog
+public class ProfileEntityProvider extends AbstractEntityProvider implements CoreEntityProvider, AutoRegisterEntityProvider, Outputable, Resolvable, Sampleable, Describeable, Redirectable, ActionsExecutable, RequestAware {
 
 	public final static String ENTITY_PREFIX = "profile";
 	
+	@Override
 	public String getEntityPrefix() {
 		return ENTITY_PREFIX;
 	}
 		
+	@Override
 	public boolean entityExists(String eid) {
 		return true;
 	}
 
+	@Override
 	public Object getSampleEntity() {
 		return new UserProfile();
 	}
 	
+	@Override
 	public Object getEntity(EntityReference ref) {
 	
 		//convert input to uuid
@@ -101,11 +116,18 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 			throw new EntityNotFoundException("Invalid user.", ref.getId());
 		}
 		
-		ProfileImage image = new ProfileImage();
-		boolean wantsThumbnail = "thumb".equals(view.getPathSegment(3)) ? true : false;
+		ProfileImage image = null;
+		boolean wantsThumbnail = StringUtils.equals("thumb", view.getPathSegment(3)) ? true : false;
 		
-		//PRFL-746 manually merged parts back so we can use the official iamge support
-		boolean wantsOfficial = StringUtils.equals("official", view.getPathSegment(3)) ? true : false;
+		boolean wantsAvatar = false;
+		if(!wantsThumbnail) {
+			wantsAvatar = StringUtils.equals("avatar", view.getPathSegment(3)) ? true : false;
+		}
+		
+		if(log.isDebugEnabled()) {
+			log.debug("wantsThumbnail:" + wantsThumbnail);
+			log.debug("wantsAvatar:" + wantsAvatar);
+		}
 		
 		//optional siteid
 		String siteId = (String)params.get("siteId");
@@ -113,12 +135,14 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 			throw new EntityNotFoundException("Invalid siteId: " + siteId, ref.getReference());
 		}
 		
-		//get thumb if requested - will fallback by default
+		//get thumb or avatar if requested - or fallback
 		if(wantsThumbnail) {
 			image = imageLogic.getProfileImage(uuid, null, null, ProfileConstants.PROFILE_IMAGE_THUMBNAIL, siteId);
-		} else if (wantsOfficial) {
-			image = imageLogic.getOfficialProfileImage(uuid);
-		} else {
+		} 
+		if(!wantsThumbnail && wantsAvatar) {
+			image = imageLogic.getProfileImage(uuid, null, null, ProfileConstants.PROFILE_IMAGE_AVATAR, siteId);
+		}
+		if(!wantsThumbnail && !wantsAvatar) {
 			image = imageLogic.getProfileImage(uuid, null, null, ProfileConstants.PROFILE_IMAGE_MAIN, siteId);
 		}
 		
@@ -312,45 +336,6 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 	}
 
 	
-	
-	public void updateEntity(EntityReference ref, Object entity, Map<String, Object> params) {
-		
-		String userId = ref.getId();
-		if (StringUtils.isBlank(userId)) {
-			throw new IllegalArgumentException("Cannot update, No userId in provided reference: " + ref);
-		}
-		
-		if (entity.getClass().isAssignableFrom(UserProfile.class)) {
-			UserProfile userProfile = (UserProfile) entity;
-			profileLogic.saveUserProfile(userProfile);
-		} else {
-			 throw new IllegalArgumentException("Invalid entity for update, must be UserProfile object");
-		}	
-	}
-	
-	
-	public String createEntity(EntityReference ref, Object entity, Map<String, Object> params) {
-		
-		//reference will be the userUuid, which comes from the UserProfile
-		String userUuid = null;
-		
-		if (entity.getClass().isAssignableFrom(UserProfile.class)) {
-			UserProfile userProfile = (UserProfile) entity;
-			
-			if(profileLogic.saveUserProfile(userProfile)) {
-				userUuid = userProfile.getUserUuid();
-			}
-			if(userUuid == null) {
-				throw new EntityException("Could not create entity", ref.getReference());
-			}
-		} else {
-			 throw new IllegalArgumentException("Invalid entity for create, must be UserProfile object");
-		}
-		return userUuid;
-	}
-	
-	
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -382,11 +367,39 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 			sb.append(userProfile.getUserUuid());
 			sb.append("</div>");
 		}
-
-	    String displayName = userProfile.getDisplayName();	
+		
+		String displayName = userProfile.getDisplayName();
 		if(StringUtils.isNotBlank(displayName)) {
 			sb.append("<div class=\"profile2-profile-displayName\">");
 			sb.append(StringEscapeUtils.escapeHtml(displayName));
+			sb.append("</div>");
+		}
+		
+		//status
+		if(userProfile.getStatus() != null) {
+			String message = userProfile.getStatus().getMessage();
+			if(StringUtils.isNotBlank(message)) {
+				sb.append("<div class=\"profile2-profile-statusMessage\">");
+				sb.append(StringEscapeUtils.escapeHtml(message));
+				sb.append("</div>");
+			}
+			
+			if(StringUtils.isNotBlank(userProfile.getStatus().getDateFormatted())) {
+				sb.append("<div class=\"profile2-profile-statusDate\">");
+				sb.append(userProfile.getStatus().getDateFormatted());
+				sb.append("</div>");
+			}
+		}
+		
+		if(StringUtils.isNotBlank(userProfile.getUserUuid())) {
+			sb.append("<div class=\"icon profile-image\">");
+			
+			sb.append("<div class=\"profile2-profile-view-full\">");
+			sb.append("<a href=\"javascript:;\" onclick=\"window.open('" +
+					linkLogic.getInternalDirectUrlToUserProfile(userProfile.getUserUuid()) +
+					"','','resizable=yes,scrollbars=yes')\">" +
+					Messages.getString("profile.view.full") + "</a>");
+			sb.append("</div>");
 			sb.append("</div>");
 		}
 		
@@ -408,22 +421,6 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 			}
 			
 			sb.append("<br />");
-		}
-		
-		//status
-		if(userProfile.getStatus() != null) {
-            String message = userProfile.getStatus().getMessage();
-            if(StringUtils.isNotBlank(message)) {
-				sb.append("<div class=\"profile2-profile-statusMessage\">");
-			    sb.append(StringEscapeUtils.escapeHtml(message));
-				sb.append("</div>");
-			}
-			
-			if(StringUtils.isNotBlank(userProfile.getStatus().getDateFormatted())) {
-				sb.append("<div class=\"profile2-profile-statusDate\">");
-				sb.append(userProfile.getStatus().getDateFormatted());
-				sb.append("</div>");
-			}
 		}
 		
 		//basic info
@@ -627,66 +624,29 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 	
 	
 	
-	
-
-	
-
-	public void deleteEntity(EntityReference ref, Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public List<?> getEntities(EntityReference ref, Search search) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	
-	
-	private RequestGetter requestGetter;
-	public void setRequestGetter(RequestGetter requestGetter) {
-		this.requestGetter = requestGetter;
-	}
-
-	
-	
+	@Override
 	public String[] getHandledOutputFormats() {
 		return new String[] {Formats.HTML, Formats.XML, Formats.JSON};
 	}
 
-	public String[] getHandledInputFormats() {
-		return new String[] {Formats.XML, Formats.JSON, Formats.HTML};
-	}
+	
+	@Setter
+	private RequestGetter requestGetter;
 	
 	
-	
-	
-	
-	
-		
+	@Setter
 	private SakaiProxy sakaiProxy;
-	public void setSakaiProxy(SakaiProxy sakaiProxy) {
-		this.sakaiProxy = sakaiProxy;
-	}
 	
+	@Setter
 	private ProfileLogic profileLogic;
-	public void setProfileLogic(ProfileLogic profileLogic) {
-		this.profileLogic = profileLogic;
-	}
 	
+	@Setter	
 	private ProfileConnectionsLogic connectionsLogic;
-	public void setConnectionsLogic(ProfileConnectionsLogic connectionsLogic) {
-		this.connectionsLogic = connectionsLogic;
-	}
 	
+	@Setter	
 	private ProfileImageLogic imageLogic;
-	public void setImageLogic(ProfileImageLogic imageLogic) {
-		this.imageLogic = imageLogic;
-	}
-
 	
+	@Setter	
+	private ProfileLinkLogic linkLogic;
 	
-	
-
 }

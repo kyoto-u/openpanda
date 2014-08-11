@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventSummary.java $
- * $Id: EventSummary.java 92639 2011-05-05 15:56:57Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventSummary.java $
+ * $Id: EventSummary.java 92193 2011-04-25 11:38:12Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation

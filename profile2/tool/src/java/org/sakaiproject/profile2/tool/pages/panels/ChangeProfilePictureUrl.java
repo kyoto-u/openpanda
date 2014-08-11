@@ -36,6 +36,7 @@ import org.sakaiproject.profile2.logic.ProfileImageLogic;
 import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.logic.ProfilePreferencesLogic;
 import org.sakaiproject.profile2.logic.ProfilePrivacyLogic;
+import org.sakaiproject.profile2.logic.ProfileWallLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.ProfileImage;
 import org.sakaiproject.profile2.model.ProfilePreferences;
@@ -65,7 +66,9 @@ public class ChangeProfilePictureUrl extends Panel{
 	@SpringBean(name="org.sakaiproject.profile2.logic.ProfilePrivacyLogic")
 	protected ProfilePrivacyLogic privacyLogic;
     
-
+	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileWallLogic")
+	private ProfileWallLogic wallLogic;
+	
 	/**
 	 * Default constructor if modifying own
 	 */
@@ -170,12 +173,16 @@ public class ChangeProfilePictureUrl extends Panel{
         		String url = stringModel.getString();
         		
         		//save via ProfileImageService
-				if(imageLogic.setExternalProfileImage(userUuid, url, null)) {
+				if(imageLogic.setExternalProfileImage(userUuid, url, null, null)) {
 					//log it
 					log.info("User " + userUuid + " successfully changed profile picture by url.");
 					
 					//post update event
 					sakaiProxy.postEvent(ProfileConstants.EVENT_PROFILE_IMAGE_CHANGE_URL, "/profile/"+userUuid, true);
+					
+					if (true == sakaiProxy.isWallEnabledGlobally() && false == sakaiProxy.isSuperUserAndProxiedToUser(userUuid)) {
+						wallLogic.addNewEventToWall(ProfileConstants.EVENT_PROFILE_IMAGE_CHANGE_URL, sakaiProxy.getCurrentUserId());
+					}
 					
 					//refresh image data
 					if(sakaiProxy.isSuperUserAndProxiedToUser(userUuid)){

@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/jsf/renderer/RichTextEditArea.java $
-* $Id: RichTextEditArea.java 91150 2011-04-01 17:23:00Z ktsao@stanford.edu $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/jsf/renderer/RichTextEditArea.java $
+* $Id: RichTextEditArea.java 113415 2012-09-21 21:05:26Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -56,7 +56,7 @@ import org.sakaiproject.util.Web;
  * @author cwen@iu.edu
  * @author Ed Smiley esmiley@stanford.edu (modifications)
  * @author Joshua Ryan joshua.ryan@asu.edu (added FCKEditor)
- * @version $Id: RichTextEditArea.java 91150 2011-04-01 17:23:00Z ktsao@stanford.edu $
+ * @version $Id: RichTextEditArea.java 113415 2012-09-21 21:05:26Z ottenhoff@longsight.com $
  */
 public class RichTextEditArea extends Renderer
 {
@@ -441,27 +441,34 @@ public class RichTextEditArea extends Renderer
     
     writer.write("\n\t<script type=\"text/javascript\" src=\"" + FCK_BASE + FCK_SCRIPT + "\"></script>");
 
-    writer.write("<script type=\"text/javascript\" language=\"JavaScript\">\n");
+    writer.write("<script type=\"text/javascript\">\n");
     
     writer.write("\nfunction show_hide_editor(client_id){");
     writer.write("\n\tvar status =  document.getElementById(client_id + '_textinput_current_status');");
     writer.write("\n\tif (status.value == \"firsttime\") {");
+    if (org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement() != null) {
+    	writer.write("\n\t\tsetMainFrameHeight('Main" + org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement().getId().replace("-","x") + "');");
+    } else {
+         writer.write("\n\t\tsetMainFrameHeight('Main" + "');");
+    }
     writer.write("\n\t\tstatus.value = \"expaneded\";");
     writer.write("\n\t\tchef_setupformattedtextarea(client_id, true);");
     writer.write("\n\t\tsetBlockDivs();");
     writer.write("\n\t\tretainHideUnhideStatus('none');\n\t}");
-    writer.write("\n\telse if (status.value == \"collapsed\") {");
-    writer.write("\n\t\tstatus.value = \"expaneded\";");
-    writer.write("\n\t\texpandMenu(client_id);\n\t}");
-    writer.write("\n\telse if (status.value == \"expaneded\") {");
-    writer.write("\n\t\tstatus.value = \"collapsed\";");
-    writer.write("\n\t\tcollapseMenu(client_id);\n\t}");    
+    writer.write("\n\telse {");
+    writer.write("\n\t\tif (status.value == \"collapsed\") {");
+    writer.write("\n\t\t\tstatus.value = \"expaneded\";");
+    writer.write("\n\t\t\texpandMenu(client_id);\n\t\t}");
+    writer.write("\n\t\telse if (status.value == \"expaneded\") {");
+    writer.write("\n\t\t\tstatus.value = \"collapsed\";");
+    writer.write("\n\t\t\tcollapseMenu(client_id);\n\t\t}");    
     writer.write("\n");
     if (org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement() != null) {
-    	writer.write("\n\tsetMainFrameHeight('Main" + org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement().getId().replace("-","x") + "');");
+    	writer.write("\n\t\tsetMainFrameHeight('Main" + org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement().getId().replace("-","x") + "');");
     } else {
-         writer.write("\n\tsetMainFrameHeight('Main" + "');");
+         writer.write("\n\t\tsetMainFrameHeight('Main" + "');");
     }
+    writer.write("\n\t}");
 
     writer.write("\n}\n");
     
@@ -618,7 +625,7 @@ public class RichTextEditArea extends Renderer
     String finalValue = newValue;
     
     // if use hid the FCK editor, we treat it as text editor
-	if ("firsttime".equals(current_status) || "collapsed".equals(current_status)) {
+	if ("firsttime".equals(current_status)) {
 		finalValue = TextFormat.convertPlaintextToFormattedTextNoHighUnicode(log, newValue);
 	}
 	else {

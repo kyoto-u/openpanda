@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/impl/StructuredArtifactDefinitionManagerImpl.java $
- * $Id: StructuredArtifactDefinitionManagerImpl.java 85658 2010-11-30 18:37:06Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/impl/StructuredArtifactDefinitionManagerImpl.java $
+ * $Id: StructuredArtifactDefinitionManagerImpl.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -131,9 +131,18 @@ public class StructuredArtifactDefinitionManagerImpl extends HibernateDaoSupport
    }
 
    public Map getWorksiteHomes(Id worksiteId, boolean includeHidden) {
+	   return getWorksiteHomes(worksiteId, null, includeHidden);
+   }
+   
+   public Map getWorksiteHomes(Id worksiteId, String currentUserId, boolean includeHidden) {
       Map<String, StructuredArtifactDefinitionBean> returnMap = new HashMap<String, StructuredArtifactDefinitionBean>();
       List<StructuredArtifactDefinitionBean> list = findGlobalHomes();
-      list.addAll(findHomes(worksiteId, includeHidden));
+      
+      if (currentUserId == null)
+    	  list.addAll(findHomes(worksiteId, includeHidden, false));
+      else
+    	  list.addAll(findAvailableHomes(worksiteId, currentUserId, includeHidden, false));
+      
       for (Iterator iter = list.iterator(); iter.hasNext();) {
          StructuredArtifactDefinitionBean sad = (StructuredArtifactDefinitionBean) iter.next();
          returnMap.put(sad.getId().getValue(), sad);
@@ -281,6 +290,36 @@ public class StructuredArtifactDefinitionManagerImpl extends HibernateDaoSupport
       else {
          return findHomes(currentWorksiteId, includeHidden?"findWorksiteHomesIncludeHidden":"findWorksiteHomes");
       }
+   }
+   
+   public List<StructuredArtifactDefinitionBean> findAvailableHomes(Id currentWorksiteId, String currentUserId, boolean includeHidden, boolean includeGlobal) {
+	   List<StructuredArtifactDefinitionBean> homes = new ArrayList<StructuredArtifactDefinitionBean>();
+	   List<StructuredArtifactDefinitionBean> filteredHomes = new ArrayList<StructuredArtifactDefinitionBean>();
+	   String queryName = "";
+	   if (includeGlobal) {
+		   queryName = includeHidden?"findAvailableHomesIncludeHidden":"findAvailableHomes";
+	   }
+	   else {
+		   queryName = includeHidden?"findAvailableWorksiteHomesIncludeHidden":"findAvailableWorksiteHomes";
+	   }
+	   
+	   Object[] params = new Object[]{new Integer(StructuredArtifactDefinitionBean.STATE_PUBLISHED),
+               currentWorksiteId.getValue(),};
+	   homes = getHibernateTemplate().findByNamedQuery(queryName, params);
+	   
+	   String siteRef = getWorksiteManager().getSite(currentWorksiteId.getValue()).getReference();
+	   boolean canEdit = getSecurityService().unlock(SharedFunctionConstants.EDIT_ARTIFACT_DEF, siteRef);
+	   
+	   
+	   for (StructuredArtifactDefinitionBean sadb : homes) {
+		   // check for perms as well as ownership
+		   Agent owner = sadb.getOwner();
+		   if (canEdit || owner.getId().getValue().equals(currentUserId) || sadb.isPublished()) {
+			   filteredHomes.add(sadb);
+		   }
+	   }
+	   
+	   return filteredHomes;
    }
 
    public StructuredArtifactDefinitionBean loadHome(String type) {

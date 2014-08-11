@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/entity/api/EntityPermissionException.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/entity/api/EntityPermissionException.java $
  * $Id: EntityPermissionException.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
  ***********************************************************************************
  *

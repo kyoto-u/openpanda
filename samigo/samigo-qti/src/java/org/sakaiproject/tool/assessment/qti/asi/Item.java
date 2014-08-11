@@ -192,7 +192,7 @@ public class Item extends ASIBaseClass
     //  rshastri: SAK-1824
     // item data
 //    ItemHelper helper = new ItemHelper();
-    if (!this.isSurvey()) //surveys are unscored
+    if (!this.isSurvey() && !this.isMXSURVEY()) //surveys are unscored
     {
       helper.addMaxScore(item.getScore(), this);
       helper.addMinScore(item.getDiscount(), this);
@@ -207,8 +207,15 @@ public class Item extends ASIBaseClass
     	setFieldentry("RANDOMIZE", item.getItemMetaDataByLabel(ItemMetaDataIfc.RANDOMIZE ));
     }
     
+    if (this.isMXSURVEY()) {
+    	setFieldentry("FORCE_RANKING", item.getItemMetaDataByLabel(ItemMetaDataIfc.FORCE_RANKING));
+    	setFieldentry("ADD_COMMENT_MATRIX", item.getItemMetaDataByLabel(ItemMetaDataIfc.ADD_COMMENT_MATRIX));
+    	setFieldentry("MX_SURVEY_QUESTION_COMMENTFIELD", item.getItemMetaDataByLabel(ItemMetaDataIfc.MX_SURVEY_QUESTION_COMMENTFIELD));
+    	setFieldentry("MX_SURVEY_RELATIVE_WIDTH", item.getItemMetaDataByLabel(ItemMetaDataIfc.MX_SURVEY_RELATIVE_WIDTH));
+    }
+    
     String instruction = item.getInstruction();
-    if (this.isMatching() || this.isFIB() || this.isFIN())
+    if (this.isMatching() || this.isFIB() || this.isFIN() || this.isMXSURVEY())
     {
       if ( instruction != null)
         {
@@ -334,6 +341,11 @@ public class Item extends ASIBaseClass
   public boolean  isSurvey()
   {
     return AuthoringConstantStrings.SURVEY.equals(this.getItemType()) ? true : false;
+  }
+  
+  public boolean isMXSURVEY()
+  {
+    return AuthoringConstantStrings.MATRIX.equals(this.getItemType()) ? true : false;
   }
 
   public boolean  isAudio()

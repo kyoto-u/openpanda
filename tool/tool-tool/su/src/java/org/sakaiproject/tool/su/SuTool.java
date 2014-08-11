@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/tool/branches/sakai-2.8.x/tool-tool/su/src/java/org/sakaiproject/tool/su/SuTool.java $
- * $Id: SuTool.java 87061 2011-01-11 20:21:38Z zach@aeroplanesoftware.com $
+ * $URL: https://source.sakaiproject.org/svn/tool/tags/sakai-2.9.0/tool-tool/su/src/java/org/sakaiproject/tool/su/SuTool.java $
+ * $Id: SuTool.java 96929 2011-08-14 14:22:04Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -171,6 +171,7 @@ public class SuTool
 		// logout - clear, but do not invalidate, preserve the usage session's current session
 		Vector saveAttributes = new Vector();
 		saveAttributes.add(UsageSessionService.USAGE_SESSION_KEY);
+		saveAttributes.add(UsageSessionService.SAKAI_CSRF_SESSION_ATTRIBUTE);
 		sakaiSession.clearExcept(saveAttributes);
 		
 		// login - set the user id and eid into session, and refresh this user's authz information

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/ToolHandler.java $
- * $Id: ToolHandler.java 79407 2010-07-14 06:43:26Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/ToolHandler.java $
+ * $Id: ToolHandler.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,7 +54,7 @@ import org.sakaiproject.util.Web;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 79407 $
+ * @version $Rev: 110562 $
  * 
  */
 public class ToolHandler extends BasePortalHandler
@@ -125,12 +125,21 @@ public class ToolHandler extends BasePortalHandler
 		}
 
 		// Reset the tool state if requested
-		if ("true".equals(req.getParameter(portalService.getResetStateParam()))
-				|| "true".equals(portalService.getResetState()))
+		if (portalService.isResetRequested(req))
 		{
 			Session s = SessionManager.getCurrentSession();
 			ToolSession ts = s.getToolSession(placementId);
+			// Don't lose the neo tool information
+			String allowNeo = (String) ts.getAttribute(Portal.SAKAI_PORTAL_ALLOW_NEO);
+			String helpActionUrl = (String) ts.getAttribute(Portal.SAKAI_PORTAL_HELP_ACTION);
+			String resetActionUrl = (String) ts.getAttribute(Portal.SAKAI_PORTAL_RESET_ACTION);
 			ts.clearAttributes();
+			if ( "true".equals(allowNeo) ) 
+			{
+				ts.setAttribute(Portal.SAKAI_PORTAL_ALLOW_NEO,"true");
+				ts.setAttribute(Portal.SAKAI_PORTAL_HELP_ACTION,helpActionUrl);
+				ts.setAttribute(Portal.SAKAI_PORTAL_RESET_ACTION,resetActionUrl);
+			}
 		}
 
 		// find the tool registered for this
@@ -189,7 +198,7 @@ public class ToolHandler extends BasePortalHandler
 	                String siteType = portal.calcSiteType(siteTool.getSiteId());
 
        			// form a context sensitive title
-	                String title = ServerConfigurationService.getString("ui.service") + " : "
+	                String title = ServerConfigurationService.getString("ui.service","Sakai") + " : "
                                 + site.getTitle() + " : " + siteTool.getTitle();
 
                 	PortalRenderContext rcontext = portal.startPageContext(siteType, title, 

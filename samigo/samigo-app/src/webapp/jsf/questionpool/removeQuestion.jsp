@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: removeQuestion.jsp 87871 2011-01-31 19:25:55Z ktsao@stanford.edu $
+<!-- $Id: removeQuestion.jsp 87870 2011-01-31 19:15:10Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *

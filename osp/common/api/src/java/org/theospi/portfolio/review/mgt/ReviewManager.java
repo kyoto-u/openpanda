@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/common/api/src/java/org/theospi/portfolio/review/mgt/ReviewManager.java $
-* $Id: ReviewManager.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/common/api/src/java/org/theospi/portfolio/review/mgt/ReviewManager.java $
+* $Id: ReviewManager.java 98915 2011-10-03 18:23:59Z botimer@umich.edu $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -83,5 +83,24 @@ public interface ReviewManager {
      * @return List of Review
      */
     public List getReviewsByParentAndTypes(String parentId, int[] types, String siteId, String producer);
+
+    /**
+     * Retrieve all reviews for all cells in a user's matrix. This does not push the
+     * content to the security advisor since its purpose is bulk list efficiency.
+     *
+     * @param matrixId - the ID of the user's matrix
+     * @return List of Review of all types
+     */
+    public List<Review> getReviewsByMatrix(String matrixId);
+
+    /**
+     * Retrieve all reviews of a given type for all cells in a user's matrix. This does not push the
+     * content to the security advisor since its purpose is bulk list efficiency.
+     *
+     * @param matrixId the ID of the user's matrix
+     * @param type the desired type of review
+     * @return List of Review of all types
+     */
+    public List<Review> getReviewsByMatrixAndType(String matrixId, int type);
 
 }

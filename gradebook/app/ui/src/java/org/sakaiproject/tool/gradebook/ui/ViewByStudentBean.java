@@ -31,6 +31,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.StaleObjectModificationException;
 import org.sakaiproject.service.gradebook.shared.UnknownUserException;
 import org.sakaiproject.tool.gradebook.Assignment;
@@ -45,6 +46,7 @@ import org.sakaiproject.tool.gradebook.GradingEvent;
 import org.sakaiproject.tool.gradebook.GradingEvents;
 import org.sakaiproject.tool.gradebook.jsf.FacesUtil;
 import org.sakaiproject.tool.gradebook.ui.AssignmentGradeRow;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 
 /**
  * Provides data for the student view of the gradebook. Is used by both the
@@ -63,6 +65,9 @@ public class ViewByStudentBean extends EnrollmentTableBean implements Serializab
     private boolean anyNotCounted;
     private boolean anyExternallyMaintained = false;
     private boolean isAllItemsViewOnly = true;
+    private double totalPoints;
+    private double pointsEarned;
+    private boolean showCoursePoints;
 
     private boolean sortAscending;
     private String sortColumn;
@@ -227,7 +232,28 @@ public class ViewByStudentBean extends EnrollmentTableBean implements Serializab
     			courseGrade = gradeRecord;
     			courseGradeLetter = gradeRecord.getDisplayGrade();
     		}
+    		if(gradeRecord.getPointsEarned() != null){
+    			pointsEarned = gradeRecord.getPointsEarned();
+    		}
     	}
+    	
+    	List<AssignmentGradeRecord> studentGradeRecs = getGradebookManager().getStudentGradeRecords(gradebook.getId(), studentUid);     
+    	getGradebookManager().applyDropScores(studentGradeRecs);
+    	
+    	List<Assignment> assignments = getGradebookManager().getAssignments(gradebook.getId());
+    	List<Assignment> countedAssigns = new ArrayList<Assignment>();
+        // let's filter the passed assignments to make sure they are all counted
+        if (assignments != null) {
+            for (Assignment assign : assignments) {
+                if (assign.isIncludedInCalculations()) {
+                    countedAssigns.add(assign);
+                }
+            }
+        }    	
+    	totalPoints = getGradebookManager().getTotalPointsInternal(gradebook, getGradebookManager().getCategories(gradebook.getId()), 
+    			studentUid, studentGradeRecs, countedAssigns, true); 
+    	//getTotalPointsInternal(gradebook, categories, studentUid, studentGradeRecs, countedAssigns);
+    	
     	
     	initializeStudentGradeData();
     }
@@ -335,6 +361,19 @@ public class ViewByStudentBean extends EnrollmentTableBean implements Serializab
     }
     public String getStudentUid() {
     	return studentUid;
+    }
+    
+    public double getTotalPoints() {
+        return totalPoints;
+    }
+    
+    public double getPointsEarned() {
+        return pointsEarned;
+    }
+    
+    public boolean getShowCoursePoints() {
+        String showCoursePoints = ServerConfigurationService.getString("gradebook.showCoursePoints", "false");
+        return Boolean.parseBoolean(showCoursePoints);
     }
     
     
@@ -482,6 +521,20 @@ public class ViewByStudentBean extends EnrollmentTableBean implements Serializab
     		if(!assignmentGradeRow.getAssociatedAssignment().isReleased() && !isInstructorView) 
     			i.remove();
     	}
+
+		i = gradeRows.iterator();
+		while (i.hasNext()) {
+			Assignment assignment = ((AssignmentGradeRow)i.next()).getAssociatedAssignment();
+			GradebookExternalAssessmentService gext = getGradebookExternalAssessmentService();
+			if (assignment.isExternallyMaintained()) {
+				if (gext.isExternalAssignmentGrouped(gradebook.getUid(), assignment.getExternalId())) {
+					if (!gext.isExternalAssignmentVisible(gradebook.getUid(), assignment.getExternalId(), getUserUid())) {
+						i.remove();
+					}
+				}
+			}
+		}
+
     	
     	if (!sortColumn.equals(Category.SORT_BY_WEIGHT)) {
 	    	Collections.sort(gradeRows, (Comparator)columnSortMap.get(sortColumn));
@@ -515,6 +568,7 @@ public class ViewByStudentBean extends EnrollmentTableBean implements Serializab
 
     		// get the student grade records
     		List gradeRecords = getGradebookManager().getStudentGradeRecordsConverted(gradebook.getId(), studentUid);
+            getGradebookManager().applyDropScores(gradeRecords);
 
     		// The display may include categories and assignments, so we need a generic list
     		gradebookItems = new ArrayList();

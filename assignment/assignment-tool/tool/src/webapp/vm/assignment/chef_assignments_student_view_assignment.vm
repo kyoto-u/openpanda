@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_view_assignment.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_student_view_assignment.vm 94881 2011-07-08 14:22:21Z ottenhoff@longsight.com $ -->
 <!-- start: check_assignments_student_view_assignment.vm -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm,v 1.2 2005/05/19 19:39:49 gsilver.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
@@ -257,6 +257,7 @@
 			<div class="act">
 				<input type="submit" name="eventSubmit_doCancel_student_view_assignment" value="$tlang.getString("gen.don")" />
 			</div>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>
 <!-- end: check_assignments_student_view_assignment.vm -->

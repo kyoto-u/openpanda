@@ -1,4 +1,4 @@
-<!-- $Id: assignment_macros.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: assignment_macros.vm 94135 2011-06-27 14:25:22Z yorkadam@umich.edu $ -->
 <!-- start:  assignment_macros.vm -->
 #macro( propertyDetails $props )
 	<span class="textPanelFooter">(

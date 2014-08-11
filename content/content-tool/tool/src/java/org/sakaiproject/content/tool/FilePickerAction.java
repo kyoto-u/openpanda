@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/branches/sakai-2.8.x/content-tool/tool/src/java/org/sakaiproject/content/tool/FilePickerAction.java $
- * $Id: FilePickerAction.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-tool/tool/src/java/org/sakaiproject/content/tool/FilePickerAction.java $
+ * $Id: FilePickerAction.java 92896 2011-05-17 13:27:20Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation

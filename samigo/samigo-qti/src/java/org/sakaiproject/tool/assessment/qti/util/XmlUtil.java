@@ -29,7 +29,6 @@ import javax.servlet.ServletContext;
 import org.sakaiproject.util.FormattedText;
 import org.springframework.core.io.ClassPathResource;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -85,7 +84,6 @@ public final class XmlUtil
 
     try
     {
-      setDocumentBuilderFactoryFeatures(builderFactory);
       DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
       document = documentBuilder.newDocument();
     }
@@ -113,7 +111,6 @@ public final class XmlUtil
 
     try
     {
-      setDocumentBuilderFactoryFeatures(builderFactory);	
       DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
         document = documentBuilder.parse(xmlString);
     }
@@ -159,7 +156,6 @@ public final class XmlUtil
 
     try
     {
-      setDocumentBuilderFactoryFeatures(builderFactory);	
       DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
       document = documentBuilder.parse(inputStream);
     }
@@ -206,7 +202,6 @@ public final class XmlUtil
 
       InputStream inputStream = resource.getInputStream();
 
-      setDocumentBuilderFactoryFeatures(builderFactory);
       DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
       document = documentBuilder.parse(inputStream);
     }
@@ -251,7 +246,6 @@ public final class XmlUtil
     DOMSource source = null;
     try
     {
-      setDocumentBuilderFactoryFeatures(builderFactory);	
       DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
       document = documentBuilder.parse(inputStream);
       source = new DOMSource(document, realPath);
@@ -331,7 +325,6 @@ public final class XmlUtil
 
       DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
       builderFactory.setNamespaceAware(true);
-      setDocumentBuilderFactoryFeatures(builderFactory);
       DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
       document = documentBuilder.parse(inputStream);
     }
@@ -659,11 +652,4 @@ public final class XmlUtil
 	  sbuff.append("]]>");
 	  return sbuff.toString();
   } 
-  
-  private static void setDocumentBuilderFactoryFeatures(
-	  DocumentBuilderFactory builderFactory) throws ParserConfigurationException {
-	      builderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-	      builderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-	      builderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-	  }
 }

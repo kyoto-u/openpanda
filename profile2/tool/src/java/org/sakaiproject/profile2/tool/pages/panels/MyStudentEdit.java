@@ -32,6 +32,8 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
+import org.sakaiproject.profile2.logic.ProfileLogic;
+import org.sakaiproject.profile2.logic.ProfileWallLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.UserProfile;
 import org.sakaiproject.profile2.util.ProfileConstants;
@@ -45,6 +47,11 @@ public class MyStudentEdit extends Panel {
 	@SpringBean(name="org.sakaiproject.profile2.logic.SakaiProxy")
 	private SakaiProxy sakaiProxy;
 
+	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileWallLogic")
+	private ProfileWallLogic wallLogic;
+	
+	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileLogic")
+	private ProfileLogic profileLogic;
 	
 	public MyStudentEdit(final String id, final UserProfile userProfile) {
 		
@@ -99,6 +106,11 @@ public class MyStudentEdit extends Panel {
 							ProfileConstants.EVENT_PROFILE_STUDENT_UPDATE,
 							"/profile/" + userProfile.getUserUuid(), true);
 
+					//post to wall if enabled
+					if (true == sakaiProxy.isWallEnabledGlobally() && false == sakaiProxy.isSuperUserAndProxiedToUser(userProfile.getUserUuid())) {
+						wallLogic.addNewEventToWall(ProfileConstants.EVENT_PROFILE_STUDENT_UPDATE, sakaiProxy.getCurrentUserId());
+					}
+					
 					// repaint panel
 					Component newPanel = new MyStudentDisplay(id, userProfile);
 					newPanel.setOutputMarkupId(true);
@@ -160,7 +172,7 @@ public class MyStudentEdit extends Panel {
 		sakaiPerson.setEducationSubjects(userProfile.getSubjects());
 		
 		//update SakaiPerson
-		if(sakaiProxy.updateSakaiPerson(sakaiPerson)) {
+		if(profileLogic.saveUserProfile(sakaiPerson)) {
 			log.info("Saved SakaiPerson for: " + userProfile.getUserUuid() );
 			return true;
 		} else {

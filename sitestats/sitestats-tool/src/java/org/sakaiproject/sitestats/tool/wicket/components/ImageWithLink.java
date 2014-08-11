@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/ImageWithLink.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/ImageWithLink.java $
  * $Id: ImageWithLink.java 74468 2010-03-09 11:45:07Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

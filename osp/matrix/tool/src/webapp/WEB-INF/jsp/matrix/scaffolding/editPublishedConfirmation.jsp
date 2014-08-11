@@ -8,22 +8,32 @@
   <c:out value="${msgs.title_saveMatrix}"/>
 </h3>
   
-<div class="alertMessage" >
-<c:out value="${msgs.text_areYouSureEdit}"/>
-
-
-
-<c:if test="${changedCellsSize > 0}">
-	<p>
-   <c:out value="${msgs.text_cell_submissions}"/>
-	<ul>
-	<c:forEach var="cellName" items="${changedCells}" varStatus="loopCount">
-		<li><c:out value="${cellName}"/></li>
-	</c:forEach>
-	</ul>
+<c:if test="${published}">
+	<div class="alertMessage" >
+	<fmt:message key="text_areYouSureEdit">
+	  <fmt:param><c:out value="${label}"/></fmt:param>
+	</fmt:message>
+	
+	
+	<c:if test="${changedCellsSize > 0}">
+		<p>
+		The following cells have submissions for the form(s) you removed and will no longer use the default forms:
+		<ul>
+		<c:forEach var="cellName" items="${changedCells}" varStatus="loopCount">
+			<li><c:out value="${cellName}"/></li>
+		</c:forEach>
+		</ul>
+		</p>
+	</c:if>
+	</div>
 </c:if>
-</div>
-
+<c:if test="${warnViewAllGroupsEval}">
+	<div class="alertMessage" >
+		<fmt:message key="confirm_evalGroup">
+		  <fmt:param><c:out value="${label}"/></fmt:param>
+		</fmt:message>
+	</div>
+</c:if>
 <form method="post">
 
 <input type="hidden" name="<c:out value="${isInSession}"/>" value="true"/>

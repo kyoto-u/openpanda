@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/gradebook/branches/sakai-2.8.x/sample-grade-finalizer/src/main/java/org/sakaiproject/gradebooksample/GradesFinalizerQuartzJob.java $
+ * $URL: https://source.sakaiproject.org/svn/gradebook/tags/sakai-2.9.0/sample-grade-finalizer/src/main/java/org/sakaiproject/gradebooksample/GradesFinalizerQuartzJob.java $
  * $Id: GradesFinalizerQuartzJob.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

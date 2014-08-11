@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/AssessmentData.java $
- * $Id: AssessmentData.java 85589 2010-11-29 23:47:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/AssessmentData.java $
+ * $Id: AssessmentData.java 85580 2010-11-29 22:30:56Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

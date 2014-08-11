@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/Authentication.java $
- * $Id: Authentication.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/Authentication.java $
+ * $Id: Authentication.java 113397 2012-09-21 20:33:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -21,13 +21,17 @@
 
 package org.sakaiproject.util;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * Authentication is a utility class that implements the Authentication interface.
  * </p>
  */
-public class Authentication implements org.sakaiproject.user.api.Authentication
+public class Authentication implements org.sakaiproject.user.api.Authentication, Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	/** The UUID identifier string. */
 	protected String m_uid = null;
 

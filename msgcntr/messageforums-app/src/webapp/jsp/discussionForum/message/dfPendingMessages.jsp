@@ -57,7 +57,7 @@
 				</p>	
 	  </div>
 	  
-	  <h:messages globalOnly="true" infoClass="success" errorClass="alertMessage" />
+	  <h:messages globalOnly="true" infoClass="success" errorClass="alertMessage" rendered="#{! empty facesContext.maximumSeverity}"/>
 	  
 		<h:dataTable id="pendingMsgs" value="#{ForumTool.pendingMessages}" width="100%" var="message" 
 				columnClasses="bogus,nopadd" styleClass="listHier specialLink" rendered="#{ForumTool.numPendingMessages >0 }" cellpadding="0" cellspacing="0">
@@ -102,7 +102,7 @@
 					<h:outputText value="#{message.message.author}" styleClass="textPanelFooter"/>
 					<h:outputText value=" #{msgs.cdfm_openb}" styleClass="textPanelFooter"/>
 					<h:outputText value="#{message.message.created}" styleClass="textPanelFooter">
-			  	<f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{ForumTool.userTimeZone}" />
+			  	<f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{ForumTool.userTimeZone}" locale="#{ForumTool.userLocale}"/>
 			  </h:outputText>
 				<h:outputText value="#{msgs.cdfm_closeb}" styleClass="textPanelFooter" />
 					<%--designNote: need to i18N --%>

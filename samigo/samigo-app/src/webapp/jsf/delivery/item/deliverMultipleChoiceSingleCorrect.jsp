@@ -1,9 +1,9 @@
-<%-- $Id: deliverMultipleChoiceSingleCorrect.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+<%-- $Id: deliverMultipleChoiceSingleCorrect.jsp 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
 include file for delivering multiple choice questions
 should be included in file importing DeliveryMessages
 --%>
 <!--
-* $Id: deliverMultipleChoiceSingleCorrect.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+* $Id: deliverMultipleChoiceSingleCorrect.jsp 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -24,7 +24,7 @@ should be included in file importing DeliveryMessages
 **********************************************************************************/
 --%>
 -->
-<h:outputText value="<script>" escape="false" />
+<h:outputText value="<script type='text/javascript'>" escape="false" />
 <h:outputText value="var selectedRadioButton#{question.itemData.itemId};" escape="false" />
 <h:outputText value="function uncheckRadioButtons#{question.itemData.itemId}(radioButton) {" escape="false" />
 <h:outputText value="if (selectedRadioButton#{question.itemData.itemId} != null) {" escape="false" />
@@ -43,29 +43,29 @@ should be included in file importing DeliveryMessages
     <h:column rendered="#{delivery.feedback eq 'true' &&
        delivery.feedbackComponent.showCorrectResponse && !delivery.noFeedback=='true'}">
       <h:graphicImage id="image"
-        rendered="#{(selection.answer.isCorrect eq 'true' || selection.answer.partialCredit gt 0) && selection.response}"
+        rendered="#{(selection.answer.isCorrect eq 'true' || (question.itemData.partialCreditFlag && selection.answer.partialCredit gt 0)) && selection.response}"
         alt="#{deliveryMessages.alt_correct}" url="/images/checkmark.gif" >
       </h:graphicImage>
       <h:graphicImage id="image2"
-        rendered="#{selection.answer.isCorrect != null && !selection.answer.isCorrect && selection.response && (selection.answer.partialCredit == null || selection.answer.partialCredit le 0)}"
-        width="16" height="16"
-        alt="#{deliveryMessages.alt_incorrect}" url="/images/crossmark.gif">
+        rendered="#{((question.itemData.partialCreditFlag && (selection.answer.partialCredit le 0 || selection.answer.partialCredit == null)) || (selection.answer.isCorrect != null && !selection.answer.isCorrect)) && selection.response}"
+        width="16" height="16" alt="#{deliveryMessages.alt_incorrect}" url="/images/crossmark.gif">
       </h:graphicImage>
     </h:column>
     <h:column>
-
-     <h:selectOneRadio onfocus="if (this.defaultChecked) { uncheckRadioButtons#{question.itemData.itemId}(this) };" onclick="uncheckRadioButtons#{question.itemData.itemId}(this);" onkeypress="uncheckRadioButtons#{question.itemData.itemId}(this);" required="false" 
-        disabled="#{delivery.actionString=='reviewAssessment'
-                 || delivery.actionString=='gradeAssessment'}" 
-       value="#{question.responseId}" layout="pageLayout">
-       <f:selectItem itemValue="#{selection.answerId}" />
-     </h:selectOneRadio>
-
-    </h:column>
-    <h:column>
-     <h:outputText value=" #{selection.answer.label}" escape="false" />
-     <h:outputText value="." rendered="#{selection.answer.label ne ''}" />
-     <h:outputText value=" #{selection.answer.text}" escape="false" />
+      <h:selectOneRadio onfocus="if (this.defaultChecked) { uncheckRadioButtons#{question.itemData.itemId}(this) };" onclick="uncheckRadioButtons#{question.itemData.itemId}(this);" onkeypress="uncheckRadioButtons#{question.itemData.itemId}(this);" required="false" 	 
+	         disabled="#{delivery.actionString=='reviewAssessment' 	 
+	                  || delivery.actionString=='gradeAssessment'}" 	 
+	        value="#{question.responseId}" layout="pageLayout"> 	 
+	    <f:selectItem itemValue="#{selection.answerId}" /> 	 
+	  </h:selectOneRadio> 	 
+	  	 
+	</h:column> 	 
+	<h:column> 	 
+	  <h:outputText value=" #{selection.answer.label}" escape="false" /> 	 
+	  <h:outputText value="." rendered="#{selection.answer.label ne ''}" /> 	 
+	  <h:outputText value="#{selection.answer.text}" escape="false" >
+     	<f:converter converterId="org.sakaiproject.tool.assessment.jsf.convert.AnswerSurveyConverter" />
+      </h:outputText>
     </h:column>
     <h:column>
       <h:panelGroup rendered="#{delivery.feedback eq 'true' &&
@@ -108,7 +108,7 @@ should be included in file importing DeliveryMessages
              && delivery.navigation ne '1' && delivery.displayMardForReview }">
 <h:selectBooleanCheckbox value="#{question.review}" id="mark_for_review" />
 	<h:outputLabel for="mark_for_review" value="#{deliveryMessages.mark}" />
-	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" onkeypress="javascript:window.open('../author/markForReviewTipText.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
+	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
 		<h:outputText  value=" #{assessmentSettingsMessages.whats_this_link}"/>
 	</h:outputLink>
 </h:panelGroup>

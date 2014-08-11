@@ -430,6 +430,20 @@ public class AudienceTool extends HelperToolBase {
      */
     protected boolean findByEmailOrUserName(String displayName, boolean allowGuest, boolean worksiteLimited) {
         List userList = getAgentManager().findByProperty(AgentManager.TYPE_EID, displayName);
+
+        // find users by email
+        if (validateEmail(displayName)) {
+            List<Agent> emailUserList = getAgentManager().findByProperty(AgentManager.TYPE_EMAIL, displayName);
+            if (userList == null) {
+                userList = emailUserList;
+            } else if (emailUserList != null) {
+                for (Agent agent : emailUserList) {
+                    if (!userList.contains(agent)) {
+                        userList.add(agent);
+                    }
+                }
+            }
+        }
         
         // if guest users not allowed and user was not found, return false
         if ( ! allowGuest && userList == null) 

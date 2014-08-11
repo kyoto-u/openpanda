@@ -5,9 +5,7 @@
 	<tool id="osp.presentation" title="Portfolios" description="Create personal ePortfolios using existing templates, layouts, or free-form design.">
 
        <category name="sakai.main" />
-      <category name="project" />
       <category name="portfolio" />
-      <category name="course" />
       <category name="myworkspace" />
 
        <keyword name="presentation" />

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/ShowMediaServlet.java $
- * $Id: ShowMediaServlet.java 82031 2010-08-31 23:13:24Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/ShowMediaServlet.java $
+ * $Id: ShowMediaServlet.java 88077 2011-02-07 19:24:17Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -46,7 +46,7 @@ import org.apache.commons.logging.LogFactory;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: ShowMediaServlet.java 82031 2010-08-31 23:13:24Z ktsao@stanford.edu $
+ * @version $Id: ShowMediaServlet.java 88077 2011-02-07 19:24:17Z ktsao@stanford.edu $
  */
 
 public class ShowMediaServlet extends HttpServlet
@@ -137,6 +137,7 @@ private static Log log = LogFactory.getLog(ShowMediaServlet.class);
       log.debug("****"+displayType+";filename=\""+mediaData.getFilename()+"\";");
       res.setHeader("Content-Disposition", displayType+";filename=\""+mediaData.getFilename()+"\";");
 
+      res.setContentLength(fileSize);
       //** note that res.setContentType() must be called before res.getOutputStream(). see javadoc on this
       FileInputStream inputStream = null;
       BufferedInputStream buf_inputStream = null;
@@ -165,7 +166,7 @@ private static Log log = LogFactory.getLog(ShowMediaServlet.class);
 
       }
 
-      int count=0;
+      //int count=0;
       try{
     	  
     	  buf_outputStream = new BufferedOutputStream(outputStream);
@@ -174,11 +175,12 @@ private static Log log = LogFactory.getLog(ShowMediaServlet.class);
         while ( (i=buf_inputStream.read()) != -1){
             //System.out.print(i);
             buf_outputStream.write(i);
-            count++;
+            //count++;
           }
         }
         log.debug("**** mediaLocation="+mediaLocation);
-        res.setContentLength(count);
+        //res.setContentLength(count);
+        
         res.flushBuffer();
       }
       catch(Exception e){

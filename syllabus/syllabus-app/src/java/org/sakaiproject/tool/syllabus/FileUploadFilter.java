@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/branches/sakai-2.8.x/syllabus-app/src/java/org/sakaiproject/tool/syllabus/FileUploadFilter.java $
- * $Id: FileUploadFilter.java 86347 2010-12-13 20:50:00Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.0/syllabus-app/src/java/org/sakaiproject/tool/syllabus/FileUploadFilter.java $
+ * $Id: FileUploadFilter.java 85889 2010-12-02 19:16:36Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation

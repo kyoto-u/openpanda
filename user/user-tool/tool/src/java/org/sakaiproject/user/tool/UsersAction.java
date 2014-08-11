@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/branches/sakai-2.8.x/user-tool/tool/src/java/org/sakaiproject/user/tool/UsersAction.java $
- * $Id: UsersAction.java 111147 2012-08-08 13:28:48Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.0/user-tool/tool/src/java/org/sakaiproject/user/tool/UsersAction.java $
+ * $Id: UsersAction.java 105553 2012-03-06 18:50:46Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

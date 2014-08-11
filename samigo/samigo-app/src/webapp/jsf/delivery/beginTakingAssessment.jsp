@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=utf-8" pageEncoding="utf-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
@@ -8,7 +7,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: beginTakingAssessment.jsp 114286 2012-10-12 03:46:28Z ktsao@stanford.edu $
+* $Id: beginTakingAssessment.jsp 107980 2012-05-09 21:39:10Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -45,7 +44,7 @@
 
 <%@ include file="/js/delivery.js" %>
 <!--JAVASCRIPT -->
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 <%@ include file="/js/browser.js" %>
 </script>
 
@@ -56,7 +55,7 @@
 
 <!-- DONE BUTTON FOR PREVIEW -->
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
  <f:verbatim></div></f:verbatim>
@@ -66,11 +65,11 @@
 <div class="tier1">
  <h4> <h:outputText value="\"#{delivery.assessmentTitle}\" #{deliveryMessages.for} #{delivery.courseName} " escape="false"/></h4>
 <div class="tier2">
-<h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
-
+<h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+ 
 <!-- ASSESSMENT INTRODUCTION-->
-<div class="assessmentIntroduction"><h:outputText value="#{delivery.instructorMessage}" escape="false"/></div>  
-
+<div class="assessmentIntroduction"><h:outputText value="#{delivery.instructorMessage}" escape="false"/></div>
+   
   <!-- ASSESSMENT ATTACHMENTS -->
   <%@ include file="/jsf/delivery/assessment_attachment.jsp" %>
 
@@ -127,11 +126,11 @@
 <h:panelGrid columns="2" border="0">
     <h:outputText value=" "/>
     <h:outputText value=" "/>
-    <h:outputLabel value="#{deliveryMessages.username}" rendered="#{delivery.settings.username ne ''}" />
-    <h:inputText value="#{delivery.username}" size="20" rendered="#{delivery.settings.username ne ''}" />
+    <h:outputLabel for="baUserName"  value="#{deliveryMessages.username}" rendered="#{delivery.settings.username ne ''}" />
+    <h:inputText id="baUserName" value="#{delivery.username}" size="20" rendered="#{delivery.settings.username ne ''}" />
 
-    <h:outputLabel value="#{deliveryMessages.password}" rendered="#{delivery.settings.username ne ''}" />
-    <h:inputSecret value="#{delivery.password}" size="20" rendered="#{delivery.settings.username ne ''}" />
+    <h:outputLabel for="baPassword" value="#{deliveryMessages.password}" rendered="#{delivery.settings.username ne ''}" />
+    <h:inputSecret id="baPassword" value="#{delivery.password}" size="20" rendered="#{delivery.settings.username ne ''}" />
 </h:panelGrid>
  </div></div>
 
@@ -163,7 +162,8 @@
 
 
 <!-- CANCEL BUTTON -->
-  <h:commandButton id="cancel1" value="#{commonMessages.cancel_action}"  action="select" type="submit" rendered="#{delivery.actionString=='previewAssessment'
+  <h:commandButton id="cancel1" value="#{commonMessages.cancel_action}"  action="select" type="submit"
+     rendered="#{delivery.actionString=='previewAssessment'
              || delivery.actionString=='takeAssessment'}"
      disabled="#{delivery.actionString=='previewAssessment'}" onclick="disableCancel1();">
     <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.select.SelectActionListener" />
@@ -173,7 +173,7 @@
 
 <!-- DONE BUTTON, FOR PREVIEW ONLY --> 
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
  <f:verbatim></div></f:verbatim>

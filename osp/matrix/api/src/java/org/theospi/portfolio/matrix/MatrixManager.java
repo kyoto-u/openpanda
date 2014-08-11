@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/matrix/api/src/java/org/theospi/portfolio/matrix/MatrixManager.java $
-* $Id: MatrixManager.java 83340 2010-10-18 17:35:36Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/matrix/api/src/java/org/theospi/portfolio/matrix/MatrixManager.java $
+* $Id: MatrixManager.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -22,6 +22,7 @@ package org.theospi.portfolio.matrix;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,8 @@ import org.theospi.portfolio.tagging.api.DecoratedTaggingProvider;
 public interface MatrixManager extends WorkflowEnabledManager {
 
    public static final String EXPOSED_MATRIX_KEY = "osp.exposedmatrix.scaffolding.id";
+   public static final String CONFIRM_PUBLISHED_FLAG = "published";
+   public static final String CONFIRM_EVAL_VIEW_ALL_GROUPS_FLAG = "warnViewAllGroupsEval";
    
    Matrix getMatrix(Id scaffoldingId, Id agentId);
    List getCellsByScaffoldingCell(Id scaffoldingCellId);
@@ -426,4 +429,51 @@ public interface MatrixManager extends WorkflowEnabledManager {
 	 * @return
 	 */
 	public int getNotificationOption(String userId, String notificationId, String siteId);
+
+	/**
+	 * returns a map of flags for saving confirmation.  This is used to warn the user of any issues that may be present
+	 * by the scaffolding being saved.
+	 * 
+	 * @param scaffolding
+	 * @return
+	 */
+	public Map getConfirmFlagsForScaffolding(Scaffolding scaffolding);
+	
+	/**
+     * returns a map of flags for saving confirmation.  This is used to warn the user of any issues that may be present
+	 * by the scaffoldingCell being saved. 
+	 * @param scaffoldingCell
+	 * @return
+	 */
+	public Map getConfirmFlagsForScaffoldingCell(ScaffoldingCell scaffoldingCell);
+
+	/**
+	 * Returns a collection of Forms for a specific type: ie. WizardFunctionConstants.EVALUATION_TYPE
+	 * 
+	 * @param wizards
+	 * @param siteId
+	 * @param deviceId
+	 * @param type
+	 * @param currentUserId
+	 * @return
+	 */
+	public Collection getTypeDevices(List wizards, String siteId, Id deviceId, String type, String currentUserId);
+	
+	/**
+	 * 
+	 * @param type
+	 * @param currentSiteId
+	 * @param currentUserId
+	 * @return
+	 */
+	public Collection getFormsForSelect(String type, String currentSiteId, String currentUserId);
+	
+	/**
+	 * 
+	 * @param additionalForms
+	 * @param siteId
+	 * @param currentUserId
+	 * @return
+	 */
+	public Collection getSelectedAdditionalFormDevices(Collection additionalForms, String siteId, String currentUserId);
 }

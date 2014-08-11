@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemovePublishedAssessmentListener.java $
- * $Id: RemovePublishedAssessmentListener.java 76735 2010-04-27 00:09:33Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemovePublishedAssessmentListener.java $
+ * $Id: RemovePublishedAssessmentListener.java 101163 2011-11-29 15:48:04Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -35,9 +35,12 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.spring.SpringBeanLocator;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.GradebookFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
+import org.sakaiproject.tool.assessment.integration.helper.ifc.CalendarServiceHelper;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
@@ -47,7 +50,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: RemovePublishedAssessmentListener.java 76735 2010-04-27 00:09:33Z ktsao@stanford.edu $
+ * @version $Id: RemovePublishedAssessmentListener.java 101163 2011-11-29 15:48:04Z holladay@longsight.com $
  */
 
 public class RemovePublishedAssessmentListener
@@ -58,6 +61,7 @@ public class RemovePublishedAssessmentListener
 		IntegrationContextFactory.getInstance().getGradebookServiceHelper();
   private static final boolean integrated =
 		IntegrationContextFactory.getInstance().isIntegrated();
+  private CalendarServiceHelper calendarService = IntegrationContextFactory.getInstance().getCalendarServiceHelper();
 
   public RemovePublishedAssessmentListener()
   {
@@ -71,9 +75,17 @@ public class RemovePublishedAssessmentListener
     {
       log.debug("assessmentId = " + assessmentId); 	    
       PublishedAssessmentService assessmentService = new PublishedAssessmentService();
+      //get assessment to see if it has a calendar event
+      PublishedAssessmentFacade assessment = assessmentService.getPublishedAssessment(
+				assessmentId.toString());
       assessmentService.removeAssessment(assessmentId, "remove");
       removeFromGradebook(assessmentId);
-      EventTrackingService.post(EventTrackingService.newEvent("sam.pubAssessment.remove", "publisedAssessmentId=" + assessmentId, true));
+      
+      String calendarDueDateEventId = assessment.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.CALENDAR_DUE_DATE_EVENT_ID);
+      if(calendarDueDateEventId != null){
+    	  calendarService.removeCalendarEvent(AgentFacade.getCurrentSiteId(), calendarDueDateEventId);
+      }
+      EventTrackingService.post(EventTrackingService.newEvent("sam.pubAssessment.remove", "siteId=" + AgentFacade.getCurrentSiteId() + ", publisedAssessmentId=" + assessmentId, true));
           
       
       AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");

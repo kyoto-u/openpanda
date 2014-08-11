@@ -1,6 +1,6 @@
 /**
- * $Id: EntityRequestHandler.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/api/src/java/org/sakaiproject/entitybroker/providers/EntityRequestHandler.java $
+ * $Id: EntityRequestHandler.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/api/src/java/org/sakaiproject/entitybroker/providers/EntityRequestHandler.java $
  * EntityRequestHandler.java - entity-broker - Apr 6, 2008 9:03:03 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/branches/sakai-2.8.x/citations-tool/tool/src/java/org/sakaiproject/citation/tool/CitationHelperAction.java $
- * $Id: CitationHelperAction.java 88776 2011-02-23 19:56:32Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-tool/tool/src/java/org/sakaiproject/citation/tool/CitationHelperAction.java $
+ * $Id: CitationHelperAction.java 95835 2011-07-28 17:08:00Z jimeng@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -34,6 +34,7 @@ import java.util.Hashtable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -705,6 +706,24 @@ public class CitationHelperAction extends VelocityPortletPaneledAction
 		}
 
 		context.put( "collectionSize", new Integer( collectionSize ) );
+		
+		Locale locale = rb.getLocale();
+		List<Map<String,String>> saveciteClients = ConfigurationService.getSaveciteClientsForLocale(locale);
+		
+		if(saveciteClients != null) {
+			for(Map<String,String> client : saveciteClients) {
+				String saveciteUrl = SearchManager.getSaveciteUrl(contentService.getUuid(resourceId),client.get("id"));
+				try {
+					client.put("saveciteUrl", java.net.URLEncoder.encode(saveciteUrl,"UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					logger.warn("Error encoding savecite URL",e);
+				}
+
+			}
+			
+			context.put("saveciteClients",saveciteClients); 
+		}
+		
 
 		// determine which features to display
 		if( ConfigurationService.isGoogleScholarEnabled() )

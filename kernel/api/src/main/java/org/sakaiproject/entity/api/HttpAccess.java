@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/entity/api/HttpAccess.java $
- * $Id: HttpAccess.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/entity/api/HttpAccess.java $
+ * $Id: HttpAccess.java 93399 2011-06-01 11:31:40Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -56,6 +56,6 @@ public interface HttpAccess
 	 * @throws EntityCopyrightException
 	 *         Throw this if you are rejecting an otherwise valid request because the user needs to agree to the copyright and has not yet done so.
 	 */
-	void handleAccess(HttpServletRequest req, HttpServletResponse res, Reference ref, Collection copyrightAcceptedRefs)
+	void handleAccess(HttpServletRequest req, HttpServletResponse res, Reference ref, Collection<String> copyrightAcceptedRefs)
 			throws EntityPermissionException, EntityNotDefinedException, EntityAccessOverloadException, EntityCopyrightException;
 }

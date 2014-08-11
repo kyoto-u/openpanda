@@ -17,7 +17,8 @@
                 <value>org/sakaiproject/component/app/messageforums/dao/hibernate/DBMembershipItemImpl.hbm.xml</value>
                 <value>org/sakaiproject/component/app/messageforums/dao/hibernate/PermissionLevelImpl.hbm.xml</value>
                 <value>org/sakaiproject/component/app/messageforums/dao/hibernate/EmailNotification.hbm.xml</value>
-                <value>org/sakaiproject/component/app/messageforums/dao/hibernate/SynopticMsgcntrItem.hbm.xml</value>                  
+                <value>org/sakaiproject/component/app/messageforums/dao/hibernate/SynopticMsgcntrItem.hbm.xml</value>
+                <value>org/sakaiproject/component/app/messageforums/dao/hibernate/HiddenGroupImpl.hbm.xml</value>                  
             </list>
         </property>
     </bean>
@@ -427,6 +428,9 @@
                 </property>              
 		 	    <property name="privacyManager">
 					<ref bean="org.sakaiproject.api.privacy.PrivacyManager" />
+		        </property>
+		        <property name="prtMsgManager">
+		        	<ref bean="org.sakaiproject.api.app.messageforums.ui.PrivateMessageManager" />
 		        </property>
             </bean>           
         </property>

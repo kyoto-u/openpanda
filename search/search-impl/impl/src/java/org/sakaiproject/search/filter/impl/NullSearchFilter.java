@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/filter/impl/NullSearchFilter.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/filter/impl/NullSearchFilter.java $
  * $Id: NullSearchFilter.java 59685 2009-04-03 23:36:24Z arwhyte@umich.edu $
  ***********************************************************************************
  *

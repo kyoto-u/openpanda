@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  
 <!--
-* $Id: timeout.jsp 82279 2010-09-15 19:00:39Z lydial@stanford.edu $
+* $Id: timeout.jsp 104800 2012-02-17 01:07:35Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -40,7 +40,7 @@
   <!-- content... -->
   <h3><h:outputText value="#{deliveryMessages.timeout}"/></h3>
  <h:form id="removeTemplateForm">
-  <div class="validation">
+  <div class="messageSamigo">
        <h:outputText value="#{deliveryMessages.timeout_save}" escape="false"
          rendered="#{!delivery.settings.autoSubmit}" />
        <h:outputText value="#{deliveryMessages.timeout_submit}" escape="false"

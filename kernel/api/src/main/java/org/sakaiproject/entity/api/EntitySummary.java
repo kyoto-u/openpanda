@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/entity/api/EntitySummary.java $
-* $Id: EntitySummary.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/entity/api/EntitySummary.java $
+* $Id: EntitySummary.java 93399 2011-06-01 11:31:40Z matthew.buckett@oucs.ox.ac.uk $
 ***********************************************************************************
 *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -33,24 +33,37 @@ import org.sakaiproject.exception.PermissionException;
 /**
  * <p>
  * Services which implement EntitySummary declare themselves as willing and able to supply summary information for synoptics.
+ * At the moment this is used to produce an RSS feed from the portal.
  * </p>
+ * @see Summary
  */
 public interface EntitySummary {
    
-   Map getSummary(String summarizableReference, int items, int days) 
+   /**
+    * Get a summary for the supplied reference.
+    * @param summarizableReference
+    * @param items
+    * @param days
+    * @return A map containing keys from {@see Summary} and string values.
+    * @throws IdUsedException
+    * @throws IdInvalidException
+    * @throws PermissionException
+    */
+   Map<String, String> getSummary(String summarizableReference, int items, int days) 
          throws IdUsedException, IdInvalidException, PermissionException;
 
    /**
     * Provide the string array of tool ids, for tools that we claim as manipulating our entities.
     * 
-    * @return
+    * @return An array of tool IDs, eg "sakai.announcement".
     */
    String[] summarizableToolIds();
+   
    /**
-    * Get a sumerisable reference for the siteId and toolIdentifier
-    * @param siteId
-    * @param toolIdentifier
-    * @return
+    * Get a summerizable reference for the siteId and toolIdentifier
+    * @param siteId The site ID to get the summary for.
+    * @param toolIdentifier The tool ID, eg "sakai.announcement".
+    * @return A String that can be passed to {@see #getSummary(String, int, int)}.
     */
    String getSummarizableReference(String siteId, String toolIdentifier);
 }

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/branches/sakai-2.8.x/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podOptionsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.0/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podOptionsBean.java $
  * $Id: podOptionsBean.java 14691 2006-09-15 12:36:27Z josrodri@iupui.edu$
  ***********************************************************************************
  *
@@ -67,6 +67,14 @@ public class podOptionsBean {
 
 	/** Returns the options of what the podcast folder can be set to **/
 	public SelectItem[] getDisplayItems() {
+		// Reset labels for i18n
+		for (SelectItem displayItem : displayItems) {
+			if (Integer.valueOf(PUBLIC).equals(displayItem.getValue())) {
+				displayItem.setLabel(rb.getString(OPTIONS_PUBLIC));
+			} else if (Integer.valueOf(SITE).equals(displayItem.getValue())) {
+				displayItem.setLabel(rb.getString(OPTIONS_SITE));
+			}
+		}
 		return displayItems;
 	}
 

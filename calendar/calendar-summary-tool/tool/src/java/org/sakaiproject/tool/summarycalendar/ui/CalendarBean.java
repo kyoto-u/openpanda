@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/CalendarBean.java $
- * $Id: CalendarBean.java 103161 2012-01-16 16:12:12Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/CalendarBean.java $
+ * $Id: CalendarBean.java 110619 2012-07-23 14:22:54Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -81,7 +81,7 @@ public class CalendarBean {
 	public static final String 						PRIORITY_HIGH			= "priority_high";
 	public static final String 						PRIORITY_MEDIUM			= "priority_medium";
 	public static final String 						PRIORITY_LOW			= "priority_low";
-	private static final String 					imgLocation				= "../../../library/image/sakai/";
+	private static final String 					imgLocation				= "/../library/image/sakai/";
 	private static final String 					SCHEDULE_TOOL_ID		= "sakai.schedule";
 	
 	private static final String 					MERGED_CALENDARS_PROP 	= "mergedCalendarReferences";
@@ -388,6 +388,7 @@ public class CalendarBean {
 			es.setEventRef(e.getId());
 			es.setUrl(e.getUrl());
 			es.setAttachments(e.getAttachments());
+			es.setSite(e.getSiteName());
 			eventList.add(es);
 		}
 		return eventList;
@@ -614,14 +615,14 @@ public class CalendarBean {
 						c.set(Calendar.MONTH, selMonth - 1);
 						c.set(Calendar.DAY_OF_MONTH, nDay);
 						vector = getScheduleEventsForDay(c);
-						day = new Day(c.getTime(), getDayEventCount(vector) > 0);
+						day = new Day(c, getDayEventCount(vector) > 0);
 						day.setOccursInOtherMonth(true);
 						day.setBackgroundCSSProperty(getDayPriorityCSSProperty(vector));
 					}else if(currDay > lastDay){
 						c.set(Calendar.MONTH, selMonth + 1);
 						c.set(Calendar.DAY_OF_MONTH, nextMonthDay++);
 						vector = getScheduleEventsForDay(c);
-						day = new Day(c.getTime(), getDayEventCount(vector) > 0);
+						day = new Day(c, getDayEventCount(vector) > 0);
 						day.setOccursInOtherMonth(true);
 						day.setBackgroundCSSProperty(getDayPriorityCSSProperty(vector));
 					}else{
@@ -629,7 +630,7 @@ public class CalendarBean {
 						c.set(Calendar.MONTH, selMonth);
 						c.set(Calendar.DAY_OF_MONTH, currDay++);
 						vector = getScheduleEventsForDay(c);
-						day = new Day(c.getTime(), getDayEventCount(vector) > 0);
+						day = new Day(c, getDayEventCount(vector) > 0);
 						day.setOccursInOtherMonth(false);
 						day.setBackgroundCSSProperty(getDayPriorityCSSProperty(vector));
 					}
@@ -677,7 +678,7 @@ public class CalendarBean {
 				boolean selected = (selectedDay != null) && (sameDay(c, selectedDay));
 
 				CalendarEventVector vector = getScheduleEventsForDay(c);
-				day = new Day(c.getTime(), getDayEventCount(vector) > 0);
+				day = new Day(c, getDayEventCount(vector) > 0);
 				day.setOccursInOtherMonth(!sameMonth);
 				day.setBackgroundCSSProperty(getDayPriorityCSSProperty(vector));
 				day.setToday(sameDay(c, getToday()));

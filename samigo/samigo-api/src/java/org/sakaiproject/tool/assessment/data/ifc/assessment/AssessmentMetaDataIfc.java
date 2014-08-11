@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/AssessmentMetaDataIfc.java $
- * $Id: AssessmentMetaDataIfc.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/AssessmentMetaDataIfc.java $
+ * $Id: AssessmentMetaDataIfc.java 97412 2011-08-25 16:29:29Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -34,6 +34,8 @@ public interface AssessmentMetaDataIfc
   public static String BGIMAGE = "ASSESSMENT_BGIMAGE";
   public static String ALIAS = "ALIAS";
 
+  public static String CALENDAR_DUE_DATE_EVENT_ID = "CALENDAR_DUE_DATE_EVENT_ID";
+  
   Long getId();
 
   void setId(Long id);

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/branches/msgcntr-2.8.x/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/MembershipManager.java $
- * $Id: MembershipManager.java 59677 2009-04-03 23:19:29Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/MembershipManager.java $
+ * $Id: MembershipManager.java 103261 2012-01-18 21:02:25Z wagnermr@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -29,23 +29,30 @@ public interface MembershipManager {
    * Get filtered members for course all/user/role/group<br>
    * Return hash map for direct access to members via id
    * (used in UI when for selected list items)<br>
-   * Filter roles/groups which do not have members
+   * Filter roles/groups which do not have members. Also
+   * filters out users that the current user is not permitted to
+   * view (ie they have privacy status hidden and the current user does not
+   * have privileges to view hidden users)
+   * To ignore hidden groups, pass in a null value
    * @param filterFerpa
+   * @param hiddenGroups
    * @return map of members
    */
-  public Map getFilteredCourseMembers(boolean filterFerpa);
+  public Map getFilteredCourseMembers(boolean filterFerpa, List<String> hiddenGroups);
   
     
   /**
    * Get members for course all/user/role/group<br>
    * Return hash map for direct access to members via id
    * (used in UI when for selected list items)<br>
+   * To ignore hidden groups, pass in a null value
    * @param filterFerpa
    * @param includeRoles
    * @param includeAllParticipantsMember
+   * @param hiddenGroups
    * @return map of members
    */
-  public Map getAllCourseMembers(boolean filterFerpa, boolean includeRoles, boolean includeAllParticipantsMember);
+  public Map getAllCourseMembers(boolean filterFerpa, boolean includeRoles, boolean includeAllParticipantsMember, List<String> hiddenGroups);
   
   /**
    * get all users for course w/o filtering of FERPA enabled members

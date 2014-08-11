@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-impl/impl/src/java/org/sakaiproject/assignment/taggable/impl/AssignmentActivityProducerImpl.java $
- * $Id: AssignmentActivityProducerImpl.java 75499 2010-03-31 15:22:25Z zqian@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/taggable/impl/AssignmentActivityProducerImpl.java $
+ * $Id: AssignmentActivityProducerImpl.java 112290 2012-09-11 17:44:18Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -114,8 +114,9 @@ public class AssignmentActivityProducerImpl implements
 		TaggableActivity activity = null;
 		if (checkReference(activityRef)) {
 			try {
-				activity = new AssignmentActivityImpl(assignmentService
-						.getAssignment(activityRef), this);
+				Assignment assignment = assignmentService.getAssignment(activityRef);
+				if (assignment != null)
+					activity = new AssignmentActivityImpl(assignment, this);
 			} catch (IdUnusedException iue) {
 				logger.error(iue.getMessage(), iue);
 			} catch (PermissionException pe) {

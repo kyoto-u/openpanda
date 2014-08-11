@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/content/api/GroupAwareEdit.java $
- * $Id: GroupAwareEdit.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/content/api/GroupAwareEdit.java $
+ * $Id: GroupAwareEdit.java 96667 2011-08-09 08:31:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -22,11 +22,11 @@
 package org.sakaiproject.content.api;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.sakaiproject.entity.api.Edit;
 import org.sakaiproject.exception.InconsistentException;
 import org.sakaiproject.exception.PermissionException;
-import org.sakaiproject.site.api.Group;
 import org.sakaiproject.time.api.Time;
 
 /**
@@ -69,15 +69,31 @@ public interface GroupAwareEdit extends GroupAwareEntity, Edit
 	 * Set the release date before which this entity should not be available to users 
 	 * except those with adequate permission (what defines "adequate permission" is TBD).
 	 * @param time The date/time at which the entity may be accessed by all users.
+	 * @deprecated see {{@link #setReleaseTime(Date)
 	 */
 	public void setReleaseDate(Time time);
+	
+	/**
+	 * Set the release date before which this entity should not be available to users 
+	 * except those with adequate permission (what defines "adequate permission" is TBD).
+	 * @param time The date/time at which the entity may be accessed by all users.
+	 */
+	public void setReleaseTime(Date date);
+	
+	/**
+	 * Set the retract date after which this entity should not be available to users 
+	 * except those with adequate permission (what defines "adequate permission" is TBD).
+	 * @param time The date/time at which access to the entity should be restricted.
+	 * @deprecated see {@link #setRetractTime(Date)}
+	 */
+	public void setRetractDate(Time time);
 	
 	/**
 	 * Set the retract date after which this entity should not be available to users 
 	 * except those with adequate permission (what defines "adequate permission" is TBD).
 	 * @param time The date/time at which access to the entity should be restricted.
 	 */
-	public void setRetractDate(Time time);
+	public void setRetractTime(Date time);
 	
 	/**
 	 * Make this entity hidden. Any values previously set for releaseDate and/or retractDate 

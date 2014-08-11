@@ -1,7 +1,7 @@
 package edu.indiana.lib.osid.base.repository.http;
 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/branches/sakai-2.8.x/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/base/repository/http/PartIterator.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/base/repository/http/PartIterator.java $
  * $Id: PartIterator.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  **********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/DiffBean.java $
- * $Id: DiffBean.java 84671 2010-11-12 18:27:24Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/DiffBean.java $
+ * $Id: DiffBean.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -31,7 +31,7 @@ import uk.ac.cam.caret.sakai.rwiki.service.api.model.RWikiObject;
  * 
  * @see GenericDiffBean
  * @see uk.ac.cam.caret.sakai.rwiki.service.api.api.model.RWikiObject
- * @version $Id: DiffBean.java 84671 2010-11-12 18:27:24Z arwhyte@umich.edu $
+ * @version $Id: DiffBean.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  * @author andrew
  */
 public class DiffBean

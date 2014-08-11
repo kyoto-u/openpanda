@@ -115,12 +115,13 @@
 			<label for ="$form-alias">
 				$tlang.getString("cus.usethi2")
 			</label>
-			<input type="text" name="$form-alias" id="$form-alias" value="$!alias" /> @${serverName}
+			<input type="text" name="$form-alias" id="$form-alias" value="$!alias" maxlength="$form-alias-max-length" /> @${serverName}
 		</p>
 		<p class="act">
 			<input type="submit" accesskey="s" class="active" name="$form-submit" value="$tlang.getString("gen.sav2")" />
 			<input type="submit" accesskey="x" name="$form-cancel" value="$tlang.getString("gen.can")" />
 		</p>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>
 

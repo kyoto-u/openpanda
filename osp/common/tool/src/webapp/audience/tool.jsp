@@ -33,7 +33,7 @@
 	<sakai:instruction_message value="#{common_msgs.audience_wizard_instructions}"/>
 </f:subview>
 
-<sakai:messages/>
+<sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
 
 <h:form id="mainForm">
     <ospx:splitarea direction="horizontal" width="100%">

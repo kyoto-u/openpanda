@@ -54,6 +54,8 @@ remove the javascript onclick stuff.
 
       <h:outputText value="<a name='top'></a>" escape="false" />
  
+ <%@ include file="/jsf/delivery/deliveryjQuery.jsp" %>
+ 
  <h:outputText value="<div class='portletBody' style='#{delivery.settings.divBgcolor};#{delivery.settings.divBackground}'>" escape="false"/>
 
 <!-- content... -->
@@ -62,7 +64,7 @@ remove the javascript onclick stuff.
 
 <!-- DONE BUTTON FOR PREVIEW -->
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
  <f:verbatim></div></f:verbatim>
@@ -71,7 +73,7 @@ remove the javascript onclick stuff.
 <!-- JAVASCRIPT -->
 <%@ include file="/js/delivery.js" %>
 
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 
 function saveTime()
 {
@@ -108,7 +110,7 @@ function saveTime()
 <h:inputHidden id="assessTitle" value="#{delivery.assessmentTitle}" />
 <%-- PART/ITEM DATA TABLES --%>
 
-  <h:panelGroup styleClass="validation">
+  <h:panelGroup styleClass="messageSamigo2">
     <h:panelGrid border="0">
 	  <h:outputText value="#{deliveryMessages.submit_warning_1}" escape="false"/>
 	  <h:outputText value="#{deliveryMessages.submit_warning_2}" escape="false"/>
@@ -176,7 +178,7 @@ function saveTime()
 
 <!-- DONE BUTTON FOR PREVIEW -->
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
  <f:verbatim></div></f:verbatim>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/component/dao/impl/SearchIndexBuilderWorkerDaoJdbcImpl.java $
- * $Id: SearchIndexBuilderWorkerDaoJdbcImpl.java 118814 2013-01-25 03:21:38Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/component/dao/impl/SearchIndexBuilderWorkerDaoJdbcImpl.java $
+ * $Id: SearchIndexBuilderWorkerDaoJdbcImpl.java 69956 2009-12-17 07:27:39Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -172,10 +172,7 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 				{
 					try
 					{
-						if (con != null)
-						{
-							con.rollback();
-						}
+						con.rollback();
 					}
 					catch (Exception e)
 					{
@@ -250,7 +247,7 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 					{
 						sbi.setSearchstate(SearchBuilderItem.STATE_COMPLETED);
 						updateOrSave(connection, sbi);
-						
+						connection.commit();
 
 						continue;
 					}
@@ -264,7 +261,7 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 						{
 							sbi.setSearchstate(SearchBuilderItem.STATE_COMPLETED);
 							updateOrSave(connection, sbi);
-							
+							connection.commit();
 						}
 						else
 						{
@@ -391,7 +388,9 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 										filterNull(ref), Field.Store.COMPRESS,
 										Field.Index.UN_TOKENIZED));
 
-								
+								doc.add(new Field(SearchService.FIELD_CONTEXT,
+										filterNull(sep.getSiteId(ref)),
+										Field.Store.COMPRESS, Field.Index.UN_TOKENIZED));
 								if (sep.isContentFromReader(ref))
 								{
 									contentReader = sep.getContentReader(ref);
@@ -529,7 +528,7 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 						}
 						sbi.setSearchstate(SearchBuilderItem.STATE_COMPLETED);
 						updateOrSave(connection, sbi);
-						
+						connection.commit();
 					}
 					catch (Exception e1)
 					{
@@ -759,13 +758,8 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 		}
 		catch (Exception ex)
 		{
-			log.warn("Failed to perform index cycle " + ex.getMessage(), ex); //$NON-NLS-1$
-			//rollback any uncommitted transactions
-			try {
-				connection.rollback();
-			} catch (SQLException e) {
-				log.debug(e);
-			}
+			log.warn("Failed to perform index cycle " + ex.getMessage()); //$NON-NLS-1$
+			log.debug("Traceback is ", ex); //$NON-NLS-1$
 		}
 		finally
 		{
@@ -1026,12 +1020,6 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 
 	}
 
-	/**
-	 *  Update a search builder item on success the item will be committed
-	 * @param connection
-	 * @param sbi
-	 * @throws SQLException
-	 */
 	private void updateOrSave(Connection connection, SearchBuilderItem sbi)
 			throws SQLException
 	{
@@ -1049,13 +1037,11 @@ public class SearchIndexBuilderWorkerDaoJdbcImpl implements SearchIndexBuilderWo
 						+ SEARCH_BUILDER_ITEM_FIELDS_UPDATE);
 				populateStatement(pst, sbi);
 				pst.executeUpdate();
-				connection.commit();
 			}
 		}
 		catch (SQLException ex)
 		{
 			log.warn("Failed ", ex); //$NON-NLS-1$
-			connection.rollback();
 			throw ex;
 		}
 		finally

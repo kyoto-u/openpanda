@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/TotalScoresBean.java $
- * $Id: TotalScoresBean.java 65737 2009-08-10 23:41:36Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/TotalScoresBean.java $
+ * $Id: TotalScoresBean.java 92420 2011-04-28 20:14:57Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -133,6 +133,7 @@ public class TotalScoresBean
   // Searching
   private String searchString;
   private String defaultSearchString;
+  private String applyToUngraded = "";
   
   private boolean multipleSubmissionsAllowed = false;
   private boolean isTimedAssessment = false;
@@ -1023,6 +1024,10 @@ public class TotalScoresBean
 	  return allAgents;
   }
 
+  public ArrayList getAllAgentsDirect(){
+  	  return allAgents;
+  }
+
   public String getGraderName() {
 	  return Validator.check(graderName, "");
   }
@@ -1063,6 +1068,7 @@ public class TotalScoresBean
   public void clear(ActionEvent event) {
       log.debug("clear");
       setSearchString(null);
+      setApplyToUngraded("");
   }
   
 	private boolean isFilteredSearch() {
@@ -1145,5 +1151,13 @@ public class TotalScoresBean
 
 	public void setIsAutoScored(boolean isAutoScored) {		
 		this.isAutoScored = isAutoScored;
+	}	
+	
+	public String getApplyToUngraded() {
+		return applyToUngraded;
+	}
+
+	public void setApplyToUngraded(String applyToUngraded) {
+		this.applyToUngraded = applyToUngraded;
 	}	
 }

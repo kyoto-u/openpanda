@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SortCoreAssessmentListener.java $
- * $Id: SortCoreAssessmentListener.java 68166 2009-10-20 22:05:32Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SortCoreAssessmentListener.java $
+ * $Id: SortCoreAssessmentListener.java 84254 2010-11-03 23:12:02Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -78,7 +78,7 @@ public class SortCoreAssessmentListener
   	}
     // get the managed bean, author and set the list
     author.setAssessments(assessmentList);
-
+    author.setJustPublishedAnAssessment(false);
   }
 
 /**

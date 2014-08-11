@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventTypes.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventTypes.java $
  * $Id: EventTypes.java 60189 2009-04-17 03:30:51Z arwhyte@umich.edu $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/HideDivisionRenderer.java $
- * $Id: HideDivisionRenderer.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/HideDivisionRenderer.java $
+ * $Id: HideDivisionRenderer.java 96482 2011-08-05 22:59:49Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -43,7 +43,7 @@ import org.sakaiproject.tool.cover.SessionManager;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: HideDivisionRenderer.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * @version $Id: HideDivisionRenderer.java 96482 2011-08-05 22:59:49Z ktsao@stanford.edu $
  */
 
 public class HideDivisionRenderer extends Renderer
@@ -110,14 +110,13 @@ public class HideDivisionRenderer extends Renderer
         String contextPath = context.getExternalContext()
           .getRequestContextPath();
 
-        writer.write("<" + BARTAG + " onclick=\"javascript:showHideDiv('" + id +
-          "', '" +  contextPath + "');\" class=\"" + BARSTYLE + "\">");
-        writer.write("  <img id=\"__img_hide_division_" + id + "\" alt=\"" +
-           title + "\"");
+        writer.write("<" + BARTAG + " class=\"" + BARSTYLE + "\">");
+        writer.write("<a href=\"#\""+ " class=\"hideDivision\" onclick=\"javascript:showHideDiv('" + id +
+           "', '" +  contextPath + "');\" onmouseup=\"blur()\"><img id=\"__img_hide_division_" + id + "\" alt=\"Click to reveal:\"");
         writer.write("    src=\""   + contextPath +
            BARIMG + "\" style=\"cursor:pointer;\" />");
         writer.write("  " + title + "");
-        writer.write("</"+ BARTAG + ">");
+        writer.write("</a></"+ BARTAG + ">");
         writer.write("<div \" id=\"__hide_division_" + id + "\">");
     }
 

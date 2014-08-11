@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/EditStructuredArtifactDefinitionController.java $
- * $Id: EditStructuredArtifactDefinitionController.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/EditStructuredArtifactDefinitionController.java $
+ * $Id: EditStructuredArtifactDefinitionController.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -30,6 +30,7 @@ import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.metaobj.shared.ArtifactFinder;
 import org.sakaiproject.metaobj.shared.SharedFunctionConstants;
 import org.sakaiproject.metaobj.shared.mgt.StructuredArtifactDefinitionManager;
+import org.sakaiproject.metaobj.shared.model.Agent;
 import org.sakaiproject.metaobj.shared.model.PersistenceException;
 import org.sakaiproject.metaobj.shared.model.StructuredArtifact;
 import org.sakaiproject.metaobj.shared.model.StructuredArtifactDefinitionBean;
@@ -55,69 +56,76 @@ public class EditStructuredArtifactDefinitionController extends AddStructuredArt
 
    protected void save(StructuredArtifactDefinitionBean sad, Errors errors) {
       //check to see if you have edit permissions
-      checkPermission(SharedFunctionConstants.EDIT_ARTIFACT_DEF);
+      boolean isAllowed = isAllowed(SharedFunctionConstants.EDIT_ARTIFACT_DEF);
+      Agent currentAgent = getAuthManager().getAgent();
 
       //TODO verify user is system admin, if editting global SAD
 
-      // todo this should all be done on the server
-      // check only if new xsd has been submitted
-      if (sad.getSchemaFile() != null) {
+      if (isAllowed || currentAgent.getId().getValue().equals(sad.getOwner().getId().getValue())) {
+    	  // todo this should all be done on the server
+    	  // check only if new xsd has been submitted
+    	  if (sad.getSchemaFile() != null) {
 
-         String type = sad.getType().getId().getValue();
+    		  String type = sad.getType().getId().getValue();
 
-         getSecurityService().pushAdvisor(new SecurityAdvisor() {
-				public SecurityAdvice isAllowed(String userId, String function, String reference) {
-					return SecurityAdvice.ALLOWED;
-				}
-			});
+    		  getSecurityService().pushAdvisor(new SecurityAdvisor() {
+    			  public SecurityAdvice isAllowed(String userId, String function, String reference) {
+    				  return SecurityAdvice.ALLOWED;
+    			  }
+    		  });
 
-         try {
-            Collection artifacts = artifactFinder.findByType(type);
-            StructuredArtifactValidator validator = new StructuredArtifactValidator();
+    		  try {
+    			  Collection artifacts = artifactFinder.findByType(type);
+    			  StructuredArtifactValidator validator = new StructuredArtifactValidator();
 
-            // validate every artifact against new xsd to determine
-            // whether or not an xsl conversion file is necessary
-            for (Iterator i = artifacts.iterator(); i.hasNext();) {
-               Object obj = i.next();
-               if (obj instanceof StructuredArtifact) {
-                  StructuredArtifact artifact = (StructuredArtifact)obj;
-                  artifact.setHome(getStructuredArtifactDefinitionManager().convertToHome(sad));
-                  Errors artifactErrors = new BindException(artifact, "bean");
-                  validator.validate(artifact, artifactErrors);
-                  if (artifactErrors.getErrorCount() > 0) {
-                     if (sad.getXslConversionFileId() == null ||
-                           sad.getXslConversionFileId().getValue().length() == 0) {
+    			  // validate every artifact against new xsd to determine
+    			  // whether or not an xsl conversion file is necessary
+    			  for (Iterator i = artifacts.iterator(); i.hasNext();) {
+    				  Object obj = i.next();
+    				  if (obj instanceof StructuredArtifact) {
+    					  StructuredArtifact artifact = (StructuredArtifact)obj;
+    					  artifact.setHome(getStructuredArtifactDefinitionManager().convertToHome(sad));
+    					  Errors artifactErrors = new BindException(artifact, "bean");
+    					  validator.validate(artifact, artifactErrors);
+    					  if (artifactErrors.getErrorCount() > 0) {
+    						  if (sad.getXslConversionFileId() == null ||
+    								  sad.getXslConversionFileId().getValue().length() == 0) {
 
-                        errors.rejectValue("schemaFile",
-                              "invalid_schema_file_edit",
-                              "key missing:  invalid_schema_file_edit");
+    							  errors.rejectValue("schemaFile",
+    									  "invalid_schema_file_edit",
+    							  "key missing:  invalid_schema_file_edit");
 
-                        for (Iterator x=artifactErrors.getAllErrors().iterator();x.hasNext();){
-                           ObjectError error = (ObjectError) x.next();
-                           logger.warn(error.toString());
-                        }
+    							  for (Iterator x=artifactErrors.getAllErrors().iterator();x.hasNext();){
+    								  ObjectError error = (ObjectError) x.next();
+    								  logger.warn(error.toString());
+    							  }
 
-                        return;
+    							  return;
 
-                     } else {
-                        sad.setRequiresXslFile(true);
-                        break;
-                     }
-                  }
-               }
-            }
-         }
-         finally {
-            getSecurityService().popAdvisor();
-         }
+    						  } else {
+    							  sad.setRequiresXslFile(true);
+    							  break;
+    						  }
+    					  }
+    				  }
+    			  }
+    		  }
+    		  finally {
+    			  getSecurityService().popAdvisor();
+    		  }
+    	  }
+
+    	  try {
+    		  getStructuredArtifactDefinitionManager().save(sad);
+    	  }
+    	  catch (PersistenceException e) {
+    		  errors.rejectValue(e.getField(), e.getErrorCode(), e.getErrorInfo(),
+    				  e.getDefaultMessage());
+    	  }
       }
-
-      try {
-         getStructuredArtifactDefinitionManager().save(sad);
-      }
-      catch (PersistenceException e) {
-         errors.rejectValue(e.getField(), e.getErrorCode(), e.getErrorInfo(),
-               e.getDefaultMessage());
+      else {
+    	  errors.rejectValue("id", "not_allowed", new Object[] {},
+    	  "Not allowed to delete");
       }
    }
 

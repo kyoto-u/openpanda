@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/branches/sakai-2.8.x/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/DbAnnouncementService.java $
- * $Id: DbAnnouncementService.java 81227 2010-08-13 14:58:17Z savithap@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/DbAnnouncementService.java $
+ * $Id: DbAnnouncementService.java 90158 2011-03-21 17:08:08Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -32,7 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Role;
-import org.sakaiproject.authz.cover.AuthzGroupService;
+import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.db.api.SqlReader;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.entity.api.Reference;
@@ -90,6 +90,14 @@ public class DbAnnouncementService extends BaseAnnouncementService
 	public void setSqlService(SqlService service)
 	{
 		m_sqlService = service;
+	}
+
+	private AuthzGroupService m_authzGroupService;
+	
+	public void setAuthzGroupService(
+			org.sakaiproject.authz.api.AuthzGroupService authzGroupService) {
+		this.m_authzGroupService = authzGroupService;
+		super.setAuthzGroupService(authzGroupService);
 	}
 
 	/**
@@ -581,7 +589,7 @@ public class DbAnnouncementService extends BaseAnnouncementService
 		// get the realm
 		try
 		{
-			AuthzGroup realm = AuthzGroupService.getAuthzGroup(ref);
+			AuthzGroup realm = m_authzGroupService.getAuthzGroup(ref);
 
 			// if the announcement realm has "pubview" role, then the announcement is publicly viewable
 			Role pubview = realm.getRole("pubview");

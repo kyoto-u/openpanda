@@ -1,9 +1,10 @@
-<%-- $Id: deliverMatching.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+<%-- $Id: deliverMatching.jsp 96833 2011-08-11 17:04:08Z ktsao@stanford.edu $
 include file for delivering matching questions
 should be included in file importing DeliveryMessages
 --%>
+<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 <!--
-* $Id: deliverMatching.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+* $Id: deliverMatching.jsp 96833 2011-08-11 17:04:08Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -33,6 +34,7 @@ should be included in file importing DeliveryMessages
      <h:outputText value="#{answer}" escape="false" />
    </h:column>
   </h:dataTable>
+  <h:outputText escape="false" value="<hr style='border:none;border-top:solid black 1px'/>" />
   <h:dataTable value="#{question.matchingArray}" var="matching">
     <h:column rendered="#{delivery.feedback eq 'true' &&
        delivery.feedbackComponent.showCorrectResponse && !delivery.noFeedback=='true'}">
@@ -50,11 +52,11 @@ should be included in file importing DeliveryMessages
       </h:graphicImage>
    </h:column>
    <h:column>
-    <h:selectOneMenu value="#{matching.response}"
+     <t:selectOneMenu value="#{matching.response}" escape="false"
       disabled="#{delivery.actionString=='reviewAssessment'
                || delivery.actionString=='gradeAssessment'}">
-        <f:selectItems value="#{matching.choices}" />
-    </h:selectOneMenu>
+       <f:selectItems value="#{matching.choices}" />
+     </t:selectOneMenu>
    </h:column>
    <h:column>
      <h:outputText value="#{matching.text}" escape="false"/>
@@ -76,7 +78,7 @@ should be included in file importing DeliveryMessages
              && delivery.navigation ne '1' && delivery.displayMardForReview }">
 <h:selectBooleanCheckbox value="#{question.review}" id="mark_for_review" />
 	<h:outputLabel for="mark_for_review" value="#{deliveryMessages.mark}" />
-	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" onkeypress="javascript:window.open('../author/markForReviewTipText.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
+	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
 		<h:outputText  value=" #{assessmentSettingsMessages.whats_this_link}"/>
 	</h:outputLink>
 </h:panelGroup>

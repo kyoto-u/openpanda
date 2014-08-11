@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveTest.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveTest.java $
  * $Id: SakaiArchiveTest.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

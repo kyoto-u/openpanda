@@ -21,8 +21,6 @@
 
 package org.sakaiproject.citation.cover;
 
-import java.util.List;
-
 import org.sakaiproject.citation.util.api.OsidConfigurationException;
 import org.sakaiproject.component.cover.ComponentManager;
 
@@ -116,7 +114,7 @@ public class ConfigurationService
   /**
    * Fetch this user's group affiliations
    */
-	public static List<String> getGroupIds() throws OsidConfigurationException
+	public static java.util.List<String> getGroupIds() throws OsidConfigurationException
 	{
 		org.sakaiproject.citation.api.ConfigurationService instance = getInstance();
 		if (instance == null)
@@ -342,6 +340,52 @@ public class ConfigurationService
 	}
 
   /**
+   * Enable/disable external search support
+   */
+  public static void setExternalSearchEnabled(boolean state)
+  {
+    org.sakaiproject.citation.api.ConfigurationService instance = getInstance();
+    if (instance == null)
+    {
+      return;
+    }
+    instance.setExternalSearchEnabled(state);
+  }
+
+  /**
+   * Is external search enabled?
+   */
+  public static boolean isExternalSearchEnabled()
+  {
+    org.sakaiproject.citation.api.ConfigurationService instance = getInstance();
+    if (instance == null)
+    {
+      return false;
+    }
+   return instance.isExternalSerarchEnabled();
+ }
+  
+  public static void setExternalSearchUrl(String url)
+  {
+    org.sakaiproject.citation.api.ConfigurationService instance = getInstance();
+    if (instance == null)
+    {
+      return;
+    }
+    instance.setExternalSearchUrl(url);
+  }
+  
+  public static String getExternalSearchUrl()
+  {
+    org.sakaiproject.citation.api.ConfigurationService instance = getInstance();
+    if (instance == null)
+    {
+      return null;
+    }
+    return instance.getExternalSearchUrl();
+  }
+
+  /**
    * Enable/disable default Citations support
    */
   public static void setCitationsEnabledByDefault(boolean state)
@@ -402,4 +446,23 @@ public class ConfigurationService
 		}
 		return instance.librarySearchEnabled();
   }
+
+  public static java.util.Map<String, java.util.List<java.util.Map<String, String>>> getSaveciteClients() {
+		org.sakaiproject.citation.api.ConfigurationService instance = getInstance();
+		if (instance == null)
+		{
+			return null;
+		}
+	    return instance.getSaveciteClients();
+  }
+
+  public static java.util.List<java.util.Map<String, String>> getSaveciteClientsForLocale(java.util.Locale locale) {
+	  org.sakaiproject.citation.api.ConfigurationService instance = getInstance();
+	  if (instance == null)
+	  {
+		  return null;
+	  }
+      return instance.getSaveciteClientsForLocale(locale);
+  }
+
 }

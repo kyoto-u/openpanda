@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/event/cover/EventTrackingService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/event/cover/EventTrackingService.java $
  * $Id: EventTrackingService.java 74613 2010-03-15 08:12:01Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

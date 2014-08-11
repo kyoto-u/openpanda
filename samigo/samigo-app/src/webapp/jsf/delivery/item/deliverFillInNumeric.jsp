@@ -27,6 +27,15 @@ should be included in file importing DeliveryMessages
 <!-- ATTACHMENTS -->
 <%@ include file="/jsf/delivery/item/attachment.jsp" %>
 
+<h:outputText value="#{deliveryMessages.fin_accepted_instruction} " escape="false" />
+<f:verbatim><br /></f:verbatim>
+<h:outputText value="#{deliveryMessages.fin_complex_note} " escape="false" />
+<f:verbatim><br /></f:verbatim>
+<h:outputText value="#{deliveryMessages.fin_complex_example} " escape="false" />
+<f:verbatim><br /></f:verbatim>
+<h:outputText value="#{deliveryMessages.fin_invalid_characters_error} " escape="false" rendered="#{question.isInvalidFinInput}" styleClass="messageSamigo3"/>
+<f:verbatim><br /></f:verbatim>
+
 <samigo:dataLine value="#{question.finArray}" var="answer"
   separator=" " first="0" rows="100">
   <h:column>
@@ -34,7 +43,8 @@ should be included in file importing DeliveryMessages
       <h:graphicImage alt="#{deliveryMessages.alt_correct}" id="image"
         rendered="#{delivery.feedback eq 'true' &&
                     delivery.feedbackComponent.showCorrectResponse &&
-                    answer.isCorrect && answer.hasInput && !delivery.noFeedback=='true'}" url="/images/checkmark.gif">
+                    answer.isCorrect && answer.hasInput && !delivery.noFeedback=='true' && 
+                    !delivery.isAnyInvalidFinInput}" url="/images/checkmark.gif">
       </h:graphicImage>
       <h:graphicImage alt="#{deliveryMessages.alt_correct}" id="ximage"
         rendered="#{delivery.feedback eq 'true' &&
@@ -44,7 +54,9 @@ should be included in file importing DeliveryMessages
 	  <h:inputText size="10" rendered="#{answer.hasInput 
 		&& delivery.actionString !='gradeAssessment' 
 		&& delivery.actionString !='reviewAssessment'}"
-		 value="#{answer.response}" onkeypress="return noenter()"/>
+		 value="#{answer.response}" onkeypress="return noenter()">
+ 	  </h:inputText>
+
       <h:outputText style="text-decoration: underline" 
 		rendered="#{delivery.actionString=='gradeAssessment' 
 			|| delivery.actionString=='reviewAssessment'}"
@@ -61,7 +73,7 @@ should be included in file importing DeliveryMessages
              && delivery.navigation ne '1' && delivery.displayMardForReview }">
 <h:selectBooleanCheckbox value="#{question.review}" id="mark_for_review" />
 	<h:outputLabel for="mark_for_review" value="#{deliveryMessages.mark}" />
-	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" onkeypress="javascript:window.open('../author/markForReviewTipText.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
+	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
 		<h:outputText  value=" #{assessmentSettingsMessages.whats_this_link}"/>
 	</h:outputLink>
 </h:panelGroup>

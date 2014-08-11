@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/utils/xml/impl/ComplexSchemaNodeImpl.java $
- * $Id: ComplexSchemaNodeImpl.java 85658 2010-11-30 18:37:06Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/utils/xml/impl/ComplexSchemaNodeImpl.java $
+ * $Id: ComplexSchemaNodeImpl.java 85421 2010-11-24 15:54:45Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation

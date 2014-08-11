@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/branches/sakai-2.8.x/citations-api/api/src/java/org/sakaiproject/citation/api/SearchManager.java $
- * $Id: SearchManager.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-api/api/src/java/org/sakaiproject/citation/api/SearchManager.java $
+ * $Id: SearchManager.java 98468 2011-09-21 02:49:36Z jimeng@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -96,4 +96,12 @@ public interface SearchManager
      * @return
      */
     public String getGoogleScholarUrl(String resourceId);
+
+    public String getExternalSearchWindowName(String resourceId);
+
+    /**
+     * Supply the url for the savecite servlet to add a citation to a particular citation list.
+     * @param resourceId The identifier for the citation list.
+     */
+	public String getSaveciteUrl(String resourceId, String saveciteClientId);
 }

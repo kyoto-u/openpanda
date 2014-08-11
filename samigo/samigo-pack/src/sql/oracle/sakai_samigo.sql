@@ -68,6 +68,12 @@ INSERT INTO SAM_TYPE_T ("TYPEID" ,"AUTHORITY" ,"DOMAIN" ,"KEYWORD",
     "DESCRIPTION" ,
     "STATUS" ,"CREATEDBY" ,"CREATEDDATE" ,"LASTMODIFIEDBY" ,
     "LASTMODIFIEDDATE" )
+    VALUES (13 , 'stanford.edu' ,'assessment.item' ,'Matrix Choices Survey' ,NULL ,1 ,1 ,
+    SYSDATE ,1 ,SYSDATE);        
+INSERT INTO SAM_TYPE_T ("TYPEID" ,"AUTHORITY" ,"DOMAIN" ,"KEYWORD",
+    "DESCRIPTION" ,
+    "STATUS" ,"CREATEDBY" ,"CREATEDDATE" ,"LASTMODIFIEDBY" ,
+    "LASTMODIFIEDDATE" )
     VALUES (21 , 'stanford.edu' ,'assessment.section' ,'Default' ,NULL ,1 ,1 ,
     SYSDATE ,1 ,SYSDATE);
 INSERT INTO SAM_TYPE_T ("TYPEID" ,"AUTHORITY" ,"DOMAIN" ,"KEYWORD",
@@ -202,7 +208,7 @@ INSERT INTO SAM_ASSESSEVALUATION_T ("ASSESSMENTID" ,
     "EVALUATIONCOMPONENTS" ,"SCORINGTYPE" ,"NUMERICMODELID" ,
     "FIXEDTOTALSCORE" ,"GRADEAVAILABLE" ,"ISSTUDENTIDPUBLIC" ,
     "ANONYMOUSGRADING" ,"AUTOSCORING" ,"TOGRADEBOOK" )
-    VALUES ((SELECT ID FROM SAM_ASSESSMENTBASE_T WHERE TITLE='Default Assessment Type' AND TYPEID='142' AND ISTEMPLATE=1) ,'' ,1 ,'' , NULL , NULL , NULL ,1 , NULL ,2  );
+    VALUES ((SELECT ID FROM SAM_ASSESSMENTBASE_T WHERE TITLE='Default Assessment Type' AND TYPEID='142' AND ISTEMPLATE=1) ,'' ,1 ,'' , NULL , NULL , NULL ,2 , NULL ,2  );
 
 INSERT INTO SAM_ASSESSFEEDBACK_T ("ASSESSMENTID" ,
     "FEEDBACKDELIVERY" ,"FEEDBACKAUTHORING" ,"SHOWQUESTIONTEXT" ,"SHOWSTUDENTRESPONSE"
@@ -223,7 +229,7 @@ INSERT INTO SAM_ASSESSACCESSCONTROL_T ("ASSESSMENTID" ,
     TO_DATE('', 'dd-Mon-yyyy HH:MI:SS AM') ,TO_DATE('',
     'dd-Mon-yyyy HH:MI:SS AM') ,TO_DATE('', 'dd-Mon-yyyy HH:MI:SS
     AM') ,TO_DATE('', 'dd-Mon-yyyy HH:MI:SS AM') ,TO_DATE('',
-    'dd-Mon-yyyy HH:MI:SS AM') ,1 ,2 ,1 ,'' ,'' ,'' ,'' ,'' ,
+    'dd-Mon-yyyy HH:MI:SS AM') ,0 ,2 ,1 ,'' ,'' ,'' ,'' ,'' ,
     1  );
 
 INSERT INTO SAM_ASSESSMETADATA_T ("ASSESSMENTMETADATAID", "ASSESSMENTID","LABEL",
@@ -302,6 +308,10 @@ INSERT INTO SAM_ASSESSMETADATA_T ("ASSESSMENTMETADATAID", "ASSESSMENTID","LABEL"
     "ENTRY")
     VALUES(sam_assessMetaData_id_s.nextVal, (SELECT ID FROM SAM_ASSESSMENTBASE_T WHERE TITLE='Default Assessment Type' AND TYPEID='142' AND ISTEMPLATE=1), 'passwordRequired_isInstructorEditable', 'true');
 
+INSERT INTO SAM_ASSESSMETADATA_T ("ASSESSMENTMETADATAID", "ASSESSMENTID","LABEL",
+    "ENTRY")
+    VALUES(sam_assessMetaData_id_s.nextVal, (SELECT ID FROM SAM_ASSESSMENTBASE_T WHERE TITLE='Default Assessment Type' AND TYPEID='142' AND ISTEMPLATE=1), 'lockedBrowser_isInstructorEditable', 'true');
+    
 INSERT INTO SAM_ASSESSMETADATA_T ("ASSESSMENTMETADATAID", "ASSESSMENTID","LABEL",
     "ENTRY")
     VALUES(sam_assessMetaData_id_s.nextVal, (SELECT ID FROM SAM_ASSESSMENTBASE_T WHERE TITLE='Default Assessment Type' AND TYPEID='142' AND ISTEMPLATE=1), 'author', '');
@@ -404,7 +414,7 @@ INSERT INTO SAM_ASSESSACCESSCONTROL_T (ASSESSMENTID,
      AND TYPEID='142' AND ISTEMPLATE=1),
                       NULL,1 ,1 , NULL , NULL , NULL , NULL ,1 ,
                       NULL, NULL, NULL, NULL, NULL,
-                      1 ,2 ,1 ,'' ,'' ,'' ,'' ,'' ,
+                      0 ,2 ,1 ,'' ,'' ,'' ,'' ,'' ,
                       1  )
 ;
 INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
@@ -633,7 +643,7 @@ INSERT INTO SAM_ASSESSACCESSCONTROL_T (ASSESSMENTID,
      AND TYPEID='142' AND ISTEMPLATE=1),
                       1,1 ,3 , NULL , NULL , NULL , NULL ,2 ,
                       NULL, NULL, NULL, NULL, NULL,
-                      1 ,1 ,1 ,'' ,'' ,'' ,'' ,'' ,
+                      0 ,1 ,1 ,'' ,'' ,'' ,'' ,'' ,
                       0  )
 ;
 INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
@@ -863,7 +873,7 @@ INSERT INTO SAM_ASSESSACCESSCONTROL_T (ASSESSMENTID,
      AND TYPEID='142' AND ISTEMPLATE=1),
                       NULL,1 ,2 , NULL , NULL , NULL , NULL ,1 ,
                       NULL, NULL, NULL, NULL, NULL,
-                      1 ,2 ,1 ,'' ,'' ,'' ,'' ,'' ,
+                      0 ,2 ,1 ,'' ,'' ,'' ,'' ,'' ,
                       1  )
 ;
 INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
@@ -1094,7 +1104,7 @@ INSERT INTO SAM_ASSESSACCESSCONTROL_T (ASSESSMENTID,
      AND TYPEID='142' AND ISTEMPLATE=1),
                       1,1 ,1 , NULL , NULL , NULL , NULL ,1 ,
                       NULL, NULL, NULL, NULL, NULL,
-                      1 ,2 ,1 ,'' ,'' ,'' ,'' ,'' ,
+                      0 ,2 ,1 ,'' ,'' ,'' ,'' ,'' ,
                       0  )
 ;
 INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
@@ -1324,7 +1334,7 @@ INSERT INTO SAM_ASSESSACCESSCONTROL_T (ASSESSMENTID,
      AND TYPEID='142' AND ISTEMPLATE=1),
                       1,1 ,1 , NULL , NULL , NULL , NULL ,2 ,
                       NULL, NULL, NULL, NULL, NULL,
-                      1 ,1 ,1 ,'' ,'' ,'' ,'' ,'' ,
+                      0 ,1 ,1 ,'' ,'' ,'' ,'' ,'' ,
                       0  )
 ;
 INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
@@ -1445,6 +1455,12 @@ INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
     ENTRY)
     VALUES(sam_assessMetaData_id_s.nextVal, (SELECT ID FROM SAM_ASSESSMENTBASE_T WHERE TITLE='Test'
      AND TYPEID='142' AND ISTEMPLATE=1),
+      'lockedBrowser_isInstructorEditable', 'true')
+;
+INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
+    ENTRY)
+    VALUES(sam_assessMetaData_id_s.nextVal, (SELECT ID FROM SAM_ASSESSMENTBASE_T WHERE TITLE='Test'
+     AND TYPEID='142' AND ISTEMPLATE=1),
       'author', '')
 ;
 INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
@@ -1554,7 +1570,7 @@ INSERT INTO SAM_ASSESSACCESSCONTROL_T (ASSESSMENTID,
      AND TYPEID='142' AND ISTEMPLATE=1),
                       1,1 ,1 , NULL , NULL , NULL , NULL ,2 ,
                       NULL, NULL, NULL, NULL, NULL,
-                      1 ,1 ,1 ,'' ,'' ,'' ,'' ,'' ,
+                      0 ,1 ,1 ,'' ,'' ,'' ,'' ,'' ,
                       0  )
 ;
 INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
@@ -1670,6 +1686,12 @@ INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
     VALUES(sam_assessMetaData_id_s.nextVal, (SELECT ID FROM SAM_ASSESSMENTBASE_T WHERE TITLE='Timed Test'
      AND TYPEID='142' AND ISTEMPLATE=1),
       'passwordRequired_isInstructorEditable', 'true')
+;
+INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
+    ENTRY)
+    VALUES(sam_assessMetaData_id_s.nextVal, (SELECT ID FROM SAM_ASSESSMENTBASE_T WHERE TITLE='Timed Test'
+     AND TYPEID='142' AND ISTEMPLATE=1),
+      'lockedBrowser_isInstructorEditable', 'true')
 ;
 INSERT INTO SAM_ASSESSMETADATA_T (ASSESSMENTMETADATAID, ASSESSMENTID, LABEL,
     ENTRY)

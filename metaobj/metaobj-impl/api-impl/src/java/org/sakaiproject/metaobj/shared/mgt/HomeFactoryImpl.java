@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/HomeFactoryImpl.java $
- * $Id: HomeFactoryImpl.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/HomeFactoryImpl.java $
+ * $Id: HomeFactoryImpl.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -105,6 +105,16 @@ public class HomeFactoryImpl implements HomeFactory {
       }
 
       return homes;
+   }
+
+   public Map getWorksiteHomes(Id worksiteId, String currentUserId, boolean includeHidden) {
+	   Map homes = new Hashtable();
+
+	   for (Iterator i = getHomeFactories().iterator(); i.hasNext();) {
+		   homes.putAll(((HomeFactory) i.next()).getWorksiteHomes(worksiteId, currentUserId, includeHidden));
+	   }
+
+	   return homes;
    }
 
    public Map getHomes(Class requiredHomeType) {

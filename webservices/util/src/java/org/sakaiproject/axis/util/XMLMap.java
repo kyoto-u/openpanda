@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/webservices/branches/webservices-1.0.x/util/src/java/org/sakaiproject/axis/util/XMLMap.java $
+ * $URL: https://source.sakaiproject.org/svn/webservices/tags/webservices-1.1.0/util/src/java/org/sakaiproject/axis/util/XMLMap.java $
  * $Id: XMLMap.java 60054 2009-04-14 16:40:13Z arwhyte@umich.edu $
  ***********************************************************************************
  *

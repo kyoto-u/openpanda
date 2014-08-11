@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/EmptyIterator.java $
- * $Id: EmptyIterator.java 73515 2010-02-15 09:23:18Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/EmptyIterator.java $
+ * $Id: EmptyIterator.java 101696 2011-12-13 14:44:36Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -22,14 +22,13 @@
 // package
 package org.sakaiproject.util;
 
-// imports
 import java.util.Iterator;
 
 /**
  * <p>
  * EmptyIterator is an iterator which is empty.
- * @deprecated use commons-collection EmptyIterator
  * </p>
+ * @deprecated use commons-collection instead, this will be removed after 2.9 - Dec 2011
  */
 @Deprecated 
 public class EmptyIterator implements Iterator

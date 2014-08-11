@@ -32,7 +32,7 @@
       <title><h:outputText value="#{authorImportExport.export_a} #{authorImportExport.dash} #{assessmentBean.title}" /></title>
       </head>
       <body onload="<%= request.getAttribute("html.body.onload") %>">
-<script language="javascript" style="text/JavaScript">
+<script style="text/JavaScript">
 function getSelectedType(qtiUrl, cpUrl){
  var tables= document.getElementsByTagName("TABLE");
   for (var i = 0; i < tables.length; i++) {
@@ -59,7 +59,7 @@ function getSelectedType(qtiUrl, cpUrl){
    <h3><h:outputText  value="#{authorImportExport.export_a} #{authorImportExport.dash} #{assessmentBean.title}" escape="false"/></h3>
     <div class="tier1">
      <div class="form_label">
-      <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+      <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
         <h:outputText value="#{authorImportExport.choose_type_1}" escape="true" />
 		<h:outputLink value="#" onclick="window.open('http://www.imsglobal.org/question/')" onkeypress="window.open('http://www.imsglobal.org/question/')">
 		  <h:outputText value="#{authorImportExport.ims_qti}"/>

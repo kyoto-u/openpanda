@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/spring/util/SakaiLocaleResolver.java $
- * $Id: SakaiLocaleResolver.java 98455 2011-09-20 22:36:35Z botimer@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/spring/util/SakaiLocaleResolver.java $
+ * $Id: SakaiLocaleResolver.java 98454 2011-09-20 22:34:31Z botimer@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2011 The Sakai Foundation

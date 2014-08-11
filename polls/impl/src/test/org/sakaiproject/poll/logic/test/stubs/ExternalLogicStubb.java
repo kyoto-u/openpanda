@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ExternalLogicStubb.java $
- * $Id: ExternalLogicStubb.java 118828 2013-01-25 04:44:02Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ExternalLogicStubb.java $
+ * $Id: ExternalLogicStubb.java 94048 2011-06-24 09:33:53Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007 The Sakai Foundation
@@ -179,6 +179,11 @@ public class ExternalLogicStubb implements ExternalLogic {
 	public ToolSession getCurrentToolSession() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean isResultsChartEnabled() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public boolean isMobileBrowser() {

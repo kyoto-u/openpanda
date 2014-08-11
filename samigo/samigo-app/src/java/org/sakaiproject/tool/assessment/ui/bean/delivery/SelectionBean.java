@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SelectionBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SelectionBean.java $
  * $Id: SelectionBean.java 73974 2010-02-23 00:50:51Z ktsao@stanford.edu $
  ***********************************************************************************
  *

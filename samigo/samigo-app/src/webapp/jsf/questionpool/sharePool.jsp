@@ -31,7 +31,7 @@
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{questionPoolMessages.q_mgr}"/></title>
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 <%@ include file="/js/samigotree.js" %>
 
@@ -107,8 +107,8 @@
 
  <h3><h:outputText value="#{questionPoolMessages.share_pool}"/></h3>
 
-<h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
-
+<h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+ 
 <div class="tier1">
 <h4><h:outputText value="#{questionPoolMessages.members_with_access} #{questionpoolshare.questionPoolName}"/></h4>
 </div>

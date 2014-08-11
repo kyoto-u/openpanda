@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/common/api/src/java/org/theospi/portfolio/guidance/mgt/GuidanceHelper.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/common/api/src/java/org/theospi/portfolio/guidance/mgt/GuidanceHelper.java $
 * $Id: GuidanceHelper.java 70856 2009-12-30 17:42:59Z bahollad@indiana.edu $
 ***********************************************************************************
 *

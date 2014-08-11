@@ -32,6 +32,7 @@ import org.sakaiproject.metaobj.utils.mvc.intf.FormController;
 import org.sakaiproject.metaobj.utils.mvc.intf.LoadObjectController;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
+import org.theospi.portfolio.matrix.MatrixManager;
 import org.theospi.portfolio.matrix.model.ScaffoldingCell;
 
 public class EditScaffoldingCellConfirmationController extends
@@ -72,6 +73,12 @@ public class EditScaffoldingCellConfirmationController extends
 	public Map referenceData(Map request, Object command, Errors errors) {
 		Map model = new HashMap();
 		model.put("label", "Scaffolding Cell");
+		if(request.containsKey(MatrixManager.CONFIRM_PUBLISHED_FLAG)){
+			model.put("published", request.get(MatrixManager.CONFIRM_PUBLISHED_FLAG));
+		}
+		if(request.containsKey(MatrixManager.CONFIRM_EVAL_VIEW_ALL_GROUPS_FLAG)){
+			model.put("warnViewAllGroupsEval", request.get(MatrixManager.CONFIRM_EVAL_VIEW_ALL_GROUPS_FLAG));
+		}
 		return model;
 	}
 }

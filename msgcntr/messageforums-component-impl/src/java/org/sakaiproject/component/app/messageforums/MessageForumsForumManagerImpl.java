@@ -772,6 +772,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         forum.setTypeUuid(typeManager.getDiscussionForumType());                  
         forum.setActorPermissions(createDefaultActorPermissions());
         forum.setModerated(Boolean.FALSE);
+        forum.setPostFirst(Boolean.FALSE);
         forum.setAutoMarkThreadsRead(DEFAULT_AUTO_MARK_READ);
         LOG.debug("createDiscussionForum executed");
         return forum;
@@ -820,6 +821,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         }
         forum.setTypeUuid(typeManager.getPrivateMessageAreaType());
         forum.setModerated(Boolean.FALSE);
+        forum.setPostFirst(Boolean.FALSE);
         LOG.debug("createPrivateForum executed");
         return forum;
     }
@@ -876,6 +878,9 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         }
         if (forum.getModerated() == null) {
         	forum.setModerated(Boolean.FALSE);
+        }
+        if (forum.getPostFirst() == null) {
+        	forum.setPostFirst(Boolean.FALSE);
         }
         forum.setDraft(Boolean.valueOf(draft));
         forum.setModified(new Date());
@@ -934,6 +939,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         topic.setLocked(Boolean.FALSE);
         topic.setDraft(forum.getDraft());
         topic.setModerated(Boolean.FALSE);
+        topic.setPostFirst(Boolean.FALSE);
         topic.setAutoMarkThreadsRead(forum.getAutoMarkThreadsRead());
         LOG.debug("createDiscussionForumTopic executed");
         return topic;
@@ -969,6 +975,10 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         	topic.setModerated(Boolean.FALSE);
         }
         
+        if (topic.getPostFirst() == null) {
+        	topic.setPostFirst(Boolean.FALSE);
+        }
+        
         if (topic.getId() == null) {
             
           DiscussionForum discussionForum = 
@@ -1000,6 +1010,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         }
         topic.setLocked(Boolean.FALSE);
         topic.setModerated(Boolean.FALSE);
+        topic.setPostFirst(Boolean.FALSE);
         topic.setDraft(forum.getDraft());
         LOG.debug("createOpenForumTopic executed");
         return topic;
@@ -1025,6 +1036,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
         }
         topic.setTypeUuid(typeManager.getPrivateMessageAreaType());
         topic.setModerated(Boolean.FALSE);
+        topic.setPostFirst(Boolean.FALSE);
         topic.setAutoMarkThreadsRead(DEFAULT_AUTO_MARK_READ);
         LOG.debug("createPrivateForumTopic executed");
         return topic;
@@ -1207,7 +1219,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
 
     private boolean isForumLocked(final Long id) {
         if (id == null) {
-            LOG.error("isForumLocked failed with id: " + id);
+            LOG.error("isForumLocked failed with id: null");
             throw new IllegalArgumentException("Null Argument");
         }
 
@@ -1440,7 +1452,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
 		public int getNumModTopicCurrentUserHasModPermForWithPermissionLevel(final List membershipList)
 		{
 			if (membershipList == null) {
-	            LOG.error("getNumModTopicCurrentUserHasModPermForWithPermissionLevel failed with membershipList: " + membershipList);
+	            LOG.error("getNumModTopicCurrentUserHasModPermForWithPermissionLevel failed with membershipList: null");
 	            throw new IllegalArgumentException("Null Argument");
 	        }
 
@@ -1461,7 +1473,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
 		public int getNumModTopicCurrentUserHasModPermForWithPermissionLevelName(final List membershipList)
 		{
 			if (membershipList == null) {
-	            LOG.error("getNumModTopicCurrentUserHasModPermForWithPermissionLevelName failed with membershipList: " + membershipList);
+	            LOG.error("getNumModTopicCurrentUserHasModPermForWithPermissionLevelName failed with membershipList: null");
 	            throw new IllegalArgumentException("Null Argument");
 	        }
 

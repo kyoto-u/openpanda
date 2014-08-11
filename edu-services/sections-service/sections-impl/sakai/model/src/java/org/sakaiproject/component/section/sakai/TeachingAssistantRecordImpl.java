@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/TeachingAssistantRecordImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/TeachingAssistantRecordImpl.java $
  * $Id: TeachingAssistantRecordImpl.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

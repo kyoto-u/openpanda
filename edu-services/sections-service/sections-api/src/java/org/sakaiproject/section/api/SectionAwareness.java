@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/sections-service/sections-api/src/java/org/sakaiproject/section/api/SectionAwareness.java $
- * $Id: SectionAwareness.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-api/src/java/org/sakaiproject/section/api/SectionAwareness.java $
+ * $Id: SectionAwareness.java 84221 2010-11-03 12:47:45Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -56,7 +56,7 @@ public interface SectionAwareness {
      * {@link org.sakaiproject.section.api.coursemanagement.CourseSection CourseSections}
      * associated with this site context.
      */
-    public List getSections(String siteContext);
+    public List<CourseSection> getSections(String siteContext);
 
     /**
      * Gets the list of section categories.  In sakai 2.1, there will be only a
@@ -70,7 +70,7 @@ public interface SectionAwareness {
      * categories.  These should be internationalized for display using
      * {@link SectionAwareness#getCategoryName(String, Locale) getCategoryName}.
      */
-    public List getSectionCategories(String siteContext);
+    public List<String> getSectionCategories(String siteContext);
     
     /**
      * Gets a {@link org.sakaiproject.section.api.coursemanagement.CourseSection CourseSection}

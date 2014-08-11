@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/ItemMetaDataIfc.java $
- * $Id: ItemMetaDataIfc.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/ItemMetaDataIfc.java $
+ * $Id: ItemMetaDataIfc.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -40,6 +40,12 @@ public interface ItemMetaDataIfc
   public static final String MUTUALLY_EXCLUSIVE_FOR_FIB= "MUTUALLY_EXCLUSIVE";
   //public static final String CASE_SENSITIVE_FOR_FIN= "CASE_SENSITIVE_FOR_FIN";
   //public static final String MUTUALLY_EXCLUSIVE_FOR_FIN= "MUTUALLY_EXCLUSIVE_FOR_FIN";
+  //sam-939
+  public static final String ADD_TO_FAVORITES_MATRIX = "ADD_TO_FAVORITES";
+  public static final String ADD_COMMENT_MATRIX = "ADD_COMMENT_MATRIX";
+  public static final String FORCE_RANKING = "FORCE_RANKING";
+  public static final String MX_SURVEY_QUESTION_COMMENTFIELD = "MX_SURVEY_QUESTION_COMMENTFIELD";
+  public static final String MX_SURVEY_RELATIVE_WIDTH = "MX_SURVEY_RELATIVE_WIDTH";
 
   
   

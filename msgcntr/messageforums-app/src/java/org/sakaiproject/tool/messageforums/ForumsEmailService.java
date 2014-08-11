@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/branches/msgcntr-2.8.x/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
- * $Id: ForumsEmailService.java 103350 2012-01-20 19:42:21Z wagnermr@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
+ * $Id: ForumsEmailService.java 103318 2012-01-19 21:11:45Z wagnermr@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007 Sakai Foundation
@@ -245,7 +245,7 @@ public class ForumsEmailService {
 
 			Multipart multipart = new MimeMultipart();
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setContent(FormattedText.escapeHtmlFormattedText(content.toString()), "text/html");			
+			messageBodyPart.setContent(FormattedText.escapeHtmlFormattedText(content.toString()), "text/html; charset=utf-8");
 			messageBodyPart.addHeader("Content-Transfer-Encoding", "quoted-printable");
             multipart.addBodyPart(messageBodyPart);
 			msg.setContent(multipart);

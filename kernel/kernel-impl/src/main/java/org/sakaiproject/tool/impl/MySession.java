@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/tool/impl/MySession.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/tool/impl/MySession.java $
  * $Id: MySession.java 59307 2009-03-30 16:10:16Z arwhyte@umich.edu $
  **********************************************************************************
  *

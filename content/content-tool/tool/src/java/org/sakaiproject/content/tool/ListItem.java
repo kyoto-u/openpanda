@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/branches/sakai-2.8.x/content-tool/tool/src/java/org/sakaiproject/content/tool/ListItem.java $
- * $Id: ListItem.java 118609 2013-01-23 01:16:19Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-tool/tool/src/java/org/sakaiproject/content/tool/ListItem.java $
+ * $Id: ListItem.java 114406 2012-10-16 14:56:27Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.Stack;
@@ -96,6 +97,14 @@ import org.sakaiproject.util.Validator;
 
 /**
  * ListItem
+ * 
+ * This class is for displaying a {@link ContentEntity} in the user interface.
+ * The typical lifecycle of the object is to:
+ * <ul>
+ * <li>Create a new instance of from a {@link ContentEntity} using {@link #ListItem(ContentEntity)}.</li>
+ * <li>Update the newly created object, probably from a HTTP request {@link #captureProperties(ParameterParser, String)}.</li>
+ * <li>Push the changes back to a {@link ContentEntity} using {@link #updateContentResourceEdit(ContentResourceEdit)} so it can be saved.</li>
+ * </ul>
  *
  */
 public class ListItem
@@ -121,6 +130,8 @@ public class ListItem
 	
 	/** A long representing the number of milliseconds in one week.  Used for date calculations */
 	public static final long ONE_WEEK = 7L * ONE_DAY;
+	
+	public static final int EXPANDABLE_FOLDER_NAV_SIZE_LIMIT = ServerConfigurationService.getInt("sakai.content.resourceLimit", 0);  //SAK-21955
 
 	/** 
 	 ** Comparator for sorting Group objects
@@ -150,6 +161,8 @@ public class ListItem
 	 */
 	public static ListItem getListItem(ContentEntity entity, ListItem parent, ResourceTypeRegistry registry, boolean expandAll, Set<String> expandedFolders, List<String> items_to_be_moved, List<String> items_to_be_copied, int depth, Comparator userSelectedSort, boolean preventPublicDisplay, ContentResourceFilter addFilter)
 	{
+		Set<String> expandedFoldersSync = Collections.synchronizedSet(expandedFolders);
+		
 		ListItem item = null;
 			
 		org.sakaiproject.content.api.ContentHostingService contentService = (org.sakaiproject.content.api.ContentHostingService) ComponentManager.get(org.sakaiproject.content.api.ContentHostingService.class);
@@ -198,115 +211,118 @@ public class ListItem
         	item.setPermissions(ResourcesAction.getPermissions(entity.getId(), null));
         }
 
-        if(isCollection)
+        synchronized(expandedFoldersSync)
         {
-        	ContentCollection collection = (ContentCollection) entity;
-        	
-        	if(item.isTooBig)
-        	{
-        		// do nothing
-        	}
-			else if(expandAll)
-        	{
-				String typeId = entity.getResourceType();
-				if(typeId != null && registry != null)
-				{
-					ResourceType typeDef = registry.getType(typeId);
-					if(typeDef != null && typeDef.isExpandable())
+	        if(isCollection)
+	        {
+	        	ContentCollection collection = (ContentCollection) entity;
+	        	
+	        	if(item.isTooBig)
+	        	{
+	        		// do nothing
+	        	}
+				else if(expandAll)
+	        	{
+					String typeId = entity.getResourceType();
+					if(typeId != null && registry != null)
 					{
-						ServiceLevelAction expandAction = ((ExpandableResourceType) typeDef).getExpandAction();
-						if(expandAction != null && expandAction.available(entity))
+						ResourceType typeDef = registry.getType(typeId);
+						if(typeDef != null && typeDef.isExpandable())
 						{
-							expandAction.initializeAction(item.m_reference);
-							
-				       		expandedFolders.add(entity.getId());
-				       		
-				       		expandAction.finalizeAction(item.m_reference);
+							ServiceLevelAction expandAction = ((ExpandableResourceType) typeDef).getExpandAction();
+							if(expandAction != null && expandAction.available(entity))
+							{
+								expandAction.initializeAction(item.m_reference);
+								
+					       		expandedFoldersSync.add(entity.getId());
+					       		
+					       		expandAction.finalizeAction(item.m_reference);
+							}
 						}
 					}
-				}
-         	}
- 			if(expandedFolders.contains(entity.getId()))
-			{
-				item.setExpanded(true);
-
-		       	List<ContentEntity> children = collection.getMemberResources();
-
-				Comparator comparator = null;
-				if(userSelectedSort != null)
+	         	}
+	 			if(expandedFoldersSync.contains(entity.getId()))
 				{
-					comparator = userSelectedSort;
-				}
-				else
-				{
-					boolean hasCustomSort = false;
-					try
+					item.setExpanded(true);
+	
+			       	List<ContentEntity> children = collection.getMemberResources();
+	
+					Comparator comparator = null;
+					if(userSelectedSort != null)
 					{
-						hasCustomSort = collection.getProperties().getBooleanProperty(ResourceProperties.PROP_HAS_CUSTOM_SORT);
-					}
-					catch(Exception e)
-					{
-						// ignore -- let value be false
-					}
-					if(hasCustomSort)
-					{
-						comparator = PRIORITY_SORT_COMPARATOR;
+						comparator = userSelectedSort;
 					}
 					else
 					{
-						comparator = DEFAULT_COMPARATOR;
+						boolean hasCustomSort = false;
+						try
+						{
+							hasCustomSort = collection.getProperties().getBooleanProperty(ResourceProperties.PROP_HAS_CUSTOM_SORT);
+						}
+						catch(Exception e)
+						{
+							// ignore -- let value be false
+						}
+						if(hasCustomSort)
+						{
+							comparator = PRIORITY_SORT_COMPARATOR;
+						}
+						else
+						{
+							comparator = DEFAULT_COMPARATOR;
+						}
 					}
+		    		Collections.sort(children, comparator);
+		    		
+		        	Iterator<ContentEntity> childIt = children.iterator();
+		        	while(childIt.hasNext())
+		        	{
+		        		ContentEntity childEntity = childIt.next();
+		        		if(childEntity.getAccess() == AccessMode.GROUPED)
+		        		{
+		        			if(childEntity.isCollection())
+		        			{
+		        				if(! contentService.allowGetCollection(childEntity.getId()))
+		        				{
+			        				continue;
+		        				}
+		        			}
+		        			else
+		        			{
+		        				if(!contentService.allowGetResource(childEntity.getId()))
+		        				{
+		        					continue;
+		        				}
+		        			}
+		        		}
+		        		
+						if(isAvailabilityEnabled && ! contentService.isAvailable(childEntity.getId()))
+						{
+							continue;
+						}
+	
+		        		ListItem child = getListItem(childEntity, item, registry, expandAll, expandedFoldersSync, items_to_be_moved, items_to_be_copied, depth + 1, userSelectedSort, preventPublicDisplay, addFilter);
+		        		if(items_to_be_copied != null && items_to_be_copied.contains(child.id))
+		        		{
+		        			child.setSelectedForCopy(true);
+		        		}
+		        		if(items_to_be_moved != null && items_to_be_moved.contains(child.id))
+		        		{
+		        			child.setSelectedForMove(true);
+		        		}
+		        		item.addMember(child);
+		        	}
 				}
-	    		Collections.sort(children, comparator);
-	    		
-	        	Iterator<ContentEntity> childIt = children.iterator();
-	        	while(childIt.hasNext())
-	        	{
-	        		ContentEntity childEntity = childIt.next();
-	        		if(childEntity.getAccess() == AccessMode.GROUPED)
-	        		{
-	        			if(childEntity.isCollection())
-	        			{
-	        				if(! contentService.allowGetCollection(childEntity.getId()))
-	        				{
-		        				continue;
-	        				}
-	        			}
-	        			else
-	        			{
-	        				if(!contentService.allowGetResource(childEntity.getId()))
-	        				{
-	        					continue;
-	        				}
-	        			}
-	        		}
-	        		
-					if(isAvailabilityEnabled && ! contentService.isAvailable(childEntity.getId()))
-					{
-						continue;
-					}
-
-	        		ListItem child = getListItem(childEntity, item, registry, expandAll, expandedFolders, items_to_be_moved, items_to_be_copied, depth + 1, userSelectedSort, preventPublicDisplay, addFilter);
-	        		if(items_to_be_copied != null && items_to_be_copied.contains(child.id))
-	        		{
-	        			child.setSelectedForCopy(true);
-	        		}
-	        		if(items_to_be_moved != null && items_to_be_moved.contains(child.id))
-	        		{
-	        			child.setSelectedForMove(true);
-	        		}
-	        		item.addMember(child);
-	        	}
-			}
- 			
-			List<ResourceToolAction> myAddActions = ResourcesAction.getAddActions(entity, item.getPermissions(), registry);
-			if(addFilter != null)
-			{
-				myAddActions = addFilter.filterAllowedActions(myAddActions);
-			}
-			item.setAddActions(myAddActions );
-			//this.members = coll.getMembers();
-			item.setIconLocation( ContentTypeImageService.getContentTypeImage("folder"));
+	 			
+				List<ResourceToolAction> myAddActions = ResourcesAction.getAddActions(entity, item.getPermissions(), registry);
+				if(addFilter != null)
+				{
+					myAddActions = addFilter.filterAllowedActions(myAddActions);
+				}
+				item.setAddActions(myAddActions );
+				//this.members = coll.getMembers();
+				item.setIconLocation( ContentTypeImageService.getContentTypeImage("folder"));
+	        }
         }
         List<ResourceToolAction> otherActions = ResourcesAction.getActions(entity, item.getPermissions(), registry);
         List<ResourceToolAction> pasteActions = ResourcesAction.getPasteActions(entity, item.getPermissions(), registry, items_to_be_moved, items_to_be_copied);
@@ -357,6 +373,7 @@ public class ListItem
 	protected boolean isHot = false;
 	protected boolean isSortable = false;
 	protected boolean isTooBig = false;
+	protected boolean isTooBigNav = false;
 	protected boolean isCourseSite = false;
 	protected String size = "";
 	protected String sizzle = "";
@@ -438,6 +455,8 @@ public class ListItem
 	protected boolean nameIsMissing = false;
 
 	private String expandIconLocation;
+	
+	protected String htmlFilter;
 
 	protected int notification = NotificationService.NOTI_NONE;
 
@@ -647,6 +666,18 @@ public class ListItem
 				setIsTooBig(true);
 			}
 			
+			//SAK-21955
+			//Prevent concurrent mode failures in admin Resource tool when clicking on resources that are too large.  Similar to 'isTooBig' but defined in properties
+			//To enable add the property sakai.content.resourceLimit=<int> to sakai.properties where int is the limit of an accessible resource folder
+			String siteId = ToolManager.getCurrentPlacement().getContext();
+			if(this.EXPANDABLE_FOLDER_NAV_SIZE_LIMIT != 0 && (siteId.equals("!admin") || SiteService.getUserSiteId("admin").contains(siteId)) && (collection_size > this.EXPANDABLE_FOLDER_NAV_SIZE_LIMIT))
+			{
+				setIsTooBigNav(true);
+			}
+			else{
+				setIsTooBigNav(false);
+			}
+			
 			//does this collection allow inlineHTML?
 			setAllowHtmlInline(isAllowInline(collection));
 			setAllowHtmlInlineInherited(Boolean.FALSE);
@@ -832,6 +863,11 @@ public class ListItem
 			this.retractDate = retractDate;
 		}
 		this.isAvailable = entity.isAvailable();
+		this.htmlFilter = entity.getProperties().getProperty(ResourceProperties.PROP_ADD_HTML);
+		if (this.htmlFilter == null)
+		{
+			this.htmlFilter = "auto";
+		}
     }
 
 	/**
@@ -990,6 +1026,7 @@ public class ListItem
  			setIsEmpty(true);
 			setSortable(false);
 			setIsTooBig(false);
+			setIsTooBigNav(false);
 		}
 		else 
 		{
@@ -1579,6 +1616,10 @@ public class ListItem
 		{
 			captureMimetypeChange(params, index);
 		}
+		if (isHtml())
+		{
+			captureHtmlChange(params, index);
+		}
 		if(this.metadataGroups != null && ! this.metadataGroups.isEmpty())
 		{
 			this.captureOptionalPropertyValues(params, index);
@@ -1588,6 +1629,16 @@ public class ListItem
 	protected void captureHtmlInline(ParameterParser params, String index) {
 		logger.debug("got allow inline of " + params.getBoolean("allowHtmlInline" + index));
 		this.allowHtmlInline = params.getBoolean("allowHtmlInline" + index);
+	}
+
+	protected void captureHtmlChange(ParameterParser params, String index) 
+	{
+		String htmlFilter = params.getString("html_filter" + index);
+		if(htmlFilter != null)
+		{
+			this.htmlFilter = htmlFilter;
+		}
+		
 	}
 
 	protected void captureMimetypeChange(ParameterParser params, String index) 
@@ -2359,6 +2410,11 @@ public class ListItem
     	return hidden;
     }
     
+    public boolean isHtml()
+    {
+    	return "text/html".equals(mimetype);
+    }
+    
     /**
      * @param group
      * @return
@@ -2492,6 +2548,17 @@ public class ListItem
 	public boolean isTooBig()
 	{
 		return this.isTooBig;
+	}
+	
+    
+         /**
+	 * Hides href on resource folders based on a configurable limit sakai.content.resourceLimit
+	 * 
+	 * @param isTooBigNav flag
+	 */
+	public boolean isTooBigNav()
+	{
+		return this.isTooBigNav;
 	}
 	
 	public boolean isUrl()
@@ -2700,6 +2767,16 @@ public class ListItem
     {
         this.isTooBig = isTooBig;
     }
+    
+	/**
+	* Hides href on resource folders based on a configurable limit sakai.content.resourceLimit
+	* 
+	* @param isTooBigNav
+	*/
+	public void setIsTooBigNav(boolean isTooBigNav)
+    	{
+       		this.isTooBigNav = isTooBigNav;
+    	}
 
 	public void setMembers(List<ListItem> members) 
 	{
@@ -3195,6 +3272,7 @@ public class ListItem
 		setDescriptionOnEntity(props);
 		setConditionalReleaseOnEntity(props);
 		setCopyrightOnEntity(props);
+		setHtmlFilterOnEntity(props);
 		setAccessOnEntity(edit);
 		setAvailabilityOnEntity(edit);
 		setHtmlInlineOnEntity(props, edit);
@@ -3209,6 +3287,18 @@ public class ListItem
 		}
 	}
 
+	protected void setHtmlFilterOnEntity(ResourcePropertiesEdit props) {
+		if (isHtml())
+		{
+			props.addProperty(ResourceProperties.PROP_ADD_HTML, this.htmlFilter);
+		}
+		else
+		{
+			props.removeProperty(ResourceProperties.PROP_ADD_HTML);
+		}
+	}
+
+	
 	protected void setMimetypeOnEntity(ContentResourceEdit edit, ResourcePropertiesEdit props) 
 	{
 		if(this.mimetype != null)
@@ -3852,7 +3942,7 @@ public class ListItem
 		}
 		catch(Exception e)
 		{
-			hot = false;;
+			hot = false;
 		}
 		
 		return hot;
@@ -4072,6 +4162,10 @@ public class ListItem
 		}
 		return size;
 	}
+
+	public String getHtmlFilter() {
+		return htmlFilter;
+	}
 	
 	public boolean isAllowHtmlInline() {
 		return allowHtmlInline;
@@ -4117,5 +4211,12 @@ public class ListItem
 		}
 		return rv;
 	}
+	
+	public String getServiceName()
+	{
+		// This is used when asking if the styles of the service should be used.
+		return ServerConfigurationService.getString("ui.service", "Sakai");
+	}
+	
 }
 

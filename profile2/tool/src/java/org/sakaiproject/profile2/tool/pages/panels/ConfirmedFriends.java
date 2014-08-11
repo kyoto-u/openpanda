@@ -16,19 +16,20 @@
 
 package org.sakaiproject.profile2.tool.pages.panels;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.ContextImage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.PopupSettings;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -38,7 +39,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.profile2.logic.ProfileConnectionsLogic;
-import org.sakaiproject.profile2.logic.ProfileLogic;
+import org.sakaiproject.profile2.logic.ProfilePrivacyLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.Person;
 import org.sakaiproject.profile2.model.ProfilePreferences;
@@ -48,10 +49,12 @@ import org.sakaiproject.profile2.tool.components.ProfileStatusRenderer;
 import org.sakaiproject.profile2.tool.dataproviders.ConfirmedFriendsDataProvider;
 import org.sakaiproject.profile2.tool.models.FriendAction;
 import org.sakaiproject.profile2.tool.pages.MySearch;
+import org.sakaiproject.profile2.tool.pages.ViewFriends;
 import org.sakaiproject.profile2.tool.pages.ViewProfile;
 import org.sakaiproject.profile2.tool.pages.windows.RemoveFriend;
+import org.sakaiproject.profile2.types.PrivacyType;
 import org.sakaiproject.profile2.util.ProfileConstants;
-import org.sakaiproject.user.api.User;
+import org.sakaiproject.profile2.util.ProfileUtils;
 
 public class ConfirmedFriends extends Panel {
 	
@@ -64,6 +67,9 @@ public class ConfirmedFriends extends Panel {
 	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileConnectionsLogic")
 	protected ProfileConnectionsLogic connectionsLogic;
     
+	@SpringBean(name="org.sakaiproject.profile2.logic.ProfilePrivacyLogic")
+	protected ProfilePrivacyLogic privacyLogic;
+	
 	private Integer numConfirmedFriends = 0;
 	private boolean ownList = false;
 	
@@ -78,8 +84,8 @@ public class ConfirmedFriends extends Panel {
 		
 		//get info for user viewing this page (will be the same if user is viewing own list, different if viewing someone else's)
 		final String currentUserUuid = sakaiProxy.getCurrentUserId();
-		User currentUser = sakaiProxy.getUserQuietly(currentUserUuid);
-		final String currentUserType = currentUser.getType(); //to be used for checking if connection between users is allowed, when this is added
+		//User currentUser = sakaiProxy.getUserQuietly(currentUserUuid);
+		//final String currentUserType = currentUser.getType(); //to be used for checking if connection between users is allowed, when this is added
 		
 		//if viewing own friends, you can manage them.
 		if(userUuid.equals(currentUserUuid)) {
@@ -115,20 +121,47 @@ public class ConfirmedFriends extends Panel {
 		confirmedFriendsHeading.setOutputMarkupId(true);
 		add(confirmedFriendsHeading);
 		
-		//search for connections
-		WebMarkupContainer searchConnections = new WebMarkupContainer("searchConnections");
-    	Link<String> searchConnectionsLink = new Link<String>("searchConnectionsLink") {
+		// actions
+		Form<Void> confirmedFriendsButtonForm = new Form<Void>("confirmedFriendsButtonForm");
+		add(confirmedFriendsButtonForm);
+		
+		//create worksite panel
+		final CreateWorksitePanel createWorksitePanel = 
+			new CreateWorksitePanel("createWorksitePanel", connectionsLogic.getConnectionsForUser(userUuid));
+		//create placeholder and set invisible initially
+		createWorksitePanel.setOutputMarkupPlaceholderTag(true);
+		createWorksitePanel.setVisible(false);
+				
+		confirmedFriendsButtonForm.add(createWorksitePanel);
+		
+		final AjaxButton createWorksiteButton = new AjaxButton("createWorksiteButton", confirmedFriendsButtonForm) {
+
 			private static final long serialVersionUID = 1L;
 
-			public void onClick() {
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				createWorksitePanel.setVisible(true);
+				target.addComponent(createWorksitePanel);
+				target.appendJavascript("fixWindowVertical();");
+			}
+
+		};
+		createWorksiteButton.setModel(new ResourceModel("link.worksite.create"));
+		createWorksiteButton.add(new AttributeModifier("title", true, new ResourceModel("link.title.worksite.create")));
+		createWorksiteButton.setVisible(sakaiProxy.isUserAllowedAddSite(userUuid));
+		confirmedFriendsButtonForm.add(createWorksiteButton);
+		
+		//search for connections
+		AjaxButton searchConnectionsButton = new AjaxButton("searchConnectionsButton", confirmedFriendsButtonForm) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				setResponsePage(new MySearch());
 			}
     	};
-		Label searchConnectionsLabel = new Label("searchConnectionsLabel", new ResourceModel("link.my.friends.search"));
-		searchConnectionsLink.add(searchConnectionsLabel);
-		searchConnections.add(searchConnectionsLink);
-    	add(searchConnections);
-    	
+		searchConnectionsButton.setModel(new ResourceModel("link.my.friends.search"));    	
+		confirmedFriendsButtonForm.add(searchConnectionsButton);
 		
 		//container which wraps list
 		final WebMarkupContainer confirmedFriendsContainer = new WebMarkupContainer("confirmedFriendsContainer");
@@ -144,7 +177,7 @@ public class ConfirmedFriends extends Panel {
 			protected void populateItem(final Item<Person> item) {
 		        
 				Person person = (Person)item.getDefaultModelObject();
-				String personUuid = person.getUuid();
+				final String personUuid = person.getUuid();
 		    			    	
 		    	//setup values
 		    	String displayName = person.getDisplayName();
@@ -193,6 +226,9 @@ public class ConfirmedFriends extends Panel {
 		    	
 		    	/* ACTIONS */
 		    	
+				WebMarkupContainer c1 = new WebMarkupContainer("removeConnectionContainer");
+				c1.setOutputMarkupId(true);
+				
 				//REMOVE FRIEND LINK AND WINDOW
 		    	final AjaxLink<String> removeConnectionLink = new AjaxLink<String>("removeConnectionLink", new Model<String>(personUuid)) {
 					private static final long serialVersionUID = 1L;
@@ -229,11 +265,13 @@ public class ConfirmedFriends extends Panel {
 						target.appendJavascript("fixWindowVertical();"); 
 					}
 				};
-				ContextImage removeConnectionIcon = new ContextImage("removeConnectionIcon",new Model<String>(ProfileConstants.DELETE_IMG));
-				removeConnectionIcon.add(new AttributeModifier("alt", true, new StringResourceModel("accessibility.connection.remove", null, new Object[]{ displayName } )));
-				removeConnectionLink.add(removeConnectionIcon);
+				//ContextImage removeConnectionIcon = new ContextImage("removeConnectionIcon",new Model<String>(ProfileConstants.DELETE_IMG));
+				removeConnectionLink.add(new AttributeModifier("alt", true, new StringResourceModel("accessibility.connection.remove", null, new Object[]{ displayName } )));
+				//removeConnectionLink.add(removeConnectionIcon);
 				removeConnectionLink.add(new AttributeModifier("title", true,new ResourceModel("link.title.removefriend")));
-				item.add(removeConnectionLink);
+				removeConnectionLink.add(new Label("removeConnectionLabel", new ResourceModel("button.friend.remove")).setOutputMarkupId(true));
+				c1.add(removeConnectionLink);
+				item.add(c1);
 				
 				//can only delete if own connections
 				if(!ownList) {
@@ -241,6 +279,74 @@ public class ConfirmedFriends extends Panel {
 					removeConnectionLink.setVisible(false);
 				}
 				
+				WebMarkupContainer c2 = new WebMarkupContainer("viewFriendsContainer");
+		    	c2.setOutputMarkupId(true);
+		    	
+		    	final AjaxLink<String> viewFriendsLink = new AjaxLink<String>("viewFriendsLink") {
+					private static final long serialVersionUID = 1L;
+					public void onClick(AjaxRequestTarget target) {
+						// always ViewFriends because a user isn't connected to himself
+						setResponsePage(new ViewFriends(personUuid));
+					}
+				};
+				final Label viewFriendsLabel = new Label("viewFriendsLabel", new ResourceModel("link.view.friends"));
+				viewFriendsLink.add(viewFriendsLabel);
+				
+				//hide if not allowed
+				if(!privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_MYFRIENDS)) {
+					viewFriendsLink.setEnabled(false);
+					c2.setVisible(false);
+				}
+				viewFriendsLink.setOutputMarkupId(true);
+				c2.add(viewFriendsLink);
+				item.add(c2);
+				
+				WebMarkupContainer c3 = new WebMarkupContainer("emailContainer");
+		    	c3.setOutputMarkupId(true);
+		    	
+		    	ExternalLink emailLink = new ExternalLink("emailLink",
+						"mailto:" + person.getProfile().getEmail(),
+						new ResourceModel("profile.email").getObject());
+		    	
+				c3.add(emailLink);
+				
+				if (StringUtils.isBlank(person.getProfile().getEmail()) || 
+						false == privacyLogic.isActionAllowed(
+								person.getUuid(), currentUserUuid, PrivacyType.PRIVACY_OPTION_CONTACTINFO)) {
+					
+					c3.setVisible(false);
+				}
+				item.add(c3);
+				
+				WebMarkupContainer c4 = new WebMarkupContainer("websiteContainer");
+		    	c4.setOutputMarkupId(true);
+		    	
+		    	// TODO home page, university profile URL or academic/research URL (see PRFL-35)
+		    	ExternalLink websiteLink = new ExternalLink("websiteLink", person.getProfile()
+						.getHomepage(), new ResourceModel(
+						"profile.homepage").getObject()).setPopupSettings(new PopupSettings());
+		    	
+		    	c4.add(websiteLink);
+		    	
+				if (StringUtils.isBlank(person.getProfile().getHomepage()) || 
+						false == privacyLogic.isActionAllowed(
+								person.getUuid(), currentUserUuid, PrivacyType.PRIVACY_OPTION_CONTACTINFO)) {
+					
+					c4.setVisible(false);
+				}
+				item.add(c4);
+				
+				// basic info can be set to 'only me' so still need to check
+				if (true == privacyLogic.isActionAllowed(
+						person.getUuid(), currentUserUuid, PrivacyType.PRIVACY_OPTION_BASICINFO)) {
+					
+					item.add(new Label("connectionSummary",
+							StringUtils.abbreviate(ProfileUtils.stripHtml(
+									person.getProfile().getPersonalSummary()), 200)));
+				} else {
+					item.add(new Label("connectionSummary", ""));
+				}
+								
 				item.setOutputMarkupId(true);
 		    }
 			

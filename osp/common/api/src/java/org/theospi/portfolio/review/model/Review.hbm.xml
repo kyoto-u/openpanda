@@ -32,5 +32,24 @@
    <query name="getReviews">
       from Review
    </query>
+   <query name="getReviewsByMatrix">
+      select r
+      from Review as r,
+      WizardPage as page,
+      Cell as cell
+      where r.parent = page.id
+      and cell.wizardPage.id = page.id
+      and cell.matrix.id = ?
+   </query>
+   <query name="getReviewsByMatrixAndType">
+      select r
+      from Review as r,
+      WizardPage as page,
+      Cell as cell
+      where r.parent = page.id
+      and cell.wizardPage.id = page.id
+      and cell.matrix.id = ?
+      and r.type = ?
+   </query>
    
 </hibernate-mapping>

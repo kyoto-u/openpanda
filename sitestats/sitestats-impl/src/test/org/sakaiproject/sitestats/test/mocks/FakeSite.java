@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeSite.java $
- * $Id: FakeSite.java 81271 2010-08-14 09:14:41Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeSite.java $
+ * $Id: FakeSite.java 101440 2011-12-06 07:29:54Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -369,7 +369,7 @@ public class FakeSite implements Site {
 		return null;
 	}
 
-	public Element toXml(Document arg0, Stack arg1) {
+	public Element toXml(Document arg0, Stack<Element> arg1) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -501,6 +501,26 @@ public class FakeSite implements Site {
 	public void setProviderGroupId(String arg0) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public Date getSoftlyDeletedDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isSoftlyDeleted() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void setSoftlyDeleted(boolean arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Collection<String> getMembersInGroups(Set<String> groupIds) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

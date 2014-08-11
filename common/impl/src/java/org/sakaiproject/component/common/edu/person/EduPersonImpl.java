@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/impl/src/java/org/sakaiproject/component/common/edu/person/EduPersonImpl.java $
- * $Id: EduPersonImpl.java 96489 2011-08-05 23:47:39Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/impl/src/java/org/sakaiproject/component/common/edu/person/EduPersonImpl.java $
+ * $Id: EduPersonImpl.java 96488 2011-08-05 23:43:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

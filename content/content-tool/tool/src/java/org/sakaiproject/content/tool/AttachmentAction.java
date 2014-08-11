@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/branches/sakai-2.8.x/content-tool/tool/src/java/org/sakaiproject/content/tool/AttachmentAction.java $
- * $Id: AttachmentAction.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-tool/tool/src/java/org/sakaiproject/content/tool/AttachmentAction.java $
+ * $Id: AttachmentAction.java 90799 2011-03-28 14:06:37Z jean-francois.leveque@upmc.fr $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation

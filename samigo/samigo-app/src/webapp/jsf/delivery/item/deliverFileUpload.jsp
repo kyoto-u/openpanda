@@ -1,5 +1,5 @@
 <!--
-* $Id: deliverFileUpload.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+* $Id: deliverFileUpload.jsp 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -20,7 +20,7 @@
 **********************************************************************************/
 --%>
 -->
-<%-- $Id: deliverFileUpload.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+<%-- $Id: deliverFileUpload.jsp 97673 2011-08-29 23:17:13Z ktsao@stanford.edu $
 include file for delivering file upload questions
 should be included in file importing DeliveryMessages
 --%>
@@ -32,7 +32,7 @@ should be included in file importing DeliveryMessages
 <h:panelGroup rendered="#{delivery.actionString=='takeAssessment' 
                        || delivery.actionString=='takeAssessmentViaUrl'}">
   <h:outputText escape="false" value="#{deliveryMessages.upload_instruction} " />
-  <h:outputText escape="false" value=" (#{delivery.fileUploadSizeMax} #{deliveryMessages.file_limit}) <br />" styleClass="validate"/>
+  <h:outputText escape="false" value=" (#{deliveryMessages.max_file_size} #{delivery.fileUploadSizeMax}#{deliveryMessages.unit}) <br />" styleClass="validate"/>
 
   <h:outputText value="#{deliveryMessages.file} " />
   <!-- note that target represent the location where the upload medis will be temporarily stored -->
@@ -98,7 +98,7 @@ should be included in file importing DeliveryMessages
              && delivery.navigation ne '1' && delivery.displayMardForReview }">
 <h:selectBooleanCheckbox value="#{question.review}" id="mark_for_review" />
 	<h:outputLabel for="mark_for_review" value="#{deliveryMessages.mark}" />
-	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" onkeypress="javascript:window.open('../author/markForReviewTipText.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
+	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
 		<h:outputText  value=" #{assessmentSettingsMessages.whats_this_link}"/>
 	</h:outputLink>
 </h:panelGroup>

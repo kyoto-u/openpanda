@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/content/api/ContentEntity.java $
- * $Id: ContentEntity.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/content/api/ContentEntity.java $
+ * $Id: ContentEntity.java 97037 2011-08-16 14:07:06Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 Sakai Foundation
@@ -26,8 +26,10 @@ import org.sakaiproject.content.api.GroupAwareEntity;
 public interface ContentEntity extends GroupAwareEntity
 {
 	/**
-	 * Access this ContentEntity's containing collection, or null if this entity is the site collection.
-	 * @return
+	 * Access this ContentEntity's containing collection.
+	 * This was documented as returning <code>null</code> for a site collection call, but has
+	 * never been the case.
+	 * @return The containing collection, or <code>null</code> if this is the root collection.
 	 */
 	public ContentCollection getContainingCollection(); 
 	

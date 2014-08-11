@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_view_submission.vm 104470 2012-02-07 16:33:38Z zqian@umich.edu $ -->
+<!-- $Id: chef_assignments_student_view_submission.vm 104471 2012-02-07 16:35:32Z zqian@umich.edu $ -->
 <!-- start: chef_assignments_student_view_submission.vm  -->
 #parse("/vm/assignment/assignment_macros.vm")
 <script type="text/javascript" src="/library/js/jquery.js"></script>
@@ -290,7 +290,7 @@ function submitform(id)
 						</th>
 							<td>
 							#if ($submission.getReviewReport().equalsIgnoreCase("Error"))
-								$tlang.getString("review.notavail")
+								<div class="alertMessage" >$!submission.getReviewError()</div>
 							#else
 								<img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
 							
@@ -494,6 +494,7 @@ function submitform(id)
 			##just show a simple done button for non-electronic submission type
 			<form name="dummyForm" action="#toolForm("AssignmentAction")" method="post" onsubmit="return true;">
 				<input type="submit" accesskey="x" name="eventSubmit_doCancel_show_submission" value="$tlang.getString('gen.don')" />
+				<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 			</form>
 		#else
 	<form name="addSubmissionForm" id="addSubmissionForm" action="#toolForm("AssignmentAction")" method="post" onsubmit="return true;" enctype="multipart/form-data">
@@ -519,6 +520,13 @@ function submitform(id)
 							##<h4>$tlang.getString("gen.yousub")</h4>
 							$validator.escapeHtmlFormattedText($!value_submission_text)
 						#else*#
+							#if ($!allowAddAssignment && $!allowSubmitByInstructor && $!student) 
+							<h4>$tlang.getString("submitforstudent")</h4>
+							<p class="instruction">
+								$student.getDisplayName()
+								<input type="hidden" name="submit_on_behalf_of" id="submit_on_behalf_of" value="$student.id" />		
+							</p>
+							#end
 							<h4>$tlang.getString("assignmenttext")</h4>
 							<p class="instruction">
 							#if ($returned)
@@ -795,7 +803,7 @@ function submitform(id)
 				#if ($!assignment.getContent().HonorPledge!=1)
 					<p class="checkbox highlightPanel">
 						<label for="$name_submission_honor_pledge_yes">
-							$tlang.getString("gen.honple2")
+							$honor_pledge_text
 						</label>
 						#if (!$!canSubmit)
 							## for submitted submission not yet returned; or returned but resubmitted submission; or after the close time
@@ -1000,6 +1008,7 @@ function submitform(id)
 				/>
 			</p>
 		#end
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 	#end
 </div>

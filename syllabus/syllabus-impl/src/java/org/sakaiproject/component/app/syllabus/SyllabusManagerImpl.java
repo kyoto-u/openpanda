@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/branches/sakai-2.8.x/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusManagerImpl.java $
- * $Id: SyllabusManagerImpl.java 92839 2011-05-13 14:17:00Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.0/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusManagerImpl.java $
+ * $Id: SyllabusManagerImpl.java 92712 2011-05-09 18:11:49Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation

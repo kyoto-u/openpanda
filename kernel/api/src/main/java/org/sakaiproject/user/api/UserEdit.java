@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/user/api/UserEdit.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/user/api/UserEdit.java $
  * $Id: UserEdit.java 79497 2010-07-15 15:33:23Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

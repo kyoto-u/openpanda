@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-api/api/src/java/org/sakaiproject/search/api/SearchIndexBuilderWorker.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-api/api/src/java/org/sakaiproject/search/api/SearchIndexBuilderWorker.java $
  * $Id: SearchIndexBuilderWorker.java 67185 2009-10-05 15:13:28Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

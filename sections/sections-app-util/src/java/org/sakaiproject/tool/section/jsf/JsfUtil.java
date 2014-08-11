@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/branches/sakai-2.8.x/sections-app-util/src/java/org/sakaiproject/tool/section/jsf/JsfUtil.java $
- * $Id: JsfUtil.java 100619 2011-11-10 01:27:53Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.0/sections-app-util/src/java/org/sakaiproject/tool/section/jsf/JsfUtil.java $
+ * $Id: JsfUtil.java 98889 2011-10-03 08:54:33Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation

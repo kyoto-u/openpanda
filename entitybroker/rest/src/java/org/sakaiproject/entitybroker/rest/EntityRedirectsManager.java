@@ -1,6 +1,6 @@
 /**
- * $Id: EntityRedirectsManager.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/java/org/sakaiproject/entitybroker/rest/EntityRedirectsManager.java $
+ * $Id: EntityRedirectsManager.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityRedirectsManager.java $
  * EntityRedirectsManager.java - entity-broker - Jul 26, 2008 9:58:00 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.sakaiproject.entitybroker.EntityBrokerManager;
 import org.sakaiproject.entitybroker.entityprovider.EntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.EntityProviderMethodStore;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.RedirectControllable;
@@ -39,7 +40,6 @@ import org.sakaiproject.entitybroker.exception.FormatUnsupportedException;
 import org.sakaiproject.entitybroker.util.TemplateParseUtil;
 import org.sakaiproject.entitybroker.util.TemplateParseUtil.PreProcessedTemplate;
 import org.sakaiproject.entitybroker.util.TemplateParseUtil.ProcessedTemplate;
-import org.sakaiproject.entitybroker.util.request.RequestUtils;
 
 
 /**
@@ -53,15 +53,21 @@ public class EntityRedirectsManager {
      * Empty constructor
      */
     protected EntityRedirectsManager() { }
-    
+
     /**
      * Base constructor
      * @param entityProviderMethodStore the provider method store service
      * @param requestStorage the request storage service
      */
-    public EntityRedirectsManager(EntityProviderMethodStore entityProviderMethodStore, RequestStorageWrite requestStorage) {
+    public EntityRedirectsManager(EntityBrokerManager entityBrokerManager, EntityProviderMethodStore entityProviderMethodStore, RequestStorageWrite requestStorage) {
+        this.entityBrokerManager = entityBrokerManager;
         this.entityProviderMethodStore = entityProviderMethodStore;
         this.requestStorage = requestStorage;
+    }
+
+    private EntityBrokerManager entityBrokerManager;
+    public void setEntityBrokerManager(EntityBrokerManager entityBrokerManager) {
+        this.entityBrokerManager = entityBrokerManager;
     }
 
     private EntityProviderMethodStore entityProviderMethodStore;
@@ -74,18 +80,8 @@ public class EntityRedirectsManager {
         this.requestStorage = requestStorage;
     }
 
-    // allow the servlet name to be more flexible
-    private String servletContext;
     private String getServletContext() {
-        if (this.servletContext == null) {
-            return RequestUtils.getServletContext(null);
-        }
-        return this.servletContext;
-    }
-    public void setServletContext(String servletContext) {
-        if (servletContext != null) {
-            this.servletContext = servletContext;
-        }
+        return this.entityBrokerManager.getServletContext();
     }
 
     /**
@@ -188,7 +184,7 @@ public class EntityRedirectsManager {
                                 args[i] = segmentValues;
                             } else {
                                 throw new IllegalStateException("URL redirect method ("+redirect+") contains an invalid methodArgTypes, " +
-                                        "only valid types allowed: String, String[], Map");
+                                "only valid types allowed: String, String[], Map");
                             }
                         }
                         try {

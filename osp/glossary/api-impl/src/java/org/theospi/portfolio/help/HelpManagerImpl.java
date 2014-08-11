@@ -549,8 +549,18 @@ public class HelpManagerImpl extends HibernateDaoSupport
    
    public void removeFromSession(Object obj) {
       this.getHibernateTemplate().evict(obj);
+
+      // Check whether it is a Hibernate-mapping class
+      Class<? extends Object> clazz;
+      if (obj instanceof GlossaryEntry) {
+         clazz = GlossaryEntry.class;
+      } else if (obj instanceof GlossaryDescription) {
+         clazz = GlossaryDescription.class;
+      } else {
+         clazz = obj.getClass();
+      }
       try {
-         getHibernateTemplate().getSessionFactory().evict(obj.getClass());
+         getHibernateTemplate().getSessionFactory().evict(clazz);
       } catch (HibernateException e) {
          logger.error(e);
       }

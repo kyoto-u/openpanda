@@ -111,6 +111,36 @@
 								</label>
 							</td>
 						</tr>
+						<tr wicket:id="wallItemNewEmailEnabled">
+							<td class="label" wicket:id="wallItemNewLabel">[wallItemNewLabel]</td>
+							<td class="item">
+								<label>
+									<input type="radio" wicket:id="wallItemNewOn" />
+									<span class="accessibility-label"><wicket:message key="accessibility.prefs.wallnew.on" /></span>
+								</label>
+							</td>
+							<td class="item">
+								<label>
+									<input type="radio" wicket:id="wallItemNewOff" />
+									<span class="accessibility-label"><wicket:message key="accessibility.prefs.wallnew.off" /></span>
+								</label>
+							</td>
+						</tr>
+						<tr wicket:id="worksiteNewEmailEnabled">
+							<td class="label" wicket:id="worksiteNewLabel">[wallItemNewLabel]</td>
+							<td class="item">
+								<label>
+									<input type="radio" wicket:id="worksiteNewOn" />
+									<span class="accessibility-label"><wicket:message key="accessibility.prefs.worksite.on" /></span>
+								</label>
+							</td>
+							<td class="item">
+								<label>
+									<input type="radio" wicket:id="worksiteNewOff" />
+									<span class="accessibility-label"><wicket:message key="accessibility.prefs.worksite.off" /></span>
+								</label>
+							</td>
+						</tr>
 					</table>
 					
 					
@@ -134,6 +164,16 @@
 									<label>
 										<input wicket:id="officialImage" type="checkbox" />
 										<span class="accessibility-label"><wicket:message key="accessibility.prefs.officialimage" /></span>
+									</label>
+								</td>
+							</tr>
+						
+							<tr wicket:id="gravatarContainer">
+								<td class="label" wicket:id="gravatarLabel">[gravatarLabel]</td>
+								<td class="content">
+									<label>
+										<input wicket:id="gravatarImage" type="checkbox" />
+										<span class="accessibility-label"><wicket:message key="accessibility.prefs.gravatar" /></span>
 									</label>
 								</td>
 							</tr>
@@ -165,6 +205,16 @@
 									</label>
 								</td>
 								<td class="toolTip"><span wicket:id="galleryFeedToolTip">[galleryFeedToolTip]</span></td>
+							</tr>
+							<tr wicket:id="onlineStatusContainer">
+								<td class="label" wicket:id="onlineStatusLabel">[onlineStatusLabel]</td>
+								<td class="content">
+									<label>
+										<input wicket:id="onlineStatusSetting" type="checkbox" />
+										<span class="accessibility-label"><wicket:message key="accessibility.prefs.onlinestatus" /></span>
+									</label>
+								</td>
+								<td class="toolTip"><span wicket:id="onlineStatusToolTip">[onlineStatusToolTip]</span></td>
 							</tr>
 						</table>
 					</div>

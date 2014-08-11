@@ -8,7 +8,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: fileUpload.jsp 87710 2011-01-26 21:45:27Z ktsao@stanford.edu $
+* $Id: fileUpload.jsp 92665 2011-05-05 23:04:53Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -75,7 +75,7 @@
   <div class="shorttext">
     <h:outputLabel value="#{authorMessages.answer_point_value}" />
     <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" onchange="toPoint(this.id);">
-<f:validateDoubleRange/>
+<f:validateDoubleRange minimum="0.00"/>
 </h:inputText>
     <h:message for="answerptr" styleClass="validate"/><br/>
   </div>

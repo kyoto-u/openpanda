@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/glossary/api/src/java/org/theospi/portfolio/help/model/GlossaryEntry.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/glossary/api/src/java/org/theospi/portfolio/help/model/GlossaryEntry.java $
 * $Id: GlossaryEntry.java 77205 2010-05-06 19:59:41Z bkirschn@umich.edu $
 ***********************************************************************************
 *

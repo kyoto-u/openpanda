@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/jldap/src/java/edu/amc/sakai/user/LdapConnectionManagerConfig.java $
- * $Id: LdapConnectionManagerConfig.java 61856 2009-05-05 17:53:41Z dmccallum@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/jldap/src/java/edu/amc/sakai/user/LdapConnectionManagerConfig.java $
+ * $Id: LdapConnectionManagerConfig.java 110799 2012-07-26 18:04:51Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -201,5 +201,15 @@ public interface LdapConnectionManagerConfig {
 	 * @param maxConns The maximum number of physical connections in the pool
 	 */
 	public void setPoolMaxConns(int maxConns);
+	
+	/**
+	 * @return The maximum number of results that can be returned in our query
+	 */
+	public int getMaxObjectsToQueryFor();
+	
+	/**
+	 * @param maxResultsFromOneQuery The maximum number of results that can be returned in our query 
+	 */
+	public void setMaxObjectsToQueryFor(int maxObjectsToQueryFor);
 	
 }

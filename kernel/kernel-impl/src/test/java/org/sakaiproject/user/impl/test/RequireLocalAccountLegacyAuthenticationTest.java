@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: RequireLocalAccountLegacyAuthenticationTest.java 88042 2011-02-05 08:28:41Z david.horwitz@uct.ac.za $
+* $Id: RequireLocalAccountLegacyAuthenticationTest.java 86666 2010-12-23 23:29:53Z aaronz@vt.edu $
 *
 ***********************************************************************************
 *

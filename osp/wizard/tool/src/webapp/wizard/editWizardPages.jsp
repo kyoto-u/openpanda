@@ -25,7 +25,7 @@
    <sakai:view_title value="#{msgs.edit_wizard} #{msgs.org_theospi_portfolio_wizard_model_Wizard_sequential}"  rendered="#{wizard.current.base.type !=
                'org.theospi.portfolio.wizard.model.Wizard.hierarchical' && !wizard.current.newWizard}"/>
     
-   <%@include file="steps.jspf"%>
+   <%@ include file="steps.jspf"%>
 	<f:subview id="instructionsHier">
 		<sakai:instruction_message value="#{msgs.wizard_pages_instructions_hier}" rendered="#{wizard.current.base.type ==
 		'org.theospi.portfolio.wizard.model.Wizard.hierarchical' && !wizard.moving  && !wizard.current.base.published}"/>
@@ -41,7 +41,7 @@
    </f:subview>
 <%--   <sakai:instruction_message value=" Last saved: " />
    <sakai:instruction_message value="#{wizard.lastSavedId}" /> --%>
-   <sakai:messages />
+   <sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
 
    <%-- <f:subview id="addPageBar" rendered="#{wizard.current.base.type != 'org.theospi.portfolio.wizard.model.Wizard.hierarchical'}">
    <sakai:tool_bar>
@@ -262,7 +262,7 @@
    </h:dataTable>
 
    <f:subview id="buttonBar" rendered="#{!wizard.moving}">
-      <%@include file="builderButtons.jspf"%>
+      <%@ include file="builderButtons.jspf"%>
    </f:subview>
 
 </h:form>

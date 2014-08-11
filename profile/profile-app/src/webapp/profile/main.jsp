@@ -9,7 +9,7 @@
 
 	<h:form id="profileForm">	 	
 	<!--main.jsp -->
-	 <%@include file="profileCommonToolBar.jsp"%>		 
+	 <%@ include file="profileCommonToolBar.jsp"%>		 
 		<h:outputText id="warning" value="#{msgs.no_profile_msg}" rendered="#{ProfileTool.displayNoProfileMsg}" styleClass="alertMessage"/>
 	 <table border="0" class="profileTable" cellspacing="0" cellpadding="0" summary="layout">
 			<tr>
@@ -43,7 +43,7 @@
 		   	<f:subview id="searchArea" rendered="#{ProfileTool.showSearch}">
 			<td class="profileSearch">
 				
-		   		<%@include file="searchModule.jsp"%>
+		   		<%@ include file="searchModule.jsp"%>
 			</td>
 			</f:subview>
 		</tr>

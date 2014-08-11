@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/cm-service/cm-impl/hibernate-impl/impl/src/test/org/sakaiproject/coursemanagement/test/CourseManagementAdministrationDataLoader.java $
- * $Id: CourseManagementAdministrationDataLoader.java 84004 2010-11-01 18:15:26Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-impl/hibernate-impl/impl/src/test/org/sakaiproject/coursemanagement/test/CourseManagementAdministrationDataLoader.java $
+ * $Id: CourseManagementAdministrationDataLoader.java 83967 2010-11-01 11:25:23Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation

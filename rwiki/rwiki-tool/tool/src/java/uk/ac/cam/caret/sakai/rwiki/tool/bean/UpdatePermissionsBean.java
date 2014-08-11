@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/UpdatePermissionsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/UpdatePermissionsBean.java $
  * $Id: UpdatePermissionsBean.java 20354 2007-01-17 10:30:57Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/TimerBarRenderer.java $
- * $Id: TimerBarRenderer.java 74754 2010-03-17 22:11:31Z lydial@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/TimerBarRenderer.java $
+ * $Id: TimerBarRenderer.java 96503 2011-08-06 00:29:39Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -42,7 +42,7 @@ import java.util.Map;
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
  * @author (JavaScript) Brian Gosselin of http://scriptasylum.com
- * @version $Id: TimerBarRenderer.java 74754 2010-03-17 22:11:31Z lydial@stanford.edu $
+ * @version $Id: TimerBarRenderer.java 96503 2011-08-06 00:29:39Z ktsao@stanford.edu $
  */
 
 public class TimerBarRenderer extends Renderer
@@ -100,7 +100,7 @@ public class TimerBarRenderer extends Renderer
         Map attrMap = component.getAttributes();
 
          writer.write("\n");
-         writer.write("\n<script language=\"javascript\">");
+         writer.write("\n<script type=\"text/javascript\">");
          writer.write("\n// Timer Bar - Version 1.0");
          writer.write("\n// Based on Script by Brian Gosselin of http://scriptasylum.com");
          writer.write("\n  var loadedcolor='gray' ;            // PROGRESS BAR COLOR");
@@ -131,7 +131,7 @@ public class TimerBarRenderer extends Renderer
          writer.write("\n");
          writer.write("\n</script>");
          String contextPath = context.getExternalContext().getRequestContextPath();
-         writer.write("\n<script language=\"javascript\" src=\"" +
+         writer.write("\n<script type=\"text/javascript\" src=\"" +
            contextPath + SCRIPT_PATH + "timerbar.js\"></script>");
          writer.write("\n");
 

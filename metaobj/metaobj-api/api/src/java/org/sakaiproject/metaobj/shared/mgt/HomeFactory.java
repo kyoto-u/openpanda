@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/mgt/HomeFactory.java $
- * $Id: HomeFactory.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/mgt/HomeFactory.java $
+ * $Id: HomeFactory.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -70,6 +70,8 @@ public interface HomeFactory {
    public Map getWorksiteHomes(Id worksiteId);
 
    public Map getWorksiteHomes(Id worksiteId, boolean includeHidden);
+
+   public Map getWorksiteHomes(Id worksiteId, String currentUserId, boolean includeHidden);
 
    /**
     * Map of all homes.  This map will map the object type as a String to the home as a ReadableObjectHome.

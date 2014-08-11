@@ -33,9 +33,9 @@
    <%-- TODO: munge these strings- want the pattern as in matrices: View: "Wizard title" (READ ONLY): Selected user name --%>
    <h3>
    <h:outputText value="#{wizard.current.base.name}"/>:
-	<%@include file="showWizardOwnerMessage.jspf"%>
+	<%@ include file="showWizardOwnerMessage.jspf"%>
    </h3>
-   <sakai:messages />
+   <sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
    
    <h:outputText value="#{wizard.lastSavePage} #{msgs.page_was_submitted}" styleClass="success" rendered="#{wizard.lastSavePage != ''}" />
    <h:outputText value="#{msgs.changes_saved}" styleClass="success" rendered="#{wizard.pageSaved}" />

@@ -22,7 +22,7 @@ package org.sakaiproject.api.app.messageforums.ui;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.sakaiproject.api.app.messageforums.Area;
 import org.sakaiproject.api.app.messageforums.Attachment;
@@ -32,6 +32,8 @@ import org.sakaiproject.api.app.messageforums.PrivateForum;
 import org.sakaiproject.api.app.messageforums.PrivateMessage;
 import org.sakaiproject.api.app.messageforums.PrivateTopic;
 import org.sakaiproject.api.app.messageforums.Topic;
+
+import org.sakaiproject.user.api.User;
 
 public interface PrivateMessageManager {
     
@@ -111,7 +113,7 @@ public interface PrivateMessageManager {
      * @param recipients
      * @param asEmail
      */
-    public void sendPrivateMessage(PrivateMessage message, Set recipients, boolean asEmail);
+    public void sendPrivateMessage(PrivateMessage message, Map<User, Boolean> recipients, boolean asEmail);
     
     
     /**
@@ -186,8 +188,13 @@ public interface PrivateMessageManager {
     
     
     public boolean isInstructor();
-    
+    public boolean isSectionTA();
     public boolean isEmailPermit();
+    
+    public boolean isAllowToFieldGroups();
+    public boolean isAllowToFieldAllParticipants();
+    public boolean isAllowToFieldRoles();
+    public boolean isAllowToViewHiddenGroups();
     
     public PrivateMessage getNextMessage(PrivateMessage message);
     public PrivateMessage getPreviousMessage(PrivateMessage message);

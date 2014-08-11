@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/LastJobRun.java $
- * $Id: LastJobRun.java 72176 2009-09-24 13:51:01Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/LastJobRun.java $
+ * $Id: LastJobRun.java 87931 2011-02-02 12:12:01Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -73,11 +73,11 @@ public class LastJobRun extends Panel {
 			try{
 				Date d = statsUpdateManager.getEventDateFromLatestJobRun();
 				String dStr = Locator.getFacade().getTimeService().newTime(d.getTime()).toStringLocalFull();
-				lastJobRunDate.setModel(new Model(dStr));
+				lastJobRunDate.setDefaultModel(new Model(dStr));
 			}catch(RuntimeException e) {
-				lastJobRunDate.setModel(new Model());
+				lastJobRunDate.setDefaultModel(new Model());
 			}catch(Exception e){
-				lastJobRunDate.setModel(new Model());
+				lastJobRunDate.setDefaultModel(new Model());
 			}
 		}
 		lastJobRun.add(lastJobRunDate);

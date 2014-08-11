@@ -37,6 +37,9 @@
      <ref bean="serverConfigurationServiceHelper"/>
    </property>
 
+   <property name="calendarServiceHelper">
+     <ref bean="calendarServiceHelper"/>
+   </property>
 </bean>
 
 <!-- context-sensitive agent behavior -->
@@ -66,6 +69,21 @@
 
 <bean name="serverConfigurationServiceHelper"
      class="org.sakaiproject.tool.assessment.integration.helper.integrated.ServerConfigurationServiceHelperImpl">
+</bean>
+
+<bean name="calendarServiceHelper"
+     class="org.sakaiproject.tool.assessment.integration.helper.integrated.CalendarServiceHelperImpl">
+     <property name="calendarService"><ref bean="org.sakaiproject.calendar.api.CalendarService"/></property>
+</bean>
+
+<!-- External Assignment Provider -->
+<!-- This advises Gradebook on information like group access of assessments -->
+<bean name="assessmentGradeInfoProvider"
+      class="org.sakaiproject.tool.assessment.integration.helper.integrated.AssessmentGradeInfoProvider"
+      singleton="true" lazy-init="false" init-method="init" destroy-method="destroy">
+      <property name="gradebookExternalAssessmentService"><ref bean="org_sakaiproject_service_gradebook_GradebookExternalAssessmentService"/></property>
+      <property name="userDirectoryService"><ref bean="org.sakaiproject.user.api.UserDirectoryService"/></property>
+      <property name="siteService"><ref bean="org.sakaiproject.site.api.SiteService"/></property>
 </bean>
 
 </beans>

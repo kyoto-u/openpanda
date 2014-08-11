@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/branches/sakai-2.8.x/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
- * $Id: ResourcesAction.java 108119 2012-05-15 02:02:16Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
+ * $Id: ResourcesAction.java 113348 2012-09-21 18:16:21Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -136,7 +136,7 @@ import org.w3c.dom.Element;
 * <p>ResourceAction is a ContentHosting application</p>
 *
 * @author University of Michigan, CHEF Software Development Team
-* @version $Revision: 108119 $
+* @version $Revision: 113348 $
 */
 public class ResourcesAction 
 	extends PagedResourceHelperAction // VelocityPortletPaneledAction
@@ -1512,13 +1512,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 					state.setAttribute (STATE_MODE, MODE_LIST);
 				}
 
-				// try to expand the collection
-				SortedSet expandedCollections = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-				if(expandedCollections == null)
-				{
-					expandedCollections = new TreeSet();
-					state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedCollections);
-				}
+				SortedSet expandedCollections = setStateAttributeExpandedCollections(state);
 				if(! expandedCollections.contains(collectionId))
 				{
 					expandedCollections.add(collectionId);
@@ -2550,12 +2544,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		
 		Comparator userSelectedSort = (Comparator) state.getAttribute(STATE_LIST_VIEW_SORT);
 		
-		Map expandedFolderSortMap = (Map) state.getAttribute(STATE_EXPANDED_FOLDER_SORT_MAP);
-		if(expandedFolderSortMap == null)
-		{
-			expandedFolderSortMap = new HashMap();
-			state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, expandedFolderSortMap);
-		}
+		Map expandedFolderSortMap = setStateAttributeExpandedFolderSortMap(state);
 		
 		SortedSet<String> expandedCollections = (SortedSet<String>) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
 		if(expandedCollections == null)
@@ -3610,46 +3599,49 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	protected static String validateURL(String url) throws MalformedURLException
 	{
 		logger.debug("ResourcesAction.validateURL()");
-		if (url.equals (NULL_STRING))
-		{
-			// ignore the empty url field
+		
+		// ignore the empty url field
+		if(StringUtils.isBlank(url)){
+			return url;
 		}
-		else if (url.indexOf ("://") == -1)
-		{
-			// if it's missing the transport, add http://
+		
+		// return relative URLs untouched (SAK-13787)
+		if(StringUtils.startsWith(url, "/")){
+			return url;
+		}
+		
+		// if it's missing the transport, add http://
+		if(!StringUtils.contains(url, "://")){
 			url = "http://" + url;
 		}
-
-		if(!url.equals(NULL_STRING))
+		
+		// valid protocol?
+		try
 		{
-			// valid protocol?
+			// test to see if the input validates as a URL.
+			// Checks string for format only.
+			new URL(url);
+		}
+		catch (MalformedURLException e1)
+		{
 			try
 			{
-				// test to see if the input validates as a URL.
-				// Checks string for format only.
-				new URL(url);
-			}
-			catch (MalformedURLException e1)
-			{
-				try
+				Pattern pattern = Pattern.compile("\\s*([a-zA-Z0-9]+)://([^\\n]+)");
+				Matcher matcher = pattern.matcher(url);
+				if(matcher.matches())
 				{
-					Pattern pattern = Pattern.compile("\\s*([a-zA-Z0-9]+)://([^\\n]+)");
-					Matcher matcher = pattern.matcher(url);
-					if(matcher.matches())
-					{
-						// if URL has "unknown" protocol, check remaider with
-						// "http" protocol and accept input if that validates.
-						new URL("http://" + matcher.group(2));
-					}
-					else
-					{
-						throw e1;
-					}
+					// if URL has "unknown" protocol, check remaider with
+					// "http" protocol and accept input if that validates.
+					new URL("http://" + matcher.group(2));
 				}
-				catch (MalformedURLException e2)
+				else
 				{
 					throw e1;
 				}
+			}
+			catch (MalformedURLException e2)
+			{
+				throw e1;
 			}
 		}
 		return url;
@@ -4217,6 +4209,11 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			context.put("availability_is_enabled", Boolean.TRUE);
 		}
 
+		boolean showWebdavLink = ServerConfigurationService.getBoolean("resources.show_webdav.link", Boolean.TRUE);
+		if (showWebdavLink) {
+			context.put("showWebdavLink", Boolean.TRUE);
+		}
+
 		Comparator userSelectedSort = (Comparator) state.getAttribute(STATE_LIST_VIEW_SORT);
 		
 		List cPath = getCollectionPath(state);
@@ -4408,6 +4405,22 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				}
 				context.put("other_sites", otherSites);
 				
+				// SAK-20927
+				for(ListItem lItem : otherSites)
+				{
+					if(lItem.hasMultipleItemActions())
+					{
+						for(String listActionId : lItem.getMultipleItemActions().keySet())
+						{
+							ServiceLevelAction listAction = registry.getMultiItemAction(listActionId);
+							if(listAction != null)
+							{
+								listActions.put(listActionId, listAction);
+							}
+						}
+					}
+				}
+
 				if (state.getAttribute(STATE_NUM_MESSAGES) != null)
 				{
 					context.put("allMsgNumber", state.getAttribute(STATE_NUM_MESSAGES).toString());
@@ -4959,6 +4972,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		}
 		conditionsHelper.buildConditionContext(context, state);
 		
+		context.put("shortUrlEnabled", ServerConfigurationService.getBoolean("shortenedurl.resources.enabled", false));
+		
 		return TEMPLATE_REVISE_METADATA;
 	}
 
@@ -5402,12 +5417,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		{
 			expandedItems = new TreeSet();
 		}
-		Map folderSortMap = (Map) state.getAttribute(STATE_EXPANDED_FOLDER_SORT_MAP);
-		if(folderSortMap == null)
-		{
-			folderSortMap = new HashMap();
-			state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, folderSortMap);
-		}
+		Map folderSortMap = setStateAttributeExpandedFolderSortMap(state);
 
 		//get the ParameterParser from RunData
 		ParameterParser params = data.getParameters ();
@@ -5538,7 +5548,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				return;
 			}
 			if (item.numberFieldIsOutOfRange) {
-			    addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { item.getConditionAssignmentPoints() }));
+				addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { item.getConditionAssignmentPoints() }));
 				return;
 			}
 			String name = params.getString("name" + ListItem.DOT + "0");
@@ -6159,12 +6169,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 	{
 		logger.debug(this + ".doExpand_collection()");
 		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
-		SortedSet expandedItems = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-		if(expandedItems == null)
-		{
-			expandedItems = new TreeSet();
-			state.setAttribute(STATE_EXPANDED_COLLECTIONS, expandedItems);
-		}
+		SortedSet expandedItems = setStateAttributeExpandedCollections(state);
 
 		//get the ParameterParser from RunData
 		ParameterParser params = data.getParameters ();
@@ -6652,29 +6657,37 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 
 			state.setAttribute(STATE_COLLECTION_ID, collectionId);
 			
-			SortedSet currentMap = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
-			if(currentMap == null)
-			{
-				currentMap = new TreeSet();
-				state.setAttribute(STATE_EXPANDED_COLLECTIONS, currentMap);
-			}
+			SortedSet currentMap = Collections.synchronizedSortedSet(setStateAttributeExpandedCollections(state));
 			
-			Map sortMap = (Map) state.getAttribute(STATE_EXPANDED_FOLDER_SORT_MAP);
-			if(sortMap == null)
-			{
-				sortMap = new HashMap();
-				state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, sortMap);
-			}
+			Map sortMap = Collections.synchronizedMap(setStateAttributeExpandedFolderSortMap(state));
 			
+			// sync over sortMap removal
 			Iterator it = currentMap.iterator();
-			while(it.hasNext())
+			synchronized (sortMap)
 			{
-				String id = (String) it.next();
-				if(id.startsWith(collectionId))
+				while(it.hasNext())
 				{
-					it.remove();
-					sortMap.remove(id);
-					removeObservingPattern(id, state);
+					String id = (String) it.next();
+					if(id.startsWith(collectionId))
+					{
+						sortMap.remove(id);
+						removeObservingPattern(id, state);
+					}
+				}
+			}
+			
+			// sync over currentMap removal
+			it = currentMap.iterator();
+			synchronized (it)
+			{
+				while(it.hasNext())
+				{
+					String id = (String) it.next();
+					if(id.startsWith(collectionId))
+					{
+						
+						it.remove();
+					}
 				}
 			}
 			
@@ -6689,6 +6702,36 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		}
 
 	}	// doNavigate
+
+	/**
+	 * get/init state attribute STATE_EXPANDED_FOLDER_SORT_MAP
+	 * @param state
+	 * @return
+	 */
+	private static Map setStateAttributeExpandedFolderSortMap(SessionState state) {
+		Map sortMap = (Map) state.getAttribute(STATE_EXPANDED_FOLDER_SORT_MAP);
+		if(sortMap == null)
+		{
+			sortMap = new HashMap();
+			state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, sortMap);
+		}
+		return sortMap;
+	}
+
+	/**
+	 * get/init state attribute STATE_EXPANDED_COLLECTIONS
+	 * @param state
+	 * @return
+	 */
+	private static SortedSet setStateAttributeExpandedCollections(SessionState state) {
+		SortedSet currentMap = (SortedSet) state.getAttribute(STATE_EXPANDED_COLLECTIONS);
+		if(currentMap == null)
+		{
+			currentMap = new TreeSet();
+			state.setAttribute(STATE_EXPANDED_COLLECTIONS, currentMap);
+		}
+		return currentMap;
+	}
 
 	/**
 	* Fire up the permissions editor for the tool's permissions
@@ -6806,7 +6849,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				return;
 			}
 			if (item.numberFieldIsOutOfRange) {
-			    addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { item.getConditionAssignmentPoints() }));
+				addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { item.getConditionAssignmentPoints() }));
 				return;
 			}
 			
@@ -6979,12 +7022,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 					expandedCollections.add(folderId);
 					
 					Comparator comparator = ContentHostingService.newContentHostingComparator(ResourceProperties.PROP_CONTENT_PRIORITY, true);
-					Map expandedFolderSortMap = (Map) state.getAttribute(STATE_EXPANDED_FOLDER_SORT_MAP);
-					if(expandedFolderSortMap == null)
-					{
-						expandedFolderSortMap = new HashMap();
-						state.setAttribute(STATE_EXPANDED_FOLDER_SORT_MAP, expandedFolderSortMap);
-					}
+					Map expandedFolderSortMap = setStateAttributeExpandedFolderSortMap(state);
 					expandedFolderSortMap.put(folderId, comparator);
 				}
 				catch(IdUnusedException e)

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/time/api/Time.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/time/api/Time.java $
  * $Id: Time.java 74709 2010-03-16 19:53:01Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

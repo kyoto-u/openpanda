@@ -47,7 +47,36 @@ import org.sakaiproject.tool.api.SessionManager;
 public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, CoreEntityProvider,
         Resolvable, ActionsExecutable, Describeable, AutoRegisterEntityProvider, PropertyProvideable, Outputable, Inputable {
 
+	public class DecoratedAttachment implements Comparable<Object> {
+
+		private String name;
+		private String url;
+		
+		public DecoratedAttachment(String name, String url) {
+			this.name = name;
+			this.url = url;
+		}
+		
+		public String getName() {
+			return this.name;
+		}
+		
+		public String getUrl() {
+			return this.url;
+		}
+		
+		public int compareTo(Object other) {
+			return this.getUrl().compareTo(((DecoratedAttachment) other).getUrl());
+		}
+		
+	}
+	
 	public class SimpleAssignment {
+		/**
+		 * the assignment id
+		 */
+		private String id;
+		
 		/**
 		 * the AssignmentContent of this Assignment.
 		 */
@@ -164,14 +193,17 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
 		 */
 		private AssignmentAccess access;
 		
-		
+		/**
+		 * the attachment list
+		 */
+		private List<DecoratedAttachment> attachments;
 
 		public SimpleAssignment() {
 		}
 
 		public SimpleAssignment(Assignment a) {
 			super();
-			this.content = a.getContent();
+			this.id = a.getId();
 			this.contentReference = a.getContentReference();
 			this.openTime = a.getOpenTime();
 			this.openTimeString = a.getOpenTimeString();
@@ -194,6 +226,25 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
 			this.position_order = a.getPosition_order();
 			this.groups = a.getGroups();
 			this.access = a.getAccess();
+			
+			this.attachments = new ArrayList<DecoratedAttachment>();
+			List<Reference> attachment_list = (List<Reference>)a.getContent().getAttachments();
+			for(Reference attachment : attachment_list)
+			{
+				String url = attachment.getUrl();
+				String name = attachment.getProperties().getPropertyFormatted(attachment.getProperties().getNamePropDisplayName());
+				DecoratedAttachment decoratedAttachment = new DecoratedAttachment(name, url);
+				this.attachments.add(decoratedAttachment);
+			}
+		}
+		
+		public String getId() {
+			return id;
+		}
+		
+		public void setId(String id)
+		{
+			this.id = id;
 		}
 
 		public AssignmentContent getContent() {
@@ -379,9 +430,17 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
 		public void setAccess(AssignmentAccess access) {
 			this.access = access;
 		}
+		
+		public List<DecoratedAttachment> getAttachments() {
+			return attachments;
+		}
+
+		public void setAttachments(List<DecoratedAttachment> attachments) {
+			this.attachments = attachments;
+		}
 	}
+	
     private AssignmentService assignmentService;
-    private DeveloperHelperService developerHelperService;
     private EntityBroker entityBroker;
     private SecurityService securityService;
     private SessionManager sessionManager;
@@ -410,16 +469,13 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
      * @see org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider#entityExists(java.lang.String)
      */
     public boolean entityExists(String id) {
-        boolean rv = false;
-        try {
-            Assignment assignment = assignmentService.getAssignment(id);
-            if (assignment != null) {
-                rv = true;
-            }
-        } catch (Exception e) {
-            rv = false;
-        }
-        return rv;
+    	boolean rv = false;
+    	//This will look up the ref from the database, so if ref is not null, that means it found one.
+    	String ref = assignmentService.assignmentReference(id);
+    	if (ref != null) {
+    		rv = true;
+    	}
+    	return rv;
     }
 
     /* (non-Javadoc)
@@ -429,9 +485,9 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
         if (ref == null || ref.getId() == null) {
             throw new IllegalArgumentException("ref and id must be set for assignments");
         }
-        Assignment assignment;
+        SimpleAssignment assignment;
         try {
-            assignment = assignmentService.getAssignment(ref.getId());
+            assignment = new SimpleAssignment(assignmentService.getAssignment(ref.getId()));
         } catch (IdUnusedException e) {
             throw new EntityNotFoundException("No assignment found: "+ref, ref.toString(), e);
         } catch (PermissionException e) {
@@ -453,8 +509,13 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
         }
         try
         {
-            Assignment a = assignmentService.getAssignment(assignmentId);
+            // enable permission to view possible draft assignment
+            securityService.pushAdvisor(new MySecurityAdvisor(
+					sessionManager.getCurrentSessionUserId(),
+					AssignmentService.SECURE_ADD_ASSIGNMENT,
+					BaseAssignmentService.getContextReference(context)));
             
+        	Assignment a = assignmentService.getAssignment(assignmentService.assignmentReference(context, assignmentId));
             assignData.put("assignment", a);
             assignData.put("context", context);
             assignData.put("assignmentId", assignmentId);
@@ -527,8 +588,167 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
             assignData.remove("assignmentUrl");
             throw new SecurityException(e);
         }
+        finally {
+            securityService.popAdvisor();
+        }
         return assignData;
     }
+    
+    @EntityCustomAction(action="deepLinkWithPermissions", viewKey=EntityView.VIEW_LIST)
+    public Map<String, Object> getAssignmentDeepLinks(EntityView view, Map<String, Object> params) {
+        Map<String, Object> assignData = new HashMap<String, Object>();
+
+        String context = view.getPathSegment(2);
+        String assignmentId = view.getPathSegment(3);
+        if (context == null || assignmentId == null)
+        {
+            // format of the view should be in a standard assignment reference
+            throw new IllegalArgumentException("Must include context and assignmentId in the path ("+view+"): e.g. /direct/assignment/deepLinkWithPermissions/{context}/{assignmentId}");
+        }
+  
+        try
+        {   
+            Assignment a = assignmentService.getAssignment(assignmentId);
+            assignData.put("assignmentId", assignmentId);
+            assignData.put("assignmentTitle", a.getTitle());
+            
+            boolean allowReadAssignment = params.get("allowReadAssignment") != null ? ((Boolean) params.get("allowReadAssignment")).booleanValue() : false;
+            boolean allowAddAssignment = params.get("allowAddAssignment") != null ? ((Boolean) params.get("allowAddAssignment")).booleanValue() : false;
+            boolean allowSubmitAssignment = params.get("allowSubmitAssignment") != null ? ((Boolean) params.get("allowSubmitAssignment")).booleanValue() : false;
+            
+            String assignmentContext = a.getContext(); // assignment context
+            if (allowReadAssignment && a.getOpenTime().before(TimeService.newTime()))
+            {
+                // this checks if we want to display an assignment link
+                try
+                {
+                    Site site = siteService.getSite(assignmentContext); // site id
+                    ToolConfiguration fromTool = site.getToolForCommonId("sakai.assignment.grades");
+                    // Three different urls to be rendered depending on the user's permission
+                    if (allowAddAssignment)
+                    {
+                        assignData.put("assignmentUrl", ServerConfigurationService.getPortalUrl() + "/directtool/" + fromTool.getId() + "?assignmentId=" + a.getReference() + "&panel=Main&sakai_action=doView_assignment");
+                    }
+                    else if (allowSubmitAssignment)
+                    {
+                        assignData.put("assignmentUrl", ServerConfigurationService.getPortalUrl() + "/directtool/" + fromTool.getId() + "?assignmentReference=" + a.getReference() + "&panel=Main&sakai_action=doView_submission");
+                    }
+                    else
+                    {
+                        // user can read the assignment, but not submit, so render the appropriate url
+                        assignData.put("assignmentUrl", ServerConfigurationService.getPortalUrl() + "/directtool/" + fromTool.getId() + "?assignmentId=" + a.getReference() + "&panel=Main&sakai_action=doView_assignment_as_student");
+                    }
+                }
+                catch (IdUnusedException e)
+                {
+                    // No site found
+                    assignData.remove("assignmentTitle");
+                    assignData.remove("assignmentUrl");
+                    throw new IdUnusedException("No site found while creating assignment url");
+                }
+            }
+        }
+        catch (IdUnusedException e)
+        {
+            assignData.remove("assignmentTitle");
+            assignData.remove("assignmentUrl");
+            throw new EntityNotFoundException("No assignment found", assignmentId, e);
+        }
+        catch (PermissionException e)
+        {
+            assignData.remove("assignmentTitle");
+            assignData.remove("assignmentUrl");
+            throw new SecurityException(e);
+        }
+        return assignData;
+    }
+    
+    @EntityCustomAction(action="deepLink", viewKey=EntityView.VIEW_LIST)
+    public Map<String, Object> getAssignmentDeepLink(EntityView view, Map<String, Object> params) {
+        Map<String, Object> assignData = new HashMap<String, Object>();
+
+        String context = view.getPathSegment(2);
+        String assignmentId = view.getPathSegment(3);
+        if (context == null || assignmentId == null)
+        {
+            // format of the view should be in a standard assignment reference
+            throw new IllegalArgumentException("Must include context and assignmentId in the path ("+view+"): e.g. /direct/assignment/deepLink/{context}/{assignmentId}");
+        }
+  
+        try
+        {   
+            Assignment a = assignmentService.getAssignment(assignmentId);
+            assignData.put("assignmentId", assignmentId);
+            assignData.put("assignmentTitle", a.getTitle());
+            
+            boolean allowReadAssignment = assignmentService.allowGetAssignment(context);
+            boolean allowAddAssignment = assignmentService.allowAddAssignment(context);
+            boolean allowSubmitAssignment = assignmentService.allowAddSubmission(context);
+            
+            String assignmentContext = a.getContext(); // assignment context
+            if (allowReadAssignment && a.getOpenTime().before(TimeService.newTime()))
+            {
+                // this checks if we want to display an assignment link
+                try
+                {
+                    Site site = siteService.getSite(assignmentContext); // site id
+                    ToolConfiguration fromTool = site.getToolForCommonId("sakai.assignment.grades");
+                    // Three different urls to be rendered depending on the user's permission
+                    if (allowAddAssignment)
+                    {
+                        assignData.put("assignmentUrl", ServerConfigurationService.getPortalUrl() + "/directtool/" + fromTool.getId() + "?assignmentId=" + a.getReference() + "&panel=Main&sakai_action=doView_assignment");
+                    }
+                    else if (allowSubmitAssignment)
+                    {
+                        assignData.put("assignmentUrl", ServerConfigurationService.getPortalUrl() + "/directtool/" + fromTool.getId() + "?assignmentReference=" + a.getReference() + "&panel=Main&sakai_action=doView_submission");
+                    }
+                    else
+                    {
+                        // user can read the assignment, but not submit, so render the appropriate url
+                        assignData.put("assignmentUrl", ServerConfigurationService.getPortalUrl() + "/directtool/" + fromTool.getId() + "?assignmentId=" + a.getReference() + "&panel=Main&sakai_action=doView_assignment_as_student");
+                    }
+                }
+                catch (IdUnusedException e)
+                {
+                    // No site found
+                    assignData.remove("assignmentTitle");
+                    assignData.remove("assignmentUrl");
+                    throw new IdUnusedException("No site found while creating assignment url");
+                }
+            }
+        }
+        catch (IdUnusedException e)
+        {
+            assignData.remove("assignmentTitle");
+            assignData.remove("assignmentUrl");
+            throw new EntityNotFoundException("No assignment found", assignmentId, e);
+        }
+        catch (PermissionException e)
+        {
+            assignData.remove("assignmentTitle");
+            assignData.remove("assignmentUrl");
+            throw new SecurityException(e);
+        }
+        return assignData;
+    }
+    
+    /**
+	 * site/siteId
+	 */
+	@EntityCustomAction(action="site",viewKey=EntityView.VIEW_LIST)
+	public List<?> getAssignmentsForSite(EntityView view, Map<String, Object> params) {
+		List<SimpleAssignment> rv = new ArrayList<SimpleAssignment>();
+		String siteId = view.getPathSegment(2);
+		String userId = sessionManager.getCurrentSessionUserId();
+		for (Iterator aIterator = assignmentService.getAssignmentsForContext(siteId, userId); aIterator.hasNext();)
+		{
+			Assignment a = (Assignment) aIterator.next();
+			rv.add(new SimpleAssignment(a));
+			
+		}
+		return rv;
+	
+	}
 
     // PROPERTY STUFF
 
@@ -573,7 +793,7 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
         String parsedRef = reference;
         String defaultView = "doView_submission";
         String[] refParts = reference.split(Entity.SEPARATOR);
-        String submissionId = "";
+        String submissionId = "null";  //setting to the string null
         String decWrapper = null;
         String decWrapperTag = "";
         String decSiteId = "";
@@ -601,7 +821,7 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
 
         String assignmentId = parsedRef;
         boolean canUserAccessWizardPageAndLinkedArtifcact = false;
-        if (!"".equals(decSiteId) && !"".equals(decPageId) && !"".equals(submissionId)) {
+        if (!"".equals(decSiteId) && !"".equals(decPageId) && !"null".equals(submissionId)) {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("siteId", decSiteId);
             params.put("pageId", decPageId);
@@ -646,22 +866,44 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
             props.put("security.site.function", SiteService.SITE_VISIT);
             props.put("security.site.ref", site.getReference());
             props.put("security.assignment.function", AssignmentService.SECURE_ACCESS_ASSIGNMENT);
+            props.put("security.assignment.grade.function", AssignmentService.SECURE_GRADE_ASSIGNMENT_SUBMISSION);
+            props.put("security.assignment.grade.ref", assignment.getReference());
 
             // OSP specific
             if (("ospMatrix".equals(decWrapperTag) && canUserAccessWizardPageAndLinkedArtifcact)
-                    || "".equals(submissionId)) {
+                    || "null".equals(submissionId)) {
 
                 List<Reference> attachments = new ArrayList<Reference>();
 
-                if (!"".equals(submissionId)) {
+                if (!"null".equals(submissionId)) {
                     props.put("security.assignment.ref", submissionId);
-                    securityService.pushAdvisor(new MySecurityAdvisor(sessionManager
-                            .getCurrentSessionUserId(), AssignmentService.SECURE_ACCESS_ASSIGNMENT,
-                            submissionId));
-                    AssignmentSubmission as = assignmentService.getSubmission(submissionId);
-                    securityService.popAdvisor();
-                    attachments.addAll(as.getSubmittedAttachments());
-                    attachments.addAll(as.getFeedbackAttachments());
+                    SecurityAdvisor subAdv = new MySecurityAdvisor(
+							sessionManager.getCurrentSessionUserId(), 
+							AssignmentService.SECURE_ACCESS_ASSIGNMENT_SUBMISSION,
+							submissionId);
+                    SecurityAdvisor subAdv2 = new MySecurityAdvisor(
+                    		sessionManager.getCurrentSessionUserId(), 
+                    		AssignmentService.SECURE_GRADE_ASSIGNMENT_SUBMISSION,
+                            assignment.getReference());
+                    try
+                    {
+                    	// enable permission to access submission
+                        securityService.pushAdvisor(subAdv);
+                        securityService.pushAdvisor(subAdv2);
+                    	AssignmentSubmission as = assignmentService.getSubmission(submissionId);
+	                    attachments.addAll(as.getSubmittedAttachments());
+	                    attachments.addAll(as.getFeedbackAttachments());
+                    }
+                    catch (Exception e)
+                    {
+                    	// exception
+                    }
+                    finally
+                    {
+                    	// remove security advisor
+                    	securityService.popAdvisor(subAdv2);
+                    	securityService.popAdvisor(subAdv);
+                    }
                 }
 
                 props.put("assignment.content.decoration.wrapper", decWrapper);
@@ -714,40 +956,6 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
         // TODO: add ability to set properties of an assignment
     }
 
-    /**
-     * A simple SecurityAdviser that can be used to override permissions on one reference string for
-     * one user for one function.
-     */
-    private class MySecurityAdvisor implements SecurityAdvisor {
-
-        protected String m_userId;
-
-        protected String m_function;
-
-        protected List<String> m_references = new ArrayList<String>();
-
-        public MySecurityAdvisor(String userId, String function, String reference) {
-            m_userId = userId;
-            m_function = function;
-            m_references.add(reference);
-        }
-
-        public MySecurityAdvisor(String userId, String function, List<String> references) {
-            m_userId = userId;
-            m_function = function;
-            m_references = references;
-        }
-
-        public SecurityAdvice isAllowed(String userId, String function, String reference) {
-            SecurityAdvice rv = SecurityAdvice.PASS;
-            if (m_userId.equals(userId) && m_function.equals(function)
-                    && m_references.contains(reference)) {
-                rv = SecurityAdvice.ALLOWED;
-            }
-            return rv;
-        }
-    }
-
     // SETTERS
 
     public void setAssignmentService(AssignmentService assignmentService) {
@@ -760,10 +968,6 @@ public class AssignmentEntityProviderImpl implements AssignmentEntityProvider, C
 
     public void setEntityBroker(EntityBroker entityBroker) {
         this.entityBroker = entityBroker;
-    }
-
-    public void setDeveloperHelperService(DeveloperHelperService developerHelperService) {
-        this.developerHelperService = developerHelperService;
     }
 
     public void setSessionManager(SessionManager sessionManager) {

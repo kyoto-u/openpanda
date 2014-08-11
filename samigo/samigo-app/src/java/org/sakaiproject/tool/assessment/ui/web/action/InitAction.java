@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/web/action/InitAction.java $
- * $Id: InitAction.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/web/action/InitAction.java $
+ * $Id: InitAction.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -52,6 +52,7 @@ import org.sakaiproject.tool.assessment.shared.api.qti.QTIServiceAPI;
 import org.sakaiproject.tool.assessment.shared.api.questionpool.QuestionPoolServiceAPI;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentEntityProducer;
+import org.sakaiproject.tool.assessment.facade.FavoriteColChoicesFacadeQueriesAPI;
 
 public class InitAction extends HttpServlet{
 
@@ -110,6 +111,9 @@ private static Log log = LogFactory.getLog(InitAction.class);
     // PagingUtil
     PagingUtilQueriesAPI pagingUtilQueries = PersistenceService.getInstance().getPagingUtilQueries();
     log.debug("*****#10  InitAction: pagingUtilQueries ="+pagingUtilQueries);
+
+    FavoriteColChoicesFacadeQueriesAPI favoriteColChoicesQueries = PersistenceService.getInstance().getFavoriteColChoicesFacadeQueries();
+    log.debug("*****#13  InitAction: favoriteColChoicesQueries ="+favoriteColChoicesQueries);
 
     // authorization facade
     AuthzQueriesFacadeAPI authzQueriesFacade = PersistenceService.getInstance().getAuthzQueriesFacade();

@@ -1,6 +1,6 @@
  /**********************************************************************************
 *
-* $Id: BaseHibernateManager.java 85093 2010-11-18 16:58:19Z jonrcook@indiana.edu $
+* $Id: BaseHibernateManager.java 113236 2012-09-20 20:32:12Z gjthomas@iupui.edu $
 *
 ***********************************************************************************
 *
@@ -46,6 +46,7 @@ import org.sakaiproject.service.gradebook.shared.ConflictingAssignmentNameExcept
 import org.sakaiproject.service.gradebook.shared.ConflictingCategoryNameException;
 import org.sakaiproject.service.gradebook.shared.GradebookNotFoundException;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.StaleObjectModificationException;
 import org.sakaiproject.tool.gradebook.AbstractGradeRecord;
 import org.sakaiproject.tool.gradebook.Assignment;
@@ -79,6 +80,7 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
     protected SectionAwareness sectionAwareness;
     protected Authn authn;
     protected EventTrackingService eventTrackingService;
+    protected GradebookExternalAssessmentService externalAssessmentService;
 
     // Local cache of static-between-deployment properties.
     protected Map propertiesMap = new HashMap();
@@ -388,11 +390,19 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
         this.eventTrackingService = eventTrackingService;
     }
 
+    protected GradebookExternalAssessmentService getGradebookExternalAssessmentService() {
+        return externalAssessmentService;
+    }
+
+    public void setGradebookExternalAssessmentService(GradebookExternalAssessmentService externalAssessmentService) {
+        this.externalAssessmentService = externalAssessmentService;
+    }
+
     public void postEvent(String message,String objectReference){        
        eventTrackingService.postEvent(message,objectReference);
     }
 
-    public Long createCategory(final Long gradebookId, final String name, final Double weight, final int drop_lowest) 
+    public Long createCategory(final Long gradebookId, final String name, final Double weight, final Integer drop_lowest, final Integer dropHighest, final Integer keepHighest, final Boolean is_extra_credit) 
     throws ConflictingCategoryNameException, StaleObjectModificationException {
     	HibernateCallback hc = new HibernateCallback() {
     		public Object doInHibernate(Session session) throws HibernateException {
@@ -409,13 +419,27 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
     			{
     				throw new IllegalArgumentException("weight for category is greater than 1 or less than 0 in createCategory of BaseHibernateManager");
     			}
+    			
+    			if(((drop_lowest!=null && drop_lowest > 0) || (dropHighest!=null && dropHighest > 0)) && (keepHighest!=null && keepHighest > 0))
+    			{
+    				throw new IllegalArgumentException("a combination of positive values for keepHighest and either drop_lowest or dropHighest occurred in createCategory of BaseHibernateManager");
+    			}
+    			
+//    			if((itemValue!=null && itemValue<=0) && ((drop_lowest!=null && drop_lowest > 0) || (dropHighest!=null && dropHighest > 0) || (keepHighest!=null && keepHighest > 0)))
+//    			{
+//    				throw new IllegalArgumentException("no valid itemValue provided with drop_lowest, dropHighest, or keepHighest in createCategory of BaseHibernateManager");
+//    			}
 
     			Category ca = new Category();
     			ca.setGradebook(gb);
     			ca.setName(name);
     			ca.setWeight(weight);
-    			ca.setDrop_lowest(drop_lowest);
+                ca.setDrop_lowest(drop_lowest);
+                ca.setDropHighest(dropHighest);
+                ca.setKeepHighest(keepHighest);
+                //ca.setItemValue(itemValue);
     			ca.setRemoved(false);
+    			ca.setExtraCredit(is_extra_credit);
 
     			Long id = (Long)session.save(ca);
 
@@ -526,6 +550,28 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
     		}
     	};
     	return (Category) getHibernateTemplate().execute(hc);
+    }
+    
+    protected void updateCategory(Category category, Session session)
+    throws ConflictingAssignmentNameException, HibernateException {
+    	session.evict(category);
+    	Category persistentCat = (Category)session.load(Category.class, category.getId());
+
+    	List conflictList = ((List)session.createQuery(
+    	"select ca from Category as ca where ca.name = ? and ca.gradebook = ? and ca.id != ? and ca.removed=false").
+    	setString(0, category.getName()).
+    	setEntity(1, category.getGradebook()).
+    	setLong(2, category.getId().longValue()).list());
+    	int numNameConflicts = conflictList.size();
+    	if(numNameConflicts > 0) {
+    		throw new ConflictingCategoryNameException("You can not save multiple category in a gradebook with the same name");
+    	}
+    	if(category.getWeight().doubleValue() > 1 || category.getWeight().doubleValue() < 0)
+    	{
+    		throw new IllegalArgumentException("weight for category is greater than 1 or less than 0 in updateCategory of BaseHibernateManager");
+    	}
+    	session.evict(persistentCat);
+    	session.update(category);
     }
     
     public void updateCategory(final Category category) throws ConflictingCategoryNameException, StaleObjectModificationException{
@@ -1034,7 +1080,7 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
     	getHibernateTemplate().execute(hc);
     }
 
-    public List getPermissionsForUser(final Long gradebookId, final String userId) throws IllegalArgumentException
+    public List<Permission> getPermissionsForUser(final Long gradebookId, final String userId) throws IllegalArgumentException
     {
     	if(gradebookId == null || userId == null)
     		throw new IllegalArgumentException("Null parameter(s) in BaseHibernateManager.getPermissionsForUser");
@@ -1110,7 +1156,7 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
     	return (List)getHibernateTemplate().execute(hc);    	
     }
     
-    public List getPermissionsForUserAnyGroupForCategory(final Long gradebookId, final String userId, final List cateIds) throws IllegalArgumentException
+    public List<Permission> getPermissionsForUserAnyGroupForCategory(final Long gradebookId, final String userId, final List cateIds) throws IllegalArgumentException
     {
     	if(gradebookId == null || userId == null)
     		throw new IllegalArgumentException("Null parameter(s) in BaseHibernateManager.getPermissionsForUserAnyGroupForCategory");
@@ -1352,6 +1398,25 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
         });
     }
     
+	protected boolean studentCanView(String studentId, Assignment assignment) {
+		if (assignment.isExternallyMaintained()) {
+			try {
+				String gbUid = assignment.getGradebook().getUid();
+				String extId = assignment.getExternalId();
+				
+				if (externalAssessmentService.isExternalAssignmentGrouped(gbUid, extId)) {
+					return externalAssessmentService.isExternalAssignmentVisible(gbUid, extId, studentId);
+				}
+			} catch (GradebookNotFoundException e) {
+				if (log.isDebugEnabled()) { log.debug("Bogus graded assignment checked for course grades: " + assignment.getId()); }
+			}
+		}
+		
+		// We assume that the only disqualifying condition is that the external assignment
+		// is grouped and the student is not a member of one of the groups allowed.
+		return true;
+	}
+        
     protected void finalizeNullGradeRecords(final Gradebook gradebook) {
     	final Set<String> studentUids = getAllStudentUids(gradebook.getUid());
 		final Date now = new Date();
@@ -1370,6 +1435,16 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
     					studentToGradeRecordMap.put(scoredGradeRecord.getStudentId(), scoredGradeRecord);
     				}
     				for (String studentUid : studentUids) {
+    					//TODO: Clean this up for efficiency. The external assessment service
+    					//      only allows querying individual student/activity pairs. For better
+    					//      performance, it should take at least a list of user IDs for an
+    					//      activity and return those that can view it.
+    					
+    					// SAK-11485 - We don't want to add scores for those grouped activities
+    					//             that this student should not see or be scored on.
+    					if (!studentCanView(studentUid, assignment)) {
+    						continue;
+    					}
     					AssignmentGradeRecord gradeRecord = studentToGradeRecordMap.get(studentUid);
    						if (gradeRecord != null) {
    							if (gradeRecord.getPointsEarned() == null) {

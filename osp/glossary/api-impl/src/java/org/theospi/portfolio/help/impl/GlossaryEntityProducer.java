@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/glossary/api-impl/src/java/org/theospi/portfolio/help/impl/GlossaryEntityProducer.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/glossary/api-impl/src/java/org/theospi/portfolio/help/impl/GlossaryEntityProducer.java $
 * $Id: GlossaryEntityProducer.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
 ***********************************************************************************
 *

@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/PagerRenderer.java $
-* $Id: PagerRenderer.java 107092 2012-04-16 00:16:26Z steve.swinsburg@gmail.com $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/PagerRenderer.java $
+* $Id: PagerRenderer.java 105547 2012-03-06 18:38:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/branches/sakai-2.8.x/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/user/prefs/MailArchiveUserNotificationPreferencesRegistrationImpl.java $
- * $Id: MailArchiveUserNotificationPreferencesRegistrationImpl.java 83341 2010-10-18 17:39:39Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.0/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/user/prefs/MailArchiveUserNotificationPreferencesRegistrationImpl.java $
+ * $Id: MailArchiveUserNotificationPreferencesRegistrationImpl.java 82737 2010-09-24 13:52:32Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2010 The Sakai Foundation

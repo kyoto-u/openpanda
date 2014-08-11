@@ -1,0 +1,1163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html rsf:id="html" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE"/>
+<script rsf:id="scr=portal-matter" type="text/javascript" language="JavaScript" src="/library/js/headscripts.js"></script>
+<script language="JavaScript" src="/sakai-lessonbuildertool-tool/js/SakaiRSFWidgets.js" type="text/javascript" rsf:id="fckScript"></script>
+<script type="text/javascript" language="JavaScript" src="../js/rsf.js"></script>
+<link rsf:id="scr=portal-matter" href="/library/skin/tool_base.css" type="text/css" rel="stylesheet" media="all" />
+<link rsf:id="scr=portal-matter" href="/library/skin/default/tool.css" type="text/css" rel="stylesheet" media="all" />
+<link rel="stylesheet" rsf:id="scr=rewrite-url" href="../css/Simplepagetool.css" type="text/css" />
+<link rel="stylesheet" rsf:id="customCSS" type="text/css" />
+<link type="text/css" href="$context/css/simplepage-theme/jquery-ui-1.8.17.custom.css" rel="stylesheet" />	
+<title rsf:id="msg=simplepage.showpage"></title>
+
+<style type="text/css">
+	#outer{
+		min-height:325px;
+	}
+	html>body #outer{height:auto}
+</style>
+<script type="text/javascript" rsf:id="iframeJavascript">
+function resizeiframe(id) {
+
+	var iframe = document.getElementById(id);
+	// workarounds for differing implementations in several browsers
+	var doc = (iframe.contentWindow || iframe.contentDocument);
+	if (doc.document) doc = doc.document;
+	var newsize = doc.body.offsetHeight;
+	
+	if (newsize > 32760) newsize = 32760;
+	
+	iframe.style.height = (newsize + 20) + 'px';
+	setMainFrameHeight(window.name);
+	
+}
+</script>
+</head>
+
+<body rsf:id="scr=sakai-body">
+<!-- <script type="text/javascript" src="$context/js/jquery-1.4.2.min.js"></script> -->
+<script type="text/javascript" src="$context/js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="$context/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="../js/simple-page.js" rsf:id="scr=rewrite-url"></script>
+<script type="text/javascript" src="$context/js/hoverIntent.js"></script>
+<script type="text/javascript" src="$context/js/show-page.js"></script>
+<script type="text/javascript" src="$context/js/gradingAjax.js"></script>
+
+<a href="#" rsf:id="redirect-link" id="redirect-link"></a>
+<script type="text/javascript" language="JavaScript" rsf:id="redirect">
+   $(location).attr('href', $('#redirect-link').attr('href'));
+</script>
+<script type="text/javascript" language="JavaScript" rsf:id="refresh">
+  parent.location.replace(parent.location);                       
+</script>
+<script type="text/javascript" language="JavaScript" rsf:id="instructoronly">
+// in case an iframe tries to replace the top, we have to give the author a way
+// to get to the page to remove it. This will be cancelled in the javascript
+// after all content has loaded.
+    window.onbeforeunload = function() {
+	return ""; // default message is OK
+    }
+</script>
+
+
+	<div class="portletBody" id="outer" role="application" style="z-index:1">
+		
+		<div rsf:id="needPermissions">
+			<p rsf:id="msg=simplepage.needpermissions"></p>
+			<a href="#" rsf:id="callpermissions"></a>
+		</div>
+
+		<div rsf:id="crumbdiv" class="fullwidth breadcrumbs" role="navigation">
+                  <a href="#" rsf:id="resetbutton2"><img rsf:id="resetimage2" src="/library/skin/default/images/reload.gif" style="float:left; margin-right:4px;margin-top:2px"/></a>
+		  <span rsf:id="crumb:"><a href="#" rsf:id="crumb-link"></a><span rsf:id="crumb-follow"></span></span>
+                  <a href="#" rsf:id="helpbutton2" target="_blank"><img rsf:id="helpimage2" src="/library/skin/default/images/help.gif" style="float:right;margin-left:4px;margin-top:2px"/><span rsf:id="helpnewwindow2" class="offscreen"></span> </a>
+		</div>
+
+		
+		<div rsf:id="hiddenAlert" class="ui-widget" role="alert">
+			<div class="ui-state-error ui-corner-all" style="margin-top: 20px; padding: .5em .7em;">
+				<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+				<div rsf:id="hidden-text" ></div>
+			</div>
+		</div>
+		
+		<div rsf:id="refreshAlert" class="ui-widget">
+			<div class="ui-state-highlight ui-corner-all" style="margin-bottom: 10px; margin-top:10px; padding: 0 .7em;"> 
+				<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+				<span rsf:id="refresh-message"></span> <strong><a href="#" rsf:id="refresh-link"></a></strong></p>
+			</div>
+		</div>
+		
+		<br rsf:id="breakAfterWarnings" />
+		
+                <div class="neoPortletTitleWrap">
+		  <h2 style="margin:0px;color:inherit;font-size:inherit">
+                  <a href="#" rsf:id="resetbutton"><img rsf:id="resetimage" src="/library/skin/default/images/reload.gif" style="float:left; margin-right:4px; margin-top:3px"/></a>
+                  <div style="float:right">
+                  <a class="usebutton" href="#" rsf:id="show-pages" id="show-pages" role="note"></a>
+                  <a href="#" rsf:id="helpbutton" target="_blank"><img rsf:id="helpimage" src="/library/skin/default/images/help.gif" style="margin-left:4px; margin-top:3px"/><span rsf:id="helpnewwindow" class="offscreen"></span></a>
+                  </div>
+		  <span class="title" rsf:id="pagetitle"></span>
+		  <span class="nextprev buttonset"> <a href="#" rsf:id="prev" class="nextprev">next</a> <a href="#" rsf:id="next" class="nextprev">next</a> </span>
+		  
+		  &nbsp;
+		  <span rsf:id="gradingSpan" class="gradingarea">
+		  		<a href="#" rsf:id="gradingBack" style="margin-right:2px;" class="usebutton">&#60;</a><img class="statusImg" src="$context/images/no-status.png" id="statusImg" height="16px" width="16px" alt=""></img><span style="*vertical-align:13%"  rsf:id="msg=simplepage.comments-points"></span><span style="display:none" class="uuidBox" rsf:id="commentsUUID"></span><span style="display:none" class="pointsSpan" rsf:id="commentPoints"></span> <input rsf:id="studentPointsBox"  id="studentPointsBox" type="text" style="font-size:100%"  size="3"></input> <a class="usebutton" href="#" rsf:id="msg=simplepage.submit" style="*vertical-align:13%;margin-right:.5em" id="submit-grading"></a> <a href="#" rsf:id="gradingForward" class="usebutton">&#62;</a>
+		  </span>
+		  </h2>
+		</div>
+		
+	
+		<div rsf:id="tool-bar:" class="navIntraTool" role="toolbar" style="z-index:100000" aria-labelledby="tool-bar::toolbar-label">
+			<h3 id="toolbar-label" rsf:id="msg=simplepage.toolbar" class="offscreen"></h3>
+			<ul id="toolbar" style="padding:2px; margin:0px">
+				<li><a href="#" rsf:id="reorder"><span rsf:id="msg.simplepage.reorder"></span></a></li>
+				<li><a href="#" rsf:id="add-text"><span rsf:id="msg.simplepage.text"></span></a></li>
+				<li><a href="#" rsf:id="add-multimedia" class="add-multimedia"><span rsf:id="msg.simplepage.multimedia"></span></a></li>
+				<li><a href="#" rsf:id="add-resource" class="add-resource"><span rsf:id="msg.simplepage.resource"></span></a></li>
+				<li><a href="#" rsf:id="subpage-link" class="subpage-link"><span rsf:id="msg=simplepage.subpage"></span></a></li>
+				<li><a href="#" rsf:id="add-assignment"><span rsf:id="msg.simplepage.assignment"></span></a></li>
+				<li><a href="#" rsf:id="add-quiz"><span rsf:id="msg.simplepage.quiz"></span></a></li>
+				<a href="#" rsf:id="help" target="_blank"></a>
+				
+				<li class="dropdown" style="z-index:900">
+					<span><a href="#" onclick="return false;" rsf:id="msg=simplepage.more-tools" ></a></span>
+				
+				</li>
+			</ul>
+		</div>
+		
+		<div id="dropDownDiv" style="display:none" class="navIntraTool" role="menu" aria-label="More menu options">
+		  <span rsf:id="forum-descrip">
+		    <a role="menuitem" class="add-forum-link" href="#" rsf:id="add-forum"><span rsf:id="msg.simplepage.forum"></span></a>
+		    <span rsf:id="msg=simplepage.forum-descrip"></span>
+		    <br />
+		  </span>
+		  
+		  <span rsf:id="addwebsite-descrip">
+		    <a href="#" role="menuitem" rsf:id="add-website" class="add-website"><span rsf:id="msg.simplepage.website"></span></a>
+		    <span rsf:id="msg=simplepage.addwebsite-descrip"></span>
+		    <br />
+		  </span>
+		  
+		  <span rsf:id="student-descrip">
+		    <a href="#" role="menuitem" rsf:id="add-comments"><span rsf:id="msg.simplepage.comments"></span></a>
+		    <span rsf:id="msg=simplepage.comments-descrip"></span>
+		    <br />
+		    <a href="#" role="menuitem" rsf:id="add-content"><span rsf:id="msg.simplepage.add-content"></span></a>
+		    <span rsf:id="msg=simplepage.student-descrip"></span>
+		    <br />
+		    <br />
+		  </span>
+		  
+		  <span rsf:id="title-descrip">
+		    <a href="#" role="menuitem" rsf:id="edit-title" id="edit-title"><span rsf:id="edit-title-text"></span></a>
+		    <span rsf:id="title-descrip-text"></span>
+		    <br />
+		  </span>
+		  
+		  <span rsf:id="remove-descrip">
+		    <a href="#" role="menuitem" rsf:id="remove-page" id="remove-page"><span rsf:id="msg=simplepage.remove-page"></span></a> 
+		    <span rsf:id="msg=simplepage.remove-descrip"></span>
+		    <br />
+		  </span>
+		  
+		  <span rsf:id="toppage-descrip">
+		    <a href="#" rsf:id="new-page" id="new-page"><span rsf:id="msg=simplepage.new-page"></span></a> 
+		    <span role="menuitem"  rsf:id="msg=simplepage.newpage-descrip"></span>
+		    <br />
+		    <a href="#" rsf:id="import-cc" id="import-cc"><span rsf:id="msg=simplepage.import_cc_button"></span></a>
+		    <span role="menuitem" rsf:id="msg=simplepage.importcc-descrip"></span>
+		    <br />
+		  </span>
+		  
+		  <span rsf:id="permissions-descrip">
+		    <br />
+		    <a href="#" role="menuitem" rsf:id="permissions"><span rsf:id="msg.simplepage.permissions"></span></a>
+		    <span rsf:id="msg=simplepage.permissions-descrip"></span>
+		    <br />
+		  </span>
+		  
+		  <span rsf:id="blti-descrip">
+		    <a href="#" role="menuitem" rsf:id="add-blti"><span rsf:id="msg.simplepage.blti"></span></a>
+		    <span rsf:id="msg=simplepage.blti-descrip"></span>
+		    <br />
+		  </span>
+		  
+		</div>
+
+		<div rsf:id="error-div" class="ui-widget" role="alert">
+			<div class="ui-state-error ui-corner-all" style="margin-top: 20px; padding: .5em .7em;">
+				<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+				<div rsf:id="error"></div>
+				<div rsf:id="errors:">
+				  <p rsf:id="error-message"></p>
+				</div>
+			</div>
+		</div>
+
+		<ul id="error-list" rsf:id="error-list:">
+		  <li id="error-item" rsf:id="error-item:"><span id="error-item-text" rsf:id="error-item-text">missing page</span></li>
+		</ul>
+
+		<div class="itemclass" rsf:id="itemContainer:" role="main" style="z-index: 1;">
+			<div style="display:none" rsf:id="current-item-id"></div>
+			
+			<h2 rsf:id="msg=simplepage.maincontent" class="offscreen" id="maintablelabel"></h2>
+			<table class="indent mainList" rsf:id="itemTable:" border="0" width="95%" style="z-index: 1;" role="list" aria-labelledby="itemContainer::maintablelabel">
+				<colgroup rsf:id="colgroup"/>
+				<col width="20" rsf:id="col1"/>
+				<col width="100%" rsf:id="col2"/>
+				<tr rsf:id="item:" id="item" role="listitem">
+					<td rsf:id="edit-td" class="edit-col"><div><a href="#" class="usebutton edit-link" onclick="return false" rsf:id="edit-link"></a></div></td>
+					<td rsf:id="item-td"><div style="float:left"><img class="status-image" rsf:id="status" height="18" width="18" style="margin-right:3px" /></div>
+					  <div style="margin-left:30px">
+					    <div rsf:id="link-div:" class="link-div">
+                                              <img rsf:id="item-icon" height="16" width="16" alt="" style="position:relative; top:3px; margin-right:2px"/>
+					      <a class="itemlink" href="#" rsf:id="link" style="width:36px"><span rsf:id="link-note" class="offscreen"></span><span rsf:id="link-text" class="link-text itemtext"></span></a>
+					      <span rsf:id="link-button-span" class="navIntraTool" style="background-color:transparent;border:none"><a href="#" class="usebutton" rsf:id="link-button"><span rsf:id="link-button-note" class="offscreen"></span><span rsf:id="link-button-text" class="link-text"></span></a></span>
+					      <a class="itemcopylink" href="#" rsf:id="copylink"><span class="itemcopytext"  rsf:id="copylinktext"></span></a>
+					      <span rsf:id="item-group-titles" class="item-group-titles"></span>
+					    </div>
+					    <div rsf:id="item-group-titles-div" class="item-group-titles"></div>
+					    <iframe
+					       name="BltiIFrame"
+					       class="portletMainIframe multimedia"
+					       frameborder="0"
+					       marginwidth="0"
+					       width="100%"
+					       height="300"
+					       marginheight="0"
+					       scrolling="auto"
+					       rsf:id="blti-iframe"
+				               id="blti-iframe"
+					       >
+					    </iframe>
+
+					    <div class="rowdescription itemdescription" rsf:id="description"></div>
+					  </div>
+					  <div style="display:none">
+					    <span rsf:id="current-item-id2" class="current-item-id2"></span>
+					    <span rsf:id="prerequisite-info" class="prerequisite-info"></span>
+					    <span rsf:id="type" class="type"></span>
+					    <span rsf:id="requirement-text" class="requirement-text"></span>
+					    <span rsf:id="page-next" class="page-next"></span>
+					    <span rsf:id="page-button" class="page-button"></span>
+					    <span rsf:id="edit-url" class="edit-url"></span>
+					    <span rsf:id="edit-settings-url" class="edit-settings-url"></span>
+					    <span rsf:id="item-samewindow" class="item-samewindow"></span>
+					    <span rsf:id="item-groups" class="item-groups"></span>
+					    <span rsf:id="item-height" class="item-height"></span>
+					    <span rsf:id="item-name" class="link-text"></span>
+					    <span rsf:id="item-format" class="item-format"></span>
+					    <span rsf:id="item-path" class="item-path"></span>
+					  </div>
+					</td>
+					<td rsf:id="edittext-td" class="edit-col"><div><a href="#" class="usebutton itemLink" rsf:id="edit-link"></a></div></td>
+					<td rsf:id="itemSpan">
+					  <div rsf:id="item-groups-titles-text" class="item-group-titles"></div>
+					  <div rsf:id="content" class="textbox"></div>
+					</td>
+					<td rsf:id="editmm-td" class="edit-col"><div><a href="#" class="usebutton multimedia-edit" onclick="return false" rsf:id="iframe-edit"></a></div></td>
+					<td rsf:id="iframeSpan" class="hideOnDialog"><div>
+					  <div rsf:id="item-group-titles2" class="item-group-titles"></div>
+					  <iframe
+					     name="SimplePageIFrame"
+					     class="portletMainIframe multimedia"
+					     frameborder="0"
+					     marginwidth="0"
+					     width="100%"
+					     marginheight="0"
+					     scrolling="auto"
+					     rsf:id="iframe"
+				             id="iframe"
+					     ></iframe>
+					  <div style="display:none" rsf:id="iframeHeight" class="mm-height"></div>
+					  <div style="display:none" rsf:id="iframeWidth" class="mm-width"></div>
+					  <div class="description" rsf:id="description5"></div>
+					  <div style="display:none" rsf:id="mimetype3" class="mm-type"></div>
+					  <div style="display:none" rsf:id="current-item-id3" class="mm-itemid"></div>
+					  <div style="display:none" rsf:id="item-groups2" class="item-groups"></div>
+					  <span style="display:none" rsf:id="item-path" class="item-path"></span>
+					  </div>
+					</td>
+	
+					<td rsf:id="imageSpan"><div>
+					    <div rsf:id="item-group-titles3" class="item-group-titles"></div>
+					    <img rsf:id="image" class="multimedia" />
+					    <div style="display:none" rsf:id="imageHeight" class="mm-height"></div>
+					    <div style="display:none" rsf:id="imageWidth" class="mm-width"></div>
+					    <div class="description" rsf:id="description2"></div>
+					    <div style="display:none" rsf:id="mimetype2" class="mm-type"></div>
+					    <div style="display:none" rsf:id="current-item-id4" class="mm-itemid"></div>
+					    <div style="display:none" rsf:id="item-groups3" class="item-groups"></div>
+					    <span style="display:none" rsf:id="item-path" class="item-path"></span>
+					  </div>
+					</td>
+
+					<td rsf:id="youtube-td" class="edit-col"><div><a href="#" class="usebutton edit-youtube" onclick="return false" rsf:id="youtube-edit"></a></div></td>
+					<td rsf:id="youtubeSpan"  id="youtubeSpan"  class="hideOnDialog"><div>
+					    <div rsf:id="item-group-titles4" class="item-group-titles"></div>
+					    
+					    <iframe rsf:id="youtubeIFrame" frameborder="0"></iframe>
+					  </div>
+					  <div style="display:none" rsf:id="youtubeId" class="youtube-id"></div>
+					  <div style="display:none" rsf:id="currentYoutubeURL" class="youtube-url"></div>
+					  <div style="display:none" rsf:id="currentYoutubeHeight" class="mm-height"></div>
+					  <div style="display:none" rsf:id="currentYoutubeWidth" class="mm-width"></div>
+					  <div class="description" rsf:id="description4"></div>
+					  <div style="display:none" rsf:id="current-item-id5" class="mm-itemid"></div>
+					  <div style="display:none" rsf:id="item-groups4" class="item-groups"></div>
+					 <span style="display:none" rsf:id="item-path" class="item-path"></span>
+					</td>
+
+					<td rsf:id="movie-td" class="edit-col"><div><a href="#" class="usebutton edit-movie" onclick="return false" rsf:id="edit-movie"></a></div></td>
+
+					<td rsf:id="movieSpan" class="hideOnDialog"><div>
+					    <div rsf:id="item-group-titles5" class="item-group-titles"></div>
+					    <embed rsf:id="movieEmbed" autoplay="false" autostart="false" scale="aspect" />
+					    <object rsf:id="movieObject"><param name="src" rsf:id="movieURLInject" /><param name="FlashVars" rsf:id="flashvars"/><param name="autoplay" value="false"/><param name="autostart" value="false"/><param name="scale" value="aspect"/>
+					      <p rsf:id="noplugin-p"></p><br rsf:id="noplugin-br"/><a href="#" rsf:id="noplugin" target="_blank"></a>
+					      <embed rsf:id="mp4-embed" autoplay="false" autostart="false" scale="aspect" />
+					      <object rsf:id="mp4-object"><param name="src" rsf:id="mp4-inject" /><param name="autoplay" value="false"/><param name="autostart" value="false"/><param name="scale" value="aspect"/>
+						<p rsf:id="mp4-noplugin-p"></p><br/><a href="#" rsf:id="mp4-noplugin" target="_blank"></a>
+					      </object>
+					    </object>
+					  </div>
+					  <div style="display:none" rsf:id="movieId" class="movie-id"></div>
+					  <div style="display:none" rsf:id="movieHeight" class="mm-height"></div>
+					  <div style="display:none" rsf:id="movieWidth" class="mm-width"></div>
+					  <div class="description" rsf:id="description3"></div>
+					  <div style="display:none" rsf:id="mimetype5" class="mm-type"></div>
+					  <div style="display:none" rsf:id="current-item-id6" class="mm-itemid"></div>
+					  <div style="display:none" rsf:id="item-groups5" class="item-groups"></div>
+					  <span style="display:none" rsf:id="item-path" class="item-path"></span>
+					</td>
+
+
+					<td rsf:id="comments-td" class="edit-col"><div><a href="#" class="usebutton edit-comments" onclick="return false" rsf:id="edit-comments"></a></div></td>
+					
+					<td rsf:id="commentsSpan" class="commentsCell">
+					        <div rsf:id="missing-prereqs"></div>
+						<div class="commentsDiv" rsf:id="commentsDiv">
+							<div rsf:id="item-group-titles6" class="item-group-titles"></div>
+							
+							<div style="text-align:right;">
+							  <h3 class="offscreen" rsf:id="msg=simplepage.comments-section"></h3>
+							<a href="#" class="usebutton gradingPaneLink" rsf:id="gradingPaneLink" ></a>
+							</div>
+							
+							<div rsf:id="msg=simplepage.replace-with-comments" class="replaceWithComments">Loading Comments ...</div>
+							
+							<div class="add-comment-button">
+							  <img rsf:id="comment-required-image" src="/sakai-lessonbuildertool-tool/images/available.png" height="18" width="18" style="margin-right:3px"/>
+							  <a rsf:id="add-comment-link" class="usebutton switchLink" onclick="switchEditors($(this))"><span style="font-weight:normal; color:#555" rsf:id="add-comment-text"></span></a>
+							</div>
+							<form class="commentArea" rsf:id="comment-form">
+								<input type="hidden" rsf:id="comment-item-id"></input>
+								<input type="hidden" rsf:id="comment-edit-id" class="comment-edit-id"></input>
+								
+								<div>
+									<textarea rsf:id="comment-text-area-evolved:"></textarea>
+								</div>
+								
+								<div class="buttonset">
+									<input type="submit" class="submitButton" href="#" rsf:id="add-comment" id="add-comment"><span rsf:id="simplepage.save_message"></span></input>
+									<input type="submit" class="cancelButton"></input>
+								</div>
+							</form>
+						</div>
+						
+						<a href="#" style="display:none" rsf:id="commentsLink" class="commentsBlock"></a>
+						<span style="display:none" rsf:id="commentsId" class="comments-id"></span>
+						<span style="display:none" rsf:id="commentsAnon" class="commentsAnon"></span>
+						<span style="display:none" rsf:id="comments-groups" class="item-groups"></span>
+						<span style="display:none" rsf:id="commentsitem-required" class="commentsitem-required"></span>
+						<span style="display:none" rsf:id="commentsitem-prerequisite" class="commentsitem-prerequisite"></span>
+						<span style="display:none" rsf:id="commentsGrade" class="commentsGrade"></span>
+						<span style="display:none" rsf:id="commentsMaxPoints" class="commentsMaxPoints"></span>
+					</td>
+					
+					<td rsf:id="student-td" class="edit-col"><div><a href="#" class="usebutton edit-student" onclick="return false" rsf:id="edit-student"></a></div></td>
+					
+					<td rsf:id="studentSpan">
+					        <span rsf:id="student-missing-prereqs"></span>
+						<div class="studentDiv" rsf:id="studentDiv">
+							<div>
+								<a href="#" style="margin-top:15px;" class="usebutton gradingPaneLink" rsf:id="studentGradingPaneLink" ></a>
+							</div>
+						
+							<div rsf:id="item-group-titles7" class="item-group-titles"></div>
+ 							<div class="studentContentTable" rsf:id="studentContentTable" role="list">
+ 							  <h3 class="studentContentTitle"  rsf:id="studentContentTitle" id="studentContentTitle"></h3>
+							  <div rsf:id="studentRow:" class="studentRow" role="listitem">
+ 							    <img src="$context/images/new-page.png" rsf:id="newPageImg" class="imgCell"></img>
+ 							    <img src="$context/images/transparent16.png" alt="" rsf:id="newPageImgT" class="imgCell"></img>
+ 							    <img src="$context/images/new-content.png" rsf:id="newContentImg" class="imgCell"></img>
+ 							    <img src="$context/images/transparent16.png" alt="" rsf:id="newContentImgT" class="imgCell"></img>
+ 							    <img src="$context/images/new-comments.png" rsf:id="newCommentsImg" class="imgCell"></img>
+ 							    <img src="$context/images/transparent16.png" alt="" rsf:id="newCommentsImgT" class="imgCell"></img>
+ 							    <a href="#" rsf:id="studentLink" class="studentLink"></a>
+							    <span rsf:id="studentGradingCell" class="gradingCell"></span>
+ 							    <div rsf:id="linkCell" class="linkCell">
+ 							      <img rsf:id="student-required-image" src="/sakai-lessonbuildertool-tool/images/available.png" height="18" width="18" style="margin-right:3px"/>
+ 							      <a href="#" rsf:id="linkLink"></a>
+ 							    </div>
+ 							  </div>
+ 							</div>
+						</div>
+						
+						<div style="display:none" rsf:id="studentId" class="student-id"></div>
+						<div style="display:none" rsf:id="studentAnon" class="studentAnon"></div>
+						<div style="display:none" rsf:id="studentComments" class="studentComments"></div>
+						<div style="display:none" rsf:id="forcedAnon" class="forcedAnon"></div>
+						<span style="display:none" rsf:id="studentGrade" class="studentGrade"></span>
+						<span style="display:none" rsf:id="studentMaxPoints" class="studentMaxPoints"></span>
+						<span style="display:none" rsf:id="studentGrade2" class="studentGrade2"></span>
+						<span style="display:none" rsf:id="studentMaxPoints2" class="studentMaxPoints2"></span>
+						<span style="display:none" rsf:id="student-groups" class="item-groups"></span>
+						<span style="display:none" rsf:id="studentitem-required" class="studentitem-required"></span>
+						<span style="display:none" rsf:id="studentitem-prerequisite" class="studentitem-prerequisite"></span>
+					</td>
+
+				</tr>
+
+			</table>
+					
+			<script rsf:id="swfobject" type="text/javascript" src="swfobject.js"></script>
+
+		</div>
+		
+	
+		<iframe rsf:id="startupHelp" role="document"
+		   name="SimplePageIFrame"
+		   class="portletMainIframe multimedia"
+		   frameborder="0"
+		   onload="resizeiframe('iframe')"
+		   marginwidth="0"
+		   width="100%"
+		   height="500"
+		   marginheight="0"
+		   scrolling="auto"
+		   id="iframe"
+		   ></iframe>
+		   <a href="#" rsf:id="prev1" class="usebutton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">next</a> 
+		   <a style="float:right;" href="#" rsf:id="next1" class="usebutton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">next</a> 
+
+		<div style="display:none;">
+			<p rsf:id="msg=simplepage.add-comment" id="simplepage.add-comment"></p>
+			<p rsf:id="msg=simplepage.edit-comment" id="simplepage.edit-comment"></p>
+			<p rsf:id="msg=simplepage.cancel_message" id="simplepage.cancel_message"></p>
+			<p rsf:id="msg=simplepage.save_message" id="simplepage.save_message"></p>
+			<p rsf:id="msg=simplepage.ckeditor" id="simplepage.ckeditor"></p>
+		</div>
+		
+		<form class="gradingForm" rsf:id="gradingForm" style="display:none;">
+			<input type="hidden" class="idField" id="gradingForm-id" rsf:id="gradingForm-id"></input>
+			<input type="hidden" class="jsIdField" id="gradingForm-jsId" rsf:id="gradingForm-jsId"></input>
+			<input type="hidden" class="pointsField" id="gradingForm-points" rsf:id="gradingForm-points"></input>
+			<input type="hidden" class="typeField" id="gradingForm-type" rsf:id="gradingForm-type"></input>
+		</form>
+		
+		<script rsf:id="gradingForm-init" type="text/javascript">
+    			// a real function call with real values which come from the 
+    			// "emitJavascriptCall" method will be placed here by RSF
+		</script>
+
+		<div rsf:id="dialogDiv">
+			<div id="messages">
+			  <p rsf:id="msg=simplepage.require_submit_assessment" id="simplepage.require_submit_assessment"></p>
+			  <p rsf:id="msg=simplepage.require_submit_assignment" id="simplepage.require_submit_assignment"></p>
+			  <p rsf:id="msg=simplepage.require_submit_forum" id="simplepage.require_submit_forum"></p>
+			  <p rsf:id="msg=simplepage.require_submit_blti" id="simplepage.require_submit_blti"></p>
+			  <p rsf:id="msg=simplepage.require_receive" id="simplepage.require_receive"></p>
+			  <p rsf:id="msg=simplepage.require_points_assessment" id="simplepage.require_points_assessment"></p>
+			  <p rsf:id="msg=simplepage.require_points_assignment" id="simplepage.require_points_assignment"></p>
+			  <p rsf:id="msg=simplepage.require_pass_assignment" id="simplepage.require_pass_assignment"></p>
+			  <p rsf:id="msg=simplepage.require_atleast" id="simplepage.require_atleast"></p>
+			  <p rsf:id="msg=simplepage.require_checkmark" id="simplepage.require_checkmark"></p>
+			  <p rsf:id="msg=simplepage.title_notblank" id="simplepage.title_notblank"></p>
+			  <p rsf:id="msg=simplepage.must_be_youtube" id="simplepage.must_be_youtube"></p>
+			  <p rsf:id="msg=simplepage.item_notblank" id="simplepage.item_notblank"></p>
+			  <p rsf:id="msg=simplepage.page_notblank" id="simplepage.page_notblank"></p>
+			  <p rsf:id="msg=simplepage.tag_iframe" id="simplepage.tag_iframe"></p>
+			  <p rsf:id="msg=simplepage.tag_img" id="simplepage.tag_img"></p>
+			  <p rsf:id="msg=simplepage.edit_quiz" id="simplepage.edit_quiz"></p>
+			  <p rsf:id="msg=simplepage.edit_quiz_settings" id="simplepage.edit_quiz_settings"></p>
+			  <p rsf:id="msg=simplepage.edit_assignment" id="simplepage.edit_assignment"></p>
+			  <p rsf:id="msg=simplepage.edit_topic" id="simplepage.edit_topic"></p>
+			  <p rsf:id="msg=simplepage.edit_blti" id="simplepage.edit_blti"></p>
+			  <p rsf:id="msg=simplepage.number_pages_not_number" id="simplepage.number_pages_not_number"></p>
+			  <p rsf:id="msg=simplepage.title_no_number" id="simplepage.title_no_number"></p>
+			  <p rsf:id="msg=simplepage.site" id="simplepage.site"></p>
+			  <p rsf:id="msg=simplepage.system" id="simplepage.system"></p>
+			  <p rsf:id="msg=simplepage.integer-expected" id="simplepage.integer-expected"></p>
+			  <p rsf:id="msg=simplepage.width-height" id="simplepage.width-height"></p>
+			  <p rsf:id="msg=simplepage.nothing-over-100-percent" id="simplepage.nothing-over-100-percent"></p>
+			</div>
+
+			<div id="subpage-dialog" rsf:id="subpage-dialog">
+				<div class="ui-widget" id="subpage-error-container">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+						<strong rsf:id="msg=simplepage.error_colon"></strong> <span id="subpage-error"></span></p>
+					</div>
+				</div>
+				
+				<form action="#" rsf:id="subpage-form">
+					<p class="shorttext required">
+						<span class="reqStar">*</span>
+						<label rsf:id="subpage-label" for="subpage-title"></label>
+				 		<input type="text" name="subpage-title" id="subpage-title" rsf:id="subpage-title" maxlength="99" length="30" /><br />
+					</p>
+				
+					<p class="shorttext required" style="margin-top: 1em; margin-bottom:1em">
+					  <a href="#" id="subpage-choose" rsf:id="subpage-choose" ><span rsf:id="msg=simplepage.choose_existing_page"></span></a>
+					</p>
+
+					<input type="checkbox" name="subpage-next" id="subpage-next" rsf:id="subpage-next" />
+					<label for="subpage-next"><span rsf:id="msg=simplepage.subpage-next"></span></label><br />
+					<input type="checkbox" name="subpage-button" id="subpage-button" rsf:id="subpage-button" />
+					<label for="subpage-button"><span rsf:id="msg=simplepage.subpage-button"></span></label><br />
+
+
+					<input class="bold" type="submit" value="Create!" rsf:id="create-subpage" onclick="event.returnValue = checkSubpageForm(); return checkSubpageForm();" />
+					<input type="submit" rsf:id="cancel-subpage" onclick="closeSubpageDialog(); return false" />
+				</form>
+			</div>
+			
+			<div id="edit-item-dialog" rsf:id="edit-item-dialog">
+				<div class="ui-widget" id="edit-item-error-container">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+						<strong rsf:id="msg=simplepage.error_colon"></strong> <span id="edit-item-error"></span></p>
+					</div>
+				</div>
+			
+				<form action="#" rsf:id="edit-form">
+					<div class="border">
+
+						<p class="shorttext required">
+							<label rsf:id="name-label" for="name"></label>
+					 		<input type="text" name="name" rsf:id="name" id="name" length="30" maxlength="99" class="edit-form-input" /><br />
+						</p>
+						
+						<p class="shorttext required">
+							<label rsf:id="msg=simplepage.path" for="path">Path</label>
+							<span id="path"></span><br />
+						</p>
+					
+						<p class="shorttext required">
+							<label rsf:id="description-label" for="description"></label><br />
+					 		<textarea name="description" id="description" rsf:id="description" class="edit-form-input" rows="5">
+							</textarea>
+						</p>
+
+						<div rsf:id="changeDiv">
+							<p class="shorttext required" id="change-assignment-p">
+								<a href="#" rsf:id="change-assignment" id="change-assignment"><span rsf:id="msg.simplepage.change_assignment"></span></a>
+							</p>
+
+							<p class="shorttext required" id="change-forum-p">
+								<a href="#" rsf:id="change-forum" id="change-forum"><span rsf:id="msg=simplepage.change_forum"></span></a>
+							</p>
+
+							<p class="shorttext required" id="change-blti-p">
+							  <a href="#" rsf:id="change-blti" id="change-blti"><span rsf:id="msg=simplepage.change_blti"></span></a>
+							</p>
+
+							<p class="shorttext required" id="change-quiz-p">
+								<a href="#" rsf:id="change-quiz" id="change-quiz"><span rsf:id="msg.simplepage.change_quiz"></span></a>
+							</p>
+
+							<p class="shorttext required" id="change-resource-p">
+								<a href="#" rsf:id="change-resource" id="change-resource"><span rsf:id="msg.simplepage.change_resource"></span></a>
+							</p>
+
+							<p class="shorttext required" id="change-page-p">
+								<a href="#" rsf:id="change-page" id="change-page"><span rsf:id="msg.simplepage.change_page"></span></a>
+							</p>
+					    </div>
+
+						<p class="shorttext required" id="edit-item-object-p">
+						  <a href="#" rsf:id="edit-item-object" id="edit-item-object"><span rsf:id="edit-item-text" id="edit-item-text"></span></a>
+					        </p>
+
+						<p class="shorttext required" id="edit-item-settings-p">
+						  <a href="#" rsf:id="edit-item-settings" id="edit-item-settings"><span rsf:id="edit-item-settings-text" id="edit-item-settings-text"></span></a>
+					        </p>
+
+						<div id="pagestuff">
+						<input type="checkbox" name="item-next" id="item-next" rsf:id="item-next" />
+						<label for="item-next" id="label-item-next"><span rsf:id="msg=simplepage.subpage-next"></span></label><br />
+						<input type="checkbox" name="item-button" id="item-button" rsf:id="item-button" />
+						<label for="item-button" id="label-item-button"><span rsf:id="msg=simplepage.subpage-button"></span></label><br />
+						</div>
+
+						<div id="newwindowstuff">
+						<input type="checkbox" name="item-newwindow" id="item-newwindow" rsf:id="item-newwindow" />
+						<label for="item-newwindow" id="label-item-newwindow"><span rsf:id="msg=simplepage.usenewwindow"></span></label><br />
+						</div>
+						<div id="formatstuff">
+						  <p rsf:id="msg=simplepage.format.heading"></p>
+						  <span rsf:id="format-select" />
+						  <input rsf:id="format-window" type="radio" name="format" value="window" id="format-window" class="format"/>
+						  <label for="format-window"><span rsf:id="msg=simplepage.format.window"></span></label><br />
+						  <input rsf:id="format-inline" type="radio" name="format" value="inline" id="format-inline" class="format"/>
+						  <label for="format-inline"><span rsf:id="msg=simplepage.format.inline"></span></label><br />
+						  <input rsf:id="format-page" type="radio" name="format" value="page" id="format-page" class="format"/>
+						  <label for="format-page"><span rsf:id="msg=simplepage.format.page"></span></label><br />
+
+						</div>
+
+					        <p class="shorttext required" id="edit-height">
+							<label rsf:id="msg=simplepage.height_label" for="edit-height-value"></label>
+					 		<input type="text" name="edit-height-value" rsf:id="edit-height-value" id="edit-height-value" length="30" class="edit-form-input" /><br />
+						</p>
+
+					</div>
+					
+					<input type="hidden" rsf:id="item-id" id="item-id" />
+					
+					<div rsf:id="permDiv" class="border2">
+					     <div id="prereqstuff">
+						<input type="checkbox" name="item-prerequisites" id="item-prerequisites" rsf:id="item-prerequisites" />
+						<label for="item-prerequisites"><span rsf:id="msg=simplepage.prerequisites_label"></span></label>
+						<br />
+					
+						<input type="checkbox" name="item-required" id="item-required" rsf:id="item-required" />
+						<label for="item-required"><span rsf:id="msg=simplepage.require" id="require-label"></span></label>
+						<br />
+					     </div>
+						<input type="checkbox" class="indent" name="item-required2" id="item-required2" rsf:id="item-required2" />
+						<label for="item-required2"><span rsf:id="msg=simplepage.require" id="require-label2"></span></label>
+						<select id="assignment-dropdown" rsf:id="assignment-dropdown">
+							<option rsf:id="option:"><span rsf:id="optionText"></span></option>
+						</select>
+						<input id="assignment-points" rsf:id="assignment-points" size="4"/>
+						<label for="assignment-points" id="assignment-points-label"> points on the assignment</label>
+						
+						<p id="editgroups" class="edit-group">
+						  <a href="#"><span rsf:id="msg=simplepage.edit-group"></span></a>
+						</p>
+						<p id="resource-group-inherited" rsf:id="msg=simplepage.resource-group-inherited"></p>
+						<div id="grouplist" rsf:id="grouplist">
+						  <span rsf:id="group-list-span"/>
+						  <p rsf:id="msg=simplepage.select-group"></p>
+						  <p id="select-resource-group" rsf:id="msg=simplepage.select-resource-group"></p>
+						  <div rsf:id="select-group-list:">
+						    <input type="checkbox" rsf:id="select-group" /><span rsf:id="select-group-text"></span>
+						  </div>
+						</div>
+					</div>
+
+					<div class="border2">
+						<div style="margin-top:5px; margin-bottom:5px;">
+							<b style="margin-left:50px;"><span rsf:id="msg=simplepage.delete"></span>:</b>
+							<input type="submit" style="margin-left:50px;" rsf:id="delete-item" />
+						</div>
+					</div>
+					
+					<input class="bold" type="submit" onclick="event.returnValue = checkEditItemForm(); return checkEditItemForm();" id="edit-item" rsf:id="edit-item" />
+					<input type="submit" rsf:id="edit-item-cancel" onclick="closeEditItemDialog(); return false" />
+				</form>
+			</div>
+
+			<div id="add-multimedia-dialog" rsf:id="add-multimedia-dialog">
+				<form action="#" rsf:id="add-multimedia-form" method="post" enctype="multipart/form-data">
+					<div class="border">
+			  
+						<p class="shorttext required" rsf:id="msg=simplepage.add_file_instructions"></p>
+
+						<p class="shorttext required mm-additional"> 
+						  <a href="#" rsf:id="mm-additional-instructions" target="_blank" class="mm-additional-instructions"></a>
+						</p>
+						
+						<p class="shorttext required mm-additional-website"> 
+						  <a href="#" rsf:id="mm-additional-website-instructions" target="_blank" class="mm-additional-website-instructions"></a>
+						</p>
+
+					</div>
+
+					<div class="border2">					
+						<p class="shorttext required mm-url-section">
+							<label rsf:id="mm-url-label" for="mm-url">URL</label>
+					 		<input type="text" name="mm-url" rsf:id="mm-url" id="mm-url" style="width:95%" class="edit-multimedia-input" /><br />
+						</p>
+
+						<p class="shorttext required">
+							<label rsf:id="mm-file-label" for="mm-file">File</label>
+					 		<input type="file" name="mm-file" id="mm-file" style="width:95%" class="edit-multimedia-input" /><br />
+						</p>
+
+						<p class="shorttext required" style="margin-top: 1em; margin-bottom:1em">
+							<a href="#" id="mm-choose" rsf:id="mm-choose" ><span rsf:id="msg=simplepage.choose_existing"></span></a>
+						</p>
+
+					<input class="bold" type="submit" id="mm-add-item" rsf:id="mm-add-item" />
+					<input type="submit" rsf:id="mm-cancel" onclick="closeAddMultimediaDialog(); return false" />
+					<input type="hidden" rsf:id="mm-item-id" id="mm-item-id" />
+					<input type="hidden" rsf:id="mm-is-mm" id="mm-is-mm" />
+					<input type="hidden" rsf:id="mm-is-website" id="mm-is-website" />
+
+					</div>
+				</form>
+			</div>
+			
+
+			<div id="edit-multimedia-dialog" rsf:id="edit-multimedia-dialog">
+				<form action="#" rsf:id="edit-multimedia-form">
+					<div class="border">
+						<p class="shorttext required">
+							<label rsf:id="width-label" for="width">Page Title</label>
+					 		<input type="text" name="width" rsf:id="width" id="width" length="30" class="edit-multimedia-input" /><br />
+						</p>
+
+						<p class="shorttext required">
+							<label rsf:id="height-label" for="height">Page Title</label>
+					 		<input type="text" name="height" rsf:id="height" id="height" length="30" class="edit-multimedia-input" /><br /> 
+						</p>
+						<p class="shorttext required" id="iframe-note" rsf:id="msg=simplepage.iframe.auto">
+						</p>
+				
+						<p class="shorttext required">
+							<label rsf:id="alt-label" for="alt">Page Title</label><br />
+					 		<input type="text" name="alt" rsf:id="alt" id="alt" class="edit-multimedia-input wideinput" /><br />
+						</p>
+						
+						<p class="shorttext required">
+							<label rsf:id="msg=simplepage.path" for="path">Path</label>
+							<span id="mm-path"></span><br />
+						</p>
+						
+						<p class="shorttext required">
+							<label rsf:id="description2-label" for="description2">Page Title</label><br />
+					 		<textarea name="description2" rsf:id="description2" id="description2" rows="5" class="edit-multimedia-input" ></textarea>
+						</p>
+						<p class="shorttext required" id="change-resource-mm-p">
+						  <a href="#" rsf:id="change-resource-mm" id="change-resource-mm"><span rsf:id="msg.simplepage.change_resource"></span></a>
+					        </p>
+						<p id="editgroups-mm" class="edit-group">
+						  <a href="#"><span rsf:id="msg=simplepage.edit-group"></span></a>
+						</p>
+					</div>
+					<br />
+
+					<div class="border2">
+						<div style="margin-top:5px; margin-bottom:5px;">
+							<b style="margin-left:50px;"><span rsf:id="msg=simplepage.delete"></span>:</b>
+							<input type="submit" style="margin-left:50px;" rsf:id="delete-multimedia-item" />
+						</div>
+					</div>
+					
+					<input type="hidden" rsf:id="multimedia-item-id" id="multimedia-item-id" />
+					
+					<input class="bold" type="submit" id="edit-multimedia-item" rsf:id="edit-multimedia-item" />
+					<input type="submit" rsf:id="edit-multimedia-cancel" onclick="closeMultimediaEditDialog(); return false" />
+					<div class="expert" id="expert-multimedia-toggle-div">
+					  <p style="margin-top:0px; margin-bottom:0px">
+					    <a href="#" id="expert-multimedia-toggle" rsf:id="msg=simplepage.expert_toggle"></a>
+					  </p>
+					</div>
+
+					<div class="expert" id="expert-multimedia">
+					  <p style="margin-top:0px; margin-bottom:0px">
+					    <span rsf:id="msg=simplepage.tag_is"></span> <span id="tagnameused"></span>
+					  </p>
+					  <p rsf:id="msg=simplepage.expert_intro" style="margin-top:0px"></p>
+					  <label rsf:id="msg=simplepage.mimetype_label" for="mimetype"></label><br />
+					  <input type="text" name="mimetype" rsf:id="mimetype" id="mimetype" class="edit-multimedia-input wideinput" /><br />
+					</div>
+					<br />
+
+				</form>
+			</div>
+			
+			<div id="import-cc-dialog" rsf:id="import-cc-dialog">
+				<form action="#" rsf:id="import-cc-form" method="post" enctype="multipart/form-data">
+					<div class="border">					
+					  <p class="required shorttext">
+					    <label rsf:id="msg=simplepage.import_cc_file" for="cc_file" id="cc-dialog-label">File</label> <br />
+					    <input type="file" name="mm-file" id="cc-file" style="width:95%" class="edit-multimedia-input" /><br />
+					  </p>
+
+					  <p rsf:id="quizmsg" style="margin-bottom:0px"></p>
+					  <input type="hidden" name="quiztool" rsf:id="quiztool" />
+					  <span rsf:id="quiztools"/>
+					  <div>
+					    <span rsf:id="quiztoolitem:">
+					      <input type="radio" rsf:id="quiztoolbox" id="quiztoolbox" />
+					      <label for="quiztoolbox" rsf:id="quiztoollabel"></label><br />
+					    </span>
+					  </div>
+
+					  <p rsf:id="topicmsg" style="margin-bottom:0px"></p>
+					  <input type="hidden" name="topictool" rsf:id="topictool" />
+					  <span rsf:id="topictools"/>
+					  <div>
+					    <span rsf:id="topictoolitem:">
+					      <input type="radio" rsf:id="topictoolbox" id="topictoolbox" />
+					      <label for="topictoolbox" rsf:id="topictoollabel"></label><br />
+					    </span>
+					  </div>
+
+					  <p>
+					    <input class="bold" type="submit" id="import-cc-submit" rsf:id="import-cc-submit" />
+					    <input type="submit" rsf:id="mm-cancel" onclick="closeImportCcDialog(); return false" />
+					  </p>
+					  <p class="hideOnDialog" id="loading" rsf:id="msg=simplepage.loading">
+					  </p>
+
+
+					</div>
+				</form>
+			</div>
+
+			<div id="edit-title-dialog" rsf:id="edit-title-dialog">
+				<div class="ui-widget" id="edit-title-error-container">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+						<strong rsf:id="msg=simplepage.error_colon"></strong> <span id="edit-title-error"></span></p>
+					</div>
+				</div>
+				
+				<form action="#" rsf:id="title-form" enctype="multipart/form-data">
+					<p class="shorttext required">
+						<span class="reqStar">*</span>
+						<label rsf:id="pageTitleLabel" for="pageTitle">Page Title</label>
+						<input rsf:id="pageTitle" maxlength="99" id="pageTitle" /><br />
+					</p>
+					
+					<div rsf:id="hideContainer">
+						<div rsf:id="prereqContainer">
+						<input type="checkbox" id="page-prerequisites" rsf:id="page-prerequisites" />
+						<label for="page-prerequisites"><span rsf:id="msg=simplepage.page_prerequisites_label"></span></label><br />
+						<input type="checkbox" id="page-required" rsf:id="page-required" />
+						<label for="page-required"><span rsf:id="msg=simplepage.page_require"></span></label><br />
+						</div>
+
+					        <input type="checkbox" id="hide" rsf:id="hide" />
+						<label for="hide"><span rsf:id="msg=simplepage.hide_page_from_users"></span></label><br />
+
+						<input type="checkbox" id="page-releasedate" rsf:id="page-releasedate" />
+						<label for="releaseDate:1:date-field"><span rsf:id="msg=simplepage.page.releasedate"></span></label><br />
+						<div id="releaseDiv" style="margin-left:3em">
+						  <span rsf:id="releaseDate:" id="releaseDate">
+						    <input type="text"
+							   id="release_date_dummy" name="release_date_dummy" value="MM/DD/YYYY"
+							   size="12" maxlength="10" /> 
+						    <img src="../images/calendar.gif"  alt="calendar" /> 
+						  </span>
+						</div>
+
+					</div>
+						
+					<div rsf:id="gradeBookDiv">
+						<input type="checkbox" name="page-gradebook" id="page-gradebook" rsf:id="page-gradebook" />
+						<label for="page-gradebook"><span rsf:id="msg=simplepage.page.gradebook"></span></label>
+						<input type="text" name="page-points" id="page-points" rsf:id="page-points" />
+						<label for="page-points"><span rsf:id="msg=simplepage.points"></span></label>
+					</div>
+					
+					<div rsf:id="csssection">
+
+					<hr />
+					
+					<label for="cssDropdown" rsf:id="cssDropdownLabel"></label>
+					<select rsf:id="cssDropdown" id="cssDropdown" name="cssDropdown">
+						<option rsf:id="possCss:"></option>
+					</select>
+					
+					<label for="cssUpload" rsf:id="cssUploadLabel"></label>
+					<input type="file" name="cssUpload" rsf:id="cssUpload" style="width:95%" class="edit-multimedia-input" />
+					<br /><span class="italic" rsf:id="cssDefaultInstructions"></span>
+					
+					<br /><hr /><br />
+					</div>
+					
+					<input class="bold" type="submit"  onclick="event.returnValue = checkEditTitleForm(); return checkEditTitleForm();" rsf:id="create-title" />
+					<input type="submit" rsf:id="cancel-title"  onclick="closeEditTitleDialog(); return false" />
+				</form>
+			</div>
+			
+			<div id="new-page-dialog" rsf:id="new-page-dialog">
+			        <div style="margin-bottom: 2em" rsf:id="msg=simplepage.new-page-explanation"></div>
+				<div class="ui-widget" id="new-page-error-container">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+						<strong rsf:id="msg=simplepage.error_colon"></strong> <span id="new-page-error"></span></p>
+					</div>
+				</div>
+
+				<form action="#" rsf:id="new-page-form">
+					<p class="shorttext required">
+						<span class="reqStar">*</span>
+						<label rsf:id="msg=simplepage.new-page-title" for="newPage"></label>
+						<input rsf:id="newPage" id="newPage" /><br />
+					</p>
+					
+					<label for="new-page-number"><span rsf:id="msg=simplepage.new-page-number"></span></label>
+					<input type="text" name="new-page-number" id="new-page-number" rsf:id="new-page-number" />
+					<span rsf:id="msg=simplepage.new-page-number-2"></span>
+					<br />
+
+					<input type="checkbox" name="new-page-copy" id="new-page-copy" rsf:id="new-page-copy" />
+					<label for="new-page-copy"><span rsf:id="msg=simplepage.new-page-copy"></span></label><br />
+
+					<div style="margin-top: .5em"></div>
+					<input class="bold" type="submit" onclick="event.returnValue = checkNewPageForm(); return checkNewPageForm();" rsf:id="new-page-submit" />
+					<input type="submit" rsf:id="new-page-cancel"  onclick="closeNewPageDialog(); return false" />
+					<div class="inset-text">
+					  <p rsf:id="msg=simplepage.new-page-explanation-1"></p>
+					  <p rsf:id="msg=simplepage.new-page-explanation-2"></p>
+					</div>
+
+				</form>
+				
+				<p class="shorttext required" style="margin-top: 1em; margin-bottom:1em">
+					<a href="#" id="subpage-choose" rsf:id="new-page-choose" ><span rsf:id="msg=simplepage.choose_existing_page"></span></a>
+				</p>
+			</div>
+
+			<div id="remove-page-dialog" rsf:id="remove-page-dialog">
+				<div style="margin-bottom: 2em" rsf:id="remove-page-explanation"></div>
+				<form action="#" rsf:id="remove-page-form">
+				  <input class="bold" type="submit" rsf:id="remove-page-submit" id="remove-page-submit" />
+				  <input type="submit" rsf:id="remove-page-cancel"  onclick="closeRemovePageDialog(); return false" />
+				</form>
+			</div>
+
+			<div id="youtube-dialog" rsf:id="youtube-dialog">
+				<div class="ui-widget" id="edit-youtube-error-container">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+						<strong rsf:id="msg=simplepage.error_colon"></strong> <span id="edit-youtube-error"></span></p>
+					</div>
+				</div>
+				
+				<form action="#" rsf:id="youtube-form">
+					<div class="border">
+						<input type="hidden" rsf:id="youtubeEditId" id="youtubeEditId" />
+						<div align="left">
+						         <p class="shorttext required">
+
+
+								<label for="youtubeURL"><span rsf:id="msg=simplepage.youtube_url"></span></label>
+								<input rsf:id="youtubeURL" id="youtubeURL" class="edit-youtube-input wideinput" /><br />
+								<label for="youtubeWidth"><span rsf:id="msg=simplepage.width_label"></span></label>
+								<input rsf:id="youtubeWidth" id="youtubeWidth" class="edit-youtube-input wideinput" /><br />
+								<label for="youtubeHeight"><span rsf:id="msg=simplepage.height_label"></span></label>
+								<input rsf:id="youtubeHeight" id="youtubeHeight" class="edit-youtube-input wideinput" /><br />
+							 </p>
+						</div>
+						<p class="shorttext required">
+						  <label rsf:id="description4-label" for="description4">Page Title</label><br />
+						  <textarea name="description4" rsf:id="description4" id="description4" rows="5" class="edit-multimedia-input" ></textarea>
+						</p>
+						<p rsf:id="editgroups-youtube" id="editgroups-youtube">
+						  <a href="#"><span rsf:id="msg=simplepage.edit-group"></span></a>
+						</p>
+					</div>
+					<br />
+					<div class="border2">
+						<div style="margin-top:5px; margin-bottom:5px;">
+							<b style="margin-left:50px;"><span rsf:id="msg=simplepage.delete"></span>:</b>
+							<input type="submit" style="margin-left:50px;" rsf:id="delete-youtube-item" />
+						</div>
+					</div>
+		
+					<input class="bold" type="submit" onclick="event.returnValue = checkYoutubeForm($('#youtubeWidth').val().trim(), $('#youtubeHeight').val().trim()); return checkYoutubeForm($('#youtubeWidth').val().trim(), $('#youtubeHeight').val().trim());" id="update-youtube" rsf:id="update-youtube" />
+					<input type="submit" rsf:id="cancel-youtube" onclick="closeYoutubeDialog(); return false" />
+				</form>
+			</div>
+			
+			<div id="movie-dialog" rsf:id="movie-dialog">
+				<div class="ui-widget" id="movie-error-container">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+						<strong rsf:id="msg=simplepage.error_colon"></strong> <span id="movie-error"></span></p>
+					</div>
+				</div>
+
+				<form action="#" rsf:id="movie-form">
+					<div class="border">
+						<input type="hidden" rsf:id="movieEditId" id="movieEditId" />
+						<p class="shorttext required">
+							<label for="movie-width">Width: </label>
+					 		<input type="text" name="width" rsf:id="movie-width" id="movie-width" length="30" class="edit-movie-input" /><br />
+						</p>
+						
+						<p class="shorttext required">
+							<label for="movie-height">Height: </label>
+					 		<input type="text" name="height" rsf:id="movie-height" id="movie-height" length="30" class="edit-movie-input" /><br />
+						</p>
+						
+						<p class="shorttext required">
+							<label rsf:id="msg=simplepage.path" for="path">Path</label>
+							<span id="movie-path"></span><br />
+						</p>
+				
+						<p class="shorttext required">
+						  <label rsf:id="description3-label" for="description3">Page Title</label><br />
+						  <textarea name="description3" rsf:id="description3" id="description3" rows="5" class="edit-multimedia-input" ></textarea>
+						</p>
+						<p class="shorttext required" id="change-resource-movie-p">
+						  <a href="#" rsf:id="change-resource-movie" id="change-resource-movie"><span rsf:id="msg.simplepage.change_resource"></span></a>
+					        </p>
+						<p id="editgroups-movie" class="edit-group">
+						  <a href="#"><span rsf:id="msg=simplepage.edit-group"></span></a>
+						</p>
+					</div>
+					<br />
+					<div class="border2">
+						<div style="margin-top:5px; margin-bottom:5px;">
+							<b style="margin-left:50px;"><span rsf:id="msg=simplepage.delete"></span>:</b>
+							<input type="submit" style="margin-left:50px;" rsf:id="delete-movie-item" />
+						</div>
+					</div>
+		
+					<input class="bold" type="submit" onclick="event.returnValue = checkMovieForm($('#movie-width').val().trim(), $('#movie-height').val().trim()); return checkMovieForm($('#movie-width').val().trim(), $('#movie-height').val().trim());" id="update-movie" rsf:id="update-movie" />
+					<input type="submit" rsf:id="movie-cancel" onclick="closeMovieDialog(); return false" />
+
+					<div class="expert" id="expert-movie-toggle-div">
+					  <p style="margin-top:0px; margin-bottom:0px">
+					    <a href="#" id="expert-movie-toggle" rsf:id="msg=simplepage.expert_toggle"></a>
+					  </p>
+					</div>
+
+					<div class="expert" id="expert-movie">
+					  <p style="margin-top:0px; margin-bottom:0px">
+					    <span rsf:id="msg=simplepage.tag_is"></span> 
+					    <span rsf:id="msg=simplepage.tag_object"></span>
+					  </p>
+					  <p rsf:id="msg=simplepage.expert_intro" style="margin-top:0px"></p>
+					  <label rsf:id="msg=simplepage.mimetype_label" for="mimetype4"></label><br />
+					  <input type="text" name="mimetype" rsf:id="mimetype4" id="mimetype4" class="edit-movie-input wideinput" /><br />
+					</div>
+
+				</form>
+			</div>
+			
+			<div id="comments-dialog" rsf:id="comments-dialog">
+				<form action="#" rsf:id="comments-form">
+					<div class="border">
+						<input type="hidden" rsf:id="commentsEditId" id="commentsEditId" />
+						<div align="left">
+							<input type="checkbox" name="comments-anonymous" id="comments-anonymous" rsf:id="comments-anonymous" />
+							<label for="comments-anonymous"><span rsf:id="msg=simplepage.comments-anonymous"></span></label><br />
+							
+							<input type="checkbox" name="comments-graded" id="comments-graded" rsf:id="comments-graded" />
+							<label for="comments-graded"><span rsf:id="msg=simplepage.comments-graded"></span></label><br />
+							<label for="comments-max" class="indent2"><span rsf:id="msg=simplepage.comments-max"></span></label>
+							<input type="text" name="comments-max" id="comments-max" rsf:id="comments-max" />
+							
+						</div>
+
+						<div align="left" style="margin-top:1em">
+						  <input type="checkbox" name="comments-prerequisite" id="comments-prerequisite" rsf:id="comments-prerequisite" />
+						  <label for="comments-prerequisite"><span rsf:id="msg=simplepage.prerequisites_label"></span></label>
+						  <br />
+					
+						  <input type="checkbox" name="comments-required" id="comments-required" rsf:id="comments-required" />
+						  <label for="comments-required"><span rsf:id="msg=simplepage.require" id="require-label"></span></label>
+						</div>
+
+						<p id="editgroups-comments">
+						  <a href="#"><span rsf:id="msg=simplepage.edit-group"></span></a>
+						</p>
+					</div>
+					<br />
+
+					<div class="border2">
+						<div style="margin-top:5px; margin-bottom:5px;">
+							<b style="margin-left:50px;"><span rsf:id="msg=simplepage.delete"></span>:</b>
+							<input type="submit" style="margin-left:50px;" rsf:id="delete-comments-item" />
+						</div>
+					</div>
+		
+					<input class="bold" type="submit" onclick="event.returnValue = checkCommentsForm(); return checkCommentsForm();" id="update-comments" rsf:id="update-comments" />
+					<input type="submit" rsf:id="cancel-comments" onclick="closeCommentsDialog(); return false" />
+
+				</form>
+			</div>
+			
+			<div id="student-dialog" rsf:id="student-dialog">
+				<form action="#" rsf:id="student-form">
+					<div class="border">
+						<input type="hidden" rsf:id="studentEditId" id="studentEditId" />
+						<div align="left">
+							<input type="checkbox" name="student-anonymous" id="student-anonymous" rsf:id="student-anonymous" />
+							<label for="student-anonymous"><span rsf:id="msg=simplepage.student-anonymous"></span></label><br />
+							
+							<input type="checkbox" name="student-graded" id="student-graded" rsf:id="student-graded" />
+							<label for="student-graded"><span rsf:id="msg=simplepage.comments-graded"></span></label><br />
+							<label for="student-max" class="indent2"><span rsf:id="msg=simplepage.comments-max"></span></label>
+							<input type="text" name="student-max" id="student-max" rsf:id="student-max" />
+							
+							<br /><br />
+							
+							<input type="checkbox" name="student-comments" id="student-comments" rsf:id="student-comments" />
+							<label for="student-comments"><span rsf:id="msg=simplepage.student-comments"></span></label><br />
+							
+							<input type="checkbox" name="student-comments-anon" id="student-comments-anon" class="indent" rsf:id="student-comments-anon" />
+							<label for="student-comments-anon"><span rsf:id="msg=simplepage.student-comments-anon"></span></label><br />
+							
+							<input type="checkbox" name="student-comments-graded" id="student-comments-graded" class="indent" rsf:id="student-comments-graded" />
+							<label for="student-comments-graded"><span rsf:id="msg=simplepage.student-comments-graded"></span></label><br />
+							
+							<label for="student-comments-max" class="indent3"><span rsf:id="msg=simplepage.comments-max"></span></label>
+							<input type="text" name="student-comments-max" id="student-comments-max" rsf:id="student-comments-max" /><br />
+							
+						</div>
+
+						<div align="left" style="margin-top:1em">
+						  <input type="checkbox" name="student-prerequisite" id="student-prerequisite" rsf:id="student-prerequisite" />
+						  <label for="student-prerequisite"><span rsf:id="msg=simplepage.prerequisites_label"></span></label>
+						  <br />
+					
+						  <input type="checkbox" name="student-required" id="student-required" rsf:id="student-required" />
+						  <label for="student-required"><span rsf:id="msg=simplepage.require" id="require-label"></span></label>
+						</div>
+
+                                               <p id="editgroups-student">
+                                                <a href="#"><span rsf:id="msg=simplepage.edit-group"></span></a>
+                                              </p>
+
+					</div>
+					<br />
+
+					<div class="border2">
+						<div style="margin-top:5px; margin-bottom:5px;">
+							<b style="margin-left:50px;"><span rsf:id="msg=simplepage.delete"></span>:</b>
+							<input type="submit" style="margin-left:50px;" rsf:id="delete-student-item" />
+						</div>
+					</div>
+		
+					<input class="bold" type="submit" onclick="return true;" id="update-student" rsf:id="update-student" />
+					<input type="submit" rsf:id="cancel-student" onclick="closeStudentDialog(); return false" />
+
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div rsf:id="delete-dialog" id="delete-dialog">
+		<span id="delete-dialog-comment-url" style="display:none"></span>
+	
+		<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 0 0;"></span>
+		<span rsf:id="msg=simplepage.delete_comment_confirm" id="delete-comment-confirm"></span>
+	</div>
+	
+	<div rsf:id="comments-script">
+		<script type="text/javascript" src="$context/js/periodicalupdater.js"></script>
+		<script type="text/javascript" src="$context/js/comments.js"></script>
+	</div>
+	<script type="text/javascript" language="JavaScript">
+		spiffyUp();	
+	</script>
+</body>
+</html>

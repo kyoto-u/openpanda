@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/StringUtil.java $
- * $Id: StringUtil.java 63898 2009-06-20 09:46:13Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/StringUtil.java $
+ * $Id: StringUtil.java 101696 2011-12-13 14:44:36Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -29,7 +29,9 @@ import java.util.Iterator;
  * <p>
  * StringUtil collects together some string utility classes.
  * </p>
+ * @deprecated use commons-lang StringUtils, this will be removed after 2.9 - Dec 2011
  */
+@Deprecated 
 public class StringUtil
 {
 	/**

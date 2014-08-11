@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/branches/sakai-2.8.x/roster-app/src/java/org/sakaiproject/tool/roster/StatusRequestCache.java $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.0/roster-app/src/java/org/sakaiproject/tool/roster/StatusRequestCache.java $
  * $Id: StatusRequestCache.java 72289 2010-01-22 15:41:10Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

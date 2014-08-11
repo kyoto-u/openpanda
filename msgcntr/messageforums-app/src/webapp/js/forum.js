@@ -478,25 +478,29 @@ function FCKeditor_OnComplete(editorInstance) {
 	   
     fckeditor_word_count(editorInstance);
     editorInstance.Events.AttachEvent('OnSelectionChange', fckeditor_word_count);
-   
 }
-
+   
 function ckeditor_word_count() {
      msgcntr_word_count(CKEDITOR.instances[sakaiCKEditorName].getData());
 }
 
 function fckeditor_word_count(editorInstance) {
-    msgcntr_word_count(editorInstance.GetData());
+     msgcntr_word_count(editorInstance.GetData());
 }
-
 
 function msgcntr_word_count(forumHtml) {
-    document.getElementById('counttotal').innerHTML = "<span class='highlight'>(" + getWordCount(forumHtml) + ")</span>";
+    if (document.getElementById('counttotal')) {
+        document.getElementById('counttotal').innerHTML = "<span class='highlight'>(" + getWordCount(forumHtml) + ")</span>";
+    }
 }
-
-function getWordCount(msgStr) {
+  
+ function fckeditor_word_count_fromMessage(msgStr, countSpan){
+ 	document.getElementById(countSpan).innerHTML = "<span class='highlight'>(" + getWordCount(msgStr) + ")</span>";
+ }
  
-    var matches = msgStr.replace(/<[^<|>]+?>|&nbsp;/gi,' ').match(/\b/g);
+ function getWordCount(msgStr) {
+ 
+     var matches = msgStr.replace(/<[^<|>]+?>|&nbsp;/gi,' ').replace(/[\u0080-\u202e\u2030-\u205f\u2061-\ufefe\uff00-\uffff]/g,'x').match(/\b/g);
     var count = 0;
     if(matches) {
         count = matches.length/2;
@@ -535,6 +539,62 @@ function InsertHTML(header) {
 	}
 }
 
+var setupLongDesc = function(){
+    var showMoreText = $('.showMoreText').text();
+    $('.show').hide();
+    $('.textPanel').each(function(i){
+        if ($(this).text().length > 200) {
+            var trimmed = $(this).text().substring(0, 200) + '... <a class=\"moreDescription\")" href=\"#\">' + showMoreText + '</a>';
+        }
+        else{
+            var trimmed = $(this).html();
+        }
+        var insertPoint = $(this).parent('.toggle');
+        $('<p class=\"trimmedPanelTop\">' + trimmed + '</p>').insertBefore(insertPoint);
+    });
+    
+    $('.forumHeader, .topicBloc').each(function(i){
+        var attachList = $(this).find('.attachListTable');
+        var insertPoint='';
+        if ($(this).find('.toggle').length){
+            var insertPoint = $(this).find('.toggle');
+        }
+        else{
+            var insertPoint = $(this).find('.hide');            
+        }
+        $(attachList).insertAfter(insertPoint);
+    });
+     
+    $('.moreDescription').live('click', function(e){
+        e.preventDefault();
+        var trimmedText = $(this).parent();
+        var textPanel = $(this).parent('p').next('div.toggle');
+        $(trimmedText).fadeOut('slow', function(){
+            $(textPanel).fadeIn('slow');
+        });
+        resizeFrame('grow')
+        
+    });
+    
+}
+var setupdfAIncMenus = function(){
+    
+    $('body').click(function(e){
+        if (e.target.className != 'moreMenuLink' && e.target.className != 'moreMenuLinkSpan'){
+            $('.moreMenu').hide();
+        }
+        });
+    $('.moreMenuLink').click(function(e){
+        e.preventDefault();
+        $('.moreMenu').hide();
+        pos =$(this).position()
+        $(this).next('ul').css({
+            'position':'absolute',
+            'top':pos.top + 20,
+            'left':pos.left + 20
+        }).toggle();
+    })
+}
 var clicked = 'false';
 function disable() {
     if (clicked == 'false') {
@@ -544,3 +604,19 @@ function disable() {
         document.forms[0].elements['dfCompose:post'].disabled=true;
     }
 }
+
+// This is the profile display on user's names.
+$(document).ready(function() {			
+	$('.authorProfile').each(function() {
+		$(this).qtip({ 
+			content: {text: '<h:outputText value="#{msgs.loading_wait}" />',
+				url: $(this).attr('href'), title: {	text: '<h:outputText value="#{msgs.cdfm_profile_information}" />',button: '[ X ]' }
+			},
+			position: {	corner: {target: 'center', tooltip: 'leftMiddle'} },
+			show: { when: 'click', solo: true, effect: {length:0} },
+			hide: { when:'unfocus', fixed:true, delay: 300,  effect: {length:0} },
+			style: { tip: true, border: {color:'#687E9C'}, name: 'light', width: 570 }
+		});
+		$(this).attr('href', 'javascript:;');
+	});
+});	

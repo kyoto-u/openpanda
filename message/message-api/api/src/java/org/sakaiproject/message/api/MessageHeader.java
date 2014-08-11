@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/branches/sakai-2.8.x/message-api/api/src/java/org/sakaiproject/message/api/MessageHeader.java $
- * $Id: MessageHeader.java 81228 2010-08-13 15:03:43Z savithap@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.0/message-api/api/src/java/org/sakaiproject/message/api/MessageHeader.java $
+ * $Id: MessageHeader.java 90084 2011-03-20 08:14:50Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Stack;
 
 import org.sakaiproject.entity.api.AttachmentContainer;
+import org.sakaiproject.site.api.Group;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.user.api.User;
 import org.w3c.dom.Document;
@@ -113,14 +114,14 @@ public interface MessageHeader extends AttachmentContainer
 	 * 
 	 * @return A Collection (String) of group refs (authorization group ids) defined for this message; empty if none are defined.
 	 */
-	Collection getGroups();
+	Collection<String> getGroups();
 
 	/**
 	 * Access the groups, as Group objects, defined for this message.
 	 * 
 	 * @return A Collection (Group) of group objects defined for this message; empty if none are defined.
 	 */
-	Collection getGroupObjects();
+	Collection<Group> getGroupObjects();
 
 	/**
 	 * Access the access mode for the message - how we compute who has access to the message.

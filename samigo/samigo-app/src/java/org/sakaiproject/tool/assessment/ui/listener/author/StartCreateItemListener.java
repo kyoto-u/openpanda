@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/StartCreateItemListener.java $
- * $Id: StartCreateItemListener.java 84423 2010-11-05 23:25:47Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/StartCreateItemListener.java $
+ * $Id: StartCreateItemListener.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -204,8 +204,11 @@ log.debug("after getting item.getItemType() ");
                         nextpage = "fillInBlackItem";
                         break;
                 case 11:
-                    nextpage = "fillInNumericItem";
-                    break;
+                        nextpage = "fillInNumericItem";
+                        break;
+                case 13:
+                        nextpage = "matrixChoicesSurveyItem";
+                        break;
                 case 9:
      			MatchItemBean matchitem = new MatchItemBean();
 

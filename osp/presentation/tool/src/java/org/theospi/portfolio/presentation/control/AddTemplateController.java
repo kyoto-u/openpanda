@@ -219,8 +219,12 @@ public class AddTemplateController extends AbstractWizardFormController {
    }
    
    protected Collection getAvailableForms(String siteId, String type) {
-      return getStructuredArtifactDefinitionManager().findHomes(
-            getIdManager().getId(siteId), true);
+	   String currentUserId = "";
+	   Agent currentAgent = getAuthManager().getAgent();
+	   if (currentAgent != null && currentAgent.getId() != null)
+		   currentUserId = currentAgent.getId().getValue();
+      return getStructuredArtifactDefinitionManager().findAvailableHomes(
+            getIdManager().getId(siteId), currentUserId, true, true);
    }
 
    protected Map referenceData(HttpServletRequest request,
@@ -379,7 +383,7 @@ public class AddTemplateController extends AbstractWizardFormController {
    protected Collection getHomes() {
       ArrayList list = new ArrayList();
       Map homeMap =  getHomeFactory().getWorksiteHomes(
-         getWorksiteManager().getCurrentWorksiteId(), true);
+         getWorksiteManager().getCurrentWorksiteId(), getAuthManager().getAgent().getId().getValue(), true);
       for (Iterator i = homeMap.values().iterator(); i.hasNext();){
            list.add(i.next());
       }

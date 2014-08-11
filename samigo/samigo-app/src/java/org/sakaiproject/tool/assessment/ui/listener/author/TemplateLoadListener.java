@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/TemplateLoadListener.java $
- * $Id: TemplateLoadListener.java 68037 2009-10-16 22:16:44Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/TemplateLoadListener.java $
+ * $Id: TemplateLoadListener.java 100218 2011-10-28 05:48:28Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -51,7 +51,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: TemplateLoadListener.java 68037 2009-10-16 22:16:44Z ktsao@stanford.edu $
+ * @version $Id: TemplateLoadListener.java 100218 2011-10-28 05:48:28Z ktsao@stanford.edu $
  */
 
 public class TemplateLoadListener
@@ -138,9 +138,13 @@ public class TemplateLoadListener
         }
         if (aac.getLateHandling() != null)
           templateBean.setLateHandling(aac.getLateHandling().toString());
-        if (aac.getAutoSubmit() != null)
-          templateBean.setAutoSave(aac.getAutoSubmit().toString());
-      }
+        if (aac.getAutoSubmit() != null && aac.getAutoSubmit().intValue() == 1) {
+        		templateBean.setAutomaticSubmission(Boolean.TRUE);
+        	}
+        }
+        else {
+        	templateBean.setAutomaticSubmission(Boolean.FALSE);
+        }
 
       // Evaluation Model
       EvaluationModel model = (EvaluationModel) template.getEvaluationModel();

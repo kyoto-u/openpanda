@@ -67,8 +67,8 @@ import java.util.Set;
  * Implements a simple differencing algortithm.
  * <p>
  * 
- * @date $Date: 2010-11-13 03:27:24 +0900 (Sat, 13 Nov 2010) $
- * @version $Revision: 84671 $
+ * @date $Date: 2010-11-03 22:15:52 +0900 (Wed, 03 Nov 2010) $
+ * @version $Revision: 84222 $
  * @author <a href="mailto:juanco@suigeneris.org">Juanco Anez</a>
  *         <p>
  *         <b>Overview of Algorithm</b>

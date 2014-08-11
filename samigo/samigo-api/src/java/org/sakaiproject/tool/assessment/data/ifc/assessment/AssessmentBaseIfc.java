@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/AssessmentBaseIfc.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/AssessmentBaseIfc.java $
  * $Id: AssessmentBaseIfc.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
  ***********************************************************************************
  *

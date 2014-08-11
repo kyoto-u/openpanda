@@ -1,6 +1,6 @@
 /**
- * $Id: AuthenticationCache.java 81061 2010-08-11 14:00:48Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/user/impl/AuthenticationCache.java $
+ * $Id: AuthenticationCache.java 113397 2012-09-21 20:33:28Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/AuthenticationCache.java $
  **************************************************************************
  * Copyright (c) 2007, 2008 Sakai Foundation
  *
@@ -19,6 +19,7 @@
 
 package org.sakaiproject.user.impl;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -171,7 +172,10 @@ public class AuthenticationCache {
 		if (log.isWarnEnabled()) log.warn("failureThrottleTimeoutMs property set but no longer used; should switch to timeToLive seconds property instead");
 	}
 
-	static class AuthenticationRecord {
+	static class AuthenticationRecord implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+
 		byte[] encodedPassword;
 		Authentication authentication;	// Null for failed authentication
 

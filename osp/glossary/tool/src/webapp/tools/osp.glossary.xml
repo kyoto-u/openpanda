@@ -6,8 +6,6 @@
        <configuration name="test" value="reg-value" />
 
        <category name="sakai.main" />
-      <category name="project" />
-      <category name="course" />
       <category name="portfolio" />
       <category name="portfolioAdmin" />
 

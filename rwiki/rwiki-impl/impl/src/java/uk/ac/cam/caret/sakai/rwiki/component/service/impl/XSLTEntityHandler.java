@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/XSLTEntityHandler.java $
- * $Id: XSLTEntityHandler.java 84672 2010-11-12 18:29:04Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/XSLTEntityHandler.java $
+ * $Id: XSLTEntityHandler.java 109848 2012-06-28 16:50:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -764,7 +764,7 @@ public class XSLTEntityHandler extends BaseEntityHandlerImpl
 				boolean isuuid = false;
 				String groupID = Entity.SEPARATOR + paths[1] + Entity.SEPARATOR
 						+ paths[2] + Entity.SEPARATOR + paths[3] + Entity.SEPARATOR
-						+ paths[4];;
+						+ paths[4];
 				if (testuuid.length > 0 && testuuid.length == uuidparts.length)
 				{
 					isuuid = true;
@@ -828,8 +828,7 @@ public class XSLTEntityHandler extends BaseEntityHandlerImpl
 	public void init()
 	{
 		if (!isAvailable()) return;
-		ComponentManager cm = org.sakaiproject.component.cover.ComponentManager
-				.getInstance();
+		ComponentManager cm = org.sakaiproject.component.cover.ComponentManager.getInstance();
 		entityManager = (EntityManager) load(cm, EntityManager.class.getName());
 		renderService = (RenderService) load(cm, RenderService.class.getName());
 
@@ -838,8 +837,7 @@ public class XSLTEntityHandler extends BaseEntityHandlerImpl
 		try
 		{
 			XSLTTransform xsltTransform = new XSLTTransform();
-			xsltTransform.setXslt(new InputSource(this.getClass().getResourceAsStream(
-					xslt)));
+			xsltTransform.setXslt(new InputSource(this.getClass().getResourceAsStream(xslt)));
 			xsltTransform.getContentHandler();
 		}
 		catch (Exception ex)

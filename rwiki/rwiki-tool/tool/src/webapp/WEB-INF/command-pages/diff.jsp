@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/diff.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/diff.jsp $
  * $Id: diff.jsp 34228 2007-08-21 23:03:53Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

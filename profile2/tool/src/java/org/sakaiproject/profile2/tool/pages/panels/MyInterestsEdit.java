@@ -35,6 +35,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.profile2.logic.ProfileLogic;
+import org.sakaiproject.profile2.logic.ProfileWallLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.UserProfile;
 import org.sakaiproject.profile2.util.ProfileConstants;
@@ -51,6 +52,9 @@ public class MyInterestsEdit extends Panel {
 	
 	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileLogic")
 	private ProfileLogic profileLogic;
+	
+	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileWallLogic")
+	private ProfileWallLogic wallLogic;
 	
 	public MyInterestsEdit(final String id, final UserProfile userProfile) {
 		super(id);
@@ -127,6 +131,11 @@ public class MyInterestsEdit extends Panel {
 					//post update event
 					sakaiProxy.postEvent(ProfileConstants.EVENT_PROFILE_INTERESTS_UPDATE, "/profile/"+userId, true);
 					
+					//post to wall if enabled
+					if (true == sakaiProxy.isWallEnabledGlobally() && false == sakaiProxy.isSuperUserAndProxiedToUser(userId)) {
+						wallLogic.addNewEventToWall(ProfileConstants.EVENT_PROFILE_INTERESTS_UPDATE, sakaiProxy.getCurrentUserId());
+					}
+					
 					//repaint panel
 					Component newPanel = new MyInterestsDisplay(id, userProfile);
 					newPanel.setOutputMarkupId(true);
@@ -201,7 +210,7 @@ public class MyInterestsEdit extends Panel {
 		sakaiPerson.setFavouriteQuotes(userProfile.getFavouriteQuotes());
 
 		//update SakaiPerson
-		if(sakaiProxy.updateSakaiPerson(sakaiPerson)) {
+		if(profileLogic.saveUserProfile(sakaiPerson)) {
 			log.info("Saved SakaiPerson for: " + userId );
 			return true;
 		} else {

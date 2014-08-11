@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-impl/impl/src/java/org/sakaiproject/portal/charon/SkinnableCharonPortal.java $
- * $Id: SkinnableCharonPortal.java 118792 2013-01-25 01:21:31Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/SkinnableCharonPortal.java $
+ * $Id: SkinnableCharonPortal.java 113359 2012-09-21 18:46:13Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,18 +37,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sourceforge.wurfl.core.Device;
-import net.sourceforge.wurfl.core.DeviceNotDefinedException;
-import net.sourceforge.wurfl.core.WURFLHolder;
-import net.sourceforge.wurfl.core.WURFLManager;
-
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.cover.SecurityService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.IdUsedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.portal.api.Editor;
 import org.sakaiproject.portal.api.PageFilter;
@@ -92,7 +91,6 @@ import org.sakaiproject.portal.charon.handlers.XLoginHandler;
 import org.sakaiproject.portal.charon.site.PortalSiteHelperImpl;
 import org.sakaiproject.portal.render.api.RenderResult;
 import org.sakaiproject.portal.render.cover.ToolRenderService;
-import org.sakaiproject.portal.util.BrowserDetector;
 import org.sakaiproject.portal.util.ErrorReporter;
 import org.sakaiproject.portal.util.ToolURLManagerImpl;
 import org.sakaiproject.portal.util.URLUtils;
@@ -110,23 +108,30 @@ import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.api.ToolURL;
 import org.sakaiproject.tool.cover.ActiveToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
-import org.sakaiproject.tool.cover.ToolManager;
+import org.sakaiproject.user.api.PreferencesEdit;
+import org.sakaiproject.user.api.Preferences;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserAlreadyDefinedException;
+import org.sakaiproject.user.api.UserEdit;
+import org.sakaiproject.user.api.UserLockedException;
 import org.sakaiproject.user.api.UserNotDefinedException;
+import org.sakaiproject.user.api.UserPermissionException;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.BasicAuth;
 import org.sakaiproject.util.EditorConfiguration;
 import org.sakaiproject.util.ResourceLoader;
-import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.Web;
+
+import au.com.flyingkite.mobiledetect.UAgentInfo;
 
 /**
  * <p/> Charon is the Sakai Site based portal.
  * </p>
  * 
  * @since Sakai 2.4
- * @version $Rev: 118792 $
+ * @version $Rev: 113359 $
  * 
  */
 @SuppressWarnings("deprecation")
@@ -192,18 +197,13 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	
 	// 2.3 back port
 	// public String PROP_SHOW_SUBSITES = "sakai:show-subsites";
-
-	// http://wurfl.sourceforge.net/
-	private boolean wurflLoaded = false;
-
-	private WURFLHolder wurflHolder = null;
-	private WURFLManager wurfl = null;
-	/*
-	public CapabilityMatrix cm = null;
-	public UAManager uam = null;
-	 */
+	
+	private boolean isMobileDevice = false;
+	
 	private boolean forceContainer = false;
 
+	private boolean sakaiTutorialEnabled = true;
+	
 	private String handlerPrefix;
 
 	private PageFilter pageFilter = new PageFilter() {
@@ -277,7 +277,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		// error and we cannot use the error site...
 
 		// form a context sensitive title
-		String title = ServerConfigurationService.getString("ui.service") + " : Portal";
+		String title = ServerConfigurationService.getString("ui.service","Sakai") + " : Portal";
 
 		// start the response
 		PortalRenderContext rcontext = startPageContext("", title, null, req);
@@ -303,7 +303,6 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 
 			if (e != null)
 			{
-				boolean first = true;
 				while (e.hasMoreElements())
 				{
 					String param = (String) e.nextElement();
@@ -492,7 +491,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 
 
 		// form a context sensitive title
-		String title = ServerConfigurationService.getString("ui.service");
+		String title = ServerConfigurationService.getString("ui.service","Sakai");
 		if (site != null)
 		{
 			title = title + ":" + site.getTitle();
@@ -524,8 +523,6 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			Map m = includeTool(res, req, placement);
 			if (m != null) rcontext.put("currentPlacement", m);
 		}
-
-		boolean loggedIn = session.getUserId() != null;
 
 		if (site != null)
 		{
@@ -615,8 +612,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		String toolId = Web.escapeHtml(placement.getToolId());
 
 		// Reset the tool state if requested
-		if ("true".equals(req.getParameter(portalService.getResetStateParam()))
-				|| "true".equals(portalService.getResetState()))
+		if (portalService.isResetRequested(req))
 		{
 			Session s = SessionManager.getCurrentSession();
 			ToolSession ts = s.getToolSession(placement.getId());
@@ -629,9 +625,17 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		boolean showResetButton = !"false".equals(placement.getConfig().getProperty(
 				Portal.TOOLCONFIG_SHOW_RESET_BUTTON));
 
-		String resetActionUrl = PortalStringUtil.replaceFirst(toolUrl, "/tool/",
-		"/tool-reset/")
-		+ "?panel=Main";
+		String resetActionUrl = PortalStringUtil.replaceFirst(toolUrl, "/tool/", "/tool-reset/");
+
+                String sakaiPanel = req.getParameter("panel");
+                if ( sakaiPanel != null && sakaiPanel.matches(".*[\"'<>].*" ) ) sakaiPanel=null;
+                if ( sakaiPanel == null ) sakaiPanel="Main";
+                resetActionUrl = URLUtils.addParameter(resetActionUrl, "panel", sakaiPanel);
+
+                // SAK-20462 - Pass through the sakai_action parameter
+                String sakaiAction = req.getParameter("sakai_action");
+                if ( sakaiAction != null && sakaiAction.matches(".*[\"'<>].*" ) ) sakaiAction=null;
+                if ( sakaiAction != null ) resetActionUrl = URLUtils.addParameter(resetActionUrl, "sakai_action", sakaiAction);
 
 		// Reset is different for Portlets
 		if (isPortletPlacement(placement))
@@ -696,11 +700,23 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		toolMap.put("toolRenderResult", result);
 		toolMap.put("hasRenderResult", Boolean.valueOf(true));
 		toolMap.put("toolUrl", toolUrl);
+
+		boolean allowNeo = ServerConfigurationService.getBoolean("portal.allow.neo.portlet", true);
+		Session s = SessionManager.getCurrentSession();
+		ToolSession ts = s.getToolSession(placement.getId());
+		ts.removeAttribute(SAKAI_PORTAL_BREADCRUMBS);
+		ts.removeAttribute(SAKAI_PORTAL_SUPPRESSTITLE);
+		if ( allowNeo ) {
+			ts.setAttribute(SAKAI_PORTAL_ALLOW_NEO,"true");
+			ts.setAttribute(SAKAI_PORTAL_HELP_ACTION,helpActionUrl);
+			ts.setAttribute(SAKAI_PORTAL_RESET_ACTION,resetActionUrl);
+		}
+
 		if (isPortletPlacement(placement))
 		{
 			// If the tool has requested it, pre-fetch render output.
 			String doPreFetch  = placement.getConfig().getProperty(Portal.JSR_168_PRE_RENDER);
-			if ( "true".equals(doPreFetch) ) 
+			if ( ! "false".equals(doPreFetch) ) 
 			{
 				try {
 					result.getContent();
@@ -709,6 +725,12 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 					String str = err.reportFragment(req, res, t);
 					result.setContent(str);
 				}
+				if ( allowNeo ) {
+					Object bread = ts.getAttribute(SAKAI_PORTAL_BREADCRUMBS);
+					if ( bread != null ) toolMap.put("breadcrumbs", bread);
+					Object suppressTitle = ts.getAttribute(SAKAI_PORTAL_SUPPRESSTITLE);
+					if ( "true".equals(suppressTitle) ) toolMap.put("suppressTitle", Boolean.TRUE);
+				}
 			}
 
 			toolMap.put("toolPlacementIDJS", "_self");
@@ -716,6 +738,9 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		}
 		else
 		{
+			String suppressTitleLegacy  = placement.getConfig().getProperty(SAKAI_PORTAL_SUPPRESSTITLE);
+			if ( "true".equals(suppressTitleLegacy) ) toolMap.put("suppressTitle", Boolean.TRUE);
+
 			toolMap.put("toolPlacementIDJS", Web.escapeJavascript("Main"
 					+ placement.getId()));
 		}
@@ -727,55 +752,44 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		toolMap.put("toolShowHelpButton", Boolean.valueOf(showHelpButton));
 		toolMap.put("toolHelpActionUrl", helpActionUrl);
 		toolMap.put("toolId", toolId);
+		
+		String directToolUrl = ServerConfigurationService.getPortalUrl() + "/" + DirectToolHandler.URL_FRAGMENT +"/" + Web.escapeUrl(placement.getId()) + "/";
+		toolMap.put("directToolUrl", directToolUrl);
+		
+		//props to enable/disable the display on a per tool/placement basis
+		//will be displayed if not explicitly disabled in the tool/placement properties
+		boolean showDirectToolUrl = !"false".equals(placement.getConfig().getProperty(Portal.TOOL_DIRECTURL_ENABLED_PROP));
+		toolMap.put("showDirectToolUrl", showDirectToolUrl);
+		
 		return toolMap;
 	}
 
 
-	private String getRequestHandler(HttpServletRequest req)
+	private boolean usePdaHandler(HttpServletRequest req)
 	{
-		setupWURFL();
-		if ( req == null || wurflHolder == null || wurfl == null ) return null;
+		if ( req == null) return false;
+
+		checkMobile(req);
 		
 		//check sakai.properties to see if auto redirect is enabled
 		//defaults to true - if set to false, skip the PDA check
 		if(!ServerConfigurationService.getBoolean("portal.pda.autoredirect", true)){
-			return null;
+			if(M_log.isDebugEnabled()) {
+				M_log.debug("Auto redirect for mobile devices is disabled, classic view will be used preferentially.");
+			}
+			return false;
 		}
 		
 		//check if we have a cookie to force classic view, skip the PDA check
 		Cookie c = findCookie(req, Portal.PORTAL_MODE_COOKIE_NAME);
 		if ((c != null) && (c.getValue().equals(Portal.FORCE_CLASSIC_COOKIE_VALUE))) {
-			return null;
+			if(M_log.isDebugEnabled()) {
+				M_log.debug("Cookie found, classic view will be used preferentially.");
+			}
+			return false;
 		}
 		
-		Device device = null;
-		try {
-			device = wurfl.getDeviceForRequest(req);
-		} catch (DeviceNotDefinedException e) {
-			//this will be hit a lot, so its at debug level to reduce log traffic
-			if (M_log.isDebugEnabled())
-			{
-				M_log.debug("Device '" + e.getDeviceId() + "' is not in WURFL");
-			}
-			return null;
-		}
-		
-		String deviceName = device.getId();
-
-		// Not a device recognized by WURFL
-		if (StringUtils.isBlank(deviceName) || deviceName.startsWith("generic") ) { 
-			return null;
-		} else {
-			//if this is a mobile device 
-			String isMobile = device.getCapability("is_wireless_device");
-			Boolean isMobileBool = Boolean.valueOf(isMobile);
-			if (isMobileBool.booleanValue()) {
-				Session session = SessionManager.getCurrentSession();
-				session.setAttribute("is_wireless_device", Boolean.TRUE);
-				return deviceName;
-			}
-			return null;
-		}
+		return isMobileDevice;
 		
 	}
 
@@ -836,12 +850,16 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			Map<String, PortalHandler> handlerMap = portalService.getHandlerMap(this);
 
 			PortalHandler ph;
-			String requestHandler = getRequestHandler(req);
+			boolean pdaHandler = usePdaHandler(req);
+			
+			if(M_log.isDebugEnabled()){
+				M_log.debug("Using pdaHandler: " + pdaHandler);
+			}
 
 			// begin SAK-19089
 			// if not logged in and accessing "/" and not from PDA, redirect to gatewaySiteUrl
 			if ((gatewaySiteUrl != null) && (option == null || "/".equals(option)) 
-					&& (requestHandler == null) && (session.getUserId() == null)) 
+					&& (!pdaHandler) && (session.getUserId() == null)) 
 			{
 				// redirect to gatewaySiteURL 
 				res.sendRedirect(gatewaySiteUrl);
@@ -849,7 +867,8 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			}
 			// end SAK-19089
 
-			if (requestHandler != null){
+			// SAK-22633 - Only forward site urls to PDAHandler
+			if (pdaHandler && parts.length > 1 && "site".equals(parts[1])){
 				//Mobile access
 				ph = handlerMap.get("pda");
 				parts[1] = "pda";
@@ -872,7 +891,6 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			if (stat == PortalHandler.NEXT)
 			{
 
-				List<PortalHandler> urlHandlers;
 				for (Iterator<PortalHandler> i = handlerMap.values().iterator(); i.hasNext();)
 				{
 					ph = i.next();
@@ -972,7 +990,16 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	public void doLogout(HttpServletRequest req, HttpServletResponse res,
 			Session session, String returnPath) throws ToolException
 	{
-		String loggedOutUrl = ServerConfigurationService.getLoggedOutUrl();
+		
+		// SAK-16370 to allow multiple logout urls
+		String loggedOutUrl = null;
+		String userType = UserDirectoryService.getCurrentUser().getType();
+		if(userType == null) {		
+			loggedOutUrl = ServerConfigurationService.getLoggedOutUrl();
+		} else {
+			loggedOutUrl = ServerConfigurationService.getString("loggedOutUrl." + userType, ServerConfigurationService.getLoggedOutUrl());
+		}
+		
 		if ( returnPath != null ) 
 		{
 			loggedOutUrl = loggedOutUrl + returnPath;
@@ -984,58 +1011,80 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		tool.help(req, res, context, "/logout");
 	}
 
-	/** Set up the WURFL objects - to use most classes will
-	 *  extend the register method and call this setup.
+	/**
+	 * Check if we are on a mobile device. Only does this once per session.
+	 * @param req HttpServletRequest
 	 */
-	public void setupWURFL()
-	{
-		// Only do this once
-		if ( wurflLoaded ) return;
-		wurflLoaded = true;
-		try {
-
-			wurflHolder = (WURFLHolder) getServletContext().getAttribute("net.sourceforge.wurfl.core.WURFLHolder");
-			if ( wurflHolder == null )
-			{
-				M_log.warn("WURFL Initialization failed - PDA support may be limited");
-			}
-			else
-			{
-				wurfl = wurflHolder.getWURFLManager();
-				M_log.info("WURFL Initialization holder=" + wurflHolder + " manager=" + wurfl);
-
-			}
-		}
-		catch (Exception e)
-		{
-			M_log.info("WURFL Initialization failed - PDA support may be limited "+e);
-		}
-	}
-
-	// Read the Wireless Universal Resource File and determine the display size
-	// http://wurfl.sourceforge.net/
-	public void setupMobileDevice(HttpServletRequest req, PortalRenderContext rcontext)
-	{
-		setupWURFL();
-		if ( req == null || wurflHolder == null || wurfl == null ) return;
+	public void checkMobile(HttpServletRequest req) {
 		
+		//check session param and return if already set. We don't care what the value actually is, just that we have already processed it
+		Session session = SessionManager.getCurrentSession();
+		Boolean mobileDeviceParam = (Boolean)session.getAttribute("is_mobile_device");
+
+		if(M_log.isDebugEnabled()){
+			M_log.debug("session id: " + session.getId());
+			M_log.debug("is_mobile_device session param: " + mobileDeviceParam);
+		}
 		
-		Device device = null;
-		try {
-			device = wurfl.getDeviceForRequest(req);
-		} catch (DeviceNotDefinedException e) {
-			//this will be hit a lot, so its at debug level to reduce log traffic
-			M_log.debug("Device '" + e.getDeviceId() + "' is not in WURFL");
+		if(mobileDeviceParam != null) {
+			//SAK-22484 before returning, ensure the value is set to the value to the session param
+			isMobileDevice = mobileDeviceParam;
 			return;
 		}
 		
+		//get user agent, return if null as we cannot check
+		String userAgent = req.getHeader("User-Agent");
+		if (StringUtils.isBlank(userAgent)) {
+			//SAK-22484 cannot determine, set false
+			isMobileDevice = false;
+			return;
+		}
+		
+		UAgentInfo agentInfo = new UAgentInfo(userAgent, null);
+		
+		//check mobile
+		isMobileDevice = agentInfo.detectMobileQuick();
+		
+		//check tablet if needed
+		boolean tabletsUseMobileView = ServerConfigurationService.getBoolean("portal.tablets.use.mobile", false);
+		if(tabletsUseMobileView && !isMobileDevice) {
+			isMobileDevice = agentInfo.detectTierTablet();
+		}
+		
+		//set session param so we don't need to do this again
+		session.setAttribute("is_mobile_device", Boolean.valueOf(isMobileDevice));		
+		
+		if(M_log.isDebugEnabled()){
+			M_log.debug("User-Agent: " + userAgent);
+			M_log.debug("Mobile device: " + isMobileDevice);
+			M_log.debug("portal.tablets.use.mobile: " + tabletsUseMobileView);
+		}
+		
+	}
+
+	/**
+	 * Check for mobile via checkMobile(req) and setup some context params
+	 */
+	public void setupMobileDevice(HttpServletRequest req, PortalRenderContext rcontext)
+	{
+		if ( req == null) return;
+		
+		checkMobile(req);
+
 		// Not a mobile device
-		if ( device == null || device.getId().length() < 1 || device.getId().startsWith("generic") ) return;
+		if (!isMobileDevice) { 
+			return;
+		}
 
-		M_log.debug("device=" + device.getId() + " agent=" + req.getHeader("user-agent"));
-		rcontext.put("wurflDevice",device.getId());
+		rcontext.put("mobileDevice", Boolean.TRUE);
+		
+		//for now just always assume we have a small display.
+		rcontext.put("mobileSmallDisplay",Boolean.TRUE);
+		
 
+		// Old WURFL code left here for reference in case people want to flesh out the detection
 		// Check to see if we have too few columns of text
+		/*
 		String columns =  device.getCapability("columns");
 		{
 			int icol = -1;
@@ -1058,6 +1107,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				return;
 			}
 		}
+		*/
 	}
 
 
@@ -1068,10 +1118,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		.getRenderEngine(portalContext, request);
 		PortalRenderContext rcontext = rengine.newRenderContext(request);
 
-		if (skin == null)
-		{
-			skin = ServerConfigurationService.getString("skin.default");
-		}
+		skin = getSkin(skin);
 		String skinRepo = ServerConfigurationService.getString("skin.repo");
 
 		rcontext.put("pageSkinRepo", skinRepo);
@@ -1080,7 +1127,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		rcontext.put("pageScriptPath", getScriptPath());
 		rcontext.put("pageTop", Boolean.valueOf(true));
 		rcontext.put("rloader", rloader);
-		rcontext.put("browser", new BrowserDetector(request));
+		//rcontext.put("browser", new BrowserDetector(request));
 
 		Session s = SessionManager.getCurrentSession();
 		rcontext.put("loggedIn", Boolean.valueOf(s.getUserId() != null));
@@ -1122,37 +1169,21 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		rcontext.put("portal_allow_auto_minimize",Boolean.valueOf( "true".equals(minStr) ) ) ;
 		// copy the add link to /mobile to the content
 		String addMLnk = ServerConfigurationService.getString("portal.add.mobile.link","false");
+		// how many tools to show in portal pull downs
+		rcontext.put("maxToolsInt", Integer.valueOf(ServerConfigurationService.getInt("portal.tool.menu.max", 10)));
+
 		
 		// show the mobile link or not
-		Session session = SessionManager.getCurrentSession();
-		if (session.getAttribute("is_wireless_device") == null && request != null)
-		{
-			// when user logs out, all session variables are cleaned, this is to reset the is_wireless_device attribute in portal
-			Device device = null;
-			try {
-				device = wurfl.getDeviceForRequest(request);
-				String deviceName = device.getId();
-
-				// Not a device recognized by WURFL
-				if (StringUtils.isBlank(deviceName) || deviceName.startsWith("generic") ) { 
-				} else {
-					//if this is a mobile device 
-					String isMobile = device.getCapability("is_wireless_device");
-					Boolean isMobileBool = Boolean.valueOf(isMobile);
-					if (isMobileBool.booleanValue()) {
-						session.setAttribute("is_wireless_device", Boolean.TRUE);
-					}
-				}
-			} catch (DeviceNotDefinedException e) {
-				//this will be hit a lot, so its at debug level to reduce log traffic
-				if (M_log.isDebugEnabled())
-				{
-					M_log.debug("Device '" + e.getDeviceId() + "' is not in WURFL");
-				}
-			}
+		if (s.getAttribute("is_mobile_device") == null && request != null){
+			//determine if we are on a mobile device - sets up the params we need
+			checkMobile(request);
 		}
-		boolean isWirelessDevice = session.getAttribute("is_wireless_device") != null ? ((Boolean) session.getAttribute("is_wireless_device")).booleanValue():false;
-		rcontext.put("portal_add_mobile_link",Boolean.valueOf( "true".equals(addMLnk) && isWirelessDevice ) ) ;
+		boolean isMobileDevice = s.getAttribute("is_mobile_device") != null ? ((Boolean) s.getAttribute("is_mobile_device")).booleanValue():false;
+		rcontext.put("portal_add_mobile_link",Boolean.valueOf( "true".equals(addMLnk) && isMobileDevice ) ) ;
+		
+		rcontext.put("toolDirectUrlEnabled", ServerConfigurationService.getBoolean("portal.tool.direct.url.enabled", false));
+		rcontext.put("toolShortUrlEnabled", ServerConfigurationService.getBoolean("shortenedurl.portal.tool.enabled", true));
+		
 		return rcontext;
 	}
 
@@ -1209,9 +1240,14 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			Map<String, PortalHandler> handlerMap = portalService.getHandlerMap(this);
 
 			PortalHandler ph;
-			String requestHandler = getRequestHandler(req);
-			// SAK-18955: do not use PDAHandler for relogin
-			if ((! parts[1].equals("relogin")) && (requestHandler!=null)){
+			boolean pdaHandler = usePdaHandler(req);
+			
+			if(M_log.isDebugEnabled()){
+				M_log.debug("Using pdaHandler: " + pdaHandler);
+			}
+			
+			// SAK-22633 - Only forward site urls to PDAHandler
+			if (pdaHandler && parts.length > 1 && "site".equals(parts[1])){
 				//Mobile access
 				ph = handlerMap.get("pda");
 				parts[1] = "pda";
@@ -1342,11 +1378,13 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	public Properties toolHeaderProperties(String skin, Placement placement) 
 	{
 		Properties retval = new Properties();
+
 		// setup html information that the tool might need (skin, body on load,
 		// js includes, etc).
-		if (skin == null || skin.length() == 0)
-			skin = ServerConfigurationService.getString("skin.default");
+		String templates = ServerConfigurationService.getString("portal.templates", "neoskin");
 		String skinRepo = ServerConfigurationService.getString("skin.repo");
+		// Adjust skin name if we are in the neo Portal
+		skin = getSkin(skin);
 		String headCssToolBase = "<link href=\""
 			+ skinRepo
 			+ "/tool_base.css\" type=\"text/css\" rel=\"stylesheet\" media=\"all\" />\n";
@@ -1535,6 +1573,38 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				rcontext.put("bottomNav", l);
 			}
 
+                        rcontext.put("neoChat", 
+				ServerConfigurationService.getBoolean("portal.neochat", true));
+                        rcontext.put("neoAvatar", 
+				ServerConfigurationService.getBoolean("portal.neoavatar", true));
+
+
+                        User thisUser = UserDirectoryService.getCurrentUser();
+                        if(sakaiTutorialEnabled && thisUser != null && thisUser.getEid() != null) {
+                        	PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class);
+                        	Preferences prefs = preferencesService.getPreferences(thisUser.getId());
+                        	if (!("1".equals(prefs.getProperties().getProperty("sakaiTutorialFlag")))) {
+                        		rcontext.put("tutorial", true);
+                        		//now save this in the user's prefefences so we don't show it again
+                        		PreferencesEdit preferences = null;
+                        		try {
+                        			preferences = preferencesService.edit(thisUser.getId());
+                        		} catch (Exception e1) {
+                        			try {
+                        				preferences = preferencesService.add(thisUser.getId());
+                        			} catch (IdUsedException e2) {
+                        				M_log.error(e2);
+                        			} catch (PermissionException e2) {
+                        				M_log.error(e2);
+                        			}
+                        		}
+                        		if (preferences != null) {
+                        			ResourcePropertiesEdit props = preferences.getPropertiesEdit();
+                        			props.addProperty("sakaiTutorialFlag", "1");
+                        			preferencesService.commit(preferences);   
+                        		}
+                        	}
+                        }
 			// rcontext.put("bottomNavSitNewWindow",
 			// Web.escapeHtml(rb.getString("site_newwindow")));
 
@@ -1597,15 +1667,13 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			String loginUserDispName = null;
 			String loginUserDispId = null;
 			boolean displayUserloginInfo = ServerConfigurationService.
-			getBoolean("display.userlogin.info", false);
+			getBoolean("display.userlogin.info", true);
 
 			// check for the top.login (where the login fields are present
 			// instead
 			// of a login link, but ignore it if container.login is set
-			boolean topLogin = Boolean.TRUE.toString().equalsIgnoreCase(
-					ServerConfigurationService.getString("top.login"));
-			boolean containerLogin = Boolean.TRUE.toString().equalsIgnoreCase(
-					ServerConfigurationService.getString("container.login"));
+			boolean topLogin = ServerConfigurationService.getBoolean("top.login", true);
+			boolean containerLogin = ServerConfigurationService.getBoolean("container.login", false);
 			if (containerLogin) topLogin = false;
 
 			// if not logged in they get login
@@ -1772,6 +1840,8 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		handlerPrefix = ServerConfigurationService.getString("portal.handler.default", "site");
 		
 		gatewaySiteUrl = ServerConfigurationService.getString("gatewaySiteUrl", null);
+		
+		sakaiTutorialEnabled = ServerConfigurationService.getBoolean("portal.use.tutorial", true);
 
 		basicAuth = new BasicAuth();
 		basicAuth.init();
@@ -2050,6 +2120,35 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Do the getSiteSkin, adjusting for the overall skin/templates for the portal.
+	 * 
+	 * @return The skin
+	 */
+	protected String getSiteSkin(String siteId)
+	{
+		String skin = SiteService.getSiteSkin(siteId);
+		return getSkin(skin);
+	}
+
+	/**
+	 * Do the getSkin, adjusting for the overall skin/templates for the portal.
+	 * 
+	 * @return The skin
+	 */
+	protected String getSkin(String skin)
+	{
+		if (skin == null)
+		{
+			skin = ServerConfigurationService.getString("skin.default");
+		}
+		String templates = ServerConfigurationService.getString("portal.templates", "neoskin");
+		String prefix = ServerConfigurationService.getString("portal.neoprefix", "neo-");
+		// Don't add the prefix twice
+		if ( "neoskin".equals(templates) && ! skin.startsWith(prefix) ) skin = prefix + skin;
+		return skin;
 	}
 
 }

@@ -71,6 +71,9 @@ public class ListPageActivities extends AbstractMatrixController
 		
 		model.put("criteriaRef", criteriaRef);
 		
+		String siteId = getWorksiteManager().getCurrentWorksiteId().getValue();
+		model.put("decoWrapper", "ospMatrix_" + siteId + "_" + pageId);
+		
 		WizardPageDefinition wpd = getMatrixManager().getWizardPageDefinition(pageId);
 		model.put("pageTitle", Validator.escapeHtml(wpd.getTitle()));
 		

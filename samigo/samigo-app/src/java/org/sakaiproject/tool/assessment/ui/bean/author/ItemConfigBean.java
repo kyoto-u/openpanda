@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemConfigBean.java $
- * $Id: ItemConfigBean.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemConfigBean.java $
+ * $Id: ItemConfigBean.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -62,6 +62,7 @@ private static final String msgResource =
   private boolean showFillInNumeric;
   private boolean selectFromQuestionPool;
   private boolean selectFromQuestionBank;
+  private boolean showMatrixSurvey;
 
   /**
    * Should we show file upload question?
@@ -236,6 +237,16 @@ private static final String msgResource =
   {
     this.showSurvey = showSurvey;
   }
+  
+  public boolean isShowMatrixSurvey()
+  {
+	  return showMatrixSurvey;
+  }
+
+  public void setShowMatrixSurvey(boolean showMatrixSurvey)
+  {
+	  this.showMatrixSurvey = showMatrixSurvey;
+  }
 
   /**
    * Derived property.  Get arraylist of item type SelectItems.
@@ -259,6 +270,9 @@ private static final String msgResource =
     if (showSurvey)
       list.add(new SelectItem("3",
         getResourceDisplayName("multiple_choice_surv")));
+    
+    if (showMatrixSurvey)
+    	list.add(new SelectItem("13", getResourceDisplayName("matrix_choices_surv")));
 
     if (showEssay)
       list.add(new SelectItem("5", getResourceDisplayName("short_answer_essay")));
@@ -303,44 +317,6 @@ if (showFillInNumeric)
 
     return list;
   }
-
-  /*
-  // test the item accessors and mutators and the selectItem list
-  public static void main (String[] args)
-  {
-    ItemConfigBean bean = new ItemConfigBean();
-    ArrayList list = bean.getItemTypeSelectList();
-    for (int i = 0; i < list.size(); i++)
-    {
-      SelectItem sitem = (SelectItem)list.get(i);
-    }
-
-    bean.setSelectFromQuestionPool(true);
-    bean.setSelectFromQuestionBank(true);
-    bean.setShowAudio(true);
-    bean.setShowEssay(true);
-    bean.setShowFileUpload(true);
-    bean.setShowFillInTheBlank(true);
-    bean.setShowFillInNumeric(true);
-    bean.setShowMatching(true);
-    bean.setShowMultipleChoiceMultipleCorrect(true);
-    bean.setShowMultipleChoiceSingleCorrect(true);
-    bean.setShowSurvey(true);
-    bean.setShowTrueFalse(true);
-    list = bean.getItemTypeSelectList();
-    for (int i = 0; i < list.size(); i++)
-    {
-      SelectItem sitem = (SelectItem)list.get(i);
-    }
-    bean.setShowAudio(false);
-    bean.setShowFileUpload(false);
-    list = bean.getItemTypeSelectList();
-    for (int i = 0; i < list.size(); i++)
-    {
-      SelectItem sitem = (SelectItem)list.get(i);
-    }
-  }
-  */
 
   /**
    * Can we select items from a question pool?

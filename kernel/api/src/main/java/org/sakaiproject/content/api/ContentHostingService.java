@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/content/api/ContentHostingService.java $
- * $Id: ContentHostingService.java 79513 2010-07-15 20:13:54Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/content/api/ContentHostingService.java $
+ * $Id: ContentHostingService.java 99118 2011-10-10 21:40:15Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -120,6 +120,25 @@ public interface ContentHostingService extends EntityProducer
 	/** Name of the event when removing a resource. */
 	public static final String EVENT_RESOURCE_AVAILABLE = "content.available";
 
+	/** 
+	 * Name of the event when the availability of a content-entity changes - includes 
+	 * transitions between hidden and shown, changes in release/retraction dates,
+	 * and changes in ConditionalRelease status. 
+	 */
+	public static final String EVENT_RESOURCE_UPD_VISIBILITY = "content.upd.visibility";
+
+	/** 
+	 * Name of the event when access to a content-entity changes - specifically whenever 
+	 * a change is made in the groups that can see a content_resource or content_collection 
+	 * or in its public/site/group access settings. 
+	 */
+	public static final String EVENT_RESOURCE_UPD_ACCESS = "content.upd.access";
+	
+	/** 
+	 * Name of the event when the title (or display name) for a content-resource changes. 
+	 */
+	public static final String EVENT_RESOURCE_UPD_TITLE = "content.upd.title";
+
 	/** Security function for creating a resource. */
 	public static final String AUTH_RESOURCE_ADD = "content.new";
 
@@ -198,6 +217,18 @@ public interface ContentHostingService extends EntityProducer
 
 	/** A "list" of all root-level collections */
     public static final Set<String> ROOT_COLLECTIONS = new TreeSet<String>();
+    
+    /** Enable zip content handling (affects resources) */
+    public static final String RESOURCES_ZIP_ENABLE = "content.zip.enabled";
+
+    /** Set the limit of the max number of files to extract from a zip archive */
+    public static final String RESOURCES_ZIP_EXPAND_MAX = "content.zip.expand.maxfiles";
+
+    /** Enable zip file expansion into content (affects resources) */
+    public static final String RESOURCES_ZIP_ENABLE_EXPAND = "content.zip.expand.enabled";
+    
+    /** Enable content compression into zip file (affects resources) */
+    public static final String RESOURCES_ZIP_ENABLE_COMPRESS = "content.zip.compress.enabled";
 
 	static final String ID_LENGTH_EXCEPTION = "id_length_exception";
 
@@ -1891,4 +1922,10 @@ public interface ContentHostingService extends EntityProducer
 	 */
 	public Collection<ContentResource> getContextResourcesOfType(String resourceType, Set<String> contextIds);
 
+	/**
+	 * Expand the supplied resource under its parent collection. See KNL-273
+	 *
+	 * @param resourceId The zip file resource that we want to expand
+	 */
+	public void expandZippedResource(String resourceId) throws Exception;
 }

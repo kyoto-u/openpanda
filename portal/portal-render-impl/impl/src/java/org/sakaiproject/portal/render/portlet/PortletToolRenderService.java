@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-render-impl/impl/src/java/org/sakaiproject/portal/render/portlet/PortletToolRenderService.java $
- * $Id: PortletToolRenderService.java 86928 2011-01-07 19:40:55Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-render-impl/impl/src/java/org/sakaiproject/portal/render/portlet/PortletToolRenderService.java $
+ * $Id: PortletToolRenderService.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ package org.sakaiproject.portal.render.portlet;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -69,11 +70,14 @@ import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.tool.api.Placement;
 
+import org.w3c.tidy.Tidy;
+
 /**
  * @author ddwolf
  * @author ieb
+ * @author csev
  * @since Sakai 2.4
- * @version $Rev: 86928 $
+ * @version $Rev: 110562 $
  */
 public class PortletToolRenderService implements ToolRenderService
 {
@@ -185,8 +189,7 @@ public class PortletToolRenderService implements ToolRenderService
 			LOG.debug("Retrieved PortletState from request cache.  Applying to window.");
 		}
 
-		if ("true".equals(request.getParameter(portalService.getResetStateParam()))
-				|| "true".equals(portalService.getResetState()))
+		if (portalService.isResetRequested(request))
 		{
 			if (state != null)
 			{
@@ -330,6 +333,28 @@ public class PortletToolRenderService implements ToolRenderService
 			{
 				renderResponse();
 				storedContent = bufferedResponse.getInternalBuffer().getBuffer().toString();
+
+				// SAK-22335 - Tidy in BodyOnly mode eats script tags so it is advisory-only and off by default
+				// if ( ! "true".equals(ServerConfigurationService.getString("portal.portlet.tidy", "false")) ) return storedContent;
+
+				if ( ! "true".equals(ServerConfigurationService.getString("portal.portlet.tidy.warnings", "false")) ) return storedContent;
+
+				Tidy tidy = new Tidy();
+				tidy.setIndentContent(true);
+				tidy.setSmartIndent(true);
+				tidy.setPrintBodyOnly(true);
+				tidy.setTidyMark(false);
+				tidy.setDocType("loose");
+				// if ( ! "true".equals(ServerConfigurationService.getString("portal.portlet.tidy.warnings", "false")) )
+				// {
+					// tidy.setQuiet(true);
+					// tidy.setShowWarnings(false);
+				// }
+				StringReader is = new StringReader(storedContent);
+				StringWriter os = new StringWriter();
+				tidy.parse(is,os); // parse() throws no errors
+				// String tidyOutput = os.toString();
+				// if ( tidyOutput != null && tidyOutput.length() > 0 ) storedContent = tidyOutput;
 				return storedContent;
 			}
 			catch(ToolRenderException e)

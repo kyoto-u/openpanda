@@ -215,9 +215,11 @@ public class QuestionScoreListener implements ActionListener,
 			if (ContextUtil.lookupParam("sortBy") != null
 					&& !ContextUtil.lookupParam("sortBy").trim().equals(""))
 				bean.setSortType(ContextUtil.lookupParam("sortBy"));
+			
 			String itemId = ContextUtil.lookupParam("itemId");
 			if (ContextUtil.lookupParam("newItemId") != null
-					&& !ContextUtil.lookupParam("newItemId").trim().equals(""))
+					&& !ContextUtil.lookupParam("newItemId").trim().equals("")
+					&& !ContextUtil.lookupParam("newItemId").trim().equals("null"))
 				itemId = ContextUtil.lookupParam("newItemId");
 
 			if (ContextUtil.lookupParam("sortAscending") != null
@@ -538,7 +540,8 @@ public class QuestionScoreListener implements ActionListener,
 							|| bean.getTypeId().equals("12")
 							|| bean.getTypeId().equals("3")
 							|| bean.getTypeId().equals("4")
-							|| bean.getTypeId().equals("9")) {
+							|| bean.getTypeId().equals("9")
+							|| bean.getTypeId().equals("13")) {
 						if (gdataAnswer != null)
 							answerText = gdataAnswer.getText();
 					} else {
@@ -590,7 +593,15 @@ public class QuestionScoreListener implements ActionListener,
 									+ answerText;
 						}
 					}
-
+					if (bean.getTypeId().equals("13")) {
+						if (gdataPubItemText == null) {
+							answerText = "";
+						}
+						else {
+							int answerNo = gdataPubItemText.getSequence().intValue();
+							answerText = answerNo + ":" + answerText;
+						}
+					}
 					// file upload
 					if (bean.getTypeId().equals("6")) {
 						gdata.setMediaArray(delegate.getMediaArray2(gdata
@@ -647,24 +658,27 @@ public class QuestionScoreListener implements ActionListener,
 					 */
 
 					//SAM-755-"checkmark" indicates right, add "X" to indicate wrong
-					if ((bean.getTypeId().equals("8") || bean.getTypeId().equals("11")) && gdataAnswer != null) {
-						//need to do something here for fill in the blanks
-						if(gdataAnswer.getScore() > 0){
-							//if score is 0, there is no way to tell if user got the correct answer
-							//by using "autoscore"... wish there was a better way to tell if its correct or not
-							Float autoscore = gdata.getAutoScore();
-							if (!(Float.valueOf(0)).equals(autoscore)) {
-								answerText = "<img src='/samigo-app/images/delivery/checkmark.gif'>" + answerText;
-							}else if(Float.valueOf(0).equals(autoscore)){
-								answerText = "<img src='/samigo-app/images/crossmark.gif'>" + answerText;
+					if (gdataAnswer != null) {
+						if (bean.getTypeId().equals("8") || bean.getTypeId().equals("11")) {
+							//need to do something here for fill in the blanks
+							if(gdataAnswer.getScore() > 0){
+								//if score is 0, there is no way to tell if user got the correct answer
+								//by using "autoscore"... wish there was a better way to tell if its correct or not
+								Float autoscore = gdata.getAutoScore();
+								if (!(Float.valueOf(0)).equals(autoscore)) {
+									answerText = "<img src='/samigo-app/images/delivery/checkmark.gif'>" + answerText;
+								}else if(Float.valueOf(0).equals(autoscore)){
+									answerText = "<img src='/samigo-app/images/crossmark.gif'>" + answerText;
+								}
 							}
 						}
-					}else if(gdataAnswer != null){
-						if((gdataAnswer.getIsCorrect() != null && gdataAnswer.getIsCorrect()) || 
-						   (gdataAnswer.getPartialCredit() != null && gdataAnswer.getPartialCredit() > 0)){
-							answerText = "<img src='/samigo-app/images/delivery/checkmark.gif'>" + answerText;
-						}else if(gdataAnswer.getIsCorrect() != null && !gdataAnswer.getIsCorrect()){
-							answerText = "<img src='/samigo-app/images/crossmark.gif'>" + answerText;
+						else if(!bean.getTypeId().equals("3")){
+							if((gdataAnswer.getIsCorrect() != null && gdataAnswer.getIsCorrect()) || 
+									(gdataAnswer.getPartialCredit() != null && gdataAnswer.getPartialCredit() > 0)){
+								answerText = "<img src='/samigo-app/images/delivery/checkmark.gif'>" + answerText;
+							}else if(gdataAnswer.getIsCorrect() != null && !gdataAnswer.getIsCorrect()){
+								answerText = "<img src='/samigo-app/images/crossmark.gif'>" + answerText;
+							}
 						}
 					}
 

@@ -1,4 +1,4 @@
-<%-- $Id: MultipleChoiceMultipleCorrect.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+<%-- $Id: MultipleChoiceMultipleCorrect.jsp 84154 2010-11-02 21:05:12Z lydial@stanford.edu $
 include file for delivering multiple choice questions
 should be included in file importing DeliveryMessages
 --%>

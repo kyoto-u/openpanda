@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/branches/sakai-2.8.x/courier-api/api/src/java/org/sakaiproject/courier/api/CourierService.java $
- * $Id: CourierService.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.0/courier-api/api/src/java/org/sakaiproject/courier/api/CourierService.java $
+ * $Id: CourierService.java 109790 2012-06-28 13:36:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -34,7 +34,13 @@ import java.util.List;
  * <p>
  * A Delivery object captures the Address, the HTML Element Id involved, and any other details of a particular type of delivery.
  * </p>
+ * 
+ * @deprecated The CourierService is no longer a preferred way to communicate with clients.
+ * 		It will be removed in a future release of Sakai (after 2.10)
+ * 		There are better technologies to use, please do not use.
+ *      <a href="https://jira.sakaiproject.org/browse/SAK-22053">SAK-22053</a>
  */
+@Deprecated
 public interface CourierService
 {
 	/** This string can be used to find the service in the service manager. */
@@ -83,4 +89,17 @@ public interface CourierService
 	 * @return true if there are deliveries for this client window, false if not.
 	 */
 	boolean hasDeliveries(String address);
+	
+	/**
+	 * Access a list of DeliveryProviders registered with the CourierService. 
+	 * @return A list of DeliveryProviders or null, if no DeliveryProviders 
+	 * 	are registered with the CourierService
+	 */
+	List<DeliveryProvider> getDeliveryProviders();
+	
+	/**
+	 * Register a DeliveryProvider with the CourierService.
+	 * @param provider
+	 */
+	void registerDeliveryProvider(DeliveryProvider provider);
 }

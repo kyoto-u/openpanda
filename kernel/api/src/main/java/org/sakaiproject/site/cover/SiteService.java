@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/site/cover/SiteService.java $
- * $Id: SiteService.java 74613 2010-03-15 08:12:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/site/cover/SiteService.java $
+ * $Id: SiteService.java 113287 2012-09-21 15:14:51Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -22,6 +22,8 @@
 package org.sakaiproject.site.cover;
 
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.site.api.Site;
 
 /**
  * <p>
@@ -69,7 +71,11 @@ public class SiteService
 	public static java.lang.String SECURE_ADD_USER_SITE = org.sakaiproject.site.api.SiteService.SECURE_ADD_USER_SITE;
 
 	public static java.lang.String SECURE_REMOVE_SITE = org.sakaiproject.site.api.SiteService.SECURE_REMOVE_SITE;
-
+	
+	public static java.lang.String SECURE_REMOVE_SOFTLY_DELETED_SITE = org.sakaiproject.site.api.SiteService.SECURE_REMOVE_SOFTLY_DELETED_SITE;
+	
+	public static java.lang.String SITE_VISIT_SOFTLY_DELETED = org.sakaiproject.site.api.SiteService.SITE_VISIT_SOFTLY_DELETED;
+	
 	public static java.lang.String SECURE_UPDATE_SITE = org.sakaiproject.site.api.SiteService.SECURE_UPDATE_SITE;
 	
 	public static java.lang.String SECURE_UPDATE_SITE_MEMBERSHIP = org.sakaiproject.site.api.SiteService.SECURE_UPDATE_SITE_MEMBERSHIP;
@@ -209,6 +215,20 @@ public class SiteService
 		return service.allowAddCourseSite();		
 	}
 	
+	public static boolean allowAddPortfolioSite() {
+		org.sakaiproject.site.api.SiteService service = getInstance();
+		if (service == null) return false;
+
+		return service.allowAddPortfolioSite();		
+	}
+	
+	public static boolean allowAddProjectSite() {
+		org.sakaiproject.site.api.SiteService service = getInstance();
+		if (service == null) return false;
+
+		return service.allowAddProjectSite();	
+	}
+	
 	public static org.sakaiproject.site.api.Site addSite(java.lang.String param0, java.lang.String param1)
 			throws org.sakaiproject.exception.IdInvalidException, org.sakaiproject.exception.IdUsedException,
 			org.sakaiproject.exception.PermissionException
@@ -237,14 +257,14 @@ public class SiteService
 		return service.allowRemoveSite(param0);
 	}
 
-	public static void removeSite(org.sakaiproject.site.api.Site param0) throws org.sakaiproject.exception.PermissionException
+	public static void removeSite(org.sakaiproject.site.api.Site param0) throws org.sakaiproject.exception.PermissionException, org.sakaiproject.exception.IdUnusedException
 	{
 		org.sakaiproject.site.api.SiteService service = getInstance();
 		if (service == null) return;
 
 		service.removeSite(param0);
 	}
-
+	
 	public static java.lang.String siteReference(java.lang.String param0)
 	{
 		org.sakaiproject.site.api.SiteService service = getInstance();

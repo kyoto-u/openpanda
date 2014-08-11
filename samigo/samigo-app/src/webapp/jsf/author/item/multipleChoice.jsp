@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: multipleChoice.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+* $Id: multipleChoice.jsp 98963 2011-10-04 21:39:57Z aaronz@vt.edu $
 <%--
 ***********************************************************************************
 *
@@ -36,7 +36,7 @@
       <!-- AUTHORING -->
       <samigo:script path="/js/authoring.js"/>
       </head>
-<body onload="resetInsertAnswerSelectMenus();disablePartialCreditField();<%= request.getAttribute("html.body.onload") %>">
+<body onload="<%= request.getAttribute("html.body.onload") %>;resetInsertAnswerSelectMenus();disablePartialCreditField();">
 
 <div class="portletBody">
 <!-- content... -->
@@ -79,11 +79,12 @@
   <!-- 1 POINTS -->
 <div class="tier2">
 
-     <div class="shorttext"> <h:outputLabel value="#{authorMessages.answer_point_value}" />
-    <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}"required="true" size="6"  onchange="toPoint(this.id);">
-<f:validateDoubleRange /></h:inputText>
+<div class="shorttext"> <h:outputLabel value="#{authorMessages.answer_point_value}" />
+<h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" size="6" onchange="toPoint(this.id);">
+<f:validateDoubleRange minimum="0.00" />
+</h:inputText>
 
-<h:message for="answerptr" styleClass="validate"/>
+<h:message for="answerptr" styleClass="validate" />
 </div>
 <br/>
 
@@ -138,7 +139,7 @@
   <h:outputText value="&nbsp;&nbsp;" escape="false" />
   <h:outputLabel value="#{authorMessages.negative_point_value}"/>
   <h:inputText id="answerdsc" value="#{itemauthor.currentItem.itemDiscount}" required="true" onchange="toPoint(this.id);">
-    <f:validateDoubleRange />
+    <f:validateDoubleRange/>
   </h:inputText>
   <f:verbatim> <script type="text/javascript" defer='defer'>
         var discDiv=document.getElementById('discountDiv');

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/authz/api/GroupProvider.java $
- * $Id: GroupProvider.java 98120 2011-09-13 11:47:15Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/authz/api/GroupProvider.java $
+ * $Id: GroupProvider.java 98119 2011-09-13 11:28:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -97,7 +97,7 @@ public interface GroupProvider
 	 * This method should return true for groups that have no members but are valid
 	 * @since 1.2.1
 	 * @param id
-	 * @return true if the group exists, false if it doesn't 
+	 * @return true if the group exists, false if it doesn't
 	 */
 	boolean groupExists(String id);
 }

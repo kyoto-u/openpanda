@@ -67,7 +67,7 @@
     <module name="Translation"/>
 
     <module name="StrictDuplicateCode">
-      <!--<property name="charset" value="UTF-8"/>-->
+     <!-- <property name="charset" value="UTF-8"/>-->
        <property name="min" value="30"/>
     </module>
 
@@ -109,7 +109,7 @@
 
         <!-- Checks for Headers                                -->
         <!-- See http://checkstyle.sf.net/config_header.html   -->
-      <!--  <module name="RegexpHeader">
+       <!-- <module name="RegexpHeader">
            <property name="headerFile" value="src/site/java.header"/>
         </module>-->
 

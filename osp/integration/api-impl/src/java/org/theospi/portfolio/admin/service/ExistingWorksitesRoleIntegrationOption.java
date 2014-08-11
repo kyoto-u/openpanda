@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/integration/api-impl/src/java/org/theospi/portfolio/admin/service/ExistingWorksitesRoleIntegrationOption.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/integration/api-impl/src/java/org/theospi/portfolio/admin/service/ExistingWorksitesRoleIntegrationOption.java $
 * $Id: ExistingWorksitesRoleIntegrationOption.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
 ***********************************************************************************
 *

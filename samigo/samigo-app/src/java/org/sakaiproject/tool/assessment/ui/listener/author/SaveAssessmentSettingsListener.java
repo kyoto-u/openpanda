@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SaveAssessmentSettingsListener.java $
- * $Id: SaveAssessmentSettingsListener.java 84910 2010-11-16 23:44:30Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SaveAssessmentSettingsListener.java $
+ * $Id: SaveAssessmentSettingsListener.java 92889 2011-05-16 23:25:23Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -35,11 +35,13 @@ import javax.faces.event.ActionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
+import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentSettingsBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
@@ -50,7 +52,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: SaveAssessmentSettingsListener.java 84910 2010-11-16 23:44:30Z ktsao@stanford.edu $
+ * @version $Id: SaveAssessmentSettingsListener.java 92889 2011-05-16 23:25:23Z ktsao@stanford.edu $
  */
 
 public class SaveAssessmentSettingsListener
@@ -212,6 +214,31 @@ public class SaveAssessmentSettingsListener
         	error=true;
         }
     }
+    
+    // check secure delivery exit password
+    SecureDeliveryServiceAPI secureDeliveryService = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI();
+    if ( secureDeliveryService.isSecureDeliveryAvaliable() ) {
+    	
+    	String moduleId = assessmentSettings.getSecureDeliveryModule();
+    	if ( ! SecureDeliveryServiceAPI.NONE_ID.equals( moduleId ) ) {
+		
+    		String exitPassword = assessmentSettings.getSecureDeliveryModuleExitPassword(); 
+    		if ( exitPassword != null && exitPassword.length() > 0 ) {
+   				
+    			for ( int i = 0; i < exitPassword.length(); i++ ) {
+					
+    				char c = exitPassword.charAt(i);
+    				if ( ! (( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) || ( c >= '0' && c <= '9' )) ) {
+    					error = true;
+    					String  submission_err = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","exit_password_error");
+    					context.addMessage(null,new FacesMessage(submission_err));
+    					break;
+    				}
+    			}					
+    		}
+    	}			
+    }
+
 
     if (error){
       String blockDivs = ContextUtil.lookupParam("assessmentSettingsAction:blockDivs");

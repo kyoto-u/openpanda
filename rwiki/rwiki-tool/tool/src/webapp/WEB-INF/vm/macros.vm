@@ -135,7 +135,7 @@ LOG-LOG-LOG-LOG-LOG
 #end
 
 #if ($useHomeLink)
-<li  class="firstToolBarItem"  role="menuitem"><span>
+<li  class="firstToolBarItem"><span>
 <a href="${util.escapeHtml($homeBean.getHomeLinkUrl())}"
 	id="homeLink"  
 	title="${resourceLoaderBean.getString("jsp_wiki_home_title")}" >${resourceLoaderBean.getString("jsp_wiki_home")}<span class="skip"> ${resourceLoaderBean.getString("jsp_wiki_home_sc")}</a> 
@@ -553,7 +553,7 @@ function togglePresence(target) {
 <a class="previewToolBar" 
 			href="#" 
 			id="toolbarButtonSave" 
-			onclick="var form = document.getElementById('editForm'); var saveButton = document.getElementById('saveButton'); form.save.value = saveButton.value; form.submit();" >
+			onclick="var form = document.getElementById('editForm'); var saveButton = document.getElementById('saveButton'); form.command_save.value = saveButton.value; form.submit();" >
 			<img src="/library/image/transparent.gif" 
 								border="0"   
 								title="${rlb.jsp_toolb_save}" 

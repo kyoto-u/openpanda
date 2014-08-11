@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/wizard/tool/src/java/org/theospi/portfolio/wizard/tool/DecoratedWizard.java $
- * $Id: DecoratedWizard.java 87792 2011-01-28 03:22:09Z botimer@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/wizard/tool/src/java/org/theospi/portfolio/wizard/tool/DecoratedWizard.java $
+ * $Id: DecoratedWizard.java 105587 2012-03-06 20:11:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -286,7 +286,7 @@ public class DecoratedWizard implements DecoratedListInterface {
 			return "repository/" + "manager=org.theospi.portfolio.wizard.mgt.WizardManager&" +
 			WizardManager.WIZARD_PARAM_ID + "=" +
 			URLEncoder.encode(getBase().getId().getValue(), "UTF-8") + "/" +
-			URLEncoder.encode(getBase().getName() + ".zip", "UTF-8");
+			URLEncoder.encode(getBase().getName().replaceAll("[/\\\\]", "_") + ".zip", "UTF-8");
 		}
 		catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);

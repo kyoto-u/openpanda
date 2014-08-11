@@ -447,7 +447,7 @@ $(document).ready(function() {
         
 		  <td align="center">
 			 <c:choose>
-				 <c:when test="${presentationBean.public}">
+				 <c:when test="${presentationBean.publicPresentation}">
 					<c:out value="${msgs.comments_public}"/>
 				 </c:when>
 				 <c:when test="${presentationBean.shared}">

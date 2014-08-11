@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: fillInTheBlank.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+* $Id: fillInTheBlank.jsp 98456 2011-09-20 22:40:12Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -71,7 +71,7 @@
 <div class="tier2">
   <div class="shorttext"><h:outputLabel value="#{authorMessages.answer_point_value}" />
   <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" onchange="toPoint(this.id);">
-    <f:validateDoubleRange />
+    <f:validateDoubleRange minimum="0.00"/>
   </h:inputText>
  <br/>  <h:message for="answerptr" styleClass="validate"/>
  </div>
@@ -79,20 +79,15 @@
 <%-- 2 QUESTION TEXT --%>
   <div class="longtext"> <h:outputLabel value="#{authorMessages.q_text}" />
   <br/></div>
-<div class="tier2">
-  <h:outputText value="#{authorMessages.note_place_curly}" />
-  <br/>
-  <h:outputText value="#{authorMessages.for_example_curly}" />
-  <br/>
-  <h:outputText value="#{authorMessages.note_insert_pipe}" />
-  <br/>
-  <h:outputText value="#{authorMessages.for_example_pipe}" />
-  <br/>
-  <h:outputText value="#{authorMessages.wildcard_char}" />
-<br/>
-  <h:outputText value="#{authorMessages.wildcard_example}" />
-<br/>
-  <h:panelGrid>
+  <f:verbatim><div class="tier2"></f:verbatim>
+  <h:outputText value="#{authorMessages.defining_answers}" escape="false"/>
+  <f:verbatim><div class="tier3"></f:verbatim>
+  <h:outputText value="#{authorMessages.fib_note_1}<br /><br />" escape="false"/>
+  <h:outputText value="#{authorMessages.fib_note_2}<br /><br />" escape="false"/>
+  <h:outputText value="#{authorMessages.fib_note_3}<br /><br />" escape="false"/>
+  <f:verbatim></div></f:verbatim>
+  
+   <h:panelGrid>
    <samigo:wysiwyg
      rows="140" value="#{itemauthor.currentItem.itemText}" hasToggle="yes">
     <f:validateLength maximum="60000"/>
@@ -100,18 +95,37 @@
   </h:panelGrid>
  <br />
 
-<h:selectBooleanCheckbox value="#{itemauthor.currentItem.caseSensitiveForFib}"> 
+<h:panelGrid columns="1" border="0">
+<h:panelGroup>
+<h:selectBooleanCheckbox value="#{itemauthor.currentItem.caseSensitiveForFib}">
 </h:selectBooleanCheckbox>
-<h:outputText value="#{authorMessages.case_sensitive}" />
+<h:outputText value="#{authorMessages.case_sensitive}" escape="false"/>
+</h:panelGroup>
+<h:panelGroup>
+<h:outputText value="&nbsp;&nbsp;" escape="false"/>
+<h:outputText value="#{authorMessages.case_sensitive_note}" escape="false"/>
+</h:panelGroup>
+<h:panelGroup>
+<h:outputText value="&nbsp;&nbsp;" escape="false"/>
+<h:outputText value="#{authorMessages.case_sensitive_example}" escape="false"/>
+</h:panelGroup>
+</h:panelGrid>
 <br/>
 
-<h:selectBooleanCheckbox value="#{itemauthor.currentItem.mutuallyExclusiveForFib}"> 
-</h:selectBooleanCheckbox>
-<h:outputText value="#{authorMessages.mutually_exclusive}" />
 <h:panelGrid columns="1">
-<h:outputText value="#{authorMessages.mutually_exclusive_note}" />
-<br/>
-<h:outputText value="#{authorMessages.mutually_exclusive_example}" />
+<h:panelGroup>
+<h:selectBooleanCheckbox value="#{itemauthor.currentItem.mutuallyExclusiveForFib}">
+</h:selectBooleanCheckbox>
+<h:outputText value="#{authorMessages.mutually_exclusive}" escape="false"/>
+</h:panelGroup>
+<h:panelGroup>
+<h:outputText value="&nbsp;&nbsp;" escape="false"/>
+<h:outputText value="#{authorMessages.mutually_exclusive_note}" escape="false"/>
+</h:panelGroup>
+<h:panelGroup>
+<h:outputText value="&nbsp;&nbsp;" escape="false"/>
+<h:outputText value="#{authorMessages.mutually_exclusive_example}" escape="false"/>
+</h:panelGroup>
 </h:panelGrid>
 </div>
 

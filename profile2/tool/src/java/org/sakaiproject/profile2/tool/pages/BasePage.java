@@ -18,6 +18,8 @@ package org.sakaiproject.profile2.tool.pages;
 
 import java.util.Locale;
 
+import javax.servlet.http.Cookie;
+
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -37,8 +39,10 @@ import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.logic.ProfileMessagingLogic;
 import org.sakaiproject.profile2.logic.ProfilePreferencesLogic;
 import org.sakaiproject.profile2.logic.ProfilePrivacyLogic;
+import org.sakaiproject.profile2.logic.ProfileSearchLogic;
+import org.sakaiproject.profile2.logic.ProfileWallLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
-import org.sakaiproject.profile2.tool.components.LocaleAwareHtmlTag;
+import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
 
 import wicket.contrib.tinymce.settings.TinyMCESettings;
@@ -75,6 +79,12 @@ public class BasePage extends WebPage implements IHeaderContributor {
 	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileExternalIntegrationLogic")
 	protected ProfileExternalIntegrationLogic externalIntegrationLogic;
 	
+	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileWallLogic")
+	protected ProfileWallLogic wallLogic;
+	
+	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileSearchLogic")
+	protected ProfileSearchLogic searchLogic;
+	
 	Link<Void> myPicturesLink;
 	Link<Void> myProfileLink;
 	Link<Void> myFriendsLink;
@@ -92,12 +102,8 @@ public class BasePage extends WebPage implements IHeaderContributor {
 		//set Locale - all pages will inherit this.
 		setUserPreferredLocale();
 		
-		//PRFL-791 set base HTML lang attribute
-		add(new LocaleAwareHtmlTag("html"));
-		
 		//get currentUserUuid
 		String currentUserUuid = sakaiProxy.getCurrentUserId();
-		
 		
     	//profile link
     	myProfileLink = new Link<Void>("myProfileLink") {
@@ -109,7 +115,6 @@ public class BasePage extends WebPage implements IHeaderContributor {
 		myProfileLink.add(new Label("myProfileLabel",new ResourceModel("link.my.profile")));
 		myProfileLink.add(new AttributeModifier("title", true, new ResourceModel("link.my.profile.tooltip")));
 		add(myProfileLink);
-		
 		
 		//my pictures link
 		myPicturesLink = new Link<Void>("myPicturesLink") {
@@ -257,7 +262,7 @@ public class BasePage extends WebPage implements IHeaderContributor {
 		response.renderOnLoadJavascript("setMainFrameHeight( window.name )");
 		
 		//for jQuery
-		response.renderJavascriptReference("javascript/jquery-1.2.5.min.js");
+		response.renderJavascriptReference("javascript/jquery-1.4.4.min.js");
 			
 		//for datepicker
 		response.renderCSSReference("css/flora.datepicker.css");
@@ -326,10 +331,21 @@ public class BasePage extends WebPage implements IHeaderContributor {
 	 * Disable a page nav link (PRFL-468)
 	 */
 	protected void disableLink(Link<Void> l) {
-		l.add(new AttributeAppender("class", new Model<String>("current"), " "));
+		l.add(new AttributeAppender("class", new Model<String>("current-tab"), " "));
 		l.setEnabled(false);
 	}
 	
-	
+	/**
+	 * Set the cookie that stores the current tab index.
+	 * 
+	 * @param tabIndex the current tab index.
+	 */
+	protected void setTabCookie(int tabIndex) {
+		
+		Cookie tabCookie = new Cookie(ProfileConstants.TAB_COOKIE, "" + tabIndex);
+		// don't persist indefinitely
+		tabCookie.setMaxAge(-1);
+		getWebRequestCycle().getWebResponse().addCookie(tabCookie);
+	}
 	
 }

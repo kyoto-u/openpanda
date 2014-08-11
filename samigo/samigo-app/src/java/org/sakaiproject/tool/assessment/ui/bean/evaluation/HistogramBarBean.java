@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/HistogramBarBean.java $
- * $Id: HistogramBarBean.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/HistogramBarBean.java $
+ * $Id: HistogramBarBean.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -24,11 +24,11 @@
 package org.sakaiproject.tool.assessment.ui.bean.evaluation;
 
 import java.io.Serializable;
-
+import java.util.ArrayList;
 import org.sakaiproject.tool.assessment.ui.bean.util.Validator;
 
 /**
- * @version $Id: HistogramBarBean.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * @version $Id: HistogramBarBean.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
  * @author Ed Smiley
  */
 public class HistogramBarBean
@@ -44,7 +44,20 @@ private int numStudents;
   private String rangeInfo;
   private String label;
   private Boolean isCorrect;
-
+  private ItemBarBean[] itemBars;
+  
+  public void setItemBars(ArrayList<ItemBarBean> items){
+	  itemBars = items.toArray(new ItemBarBean[items.size()]);
+  }
+  
+  public void setItemBars(ItemBarBean[] barBean){
+	  itemBars = barBean;
+  }
+  
+  public ItemBarBean[] getItemBars(){
+	  return this.itemBars;
+  }
+	  
   /**
     *
     * @param numStudents int

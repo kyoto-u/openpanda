@@ -96,6 +96,7 @@ function printPreview(target){
 					#end
 				</div>		
 			</div>		
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	#end
 	<h3>
@@ -303,20 +304,32 @@ function printPreview(target){
 					#if ($pagesize != 0)
 						#if ($goFPButton == "true")
 							<form name="firstpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							    <fieldset><legend>$tlang.getString("gen.first")</legend>
 								<input type="submit" name="eventSubmit_doList_first" value="|&lt;" title="$tlang.getString("gen.first")" />
+                                </fieldset>
+								<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 							</form>
 						#else
 							<form name="firstpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							    <fieldset><legend>$tlang.getString("gen.first")</legend>
 								<input type="submit" name="eventSubmit_doList_first" value="|&lt;" disabled="disabled" />
+                                </fieldset>
+								<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 							</form>
 						#end
 						#if ($goPPButton == "true")
 							<form name="prevpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							    <fieldset><legend>$tlang.getString('gen.previous') $pagesize</legend>
 								<input type="submit" name="eventSubmit_doList_prev" value="&lt;" title="$tlang.getString('gen.previous') $pagesize" />
+                                </fieldset>
+								<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 							</form>
 						#else
 							<form name="prevpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							    <fieldset><legend>$tlang.getString('gen.previous') $pagesize</legend>
 								<input type="submit" name="eventSubmit_doList_prev" value="&lt;" disabled="disabled" />
+                                </fieldset>
+								<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 							</form>
 						#end
 					#end
@@ -328,24 +341,37 @@ function printPreview(target){
 								<option value="$i" #if($pagesize == $i) selected="selected" #end>$tlang.getString("sitegen.siteinfolist.show") $i $tlang.getString("sitegen.siteinfolist.itemspage")</option>
 							#end
 						</select>
+						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 					</form>
 					#if ($pagesize != 0)
 						#if ($goNPButton == "true")
 							<form name="nextpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							    <fieldset><legend>$tlang.getString('gen.next') $pagesize</legend>
 								<input type="submit" name="eventSubmit_doList_next" value="&gt;" title="$tlang.getString('gen.next') $pagesize" />
+                                </fieldset>
+								<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 							</form>
 						#else
 							<form name="nextpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							    <fieldset><legend>$tlang.getString('gen.next') $pagesize</legend>
 								<input type="submit" name="eventSubmit_doList_next" value="&gt;" disabled="disabled" />
+                                </fieldset>
+								<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 							</form>
 						#end
 						#if ($goLPButton == "true")
 							<form name="lastpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							    <fieldset><legend>$tlang.getString('gen.last')</legend>
 								<input type="submit" name="eventSubmit_doList_last" value="&gt;|" title="$tlang.getString('gen.last')" />
+                                </fieldset>
+								<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 							</form>
 						#else
 							<form name="lastpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
+							    <fieldset><legend>$tlang.getString('gen.last')</legend>
 								<input type="submit" name="eventSubmit_doList_last" value="&gt;|" disabled="disabled" />
+                                </fieldset>
+								<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 							</form>
 						#end
 					#end
@@ -437,9 +463,10 @@ function printPreview(target){
 							</a>
 							</th>
 						#end
-						<th id="remove" class="screenOnly" align="center">
-							$tlang.getString("sitegen.siteinfolist.remove")
+						<th id="remove" class="screenOnly attach" align="center" >
+							
 							<input type="checkbox" name="toggleAllSelected" value="" id="toggleAllSelected" onclick="javascript:toggleSelectAll(this, 'selectedUser')" title="$tlang.getString('check.all')"/>
+							<label for="toggleAllSelected">$tlang.getString("sitegen.siteinfolist.remove")</label>
 						</th>
 					#end
 				</tr>
@@ -526,14 +553,13 @@ function printPreview(target){
 								#if ($participant.isRemoveable())
 									## if in My Workspace site, cannot move the site user from it
 									#if (!$!isMyWorkspace || ($!isMyWorkspace && !$uniqname.equals($!siteUserId)))
-									<label  for="remove_$uniqname"><span class="skip">$tlang.getString("sitegen.siteinfolist.remove") $participant.getDisplayId()</span> &nbsp;&nbsp;&nbsp;<input type="checkbox" name="selectedUser" value="$uniqname" id="remove_$uniqname"
+									<label  for="remove_$uniqname"><span class="skip">$tlang.getString("sitegen.siteinfolist.remove") $participant.getDisplayId()</span></label><input type="checkbox" name="selectedUser" value="$uniqname" id="remove_$uniqname"
 											#foreach($participantSelected in $selectedParticipants)
 												#if($participantSelected.getUniqname() == $uniqname)
 													checked="checked" 
 												#end
 											#end
 										/>
-										&nbsp;&nbsp;&nbsp;</label>
 									#end
 								#end
 							</td>
@@ -548,6 +574,7 @@ function printPreview(target){
 				#end
                                 <div class="instruction" style="padding-left: 0.3em;"><em>$tlang.getString("sitegen.siteinfolist.lastupdated") $realmModifiedTime</em></span>
 			</div>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 		<h4>$tlang.getString("sitegen.siteinfolist.roledes")</h4>
 			<dl>

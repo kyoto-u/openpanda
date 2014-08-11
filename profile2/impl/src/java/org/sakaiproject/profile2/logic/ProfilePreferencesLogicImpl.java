@@ -1,10 +1,13 @@
 package org.sakaiproject.profile2.logic;
 
+import lombok.Setter;
+
 import org.apache.log4j.Logger;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.profile2.cache.CacheManager;
 import org.sakaiproject.profile2.dao.ProfileDao;
 import org.sakaiproject.profile2.model.ProfilePreferences;
+import org.sakaiproject.profile2.types.PreferenceType;
 import org.sakaiproject.profile2.util.ProfileConstants;
 
 /**
@@ -36,35 +39,37 @@ public class ProfilePreferencesLogicImpl implements ProfilePreferencesLogic {
 	  		throw new IllegalArgumentException("Null argument in ProfileLogic.getPreferencesRecordForUser"); 
 	  	}
 		
-		//will stay null if we can't get or create a record
-		ProfilePreferences prefs = null;
-		
 		//check cache
 		if(useCache){
 			if(cache.containsKey(userId)){
 				log.debug("Fetching preferences record from cache for: " + userId);
-				//log.debug((ProfilePreferences)cache.get(userId));
 				return (ProfilePreferences)cache.get(userId);
 			}
 		}
 		
-		if(prefs == null) {
-			prefs = dao.getPreferencesRecordForUser(userId);
-			log.debug("Fetching preferences record from dao for: " + userId);
+		//will stay null if we can't get or create a record
+		ProfilePreferences prefs = null;
 		
-			if(prefs == null) {
-				prefs = dao.addNewPreferencesRecord(getDefaultPreferencesRecord(userId));
-				if(prefs != null) {
-					sakaiProxy.postEvent(ProfileConstants.EVENT_PREFERENCES_NEW, "/profile/"+userId, true);
-					log.info("Created default preferences record for user: " + userId); 
-				}
-			}			
-		}
+		prefs = dao.getPreferencesRecordForUser(userId);
+		log.debug("Fetching preferences record from dao for: " + userId);
+	
+		if(prefs == null) {
+			prefs = dao.addNewPreferencesRecord(getDefaultPreferencesRecord(userId));
+			if(prefs != null) {
+				sakaiProxy.postEvent(ProfileConstants.EVENT_PREFERENCES_NEW, "/profile/"+userId, true);
+				log.info("Created default preferences record for user: " + userId); 
+			}
+		}			
 		
 		//add to cache
 		if(prefs != null){
 			log.debug("Adding preferences record to cache for: " + userId);
 			cache.put(userId, prefs);
+		}
+		
+		//if still null, we can't do much except log an error and wait for an NPE.
+		if(prefs == null) {
+			log.error("Couldn't retrieve or create a preferences record for user: " + userId + " This is an error and you need to fix your installation.");
 		}
 		
 		return prefs;
@@ -93,42 +98,31 @@ public class ProfilePreferencesLogicImpl implements ProfilePreferencesLogic {
 	/**
  	 * {@inheritDoc}
  	 */
-	public boolean isEmailEnabledForThisMessageType(final String userId, final int messageType) {
+	public boolean isPreferenceEnabled(final String userUuid, final PreferenceType type) {
 		
 		//get preferences record for this user
-    	ProfilePreferences profilePreferences = getPreferencesRecordForUser(userId);
+    	ProfilePreferences prefs = getPreferencesRecordForUser(userUuid);
     	
-    	//if none, return whatever the flag is set as by default
-    	if(profilePreferences == null) {
-    		return ProfileConstants.DEFAULT_EMAIL_NOTIFICATION_SETTING;
+    	boolean result=false;
+    	
+    	switch (type) {
+    		case EMAIL_NOTIFICATION_REQUEST: result = prefs.isRequestEmailEnabled(); break;
+    		case EMAIL_NOTIFICATION_CONFIRM: result = prefs.isConfirmEmailEnabled(); break;
+    		case EMAIL_NOTIFICATION_MESSAGE_NEW: result = prefs.isMessageNewEmailEnabled(); break;
+    		case EMAIL_NOTIFICATION_MESSAGE_REPLY: result = prefs.isMessageReplyEmailEnabled(); break;
+    		case EMAIL_NOTIFICATION_WALL_EVENT_NEW: result = prefs.isWallItemNewEmailEnabled(); break;
+    		case EMAIL_NOTIFICATION_WALL_STATUS_NEW: result = prefs.isWallItemNewEmailEnabled(); break;
+    		case EMAIL_NOTIFICATION_WALL_POST_MY_NEW: result = prefs.isWallItemNewEmailEnabled(); break;
+    		case EMAIL_NOTIFICATION_WALL_POST_CONNECTION_NEW: result = prefs.isWallItemNewEmailEnabled(); break;
+    		case EMAIL_NOTIFICATION_WORKSITE_NEW: result = prefs.isWorksiteNewEmailEnabled(); break;
+    		default: 
+    			//invalid type
+    	    	log.debug("ProfileLogic.isPreferenceEnabled. False for userId: " + userUuid + ", type: " + type);  
+    			result = false; 
+    		break;
     	}
-    	
-    	//if its a request and requests enabled, true
-    	if(messageType == ProfileConstants.EMAIL_NOTIFICATION_REQUEST && profilePreferences.isRequestEmailEnabled()) {
-    		return true;
-    	}
-    	
-    	//if its a confirm and confirms enabled, true
-    	if(messageType == ProfileConstants.EMAIL_NOTIFICATION_CONFIRM && profilePreferences.isConfirmEmailEnabled()) {
-    		return true;
-    	}
-    	
-    	//if its a new message and new messages enabled, true
-    	if(messageType == ProfileConstants.EMAIL_NOTIFICATION_MESSAGE_NEW && profilePreferences.isMessageNewEmailEnabled()) {
-    		return true;
-    	}
-    	
-    	//if its a reply to a message message and replies enabled, true
-    	if(messageType == ProfileConstants.EMAIL_NOTIFICATION_MESSAGE_REPLY && profilePreferences.isMessageReplyEmailEnabled()) {
-    		return true;
-    	}
-    	
-    	//add more cases here as need progresses
-    	
-    	//no notification for this message type, return false 	
-    	log.debug("ProfileLogic.isEmailEnabledForThisMessageType. False for userId: " + userId + ", messageType: " + messageType);  
-
-    	return false;
+		
+    	return result;
 	}
 	
 	
@@ -145,9 +139,13 @@ public class ProfilePreferencesLogicImpl implements ProfilePreferencesLogic {
 		prefs.setConfirmEmailEnabled(ProfileConstants.DEFAULT_EMAIL_CONFIRM_SETTING);
 		prefs.setMessageNewEmailEnabled(ProfileConstants.DEFAULT_EMAIL_MESSAGE_NEW_SETTING);
 		prefs.setMessageReplyEmailEnabled(ProfileConstants.DEFAULT_EMAIL_MESSAGE_REPLY_SETTING);
+		prefs.setWallItemNewEmailEnabled(ProfileConstants.DEFAULT_EMAIL_MESSAGE_WALL_SETTING);
+		prefs.setWorksiteNewEmailEnabled(ProfileConstants.DEFAULT_EMAIL_MESSAGE_WORKSITE_SETTING);
 		prefs.setUseOfficialImage(ProfileConstants.DEFAULT_OFFICIAL_IMAGE_SETTING);
 		prefs.setShowKudos(ProfileConstants.DEFAULT_SHOW_KUDOS_SETTING);
 		prefs.setShowGalleryFeed(ProfileConstants.DEFAULT_SHOW_GALLERY_FEED_SETTING);
+		prefs.setUseGravatar(ProfileConstants.DEFAULT_GRAVATAR_SETTING);
+		prefs.setShowOnlineStatus(ProfileConstants.DEFAULT_SHOW_ONLINE_STATUS_SETTING);
 				
 		return prefs;
 	}
@@ -157,18 +155,13 @@ public class ProfilePreferencesLogicImpl implements ProfilePreferencesLogic {
 		cache = cacheManager.createCache(CACHE_NAME);
 	}
 	
+	@Setter
 	private SakaiProxy sakaiProxy;
-	public void setSakaiProxy(SakaiProxy sakaiProxy) {
-		this.sakaiProxy = sakaiProxy;
-	}
 	
+	@Setter
 	private ProfileDao dao;
-	public void setDao(ProfileDao dao) {
-		this.dao = dao;
-	}
 	
+	@Setter
 	private CacheManager cacheManager;
-	public void setCacheManager(CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
-	}
+	
 }

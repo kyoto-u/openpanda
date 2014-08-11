@@ -1,4 +1,4 @@
-## version: $Id: sakai_resources_cwiz_finish.vm 59726 2009-04-06 18:18:23Z jimeng@umich.edu $
+## version: $Id: sakai_resources_cwiz_finish.vm 95047 2011-07-12 18:18:48Z ottenhoff@longsight.com $
 <!-- chef_resources_cwiz_finish.vm, use with org.sakaiproject.tool.content.ResourcesAction.java -->
 <div class="portletBody specialLink">
 	<h3>
@@ -72,6 +72,7 @@
 			<input type="button" id="cancel_button" onclick="javascript:document.getElementById('user_action').value='cancel';submitform('$DETAILS_FORM_NAME');" value="$tlang.getString("label.cancel")" accesskey="x" />
 		</p>
 		
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>
 #parse("/vm/resources/sakai_properties_scripts.vm")

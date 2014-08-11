@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-api/api/src/java/org/sakaiproject/metaobj/worksite/intf/WorksiteAware.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-api/api/src/java/org/sakaiproject/metaobj/worksite/intf/WorksiteAware.java $
  * $Id: WorksiteAware.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
  ***********************************************************************************
  *
@@ -22,7 +22,7 @@
 package org.sakaiproject.metaobj.worksite.intf;
 
 /*
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-api/api/src/java/org/sakaiproject/metaobj/worksite/intf/WorksiteAware.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-api/api/src/java/org/sakaiproject/metaobj/worksite/intf/WorksiteAware.java $
  * $Revision: 59676 $
  * $Date: 2009-04-04 08:18:23 +0900 (Sat, 04 Apr 2009) $
  */

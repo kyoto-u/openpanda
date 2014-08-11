@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ActiveToolComponent.java $
- * $Id: ActiveToolComponent.java 83841 2010-10-28 08:05:13Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ActiveToolComponent.java $
+ * $Id: ActiveToolComponent.java 83840 2010-10-28 08:00:22Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation

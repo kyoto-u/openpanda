@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/alias/api/Alias.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/alias/api/Alias.java $
  * $Id: Alias.java 81196 2010-08-13 11:21:47Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

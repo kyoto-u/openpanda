@@ -357,7 +357,7 @@ public class ListPresentationController extends AbstractPresentationController {
          return m_shared;
       }
       
-      public boolean getPublic() {
+      public boolean getPublicPresentation() {
          return m_public;
       }
       

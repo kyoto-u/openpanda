@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/AcademicSession.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/AcademicSession.java $
  * $Id: AcademicSession.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

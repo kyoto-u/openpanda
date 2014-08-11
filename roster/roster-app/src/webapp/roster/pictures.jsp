@@ -20,10 +20,10 @@ response.setContentType("text/html; charset=UTF-8");
 		</script>
         <h:form id="roster_form">
             <t:aliasBean alias="#{viewBean}" value="#{pictures}">
-                <%@include file="inc/nav.jspf" %>
+                <%@ include file="inc/nav.jspf" %>
             </t:aliasBean>
 
-            <%@include file="inc/filter.jspf" %>
+            <%@ include file="inc/filter.jspf" %>
 
             <h:panelGrid columns="2" styleClass="rosterPicturesFilter" columnClasses="rosterPageHeaderLeft,rosterPageHeaderRight">
                 <t:selectOneRadio  value="#{prefs.displayProfilePhotos}" onclick="this.form.submit()" immediate="true" rendered="#{pictures.renderPicturesOptions}">

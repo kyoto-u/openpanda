@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-api/api/src/java/org/sakaiproject/calendar/cover/CalendarService.java $
- * $Id: CalendarService.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-api/api/src/java/org/sakaiproject/calendar/cover/CalendarService.java $
+ * $Id: CalendarService.java 99972 2011-10-19 15:14:43Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -69,6 +69,15 @@ public class CalendarService
 	public static int WEEK_VIEW = org.sakaiproject.calendar.api.CalendarService.WEEK_VIEW;
 	public static int MONTH_VIEW = org.sakaiproject.calendar.api.CalendarService.MONTH_VIEW;
 	public static int LIST_VIEW = org.sakaiproject.calendar.api.CalendarService.LIST_VIEW;
+	/** events */
+	public static java.lang.String EVENT_MODIFY_CALENDAR_EVENT_TITLE = org.sakaiproject.calendar.api.CalendarService.EVENT_MODIFY_CALENDAR_EVENT_TITLE;
+	public static java.lang.String EVENT_MODIFY_CALENDAR_EVENT_TIME = org.sakaiproject.calendar.api.CalendarService.EVENT_MODIFY_CALENDAR_EVENT_TIME;
+	public static java.lang.String EVENT_MODIFY_CALENDAR_EVENT_TYPE = org.sakaiproject.calendar.api.CalendarService.EVENT_MODIFY_CALENDAR_EVENT_TYPE;
+	public static java.lang.String EVENT_MODIFY_CALENDAR_EVENT_ACCESS = org.sakaiproject.calendar.api.CalendarService.EVENT_MODIFY_CALENDAR_EVENT_ACCESS;
+	public static java.lang.String EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY = org.sakaiproject.calendar.api.CalendarService.EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY;
+	public static java.lang.String EVENT_MODIFY_CALENDAR_EVENT_EXCLUSIONS = org.sakaiproject.calendar.api.CalendarService.EVENT_MODIFY_CALENDAR_EVENT_EXCLUSIONS;
+	public static java.lang.String EVENT_MODIFY_CALENDAR_EVENT_EXCLUDED = org.sakaiproject.calendar.api.CalendarService.EVENT_MODIFY_CALENDAR_EVENT_EXCLUDED;
+	public static java.lang.String EVENT_REMOVE_CALENDAR_EVENT = org.sakaiproject.calendar.api.CalendarService.EVENT_REMOVE_CALENDAR_EVENT;
 
 	public static java.lang.String calendarReference(java.lang.String param0, java.lang.String param1)
 	{

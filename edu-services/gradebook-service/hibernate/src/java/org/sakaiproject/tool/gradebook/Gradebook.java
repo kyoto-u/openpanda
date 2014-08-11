@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: Gradebook.java 69200 2009-11-24 16:28:32Z wagnermr@iupui.edu $
+* $Id: Gradebook.java 95212 2011-07-15 11:39:20Z david.horwitz@uct.ac.za $
 *
 ***********************************************************************************
 *
@@ -56,6 +56,7 @@ public class Gradebook implements Serializable {
     private Boolean showMode;
     private Boolean showRank;
     private Boolean showItemStatistics;
+    private Boolean showStatisticsChart;
 
     /**
      * Default no-arg constructor needed for persistence
@@ -318,6 +319,14 @@ public class Gradebook implements Serializable {
 
 		public Boolean getScaledExtraCredit() {
 			return scaledExtraCredit;
+		}
+
+		public Boolean getShowStatisticsChart() {
+			return showStatisticsChart;
+		}
+
+		public void setShowStatisticsChart(Boolean showStatisticsChart) {
+			this.showStatisticsChart = showStatisticsChart;
 		}
 }
 

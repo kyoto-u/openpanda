@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/select/SelectAssessmentBean.java $
- * $Id: SelectAssessmentBean.java 79818 2010-07-22 21:54:46Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/select/SelectAssessmentBean.java $
+ * $Id: SelectAssessmentBean.java 92889 2011-05-16 23:25:23Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 /**
  * @author <a href="mailto:lance@indiana.edu">Lance Speelmon</a>
- * @version $Id: SelectAssessmentBean.java 79818 2010-07-22 21:54:46Z ktsao@stanford.edu $
+ * @version $Id: SelectAssessmentBean.java 92889 2011-05-16 23:25:23Z ktsao@stanford.edu $
  *
  * Used to be org.navigoproject.ui.web.asi.select.SelectAssessmentForm.java
  */
@@ -52,6 +52,7 @@ implements Serializable
 	private boolean hasAnyAssessmentRetractForEdit = false;  // this is used to display the message on the bottom if there is any assessment retracted for edit.
 	private String displayAllAssessments = "2"; // display all
 	private boolean hasAverageMultipleSubmissions=false;
+	private String secureDeliveryHTMLFragments;
 	
 	/**
 	 * ArrayLists should be lists of DeliveryBean objects
@@ -292,4 +293,12 @@ implements Serializable
 	public void setHasAverageMultipleSubmissions(boolean hasAverageMultipleSubmissions) {
 		this.hasAverageMultipleSubmissions = hasAverageMultipleSubmissions;
 	}       
+	
+	public String getSecureDeliveryHTMLFragments() {
+		return secureDeliveryHTMLFragments;
+	}
+		  
+	public void setSecureDeliveryHTMLFragments(String secureDeliveryHTMLFragments) {
+		this.secureDeliveryHTMLFragments = secureDeliveryHTMLFragments;
+	}
 }

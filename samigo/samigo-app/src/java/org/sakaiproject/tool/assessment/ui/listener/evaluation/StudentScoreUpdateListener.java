@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/StudentScoreUpdateListener.java $
- * $Id: StudentScoreUpdateListener.java 87712 2011-01-26 22:55:17Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/StudentScoreUpdateListener.java $
+ * $Id: StudentScoreUpdateListener.java 113421 2012-09-21 21:42:26Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -39,6 +39,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.math.util.MathUtils;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
@@ -64,7 +65,7 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Rachel Gollub
- * @version $Id: StudentScoreUpdateListener.java 87712 2011-01-26 22:55:17Z ktsao@stanford.edu $
+ * @version $Id: StudentScoreUpdateListener.java 113421 2012-09-21 21:42:26Z ottenhoff@longsight.com $
  */
 
 public class StudentScoreUpdateListener
@@ -170,7 +171,9 @@ public class StudentScoreUpdateListener
             else {
               oldComments = "";
             }
-            boolean updateScore = newAutoScore != oldAutoScore;
+            
+            // if newAutoScore != oldAutoScore then updateScore = true
+            boolean updateScore = !(MathUtils.equalsIncludingNaN(newAutoScore, oldAutoScore, 0.0001));
             boolean updateComments = !newComments.equals(oldComments);
             StringBuffer logString = new StringBuffer();
             logString.append("gradedBy=");
@@ -196,7 +199,7 @@ public class StudentScoreUpdateListener
               updateFlag = true;	
               data.setGradedBy(AgentFacade.getAgentString());
               data.setGradedDate(new Date());
-              EventTrackingService.post(EventTrackingService.newEvent("sam.student.score.update", logString.toString(), true));
+              EventTrackingService.post(EventTrackingService.newEvent("sam.student.score.update", "siteId=" + AgentFacade.getCurrentSiteId() + ", " + logString.toString(), true));
               log.debug("****4 itemGradingId="+data.getItemGradingId());
               log.debug("****5 set points = " + data.getAutoScore() + ", comments to " + data.getComments());
             }
@@ -309,7 +312,7 @@ public class StudentScoreUpdateListener
     				if (attachmentList.size() > 0) {
     					gradingService.saveOrUpdateAttachments(attachmentList);
     					EventTrackingService.post(EventTrackingService.newEvent("sam.student.score.update", 
-    							"Adding " + attachmentList.size() + " attachments for itemGradingData id = " + itemGradingData.getItemGradingId(), 
+    							"siteId=" + AgentFacade.getCurrentSiteId() + ", Adding " + attachmentList.size() + " attachments for itemGradingData id = " + itemGradingData.getItemGradingId(), 
     							true));
     				}
     				
@@ -320,7 +323,7 @@ public class StudentScoreUpdateListener
     					Long attachmentId = (Long)iter4.next();
     					gradingService.removeItemGradingAttachment(attachmentId.toString());
     					EventTrackingService.post(EventTrackingService.newEvent("sam.student.score.update", 
-    							"Removing attachmentId = " + attachmentId, true));
+    							"siteId=" + AgentFacade.getCurrentSiteId() + ", Removing attachmentId = " + attachmentId, true));
     				}
     			}
     		}

@@ -1,6 +1,6 @@
 /*********************************************************************************a
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/Validator.java $
- * $Id: Validator.java 80004 2010-07-28 18:37:21Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/Validator.java $
+ * $Id: Validator.java 101696 2011-12-13 14:44:36Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -36,7 +36,9 @@ import org.sakaiproject.exception.IdInvalidException;
  * <p>
  * Validator is utility class that helps to validate stuff.
  * </p>
+ * @deprecated use apache commons utils or {@link org.sakaiproject.util.api.FormattedText}, this will be removed after 2.9 - Dec 2011
  */
+@Deprecated 
 public class Validator
 {
 	/** Our logger. */
@@ -54,27 +56,27 @@ public class Validator
 	/** These characters are not allowed in a site skin */
 	protected static final String INVALID_CHARS_IN_SITE_SKIN = " $&':<>[]{}#%@/;=?\\^|~\"";
 	
-	protected static final String MAP_TO_A = "âäàåÄÅáá";
+	protected static final String MAP_TO_A = "ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ";
 
-	protected static final String MAP_TO_B = "ßß";
+	protected static final String MAP_TO_B = "ÔøΩÔøΩ";
 
-	protected static final String MAP_TO_C = "Çç¢¢";
+	protected static final String MAP_TO_C = "ÔøΩÔøΩÔøΩÔøΩ";
 
-	protected static final String MAP_TO_E = "éêëèÉæÆÆ";
+	protected static final String MAP_TO_E = "ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ";
 
-	protected static final String MAP_TO_I = "ïîìíí";
+	protected static final String MAP_TO_I = "ÔøΩÔøΩÔøΩÔøΩÔøΩ";
 
-	protected static final String MAP_TO_L = "££";
+	protected static final String MAP_TO_L = "ÔøΩÔøΩ";
 
-	protected static final String MAP_TO_N = "ñÑÑ";
+	protected static final String MAP_TO_N = "ÔøΩÔøΩÔøΩ";
 
-	protected static final String MAP_TO_O = "ôöòÖóó";
+	protected static final String MAP_TO_O = "ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ";
 
-	protected static final String MAP_TO_U = "üûùÜúú";
+	protected static final String MAP_TO_U = "ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ";
 
 	protected static final String MAP_TO_Y = "ÿ¥??";
 
-	protected static final String MAP_TO_X = "???§©ª®±?´µ¶¿?";
+	protected static final String MAP_TO_X = "???ÔøΩÔøΩÔøΩÔøΩÔøΩ?ÔøΩÔøΩÔøΩÔøΩ?";
 
 	/**
 	 * These characters are allowed; but if escapeResourceName() is called, they are escaped (actually, removed) Certain characters cause problems with filenames in certain OSes - so get rid of these characters in filenames
@@ -102,6 +104,7 @@ public class Validator
 	 * @param value
 	 *        The string to escape.
 	 * @return value fully escaped for HTML.
+     * @deprecated this is a passthrough for {@link FormattedText#escapeHtml(String, boolean)} so use that instead
 	 */
 	public static String escapeHtml(String value)
 	{
@@ -115,6 +118,7 @@ public class Validator
 	 * @param value
 	 *        The string to escape.
 	 * @return value fully escaped for HTML.
+     * @deprecated this is a passthrough for {@link FormattedText#escapeHtml(String, boolean)} so use that instead
 	 */
 	public static String escapeHtmlSupressNewlines(String value)
 	{
@@ -123,6 +127,7 @@ public class Validator
 
 	/**
 	 * Escape plaintext for display inside a plain textarea.
+     * @deprecated this is a passthrough for {@link FormattedText#escapeHtml(String, boolean)} so use that instead
 	 */
 	public static String escapeHtmlTextarea(String value)
 	{
@@ -131,6 +136,7 @@ public class Validator
 
 	/**
 	 * Escape HTML-formatted text in preparation to include it in an HTML document.
+     * @deprecated this is a passthrough for {@link FormattedText#escapeHtmlFormattedText(String)} so use that instead
 	 */
 	public static String escapeHtmlFormattedText(String value)
 	{
@@ -139,6 +145,7 @@ public class Validator
 
 	/**
 	 * Escape HTML-formatted text in preparation to include it in an HTML document, except that HTML line breaks ("&lt;br /&gt;") will be supressed (removed).
+     * @deprecated this is a passthrough for {@link FormattedText#escapeHtmlFormattedTextSupressNewlines(String)} so use that instead
 	 */
 	public static String escapeHtmlFormattedTextSupressNewlines(String value)
 	{
@@ -151,6 +158,7 @@ public class Validator
 	 * @param value
 	 *        The formatted text to escape
 	 * @return The string to use as the value of the formatted textarea widget
+     * @deprecated this is a passthrough for {@link FormattedText#escapeHtmlFormattedTextarea(String)} so use that instead
 	 */
 	public static String escapeHtmlFormattedTextarea(String value)
 	{
@@ -158,22 +166,109 @@ public class Validator
 	}
 
 	/**
-	 * escapeHtml(), but also fix the case where we start with &#169; and treat it as copyright (c) Note: ResourcesAction used to (before 1.1.05) place this as the copyright symbol. -ggolden
+	 * escapeHtml(), but also fix the case where we start with &#169; and treat it as copyright (c) 
+	 * Note: ResourcesAction used to (before 1.1.05) place this as the copyright symbol. -ggolden
+	 * 
+	 * @deprecated this is a non-i18n compliant method, DO NOT USE, it will be removed after 2.9 - Dec 2011
 	 */
-	public static String escapeHtmlFixCopyright(String value)
-	{
-		if (value.startsWith("&#169;"))
-		{
+	public static String escapeHtmlFixCopyright(String value) {
+		if (value.startsWith("&#169;")) {
 			value = "copyright (c)" + value.substring(6);
 		}
-
-		return escapeHtml(value);
+		return FormattedText.escapeHtml(value, true);
 
 	} // escapeHtmlFixCopyright
 
+    /**
+     * Return a string based on value that is safe to place into a sql statement: sql statements use the single quote, and this must be doubled as an escape.
+     * 
+     * @param value
+     *        The string to escape.
+     * @return value escaped.
+     * @deprecated use commons-lang StringEscapeUtils
+     */
+    public static String escapeSql(String value)
+    {
+        if (value == null) return "";
+        try
+        {
+            StringBuilder buf = new StringBuilder();
+            for (int i = 0; i < value.length(); i++)
+            {
+                char c = value.charAt(i);
+                if (c == '\'')
+                {
+                    buf.append("''");
+                }
+                else
+                {
+                    buf.append(c);
+                }
+            }
+
+            String rv = buf.toString();
+            return rv;
+        }
+        catch (Exception e)
+        {
+            M_log.warn("Validator.escapeSql: ", e);
+            return "";
+        }
+
+    } // escapeSql
+
+    /**
+     * Return a string based on value that is safe to place into a javascript / html identifier: anything not alphanumeric change to 'x'. If the first character is not alphabetic, a letter 'i' is prepended.
+     * 
+     * @param value
+     *        The string to escape.
+     * @return value fully escaped using javascript / html identifier rules.
+     * @deprecated use commons-lang StringEscapeUtils
+     */
+    public static String escapeJavascript(String value)
+    {
+        if (value == null || "".equals(value)) return "";
+        try
+        {
+            StringBuilder buf = new StringBuilder();
+
+            // prepend 'i' if first character is not a letter
+            if (!java.lang.Character.isLetter(value.charAt(0)))
+            {
+                buf.append("i");
+            }
+
+            // change non-alphanumeric characters to 'x'
+            for (int i = 0; i < value.length(); i++)
+            {
+                char c = value.charAt(i);
+                if (!java.lang.Character.isLetterOrDigit(c))
+                {
+                    buf.append("x");
+                }
+                else
+                {
+                    buf.append(c);
+                }
+            }
+
+            String rv = buf.toString();
+            return rv;
+        }
+        catch (Exception e)
+        {
+            M_log.warn("Validator.escapeJavascript: ", e);
+            return "";
+        }
+
+    } // escapeJavascript
+
+
 	/**
 	 * Return a string based on id that is fully escaped using URL rules, using a UTF-8 underlying encoding.
-	 *
+	 * One reason for this existing is that the standard URLEncoder in Java will encode slashes ('/') but this method doesn't.
+	 * Also watch out as it trims trailing spaces, and other character get lost here too.
+	 * 
 	 * Note: java.net.URLEncode.encode() provides a more standard option
 	 *       FormattedText.decodeNumericCharacterReferences() undoes this op
 	 * 
@@ -202,6 +297,9 @@ public class Validator
 					buf.append(toHex(b));
 					buf.append('^');
 				}
+				// 0x1F is the last control character
+				// 0x7F is DEL chatecter
+				// 0x80 is the start of the top of the 256bit set.
 				else if ((ESCAPE_URL.indexOf((char) b) != -1) || (b <= 0x1F) || (b == 0x7F) || (b >= 0x80))
 				{
 					buf.append("%");
@@ -223,7 +321,44 @@ public class Validator
 		}
 
 	} // escapeUrl
+    
+    /**
+     * Is this a valid local part of an email id?
+     * @deprecated use commons-validator EmailValidator
+     */
+    public static boolean checkEmailLocal(String id)
+    {
+        // rules based on rfc2882, but a bit more conservative
 
+        for (int i = 0; i < id.length(); i++)
+        {
+            if (VALID_EMAIL.indexOf(id.charAt(i)) == -1) return false;
+        }
+
+        return true;
+
+    } // checkEmailLocal
+
+    /**
+     * Limit the formatted to a certain number of DISPLAYED characters, adding "..." if it was truncated. For example, <xmp>trim("Hello \n<b>World</b>!", 7)</xmp> returns <xmp>"Hello \n<b>W</b>..."</xmp>
+     * 
+     * @param value
+     *        The formatted text to limit.
+     * @param the
+     *        length to limit to (as an int).
+     * @return The limited string.
+     * @deprecated use {@link org.sakaiproject.util.api.FormattedText#trimFormattedText(String, int, StringBuilder)} instead
+     */
+    public static String limitFormattedText(String value, int length)
+    {
+        StringBuilder ret = new StringBuilder();
+        value = FormattedText.escapeHtmlFormattedTextSupressNewlines(value);
+        boolean didTrim = FormattedText.trimFormattedText(value, length, ret);
+        if (didTrim) ret.append("...");
+        return ret.toString();
+    }
+
+ 
 	/**
 	 * Return a string based on id that is valid according to Resource name validity rules.
 	 * 
@@ -431,90 +566,6 @@ public class Validator
 	} // escapeJsQuoted
 
 	/**
-	 * Return a string based on value that is safe to place into a sql statement: sql statements use the single quote, and this must be doubled as an escape.
-	 * 
-	 * @param value
-	 *        The string to escape.
-	 * @return value escaped.
-	 * @deprecated use commons-lang StringEscapeUtils
-	 */
-	public static String escapeSql(String value)
-	{
-		if (value == null) return "";
-		try
-		{
-			StringBuilder buf = new StringBuilder();
-			for (int i = 0; i < value.length(); i++)
-			{
-				char c = value.charAt(i);
-				if (c == '\'')
-				{
-					buf.append("''");
-				}
-				else
-				{
-					buf.append(c);
-				}
-			}
-
-			String rv = buf.toString();
-			return rv;
-		}
-		catch (Exception e)
-		{
-			M_log.warn("Validator.escapeSql: ", e);
-			return "";
-		}
-
-	} // escapeSql
-
-	/**
-	 * Return a string based on value that is safe to place into a javascript / html identifier: anything not alphanumeric change to 'x'. If the first character is not alphabetic, a letter 'i' is prepended.
-	 * 
-	 * @param value
-	 *        The string to escape.
-	 * @return value fully escaped using javascript / html identifier rules.
-	 * @deprecated use commons-lang StringEscapeUtils
-	 */
-	public static String escapeJavascript(String value)
-	{
-		if (value == null || "".equals(value)) return "";
-		try
-		{
-			StringBuilder buf = new StringBuilder();
-
-			// prepend 'i' if first character is not a letter
-			if (!java.lang.Character.isLetter(value.charAt(0)))
-			{
-				buf.append("i");
-			}
-
-			// change non-alphanumeric characters to 'x'
-			for (int i = 0; i < value.length(); i++)
-			{
-				char c = value.charAt(i);
-				if (!java.lang.Character.isLetterOrDigit(c))
-				{
-					buf.append("x");
-				}
-				else
-				{
-					buf.append(c);
-				}
-			}
-
-			String rv = buf.toString();
-			return rv;
-		}
-		catch (Exception e)
-		{
-			M_log.warn("Validator.escapeJavascript: ", e);
-			return "";
-		}
-
-	} // escapeJavascript
-
-	/**
 	 * Check for a valid user id.
 	 * 
 	 * @exception IdInvalidException
@@ -615,24 +666,6 @@ public class Validator
 		return true;
 
 	} // checkSiteSkin
-		
-	
-	/**
-	 * Is this a valid local part of an email id?
-	 * @deprecated use commons-validator EmailValidator
-	 */
-	public static boolean checkEmailLocal(String id)
-	{
-		// rules based on rfc2882, but a bit more conservative
-
-		for (int i = 0; i < id.length(); i++)
-		{
-			if (VALID_EMAIL.indexOf(id.charAt(i)) == -1) return false;
-		}
-
-		return true;
-
-	} // checkEmailLocal
 
 	/**
 	 * Isolate and return just the file name part of a full drive and path file name.
@@ -814,24 +847,6 @@ public class Validator
 	} // limit
 
 	/**
-	 * Limit the formatted to a certain number of DISPLAYED characters, adding "..." if it was truncated. For example, <xmp>trim("Hello \n<b>World</b>!", 7)</xmp> returns <xmp>"Hello \n<b>W</b>..."</xmp>
-	 * 
-	 * @param value
-	 *        The formatted text to limit.
-	 * @param the
-	 *        length to limit to (as an int).
-	 * @return The limited string.
-	 */
-	public static String limitFormattedText(String value, int length)
-	{
-		StringBuilder ret = new StringBuilder();
-		value = FormattedText.escapeHtmlFormattedTextSupressNewlines(value);
-		boolean didTrim = FormattedText.trimFormattedText(value, length, ret);
-		if (didTrim) ret.append("...");
-		return ret.toString();
-	}
-
-	/**
 	 * Clean the user input string of strange newlines, etc.
 	 * 
 	 * @param value
@@ -906,8 +921,8 @@ public class Validator
 		for (int i = 0; i < len; i++)
 		{
 			char c = value.charAt(i);
-			char next = 0;
-			if (i + 1 < len) next = value.charAt(i + 1);
+			//char next = 0;
+			//if (i + 1 < len) next = value.charAt(i + 1);
 
 			switch (c)
 			{

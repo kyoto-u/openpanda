@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/branches/sakai-2.8.x/mailarchive-james/james/src/java/org/sakaiproject/james/JamesServlet.java $
- * $Id: JamesServlet.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.0/mailarchive-james/james/src/java/org/sakaiproject/james/JamesServlet.java $
+ * $Id: JamesServlet.java 92897 2011-05-17 13:29:42Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

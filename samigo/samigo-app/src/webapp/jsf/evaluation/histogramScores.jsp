@@ -14,7 +14,7 @@
       </head>
       <body onload="<%= request.getAttribute("html.body.onload") %>">
 <!--
-$Id: histogramScores.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+$Id: histogramScores.jsp 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -37,6 +37,10 @@ $Id: histogramScores.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
 -->
 <!-- content... -->
  <div class="portletBody">
+ 
+<!-- IF A SECURE DELIVERY MODULE HAS BEEN SELECTED, INJECT ITS HTML FRAGMENT (IF ANY) HERE -->
+<h:outputText  value="#{delivery.secureDeliveryHTMLFragment}" escape="false"  />
+ 
 <h:form id="histogram">
 
   <h:inputHidden id="publishedId" value="#{histogramScores.publishedId}" />
@@ -100,8 +104,8 @@ $Id: histogramScores.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
 
     <h:outputText value=" </p>" rendered="#{histogramScores.hasNav==null || histogramScores.hasNav=='true'}" escape="false"/>
 
-  <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
-
+   <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+   
 <div class="tier1">
 
 
@@ -132,13 +136,8 @@ $Id: histogramScores.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
          type="org.sakaiproject.tool.assessment.ui.listener.evaluation.HistogramListener" />
      </h:selectOneMenu>
     </h:panelGroup>
-
-    <h:panelGroup rendered="#{histogramScores.randomType =='true'}">
-    <h:outputText value="#{evaluationMessages.no_histogram_for_random}" />
-      </h:panelGroup>
-
-
-    <h:panelGroup rendered="#{histogramScores.randomType =='false'}">
+       
+    <h:panelGroup>
  <f:verbatim><h4></f:verbatim>
   <h:outputText value="#{evaluationMessages.tot}" />
    <f:verbatim></h4><div class="tier2"></f:verbatim>
@@ -199,19 +198,28 @@ $Id: histogramScores.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
 </h:panelGrid>
 </p>
 
+<h:panelGroup>
+    <f:verbatim><h4></f:verbatim>
+    <h:outputText value="#{evaluationMessages.q_view}" />
+    <f:verbatim></h4></f:verbatim>
+</h:panelGroup>
 
+<!-- The parts drop down. -->
+<h:panelGroup rendered="#{histogramScores.assesmentPartCount > 1}">
+    <h:outputText value="#{evaluationMessages.part} " />
+    <h:outputText value="#{evaluationMessages.column} " />
+    <h:selectOneMenu id="partNumber" onchange="document.forms[0].submit();"
+                     value="#{histogramScores.partNumber}" >
+	<f:selectItem itemValue="" itemLabel="#{evaluationMessages.all_parts}" />
+        <f:selectItems value="#{histogramScores.selectItemParts}"/>
+        <f:valueChangeListener
+            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.HistogramListener" />
+    </h:selectOneMenu>
+</h:panelGroup>
 
-  <h:dataTable value="#{histogramScores.info}" var="item">
+  <h:dataTable value="#{histogramScores.partInfo}" var="item">
 
-<!-- need to add a randomtype property for histogramQuestionScoreBean (item) and if it's true, hide histogram  -->
-<%--
-    <h:column rendered="#{histogramScores.randomType =='true'}">
-      <h:outputText value="#{evaluationMessages.no_histogram_for_random}" />
-    </h:column>
---%>
-
-
-    <h:column rendered="#{histogramScores.randomType =='false'}">
+    <h:column>
       <h:panelGroup>
         <f:verbatim><h4></f:verbatim>
           <h:outputText value="#{item.title}" escape="false" />
@@ -222,23 +230,40 @@ $Id: histogramScores.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
         <h:dataTable value="#{item.histogramBars}" var="bar">
           <h:column>
             <h:panelGrid columns="1">
-              <h:panelGroup>
-
-<h:graphicImage id="image8" rendered="#{bar.isCorrect}" width="12" height="12"
-        alt="#{evaluationMessages.alt_correct}" url="/images/delivery/checkmark.gif" >
-       </h:graphicImage>
-
-<h:graphicImage id="image9" rendered="#{!bar.isCorrect}" width="12" height="12"
-        alt="#{evaluationMessages.alt_incorrect}" url="/images/delivery/spacer.gif" >
-       </h:graphicImage>
+              <h:panelGroup rendered="#{item.questionType !='13'}">
+				<h:graphicImage id="image8" rendered="#{bar.isCorrect}" width="12" height="12"
+        			alt="#{evaluationMessages.alt_correct}" url="/images/delivery/checkmark.gif" >
+       			</h:graphicImage>
+				<h:graphicImage id="image9" rendered="#{!bar.isCorrect}" width="12" height="12"
+        			alt="#{evaluationMessages.alt_incorrect}" url="/images/delivery/spacer.gif" >
+       			</h:graphicImage>
 
                 <h:graphicImage url="/images/reddot.gif" height="12" width="#{bar.columnHeight}"/>
                 <h:outputText value=" #{bar.numStudentsText}" />
               </h:panelGroup>
-               <h:panelGroup>
-               <h:graphicImage width="12" height="12" url="/images/delivery/spacer.gif" />
-              <h:outputText value="#{bar.label}" escape="false" />
-</h:panelGroup>
+              
+              <h:panelGroup>
+              	<h:graphicImage width="12" height="12" url="/images/delivery/spacer.gif" />
+              	<h:outputText value="#{bar.label}" escape="false" >
+              		<f:converter converterId="org.sakaiproject.tool.assessment.jsf.convert.AnswerSurveyConverter" />
+             	</h:outputText>
+			  </h:panelGroup>
+			  
+			  <h:panelGroup rendered="#{item.questionType == '13' }">
+			    <f:verbatim><div class="tier3"></f:verbatim>
+				<h:dataTable value="#{bar.itemBars}" var="itemBar" >
+					<h:column>
+					<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputText value="#{itemBar.itemText}  "/>
+						<h:graphicImage url="/images/reddot.gif" height="12" width="#{itemBar.columnHeight}"/>
+						<h:outputText value="#{itemBar.numStudentsText}"/> 
+					</h:panelGroup>
+					</h:panelGrid>
+					</h:column>
+				</h:dataTable>
+				<f:verbatim></div></f:verbatim>
+			  </h:panelGroup>
             </h:panelGrid>
           </h:column>
         </h:dataTable>
@@ -258,7 +283,7 @@ $Id: histogramScores.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
           <h:outputLabel value="#{evaluationMessages.mode}" />
           <h:outputText id="mode" value="#{item.mode}" />
         </h:panelGrid>
-       <h:panelGrid columns="2" rendered="#{item.questionType == '3'}">
+       <h:panelGrid columns="2" rendered="#{item.questionType == '3' or item.questionType == '13'}">
           <h:outputLabel for="responses1" value="#{evaluationMessages.responses}" />
           <h:outputText id="responses1" value="#{item.numResponses}" />
         </h:panelGrid>

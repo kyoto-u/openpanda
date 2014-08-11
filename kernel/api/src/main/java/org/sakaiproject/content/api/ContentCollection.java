@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/content/api/ContentCollection.java $
- * $Id: ContentCollection.java 66286 2009-09-04 13:47:34Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/content/api/ContentCollection.java $
+ * $Id: ContentCollection.java 96667 2011-08-09 08:31:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -21,17 +21,16 @@
 
 package org.sakaiproject.content.api;
 
+import java.util.Date;
 import java.util.List;
 
-import org.sakaiproject.content.api.ContentEntity;
-import org.sakaiproject.content.api.GroupAwareEntity;
 import org.sakaiproject.time.api.Time;
 
 /**
 * <p>ContentCollection is the core interface for a Collection object in the GenericContentHostingService.</p>
 * <p>A Collection has a list of internal members, each a resource id.</p>
 *
-* @version $Revision: 66286 $
+* @version $Revision: 96667 $
 */
 public interface ContentCollection
 	extends ContentEntity
@@ -67,6 +66,7 @@ public interface ContentCollection
 	 * Access the release date before which this entity should not be available to users 
 	 * except those with adequate permission (what defines "adequate permission" is TBD).
 	 * @return The date/time at which the entity may be accessed by all users.
+	 * @deprecated use {{@link #getReleaseTime()}
 	 */
 	public Time getReleaseDate();
 	
@@ -74,9 +74,24 @@ public interface ContentCollection
 	 * Access the retract date after which this entity should not be available to users 
 	 * except those with adequate permission (what defines "adequate permission" is TBD).
 	 * @return The date/time at which access to the entity should be restricted.
+	 * @deprecated use {{@link #getRetractTime()}
 	 */
 	public Time getRetractDate();
 	
+	/**
+	 * Access the release date before which this entity should not be available to users 
+	 * except those with adequate permission (what defines "adequate permission" is TBD).
+	 * @return The date/time at which the entity may be accessed by all users.
+	 */
+	public Date getReleaseTime();
+	
+	
+	/**
+	 * Access the retract date after which this entity should not be available to users 
+	 * except those with adequate permission (what defines "adequate permission" is TBD).
+	 * @return The date/time at which access to the entity should be restricted.
+	 */
+	public Date getRetractTime();
 }	// ContentCollection
 
 

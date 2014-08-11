@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/EditAssessmentListener.java $
- * $Id: EditAssessmentListener.java 72846 2010-01-28 00:33:22Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/EditAssessmentListener.java $
+ * $Id: EditAssessmentListener.java 113407 2012-09-21 20:46:17Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -52,7 +52,7 @@ import org.sakaiproject.tool.cover.ToolManager;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: EditAssessmentListener.java 72846 2010-01-28 00:33:22Z ktsao@stanford.edu $
+ * @version $Id: EditAssessmentListener.java 113407 2012-09-21 20:46:17Z ottenhoff@longsight.com $
  */
 
 public class EditAssessmentListener
@@ -221,18 +221,30 @@ public class EditAssessmentListener
   }
   
   public static void showPrintLink(AssessmentBean assessmentBean) {
-	  log.debug("first condition = " + (ToolManager.getTool("sakai.questionbank.printout") != null));
-	  log.debug("second conditon = " + !ServerConfigurationService.getString("stealthTools@org.sakaiproject.tool.api.ActiveToolManager").contains("sakai.questionbank.printout"));
-	  log.debug("third condition = " + !ServerConfigurationService.getString("hiddenTools@org.sakaiproject.tool.api.ActiveToolManager").contains("sakai.questionbank.printout"));
+	  String stealthTools =ServerConfigurationService.getString("stealthTools@org.sakaiproject.tool.api.ActiveToolManager"); 
+	  String hiddenTools = ServerConfigurationService.getString("hiddenTools@org.sakaiproject.tool.api.ActiveToolManager");
+	  
+	  //Doing lots of string appends so only do this if we're in debug
+	  if (log.isDebugEnabled()) {
+		  log.debug("first condition = " + (ToolManager.getTool("sakai.questionbank.printout") != null));
+		  //Its possible for stealthTools and HiddenTools to be empty or null - DH
+		  if (stealthTools != null && !"".equals(stealthTools)) {
+			  log.debug("second conditon = " + !stealthTools.contains("sakai.questionbank.printout"));
+		  } else {
+			  log.debug("second conditon = steathTools is empyty");
+		  }
+		  
+		  if (hiddenTools != null && !"".equals(hiddenTools)) {
+			  log.debug("third condition = " + !hiddenTools.contains("sakai.questionbank.printout"));
+		  } else {
+			  log.debug("third condition = hiddenTools is empty");
+		  }
+	  }
 	  String printAssessment = ServerConfigurationService.getString("samigo.printAssessment");
 
 	  if (((ToolManager.getTool("sakai.questionbank.printout") != null)
-			  && !ServerConfigurationService.getString(
-			  "stealthTools@org.sakaiproject.tool.api.ActiveToolManager")
-			  .contains("sakai.questionbank.printout")
-			  && !ServerConfigurationService.getString(
-			  "hiddenTools@org.sakaiproject.tool.api.ActiveToolManager")
-			  .contains("sakai.questionbank.printout"))
+			  && (stealthTools != null && !stealthTools.contains("sakai.questionbank.printout"))
+			  && (hiddenTools != null && !hiddenTools.contains("sakai.questionbank.printout")))
 			  || Boolean.parseBoolean(printAssessment)) {
 		  assessmentBean.setShowPrintLink(true);
 	  }

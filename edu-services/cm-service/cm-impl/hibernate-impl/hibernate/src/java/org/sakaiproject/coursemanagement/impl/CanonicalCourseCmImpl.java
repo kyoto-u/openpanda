@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/cm-service/cm-impl/hibernate-impl/hibernate/src/java/org/sakaiproject/coursemanagement/impl/CanonicalCourseCmImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-impl/hibernate-impl/hibernate/src/java/org/sakaiproject/coursemanagement/impl/CanonicalCourseCmImpl.java $
  * $Id: CanonicalCourseCmImpl.java 60827 2009-04-22 12:47:19Z aaronz@vt.edu $
  ***********************************************************************************
  *

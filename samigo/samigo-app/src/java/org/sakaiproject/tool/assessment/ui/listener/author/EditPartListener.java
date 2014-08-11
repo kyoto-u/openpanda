@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/EditPartListener.java $
- * $Id: EditPartListener.java 68037 2009-10-16 22:16:44Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/EditPartListener.java $
+ * $Id: EditPartListener.java 92666 2011-05-06 00:14:03Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -32,6 +32,7 @@ import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.tool.assessment.data.dao.assessment.SectionMetaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionMetaDataIfc;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.SectionFacade;
 import org.sakaiproject.tool.assessment.services.ItemService;
 import org.sakaiproject.tool.assessment.services.PublishedItemService;
@@ -47,7 +48,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: EditPartListener.java 68037 2009-10-16 22:16:44Z ktsao@stanford.edu $
+ * @version $Id: EditPartListener.java 92666 2011-05-06 00:14:03Z ktsao@stanford.edu $
  */
 
 public class EditPartListener
@@ -86,11 +87,11 @@ public class EditPartListener
     AssessmentService assessmentService = null;
     SectionFacade section = null;
     if (isEditPendingAssessmentFlow) {
-    	EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "sectionId=" + sectionId, true));
+    	EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", sectionId=" + sectionId, true));
     	assessmentService = new AssessmentService();
     }
     else {
-    	EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.revise", "sectionId=" + sectionId, true));
+    	EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", sectionId=" + sectionId, true));
     	assessmentService = new PublishedAssessmentService();
     }
     section = assessmentService.getSection(sectionId);

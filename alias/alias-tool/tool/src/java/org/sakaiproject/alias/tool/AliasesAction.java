@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/alias/branches/sakai-2.8.x/alias-tool/tool/src/java/org/sakaiproject/alias/tool/AliasesAction.java $
- * $Id: AliasesAction.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/alias/tags/sakai-2.9.0/alias-tool/tool/src/java/org/sakaiproject/alias/tool/AliasesAction.java $
+ * $Id: AliasesAction.java 92892 2011-05-17 12:59:40Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation

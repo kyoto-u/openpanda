@@ -1,6 +1,6 @@
  /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/branches/sakai-2.8.x/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
- * $Id: AnnouncementAction.java 118629 2013-01-23 05:55:03Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
+ * $Id: AnnouncementAction.java 114412 2012-10-16 15:12:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -22,7 +22,6 @@
 package org.sakaiproject.announcement.tool;
 
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -78,6 +77,7 @@ import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn.Header;
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.event.api.SessionState;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.IdUsedException;
@@ -234,6 +234,8 @@ public class AnnouncementAction extends PagedResourceActionII
    private static final String UPDATE_PERMISSIONS = "site.upd";
 
    private ContentHostingService contentHostingService = null;
+   
+   private EventTrackingService eventTrackingService = null;
    
    private EntityBroker entityBroker;
    
@@ -1417,7 +1419,7 @@ public class AnnouncementAction extends PagedResourceActionII
 	private List getMessages(AnnouncementChannel defaultChannel, Filter filter, boolean ascending, AnnouncementActionState state,
 			VelocityPortlet portlet) throws PermissionException
 	{
-		List messageList = new Vector();
+		List messageList = new ArrayList();
 
 		MergedList mergedAnnouncementList = new MergedList();
 
@@ -1851,7 +1853,7 @@ public class AnnouncementAction extends PagedResourceActionII
 		}
 
 		// output the notification options
-		String notification = (String) sstate.getAttribute(SSTATE_NOTI_VALUE);;
+		String notification = (String) sstate.getAttribute(SSTATE_NOTI_VALUE);
 		if ("r".equals(notification))
 		{
 			context.put("noti", rb.getString("java.NOTI_REQUIRED"));
@@ -2186,7 +2188,7 @@ public class AnnouncementAction extends PagedResourceActionII
 				context.put("pubview", Boolean.FALSE);
 
 			// output the notification options
-			String notification = (String) sstate.getAttribute(SSTATE_NOTI_VALUE);;
+			String notification = (String) sstate.getAttribute(SSTATE_NOTI_VALUE);
 			// "r", "o" or "n"
 			context.put("noti", notification);
 			
@@ -2798,6 +2800,11 @@ public class AnnouncementAction extends PagedResourceActionII
 	 */
 	protected void postOrSaveDraft(RunData rundata, Context context, boolean post)
 	{
+		// tracking changes
+		boolean titleChanged = false;
+		boolean accessChanged = false;
+		boolean availabilityChanged = false;
+		
 		// retrieve the state from state object
 		AnnouncementActionState state = (AnnouncementActionState) getState(context, rundata, AnnouncementActionState.class);
 
@@ -2870,7 +2877,13 @@ public class AnnouncementAction extends PagedResourceActionII
 
 				msg.setBody(body);
 				AnnouncementMessageHeaderEdit header = msg.getAnnouncementHeaderEdit();
+				String oSubject = header.getSubject();
 				header.setSubject(subject);
+				if (StringUtils.trimToNull(oSubject) != null && StringUtils.trimToNull(subject) != null && !oSubject.equals(subject))
+				{
+					// announcement title changed
+					titleChanged = true;
+				}
 				
 				//set the order of the announcement messages
 				// for example, if this was MESSAGE_ORDER=5 and now becomes MESSAGE_ORDER=12, 
@@ -2920,6 +2933,12 @@ public class AnnouncementAction extends PagedResourceActionII
 				
 //				header.setDraft(!post);
 				// v2.4: Hidden in UI becomes Draft 'behind the scenes'
+				boolean oDraft = header.getDraft();
+				if (oDraft != tempHidden)
+				{
+					// draft status changed
+					availabilityChanged = true;
+				}
 				header.setDraft(tempHidden);
 				header.replaceAttachments(state.getAttachments());
 				header.setFrom(UserDirectoryService.getCurrentUser());
@@ -2933,6 +2952,8 @@ public class AnnouncementAction extends PagedResourceActionII
 				final boolean use_end_date = params.getBoolean("use_end_date");
 				Time releaseDate = null;
 				Time retractDate = null;
+				String oReleaseDate = msg.getPropertiesEdit().getProperty(AnnouncementService.RELEASE_DATE);
+				String oRetractDate = msg.getPropertiesEdit().getProperty(AnnouncementService.RETRACT_DATE);
 				
 				if(use_start_date && SPECIFY_DATES.equals("specify"))
 				{
@@ -2992,6 +3013,10 @@ public class AnnouncementAction extends PagedResourceActionII
 					}
 				}
 				
+				// release and retract date changed?
+				availabilityChanged = stringChanged(availabilityChanged, oReleaseDate, msg.getPropertiesEdit().getProperty(AnnouncementService.RELEASE_DATE));
+				availabilityChanged = stringChanged(availabilityChanged, oRetractDate, msg.getPropertiesEdit().getProperty(AnnouncementService.RETRACT_DATE));
+				
 				//modified date
 				msg.getPropertiesEdit().addProperty(AnnouncementService.MOD_DATE, TimeService.newTime().toString());
 				
@@ -3004,10 +3029,15 @@ public class AnnouncementAction extends PagedResourceActionII
 					header.clearGroupAccess();
 				}
 				
+				// get the existing access and group settings
+				String oPubView = msg.getPropertiesEdit().getProperty(ResourceProperties.PROP_PUBVIEW);
+				String oAccess = header.getAccess().toString();
+				Collection<Group> oGroups = header.getGroupObjects();
+				
 				try
 				{
 					Site site = SiteService.getSite(channel.getContext());
-
+					
 					if (announceTo != null && announceTo.equals("pubview")
 							|| Boolean.valueOf((String) sstate.getAttribute(AnnouncementAction.SSTATE_PUBLICVIEW_VALUE))
 									.booleanValue()) // if from the post in preview, get the setting from sstate object
@@ -3021,7 +3051,10 @@ public class AnnouncementAction extends PagedResourceActionII
 						// remove the property to indicate no pubview
 						msg.getPropertiesEdit().removeProperty(ResourceProperties.PROP_PUBVIEW);
 					}
-
+					
+					// pubview changed?
+					accessChanged = stringChanged(accessChanged, oPubView, msg.getPropertiesEdit().getProperty(ResourceProperties.PROP_PUBVIEW));
+					
 					// announce to site?
 					if (announceTo != null && announceTo.equals("site"))
 					{
@@ -3042,6 +3075,19 @@ public class AnnouncementAction extends PagedResourceActionII
 
 						// set access
 						header.setGroupAccess(groups);
+					}
+					
+					// site/grouop changed?
+					accessChanged = stringChanged(accessChanged, oAccess, header.getAccess().toString());
+					if (!accessChanged)
+					{
+						Collection<Group> groups = header.getGroupObjects();
+						if (oGroups != null && groups != null
+							&& !(oGroups.containsAll(groups) && groups.containsAll(oGroups)))
+						{
+							// group changed
+							accessChanged = true;
+						}
 					}
 				}
 				catch (PermissionException e)
@@ -3084,6 +3130,23 @@ public class AnnouncementAction extends PagedResourceActionII
 				{
 					state.setEdit(null);
 				} // if-else
+				
+				// for event tracking
+				if (titleChanged)
+				{
+					// title changed
+					eventTrackingService.post(eventTrackingService.newEvent(AnnouncementService.EVENT_ANNC_UPDATE_TITLE, msg.getReference(), true));
+				}
+				if (accessChanged)
+				{
+					// access changed
+					eventTrackingService.post(eventTrackingService.newEvent(AnnouncementService.EVENT_ANNC_UPDATE_ACCESS, msg.getReference(), true));
+				}
+				if (availabilityChanged)
+				{
+					// availablity changed
+					eventTrackingService.post(eventTrackingService.newEvent(AnnouncementService.EVENT_ANNC_UPDATE_AVAILABILITY, msg.getReference(), true));
+				}
 			}
 			catch (IdUnusedException e)
 			{
@@ -3111,7 +3174,35 @@ public class AnnouncementAction extends PagedResourceActionII
 			// make sure auto-updates are enabled
 			enableObservers(sstate);
 		}
-	} // postOrSaveDraf
+	} // postOrSaveDraft
+	
+	/**
+	 * detect string chagne.
+	 * @param startValue
+	 * @param s1
+	 * @param s2
+	 * @return
+	 */
+	private boolean stringChanged (boolean startValue, String s1, String s2)
+	{
+		boolean rv = startValue;
+		if (!startValue)
+		{
+			if (s1 == null && s2 != null)
+			{
+				rv = true;
+			}
+			else if (s1 != null && s2 == null)
+			{
+				rv = true;
+			}
+			else if (s1 != null && s2 != null && !s1.equals(s2))
+			{
+				rv = true;
+			}
+		}
+		return rv;
+	}
 
 	/**
 	 * Action is to use when doPreviewrevise requested from preview status corresponding to chef_announcements-preview "eventSubmit_doPreviewrevise"
@@ -4270,6 +4361,11 @@ public class AnnouncementAction extends PagedResourceActionII
 		{
 			entityBroker = (EntityBroker) ComponentManager.get("org.sakaiproject.entitybroker.EntityBroker");
 		}
+		
+		if (eventTrackingService == null)
+		{
+			eventTrackingService = (EventTrackingService) ComponentManager.get("org.sakaiproject.event.api.EventTrackingService");
+		}
 
 		// retrieve the state from state object
 		AnnouncementActionState annState = (AnnouncementActionState) getState(portlet, rundata, AnnouncementActionState.class);
@@ -4385,7 +4481,7 @@ public class AnnouncementAction extends PagedResourceActionII
 				for (int i = 0; i < disableStrgs.length; i++)
 				{
 					if ((StringUtil.trimToZero(disableStrgs[i])).equals(site.getType()))
-						state.setAttribute(PUBLIC_DISPLAY_DISABLE_BOOLEAN, Boolean.TRUE);;
+						state.setAttribute(PUBLIC_DISPLAY_DISABLE_BOOLEAN, Boolean.TRUE);
 				}
 			}
 		}

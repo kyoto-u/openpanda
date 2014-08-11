@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/branches/sakai-2.8.x/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesItem.java $
- * $Id: ResourcesItem.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesItem.java $
+ * $Id: ResourcesItem.java 90429 2011-03-23 13:25:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -102,6 +102,8 @@ public class ResourcesItem
 		this.collectionId = entity.getContainingCollection().getId();
 		this.createdBy = props.getProperty(ResourceProperties.PROP_CREATOR);
 		this.modifiedBy = props.getProperty(ResourceProperties.PROP_MODIFIED_BY);
+		this.entityId = entity.getId();
+		
 		try
 		{
 			this.createdTime = props.getTimeProperty(ResourceProperties.PROP_CREATION_DATE);
@@ -119,7 +121,7 @@ public class ResourcesItem
 		}
 		this.displayName = props.getProperty(ResourceProperties.PROP_DISPLAY_NAME);
 		this.description = props.getProperty(ResourceProperties.PROP_DESCRIPTION);
-		this.entityId = entity.getId();
+		
 		this.groups = new TreeSet( entity.getGroupObjects() );
 		// this.hasQuota = 
 		this.hidden = entity.isHidden();

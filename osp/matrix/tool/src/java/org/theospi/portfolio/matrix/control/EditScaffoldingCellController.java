@@ -89,8 +89,6 @@ public class EditScaffoldingCellController extends
 
 	private AgentManager agentManager;
 
-	private WizardManager wizardManager;
-
 	private AuthorizationFacade authzManager = null;
 
 	private WizardActivityProducer wizardActivityProducer;
@@ -104,11 +102,10 @@ public class EditScaffoldingCellController extends
 	private boolean feedbackFormUsed = false;
 	private boolean evaluationFormUsed = false;
 	private boolean isCellUsed = false;
+	private WizardManager wizardManager;
 
 	protected static ResourceLoader myResources = new ResourceLoader("org.theospi.portfolio.matrix.bundle.Messages");
    
-	public final static String FORM_TYPE = "form";
-
 	protected final static String audienceSelectionFunction = AudienceSelectionHelper.AUDIENCE_FUNCTION_MATRIX;
    
 	/*
@@ -315,10 +312,12 @@ public class EditScaffoldingCellController extends
 		}
 		if (saveAction != null) {
 
-			if (isPublished(scaffoldingCell)) {
+			Map confirmFlags = getMatrixManager().getConfirmFlagsForScaffoldingCell(scaffoldingCell);
+			if(confirmFlags.size() > 0){
 				model.put("scaffoldingCell", scaffoldingCell);
 				model.put(EditedScaffoldingStorage.STORED_SCAFFOLDING_FLAG,
 						"true");
+				model.putAll(confirmFlags);
 				return new ModelAndView("editScaffoldingCellConfirm", model);
 			}
 
@@ -474,10 +473,6 @@ public class EditScaffoldingCellController extends
 		model.put("scaffolding_id", scaffoldingCell.getScaffolding().getId());
 	}
 
-	protected boolean isPublished(ScaffoldingCell scaffoldingCell) {
-		return scaffoldingCell.getScaffolding().isPublished();
-	}
-
 	protected String getGuidanceViewPermission() {
 		return MatrixFunctionConstants.VIEW_SCAFFOLDING_GUIDANCE;
 	}
@@ -614,66 +609,66 @@ public class EditScaffoldingCellController extends
 		return model;
 	}
 
-	/**
-	 ** Set and Return default list of evaluators for this matrix cell or wizard page
-	 **/
-	protected List getDefaultEvaluators(WizardPageDefinition wpd) {
-		List evalList = new ArrayList();
-		Set roles;
-		try {
-			roles = SiteService.getSite(wpd.getSiteId()).getRoles();
-		}
-		catch (IdUnusedException e) {
-			logger.warn(".getDefaultEvaluators unknown siteid", e);
-			return evalList;
-		}
-		
-		for (Iterator i = roles.iterator(); i.hasNext();) {
-			Role role = (Role) i.next();
-			if ( !role.isAllowed(audienceSelectionFunction) )
-				continue;
-					
-			Agent roleAgent = getAgentManager().getWorksiteRole(role.getId(), wpd.getSiteId());
-			evalList.add(myResources.getFormattedMessage("decorated_role_format",
-																		new Object[] { roleAgent.getDisplayName() }));
-
-			getAuthzManager().createAuthorization(roleAgent, 
-															  audienceSelectionFunction, 
-															  (wpd.getId()==null?wpd.getNewId():wpd.getId()));
-		}
-		return evalList;
-	}
+//	/**
+//	 ** Set and Return default list of evaluators for this matrix cell or wizard page
+//	 **/
+//	protected List getDefaultEvaluators(WizardPageDefinition wpd) {
+//		List evalList = new ArrayList();
+//		Set roles;
+//		try {
+//			roles = SiteService.getSite(wpd.getSiteId()).getRoles();
+//		}
+//		catch (IdUnusedException e) {
+//			logger.warn(".getDefaultEvaluators unknown siteid", e);
+//			return evalList;
+//		}
+//		
+//		for (Iterator i = roles.iterator(); i.hasNext();) {
+//			Role role = (Role) i.next();
+//			if ( !role.isAllowed(audienceSelectionFunction) )
+//				continue;
+//					
+//			Agent roleAgent = getAgentManager().getWorksiteRole(role.getId(), wpd.getSiteId());
+//			evalList.add(myResources.getFormattedMessage("decorated_role_format",
+//																		new Object[] { roleAgent.getDisplayName() }));
+//
+//			getAuthzManager().createAuthorization(roleAgent, 
+//															  audienceSelectionFunction, 
+//															  (wpd.getId()==null?wpd.getNewId():wpd.getId()));
+//		}
+//		return evalList;
+//	}
 	
-	/**
-	 ** Return list of evaluators for this matrix cell or wizard page
-	 **/
-	protected List getEvaluators(WizardPageDefinition wpd) {
-		Id id = wpd.getId() == null ? wpd.getNewId() : wpd.getId();
-
-		List evaluators = getAuthzManager().getAuthorizations(null, audienceSelectionFunction, id);
-		
-		// If no evaluators defined, add all qualified roles as default list
-		if ( evaluators.size() == 0 ) 
-			return getDefaultEvaluators(wpd);
-
-		// Otherwise, return list of selected evaluator roles and users
-		List evalList = new ArrayList();
-		for (Iterator iter = evaluators.iterator(); iter.hasNext();) {
-			Authorization az = (Authorization) iter.next();
-			Agent agent = az.getAgent();
-			if (agent.isRole()) {
-				evalList.add(myResources.getFormattedMessage("decorated_role_format",
-																			new Object[] { agent.getDisplayName() }));
-			} 
-			else {
-				String userId = az.getAgent().getEid().getValue();
-				evalList.add(myResources.getFormattedMessage("decorated_user_format", 
-																			new Object[] { agent.getDisplayName(), userId }));
-			}
-		}
-
-		return evalList;
-	}
+//	/**
+//	 ** Return list of evaluators for this matrix cell or wizard page
+//	 **/
+//	protected List getEvaluators(WizardPageDefinition wpd) {
+//		Id id = wpd.getId() == null ? wpd.getNewId() : wpd.getId();
+//
+//		List evaluators = getAuthzManager().getAuthorizations(null, audienceSelectionFunction, id);
+//		
+//		// If no evaluators defined, add all qualified roles as default list
+//		if ( evaluators.size() == 0 ) 
+//			return getDefaultEvaluators(wpd);
+//
+//		// Otherwise, return list of selected evaluator roles and users
+//		List evalList = new ArrayList();
+//		for (Iterator iter = evaluators.iterator(); iter.hasNext();) {
+//			Authorization az = (Authorization) iter.next();
+//			Agent agent = az.getAgent();
+//			if (agent.isRole()) {
+//				evalList.add(myResources.getFormattedMessage("decorated_role_format",
+//																			new Object[] { agent.getDisplayName() }));
+//			} 
+//			else {
+//				String userId = az.getAgent().getEid().getValue();
+//				evalList.add(myResources.getFormattedMessage("decorated_user_format", 
+//																			new Object[] { agent.getDisplayName(), userId }));
+//			}
+//		}
+//
+//		return evalList;
+//	}
 
 	protected void setAudienceSelectionVariables(Map session,
 			ScaffoldingCell scaffoldingCell, String audienceFunction) {
@@ -699,176 +694,39 @@ public class EditScaffoldingCellController extends
 				scaffoldingCell.getTitle());
 
 	}
-
-	protected Collection getAvailableForms(String siteId, String type) {
-		return getStructuredArtifactDefinitionManager().findHomes(
-				getIdManager().getId(siteId), true);
-	}
-
-	protected Collection getFormsForSelect(String type, String currentSiteId) {
-		Collection commentForms = getAvailableForms(currentSiteId, type);
-
-		List retForms = new ArrayList();
-		for (Iterator iter = commentForms.iterator(); iter.hasNext();) {
-			StructuredArtifactDefinitionBean sad = (StructuredArtifactDefinitionBean) iter
-					.next();
-			retForms.add(new CommonFormBean(sad.getId().getValue(), sad
-					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-					.getName(), sad.getModified()));
-		}
-
-		Collections.sort(retForms, CommonFormBean.beanComparator);
-		return retForms;
-	}
-
-	protected Collection getWizardsForSelect(String type, String currentSiteId) {
-		List wizards = getWizardManager().listWizardsByType(
-				getSessionManager().getCurrentSessionUserId(), currentSiteId,
-				type);
-		List retWizards = new ArrayList();
-		for (Iterator iter = wizards.iterator(); iter.hasNext();) {
-			Wizard wizard = (Wizard) iter.next();
-			retWizards.add(new CommonFormBean(wizard.getId().getValue(), wizard
-					.getName(), WizardFunctionConstants.WIZARD_TYPE_SEQUENTIAL,
-					wizard.getOwner().getName(), wizard.getModified()));
-		}
-
-		Collections.sort(retWizards, CommonFormBean.beanComparator);
-		return retWizards;
-	}
-
+	
 	protected Collection getAdditionalFormDevices( String siteId ) {
-		// Return all forms
-		return getFormsForSelect(null, siteId);
-	}
-
-
+		return getMatrixManager().getFormsForSelect(null, siteId, getSessionManager().getCurrentSessionUserId());	
+	}	
+	
 	protected Collection getReviewDevices(String siteId, ScaffoldingCell scaffoldingCell) {
-		Collection all = getFormsForSelect(WizardFunctionConstants.COMMENT_TYPE, siteId);
-		all.addAll(getWizardsForSelect(WizardFunctionConstants.COMMENT_TYPE, siteId));
-		
-
-		//add any of the forms that the user does not have access to but has been added to the matrix
-		Id selectedId = scaffoldingCell.getReviewDevice();
-
-		if (selectedId != null && !sadCollectionContainsId(all, selectedId.getValue())){
-			StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(selectedId);
-			all.add(new CommonFormBean(sad.getId().getValue(), sad
-					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-					.getName(), sad.getModified()));
-		}
-
-		
-		return all;
+		List wizards = getWizardManager().listWizardsByType(
+				getSessionManager().getCurrentSessionUserId(), siteId,
+				WizardFunctionConstants.COMMENT_TYPE);
+		return getMatrixManager().getTypeDevices(wizards, siteId, scaffoldingCell.getReviewDevice(), WizardFunctionConstants.COMMENT_TYPE, getSessionManager().getCurrentSessionUserId());
 	}
-
+	
 	protected Collection getReflectionDevices(String siteId, ScaffoldingCell scaffoldingCell) {
-		Collection all = getFormsForSelect(WizardFunctionConstants.REFLECTION_TYPE, siteId);
-		all
-				.addAll(getWizardsForSelect(WizardFunctionConstants.REFLECTION_TYPE, siteId));
-		
-
-		//add any of the forms that the user does not have access to but has been added to the matrix
-		Id selectedId = scaffoldingCell.getReflectionDevice();
-
-		if (selectedId != null && !sadCollectionContainsId(all, selectedId.getValue())){
-			StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(selectedId);
-			all.add(new CommonFormBean(sad.getId().getValue(), sad
-					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-					.getName(), sad.getModified()));
-		}
-
-		
-		return all;
+		List wizards = getWizardManager().listWizardsByType(
+				getSessionManager().getCurrentSessionUserId(), siteId,
+				WizardFunctionConstants.REFLECTION_TYPE);
+		return getMatrixManager().getTypeDevices(wizards, siteId, scaffoldingCell.getReflectionDevice(), WizardFunctionConstants.REFLECTION_TYPE, getSessionManager().getCurrentSessionUserId());
 	}
-
+	
 	protected Collection getEvaluationDevices(String siteId, ScaffoldingCell scaffoldingCell) {
-		Collection all = getFormsForSelect(WizardFunctionConstants.EVALUATION_TYPE, siteId);
-		all
-				.addAll(getWizardsForSelect(WizardFunctionConstants.EVALUATION_TYPE, siteId));
-		
-		//add any of the forms that the user does not have access to but has been added to the matrix
-		Id selectedId = scaffoldingCell.getEvaluationDevice();
-
-		if (selectedId != null && !sadCollectionContainsId(all, selectedId.getValue())){
-			StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(selectedId);
-			all.add(new CommonFormBean(sad.getId().getValue(), sad
-					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-					.getName(), sad.getModified()));
-		}
-		
-		return all;
+		List wizards = getWizardManager().listWizardsByType(
+				getSessionManager().getCurrentSessionUserId(), siteId,
+				WizardFunctionConstants.EVALUATION_TYPE);
+		return getMatrixManager().getTypeDevices(wizards, siteId, scaffoldingCell.getEvaluationDevice(), WizardFunctionConstants.EVALUATION_TYPE, getSessionManager().getCurrentSessionUserId());
 	}
-
-
-
 
 	protected Collection getSelectedAdditionalFormDevices(ScaffoldingCell sCell, String siteId) {
-		// cwm need to preserve the ordering
-		Collection returnCol = new ArrayList();
-		Collection col = getAdditionalFormDevices(siteId);
-		for (Iterator iter = col.iterator(); iter.hasNext();) {
-			CommonFormBean bean = (CommonFormBean) iter.next();
-			if (sCell.getAdditionalForms().contains(bean.getId()))
-				returnCol.add(bean);
-		}
-		
-		//add any of the forms that the user does not have access to but has been added to the matrix
-		Collection selectedIds = sCell.getAdditionalForms();
-		for (Iterator iterator = selectedIds.iterator(); iterator.hasNext();) {
-			String id = (String) iterator.next();
-			if (!sadCollectionContainsId(returnCol, id)){
-				StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(getIdManager().getId(id));
-				returnCol.add(new CommonFormBean(sad.getId().getValue(), sad
-						.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-						.getName(), sad.getModified()));
-			}
-		}
-		
-		
-		return returnCol;
+		return getMatrixManager().getSelectedAdditionalFormDevices(sCell.getAdditionalForms(), siteId, getSessionManager().getCurrentSessionUserId());
 	}
 	
 	protected Collection getDefaultSelectedAdditionalFormDevices(ScaffoldingCell sCell, String siteId){
-		// cwm need to preserve the ordering
-		Collection returnCol = new ArrayList();
-		
-		if(sCell.getScaffolding() != null){
-			
-			Collection idCol = sCell.getScaffolding().getAdditionalForms();
-			for (Iterator iterator = idCol.iterator(); iterator.hasNext();) {
-				String id = (String) iterator.next();
-				StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(getIdManager().getId(id));
-				returnCol.add(new CommonFormBean(sad.getId().getValue(), sad
-						.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-						.getName(), sad.getModified()));			
-			}
-//			
-//			Collection col = getAdditionalFormDevices(siteId);
-//			for (Iterator iter = col.iterator(); iter.hasNext();) {
-//				CommonFormBean bean = (CommonFormBean) iter.next();
-//				if (sCell.getScaffolding().getAdditionalForms().contains(bean.getId()))
-//					returnCol.add(bean);
-//			}
-		}
-		return returnCol;
+		return getMatrixManager().getSelectedAdditionalFormDevices(sCell.getScaffolding().getAdditionalForms(), siteId, getSessionManager().getCurrentSessionUserId());
 	}
-
-	private boolean sadCollectionContainsId(Collection sadCol, String id){
-		boolean contains = false;
-
-		for (Iterator iter = sadCol.iterator(); iter.hasNext();) {
-			CommonFormBean bean = (CommonFormBean) iter.next();
-
-			if(bean.getId().equals(id)){
-				contains = true;
-				break;
-			}
-		}
-
-		return contains;
-	}
-	
 
 
 	/**
@@ -908,14 +766,6 @@ public class EditScaffoldingCellController extends
 	public void setStructuredArtifactDefinitionManager(
 			StructuredArtifactDefinitionManager structuredArtifactDefinitionManager) {
 		this.structuredArtifactDefinitionManager = structuredArtifactDefinitionManager;
-	}
-
-	public WizardManager getWizardManager() {
-		return wizardManager;
-	}
-
-	public void setWizardManager(WizardManager wizardManager) {
-		this.wizardManager = wizardManager;
 	}
 
 	/**
@@ -1019,5 +869,13 @@ public class EditScaffoldingCellController extends
 
 	public boolean isCellUsed() {
 		return isCellUsed;
+	}
+
+	public WizardManager getWizardManager() {
+		return wizardManager;
+	}
+
+	public void setWizardManager(WizardManager wizardManager) {
+		this.wizardManager = wizardManager;
 	}
 }

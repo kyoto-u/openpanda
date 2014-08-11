@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GetUsersByEidTest.java 88042 2011-02-05 08:28:41Z david.horwitz@uct.ac.za $
+* $Id: GetUsersByEidTest.java 113396 2012-09-21 20:32:34Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -35,6 +35,8 @@ import junit.framework.TestSuite;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.cover.AuthzGroupService;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.test.SakaiKernelTestBase;
 import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 import org.sakaiproject.tool.cover.SessionManager;
@@ -76,6 +78,7 @@ public class GetUsersByEidTest extends SakaiKernelTestBase {
 	// This is the implementation class because there's no way to inject the
 	// test provider or to clear the user cache through the official API.
 	private static DbUserService dbUserService;
+	private static Cache callCache;
 
 	public static Test suite() {
 		TestSetup setup = new TestSetup(new TestSuite(GetUsersByEidTest.class)) {
@@ -101,6 +104,9 @@ public class GetUsersByEidTest extends SakaiKernelTestBase {
 		// for specific integration tests.
 		dbUserService = (DbUserService)getService("org.sakaiproject.user.api.UserDirectoryService");
 		dbUserService.setProvider(userDirectoryProvider);
+		
+		callCache = ((MemoryService) getService("org.sakaiproject.memory.api.MemoryService")).newCache(
+				"org.sakaiproject.user.api.UserDirectoryService.callCache", "/user/");
 		
 		// Sakai provides no way to undo a EID-to-ID mapping, and so we can't use
 		// a normal setUp and tearDown approach to loading test data.
@@ -231,6 +237,7 @@ public class GetUsersByEidTest extends SakaiKernelTestBase {
 		dbUserService.getIdEidCache().removeAll();
 		String ref = "/user/" + userId;
 		ThreadLocalManager.set(ref, null);
+		if (callCache != null) { callCache.remove(ref); }
 	}
 
 	public static class TestProvider implements UserDirectoryProvider {

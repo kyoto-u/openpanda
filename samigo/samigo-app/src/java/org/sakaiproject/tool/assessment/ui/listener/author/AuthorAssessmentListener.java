@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorAssessmentListener.java $
- * $Id: AuthorAssessmentListener.java 72846 2010-01-28 00:33:22Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorAssessmentListener.java $
+ * $Id: AuthorAssessmentListener.java 98413 2011-09-19 21:51:29Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -35,6 +35,7 @@ import javax.faces.event.ActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacadeQueries;
 import org.sakaiproject.tool.assessment.facade.AssessmentTemplateFacade;
@@ -53,7 +54,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: AuthorAssessmentListener.java 72846 2010-01-28 00:33:22Z ktsao@stanford.edu $
+ * @version $Id: AuthorAssessmentListener.java 98413 2011-09-19 21:51:29Z ktsao@stanford.edu $
  */
 
 public class AuthorAssessmentListener
@@ -81,6 +82,7 @@ public class AuthorAssessmentListener
     AssessmentSettingsBean assessmentSettings = (AssessmentSettingsBean) ContextUtil.
     lookupBean("assessmentSettings");
     author.setOutcome("createAssessment");
+    author.setFirstFromPage("editAssessment");
     if (!passAuthz(context)){
       author.setOutcome("author");
       return;
@@ -128,7 +130,7 @@ public class AuthorAssessmentListener
     try{
       assessment = createAssessment(
          assessmentTitle.trim(), description, typeId, templateId);
-      EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.create", "assessmentId=" + assessment.getAssessmentId(), true));
+      EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.create", "siteId=" + AgentFacade.getCurrentSiteId() + ", assessmentId=" + assessment.getAssessmentId(), true));
     }
     catch(Exception e){
       // can't create assesment because gradebookService is not ready

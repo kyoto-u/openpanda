@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/branches/sakai-2.8.x/help-tool/src/java/org/sakaiproject/jsf/help/HelpFrameSetRender.java $
- * $Id: HelpFrameSetRender.java 85677 2010-11-30 21:16:38Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.0/help-tool/src/java/org/sakaiproject/jsf/help/HelpFrameSetRender.java $
+ * $Id: HelpFrameSetRender.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +49,7 @@ import org.sakaiproject.util.ResourceLoader;
 
 /**
  * render help frame set 
- * @version $Id: HelpFrameSetRender.java 85677 2010-11-30 21:16:38Z arwhyte@umich.edu $
+ * @version $Id: HelpFrameSetRender.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  */
 public class HelpFrameSetRender extends Renderer
 {
@@ -97,7 +97,7 @@ public class HelpFrameSetRender extends Renderer
 
     EventTrackingService.post(EventTrackingService.newEvent("help.access", helpParameter, false));
 
-    helpWindowTitle = ServerConfigurationService.getString("ui.service") + " " + component.getAttributes().get("helpWindowTitle");
+    helpWindowTitle = ServerConfigurationService.getString("ui.service", "Sakai") + " " + component.getAttributes().get("helpWindowTitle");
     
     writer.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" \"http://www.w3.org/TR/html4/frameset.dtd\">\n");
     writer.write("<html><head><title>" + helpWindowTitle + "</title></head>\n");
@@ -111,7 +111,7 @@ public class HelpFrameSetRender extends Renderer
     HelpManager manager  = (HelpManager) binding.getValue(context);    
                   
     if(manager.getWelcomePage() == null) {
-    	writer.write("<FRAME src=\"" + welcomepage + "\" name=\"content\">");
+    	writer.write("<FRAME src=\"content.hlp?docId=" + welcomepage + "\" name=\"content\">");
     }
     else {
       writer.write("<FRAME src=\"content.hlp?docId=" + manager.getWelcomePage() + "\" name=\"content\">");             

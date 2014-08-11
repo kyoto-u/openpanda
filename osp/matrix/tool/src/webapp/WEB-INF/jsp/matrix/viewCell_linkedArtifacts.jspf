@@ -16,7 +16,7 @@
 				<span class="indnt2">
 				<img border="0" src="<c:out value="${taggableItem.iconUrl}" />" />
 				<a class="thickbox"
-					href="<c:if test="${scaffoldingCan.accessUserList}"><c:out value="${taggableItem.itemDetailUrl}"/></c:if><c:if test="${!scaffoldingCan.accessUserList}"><c:out value="${taggableItem.itemDetailPrivateUrl}"/></c:if><c:if test="${taggableItem.useDecoration}"><c:out value="/${decoWrapper}" /></c:if><c:out value="${taggableItem.itemDetailUrlParams}"/>tagReference=<c:out value="${criteriaRef}"/>">
+					href="<c:if test="${scaffoldingCan.accessUserList}"><c:out value="${taggableItem.itemDetailUrl}"/></c:if><c:if test="${!scaffoldingCan.accessUserList}"><c:out value="${taggableItem.itemDetailPrivateUrl}"/></c:if><c:if test="${taggableItem.useDecoration}"><c:out value="/${decoWrapper}" /></c:if><c:out value="${taggableItem.itemDetailUrlParams}"/>&tagReference=<c:out value="${criteriaRef}"/>">
 					<c:out value="${taggableItem.activity.title}" /> 
 				</a></span>
 			</td>

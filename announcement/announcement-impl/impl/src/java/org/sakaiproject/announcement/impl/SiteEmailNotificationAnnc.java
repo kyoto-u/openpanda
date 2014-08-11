@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/branches/sakai-2.8.x/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/SiteEmailNotificationAnnc.java $
- * $Id: SiteEmailNotificationAnnc.java 118798 2013-01-25 01:56:20Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/SiteEmailNotificationAnnc.java $
+ * $Id: SiteEmailNotificationAnnc.java 113238 2012-09-20 20:44:07Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -148,31 +148,32 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 		Reference ref = EntityManager.newReference(event.getResource());
 		AnnouncementMessage msg = (AnnouncementMessage) ref.getEntity();
 		AnnouncementMessageHeader hdr = (AnnouncementMessageHeader) msg.getAnnouncementHeader();
-				
+
 		// use either the configured site, or if not configured, the site (context) of the resource
 		String siteId = (getSite() != null) ? getSite() : ref.getContext();
 
 		// get a site title
 		String title = siteId;
+		String url = ServerConfigurationService.getPortalUrl()+ "/site/"+ siteId;
 		try
 		{
 			Site site = SiteService.getSite(siteId);
 			title = site.getTitle();
+			url = site.getUrl(); // Might have a better URL.
 		}
 		catch (Exception ignore)
 		{
+			M_log.warn("Failed to load site: "+ siteId+ " for: "+ event.getResource());
 		}
 
 		// Now build up the message text.
 		if (AnnouncementService.SECURE_ANNC_ADD.equals(event.getEvent()))
 		{
-			buf.append(rb.getFormattedMessage("noti.header.add", new Object[]{title,ServerConfigurationService.getString("ui.service", "Sakai"),ServerConfigurationService.getPortalUrl(), siteId}));
-
+			buf.append(rb.getFormattedMessage("noti.header.add", new Object[]{title,ServerConfigurationService.getString("ui.service", "Sakai"), url}));
 		}
 		else
 		{
-			buf.append(rb.getFormattedMessage("noti.header.update", new Object[]{title,ServerConfigurationService.getString("ui.service", "Sakai"),ServerConfigurationService.getPortalUrl(), siteId}));
-
+			buf.append(rb.getFormattedMessage("noti.header.update", new Object[]{title,ServerConfigurationService.getString("ui.service", "Sakai"), url}));
 		}
 		buf.append(newline);
 		buf.append(newline);
@@ -332,18 +333,44 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 	 */
 	protected String getFromAddress(Event event)
 	{
+		Reference ref = EntityManager.newReference(event.getResource());
+		
+		//SAK-14831, yorkadam, make site title reflected in 'From:' name instead of default ServerConfigurationService.getString("ui.service", "Sakai");
+		String siteId = (getSite() != null) ? getSite() : ref.getContext();
+		String title = "";
+		try
+		{
+			Site site = SiteService.getSite(siteId);
+			title = site.getTitle();
+		}
+		catch(Exception ignore)
+		{}
+		
 		String userEmail = "no-reply@" + ServerConfigurationService.getServerName();
 		String userDisplay = ServerConfigurationService.getString("ui.service", "Sakai");
-		String no_reply= "From: \"" + userDisplay + "\" <" + userEmail + ">";
-		String from= getFrom(event);
+		//String no_reply = "From: \"" + userDisplay + "\" <" + userEmail + ">";
+		//String no_reply_withTitle = "From: \"" + title + "\" <" + userEmail + ">";	
+		String from = "From: Sakai"; // fallback value
+		 if (title!=null && !title.equals("")){ 
+		     from = "From: \"" + title + "\" <" + userEmail + ">"; 
+		 } else {
+		     String fromVal = getFrom(event); // should not return null but better safe than sorry
+	         if (fromVal != null) {
+	             from = fromVal;
+	         }
+		 }
+		
 		// get the message
-		Reference ref = EntityManager.newReference(event.getResource());
 		AnnouncementMessage msg = (AnnouncementMessage) ref.getEntity();
-		String userId=msg.getAnnouncementHeader().getFrom().getDisplayId();
+		String userId = msg.getAnnouncementHeader().getFrom().getDisplayId();
 
 		//checks if "from" email id has to be included? and whether the notification is a delayed notification?. SAK-13512
-		if ((ServerConfigurationService.getString("emailFromReplyable@org.sakaiproject.event.api.NotificationService").equals("true")) && from.equals(no_reply) && userId !=null){
-						
+		// SAK-20988 - emailFromReplyable@org.sakaiproject.event.api.NotificationService is deprecated
+		boolean notificationEmailFromReplyable = ServerConfigurationService.getBoolean("notify.email.from.replyable", false);
+		if (notificationEmailFromReplyable 
+		        && from.contains("no-reply@") 
+		        && userId != null) 
+		{
 				try
 				{
 					User u = UserDirectoryService.getUser(userId);
@@ -351,10 +378,7 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 					userEmail = u.getEmail();
 					if ((userEmail != null) && (userEmail.trim().length()) == 0) userEmail = null;
 					
-				}
-				catch (UserNotDefinedException e)
-				{
-				}
+				} catch (UserNotDefinedException e) {}
 				
 				// some fallback positions
 				if (userEmail == null) userEmail = "no-reply@" + ServerConfigurationService.getServerName();
@@ -441,7 +465,7 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 			}
 		});
 	}
-	
+
 	/**
 	 * remove recent add SecurityAdvisor from stack
 	 */

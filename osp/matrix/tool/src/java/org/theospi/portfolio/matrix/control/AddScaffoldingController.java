@@ -1,7 +1,7 @@
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/matrix/tool/src/java/org/theospi/portfolio/matrix/control/AddScaffoldingController.java $
-* $Id: AddScaffoldingController.java 85788 2010-12-01 19:16:22Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/matrix/tool/src/java/org/theospi/portfolio/matrix/control/AddScaffoldingController.java $
+* $Id: AddScaffoldingController.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -64,7 +64,7 @@ public class AddScaffoldingController extends BaseScaffoldingController
    private ReviewManager reviewManager;
 
    private StructuredArtifactDefinitionManager structuredArtifactDefinitionManager;
-   public final static String FORM_TYPE = "form";
+
    private WizardManager wizardManager;
 
    
@@ -152,10 +152,14 @@ public class AddScaffoldingController extends BaseScaffoldingController
       }
 
       if (generateAction != null) {
-    	  if (scaffolding.isPublished()) {                              
-    		  return new ModelAndView("editScaffoldingConfirm");             
-    	  }           
     	  
+    	  Map confirmFlags = getMatrixManager().getConfirmFlagsForScaffolding(scaffolding);
+
+    	  if(confirmFlags.size() > 0){
+    		  model.putAll(confirmFlags);
+    		  return new ModelAndView("editScaffoldingConfirm", model);   
+    	  }
+
     	  scaffolding = saveScaffolding(scaffolding);
     	  
     	  session.remove(EditedScaffoldingStorage.STORED_SCAFFOLDING_FLAG);
@@ -259,143 +263,33 @@ public class AddScaffoldingController extends BaseScaffoldingController
    
    
    protected Collection getEvaluationDevices(String siteId, Scaffolding scaffolding) {
-		Collection all = getFormsForSelect(WizardFunctionConstants.EVALUATION_TYPE, siteId);
-		all
-				.addAll(getWizardsForSelect(WizardFunctionConstants.EVALUATION_TYPE, siteId));
-		
-		//add any of the forms that the user does not have access to but has been added to the matrix
-		Id selectedId = scaffolding.getEvaluationDevice();
-
-		if (selectedId != null && !sadCollectionContainsId(all, selectedId.getValue())){
-			StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(selectedId);
-			all.add(new CommonFormBean(sad.getId().getValue(), sad
-					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-					.getName(), sad.getModified()));
-		}
-		
-		return all;
-	}
-     
+	   List wizards = getWizardManager().listWizardsByType(
+				getSessionManager().getCurrentSessionUserId(), siteId,
+				WizardFunctionConstants.EVALUATION_TYPE);
+	   return getMatrixManager().getTypeDevices(wizards, siteId, scaffolding.getEvaluationDevice(), WizardFunctionConstants.EVALUATION_TYPE, getSessionManager().getCurrentSessionUserId());
+   }
+	   
    protected Collection getReviewDevices(String siteId, Scaffolding scaffolding) {
-		Collection all = getFormsForSelect(WizardFunctionConstants.COMMENT_TYPE, siteId);
-		all.addAll(getWizardsForSelect(WizardFunctionConstants.COMMENT_TYPE, siteId));
-		
-		//add any of the forms that the user does not have access to but has been added to the matrix
-		Id selectedId = scaffolding.getReviewDevice();
+	   List wizards = getWizardManager().listWizardsByType(
+				getSessionManager().getCurrentSessionUserId(), siteId,
+				WizardFunctionConstants.COMMENT_TYPE);
+	   return getMatrixManager().getTypeDevices(wizards, siteId, scaffolding.getReviewDevice(), WizardFunctionConstants.COMMENT_TYPE, getSessionManager().getCurrentSessionUserId());
+   }
 
-		if (selectedId != null && !sadCollectionContainsId(all, selectedId.getValue())){
-			StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(selectedId);
-			all.add(new CommonFormBean(sad.getId().getValue(), sad
-					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-					.getName(), sad.getModified()));
-		}
-
-		
-		
-		return all;
-	}
-   
-   protected Collection getFormsForSelect(String type, String currentSiteId) {
-		Collection commentForms = getAvailableForms(currentSiteId, type);
-
-		List retForms = new ArrayList();
-		for (Iterator iter = commentForms.iterator(); iter.hasNext();) {
-			StructuredArtifactDefinitionBean sad = (StructuredArtifactDefinitionBean) iter
-					.next();
-			retForms.add(new CommonFormBean(sad.getId().getValue(), sad
-					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-					.getName(), sad.getModified()));
-		}
-
-		Collections.sort(retForms, CommonFormBean.beanComparator);
-		return retForms;
-	}
-   
-   protected Collection getAvailableForms(String siteId, String type) {
-		return getStructuredArtifactDefinitionManager().findHomes(
-				getIdManager().getId(siteId), true);
-	}
-   
-   protected Collection getWizardsForSelect(String type, String currentSiteId) {
-		List wizards = getWizardManager().listWizardsByType(
-				getSessionManager().getCurrentSessionUserId(), currentSiteId,
-				type);
-		List retWizards = new ArrayList();
-		for (Iterator iter = wizards.iterator(); iter.hasNext();) {
-			Wizard wizard = (Wizard) iter.next();
-			retWizards.add(new CommonFormBean(wizard.getId().getValue(), wizard
-					.getName(), WizardFunctionConstants.WIZARD_TYPE_SEQUENTIAL,
-					wizard.getOwner().getName(), wizard.getModified()));
-		}
-
-		Collections.sort(retWizards, CommonFormBean.beanComparator);
-		return retWizards;
-	}
-   
    protected Collection getReflectionDevices(String siteId, Scaffolding scaffolding) {
-		Collection all = getFormsForSelect(WizardFunctionConstants.REFLECTION_TYPE, siteId);
-		all
-				.addAll(getWizardsForSelect(WizardFunctionConstants.REFLECTION_TYPE, siteId));
-		
-
-		//add any of the forms that the user does not have access to but has been added to the matrix
-		Id selectedId = scaffolding.getReflectionDevice();
-
-		if (selectedId != null && !sadCollectionContainsId(all, selectedId.getValue())){
-			StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(selectedId);
-			all.add(new CommonFormBean(sad.getId().getValue(), sad
-					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-					.getName(), sad.getModified()));
-		}
-
-		
-		
-		return all;
-	}
+	   List wizards = getWizardManager().listWizardsByType(
+				getSessionManager().getCurrentSessionUserId(), siteId,
+				WizardFunctionConstants.REFLECTION_TYPE);
+	   return getMatrixManager().getTypeDevices(wizards, siteId, scaffolding.getReflectionDevice(), WizardFunctionConstants.REFLECTION_TYPE, getSessionManager().getCurrentSessionUserId());
+   }
    
    protected Collection getAdditionalFormDevices( String siteId ) {
 		// Return all forms
-		return getFormsForSelect(null, siteId);
+		return getMatrixManager().getFormsForSelect(null, siteId, getSessionManager().getCurrentSessionUserId());
 	}
    
    protected Collection getSelectedAdditionalFormDevices(Scaffolding scaffolding, String siteId) {
-		// cwm need to preserve the ordering
-		Collection returnCol = new ArrayList();
-		Collection col = getAdditionalFormDevices(siteId);
-		for (Iterator iter = col.iterator(); iter.hasNext();) {
-			CommonFormBean bean = (CommonFormBean) iter.next();
-			if (scaffolding.getAdditionalForms().contains(bean.getId()))
-				returnCol.add(bean);
-		}
-
-		//add any of the forms that the user does not have access to but has been added to the matrix
-		Collection selectedIds = scaffolding.getAdditionalForms();
-		for (Iterator iterator = selectedIds.iterator(); iterator.hasNext();) {
-			String id = (String) iterator.next();
-			if (!sadCollectionContainsId(returnCol, id)){
-				StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(getIdManager().getId(id));
-				returnCol.add(new CommonFormBean(sad.getId().getValue(), sad
-						.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
-						.getName(), sad.getModified()));
-			}
-		}
-
-		return returnCol;
-	}
-   
-   private boolean sadCollectionContainsId(Collection sadCol, String id){
-	   boolean contains = false;
-	   
-	   for (Iterator iter = sadCol.iterator(); iter.hasNext();) {
-			CommonFormBean bean = (CommonFormBean) iter.next();
-		
-			if(bean.getId().equals(id)){
-				contains = true;
-				break;
-			}
-	   }
-	   
-	   return contains;
+	   return getMatrixManager().getSelectedAdditionalFormDevices(scaffolding.getAdditionalForms(), siteId, getSessionManager().getCurrentSessionUserId());
    }
    
    protected Map parseParams(String params) {
@@ -413,17 +307,6 @@ public class AddScaffoldingController extends BaseScaffoldingController
 		return model;
 	}
    
-/*
-   private void touchAllScaffolding(Scaffolding scaffolding) {
-	  scaffolding.getLevels().size();
- 	  scaffolding.getCriteria().size();
- 	 for (Iterator iter = scaffolding.getScaffoldingCells().iterator(); iter.hasNext();) {
-         ScaffoldingCell sCell = (ScaffoldingCell) iter.next();
-         sCell.getCells().size();
-         //sCell.getExpectations().size();
-      }
-   }
-*/
    protected void touchAllCells(Scaffolding scaffolding) {
       for (Iterator iter = scaffolding.getScaffoldingCells().iterator(); iter.hasNext();) {
          ScaffoldingCell sCell = (ScaffoldingCell) iter.next();
@@ -484,11 +367,9 @@ public class AddScaffoldingController extends BaseScaffoldingController
 	   this.structuredArtifactDefinitionManager = structuredArtifactDefinitionManager;
    }
 
-
    public WizardManager getWizardManager() {
 	   return wizardManager;
    }
-
 
    public void setWizardManager(WizardManager wizardManager) {
 	   this.wizardManager = wizardManager;

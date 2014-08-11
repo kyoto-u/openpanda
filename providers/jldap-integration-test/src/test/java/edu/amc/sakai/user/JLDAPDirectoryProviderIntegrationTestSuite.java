@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/jldap-integration-test/src/test/java/edu/amc/sakai/user/JLDAPDirectoryProviderIntegrationTestSuite.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/jldap-integration-test/src/test/java/edu/amc/sakai/user/JLDAPDirectoryProviderIntegrationTestSuite.java $
  * $Id: JLDAPDirectoryProviderIntegrationTestSuite.java 61858 2009-05-05 17:57:52Z dmccallum@unicon.net $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/postem/branches/sakai-2.8.x/postem-app/src/java/com/corejsf/UploadRenderer.java $
- * $Id: UploadRenderer.java 87945 2011-02-02 16:58:27Z wagnermr@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-2.9.0/postem-app/src/java/com/corejsf/UploadRenderer.java $
+ * $Id: UploadRenderer.java 87638 2011-01-26 15:25:48Z wagnermr@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

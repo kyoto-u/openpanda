@@ -71,7 +71,7 @@
 	            <h:outputText value="#{msgs.cdfm_message}" />
 			<f:verbatim></h4></f:verbatim>	
 			<h:message for="df_compose_body" styleClass="messageAlert" id="bodyErrorMessages" />
-            <sakai:inputRichText value="#{ForumTool.composeBody}" id="df_compose_body" rows="22" cols="120">
+            <sakai:inputRichText value="#{ForumTool.composeBody}" id="df_compose_body" rows="#{ForumTool.editorRows}" cols="120">
 				<f:validateLength maximum="65000"/>
 			</sakai:inputRichText>
 	      
@@ -83,7 +83,7 @@
 		        
 			<h:outputText value="#{msgs.cdfm_no_attachments}" rendered="#{empty ForumTool.attachments}" styleClass="instruction"/>
 	          <sakai:button_bar>
-	          	<sakai:button_bar_item action="#{ForumTool.processAddAttachmentRedirect}" value="#{msgs.cdfm_button_bar_add_attachment_redirect}" immediate="true"
+	          	<sakai:button_bar_item action="#{ForumTool.processAddAttachmentRedirect}" value="#{msgs.cdfm_button_bar_add_attachment_redirect}" 
 	          	                       accesskey="a" />
 	          </sakai:button_bar>
 

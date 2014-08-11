@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/message/model/RwikiTriggerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/message/model/RwikiTriggerImpl.java $
  * $Id: RwikiTriggerImpl.java 11112 2006-06-23 15:35:35Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

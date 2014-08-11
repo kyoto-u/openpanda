@@ -1,6 +1,6 @@
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/jsf/widgets/src/java/org/theospi/jsf/renderer/SplitAreaRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/jsf/widgets/src/java/org/theospi/jsf/renderer/SplitAreaRenderer.java $
 * $Id: SplitAreaRenderer.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
 ***********************************************************************************
 *

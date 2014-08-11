@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/branches/sakai-2.8.x/news-api/api/src/java/org/sakaiproject/news/api/NewsConnectionException.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.0/news-api/api/src/java/org/sakaiproject/news/api/NewsConnectionException.java $
  * $Id: NewsConnectionException.java 59692 2009-04-03 23:47:17Z arwhyte@umich.edu $
  ***********************************************************************************
  *

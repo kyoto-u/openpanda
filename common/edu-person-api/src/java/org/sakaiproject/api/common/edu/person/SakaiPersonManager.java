@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/edu-person-api/src/java/org/sakaiproject/api/common/edu/person/SakaiPersonManager.java $
- * $Id: SakaiPersonManager.java 96489 2011-08-05 23:47:39Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/edu-person-api/src/java/org/sakaiproject/api/common/edu/person/SakaiPersonManager.java $
+ * $Id: SakaiPersonManager.java 96488 2011-08-05 23:43:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

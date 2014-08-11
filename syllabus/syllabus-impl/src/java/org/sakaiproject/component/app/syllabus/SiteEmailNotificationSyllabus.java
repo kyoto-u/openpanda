@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/branches/sakai-2.8.x/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SiteEmailNotificationSyllabus.java $
- * $Id: SiteEmailNotificationSyllabus.java 95300 2011-07-18 14:26:00Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.0/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SiteEmailNotificationSyllabus.java $
+ * $Id: SiteEmailNotificationSyllabus.java 95080 2011-07-13 14:06:36Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

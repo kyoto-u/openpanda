@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SectionContentsBean.java $
- * $Id: SectionContentsBean.java 92517 2011-05-02 21:12:41Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SectionContentsBean.java $
+ * $Id: SectionContentsBean.java 106373 2012-03-29 18:07:09Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -24,21 +24,28 @@
 package org.sakaiproject.tool.assessment.ui.bean.delivery;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.QuestionPoolFacade;
 import org.sakaiproject.tool.assessment.services.QuestionPoolService;
+import org.sakaiproject.util.ResourceLoader;
 
 /**
  * <p>This bean represents a Part in an assessment </p>
@@ -51,8 +58,9 @@ public class SectionContentsBean
 	 * 
 	 */
 	private static final long serialVersionUID = 5959692528847396966L;
-private String text;
-  private String nonDefaultText;
+	private static Log log = LogFactory.getLog(SectionContentsBean.class);
+	private String text;
+	private String nonDefaultText;
   private java.util.ArrayList itemContents;
   private String sectionId;
   private String number;
@@ -418,15 +426,23 @@ private String text;
           String poolname = section.getSectionMetaDataByLabel(
             SectionDataIfc.POOLNAME_FOR_RANDOM_DRAW);
           setPoolNameToBeDrawn(poolname);
-
+          
           String randomDrawDate = section.getSectionMetaDataByLabel(SectionDataIfc.QUESTIONS_RANDOM_DRAW_DATE);
           if(randomDrawDate != null && !"".equals(randomDrawDate)){
-        	  try{          
-        		  Date drawDate = new Date(randomDrawDate);
-        		  setRandomQuestionsDrawDate(DateFormat.getDateInstance().format(drawDate));
-        		  setRandomQuestionsDrawTime(DateFormat.getTimeInstance().format(drawDate));
+
+        	  try{
+        		  //The Date Time is in ISO format
+        		  DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+        		  DateTime drawDate = fmt.parseDateTime(randomDrawDate);
+        		  //We need the locale to localize the output string
+        		  Locale loc = new ResourceLoader().getLocale();
+        		  String drawDateString = DateTimeFormat.fullDate().withLocale(loc).print(drawDate);
+        		  String drawTimeString = DateTimeFormat.fullTime().withLocale(loc).print(drawDate);
+        		  setRandomQuestionsDrawDate(drawDateString);
+        		  setRandomQuestionsDrawTime(drawTimeString);
+
         	  }catch(Exception e){
-        		  e.printStackTrace();
+        		  log.error("Unable to parse date text: " + randomDrawDate, e);
         	  }         
           }
         }

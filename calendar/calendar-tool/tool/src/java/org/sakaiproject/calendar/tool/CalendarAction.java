@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
- * $Id: CalendarAction.java 118619 2013-01-23 03:29:15Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
+ * $Id: CalendarAction.java 114411 2012-10-16 15:11:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,24 +33,22 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.Vector;
-import java.util.Properties;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.alias.api.Alias;
 import org.sakaiproject.alias.cover.AliasService;
-import org.sakaiproject.assignment.api.Assignment;
-import org.sakaiproject.assignment.api.AssignmentService;
 import org.sakaiproject.authz.api.PermissionsHelper;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.calendar.api.Calendar;
@@ -75,11 +72,14 @@ import org.sakaiproject.cheftool.menu.MenuEntry;
 import org.sakaiproject.cheftool.menu.MenuImpl;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
-import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.content.cover.ContentTypeImageService;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.cover.EntityManager;
+import org.sakaiproject.entitybroker.EntityBroker;
+import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
+import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
@@ -110,7 +110,6 @@ import org.sakaiproject.util.MergedList;
 import org.sakaiproject.util.MergedListEntryProviderFixedListWrapper;
 import org.sakaiproject.util.ParameterParser;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
 
 
@@ -182,7 +181,6 @@ extends VelocityPortletStateAction
 	private static final String FORM_ICAL_ENABLE = "icalEnable";
 	
 	/** The attachments from assignment */
-	private final static String NEW_ASSIGNMENT_DUEDATE_CALENDAR_ASSIGNMENT_ID = "new_assignment_duedate_calendar_assignment_id";
 	private static final String ATTACHMENTS = "Assignment.attachments";
 	
 	/** state selected view */
@@ -201,9 +199,14 @@ extends VelocityPortletStateAction
 	private final static String STATE_SCHEDULE_TO_GROUPS = "scheduleToGroups";
 	private static final String STATE_SELECTED_GROUPS_FILTER = "groups_filters";
 	
-	private AssignmentService assignmentService;
-	
 	private ContentHostingService contentHostingService;
+   
+	private EntityBroker entityBroker;
+   
+	// tbd fix shared definition from org.sakaiproject.assignment.api.AssignmentEntityProvider
+	private final static String ASSN_ENTITY_ID     = "assignment";
+	private final static String ASSN_ENTITY_ACTION = "deepLink";
+	private final static String ASSN_ENTITY_PREFIX = EntityReference.SEPARATOR+ASSN_ENTITY_ID+EntityReference.SEPARATOR+ASSN_ENTITY_ACTION+EntityReference.SEPARATOR;
    
 	private NumberFormat monthFormat = null;
 	
@@ -1071,7 +1074,7 @@ extends VelocityPortletStateAction
 			if (mergedCalendarList != null && isOnWorkspaceTab())
 			{
 				String channelRef = mergedCalendarList.getDelimitedChannelReferenceString();
-				if (StringUtil.trimToNull(channelRef) == null )
+				if (StringUtils.trimToNull(channelRef) == null )
 					channelRef = state.getPrimaryCalendarReference();
 				placement.getPlacementConfig().setProperty(
 											 PORTLET_CONFIG_PARM_MERGED_CALENDARS, channelRef );
@@ -2275,7 +2278,7 @@ extends VelocityPortletStateAction
 								isOnWorkspaceTab(),
 								false,
 								entryProvider,
-								StringUtil.trimToZero(SessionManager.getCurrentSessionUserId()),
+								StringUtils.trimToEmpty(SessionManager.getCurrentSessionUserId()),
 								channelArray, 
 								SecurityService.isSuperUser(),
 								ToolManager.getCurrentPlacement().getContext());
@@ -2517,7 +2520,7 @@ extends VelocityPortletStateAction
 		if (calendarReference == null)
 		{
 			
-			calendarReference = StringUtil.trimToNull(portlet.getPortletConfig().getInitParameter(CALENDAR_INIT_PARAMETER));
+			calendarReference = StringUtils.trimToNull(portlet.getPortletConfig().getInitParameter(CALENDAR_INIT_PARAMETER));
 			if (calendarReference == null)
 			{
 				// form a reference to the default calendar for this request's site
@@ -2881,66 +2884,32 @@ extends VelocityPortletStateAction
 				context.put("config",configProps);
 				
 				// Get the attachments from assignment tool for viewing
-				String assignmentId = calEvent.getField(NEW_ASSIGNMENT_DUEDATE_CALENDAR_ASSIGNMENT_ID);
+				String assignmentId = calEvent.getField(CalendarUtil.NEW_ASSIGNMENT_DUEDATE_CALENDAR_ASSIGNMENT_ID);
 				
 				if (assignmentId != null && assignmentId.length() > 0)
 				{
-					try
-					{
-						Assignment a = assignmentService.getAssignment(assignmentId);
-						
-						if (a != null) {
-							
-						context.put("assignment", a);
-
-						String assignmentContext = a.getContext(); // assignment context
-						boolean allowReadAssignment = assignmentService.allowGetAssignment(assignmentContext); // check for read permission
-						
-						if (allowReadAssignment && a.getOpenTime().before(TimeService.newTime())) // this checks if we want to display an assignment link based on the open date
-						{
-							Site site = SiteService.getSite(assignmentContext); // site id
-							ToolConfiguration fromTool = site.getToolForCommonId("sakai.assignment.grades");
-							boolean allowAddAssignment = assignmentService.allowAddAssignment(assignmentContext); // this checks for the asn.new permission and determines the url we present the user
-							
-							if (fromTool != null)
-							{
-								// Two different urls to be rendered depending on the user's permission
-								if (allowAddAssignment)
-								{
-									context.put("assignmenturl", ServerConfigurationService.getPortalUrl() + "/directtool/" + fromTool.getId() + "?assignmentId=" + a.getReference() + "&panel=Main&sakai_action=doView_assignment");
-								}
-								else
-								{
-									context.put("assignmenturl", ServerConfigurationService.getPortalUrl() + "/directtool/" + fromTool.getId() + "?assignmentReference=" + a.getReference() + "&panel=Main&sakai_action=doView_submission");
-								}
-							}
-						}
-						
-						sstate.setAttribute(ATTACHMENTS, a.getContent().getAttachments());						
-						}
+					// pass in the assignment reference to get the assignment data we need
+					Map<String, Object> assignData = new HashMap<String, Object>();
+					StringBuilder entityId = new StringBuilder( ASSN_ENTITY_PREFIX );
+					entityId.append( (CalendarService.getCalendar(calEvent.getCalendarReference())).getContext() );
+					entityId.append( EntityReference.SEPARATOR );
+					entityId.append( assignmentId );
+					ActionReturn ret = entityBroker.executeCustomAction(entityId.toString(), ASSN_ENTITY_ACTION, null, null);
+					if (ret != null && ret.getEntityData() != null) {
+						Object returnData = ret.getEntityData().getData();
+						assignData = (Map<String, Object>)returnData;
 					}
-					catch (IdUnusedException e)
-					{
-						addAlert(sstate, rb.getString("Cannot Find AssignmentID") + ": " + assignmentId);
-					}
-					catch (PermissionException e)
-					{
-						addAlert(sstate, rb.getString("AssignmentID Permission Error") + ": " + assignmentId);
-					}
+					context.put("assignmenturl", (String) assignData.get("assignmentUrl"));
+					context.put("assignmentTitle", (String) assignData.get("assignmentTitle"));
 				}
-				
+						
 				
 				String ownerId = calEvent.getCreator();
 				if ( ownerId != null && ! ownerId.equals("") )
-				// if the user not defined, assigned the owner_name as ""
-				try 
 				{
 					String ownerName = 
 							 UserDirectoryService.getUser( ownerId ).getDisplayName();
 					context.put("owner_name", ownerName);
-				} 
-				catch (UserNotDefinedException e) {
-					context.put("owner_name", "");
 				}
 				
 				String siteName = calEvent.getSiteName();
@@ -2969,6 +2938,12 @@ extends VelocityPortletStateAction
 				context.put(NO_EVENT_FLAG_CONTEXT_VAR, TRUE_STRING);
 			}
 			catch (PermissionException e)
+			{
+				context.put(ALERT_MSG_KEY,rb.getString("java.alert.younotpermadd"));
+				M_log.debug(".buildDescriptionContext(): " + e);
+				return;
+			}
+			catch (UserNotDefinedException e)
 			{
 				context.put(ALERT_MSG_KEY,rb.getString("java.alert.younotpermadd"));
 				M_log.debug(".buildDescriptionContext(): " + e);
@@ -3772,15 +3747,16 @@ extends VelocityPortletStateAction
 		context.put("config",configProps);
 		context.put("message",state.getState());
 
-		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL, new ResourceLoader().getLocale());			
+		DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL, new ResourceLoader().getLocale());
+		formatter.setTimeZone(TimeService.getLocalTimeZone());
 		try{
-			context.put("beginWeek", formatter.format(calObj.getPrevTime(calObj.getFirstDayOfWeek())));
+			context.put("beginWeek", formatter.format(calObj.getPrevTime(calObj.getDay_Of_Week(true)-1)));
 		}catch(Exception e){
 			context.put("beginWeek", calObj.getTodayDate());
 		}
 		try{
 			calObj.setNextWeek();
-			context.put("endWeek",formatter.format(calObj.getPrevTime(dayofweek)));
+			context.put("endWeek",formatter.format(calObj.getPrevTime(1)));
 		}catch(Exception e){
 			context.put("endWeek", calObj.getTodayDate());
 		}
@@ -5651,8 +5627,8 @@ extends VelocityPortletStateAction
 		String peid = ((JetspeedRunData)data).getJs_peid();
 		SessionState sstate = ((JetspeedRunData)data).getPortletSessionState(peid);
 		
-		String enable = StringUtil.trimToNull(data.getParameters().getString(FORM_ICAL_ENABLE));
-		String alias = StringUtil.trimToNull(data.getParameters().getString(FORM_ALIAS));
+		String enable = StringUtils.trimToNull(data.getParameters().getString(FORM_ICAL_ENABLE));
+		String alias = StringUtils.trimToNull(data.getParameters().getString(FORM_ALIAS));
       
 		// this will verify that no invalid characters are used
 		if ( ! Validator.escapeResourceName(alias).equals(alias) )
@@ -6952,7 +6928,7 @@ extends VelocityPortletStateAction
 		// Initialize month format object		
 		if ( monthFormat == null ) 
 		{
-			monthFormat = NumberFormat.getInstance();
+			monthFormat = NumberFormat.getInstance(new ResourceLoader().getLocale());
 			monthFormat.setMinimumIntegerDigits(2);
 		}
 		
@@ -7888,10 +7864,11 @@ extends VelocityPortletStateAction
 			contentHostingService = (ContentHostingService) ComponentManager.get("org.sakaiproject.content.api.ContentHostingService");
 		}
 		
-		if (assignmentService == null)
+		if (entityBroker == null)
 		{
-			assignmentService = (AssignmentService) ComponentManager.get("org.sakaiproject.assignment.api.AssignmentService");
+			entityBroker = (EntityBroker) ComponentManager.get("org.sakaiproject.entitybroker.EntityBroker");
 		}
+
 
 		// retrieve the state from state object
 		CalendarActionState calState = (CalendarActionState)getState( portlet, rundata, CalendarActionState.class );

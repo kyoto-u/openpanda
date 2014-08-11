@@ -14,9 +14,9 @@
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 <!--jsp/privateMsg/pvtMsgDetail.jsp-->
 <%--			<sakai:tool_bar_message value="#{msgs.pvt_detmsgreply}" /> --%> 
-			<h:messages styleClass="alertMessage" id="errorMessages" /> 
+			<h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}"/> 
 
-<h:panelGrid columns="2" summary="layout" width="100%" styleClass="navPanel specialLink">
+<h:panelGrid columns="2" width="100%" styleClass="navPanel specialLink">
 	<h:panelGroup>
           	<f:verbatim><div class="breadCrumb"><h3></f:verbatim>
 <%--   			  <h:commandLink action="#{PrivateMessagesTool.processActionHome}" value="#{msgs.cdfm_message_forums}" title=" #{msgs.cdfm_message_forums}"/><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " />
@@ -115,6 +115,22 @@
             	 <h:outputText value="#{PrivateMessagesTool.detailMsg.recipientsAsText}" />
             </td>
           </tr>
+          <f:subview id="bccRecipients" rendered="#{ForumTool.userId == PrivateMessagesTool.detailMsg.msg.createdBy && PrivateMessagesTool.detailMsg.recipientsAsTextBcc != null && PrivateMessagesTool.detailMsg.recipientsAsTextBcc != ''}">
+	          <f:verbatim>
+	          <tr>
+	            <th>
+	            </f:verbatim>
+	            	 <h:outputText value="#{msgs.pvt_bcc}" />
+	            <f:verbatim>
+	            </th>
+	            <td>        
+	            </f:verbatim>   	
+	            	 <h:outputText value="#{PrivateMessagesTool.detailMsg.recipientsAsTextBcc}" />
+	            <f:verbatim>
+	            </td>
+	          </tr>
+	          </f:verbatim>
+          </f:subview>
           <tr>
             <th>
               <h:outputText value="#{msgs.pvt_subject}"/>
@@ -131,7 +147,7 @@
             	<h:outputText value="#{PrivateMessagesTool.detailMsg.msg.author}" />  
             	<h:outputText value="#{msgs.pvt_openb}" />  
             	<h:outputText value="#{PrivateMessagesTool.detailMsg.msg.created}" >
-                	<f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />  
+                	<f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>  
                 </h:outputText>
             	<h:outputText value=" #{msgs.pvt_closeb}" /> 
             </td>
@@ -142,7 +158,7 @@
               <h:outputText value="#{msgs.pvt_label} "/>
             </th>
             <td>
-            	<h:outputText value="#{PrivateMessagesTool.detailMsg.msg.label}" />  
+            	<h:outputText value="#{PrivateMessagesTool.detailMsg.label}" />  
             </td>
           </tr> 
           <tr>

@@ -1,6 +1,6 @@
 /**
- * $Id: DeveloperHelperService.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/api/src/java/org/sakaiproject/entitybroker/DeveloperHelperService.java $
+ * $Id: DeveloperHelperService.java 87501 2011-01-24 15:07:11Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/api/src/java/org/sakaiproject/entitybroker/DeveloperHelperService.java $
  * DeveloperHelperService.java - entity-broker - Apr 13, 2008 5:42:38 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -172,7 +172,7 @@ public interface DeveloperHelperService {
      * <br/>
      * recommend you use {@link #getCurrentUserReference()} instead
      * 
-     * @return the user id OR null if there is no current user
+     * @return the user id OR null if there is no current user (or the user is anonymous)
      */
     public String getCurrentUserId();
 

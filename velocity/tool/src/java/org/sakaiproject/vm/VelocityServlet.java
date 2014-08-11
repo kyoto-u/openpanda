@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/branches/sakai-2.8.x/tool/src/java/org/sakaiproject/vm/VelocityServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.0/tool/src/java/org/sakaiproject/vm/VelocityServlet.java $
  * $Id: VelocityServlet.java 76461 2010-04-22 09:40:20Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

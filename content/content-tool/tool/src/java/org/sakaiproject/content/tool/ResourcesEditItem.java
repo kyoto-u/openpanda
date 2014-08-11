@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/branches/sakai-2.8.x/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesEditItem.java $
- * $Id: ResourcesEditItem.java 84675 2010-11-12 18:36:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesEditItem.java $
+ * $Id: ResourcesEditItem.java 90429 2011-03-23 13:25:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -984,7 +984,8 @@ public class ResourcesEditItem
 	  */
 	 public Object getValue(String name)
 	 {
-		 String[] names = name.split(ResourcesMetadata.DOT);
+		 //. has a special meaning in regex so needs to be escaped
+		 String[] names = name.split("\\" + ResourcesMetadata.DOT);
 		 Object rv = m_structuredArtifact;
 		 if(rv != null && ((Map) rv).isEmpty())
 		 {

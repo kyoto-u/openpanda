@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/test/java/org/sakaiproject/content/impl/db/test/CheckBlobSafety.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/test/java/org/sakaiproject/content/impl/db/test/CheckBlobSafety.java $
  * $Id: CheckBlobSafety.java 70947 2010-01-06 15:25:05Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

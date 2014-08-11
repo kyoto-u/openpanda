@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/textarea/branches/sakai-2.8.x/FCKeditor/connector/src/java/org/sakaiproject/connector/fck/FCKConnectorServlet.java $
- * $Id: FCKConnectorServlet.java 95477 2011-07-21 15:10:30Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/textarea/tags/sakai-2.9.0/FCKeditor/connector/src/java/org/sakaiproject/connector/fck/FCKConnectorServlet.java $
+ * $Id: FCKConnectorServlet.java 95361 2011-07-19 14:42:57Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -399,8 +399,11 @@ public class FCKConnectorServlet extends HttpServlet {
                if (dir.split("/").length == 2) {
                     List<String> collections = new ArrayList<String>();
                     map = contentHostingService.getCollectionMap();
-                    if (map != null && map.keySet() != null) {
-                         collections.addAll(map.keySet());
+                    for (String key : map.keySet()) {
+                    	if (!contentHostingService.isInDropbox((String)key)) {
+                    		collections.add(key);
+                    	}
+
                     }
                     List extras = (List) sessionManager.getCurrentSession()
                          .getAttribute(FCK_EXTRA_COLLECTIONS_BASE + collectionBase);

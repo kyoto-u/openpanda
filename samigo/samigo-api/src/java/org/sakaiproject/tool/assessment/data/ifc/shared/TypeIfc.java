@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/shared/TypeIfc.java $
- * $Id: TypeIfc.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/shared/TypeIfc.java $
+ * $Id: TypeIfc.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -34,9 +34,10 @@ public interface TypeIfc extends java.io.Serializable {
   public static Long FILE_UPLOAD = Long.valueOf(6);
   public static Long AUDIO_RECORDING = Long.valueOf(7);
   public static Long FILL_IN_BLANK = Long.valueOf(8);
+  public static Long MATCHING = Long.valueOf(9);
   public static Long FILL_IN_NUMERIC = Long.valueOf(11);
   public static Long MULTIPLE_CORRECT_SINGLE_SELECTION = Long.valueOf(12);
-  public static Long MATCHING = Long.valueOf(9);
+  public static Long MATRIX_CHOICES_SURVEY = Long.valueOf(13);
   // these are section type available in this site,
   public static Long DEFAULT_SECTION = Long.valueOf(21);
   // these are assessment template type available in this site,

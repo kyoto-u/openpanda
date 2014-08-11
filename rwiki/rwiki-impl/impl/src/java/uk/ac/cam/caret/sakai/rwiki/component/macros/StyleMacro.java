@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/StyleMacro.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/StyleMacro.java $
  * $Id: StyleMacro.java 58922 2009-03-20 18:17:19Z s.swinsburg@lancaster.ac.uk $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/model/DateBean.java $
- * $Id: DateBean.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/model/DateBean.java $
+ * $Id: DateBean.java 101653 2011-12-12 21:07:13Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -33,7 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.metaobj.utils.mvc.intf.FieldValueWrapper;
 import org.sakaiproject.metaobj.utils.xml.NormalizationException;
-import org.sakaiproject.util.DateWidgetFormat;
+import org.sakaiproject.metaobj.utils.DateWidgetFormat;
 
 public class DateBean implements FieldValueWrapper {
    protected final Log logger = LogFactory.getLog(getClass());

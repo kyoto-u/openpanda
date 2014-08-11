@@ -90,7 +90,7 @@ import org.apache.commons.jrcs.diff.PatchFailedException;
  * @see Archive
  *
  * @author <a href="mailto:juanco@suigeneris.org">Juanco Anez</a>
- * @version $Id: Node.java 84671 2010-11-12 18:27:24Z arwhyte@umich.edu $
+ * @version $Id: Node.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  */
 public abstract class Node
         extends ToString

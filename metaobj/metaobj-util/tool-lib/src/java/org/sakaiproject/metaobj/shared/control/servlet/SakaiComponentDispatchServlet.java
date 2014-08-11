@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/servlet/SakaiComponentDispatchServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/servlet/SakaiComponentDispatchServlet.java $
  * $Id: SakaiComponentDispatchServlet.java 73944 2010-02-21 11:37:41Z aaronz@vt.edu $
  ***********************************************************************************
  *

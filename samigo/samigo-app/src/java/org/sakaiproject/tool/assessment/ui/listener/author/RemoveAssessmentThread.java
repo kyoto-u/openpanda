@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemoveAssessmentThread.java $
- * $Id: RemoveAssessmentThread.java 118689 2013-01-23 19:35:25Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemoveAssessmentThread.java $
+ * $Id: RemoveAssessmentThread.java 76735 2010-04-27 00:09:33Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -23,7 +23,6 @@ package org.sakaiproject.tool.assessment.ui.listener.author;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 import org.sakaiproject.tool.api.Session;
@@ -42,14 +41,11 @@ public class RemoveAssessmentThread extends Thread
 	private String assessmentId;
 
 	private String userId;
-	
-	private String context;
 
-	public RemoveAssessmentThread(String assessmentId, String userId, String context)
+	public RemoveAssessmentThread(String assessmentId, String userId)
 	{
 		this.assessmentId = assessmentId;
 		this.userId = userId;
-		this.context = context;
 	}
 
 	public void run()
@@ -68,12 +64,9 @@ public class RemoveAssessmentThread extends Thread
 			}
 
 			AssessmentService assessmentService = new AssessmentService();
-			log.info("** remove assessmentId= " + this.assessmentId + " in context: " + context);
+			log.info("** remove assessmentId= " + this.assessmentId);
 			assessmentService.removeAssessment(this.assessmentId);
-			//SAM-2004 we need to set the context
-			
-			
-			EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.remove", "assessmentId=" + assessmentId, context, true, NotificationService.NOTI_NONE));
+			EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.remove", "assessmentId=" + assessmentId, true));
 		      
 		}
 		finally

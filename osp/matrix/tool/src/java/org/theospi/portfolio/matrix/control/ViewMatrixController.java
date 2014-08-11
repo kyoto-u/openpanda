@@ -76,6 +76,8 @@ import org.theospi.portfolio.style.mgt.StyleManager;
 import org.theospi.portfolio.security.Authorization;
 import org.theospi.portfolio.wizard.taggable.api.WizardActivityProducer;
 
+import org.springframework.transaction.annotation.Transactional; 
+
 public class ViewMatrixController extends AbstractMatrixController implements FormController, LoadObjectController {
 
    protected final Log logger = LogFactory.getLog(getClass());
@@ -95,6 +97,7 @@ public class ViewMatrixController extends AbstractMatrixController implements Fo
    
    private WizardActivityProducer wizardActivityProducer;
    
+   @Transactional
    public Object fillBackingObject(Object incomingModel, Map request, Map session, Map application) throws Exception {
 
       MatrixGridBean grid = (MatrixGridBean)incomingModel;
@@ -157,7 +160,7 @@ public class ViewMatrixController extends AbstractMatrixController implements Fo
       
       Matrix matrix = getMatrixManager().getMatrix(scaffoldingId, currentAgent.getId());
       if (matrix == null) {
-         if (currentAgent != null && !currentAgent.equals("")) {
+         if (currentAgent != null && !currentAgent.getId().getValue().equals("")) {
             //Don't create a matrix unless the scaffolding has been published 
             // and the user has permission to use a matrix.
             if (scaffolding.isPublished() || scaffolding.isPreview()) {
@@ -187,6 +190,7 @@ public class ViewMatrixController extends AbstractMatrixController implements Fo
       
       List<Cell> cells = getMatrixManager().getCells(matrix);
        
+      List<Review> reviews = getReviewManager().getReviewsByMatrix(matrix.getId().getValue());
       for (Iterator<Criterion> criteriaIterator = criteria.iterator(); criteriaIterator.hasNext();) {
          row = new ArrayList();
          criterion = (Criterion) criteriaIterator.next();
@@ -212,9 +216,23 @@ public class ViewMatrixController extends AbstractMatrixController implements Fo
 
             String pageId = cell.getWizardPage().getId().getValue();
             String siteId = cell.getWizardPage().getPageDefinition().getSiteId();
-            cellBean.setReflections( getReviewManager().getReviewsByParentAndType( pageId, Review.REFLECTION_TYPE, siteId, MatrixContentEntityProducer.MATRIX_PRODUCER ) );
-            cellBean.setReviews( getReviewManager().getReviewsByParentAndType( pageId, Review.FEEDBACK_TYPE, siteId, MatrixContentEntityProducer.MATRIX_PRODUCER ) );
-            cellBean.setEvaluations( getReviewManager().getReviewsByParentAndType( pageId, Review.EVALUATION_TYPE, siteId, MatrixContentEntityProducer.MATRIX_PRODUCER ) );
+            List reflections = new ArrayList();
+            List feedback = new ArrayList();
+            List evaluations = new ArrayList();
+            for (Review r : reviews) {
+                if (pageId.equals(r.getParent())) {
+                    if (Review.REFLECTION_TYPE == r.getType()) {
+                        reflections.add(r);
+                    } else if (Review.FEEDBACK_TYPE == r.getType()) {
+                        feedback.add(r);
+                    } else if (Review.EVALUATION_TYPE == r.getType()) {
+                        evaluations.add(r);
+                    }
+                }
+            }
+            cellBean.setReflections(reflections);
+            cellBean.setReviews(feedback);
+            cellBean.setEvaluations(evaluations);
 
             if (getMatrixManager().getTaggingManager().isTaggable()) {
     			TaggableItem item = wizardActivityProducer.getItem(cell.getWizardPage());
@@ -241,6 +259,7 @@ public class ViewMatrixController extends AbstractMatrixController implements Fo
    /* (non-Javadoc)
     * @see org.theospi.utils.mvc.intf.FormController#referenceData(java.util.Map, java.lang.Object, org.springframework.validation.Errors)
     */
+   @Transactional
    public Map referenceData(Map request, Object command, Errors errors) {
       Map<String, Object> model = new HashMap<String, Object>();
       MatrixGridBean grid = (MatrixGridBean) command;      
@@ -298,8 +317,14 @@ public class ViewMatrixController extends AbstractMatrixController implements Fo
       
       model.put("showFooter", getShowFooter(grid));
       
-      model.put("cellsICanAccess", getCellsICanAccess(getMatrixManager().getMatrix(
-				grid.getMatrixId())));
+      List<String> cellsICanAccess = getCellsICanAccess(getMatrixManager().getMatrix(grid.getMatrixId()));
+      model.put("cellsICanAccess", cellsICanAccess);
+
+      HashMap<String, Boolean> accessibleCells = new HashMap<String, Boolean>();
+      for (String s : cellsICanAccess) {
+         accessibleCells.put(s, true);
+      }
+      model.put("accessibleCells", accessibleCells);
       
       return model;
    }

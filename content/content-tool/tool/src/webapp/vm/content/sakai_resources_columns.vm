@@ -22,7 +22,9 @@
 	#set($itemsOnLine = 0)
 	<div class="navIntraTool">
 		$tlang.getString("list.site")
+		#if($showWebdavLink)
 		| <a href="#toolLink("ResourcesAction" "doShow_webdav")" title="$tlang.getString('dav.webdav')">$tlang.getString("dav.webdav")</a> 
+		#end
 		#if($showPermissions)
 		| <a href="#toolLinkParam("ResourcesAction" "doPermissions" "collectionId=$validator.escapeUrl(${site.id})")" title="$tlang.getString('list.sPerm')">$tlang.getString("list.sPerm")</a>
 		#end
@@ -40,6 +42,7 @@
 				#end
 			</select>
 			<input type="hidden" id="selectedItemId" name="selectedItemId" value="$selectedItemId" />
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>
 	
@@ -115,5 +118,6 @@
 	<form id="selectionForm" name="selectionForm" action="#toolForm("ResourcesAction")" method="post">
 		<input type="hidden" name="sakai_action" id="sakai_action" value="doShowMembers" />
 		<input type="hidden" name="item" id="item" value="" />
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>

@@ -13,12 +13,13 @@
 		<h3>
 			$tlang.getString("useedi.revandmod")
 		</h3>
+		<p class="instruction"><span class="reqStarInline">*</span> $tlang.getString("usecre.instruc")</p>
+
 		#if ($alertMessage)<div class="alertMessage">$tlang.getString("useconrem.alert") $validator.escapeHtml($alertMessage)</div>#end
 		<form name="$form-name" id="useredit" action="#toolForm("$action")" method="post">
 			<p class="shorttext  required">
-				#if(!$user)<span class="reqStar">*</span>#end 
 				<label #if(!$user) for="eid" #end>
-					$tlang.getString("useconrem.useid")
+					#if(!$user)<span class="reqStar">*</span>#end $tlang.getString("useconrem.useid")
 				</label>
 				#if($!user && !$valueEid)
 					#set($valueEid=$user.Eid)
@@ -134,6 +135,28 @@
 				$validator.escapeHtml($user.Id)
 			</p>
 #end
+#set ($paramNames = $user.Properties.PropertyNames)
+#if($!superUser && $user)
+<p class="shorttext"></p>
+<table class="itemSummary" summary="$tlang.getString("sitedi.pro")">
+				##avoid val error on empty table
+				<tr><th>$tlang.getString("useProperties")</th><td></td></tr>
+				#foreach ($paramName in $paramNames)
+					#set ($paramValue = $user.Properties.getPropertyFormatted($paramName))
+					<tr>
+						<th>
+							<label for="param_$paramName">
+								$paramName:
+							</label>
+						</th>
+						<td>
+							$validator.escapeHtml($paramValue)
+						</td>
+					</tr>
+				#end
+			</table>
+#end
+
 			<div class="act">
 				#if($user)
 					<input type="submit" class="active" name="eventSubmit_doSave" value="$tlang.getString("useedi.sav")" accesskey="s" />
@@ -142,6 +165,7 @@
 				#end					
 				<input type="submit" name="eventSubmit_doCancel" value="$tlang.getString("useedi.can")" accesskey="x" />
 			</div>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>
 

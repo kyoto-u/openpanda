@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
- * $Id: AssignmentSubmission.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
+ * $Id: AssignmentSubmission.java 98449 2011-09-20 21:28:59Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -39,6 +39,9 @@ public interface AssignmentSubmission extends Entity
 	
 	/** submission level of close time*/
 	public static final String ALLOW_RESUBMIT_CLOSETIME = "allow_resubmit_closeTime";
+	
+	/** submission by different user */
+	public static final String SUBMITTER_USER_ID = "submitted_user_id";
 	
 	/**
 	 * Access the context at the time of creation.
@@ -245,5 +248,10 @@ public interface AssignmentSubmission extends Entity
 	 * @return
 	 */
 	public String getReviewIconUrl();
-	
+
+    /**
+     *
+     * @return error string, if any, returned from review service
+     */
+    public String getReviewError();
 }

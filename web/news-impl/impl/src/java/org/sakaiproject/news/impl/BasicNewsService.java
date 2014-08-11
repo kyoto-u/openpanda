@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/branches/sakai-2.8.x/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsService.java $
- * $Id: BasicNewsService.java 107094 2012-04-16 03:30:53Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.0/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsService.java $
+ * $Id: BasicNewsService.java 105548 2012-03-06 18:42:10Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

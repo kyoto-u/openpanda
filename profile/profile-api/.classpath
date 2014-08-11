@@ -1,7 +1,0 @@
-<classpath>
-  <classpathentry kind="src" path="src/java"/>
-  <classpathentry kind="output" path="target/classes"/>
-  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/sakaiproject/common/sakai-common-edu-person-api/1.0.0-beta02-SNAPSHOT/sakai-common-edu-person-api-1.0.0-beta02-SNAPSHOT.jar"/>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-</classpath>

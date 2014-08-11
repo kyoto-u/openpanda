@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/impl/BaseContentService.java $
- * $Id: BaseContentService.java 118916 2013-01-28 23:24:40Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/BaseContentService.java $
+ * $Id: BaseContentService.java 113956 2012-10-04 00:45:56Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -33,7 +33,9 @@ import java.net.SocketException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -62,20 +64,22 @@ import org.sakaiproject.antivirus.api.VirusScanner;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.AuthzPermissionException;
+import org.sakaiproject.authz.api.FunctionManager;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.RoleAlreadyDefinedException;
-import org.sakaiproject.authz.api.FunctionManager;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.conditions.api.ConditionService;
 import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentCollectionEdit;
 import org.sakaiproject.content.api.ContentEntity;
+import org.sakaiproject.content.api.ContentFilter;
 import org.sakaiproject.content.api.ContentHostingHandler;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentResourceEdit;
+import org.sakaiproject.content.api.ContentTypeImageService;
 import org.sakaiproject.content.api.GroupAwareEdit;
 import org.sakaiproject.content.api.GroupAwareEntity;
 import org.sakaiproject.content.api.ResourceType;
@@ -84,9 +88,9 @@ import org.sakaiproject.content.api.GroupAwareEntity.AccessMode;
 import org.sakaiproject.content.api.providers.SiteContentAdvisor;
 import org.sakaiproject.content.api.providers.SiteContentAdvisorProvider;
 import org.sakaiproject.content.api.providers.SiteContentAdvisorTypeRegistry;
-import org.sakaiproject.content.api.ContentTypeImageService;
 import org.sakaiproject.content.impl.serialize.api.SerializableCollectionAccess;
 import org.sakaiproject.content.impl.serialize.api.SerializableResourceAccess;
+import org.sakaiproject.content.util.ZipContentUtil;
 import org.sakaiproject.entity.api.ContextObserver;
 import org.sakaiproject.entity.api.Edit;
 import org.sakaiproject.entity.api.Entity;
@@ -109,9 +113,9 @@ import org.sakaiproject.entity.api.serialize.EntityReaderHandler;
 import org.sakaiproject.entity.api.serialize.EntitySerializer;
 import org.sakaiproject.entity.api.serialize.SerializableEntity;
 import org.sakaiproject.event.api.Event;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.api.NotificationEdit;
 import org.sakaiproject.event.api.NotificationService;
-import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.CopyrightException;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdLengthException;
@@ -140,8 +144,8 @@ import org.sakaiproject.tool.api.SessionBindingListener;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.User;
-import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.BaseResourcePropertiesEdit;
 import org.sakaiproject.util.Blob;
 import org.sakaiproject.util.DefaultEntityHandler;
@@ -161,7 +165,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import com.ibm.icu.impl.duration.impl.DataRecord.ECountVariant;
 import com.ibm.icu.text.CharsetDetector;
 import com.ibm.icu.text.CharsetMatch;
 
@@ -193,9 +196,6 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	/** MIME multipart separation string */
     protected static final String MIME_SEPARATOR = "SAKAI_MIME_BOUNDARY";
 
-    protected static final String DEFAULT_RESOURCE_QUOTA = "content.quota.";
-    protected static final String DEFAULT_DROPBOX_QUOTA = "content.dropbox.quota.";
-
 	/** The initial portion of a relative access point URL. */
 	protected String m_relativeAccessPoint = null;
 
@@ -208,11 +208,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	/**
 	 * The quota for content resource body bytes (in Kbytes) for any hierarchy in the /user/ or /group/ areas, or 0 if quotas are not enforced.
 	 */
-	protected long m_siteQuota = 1048576;
-    /**
-     * The quota for content dropbox body bytes (in Kbytes), or 0 if quotas are not enforced.
-     */
-	protected long m_dropBoxQuota = 1048576;
+	protected long m_siteQuota = 0;
 
 	private boolean m_useSmartSort = true;
 
@@ -232,6 +228,8 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 
 	/** Optional set of folders just within the m_bodyPath to distribute files among. */
 	protected String[] m_bodyVolumes = null;
+	
+	protected List<ContentFilter> m_outputFilters = Collections.emptyList();
 
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Constructors, Dependencies and their setter methods
@@ -402,19 +400,6 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		}
 	}
 	
-	/**
-	 * Set the dropbox quota.
-	 * 
-	 * @param quota
-	 *        The dropbox quota (as a string).
-	 */
-	public void setDropBoxQuota(Long quota)
-	{
-		if (quota != null)
-		{
-			m_dropBoxQuota = quota;
-		}
-	}
 	
 	private EventTrackingService eventTrackingService;
 	public void setEventTrackingService(EventTrackingService eventTrackingService) {
@@ -733,9 +718,12 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		this.convertToContextQueryForCollectionSize = convertToContextQueryForCollectionSize;
 	}
 
+	public void setOutputFilters(List<ContentFilter> outputFilters)
+	{
+		this.m_outputFilters = outputFilters;
+	}
 
-
-
+	
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Init and Destroy
 	 *********************************************************************************************************************************************************************************************************************************************************/
@@ -825,18 +813,14 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			functionManager.registerFunction(AUTH_DROPBOX_OWN, false);
 			functionManager.registerFunction(AUTH_DROPBOX_MAINTAIN, false);
 
-			// quotas
-			m_siteQuota = Long.parseLong(m_serverConfigurationService.getString("content.quota", Long.toString(m_siteQuota)));
-            m_dropBoxQuota = Long.parseLong(m_serverConfigurationService.getString("content.dropbox.quota", Long.toString(m_dropBoxQuota)));
 
-			M_log.info("init(): site quota: " + m_siteQuota + ", dropbox quota: " + m_dropBoxQuota + ", body path: " + m_bodyPath + " volumes: "+ buf.toString());
+			M_log.info("init(): site quota: " + m_siteQuota + " body path: " + m_bodyPath + " volumes: "
+					+ buf.toString());
 		}
 		catch (Exception t)
 		{
 			M_log.warn("init(): ", t);
 		}
-
-
 
 		this.m_useSmartSort = m_serverConfigurationService.getBoolean("content.smartSort", true);
 
@@ -855,7 +839,6 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		if ((m_caching) && (m_cache != null))
 		{
 			m_cache.destroy();
-			m_cache = null;
 		}
 
 		M_log.info("destroy()");
@@ -1364,6 +1347,11 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		{
 			BaseResourceEdit bre = new BaseResourceEdit();
 			resourceSerializer.parse(bre,blob);
+			ResourceProperties props = bre.getProperties();
+			if(props != null) {
+				String oldDisplayName = props.getProperty(ResourceProperties.PROP_DISPLAY_NAME);
+				bre.setOldDisplayName(oldDisplayName);
+			}
 			return bre;
 		}
 		/* (non-Javadoc)
@@ -1373,6 +1361,11 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		{
 			BaseResourceEdit bre = new BaseResourceEdit();
 			resourceSerializer.parse(bre,blob);
+			ResourceProperties props = bre.getProperties();
+			if(props != null) {
+				String oldDisplayName = props.getProperty(ResourceProperties.PROP_DISPLAY_NAME);
+				bre.setOldDisplayName(oldDisplayName);
+			}
 			return bre;
 		}
 
@@ -2448,34 +2441,6 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			collection = new BaseCollectionEdit(collection);
 		}
 
-		//		// if not caching
-		//		if ((!m_caching) || (m_cache == null) || (m_cache.disabled()))
-		//		{
-		//			// TODO: current service caching
-		//			collection = m_storage.getCollection(id);
-		//		}
-		//		else
-		//		{
-		//			// if we have it cached, use it (hit or miss)
-		//			String key = getReference(id);
-		//			if (m_cache.containsKey(key))
-		//			{
-		//				Object o = m_cache.get(key);
-		//				if ((o != null) && (!(o instanceof ContentCollection))) throw new TypeException(id);
-		//
-		//				collection = (ContentCollection) o;
-		//			}
-		//
-		//			// if not in the cache, see if we have it in our info store
-		//			else
-		//			{
-		//				collection = m_storage.getCollection(id);
-		//
-		//				// cache it (hit or miss)
-		//				m_cache.put(key, collection);
-		//			}
-		//		}
-
 		return collection;
 
 	} // findCollection
@@ -2788,6 +2753,16 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			}
 		}
 
+		if(((BasicGroupAwareEdit) edit).isVisibilityUpdated()) {
+			// post EVENT_RESOURCE_UPD_VISIBILITY event
+			this.eventTrackingService.post(this.eventTrackingService.newEvent(EVENT_RESOURCE_UPD_VISIBILITY, edit.getReference(), true));
+		}
+		
+		if(((BasicGroupAwareEdit) edit).isAccessUpdated()) {
+			// post EVENT_RESOURCE_UPD_ACCESS event
+			this.eventTrackingService.post(this.eventTrackingService.newEvent(EVENT_RESOURCE_UPD_ACCESS, edit.getReference(), true));
+		}
+		
 		// update the properties for update
 		addLiveUpdateCollectionProperties(edit);
 
@@ -3041,7 +3016,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		}
 	}
 
-	protected void cacheEntities(List entities)
+	protected void cacheEntities(List<ContentEntity> entities)
 	{
 		if(entities == null)
 		{
@@ -4103,6 +4078,11 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		resource.setEvent(EVENT_RESOURCE_WRITE);
 
 		threadLocalManager.set(String.valueOf(resource), resource);
+		
+		ResourceProperties props = resource.getProperties();
+		if(props != null) {
+			resource.setOldDisplayName(props.getProperty(ResourceProperties.PROP_DISPLAY_NAME));
+		}
 
 		return resource;
 
@@ -4292,34 +4272,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			resource = new BaseResourceEdit(resource);
 		}
 
-		//		// if not caching
-		//		if ((!m_caching) || (m_cache == null) || (m_cache.disabled()))
-		//		{
-		//			// TODO: current service caching
-		//			resource = m_storage.getResource(id);
-		//		}
-		//
-		//		else
-		//		{
-		//			// if we have it cached, use it (hit or miss)
-		//			String key = getReference(id);
-		//			if (m_cache.containsKey(key))
-		//			{
-		//				Object o = m_cache.get(key);
-		//				if ((o != null) && (!(o instanceof ContentResource))) throw new TypeException(id);
-		//
-		//				resource = (ContentResource) o;
-		//			}
-		//
-		//			// if not in the cache, see if we have it in our info store
-		//			else
-		//			{
-		//				resource = m_storage.getResource(id);
-		//
-		//				// cache it (hit or miss)
-		//				m_cache.put(key, resource);
-		//			}
-		//		}
+		
 
 
 		return resource;
@@ -4376,14 +4329,29 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	} // removeResource
 
 	/**
-	 * Remove a resource that is locked for update.
+     * Remove a resource that is locked for update.
+     * 
+     * @param edit
+     *        The ContentResourceEdit object to remove.
+     * @exception PermissionException
+     *            if the user does not have permissions to read a containing collection, or to remove this resource.
+     */
+    public void removeResource(ContentResourceEdit edit) throws PermissionException {
+	    removeResource(edit, true);
+	}
+
+	/**
+     * Allows removing a resource while leaving the content alone,
+     * this mostly matters for resources copied by reference
 	 * 
 	 * @param edit
 	 *        The ContentResourceEdit object to remove.
+	 * @param removeContent if true, removes the content as well (default),
+	 *        else only removes the resource record from the DB
 	 * @exception PermissionException
 	 *            if the user does not have permissions to read a containing collection, or to remove this resource.
 	 */
-	public void removeResource(ContentResourceEdit edit) throws PermissionException
+	protected void removeResource(ContentResourceEdit edit, boolean removeContent) throws PermissionException
 	{
 		// check for closed edit
 		if (!edit.isActiveEdit())
@@ -4409,7 +4377,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		addResourceToDeleteTable(edit, uuid, userId);
 
 		// complete the edit
-		m_storage.removeResource(edit);
+		m_storage.removeResource(edit, removeContent);
 
 		// close the edit object
 		((BaseResourceEdit) edit).closeEdit();
@@ -4522,8 +4490,19 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	 */
 	public boolean allowRename(String id, String new_id)
 	{
-		M_log.warn("allowRename(" + id + ") - Rename not implemented");
-		return false;
+	    // check security for remove resource (own or any)
+	    boolean allowed = false;
+        if ( allowRemove(id) ) {
+            // check security for read resource
+            if ( unlockCheck(AUTH_RESOURCE_READ, id) ) {
+                // check security for add resource
+                if ( unlockCheck(AUTH_RESOURCE_ADD, new_id) ) {
+                    allowed = true;
+                }
+            }
+        }
+		if (M_log.isDebugEnabled()) M_log.debug("content allowRename("+id+", "+new_id+") = "+allowed);
+		return allowed;
 
 		// return unlockCheck(AUTH_RESOURCE_ADD, new_id) &&
 		// unlockCheck(AUTH_RESOURCE_REMOVE, id);
@@ -4573,7 +4552,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		ContentResourceEdit thisResource = null;
 		ContentCollectionEdit thisCollection = null;
 
-		if (M_log.isDebugEnabled()) M_log.debug("copy(" + id + "," + new_id + ")");
+		if (M_log.isDebugEnabled()) M_log.debug("rename(" + id + "," + new_id + ")");
 
 		if (m_storage.checkCollection(id))
 		{
@@ -4596,21 +4575,21 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			throw new IdUnusedException(id);
 		}
 
-		if (isCollection)
-		{
-			new_id = copyCollection(thisCollection, new_id);
-			removeCollection(thisCollection);
-		}
-		else
-		{
-			new_id = copyResource(thisResource, new_id);
-			removeResource(thisResource);
-		}
+	    // makes a copy each time content is renamed
+        if (isCollection) {
+            // NOTE: this does NOT do a deep copy (i.e. the collection is copied but the content is not)
+            new_id = copyCollection(thisCollection, new_id);
+            removeCollection(thisCollection);
+        } else {
+            // rename should do a reference copy only and not remove the content after
+            new_id = copyResource(thisResource, new_id, true); // set referenceCopy
+            removeResource(thisResource, false); // force content to not be removed
+        }
 		return new_id;
 
 	} // rename
 
-	/**
+    /**
 	 * check permissions for copy().
 	 * 
 	 * @param id
@@ -5009,7 +4988,18 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			{
 				ContentResourceEdit edit = addResource(new_id);
 				edit.setContentType(thisResource.getContentType());
-				edit.setContent(thisResource.streamContent());
+				// NOTE: we always do a reference copy on a move if we can
+				boolean referenceCopy = false;
+				if (edit instanceof BaseResourceEdit) {
+			        ((BaseResourceEdit)edit).setReferenceCopy(thisResource.getId());
+			        // need to manually update the content length or it ends up as 0
+			        ((BaseResourceEdit)edit).setContentLength(thisResource.getContentLength());
+			        // need to manually update the file path or it will be regenerated
+			        ((BaseResourceEdit) edit).m_filePath = ((BaseResourceEdit) thisResource).m_filePath;
+			        referenceCopy = true;
+				} else {
+	                edit.setContent(thisResource.streamContent());
+				}
 				edit.setResourceType(thisResource.getResourceType());
 				edit.setAvailability(thisResource.isHidden(), thisResource.getReleaseDate(), thisResource.getRetractDate());
 
@@ -5060,7 +5050,8 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 				// TODO - we don't know whether to post a future notification or not 
 				postAvailableEvent(edit, ref, NotificationService.NOTI_NONE);
 
-				m_storage.removeResource(thisResource);
+				// we need to not remove the content if we just did a reference copy above (or remove the content when there was no reference copy)
+				m_storage.removeResource(thisResource, !referenceCopy);
 
 				// track it (no notification)
 				String thisRef = thisResource.getReference(null);
@@ -5196,10 +5187,8 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	/**
 	 * Copy a resource.
 	 * 
-	 * @param thisResource
-	 *        The resource to be copied
-	 * @param new_id
-	 *        The desired id of the new resource.
+	 * @param resource The resource to be copied
+	 * @param new_id The desired id of the new resource.
 	 * @return The full id of the new copy of the resource.
 	 * @exception PermissionException
 	 *            if the user does not have permissions to read a containing collection, or to remove this resource.
@@ -5219,9 +5208,38 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	public String copyResource(ContentResource resource, String new_id) throws PermissionException, IdUnusedException,
 	TypeException, InUseException, OverQuotaException, IdUsedException, ServerOverloadException
 	{
+	    return copyResource(resource, new_id, false);
+	}
+
+	/**
+	 * Copy a resource with an option to do a reference copy
+	 * 
+	 * @param resource
+	 * @param new_id
+	 * @param referenceCopy if true, then do not copy the actual content (only make a reference copy which points to it),
+	 *                      if false, then copy like normal (duplicate the content)
+     * @return The full id of the new copy of the resource.
+     * @exception PermissionException
+     *            if the user does not have permissions to read a containing collection, or to remove this resource.
+     * @exception IdUnusedException
+     *            if the resource id is not found.
+     * @exception TypeException
+     *            if the resource is a collection.
+     * @exception InUseException
+     *            if the resource is locked by someone else.
+     * @exception OverQuotaException
+     *            if copying the resource would exceed the quota.
+     * @exception IdUsedException
+     *            if a unique id cannot be found in some arbitrary number of attempts (@see MAXIMUM_ATTEMPTS_FOR_UNIQUENESS).
+     * @exception ServerOverloadException
+     *            if the server is configured to write the resource body to the filesystem and the save fails.
+	 */
+	protected String copyResource(ContentResource resource, String new_id, boolean referenceCopy) throws PermissionException, IdUnusedException,
+    TypeException, InUseException, OverQuotaException, IdUsedException, ServerOverloadException
+    {
 		if (M_log.isDebugEnabled())
 		{
-			M_log.debug("copyResource: " + resource.getId() + " to " + new_id);
+			M_log.debug("copyResource: " + resource.getId() + " to " + new_id + ", reference="+referenceCopy);
 		}
 		
         if (StringUtils.isBlank(new_id)) {
@@ -5260,11 +5278,19 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			try
 			{
 				edit = addResource(new_id);
+				// this duplicates a lot of the code from BaseResourceEdit.set()
 				edit.setContentType(resource.getContentType());
 
-				// use stream instead of byte array
-				// edit.setContent(resource.getContent());
-				edit.setContent(resource.streamContent());
+				if (referenceCopy && edit instanceof BaseResourceEdit) {
+				    // do a reference copy so the actual content is not duplicated
+				    ((BaseResourceEdit)edit).setReferenceCopy(resource.getId());
+                    if (M_log.isDebugEnabled()) M_log.debug("copyResource doing a reference copy of "+resource.getId());
+				} else {
+	                // use stream instead of byte array
+	                // edit.setContent(resource.getContent());
+	                edit.setContent(resource.streamContent());
+                    if (M_log.isDebugEnabled()) M_log.debug("copyResource doing a normal copy");
+				}
 
 				edit.setResourceType(resource.getResourceType());
 				ResourcePropertiesEdit newProps = edit.getPropertiesEdit();
@@ -5330,7 +5356,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	 *        The desired id of the new collection.
 	 * @return The full id of the new copy of the resource.
 	 * @exception PermissionException
-	 *            if the user does not have permissions to perform the operations
+	 *            if the user does not have permissions to perform the operations OR the collection has members in it
 	 * @exception IdUnusedException
 	 *            if the collection id is not found.
 	 * @exception TypeException
@@ -5387,7 +5413,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	} // copyCollection
 
 	/**
-	 * Make a deep copy of a collection. Creates a new collection with an id similar to new_folder_id and recursively copies all nested collections and resources within thisCollection to the new collection.
+	 * Make a deep copy of a collection. 
+	 * Creates a new collection with an id similar to new_folder_id and recursively copies all nested collections and resources within thisCollection to the new collection.
+	 * Only used in "copyIntoFolder" for now
 	 * 
 	 * @param thisCollection
 	 *        The collection to be copied
@@ -5557,16 +5585,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			M_log.warn("commitResource(): closed ContentResourceEdit", e);
 			return;
 		}
-
 		
 		commitResourceEdit(edit, priority);
 
-		//check the content type if this is an HTML or TEXT file upload
-		if (ResourceType.TYPE_UPLOAD.equals(edit.getResourceType()) && 
-			(ResourceType.MIME_TYPE_HTML.equals(edit.getContentType()) || ResourceType.MIME_TYPE_TEXT.equals(edit.getContentType()))) {
-			checkUpdateContentEncoding(edit.getId());
-		}
-		
 		if (virusScanner.getEnabled()) {
 			try {
 				virusScanner.scanContent(edit.getId());
@@ -5628,17 +5649,20 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 
 	} // commitResource
 
-	private void checkUpdateContentEncoding(String id) {
-		M_log.debug("checkUpdateContentEncoding(" + id);
-		ContentResourceEdit edit = null;
+	private boolean checkUpdateContentEncoding(ContentResourceEdit edit) {
+		if (edit == null) {
+			return false;
+		}
+		M_log.debug("checkUpdateContentEncoding(" + edit.getId() + ")");
+
 		InputStream content = null;
+		boolean updated = false;
 		try
 		{
-			edit = editResource(id);
 			//no point in doing this for 0 size resources
 			if (edit.getContentLength() == 0)
 			{
-				return;
+				return false;
 			}
 			
 			String contentEncoding = edit.getProperties().getProperty(ResourceProperties.PROP_CONTENT_ENCODING);
@@ -5667,7 +5691,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			}
 			else
 			{
-				return;
+				return false;
 			}
 			//KNL-682 do not set content as UTF-32LE or UTF-16
 			if (encoding.indexOf("UTF-16") > -1 || encoding.indexOf("UTF-32") > -1) {
@@ -5683,29 +5707,13 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 				ResourcePropertiesEdit rpe = edit.getPropertiesEdit();
 				rpe.removeProperty(ResourceProperties.PROP_CONTENT_ENCODING);
 				rpe.addProperty(ResourceProperties.PROP_CONTENT_ENCODING, encoding);
-				//KNL-653 This update should never send a notification
-				commitResource(edit, NotificationService.NOTI_NONE);
+				updated = true;
 			} 
 			
-		} catch (PermissionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IdUnusedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TypeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InUseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ServerOverloadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OverQuotaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -5717,16 +5725,8 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 					//not much we can do
 				}
 			}
-			
-			if (edit != null && edit.isActiveEdit())
-			{
-				
-				cancelResource(edit);
-			}
-			
-						
 		}
-		
+		return updated;
 	}
 
 	/**
@@ -5756,8 +5756,46 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		// update the properties for update
 		addLiveUpdateResourceProperties(edit);
 
+		boolean titleUpdated = false;
+		if(edit instanceof BaseResourceEdit) {
+			String oldDisplayName = ((BaseResourceEdit) edit).getOldDisplayName();
+			ResourceProperties props = edit.getProperties();
+			if(props != null) {
+				String newDisplayName = props.getProperty(ResourceProperties.PROP_DISPLAY_NAME);
+				if(oldDisplayName == null || newDisplayName == null) {
+					// do nothing
+				} else if(! oldDisplayName.equals(newDisplayName)) {
+					// DisplayName has changed -- post event
+					titleUpdated = true;
+				}
+			}
+		}
+
+		// Flag whether we have a body update or not. This will save expensive DB/IO if we don't need to check the encoding.
+		boolean contentUpdated = ((BaseResourceEdit) edit).m_body != null || ((BaseResourceEdit) edit).m_contentStream != null;
+
 		// complete the edit
 		m_storage.commitResource(edit);
+
+		// Now that the data is committed, we can update the encoding if needed.
+		// Check the content type if this is an HTML or TEXT file upload.
+		if (contentUpdated && ResourceType.TYPE_UPLOAD.equals(edit.getResourceType()) && 
+			(ResourceType.MIME_TYPE_HTML.equals(edit.getContentType()) || ResourceType.MIME_TYPE_TEXT.equals(edit.getContentType()))) {
+
+			// Any body bytes lying around erroneously should be thrown away
+			// because they would already be committed. We also purge the stream
+			// reference because it would be used up. Additional calls to
+			// streamContent() will generate new ones from storage like we need.
+			((BaseResourceEdit) edit).m_body = null;
+			((BaseResourceEdit) edit).m_contentStream = null;
+
+			if (edit.isActiveEdit() && checkUpdateContentEncoding(edit)) {
+
+				// The encoding was changed, so we have to flush the metadata.
+				// Since we already cleaned up, we won't write the body again.
+				m_storage.commitResource(edit);
+			}
+		}
 
 		// close the edit object
 		((BaseResourceEdit) edit).closeEdit();
@@ -5789,6 +5827,21 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		// Post an available event for now or later
 		postAvailableEvent(edit, ref, priority);
 
+		if(titleUpdated) {
+			// post EVENT_RESOURCE_UPD_TITLE event
+			this.eventTrackingService.post(this.eventTrackingService.newEvent(EVENT_RESOURCE_UPD_TITLE, edit.getReference(), true, priority));
+		}
+		
+		if(((BasicGroupAwareEdit) edit).isVisibilityUpdated()) {
+			// post EVENT_RESOURCE_UPD_VISIBILITY event
+			this.eventTrackingService.post(this.eventTrackingService.newEvent(EVENT_RESOURCE_UPD_VISIBILITY, edit.getReference(), true, priority));
+		}
+		
+		if(((BasicGroupAwareEdit) edit).isAccessUpdated()) {
+			// post EVENT_RESOURCE_UPD_ACCESS event
+			this.eventTrackingService.post(this.eventTrackingService.newEvent(EVENT_RESOURCE_UPD_ACCESS, edit.getReference(), true, priority));
+		}
+		
 	} // commitResourceEdit
 
 	/**
@@ -6500,6 +6553,13 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 						{
 							throw new IdUnusedException(ref.getReference());
 						}
+						for (ContentFilter filter: m_outputFilters)
+						{
+							if (filter.isFiltered(resource))
+							{
+								res = filter.wrap(res, resource);
+							}
+						}
 	
 						res.setContentType(contentType);
 						res.addHeader("Content-Disposition", disposition);
@@ -6595,6 +6655,13 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 							if (content == null)
 							{
 								throw new IdUnusedException(ref.getReference());
+							}
+							for (ContentFilter filter: m_outputFilters)
+							{
+								if (filter.isFiltered(resource))
+								{
+									res = filter.wrap(res, resource);
+								}
 							}
 				
 							// set the buffer of the response to match what we are reading from the request
@@ -8508,7 +8575,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 
 		// some quick exits, if we are not doing user quota, or if this is not a user or group resource
 		// %%% These constants should be from somewhere else -ggolden
-		if (!((edit.getId().startsWith(COLLECTION_USER)) || (edit.getId().startsWith(COLLECTION_SITE)) || edit.getId().startsWith(COLLECTION_DROPBOX))) return false;
+		if (!((edit.getId().startsWith("/user/")) || (edit.getId().startsWith("/group/")))) return false;
 
 		// expect null, "user" | "group", user/groupid, rest...
 		String[] parts = StringUtil.split(edit.getId(), Entity.SEPARATOR);
@@ -8520,10 +8587,6 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		try
 		{
 			collection = findCollection(id);
-			// Limit size per user inside dropbox
-			if (edit.getId().startsWith(COLLECTION_DROPBOX)) {
-				collection = findCollection(id + parts[3] + Entity.SEPARATOR);
-			}
 		}
 		catch (TypeException ignore)
 		{
@@ -8757,8 +8820,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	 */
 	public long getQuota(ContentCollection collection) {
 		long quota = m_siteQuota;
-		String default_quota = DEFAULT_RESOURCE_QUOTA;
-		ContentCollection parentCollection = null;
+
 		// parse a string like /user/344454534543534535353543535
 		String[] parts = StringUtil.split(collection.getId(), Entity.SEPARATOR);
 		if (parts.length >= 3) {
@@ -8770,14 +8832,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			} else {
 				siteId = parts[2];
 			}
-			if (collection.getId().startsWith(COLLECTION_DROPBOX)) {
-				default_quota = DEFAULT_DROPBOX_QUOTA;
-				quota = m_dropBoxQuota;
-				try {
-					parentCollection = findCollection(Entity.SEPARATOR + parts[1] + Entity.SEPARATOR + parts[2] + Entity.SEPARATOR);
-				} catch (TypeException tex) {
-				}
-			}
+
 			String siteType = null;
 			// get the site type
 			try {
@@ -8788,7 +8843,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 
 			// use this quota unless we have one more specific
 			if (siteType != null) {
-				quota = Long.parseLong(m_serverConfigurationService.getString(default_quota + siteType, Long.toString(collection.getId().startsWith(COLLECTION_DROPBOX)?m_dropBoxQuota:m_siteQuota)));
+				quota = Long.parseLong(m_serverConfigurationService.getString("content.quota." + siteType, Long.toString(m_siteQuota)));
 			}
 		}
 
@@ -8803,19 +8858,6 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		catch (EntityPropertyNotDefinedException ignore)
 		{
 			// don't log or anything, this just means that this site doesn't have this quota property.
-			// Look for dropBox quota in parent collection
-			try {
-				if (parentCollection!=null) {
-					long siteSpecific = parentCollection.getProperties().getLongProperty(
-							ResourceProperties.PROP_COLLECTION_BODY_QUOTA);
-	
-					quota = siteSpecific;
-				}
-			} catch (EntityPropertyTypeException ignoretex) {
-				// don't log or anything, this just means that this site doesn't have this quota property.
-			} catch (EntityPropertyNotDefinedException ignoreex) {
-				// don't log or anything, this just means that this site doesn't have this quota property.
-			}
 		}
 		catch (Exception ignore)
 		{
@@ -9400,7 +9442,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		}
 		catch(TypeException e)
 		{
-			// do nothing
+			M_log.warn("createDropboxCollection(): File exists where dropbox collection is expected: "+ dropbox);
 		}
 
 		// The AUTH_DROPBOX_OWN is granted within the site, so we can ask for all the users who have this ability
@@ -9413,22 +9455,20 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			// the folder id for this user's dropbox in this group
 			String userFolder = dropbox + user.getId() + "/";
 
-			if(members.contains(userFolder))
-			{
-				members.remove(userFolder);
-				continue;
-			}
 			// see if it exists - add if it doesn't
 			try
 			{
-				if (findCollection(userFolder) == null)
+				
+				if (!members.remove(userFolder))
 				{
-					ContentCollectionEdit edit = addValidPermittedCollection(userFolder);
-					ResourcePropertiesEdit props = edit.getPropertiesEdit();
-					props.addProperty(ResourceProperties.PROP_DISPLAY_NAME, user.getSortName());
-					props.addProperty(ResourceProperties.PROP_DESCRIPTION, rb.getString("use1"));
-					// props.addProperty(ResourceProperties.PROP_DESCRIPTION, PROP_MEMBER_DROPBOX_DESCRIPTION);
-					commitCollection(edit);
+					if (findCollection(userFolder) == null) // This check it probably redundant
+					{
+						ContentCollectionEdit edit = addValidPermittedCollection(userFolder);
+						ResourcePropertiesEdit props = edit.getPropertiesEdit();
+						props.addProperty(ResourceProperties.PROP_DISPLAY_NAME, user.getSortName());
+						props.addProperty(ResourceProperties.PROP_DESCRIPTION, rb.getString("use1"));
+						commitCollection(edit);
+					}
 				}
 			}
 			catch (TypeException e)
@@ -9443,12 +9483,40 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			{
 				M_log.warn("createDropboxCollection(): InconsistentException: " + userFolder);
 			}
-			//			catch (PermissionException e) 
-			//			{
-			//				M_log.warn("createDropboxCollection(): PermissionException: " + userFolder);
-			//			}
-
-			// the SortedSet "members" now contains id's for all folders that are not associated with a particular member of the site
+		}
+		// Attempt to remove all empty dropboxes that are no longer members of the site.
+		for(String member : members) {
+			try
+			{
+				ContentCollection folder = getCollection(member);
+				if (folder.getMemberCount() == 0)
+				{
+					removeCollection(member);
+					M_log.info("createDropboxCollection(): Removed the empty dropbox collection for member: " + member);
+				} else {
+				    M_log.warn("createDropboxCollection(): Could not remove the dropbox collection for member (" + member +") because the root contains "+folder.getMemberCount()+" members");
+				}
+			}
+			catch(IdUnusedException e)
+			{
+				M_log.warn("createDropboxCollection(): Could not find collection to delete: " + member);
+			}
+			catch(PermissionException e)
+			{
+				M_log.warn("createDropboxCollection(): Unable to delete collection due to lack of permission: " + member);
+			}
+			catch(InUseException e)
+			{
+				M_log.warn("createDropboxCollection(): Unable to delete collection as collection is in use: " + member);
+			}
+			catch(ServerOverloadException e)
+			{
+				M_log.warn("createDropboxCollection(): Unable to delete collection as server is overloaded: " + member);
+			}
+			catch(TypeException e)
+			{
+				M_log.warn("createDropboxCollection(): Unable to delete as it doesn't appear to be a collection: " + member);
+			}
 		}
 	}
 
@@ -9832,6 +9900,10 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		/** The "type" in the ResourceTypeRegistry that defines properties of this ContentEntity */
 		protected String m_resourceType;
 
+		protected boolean m_visibilityUpdated = false;
+
+		protected boolean m_accessUpdated;;
+
 		/**
 		 * @inheritDoc
 		 */
@@ -9869,7 +9941,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			{
 				throw new InconsistentException(this.getReference());
 			}
-
+			if(this.m_groups.size() > 0) {
+				this.m_accessUpdated = true;
+			}
 			this.m_access = AccessMode.INHERITED;
 			this.m_groups.clear();
 
@@ -9880,6 +9954,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		 */
 		public void clearPublicAccess() throws InconsistentException, PermissionException 
 		{
+			if(isPubView(this.m_id)) {
+				this.m_accessUpdated = true;
+			}
 			setPubView(this.m_id, false);
 			this.m_access = AccessMode.INHERITED;
 			this.m_groups.clear();
@@ -9888,7 +9965,11 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 
 		public void setPublicAccess() throws PermissionException
 		{
+			if(! isPubView(this.m_id)) {
+				this.m_accessUpdated = true;
+			}
 			setPubView(this.m_id, true);
+
 			this.m_access = AccessMode.INHERITED;
 			this.m_groups.clear();
 		}
@@ -9916,6 +9997,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			SortedSet groupRefs = new TreeSet();
 			if(this.getInheritedAccess() == AccessMode.GROUPED)
 			{
+				this.m_accessUpdated = true;
 				groupRefs.addAll(this.getInheritedGroups());
 			}
 			else
@@ -9958,10 +10040,14 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 				newGroups.add(groupRef);
 			}
 
-			this.m_access = AccessMode.GROUPED;
-			this.m_groups.clear();
-			this.m_groups.addAll(newGroups);
-
+			if(this.m_access != AccessMode.GROUPED || !(newGroups.containsAll(this.m_groups) && this.m_groups.containsAll(newGroups))) {
+				this.m_accessUpdated = true;
+				
+				this.m_access = AccessMode.GROUPED;
+				this.m_groups.clear();
+				this.m_groups.addAll(newGroups);
+			}
+			
 		}
 
 
@@ -10092,10 +10178,36 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			return m_releaseDate;
 		}
 
+		public Date getReleaseTime()
+		{
+			return new Date(m_releaseDate.getTime());
+		}
+		
 		public Time getRetractDate()
 		{
-			// TODO Auto-generated method stub
 			return m_retractDate;
+		}
+		
+		public Date getRetractTime()
+		{
+			return new Date(m_retractDate.getTime());
+		}
+
+		/**
+		 * @return true if a change has been maded in any settings affecting visibility 
+		 * for this resource, or false otherwise.
+		 */
+		public boolean isVisibilityUpdated() {
+			return m_visibilityUpdated;
+		}
+
+		/**
+		 * @return true if a change has been made in any settings affecting whether this 
+		 * entity can be accessed publicly, by members of a single site, or by members of 
+		 * one or more authz groups, or false otherwise.
+		 */
+		public boolean isAccessUpdated() {
+			return m_accessUpdated;
 		}
 
 		public boolean isAvailable() 
@@ -10151,30 +10263,67 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		{
 			if(time == null)
 			{
+				if(m_releaseDate != null) {
+					this.m_visibilityUpdated = true;
+				}
 				m_releaseDate = null;
 			}
 			else
 			{
+				if(m_releaseDate == null || m_releaseDate.compareTo(time) != 0) {
+					this.m_visibilityUpdated = true;
+				}
 				m_releaseDate = timeService.newTime(time.getTime());
 			}
 			m_hidden = false;
 		}
 
+		public void setReleaseTime(Date date)
+		{
+			setReleaseDate(timeService.newTime(date.getTime()));
+		}
+		
 		public void setRetractDate(Time time)
 		{
 			if(time == null)
 			{
+				if(m_retractDate != null) {
+					this.m_visibilityUpdated = true;
+				}
 				m_retractDate = null;
 			}
 			else
 			{
+				if(m_retractDate == null || m_retractDate.compareTo(time) != 0) {
+					this.m_visibilityUpdated = true;
+				}
 				m_retractDate = timeService.newTime(time.getTime());
 			}
 			m_hidden = false;
 		}
 
+		public void setRetractTime(Date time)
+		{
+			setRetractDate(timeService.newTime(time.getTime()));
+		}
+		
 		public void setAvailability(boolean hidden, Time releaseDate, Time retractDate) 
 		{
+			if(m_hidden != hidden) {
+				this.m_visibilityUpdated = true;
+			} else if(releaseDate == null && m_releaseDate != null) {
+				this.m_visibilityUpdated = true;
+			} else if(releaseDate != null && m_releaseDate == null) {
+				this.m_visibilityUpdated = true;
+			} else if(m_releaseDate != null && releaseDate != null && m_releaseDate.compareTo(releaseDate) != 0) {
+				this.m_visibilityUpdated = true;
+			} else if(retractDate == null && m_retractDate != null) {
+				this.m_visibilityUpdated = true;
+			} else if(retractDate != null && m_retractDate == null) {
+				this.m_visibilityUpdated = true;
+			} else if(m_retractDate != null && retractDate != null && m_retractDate.compareTo(retractDate) != 0) {
+				this.m_visibilityUpdated = true;
+			}
 			m_hidden = hidden;
 			if(hidden)
 			{
@@ -10205,6 +10354,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 
 		public void setHidden() 
 		{
+			if(!m_hidden) {
+				this.m_visibilityUpdated = true;
+			}
 			m_hidden = true;
 			this.m_releaseDate = null;
 			this.m_retractDate = null;
@@ -10290,6 +10442,22 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		}
 
 		public void setConditionallyReleased(boolean isConditionallyReleased) {
+			try {
+				Boolean oldValue = this.m_properties.getBooleanProperty(ConditionService.PROP_CONDITIONAL_RELEASE);
+				if(oldValue.booleanValue() != isConditionallyReleased) {
+					this.m_visibilityUpdated = true;
+				}
+			} catch (EntityPropertyNotDefinedException e) {
+				// oldValue is false
+				if(isConditionallyReleased) {
+					this.m_visibilityUpdated = true;
+				}
+			} catch (EntityPropertyTypeException e) {
+				// assume oldValue is false
+				if(isConditionallyReleased) {
+					this.m_visibilityUpdated = true;
+				}
+			}
 			m_properties.addProperty(ConditionService.PROP_CONDITIONAL_RELEASE, Boolean.toString(isConditionallyReleased));
 		}
 
@@ -10707,9 +10875,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			if(readyToUseFilesizeColumn())
 			{
 				String context = getContext();
-				if(context != null || m_id.startsWith(COLLECTION_DROPBOX))
+				if(context != null)
 				{
-					size = getSizeForContext(context!=null?context:m_id)/1000L;
+					size = getSizeForContext(context)/1000L;
 				}
 			}
 			else
@@ -10758,62 +10926,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			{
 				mbrs = new ArrayList();
 
-				// if not caching
-				if ((!m_caching) || (m_cache == null) || (m_cache.disabled()))
-				{
-					// TODO: current service caching
-					mbrs.addAll(m_storage.getCollections(this));
-					mbrs.addAll(m_storage.getResources(this));
-				}
-
-				else
-				{
-					// if the cache is complete for this collection, use it
-					if (m_cache.isComplete(getReference()))
-					{
-						// get just this collection's members
-						mbrs.addAll(m_cache.getAll(getReference()));
-					}
-
-					// otherwise get all the members from storage
-					else
-					{
-						// Note: while we are getting from storage, storage might change. These can be processed
-						// after we get the storage entries, and put them in the cache, and mark the cache complete.
-						// -ggolden
-						synchronized (m_cache)
-						{
-							// if we were waiting and it's now complete...
-							if (m_cache.isComplete(getReference()))
-							{
-								// get just this collection's members
-								mbrs.addAll(m_cache.getAll(getReference()));
-							}
-							else
-							{
-								// save up any events to the cache until we get past this load
-								m_cache.holdEvents();
-
-								// read from storage - resources and collections, but just those
-								// whose path is this's path (i.e. just mine!)
-								mbrs.addAll(m_storage.getCollections(this));
-								mbrs.addAll(m_storage.getResources(this));
-
-								// update the cache, and mark it complete
-								for (int i = 0; i < mbrs.size(); i++)
-								{
-									Entity mbr = (Entity) mbrs.get(i);
-									m_cache.put(mbr.getReference(), mbr);
-								}
-
-								m_cache.setComplete(getReference());
-
-								// now we are complete, process any cached events
-								m_cache.processEvents();
-							}
-						}
-					}
-				}
+				// TODO: current service caching
+				mbrs.addAll(m_storage.getCollections(this));
+				mbrs.addAll(m_storage.getResources(this));
 
 				threadLocalManager.set("members@" + this.m_id, mbrs);
 			}
@@ -11369,6 +11484,26 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 
 		private boolean m_sessionBound = true;
 
+		protected String m_oldDisplayName = null;
+
+		/**
+		 * Indicates this resource is a reference copy of an existing resource,
+		 * this id will be the resource it is a copy of
+		 */
+		protected String referenceCopy = null;
+        /**
+         * Indicates this resource is a reference copy of an existing resource,
+         * this id will be the resource it is a copy of
+         * WARNING: this will null out the content values (stream and body)
+		 * 
+		 * @param referenceCopy the id of the resource this is a copy of
+		 */
+        public void setReferenceCopy(String referenceCopy) {
+            this.referenceCopy = referenceCopy;
+            this.m_contentStream = null;
+            this.m_body = null;
+        }
+
 		/**
 		 * Construct.
 		 * 
@@ -11403,6 +11538,10 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			set(other);
 		} // BaseResourceEdit
 
+		public BaseResourceEdit(ContentResource other, boolean reference) {
+		    set(other, reference);
+		} // BaseResourceEdit
+
 		/**
 		 * Set the file path for this resource
 		 * 
@@ -11425,13 +11564,22 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		}
 
 		/**
-		 * Take all values from this object.
+		 * Take all values from this object
 		 * 
-		 * @param user
+		 * @param other
 		 *        The other object to take values from.
 		 */
-		protected void set(ContentResource other)
-		{
+		protected void set(ContentResource other) {
+		    set(other, false);
+		}
+
+		/**
+		 * Set the values in this edit to equal the values in the passing object
+		 * 
+		 * @param other the object to take values from.
+		 * @param reference if true then make a reference copy (i.e. do not duplicate the actual 
+		 */
+        protected void set(ContentResource other, boolean reference) {
 			m_id = other.getId();
 			m_contentType = other.getContentType();
 			m_contentLength = other.getContentLength();
@@ -11439,19 +11587,28 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			chh = other.getContentHandler();
 			chh_vce = other.getVirtualContentEntity();
 
-			this.m_contentStream = ((BaseResourceEdit) other).m_contentStream;
+			if (reference && other.getId() != null) {
+			    // populate the reference copy key, skip populating the actual content
+			    this.referenceCopy = other.getId();
+			    this.m_contentStream = null;
+			    this.m_body = null;
+			} else {
+                // copy the actual content
+			    this.referenceCopy = null;
+                this.m_contentStream = ((BaseResourceEdit) other).m_contentStream;
+
+                // if there's a body in the other, reference it, else leave this one null
+                // Note: this treats the body byte array as immutable, so to update it one
+                // *must* call setContent() not just getContent and mess with the bytes. -ggolden
+                byte[] content = ((BaseResourceEdit) other).m_body;
+                if (content != null)
+                {
+                    m_contentLength = content.length;
+                    m_body = content;
+                }
+			}
 
 			m_filePath = ((BaseResourceEdit) other).m_filePath;
-
-			// if there's a body in the other, reference it, else leave this one null
-			// Note: this treats the body byte array as immutable, so to update it one
-			// *must* call setContent() not just getContent and mess with the bytes. -ggolden
-			byte[] content = ((BaseResourceEdit) other).m_body;
-			if (content != null)
-			{
-				m_contentLength = content.length;
-				m_body = content;
-			}
 
 			// copy other's access mode and list of groups
 			m_access = other.getAccess();
@@ -12521,6 +12678,20 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			}			
 		}
 
+		/**
+		 * @return the oldDisplayName
+		 */
+		public String getOldDisplayName() {
+			return m_oldDisplayName;
+		}
+
+		/**
+		 * @param oldDisplayName the oldDisplayName to set
+		 */
+		public void setOldDisplayName(String oldDisplayName) {
+			this.m_oldDisplayName = oldDisplayName;
+		}
+
 	} // BaseResourceEdit
 
 	/**********************************************************************************************************************************************************************************************************************************************************
@@ -12647,9 +12818,19 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		public void cancelResource(ContentResourceEdit edit);
 
 		/**
-		 * Forget about a resource.
+		 * Forget about a resource (and associated content).
+		 * 
+		 * @param resource the resource to remove
 		 */
 		public void removeResource(ContentResourceEdit resource);
+
+		/**
+         * Forget about a resource with the option to leave the content in place
+		 * 
+         * @param resource the resource to remove
+		 * @param removeContent if true, then also remove the content
+		 */
+		public void removeResource(ContentResourceEdit resource, boolean removeContent);
 
 		/**
 		 * Read the resource's body.
@@ -13182,5 +13363,45 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
         }
     }
     
+    /**
+     * Expand the supplied resource under its parent collection.
+     * If the zip is bigger than the max zip size specified in properties extraction will
+     * NOT occur. See KNL-273 and KNL-900.
+     *
+     * @param resourceId The zip file resource that we want to expand
+     * @exception Exception Anything thrown by ZipContentUtil gets passed upwards.
+     */
+    public void expandZippedResource(String resourceId) throws Exception {
+        int maxZipExtractSize = ZipContentUtil.getMaxZipExtractFiles();
+        ZipContentUtil extractZipArchive = new ZipContentUtil();
+
+        // KNL-900 Total size of files should be checked before unzipping (KNL-273)
+        Map <String, Long> zipManifest = extractZipArchive.getZipManifest(resourceId);
+        if (zipManifest == null) {
+            M_log.error("Zip file for resource ("+resourceId+") has no zip manifest, cannot extract");
+        } else if (zipManifest.size() >= maxZipExtractSize) {
+            M_log.warn("Zip file for resource ("+resourceId+") is too large to be expanded, size("+zipManifest.size()+") exceeds the max=("+maxZipExtractSize+") as specified in setting content.zip.expand.maxfiles");
+        } else {
+            // zip is not too large to extract so check if files are too large
+            long totalSize = 0;
+            for (Long entrySize : zipManifest.values()) {
+                totalSize += entrySize;
+            }
+
+            // Get a context
+            ContentResourceEdit resource = editResource(resourceId);
+            // Set the updated length for quota checking
+            resource.setContentLength(totalSize);
+            if (M_log.isDebugEnabled()) M_log.debug(String.format("Resource is: [%s] Size is [%d]",resourceId, totalSize));
+            // check for over quota.
+            if (overQuota(resource)) {
+                M_log.error("Zip file for resource ("+resourceId+") would be too large after unzip so it cannot be expanded, totalSize("+totalSize+") exceeds the resource quota");
+                throw new OverQuotaException(resource.getReference());
+            }
+            // zip files are not too large to extract so do the extract
+            extractZipArchive.extractArchive(resourceId);
+        }
+    }
+
 } // BaseContentService
 

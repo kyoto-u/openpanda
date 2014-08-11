@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeMemoryService.java $
- * $Id: FakeMemoryService.java 89399 2011-03-08 09:07:04Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeMemoryService.java $
+ * $Id: FakeMemoryService.java 93751 2011-06-12 16:58:09Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -21,6 +21,7 @@ package org.sakaiproject.sitestats.test.mocks;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.CacheRefresher;
 import org.sakaiproject.memory.api.Cacher;
+import org.sakaiproject.memory.api.GenericMultiRefCache;
 import org.sakaiproject.memory.api.MemoryPermissionException;
 import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.memory.api.MultiRefCache;
@@ -119,6 +120,11 @@ public class FakeMemoryService implements MemoryService {
 	public void evictExpiredMembers() throws MemoryPermissionException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public GenericMultiRefCache newGenericMultiRefCache(String cacheName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

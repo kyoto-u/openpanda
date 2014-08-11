@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/branches/sakai-2.8.x/courier-api/api/src/java/org/sakaiproject/courier/cover/CourierService.java $
- * $Id: CourierService.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.0/courier-api/api/src/java/org/sakaiproject/courier/cover/CourierService.java $
+ * $Id: CourierService.java 89423 2011-03-08 15:27:35Z bkirschn@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -94,6 +94,22 @@ public class CourierService
 			return;
 
 		service.clear(param0);
+	}
+
+	public static java.util.List<org.sakaiproject.courier.api.DeliveryProvider> getDeliveryProviders() {
+		org.sakaiproject.courier.api.CourierService service = getInstance();
+		if (service == null)
+			return null;
+
+		return service.getDeliveryProviders();
+	}
+	
+	void registerDeliveryProvider(org.sakaiproject.courier.api.DeliveryProvider provider) {
+		org.sakaiproject.courier.api.CourierService service = getInstance();
+		if (service == null)
+			return;
+
+		service.registerDeliveryProvider(provider);
 	}
 }
 

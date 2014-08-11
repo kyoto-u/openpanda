@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.sakaiproject.profile2</groupId>
 		<artifactId>profile2</artifactId>
-	    <version>1.4.13-SNAPSHOT</version>
+	    <version>1.5.0</version>
 	</parent>
 
 	<dependencies>
@@ -67,6 +67,7 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 		
+		
 		<!--  INTERNAL DEPENDENCIES -->
 		<dependency>
       		<groupId>org.sakaiproject.profile2</groupId>
@@ -95,12 +96,10 @@
 	    <dependency>
       		<groupId>org.sakaiproject.entitybroker</groupId>
       		<artifactId>entitybroker-api</artifactId>
-      		<scope>provided</scope>
     	</dependency>
 	    <dependency>
       		<groupId>org.sakaiproject.entitybroker</groupId>
       		<artifactId>entitybroker-utils</artifactId>
-			<version>${entitybroker.version}</version>
     	</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>

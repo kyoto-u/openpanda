@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/ToolConfigBean.java $
- * $Id: ToolConfigBean.java 84671 2010-11-12 18:27:24Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/ToolConfigBean.java $
+ * $Id: ToolConfigBean.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

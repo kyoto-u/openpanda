@@ -5,8 +5,6 @@
 	<tool id="osp.evaluation" title="Evaluations" description="View outstanding evaluations from student's ePortfolio matrices and wizards">
 
       <category name="sakai.main" />
-      <category name="project" />
-      <category name="course" />
       <category name="portfolio" />
       <category name="myworkspace" />
 

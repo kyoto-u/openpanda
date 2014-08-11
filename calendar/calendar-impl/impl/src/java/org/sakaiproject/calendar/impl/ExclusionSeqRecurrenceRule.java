@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/ExclusionSeqRecurrenceRule.java $
- * $Id: ExclusionSeqRecurrenceRule.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/ExclusionSeqRecurrenceRule.java $
+ * $Id: ExclusionSeqRecurrenceRule.java 90425 2011-03-23 09:38:42Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -33,8 +33,6 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.calendar.api.RecurrenceRule;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeRange;
-import org.sakaiproject.time.cover.TimeService;
-import org.sakaiproject.util.DefaultEntityHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

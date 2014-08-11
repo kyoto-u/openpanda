@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/impl/src/java/org/sakaiproject/poll/logic/impl/ExternalLogicImpl.java $
- * $Id: ExternalLogicImpl.java 118829 2013-01-25 04:46:12Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/impl/src/java/org/sakaiproject/poll/logic/impl/ExternalLogicImpl.java $
+ * $Id: ExternalLogicImpl.java 113877 2012-10-02 07:14:49Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007 The Sakai Foundation
@@ -484,6 +484,10 @@ public class ExternalLogicImpl implements ExternalLogic {
 
 	public ToolSession getCurrentToolSession() {
 		return sessionManager.getCurrentToolSession();
+	}
+	
+	public boolean isResultsChartEnabled() {
+		return serverConfigurationService.getBoolean("poll.results.chart.enabled", false);
 	}
 	
 	

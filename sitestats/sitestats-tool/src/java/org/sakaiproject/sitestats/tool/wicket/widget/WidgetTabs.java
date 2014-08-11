@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/widget/WidgetTabs.java $
- * $Id: WidgetTabs.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/widget/WidgetTabs.java $
+ * $Id: WidgetTabs.java 87931 2011-02-02 12:12:01Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -103,7 +103,7 @@ public class WidgetTabs extends Panel implements IAjaxIndicatorAware {
 		if(selectedTab < 0 || selectedTab >= tabs.size()){
 			throw new IndexOutOfBoundsException();
 		}
-		setModelObject(Integer.valueOf(selectedTab));
+		setDefaultModelObject(Integer.valueOf(selectedTab));
 		AbstractTab tab = getTabs().get(selectedTab);
 		WebMarkupContainer tabContents = null;
 		if(showTabContents) {
@@ -118,7 +118,7 @@ public class WidgetTabs extends Panel implements IAjaxIndicatorAware {
 		}
 	}
 	public int getSelectedTab() {
-		return ((Integer) getModelObject()).intValue();
+		return ((Integer) getDefaultModelObject()).intValue();
 	}
 	
 	public String getLoadSelectedTabScript() {

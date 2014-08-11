@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/branches/sakai-2.8.x/presence-util/util/src/java/org/sakaiproject/util/PresenceObservingCourier.java $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.0/presence-util/util/src/java/org/sakaiproject/util/PresenceObservingCourier.java $
  * $Id: PresenceObservingCourier.java 82328 2010-09-16 20:23:52Z csev@umich.edu $
  ***********************************************************************************
  *

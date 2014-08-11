@@ -69,7 +69,7 @@ public class EmailListener implements ActionListener {
 		// Subject
 		StringBuilder sb = new StringBuilder(totalScoreBean.getAssessmentName());
 		sb.append(" ");
-		sb.append(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.CommonMessages", "feedback"));
+		sb.append(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "feedback"));
 		emailBean.setSubject(sb.toString());
 	}
 }

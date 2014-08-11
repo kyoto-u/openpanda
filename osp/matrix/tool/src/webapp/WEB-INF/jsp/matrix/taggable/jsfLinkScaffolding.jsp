@@ -28,7 +28,7 @@
 		<h:form>
 			<sakai:view_title value="#{matrixLinkTool.viewTitle}" />
 			<sakai:instruction_message value="#{matrix_msgs.matrix_links_desc}" />
-			<sakai:messages />
+			<sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
 
 			<h:panelGrid columns="2">
 				<h:column>

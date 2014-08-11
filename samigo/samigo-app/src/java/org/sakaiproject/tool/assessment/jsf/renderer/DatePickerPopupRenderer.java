@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/DatePickerPopupRenderer.java $
- * $Id: DatePickerPopupRenderer.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/renderer/DatePickerPopupRenderer.java $
+ * $Id: DatePickerPopupRenderer.java 96503 2011-08-06 00:29:39Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -137,7 +137,7 @@ public class DatePickerPopupRenderer extends Renderer
       writer.write("<style>\n");
       writer.write("	td {font-family: Tahoma, Verdana, sans-serif; font-size: 12px;}\n");
       writer.write("</style>\n");
-      writer.write("<script language=\"JavaScript\">\n");
+      writer.write("<script type=\"text/javascript\">\n");
       writer.write("//<![CDATA[\n");
       writer.write("// months as they appear in the calendar's title\n");
       writer.write("// (These are dynamically built by locale DateFormatSymbols!)\n");
@@ -239,7 +239,7 @@ public class DatePickerPopupRenderer extends Renderer
 //        writer.write("<table cellspacing=\"1\" cellpadding=\"3\" border=\"0\" width=\"100%\">\n");
 //        writer.write("<tr><td colspan=\"7\"><table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\">\n");
 //        writer.write("<tr>\n");
-      writer.write("<script language=\"JavaScript\">\n");
+      writer.write("<script type=\"text/javascript\">\n");
 //      writer.write("//<![CDATA[\n");
 //      writer.write("alert('got here');\n");
 //      writer.write("//<!--");
@@ -303,7 +303,7 @@ public class DatePickerPopupRenderer extends Renderer
 //        writer.write("</tr>\n");
 //        writer.write("</table></td></tr>\n");
 //        writer.write("<tr>\n");
-//        writer.write("<script language=\"JavaScript\">\n");
+//        writer.write("<script type=\"text/javascript\">\n");
       writer.write("\n");
       writer.write("// print weekdays titles\n");
       writer.write("for (var n=0; n < 7; n++)\n");

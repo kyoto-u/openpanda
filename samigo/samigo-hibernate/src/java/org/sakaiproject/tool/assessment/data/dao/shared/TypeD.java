@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/shared/TypeD.java $
- * $Id: TypeD.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/shared/TypeD.java $
+ * $Id: TypeD.java 95934 2011-07-29 22:13:46Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -38,7 +38,8 @@ public class TypeD implements TypeIfc{
   public static final Long AUDIO_RECORDING = Long.valueOf(7);
   public static final Long FILL_IN_BLANK = Long.valueOf(8);
   public static final Long FILL_IN_NUMERIC = Long.valueOf(11);
-
+  public static final Long MATRIX_CHOICES_SURVEY = Long.valueOf(13);
+  
   public static final Long MATCHING = Long.valueOf(9);
   // these are section type available in this site,
   public static final Long DEFAULT_SECTION = Long.valueOf(21);

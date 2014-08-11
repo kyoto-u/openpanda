@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/branches/sakai-2.8.x/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/PreferencesBean.java $
- * $Id: PreferencesBean.java 88759 2011-02-23 17:41:38Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.0/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/PreferencesBean.java $
+ * $Id: PreferencesBean.java 88172 2011-02-09 09:02:15Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/utils/xml/impl/NumberElementType.java $
- * $Id: NumberElementType.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/utils/xml/impl/NumberElementType.java $
+ * $Id: NumberElementType.java 97983 2011-09-09 21:13:03Z botimer@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -31,6 +31,7 @@ import org.sakaiproject.metaobj.utils.xml.NormalizationException;
 import org.sakaiproject.metaobj.utils.xml.SchemaInvalidException;
 import org.sakaiproject.metaobj.utils.xml.SchemaNode;
 import org.sakaiproject.metaobj.utils.xml.ValueRange;
+import org.sakaiproject.util.ResourceLoader;
 
 /**
  * Created by IntelliJ IDEA.
@@ -54,7 +55,7 @@ public class NumberElementType extends FormatterElementType {
    public NumberElementType(String typeName, Element schemaElement, SchemaNode parentNode, Namespace xsdNamespace) {
       super(typeName, schemaElement, parentNode, xsdNamespace);
 
-      format = NumberFormat.getIntegerInstance();
+      format = NumberFormat.getIntegerInstance(new ResourceLoader().getLocale());
 
       totalDigits = (new String(Long.MAX_VALUE + "")).length();
 

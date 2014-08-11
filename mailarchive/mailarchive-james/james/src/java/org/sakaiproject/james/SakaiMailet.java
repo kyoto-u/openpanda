@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/branches/sakai-2.8.x/mailarchive-james/james/src/java/org/sakaiproject/james/SakaiMailet.java $
- * $Id: SakaiMailet.java 84680 2010-11-12 18:52:11Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.0/mailarchive-james/james/src/java/org/sakaiproject/james/SakaiMailet.java $
+ * $Id: SakaiMailet.java 106662 2012-04-09 20:26:34Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
@@ -43,33 +44,35 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.mailet.GenericMailet;
 import org.apache.mailet.Mail;
 import org.apache.mailet.MailAddress;
-import org.sakaiproject.alias.cover.AliasService;
-import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.alias.api.AliasService;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.content.cover.ContentHostingService;
+import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
-import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.mailarchive.api.MailArchiveChannel;
 import org.sakaiproject.mailarchive.cover.MailArchiveService;
-import org.sakaiproject.site.cover.SiteService;
-import org.sakaiproject.thread_local.cover.ThreadLocalManager;
-import org.sakaiproject.time.cover.TimeService;
+import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.thread_local.api.ThreadLocalManager;
+import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.tool.api.Session;
-import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.Web;
 
@@ -92,12 +95,109 @@ public class SakaiMailet extends GenericMailet
 	// used when parsing email header parts
 	private static final String NAME_PREFIX = "name=";
 
-	/**
+    private static String PROCESSOR_ROOT = "root";
+    private static String PROCESSOR_ERROR = Mail.ERROR;
+    private static String PROCESSOR_TRANSPORT = Mail.TRANSPORT;
+	/* 
+	 * root processor is first (redirects to transport mostly), then error, then transport (which is where the SakaiMailet is engaged)
+	 * then the processors in the order listed below
+	 * 
+	 * From: http://james.apache.org/server/2.3.0/spoolmanager_configuration.html
+	 * The James SpoolManager creates a correspondence between processor names and the "state" of a mail as defined in the Mailet API. 
+	 * Specifically, after each mailet processes a mail, the state of the message is examined. 
+	 * If the state has been changed, the message does not continue in the current processor. 
+	 * If the new state is "ghost" then processing of that message terminates completely. 
+	 * If the new state is anything else, the message is re-routed to the processor with the name matching the new state.
+	 */
+    private static String PROCESSOR_SPAM = "spam";
+    private static String PROCESSOR_VIRUS = "virus";
+    private static String PROCESSOR_LOCAL_ADDRESS_ERROR = "local-address-error";
+    private static String PROCESSOR_RELAY_DENIED = "relay-denied";
+    private static String PROCESSOR_BOUNCES = "bounces";
+    // indicates no more processing should occur
+    private static String PROCESSOR_GHOST = Mail.GHOST;
+    /**
+     * The james processor order - NOTE: this MUST match with the config in:
+     * /sakai-mailarchive-james/src/webapp/apps/james/SAR-INF/config.xml
+     */
+    private static String[] PROCESSORS = {
+        PROCESSOR_ROOT,
+        PROCESSOR_ERROR,
+        PROCESSOR_TRANSPORT,
+        PROCESSOR_SPAM,
+        PROCESSOR_VIRUS,
+        PROCESSOR_LOCAL_ADDRESS_ERROR,
+        PROCESSOR_RELAY_DENIED,
+        PROCESSOR_BOUNCES,
+        PROCESSOR_GHOST
+    };
+
+	private AliasService aliasService = null;
+	private ContentHostingService contentHostingService = null;
+	private EntityManager entityManager = null;
+	private SiteService siteService = null;
+	private ThreadLocalManager threadLocalManager = null;
+	private TimeService timeService = null;
+	private SessionManager sessionManager = null;
+	private UserDirectoryService userDirectoryService = null;
+	private ServerConfigurationService serverConfigurationService = null;
+
+    private String courseMailArchiveDisabledProcessor = null;
+	private String courseMailArchiveNotExistsProcessor = null;
+    private String userNotAllowedToPostProcessor = null;
+
+    /**
 	 * Called when created.
 	 */
 	public void init() throws MessagingException
 	{
 		M_log.info("init()");
+		// load the services
+		aliasService = requireService(AliasService.class);
+		contentHostingService = requireService(ContentHostingService.class);
+		entityManager = requireService(EntityManager.class);
+		siteService = requireService(SiteService.class);
+		threadLocalManager = requireService(ThreadLocalManager.class);
+		timeService = requireService(TimeService.class);
+		sessionManager = requireService(SessionManager.class);
+		userDirectoryService = requireService(UserDirectoryService.class);
+		serverConfigurationService = requireService(ServerConfigurationService.class);
+
+		// load up the configuration options for the sakai mailet processor
+        courseMailArchiveDisabledProcessor = serverConfigurationService.getString("smtp.archive.disabled.processor", PROCESSOR_GHOST);
+        if (courseMailArchiveDisabledProcessor == null 
+                || "none".equalsIgnoreCase(courseMailArchiveDisabledProcessor)
+                || !Arrays.asList(PROCESSORS).contains(courseMailArchiveDisabledProcessor)) {
+            courseMailArchiveDisabledProcessor = PROCESSOR_GHOST; // DEFAULT
+        }
+		courseMailArchiveNotExistsProcessor = serverConfigurationService.getString("smtp.archive.address.invalid.processor", PROCESSOR_GHOST);
+        if (courseMailArchiveNotExistsProcessor == null 
+                || "none".equalsIgnoreCase(courseMailArchiveNotExistsProcessor)
+                || !Arrays.asList(PROCESSORS).contains(courseMailArchiveNotExistsProcessor)) {
+            courseMailArchiveNotExistsProcessor = PROCESSOR_GHOST; // DEFAULT
+        }
+		userNotAllowedToPostProcessor = serverConfigurationService.getString("smtp.user.not.allowed.processor", PROCESSOR_GHOST);
+        if (userNotAllowedToPostProcessor == null 
+                || "none".equalsIgnoreCase(userNotAllowedToPostProcessor)
+                || !Arrays.asList(PROCESSORS).contains(userNotAllowedToPostProcessor)) {
+            userNotAllowedToPostProcessor = PROCESSOR_GHOST; // DEFAULT
+        }
+        M_log.info("MailArchiveDisabledProcessor="+courseMailArchiveDisabledProcessor+", MailArchiveNotExistsProcessor="+courseMailArchiveNotExistsProcessor+", UserNotAllowedToPostProcessor"+userNotAllowedToPostProcessor);
+	}
+
+	/**
+	 * Get the service for a class or die
+	 * @param serviceClass
+	 * @return the service class
+	 * @throws IllegalStateException if the service cannot be found
+	 */
+	@SuppressWarnings({"unchecked"})
+    private <T> T requireService(Class<T> serviceClass) {
+	    Object service = ComponentManager.get(serviceClass);
+	    if (service == null) {
+	        throw new IllegalStateException("Unable to get service ("+serviceClass+") from Sakai ComponentManager");
+	    }
+	    return (T) service;
 	}
 
 	/**
@@ -123,7 +223,7 @@ public class SakaiMailet extends GenericMailet
 		User postmaster = null;
 		try
 		{
-			postmaster = UserDirectoryService.getUser(POSTMASTER);
+			postmaster = userDirectoryService.getUser(POSTMASTER);
 		}
 		catch (UserNotDefinedException e)
 		{
@@ -135,14 +235,15 @@ public class SakaiMailet extends GenericMailet
 		try
 		{
 			// set the current user to postmaster
-			Session s = SessionManager.getCurrentSession();
+			Session s = sessionManager.getCurrentSession();
 			if (s != null)
 			{
 				s.setUserId(postmaster.getId());
 			}
 			else
 			{
-				M_log.warn("service - no SessionManager.getCurrentSession, cannot set to postmaser user");
+				M_log.warn("service - no SessionManager.getCurrentSession, cannot set to postmaser user, attempting to use the current user ("
+				        +sessionManager.getCurrentSessionUserId()+") and session ("+sessionManager.getCurrentSession().getId()+")");
 			}
 
 			MimeMessage msg = mail.getMessage();
@@ -165,14 +266,14 @@ public class SakaiMailet extends GenericMailet
 				fromAddr = mail.getSender().toInternetAddress().getAddress();
 			}
 
-			Collection to = mail.getRecipients();
+			Collection<MailAddress> to = mail.getRecipients();
 
 			Date sent = msg.getSentDate();
 
-			String subject = StringUtil.trimToNull(msg.getSubject());
+			String subject = StringUtils.trimToNull(msg.getSubject());
 
-			Enumeration headers = msg.getAllHeaderLines();
-			List mailHeaders = new Vector();
+			Enumeration<String> headers = msg.getAllHeaderLines();
+			List<String> mailHeaders = new Vector<String>();
 			while (headers.hasMoreElements())
 			{
 				String line = (String) headers.nextElement();
@@ -194,18 +295,22 @@ public class SakaiMailet extends GenericMailet
                mailHeaders.add(MailArchiveService.HEADER_SUBJECT + ": <"+ rb.getString("err_no_subject") +">");
 			}
 
-			M_log.debug(id + " : mail: from:" + from + " sent: " + TimeService.newTime(sent.getTime()).toStringLocalFull() + " subject: "
-					+ subject);
+            if (M_log.isDebugEnabled()) {
+                M_log.debug(id + " : mail: from:" + from + " sent: " + timeService.newTime(sent.getTime()).toStringLocalFull() 
+                        + " subject: " + subject);
+            }
 
 			// process for each recipient
-			Iterator it = to.iterator();
+			Iterator<MailAddress> it = to.iterator();
 			while (it.hasNext())
 			{
 				String mailId = null;
 				try
 				{
 					MailAddress recipient = (MailAddress) it.next();
-					M_log.debug(id + " : checking to: " + recipient);
+                    if (M_log.isDebugEnabled()) {
+                        M_log.debug(id + " : checking to: " + recipient);
+                    }
 
 					// the recipient's mail id
 					mailId = recipient.getUser();
@@ -214,10 +319,17 @@ public class SakaiMailet extends GenericMailet
 					if ("no-reply".equalsIgnoreCase(mailId))
 					{
 						mail.setState(Mail.GHOST);
+                        if (M_log.isInfoEnabled()) {
+                            M_log.info("Incoming message mailId ("+mailId+") set to no-reply, mail processing cancelled");
+                        }
+                        /* NOTE: this doesn't make a lot of sense to me, once the mail is ghosted 
+                         * then it won't be processed anymore so continuing is kind of a waste of time,
+                         * shouldn't this just break instead?
+                         */
 						continue;
 					}
 
-					// find the channel (mailbox) that this is adressed to
+					// find the channel (mailbox) that this is addressed to
 					// for now, check only for it being a site or alias to a site.
 					// %%% - add user and other later -ggolden
 					MailArchiveChannel channel = null;
@@ -227,62 +339,112 @@ public class SakaiMailet extends GenericMailet
 					try
 					{
 						channel = MailArchiveService.getMailArchiveChannel(channelRef);
+                        if (M_log.isDebugEnabled()) {
+                            M_log.debug("Incoming message mailId ("+mailId+") IS a valid site channel reference");
+                        }
 					}
-					catch (IdUnusedException goOn)
-					{
-					}
+					catch (IdUnusedException goOn) {
+					    // INDICATES the incoming message is NOT for a currently valid site
+					    if (M_log.isDebugEnabled()) {
+					        M_log.debug("Incoming message mailId ("+mailId+") is NOT a valid site channel reference, will attempt more matches");
+					    }
+					} catch (PermissionException e) {
+					    // INDICATES the channel is valid but the user has no permission to access it
+	                    // This generally should not happen because the current user should be the postmaster
+	                    M_log.warn("mailarchive failure: message processing cancelled: PermissionException with channelRef ("+channelRef
+	                            +") - user not allowed to get this mail archive channel: (id="+id+") (mailId="+mailId+") (user="
+                                +sessionManager.getCurrentSessionUserId()+") (session="+sessionManager.getCurrentSession().getId()+"): " + e, e);
+	                    // BOUNCE REPLY - send a message back to the user to let them know their email failed
+                        String errMsg = rb.getString("err_not_member") + "\n\n";
+                        String mailSupport = StringUtils.trimToNull( serverConfigurationService.getString("mail.support") );
+                        if ( mailSupport != null ) {
+                            errMsg +=(String) rb.getFormattedMessage("err_questions",  new Object[]{mailSupport})+"\n";
+                        }
+                        mail.setErrorMessage(errMsg);
+                        mail.setState(userNotAllowedToPostProcessor);
+                        continue;
+                    }
 
 					// next, if not a site, see if it's an alias to a site or channel
-					if (channel == null)
-					{
+					if (channel == null) {
 						// if not an alias, it will throw the IdUnusedException caught below
-						Reference ref = EntityManager.newReference(AliasService.getTarget(mailId));
+						Reference ref = entityManager.newReference(aliasService.getTarget(mailId));
 
-						// if ref is a site
-						if (ref.getType().equals(SiteService.APPLICATION_ID))
-						{
+						if (ref.getType().equals(SiteService.APPLICATION_ID)) {
+						    // ref is a site
 							// now we have a site reference, try for it's channel
 							channelRef = MailArchiveService.channelReference(ref.getId(), SiteService.MAIN_CONTAINER);
-						}
-
-						// if ref is a channel
-						else if (ref.getType().equals(MailArchiveService.APPLICATION_ID))
-						{
+                            if (M_log.isDebugEnabled()) {
+                                M_log.debug("Incoming message mailId ("+mailId+") IS a valid site reference ("+ref.getId()+")");
+                            }
+						} else if (ref.getType().equals(MailArchiveService.APPLICATION_ID)) {
 							// ref is a channel
 							channelRef = ref.getReference();
-						}
-
-						// ref is something else
-						else
-						{
-							M_log.info(id + " : mail rejected: unknown address: " + mailId);
-
+                            if (M_log.isDebugEnabled()) {
+                                M_log.debug("Incoming message mailId ("+mailId+") IS a valid channel reference ("+ref.getId()+")");
+                            }
+						} else {
+						    // ref cannot be be matched
+	                        if (M_log.isInfoEnabled()) {
+	                            M_log.info(id + " : mail rejected: unknown address: " + mailId + " : mailId ("+mailId+") does NOT match site, alias, or other current channel");
+	                        }
+	                        if (M_log.isDebugEnabled()) {
+	                            M_log.debug("Incoming message mailId ("+mailId+") is NOT a valid does NOT match site, alias, or other current channel reference ("+ref.getId()+"), message rejected");
+	                        }
 							throw new IdUnusedException(mailId);
 						}
 
 						// if there's no channel for this site, it will throw the IdUnusedException caught below
-						channel = MailArchiveService.getMailArchiveChannel(channelRef);
+						try {
+                            channel = MailArchiveService.getMailArchiveChannel(channelRef);
+                        } catch (PermissionException e) {
+                            // INDICATES the channel is valid but the user has no permission to access it
+                            // This generally should not happen because the current user should be the postmaster
+                            M_log.warn("mailarchive failure: message processing cancelled: PermissionException with channelRef ("+channelRef
+                                    +") - user not allowed to get this mail archive channel: (id="+id+") (mailId="+mailId+") (user="
+                                    +sessionManager.getCurrentSessionUserId()+") (session="+sessionManager.getCurrentSession().getId()+"): " + e, e);
+                            // BOUNCE REPLY - send a message back to the user to let them know their email failed
+                            String errMsg = rb.getString("err_not_member") + "\n\n";
+                            String mailSupport = StringUtils.trimToNull( serverConfigurationService.getString("mail.support") );
+                            if ( mailSupport != null ) {
+                                errMsg +=(String) rb.getFormattedMessage("err_questions",  new Object[]{mailSupport})+"\n";
+                            }
+                            mail.setErrorMessage(errMsg);
+                            mail.setState(userNotAllowedToPostProcessor);
+                            continue;
+                        }
+                        if (M_log.isDebugEnabled()) {
+                            M_log.debug("Incoming message mailId ("+mailId+") IS a valid channel ("+channelRef+"), found channel: "+channel);
+                        }
 					}
+                    if (channel == null) {
+                        if (M_log.isDebugEnabled()) {
+                            M_log.debug("Incoming message mailId ("+mailId+"), channelRef ("+channelRef+") could not be resolved and is null: "+channel);
+                        }
+                        // this should never happen but it is here just in case
+                        throw new IdUnusedException(mailId);
+                    }
 
-					// skip disabled channels
+                    // skip disabled channels
 					if (!channel.getEnabled())
 					{
-						if (from.startsWith(POSTMASTER))
-						{
+                        // INDICATES that the channel is NOT currently enabled so no messages can be received
+						if (from.startsWith(POSTMASTER)) {
 							mail.setState(Mail.GHOST);
-						}
-						else
-						{
+						} else {
+		                    // BOUNCE REPLY - send a message back to the user to let them know their email failed
 							String errMsg = rb.getString("err_email_off") + "\n\n";
-							String mailSupport = StringUtil.trimToNull( ServerConfigurationService.getString("mail.support") );
-							if ( mailSupport != null )
+							String mailSupport = StringUtils.trimToNull( serverConfigurationService.getString("mail.support") );
+							if ( mailSupport != null ) {
 								errMsg +=(String) rb.getFormattedMessage("err_questions",  new Object[]{mailSupport})+"\n";
-
+							}
 							mail.setErrorMessage(errMsg);
+                            mail.setState(courseMailArchiveDisabledProcessor);
 						}
 
-						M_log.info(id + " : mail rejected: channel not enabled: " + mailId);
-
+                        if (M_log.isInfoEnabled()) {
+                            M_log.info(id + " : mail rejected: channel ("+channelRef+") not enabled: " + mailId);
+                        }
 						continue;
 					}
 
@@ -292,13 +454,18 @@ public class SakaiMailet extends GenericMailet
 						// see if our fromAddr is the email address of any of the users who are permitted to add messages to the channel.
 						if (!fromValidUser(fromAddr, channel))
 						{
-							M_log.info(id + " : mail rejected: from: " + fromAddr + " not authorized for site: " + mailId);
-
+						    // INDICATES user is not allowed to send messages to this group
+		                    if (M_log.isInfoEnabled()) {
+		                        M_log.info(id + " : mail rejected: from: " + fromAddr + " not authorized for site: " + mailId + " and channel ("+channelRef+")");
+		                    }
+		                    // BOUNCE REPLY - send a message back to the user to let them know their email failed
 							String errMsg = rb.getString("err_not_member") + "\n\n";
-							String mailSupport = StringUtil.trimToNull( ServerConfigurationService.getString("mail.support") );
-							if ( mailSupport != null )
+							String mailSupport = StringUtils.trimToNull( serverConfigurationService.getString("mail.support") );
+							if ( mailSupport != null ) {
 								errMsg +=(String) rb.getFormattedMessage("err_questions",  new Object[]{mailSupport})+"\n";
+							}
 							mail.setErrorMessage(errMsg);
+		                    mail.setState(userNotAllowedToPostProcessor);
 							continue;
 						}
 					}
@@ -307,16 +474,16 @@ public class SakaiMailet extends GenericMailet
 					StringBuilder bodyBuf[] = new StringBuilder[2];
 					bodyBuf[0] = new StringBuilder();
 					bodyBuf[1] = new StringBuilder();
-					List attachments = EntityManager.newReferenceList();
+					List<Reference> attachments = entityManager.newReferenceList();
 					String siteId = null;
-					if (SiteService.siteExists(channel.getContext())) {
+					if (siteService.siteExists(channel.getContext())) {
 						siteId = channel.getContext();
 					}
 					
 					try
 					{
 						StringBuilder bodyContentType = new StringBuilder();
-						Integer embedCount = parseParts(siteId, msg, id, bodyBuf, bodyContentType, attachments, Integer.valueOf(-1));
+						parseParts(siteId, msg, id, bodyBuf, bodyContentType, attachments, Integer.valueOf(-1));
 						
 						if (bodyContentType.length() > 0)
 						{
@@ -327,91 +494,105 @@ public class SakaiMailet extends GenericMailet
 					}
 					catch (MessagingException e)
 					{
-					    e.printStackTrace();
-						M_log.warn("service(): msg.getContent() threw: " + e);
+					    // NOTE: if this happens it just means we don't get the extra header, not the end of the world
+					    //e.printStackTrace();
+						M_log.warn("MessagingException: service(): msg.getContent() threw: " + e, e);
 					}
 					catch (IOException e)
 					{
-					    e.printStackTrace();
-						M_log.warn("service(): msg.getContent() threw: " + e);
+                        // NOTE: if this happens it just means we don't get the extra header, not the end of the world
+					    //e.printStackTrace();
+						M_log.warn("IOException: service(): msg.getContent() threw: " + e, e);
 					}
 					
+					mailHeaders.add("List-Id: <"+ channel.getId()+ ".localhost>");
 					// post the message to the group's channel
 					String body[] = new String[2];
 					body[0] = bodyBuf[0].toString(); // plain/text
 					body[1] = bodyBuf[1].toString(); // html/text
 					
-					if (channel.getReplyToList())
-					{
-						List modifiedHeaders = new Vector();
-						for (String header: (List<String>)mailHeaders) 
-						{
-							if (header != null && !header.startsWith("Reply-To:"))
-							{
-								modifiedHeaders.add(header);
-							}
-						}
-						// Note: can't use recipient, since it's host may be configured as mailId@myhost.james
-						String mailHost = ServerConfigurationService.getServerName();
-						if ( mailHost == null || mailHost.trim().equals("") )
-							mailHost = mail.getRemoteHost();
-                  
-						MailAddress replyTo = new MailAddress( mailId, mailHost );
-						M_log.debug("Set Reply-To address to "+ replyTo.toString());
-						modifiedHeaders.add("Reply-To: "+ replyTo.toString());
+					try {
+                        if (channel.getReplyToList())
+                        {
+                        	List<String> modifiedHeaders = new Vector<String>();
+                        	for (String header: (List<String>)mailHeaders) 
+                        	{
+                        		if (header != null && !header.startsWith("Reply-To:"))
+                        		{
+                        			modifiedHeaders.add(header);
+                        		}
+                        	}
+                        	// Note: can't use recipient, since it's host may be configured as mailId@myhost.james
+                        	String mailHost = serverConfigurationService.getServerName();
+                        	if ( mailHost == null || mailHost.trim().equals("") )
+                        		mailHost = mail.getRemoteHost();
+              
+                        	MailAddress replyTo = new MailAddress( mailId, mailHost );
+                            if (M_log.isDebugEnabled()) {
+                                M_log.debug("Set Reply-To address to "+ replyTo.toString());
+                            }
+                        	modifiedHeaders.add("Reply-To: "+ replyTo.toString());
   
-						// post the message to the group's channel
-						channel.addMailArchiveMessage(subject, from.toString(), TimeService.newTime(sent.getTime()), modifiedHeaders,
-								attachments, body);
-					}
-					else
-					{
-						// post the message to the group's channel
-						channel.addMailArchiveMessage(subject, from.toString(), TimeService.newTime(sent.getTime()), mailHeaders,
-								attachments, body);
-					}
-															
-					M_log.debug(id + " : delivered to:" + mailId);
+                        	// post the message to the group's channel
+                        	channel.addMailArchiveMessage(subject, from.toString(), timeService.newTime(sent.getTime()), modifiedHeaders,
+                        			attachments, body);
+                        }
+                        else
+                        {
+                        	// post the message to the group's channel
+                        	channel.addMailArchiveMessage(subject, from.toString(), timeService.newTime(sent.getTime()), mailHeaders,
+                        			attachments, body);
+                        }
+                    } catch (PermissionException pe) {
+                        // INDICATES that the current user does not have permission to add or get the mail archive message from the current channel
+                        // This generally should not happen because the current user should be the postmaster
+                        M_log.warn("mailarchive PermissionException message service failure: (id="+id+") (mailId="+mailId+") : " + pe, pe);
+                        mail.setState(Mail.GHOST); // ghost out the message because this should not happen
+                    }
+
+                    if (M_log.isDebugEnabled()) {
+                        M_log.debug(id + " : delivered to:" + mailId);
+                    }
 
 					// all is happy - ghost the message to stop further processing
 					mail.setState(Mail.GHOST);
 				}
 				catch (IdUnusedException goOn)
 				{
-					// if this is to the postmaster, and there's no site, channel or alias for the postmaster, then quietly eat the message
-					if (POSTMASTER.equals(mailId))
+					// INDICATES that the channelReference found above was actually invalid OR that no channel reference could be identified
+
+				    // if this is to the postmaster, and there's no site, channel or alias for the postmaster, then quietly eat the message
+					if (POSTMASTER.equals(mailId) || from.startsWith(POSTMASTER + "@"))
 					{
 						mail.setState(Mail.GHOST);
 						continue;
 					}
 
-					if (from.startsWith(POSTMASTER + "@"))
-					{
-						mail.setState(Mail.GHOST);
-						continue;
+					// BOUNCE REPLY - send a message back to the user to let them know their email failed
+					if (M_log.isInfoEnabled()) {
+					    M_log.info("mailarchive invalid or unusable channel reference ("+mailId+"): "+id + " : mail rejected: " + goOn.toString());
 					}
-
-					M_log.info(id + " : mail rejected: " + goOn.toString());
 					String errMsg = rb.getString("err_addr_unknown") + "\n\n";
-					String mailSupport = StringUtil.trimToNull( ServerConfigurationService.getString("mail.support") );
-					if ( mailSupport != null )
+					String mailSupport = StringUtils.trimToNull( serverConfigurationService.getString("mail.support") );
+					if ( mailSupport != null ) {
 						errMsg +=(String) rb.getFormattedMessage("err_questions",  new Object[]{mailSupport})+"\n";
+					}
 					mail.setErrorMessage(errMsg);
+                    mail.setState(courseMailArchiveNotExistsProcessor);
 				}
-				catch (PermissionException e)
+				catch (Exception ex)
 				{
-					M_log.info(id + " : " + e);
-				}
-				catch (Exception  ex)
-				{
-					M_log.info(id + " : " + ex);
+                    // INDICATES that some general exception has occurred which we did not expect
+			        // This definitely should NOT happen
+					M_log.error("mailarchive General message service exception: (id="+id+") (mailId="+mailId+") : " + ex, ex);
+                    mail.setState(Mail.GHOST); // ghost the message to stop it from being further processed
 				}
 			}
 		}
 		finally
 		{
 			// clear out any current current bindings
-			ThreadLocalManager.clear();
+			threadLocalManager.clear();
 		}
 	}
 
@@ -429,13 +610,13 @@ public class SakaiMailet extends GenericMailet
 		if ((fromAddr == null) || (fromAddr.length() == 0)) return false;
 
 		// find the users with this email address
-		Collection users = UserDirectoryService.findUsersByEmail(fromAddr);
+		Collection<User> users = userDirectoryService.findUsersByEmail(fromAddr);
 
 		// if none found
 		if ((users == null) || (users.isEmpty())) return false;
 
 		// see if any of them are allowed to add
-		for (Iterator i = users.iterator(); i.hasNext();)
+		for (Iterator<User> i = users.iterator(); i.hasNext();)
 		{
 			User u = (User) i.next();
 			if (channel.allowAddMessage(u)) return true;
@@ -450,11 +631,11 @@ public class SakaiMailet extends GenericMailet
 	protected Reference createAttachment(String siteId, List attachments, String type, String fileName, byte[] body, String id)
 	{
 		// we just want the file name part - strip off any drive and path stuff
-		String name = Validator.getFileName(fileName);
+		String name = FilenameUtils.getName(fileName);  //Validator.getFileName(fileName);
 		String resourceName = Validator.escapeResourceName(fileName);
 
 		// make a set of properties to add for the new resource
-		ResourcePropertiesEdit props = ContentHostingService.newResourceProperties();
+		ResourcePropertiesEdit props = contentHostingService.newResourceProperties();
 		props.addProperty(ResourceProperties.PROP_DISPLAY_NAME, name);
 		props.addProperty(ResourceProperties.PROP_DESCRIPTION, fileName);
 
@@ -463,14 +644,14 @@ public class SakaiMailet extends GenericMailet
 		{
 			ContentResource attachment;
 			if (siteId == null) {
-				attachment = ContentHostingService.addAttachmentResource(resourceName, type, body, props);
+				attachment = contentHostingService.addAttachmentResource(resourceName, type, body, props);
 			} else {
-				attachment = ContentHostingService.addAttachmentResource(
+				attachment = contentHostingService.addAttachmentResource(
 						resourceName, siteId, null, type, body, props);
 			}
 
 			// add a dereferencer for this to the attachments
-			Reference ref = EntityManager.newReference(attachment.getReference());
+			Reference ref = entityManager.newReference(attachment.getReference());
 			attachments.add(ref);
 
 			M_log.debug(id + " : attachment: " + ref.getReference() + " size: " + body.length);
@@ -498,14 +679,14 @@ public class SakaiMailet extends GenericMailet
 		byte[] buff = new byte[10000];
 		try
 		{
-			int lenRead = 0;
+			//int lenRead = 0;
 			int count = 0;
 			while (count >= 0)
 			{
 				count = stream.read(buff, 0, buff.length);
 				if (count <= 0) break;
 				baos.write(buff, 0, count);
-				lenRead += count;
+				//lenRead += count;
 			}
 		}
 		catch (IOException e)

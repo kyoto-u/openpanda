@@ -1,6 +1,6 @@
 /**
  * $Id: InvalidEmailTemplateException.java 77660 2010-05-21 14:28:00Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/impl/src/java/org/sakaiproject/poll/logic/impl/InvalidEmailTemplateException.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/impl/src/java/org/sakaiproject/poll/logic/impl/InvalidEmailTemplateException.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

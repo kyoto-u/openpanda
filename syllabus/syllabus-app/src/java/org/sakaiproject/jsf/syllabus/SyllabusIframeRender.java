@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/branches/sakai-2.8.x/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIframeRender.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.0/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIframeRender.java $
  * $Id: SyllabusIframeRender.java 59687 2009-04-03 23:44:40Z arwhyte@umich.edu $
  ***********************************************************************************
  *

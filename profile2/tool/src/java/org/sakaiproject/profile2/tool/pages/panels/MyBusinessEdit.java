@@ -27,7 +27,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
-import org.apache.wicket.extensions.markup.html.tabs.TabbedPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -40,10 +39,15 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.profile2.logic.ProfileLogic;
+import org.sakaiproject.profile2.logic.ProfileWallLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.CompanyProfile;
 import org.sakaiproject.profile2.model.UserProfile;
+import org.sakaiproject.profile2.tool.components.TextareaTinyMceSettings;
 import org.sakaiproject.profile2.util.ProfileConstants;
+
+import wicket.contrib.tinymce.TinyMceBehavior;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
  * Panel for displaying and editing business profile data.
@@ -63,7 +67,8 @@ public class MyBusinessEdit extends Panel {
 	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileLogic")
 	private ProfileLogic profileLogic;
 	
-	
+	@SpringBean(name="org.sakaiproject.profile2.logic.ProfileWallLogic")
+	private ProfileWallLogic wallLogic;
 	
 	public MyBusinessEdit(final String id, final UserProfile userProfile) {
 		this(id, userProfile, new ArrayList<CompanyProfile>(),
@@ -115,6 +120,7 @@ public class MyBusinessEdit extends Panel {
 		TextArea<String> businessBiography = new TextArea<String>(
 				"businessBiography", new PropertyModel<String>(userProfile,
 						"businessBiography"));
+		businessBiography.add(new TinyMceBehavior(new TextareaTinyMceSettings()));
 		businessBiographyContainer.add(businessBiography);
 		form.add(businessBiographyContainer);
 
@@ -132,6 +138,7 @@ public class MyBusinessEdit extends Panel {
 
 		AjaxFallbackButton submitButton = createSaveChangesButton(id,
 				userProfile, form, formFeedback);
+		submitButton.add(new TinyMceAjaxSubmitModifier());
 		form.add(submitButton);
 
 		AjaxFallbackButton cancelButton = createCancelChangesButton(id,
@@ -187,6 +194,11 @@ public class MyBusinessEdit extends Panel {
 							ProfileConstants.EVENT_PROFILE_BUSINESS_UPDATE,
 							"/profile/" + userProfile.getUserUuid(), true);
 
+					//post to wall if enabled
+					if (true == sakaiProxy.isWallEnabledGlobally() && false == sakaiProxy.isSuperUserAndProxiedToUser(userProfile.getUserUuid())) {
+						wallLogic.addNewEventToWall(ProfileConstants.EVENT_PROFILE_BUSINESS_UPDATE, sakaiProxy.getCurrentUserId());
+					}
+					
 					// repaint panel
 					Component newPanel = new MyBusinessDisplay(id, userProfile);
 					newPanel.setOutputMarkupId(true);
@@ -378,7 +390,7 @@ public class MyBusinessEdit extends Panel {
 		}
 
 		// update SakaiPerson
-		if (sakaiProxy.updateSakaiPerson(sakaiPerson)) {
+		if (profileLogic.saveUserProfile(sakaiPerson)) {
 			log.info("Saved SakaiPerson for: " + userId);
 			return true;
 		} else {

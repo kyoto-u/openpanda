@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/antivirus/api/VirusScanIncompleteException.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/antivirus/api/VirusScanIncompleteException.java $
  * $Id: VirusScanIncompleteException.java 76289 2010-04-17 10:20:37Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

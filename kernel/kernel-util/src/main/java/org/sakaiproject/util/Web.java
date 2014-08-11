@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/Web.java $
- * $Id: Web.java 118913 2013-01-28 23:10:47Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/Web.java $
+ * $Id: Web.java 108792 2012-05-31 13:51:02Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -39,7 +39,9 @@ import org.sakaiproject.tool.api.SessionManager;
  * <p>
  * Web is a web (html, http, etc) technlogies collection of helper methods.
  * </p>
+ * @deprecated use apache commons utils for {@link org.sakaiproject.util.api.FormattedText}, this will be removed after 2.9 - Dec 2011
  */
+@Deprecated 
 public class Web
 {
 	/** Our log (commons). */
@@ -51,21 +53,6 @@ public class Web
 	
 	private static SessionManager sessionManager = (SessionManager)
 			ComponentManager.get(SessionManager.class);
-	
-	protected static void displayStringChars(PrintWriter out, String str)
-	{
-		if (str == null)
-		{
-			out.print("null");
-		}
-		else
-			for (int i = 0; i < str.length(); i++)
-			{
-				int c = (int) str.charAt(i);
-				out.print(Integer.toHexString(c) + " ");
-			}
-		out.println();
-	}
 
 	/**
 	 * Escape a plaintext string so that it can be output as part of an HTML document. Amperstand, greater-than, less-than, newlines, etc, will be escaped so that they display (instead of being interpreted as formatting).
@@ -73,29 +60,11 @@ public class Web
 	 * @param value
 	 *        The string to escape.
 	 * @return value fully escaped for HTML.
+     * @deprecated this is a passthrough for {@link FormattedText#escapeHtml(String, boolean)} so use that instead
 	 */
 	public static String escapeHtml(String value)
 	{
-		return escapeHtml(value, true);
-	}
-	
-	/**
-	 * For converting plain-text URLs in a String to HTML &lt;a&gt; tags
-	 * Any URLs in the source text that happen to be already in a &lt;a&gt; tag will be unaffected.
-	 * @param text the plain text to convert
-	 * @return the full source text with URLs converted to HTML.
-	 */
-	public static String encodeUrlsAsHtml(String text)
-	{
-		Pattern p = Pattern.compile("(?<!href=['\"]{1})(((https?|s?ftp|ftps|file|smb|afp|nfs|(x-)?man|gopher|txmt)://|mailto:)[-:;@a-zA-Z0-9_.,~%+/?=&#]+(?<![.,?:]))");
-		Matcher m = p.matcher(text);
-		StringBuffer buf = new StringBuffer();
-		while(m.find()) {
-			String matchedUrl = m.group();
-			m.appendReplacement(buf, "<a href=\"" + Web.unEscapeHtml(matchedUrl) + "\">$1</a>");
-		}
-		m.appendTail(buf);
-		return buf.toString();
+		return FormattedText.escapeHtml(value, true);
 	}
 
 	/**
@@ -104,29 +73,99 @@ public class Web
 	 * @param value
 	 *        The string to escape.
 	 * @return value escaped for HTML.
+	 * @deprecated this is a passthrough for {@link FormattedText#escapeHtmlFormattedText(String)} so use that instead
 	 */
 	public static String escapeHtmlFormattedText(String value)
 	{
 		return FormattedText.escapeHtmlFormattedText(value);
 	}
-	
-	/**
-	 * Returns a String with HTML entity references converted to characters suitable for processing as formatted text.
-	 * 
-	 * @param value
-	 *        The text containing entity references (e.g., a News item description).
-	 * @return The HTML, ready for processing.
-	 */
-	public static String unEscapeHtml(String value)
-	{
-		if (value == null) return "";
-		if (value.equals("")) return "";
-		value = value.replaceAll("&lt;", "<");
-		value = value.replaceAll("&gt;", ">");
-		value = value.replaceAll("&amp;", "&");
-		value = value.replaceAll("&quot;", "\"");
-		return value;
-	}
+	   
+    /**
+     * Escape the given value so that it appears as-is in HTML - that is, HTML meta-characters like '<' are escaped to HTML character entity references like '&lt;'. Markup, amper, quote are escaped. Whitespace is not.
+     * 
+     * @param value
+     *        The string to escape.
+     * @param escapeNewlines
+     *        Whether to escape newlines as "&lt;br /&gt;\n" so that they appear as HTML line breaks.
+     * @return value fully escaped for HTML.
+     * @deprecated this is a passthrough for {@link FormattedText#escapeHtml(String, boolean)} so use that instead
+     */
+    public static String escapeHtml(String value, boolean escapeNewlines) {
+        return FormattedText.escapeHtml(value, escapeNewlines);
+    }
+
+    /**
+     * Return a string based on value that is safe to place into a javascript value that is in single quiotes.
+     * 
+     * @param value
+     *        The string to escape.
+     * @return value escaped.
+     * @deprecated 
+     *        Use http://commons.apache.org/lang/api/org/apache/commons/lang/StringEscapeUtils.html instead (see KNL-69).
+     * @deprecated just a passthrough for {@link Validator#escapeJsQuoted(String)} so use that instead
+     */
+    public static String escapeJsQuoted(String value)
+    {
+        return Validator.escapeJsQuoted(value);
+    }
+
+    /**
+     * Return a string based on id that is fully escaped using URL rules, using a UTF-8 underlying encoding.
+     * 
+     * Note: java.net.URLEncode.encode() provides a more standard option
+     *       FormattedText.decodeNumericCharacterReferences() undoes this op
+     * 
+     * @param id
+     *        The string to escape.
+     * @return id fully escaped using URL rules.
+     * @deprecated just a passthrough for {@link Validator#escapeUrl(String)} so use that instead
+     */
+    public static String escapeUrl(String id)
+    {
+        return Validator.escapeUrl( id );
+
+    } // escapeUrl
+
+    /**
+     * Returns a String with HTML entity references converted to characters suitable for processing as formatted text.
+     * 
+     * @param value
+     *        The text containing entity references (e.g., a News item description).
+     * @return The HTML, ready for processing.
+     * @deprecated just a copy of {@link org.sakaiproject.util.api.FormattedText#unEscapeHtml(String)} so use that instead
+     */
+    public static String unEscapeHtml(String value)
+    {
+        // FIXME delete this method
+        if (value == null) return "";
+        if (value.equals("")) return "";
+        value = value.replaceAll("&lt;", "<");
+        value = value.replaceAll("&gt;", ">");
+        value = value.replaceAll("&amp;", "&");
+        value = value.replaceAll("&quot;", "\"");
+        return value;
+    }
+
+    /**
+     * For converting plain-text URLs in a String to HTML &lt;a&gt; tags
+     * Any URLs in the source text that happen to be already in a &lt;a&gt; tag will be unaffected.
+     * @param text the plain text to convert
+     * @return the full source text with URLs converted to HTML.
+     * @deprecated just a copy of {@link org.sakaiproject.util.api.FormattedText#encodeUrlsAsHtml(String)} so use that instead
+     */
+    public static String encodeUrlsAsHtml(String text)
+    {
+        Pattern p = Pattern.compile("(?<!href=['\"]{1})(((https?|s?ftp|ftps|file|smb|afp|nfs|(x-)?man|gopher|txmt)://|mailto:)[-:;@a-zA-Z0-9_.,~%+/?=&#]+(?<![.,?:]))");
+        Matcher m = p.matcher(text);
+        StringBuffer buf = new StringBuffer();
+        while(m.find()) {
+            String matchedUrl = m.group();
+            m.appendReplacement(buf, "<a href=\"" + Web.unEscapeHtml(matchedUrl) + "\">$1</a>");
+        }
+        m.appendTail(buf);
+        return buf.toString();
+    }
+
 
 	/**
 	 * Return a string based on value that is safe to place into a javascript / html identifier: anything not alphanumeric change to 'x'. If the first character is not alphabetic, a letter 'i' is prepended.
@@ -171,36 +210,6 @@ public class Web
 			return value;
 		}
 	}
-
-	/**
-	 * Return a string based on value that is safe to place into a javascript value that is in single quiotes.
-	 * 
-	 * @param value
-	 *        The string to escape.
-	 * @return value escaped.
-	 * @deprecated 
-	 *        Use http://commons.apache.org/lang/api/org/apache/commons/lang/StringEscapeUtils.html instead (see KNL-69).
-	 */
-	public static String escapeJsQuoted(String value)
-	{
-		return Validator.escapeJsQuoted(value);
-	}
-
-	/**
-	 * Return a string based on id that is fully escaped using URL rules, using a UTF-8 underlying encoding.
-	 * 
-	 * Note: java.net.URLEncode.encode() provides a more standard option
-	 *       FormattedText.decodeNumericCharacterReferences() undoes this op
-	 * 
-	 * @param id
-	 *        The string to escape.
-	 * @return id fully escaped using URL rules.
-	 */
-	public static String escapeUrl(String id)
-	{
-		return Validator.escapeUrl( id );
-
-	} // escapeUrl
 
 	/**
 	 * Returns the hex digit cooresponding to a number between 0 and 15.
@@ -390,7 +399,7 @@ public class Web
 			p = "<p>";
 		}
 
-		Enumeration e = null;
+		Enumeration<?> e = null;
 
 		out.println(h1 + "Snoop for request" + h1x);
 		out.println(req.toString());
@@ -559,26 +568,14 @@ public class Web
 		
 		return fileName;		
 	}
-	
-	/**
-	 * Escape the given value so that it appears as-is in HTML - that is, HTML meta-characters like '<' are escaped to HTML character entity references like '&lt;'. Markup, amper, quote are escaped. Whitespace is not.
-	 * 
-	 * @param value
-	 *        The string to escape.
-	 * @param escapeNewlines
-	 *        Whether to escape newlines as "&lt;br /&gt;\n" so that they appear as HTML line breaks.
-	 * @return value fully escaped for HTML.
-	 */
-	public static String escapeHtml(String value, boolean escapeNewlines)
-	{
-		if (value == null) return "";
 
-		try
-		{
-			// lazily allocate the StringBuilder
-			// only if changes are actually made; otherwise
-			// just return the given string without changing it.
-			StringBuilder buf = (false) ? null : new StringBuilder();
+	private static String internalEscapeHtml(String value, boolean escapeNewlines) {
+	    // FIXME this method needs to be removed entirely and is only here as a reference of how this used to work
+
+	    if (value == null) return "";
+
+		try {
+			StringBuilder buf = new StringBuilder();
 			final int len = value.length();
 			for (int i = 0; i < len; i++)
 			{
@@ -687,4 +684,21 @@ public class Web
 
 		return htmlStr;
 	}
+
+
+    protected static void displayStringChars(PrintWriter out, String str)
+    {
+        if (str == null)
+        {
+            out.print("null");
+        }
+        else
+            for (int i = 0; i < str.length(); i++)
+            {
+                int c = (int) str.charAt(i);
+                out.print(Integer.toHexString(c) + " ");
+            }
+        out.println();
+    }
+
 }

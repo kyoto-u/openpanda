@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseManagementGroupProvider.java $
- * $Id: CourseManagementGroupProvider.java 87615 2011-01-26 04:19:14Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseManagementGroupProvider.java $
+ * $Id: CourseManagementGroupProvider.java 87276 2011-01-14 08:59:58Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation

@@ -39,6 +39,7 @@ import org.sakaiproject.tool.api.ToolSession;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.theospi.portfolio.matrix.MatrixFunctionConstants;
+import org.theospi.portfolio.matrix.MatrixManager;
 import org.theospi.portfolio.matrix.model.Scaffolding;
 import org.theospi.portfolio.matrix.model.ScaffoldingCell;
 import org.theospi.portfolio.review.mgt.ReviewManager;
@@ -68,14 +69,20 @@ implements Controller, FormController {
       String next = (String)request.get("continue");
       if (cancel != null) {
          viewName = "cancel";
+         session.put(EditedScaffoldingStorage.EDITED_SCAFFOLDING_STORAGE_SESSION_KEY,
+                 sessionBean);
+         model.put(EditedScaffoldingStorage.STORED_SCAFFOLDING_FLAG, "true");
       }
       else if (next != null) {
-         saveScaffolding(usedCellDefaultSettingAdjustment(scaffolding));
+    	  if(scaffolding.getId() != null){
+    		  scaffolding = usedCellDefaultSettingAdjustment(scaffolding);
+    	  }
+    	  scaffolding = saveScaffolding(scaffolding);
+    	  model.put("scaffolding_id", scaffolding.getId());
+            
+    	  session.remove(EditedScaffoldingStorage.STORED_SCAFFOLDING_FLAG);
+    	  session.remove(EditedScaffoldingStorage.EDITED_SCAFFOLDING_STORAGE_SESSION_KEY);
       }
-      
-      session.remove(EditedScaffoldingStorage.STORED_SCAFFOLDING_FLAG);
-      session.remove(EditedScaffoldingStorage.EDITED_SCAFFOLDING_STORAGE_SESSION_KEY);
-      
       return new ModelAndView(viewName, model);
    }
 
@@ -89,7 +96,16 @@ implements Controller, FormController {
 
 	   model.put("label", "Scaffolding");
 
-	   Collection changedCells = getChangedCells(scaffolding);
+	   Collection changedCells = new ArrayList<String>();
+	   if(scaffolding.getId() != null){
+		   changedCells = getChangedCells(scaffolding);
+	   }
+	   if(request.containsKey(MatrixManager.CONFIRM_PUBLISHED_FLAG)){
+		   model.put("published", request.get(MatrixManager.CONFIRM_PUBLISHED_FLAG));
+	   }
+	   if(request.containsKey(MatrixManager.CONFIRM_EVAL_VIEW_ALL_GROUPS_FLAG)){
+		   model.put("warnViewAllGroupsEval", request.get(MatrixManager.CONFIRM_EVAL_VIEW_ALL_GROUPS_FLAG));
+	   }
 	   
 	   model.put("changedCells", changedCells);
 	   model.put("changedCellsSize", changedCells.size());

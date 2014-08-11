@@ -29,28 +29,50 @@ public interface ServerWideReportManager
     
     
     /**
-     * Get site login activity statistics grouped by month.
+     * Get total login activity statistics grouped by month.
      * 
      * @return a list of login statistics. 
-     * 		format: String yyyy-mm, Total Logins, Total Unique Logins
+     * 		format: String yyyy-mm, Total Logins,
      */
-    public List<ServerWideStatsRecord> getMonthlyLogin ();
+    public List<ServerWideStatsRecord> getMonthlyTotalLogins();
     
     /**
-     * Get site login activity statistics grouped by week.
+     * Get unique login activity statistics grouped by month.
+     * 
+     * @return a list of login statistics. 
+     * 		format: String yyyy-mm, Total Unique Logins
+     */
+    public List<ServerWideStatsRecord> getMonthlyUniqueLogins();
+    
+    /**
+     * Get total login activity statistics grouped by week.
      * 
      * @return a list of login statistics where date is the Monday's of the
      *         week. format: Date, Total Logins, Total Unique Logins
      */
-    public List<ServerWideStatsRecord> getWeeklyLogin ();
+    public List<ServerWideStatsRecord> getWeeklyTotalLogins();
+    
+    /**
+     * Get unique login activity statistics grouped by week.
+     * 
+     * @return a list of login statistics where date is the Monday's of the
+     *         week. format: Date, Total Logins
+     */
+    public List<ServerWideStatsRecord> getWeeklyUniqueLogins();
 
     /**
-     * Get site login activity statistics grouped by day.
+     * Get total login activity statistics grouped by day.
      * 
-     * @return a list of login statistics. format: Date, Total Logins, Total
-     *         Unique Logins
+     * @return a list of login statistics. format: Date, Total Logins
      */
-    public List<ServerWideStatsRecord> getDailyLogin ();
+    public List<ServerWideStatsRecord> getDailyTotalLogins();
+    
+    /**
+     * Get unique login activity statistics grouped by day.
+     * 
+     * @return a list of login statistics. format: Date, Total Unique Logins
+     */
+    public List<ServerWideStatsRecord> getDailyUniqueLogins();
 
     /**
      * Get site site created or deleted per time period.

@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x/portlet-util/src/k1/org/sakaiproject/basiclti/LocalEventTrackingService.java $
- * $Id: LocalEventTrackingService.java 78156 2010-05-28 17:38:01Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0/portlet-util/src/k1/org/sakaiproject/basiclti/LocalEventTrackingService.java $
+ * $Id: LocalEventTrackingService.java 98512 2011-09-22 17:59:08Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -23,17 +23,17 @@ import org.sakaiproject.event.cover.EventTrackingService;
 
 @SuppressWarnings("deprecation")
 public class LocalEventTrackingService {
-    public static org.sakaiproject.event.api.Event newEvent(java.lang.String param0, java.lang.String param1, java.lang.String param2, boolean param3, int param4) {
-        //For 2.6
-        return EventTrackingService.newEvent(param0,param1,param2,param3,param4);
-    }
-    /*
-    public static org.sakaiproject.event.api.Event newEvent(java.lang.String param0, java.lang.String param1, java.lang.String param2, boolean param3, int param4) {
-        //For 2.5
-        return EventTrackingService.newEvent(param0,param1,param3);
-    }
-    */
-    public static void post(org.sakaiproject.event.api.Event param0) {
-        EventTrackingService.post(param0);
-    }
+	public static org.sakaiproject.event.api.Event newEvent(java.lang.String param0, java.lang.String param1, java.lang.String param2, boolean param3, int param4) {
+		//For 2.6
+		return EventTrackingService.newEvent(param0,param1,param2,param3,param4);
+	}
+	/*
+	   public static org.sakaiproject.event.api.Event newEvent(java.lang.String param0, java.lang.String param1, java.lang.String param2, boolean param3, int param4) {
+//For 2.5
+return EventTrackingService.newEvent(param0,param1,param3);
+}
+	 */
+public static void post(org.sakaiproject.event.api.Event param0) {
+	EventTrackingService.post(param0);
+}
 }

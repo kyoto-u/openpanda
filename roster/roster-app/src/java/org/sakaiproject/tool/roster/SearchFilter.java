@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/branches/sakai-2.8.x/roster-app/src/java/org/sakaiproject/tool/roster/SearchFilter.java $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.0/roster-app/src/java/org/sakaiproject/tool/roster/SearchFilter.java $
  * $Id: SearchFilter.java 59682 2009-04-03 23:31:05Z arwhyte@umich.edu $
  ***********************************************************************************
  *

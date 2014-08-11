@@ -18,12 +18,20 @@ package org.sakaiproject.profile2.hbm.model;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Hibernate model for an uploaded profile image
  * 
  * @author Steve Swinsburg (s.swinsburg@lancaster.ac.uk)
  *
  */
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProfileImageUploaded implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -32,63 +40,18 @@ public class ProfileImageUploaded implements Serializable {
 	private String userUuid;
 	private String mainResource;
 	private String thumbnailResource;
+	private String avatarResource;
 	private boolean current;
 	
-	/**
-	 * Empty constructor
-	 */
-	public ProfileImageUploaded() {
-	}
-
 	/** 
-	 * Constructor to create a ProfileImage record in one go
+	 * Additional constructor to create a ProfileImage record in one go
 	 */
-	public ProfileImageUploaded(String userUuid, String mainResource, String thumbnailResource, boolean current) {
+	public ProfileImageUploaded(String userUuid, String mainResource, String thumbnailResource, String avatarResource, boolean current) {
 		this.userUuid = userUuid;
 		this.mainResource = mainResource;
 		this.thumbnailResource = thumbnailResource;
+		this.avatarResource=avatarResource;
 		this.current = current;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public String getUserUuid() {
-		return userUuid;
-	}
-
-	public void setUserUuid(String userUuid) {
-		this.userUuid = userUuid;
-	}
-
-	public String getMainResource() {
-		return mainResource;
-	}
-
-	public void setMainResource(String mainResource) {
-		this.mainResource = mainResource;
-	}
-
-	public String getThumbnailResource() {
-		return thumbnailResource;
-	}
-
-	public void setThumbnailResource(String thumbnailResource) {
-		this.thumbnailResource = thumbnailResource;
-	}
-
-	public boolean isCurrent() {
-		return current;
-	}
-
-	public void setCurrent(boolean current) {
-		this.current = current;
-	}
-	
-	
 }

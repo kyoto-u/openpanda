@@ -1,50 +1,93 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>base</artifactId>
-    <groupId>org.sakaiproject</groupId>
-    <version>2.8-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-  <name>Sakai Assignment Project</name>
-  <groupId>org.sakaiproject</groupId>
-  <artifactId>assignment-base</artifactId>
-  <packaging>pom</packaging>
-  <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/assignment/trunk</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/assignment/trunk</developerConnection>
-    <url>https://source.sakaiproject.org/svn/assignment/trunk</url>
-  </scm>
-  <modules>
-    <module>assignment-api/api</module>
-    <module>assignment-help</module>
-    <module>assignment-impl/impl</module>
-    <module>assignment-impl/pack</module>
-    <module>assignment-tool/tool</module>
-  </modules>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
         <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-taggable-api</artifactId>
-        <version>2.8-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-contentreview-model-api</artifactId>
-        <version>2.8-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-assignment-impl</artifactId>
-        <version>2.8-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-velocity-tool</artifactId>
-        <version>2.8-SNAPSHOT</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+        <artifactId>master</artifactId>
+        <version>2.9.0</version>
+        <relativePath>../master/pom.xml</relativePath>
+    </parent>
+    
+    <name>sakai-assignment base pom</name>
+    <groupId>org.sakaiproject.assignment</groupId>
+    <artifactId>assignment</artifactId>
+    <version>2.9.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>assignment-api/api</module>
+        <module>assignment-assembly</module>
+        <module>assignment-bundles</module>
+        <module>assignment-help</module>
+        <module>assignment-impl/impl</module>
+        <module>assignment-impl/pack</module>
+        <module>assignment-tool/tool</module>
+    </modules>
+
+    <scm>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0</developerConnection>
+        <url>https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0</url>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>sakai-maven</id>
+            <name>Sakai Maven Repo</name>
+            <layout>default</layout>
+            <url>http://source.sakaiproject.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>sakai-maven2-snapshots</id>
+            <name>Sakai Maven Repo</name>
+            <layout>default</layout>
+            <url>http://source.sakaiproject.org/maven2-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository> 
+			<id>sonatype-nexus-snapshots</id> 
+			<name>Sonatype Nexus Snapshots</name> 
+			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
+			<releases> 
+				<enabled>false</enabled> 
+			</releases> 
+			<snapshots> 
+				<enabled>true</enabled> 
+			</snapshots> 
+		</repository> 
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>sakai-assignment-api</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>sakai-assignment-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>sakai-assignment-bundles</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
 </project>

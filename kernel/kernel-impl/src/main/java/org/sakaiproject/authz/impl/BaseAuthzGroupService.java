@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
- * $Id: BaseAuthzGroupService.java 118909 2013-01-28 22:58:14Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
+ * $Id: BaseAuthzGroupService.java 115363 2012-10-31 16:02:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -43,6 +43,7 @@ import org.sakaiproject.authz.api.GroupIdInvalidException;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.GroupProvider;
 import org.sakaiproject.authz.api.Role;
+import org.sakaiproject.authz.api.RoleAlreadyDefinedException;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
@@ -326,6 +327,14 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 		return m_storage.getAuthzUserGroupIds(authzGroupIds, userid);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Collection<String> getAuthzUsersInGroups(Set<String> groupIds)
+	{
+		return m_storage.getAuthzUsersInGroups(groupIds);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -737,6 +746,18 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 		String roleName = azGroup.getMaintainRole();
 		if ((roleName != null) && (userId != null))
 		{
+			if (azGroup.getRole(roleName) == null)
+			{
+				// add the "maintain" role to the azGroup
+				try
+				{
+					azGroup.addRole(roleName);
+				}
+				catch (RoleAlreadyDefinedException e)
+				{
+					M_log.warn("addAuthzGroup: ", e);
+				}
+			}
 			azGroup.addMember(userId, roleName, true, false);
 		}
 
@@ -1262,6 +1283,14 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService, Storag
 		 * @return The List (AuthzGroup) that meet specified criteria.
 		 */
 		List getAuthzUserGroupIds(ArrayList authzGroupIds, String user_id);
+
+		/**
+		 * Return a list of users in the specified group list
+		 *
+		 * @param groupIds set of authz group ids
+		 * @return collection of user ids
+		 */
+		Collection<String> getAuthzUsersInGroups(Set<String> groupIds);
 
 		/**
 		 * Count the AuthzGroup objets that meet specified criteria.

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedAccessControl.java $
- * $Id: PublishedAccessControl.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedAccessControl.java $
+ * $Id: PublishedAccessControl.java 97412 2011-08-25 16:29:29Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -84,7 +84,7 @@ public class PublishedAccessControl
                                  Integer timeLimit, Integer timedAssessment,
                                  Integer retryAllowed, Integer lateHandling,
                                  Date startDate, Date dueDate,
-                                 Date scoreDate, Date feedbackDate,
+                                 Date scoreDate, Date feedbackDate, 
                                  String releaseTo)
   {
     this.submissionsAllowed = submissionsAllowed; // =  no limit
@@ -379,4 +379,5 @@ public class PublishedAccessControl
   public void setMarkForReview(Integer markForReview) {
 	  this.markForReview = markForReview;
   }
+  
 }

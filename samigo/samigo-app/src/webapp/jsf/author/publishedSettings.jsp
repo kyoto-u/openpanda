@@ -9,8 +9,8 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/webapp/jsf/author/publishedSettings.jsp $
- * $Id: publishedSettings.jsp 103141 2012-01-13 22:50:44Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/webapp/jsf/author/publishedSettings.jsp $
+ * $Id: publishedSettings.jsp 100462 2011-11-04 13:45:06Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 Sakai Foundation
@@ -42,7 +42,12 @@
       </head>
     <body onload="<%= request.getAttribute("html.body.onload") %>">
 
-<script language="javascript" style="text/JavaScript">
+<script style="text/JavaScript">
+function updateItemNavigation(isFromItemNavigation)
+{
+  var inputhidden = document.getElementById("assessmentSettingsAction:itemNavigationUpdated");
+  inputhidden.value = isFromItemNavigation;
+}
 
 function submitForm()
 {
@@ -246,14 +251,15 @@ function uncheckOther(field){
 <!-- content... -->
 <h:form id="assessmentSettingsAction" onsubmit="return editorCheck();">
   <h:inputHidden id="assessmentId" value="#{publishedSettings.assessmentId}"/>
-  <h:inputHidden id="blockDivs"value="#{publishedSettings.blockDivs}"/>
-
+  <h:inputHidden id="blockDivs" value="#{publishedSettings.blockDivs}"/>
+  <h:inputHidden id="itemNavigationUpdated" value="false" />
+  
   <!-- HEADINGS -->
   <%@ include file="/jsf/author/allHeadings.jsp" %>
 
 <p>
-  <h:messages infoClass="validation" warnClass="messageValidation" errorClass="validation" fatalClass="validation"/>
-</p>
+  <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+  </p>
 
     <h3>
      <h:outputText id="x1" value="#{assessmentSettingsMessages.settings} #{assessmentSettingsMessages.dash} #{publishedSettings.title}"/>
@@ -276,7 +282,7 @@ function uncheckOther(field){
     <h:panelGrid columns="2" columnClasses="shorttext"
       summary="#{templateMessages.enter_template_info_section}">
         <h:outputLabel value="#{assessmentSettingsMessages.assessment_title}"/>
-        <h:inputText id="assessment_title" size="80" value="#{publishedSettings.title}" />
+        <h:inputText id="assessment_title" size="80" maxlength="255" value="#{publishedSettings.title}" />
 
         <h:outputLabel value="#{assessmentSettingsMessages.assessment_creator}"  rendered="#{publishedSettings.valueMap.assessmentAuthor_isInstructorEditable==true}"/>
 
@@ -284,7 +290,7 @@ function uncheckOther(field){
 
         <h:outputLabel for="assessment_author" rendered="#{publishedSettings.valueMap.assessmentAuthor_isInstructorEditable==true}" value="#{assessmentSettingsMessages.assessment_authors}"/>
 
-        <h:inputText id="assessment_author" size="80" value="#{publishedSettings.authors}"
+        <h:inputText id="assessment_author" size="80" maxlength="255" value="#{publishedSettings.authors}"
           rendered="#{publishedSettings.valueMap.assessmentAuthor_isInstructorEditable==true}"/>
 
         <h:outputLabel value="#{assessmentSettingsMessages.assessment_description}" rendered="#{publishedSettings.valueMap.description_isInstructorEditable==true}"/>
@@ -316,7 +322,7 @@ function uncheckOther(field){
       <samigo:datePicker value="#{publishedSettings.startDateString}" size="25" id="startDate" />
       <h:outputText value="" />
       <h:outputText value="#{assessmentSettingsMessages.available_date_note}" />
-	
+
 	<!-- For formatting -->
 	<h:outputText value="" />
 	<h:outputText value="" />
@@ -327,7 +333,7 @@ function uncheckOther(field){
       <samigo:datePicker value="#{publishedSettings.dueDateString}" size="25" id="endDate"/>
       <h:outputText value="" />
 	  <h:outputText value="#{assessmentSettingsMessages.assessment_due_date_note}" />
-	  	
+
 	<!-- For formatting -->
 	<h:outputText value="" />
 	<h:outputText value="" />
@@ -380,7 +386,7 @@ function uncheckOther(field){
 </samigo:hideDivision>
 
   <!-- *** HIGH SECURITY *** -->
-  <h:panelGroup rendered="#{publishedSettings.valueMap.ipAccessType_isInstructorEditable==true or publishedSettings.valueMap.passwordRequired_isInstructorEditable==true}" >
+  <h:panelGroup rendered="#{publishedSettings.valueMap.ipAccessType_isInstructorEditable==true or publishedSettings.valueMap.passwordRequired_isInstructorEditable==true or publishedSettings.valueMap.lockedBrowser_isInstructorEditable==true}" >
   <samigo:hideDivision title="#{assessmentSettingsMessages.t_highSecurity}" id="div4">
 	<f:verbatim><div class="tier2"></f:verbatim>
     <h:panelGrid border="0" columns="2" columnClasses="longtext"
@@ -400,6 +406,21 @@ function uncheckOther(field){
         <h:outputLabel value="#{assessmentSettingsMessages.high_security_password}"/>
         <h:inputText size="20" value="#{publishedSettings.password}"/>
       </h:panelGrid>
+      
+	  <h:outputText value="#{assessmentSettingsMessages.require_secure_delivery}"
+		rendered="#{publishedSettings.valueMap.lockedBrowser_isInstructorEditable==true && publishedSettings.secureDeliveryAvailable}"/>
+	  <h:panelGrid border="0" columns="1"  columnClasses="longtext"
+		rendered="#{publishedSettings.valueMap.lockedBrowser_isInstructorEditable==true && publishedSettings.secureDeliveryAvailable}">
+	    <h:selectOneRadio id="secureDeliveryModule" value="#{publishedSettings.secureDeliveryModule}"  layout="pageDirection" onclick="setBlockDivs();document.forms[0].onsubmit();document.forms[0].submit();">
+			<f:selectItems value="#{publishedSettings.secureDeliveryModuleSelections}" />
+		</h:selectOneRadio>
+		<h:panelGrid border="0" columns="2"  columnClasses="longtext"
+		   rendered="#{publishedSettings.valueMap.lockedBrowser_isInstructorEditable==true && publishedSettings.secureDeliveryAvailable}">	
+		   <h:outputLabel for="secureDeliveryModuleExitPassword" value="#{assessmentSettingsMessages.secure_delivery_exit_pwd}"/>
+		   <h:inputText id="secureDeliveryModuleExitPassword" size="20" value="#{publishedSettings.secureDeliveryModuleExitPassword}"
+				disabled="#{publishedSettings.secureDeliveryModule == 'SECURE_DELIVERY_NONE_ID'}" maxlength="14" />      	
+		</h:panelGrid>
+	  </h:panelGrid>
     </h:panelGrid>
 <f:verbatim></div></f:verbatim>
   </samigo:hideDivision>
@@ -447,7 +468,7 @@ function uncheckOther(field){
   <f:verbatim></div><div class="tier3"></f:verbatim>
     <h:panelGrid columns="1">
       <h:selectOneRadio id="itemNavigation" value="#{publishedSettings.itemNavigation}"  layout="pageDirection" 
-		onclick="setBlockDivs();submitForm();">
+		onclick="setBlockDivs();updateItemNavigation(true);submitForm();">
         <f:selectItem itemValue="1" itemLabel="#{assessmentSettingsMessages.linear_access}"/>
         <f:selectItem itemValue="2" itemLabel="#{assessmentSettingsMessages.random_access}"/>
       </h:selectOneRadio>
@@ -940,7 +961,7 @@ function uncheckOther(field){
 <p class="act">
 
   <!-- Save button -->
-  <h:commandButton type="submit" value="#{assessmentSettingsMessages.button_save_settings}" action="#{publishedSettings.getOutcome}"  styleClass="active" onclick="setBlockDivs();" >
+  <h:commandButton type="submit" value="#{assessmentSettingsMessages.button_save_settings}" action="#{publishedSettings.getOutcome}"  styleClass="active" onclick="setBlockDivs();updateItemNavigation(false);" >
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.SavePublishedSettingsListener" />
   </h:commandButton>
   
@@ -959,8 +980,8 @@ function uncheckOther(field){
 <!-- end content -->
 <f:verbatim></div></f:verbatim>
 
-        <script language="javascript" style="text/JavaScript">retainHideUnhideStatus('none');showHideReleaseGroups();</script>
-
+        <script style="text/JavaScript">retainHideUnhideStatus('none');showHideReleaseGroups();</script>
+        
       </body>
     </html>
   </f:view>

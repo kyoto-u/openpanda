@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x/basiclti-impl/src/java/org/sakaiproject/basiclti/impl/BasicLTISecurityServiceImpl.java $
- * $Id: BasicLTISecurityServiceImpl.java 88241 2011-02-09 19:23:21Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0/basiclti-impl/src/java/org/sakaiproject/basiclti/impl/BasicLTISecurityServiceImpl.java $
+ * $Id: BasicLTISecurityServiceImpl.java 98604 2011-09-25 12:51:59Z csev@umich.edu $
  * 
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -55,10 +55,17 @@ import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.NotificationService;
+import org.sakaiproject.lti.api.LTIService;
 //import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.Web;
+
+import org.sakaiproject.util.foorm.SakaiFoorm;
 
 import org.sakaiproject.basiclti.LocalEventTrackingService;
 import org.sakaiproject.basiclti.util.SakaiBLTIUtil;
+
 
 @SuppressWarnings("deprecation")
 public class BasicLTISecurityServiceImpl implements EntityProducer {
@@ -70,11 +77,13 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 	public static final String APPLICATION_ID = "sakai:basiclti";
 	public static final String EVENT_BASICLTI_LAUNCH = "basiclti.launch";
 
+	protected static SakaiFoorm foorm = new SakaiFoorm();
+
 	// Note: security needs a proper Resource reference
 
 	/*******************************************************************************
-	* Dependencies and their setter methods
-	*******************************************************************************/
+	 * Dependencies and their setter methods
+	 *******************************************************************************/
 
 	/** Dependency: a logger component. */
 	private Log logger = LogFactory.getLog(BasicLTISecurityServiceImpl.class);
@@ -109,8 +118,10 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 		return false;
 	}
 	/*******************************************************************************
-	* Init and Destroy
-	*******************************************************************************/
+	 * Init and Destroy
+	 *******************************************************************************/
+	/** A service */
+	protected static LTIService ltiService = null; 
 
 	/**
 	 * Final initialization, once all dependencies are set.
@@ -130,6 +141,7 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 		{
 			logger.warn("init(): ", t);
 		}
+		if ( ltiService == null ) ltiService = (LTIService) ComponentManager.get("org.sakaiproject.lti.api.LTIService");
 	}
 
 	/**
@@ -155,40 +167,81 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 	}
 
 
-		/*******************************************************************************************************************************
-		 * EntityProducer
-		 ******************************************************************************************************************************/
+	/*******************************************************************************************************************************
+	 * EntityProducer
+	 ******************************************************************************************************************************/
 
-		/**
-		 * {@inheritDoc}
-                   /access/basiclti/site/12-siteid-456/98-placement-id
-                   /access/basiclti/content/ --- content path ---- (Future)
-		 */
-		public boolean parseEntityReference(String reference, Reference ref)
+	/**
+	 * {@inheritDoc}
+	 /access/basiclti/site/12-siteid-456/98-placement-id
+	 /access/basiclti/content/ --- content path ---- (Future)
+	 */
+	public boolean parseEntityReference(String reference, Reference ref)
+	{
+		if (reference.startsWith(REFERENCE_ROOT))
 		{
-			if (reference.startsWith(REFERENCE_ROOT))
+			// we will get null, simplelti, site, <context>, <placement>
+			// we will store the context, and the ContentHosting reference in our id field.
+			String id = null;
+			String context = null;
+			String[] parts = StringUtil.split(reference, Entity.SEPARATOR);
+
+			if ( parts.length == 5 && parts[2].equals("site") )
 			{
-				// we will get null, simplelti, site, <context>, <placement>
-				// we will store the context, and the ContentHosting reference in our id field.
-				String id = null;
-				String context = null;
-				String[] parts = StringUtil.split(reference, Entity.SEPARATOR);
-
-				if ( parts.length == 5 && parts[2].equals("site") )
-				{
-					context = parts[3];
-					id = parts[4];
-					//Should the slashes below be entityseparator
-					// id = "/" + StringUtil.unsplit(parts, 2, parts.length - 2, "/");
-				}
-
-				ref.set(APPLICATION_ID, "site", id, null, context);
-
-				return true;
+				context = parts[3];
+				id = parts[4];
+				//Should the slashes below be entityseparator
+				// id = "/" + StringUtil.unsplit(parts, 2, parts.length - 2, "/");
 			}
 
-			return false;
+			ref.set(APPLICATION_ID, "site", id, null, context);
+
+			return true;
 		}
+
+		return false;
+	}
+
+	private void sendHTMLPage(HttpServletResponse res, String body)
+	{
+		try
+		{							
+			res.setContentType("text/html; charset=UTF-8");
+			res.setCharacterEncoding("utf-8");
+			res.addDateHeader("Expires", System.currentTimeMillis() - (1000L * 60L * 60L * 24L * 365L));
+			res.addDateHeader("Last-Modified", System.currentTimeMillis());
+			res.addHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0");
+			res.addHeader("Pragma", "no-cache");
+			ServletOutputStream out = res.getOutputStream();
+			
+			out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+			out.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">");
+			out.println("<html>\n<head>");
+			out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+			out.println("</head>\n<body>\n");
+			out.println(body);
+			out.println("\n</body>\n</html>");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+
+	private void doSplash(HttpServletRequest req, HttpServletResponse res, String splash, ResourceLoader rb)
+	{
+		// req.getRequestURL()=http://localhost:8080/access/basiclti/site/85fd092b-1755-4aa9-8abc-e6549527dce0/content:0
+		// req.getRequestURI()=/access/basiclti/site/85fd092b-1755-4aa9-8abc-e6549527dce0/content:0
+		String acceptPath = req.getRequestURI().toString() + "?splash=bypass";
+                String body = "<div align=\"center\" style=\"text-align:left;width:80%;margin-top:5px;margin-left:auto;margin-right:auto;border-width:1px 1px 1px 1px;border-style:solid;border-color: gray;padding:.5em;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:.8em\">";
+		body += splash+"</div><p>";
+		String txt = rb.getString("launch.button", "Press to continue to external tool.");
+		body += "<form><input type=\"submit\" onclick=\"window.location='"+acceptPath+"';return false;\" value=\"";
+		body += rb.getString("launch.button", "Press to continue to proceed to external tool.");
+		body += "\"></form></p>\n";
+		sendHTMLPage(res, body);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -198,51 +251,89 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 		return new HttpAccess()
 		{
 			@SuppressWarnings("unchecked")
-			public void handleAccess(HttpServletRequest req, HttpServletResponse res, Reference ref,
-					Collection copyrightAcceptedRefs) throws EntityPermissionException, EntityNotDefinedException,
-					EntityAccessOverloadException, EntityCopyrightException
-			{
-				// decide on security
-				if (!checkSecurity(ref))
-				{
-					throw new EntityPermissionException(SessionManager.getCurrentSessionUserId(), "basiclti", ref.getReference());
-				}
+				public void handleAccess(HttpServletRequest req, HttpServletResponse res, Reference ref,
+						Collection copyrightAcceptedRefs) throws EntityPermissionException, EntityNotDefinedException,
+					   EntityAccessOverloadException, EntityCopyrightException
+					   {
+						   // decide on security
+						   if (!checkSecurity(ref))
+						   {
+							   throw new EntityPermissionException(SessionManager.getCurrentSessionUserId(), "basiclti", ref.getReference());
+						   }
 
-				// Get the post data for the placement
-				String[] retval = SakaiBLTIUtil.postLaunchHTML(ref.getId(), rb);
+						   String refId = ref.getId();
+						   String [] retval = null;
+						   if ( refId.startsWith("content:") && refId.length() > 8 ) 
+						   {
+							   Map<String,Object> content = null;
+							   Map<String,Object> tool = null;
 
-				try
-				{
-					res.setContentType("text/html; charset=UTF-8");
-					res.setCharacterEncoding("utf-8");
-					res.addDateHeader("Expires", System.currentTimeMillis() - (1000L * 60L * 60L * 24L * 365L));
-					res.addDateHeader("Last-Modified", System.currentTimeMillis());
-					res.addHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0");
-					res.addHeader("Pragma", "no-cache");
-					ServletOutputStream out = res.getOutputStream();
+							   String contentStr = refId.substring(8);
+							   Long contentKey = foorm.getLongKey(contentStr);
+							   if ( contentKey >= 0 )
+							   {
+								   content = ltiService.getContentNoAuthz(contentKey);
+								   if ( content != null ) 
+								   {
+									   String siteId = (String) content.get(LTIService.LTI_SITE_ID);
+									   if ( siteId == null || ! siteId.equals(ref.getContext()) )  
+									   {
+										   content = null;
+									   }
+								   }
+								   if ( content != null ) 
+								   {
+									   Long toolKey = foorm.getLongKey(content.get(LTIService.LTI_TOOL_ID));
+									   if ( toolKey >= 0 ) tool = ltiService.getToolNoAuthz(toolKey);
+									   if ( tool != null ) 
+									   {
+										   // SITE_ID can be null for the tool
+										   String siteId = (String) tool.get(LTIService.LTI_SITE_ID);
+										   if ( siteId != null && ! siteId.equals(ref.getContext()) ) 
+										   {
+											   tool = null;
+										   }
+									   }
+								   }
 
-					out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-					out.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">");
-					out.println("<html>\n<head>");
-					out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-					out.println("</head>\n<body>");
-					out.println(retval[0]);
-					out.println("</body>\n</html>");
-					String refstring = ref.getReference();
-					if ( retval.length > 1 ) refstring = retval[1];
-					// Cool 2.6 Event call
-                                        Event event = LocalEventTrackingService.newEvent(EVENT_BASICLTI_LAUNCH, refstring, ref.getContext(),  false, NotificationService.NOTI_OPTIONAL);
-					// 2.5 Event call
-                                        // Event event = EventTrackingService.newEvent(EVENT_BASICLTI_LAUNCH, refstring, false);
-                                        LocalEventTrackingService.post(event);
+								   // Adjust the content items based on the tool items
+								   if ( tool != null || content != null ) 
+								   {
+									   ltiService.filterContent(content, tool);
+								   }
+							   }
+							   String splash = (String) tool.get("splash");
+							   String splashParm = req.getParameter("splash");
+							   if ( splashParm == null && splash != null && splash.trim().length() > 1 )
+							   {
+								doSplash(req, res, splash, rb);
+								return;
+							   }
+							   retval = SakaiBLTIUtil.postLaunchHTML(content, tool, rb);
+						   }
+						   else
+						   {
+							   // Get the post data for the placement
+							   retval = SakaiBLTIUtil.postLaunchHTML(refId, rb);
+						   }
 
-				} 
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+						   try
+						   {
+							   sendHTMLPage(res, retval[0]);
+							   String refstring = ref.getReference();
+							   if ( retval.length > 1 ) refstring = retval[1];
+							   // Cool 2.6 Event call
+							   Event event = LocalEventTrackingService.newEvent(EVENT_BASICLTI_LAUNCH, refstring, ref.getContext(),  false, NotificationService.NOTI_OPTIONAL);
+							   // 2.5 Event call
+							   // Event event = EventTrackingService.newEvent(EVENT_BASICLTI_LAUNCH, refstring, false);
+							   LocalEventTrackingService.post(event);
+						   } 
+						   catch (Exception e)
+						   {
+							   e.printStackTrace();
+						   }
 
-			}
+					   }
 		};
 	}
 
@@ -295,22 +386,22 @@ public class BasicLTISecurityServiceImpl implements EntityProducer {
 		return "basiclti";
 	}
 
-        public boolean willArchiveMerge()
-        {
-                return false;
-        }
+	public boolean willArchiveMerge()
+	{
+		return false;
+	}
 
-        @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 		public String merge(String siteId, Element root, String archivePath, String fromSiteId, Map attachmentNames, Map userIdTrans,
-                        Set userListAllowImport)
-        {
-		return null;
-        }
+				Set userListAllowImport)
+		{
+			return null;
+		}
 
-        @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 		public String archive(String siteId, Document doc, Stack stack, String archivePath, List attachments)
-        {
-		return null;
-        }
+		{
+			return null;
+		}
 
 }

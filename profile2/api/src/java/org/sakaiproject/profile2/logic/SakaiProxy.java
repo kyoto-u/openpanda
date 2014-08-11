@@ -22,6 +22,8 @@ import java.util.Map;
 
 import org.sakaiproject.api.common.edu.person.SakaiPerson;
 import org.sakaiproject.profile2.model.MimeTypeByteArray;
+import org.sakaiproject.site.api.Site;
+import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.user.api.User;
 /**
  * An interface for abstracting Sakai specific parts away from the main logic.
@@ -200,7 +202,12 @@ public interface SakaiProxy {
 	public SakaiPerson createSakaiPerson(String userId);
 
 	/**
-	 * Update a SakaiPerson object in the db
+	 * Update a SakaiPerson object in the db.
+	 * <p>If you are doing this from the UI you should use the {@link ProfileLogic.updateUserProfile} method instead
+	 * as it will also handle any email notifications that may be required.
+	 * 
+	 * <p>We keep this because for direct actions like converting profiles etc we dont need email notifications.
+	 *  
 	 * @param sakaiPerson
 	 * @return
 	 */
@@ -425,6 +432,24 @@ public interface SakaiProxy {
 	public boolean isBusinessProfileEnabled();
 	
 	/**
+	 * Is the profile2.wall.enabled flag set in sakai.properties? If not set,
+	 * defaults to <code>false</code>.
+	 * 
+	 * @return <code>true</code> if the profile2.wall.enabled flag is set,
+	 *         otherwise returns <code>false</code>.
+	 */
+	public boolean isWallEnabledGlobally();
+	
+	/**
+	 * Is the profile2.wall.default flag set in sakai.properties? If not set,
+	 * defaults to <code>false</code>.
+	 * 
+	 * @return <code>true</code> if the profile2.wall.default flag is set,
+	 *         otherwise returns <code>false</code>.
+	 */
+	public boolean isWallDefaultProfilePage();
+	
+	/**
 	 * Is the profile2.convert flag set in sakai.properties?
 	 * If not set, defaults to false
 	 * 
@@ -496,12 +521,14 @@ public interface SakaiProxy {
 	
 	/**
 	 * Get the profile2.picture.type setting in sakai.properties
-	 * <p>Possible values for the sakai property are 'upload', 'url', and 'official'.
+	 * <p>Possible values for the sakai property are 'upload', 'url', 'official' and 'gravatar'.
 	 * If not set, defaults to 'upload'.</p>
-	 * <p>This returns an int which matches one of: ProfileConstants.PICTURE_SETTING_UPLOAD, ProfileConstants.PICTURE_SETTING_URL, ProfileConstants.PICTURE_SETTING_OFFICIAL</p>
+	 * <p>This returns an int which matches one of: ProfileConstants.PICTURE_SETTING_UPLOAD, 
+	 * ProfileConstants.PICTURE_SETTING_URL, ProfileConstants.PICTURE_SETTING_OFFICIAL,
+	 * ProfileConstants.PICTURE_SETTINGS_GRAVATAR.</p>
 	 * 
 	 * <p>Depending on this setting, Profile2 will decide how it retrieves a user's profile image, and the method by which
-	 * users can add their own image. ie by uploading their own image, providing a URL, or not at all (for official).</p>
+	 * users can add their own image. ie by uploading their own image, providing a URL, not at all (for official), or creating a gravatar URL</p>
 	 * 
 	 * @return
 	 */
@@ -713,28 +740,81 @@ public interface SakaiProxy {
 	public int getMaxSearchResultsPerPage();
 	
 	/**
+	 * Is profile2.gravatar.image.enabled true? If so, allow use of this image and preference.
+	 * @return
+	 */
+	public boolean isGravatarImageEnabledGlobally();
+
+	/**
+	 * Does user have site.add permission?
+	 * 
+	 * @return <code>true</code> if user allowed to create worksites, else <code>false</code>.
+	 */
+	public boolean isUserAllowedAddSite(String userUuid);
+	
+	/**
+	 * Add a new site.
+	 * 
+	 * @param id the id of the site.
+	 * @param type the type of the site e.g. project.
+	 * @return a reference to the new site or <code>null</code> if there is a problem creating the site.
+	 */
+	public Site addSite(String id, String type);
+	
+	/**
+	 * Save an existing site.
+	 * 
+	 * @param site a reference to the site to save.
+	 * @return <code>true</code> if successful, otherwise <code>false</code>.
+	 */
+	public boolean saveSite(Site site);
+	
+	/**
+	 * Return a reference to the specified site.
+	 * 
+	 * @param siteId
+	 * @return a reference to the specified site.
+	 */
+	public Site getSite(String siteId);
+	
+	/**
+	 * Return all user sites for the current user (i.e. worksites that the user has at least 'access' permission to).
+	 * 
+	 * @return all user sites for the current user.
+	 */
+	public List<Site> getUserSites();
+	
+	/**
+	 * Returns a reference to the specified Sakai tool.
+	 * 
+	 * @param id the id of the tool required.
+	 * @return a reference to the specified Sakai tool or <code>null</code> if a
+	 *         reference cannot be obtained.
+	 */
+	public Tool getTool(String id);
+	
+	/**
+	 * Returns a list of the tool types required for the specified site type.
+	 * 
+	 * @param category the type of site e.g. 'project'
+	 * @return a list of the tool types required for the specified site type
+	 */
+	public List<String> getToolsRequired(String category);
+	
+	/**
+	 * Is the profile2.integration.google.enabled flag set to true in sakai.properties?
+	 * If not set, defaults to false
+	 * 
+	 * <p>Depending on this setting, the UI will allow a user to add their Google account.
+	 * For institutions to use this there additional setup required.</p>
+	 * 
+	 * @return
+	 */
+	public boolean isGoogleIntegrationEnabledGlobally();
+	
+	/**
 	 * Helper to check if the current user is logged in
 	 * @return
 	 */
 	public boolean isLoggedIn();
-	
-	/**
-	 * Is the profile2.profile.fields.enabled flag set in sakai.properties? 
-	 * If not set, defaults to true.
-	 * 
-	 * <p>This setting controls the display of the profile fields.
-	 * 
-	 * @return true or false. 
-	 */
-	public boolean isProfileFieldsEnabled();
-	
-	/**
-	 * Is the profile2.profile.status.enabled flag set in sakai.properties? 
-	 * If not set, defaults to true.
-	 * 
-	 * <p>This setting controls the display of the profile status section.
-	 * 
-	 * @return true or false. 
-	 */
-	public boolean isProfileStatusEnabled();
 }

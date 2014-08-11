@@ -81,14 +81,20 @@ div.profile2-profile-content-thumb {
 }
 
 .profile2-profile-statusMessage {
-	font-size: 0.8em;
+	font-size: 1em;
 	word-wrap: break-word;
+	margin-bottom: 2px;
 }
 
 .profile2-profile-statusDate {
-	font-size: 0.6em;
+	font-size: 1em;
 	color: #5D5D5D;
 	margin-bottom: 2px;
+}
+
+.profile2-profile-view-full {
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .icon {
@@ -110,5 +116,9 @@ div.profile2-profile-content-thumb {
 }
 
 .connection-self {
+	background-image: url(/library/image/silk/vcard.png);
+}
+
+.profile-image {
 	background-image: url(/library/image/silk/vcard.png);
 }

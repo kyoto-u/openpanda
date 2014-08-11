@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/branches/sakai-2.8.x/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementActionState.java $
- * $Id: AnnouncementActionState.java 97655 2011-08-29 16:04:40Z savithap@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.0/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementActionState.java $
+ * $Id: AnnouncementActionState.java 109814 2012-06-28 15:20:46Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -354,12 +354,12 @@ public class AnnouncementActionState extends ControllerState implements SessionB
 					String varNameNumberChars = parameters.getString("changeChars");
 					if (varNameNumberChars.equals(rb.getString("custom.shofir")))
 					{
-						setNumberOfCharsPerAnnouncement(50);
+						setNumberOfCharsPerAnnouncement(53);
 						setEnforceNumberOfCharsPerAnnouncement(true);
 					}
 					else if (varNameNumberChars.equals(rb.getString("custom.shofirtwo")))
 					{
-						setNumberOfCharsPerAnnouncement(100);
+						setNumberOfCharsPerAnnouncement(103);
 						setEnforceNumberOfCharsPerAnnouncement(true);
 					}
 					else if (varNameNumberChars.equals(rb.getString("custom.shoall")))
@@ -377,12 +377,12 @@ public class AnnouncementActionState extends ControllerState implements SessionB
 				String varNameNumberChars = parameters.getString("changeChars");
 				if (varNameNumberChars.equals(rb.getString("custom.shofir")))
 				{
-					setNumberOfCharsPerAnnouncement(50);
+					setNumberOfCharsPerAnnouncement(53);
 					setEnforceNumberOfCharsPerAnnouncement(true);
 				}
 				else if (varNameNumberChars.equals(rb.getString("custom.shofirtwo")))
 				{
-					setNumberOfCharsPerAnnouncement(100);
+					setNumberOfCharsPerAnnouncement(103);
 					setEnforceNumberOfCharsPerAnnouncement(true);
 				}
 				else if (varNameNumberChars.equals(rb.getString("custom.shoall")))

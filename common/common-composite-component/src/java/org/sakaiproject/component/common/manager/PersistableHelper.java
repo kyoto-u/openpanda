@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/common-composite-component/src/java/org/sakaiproject/component/common/manager/PersistableHelper.java $
- * $Id: PersistableHelper.java 96489 2011-08-05 23:47:39Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/common-composite-component/src/java/org/sakaiproject/component/common/manager/PersistableHelper.java $
+ * $Id: PersistableHelper.java 96488 2011-08-05 23:43:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -21,6 +21,7 @@
 
 package org.sakaiproject.component.common.manager;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -65,10 +66,16 @@ public class PersistableHelper
 			PropertyUtils.setProperty(persistable, LASTMODIFIEDBY, actor);
 			PropertyUtils.setProperty(persistable, LASTMODIFIEDDATE, now);
 		}
-		catch (Exception e)
+		catch (NoSuchMethodException e)
 		{
 			LOG.error(e);
-			throw new Error(e);
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			LOG.error(e);
+			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			LOG.error(e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -90,10 +97,16 @@ public class PersistableHelper
 			PropertyUtils.setProperty(persistable, CREATEDBY, actor);
 			PropertyUtils.setProperty(persistable, CREATEDDATE, now);
 		}
-		catch (Exception e)
+		catch (NoSuchMethodException e)
 		{
 			LOG.error(e);
-			throw new Error(e);
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			LOG.error(e);
+			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			LOG.error(e);
+			throw new RuntimeException(e);
 		}
 	}
 

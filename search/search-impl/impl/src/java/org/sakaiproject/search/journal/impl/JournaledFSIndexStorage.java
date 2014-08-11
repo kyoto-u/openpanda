@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/JournaledFSIndexStorage.java $
- * $Id: JournaledFSIndexStorage.java 81609 2010-08-22 15:20:44Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/JournaledFSIndexStorage.java $
+ * $Id: JournaledFSIndexStorage.java 83743 2010-10-25 15:04:23Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -308,8 +308,9 @@ public class JournaledFSIndexStorage implements JournaledIndex, IndexStorageProv
 				}
 				if (tableExists)
 				{
+					//SRCH-3 deleting this entirely can lead to search inconsistency
 					deleteJournalSavePointPst = connection
-							.prepareStatement("delete from search_node_status where serverid = ? ");
+							.prepareStatement("update search_node_status set jid = -1 where serverid = ? ");
 					deleteJournalSavePointPst.clearParameters();
 					deleteJournalSavePointPst.setString(1, serverId);
 					deleteJournalSavePointPst.executeUpdate();

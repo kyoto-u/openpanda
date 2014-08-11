@@ -7,7 +7,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: accessDenied.jsp 92043 2011-04-19 21:20:08Z ktsao@stanford.edu $
+* $Id: accessDenied.jsp 104800 2012-02-17 01:07:35Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -38,7 +38,7 @@
 <div class="portletBody">
 <h:form id="redirectLoginForm">
   <h3><h:outputText value="#{deliveryMessages.access_denied}"/></h3>
-   <div class="validation">
+   <div class="messageSamigo">
   <h:outputText  value="#{deliveryMessages.access_denied_message}" />
   </div>
  <p class="act">

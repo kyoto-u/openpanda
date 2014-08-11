@@ -7,9 +7,7 @@
 
       <category name="sakai.helper" />
       <category name="sakai.main" />
-      <category name="project" />
       <category name="portfolio" />
-      <category name="course" />
       <category name="portfolioAdmin" />
       
       <configuration name="theospi.toolListenerId"

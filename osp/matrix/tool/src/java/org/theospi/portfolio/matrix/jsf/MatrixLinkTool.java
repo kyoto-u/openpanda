@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.faces.context.ExternalContext;
@@ -35,8 +34,8 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.entity.api.Reference;
+import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.metaobj.security.AuthenticationManager;
@@ -280,7 +279,10 @@ public class MatrixLinkTool extends HelperToolBase
 	}
 	
 	public String getFrameId() {
-		String script = "<script type=\"text/javascript\" language=\"JavaScript\">iframeId = '" + Validator.escapeJavascript("Main" + getSessionManager().getCurrentToolSession().getPlacementId()) + "';</script>";
+		ToolSession toolSession = getSessionManager().getCurrentToolSession();
+		String placementId = toolSession.getPlacementId();
+		String id = Validator.escapeJavascript(placementId);
+		String script = "<script type=\"text/javascript\" language=\"JavaScript\">iframeId = '" + id + "';</script>";
 		
 		return script;
 	}

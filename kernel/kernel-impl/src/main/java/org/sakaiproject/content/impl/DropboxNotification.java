@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/impl/DropboxNotification.java $
- * $Id: DropboxNotification.java 118908 2013-01-28 22:56:20Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/DropboxNotification.java $
+ * $Id: DropboxNotification.java 113289 2012-09-21 15:16:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.authz.api.Member;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.cover.ContentHostingService;
@@ -49,10 +50,10 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.EmailNotification;
-import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.Resource;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.StringUtil;
+import org.sakaiproject.util.api.FormattedText;
 
 /**
  * <p>
@@ -90,7 +91,25 @@ public class DropboxNotification extends EmailNotification
 	private final String TERMINATION_LINE = "\n\n--"+MULTIPART_BOUNDARY+"--\n\n";
 
 	private final String MIME_ADVISORY = "This message is for MIME-compliant mail readers.";
-	
+
+    private static Object LOCK = new Object();
+
+    private static FormattedText formattedText;
+
+    protected static FormattedText getFormattedText() {
+        if (formattedText == null) {
+            synchronized (LOCK) {
+                FormattedText component = (FormattedText) ComponentManager.get(FormattedText.class);
+                if (component == null) {
+                    throw new IllegalStateException("Unable to find the FormattedText using the ComponentManager");
+                } else {
+                    formattedText = component;
+                }
+            }
+        }
+        return formattedText;
+    }
+
 	/* (non-Javadoc)
 	 * @see org.sakaiproject.util.EmailNotification#getClone()
 	 */
@@ -128,44 +147,45 @@ public class DropboxNotification extends EmailNotification
 
 		return rv;
 	}
-	
-	/**
-	 * Extract a 'Set' of user ids from the given set of members.
-	 *
-	 * @param members   The Set of members from which to extract the userIds
-	 * @return
-	 *      The set of user ids that belong to the users in the member set.
-	 */
-	private Set<String> getUserIds(Collection<Member> members) {
-		Set<String> userIds = new HashSet<String>();
 
-		for (Member member : members)
-			userIds.add(member.getUserId());
-		return userIds;
-	}
+    /**
+     * Extract a 'Set' of user ids from the given set of members.
+     *
+     * @param members   The Set of members from which to extract the userIds
+     * @return
+     *      The set of user ids that belong to the users in the member set.
+     */
+    private Set<String> getUserIds(Collection<Member> members) {
+        Set<String> userIds = new HashSet<String>();
 
-	/**
+        for (Member member : members)
+            userIds.add(member.getUserId());
+
+        return userIds;
+    }
+
+   	/**
 	 * Only include actual site members in the notification.
-	 *
+	 * 
 	 * @param users
 	 *        List of users that emails would be sent to.
 	 * @param site
 	 *        Site that the emails would be sent to
-	 * @return
-	 *        Refined list of users who are members of this site.
+	 * @return 
+     *        Refined list of users who are members of this site.
 	 */
-	protected void refineToSiteMembers(List<User> users, Site site) {
-		Set<Member> members = site.getMembers();
-		Set<String> memberUserIds = getUserIds(members);
+    protected void refineToSiteMembers(List<User> users, Site site) { 
+        Set<Member> members = site.getMembers(); 
+        Set<String> memberUserIds = getUserIds(members); 
 
-		for (Iterator<User> i = users.listIterator(); i.hasNext();) {
-			User user = i.next();
+        for (Iterator<User> i = users.listIterator(); i.hasNext();) { 
+            User user = i.next(); 
 
-			if (!memberUserIds.contains(user.getId())) {
-				i.remove();
-			}
-		}
-	}
+            if (!memberUserIds.contains(user.getId())) { 
+                i.remove(); 
+            } 
+        } 
+    } 
 	
 	/**
 	 * Get the list of User objects who are eligible to receive the notification email.
@@ -180,17 +200,17 @@ public class DropboxNotification extends EmailNotification
 		
 		String resourceRef = event.getResource();
 		Reference ref = EntityManager.newReference(resourceRef);
-		String siteId = (getSite() != null) ? getSite() : ref.getContext();
+        String siteId = (getSite() != null) ? getSite() : ref.getContext();
 
-		Site site;
-		// get a site
-		try {
-			site = SiteService.getSite(siteId);
-		}
-		catch (IdUnusedException e) {
+        Site site;
+        // get a site 
+        try {
+          site = SiteService.getSite(siteId);
+        }
+        catch (IdUnusedException e) {
 			logger.warn("Could not getSite for " + siteId + " not returning any recipients.");
-			return recipients;
-		}
+            return recipients;
+        }
 		
 		ResourceProperties props = ref.getProperties();
 		String modifiedBy = props.getProperty(ResourceProperties.PROP_MODIFIED_BY);
@@ -209,7 +229,7 @@ public class DropboxNotification extends EmailNotification
 				String siteDropbox = buf.toString();
 
 				recipients.addAll( SecurityService.unlockUsers(ContentHostingService.AUTH_DROPBOX_MAINTAIN, siteDropbox) ); 
-				refineToSiteMembers(recipients, site);
+                refineToSiteMembers(recipients, site);
 			}
 			else
 			{
@@ -330,11 +350,11 @@ public class DropboxNotification extends EmailNotification
 
 		if ( doHtml ) 
 		{
-			siteTitle = FormattedText.escapeHtmlFormattedTextarea(siteTitle);
-			subject = FormattedText.escapeHtmlFormattedTextarea(subject);
-			resourceName = FormattedText.escapeHtmlFormattedTextarea(resourceName);
-			description = FormattedText.escapeHtmlFormattedTextarea(description);
-			dropboxTitle = FormattedText.escapeHtmlFormattedTextarea(dropboxTitle);
+			siteTitle = getFormattedText().escapeHtmlFormattedTextarea(siteTitle);
+			subject = getFormattedText().escapeHtmlFormattedTextarea(subject);
+			resourceName = getFormattedText().escapeHtmlFormattedTextarea(resourceName);
+			description = getFormattedText().escapeHtmlFormattedTextarea(description);
+			dropboxTitle = getFormattedText().escapeHtmlFormattedTextarea(dropboxTitle);
 			blankLine = "\n</p><p>\n";
 			newLine = "<br/>\n";
 		}

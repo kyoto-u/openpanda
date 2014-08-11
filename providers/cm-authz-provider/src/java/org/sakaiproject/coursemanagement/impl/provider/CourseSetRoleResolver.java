@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseSetRoleResolver.java $
- * $Id: CourseSetRoleResolver.java 107091 2012-04-16 00:10:14Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseSetRoleResolver.java $
+ * $Id: CourseSetRoleResolver.java 102983 2012-01-09 19:11:46Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation

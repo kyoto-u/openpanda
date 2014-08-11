@@ -22,22 +22,30 @@
 package org.sakaiproject.util;
 
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.i18n.InternationalizedMessages;
-import org.sakaiproject.tool.cover.SessionManager;
-import org.sakaiproject.user.api.Preferences;
-import org.sakaiproject.user.cover.PreferencesService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.i18n.InternationalizedMessages;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.user.api.PreferencesService;
 
 /**
  * ResourceLoader provides an alternate implementation of org.util.ResourceBundle, dynamically selecting the prefered locale from either the user's session or from the user's sakai preferences
  * 
  * @author Sugiura, Tatsuki (University of Nagoya)
  */
+@SuppressWarnings("rawtypes")
 public class ResourceLoader extends DummyMap implements InternationalizedMessages
 {
 	protected static final Log M_log = LogFactory.getLog(ResourceLoader.class);
@@ -64,6 +72,28 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	protected String DEBUG_LOCALE = "en_US_DEBUG";
 	private   String DBG_PREFIX = "** ";
 	private   String DBG_SUFFIX = " **";
+
+	private static Object LOCK = new Object();
+
+	private static SessionManager sessionManager;
+	protected static SessionManager getSessionManager() {
+        if (sessionManager == null) {
+            synchronized (LOCK) {
+                sessionManager = (SessionManager) ComponentManager.get(SessionManager.class);
+            }
+        }
+        return sessionManager;
+	}
+
+	private static PreferencesService preferencesService;
+	protected static PreferencesService getPreferencesService() {
+	    if (preferencesService == null) {
+	        synchronized (LOCK) {
+	            preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class);
+            }
+	    }
+	    return preferencesService;
+	}
 
 	/**
 	 * Default constructor (may be used to find user's default locale 
@@ -112,7 +142,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	/**
 	 ** Return ResourceBundle properties as if Map.entrySet() 
 	 **/
-	public Set entrySet()
+    public Set entrySet()
 	{
 		return getBundleAsMap().entrySet();
 	}
@@ -205,7 +235,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 			 
 			 else
 			 {
-				 loc = (Locale) SessionManager.getCurrentSession().getAttribute(LOCALE_SESSION_KEY+SessionManager.getCurrentSessionUserId());
+				 loc = (Locale) getSessionManager().getCurrentSession().getAttribute(LOCALE_SESSION_KEY+getSessionManager().getCurrentSessionUserId());
 				 
 				 // The locale is not in the session. 
 				 // Look for it and set in session
@@ -213,7 +243,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 					 loc = setContextLocale(null);
 			 }
 		 }
-		 //FIXME NPE's should not be explicitly caught - rather check the session above fo null
+		 //FIXME NPE's should not be explicitly caught - rather check the session above for null
 		 catch(NullPointerException e) 
 		 {
 			if (M_log.isWarnEnabled()) {
@@ -253,7 +283,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	 ***/
 	public Locale getLocale(String userId)
 	{
-		return PreferencesService.getLocale(userId);
+		return getPreferencesService().getLocale(userId);
 	}
 	
 	/**
@@ -274,7 +304,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 		{
 			try
 			{
-				loc = getLocale( SessionManager.getCurrentSessionUserId() );
+				loc = getLocale( getSessionManager().getCurrentSessionUserId() );
 			}
 			catch (Exception e)
 			{
@@ -290,7 +320,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 		{
 			try
 			{
-				loc = (Locale) SessionManager.getCurrentSession().getAttribute("locale");
+				loc = (Locale) getSessionManager().getCurrentSession().getAttribute("locale");
 			}
 			catch (NullPointerException e)
 			{
@@ -322,9 +352,9 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 		//Write the sakai locale in the session	
 		try 
 		{
-			String sessionUser = SessionManager.getCurrentSessionUserId();
+			String sessionUser = getSessionManager().getCurrentSessionUserId();
 			if ( sessionUser != null )
-				SessionManager.getCurrentSession().setAttribute(LOCALE_SESSION_KEY+sessionUser,loc);
+				getSessionManager().getCurrentSession().setAttribute(LOCALE_SESSION_KEY+sessionUser,loc);
 		}
 		catch (Exception e) 
 		{
@@ -492,7 +522,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	 */
 	public void purgeCache()
 	{
-		this.bundles = new Hashtable();
+		this.bundles = new Hashtable<Locale, ResourceBundle>();
 		M_log.debug("purge bundle cache");
 	}
 
@@ -655,6 +685,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	}
 }
 
+@SuppressWarnings({ "rawtypes" })
 abstract class DummyMap implements Map
 {
 	public void clear()

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/SectionBean.java $
- * $Id: SectionBean.java 84423 2010-11-05 23:25:47Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/SectionBean.java $
+ * $Id: SectionBean.java 113410 2012-09-21 20:49:23Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -31,7 +31,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.text.Collator;
-
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
@@ -401,8 +402,12 @@ private List attachmentList;
 	  public int compare(Object o1, Object o2) {
 		  SelectItem i1 = (SelectItem)o1;
 		  SelectItem i2 = (SelectItem)o2;
-		  return Collator.getInstance().compare(i1.getLabel(),i2.getLabel());
-
+			try{
+				RuleBasedCollator r_collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+				return r_collator.compare(i1.getLabel(), i2.getLabel());
+			}catch(ParseException e){
+				  return Collator.getInstance().compare(i1.getLabel(),i2.getLabel());
+			}
 	  }
   }
 

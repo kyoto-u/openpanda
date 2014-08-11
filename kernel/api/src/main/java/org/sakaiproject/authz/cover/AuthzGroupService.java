@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/authz/cover/AuthzGroupService.java $
- * $Id: AuthzGroupService.java 77198 2010-05-06 17:58:38Z bkirschn@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/authz/cover/AuthzGroupService.java $
+ * $Id: AuthzGroupService.java 101392 2011-12-05 15:07:25Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -21,6 +21,7 @@
 
 package org.sakaiproject.authz.cover;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -345,4 +346,13 @@ public class AuthzGroupService
 
 		return service.getUsersRole(param0, param1);
 	}
+
+    public static Collection<String> getAuthzUsersInGroups(Set<String> groupIds)
+    {
+        org.sakaiproject.authz.api.AuthzGroupService service = getInstance();
+        if (service == null) return null;
+
+        return service.getAuthzUsersInGroups(groupIds);
+    }
+
 }

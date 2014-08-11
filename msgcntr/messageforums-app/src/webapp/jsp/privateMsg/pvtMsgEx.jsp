@@ -15,10 +15,10 @@
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 			<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>		
 			
-			<%@include file="topNav.jsp" %>
+			<%@ include file="topNav.jsp" %>
 
-			<h:messages styleClass="alertMessage" id="errorMessages" />
-			<%@include file="msgHeader.jsp"%>
+			<h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}"/>
+			<%@ include file="msgHeader.jsp"%>
 
 
 	  <h:dataTable styleClass="listHier lines nolines" cellpadding="0" cellspacing="0"  id="pvtmsgs" width="100%" value="#{PrivateMessagesTool.searchPvtMsgs}" var="rcvdItems" 
@@ -67,17 +67,17 @@
 		       <h:outputText value="#{msgs.pvt_date}"/>
 		    </f:facet>
 		     <h:outputText value="#{rcvdItems.msg.created}" rendered="#{rcvdItems.hasRead}">
-    		     <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />
+    		     <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>
     		 </h:outputText>
 		     <h:outputText styleClass="unreadMsg" value="#{rcvdItems.msg.created}" rendered="#{!rcvdItems.hasRead}">
-		         <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />
+		         <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>
 		     </h:outputText>
 		  </h:column>
 		  <h:column>
 		    <f:facet name="header">
 		       <h:outputText value="#{msgs.pvt_label}"/>
 		    </f:facet>
-		     <h:outputText value="#{rcvdItems.msg.label}"/>
+		     <h:outputText value="#{rcvdItems.label}"/>
 		  </h:column>
 		</h:dataTable>
 		
@@ -129,17 +129,17 @@
 		       <h:outputText value="#{msgs.pvt_date}"/>
 		    </f:facet>
 		     <h:outputText value="#{rcvdItems.msg.created}" rendered="#{rcvdItems.hasRead}">
-		         <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />
+		         <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>
 		     </h:outputText>
 		     <h:outputText styleClass="unreadMsg" value="#{rcvdItems.msg.created}" rendered="#{!rcvdItems.hasRead}">
-		         <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />
+		         <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>
 		     </h:outputText>
 		  </h:column>
 		  <h:column>
 		    <f:facet name="header">
 		       <h:outputText value="#{msgs.pvt_label}"/>
 		    </f:facet>
-		     <h:outputText value="#{rcvdItems.msg.label}"/>
+		     <h:outputText value="#{rcvdItems.label}"/>
 		  </h:column>
 		</mf:hierPvtMsgDataTable>
 		

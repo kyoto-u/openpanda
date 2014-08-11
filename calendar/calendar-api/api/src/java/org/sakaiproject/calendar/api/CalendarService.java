@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-api/api/src/java/org/sakaiproject/calendar/api/CalendarService.java $
- * $Id: CalendarService.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-api/api/src/java/org/sakaiproject/calendar/api/CalendarService.java $
+ * $Id: CalendarService.java 99972 2011-10-19 15:14:43Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -58,7 +58,31 @@ public interface CalendarService
 
 	/** Name for the event of removing or changing any events in a calendar. */
 	public static final String EVENT_MODIFY_CALENDAR = "calendar.revise";
+	
+	/** Name for the event of changing event title */
+	public static final String EVENT_MODIFY_CALENDAR_EVENT_TITLE = "calendar.revise.event.title";
+	
+	/** Name for the event of changing the start time of a calendar event */
+	public static final String EVENT_MODIFY_CALENDAR_EVENT_TIME = "calendar.revise.event.time";
+	
+	/** Name for the event of changing the start time of a calendar event */
+	public static final String EVENT_MODIFY_CALENDAR_EVENT_TYPE = "calendar.revise.event.type";
+	
+	/** Name for the event of changing event access settings */
+	public static final String EVENT_MODIFY_CALENDAR_EVENT_ACCESS = "calendar.revise.event.access";
+	
+	/** Name for the event of changing event frequency */
+	public static final String EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY = "calendar.revise.event.frequency";
+	
+	/** Name for the event of adding (or removing) an item in the list of exclusions for a recurring event (the entity ref identifies the recurring event and the index of excluded item) */
+	public static final String EVENT_MODIFY_CALENDAR_EVENT_EXCLUSIONS = "calendar.revise.event.exclusions";
 
+	/** Name for the event of excluding an item from a recurring event (the entity ref identifies the newly independent event) */
+	public static final String EVENT_MODIFY_CALENDAR_EVENT_EXCLUDED = "calendar.revise.event.excluded";
+
+	/** Name for the event of deleting a calendar event or a repeating calendar event */ 
+	public static final String EVENT_REMOVE_CALENDAR_EVENT = "calendar.delete.event";
+	
    /** Security lock for adding a calendar event */
 	public static final String AUTH_ADD_CALENDAR = "calendar.new";
 
@@ -147,6 +171,7 @@ public interface CalendarService
 
    /** session attribute for list of all calendars user can reference */   
    public static final String SESSION_CALENDAR_LIST = "calendar.ref.list";
+
 
 	/**
 	* Return a List of all the defined calendars.

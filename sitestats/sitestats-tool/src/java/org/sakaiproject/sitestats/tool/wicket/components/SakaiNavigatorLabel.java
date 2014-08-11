@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/SakaiNavigatorLabel.java $
- * $Id: SakaiNavigatorLabel.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/SakaiNavigatorLabel.java $
+ * $Id: SakaiNavigatorLabel.java 87931 2011-02-02 12:12:01Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -109,7 +109,7 @@ public class SakaiNavigatorLabel extends Label {
 	private SakaiNavigatorLabel(final String id, final PageableComponent table) {
 		super(id);
 		Model model = new Model(new LabelModelObject(table)); 
-		setModel(
+		setDefaultModel(
 				new StringResourceModel(
 						"pager_textStatus", 
 						this, 

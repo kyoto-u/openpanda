@@ -20,7 +20,7 @@
 
 	<sakai:view_content>
 
-		<h:messages showSummary="false" showDetail="true" />
+		<h:messages showSummary="false" showDetail="true" rendered="#{!empty facesContext.maximumSeverity}"/>
 	
 		<sakai:instruction_message value="#{common_msgs.options_instructions}" />
 	

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $HeadURL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/PathHashUtil.java $
- * $Id: PathHashUtil.java 60847 2009-04-22 14:51:46Z aaronz@vt.edu $
+ * $HeadURL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/PathHashUtil.java $
+ * $Id: PathHashUtil.java 101656 2011-12-12 22:40:28Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 Sakai Foundation
@@ -29,7 +29,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * 
  * A utility class to generate a SHA1 hash based on a full path to a resource/entity.
- *
+ * @deprecated unused as of 12 Dec 2011, planned for removal after 2.9
  */
 public class PathHashUtil 
 {
@@ -39,7 +39,7 @@ public class PathHashUtil
     private static char[] encode = { '0', '1', '2', '3', '4', '5', '6', '7',
                     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
-    private static ThreadLocal digest = new ThreadLocal();
+    private static ThreadLocal<MessageDigest> digest = new ThreadLocal<MessageDigest>();
     
     /**
      * create a SHA1 hash of the path

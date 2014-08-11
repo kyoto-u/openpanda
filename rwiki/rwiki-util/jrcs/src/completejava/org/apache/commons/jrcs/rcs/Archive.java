@@ -145,7 +145,7 @@ import org.apache.commons.jrcs.util.ToString;
  * <p>This class is NOT thread safe.</p>
  * @see org.apache.commons.jrcs.diff
  *
- * @version $Id: Archive.java 84671 2010-11-12 18:27:24Z arwhyte@umich.edu $
+ * @version $Id: Archive.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  * @author <a href="mailto:juanco@suigeneris.org">Juanco Anez</a>
  */
 public class Archive

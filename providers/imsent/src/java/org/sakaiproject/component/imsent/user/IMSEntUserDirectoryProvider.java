@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/imsent/src/java/org/sakaiproject/component/imsent/user/IMSEntUserDirectoryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/imsent/src/java/org/sakaiproject/component/imsent/user/IMSEntUserDirectoryProvider.java $
  * $Id: IMSEntUserDirectoryProvider.java 81297 2010-08-15 13:17:07Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

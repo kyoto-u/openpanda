@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/branches/sakai-2.8.x/presence-impl/impl/src/java/org/sakaiproject/presence/impl/BasePresenceService.java $
- * $Id: BasePresenceService.java 96034 2011-08-02 12:06:39Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.0/presence-impl/impl/src/java/org/sakaiproject/presence/impl/BasePresenceService.java $
+ * $Id: BasePresenceService.java 101764 2011-12-14 19:44:28Z botimer@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -33,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.privacy.PrivacyManager;
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.courier.api.PresenceUpdater;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.EventTrackingService;
@@ -57,7 +58,7 @@ import org.w3c.dom.Element;
  * Implements the PresenceService, all but a Storage model.
  * </p>
  */
-public abstract class BasePresenceService implements PresenceService
+public abstract class BasePresenceService implements PresenceService, PresenceUpdater
 {
 	/** Our log (commons). */
 	private static Log M_log = LogFactory.getLog(BasePresenceService.class);

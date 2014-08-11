@@ -25,13 +25,11 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.MultiFileUploadField;
@@ -58,6 +56,8 @@ import org.sakaiproject.profile2.util.ProfileUtils;
 
 /**
  * Main gallery component for viewing the current user's picture gallery.
+ * 
+ * @author d.b.robinson@lancaster.ac.uk
  */
 public class MyPictures extends BasePage {
 
@@ -106,11 +106,11 @@ public class MyPictures extends BasePage {
 		addPictureUploadFolder.mkdirs();
 		
 		//file feedback will be redirected here
-		final FeedbackPanel fileFeedback = new FeedbackPanel("fileFeedback");
-		fileFeedback.setOutputMarkupId(true);
+        final FeedbackPanel fileFeedback = new FeedbackPanel("fileFeedback");
+        fileFeedback.setOutputMarkupId(true);
         
 		Form addPictureForm = new FileUploadForm("form", userUuid, fileFeedback);
-		addPictureForm.add(fileFeedback);
+        addPictureForm.add(fileFeedback);
 		addPictureForm.setOutputMarkupId(true);
 		add(addPictureForm);
 		
@@ -123,8 +123,22 @@ public class MyPictures extends BasePage {
 				new PropertyModel<Collection<FileUpload>>(addPictureForm,
 						"uploads"), ProfileConstants.MAX_GALLERY_FILE_UPLOADS));
 
-		Button submitButton = new Button("submitPicture", new ResourceModel(
-				"button.gallery.upload"));
+		IndicatingAjaxButton submitButton = new IndicatingAjaxButton(
+				"submitPicture", new ResourceModel("button.gallery.upload")) {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				target.addComponent(fileFeedback);
+			}
+			
+        	protected void onError(AjaxRequestTarget target, Form form) { 
+        		log.debug("MyPictures.onSubmit validation failed.");
+        	    target.addComponent(fileFeedback); 
+        	} 
+
+		};
 		addPictureContainer.add(submitButton);
 
 		addPictureContainer
@@ -336,10 +350,14 @@ public class MyPictures extends BasePage {
 				sakaiProxy.postEvent(
 						ProfileConstants.EVENT_GALLERY_IMAGE_UPLOAD,
 						"/profile/" + sakaiProxy.getCurrentUserId(), true);
-
-				setResponsePage(new MyPictures(gridView.getPageCount()));
-
 			}
+			
+			// post to walls if wall enabled
+			if (true == sakaiProxy.isWallEnabledGlobally()) {
+				wallLogic.addNewEventToWall(ProfileConstants.EVENT_GALLERY_IMAGE_UPLOAD, sakaiProxy.getCurrentUserId());
+			}
+			
+			setResponsePage(new MyPictures(gridView.getPageCount()));
 		}
 		
 	}

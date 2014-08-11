@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/kerberos/docs/JaasTest.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/kerberos/docs/JaasTest.java $
  * $Id: JaasTest.java 59681 2009-04-03 23:29:54Z arwhyte@umich.edu $
  ***********************************************************************************
  *

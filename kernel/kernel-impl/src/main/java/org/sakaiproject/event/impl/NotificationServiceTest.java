@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/event/impl/NotificationServiceTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/NotificationServiceTest.java $
  * $Id: NotificationServiceTest.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/RichTextAreaRenderer.java $
-* $Id: RichTextAreaRenderer.java 94497 2011-07-07 03:12:11Z steve.swinsburg@gmail.com $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/RichTextAreaRenderer.java $
+* $Id: RichTextAreaRenderer.java 94496 2011-07-07 03:05:27Z steve.swinsburg@gmail.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

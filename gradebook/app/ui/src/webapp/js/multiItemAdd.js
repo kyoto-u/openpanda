@@ -113,7 +113,7 @@ function addDelX() {
 	var firstDelEl = document.getElementsByClassNameArray('hideRemove');
 
 	firstDelEl[0].style.display='inline';
-	firstDelEl[0].className = 'firstDel' + firstDelEl[0].className.substring(10);
+  firstDelEl[0].className = 'firstDel' + firstDelEl[0].className.substring(10);
 }
 
 //*********************************************************************

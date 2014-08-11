@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/intf/CustomCommandController.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/intf/CustomCommandController.java $
  * $Id: CustomCommandController.java 59676 2009-04-03 23:18:23Z arwhyte@umich.edu $
  ***********************************************************************************
  *
@@ -24,7 +24,7 @@ package org.sakaiproject.metaobj.utils.mvc.intf;
 import java.util.Map;
 
 /*
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/intf/CustomCommandController.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/intf/CustomCommandController.java $
  * $Revision: 59676 $
  * $Date: 2009-04-04 08:18:23 +0900 (Sat, 04 Apr 2009) $
  */

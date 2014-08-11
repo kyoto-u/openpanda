@@ -30,7 +30,7 @@
             value="${worksite.reference}"/>
       <osp:param name="session.sakai.permissions.helpersakai.tool.helper.done.url" value="${homeUrl}"/>
       <osp:param name="session.sakaiproject.permissions.prefix" value="metaobj."/>
-       </osp:url>"title="<fmt:message key="action_permissions"/>" ><fmt:message key="action_permissions_title"/>
+       </osp:url>" title="<fmt:message key="action_permissions"/>" ><fmt:message key="action_permissions_title"/>
      </a>
 
    </c:if>
@@ -61,17 +61,18 @@
       <TD nowrap>
          <c:out value="${home.type.description}" />
          <c:if test="${home.modifiable}">
+         	<c:set var="hasFirstAction" value="false" />
             <div class="itemAction indnt1">
-                <c:if test="${can.edit}"><a href="<osp:url value="/editStructuredArtifactDefinition.osp"/>&id=<c:out value="${home.id}" />"><fmt:message key="table_action_edit"/></a></c:if>
+                <c:if test="${can.edit || home.owner == currentAgent}"><c:set var="hasFirstAction" value="true" /><a href="<osp:url value="/editStructuredArtifactDefinition.osp"/>&id=<c:out value="${home.id}" />"><fmt:message key="table_action_edit"/></a></c:if>
                 
-                <c:if test="${can.export}">| <a href="<osp:url includeQuestion="false" value="/repository/1=1"/>&manager=structuredArtifactDefinitionManager&formId=<c:out value="${home.id.value}" />/<c:out value="${home.type.description}" /> Form.zip"><fmt:message key="table_action_export"/></a>
+                <c:if test="${can.export}"><c:if test="${hasFirstAction}" > | </c:if><c:set var="hasFirstAction" value="true" /> <a href="<osp:url includeQuestion="false" value="/repository/1=1"/>&manager=structuredArtifactDefinitionManager&formId=<c:out value="${home.id.value}" />/<c:out value="${home.type.description}" /> Form.zip"><fmt:message key="table_action_export"/></a>
                 </c:if>
-                <c:if test="${!isGlobal && can.publish && home.canPublish}"> | <a href="<osp:url value="confirmSADPublish.osp"/>&action=site_publish&id=<c:out value="${home.id}" />"><fmt:message key="table_action_publish"/></a></c:if>
-                <c:if test="${isGlobal && can.publish &&  home.canGlobalPublish}"> | <a href="<osp:url value="confirmSADPublish.osp"/>&action=global_publish&id=<c:out value="${home.id}" />"><fmt:message key="table_action_globalPublish"/></a></c:if>
-                <c:if test="${!isGlobal && home.canSuggestGlobalPublish && can['suggest.global.publish']}"> | <a href="<osp:url value="confirmSADPublish.osp"/>&action=suggest_global_publish&id=<c:out value="${home.id}" />"><fmt:message key="table_action_suggestPublishGlobal"/></a></c:if>
-                <c:if test="${isGlobal && home.canApproveGlobalPublish && can.publish}"> | <a href="<osp:url value="confirmSADPublish.osp"/>&action=global_publish&id=<c:out value="${home.id}" />"><fmt:message key="table_action_approveGlobalPublish"/></a></c:if>
-                <c:if test="${can.delete}"> | <a href="<osp:url value="confirmSADDelete.osp"/>&id=<c:out value="${home.id}" />"><fmt:message key="table_action_delete"/></a></c:if>
-                <c:if test="${isMaintainer && toolShowUsage}"> | <a href="<osp:url value="formUsage.osp" />&id=<c:out value="${home.id}" />"><fmt:message key="table_action_usage" /></a></c:if>
+                <c:if test="${!isGlobal && can.publish && home.canPublish}"> <c:if test="${hasFirstAction}" > | </c:if><c:set var="hasFirstAction" value="true" /> <a href="<osp:url value="confirmSADPublish.osp"/>&action=site_publish&id=<c:out value="${home.id}" />"><fmt:message key="table_action_publish"/></a></c:if>
+                <c:if test="${isGlobal && can.publish &&  home.canGlobalPublish}"> <c:if test="${hasFirstAction}" > | </c:if><c:set var="hasFirstAction" value="true" /> <a href="<osp:url value="confirmSADPublish.osp"/>&action=global_publish&id=<c:out value="${home.id}" />"><fmt:message key="table_action_globalPublish"/></a></c:if>
+                <c:if test="${!isGlobal && home.canSuggestGlobalPublish && can['suggest.global.publish']}"> <c:if test="${hasFirstAction}" > | </c:if><c:set var="hasFirstAction" value="true" /> <a href="<osp:url value="confirmSADPublish.osp"/>&action=suggest_global_publish&id=<c:out value="${home.id}" />"><fmt:message key="table_action_suggestPublishGlobal"/></a></c:if>
+                <c:if test="${isGlobal && home.canApproveGlobalPublish && can.publish}"> <c:if test="${hasFirstAction}" > | </c:if><c:set var="hasFirstAction" value="true" /> <a href="<osp:url value="confirmSADPublish.osp"/>&action=global_publish&id=<c:out value="${home.id}" />"><fmt:message key="table_action_approveGlobalPublish"/></a></c:if>
+                <c:if test="${can.delete || home.owner == currentAgent}"> <c:if test="${hasFirstAction}" > | </c:if> <c:set var="hasFirstAction" value="true" /><a href="<osp:url value="confirmSADDelete.osp"/>&id=<c:out value="${home.id}" />"><fmt:message key="table_action_delete"/></a></c:if>
+                <c:if test="${isMaintainer && toolShowUsage}"> <c:if test="${hasFirstAction}" > | </c:if> <c:set var="hasFirstAction" value="true" /><a href="<osp:url value="formUsage.osp" />&id=<c:out value="${home.id}" />"><fmt:message key="table_action_usage" /></a></c:if>
             </div>
          </c:if>
       </TD>

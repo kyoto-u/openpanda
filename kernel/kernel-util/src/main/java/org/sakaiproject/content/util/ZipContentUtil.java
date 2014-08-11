@@ -19,37 +19,64 @@ import javax.activation.MimetypesFileTypeMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentCollectionEdit;
+import org.sakaiproject.content.cover.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentResourceEdit;
-import org.sakaiproject.content.cover.ContentHostingService;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.IdUsedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
+import org.sakaiproject.tool.api.ToolSession;
+import org.sakaiproject.tool.cover.SessionManager;
 
+@SuppressWarnings({ "deprecation", "restriction" })
 public class ZipContentUtil {
 	
 	protected static final Log LOG = LogFactory.getLog(ZipContentUtil.class);
 	private static final String ZIP_EXTENSION = ".zip";
-	private static final int BUFFER_SIZE = 8192;
+	private static final int BUFFER_SIZE = 32000;
 	private static final MimetypesFileTypeMap mime = new MimetypesFileTypeMap();
-	
+	public static final String PREFIX = "resources.";
+	public static final String REQUEST = "request.";
+	private static final String STATE_HOME_COLLECTION_ID = PREFIX + REQUEST + "collection_home";
+	private static final String STATE_HOME_COLLECTION_DISPLAY_NAME = PREFIX + REQUEST + "collection_home_display_name";
+	public static final String STATE_MESSAGE = "message";
+	/**
+	 * Maximum number of files to extract from a zip archive (1000)
+	 */
+    public static final int MAX_ZIP_EXTRACT_FILES_DEFAULT = 1000;
+	private static Integer MAX_ZIP_EXTRACT_FILES;
+    
+    public static int getMaxZipExtractFiles() {
+        if(MAX_ZIP_EXTRACT_FILES == null){
+            MAX_ZIP_EXTRACT_FILES = ServerConfigurationService.getInt(org.sakaiproject.content.api.ContentHostingService.RESOURCES_ZIP_EXPAND_MAX,MAX_ZIP_EXTRACT_FILES_DEFAULT);
+        }
+        if (MAX_ZIP_EXTRACT_FILES <= 0) {
+            MAX_ZIP_EXTRACT_FILES = MAX_ZIP_EXTRACT_FILES_DEFAULT; // any less than this is useless so probably a mistake
+            LOG.warn("content.zip.expand.maxfiles is set to a value less than or equal to 0, defaulting to "+MAX_ZIP_EXTRACT_FILES_DEFAULT);
+        }
+        return MAX_ZIP_EXTRACT_FILES;
+    }
+
 	/**
 	 * Compresses a ContentCollection to a new zip archive with the same folder name
 	 * 
-	 * @param reference
-	 * @throws Exception
+	 * @param reference sakai entity reference
+	 * @throws Exception on failure
 	 */
-	public void compressFolder(Reference reference) { 
+    public void compressFolder(Reference reference) { 
 		File temp = null;
 		FileInputStream fis = null;
 		ZipOutputStream out = null;
+		ToolSession toolSession = SessionManager.getCurrentToolSession();
 		try {
 			// Create the compressed archive in the filesystem
 			temp = File.createTempFile("sakai_content-", ".tmp");
@@ -57,21 +84,61 @@ public class ZipContentUtil {
 			ContentCollection collection = ContentHostingService.getCollection(reference.getId());
 			out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(temp),BUFFER_SIZE));			
 			storeContentCollection(reference.getId(),collection,out);        		
+			out.close();
 			
 			
 			// Store the compressed archive in the repository
-			String resourceId = reference.getId().substring(0,reference.getId().lastIndexOf(Entity.SEPARATOR))+ZIP_EXTENSION;
-			String resourceName = extractName(resourceId);
-			ContentResourceEdit resourceEdit = ContentHostingService.addResource(resourceId);
+			String resourceId = reference.getId().substring(0,reference.getId().lastIndexOf(Entity.SEPARATOR));
+			String resourceName = extractName(resourceId);			
+			String homeCollectionId = (String) toolSession.getAttribute(STATE_HOME_COLLECTION_ID);
+			if(homeCollectionId != null && homeCollectionId.equals(reference.getId())){
+				//place the zip file into the home folder of the resource tool
+				resourceId = reference.getId() + resourceName;
+				
+				String homeName = (String) toolSession.getAttribute(STATE_HOME_COLLECTION_DISPLAY_NAME);
+				if(homeName != null){
+					resourceName = homeName;
+				}				
+			}
+			int count = 0;
+			ContentResourceEdit resourceEdit = null;
+			while(true){
+				try{
+					String newResourceId = resourceId;
+					String newResourceName = resourceName;
+					count++;
+					if(count > 1){
+						//previous naming convention failed, try another one
+						newResourceId += "_" + count;
+						newResourceName += "_" + count;
+					}
+					newResourceId += ZIP_EXTENSION;
+					newResourceName += ZIP_EXTENSION;
+					resourceEdit = ContentHostingService.addResource(newResourceId);
+					//success, so keep track of name/id
+					resourceId = newResourceId;
+					resourceName = newResourceName;
+					break;
+				}catch(IdUsedException e){
+					//do nothing, just let it loop again
+				}catch(Exception e){
+					throw new Exception(e);
+				}
+			}
 			fis = new FileInputStream(temp);
 			resourceEdit.setContent(fis);
 			resourceEdit.setContentType(mime.getContentType(resourceId));
 			ResourcePropertiesEdit props = resourceEdit.getPropertiesEdit();
 			props.addProperty(ResourcePropertiesEdit.PROP_DISPLAY_NAME, resourceName);
 			ContentHostingService.commitResource(resourceEdit, NotificationService.NOTI_NONE);								
-		} 
+		}
+		catch (PermissionException pE){
+			addAlert(toolSession, "You do not have the proper permissions for compressing to zip archive");
+			LOG.warn(pE);
+		}
 		catch (Exception e) {
-			e.printStackTrace();
+			addAlert(toolSession, "An error has occurred while compressing to zip archive");
+			LOG.error(e);
 		} 
 		finally {
 			if (fis != null) {
@@ -93,15 +160,39 @@ public class ZipContentUtil {
 			}
 		}
 	}
+	
+	private void addAlert(ToolSession toolSession, String alert){
+		String errorMessage = (String) toolSession.getAttribute(STATE_MESSAGE);
+		if(errorMessage == null){
+			errorMessage = alert;
+		}else{
+			errorMessage += "\n\n" + alert;
+		}
+		toolSession.setAttribute(STATE_MESSAGE, errorMessage);
+	}
+
+	/**
+     * Extracts a compressed (zip) ContentResource to a new folder with the same name.
+     * 
+     * @param reference the sakai entity reference
+     * @throws Exception on failure
+     * @deprecated 11 Oct 2011 -AZ, use {@link #extractArchive(String)} instead
+     */
+    public void extractArchive(Reference reference) throws Exception {
+        if (reference == null) {
+            throw new IllegalArgumentException("reference cannot be null");
+        }
+        extractArchive(reference.getId());
+    }
 
 	/**
 	 * Extracts a compressed (zip) ContentResource to a new folder with the same name.
 	 * 
-	 * @param reference
-	 * @throws Exception
+     * @param referenceId the sakai entity reference id
+	 * @throws Exception on failure
 	 */
-	public void extractArchive(Reference reference) throws Exception {
-		ContentResource resource = ContentHostingService.getResource(reference.getId());
+	public void extractArchive(String referenceId) throws Exception {
+		ContentResource resource = ContentHostingService.getResource(referenceId);
 		String rootCollectionId = extractZipCollectionPrefix(resource);
 
 		// Prepare Collection
@@ -127,26 +218,37 @@ public class ZipContentUtil {
 				}
 			}
 			zipFile.close();
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		finally {
+		} finally {
 			temp.delete();	
 		}
 		
 	}
-	
+
+   /**
+     * Get a list of the files in a zip and their size
+     * @param reference the sakai entity reference
+     * @return a map of file names to file sizes in the zip archive
+     * @deprecated 11 Oct 2011 -AZ, use {@link #getZipManifest(String)}
+     */
+    public Map<String, Long> getZipManifest(Reference reference) {
+        if (reference == null) {
+            throw new IllegalArgumentException("reference cannot be null");
+        }
+        return getZipManifest(reference.getId());
+    }
+
 	/**
 	 * Get a list of the files in a zip and their size
-	 * @param reference
-	 * @return 
+	 * @param referenceId the sakai entity reference id
+     * @return a map of file names to file sizes in the zip archive
 	 */
-	public Map<String, Long> getZipManifest(Reference reference) {
+	public Map<String, Long> getZipManifest(String referenceId) {
 		Map<String, Long> ret = new HashMap<String, Long>();
 		ContentResource resource;
 		try {
-			resource = ContentHostingService.getResource(reference.getId());
+			resource = ContentHostingService.getResource(referenceId);
 		} catch (PermissionException e1) {
 			return null;
 		} catch (IdUnusedException e1) {
@@ -154,8 +256,7 @@ public class ZipContentUtil {
 		} catch (TypeException e1) {
 			return null;
 		}
-		String rootCollectionId = extractZipCollectionPrefix(resource);
-
+		//String rootCollectionId = extractZipCollectionPrefix(resource);
 		
 		// Extract Zip File	
 		File temp = null;		
@@ -164,9 +265,13 @@ public class ZipContentUtil {
 			ZipFile zipFile = new ZipFile(temp,ZipFile.OPEN_READ);
 			Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
-			while (entries.hasMoreElements()) {
+			int i = 0;
+			//use <= getMAX_ZIP_EXTRACT_SIZE() so the returned value will be
+			//larger than the max and then rejected
+			while (entries.hasMoreElements() && i <= getMaxZipExtractFiles()) {
 				ZipEntry nextElement = entries.nextElement();						
 				ret.put(nextElement.getName(), nextElement.getSize());
+				i++;
 			}
 			zipFile.close();
 		} 
@@ -227,7 +332,6 @@ public class ZipContentUtil {
 	 * 
 	 * @param resource
 	 * @return
-	 * 
 	 */
 	private File exportResourceToFile(ContentResource resource) {
 		File temp = null;
@@ -321,4 +425,5 @@ public class ZipContentUtil {
 		String tmp = extractName(resource.getId());
 		return tmp.substring(0, tmp.lastIndexOf("."));
 	}
+
 }

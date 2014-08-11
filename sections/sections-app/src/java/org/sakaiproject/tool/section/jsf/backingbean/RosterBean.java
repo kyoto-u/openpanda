@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/branches/sakai-2.8.x/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/RosterBean.java $
- * $Id: RosterBean.java 100559 2011-11-08 23:43:38Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.0/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/RosterBean.java $
+ * $Id: RosterBean.java 99001 2011-10-05 21:39:37Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -308,6 +308,8 @@ public class RosterBean extends CourseDependentBean implements Serializable {
     public void export(ActionEvent event){
     	log.debug("export(");
         List<List<Object>> spreadsheetData = new ArrayList<List<Object>>();
+        
+        Map<String, String> sectionTutors = new HashMap<String, String>();
         // Get the section enrollments
         Set<String> studentUids = new HashSet<String>();
         for(Iterator iter = siteStudents.iterator(); iter.hasNext();) {
@@ -319,12 +321,22 @@ public class RosterBean extends CourseDependentBean implements Serializable {
         List<Object> header = new ArrayList<Object>();
         header.add(JsfUtil.getLocalizedMessage("roster_table_header_name"));
         header.add(JsfUtil.getLocalizedMessage("roster_table_header_id"));
-
-        for (Iterator iter = getUsedCategories().iterator(); iter.hasNext();){
+        
+        int categories = 0;
+        for (Iterator<String> iter = getUsedCategories().iterator(); iter.hasNext();){
             String category = (String)iter.next();          
             String categoryName = getCategoryName(category);
             header.add(categoryName);
+            categories++;
         }
+        
+        //SAK-20962 Show TA doesn't work with multiple section types
+        boolean showTAs = false;
+        if (categories == 1) {
+        	header.add(JsfUtil.getLocalizedMessage("roster_table_header_ta"));
+        	showTAs = true;
+        	
+        } 
         spreadsheetData.add(header);
         for(Iterator enrollmentIter = siteStudents.iterator(); enrollmentIter.hasNext();) {
             //EnrollmentDecorator enrollment = enrollmentIter.next();
@@ -339,9 +351,22 @@ public class RosterBean extends CourseDependentBean implements Serializable {
                 CourseSection section = sectionEnrollments.getSection(record.getUser().getUserUid(), category);
 
                 if(section!=null){
-                    row.add(section.getTitle());
+                	row.add(section.getTitle());
+                	//SAK-20092 add the TA's
+                	if (showTAs) {
+                		if (sectionTutors.get(section.getUuid()) != null) {
+                			row.add(sectionTutors.get(section.getUuid()));
+                		} else {
+                			String ta = getSectionTutorsAsString(section.getUuid());
+                			row.add(ta);
+                			sectionTutors.put(section.getUuid(), ta);
+                		}
+                	}
                 }else{
                     row.add("");
+                    if (showTAs) {
+                    	row.add("");
+                    }
                 }
             }
             spreadsheetData.add(row);
@@ -350,6 +375,21 @@ public class RosterBean extends CourseDependentBean implements Serializable {
         SpreadsheetUtil.downloadSpreadsheetData(spreadsheetData, spreadsheetName, new SpreadsheetDataFileWriterXls());
 
     }
+
+    private String getSectionTutorsAsString(String section) {
+    	List<ParticipationRecord> tas = getSectionManager().getSectionTeachingAssistants(section);
+    	StringBuilder sb = new StringBuilder();
+    	for (int i =0; i < tas.size(); i++) {
+    		ParticipationRecord participant = tas.get(i);
+    		if (i > 0) {
+    			sb.append(", ");
+    		}
+    		sb.append(participant.getUser().getDisplayName());
+    	}
+
+    	return sb.toString();
+    }
+
 
     protected String getDownloadFileName(String rawString) {
         String dateString = DateFormat.getDateInstance(DateFormat.SHORT).format(new Date());

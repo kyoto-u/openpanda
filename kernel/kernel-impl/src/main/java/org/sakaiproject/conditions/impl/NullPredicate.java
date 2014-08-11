@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/conditions/impl/NullPredicate.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/conditions/impl/NullPredicate.java $
  * $Id: NullPredicate.java 76892 2010-04-30 16:45:19Z zach@aeroplanesoftware.com $
  ***********************************************************************************
  *

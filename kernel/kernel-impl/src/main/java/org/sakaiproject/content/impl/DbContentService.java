@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbContentService.java $
- * $Id: DbContentService.java 108118 2012-05-15 02:01:58Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbContentService.java $
+ * $Id: DbContentService.java 114480 2012-10-17 15:05:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -64,6 +64,7 @@ import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.entity.api.serialize.EntityParseException;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.KernelConfigurationError;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
@@ -373,8 +374,10 @@ public class DbContentService extends BaseContentService
 
             if (!filesizeColumnExists)
             {
-                addNewColumns();
-                filesizeColumnExists = filesizeColumnExists();
+            	//See KNL-487 - DH
+                //if the columns don't exist we need to exit - updat needs to be run
+            	M_log.error("The filesize column doesn't exit. Please make sure you ran the 2.4-2.5 DB Conversion");
+            	throw new Error("The filesize column doesn't exit. Please make sure you ran the 2.4-2.5 DB Conversion");
             }
 
             if (filesizeColumnExists && !readyToUseFilesizeColumn())
@@ -1043,7 +1046,11 @@ public class DbContentService extends BaseContentService
                          * While this may be harmful is bad practice and prevents us identifying real issues
                          */
                         cleanup(connection, statement, rs, selectStatement, updateStatement);
-                        System.exit(-10);
+                        throw new KernelConfigurationError("There are migrated content collection entries in the \n" +
+                        		"BINARY_ENTITY column  of CONTENT_RESOURCE_DELETE you must ensure that this \n" +
+                        		"data is not required and set all entries to null before starting \n" +
+                        		"up with migrate data disabled. Failure to do this could loose \n" +
+                        "updates since this database was upgraded");
                     }
                 }
 
@@ -1720,57 +1727,97 @@ public class DbContentService extends BaseContentService
                 {
                     BaseResourceEdit redit = (BaseResourceEdit) edit;
                     boolean ok = true;
-                    if (redit.m_body == null)
-                    {
-                        if (redit.m_contentStream == null)
+
+                    /**
+                     * https://jira.sakaiproject.org/browse/KNL-817
+                     * If the reference copy flag is set then we do NOT actually do the content data copy (in the else below)
+                     * Instead, we modify the in DB resource table to point at the new resource id
+                     */
+                    String referenceResourceId = redit.referenceCopy;
+                    if (referenceResourceId != null) {
+                        // special handling for reference commits
+                        if (M_log.isDebugEnabled()) M_log.debug("Making resource ("+redit.getId()+") reference copy of DB resource ("+referenceResourceId+"), body/contentStream is ignored");
+                        if (m_bodyPath == null) {
+                            /* SPECIAL handling for a reference copy of a resource,
+                             * for reference we just move the binary data location to point at the new one
+                             */
+                            // the DB write could fail so we do a count check first (still not a guarantee)
+                            String sqlExists = "select count(*) from " + m_resourceBodyTableName + " where RESOURCE_ID=?";
+                            @SuppressWarnings("unchecked")
+                            List<String> sqlExistsResult = m_sqlService.dbRead(sqlExists, new Object[] { referenceResourceId }, null);
+                            if (sqlExistsResult != null && Long.parseLong(sqlExistsResult.get(0)) == 1l) {
+                                // the resource exists already so we proceed to redirect
+                                String sql = "update "+m_resourceBodyTableName+" set RESOURCE_ID=? where RESOURCE_ID=?";
+                                // this write could fail if we try to move it to a taken resource_id, no way to recover if it does
+                                ok = m_sqlService.dbWrite(sql, new Object[] {redit.getId(), referenceResourceId});
+                                if (M_log.isDebugEnabled()) M_log.debug("Moving RESOURCE_ID ("+redit.getId()+") to ("+referenceResourceId+") for DB stored content data ("+m_resourceBodyTableName+"), success="+ok);
+                            } else {
+                                ok = false;
+                                if (M_log.isDebugEnabled()) M_log.debug("Moving RESOURCE_ID ("+redit.getId()+") to ("+referenceResourceId+") for DB stored content data ("+m_resourceBodyTableName+") failed because the referenceResourceId ("+referenceResourceId+") does not exist in the table");
+                            }
+                            if (!ok) {
+                                // cannot recover so we will flip this over and do a normal content copy
+                                M_log.warn("Moving RESOURCE_ID ("+redit.getId()+") to ("+referenceResourceId+") for DB stored content data ("+m_resourceBodyTableName+") failed... we will do a normal content copy as a fallback");
+                                referenceResourceId = null;
+                            }
+                        }
+                    }
+                    if (referenceResourceId == null) {
+                        // normal handling (write the resource content data)
+                        if (M_log.isDebugEnabled()) M_log.debug("Normal resource ("+redit.getId()+") body/contentStream storage");
+                        if (redit.m_body == null)
                         {
-                            // no body and no stream -- may result from edit in which body is not accessed or modified
-                            M_log.debug("ContentResource committed with no change to contents (i.e. no body and no stream for content): "
-                                    + edit.getReference());
+                            if (redit.m_contentStream == null)
+                            {
+                                // no body and no stream -- may result from edit in which body is not accessed or modified
+                                M_log.debug("ContentResource committed with no change to contents (i.e. no body and no stream for content): "
+                                        + edit.getReference());
+                            }
+                            else
+                            {
+                                message += "from stream ";
+                                // if we have been configured to use an external file system
+                                if (m_bodyPath != null)
+                                {
+                                    message += "to file";
+                                    ok = putResourceBodyFilesystem(edit, redit.m_contentStream);
+                                }
+
+                                // otherwise use the database
+                                else
+                                {
+                                    message += "to database";
+                                    ok = putResourceBodyDb(edit, redit.m_contentStream);
+                                }
+                            }
                         }
                         else
                         {
-                            message += "from stream ";
-                            // if we have been configured to use an external file system
-                            if (m_bodyPath != null)
-                            {
-                                message += "to file";
-                                ok = putResourceBodyFilesystem(edit, redit.m_contentStream);
-                            }
+                            message += "from byte-array ";
+                            byte[] body = ((BaseResourceEdit) edit).m_body;
+                            ((BaseResourceEdit) edit).m_body = null;
 
-                            // otherwise use the database
-                            else
+                            // update the resource body
+                            if (body != null)
                             {
-                                message += "to database";
-                                ok = putResourceBodyDb(edit, redit.m_contentStream);
+                                // if we have been configured to use an external file
+                                // system
+                                if (m_bodyPath != null)
+                                {
+                                    message += "to file";
+                                    ok = putResourceBodyFilesystem(edit, body);
+                                }
+
+                                // otherwise use the database
+                                else
+                                {
+                                    message += "to database";
+                                    ok = putResourceBodyDb(edit, body);
+                                }
                             }
                         }
                     }
-                    else
-                    {
-                        message += "from byte-array ";
-                        byte[] body = ((BaseResourceEdit) edit).m_body;
-                        ((BaseResourceEdit) edit).m_body = null;
 
-                        // update the resource body
-                        if (body != null)
-                        {
-                            // if we have been configured to use an external file
-                            // system
-                            if (m_bodyPath != null)
-                            {
-                                message += "to file";
-                                ok = putResourceBodyFilesystem(edit, body);
-                            }
-
-                            // otherwise use the database
-                            else
-                            {
-                                message += "to database";
-                                ok = putResourceBodyDb(edit, body);
-                            }
-                        }
-                    }
                     if (!ok)
                     {
                         cancelResource(edit);
@@ -1845,6 +1892,11 @@ public class DbContentService extends BaseContentService
 
         public void removeResource(ContentResourceEdit edit)
         {
+            removeResource(edit, true);
+        }
+
+        public void removeResource(ContentResourceEdit edit, boolean removeContent)
+        {
             // delete the body
             boolean goin = in();
             try
@@ -1856,20 +1908,28 @@ public class DbContentService extends BaseContentService
                 else
                 {
 
-                    // if we have been configured to use an external file system
                     if (m_bodyPath != null)
                     {
-                        delResourceBodyFilesystem(edit);
+                        // if we have been configured to use an external file system
+                        if (removeContent) {
+                            M_log.info("Removing resource ("+edit.getId()+") content: "+m_bodyPath);
+                            delResourceBodyFilesystem(edit);
+                        } else {
+                            M_log.info("Removing original resource reference ("+edit.getId()+") without removing the actual content: "+m_bodyPath);
+                        }
                     }
-
-                    // otherwise use the database
                     else
                     {
-                        delResourceBodyDb(edit);
+                        // otherwise use the database
+                        if (removeContent) {
+                            delResourceBodyDb(edit);
+                            M_log.info("Removing resource ("+edit.getId()+") DB content");
+                        } else {
+                            M_log.info("Removing original resource reference ("+edit.getId()+") without removing the actual DB content");
+                        }
                     }
 
                     // clear the memory image of the body
-                    byte[] body = ((BaseResourceEdit) edit).m_body;
                     ((BaseResourceEdit) edit).m_body = null;
 
                     if(isInsideIndividualDropbox(edit.getId()))
@@ -2145,9 +2205,9 @@ public class DbContentService extends BaseContentService
          */
         protected boolean putResourceBodyDb(ContentResourceEdit resource, byte[] body)
         {
-
             if ((body == null) || (body.length == 0)) return true;
 
+            if (M_log.isDebugEnabled()) M_log.debug("Making resource ("+resource.getId()+") copy of DB resource body");
             // delete the old
             String statement = contentServiceSql.getDeleteContentSql(m_resourceBodyTableName);
 
@@ -2159,7 +2219,9 @@ public class DbContentService extends BaseContentService
             // add the new
             statement = contentServiceSql.getInsertContentSql(m_resourceBodyTableName);
 
-            return m_sqlService.dbWriteBinary(statement, fields, body, 0, body.length);
+            boolean success = m_sqlService.dbWriteBinary(statement, fields, body, 0, body.length);
+            if (M_log.isDebugEnabled()) M_log.debug("putResourceBodyDb: resource ("+resource.getId()+") put success="+success);
+            return success;
 
             /*
              * %%% BLOB code // read the record's blob and update statement = "select body from " + m_resourceTableName + " where ( resource_id = '" +
@@ -3051,35 +3113,6 @@ public class DbContentService extends BaseContentService
 
     }
 
-    public boolean addNewColumns()
-    {
-        String sql1 = contentServiceSql.getAddFilesizeColumnSql(m_resourceTableName);
-        boolean ok1 = m_sqlService.dbWrite(sql1);
-        String sql2 = contentServiceSql.getAddContextColumnSql(m_resourceTableName);
-        boolean ok2 = m_sqlService.dbWrite(sql2);
-        String sql3 = contentServiceSql.getAddContextIndexSql(m_resourceTableName);
-        boolean ok3 = m_sqlService.dbWrite(sql3);
-        String sql4 = contentServiceSql.getAddFilesizeColumnSql(m_resourceDeleteTableName);
-        boolean ok4 = m_sqlService.dbWrite(sql4);
-        String sql5 = contentServiceSql.getAddContextColumnSql(m_resourceDeleteTableName);
-        boolean ok5 = m_sqlService.dbWrite(sql5);
-        String sql6 = contentServiceSql.getAddContextIndexSql(m_resourceDeleteTableName);
-        boolean ok6 = m_sqlService.dbWrite(sql6);
-        String sql7 = contentServiceSql.getAddResourceTypeColumnSql(m_resourceTableName);
-        boolean ok7 = m_sqlService.dbWrite(sql7);
-        String sql8 = contentServiceSql.getAddResourceTypeColumnSql(m_resourceDeleteTableName);
-        boolean ok8 = m_sqlService.dbWrite(sql8);
-        String sql9 = contentServiceSql.getAddResourceTypeIndexSql(m_resourceTableName);
-        boolean ok9 = m_sqlService.dbWrite(sql9);
-        String sql10 = contentServiceSql.getAddResourceTypeIndexSql(m_resourceDeleteTableName);
-        boolean ok10 = m_sqlService.dbWrite(sql10);
-
-
-        addNewColumnsCompleted = (ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7);
-
-        return addNewColumnsCompleted;
-    }
-
     public void populateNewColumns()
     {
         String sql1 = contentServiceSql.getAccessResourceIdAndXmlSql(m_resourceTableName);
@@ -3230,10 +3263,10 @@ public class DbContentService extends BaseContentService
     {
         long size = 0L;
 
-        String sql = context.startsWith(COLLECTION_DROPBOX)?contentServiceSql.getDropBoxQuotaQuerySql():contentServiceSql.getQuotaQuerySql();
+        String sql = contentServiceSql.getQuotaQuerySql();
 
         Object [] fields = new Object[1];
-        fields[0] = context.startsWith(COLLECTION_DROPBOX)?context+"%":context;
+        fields[0] = context;
 
         List list = m_sqlService.dbRead(sql, fields, null);
         if(list != null && ! list.isEmpty())

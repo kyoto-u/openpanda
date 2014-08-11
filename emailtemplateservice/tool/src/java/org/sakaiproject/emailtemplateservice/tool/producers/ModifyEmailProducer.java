@@ -1,6 +1,6 @@
 /**
- * $Id: ModifyEmailProducer.java 88146 2011-02-08 19:46:38Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/branches/emailtemplateservice-0.5.x/tool/src/java/org/sakaiproject/emailtemplateservice/tool/producers/ModifyEmailProducer.java $
+ * $Id: ModifyEmailProducer.java 87845 2011-01-31 12:06:05Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.0/tool/src/java/org/sakaiproject/emailtemplateservice/tool/producers/ModifyEmailProducer.java $
  * ModifyEmailProducer.java - evaluation - Feb 29, 2008 6:06:42 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

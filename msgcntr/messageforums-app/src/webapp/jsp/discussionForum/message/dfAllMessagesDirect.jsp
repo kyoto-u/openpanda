@@ -3,6 +3,7 @@
                  org.sakaiproject.api.app.messageforums.*,
                  org.sakaiproject.site.cover.SiteService,
                  org.sakaiproject.tool.cover.ToolManager" %>
+<%@ page import="org.sakaiproject.component.cover.ServerConfigurationService" %>
 <%
 
   FacesContext context = FacesContext.getCurrentInstance();
@@ -14,8 +15,9 @@
 
   if (org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement() == null) {
 
+    String portalPath = ServerConfigurationService.getString("portalPath");
     try {
-      target = "/portal/tool/" + request.getParameter("placementId")
+      target = portalPath + "/tool/" + request.getParameter("placementId")
              + "/discussionForum/message/dfAllMessagesDirect.jsf?topicId="
       	     + request.getParameter("topicId");
       response.sendRedirect(target);
@@ -26,6 +28,7 @@
     }
   }
 
+if(forumTool.getHasTopicAccessPrivileges(request.getParameter("topicId"))){
   target = "/jsp/discussionForum/message/dfAllMessages.jsf?topicId="
   	       + request.getParameter("topicId");
 
@@ -40,4 +43,17 @@
     e.printStackTrace();
   }
 
+  }else{
+  	%>
+  	<jsp:useBean id="msgs" class="org.sakaiproject.util.ResourceLoader" scope="session">
+   		<jsp:setProperty name="msgs" property="baseName" value="org.sakaiproject.api.app.messagecenter.bundle.Messages"/>
+	</jsp:useBean>
+	<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
+    <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+    <f:view>
+    <f:verbatim><br/><br/></f:verbatim>
+    <h:outputText value="#{msgs.cdfm_insufficient_privileges_view_topic}"/>
+    </f:view>
+  	<%
+  }
 %>

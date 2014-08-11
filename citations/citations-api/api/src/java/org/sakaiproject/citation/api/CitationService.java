@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/branches/sakai-2.8.x/citations-api/api/src/java/org/sakaiproject/citation/api/CitationService.java $
- * $Id: CitationService.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-api/api/src/java/org/sakaiproject/citation/api/CitationService.java $
+ * $Id: CitationService.java 98468 2011-09-21 02:49:36Z jimeng@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -23,6 +23,8 @@ package org.sakaiproject.citation.api;
 
 import java.util.List;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.osid.repository.Asset;
 import org.sakaiproject.entity.api.Entity;
@@ -95,7 +97,7 @@ public interface CitationService extends EntityProducer
 
 	/**
 	 * 
-	 * @param listId
+	 * @param mediatype The Scheme type to create.
 	 * @return
 	 */
 	public Citation addCitation(String mediatype);
@@ -191,6 +193,14 @@ public interface CitationService extends EntityProducer
      * @param collection
      */
     public void save(CitationCollection collection);
-    
+
+    /**
+     * Attempt to find a Citation from a request.
+     * This basically uses OpenURL to look for details of a citation in the request.
+     * @param request The servlet request.
+     * @return The returned citation which been saved or added to a citation collection,
+     * if no citation is found in the request then <code>null</code> is returned.
+     */
+    public Citation addCitation(HttpServletRequest request);
 }	// interface CitationService
 

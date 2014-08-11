@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/PasswordCheck.java $
- * $Id: PasswordCheck.java 67352 2009-10-08 08:31:23Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/PasswordCheck.java $
+ * $Id: PasswordCheck.java 101656 2011-12-12 22:40:28Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -36,6 +36,7 @@ import org.apache.commons.logging.LogFactory;
  * <p>
  * Based on the library available from http://justwild.us/examples/password/
  * </p>
+ * @deprecated unused as of 12 Dec 2011, planned for removal after 2.9
  */
 public class PasswordCheck {
 	

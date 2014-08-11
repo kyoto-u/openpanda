@@ -6,7 +6,7 @@
 
 
 <!--
-* $Id: authorSettings.jsp 109464 2012-06-21 19:04:43Z ktsao@stanford.edu $
+* $Id: authorSettings.jsp 99095 2011-10-10 17:41:58Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -41,7 +41,7 @@
       <samigo:script path="/js/authoring.js"/>
 
 
-<script language="javascript" style="text/JavaScript">
+<script style="text/JavaScript">
 <!--
 function validateUrl(){
   var list =document.getElementsByTagName("input");
@@ -66,8 +66,14 @@ function validateUrl0(){
   window.open(finalPageUrl.value,'validateUrl');
 }
 
-function submitForm()
+function updateItemNavigation(isFromItemNavigation)
 {
+  var inputhidden = document.getElementById("assessmentSettingsAction:itemNavigationUpdated");
+  inputhidden.value = isFromItemNavigation;
+}
+    
+function submitForm()
+{  
   document.forms[0].onsubmit();
   document.forms[0].submit();
 }
@@ -311,6 +317,7 @@ function setBlockDivs()
 
   <h:inputHidden id="assessmentId" value="#{assessmentSettings.assessmentId}"/>
   <h:inputHidden id="blockDivs" value="#{assessmentSettings.blockDivs}"/>
+  <h:inputHidden id="itemNavigationUpdated" value="false" />
 
   <!-- HEADINGS -->
   <%@ include file="/jsf/author/allHeadings.jsp" %>
@@ -319,7 +326,7 @@ function setBlockDivs()
      <h:outputText value="#{assessmentSettingsMessages.settings} #{assessmentSettingsMessages.dash} #{assessmentSettings.title}"/>
     </h3>
 <p>
-  <h:messages infoClass="validation" warnClass="messageValidation" errorClass="validation" fatalClass="validation"/>
+  <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
 </p>
 
 <div class="tier1">
@@ -360,7 +367,7 @@ function setBlockDivs()
       summary="#{templateMessages.enter_template_info_section}">
 
         <h:outputLabel for="assessment_title" value="#{assessmentSettingsMessages.assessment_title}"/>
-        <h:inputText id="assessment_title" size="80" value="#{assessmentSettings.title}" />
+        <h:inputText id="assessment_title" size="80" maxlength="255" value="#{assessmentSettings.title}" />
 
         <h:outputLabel for="creator" value="#{assessmentSettingsMessages.assessment_creator}" rendered="#{assessmentSettings.valueMap.assessmentAuthor_isInstructorEditable==true}"/>
 
@@ -415,7 +422,7 @@ function setBlockDivs()
 	</h:panelGroup>
 	<h:outputText value="" rendered="#{assessmentSettings.valueMap.dueDate_isInstructorEditable==true}"/>
 	<h:outputText value="#{assessmentSettingsMessages.assessment_due_date_note}" rendered="#{assessmentSettings.valueMap.dueDate_isInstructorEditable==true}"/>
-	
+		
 	<!-- For formatting -->
 	<h:outputText value="" />
 	<h:outputText value="" />
@@ -428,6 +435,7 @@ function setBlockDivs()
 	</h:panelGroup>
 	<h:outputText value="" rendered="#{assessmentSettings.valueMap.retractDate_isInstructorEditable==true}"/>
 	<h:outputText value="#{assessmentSettingsMessages.assessment_retract_date_note}" rendered="#{assessmentSettings.valueMap.retractDate_isInstructorEditable==true}"/>
+
   </h:panelGrid>
  </div>
   </samigo:hideDivision>
@@ -460,7 +468,7 @@ function setBlockDivs()
   </samigo:hideDivision>
 
   <!-- *** HIGH SECURITY *** -->
-<h:panelGroup rendered="#{assessmentSettings.valueMap.ipAccessType_isInstructorEditable==true or assessmentSettings.valueMap.passwordRequired_isInstructorEditable==true}" >
+<h:panelGroup rendered="#{assessmentSettings.valueMap.ipAccessType_isInstructorEditable==true or assessmentSettings.valueMap.passwordRequired_isInstructorEditable==true} or publishedSettings.valueMap.lockedBrowser_isInstructorEditable==true" >
   <samigo:hideDivision title="#{assessmentSettingsMessages.heading_high_security}">
     <f:verbatim><div class="tier2"></f:verbatim>
     <h:panelGrid border="0" columns="2"
@@ -488,6 +496,21 @@ function setBlockDivs()
         <h:outputLabel for="password" value="#{assessmentSettingsMessages.high_security_password}"/>
         <h:inputText id="password" size="20" value="#{assessmentSettings.password}"/>
       </h:panelGrid>
+      
+      <h:outputText value="#{assessmentSettingsMessages.require_secure_delivery}"
+		rendered="#{assessmentSettings.valueMap.lockedBrowser_isInstructorEditable==true && assessmentSettings.secureDeliveryAvailable}"/>
+	  <h:panelGrid border="0" columns="1"  columnClasses="longtext"
+		rendered="#{assessmentSettings.valueMap.lockedBrowser_isInstructorEditable==true && assessmentSettings.secureDeliveryAvailable}">
+	  	<h:selectOneRadio id="secureDeliveryModule" value="#{assessmentSettings.secureDeliveryModule}"  layout="pageDirection" onclick="setBlockDivs();document.forms[0].onsubmit();document.forms[0].submit();">
+			<f:selectItems value="#{assessmentSettings.secureDeliveryModuleSelections}" />
+	  	</h:selectOneRadio>
+	  	<h:panelGrid border="0" columns="2"  columnClasses="longtext"
+			rendered="#{assessmentSettings.valueMap.lockedBrowser_isInstructorEditable==true && assessmentSettings.secureDeliveryAvailable}">	
+			<h:outputLabel for="secureDeliveryModuleExitPassword" value="#{assessmentSettingsMessages.secure_delivery_exit_pwd}"/>
+			<h:inputText id="secureDeliveryModuleExitPassword" size="20" value="#{assessmentSettings.secureDeliveryModuleExitPassword}"
+				disabled="#{assessmentSettings.secureDeliveryModule == 'SECURE_DELIVERY_NONE_ID'}" maxlength="14"/>      	
+	  	</h:panelGrid>
+	  </h:panelGrid>
     </h:panelGrid>
  <f:verbatim></div></f:verbatim>
   </samigo:hideDivision>
@@ -546,7 +569,7 @@ function setBlockDivs()
   <f:verbatim> <div class="longtext"></f:verbatim> <h:outputLabel for="itemNavigation" value="#{assessmentSettingsMessages.navigation}" /><f:verbatim></div><div class="tier3"></f:verbatim>
       <h:panelGrid columns="1">
         <h:selectOneRadio id="itemNavigation" value="#{assessmentSettings.itemNavigation}"  layout="pageDirection" 
-		onclick="setBlockDivs();submitForm();">
+		onclick="setBlockDivs();updateItemNavigation(true);submitForm();">
           <f:selectItem itemValue="1" itemLabel="#{assessmentSettingsMessages.linear_access}"/>
           <f:selectItem itemValue="2" itemLabel="#{assessmentSettingsMessages.random_access}"/>
         </h:selectOneRadio>
@@ -639,14 +662,9 @@ function setBlockDivs()
         </h:selectOneRadio>
 
       <f:verbatim></td><td valign="bottom"></f:verbatim>
-
-        <h:panelGroup rendered="#{assessmentSettings.itemNavigation!=1}">
+        <h:panelGroup>
           <h:inputText size="5"  id="submissions_Allowed" value="#{assessmentSettings.submissionsAllowed}" />
-          <h:outputLabel for="submissions_Allowed1" value="#{assessmentSettingsMessages.limited_submission}" />
-        </h:panelGroup>
-        <h:panelGroup rendered="#{assessmentSettings.itemNavigation==1}">
-          <h:inputText size="5"  id="submissions_Allowed2" value="1" disabled="true" />
-          <h:outputLabel for="submissions_Allowed2" value="#{assessmentSettingsMessages.limited_submission}" />
+          <h:outputLabel for="submissions_Allowed" value="#{assessmentSettingsMessages.limited_submission}" />
         </h:panelGroup>
       <f:verbatim></td></tr></table></div></f:verbatim>
     </h:panelGroup>
@@ -973,7 +991,7 @@ function setBlockDivs()
 
  <!-- save & publish -->
   <h:commandButton  value="#{assessmentSettingsMessages.button_unique_save_and_publish}" type="submit" styleClass="active" rendered="#{assessmentSettings.hasQuestions}"
-      action="#{assessmentSettings.getOutcomePublish}" onclick="setBlockDivs();" >
+      action="#{assessmentSettings.getOutcomePublish}" onclick="setBlockDivs();updateItemNavigation(false);" >
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.ConfirmPublishAssessmentListener" />
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.PublishAssessmentListener" />
   </h:commandButton>
@@ -982,18 +1000,18 @@ function setBlockDivs()
       action="#{assessmentSettings.getOutcomePublish}" disabled="true" />
       
 <!-- save -->
-  <h:commandButton type="submit" value="#{assessmentSettingsMessages.button_save_settings}" action="#{assessmentSettings.getOutcomeSave}"  onclick="setBlockDivs();">
+  <h:commandButton type="submit" value="#{assessmentSettingsMessages.button_save_settings}" action="#{assessmentSettings.getOutcomeSave}"  onclick="setBlockDivs();updateItemNavigation(false);">
       <f:param name="assessmentId" value="#{assessmentSettings.assessmentId}"/>
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.SaveAssessmentSettingsListener"/>
   </h:commandButton>
 
   <!-- cancel -->
-  <h:commandButton value="#{commonMessages.cancel_action}" type="submit" action="editAssessment" rendered="#{author.fromPage == 'editAssessment'}">
+  <h:commandButton value="#{commonMessages.cancel_action}" type="submit" action="editAssessment" rendered="#{author.firstFromPage == 'editAssessment'}">
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.ResetAssessmentAttachmentListener" />
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.EditAssessmentListener" />
   </h:commandButton>
 
-    <h:commandButton value="#{commonMessages.cancel_action}" type="submit" action="#{author.getFromPage}" rendered="#{author.fromPage != 'editAssessment'}">
+    <h:commandButton value="#{commonMessages.cancel_action}" type="submit" action="author" rendered="#{author.firstFromPage == 'author'}">
 	      <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.ResetAssessmentAttachmentListener" />
   </h:commandButton>
 
@@ -1001,7 +1019,7 @@ function setBlockDivs()
 </h:form>
 <!-- end content -->
 </div>
-         <script language="javascript" style="text/JavaScript">retainHideUnhideStatus('none');showHideReleaseGroups();</script>
+         <script style="text/JavaScript">retainHideUnhideStatus('none');showHideReleaseGroups();</script>
 
       </body>
     </html>

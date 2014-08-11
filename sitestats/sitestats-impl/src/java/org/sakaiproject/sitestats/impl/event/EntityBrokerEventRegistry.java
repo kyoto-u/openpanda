@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EntityBrokerEventRegistry.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EntityBrokerEventRegistry.java $
  * $Id: EntityBrokerEventRegistry.java 72280 2010-01-22 10:45:04Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

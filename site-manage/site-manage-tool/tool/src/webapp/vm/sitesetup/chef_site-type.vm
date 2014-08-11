@@ -54,22 +54,18 @@
 		<div id="siteTypeList" 
 			 #* if templates enabled *# class="indnt3" #*end templates enabled *#>
 			#foreach ($type in $siteTypes)
-				#if (($type != "GradToolsStudent" && $type != $courseSiteType) || ($type == $courseSiteType && $canAddCourse) || ($type == "GradToolsStudent" && $!withDissertation && $!isGradStudent.booleanValue() && $!noGradToolsSite.booleanValue()))
+				#if (($type == $courseSiteType && $canAddCourse) || ($type == $portfolioSiteType && $canAddPortfolio) || ($type == $projectSiteType && $canAddProject))
 					<p class="checkbox indnt1">
 						<input type="radio" name="itemType" id="$type" value="$type" #if ($type == $typeSelected) checked="checked" #end/>
 						<label for = "$type">
-							#if ($type == "GradToolsStudent")
-								$tlang.getString("sitetype.gratooweb")
-							#else
-								$type $tlang.getString("sitetype.websit")	
-							#end
+							$tlang.getFormattedMessage("sitetype.websit", $type)
 						</label>	
 					</p>		
 					#if ($type == $courseSiteType && $canAddCourse)
 						<div class="indnt3" id="termList" style="display:none;">
 							<p class="required">
-								<span class ="reqStar" id="term-required" style="height:1em;border:1px solid transparent"> * </span>
 								<label for="selectTerm">
+                                    <span class ="reqStar" id="term-required" style="height:1em;border:1px solid transparent"> * </span>
 									$tlang.getString("sitetype.acater")
 								</label>	
 								<select name="selectTerm" id="selectTerm">  ## onclick="selectSiteType('$type')"
@@ -92,7 +88,7 @@
 							</p>	
 						</div>	
 					#end ## end of #if ($type == $courseSiteType && $canAddCourse)
-				#end ## end of #if (($type != "GradToolsStudent" && $type != $courseSiteType) || ($type == $courseSiteType && $canAddCourse) || ($type == "GradToolsStudent" && $!withDissertation && $!isGradStudent.booleanValue() && $!noGradToolsSite.booleanValue()))
+				#end ## end of #if ($type != $courseSiteType || ($type == $courseSiteType && $canAddCourse))
 				#*
 				#if ($templateList.size() > 0 && $templateList.containsKey($type))
 					<p class="checkbox indnt3">
@@ -163,7 +159,27 @@
 					<input type="checkbox" name="publishSite" id="publishSite" value="true"/>	
 					<label for="publishSite">$tlang.getString("sitetype.publishSite")</label>
 				</div>
-			</div> ## end of div#templateSettings
+
+
+<STYLE type="text/css">
+<!-- 
+table.templates p{margin:0 !important;  padding:0}
+ -->
+</STYLE>
+			<p>
+			<div id="siteTypeList2" style="background-color:#edd">
+				$tlang.getString("sitetype.template.notice")
+			<div class="indnt2">
+			<table class="templates">
+			<tr><th>$tlang.getString("sinfo.stitle")</th><th>$tlang.getString("sinfo.descr")</th></tr>
+			#foreach($templateSite in $templateSites)
+				#set($description=false)
+				#set($description=$templateSite.description)
+				<tr><td valign="top">$templateSite.title</td><td style="padding-left:0.5em">#if($description)$description#end</td></tr>
+			#end				
+			</table>
+			</div>
+			</div>
 		#end
 		## end templates enabled
 		<input type="hidden" name="back" value="$!backIndex" />
@@ -176,6 +192,7 @@
 				<span id="templateCourseInstruction" style="display:none">$tlang.getString("sitetype.templatecourserosterinstruction")</span>
 				<span id="templateNonCourseInstruction" style="display:none">$tlang.getString("sitetype.templatefinalstepinstruction")</span>
 		</div>	
+		</div> ## end of div#templateSettings
 		<div class ="act" style="padding-top:1em;">
 			#* this submit should create the site from the template and redirect user to site
 			 it should be set style="display:none" if user is coming back
@@ -189,6 +206,7 @@
 			<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 		</div>
 
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>				
 </div>	
 

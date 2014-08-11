@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/entity/api/Entity.java $
- * $Id: Entity.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/entity/api/Entity.java $
+ * $Id: Entity.java 93399 2011-06-01 11:31:40Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -91,5 +91,5 @@ public interface Entity
 	 *        The DOM elements, the top of which is the containing element of the new "entity" element.
 	 * @return The newly added element.
 	 */
-	Element toXml(Document doc, Stack stack);
+	Element toXml(Document doc, Stack<Element> stack);
 }

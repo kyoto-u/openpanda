@@ -48,7 +48,7 @@ import org.radeox.util.Service;
  * more languages. CodeMacro displays Java, Ruby or SQL code. @author stephan
  * @team sonicteam
  * 
- * @version $Id: CodeMacro.java 96032 2011-08-02 11:58:42Z holladay@longsight.com $
+ * @version $Id: CodeMacro.java 95575 2011-07-25 11:56:51Z david.horwitz@uct.ac.za $
  */
 
 public class CodeMacro extends LocalePreserved

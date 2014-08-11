@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/branches/sakai-2.8.x/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/SiteEmailNotificationMail.java $
- * $Id: SiteEmailNotificationMail.java 84680 2010-11-12 18:52:11Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.0/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/SiteEmailNotificationMail.java $
+ * $Id: SiteEmailNotificationMail.java 101750 2011-12-14 16:57:18Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -34,7 +34,6 @@ import org.sakaiproject.event.api.Event;
 import org.sakaiproject.mailarchive.api.MailArchiveMessage;
 import org.sakaiproject.mailarchive.api.MailArchiveMessageHeader;
 import org.sakaiproject.mailarchive.api.MailArchiveService;
-import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.util.EmailNotification;
 import org.sakaiproject.util.FormattedText;

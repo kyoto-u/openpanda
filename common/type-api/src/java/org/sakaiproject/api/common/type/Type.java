@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/type-api/src/java/org/sakaiproject/api/common/type/Type.java $
- * $Id: Type.java 59094 2009-03-25 13:32:59Z s.swinsburg@lancaster.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/type-api/src/java/org/sakaiproject/api/common/type/Type.java $
+ * $Id: Type.java 89105 2011-02-26 07:44:58Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 Sakai Foundation
@@ -28,23 +28,64 @@ import org.sakaiproject.api.common.manager.Persistable;
  */
 public interface Type extends Persistable
 {
+	/**
+	 * 
+	 * @return
+	 */
 	public String getAuthority();
 
+	/**
+	 * 
+	 * @param authority
+	 */
 	public void setAuthority(String authority);
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getDomain();
 
+	/**
+	 * 
+	 * @param domain
+	 */
 	public void setDomain(String domain);
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getKeyword();
 
+	/**
+	 * 
+	 * @param keyword
+	 */
 	public void setKeyword(String keyword);
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getDisplayName();
 
+	/**
+	 * 
+	 * @param displayName
+	 */
 	public void setDisplayName(String displayName);
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getDescription();
 
+	/**
+	 * 
+	 * @param description
+	 */
 	public void setDescription(String description);
 }

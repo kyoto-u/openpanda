@@ -188,23 +188,14 @@
 
                  <c:forEach var="cellBean" items="${matrixContents.matrixContents[rowLoop.index]}" varStatus="cellLoop">
                      <c:set var="cell" value="${cellBean.cell}"/>
-
-                    <!-- Find out if user has access to this cell -->
-                     <c:set var="hasAccess" value="false"/>
-                     <c:forEach var="cellId" items="${cellsICanAccess}">
-                     	<c:if test="${cellId == cell.id.value}">
-                     		<c:set var="hasAccess" value="true"/>
-                     	</c:if>                     	
-                     </c:forEach>
-					
-		                     
+                     <c:set var="hasAccess" value="${accessibleCells[cell.id.value] != null}"/>
                      <td class="matrix-cell-border matrix-<c:out value="${cell.status}"/>" 
                      	<c:if test="${hasAccess}">
                      		onclick="hrefViewCell('<c:out value="${cell.wizardPage.id}"/>') "
                      	</c:if> 
-                     	
+
                      	<c:if test="${!hasAccess}">
-                     		onclick="noAccess('<c:out value="${cell.scaffoldingCell.wizardPageDefinition.title}"/>')"                    		
+                     		onclick="noAccess('<c:out value="${cell.scaffoldingCell.wizardPageDefinition.title}"/>')"
                      	</c:if>
                      	style="cursor:pointer">
                         &nbsp;

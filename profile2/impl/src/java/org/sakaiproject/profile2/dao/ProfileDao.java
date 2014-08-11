@@ -19,6 +19,8 @@ import org.sakaiproject.profile2.model.ProfilePrivacy;
 import org.sakaiproject.profile2.model.ProfileStatus;
 import org.sakaiproject.profile2.model.SocialNetworkingInfo;
 import org.sakaiproject.profile2.model.UserProfile;
+import org.sakaiproject.profile2.model.WallItem;
+import org.sakaiproject.profile2.model.WallItemComment;
 
 /**
  * Internal DAO Interface for Profile2.
@@ -58,9 +60,10 @@ public interface ProfileDao {
 	 * Get a list of all userIds that match the search criteria in the interest fields.
 	 * 
 	 * @param search	string to search on
+	 * @param includeBusinessBio <code>true</code> if the business biography should also be searched.
 	 * @return
 	 */
-	public List<String> findSakaiPersonsByInterest(final String search);
+	public List<String> findSakaiPersonsByInterest(final String search, boolean includeBusinessBio);
 	
 	/**
 	 * Get the current ProfileImage records from the database.
@@ -489,6 +492,39 @@ public interface ProfileDao {
 	 */
 	public boolean updateExternalIntegrationInfo(ExternalIntegrationInfo info);
 	
+	/**
+	 * Adds a wall item for the specified user.
+	 * 
+	 * @param userUuid the user ID.
+	 * @param item the wall item to add.
+	 * @return <code>true</code> on success, <code>false</code> on failure.
+	 */
+	public boolean addNewWallItemForUser(final String userUuid, final WallItem item);
+	
+	/**
+	 * Removes a wall item.
+	 * 
+	 * @param item the wall item to remove.
+	 * @return <code>true</code> on success, <code>false</code> on failure.
+	 */
+	public boolean removeWallItemFromWall(final WallItem item);
+	
+	/**
+	 * Retrieves all wall items for the specified user.
+	 * 
+	 * @param userUuid the user ID.
+	 * @return the wall items for the specified user.
+	 */
+	public List<WallItem> getWallItemsForUser(final String userUuid);
+			
+	/**
+	 * Adds a new wall item comment.
+	 *  
+	 * @param wallItemComment the wall item comment to add.
+	 * @return <code>true</code> if the add is successful and
+	 *         <code>false</code> if the add fails.
+	 */
+	public boolean addNewCommentToWallItem(WallItemComment wallItemComment);
 	
 	// Hibernate query constants
 	final String QUERY_GET_COMPANY_PROFILE = "getCompanyProfile";
@@ -516,7 +552,8 @@ public interface ProfileDao {
 
 	//SakaiPersonMeta
 	final String QUERY_FIND_SAKAI_PERSONS_BY_NAME_OR_EMAIL = "findSakaiPersonsByNameOrEmail"; 
-	final String QUERY_FIND_SAKAI_PERSONS_BY_INTEREST = "findSakaiPersonsByInterest"; 
+	final String QUERY_FIND_SAKAI_PERSONS_BY_INTEREST = "findSakaiPersonsByInterest";
+	final String QUERY_FIND_SAKAI_PERSONS_BY_INTEREST_AND_BUSINESS_BIO = "findSakaiPersonsByInterestAndBusinessBio";
 	final String QUERY_GET_SAKAI_PERSON = "getSakaiPerson";
 	final String QUERY_GET_ALL_SAKAI_PERSON_IDS = "getAllSakaiPersonIds"; 
 	final String QUERY_GET_ALL_SAKAI_PERSON_IDS_COUNT = "getAllSakaiPersonIdsCount";
@@ -550,6 +587,14 @@ public interface ProfileDao {
 	//from ExternalIntegrationInfo.hbm.xml
 	final String QUERY_GET_EXTERNAL_INTEGRATION_INFO="getExternalIntegrationInfo";
 	
+	//from WallItem.hbm.xml
+	final String QUERY_GET_WALL_ITEMS = "getWallItemRecords";
+	
+	// TODO remove these unused strings
+	//from WallItemComment.hbm.xml
+	//final String QUERY_GET_WALL_ITEM_COMMENTS = "getWallItemComments";
+	
+	//final String QUERY_GET_WALL_ITEMS_COUNT = "getWallItemsCount";
 	
 	// Hibernate object fields
 	final String USER_UUID = "userUuid";

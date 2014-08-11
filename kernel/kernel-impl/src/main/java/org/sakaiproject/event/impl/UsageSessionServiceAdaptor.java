@@ -1,6 +1,6 @@
 /**********************************************************************************
-  * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/event/impl/UsageSessionServiceAdaptor.java $
- * $Id: UsageSessionServiceAdaptor.java 77575 2010-05-19 09:47:37Z steve.swinsburg@gmail.com $
+  * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/UsageSessionServiceAdaptor.java $
+ * $Id: UsageSessionServiceAdaptor.java 98741 2011-09-29 09:38:40Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -21,12 +21,16 @@
 
 package org.sakaiproject.event.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +70,10 @@ import org.sakaiproject.user.api.UserDirectoryService;
  */
 public abstract class UsageSessionServiceAdaptor implements UsageSessionService
 {
+	// see http://jira.sakaiproject.org/browse/SAK-3793 for more info about these numbers
+	private static final long WARNING_SAFE_SESSIONS_TABLE_SIZE = 1750000l;
+	private static final long MAX_SAFE_SESSIONS_TABLE_SIZE = 2000000l;
+
 	/** Our log (commons). */
 	private static Log M_log = LogFactory.getLog(UsageSessionServiceAdaptor.class);
 
@@ -222,6 +230,22 @@ public abstract class UsageSessionServiceAdaptor implements UsageSessionService
 			M_log.warn("init(): ", t);
 		}
 		setUsageSessionServiceSql(sqlService().getVendor());
+		
+		boolean sessionsSizeCheck = serverConfigurationService().getBoolean("sessions.size.check", true);
+		if (sessionsSizeCheck) {
+			long totalSessionsCount = getSessionsCount();
+			if (totalSessionsCount > WARNING_SAFE_SESSIONS_TABLE_SIZE) {
+				M_log.info("The SAKAI_SESSIONS table size ("+totalSessionsCount+") is approaching the point at which " +
+						"performance will begin to degrade ("+MAX_SAFE_SESSIONS_TABLE_SIZE+
+						"), we recommend you archive older sessions over to another table, " +
+						"remove older rows, or truncate this table before it reaches a size of "+MAX_SAFE_SESSIONS_TABLE_SIZE);
+			} else if (totalSessionsCount > MAX_SAFE_SESSIONS_TABLE_SIZE) {
+				M_log.warn("The SAKAI_SESSIONS table size ("+totalSessionsCount+") has passed the point at which " +
+						"performance will begin to degrade ("+MAX_SAFE_SESSIONS_TABLE_SIZE+
+						"), we recommend you archive older events over to another table, " +
+						"remove older rows, or truncate this table to ensure that performance is not affected negatively");
+			}
+		}
 	}
 
 	/**
@@ -285,6 +309,23 @@ public abstract class UsageSessionServiceAdaptor implements UsageSessionService
 			// store
 			if (m_storage.addSession(session))
 			{
+				// set a CSRF token
+				StringBuffer sb = new StringBuffer();
+				sb.append(System.currentTimeMillis());
+				sb.append(session.getId());
+				
+				MessageDigest md;
+				try {
+					md = MessageDigest.getInstance("SHA-256");
+					byte[] digest = md.digest(sb.toString().getBytes("UTF-8"));
+					String hashedSessionId = byteArray2Hex(digest);					
+					s.setAttribute(SAKAI_CSRF_SESSION_ATTRIBUTE, hashedSessionId);
+				} catch (NoSuchAlgorithmException e) {
+					M_log.warn("Failed to create a hashed session id for use as CSRF token because no SHA-256 support", e);
+				} catch (UnsupportedEncodingException e) {
+					M_log.warn("Failed to create a hashed session id for use as CSRF token because could not get UTF-8 bytes of session id", e);
+				}
+				
 				// set as the current session
 				s.setAttribute(USAGE_SESSION_KEY, session);
 
@@ -993,6 +1034,37 @@ public abstract class UsageSessionServiceAdaptor implements UsageSessionService
 		}
 	}
 
+	/**
+	 * @return the current total number of sessions in the sessions table (data storage)
+	 */
+	protected long getSessionsCount() {
+		/*
+		 * NOTE: this is a weird way to get the value out but it matches the existing code
+		 * Added for SAK-3793
+		 */
+		long totalSessionsCount = 0;
+		final String sessionCountStmt = usageSessionServiceSql.getSessionsCountSql();
+		try {
+			List<Long> counts = sqlService().dbRead(sessionCountStmt, null, new SqlReader() {
+				public Object readSqlResultRecord(ResultSet result) {
+					long value = 0;
+					try {
+						value = result.getLong(1);
+					} catch (SQLException ignore) {
+						M_log.info("Could not get count of sessions table using SQL (" + sessionCountStmt + ")");
+					}
+					return new Long(value);
+				}
+			});
+			if (counts.size() > 0) {
+				totalSessionsCount = counts.get(0);
+			}
+		} catch (Exception e) {
+			M_log.warn("Could not get count of sessions.", e);
+		}
+		return totalSessionsCount;
+	}
+
 	@SuppressWarnings("unchecked")
 	public int closeSessionsOnInvalidServers(List<String> validServerIds) {
 		String statement = usageSessionServiceSql.getOpenSessionsOnInvalidServersSql(validServerIds);
@@ -1021,6 +1093,13 @@ public abstract class UsageSessionServiceAdaptor implements UsageSessionService
 		return sessions.size();
 	}
 	
+	private static String byteArray2Hex(byte[] hash) {
+        Formatter formatter = new Formatter();
+        for (byte b : hash) {
+            formatter.format("%02x", b);
+        }
+        return formatter.toString();
+    }
 	
 }
 	

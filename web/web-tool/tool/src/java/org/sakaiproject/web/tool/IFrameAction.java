@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/branches/sakai-2.8.x/web-tool/tool/src/java/org/sakaiproject/web/tool/IFrameAction.java $
- * $Id: IFrameAction.java 87528 2011-01-24 21:23:29Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.0/web-tool/tool/src/java/org/sakaiproject/web/tool/IFrameAction.java $
+ * $Id: IFrameAction.java 103132 2012-01-13 19:57:04Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -21,18 +21,17 @@
 
 package org.sakaiproject.web.tool;
 
+import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Properties;
-import java.util.Collections;
 import java.util.Locale;
-import java.net.URLEncoder;
-import java.io.File;
+import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.commons.validator.UrlValidator;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Role;
@@ -46,6 +45,8 @@ import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.cover.EntityManager;
+import org.sakaiproject.event.api.EventTrackingService;
+import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Site;
@@ -57,14 +58,11 @@ import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
-import org.sakaiproject.util.FormattedText;
-import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
-import org.sakaiproject.event.api.EventTrackingService;
-import org.sakaiproject.event.api.NotificationService;
+import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.util.ResourceLoader;
 
 /**
  * <p>
@@ -288,13 +286,13 @@ public class IFrameAction extends VelocityPortletPaneledAction
 		}
 
 		// set the source url setting
-		String source = StringUtil.trimToNull(config.getProperty(SOURCE));
+		String source = StringUtils.trimToNull(config.getProperty(SOURCE));
 		
 
 		// check for an older way the ChefWebPagePortlet took parameters, converting to our "source" value
 		if (source == null)
 		{
-			source = StringUtil.trimToNull(config.getProperty("url"));
+			source = StringUtils.trimToNull(config.getProperty("url"));
 		}
 
 		// store the raw as-configured source url
@@ -333,6 +331,15 @@ public class IFrameAction extends VelocityPortletPaneledAction
 			SitePage p = SiteService.findPage(getCurrentSitePageId());
 			state.setAttribute(STATE_PAGE_TITLE, p.getTitle());
 		}
+		
+		// if events found in tool registration file put them in state
+		if((StringUtils.trimToNull(config.getProperty(EVENT_ACCESS_WEB_CONTENT)) != null)) {
+			state.setAttribute(EVENT_ACCESS_WEB_CONTENT, config.getProperty(EVENT_ACCESS_WEB_CONTENT));
+		}
+		if((StringUtils.trimToNull(config.getProperty(EVENT_REVISE_WEB_CONTENT)) != null)) {
+			state.setAttribute(EVENT_REVISE_WEB_CONTENT, config.getProperty(EVENT_REVISE_WEB_CONTENT));
+		}
+
 		
 		if (m_eventTrackingService == null)
 		{
@@ -396,18 +403,18 @@ public class IFrameAction extends VelocityPortletPaneledAction
 	 */
 	protected String sourceUrl(String special, String source, String context, boolean macroExpansion, boolean passPid, String pid, String sakaiPropertiesUrlKey)
 	{
-		String rv = StringUtil.trimToNull(source);
+		String rv = StringUtils.trimToNull(source);
 
 		// if marked for "site", use the site intro from the properties
 		if (SPECIAL_SITE.equals(special))
 		{
-			rv = StringUtil.trimToNull(getLocalizedURL("server.info.url"));
+			rv = StringUtils.trimToNull(getLocalizedURL("server.info.url"));
 		}
 
 		// if marked for "workspace", use the "user" site info from the properties
 		else if (SPECIAL_WORKSPACE.equals(special))
 		{
-			rv = StringUtil.trimToNull(getLocalizedURL("myworkspace.info.url"));
+			rv = StringUtils.trimToNull(getLocalizedURL("myworkspace.info.url"));
 		}
 
 		// if marked for "worksite", use the setting from the site's definition
@@ -418,7 +425,7 @@ public class IFrameAction extends VelocityPortletPaneledAction
 			{
 				// get the site's info URL, if defined
 				Site s = SiteService.getSite(context);
-				rv = StringUtil.trimToNull(s.getInfoUrlFull());
+				rv = StringUtils.trimToNull(s.getInfoUrlFull());
 
 				// compute the info url for the site if it has no specific InfoUrl
 				if (rv == null)
@@ -435,14 +442,14 @@ public class IFrameAction extends VelocityPortletPaneledAction
 		else if (sakaiPropertiesUrlKey != null && sakaiPropertiesUrlKey.length() > 1)
 		{
 			// set the url to a string defined in sakai.properties
-			rv = StringUtil.trimToNull(ServerConfigurationService.getString(sakaiPropertiesUrlKey));
+			rv = StringUtils.trimToNull(ServerConfigurationService.getString(sakaiPropertiesUrlKey));
 		}
 		
 
 		// if it's not special, and we have no value yet, set it to the webcontent instruction page, as configured
 		if (rv == null || rv.equals("http://") || rv.equals("https://"))
 		{
-			rv = StringUtil.trimToNull(getLocalizedURL("webcontent.instructions.url"));
+			rv = StringUtils.trimToNull(getLocalizedURL("webcontent.instructions.url"));
 		}
 
 		if (rv != null)
@@ -777,21 +784,35 @@ public class IFrameAction extends VelocityPortletPaneledAction
 		}
 	
 		// tracking event
+		String siteId = "";
+		try
+		{
+			Site s = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
+			siteId = s.getId();
+		}
+		catch (Throwable e)
+		{
+			
+		}
 		if (special == null)
 		{
-			String siteId = "";
-			try
-			{
-				Site s = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
-				siteId = s.getId();
-			}
-			catch (Throwable e)
-			{
-				
-			}
+			if(state.getAttribute(EVENT_ACCESS_WEB_CONTENT) == null) {
 			
-			// this is a Web Content tool
-			m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_ACCESS_WEB_CONTENT, url, siteId, false, NotificationService.NOTI_NONE));
+				// this is a Web Content tool
+				m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_ACCESS_WEB_CONTENT, url, siteId, false, NotificationService.NOTI_NONE));
+			}
+			else {
+				
+				// event in tool registration file will be used
+				m_eventTrackingService.post(m_eventTrackingService.newEvent((String)state.getAttribute(EVENT_ACCESS_WEB_CONTENT), url, siteId, false, NotificationService.NOTI_NONE));
+			}
+		}
+		else {
+			if(state.getAttribute(EVENT_ACCESS_WEB_CONTENT) != null) {
+				
+				// special and event in tool registration file
+				m_eventTrackingService.post(m_eventTrackingService.newEvent((String)state.getAttribute(EVENT_ACCESS_WEB_CONTENT), url, siteId, false, NotificationService.NOTI_NONE));
+			}
 		}
 
 		return (String) getContext(rundata).get("template");
@@ -837,13 +858,13 @@ public class IFrameAction extends VelocityPortletPaneledAction
 					Site s = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
 					siteId = s.getId();
 
-					String infoUrl = StringUtil.trimToNull(s.getInfoUrl());
+					String infoUrl = StringUtils.trimToNull(s.getInfoUrl());
 					if (infoUrl != null)
 					{
 						context.put("info_url", infoUrl);
 					}
 
-					String description = StringUtil.trimToNull(s.getDescription());
+					String description = StringUtils.trimToNull(s.getDescription());
 					if (description != null)
 					{
 	                    description = FormattedText.escapeHtmlFormattedTextarea(description);
@@ -951,11 +972,36 @@ public class IFrameAction extends VelocityPortletPaneledAction
 			template = template + "-customize";
 		}
 
+		
 		// tracking event
+		if(siteId.length() == 0) {
+			try
+			{
+				Site s = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
+				siteId = s.getId();
+			}
+			catch (Throwable e)
+			{
+				
+			}
+		}
 		if (special == null)
 		{
-			// this is a Web Content tool
-			m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_REVISE_WEB_CONTENT, source, siteId, true, NotificationService.NOTI_NONE));
+			if(state.getAttribute(EVENT_REVISE_WEB_CONTENT) == null) {
+				
+				// this is a Web Content tool
+				m_eventTrackingService.post(m_eventTrackingService.newEvent(EVENT_REVISE_WEB_CONTENT, source, siteId, true, NotificationService.NOTI_NONE));
+			}
+			else {
+				// event in tool registration file will be used
+				m_eventTrackingService.post(m_eventTrackingService.newEvent((String)state.getAttribute(EVENT_REVISE_WEB_CONTENT), source, siteId, true, NotificationService.NOTI_NONE));
+			}
+		}
+		else {
+			if(state.getAttribute(EVENT_REVISE_WEB_CONTENT) != null) {
+				// special and event in tool registration file 
+				m_eventTrackingService.post(m_eventTrackingService.newEvent((String)state.getAttribute(EVENT_REVISE_WEB_CONTENT), source, siteId, true, NotificationService.NOTI_NONE));
+			}
 		}
 		
 		// output the max limit 
@@ -1040,7 +1086,7 @@ public class IFrameAction extends VelocityPortletPaneledAction
 		placement.setTitle(title);
 		
 		// site info url 
-		String infoUrl = StringUtil.trimToNull(data.getParameters().getString("infourl"));
+		String infoUrl = StringUtils.trimToNull(data.getParameters().getString("infourl"));
 		if (infoUrl != null && infoUrl.length() > MAX_SITE_INFO_URL_LENGTH)
 		{
 			addAlert(state, rb.getString("gen.info.url.toolong"));
@@ -1090,10 +1136,26 @@ public class IFrameAction extends VelocityPortletPaneledAction
 		// read source if we are not special
 		if (state.getAttribute(SPECIAL) == null)
 		{
-			String source = StringUtil.trimToZero(data.getParameters().getString(SOURCE));
-			if ((source != null) && (source.length() > 0) && (!source.startsWith("/")) && (source.indexOf("://") == -1))
+			String source = StringUtils.trimToEmpty(data.getParameters().getString(SOURCE));
+			
+			// User entered nothing in the source box; give the user an alert
+			if (StringUtils.isBlank(source))
+			{
+				addAlert(state, rb.getString("gen.url.empty"));
+				return;		
+			}
+			
+			if ((!source.startsWith("/")) && (source.indexOf("://") == -1))
 			{
 				source = "http://" + source;
+			}
+			
+			// Validate the url
+			UrlValidator urlValidator = new UrlValidator();
+			if (!urlValidator.isValid(source)) 
+			{
+				addAlert(state, rb.getString("gen.url.invalid"));
+				return;
 			}
 
 			// update state
@@ -1106,7 +1168,7 @@ public class IFrameAction extends VelocityPortletPaneledAction
 			{
 				infoUrl = "http://" + infoUrl;
 			}
-			String description = StringUtil.trimToNull(data.getParameters().getString("description"));
+			String description = StringUtils.trimToNull(data.getParameters().getString("description"));
 			description = FormattedText.processEscapedHtml(description);
 
 			// update the site info

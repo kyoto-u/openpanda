@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/TikaContentDigester.java $
- * $Id: TikaContentDigester.java 68269 2009-10-26 14:27:03Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/TikaContentDigester.java $
+ * $Id: TikaContentDigester.java 100726 2011-11-15 14:22:43Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -31,6 +31,7 @@ import org.sakaiproject.content.api.ContentResource;
 import org.xml.sax.ContentHandler;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 
@@ -66,7 +67,7 @@ public class TikaContentDigester extends BaseContentDigester
 			ContentHandler handler = new BodyContentHandler();
 			Parser parser = new AutoDetectParser();
 				
-			parser.parse(contentStream, handler, metadata);
+			parser.parse(contentStream, handler, metadata, new ParseContext());
 			return handler.toString();
 		}
 		catch (Exception e)

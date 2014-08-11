@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-impl/impl/src/java/org/sakaiproject/assignment/taggable/impl/AssignmentActivityImpl.java $
- * $Id: AssignmentActivityImpl.java 68687 2009-11-09 16:45:06Z chmaurer@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/taggable/impl/AssignmentActivityImpl.java $
+ * $Id: AssignmentActivityImpl.java 112290 2012-09-11 17:44:18Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -74,7 +74,7 @@ public class AssignmentActivityImpl implements TaggableActivity {
 	{
 		//String url = assignment.getUrl();
 		String url = ServerConfigurationService.getServerUrl() + 
-			"/direct/assignment/" + assignment.getId() + "/doView_assignment?TB_iframe=true";
+			"/direct/assignment/" + assignment.getId() + "/doView_assignment";
 		return url;
 	}
 
@@ -82,4 +82,14 @@ public class AssignmentActivityImpl implements TaggableActivity {
 	{
 		return producer.getName();
 	}
+	
+	public boolean getUseDecoration()
+	{
+		return true;
+	}
+	
+	public String getActivityDetailUrlParams() {
+		return "?TB_iframe=true";
+	}
+
 }

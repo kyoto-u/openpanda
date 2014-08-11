@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/chat/branches/sakai-2.8.x/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatContentProducer.java $
-* $Id: ChatContentProducer.java 84071 2010-11-02 15:40:33Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.0/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatContentProducer.java $
+* $Id: ChatContentProducer.java 84052 2010-11-02 15:00:40Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2007, 2008 The Sakai Foundation

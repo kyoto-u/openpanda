@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ToolImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ToolImpl.java $
  * $Id: ToolImpl.java 66230 2009-09-02 08:07:38Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

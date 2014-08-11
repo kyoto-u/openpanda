@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/RemoteHostFilter.java $
- * $Id: RemoteHostFilter.java 51359 2008-08-25 18:27:43Z ian@caret.cam.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/RemoteHostFilter.java $
+ * $Id: RemoteHostFilter.java 101656 2011-12-12 22:40:28Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -233,7 +233,7 @@ public class RemoteHostFilter implements Filter {
 
         StringTokenizer st = new StringTokenizer(list, ",");
 
-        ArrayList patterns = new ArrayList();
+        ArrayList<Pattern> patterns = new ArrayList<Pattern>();
         while (st.hasMoreTokens()) {
             String token = st.nextToken().trim();
             try {

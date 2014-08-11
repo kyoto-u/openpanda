@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-tool/tool/src/webapp/WEB-INF/pages/title.jsp $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-tool/tool/src/webapp/WEB-INF/pages/title.jsp $
  * $Id: title.jsp 59320 2009-03-30 21:09:29Z arwhyte@umich.edu $
  ***********************************************************************************
  *

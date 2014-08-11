@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/util/ToolListener.java $
- * $Id: ToolListener.java 64592 2009-07-06 14:45:36Z bkirschn@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/util/ToolListener.java $
+ * $Id: ToolListener.java 97042 2011-08-16 15:01:53Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -30,7 +30,7 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.tool.cover.ActiveToolManager;
 
 /**
@@ -41,6 +41,14 @@ import org.sakaiproject.tool.cover.ActiveToolManager;
  * newly registered tool(s).  These files are required to be in the /tool/ directory
  * have have a name of the form [toolId][_][localCode].properties.  This format allows
  * tool litles (etc) to be localized even when multiple tool registrations are included.
+ * </p>
+ * This listener can be added to the web.xml file with a snippet like this:
+ * <p>
+ * <code>
+ * &lt;listener&gt;<br/>
+ * &nbsp;&lt;listener-class&gt;org.sakaiproject.util.ToolListener&lt;/listener-class&gt;<br/>
+ * &lt;/listener&gt;<br/>
+ * </code>
  * </p>
  */
 public class ToolListener implements ServletContextListener
@@ -55,12 +63,16 @@ public class ToolListener implements ServletContextListener
 	{
 		// The the location of resource and registration files.
 		Set paths = event.getServletContext().getResourcePaths("/tools/");
-		if (paths == null) return;
+		final String sakaiHomePath = ServerConfigurationService.getSakaiHomePath();
 
 		//	First Pass:  Search for tool registration file.
+		if (paths == null) {
+			return;
+		}
+		int registered = 0;
 		for (Iterator i = paths.iterator(); i.hasNext();)
 		{
-			String path = (String) i.next();
+			final String path = (String) i.next();
 
 			// skip directories
 			if (path.endsWith("/")) continue;
@@ -68,9 +80,22 @@ public class ToolListener implements ServletContextListener
 			// If an XML file, use it as the tool registration file.
 			if (path.endsWith(".xml"))
 			{
-				M_log.info("registering tools from resource: " + path);
-				ActiveToolManager.register(event.getServletContext().getResourceAsStream(path), event.getServletContext());
+				final File f = new File(sakaiHomePath + path);
+				if(f.exists()) {
+					ActiveToolManager.register(f, event.getServletContext());
+					ToolListener.M_log.info("overriding tools configuration: registering tools from resource: " + sakaiHomePath + path);
+				} else {
+					M_log.info("registering tools from resource: " + path);
+					ActiveToolManager.register(event.getServletContext().getResourceAsStream(path), event.getServletContext());
+				}
+				registered++;
 			}
+		}
+		
+		if (registered == 0)
+		{
+			// Probably misconfigured as we should have at least one registered.
+			M_log.warn("No tools found to be registered.");
 		}
 
 		//	Second pass, search for message bundles.  Two passes are necessary to make sure the tool is registered first.

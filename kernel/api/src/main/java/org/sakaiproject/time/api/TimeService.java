@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/time/api/TimeService.java $
- * $Id: TimeService.java 79497 2010-07-15 15:33:23Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/time/api/TimeService.java $
+ * $Id: TimeService.java 113286 2012-09-21 15:08:57Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -219,9 +219,9 @@ public interface TimeService
 	TimeRange newTimeRange(Time start, Time end);
 
 	/**
-	 * Access the local TimeZone.
+	 * Access the users prefered local TimeZone.
 	 * 
-	 * @return The local TimeZone.
+	 * @return The user's local TimeZone.
 	 */
 	TimeZone getLocalTimeZone();
 

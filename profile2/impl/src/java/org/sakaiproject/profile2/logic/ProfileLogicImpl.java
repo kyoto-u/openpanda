@@ -17,8 +17,11 @@
 package org.sakaiproject.profile2.logic;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Setter;
 
@@ -36,6 +39,8 @@ import org.sakaiproject.profile2.model.Person;
 import org.sakaiproject.profile2.model.ProfilePrivacy;
 import org.sakaiproject.profile2.model.SocialNetworkingInfo;
 import org.sakaiproject.profile2.model.UserProfile;
+import org.sakaiproject.profile2.types.EmailType;
+import org.sakaiproject.profile2.types.PrivacyType;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.profile2.util.ProfileUtils;
 import org.sakaiproject.user.api.User;
@@ -96,21 +101,24 @@ public class ProfileLogicImpl implements ProfileLogic {
 			return p;
 		}
 		
-		//get privacy record
-		ProfilePrivacy privacy = privacyLogic.getPrivacyRecordForUser(userUuid);
-		
-		//check friend status
-		boolean friend = connectionsLogic.isUserXFriendOfUserY(userUuid, currentUserUuid);
+		//REMOVE the birth year if not allowed
+		if(!privacyLogic.isBirthYearVisible(userUuid)){
+			if(p.getDateOfBirth() != null) {
+				p.setDateOfBirth(ProfileUtils.stripYear(p.getDateOfBirth()));
+			} else {
+				p.setDateOfBirth(null);
+			}
+		}
 		
 		//REMOVE basic info if not allowed
-		if(!privacyLogic.isUserXBasicInfoVisibleByUserY(userUuid, privacy, currentUserUuid, friend)) {
+		if(!privacyLogic.isActionAllowed(userUuid,currentUserUuid, PrivacyType.PRIVACY_OPTION_BASICINFO)) {
 			p.setNickname(null);
 			p.setDateOfBirth(null);
 			p.setPersonalSummary(null);
 		}
 		
 		//ADD email if allowed, REMOVE contact info if not
-		if(privacyLogic.isUserXContactInfoVisibleByUserY(userUuid, privacy, currentUserUuid, friend)) {
+		if(privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_CONTACTINFO)) {
 			p.setEmail(u.getEmail());
 		} else {
 			p.setEmail(null);
@@ -122,7 +130,7 @@ public class ProfileLogicImpl implements ProfileLogic {
 		}
 		
 		//REMOVE staff info if not allowed
-		if(!privacyLogic.isUserXStaffInfoVisibleByUserY(userUuid, privacy, currentUserUuid, friend)) {
+		if(!privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_STAFFINFO)) {
 			p.setDepartment(null);
 			p.setPosition(null);
 			p.setSchool(null);
@@ -134,13 +142,13 @@ public class ProfileLogicImpl implements ProfileLogic {
 		}
 		
 		//REMOVE student info if not allowed
-		if(!privacyLogic.isUserXStudentInfoVisibleByUserY(userUuid, privacy, currentUserUuid, friend)) {
+		if(!privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_STUDENTINFO)) {
 			p.setCourse(null);
 			p.setSubjects(null);
 		}
 		
 		//REMOVE personal info if not allowed
-		if(!privacyLogic.isUserXPersonalInfoVisibleByUserY(userUuid, privacy, currentUserUuid, friend)) {
+		if(!privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_PERSONALINFO)) {
 			p.setFavouriteBooks(null);
 			p.setFavouriteTvShows(null);
 			p.setFavouriteMovies(null);
@@ -148,13 +156,13 @@ public class ProfileLogicImpl implements ProfileLogic {
 		}
 		
 		//ADD social networking info if allowed
-		if(privacyLogic.isUserXSocialNetworkingInfoVisibleByUserY(userUuid, privacy, currentUserUuid, friend)) {
+		if(privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_SOCIALINFO)) {
 			p.setSocialInfo(getSocialNetworkingInfo(userUuid));
 		}
 		
 		//ADD company info if activated and allowed, REMOVE business bio if not
 		if(sakaiProxy.isBusinessProfileEnabled()) {
-			if(privacyLogic.isUserXBusinessInfoVisibleByUserY(userUuid, privacy, currentUserUuid, friend)) {
+			if(privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_BUSINESSINFO)) {
 				p.setCompanyProfiles(getCompanyProfiles(userUuid));
 			} else {
 				p.setBusinessBiography(null);
@@ -164,7 +172,7 @@ public class ProfileLogicImpl implements ProfileLogic {
 		}
 		
 		//ADD profile status if allowed
-		if(privacyLogic.isUserXStatusVisibleByUserY(userUuid, privacy, currentUserUuid, friend)) {
+		if(privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_MYSTATUS)) {
 			p.setStatus(statusLogic.getUserStatus(userUuid));
 		}
 		
@@ -174,9 +182,13 @@ public class ProfileLogicImpl implements ProfileLogic {
 	/**
  	 * {@inheritDoc}
  	 */
-	public boolean saveUserProfile(UserProfile p) {
+	public boolean saveUserProfile(SakaiPerson sp) {
 		
-		//TODO
+		if(sakaiProxy.updateSakaiPerson(sp)) {
+			sendProfileChangeEmailNotification(sp.getAgentUuid());
+			
+			return true;
+		}
 		
 		return false;
 	}
@@ -222,7 +234,7 @@ public class ProfileLogicImpl implements ProfileLogic {
 	 * {@inheritDoc}
 	 */
 	public boolean removeCompanyProfile(String userId, long companyProfileId) {
-		if (userId == null || new Long(companyProfileId) == null) {
+		if (userId == null || Long.valueOf(companyProfileId) == null) {
 			throw new IllegalArgumentException("Null argument in ProfileLogicImpl.removeCompanyProfile()");
 		}
 
@@ -271,70 +283,6 @@ public class ProfileLogicImpl implements ProfileLogic {
 		
 		return false;
 	}
-	
-
-	/**
- 	 * {@inheritDoc}
- 	 */
-	public List<Person> findUsersByNameOrEmail(String search) {
-		
-		List<User> users = new ArrayList<User>();
-		List<String> sakaiPersonUuids = new ArrayList<String>();
-		
-		//add users from SakaiPerson (clean list)
-		sakaiPersonUuids = dao.findSakaiPersonsByNameOrEmail(search);
-		users.addAll(sakaiProxy.getUsers(sakaiPersonUuids));
-
-		//add local users from UserDirectoryService
-		users.addAll(sakaiProxy.searchUsers(search));
-		
-		//add external users from UserDirectoryService
-		users.addAll(sakaiProxy.searchExternalUsers(search));
-		
-		//remove duplicates
-		ProfileUtils.removeDuplicates(users);
-		
-		log.debug("Found " + users.size() + " results for search: " + search);
-		
-		//restrict to only return the max number. UI will print message
-		int maxResults = sakaiProxy.getMaxSearchResults();
-		if(users.size() >= maxResults) {
-			users = users.subList(0, maxResults);
-		}
-		
-		//remove invisible
-		users = removeInvisibleUsers(users);
-		
-		return getPersons(users);
-	}
-	
-	
-	
-	/**
- 	 * {@inheritDoc}
- 	 */
-	public List<Person> findUsersByInterest(String search) {
-		
-		List<User> users = new ArrayList<User>();
-		List<String> sakaiPersonUuids = new ArrayList<String>();
-		
-		//add users from SakaiPerson		
-		sakaiPersonUuids = dao.findSakaiPersonsByInterest(search);
-		users.addAll(sakaiProxy.getUsers(sakaiPersonUuids));
-		
-		//restrict to only return the max number. UI will print message
-		int maxResults = sakaiProxy.getMaxSearchResults();
-		if(users.size() >= maxResults) {
-			users = users.subList(0, maxResults);
-		}
-		
-		//remove invisible
-		users = removeInvisibleUsers(users);
-		
-		return getPersons(users);
-	}
-	
-	
 	
 	/**
  	 * {@inheritDoc}
@@ -431,36 +379,14 @@ public class ProfileLogicImpl implements ProfileLogic {
 		
 		//do we need to import profiles?
 		if(sakaiProxy.isProfileImportEnabled()) {
+			
 			String csv = sakaiProxy.getProfileImportCsvPath();
 			//run the profile importer
-			 converter.importProfiles(csv);
+			converter.importProfiles(csv);
 		}
 	}
 	
 	
-	/**
-	 * Remove invisible users from the list
-	 * @param users
-	 * @return cleaned list
-	 */
-	private List<User> removeInvisibleUsers(List<User> users){
-		
-		//if superuser return list unchanged.
-		if(sakaiProxy.isSuperUser()){
-			return users;
-		}
-		
-		//get list of invisible users as Users
-		List<User> invisibleUsers = sakaiProxy.getUsers(sakaiProxy.getInvisibleUsers());
-		if(invisibleUsers.isEmpty()) {
-			return users;
-		}
-		
-		//remove
-		users.removeAll(invisibleUsers);
-		
-		return users;
-	}
 	
 	/**
 	 * Convenience method to map a SakaiPerson object onto a UserProfile object
@@ -510,44 +436,74 @@ public class ProfileLogicImpl implements ProfileLogic {
 		return p;
 	}
 	
+
+	/**
+	 * Sends an email notification when a user changes their profile, if enabled.
+	 * @param toUuid		the uuid of the user who changed their profile
+	 */
+	private void sendProfileChangeEmailNotification(final String userUuid) {
+		
+		//check if option is enabled
+		boolean enabled = Boolean.valueOf(sakaiProxy.getServerConfigurationParameter("profile2.profile.change.email.enabled", "false"));
+		if(!enabled) {
+			return;
+		}
+		
+		//get the user to send to. THis will be translated into an internal ID. Since SakaiProxy.sendEmail takes a userId as a param
+		//it was easier to require an eid here (and thus the person needs to have an account) rather than create a new method that takes an email address.
+		String eidTo = sakaiProxy.getServerConfigurationParameter("profile2.profile.change.email.eid", null);
+		if(StringUtils.isBlank(eidTo)){
+			log.error("Profile change email notification is enabled but no user eid to send it to is set. Please set 'profile2.profile.change.email.eid' in sakai.properties");
+			return;
+		}
+		
+		//get internal id for this user
+		String userUuidTo = sakaiProxy.getUserIdForEid(eidTo);
+		if(StringUtils.isBlank(userUuidTo)) {
+			log.error("Profile change email notification is setup with an invalid eid. Please adjust 'profile2.profile.change.email.eid' in sakai.properties");
+			return;
+		}
+		
+		String emailTemplateKey = ProfileConstants.EMAIL_TEMPLATE_KEY_PROFILE_CHANGE_NOTIFICATION;
+			
+		//create the map of replacement values for this email template
+		Map<String,String> replacementValues = new HashMap<String,String>();
+		replacementValues.put("userDisplayName", sakaiProxy.getUserDisplayName(userUuid));
+		replacementValues.put("localSakaiName", sakaiProxy.getServiceName());
+		replacementValues.put("profileLink", linkLogic.getEntityLinkToProfileHome(userUuid));
+		replacementValues.put("localSakaiUrl", sakaiProxy.getPortalUrl());
+
+		sakaiProxy.sendEmail(userUuidTo, emailTemplateKey, replacementValues);
+		return;
+		
+	}
 	
+	
+	@Setter
 	private SakaiProxy sakaiProxy;
-	public void setSakaiProxy(SakaiProxy sakaiProxy) {
-		this.sakaiProxy = sakaiProxy;
-	}
 	
+	@Setter
 	private ProfileDao dao;
-	public void setDao(ProfileDao dao) {
-		this.dao = dao;
-	}
 	
+	@Setter
 	private ProfilePreferencesLogic preferencesLogic;
-	public void setPreferencesLogic(ProfilePreferencesLogic preferencesLogic) {
-		this.preferencesLogic = preferencesLogic;
-	}
 	
+	@Setter
 	private ProfileStatusLogic statusLogic;
-	public void setStatusLogic(ProfileStatusLogic statusLogic) {
-		this.statusLogic = statusLogic;
-	}
 	
+	@Setter
 	private ProfilePrivacyLogic privacyLogic;
-	public void setPrivacyLogic(ProfilePrivacyLogic privacyLogic) {
-		this.privacyLogic = privacyLogic;
-	}
 	
+	@Setter
 	private ProfileConnectionsLogic connectionsLogic;
-	public void setConnectionsLogic(ProfileConnectionsLogic connectionsLogic) {
-		this.connectionsLogic = connectionsLogic;
-	}
 	
+	@Setter
 	private ProfileImageLogic imageLogic;
-	public void setImageLogic(ProfileImageLogic imageLogic) {
-		this.imageLogic = imageLogic;
-	}
 	
 	@Setter
 	private ProfileConverter converter;
 	
+	@Setter
+	private ProfileLinkLogic linkLogic;
 	
 }

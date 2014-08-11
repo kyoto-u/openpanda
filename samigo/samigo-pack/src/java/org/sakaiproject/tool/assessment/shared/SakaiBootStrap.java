@@ -27,6 +27,8 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.db.api.SqlService;
 
+import java.io.File;
+
 /**
  * This class will be used to initialize the state of the application.
  * 
@@ -73,10 +75,56 @@ public class SakaiBootStrap
     if (autoDdl)
     {
       LOG.info("SakaiBootStrap.init(): autoDdl enabled; running DDL...");
-      sqlService.ddl(this.getClass().getClassLoader(), SQL_UPDATE_SCRIPT_NAME);
-      sqlService.ddl(this.getClass().getClassLoader(), SAKAI_SAMIGO_DDL_NAME);
+
+      // Don't take down the entire instance if this update script fails!
+      // This update script makes sure the Oracle MEDIA column uses a blob 
+      // and also makes sure indexes are created. As soon as one update fails,
+      // the entire script fails.
+      try {
+        sqlService.ddl(this.getClass().getClassLoader(), SQL_UPDATE_SCRIPT_NAME);
+      }
+      catch (Throwable t) {
+        LOG.warn("SakaiBootStrap.init(): ", t);
+      }
+
+      // Don't take down the entire instance if this series of inserts fails!
+      try {
+        sqlService.ddl(this.getClass().getClassLoader(), SAKAI_SAMIGO_DDL_NAME);
+      }
+      catch (Throwable t) {
+        LOG.warn("SakaiBootStrap.init(): ", t);
+      }
+
     } else {
       LOG.debug("****autoDdl disabled.");
+    }
+
+    String uploadPath = ServerConfigurationService.getString("samigo.answerUploadRepositoryPath", null);
+
+    if(uploadPath != null)
+    {
+        File samigoDir = new File(uploadPath);
+
+        if(!samigoDir.exists())
+        {
+            LOG.info(samigoDir + " doesn't exist. Creating it now ...");
+            if(samigoDir.mkdirs())
+            {
+                LOG.info(samigoDir + " created.");
+            }
+            else
+            {
+                LOG.error("samigo.answerUploadRepositoryPath was not set. No Samigo upload folder has been created.");
+            }
+        }
+        else
+        {
+            LOG.info(samigoDir + " exists. It will not be recreated.");
+        }
+    }
+    else
+    {
+        LOG.error("samigo.answerUploadRepositoryPath was not set. No Samigo upload folder has been created.");
     }
 
     //LOG.debug("***** init() completed successfully");

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/branches/sakai-2.8.x/roster-app/src/java/org/sakaiproject/tool/roster/FilteredParticipantListingBean.java $
- * $Id: FilteredParticipantListingBean.java 112235 2012-09-09 02:30:08Z matthew@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.0/roster-app/src/java/org/sakaiproject/tool/roster/FilteredParticipantListingBean.java $
+ * $Id: FilteredParticipantListingBean.java 112291 2012-09-11 17:47:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation

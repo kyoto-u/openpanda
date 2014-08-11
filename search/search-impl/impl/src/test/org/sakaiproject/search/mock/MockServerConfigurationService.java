@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/test/org/sakaiproject/search/mock/MockServerConfigurationService.java $
- * $Id: MockServerConfigurationService.java 59685 2009-04-03 23:36:24Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/test/org/sakaiproject/search/mock/MockServerConfigurationService.java $
+ * $Id: MockServerConfigurationService.java 98101 2011-09-13 02:44:40Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -261,5 +261,25 @@ public class MockServerConfigurationService implements ServerConfigurationServic
 	{
 		this.instanceName = instanceName;
 	}
+
+    public <T> T getConfig(String name, T defaultValue) {
+        return null;
+    }
+
+    public ConfigItem getConfigItem(String name) {
+        return null;
+    }
+
+    public ConfigData getConfigData() {
+        return null;
+    }
+
+    public ConfigItem registerConfigItem(ConfigItem configItem) {
+        return null;
+    }
+
+    public void registerListener(ConfigurationListener configurationListener) {
+        
+    }
 
 }

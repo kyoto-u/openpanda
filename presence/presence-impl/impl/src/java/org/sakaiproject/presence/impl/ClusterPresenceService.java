@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/branches/sakai-2.8.x/presence-impl/impl/src/java/org/sakaiproject/presence/impl/ClusterPresenceService.java $
- * $Id: ClusterPresenceService.java 77338 2010-05-11 09:51:46Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.0/presence-impl/impl/src/java/org/sakaiproject/presence/impl/ClusterPresenceService.java $
+ * $Id: ClusterPresenceService.java 92673 2011-05-06 09:54:49Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -201,7 +201,6 @@ public class ClusterPresenceService extends BasePresenceService
 		/**
 		 * {@inheritDoc}
 		 */
-		@SuppressWarnings("unchecked")
 		public List<String> getLocations()
 		{
 			// form the SQL query

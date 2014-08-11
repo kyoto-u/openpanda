@@ -1,6 +1,6 @@
 /**********************************************************************************
  *
- * $Id: AssignmentPointsConverter.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $Id: AssignmentPointsConverter.java 95104 2011-07-13 15:57:56Z holladay@longsight.com $
  *
  ***********************************************************************************
  *
@@ -27,6 +27,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.tool.gradebook.AbstractGradeRecord;
 import org.sakaiproject.tool.gradebook.Assignment;
@@ -94,6 +95,15 @@ public class AssignmentPointsConverter extends PointsConverter {
 				// display percentage
 				percentage = true;
 				workingValue = ((AbstractGradeRecord)value).getGradeAsPercentage();
+				if(ServerConfigurationService.getBoolean("gradebook.roster.showCourseGradePoints", false)){
+					Gradebook gradebook = ((GradableObject)((AbstractGradeRecord)value).getGradableObject()).getGradebook();
+					int gradeType = gradebook.getGrade_type();
+					if(gradeType == GradebookService.GRADE_TYPE_POINTS && gradebook.getCategory_type() != GradebookService.CATEGORY_TYPE_WEIGHTED_CATEGORY){
+						percentage = false;
+						workingValue = super.getAsString(context, component, ((CourseGradeRecord)value).getPointsEarned())
+						+ "/" + super.getAsString(context, component, ((CourseGradeRecord)value).getTotalPointsPossible());
+					}
+				}
 			}
 		}
 		formattedScore = super.getAsString(context, component, workingValue);
@@ -104,6 +114,12 @@ public class AssignmentPointsConverter extends PointsConverter {
 		if(percentage && workingValue != null){
 			formattedScore += "%";
 		}
+        if(value != null && value instanceof AssignmentGradeRecord){
+            AssignmentGradeRecord agr = (AssignmentGradeRecord)value;
+            if(agr.getDroppedFromGrade()) {
+                formattedScore = "<strike>" + formattedScore + "</strike>";
+            }
+        }
 		return formattedScore;
 	}
 }

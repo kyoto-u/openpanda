@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/AssignmentSubmissionAccess.java $
- * $Id: AssignmentSubmissionAccess.java 84784 2010-11-16 16:29:19Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/AssignmentSubmissionAccess.java $
+ * $Id: AssignmentSubmissionAccess.java 84106 2010-11-02 18:17:48Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

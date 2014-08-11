@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-api/api/src/java/org/sakaiproject/search/model/SearchWriterLock.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-api/api/src/java/org/sakaiproject/search/model/SearchWriterLock.java $
  * $Id: SearchWriterLock.java 67816 2009-10-15 12:01:11Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

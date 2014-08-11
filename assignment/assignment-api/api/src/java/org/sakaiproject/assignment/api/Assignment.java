@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-api/api/src/java/org/sakaiproject/assignment/api/Assignment.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/Assignment.java $
  * $Id: Assignment.java 68798 2009-11-11 18:48:22Z zqian@umich.edu $
  ***********************************************************************************
  *

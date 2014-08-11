@@ -3,15 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>org.sakaiproject.purepoms</groupId>
-        <artifactId>sakai-edu-tool</artifactId>
-        <version>2.8.7</version>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>master</artifactId>
+        <version>2.9.0</version>
+        <relativePath>../master/pom.xml</relativePath>
+        <!-- <version>2.8.3</version> -->
     </parent>
     
     <name>BasicLTI base pom (basiclti)</name>
     <groupId>org.sakaiproject.basiclti</groupId>
     <artifactId>basiclti</artifactId>
-    <version>1.3.7-SNAPSHOT</version>
+    <version>2.0.0</version>
     <organization>
         <name>Sakai Project</name>
         <url>http://sakaiproject.org/</url>
@@ -19,22 +21,50 @@
     <inceptionYear>2009</inceptionYear>
     <packaging>pom</packaging>
 
-    <properties>
-    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <modules>
         <module>basiclti-common</module>
         <module>basiclti-assembly</module>
         <module>basiclti-docs</module>
         <module>basiclti-help</module>
+        <module>basiclti-api</module>
         <module>basiclti-impl</module>
         <module>basiclti-pack</module>
         <module>basiclti-portlet</module>
         <module>basiclti-blis</module>
         <module>basiclti-util</module>
+        <module>basiclti-tool</module>
         <module>portlet-util</module>
     </modules>
+    
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+								<!--
+								<sakai.entitybroker.version>1.5-SNAPSHOT</sakai.entitybroker.version>
+								-->
+                <sakai.velocity.groupId>org.sakaiproject.velocity</sakai.velocity.groupId>
+								<sakai.velocity.version>${sakai.velocity-tool.version}</sakai.velocity.version>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+								<!--
+								<sakai.edu-services.version>1.2-SNAPSHOT</sakai.edu-services.version> 
+								-->
+            </properties>
+        </profile>
+        <profile>
+            <id>sakai-2.8</id>
+            <properties>
+                <sakai.entitybroker.version>1.4.3</sakai.entitybroker.version>
+                <sakai.velocity.groupId>org.sakaiproject</sakai.velocity.groupId>
+                <sakai.velocity.version>2.8.1</sakai.velocity.version>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+                <sakai.edu-services.version>1.1.3</sakai.edu-services.version> 
+            </properties>
+        </profile>
+    </profiles>
     
     <developers>
         <developer>
@@ -75,7 +105,7 @@
             <timezone>-5</timezone>
         </developer>
         <developer>
-            <id>sswinsburg</id>
+            <id>steve.swinsburg</id>
             <name>Steve Swinsburg</name>
             <organization>Australian National University</organization>
             <roles>
@@ -96,84 +126,19 @@
     </developers>
 
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x</developerConnection>
-        <url>https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0</developerConnection>
+        <url>https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0</url>
     </scm>
-
-    <distributionManagement>
-        <site>
-            <id>sakai-site</id>
-            <name>Sakai release Site</name>
-            <url>scpexe://source.sakaiproject.org/var/www/html/release/basiclti/${project.version}</url>
-        </site>
-    </distributionManagement>
-    
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven2-central-repo</id>
-            <name>Maven2 Central Repo</name>
-            <url>http://repo1.maven.org/maven2/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>Sakai Plugin Repo</id>
-            <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <repositories>
-        <repository>
-            <id>sakai-maven</id>
-            <name>Sakai Maven Repo</name>
-            <layout>default</layout>
-            <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>sakai-maven2-snapshots</id>
-            <name>Sakai Maven Repo</name>
-            <layout>default</layout>
-            <url>http://source.sakaiproject.org/maven2-snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>default</id>
-            <name>Maven Repository Switchboard</name>
-            <layout>default</layout>
-            <url>http://repo1.maven.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>basiclti-api</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>basiclti-impl</artifactId>
@@ -195,40 +160,13 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.portlet</groupId>
-                <artifactId>portlet-api</artifactId>
-                <version>1.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-        		<groupId>org.sakaiproject.entitybroker</groupId>
-        		<artifactId>entitybroker-utils</artifactId>
-            	<version>${sakai.entitybroker.version}</version>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>1.6</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <debug>true</debug>
-                    <links>
-                        <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-                    </links>
-                    <breakiterator>true</breakiterator>
-                    <verbose>false</verbose>
-                    <aggregate>true</aggregate>
-                    <maxmemory>512m</maxmemory>
-                    <additionalJOption>-J-Xms168m -J-Xmx512m -J-XX:PermSize=128m -J-XX:NewSize=64m</additionalJOption>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
-    
     <build>
         <plugins>
             <plugin>
@@ -287,5 +225,28 @@
                 -->
             </plugin>
         </plugins>
+        <extensions>
+            <!-- Enabling the use of external ssh -->
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>2.0</version>
+            </extension>
+        </extensions>
     </build>
+    
+	<repositories> 
+		<repository> 
+			<id>sonatype-nexus-snapshots</id> 
+			<name>Sonatype Nexus Snapshots</name> 
+			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
+			<releases> 
+				<enabled>false</enabled> 
+			</releases> 
+			<snapshots> 
+				<enabled>true</enabled> 
+			</snapshots> 
+		</repository> 
+	</repositories>
+
 </project>

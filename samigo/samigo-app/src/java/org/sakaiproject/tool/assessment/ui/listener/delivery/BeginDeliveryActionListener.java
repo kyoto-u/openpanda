@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/BeginDeliveryActionListener.java $
- * $Id: BeginDeliveryActionListener.java 92517 2011-05-02 21:12:41Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/BeginDeliveryActionListener.java $
+ * $Id: BeginDeliveryActionListener.java 101758 2011-12-14 18:14:10Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -65,7 +65,7 @@ import org.sakaiproject.tool.assessment.ui.listener.author.RemovePublishedAssess
  * <p>Purpose:  this module handles the beginning of the assessment
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: BeginDeliveryActionListener.java 92517 2011-05-02 21:12:41Z ktsao@stanford.edu $
+ * @version $Id: BeginDeliveryActionListener.java 101758 2011-12-14 18:14:10Z ktsao@stanford.edu $
  */
 
 public class BeginDeliveryActionListener implements ActionListener
@@ -95,6 +95,16 @@ public class BeginDeliveryActionListener implements ActionListener
     
     delivery.setDisplayFormat();
     
+    if ("previewAssessment".equals(delivery.getActionString()) || "editAssessment".equals(actionString)) {
+    	String isFromPrint = ContextUtil.lookupParam("isFromPrint");
+        if (isFromPrint != null && !isFromPrint.trim().equals("")) {
+    		delivery.setIsFromPrint(Boolean.parseBoolean(isFromPrint));
+    	}
+    }
+    else {
+    	delivery.setIsFromPrint(false);
+    }
+    
     int action = delivery.getActionMode();
     PublishedAssessmentFacade pub = getPublishedAssessmentBasedOnAction(action, delivery);
     if(pub == null){
@@ -123,7 +133,8 @@ public class BeginDeliveryActionListener implements ActionListener
     */
     delivery.setBeginAssessment(true);
     delivery.setTimeStamp((new Date()).getTime());
-
+    delivery.setRedrawAnchorName("");
+    
     // protocol = http://servername:8080/; deliverAudioRecording.jsp needs it
     delivery.setProtocol(ContextUtil.getProtocol());
 
@@ -134,7 +145,7 @@ public class BeginDeliveryActionListener implements ActionListener
     	sizeMax = Long.parseLong(paramValue);
     	sizeMax_float = sizeMax.floatValue()/1024;
     }
-    delivery.setFileUploadSizeMax(sizeMax_float);
+    delivery.setFileUploadSizeMax(Math.round(sizeMax_float));
     delivery.setPublishedAssessment(pub);
     
     // populate backing bean from published assessment
@@ -179,6 +190,14 @@ public class BeginDeliveryActionListener implements ActionListener
     FeedbackComponent component = populateFeedbackComponent(pubAssessment);
     delivery.setFeedbackComponent(component);
 
+    // feedback component option
+    if (pubAssessment.getFeedbackComponentOption() != null) {
+    	delivery.setFeedbackComponentOption(pubAssessment.getFeedbackComponentOption().toString());
+    }
+    else {
+    	delivery.setFeedbackComponentOption("1");
+    }
+    
     // important: set feedbackOnDate last
     Date currentDate = new Date();
     if (component.getShowDateFeedback() && control.getFeedbackDate()!= null && currentDate.after(control.getFeedbackDate())) {
@@ -205,7 +224,7 @@ public class BeginDeliveryActionListener implements ActionListener
     }
     return component;
   }
-
+ 
   /**
    * This grabs the assessment and its AssessmentAccessControlIfc &
    * puts it in the SettingsDeliveryBean.
@@ -253,6 +272,7 @@ public class BeginDeliveryActionListener implements ActionListener
     delivery.setBeginTime(null);
     delivery.setFeedbackOnDate(false);
     delivery.setDueDate(control.getDueDate());
+    delivery.setRetractDate(control.getRetractDate());
     
     if (control.getMarkForReview() != null && (Integer.valueOf(1)).equals(control.getMarkForReview())) {
     	delivery.setDisplayMardForReview(true);

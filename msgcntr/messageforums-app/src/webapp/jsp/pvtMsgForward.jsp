@@ -8,11 +8,53 @@
    <jsp:setProperty name="msgs" property="baseName" value="org.sakaiproject.api.app.messagecenter.bundle.Messages"/>
 </jsp:useBean>
 
+<%
+	String thisId = request.getParameter("panel");
+	if (thisId == null) {
+		thisId = "Main"	+ org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement().getId();
+	}
+%>
+
+
 <f:view>
   <sakai:view title="#{msgs.pvt_forward}">
     <h:form id="pvtMsgForward">
            		<script type="text/javascript" src="/library/js/jquery.js"></script>
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
+       		<sakai:script contextBase="/messageforums-tool" path="/js/messages.js"/>
+       		<script type="text/javascript">
+				function clearSelection(selectObject)
+				{
+					for (var i=0; i<selectObject.options.length; i++)
+					{
+						selectObject.options[i].selected=false;
+					}
+				}
+				
+				function fadeInBcc(){
+					$('.bccLink').fadeOut(); 
+					$('.bcc').fadeIn();
+					resize();
+				}
+				
+				function fadeOutBcc(){
+					$('.bccLink').fadeIn(); 
+					$('.bcc').fadeOut();
+					clearSelection(document.getElementById('pvtMsgForward:list2'));
+					resize();
+				}
+				
+				function resize(){
+					mySetMainFrameHeight('<%=org.sakaiproject.util.Web.escapeJavascript(thisId)%>');
+				}
+				
+				$(document).ready(function() {
+				  	if(document.getElementById('pvtMsgForward:list2').selectedIndex != -1){
+				  		//BCC has selected items, so show it
+				  		fadeInBcc();
+				  	}
+				});
+			</script>
     <h:panelGroup>
           	<f:verbatim><div class="breadCrumb"><h3></f:verbatim>
 				  <h:panelGroup rendered="#{PrivateMessagesTool.messagesandForums}" >
@@ -21,7 +63,7 @@
 				  </h:panelGroup>
 	  		      <h:commandLink action="#{PrivateMessagesTool.processActionPrivateMessages}" value="#{msgs.pvt_message_nav}" title=" #{msgs.cdfm_message_forums}"/>
 	              <f:verbatim><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " /></f:verbatim>
-				<h:commandLink action="#{PrivateMessagesTool.processDisplayForum}" value="#{(PrivateMessagesTool.msgNavMode == 'pvt_received' || PrivateMessagesTool.msgNavMode == 'pvt_sent' || PrivateMessagesTool.msgNavMode == 'pvt_deleted' || PrivateMessagesTool.msgNavMode == 'pvt_drafts')? msgs[PrivateMessagesTool.msgNavMode]: PrivateMessagesTool.msgNavMode}" title=" #{#{(PrivateMessagesTool.msgNavMode == 'pvt_received' || PrivateMessagesTool.msgNavMode == 'pvt_sent' || PrivateMessagesTool.msgNavMode == 'pvt_deleted' || PrivateMessagesTool.msgNavMode == 'pvt_drafts')? msgs[PrivateMessagesTool.msgNavMode]: PrivateMessagesTool.msgNavMode}}"/><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " />
+				<h:commandLink action="#{PrivateMessagesTool.processDisplayForum}" value="#{(PrivateMessagesTool.msgNavMode == 'pvt_received' || PrivateMessagesTool.msgNavMode == 'pvt_sent' || PrivateMessagesTool.msgNavMode == 'pvt_deleted' || PrivateMessagesTool.msgNavMode == 'pvt_drafts')? msgs[PrivateMessagesTool.msgNavMode]: PrivateMessagesTool.msgNavMode}" title=" #{(PrivateMessagesTool.msgNavMode == 'pvt_received' || PrivateMessagesTool.msgNavMode == 'pvt_sent' || PrivateMessagesTool.msgNavMode == 'pvt_deleted' || PrivateMessagesTool.msgNavMode == 'pvt_drafts')? msgs[PrivateMessagesTool.msgNavMode]: PrivateMessagesTool.msgNavMode}"/><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " />
 				<h:commandLink action="#{PrivateMessagesTool.processDisplayMessages}" value="#{PrivateMessagesTool.detailMsg.msg.title}" title=" #{PrivateMessagesTool.detailMsg.msg.title}"/><h:outputText value=" " /><h:outputText value=" / " /><h:outputText value=" " />
 				<h:outputText value="#{msgs.pvt_forward}" />
 			<f:verbatim></h3></div></f:verbatim>
@@ -36,18 +78,89 @@
 		  	 <sakai:instruction_message value="#{PrivateMessagesTool.privacyAlert}"/>
 		  </h:outputLink>
 		  
-		  <h:messages styleClass="alertMessage" id="errorMessages" />
+		  <h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}" />
 		  
-		   <h:panelGrid styleClass="jsfFormTable" columns="2" summary="layout">
+		   <h:panelGrid styleClass="jsfFormTable" columns="2">
 			  <h:panelGroup styleClass="shorttext required">
-				  <h:outputText value="#{msgs.pvt_star}" styleClass="reqStar"/>
-					<h:outputLabel for="list1"><h:outputText value="#{msgs.pvt_select_forward_recipients}"/></h:outputLabel>
+					<h:outputLabel for="list1">
+					 <h:outputText value="#{msgs.pvt_star}" styleClass="reqStar"/>
+					<h:outputText value="#{msgs.pvt_select_forward_recipients}"/>
+					</h:outputLabel>
 			  </h:panelGroup>
 			  <h:panelGroup styleClass="shorttext">
-					<h:selectManyListbox id="list1" value="#{PrivateMessagesTool.selectedComposeToList}" size="5" style="width: 20em;">
-		         <f:selectItems value="#{PrivateMessagesTool.totalComposeToList}"/>
-		       </h:selectManyListbox>
-				</h:panelGroup>
+				   <h:selectManyListbox id="list1" value="#{PrivateMessagesTool.selectedComposeToList}" size="5" style="width: 20em;">
+			         <f:selectItems value="#{PrivateMessagesTool.totalComposeToList}"/>
+			       </h:selectManyListbox>
+			       <f:verbatim>
+			      	<span class="bcc" style="display:none">
+		       			&nbsp;		       	
+		       			</f:verbatim>
+		       			<h:graphicImage url="/../../library/image/silk/delete.png" title="#{msgs.pvt_bccClear}" alt="#{msgs.pvt_bccClear}"/>
+		       			<f:verbatim> 		
+		       			<a href="#" onclick="clearSelection(document.getElementById('pvtMsgForward:list1'));">
+		       			</f:verbatim>	       				
+		       				<h:outputText value="#{msgs.pvt_bccClear}"/>
+		       			<f:verbatim>
+		       			</a>
+		       		</span>
+		       	 </f:verbatim>
+			  </h:panelGroup>
+				
+			<h:panelGroup styleClass="shorttext bccLink">
+				<h:outputLabel>
+					<f:verbatim>
+		       			&nbsp;
+		       			</f:verbatim>
+		       			<h:graphicImage url="/../../library/image/silk/add.png" title="#{msgs.pvt_addBcc}" alt="#{msgs.pvt_addBcc}"/>
+		       			<f:verbatim>
+		       			<a href="#" onclick="fadeInBcc();">
+		       			</f:verbatim>
+		       				<h:outputText value="#{msgs.pvt_addBcc}"/>
+		       			<f:verbatim>
+		       			</a>
+		       		</f:verbatim>
+	       		</h:outputLabel>
+		  	</h:panelGroup>
+		  	<h:panelGroup styleClass="shorttext bccLink">
+				
+		  	</h:panelGroup>
+			<h:panelGroup styleClass="shorttext bcc" style="display:none">
+				<h:outputLabel for="list2">
+					<f:verbatim>
+		       			<h:outputText value="#{msgs.pvt_bcc}"/>
+						<f:verbatim>
+			       			<br>
+			       			<br>
+			       			</f:verbatim>
+			       				<h:graphicImage url="/../../library/image/silk/cancel.png" title="#{msgs.pvt_removeBcc}" alt="#{msgs.pvt_removeBcc}"/>
+			       			<f:verbatim>
+			       			<a href="#" onclick="fadeOutBcc();">
+			       			</f:verbatim>		       				
+			       				<h:outputText value="#{msgs.pvt_removeBcc}"/>
+			       			<f:verbatim>
+			       			</a>
+			       			&nbsp;
+			       		</f:verbatim>
+		       		</f:verbatim>
+	       		</h:outputLabel>
+		  	</h:panelGroup>
+		  	<h:panelGroup styleClass="shorttext bcc" style="display:none">
+				<h:selectManyListbox id="list2" value="#{PrivateMessagesTool.selectedComposeBccList}" size="5" style="width: 20em;">
+	         		<f:selectItems value="#{PrivateMessagesTool.totalComposeToList}"/>
+	       		</h:selectManyListbox>
+	       		<f:verbatim>
+	       			&nbsp;	     
+	       			</f:verbatim>
+	       			<h:graphicImage url="/../../library/image/silk/delete.png" title="#{msgs.pvt_bccClear}" alt="#{msgs.pvt_bccClear}"/>
+	       			<f:verbatim>   			
+	       			<a href="#" onclick="clearSelection(document.getElementById('pvtMsgForward:list2'));">
+	       			</f:verbatim>
+	       				<h:outputText value="#{msgs.pvt_bccClear}"/>
+	       			<f:verbatim>
+	       			</a>
+	       		</f:verbatim>
+			</h:panelGroup>	
+				
 				
 		    <h:panelGroup styleClass="shorttext" rendered= "#{PrivateMessagesTool.dispSendEmailOut}">
 					<h:outputLabel><h:outputText value="#{msgs.pvt_send_cc}"/></h:outputLabel>
@@ -66,15 +179,17 @@
 			  </h:panelGroup>
 			  <h:panelGroup>
 					<h:selectOneListbox size="1" id="viewlist" value="#{PrivateMessagesTool.selectedLabel}">
-            	  <f:selectItem itemValue="#{msgs.pvt_priority_normal}" itemLabel="#{msgs.pvt_priority_normal}"/>
-            	  <f:selectItem itemValue="#{msgs.pvt_priority_low}" itemLabel="#{msgs.pvt_priority_low}"/>
-            	  <f:selectItem itemValue="#{msgs.pvt_priority_high}" itemLabel="#{msgs.pvt_priority_high}"/>
+            	  <f:selectItem itemValue="pvt_priority_normal" itemLabel="#{msgs.pvt_priority_normal}"/>
+            	  <f:selectItem itemValue="pvt_priority_low" itemLabel="#{msgs.pvt_priority_low}"/>
+            	  <f:selectItem itemValue="pvt_priority_high" itemLabel="#{msgs.pvt_priority_high}"/>
           	  </h:selectOneListbox> 
 				</h:panelGroup>
 				
 				<h:panelGroup styleClass="shorttext required">
+  					<h:outputLabel for="subject" >
   					<h:outputText value="#{msgs.pvt_star}" styleClass="reqStar"/>
-  					<h:outputLabel for="subject" ><h:outputText value="#{msgs.pvt_subject}"  /></h:outputLabel>
+  					<h:outputText value="#{msgs.pvt_subject}"  />
+  					</h:outputLabel>
   			</h:panelGroup>
   			<h:panelGroup styleClass="shorttext">
 					<h:inputText value="#{PrivateMessagesTool.forwardSubject}" id="subject" size="45">
@@ -88,7 +203,7 @@
 			
 			<h4><h:outputText value="#{msgs.pvt_message}" /></h4>
 					   	
-	     	<sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" rows="22" cols="120" id="df_compose_body" value="#{PrivateMessagesTool.forwardBody}">
+	     	<sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" rows="#{ForumTool.editorRows}" cols="120" id="df_compose_body" value="#{PrivateMessagesTool.forwardBody}">
 				<f:validateLength maximum="65000"/>
 		 	</sakai:inputRichText>
             

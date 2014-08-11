@@ -27,7 +27,7 @@
 		<c:forEach var="activity" items="${pageActivities}">
 			<tr>
 				<td style="white-space: nowrap"><a class="thickbox"
-					href="<c:out value="${activity.activity.activityDetailUrl}" />?tagReference=<c:out value="${criteriaRef}"/>">
+					href="<c:out value="${activity.activity.activityDetailUrl}" /><c:if test="${activity.activity.useDecoration}">/null/<c:out value="${decoWrapper}" /></c:if><c:out value="${activity.activity.activityDetailUrlParams}" />&tagReference=<c:out value="${criteriaRef}"/>">
 				<c:out value="${activity.activity.title}" /> </a></td>
 				<td style="white-space: nowrap"><c:out
 					value="${activity.activity.typeName}" /></td>

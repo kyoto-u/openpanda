@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/SectionCategory.java $
- * $Id: SectionCategory.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/SectionCategory.java $
+ * $Id: SectionCategory.java 84221 2010-11-03 12:47:45Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -26,8 +26,21 @@ package org.sakaiproject.coursemanagement.api;
  *
  */
 public interface SectionCategory {
+	
+	/**
+	 * @return
+	 */
 	public String getCategoryCode();
+	/**
+	 * @param categoryCode
+	 */
 	public void setCategoryCode(String categoryCode);
+	/**
+	 * @return
+	 */
 	public String getCategoryDescription();
+	/**
+	 * @param categoryDescription
+	 */
 	public void setCategoryDescription(String categoryDescription);
 }

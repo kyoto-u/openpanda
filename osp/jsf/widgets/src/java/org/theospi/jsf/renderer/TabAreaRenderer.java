@@ -1,6 +1,6 @@
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/jsf/widgets/src/java/org/theospi/jsf/renderer/TabAreaRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/jsf/widgets/src/java/org/theospi/jsf/renderer/TabAreaRenderer.java $
 * $Id: TabAreaRenderer.java 73575 2010-02-16 20:55:30Z botimer@umich.edu $
 ***********************************************************************************
 *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/CourseSectionImpl.java $
- * $Id: CourseSectionImpl.java 92630 2011-05-05 15:46:09Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/CourseSectionImpl.java $
+ * $Id: CourseSectionImpl.java 91333 2011-04-05 12:46:30Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation

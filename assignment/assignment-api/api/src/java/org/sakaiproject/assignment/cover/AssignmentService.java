@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-api/api/src/java/org/sakaiproject/assignment/cover/AssignmentService.java $
- * $Id: AssignmentService.java 107093 2012-04-16 00:54:36Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-api/api/src/java/org/sakaiproject/assignment/cover/AssignmentService.java $
+ * $Id: AssignmentService.java 100827 2011-11-17 19:35:03Z yorkadam@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -767,7 +767,16 @@ public class AssignmentService {
 		return service.canSubmit(param0, param1);
 	}
 	
+    public static boolean getAllowSubmitByInstructor() {
+        org.sakaiproject.assignment.api.AssignmentService service = getInstance();
+        if (service == null) {
+            return false;
+        }
+        return service.getAllowSubmitByInstructor();
+    }
+
 	public static List<String> getSubmitterIdList(String param0, String param1, String param2, String param3, String param4) {
+
 		org.sakaiproject.assignment.api.AssignmentService service = getInstance();
 		if (service == null)
 			return null;

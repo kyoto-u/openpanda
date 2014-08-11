@@ -1,6 +1,6 @@
 /**
  * $Id: RESTful.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/RESTful.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/RESTful.java $
  * RESTful.java - entity-broker - Apr 8, 2008 12:05:12 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

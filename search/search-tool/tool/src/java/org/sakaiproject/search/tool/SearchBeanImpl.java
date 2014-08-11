@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchBeanImpl.java $
- * $Id: SearchBeanImpl.java 118820 2013-01-25 03:39:20Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchBeanImpl.java $
+ * $Id: SearchBeanImpl.java 83278 2010-10-15 16:05:17Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1151,13 +1151,5 @@ public class SearchBeanImpl implements SearchBean
 		return FormattedText.escapeHtml(searchURL, false);
 		
 		
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean isSearchServer()
-	{
-		return searchService.isSearchServer();
 	}
 }

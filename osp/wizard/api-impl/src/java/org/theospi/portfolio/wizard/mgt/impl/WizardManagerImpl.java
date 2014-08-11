@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/wizard/api-impl/src/java/org/theospi/portfolio/wizard/mgt/impl/WizardManagerImpl.java $
-* $Id: WizardManagerImpl.java 85788 2010-12-01 19:16:22Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/wizard/api-impl/src/java/org/theospi/portfolio/wizard/mgt/impl/WizardManagerImpl.java $
+* $Id: WizardManagerImpl.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -627,9 +627,9 @@ public class WizardManagerImpl extends HibernateDaoSupport
       return (List)getHibernateTemplate().execute(hcb);
    }
    
-   public Collection getAvailableForms(String siteId, String type) {
-      return getStructuredArtifactDefinitionManager().findHomes(
-            getIdManager().getId(siteId), true);
+   public Collection getAvailableForms(String siteId, String type, String currentUserId) {
+      return getStructuredArtifactDefinitionManager().findAvailableHomes(
+            getIdManager().getId(siteId), currentUserId, true, true);
    }
 
    public void deleteObjects(List deletedItems) {

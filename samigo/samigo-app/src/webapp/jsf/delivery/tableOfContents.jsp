@@ -7,7 +7,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: tableOfContents.jsp 84512 2010-11-09 21:27:31Z ktsao@stanford.edu $
+* $Id: tableOfContents.jsp 104939 2012-02-22 00:58:43Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -37,6 +37,9 @@
     <body onload="hideUnhideAllDivsExceptFirst('none');;<%= request.getAttribute("html.body.onload") %>">
 <!--div class="portletBody"-->
 
+ <!-- IF A SECURE DELIVERY MODULE HAS BEEN SELECTED, INJECT ITS HTML FRAGMENT (IF ANY) HERE -->
+ <h:outputText  value="#{delivery.secureDeliveryHTMLFragment}" escape="false" />
+
  <h:outputText value="<div class='portletBody' style='#{delivery.settings.divBgcolor};#{delivery.settings.divBackground}'>" escape="false"/>
 
  <!--h:outputText value="<div class='portletBody' style='background:#{delivery.settings.divBgcolor};background-image:url(http://www.w3.org/WAI/UA/TS/html401/images/test-background.gif)'>" escape="false"/-->
@@ -44,7 +47,7 @@
 <%@ include file="/js/delivery.js" %>
  
 <!-- content... -->
-<script language="javascript">
+<script type="text/javascript">
 
 function noenter(){
 return!(window.event && window.event.keyCode == 13);
@@ -88,7 +91,7 @@ function clickSubmitForGrade(){
 <h:form id="tableOfContentsForm">
 
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
  <f:verbatim></div></f:verbatim>
@@ -113,17 +116,21 @@ function clickSubmitForGrade(){
     expireScript="document.forms[0].elements['tableOfContentsForm:elapsed'].value=loaded; document.forms[0].elements['tableOfContentsForm:outoftime'].value='true'; clickSubmitForGrade();" />
 <f:verbatim>  </span></f:verbatim>
 
-<h:commandButton type="button" onclick="document.getElementById('remText').style.display=document.getElementById('remText').style.display=='none' ? '': 'none';document.getElementById('timer').style.display=document.getElementById('timer').style.display=='none' ? '': 'none';document.getElementById('bar').style.display=document.getElementById('bar').style.display=='none' ? '': 'none'" onkeypress="document.getElementById('remText').style.display=document.getElementById('remText').style.display=='none' ? '': 'none';document.getElementById('timer').style.display=document.getElementById('timer').style.display=='none' ? '': 'none';document.getElementById('bar').style.display=document.getElementById('bar').style.display=='none' ? '': 'none'" value="#{deliveryMessages.hide_show}" />
+<h:commandButton type="button" onclick="document.getElementById('remText').style.display=document.getElementById('remText').style.display=='none' ? '': 'none';document.getElementById('timer').style.display=document.getElementById('timer').style.display=='none' ? '': 'none';document.getElementById('bar').style.display=document.getElementById('bar').style.display=='none' ? '': 'none'" value="#{deliveryMessages.hide_show}" />
 </h:panelGroup>
 
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'&& delivery.hasTimeLimit}" >
-	<h:graphicImage height="60" width="300" url="/images/delivery/TimerPreview.png"/>
+  <f:verbatim><div style="margin:10px 0px 0px 0px;"><span style="background-color:#bab5b5; padding:5px"></f:verbatim>
+  <h:outputText value="#{deliveryMessages.timer_preview_not_available}"/>
+  <f:verbatim></div></span></f:verbatim>
 </h:panelGroup>
 
-<div class="tier1">
+<f:verbatim><br/></span></f:verbatim>
+
+<f:verbatim><div class="tier1"></f:verbatim>
   <f:verbatim><b></f:verbatim><h:outputText value="#{deliveryMessages.warning}#{deliveryMessages.column} "/><f:verbatim></b></f:verbatim>
   <h:outputText value="#{deliveryMessages.instruction_submitGrading}" />
-</div>
+<f:verbatim></div></f:verbatim>
 
 <div class="tier1">
   <h4>
@@ -152,7 +159,7 @@ function clickSubmitForGrade(){
 <h:inputHidden id="outoftime" value="#{delivery.timeOutSubmission}"/>
 <h:commandLink id="submitforgrade" action="#{delivery.submitForGrade}" value="" />
 
-    <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+    <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
     <p style="margin-bottom:0"><h:outputText value="#{deliveryMessages.seeOrHide}" /> </p>
     <h:dataTable value="#{delivery.tableOfContents.partsContents}" var="part">
       <h:column>
@@ -196,19 +203,19 @@ function clickSubmitForGrade(){
                              && authorization.submitAssessmentForGrade)}">
     <h:commandButton id="submitForGradeTOC1" type="submit" value="#{deliveryMessages.button_submit_grading}"
       action="#{delivery.confirmSubmitTOC}" styleClass="active"  
-      onclick="disableSubmitForGradeTOC1();javascript:saveTime()" onkeypress="disableSubmitForGradeTOC1();javascript:saveTime()"
+      onclick="disableSubmitForGradeTOC1();javascript:saveTime()" 
       disabled="#{delivery.actionString=='previewAssessment'}" />
   </h:panelGroup>
 
 <!-- SUBMIT BUTTON FOR TAKE ASSESSMENT VIA URL ONLY -->
-  <h:commandButton id="submitForGradeTOC2" type="submit" value="#{deliveryMessages.button_submit}"
+  <h:commandButton id="submitForGradeTOC2" type="submit" value="#{deliveryMessages.button_submit_grading}"
     action="#{delivery.confirmSubmitTOC}" styleClass="active" onclick="disableSubmitForGradeTOC2();"
     rendered="#{delivery.actionString=='takeAssessmentViaUrl'}" />
 
 <!-- SAVE AND EXIT BUTTON FOR TAKE ASSESMENT AND PREVIEW ASSESSMENT-->
   <h:commandButton id="exitTOC1" type="submit" value="#{deliveryMessages.button_exit}"
     action="#{delivery.saveAndExit}"
-    onclick="disableExitTOC1();javascript:saveTime()" onkeypress="disableExitTOC1();javascript:saveTime()"
+    onclick="disableExitTOC1();javascript:saveTime()" 
     rendered="#{(delivery.actionString=='takeAssessment'
              || delivery.actionString=='previewAssessment') && !delivery.hasTimeLimit}" 
     disabled="#{delivery.actionString=='previewAssessment'}" />
@@ -216,14 +223,14 @@ function clickSubmitForGrade(){
 <!-- QUIT BUTTON FOR TAKE ASSESSMENT VIA URL -->
   <h:commandButton id="exitTOC2" type="submit" value="#{deliveryMessages.button_exit}"
     action="#{delivery.saveAndExit}"
-    onclick="disableExitTOC2();javascript:saveTime()" onkeypress="disableExitTOC2();javascript:saveTime()"
+    onclick="disableExitTOC2();javascript:saveTime()" 
     rendered="#{delivery.actionString=='takeAssessmentViaUrl' && !delivery.hasTimeLimit}" >
   </h:commandButton>
 </p>
 
 <!-- DONE BUTTON FOR PREVIEW ASSESSMENT ONLY -->
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
  <f:verbatim></div></f:verbatim>

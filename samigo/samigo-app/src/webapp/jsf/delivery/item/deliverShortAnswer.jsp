@@ -1,9 +1,9 @@
-<%-- $Id: deliverShortAnswer.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+<%-- $Id: deliverShortAnswer.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
 include file for delivering short answer essay questions
 should be included in file importing DeliveryMessages
 --%>
 <!--
-* $Id: deliverShortAnswer.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+* $Id: deliverShortAnswer.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -29,19 +29,29 @@ should be included in file importing DeliveryMessages
 <!-- ATTACHMENTS -->
 <%@ include file="/jsf/delivery/item/attachment.jsp" %>
 
-<h:panelGroup 
-     rendered="#{!(delivery.actionString=='reviewAssessment'
-            || delivery.actionString=='gradeAssessment')}">
-<f:verbatim><br/><br/></f:verbatim>
-<h:outputText value="#{deliveryMessages.maxSAText}"/>
-</h:panelGroup> 
+<h:panelGrid rendered="#{!(delivery.actionString=='reviewAssessment' || delivery.actionString=='gradeAssessment')}">
 <f:verbatim><br/></f:verbatim>
+<h:outputText value="#{deliveryMessages.maxSAText}"/>
+
+<h:panelGroup>
+  <h:commandButton id="getAaCharCount" value="#{deliveryMessages.count_characters}" styleClass="active" onclick="clickSaCharCountLink(this);" onmousedown="clickSaCharCountLink(this);"/>
+  <f:verbatim>&nbsp;&nbsp;</f:verbatim>
+  <h:inputText value="#{question.saCharCount}" size="8" readonly="true" style="text-align:right;"/>
+</h:panelGroup>
+</h:panelGrid>
+
+<h:commandLink id="hiddenlink" action="takeAssessment" value="">
+  <f:actionListener
+           type="org.sakaiproject.tool.assessment.ui.listener.delivery.SaCharCountListener" />
+  <f:param name="itemId" value="#{question.itemData.itemId}"/>
+</h:commandLink>
+
+<h:outputText value="#{deliveryMessages.sa_invalid_length_error} " escape="false" rendered="#{question.isInvalidSALengthInput}" styleClass="messageSamigo3"/>
 
 <%-- If studentRichText is true, show the rich text answer option --%>
 <h:panelGrid rendered="#{delivery.actionString!='reviewAssessment'
             && delivery.actionString!='gradeAssessment' && delivery.studentRichText}">
-	<samigo:wysiwyg rows="140" value="#{question.responseText}" hasToggle="yes">
-	    <f:validateLength maximum="60000"/>
+	<samigo:wysiwyg rows="240" columns="629" value="#{question.responseText}" hasToggle="yes">
 	</samigo:wysiwyg>
 </h:panelGrid>
 
@@ -63,10 +73,12 @@ should be included in file importing DeliveryMessages
              && delivery.navigation ne '1' && delivery.displayMardForReview }">
 <h:selectBooleanCheckbox value="#{question.review}" id="mark_for_review" />
 	<h:outputLabel for="mark_for_review" value="#{deliveryMessages.mark}" />
-	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" onkeypress="javascript:window.open('../author/markForReviewTipText.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
+	<h:outputLink title="#{assessmentSettingsMessages.whats_this_link}" value="#" onclick="javascript:window.open('../author/markForReviewPopUp.faces','MarkForReview','width=300,height=220,scrollbars=yes, resizable=yes');" >
 		<h:outputText  value=" #{assessmentSettingsMessages.whats_this_link}"/>
 	</h:outputLink>
 </h:panelGroup>
+
+<f:verbatim><br /></f:verbatim>
 
 <h:panelGroup rendered="#{delivery.feedback eq 'true'}">
   <h:panelGrid rendered="#{delivery.feedbackComponent.showCorrectResponse && !delivery.noFeedback=='true'&& question.modelAnswerIsNotEmpty}" >

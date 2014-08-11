@@ -123,7 +123,7 @@
 								#set($field = $!form_requiredFields.get($fieldCount))
 								#set($fieldLabel = $!form_requiredFields.get($fieldCount).labelKey)
 									<th id="$!fieldLabel">	
-										<span class ="reqStarInline">*</span>$fieldLabel
+										<span class ="reqStarInline">* </span>$fieldLabel
 									</th>
 						#end
 					</tr>
@@ -166,30 +166,37 @@
 						<h4>$tlang.getString("man.siteroster")</h4>
 						<p class="instruction">$tlang.getString("man.notverifyfuture1")$!weeksAhead $tlang.getString("man.notverifyfuture2")</p>
 					#else
-						<h4>$tlang.getString("man.siteauth")</h4>
-						<p class="instruction">$tlang.getString("man.notverify")</p>
+					  #if ($requireAuthorizer)
+						  <h4>$tlang.getString("man.siteauth")</h4>
+						  <p class="instruction">$tlang.getString("man.notverify")</p>
+						#end
 					#end
 				</div>
 				#if (!$!isFutureTerm)
+				  #if ($requireAuthorizer)
 					<div class="shorttext required">
-						<span class="reqStar">*</span>						
 						<label for="uniqname">
+                            <span class="reqStar">*</span>
 						   $tlang.getString("man.authoriz")
 						</label>
-						<input type="text" name="uniqname"  id="uniqname"   size="40" value="$!value_uniqname" />
+						<input type="text" name="uniqname"  id="uniqname"   size="40" value="$!value_uniqname"  aria-describedby="uniquenameins"/>
 					</div>
-					<p class="labelindnt instruction">
+					<p class="labelindnt instruction"  id="uniquenameins">
 					   $tlang.getString("man.email")
 					</p>
 					<div class="shorttext">
 						<label for="additional" class="block">
 							$tlang.getString("man.spec")
 						</label>
-						<textarea id="additional"   name="additional" rows="4" cols="40" wrap="virtual">$validator.escapeHtmlTextarea($form_additional)</textarea>
+						<textarea id="additional"   name="additional" rows="4" cols="40" wrap="virtual" aria-describedby="additionalinst">$validator.escapeHtmlTextarea($form_additional)</textarea>
 					</div>
-					<p  class="instruction labelindnt">
+					<p  class="instruction labelindnt" id="additionalinst">
 						$tlang.getString("man.please")
 					</p>
+					#else 
+					  <input type="hidden" name="uniqname"  value="admin" />
+					  <input type="hidden" name="additional" value="" />
+				  #end
 
 				#end
 			#set ($count = $count + 1)
@@ -218,5 +225,6 @@
 						onclick="document.requestCourseForm.option.value='cancel'; document.requestCourseForm.submit(); return false;" />
 				<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 			</p>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>

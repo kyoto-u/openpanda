@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/event/impl/ClusterEventTrackingServiceSql.java $
- * $Id: ClusterEventTrackingServiceSql.java 82001 2010-08-30 21:32:26Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/ClusterEventTrackingServiceSql.java $
+ * $Id: ClusterEventTrackingServiceSql.java 98741 2011-09-29 09:38:40Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -45,10 +45,5 @@ public interface ClusterEventTrackingServiceSql
      * returns the sql statement which counts the number of events in the event table
      */
     String getEventsCountSql();
-
-    /**
-     * returns the sql statement which counts the number of sessions in the sessions table
-     */
-    String getSessionsCountSql();
 
 }

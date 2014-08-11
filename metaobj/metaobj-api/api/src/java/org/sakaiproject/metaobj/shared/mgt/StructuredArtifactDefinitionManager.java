@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/mgt/StructuredArtifactDefinitionManager.java $
- * $Id: StructuredArtifactDefinitionManager.java 82225 2010-09-10 20:24:49Z chmaurer@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/mgt/StructuredArtifactDefinitionManager.java $
+ * $Id: StructuredArtifactDefinitionManager.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -52,6 +52,8 @@ public interface StructuredArtifactDefinitionManager {
    public Map getWorksiteHomes(Id worksiteId);
 
    public Map getWorksiteHomes(Id worksiteId, boolean includeHidden);
+   
+   public Map getWorksiteHomes(Id worksiteId, String currentUserId, boolean includeHidden);
 
    public List findHomes();
 
@@ -160,6 +162,8 @@ public interface StructuredArtifactDefinitionManager {
    public void addConsumer(FormConsumer consumer);
 
    List findHomes(Id currentWorksiteId, boolean includeHidden, boolean includeGlobal);
+   
+   public List<StructuredArtifactDefinitionBean> findAvailableHomes(Id currentWorksiteId, String currentUserId, boolean includeHidden, boolean includeGlobal);
    
    /**
     * Return form usage details

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveFileParser.java $
- * $Id: SakaiArchiveFileParser.java 118627 2013-01-23 05:41:07Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveFileParser.java $
+ * $Id: SakaiArchiveFileParser.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation
@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -73,11 +72,7 @@ public class SakaiArchiveFileParser extends ZipFileParser {
         InputStream fis = null;
         try {
             fis = new FileInputStream(absolutepathToManifest);
-            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-            builderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            builderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            builderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
+            DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             this.importMappings = (Document) docBuilder.parse(fis);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block

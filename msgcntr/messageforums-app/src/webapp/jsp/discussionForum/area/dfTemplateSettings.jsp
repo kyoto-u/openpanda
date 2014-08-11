@@ -11,7 +11,8 @@
 <f:view>
    <sakai:view title="#{msgs.cdfm_default_template_settings}" toolCssHref="/messageforums-tool/css/msgcntr.css">           
       <h:form id="revise">
-             		<script type="text/javascript" src="/library/js/jquery.js"></script>
+        <script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
 		<sakai:script contextBase="/messageforums-tool" path="/js/datetimepicker.js"/>             		             		
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 		<sakai:script contextBase="/messageforums-tool" path="/js/permissions_header.js"/>
@@ -52,13 +53,20 @@
 		 		<div class="instruction">
 		  		  <h:outputText id="instruction" value="#{msgs.cdfm_default_template_settings_instruction}"/>
 				</div>
-				<h:messages styleClass="messageAlert" id="errorMessages"  />
+				<h:messages styleClass="messageAlert" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}" />
 				<h4><h:outputText  value="#{msgs.cdfm_forum_posting}" /></h4>
 				<h:panelGrid columns="2" columnClasses="shorttext,checkbox">
 				  <h:panelGroup><h:outputText id="outputLabel4"   value="#{msgs.cdfm_moderate_forums}"/>	</h:panelGroup>
 				  <h:panelGroup>
 					  <h:selectOneRadio layout="lineDirection" disabled="#{not ForumTool.editMode}" id="moderated"  value="#{ForumTool.template.moderated}"
 					  	onclick="javascript:disableOrEnableModeratePerm();">
+    					<f:selectItem itemValue="true" itemLabel="#{msgs.cdfm_yes}"/>
+    					<f:selectItem itemValue="false" itemLabel="#{msgs.cdfm_no}"/>
+  					</h:selectOneRadio>
+				  </h:panelGroup>
+				  <h:panelGroup><h:outputText id="outputLabel15"   value="#{msgs.cdfm_postFirst}"/>	</h:panelGroup>
+				  <h:panelGroup>
+					  <h:selectOneRadio layout="lineDirection" disabled="#{not ForumTool.editMode}" id="postFirst"  value="#{ForumTool.template.postFirst}">
     					<f:selectItem itemValue="true" itemLabel="#{msgs.cdfm_yes}"/>
     					<f:selectItem itemValue="false" itemLabel="#{msgs.cdfm_no}"/>
   					</h:selectOneRadio>
@@ -111,7 +119,7 @@
 				  </h:panelGroup>
 			    </h:panelGrid>
 			  
-		 		<%@include file="/jsp/discussionForum/permissions/permissions_include.jsp"%>
+		 		<%@ include file="/jsp/discussionForum/permissions/permissions_include.jsp"%>
 		 		
         <div class="act">
           <h:commandButton action="#{ForumTool.processActionReviseTemplateSettings}" 

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/profile/branches/profile-2.8.x/profile-component-shared/src/java/org/sakaiproject/component/app/profile/LegacyProfileManagerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/profile/tags/profile-2.9.0/profile-component-shared/src/java/org/sakaiproject/component/app/profile/LegacyProfileManagerImpl.java $
  * $Id: LegacyProfileManagerImpl.java 69817 2009-12-14 00:44:11Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

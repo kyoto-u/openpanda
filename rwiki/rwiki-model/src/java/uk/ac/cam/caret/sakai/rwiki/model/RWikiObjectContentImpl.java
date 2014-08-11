@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiObjectContentImpl.java $
- * $Id: RWikiObjectContentImpl.java 95034 2011-07-12 15:15:50Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiObjectContentImpl.java $
+ * $Id: RWikiObjectContentImpl.java 94297 2011-07-01 13:44:07Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

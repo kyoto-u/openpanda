@@ -20,7 +20,7 @@
    <sakai:view_title value="#{msgs.import_wizard_title}"/>
 
      <sakai:instruction_message value="#{msgs.import_wizard_instruction}" />
-   <sakai:messages />
+   <sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
    
    <sakai:panel_edit>
       <h:outputLabel for="files" id="nameLabel" value="#{msgs.wizard_name}" />

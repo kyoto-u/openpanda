@@ -3,6 +3,8 @@ package org.sakaiproject.profile2.logic;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Setter;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.sakaiproject.profile2.dao.ProfileDao;
@@ -13,7 +15,7 @@ import org.sakaiproject.profile2.util.ProfileUtils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
+import twitter4j.http.AccessToken;
 
 /**
  * Implementation of ProfileExternalIntegrationLogic API
@@ -28,8 +30,8 @@ public class ProfileExternalIntegrationLogicImpl implements ProfileExternalInteg
 	/**
 	 * OAuth Consumer registration details for Profile2.
 	 */
-	private final String TWITTER_OAUTH_CONSUMER_KEY="XzSPZIj0LxNaaoBz8XrgZQ";
-	private final String TWITTER_OAUTH_CONSUMER_SECRET="FSChsnmTufYi3X9H25YdFRxBhPXgnh2H0lMnLh7ZVG4";
+	@Deprecated private final String TWITTER_OAUTH_CONSUMER_KEY="XzSPZIj0LxNaaoBz8XrgZQ";
+	@Deprecated private final String TWITTER_OAUTH_CONSUMER_SECRET="FSChsnmTufYi3X9H25YdFRxBhPXgnh2H0lMnLh7ZVG4";
 	
 	/**
  	 * {@inheritDoc}
@@ -87,10 +89,7 @@ public class ProfileExternalIntegrationLogicImpl implements ProfileExternalInteg
 			AccessToken accessToken = new AccessToken(token, secret);
 			
 			//setup
-			TwitterFactory factory = new TwitterFactory();
-			Twitter twitter = factory.getInstance();
-			twitter.setOAuthConsumer(config.get("key"), config.get("secret"));
-			twitter.setOAuthAccessToken(accessToken);
+			Twitter twitter = new TwitterFactory().getOAuthAuthorizedInstance(config.get("key"), config.get("secret"), accessToken);
 			
 			//check
 			try {
@@ -142,10 +141,7 @@ public class ProfileExternalIntegrationLogicImpl implements ProfileExternalInteg
 				AccessToken accessToken = new AccessToken(userToken, userSecret);
 				
 				//setup
-				TwitterFactory factory = new TwitterFactory();
-				Twitter twitter = factory.getInstance();
-				twitter.setOAuthConsumer(config.get("key"), config.get("secret"));
-				twitter.setOAuthAccessToken(accessToken);
+				Twitter twitter = new TwitterFactory().getOAuthAuthorizedInstance(config.get("key"), config.get("secret"), accessToken);
 				
 				try {
 					twitter.updateStatus(message);
@@ -154,7 +150,7 @@ public class ProfileExternalIntegrationLogicImpl implements ProfileExternalInteg
 					//post update event
 					sakaiProxy.postEvent(ProfileConstants.EVENT_TWITTER_UPDATE, "/profile/"+userUuid, true);
 				}
-				catch (Exception e) {
+				catch (TwitterException e) {
 					log.error("ProfileLogic.sendMessageToTwitter() failed. " + e.getClass() + ": " + e.getMessage());  
 				}
 			}
@@ -167,9 +163,6 @@ public class ProfileExternalIntegrationLogicImpl implements ProfileExternalInteg
 			
 		//get user info
 		ExternalIntegrationInfo info = getExternalIntegrationInfo(userUuid);
-		if(info == null){
-			return;
-		}
 		String token = info.getTwitterToken();
 		String secret = info.getTwitterSecret();
 		if(StringUtils.isBlank(token) || StringUtils.isBlank(secret)) {
@@ -182,6 +175,31 @@ public class ProfileExternalIntegrationLogicImpl implements ProfileExternalInteg
 		
 		//instantiate class to send the data
 		new TwitterUpdater(userUuid, token, secret, message);
+	}
+	
+	/**
+ 	 * {@inheritDoc}
+ 	 */
+	public String getGoogleAuthenticationUrl() {
+		
+		String clientId = sakaiProxy.getServerConfigurationParameter("profile2.integration.google.client-id", null);
+	
+		if(StringUtils.isBlank(clientId)){
+			log.error("Google integration not properly configured. Please set the client id");
+			return null;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("https://accounts.google.com/o/oauth2/auth?");
+		sb.append("client_id=");
+		sb.append(clientId);
+		sb.append("&redirect_uri=");
+		sb.append(ProfileConstants.GOOGLE_REDIRECT_URI);
+		sb.append("&response_type=code");
+		sb.append("&scope=");
+		sb.append(ProfileConstants.GOOGLE_DOCS_SCOPE);
+		
+		return sb.toString();
 	}
 	
 	
@@ -197,16 +215,11 @@ public class ProfileExternalIntegrationLogicImpl implements ProfileExternalInteg
 		
 	}
 	
-	
+	@Setter
 	private ProfileDao dao;
-	public void setDao(ProfileDao dao) {
-		this.dao = dao;
-	}
 	
+	@Setter
 	private SakaiProxy sakaiProxy;
-	public void setSakaiProxy(SakaiProxy sakaiProxy) {
-		this.sakaiProxy = sakaiProxy;
-	}
 	
 	
 }

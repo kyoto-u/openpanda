@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputRichTextRenderer.java $
-* $Id: InputRichTextRenderer.java 107298 2012-04-17 05:29:29Z steve.swinsburg@gmail.com $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputRichTextRenderer.java $
+* $Id: InputRichTextRenderer.java 109455 2012-06-21 16:24:18Z matthew@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -70,7 +70,7 @@ import java.util.*;
  * <p>Copyright: Copyright (c) 2004 Sakai</p>
  * @author cwen@iu.edu
  * @author Ed Smiley esmiley@stanford.edu (modifications)
- * @version $Id: InputRichTextRenderer.java 107298 2012-04-17 05:29:29Z steve.swinsburg@gmail.com $
+ * @version $Id: InputRichTextRenderer.java 109455 2012-06-21 16:24:18Z matthew@longsight.com $
  */
 public class InputRichTextRenderer extends Renderer
 {
@@ -207,10 +207,10 @@ public class InputRichTextRenderer extends Renderer
     String editor = serverConfigurationService.getString("wysiwyg.editor");
     
     String collectionBase = (String) RendererUtil.getAttribute(context, component, "collectionBase");
-	String collectionId = "";
-	if (collectionBase != null) {
-		collectionId="collectionId: '"+collectionBase.replaceAll("\"","\\\"")+"'";
-	}
+    String collectionId = "";
+    if (collectionBase != null) {
+        collectionId="collectionId: '"+collectionBase.replaceAll("\"","\\\"")+"'";
+    }
     
     writer.write("<table border=\"0\"><tr><td>");
     writer.write("<textarea name=\"" + clientId + "_inputRichText\" id=\"" + clientId + "_inputRichText\"");
@@ -224,7 +224,7 @@ public class InputRichTextRenderer extends Renderer
     if (!"true".equals(textareaOnly))
     {
     writer.write("<script type=\"text/javascript\">sakai.editor.launch('" + clientId + "_inputRichText', {"+collectionId+"}, '" + widthPx + "','" + heightPx + "');</script>");
-   	}
+    }
 
     writer.write("</td></tr></table>\n");
 
@@ -444,7 +444,7 @@ public class InputRichTextRenderer extends Renderer
                  "lang/en.js\"></script>\n");
 
     String language = locale.getLanguage();
-    if (!Locale.ENGLISH.equals(language))
+    if (!Locale.ENGLISH.getLanguage().equals(language))
     {
       writer.write("<script type=\"text/javascript\" src=\"" + "/" +
         RESOURCE_PATH + "/"     + HTMLAREA_SCRIPT_PATH + "/" +

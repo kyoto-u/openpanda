@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/branches/sakai-2.8.x/mailarchive-james/james/src/java/org/sakaiproject/james/PhoenixLauncherMain.java $
- * $Id: PhoenixLauncherMain.java 84680 2010-11-12 18:52:11Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.0/mailarchive-james/james/src/java/org/sakaiproject/james/PhoenixLauncherMain.java $
+ * $Id: PhoenixLauncherMain.java 84227 2010-11-03 13:58:39Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation

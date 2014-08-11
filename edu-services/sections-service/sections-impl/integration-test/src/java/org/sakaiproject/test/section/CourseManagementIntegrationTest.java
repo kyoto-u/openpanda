@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/sections-service/sections-impl/integration-test/src/java/org/sakaiproject/test/section/CourseManagementIntegrationTest.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/integration-test/src/java/org/sakaiproject/test/section/CourseManagementIntegrationTest.java $
  * $Id: CourseManagementIntegrationTest.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

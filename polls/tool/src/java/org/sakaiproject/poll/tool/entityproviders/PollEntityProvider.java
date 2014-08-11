@@ -1,6 +1,6 @@
 /**
- * $Id: PollEntityProvider.java 306877 2014-03-06 20:08:19Z steve.swinsburg@gmail.com $
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/tool/src/java/org/sakaiproject/poll/tool/entityproviders/PollEntityProvider.java $
+ * $Id: PollEntityProvider.java 86576 2010-12-16 15:11:08Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/tool/src/java/org/sakaiproject/poll/tool/entityproviders/PollEntityProvider.java $
  * PollEntityProvider.java - polls - Aug 21, 2008 7:34:47 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -81,7 +81,6 @@ public class PollEntityProvider extends AbstractEntityProvider implements CoreEn
     /* (non-Javadoc)
      * @see org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider#entityExists(java.lang.String)
      */
-    @Deprecated
     public boolean entityExists(String id) {
         if (id == null) {
             return false;
@@ -98,7 +97,6 @@ public class PollEntityProvider extends AbstractEntityProvider implements CoreEn
      * @param id
      * @return
      */
-    @Deprecated
     private Poll getPollById(String id) {
         Long pollId;
         try {
@@ -113,7 +111,6 @@ public class PollEntityProvider extends AbstractEntityProvider implements CoreEn
     /**
      * Note that details is the only optional field
      */
-    @Deprecated
     public String createEntity(EntityReference ref, Object entity, Map<String, Object> params) {
         Poll poll = (Poll) entity;
         poll.setCreationDate(new Date());
@@ -143,7 +140,6 @@ public class PollEntityProvider extends AbstractEntityProvider implements CoreEn
         return new Poll();
     }
 
-    @Deprecated
     public void updateEntity(EntityReference ref, Object entity, Map<String, Object> params) {
         String id = ref.getId();
         if (id == null) {
@@ -174,7 +170,6 @@ public class PollEntityProvider extends AbstractEntityProvider implements CoreEn
         pollListManager.savePoll(current);
     }
 
-    @Deprecated
     public Object getEntity(EntityReference ref) {
         String id = ref.getId();
         if (id == null) {
@@ -229,7 +224,6 @@ public class PollEntityProvider extends AbstractEntityProvider implements CoreEn
         return poll;
     }
 
-    @Deprecated
     public void deleteEntity(EntityReference ref, Map<String, Object> params) {
         String id = ref.getId();
         if (id == null) {
@@ -247,7 +241,6 @@ public class PollEntityProvider extends AbstractEntityProvider implements CoreEn
         }
     }
 
-    @Deprecated
     public List<?> getEntities(EntityReference ref, Search search) {
 	System.out.println("get entities");
         // get the setting which indicates if we are getting polls we can admin or polls we can take

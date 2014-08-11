@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/branches/sakai-2.8.x/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/SectionDecorator.java $
- * $Id: SectionDecorator.java 99233 2011-10-11 13:35:31Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.0/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/SectionDecorator.java $
+ * $Id: SectionDecorator.java 99053 2011-10-07 11:54:52Z bkirschn@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation

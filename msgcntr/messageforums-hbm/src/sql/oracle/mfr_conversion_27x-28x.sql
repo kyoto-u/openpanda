@@ -5,8 +5,8 @@ update MFR_AREA_T set AVAILABILITY_RESTRICTED=0 where AVAILABILITY_RESTRICTED is
 alter table MFR_AREA_T modify (AVAILABILITY_RESTRICTED NUMBER(1,0) default 0 not null );
 
 alter table MFR_AREA_T add (AVAILABILITY NUMBER(1,0));
-update MFR_AREA_T set AVAILABILITY=0 where AVAILABILITY is NULL;
-alter table MFR_AREA_T modify (AVAILABILITY NUMBER(1,0) default 0 not null);
+update MFR_AREA_T set AVAILABILITY=1 where AVAILABILITY is NULL;
+alter table MFR_AREA_T modify (AVAILABILITY NUMBER(1,0) default 1 not null);
 
 alter table MFR_AREA_T add (OPEN_DATE timestamp);
 
@@ -18,8 +18,8 @@ update MFR_OPEN_FORUM_T set AVAILABILITY_RESTRICTED=0 where AVAILABILITY_RESTRIC
 alter table MFR_OPEN_FORUM_T modify (AVAILABILITY_RESTRICTED NUMBER(1,0) default 0 not null );
 
 alter table MFR_OPEN_FORUM_T add (AVAILABILITY NUMBER(1,0));
-update MFR_OPEN_FORUM_T set AVAILABILITY=0 where AVAILABILITY is NULL;
-alter table MFR_OPEN_FORUM_T modify (AVAILABILITY NUMBER(1,0) default 0 not null );
+update MFR_OPEN_FORUM_T set AVAILABILITY=1 where AVAILABILITY is NULL;
+alter table MFR_OPEN_FORUM_T modify (AVAILABILITY NUMBER(1,0) default 1 not null );
 
 alter table MFR_OPEN_FORUM_T add (OPEN_DATE timestamp);
 
@@ -30,8 +30,8 @@ update MFR_TOPIC_T set AVAILABILITY_RESTRICTED=0 where AVAILABILITY_RESTRICTED i
 alter table MFR_TOPIC_T modify (AVAILABILITY_RESTRICTED NUMBER(1,0) default 0 not null );
 
 alter table MFR_TOPIC_T add (AVAILABILITY NUMBER(1,0));
-update MFR_TOPIC_T set AVAILABILITY=0 where AVAILABILITY is NULL;
-alter table MFR_TOPIC_T modify (AVAILABILITY NUMBER(1,0) default 0 not null );
+update MFR_TOPIC_T set AVAILABILITY=1 where AVAILABILITY is NULL;
+alter table MFR_TOPIC_T modify (AVAILABILITY NUMBER(1,0) default 1 not null );
 
 alter table MFR_TOPIC_T add (OPEN_DATE timestamp);
 
@@ -56,3 +56,7 @@ CREATE INDEX user_type_context_idx ON MFR_PVT_MSG_USR_T ( USER_ID, TYPE_UUID, CO
 --MSGCNTR-429
 --Hibernate could have missed this index, if this fails, then the index may already be in the table
 CREATE INDEX MFR_UNREAD_STATUS_I2 ON MFR_UNREAD_STATUS_T (MESSAGE_C, USER_C, READ_C);
+
+--MSGCNTR-449
+--Restores correct thread sorting
+update MFR_MESSAGE_T set LASTTHREADATE = CREATED where THREADID is null and LASTTHREADATE is null;

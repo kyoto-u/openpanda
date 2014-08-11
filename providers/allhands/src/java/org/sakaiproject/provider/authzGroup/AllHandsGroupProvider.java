@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/allhands/src/java/org/sakaiproject/provider/authzGroup/AllHandsGroupProvider.java $
- * $Id: AllHandsGroupProvider.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/allhands/src/java/org/sakaiproject/provider/authzGroup/AllHandsGroupProvider.java $
+ * $Id: AllHandsGroupProvider.java 92938 2011-05-17 18:52:01Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation

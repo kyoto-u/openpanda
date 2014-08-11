@@ -1216,13 +1216,23 @@ public String removePageFromSite( String sessionid, String siteid, String pageti
 
 		Site siteEdit = null;
 		siteEdit = siteService.getSite(siteid);
+		ArrayList remPages = new ArrayList();
 		List pageEdits = siteEdit.getPages();
 		for (Iterator i = pageEdits.iterator(); i.hasNext();)
 		{
 			SitePage pageEdit = (SitePage) i.next();
 			if (pageEdit.getTitle().equals(pagetitle))
-				siteEdit.removePage(pageEdit);
+			{
+				remPages.add(pageEdit);
+			}
 		}
+
+		for (Iterator i = remPages.iterator(); i.hasNext();)
+		{
+			SitePage pageEdit = (SitePage) i.next();
+			siteEdit.removePage(pageEdit);
+		}
+
 		siteService.save(siteEdit);
 	
 	}
@@ -2126,7 +2136,10 @@ public String searchForUsers(String sessionid, String criteria, int first, int l
 			return "<exception/>";
 		}
 	
+	
 		List users = userDirectoryService.searchUsers(criteria, first, last);
+		List externalUsers = userDirectoryService.searchExternalUsers(criteria, first, last);
+		users.addAll(externalUsers);
 				
 		Document dom = Xml.createDocument();
 		Node list = dom.createElement("list");
@@ -3272,8 +3285,6 @@ private void transferCopyEntities(String toolId, String fromContext, String toCo
 		}
 	}
 }
-
-
 
 
 }

@@ -51,11 +51,16 @@ import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.util.Resource;
 import org.sakaiproject.util.ResourceLoader;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class FileUploadType extends BaseResourceType 
 {
 	protected String typeId = ResourceType.TYPE_UPLOAD;
 	protected String helperId = "sakai.resource.type.helper";
-	// private static final String RESOURCES_ZIP_ENABLE = "resources.zip.enable"; //sakai.properties hack
+
+	private static final Log LOG = LogFactory.getLog(FileUploadType.class);
+
 	
 	/** localized tool properties **/
 	private static final String DEFAULT_RESOURCECLASS = "org.sakaiproject.localization.util.TypeProperties";
@@ -71,10 +76,12 @@ public class FileUploadType extends BaseResourceType
 
 	protected Map<String, ResourceToolAction> actions = new HashMap<String, ResourceToolAction>();	
 	protected UserDirectoryService userDirectoryService;
+	protected ContentHostingService contentHostingService;
 	
 	public FileUploadType()
 	{
 		this.userDirectoryService = (UserDirectoryService) ComponentManager.get("org.sakaiproject.user.api.UserDirectoryService");
+		this.contentHostingService = (ContentHostingService) ComponentManager.get("org.sakaiproject.content.api.ContentHostingService");
 		
 		actions.put(ResourceToolAction.CREATE, new FileUploadCreateAction());
 		//actions.put(ResourceToolAction.ACCESS_CONTENT, new FileUploadAccessAction());
@@ -90,11 +97,12 @@ public class FileUploadType extends BaseResourceType
 		// [WARN] Archive file handling compress/decompress feature contains bugs; exclude action item.
 		// Disable property setting masking problematic code per will of the Community.
 		// See Jira KNL-155/SAK-800 for more details.
-		/*
-		if (ServerConfigurationService.getBoolean(RESOURCES_ZIP_ENABLE,false)) {
+		// also https://jira.sakaiproject.org/browse/KNL-273
+		if (ServerConfigurationService.getBoolean(ContentHostingService.RESOURCES_ZIP_ENABLE, false) ||
+				ServerConfigurationService.getBoolean(ContentHostingService.RESOURCES_ZIP_ENABLE_EXPAND, false)) {
 			actions.put(ResourceToolAction.EXPAND_ZIP_ARCHIVE, new FileUploadExpandAction());
 		}
-		*/
+		
 		
 		// initialize actionMap with an empty List for each ActionType
 		for(ResourceToolAction.ActionType type : ResourceToolAction.ActionType.values())
@@ -775,9 +783,9 @@ public class FileUploadType extends BaseResourceType
 		
 		public void initializeAction(Reference reference) {			
 			try {
-				extractZipArchive.extractArchive(reference);
+					contentHostingService.expandZippedResource(reference.getId());
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				LOG.warn("Exception extracting zip content", e);
 			}
 		}
 		

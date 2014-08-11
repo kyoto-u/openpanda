@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseNotificationService.java $
- * $Id: BaseNotificationService.java 82033 2010-09-01 12:56:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseNotificationService.java $
+ * $Id: BaseNotificationService.java 111988 2012-08-30 18:07:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -181,6 +181,7 @@ public abstract class BaseNotificationService implements NotificationService, Ob
 	 */
 	public void setEmailToReplyable(boolean value)
 	{
+        M_log.warn("Use of this setter (emailToReplyable) is deprecated: use notify.email.to.replyable instead");
 		m_emailsToReplyable = value;
 	}
 
@@ -195,6 +196,7 @@ public abstract class BaseNotificationService implements NotificationService, Ob
 	 */
 	public void setEmailFromReplyable(boolean value)
 	{
+	    M_log.warn("Use of this setter (emailFromReplyable) is deprecated: use notify.email.from.replyable instead");
 		m_emailsFromReplyable = value;
 	}
 
@@ -214,7 +216,7 @@ public abstract class BaseNotificationService implements NotificationService, Ob
 
 			m_relativeAccessPoint = REFERENCE_ROOT;
 
-			M_log.info(this + ".init()");
+			M_log.info(this + ".init() started");
 
 			// construct storage and read
 			m_storage = newStorage();
@@ -226,7 +228,11 @@ public abstract class BaseNotificationService implements NotificationService, Ob
 			// start watching the events - only those generated on this server, not those from elsewhere
 			eventTrackingService().addLocalObserver(this);
 
-			M_log.info(this + ".init()");
+			// set these from real sakai config values
+			m_emailsFromReplyable = serverConfigurationService().getBoolean("notify.email.from.replyable", false);
+            m_emailsToReplyable = serverConfigurationService().getBoolean("notify.email.to.replyable", false);
+
+			M_log.info(this + ".init() complete");
 		}
 		catch (Exception t)
 		{

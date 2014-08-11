@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: SpreadsheetDataFileWriterXls.java 100561 2011-11-08 23:48:00Z steve.swinsburg@gmail.com $
+* $Id: SpreadsheetDataFileWriterXls.java 101732 2011-12-14 13:14:14Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -32,9 +32,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+
+import org.sakaiproject.component.cover.ServerConfigurationService;
 
 /**
  *
@@ -65,13 +70,32 @@ public class SpreadsheetDataFileWriterXls implements SpreadsheetDataFileWriter {
 	private HSSFWorkbook getAsWorkbook(List<List<Object>> spreadsheetData) {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet();
+		HSSFCellStyle headerCs = wb.createCellStyle();
 		Iterator<List<Object>> dataIter = spreadsheetData.iterator();
 		
+		// Set the header style
+		headerCs.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		headerCs.setFillBackgroundColor(HSSFColor.BLUE_GREY.index);
+
+		// Set the font
+		HSSFCellStyle cellStyle = null;
+		String fontName = ServerConfigurationService.getString("spreadsheet.font");
+		if (fontName != null) {
+			HSSFFont font = wb.createFont();
+			font.setFontName(fontName);
+			headerCs.setFont(font);
+			cellStyle = wb.createCellStyle();
+			cellStyle.setFont(font);
+		}
+
 		// By convention, the first list in the list contains column headers.
 		HSSFRow headerRow = sheet.createRow((short)0);
 		List<Object> headerList = dataIter.next();
 		for (short i = 0; i < headerList.size(); i++) {
-			createCell(headerRow, i).setCellValue((String)headerList.get(i));
+			HSSFCell headerCell = createCell(headerRow, i);
+			headerCell.setCellValue((String)headerList.get(i));
+			headerCell.setCellStyle(headerCs);
+			sheet.autoSizeColumn(i);
 		}
 		
 		short rowPos = 1;
@@ -87,6 +111,9 @@ public class SpreadsheetDataFileWriterXls implements SpreadsheetDataFileWriter {
 					} else {
 						cell.setCellValue(data.toString());
 					}
+					if (cellStyle != null) {
+						cell.setCellStyle(cellStyle);
+					}
 				}
 			}
 		}
@@ -95,8 +122,7 @@ public class SpreadsheetDataFileWriterXls implements SpreadsheetDataFileWriter {
 	}
 
 	private HSSFCell createCell(HSSFRow row, short column) {
-		HSSFCell cell = row.createCell(column);
-		cell.setEncoding(HSSFCell.ENCODING_UTF_16);
+		HSSFCell cell = row.createCell(Integer.valueOf(column).intValue());
 		return cell;
 	}
 

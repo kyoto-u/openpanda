@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/sample/src/java/org/sakaiproject/provider/authzGroup/SampleGroupProvider.java $
- * $Id: SampleGroupProvider.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/sample/src/java/org/sakaiproject/provider/authzGroup/SampleGroupProvider.java $
+ * $Id: SampleGroupProvider.java 92938 2011-05-17 18:52:01Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

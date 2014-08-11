@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/branches/sakai-2.8.x/dav/src/java/org/sakaiproject/dav/DavServlet.java $
- * $Id: DavServlet.java 310694 2014-07-10 13:37:57Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-2.9.0/dav/src/java/org/sakaiproject/dav/DavServlet.java $
+ * $Id: DavServlet.java 110795 2012-07-26 17:59:42Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -135,6 +135,7 @@ import org.sakaiproject.entity.api.EntityPropertyTypeException;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.event.api.NotificationService;
+import org.sakaiproject.event.api.UsageSession;
 import org.sakaiproject.event.cover.UsageSessionService;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
@@ -1491,8 +1492,6 @@ public class DavServlet extends HttpServlet
 				}
 				modificationDate = props.getTimeProperty(ResourceProperties.PROP_MODIFIED_DATE).getTime();
 				eTag = modificationDate + "+" + eTag;
-				// SAK-26593 if you don't clean the eTag you may send invalid XML to client
-				eTag = md5Encoder.encode(md5Helper.digest(eTag.getBytes()));
 				if (M_log.isDebugEnabled()) M_log.debug("Path=" + path + " eTag=" + eTag);
 				creationDate = props.getTimeProperty(ResourceProperties.PROP_CREATION_DATE).getTime();
 				resourceLink = mbr.getUrl();
@@ -1938,20 +1937,19 @@ public class DavServlet extends HttpServlet
 		if(parts.length == 4 && parts[1].equals("group-user")){
 			try
 			{
-				// try using it as an ID
-				resourceName = UserDirectoryService.getUserEid(parts[3]);
+				// if successful, the context is already a valid user EID
+				UserDirectoryService.getUserByEid(parts[3]);
 			}
 			catch (UserNotDefinedException tryId)
 			{
 				try
 				{
-					// if successful, the context is already a valid user EID
-					UserDirectoryService.getUserByEid(parts[3]);
+					// try using it as an ID
+					resourceName = UserDirectoryService.getUserEid(parts[3]);
 				}
 				catch (UserNotDefinedException notId)
 				{
 					// if context was not a valid ID, leave it alone
-					M_log.warn("getResourceNameSAKAI could not find either id or eid: " + parts[3]);
 				}
 			}
 		 }
@@ -2734,6 +2732,21 @@ public class DavServlet extends HttpServlet
 		InputStream inputStream = req.getInputStream();
 		contentType = req.getContentType();
 
+		// For MS office, ignore the supplied content type if we can figure out one from file type
+		// they send text/xml for doc and docx files
+		if (contentType != null) {
+		    UsageSession session = UsageSessionService.getSession();
+		    String agent = null;
+		    if (session != null)
+			agent = session.getUserAgent();
+		    if (agent != null && agent.startsWith("Microsoft Office Core Storage Infrastructure")) {
+			String fileContentType = getServletContext().getMimeType(path);
+			if (fileContentType != null) {
+			    contentType = fileContentType;
+			}
+		    }
+		}
+
 		if (M_log.isDebugEnabled()) M_log.debug("  req.contentType() =" + contentType);
 
 		if (contentType == null)
@@ -2862,7 +2875,7 @@ public class DavServlet extends HttpServlet
 			return;
 		}
 
-		copyResource(req, resp);
+		copyResource(req, resp, false);
 
 	}
 
@@ -2886,10 +2899,7 @@ public class DavServlet extends HttpServlet
 
 		String path = getRelativePath(req);
 
-		if (copyResource(req, resp))
-		{
-			deleteResource(path, req, resp);
-		}
+		copyResource(req, resp, true);
 
 	}
 
@@ -3829,9 +3839,11 @@ public class DavServlet extends HttpServlet
 	 *        Servlet request
 	 * @param resp
 	 *        Servlet response
+	 * @param move
+	 *	  This is actually a move operation
 	 * @return boolean true if the copy is successful
 	 */
-	private boolean copyResource(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+	 private boolean copyResource(HttpServletRequest req, HttpServletResponse resp, boolean move) throws ServletException, IOException
 	{
 
 		String destinationPath = getDestinationPath(req);
@@ -3959,7 +3971,7 @@ public class DavServlet extends HttpServlet
 
 		Hashtable<String,Integer> errorList = new Hashtable<String,Integer>();
 
-		boolean result = copyResource(resources, errorList, path, destinationPath);
+		boolean result = copyResource(resources, errorList, path, destinationPath, move);
 
 		if ((!result) || (!errorList.isEmpty()))
 		{
@@ -4002,7 +4014,7 @@ public class DavServlet extends HttpServlet
 	}
 
 	/**
-	 * Copy a collection.
+	 * Copy or name a resource or collection.
 	 * 
 	 * @param resources
 	 *        Resources implementation to be used
@@ -4013,7 +4025,7 @@ public class DavServlet extends HttpServlet
 	 * @param dest
 	 *        Destination path
 	 */
-	private boolean copyResource(DirContextSAKAI resources, Hashtable<String,Integer> errorList, String source, String dest)
+	private boolean copyResource(DirContextSAKAI resources, Hashtable<String,Integer> errorList, String source, String dest, boolean move)
 	{
 
 		if (M_log.isDebugEnabled()) M_log.debug("Copy: " + source + " To: " + dest);
@@ -4035,7 +4047,10 @@ public class DavServlet extends HttpServlet
 		{
 		    boolean isCollection = contentHostingService.getProperties(source).getBooleanProperty(ResourceProperties.PROP_IS_COLLECTION);
 
-		    if (isCollection) {
+		    if (move) {
+		    	contentHostingService.rename(source, dest);
+		    }
+		    else if (isCollection) {
 		    	copyCollection(source, dest);
 		    }
 		    else {

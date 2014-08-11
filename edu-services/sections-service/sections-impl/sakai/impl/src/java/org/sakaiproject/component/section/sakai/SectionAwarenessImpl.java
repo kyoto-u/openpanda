@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/sections-service/sections-impl/sakai/impl/src/java/org/sakaiproject/component/section/sakai/SectionAwarenessImpl.java $
- * $Id: SectionAwarenessImpl.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/sakai/impl/src/java/org/sakaiproject/component/section/sakai/SectionAwarenessImpl.java $
+ * $Id: SectionAwarenessImpl.java 84221 2010-11-03 12:47:45Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -94,14 +94,14 @@ public class SectionAwarenessImpl implements SectionAwareness {
 	public List getSections(final String siteContext) {
     	if(log.isDebugEnabled()) log.debug("Getting sections for context " + siteContext);
     	List<CourseSectionImpl> sectionList = new ArrayList<CourseSectionImpl>();
-    	Collection sections;
+    	Collection<Group> sections;
     	try {
     		sections = siteService.getSite(siteContext).getGroups();
     	} catch (IdUnusedException e) {
     		log.error("No site with id = " + siteContext);
     		return sectionList;
     	}
-    	for(Iterator iter = sections.iterator(); iter.hasNext();) {
+    	for(Iterator<Group> iter = sections.iterator(); iter.hasNext();) {
     		Group group = (Group)iter.next();
     		sectionList.add(new CourseSectionImpl(group));
     	}
@@ -112,11 +112,10 @@ public class SectionAwarenessImpl implements SectionAwareness {
 	/**
 	 * @inheritDoc
 	 */
-	public List getSectionCategories(String siteContext) {
+	public List<String>  getSectionCategories(String siteContext) {
 		List<String> catCodes = new ArrayList<String>();
-		for(Iterator iter = courseManagementService.getSectionCategories().iterator(); iter.hasNext();) {
-			SectionCategory cat = (SectionCategory)iter.next();
-			catCodes.add(cat.getCategoryCode());
+		for(Iterator<String>  iter = courseManagementService.getSectionCategories().iterator(); iter.hasNext();) {
+			catCodes.add(iter.next());
 		}
 		return catCodes;
 	}

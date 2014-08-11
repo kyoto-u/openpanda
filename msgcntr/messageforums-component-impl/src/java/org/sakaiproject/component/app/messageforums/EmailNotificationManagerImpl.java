@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/branches/msgcntr-2.8.x/messageforums-component-impl/src/java/org/sakaiproject/component/app/messageforums/EmailNotificationManagerImpl.java $
- * $Id: EmailNotificationManagerImpl.java 85623 2010-11-30 14:17:12Z wagnermr@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.0/messageforums-component-impl/src/java/org/sakaiproject/component/app/messageforums/EmailNotificationManagerImpl.java $
+ * $Id: EmailNotificationManagerImpl.java 85590 2010-11-30 02:36:13Z wagnermr@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

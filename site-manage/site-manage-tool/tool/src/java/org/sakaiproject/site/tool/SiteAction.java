@@ -1,6 +1,7 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/branches/sakai-2.8.x/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
- * $Id: SiteAction.java 118784 2013-01-25 00:21:24Z steve.swinsburg@gmail.com $
+
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.0/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
+ * $Id: SiteAction.java 113355 2012-09-21 18:32:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -118,6 +119,7 @@ import org.sakaiproject.sitemanage.api.model.SiteSetupQuestion;
 import org.sakaiproject.sitemanage.api.model.SiteSetupQuestionAnswer;
 import org.sakaiproject.sitemanage.api.model.SiteSetupUserAnswer;
 import org.sakaiproject.sitemanage.api.model.SiteTypeQuestions;
+import org.sakaiproject.sitemanage.api.UserNotificationProvider;
 import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeBreakdown;
@@ -139,6 +141,7 @@ import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.SortedIterator;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.Web;
+
 
 /**
  * <p>
@@ -176,8 +179,14 @@ public class SiteAction extends PagedResourceActionII {
 	private org.sakaiproject.sitemanage.api.AffiliatedSectionProvider affiliatedSectionProvider = (org.sakaiproject.sitemanage.api.AffiliatedSectionProvider) ComponentManager
 	.get(org.sakaiproject.sitemanage.api.AffiliatedSectionProvider.class);
 	
+	private org.sakaiproject.sitemanage.api.SiteTypeProvider siteTypeProvider = (org.sakaiproject.sitemanage.api.SiteTypeProvider) ComponentManager
+	.get(org.sakaiproject.sitemanage.api.SiteTypeProvider.class);
+	
 	private static org.sakaiproject.sitemanage.api.model.SiteSetupQuestionService questionService = (org.sakaiproject.sitemanage.api.model.SiteSetupQuestionService) ComponentManager
 	.get(org.sakaiproject.sitemanage.api.model.SiteSetupQuestionService.class);
+	
+	private static org.sakaiproject.sitemanage.api.UserNotificationProvider userNotificationProvider = (org.sakaiproject.sitemanage.api.UserNotificationProvider) ComponentManager
+	.get(org.sakaiproject.sitemanage.api.UserNotificationProvider.class);
 	
 	private static final String SITE_MODE_SITESETUP = "sitesetup";
 
@@ -232,7 +241,7 @@ public class SiteAction extends PagedResourceActionII {
 			"",// 39
 			"",// 40
 			"",// 41
-			"-gradtoolsConfirm",// 42
+			"-type-confirm",// 42
 			"-siteInfo-editClass",// 43
 			"-siteInfo-addCourseConfirm",// 44
 			"-siteInfo-importMtrlMaster", // 45 -- htripath for import
@@ -276,6 +285,9 @@ public class SiteAction extends PagedResourceActionII {
 
 	private static final String STATE_DISABLE_JOINABLE_SITE_TYPE = "disable_joinable_site_types";
 
+	
+	private final static String PROP_SITE_LANGUAGE = "locale_string";
+	
 	/**
 	 * Name of the state attribute holding the site list column list is sorted
 	 * by
@@ -301,6 +313,8 @@ public class SiteAction extends PagedResourceActionII {
 	private static final String STATE_TOOL_REGISTRATION_OLD_SELECTED_LIST = "toolRegistrationOldSelectedList";
 
 	private static final String STATE_TOOL_REGISTRATION_OLD_SELECTED_HOME = "toolRegistrationOldSelectedHome";
+    
+	private static final String STATE_EXTRA_SELECTED_TOOL_LIST = "extraSelectedToolList";
 
 	private static final String STATE_TOOL_EMAIL_ADDRESS = "toolEmailAddress";
 
@@ -319,6 +333,14 @@ public class SiteAction extends PagedResourceActionII {
 	
 	private static final String STATE_SITE_ADD_COURSE = "canAddCourse";
 	
+	private static final String STATE_SITE_ADD_PORTFOLIO = "canAddPortfolio";
+	
+	private static final String STATE_PORTFOLIO_SITE_TYPE = "portfolio";
+		
+	private static final String STATE_SITE_ADD_PROJECT = "canAddProject";
+		
+	private static final String STATE_PROJECT_SITE_TYPE = "project";
+			
 
 	// %%% get rid of the IdAndText tool lists and just use ToolConfiguration or
 	// ToolRegistration lists
@@ -386,6 +408,12 @@ public class SiteAction extends PagedResourceActionII {
 
 	/** The name of the Attribute for display template index */
 	private static final String STATE_TEMPLATE_INDEX = "site.templateIndex";
+
+	/** The name of the Attribute for display template index */
+	private static final String STATE_OVERRIDE_TEMPLATE_INDEX = "site.overrideTemplateIndex";
+
+	/** The name of the Attribute to indicate we are operating in shortcut mode */
+	private static final String STATE_IN_SHORTCUT = "site.currentlyInShortcut";
 
 	/** State attribute for state initialization. */
 	private static final String STATE_INITIALIZED = "site.initialized";
@@ -466,6 +494,8 @@ public class SiteAction extends PagedResourceActionII {
 	private final static String STATE_ADD_CLASS_PROVIDER = "state_add_class_provider";
 
 	private final static String STATE_ADD_CLASS_PROVIDER_CHOSEN = "state_add_class_provider_chosen";
+	
+	private final static String STATE_ADD_CLASS_PROVIDER_DESCRIPTION_CHOSEN = "state_add_class_provider_description_chosen";
 
 	private final static String STATE_ADD_CLASS_MANUAL = "state_add_class_manual";
 
@@ -484,15 +514,6 @@ public class SiteAction extends PagedResourceActionII {
 	private final static String STATE_SUBJECT_AFFILIATES = "site.subject.affiliates";
 
 	private final static String STATE_ICONS = "icons";
-
-	// site template used to create a UM Grad Tools student site
-	public static final String SITE_GTS_TEMPLATE = "!gtstudent";
-
-	// the type used to identify a UM Grad Tools student site
-	public static final String SITE_TYPE_GRADTOOLS_STUDENT = "GradToolsStudent";
-
-	// list of UM Grad Tools site types for editing
-	public static final String GRADTOOLS_SITE_TYPES = "gradtools_site_types";
 
 	public static final String SITE_DUPLICATED = "site_duplicated";
 
@@ -651,6 +672,20 @@ public class SiteAction extends PagedResourceActionII {
 	
 	// the maximum tool title length enforced in UI
 	private final static int MAX_TOOL_TITLE_LENGTH = 20;
+	
+	private final static String SORT_KEY_SESSION = "worksitesetup.sort.key.session";
+	private final static String SORT_ORDER_SESSION = "worksitesetup.sort.order.session";
+	private final static String SORT_KEY_COURSE_SET = "worksitesetup.sort.key.courseSet";
+	private final static String SORT_ORDER_COURSE_SET = "worksitesetup.sort.order.courseSet";
+	private final static String SORT_KEY_COURSE_OFFERING = "worksitesetup.sort.key.courseOffering";
+	private final static String SORT_ORDER_COURSE_OFFERING = "worksitesetup.sort.order.courseOffering";
+	private final static String SORT_KEY_SECTION = "worksitesetup.sort.key.section";
+	private final static String SORT_ORDER_SECTION = "worksitesetup.sort.order.section";
+
+	private List prefLocales = new ArrayList();
+	private String SAKAI_LOCALES = "locales";
+	private String SAKAI_LOCALES_MORE = "locales.more";
+	private LocaleComparator localeComparator = new LocaleComparator();	
 	
 	/**
 	 * what are the tool ids within Home page?
@@ -928,16 +963,6 @@ public class SiteAction extends PagedResourceActionII {
 		if (state.getAttribute(STATE_ICONS) == null) {
 			setupIcons(state);
 		}
-
-		if (state.getAttribute(GRADTOOLS_SITE_TYPES) == null) {
-			List gradToolsSiteTypes = new Vector();
-			if (ServerConfigurationService.getStrings("gradToolsSiteType") != null) {
-				gradToolsSiteTypes = new ArrayList(Arrays
-						.asList(ServerConfigurationService
-								.getStrings("gradToolsSiteType")));
-			}
-			state.setAttribute(GRADTOOLS_SITE_TYPES, gradToolsSiteTypes);
-		}
 		
 		if (ServerConfigurationService.getStrings("titleEditableSiteType") != null) {
 			state.setAttribute(TITLE_EDITABLE_SITE_TYPE, new ArrayList(Arrays
@@ -995,7 +1020,13 @@ public class SiteAction extends PagedResourceActionII {
 		state.removeAttribute(STATE_IMPORT);
 		state.removeAttribute(STATE_IMPORT_SITES);
 		state.removeAttribute(STATE_IMPORT_SITE_TOOL);
-
+		// remove the state attributes related to multi-tool selection
+		state.removeAttribute(STATE_WORKSITE_SETUP_PAGE_LIST);
+		state.removeAttribute(STATE_MULTIPLE_TOOL_ID_SET);
+		state.removeAttribute(STATE_MULTIPLE_TOOL_ID_TITLE_MAP);
+		state.removeAttribute(STATE_MULTIPLE_TOOL_CONFIGURATION);
+		state.removeAttribute(STATE_TOOL_REGISTRATION_LIST);
+		state.removeAttribute(STATE_TOOL_REGISTRATION_TITLE_LIST);
 		// remove those state attributes related to course site creation
 		state.removeAttribute(STATE_TERM_COURSE_LIST);
 		state.removeAttribute(STATE_TERM_COURSE_HASH);
@@ -1004,6 +1035,7 @@ public class SiteAction extends PagedResourceActionII {
 		state.removeAttribute(STATE_FUTURE_TERM_SELECTED);
 		state.removeAttribute(STATE_ADD_CLASS_PROVIDER);
 		state.removeAttribute(STATE_ADD_CLASS_PROVIDER_CHOSEN);
+		state.removeAttribute(STATE_ADD_CLASS_PROVIDER_DESCRIPTION_CHOSEN);
 		state.removeAttribute(STATE_ADD_CLASS_MANUAL);
 		state.removeAttribute(STATE_AUTO_ADD);
 		state.removeAttribute(STATE_MANUAL_ADD_COURSE_NUMBER);
@@ -1065,10 +1097,27 @@ public class SiteAction extends PagedResourceActionII {
 	} // doPermissions
 
 	/**
+	 * Build the context for shortcut display
+	 */
+	public String buildShortcutPanelContext(VelocityPortlet portlet,
+			Context context, RunData data, SessionState state) {
+		return buildMainPanelContext(portlet, context, data, state, true);
+	}
+
+	/**
 	 * Build the context for normal display
 	 */
 	public String buildMainPanelContext(VelocityPortlet portlet,
 			Context context, RunData data, SessionState state) {
+		return buildMainPanelContext(portlet, context, data, state, false);
+	}
+
+	/**
+	 * Build the context for normal/shortcut display and detect switches
+	 */
+	public String buildMainPanelContext(VelocityPortlet portlet,
+			Context context, RunData data, SessionState state,
+			boolean inShortcut) {
 		rb = new ResourceLoader("sitesetupgeneric");
 		context.put("tlang", rb);
 		context.put("clang", cfgRb);
@@ -1097,6 +1146,24 @@ public class SiteAction extends PagedResourceActionII {
 		// updatePortlet(state, portlet, data);
 		if (state.getAttribute(STATE_INITIALIZED) == null) {
 			init(portlet, data, state);
+			String overRideTemplate = (String) state.getAttribute(STATE_OVERRIDE_TEMPLATE_INDEX);
+			if ( overRideTemplate != null ) {
+				state.removeAttribute(STATE_OVERRIDE_TEMPLATE_INDEX);
+				state.setAttribute(STATE_TEMPLATE_INDEX, overRideTemplate);
+			}
+		}
+
+		// Track when we come into Main panel most recently from Shortcut Panel
+		// Reset the state and template if we *just* came into Main from Shortcut
+		if ( inShortcut ) {
+			state.setAttribute(STATE_IN_SHORTCUT, "true");
+		} else {
+			String fromShortcut = (String) state.getAttribute(STATE_IN_SHORTCUT);
+			if ( "true".equals(fromShortcut) ) {
+				cleanState(state);
+				state.setAttribute(STATE_TEMPLATE_INDEX, "0");
+			}
+			state.removeAttribute(STATE_IN_SHORTCUT);
 		}
 		
 		String indexString = (String) state.getAttribute(STATE_TEMPLATE_INDEX);
@@ -1222,15 +1289,21 @@ public class SiteAction extends PagedResourceActionII {
 
 		ResourceProperties siteProperties = null;
 
-		String hasGradSites = ServerConfigurationService.getString(
-				"withDissertation", Boolean.FALSE.toString());
-
 		// course site type
 		String courseSiteType = (String) state.getAttribute(STATE_COURSE_SITE_TYPE);
 		context.put("courseSiteType", courseSiteType);
 		
 		//can the user create course sites?
 		context.put(STATE_SITE_ADD_COURSE, SiteService.allowAddCourseSite());
+		
+		// can the user create portfolio sites?
+		context.put("portfolioSiteType", STATE_PORTFOLIO_SITE_TYPE);
+		context.put(STATE_SITE_ADD_PORTFOLIO, SiteService.allowAddPortfolioSite());
+		
+		// can the user create project sites?
+		context.put("projectSiteType", STATE_PROJECT_SITE_TYPE);
+		context.put(STATE_SITE_ADD_PROJECT, SiteService.allowAddProjectSite());
+		
 
 		
 		Site site = getStateSite(state);
@@ -1251,17 +1324,20 @@ public class SiteAction extends PagedResourceActionII {
 			if (SecurityService.isSuperUser()) {
 				views.put(rb.getString("java.allmy"), rb
 						.getString("java.allmy"));
-				views.put(rb.getString("java.my") + " "
-						+ rb.getString("java.sites"), rb.getString("java.my"));
+				views.put(rb.getFormattedMessage("java.sites", new Object[]{rb.getString("java.my")}), rb.getString("java.my"));
 				for (int sTypeIndex = 0; sTypeIndex < sTypes.size(); sTypeIndex++) {
 					String type = (String) sTypes.get(sTypeIndex);
-					views.put(type + " " + rb.getString("java.sites"), type);
+					views.put(rb.getFormattedMessage("java.sites", new Object[]{type}), type);
 				}
-				if (hasGradSites.equalsIgnoreCase("true")) {
-					views.put(rb.getString("java.gradtools") + " "
-							+ rb.getString("java.sites"), rb
-							.getString("java.gradtools"));
+				List<String> moreTypes = siteTypeProvider.getTypesForSiteList();
+				if (!moreTypes.isEmpty())
+				{
+					for(String mType : moreTypes)
+					{
+						views.put(rb.getFormattedMessage("java.sites", new Object[]{mType}), mType);
+					}
 				}
+				
 				if (state.getAttribute(STATE_VIEW_SELECTED) == null) {
 					state.setAttribute(STATE_VIEW_SELECTED, rb
 							.getString("java.allmy"));
@@ -1271,45 +1347,6 @@ public class SiteAction extends PagedResourceActionII {
 				context.put("superUser", Boolean.FALSE);
 				views.put(rb.getString("java.allmy"), rb
 						.getString("java.allmy"));
-
-				// if there is a GradToolsStudent choice inside
-				boolean remove = false;
-				if (hasGradSites.equalsIgnoreCase("true")) {
-					try {
-						// the Grad Tools site option is only presented to
-						// GradTools Candidates
-						String userId = StringUtils.trimToEmpty(SessionManager
-								.getCurrentSessionUserId());
-
-						// am I a grad student?
-						if (!isGradToolsCandidate(userId)) {
-							// not a gradstudent
-							remove = true;
-						}
-					} catch (Exception e) {
-						remove = true;
-						M_log.warn(this + "buildContextForTemplate chef_site-list.vm list GradToolsStudent sites", e);
-					}
-				} else {
-					// not support for dissertation sites
-					remove = true;
-				}
-				// do not show this site type in views
-				// sTypes.remove(new String(SITE_TYPE_GRADTOOLS_STUDENT));
-
-				for (int sTypeIndex = 0; sTypeIndex < sTypes.size(); sTypeIndex++) {
-					String type = (String) sTypes.get(sTypeIndex);
-					if (!type.equals(SITE_TYPE_GRADTOOLS_STUDENT)) {
-						views
-								.put(type + " " + rb.getString("java.sites"),
-										type);
-					}
-				}
-				if (!remove) {
-					views.put(rb.getString("java.gradtools") + " "
-							+ rb.getString("java.sites"), rb
-							.getString("java.gradtools"));
-				}
 
 				// default view
 				if (state.getAttribute(STATE_VIEW_SELECTED) == null) {
@@ -1381,40 +1418,31 @@ public class SiteAction extends PagedResourceActionII {
 
 			pagingInfoToContext(state, context);
 			
-			context.put("allowAddSite",Boolean.valueOf(SiteService.allowAddSite(null)));
+			//SAK-22438 if user can add one of these site types then they can see the link to add a new site
+			boolean allowAddSite = false;
+			if(SiteService.allowAddCourseSite()) {
+				allowAddSite = true;
+			} else if (SiteService.allowAddPortfolioSite()) {
+				allowAddSite = true;
+			} else if (SiteService.allowAddProjectSite()) {
+				allowAddSite = true;
+			}
+			
+			context.put("allowAddSite",allowAddSite);
+
+			
 			return (String) getContext(data).get("template") + TEMPLATE[0];
 		case 1:
 			/*
 			 * buildContextForTemplate chef_site-type.vm
 			 * 
 			 */
-			if (hasGradSites.equalsIgnoreCase("true")) {
-				context.put("withDissertation", Boolean.TRUE);
-				try {
-					// the Grad Tools site option is only presented to UM grad
-					// students
-					String userId = StringUtils.trimToEmpty(SessionManager
-							.getCurrentSessionUserId());
-
-					// am I a UM grad student?
-					Boolean isGradStudent = Boolean.valueOf(
-							isGradToolsCandidate(userId));
-					context.put("isGradStudent", isGradStudent);
-
-					// if I am a UM grad student, do I already have a Grad Tools
-					// site?
-					boolean noGradToolsSite = true;
-					if (hasGradToolsStudentSite(userId))
-						noGradToolsSite = false;
-					context.put("noGradToolsSite", Boolean.valueOf(noGradToolsSite));
-				} catch (Exception e) {
-					M_log.warn(this + "buildContextForTemplate chef_site-type.vm ", e);
-				}
-			} else {
-				context.put("withDissertation", Boolean.FALSE);
-			}
-
 			List types = (List) state.getAttribute(STATE_SITE_TYPES);
+			List<String> mTypes = siteTypeProvider.getTypesForSiteCreation();
+			if (mTypes != null && !mTypes.isEmpty())
+			{
+				types.addAll(mTypes);
+			}
 			context.put("siteTypes", types);
 
 			// put selected/default site type into context
@@ -1472,9 +1500,38 @@ public class SiteAction extends PagedResourceActionII {
 			}
 			context.put("myworkspace_site", Boolean.valueOf(myworkspace_site));
 			
-			context.put(STATE_TOOL_REGISTRATION_LIST, state.getAttribute(STATE_TOOL_REGISTRATION_LIST));
+			toolRegistrationList = (List) state.getAttribute(STATE_TOOL_REGISTRATION_LIST);
+			context.put(STATE_TOOL_REGISTRATION_LIST, toolRegistrationList);
+			
+			if (toolRegistrationSelectedList != null && toolRegistrationList != null)
+			{
+				// see if any tool is added outside of Site Info tool, which means the tool is outside of the allowed tool set for this site type
+				List extraSelectedToolList = new ArrayList();
+				for (Object selectedTool : toolRegistrationSelectedList)
+				{
+					boolean selected = false;
+					for (Object toolRegisteration:toolRegistrationList)
+					{
+						if (((MyTool) toolRegisteration).getId().equals((String) selectedTool))
+						{
+							selected = true;
+							break;
+						}
+					}
+					if (!selected)
+					{
+						// add the tool id if not in the registration list
+						extraSelectedToolList.add(selectedTool);
+					}
+				}
+				
+				extraSelectedToolList.removeAll(toolRegistrationList);
+				state.setAttribute(STATE_EXTRA_SELECTED_TOOL_LIST, extraSelectedToolList);
+				context.put("extraSelectedToolList", extraSelectedToolList);
+			}
+			
 			// put tool title into context if PageOrderHelper is enabled
-			pageOrderToolTitleIntoContext(context, state, type, (site == null));
+			pageOrderToolTitleIntoContext(context, state, type, (site == null), site==null?null:site.getProperties().getProperty(SiteConstants.SITE_PROPERTY_OVERRIDE_HIDE_PAGEORDER_SITE_TYPES));
 
 			// all info related to multiple tools
 			multipleToolIntoContext(context, state);
@@ -1591,6 +1648,9 @@ public class SiteAction extends PagedResourceActionII {
 					context.put("manualAddFields", state
 							.getAttribute(STATE_MANUAL_ADD_COURSE_FIELDS));
 				}
+				else if (state.getAttribute(STATE_CM_REQUESTED_SECTIONS) != null) {
+					context.put("manualAddNumber", Integer.valueOf(((List) state.getAttribute(STATE_CM_REQUESTED_SECTIONS)).size()));
+				}
 
 				context.put("skins", state.getAttribute(STATE_ICONS));
 				if (StringUtils.trimToNull(siteInfo.getIconUrl()) != null) {
@@ -1614,6 +1674,18 @@ public class SiteAction extends PagedResourceActionII {
 			context.put("short_description", siteInfo.short_description);
 			context.put("siteContactName", siteInfo.site_contact_name);
 			context.put("siteContactEmail", siteInfo.site_contact_email);
+			
+			/// site language information
+ 							
+ 			String locale_string_selected = (String) state.getAttribute("locale_string");
+ 			if(locale_string_selected == ""  || locale_string_selected == null)		
+ 				context.put("locale_string_selected", "");			
+ 			else
+ 			{
+ 				Locale locale_selected = getLocaleFromString(locale_string_selected);
+ 				context.put("locale_string_selected", locale_selected);
+ 			}
+
 			toolRegistrationSelectedList = (List) state
 					.getAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST);
 			context.put(STATE_TOOL_REGISTRATION_SELECTED_LIST,
@@ -1757,7 +1829,7 @@ public class SiteAction extends PagedResourceActionII {
 					if (notStealthOrHiddenTool("sakai-site-pageorder-helper")) {
 						
 						// in particular, need to check site types for showing the tool or not
-						if (isPageOrderAllowed(siteType))
+						if (isPageOrderAllowed(siteType, siteProperties.getProperty(SiteConstants.SITE_PROPERTY_OVERRIDE_HIDE_PAGEORDER_SITE_TYPES)))
 						{
 							b.add(new MenuEntry(rb.getString("java.orderpages"), "doPageOrderHelper"));
 						}
@@ -1828,23 +1900,21 @@ public class SiteAction extends PagedResourceActionII {
 				if (allowUpdateSite) 
 				{
 					if (!isMyWorkspace) {
-						List gradToolsSiteTypes = (List) state
-								.getAttribute(GRADTOOLS_SITE_TYPES);
-						boolean isGradToolSite = false;
+						List<String> providedSiteTypes = siteTypeProvider.getTypes();
+						boolean isProvidedType = false;
 						if (siteType != null
-								&& gradToolsSiteTypes.contains(siteType)) {
-							isGradToolSite = true;
+								&& providedSiteTypes.contains(siteType)) {
+							isProvidedType = true;
 						}
-						if (!isGradToolSite) {
-							// hide site access for GRADTOOLS
+						if (!isProvidedType) {
+							// hide site access for provided site types
 							// type of sites
 							b.add(new MenuEntry(
 									rb.getString("java.siteaccess"),
 									"doMenu_edit_site_access"));
 							
 							// hide site duplicate and import
-							// for GRADTOOLS type of sites
-							if (SiteService.allowAddSite(null))
+							if (SiteService.allowAddSite(null) && ServerConfigurationService.getBoolean("site.setup.allowDuplicateSite", true))
 							{
 								b.add(new MenuEntry(rb.getString("java.duplicate"),
 										"doMenu_siteInfo_duplicate"));
@@ -1973,18 +2043,33 @@ public class SiteAction extends PagedResourceActionII {
 					context.put("isCourseSite", Boolean.FALSE);
 				}
 				
+				Collection<Group> groups = null;
 				if ((allowUpdateSite || allowUpdateGroupMembership) 
 						&& (!isMyWorkspace
 							&& (ServerConfigurationService.getString("wsetup.group.support") == "" 
 							|| ServerConfigurationService.getString("wsetup.group.support").equalsIgnoreCase(Boolean.TRUE.toString())))) 
 				{
 					// show all site groups
-					context.put("groups", site.getGroups());
+					groups = site.getGroups();
 				}
 				else
 				{
 					// show groups that the current user is member of
-					context.put("groups", site.getGroupsWithMember(UserDirectoryService.getCurrentUser().getId()));
+					groups = site.getGroupsWithMember(UserDirectoryService.getCurrentUser().getId());
+				}
+				if (groups != null)
+				{
+					// filter out only those groups that are manageable by site-info
+					Collection<Group> filteredGroups = new ArrayList<Group>();
+					for (Group g : groups)
+					{
+						Object gProp = g.getProperties().getProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED);
+						if (gProp != null && gProp.equals(Boolean.TRUE.toString()))
+						{
+							filteredGroups.add(g);
+						}
+					}
+					context.put("groups", filteredGroups);
 				}
 			} catch (Exception e) {
 				M_log.warn(this + " buildContextForTemplate chef_site-siteInfo-list.vm ", e);
@@ -2021,10 +2106,18 @@ public class SiteAction extends PagedResourceActionII {
 				// revising a existing site's tool
 				context.put("existingSite", Boolean.TRUE);
 				context.put("continue", "14");
+				
+				ResourcePropertiesEdit props = site.getPropertiesEdit();
+						
+				String locale_string = StringUtils.trimToEmpty(props.getProperty(PROP_SITE_LANGUAGE));
+				context.put("locale_string",locale_string);
 			} else {
 				// new site
 				context.put("existingSite", Boolean.FALSE);
 				context.put("continue", "3");
+				
+				// get the system default as locale string
+				context.put("locale_string", "");
 			}
 			
 			boolean displaySiteAlias = displaySiteAlias();
@@ -2044,13 +2137,17 @@ public class SiteAction extends PagedResourceActionII {
 				context.put("isCourseSite", Boolean.TRUE);
 				context.put("isProjectSite", Boolean.FALSE);
 
-				putSelectedProviderCourseIntoContext(context, state);
+				boolean hasRosterAttached = putSelectedProviderCourseIntoContext(context, state);
 
 				List<SectionObject> cmRequestedList = (List<SectionObject>) state
 						.getAttribute(STATE_CM_REQUESTED_SECTIONS);
 
 				if (cmRequestedList != null) {
 					context.put("cmRequestedSections", cmRequestedList);
+					if (!hasRosterAttached && cmRequestedList.size() > 0)
+					{
+						hasRosterAttached = true;
+					}
 				}
 
 				List<SectionObject> cmAuthorizerSectionList = (List<SectionObject>) state
@@ -2059,6 +2156,10 @@ public class SiteAction extends PagedResourceActionII {
 					context
 							.put("cmAuthorizerSections",
 									cmAuthorizerSectionList);
+					if (!hasRosterAttached && cmAuthorizerSectionList.size() > 0)
+					{
+						hasRosterAttached = true;
+					}
 				}
 
 				if (state.getAttribute(STATE_MANUAL_ADD_COURSE_NUMBER) != null) {
@@ -2068,18 +2169,27 @@ public class SiteAction extends PagedResourceActionII {
 					context.put("manualAddNumber", Integer.valueOf(number - 1));
 					context.put("manualAddFields", state
 							.getAttribute(STATE_MANUAL_ADD_COURSE_FIELDS));
+					if (!hasRosterAttached)
+					{
+						hasRosterAttached = true;
+					}
 				} else {
 					if (site != null)
-						coursesIntoContext(state, context, site);
+						if (!hasRosterAttached)
+						{
+							hasRosterAttached = coursesIntoContext(state, context, site);
+						}
+						else
+						{
+							coursesIntoContext(state, context, site);
+						}
 
 					if (courseManagementIsImplemented()) {
 					} else {
 						context.put("templateIndex", "37");
 					}
 				}
-
-				// whether to show course skin selection choices or not
-				courseSkinSelection(context, state, site, siteInfo);
+				context.put("hasRosterAttached", Boolean.valueOf(hasRosterAttached));
 				
 				if (StringUtils.trimToNull(siteInfo.term) == null) {
 					if (site != null)
@@ -2107,6 +2217,9 @@ public class SiteAction extends PagedResourceActionII {
 				}
 			}
 
+			// about skin and icon selection
+			skinIconSelection(context, state, siteType != null && siteType.equalsIgnoreCase(courseSiteType), site, siteInfo);
+
 			if (state.getAttribute(SiteHelper.SITE_CREATE_SITE_TITLE) != null) {
 				context.put("titleEditableSiteType", Boolean.FALSE);
 				siteInfo.title = (String)state.getAttribute(SiteHelper.SITE_CREATE_SITE_TITLE);
@@ -2132,6 +2245,10 @@ public class SiteAction extends PagedResourceActionII {
 			context.put("site_aliases_editable", aliasesEditable(state, site == null ? null:site.getReference()));
 			context.put("site_alias_assignable", aliasAssignmentForNewSitesEnabled(state));
 
+			// available languages in sakai.properties
+			List locales = getPrefLocales();	
+			context.put("locales",locales);			
+						
 			return (String) getContext(data).get("template") + TEMPLATE[13];
 		case 14:
 			/*
@@ -2144,14 +2261,38 @@ public class SiteAction extends PagedResourceActionII {
 			siteType = (String) state.getAttribute(STATE_SITE_TYPE);
 			if (siteType != null && siteType.equalsIgnoreCase(courseSiteType)) {
 				context.put("isCourseSite", Boolean.TRUE);
-				context.put("disableCourseSelection", ServerConfigurationService.getString("disable.course.site.skin.selection", "false").equals("true")?Boolean.TRUE:Boolean.FALSE);
 				context.put("siteTerm", siteInfo.term);
 			} else {
 				context.put("isCourseSite", Boolean.FALSE);
 			}
+			// about skin and icon selection
+			skinIconSelection(context, state, siteType != null && siteType.equalsIgnoreCase(courseSiteType), site, siteInfo);
+			
 			context.put("oTitle", site.getTitle());
 			context.put("title", siteInfo.title);
-
+			
+			// get updated language
+			String new_locale_string = (String) state.getAttribute("locale_string");			
+			if(new_locale_string == ""  || new_locale_string == null)							
+				context.put("new_locale", "");			
+			else
+			{
+				Locale new_locale = getLocaleFromString(new_locale_string);
+				context.put("new_locale", new_locale);
+			}
+						
+			// get site language saved
+			ResourcePropertiesEdit props = site.getPropertiesEdit();					
+			String oLocale_string = props.getProperty(PROP_SITE_LANGUAGE);			
+			if(oLocale_string == "" || oLocale_string == null)				
+				context.put("oLocale", "");			
+			else
+			{
+				Locale oLocale = getLocaleFromString(oLocale_string);
+				context.put("oLocale", oLocale);
+			}
+						
+			
 			context.put("description", siteInfo.description);
 			context.put("oDescription", site.getDescription());
 			context.put("short_description", siteInfo.short_description);
@@ -2169,7 +2310,6 @@ public class SiteAction extends PagedResourceActionII {
 			context.put("oEmail", siteProperties.getProperty(Site.PROP_SITE_CONTACT_EMAIL));
 			context.put("siteUrls",  getSiteUrlsForAliasIds(siteInfo.siteRefAliases));
 			context.put("oSiteUrls", getSiteUrlsForSite(site));
-			
 			return (String) getContext(data).get("template") + TEMPLATE[14];
 		case 15:
 			/*
@@ -2188,15 +2328,20 @@ public class SiteAction extends PagedResourceActionII {
 				}
 			}
 
-			context.put(STATE_TOOL_REGISTRATION_LIST, state
-					.getAttribute(STATE_TOOL_REGISTRATION_LIST));
+			toolRegistrationSelectedList = (List) state.getAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST);
+			toolRegistrationList = (List) state.getAttribute(STATE_TOOL_REGISTRATION_LIST);
+			context.put(STATE_TOOL_REGISTRATION_LIST, toolRegistrationList);
+			if (toolRegistrationSelectedList != null && toolRegistrationList != null)
+			{
+				// see if any tool is added outside of Site Info tool, which means the tool is outside of the allowed tool set for this site type
+				context.put("extraSelectedToolList", state.getAttribute(STATE_EXTRA_SELECTED_TOOL_LIST));
+			}
 			// put tool title into context if PageOrderHelper is enabled
-			pageOrderToolTitleIntoContext(context, state, site_type, false);
+			pageOrderToolTitleIntoContext(context, state, site_type, false, site.getProperties().getProperty(SiteConstants.SITE_PROPERTY_OVERRIDE_HIDE_PAGEORDER_SITE_TYPES));
 
 			context.put("check_home", state
 					.getAttribute(STATE_TOOL_HOME_SELECTED));
-			context.put("selectedTools", orderToolIds(state, checkNullSiteType(state, site), (List) state
-					.getAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST), false));
+			context.put("selectedTools", orderToolIds(state, checkNullSiteType(state, site), toolRegistrationSelectedList, false));
 			context.put("oldSelectedTools", state
 					.getAttribute(STATE_TOOL_REGISTRATION_OLD_SELECTED_LIST));
 			context.put("oldSelectedHome", state
@@ -2399,7 +2544,7 @@ public class SiteAction extends PagedResourceActionII {
 			context.put(STATE_TOOL_REGISTRATION_LIST, state
 					.getAttribute(STATE_TOOL_REGISTRATION_LIST));
 			context.put("selectedTools", orderToolIds(state, site_type,
-			        importableTools, false)); // String toolId's
+			        originalToolIds((List<String>) importableTools, state), false));
 			context.put("importSites", state.getAttribute(STATE_IMPORT_SITES));
 			context.put("importSitesTools", state
 					.getAttribute(STATE_IMPORT_SITE_TOOL));
@@ -2525,7 +2670,7 @@ public class SiteAction extends PagedResourceActionII {
 				context.put("duplicatedName", state
 						.getAttribute(SITE_DUPLICATED_NAME));
 			}
-
+			context.put("titleMaxLength", state.getAttribute(STATE_SITE_TITLE_MAX));
 			return (String) getContext(data).get("template") + TEMPLATE[29];
 		case 36:
 			/*
@@ -2537,7 +2682,6 @@ public class SiteAction extends PagedResourceActionII {
 				
 			if (site != null) {
 				context.put("site", site);
-				context.put("siteTitle", site.getTitle());
 
 				List providerCourseList = (List) state
 						.getAttribute(SITE_PROVIDER_COURSE_LIST);
@@ -2715,10 +2859,12 @@ public class SiteAction extends PagedResourceActionII {
 			
 			context.put("basedOnTemplate",  state.getAttribute(STATE_TEMPLATE_SITE) != null ? Boolean.TRUE:Boolean.FALSE);
 			
+			context.put("requireAuthorizer", ServerConfigurationService.getString("wsetup.requireAuthorizer", "true").equals("true")?Boolean.TRUE:Boolean.FALSE);
+			
 			return (String) getContext(data).get("template") + TEMPLATE[37];
 		case 42:
 			/*
-			 * buildContextForTemplate chef_site-gradtoolsConfirm.vm
+			 * buildContextForTemplate chef_site-type-confirm.vm
 			 * 
 			 */
 			siteInfo = (SiteInfo) state.getAttribute(STATE_SITE_INFO);
@@ -2896,12 +3042,12 @@ public class SiteAction extends PagedResourceActionII {
 					}
 					else if (numSelections < cmLevelSize)
 					{
-						levelOpts[numSelections] = sortCmObject(cms.findCourseSets(getSelectionString(selections, numSelections)));
+						levelOpts[numSelections] = sortCourseSets(cms.findCourseSets(getSelectionString(selections, numSelections)));
 					}
 				}
 				// always set the top level
 				Set<CourseSet> courseSets = filterCourseSetList(getCourseSet(state));
-				levelOpts[0] = sortCmObject(courseSets);
+				levelOpts[0] = sortCourseSets(courseSets);
 				
 				// clean further element inside the array
 				for (int i = numSelections + 1; i<cmLevelSize; i++)
@@ -3030,9 +3176,9 @@ public class SiteAction extends PagedResourceActionII {
 	 * @param siteType
 	 * @param newSite
 	 */
-	private void pageOrderToolTitleIntoContext(Context context, SessionState state, String siteType, boolean newSite) {
+	private void pageOrderToolTitleIntoContext(Context context, SessionState state, String siteType, boolean newSite, String overrideSitePageOrderSetting) {
 		// check if this is an existing site and PageOrder is enabled for the site. If so, show tool title
-		if (!newSite && notStealthOrHiddenTool("sakai-site-pageorder-helper") && isPageOrderAllowed(siteType))
+		if (!newSite && notStealthOrHiddenTool("sakai-site-pageorder-helper") && isPageOrderAllowed(siteType, overrideSitePageOrderSetting))
 		{
 			// the actual page titles
 			context.put(STATE_TOOL_REGISTRATION_TITLE_LIST, state.getAttribute(STATE_TOOL_REGISTRATION_TITLE_LIST));
@@ -3087,12 +3233,20 @@ public class SiteAction extends PagedResourceActionII {
 	 * get the titles of list of selected provider courses into context
 	 * @param context
 	 * @param state
+	 * @return true if there is selected provider course, false otherwise
 	 */
-	private void putSelectedProviderCourseIntoContext(Context context, SessionState state) {
+	private boolean putSelectedProviderCourseIntoContext(Context context, SessionState state) {
+		boolean rv = false;
 		if (state.getAttribute(STATE_ADD_CLASS_PROVIDER_CHOSEN) != null) {
 			
 			List<String> providerSectionList = (List<String>) state.getAttribute(STATE_ADD_CLASS_PROVIDER_CHOSEN);
 			context.put("selectedProviderCourse", providerSectionList);
+			context.put("selectedProviderCourseDescription", state.getAttribute(STATE_ADD_CLASS_PROVIDER_DESCRIPTION_CHOSEN));
+			if (providerSectionList != null && providerSectionList.size() > 0)
+			{
+				// roster attached
+				rv = true;
+			}
 
 			HashMap<String, String> providerSectionListTitles = new HashMap<String, String>();
 			if (providerSectionList != null)
@@ -3107,34 +3261,45 @@ public class SiteAction extends PagedResourceActionII {
 							providerSectionListTitles.put(s.getEid(), s.getTitle()); 
 						}
 					}
-					catch (Exception e)
+					catch (IdNotFoundException e)
 					{
 						providerSectionListTitles.put(providerSectionId, providerSectionId);
-						M_log.warn(this + ".putSelectedProviderCourseIntoContext " + e.getMessage() + " sectionId=" + providerSectionId, e);
+						M_log.warn("putSelectedProviderCourseIntoContext Cannot find section " + providerSectionId);
 					}
 				}
 				context.put("size", Integer.valueOf(providerSectionList.size() - 1));
 			}
 			context.put("selectedProviderCourseTitles", providerSectionListTitles);		
 		}
+		return rv;
 	}
 
 	/**
 	 * whether the PageOrderHelper is allowed to be shown in this site type
 	 * @param siteType
+	 * @param overrideSitePageOrderSetting
 	 * @return
 	 */
-	private boolean isPageOrderAllowed(String siteType) {
-		boolean rv = true;
-		String hidePageOrderSiteTypes = ServerConfigurationService.getString("hide.pageorder.site.types", "");
-		if ( hidePageOrderSiteTypes.length() != 0)
+	private boolean isPageOrderAllowed(String siteType, String overrideSitePageOrderSetting) {
+		if (overrideSitePageOrderSetting != null && Boolean.valueOf(overrideSitePageOrderSetting))
 		{
-			if (new ArrayList<String>(Arrays.asList(StringUtils.split(hidePageOrderSiteTypes, ","))).contains(siteType))
-			{
-				rv = false;
-			}
+			// site-specific setting, show PageOrder tool
+			return true;
 		}
-		return rv;
+		else
+		{
+			// read the setting from sakai properties
+			boolean rv = true;
+			String hidePageOrderSiteTypes = ServerConfigurationService.getString(SiteConstants.SAKAI_PROPERTY_HIDE_PAGEORDER_SITE_TYPES, "");
+			if ( hidePageOrderSiteTypes.length() != 0)
+			{
+				if (new ArrayList<String>(Arrays.asList(StringUtils.split(hidePageOrderSiteTypes, ","))).contains(siteType))
+				{
+					rv = false;
+				}
+			}
+			return rv;
+		}
 	}
 
 	private void multipleToolIntoContext(Context context, SessionState state) {
@@ -3146,19 +3311,29 @@ public class SiteAction extends PagedResourceActionII {
 
 
 	/**
-	 * show course site skin selection or not
+	 * show site skin and icon selections or not
 	 * @param context
+	 * @param isCourseSite
 	 * @param state
 	 * @param site
 	 * @param siteInfo
 	 */
-	private void courseSkinSelection(Context context, SessionState state, Site site, SiteInfo siteInfo) {
-		// Display of appearance icon/url list with course site based on
-		// "disable.course.site.skin.selection" value set with
-		// sakai.properties file.
-		// The setting defaults to be false.
-		context.put("disableCourseSelection", ServerConfigurationService.getString("disable.course.site.skin.selection", "false").equals("true")?Boolean.TRUE:Boolean.FALSE);
-		context.put("skins", state.getAttribute(STATE_ICONS));
+	private void skinIconSelection(Context context, SessionState state, boolean isCourseSite, Site site, SiteInfo siteInfo) {
+		// 1. the skin list
+		// For course site, display skin list based on "disable.course.site.skin.selection" value set with sakai.properties file. The setting defaults to be false.
+		boolean disableCourseSkinChoice = ServerConfigurationService.getString("disable.course.site.skin.selection", "false").equals("true");
+		// For non-course site, display skin list based on "disable.noncourse.site.skin.selection" value set with sakai.properties file. The setting defaults to be true.
+		boolean disableNonCourseSkinChoice = ServerConfigurationService.getString("disable.noncourse.site.skin.selection", "true").equals("true");
+		if ((isCourseSite && !disableCourseSkinChoice) || (!isCourseSite && !disableNonCourseSkinChoice))
+		{
+			context.put("allowSkinChoice", Boolean.TRUE);
+			context.put("skins", state.getAttribute(STATE_ICONS));
+		}
+		else
+		{
+			context.put("allowSkinChoice", Boolean.FALSE);
+		}
+			
 		if (siteInfo != null && StringUtils.trimToNull(siteInfo.getIconUrl()) != null) 
 		{
 			context.put("selectedIcon", siteInfo.getIconUrl());
@@ -3555,10 +3730,19 @@ public class SiteAction extends PagedResourceActionII {
 
 	} // doSite_search_clear
 
-	private void coursesIntoContext(SessionState state, Context context,
+	/**
+	 * 
+	 * @param state
+	 * @param context
+	 * @param site
+	 * @return true if there is any roster attached, false otherwise
+	 */
+	private boolean coursesIntoContext(SessionState state, Context context,
 			Site site) {
+		boolean rv = false;
 		List providerCourseList = SiteParticipantHelper.getProviderCourseList((String) state.getAttribute(STATE_SITE_INSTANCE_ID));
 		if (providerCourseList != null && providerCourseList.size() > 0) {
+			rv = true;
 			state.setAttribute(SITE_PROVIDER_COURSE_LIST, providerCourseList);
 			
 			Hashtable<String, String> sectionTitles = new Hashtable<String, String>();
@@ -3573,10 +3757,10 @@ public class SiteAction extends PagedResourceActionII {
 						sectionTitles.put(sectionId, s.getTitle());
 					}
 				}
-				catch (Exception e)
+				catch (IdNotFoundException e)
 				{
 					sectionTitles.put(sectionId, sectionId);
-					M_log.warn(this + ".coursesIntoContext " + e.getMessage() + " sectionId=" + sectionId, e);
+					M_log.warn("coursesIntoContext: Cannot find section " + sectionId);
 				}
 			}
 			context.put("providerCourseTitles", sectionTitles);
@@ -3584,15 +3768,29 @@ public class SiteAction extends PagedResourceActionII {
 		}
 
 		// put manual requested courses into context
-		courseListFromStringIntoContext(state, context, site, STATE_CM_REQUESTED_SECTIONS, STATE_CM_REQUESTED_SECTIONS, "cmRequestedCourseList");
+		boolean rv2 = courseListFromStringIntoContext(state, context, site, STATE_CM_REQUESTED_SECTIONS, STATE_CM_REQUESTED_SECTIONS, "cmRequestedCourseList");
 		
 		// put manual requested courses into context
-		courseListFromStringIntoContext(state, context, site, PROP_SITE_REQUEST_COURSE, SITE_MANUAL_COURSE_LIST, "manualCourseList");
+		boolean rv3 = courseListFromStringIntoContext(state, context, site, PROP_SITE_REQUEST_COURSE, SITE_MANUAL_COURSE_LIST, "manualCourseList");
+		
+		return (rv || rv2 || rv3);
 	}
 
-	private void courseListFromStringIntoContext(SessionState state, Context context, Site site, String site_prop_name, String state_attribute_string, String context_string) {
+	/**
+	 * 
+	 * @param state
+	 * @param context
+	 * @param site
+	 * @param site_prop_name
+	 * @param state_attribute_string
+	 * @param context_string
+	 * @return true if there is any roster attached; false otherwise
+	 */
+	private boolean courseListFromStringIntoContext(SessionState state, Context context, Site site, String site_prop_name, String state_attribute_string, String context_string) {
+		boolean rv = false;
 		String courseListString = StringUtils.trimToNull(site != null?site.getProperties().getProperty(site_prop_name):null);
 		if (courseListString != null) {
+			rv = true;
 			List courseList = new Vector();
 			if (courseListString.indexOf("+") != -1) {
 				courseList = new ArrayList(Arrays.asList(groupProvider.unpackId(courseListString)));
@@ -3616,9 +3814,9 @@ public class SiteAction extends PagedResourceActionII {
 							soList.add(new SectionObject(s));
 						}
 					}
-					catch (Exception e)
+					catch (IdNotFoundException e)
 					{
-						M_log.warn(this + ": cannot find section " + courseEid, e);
+						M_log.warn("courseListFromStringIntoContext: cannot find section " + courseEid);
 					}
 				}
 				if (soList.size() > 0)
@@ -3631,6 +3829,7 @@ public class SiteAction extends PagedResourceActionII {
 			}
 		}
 		context.put(context_string, state.getAttribute(state_attribute_string));
+		return rv;
 	}
 
 	/**
@@ -3687,15 +3886,6 @@ public class SiteAction extends PagedResourceActionII {
 							size++;
 						} catch (IdUnusedException e) {
 						}
-					} else if (view.equalsIgnoreCase(rb
-							.getString("java.gradtools"))) {
-						// search for gradtools sites
-						size = SiteService
-								.countSites(
-										org.sakaiproject.site.api.SiteService.SelectionType.NON_USER,
-										state
-												.getAttribute(GRADTOOLS_SITE_TYPES),
-										search, null);
 					} else {
 						// search for specific type of sites
 						size = SiteService
@@ -3733,15 +3923,6 @@ public class SiteAction extends PagedResourceActionII {
 								.countSites(
 										org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
 										null, search, null);
-					} else if (view.equalsIgnoreCase(rb
-							.getString("java.gradtools"))) {
-						// search for gradtools sites
-						size += SiteService
-								.countSites(
-										org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
-										state
-												.getAttribute(GRADTOOLS_SITE_TYPES),
-										search, null);
 					} else {
 						// search for specific type of sites
 						size += SiteService
@@ -3816,16 +3997,6 @@ public class SiteAction extends PagedResourceActionII {
 						}
 
 						return rv;
-					} else if (view.equalsIgnoreCase(rb
-							.getString("java.gradtools"))) {
-						// search for gradtools sites
-						return SiteService
-								.getSites(
-										org.sakaiproject.site.api.SiteService.SelectionType.NON_USER,
-										state
-												.getAttribute(GRADTOOLS_SITE_TYPES),
-										search, null, sortType,
-										new PagingPosition(first, last));
 					} else {
 						// search for a specific site
 						return SiteService
@@ -3866,20 +4037,6 @@ public class SiteAction extends PagedResourceActionII {
 												org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
 												null, search, null, sortType,
 												new PagingPosition(first, last)));
-					} else if (view.equalsIgnoreCase(rb
-							.getString("java.gradtools"))) {
-						// search for a specific user site for
-						// the particular user id in the
-						// criteria - exact match only
-						rv
-								.addAll(SiteService
-										.getSites(
-												org.sakaiproject.site.api.SiteService.SelectionType.ACCESS,
-												state
-														.getAttribute(GRADTOOLS_SITE_TYPES),
-												search, null, sortType,
-												new PagingPosition(first, last)));
-
 					} else {
 						rv
 								.addAll(SiteService
@@ -3931,8 +4088,8 @@ public class SiteAction extends PagedResourceActionII {
 		Hashtable importTools = new Hashtable();
 
 		// the tools for current site
-		List selectedTools = (List) state
-				.getAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST); // String
+		List selectedTools = originalToolIds((List<String>) state
+				.getAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST), state); // String
 		// toolId's
 		if (selectedTools != null)
 		{
@@ -3999,10 +4156,14 @@ public class SiteAction extends PagedResourceActionII {
 		// start clean
 		cleanState(state);
 
-		List siteTypes = (List) state.getAttribute(STATE_SITE_TYPES);
-		if (siteTypes != null) 
-		{
-			state.setAttribute(STATE_TEMPLATE_INDEX, "1");
+		if (state.getAttribute(STATE_INITIALIZED) == null) {
+			state.setAttribute(STATE_OVERRIDE_TEMPLATE_INDEX, "1");
+		} else {
+			List siteTypes = (List) state.getAttribute(STATE_SITE_TYPES);
+			if (siteTypes != null) 
+			{
+				state.setAttribute(STATE_TEMPLATE_INDEX, "1");
+			} 
 		}
 
 	} // doNew_site
@@ -4082,6 +4243,18 @@ public class SiteAction extends PagedResourceActionII {
 	 *         could be found
 	 */
 	protected Site getStateSite(SessionState state) {
+		return getStateSite(state, false);
+
+	} // getStateSite
+
+	/**
+	 * get the Site object based on SessionState attribute values
+	 * 
+	 * @param autoContext - If true, we fall back to a context if it exists
+	 * @return Site object related to current state; null if no such Site object
+	 *         could be found
+	 */
+	protected Site getStateSite(SessionState state, boolean autoContext) {
 		Site site = null;
 
 		if (state.getAttribute(STATE_SITE_INSTANCE_ID) != null) {
@@ -4091,8 +4264,15 @@ public class SiteAction extends PagedResourceActionII {
 			} catch (Exception ignore) {
 			}
 		}
+		if ( site == null && autoContext ) {
+                        String siteId = ToolManager.getCurrentPlacement().getContext();
+			try {
+				site = SiteService.getSite(siteId);
+				state.setAttribute(STATE_SITE_INSTANCE_ID, siteId);
+			} catch (Exception ignore) {
+			}
+		}
 		return site;
-
 	} // getStateSite
 
 	/**
@@ -4231,6 +4411,7 @@ public class SiteAction extends PagedResourceActionII {
 				.intValue();
 		actionForTemplate("continue", index, params, state, data);
 
+		List<String> pSiteTypes = siteTypeProvider.getTypesForSiteCreation();
 		String type = StringUtils.trimToNull(params.getString("itemType"));
 
 		if (type == null) {
@@ -4243,20 +4424,19 @@ public class SiteAction extends PagedResourceActionII {
 				redirectCourseCreation(params, state, "selectTerm");
 			} else if ("project".equals(type)) {
 				state.setAttribute(STATE_TEMPLATE_INDEX, "13");
-			} else if (type.equals(SITE_TYPE_GRADTOOLS_STUDENT)) {
-				// if a GradTools site use pre-defined site info and exclude
+			} else if (pSiteTypes != null && pSiteTypes.contains(type)) {
+				// if of customized type site use pre-defined site info and exclude
 				// from public listing
 				SiteInfo siteInfo = new SiteInfo();
 				if (state.getAttribute(STATE_SITE_INFO) != null) {
 					siteInfo = (SiteInfo) state.getAttribute(STATE_SITE_INFO);
 				}
 				User currentUser = UserDirectoryService.getCurrentUser();
-				siteInfo.title = rb.getString("java.grad") + " - "
-						+ currentUser.getId();
-				siteInfo.description = rb.getString("java.gradsite") + " "
-						+ currentUser.getDisplayName();
-				siteInfo.short_description = rb.getString("java.grad") + " - "
-						+ currentUser.getId();
+				List<String> pList = new ArrayList<String>();
+				pList.add(currentUser.getId());
+				siteInfo.title = siteTypeProvider.getSiteTitle(type, pList);
+				siteInfo.description = siteTypeProvider.getSiteDescription(type, pList);
+				siteInfo.short_description = siteTypeProvider.getSiteShortDescription(type, pList);
 				siteInfo.include = false;
 				state.setAttribute(STATE_SITE_INFO, siteInfo);
 
@@ -4640,8 +4820,7 @@ public class SiteAction extends PagedResourceActionII {
 					Section s = cms.getSection(sectionEid);
 					title = s != null?s.getTitle():title;
 				} catch (IdNotFoundException e) {
-					// cannot find section, use the default title 
-					M_log.warn(this + ":readCourseSectionInfo: cannot find section with eid=" + sectionEid);
+					M_log.warn("readCourseSectionInfo: Cannot find section " + sectionEid);
 				}
 				siteInfo.title = title;
 				state.setAttribute(STATE_SITE_INFO, siteInfo);
@@ -4861,6 +5040,8 @@ public class SiteAction extends PagedResourceActionII {
 			doBack(data);
 		} else if ("cancel".equals(option)) {
 			doCancel_create(data);
+		} else if ("norosters".equals(option)) {
+			state.setAttribute(STATE_TEMPLATE_INDEX, "13");
 		}
 		else if (option.equalsIgnoreCase("change")) {
 			// change term
@@ -4954,7 +5135,7 @@ public class SiteAction extends PagedResourceActionII {
 				try {
 				    site = SiteService.getSite(site.getId());
 				} catch (Exception ee) {
-				    M_log.error(this + "doFinish: unable to reload site after copying tools");
+				    M_log.error(this + "doFinish: unable to reload site " + site.getId() + " after copying tools");
 				}
 			}
 			else
@@ -4967,7 +5148,7 @@ public class SiteAction extends PagedResourceActionII {
 					try {
 					    site = SiteService.getSite(site.getId());
 					} catch (Exception ee) {
-					    M_log.error(this + "doFinish: unable to reload site after copying tools");
+					    M_log.error(this + "doFinish: unable to reload site " + site.getId() + " after importing tools");
 					}
 				}
 				// copy members
@@ -5003,10 +5184,36 @@ public class SiteAction extends PagedResourceActionII {
 						AuthzGroup newGroup = authzGroupService.getAuthzGroup(site.getReference());
 						newGroup.setProviderGroupId(null);
 						authzGroupService.save(newGroup);
+						
+						// make sure current user stays in the site
+						newGroup = authzGroupService.getAuthzGroup(site.getReference());
+						String currentUserId = UserDirectoryService.getCurrentUser().getId();
+						if (newGroup.getUserRole(currentUserId) == null)
+						{
+							// add advisor
+							SecurityService.pushAdvisor(new SecurityAdvisor()
+							{
+								public SecurityAdvice isAllowed(String userId, String function, String reference)
+								{
+									return SecurityAdvice.ALLOWED;
+								}
+							});
+							newGroup.addMember(currentUserId, newGroup.getMaintainRole(), true, false);
+							authzGroupService.save(newGroup);
+							
+							// remove advisor
+							SecurityService.popAdvisor();
+						}
 					}
 					catch (Exception removeProviderException)
 					{
 						M_log.warn(this + "doFinish: remove provider id " + " new site =" + site.getReference() + " " + removeProviderException.getMessage());
+					}
+					
+					try {
+					    site = SiteService.getSite(site.getId());
+					} catch (Exception ee) {
+					    M_log.error(this + "doFinish: unable to reload site " + site.getId() + " after updating roster.");
 					}
 				}
 				// We don't want the new site to automatically be a template
@@ -5015,7 +5222,7 @@ public class SiteAction extends PagedResourceActionII {
 				// publish the site or not based on the template choice
 				site.setPublished(state.getAttribute(STATE_TEMPLATE_PUBLISH) != null?true:false);
 				
-				sendTemplateUseNotification(site, UserDirectoryService.getCurrentUser(), templateSite);	
+				userNotificationProvider.notifyTemplateUse(templateSite, UserDirectoryService.getCurrentUser(), site);	
 			}
 				
 			ResourcePropertiesEdit rp = site.getPropertiesEdit();
@@ -5129,15 +5336,13 @@ public class SiteAction extends PagedResourceActionII {
 			try {
 				AliasService.removeAlias(aliasId);
 			} catch ( PermissionException e ) {
-				addAlert(state, rb.getString("java.delalias") + " ");
-				M_log.warn(this + ".setSiteReferenceAliases: " + rb.getString("java.delalias"), e);
+				addAlert(state, rb.getFormattedMessage("java.delalias", new Object[]{aliasId}));
+				M_log.warn(this + ".setSiteReferenceAliases: " + rb.getFormattedMessage("java.delalias", new Object[]{aliasId}), e);
 			} catch ( IdUnusedException e ) {
 				// no problem
 			} catch ( InUseException e ) {
-				addAlert(state, rb.getString("java.delalias") + " " + aliasId + ". " + 
-						rb.getString("java.aliaslocked") + " " + aliasId + "");
-				M_log.warn(this + ".setSiteReferenceAliases: " + rb.getString("java.delalias") + ". " + 
-						rb.getString("java.aliaslocked") + " " + aliasId + "", e);
+				addAlert(state, rb.getFormattedMessage("java.delalias", new Object[]{aliasId}) + rb.getFormattedMessage("java.alias.locked", new Object[]{aliasId}));
+				M_log.warn(this + ".setSiteReferenceAliases: " + rb.getFormattedMessage("java.delalias", new Object[]{aliasId}) + rb.getFormattedMessage("java.alias.locked", new Object[]{aliasId}), e);
 	 			}
 	 		}
 		for ( String aliasId : aliasIdsToAdd ) {
@@ -5147,15 +5352,11 @@ public class SiteAction extends PagedResourceActionII {
 				addAlert(state, rb.getString("java.addalias") + " ");
 				M_log.warn(this + ".setSiteReferenceAliases: " + rb.getString("java.addalias"), e);
 			} catch ( IdInvalidException e ) {
-				addAlert(state, rb.getString("java.alias") + " " + aliasId
-						+ " " + rb.getString("java.isinval"));
-				M_log.warn(this + ".setSiteReferenceAliases: " + rb.getString("java.addalias") 
-						+ " " + rb.getString("java.isinval"), e);
+				addAlert(state, rb.getFormattedMessage("java.alias.isinval", new Object[]{aliasId}));
+				M_log.warn(this + ".setSiteReferenceAliases: " + rb.getFormattedMessage("java.alias.isinval", new Object[]{aliasId}), e);
 			} catch ( IdUsedException e ) {
-				addAlert(state, rb.getString("java.alias") + " " + aliasId
-						+ " " + rb.getString("java.exists"));
-				M_log.warn(this + ".setSiteReferenceAliases: " + rb.getString("java.addalias")
-						+ ". " + rb.getString("java.exists"), e);
+				addAlert(state, rb.getFormattedMessage("java.alias.exists", new Object[]{aliasId}));
+				M_log.warn(this + ".setSiteReferenceAliases: " + rb.getFormattedMessage("java.alias.exists", new Object[]{aliasId}), e);
 			}
 		}
 	}
@@ -5425,6 +5626,7 @@ public class SiteAction extends PagedResourceActionII {
 		User cUser = UserDirectoryService.getCurrentUser();
 		String sendEmailToRequestee = null;
 		StringBuilder buf = new StringBuilder();
+		boolean requireAuthorizer = ServerConfigurationService.getString("wsetup.requireAuthorizer", "true").equals("true")?true:false;
 
 		// get the request email from configuration
 		String requestEmail = getSetupRequestEmailAddress();
@@ -5456,7 +5658,6 @@ public class SiteAction extends PagedResourceActionII {
 			String to = NULL_STRING;
 			String headerTo = NULL_STRING;
 			String replyTo = NULL_STRING;
-			String message_subject = NULL_STRING;
 			String content = NULL_STRING;
 
 			String sessionUserName = cUser.getDisplayName();
@@ -5473,16 +5674,6 @@ public class SiteAction extends PagedResourceActionII {
 							.getAttribute(STATE_FUTURE_TERM_SELECTED))
 							.booleanValue()) {
 				isFutureTerm = true;
-			}
-
-			// message subject
-			if (termExist) {
-				message_subject = rb.getString("java.sitereqfrom") + " "
-						+ sessionUserName + " " + rb.getString("java.for")
-						+ " " + term.getEid();
-			} else {
-				message_subject = rb.getString("java.official") + " "
-						+ sessionUserName;
 			}
 
 			// there is no offical instructor for future term sites
@@ -5509,178 +5700,63 @@ public class SiteAction extends PagedResourceActionII {
                     authorizerList.add(instructorId);
 				}
             }
- 			
-			if (!isFutureTerm) {
-				// To site quest account - the instructor of record's
-				//if (requestId != null) {
-					//List instructors = new ArrayList(Arrays.asList(requestId.split(",")));
-					for (Iterator iInstructors = authorizerList.iterator(); iInstructors.hasNext();)
-					{
-						String instructorId = (String) iInstructors.next();
-						try {
-							User instructor = UserDirectoryService.getUserByEid(instructorId);
-							
-							rb.setContextLocale(rb.getLocale(instructor.getId()));
-							
-							// reset 
-							buf.setLength(0);
-							
-							to = instructor.getEmail();	
-							from = requestEmail;
-							headerTo = to;
-							replyTo = requestEmail;
-							buf.append(rb.getString("java.hello") + " \n\n");
-							buf.append(rb.getString("java.receiv") + " "
-									+ sessionUserName + ", ");
-							buf.append(rb.getString("java.who") + "\n");
-							if (termExist) {
-								buf.append(term.getTitle() + "\n");
-							}
-	
-							// requested sections
-							if ("manual".equals(fromContext))
-							{
-								addRequestedSectionIntoNotification(state, requestFields, buf);
-							}
-							else if ("cmRequest".equals(fromContext))
-							{
-								addRequestedCMSectionIntoNotification(state, requestFields, buf);
-							}
-							
-							buf.append(rb.getString("java.sitetitle") + "\t"
-									+ title + "\n");
-							buf.append(rb.getString("java.siteid") + "\t" + id + "\n\n");			
-							buf.append(rb.getString("java.siteinstr") + "\n" + additional
-									+ "\n\n");
-							buf.append(rb.getString("java.according")
-									+ " " + sessionUserName + " "
-									+ rb.getString("java.record"));
-							buf.append(" " + rb.getString("java.canyou") + " "
-									+ sessionUserName + " "
-									+ rb.getString("java.assoc") + "\n\n");
-							buf.append(rb.getString("java.respond") + " "
-									+ sessionUserName
-									+ rb.getString("java.appoint") + "\n\n");
-							buf.append(rb.getString("java.thanks") + "\n");
-							buf.append(productionSiteName + " "
-									+ rb.getString("java.support"));
-							content = buf.toString();
-	
-							// send the email
-							EmailService.send(from, to, message_subject, content,
-									headerTo, replyTo, null);
-							// revert back the local setting to default
-							rb.setContextLocale(Locale.getDefault());
-						}
-						catch (Exception e)
-						{
-							sendEmailToRequestee = sendEmailToRequestee == null?instructorId:sendEmailToRequestee.concat(", ").concat(instructorId);
-						}
-				//	}
-				}
-			}
-
-			// To Support
-			from = cUser.getEmail();
-			// set locale to system default
-			rb.setContextLocale(Locale.getDefault());
-			to = requestEmail;
-			headerTo = requestEmail;
-			replyTo = cUser.getEmail();
-			buf.setLength(0);
-			buf.append(rb.getString("java.to") + "\t\t" + productionSiteName
-					+ " " + rb.getString("java.supp") + "\n");
-			buf.append("\n" + rb.getString("java.from") + "\t"
-					+ sessionUserName + "\n");
-			if ("new".equals(request)) {
-				buf.append(rb.getString("java.subj") + "\t"
-						+ rb.getString("java.sitereq") + "\n");
-			} else {
-				buf.append(rb.getString("java.subj") + "\t"
-						+ rb.getString("java.sitechreq") + "\n");
-			}
-			buf.append(rb.getString("java.date") + "\t" + local_date + " "
-					+ local_time + "\n\n");
-			if ("new".equals(request)) {
-				buf.append(rb.getString("java.approval") + " "
-						+ productionSiteName + " "
-						+ rb.getString("java.coursesite") + " ");
-			} else {
-				buf.append(rb.getString("java.approval2") + " "
-						+ productionSiteName + " "
-						+ rb.getString("java.coursesite") + " ");
-			}
-			if (termExist) {
-				buf.append(term.getTitle());
-			}
-			if (requestListSize > 1) {
-				buf.append(" " + rb.getString("java.forthese") + " "
-						+ requestListSize + " " + rb.getString("java.sections")
-						+ "\n\n");
-			} else {
-				buf.append(" " + rb.getString("java.forthis") + "\n\n");
-			}
-
+            
+            String requestSectionInfo = "";
 			// requested sections
 			if ("manual".equals(fromContext))
 			{
-				addRequestedSectionIntoNotification(state, requestFields, buf);
+				requestSectionInfo = addRequestedSectionIntoNotification(state, requestFields);
 			}
 			else if ("cmRequest".equals(fromContext))
 			{
-				addRequestedCMSectionIntoNotification(state, requestFields, buf);
+				requestSectionInfo = addRequestedCMSectionIntoNotification(state, requestFields);
 			}
-			
-			buf.append(rb.getString("java.name") + "\t" + sessionUserName
-					+ " (" + officialAccountName + " " + cUser.getEid()
-					+ ")\n");
-			buf.append(rb.getString("java.email") + "\t" + replyTo + "\n");
-			buf.append(rb.getString("java.sitetitle") + "\t" + title + "\n");
-			buf.append(rb.getString("java.siteid") + "\t" + id + "\n\n");
-			buf.append(rb.getString("java.siteinstr") + "\n" + additional
-					+ "\n\n");
-
+ 			
+			String authorizerNotified = "";
+			String authorizerNotNotified = "";
 			if (!isFutureTerm) {
-				if (sendEmailToRequestee == null) {
-					buf.append(rb.getString("java.authoriz") + " " + requestId
-							+ " " + rb.getString("java.asreq"));
-				} else {
-					buf.append(rb.getString("java.thesiteemail") + " "
-							+ sendEmailToRequestee + " " + rb.getString("java.asreq"));
+				for (Iterator iInstructors = authorizerList.iterator(); iInstructors.hasNext();)
+				{
+					String instructorId = (String) iInstructors.next();
+					if (requireAuthorizer)
+					{
+						// 1. email to course site authorizer
+						boolean result = userNotificationProvider.notifyCourseRequestAuthorizer(instructorId, requestEmail, term != null? term.getTitle():"", requestSectionInfo, title, id, additional, productionSiteName);
+						if (!result)
+						{
+							// append authorizer who doesn't received an notification
+							authorizerNotNotified += instructorId + ", ";
+						}
+						else
+						{
+							// append authorizer who does received an notification
+							authorizerNotified += instructorId + ", ";
+						}
+						
+					}
 				}
 			}
-			content = buf.toString();
-			EmailService.send(from, to, message_subject, content, headerTo,
-					replyTo, null);
 
-			// To the Instructor
-			from = requestEmail;
-			to = cUser.getEmail();
-			// set the locale to individual receipient's setting
-			rb.setContextLocale(rb.getLocale(cUser.getId()));
-			headerTo = to;
-			replyTo = to;
-			buf.setLength(0);
-			buf.append(rb.getString("java.isbeing") + " ");
-			buf.append(rb.getString("java.meantime") + "\n\n");
-			buf.append(rb.getString("java.copy") + "\n\n");
-			buf.append(content);
-			buf.append("\n" + rb.getString("java.wish") + " " + requestEmail);
-			content = buf.toString();
-			EmailService.send(from, to, message_subject, content, headerTo,
-					replyTo, null);
-			// revert the locale to system default
+			// 2. email to system support team
+			String supportEmailContent = userNotificationProvider.notifyCourseRequestSupport(requestEmail, productionSiteName, request, term != null?term.getTitle():"", requestListSize, requestSectionInfo,
+						officialAccountName, title, id, additional, requireAuthorizer, authorizerNotified, authorizerNotNotified);
+			
+			// 3. email to site requeser
+			userNotificationProvider.notifyCourseRequestRequester(requestEmail, supportEmailContent, term != null?term.getTitle():"");
+			
+			// revert the locale to system default			
 			rb.setContextLocale(Locale.getDefault());
 			state.setAttribute(REQUEST_SENT, Boolean.valueOf(true));
 
 		} // if
 		
-		// reset locale to user default
+		// reset locale to user default		
 		rb.setContextLocale(null);
 
 	} // sendSiteRequest
 
-	private void addRequestedSectionIntoNotification(SessionState state, List requestFields, StringBuilder buf) {
+	private String addRequestedSectionIntoNotification(SessionState state, List requestFields) {
+		StringBuffer buf = new StringBuffer();
 		// what are the required fields shown in the UI
 		List requiredFields = state.getAttribute(STATE_MANUAL_ADD_COURSE_FIELDS) != null ?(List) state.getAttribute(STATE_MANUAL_ADD_COURSE_FIELDS):new Vector();
 		for (int i = 0; i < requiredFields.size(); i++) {
@@ -5693,10 +5769,13 @@ public class SiteAction extends PagedResourceActionII {
 				buf.append(requiredField.getLabelKey() + "\t"
 						+ requiredField.getValue() + "\n");
 			}
+			buf.append("\n");
 		}
+		return buf.toString();
 	}
 	
-	private void addRequestedCMSectionIntoNotification(SessionState state, List cmRequestedSections, StringBuilder buf) {
+	private String addRequestedCMSectionIntoNotification(SessionState state, List cmRequestedSections) {
+		StringBuffer buf = new StringBuffer();
 		// what are the required fields shown in the UI
 		for (int i = 0; i < cmRequestedSections.size(); i++) {
 			SectionObject so = (SectionObject) cmRequestedSections.get(i);
@@ -5704,6 +5783,7 @@ public class SiteAction extends PagedResourceActionII {
 			buf.append(so.getTitle() + "(" + so.getEid()
 					+ ")" + so.getCategory() + "\n");
 		}
+		return buf.toString();
 	}
 
 	/**
@@ -5713,82 +5793,20 @@ public class SiteAction extends PagedResourceActionII {
 	private void sendSiteNotification(SessionState state, Site site, List notifySites) {
 		boolean courseSite = site.getType() != null && site.getType().equals((String) state.getAttribute(STATE_COURSE_SITE_TYPE));
 		
+		String term_name = "";
+		if (state.getAttribute(STATE_TERM_SELECTED) != null) {
+			term_name = ((AcademicSession) state
+					.getAttribute(STATE_TERM_SELECTED)).getEid();
+		}
 		// get the request email from configuration
 		String requestEmail = getSetupRequestEmailAddress();
-		if (requestEmail != null) {
-			// send emails
-			String id = site.getId();
-			String title = site.getTitle();
-			Time time = TimeService.newTime();
-			String local_time = time.toStringLocalTime();
-			String local_date = time.toStringLocalDate();
-			String term_name = "";
-			if (state.getAttribute(STATE_TERM_SELECTED) != null) {
-				term_name = ((AcademicSession) state
-						.getAttribute(STATE_TERM_SELECTED)).getEid();
-			}
-			String message_subject = courseSite ? rb.getString("java.official") + " "
-					+ UserDirectoryService.getCurrentUser().getDisplayName()
-					+ " " + rb.getString("java.for") + " " + term_name : rb.getString("java.site.createdBy") + " " + UserDirectoryService.getCurrentUser().getDisplayName();
-
-			String from = NULL_STRING;
-			String to = NULL_STRING;
-			String headerTo = NULL_STRING;
-			String replyTo = NULL_STRING;
-			String sender = UserDirectoryService.getCurrentUser()
-					.getDisplayName();
-			String userId = StringUtils.trimToEmpty(SessionManager
-					.getCurrentSessionUserId());
-			try {
-				userId = UserDirectoryService.getUserEid(userId);
-			} catch (UserNotDefinedException e) {
-				M_log.warn(this + ".sendSiteNotification:" + rb.getString("user.notdefined") + " " + userId, e);
-			}
-
-			// To Support
-			//set local to default
-			rb.setContextLocale(Locale.getDefault());
-			from = UserDirectoryService.getCurrentUser().getEmail();
-			to = requestEmail;
-			headerTo = requestEmail;
-			replyTo = UserDirectoryService.getCurrentUser().getEmail();
-			StringBuilder buf = new StringBuilder();
-			buf.append("\n" + rb.getString("java.fromwork") + " "
-					+ ServerConfigurationService.getServerName() + " "
-					+ rb.getString("java.supp") + ":\n\n");
-			buf.append(courseSite ? rb.getString("java.off") : rb.getString("java.site"));
-			buf.append(" '" + title + "' (id " + id
-					+ "), " + rb.getString("java.wasset") + " ");
-			buf.append(sender + " (" + userId + ", "
-					+ rb.getString("java.email2") + " " + replyTo + ") ");
-			buf.append(rb.getString("java.on") + " " + local_date + " "
-					+ rb.getString("java.at") + " " + local_time + " ");
-			if (courseSite)
-			{
-				buf.append(rb.getString("java.for") + " " + term_name + ", ");
-			}
-			if (notifySites!= null)
-			{
-				int nbr_sections = notifySites.size();
-				if (nbr_sections > 1) {
-					buf.append(rb.getString("java.withrost") + " "
-							+ Integer.toString(nbr_sections) + " "
-							+ rb.getString("java.sections") + "\n\n");
-				} else {
-					buf.append(" " + rb.getString("java.withrost2") + "\n\n");
-				}
-	
-				for (int i = 0; i < nbr_sections; i++) {
-					String course = (String) notifySites.get(i);
-					buf.append(rb.getString("java.course2") + " " + course + "\n");
-				}
-			}
-			String content = buf.toString();
-			EmailService.send(from, to, message_subject, content, headerTo,
-					replyTo, null);
+		User currentUser = UserDirectoryService.getCurrentUser();
+		if (requestEmail != null && currentUser != null) {
+			userNotificationProvider.notifySiteCreation(site, notifySites, courseSite, term_name, requestEmail);
 		} // if
 
 		// reset locale to user default
+		
 		rb.setContextLocale(null);
 		
 	} // sendSiteNotification
@@ -6033,7 +6051,22 @@ public class SiteAction extends PagedResourceActionII {
 		}
 	}
 
+	// replace fake tool ids with real ones. Don't duplicate, since several fake tool ids may appear for the same real one
+	// it's far from clear that we need to be using fake tool ids at all. But I don't know the code well enough
+	// to get rid of the fakes completely.
+	private List<String> originalToolIds(List<String>toolIds, SessionState state) {    
+		Set<String>found = new HashSet<String>();
+		List<String>rv = new ArrayList<String>();
 
+		for (String toolId: toolIds) {
+		    String origToolId = findOriginalToolId(state, toolId);
+		    if (!found.contains(origToolId)) {
+			    rv.add(origToolId);
+			    found.add(origToolId);
+		    }
+		}
+		return rv;
+	}
 
 	private String originalToolId(String toolId, String toolRegistrationId) {
 		String rv = null;
@@ -6061,7 +6094,7 @@ public class SiteAction extends PagedResourceActionII {
 				catch (Exception e)
 				{
 					// not the right tool id
-					M_log.debug(this + ".findOriginalToolId not matchign tool id = " + toolRegistrationId + " original tool id=" + toolId + e.getMessage(), e);
+					M_log.debug(this + ".findOriginalToolId not matching tool id = " + toolRegistrationId + " original tool id=" + toolId + e.getMessage(), e);
 				}
 			}
 			
@@ -6366,11 +6399,18 @@ public class SiteAction extends PagedResourceActionII {
 		SessionState state = ((JetspeedRunData) data)
 				.getPortletSessionState(((JetspeedRunData) data).getJs_peid());
 
+		// Clean up state on our first entry from a shortcut
+                String panel = data.getParameters().getString("panel");
+		if ( "Shortcut".equals(panel) ) cleanState(state);
+
 		// get the tools
 		siteToolsIntoState(state);
 
 		if (state.getAttribute(STATE_MESSAGE) == null) {
 			state.setAttribute(STATE_TEMPLATE_INDEX, "3");
+			if (state.getAttribute(STATE_INITIALIZED) == null) {
+				state.setAttribute(STATE_OVERRIDE_TEMPLATE_INDEX, "3");
+			}
 		}
 
 	} // doMenu_edit_site_tools
@@ -6386,7 +6426,6 @@ public class SiteAction extends PagedResourceActionII {
 		try {
 			Site site = getStateSite(state);
 			state.setAttribute(STATE_SITE_ACCESS_PUBLISH, Boolean.valueOf(site.isPublished()));
-			state.setAttribute(STATE_SITE_ACCESS_INCLUDE, Boolean.valueOf(site.isPubView()));
 			boolean joinable = site.isJoinable();
 			state.setAttribute(STATE_JOINABLE, Boolean.valueOf(joinable));
 			String joinerRole = site.getJoinerRole();
@@ -6465,14 +6504,8 @@ public class SiteAction extends PagedResourceActionII {
 		Site.setShortDescription(siteInfo.short_description);
 
 		if (site_type != null) {
-			if (site_type.equals((String) state.getAttribute(STATE_COURSE_SITE_TYPE))) {
-				// set icon url for course
-				setAppearance(state, Site, siteInfo.iconUrl);
-			} else {
-				// set icon url for others
-				Site.setIconUrl(siteInfo.iconUrl);
-			}
-
+			// set icon url for course
+			setAppearance(state, Site, siteInfo.iconUrl);
 		}
 
 		// site contact information
@@ -6491,7 +6524,14 @@ public class SiteAction extends PagedResourceActionII {
 		if ( updateSiteRefAliases ) {
 			setSiteReferenceAliases(state, Site.getId());
 		}
-
+	
+		/// site language information
+				
+		String locale_string = (String) state.getAttribute("locale_string");							
+				
+		siteProperties.removeProperty(PROP_SITE_LANGUAGE);		
+		siteProperties.addProperty(PROP_SITE_LANGUAGE, locale_string);
+				
 		if (state.getAttribute(STATE_MESSAGE) == null) {
 			try {
 				SiteService.save(Site);
@@ -6704,6 +6744,7 @@ public class SiteAction extends PagedResourceActionII {
 			int siteTitleMaxLength = ServerConfigurationService.getInt("site.title.maxlength", 25);
 			state.setAttribute(STATE_SITE_TITLE_MAX, siteTitleMaxLength);
 		}
+
 	} // init
 
 	public void doNavigate_to_site(RunData data) {
@@ -6783,6 +6824,12 @@ public class SiteAction extends PagedResourceActionII {
 		ParameterParser params = data.getParameters();
 		Site s = getStateSite(state);
 		String realmId = SiteService.siteReference(s.getId());
+		
+		// list of updated users
+		List<String> userUpdated = new Vector<String>();
+		// list of all removed user
+		List<String> usersDeleted = new Vector<String>();
+		
 		if (AuthzGroupService.allowUpdate(realmId)
 				|| SiteService.allowUpdateSiteMembership(s.getId())) {
 			try {
@@ -6812,30 +6859,56 @@ public class SiteAction extends PagedResourceActionII {
 						String inputRoleField = "role" + id;
 						String roleId = params.getString(inputRoleField);
 						String oldRoleId = participant.getRole();
+						boolean roleChange = roleId != null && !roleId.equals(oldRoleId);
+						
+						// get the grant active status
+						boolean activeGrant = true;
+						String activeGrantField = "activeGrant" + id;
+						if (params.getString(activeGrantField) != null) {
+							activeGrant = params
+									.getString(activeGrantField)
+									.equalsIgnoreCase("true") ? true
+									: false;
+						}
+						boolean activeGrantChange = roleId != null && (participant.isActive() && !activeGrant || !participant.isActive() && activeGrant);
+						
 						// save any roles changed for permission check
-						if (roleId != null && !roleId.equals(oldRoleId)) {
+						if (roleChange) {
 						    roles.add(roleId);
 						    roles.add(oldRoleId);
 						}
-
-						// only change roles when they are different than before
-						if (roleId != null) {
-							// get the grant active status
-							boolean activeGrant = true;
-							String activeGrantField = "activeGrant" + id;
-							if (params.getString(activeGrantField) != null) {
-								activeGrant = params
-										.getString(activeGrantField)
-										.equalsIgnoreCase("true") ? true
-										: false;
-							}
-
+						
+						if (roleChange || activeGrantChange)
+						{
 							boolean fromProvider = !participant.isRemoveable();
 							if (fromProvider && !roleId.equals(participant.getRole())) {
 							    fromProvider = false;
 							}
 							realmEdit.addMember(id, roleId, activeGrant,
 									fromProvider);
+							
+							// construct the event string
+							String userUpdatedString = "uid=" + id;
+							if (roleChange)
+							{
+								userUpdatedString += ";oldRole=" + oldRoleId + ";newRole=" + roleId;
+							}
+							else
+							{
+								userUpdatedString += ";role=" + roleId;
+							}
+							if (activeGrantChange)
+							{
+								userUpdatedString += ";oldActive=" + participant.isActive() + ";newActive=" + activeGrant;
+							}
+							else
+							{
+								userUpdatedString += ";active=" + activeGrant;
+							}
+							userUpdatedString += ";provided=" + fromProvider;
+							
+							// add to the list for all participants that have role changes
+							userUpdated.add(userUpdatedString);
 						}
 					}
 				}
@@ -6862,6 +6935,7 @@ public class SiteAction extends PagedResourceActionII {
 										roles.add(role.getId());
 									}
 									realmEdit.removeMember(userId);
+									usersDeleted.add("uid=" + userId);
 								}
 							}
 						} catch (UserNotDefinedException e) {
@@ -6895,12 +6969,27 @@ public class SiteAction extends PagedResourceActionII {
 				} else {
 					
 					AuthzGroupService.save(realmEdit);
+
+					// then update all related group realms for the role
+					doUpdate_related_group_participants(s, realmId);
 					
 					// post event about the participant update
 					EventTrackingService.post(EventTrackingService.newEvent(SiteService.SECURE_UPDATE_SITE_MEMBERSHIP, realmEdit.getId(),false));
 					
-					// then update all related group realms for the role
-					doUpdate_related_group_participants(s, realmId);
+					// check the configuration setting, whether logging membership change at individual level is allowed
+					if (ServerConfigurationService.getBoolean(SiteHelper.WSETUP_TRACK_USER_MEMBERSHIP_CHANGE, false))
+					{
+						// event for each individual update
+						for (String userChangedRole : userUpdated)
+						{
+							EventTrackingService.post(EventTrackingService.newEvent(org.sakaiproject.site.api.SiteService.EVENT_USER_SITE_MEMBERSHIP_UPDATE, userChangedRole,true));
+						}
+						// event for each individual remove
+						for (String userDeleted : usersDeleted)
+						{
+							EventTrackingService.post(EventTrackingService.newEvent(org.sakaiproject.site.api.SiteService.EVENT_USER_SITE_MEMBERSHIP_REMOVE, userDeleted,true));
+						}
+					}
 				}
 			} catch (GroupNotDefinedException e) {
 				addAlert(state, rb.getString("java.problem2"));
@@ -6920,6 +7009,7 @@ public class SiteAction extends PagedResourceActionII {
 	 */
 	private void doUpdate_related_group_participants(Site s, String realmId) {
 		Collection groups = s.getGroups();
+		boolean trackIndividualChange = ServerConfigurationService.getBoolean(SiteHelper.WSETUP_TRACK_USER_MEMBERSHIP_CHANGE, false);
 		if (groups != null)
 		{
 			try
@@ -6960,11 +7050,17 @@ public class SiteAction extends PagedResourceActionII {
 										}
 										g.removeMember(gMemberId);
 										g.addMember(gMemberId, siteRole.getId(), siteMember.isActive(), false);
+										// track the group membership change at individual level
+										if (trackIndividualChange)
+										{
+											// an event for each individual member role change
+											EventTrackingService.post(EventTrackingService.newEvent(org.sakaiproject.site.api.SiteService.EVENT_USER_GROUP_MEMBERSHIP_UPDATE, "uid=" + gMemberId + ";groupId=" + g.getId() + ";oldRole=" + groupRole + ";newRole=" + siteRole + ";active=" + siteMember.isActive() + ";provided=false", true/*update event*/));
+										}
 									}
 								}
 							}
 							// post event about the participant update
-							EventTrackingService.post(EventTrackingService.newEvent(SiteService.SECURE_UPDATE_GROUP_MEMBERSHIP, g.getId(),false));
+							EventTrackingService.post(EventTrackingService.newEvent(SiteService.SECURE_UPDATE_GROUP_MEMBERSHIP, g.getId(),true));
 						}
 						catch (Exception ee)
 						{
@@ -7070,6 +7166,7 @@ public class SiteAction extends PagedResourceActionII {
 				state.setAttribute(STATE_TEMPLATE_INDEX, "10");
 			}
 		}
+			
 
 	} // doUpdate_site_access
 	
@@ -7260,8 +7357,8 @@ public class SiteAction extends PagedResourceActionII {
 					if (select_import_tools(params, state)) {
 						Hashtable importTools = (Hashtable) state
 								.getAttribute(STATE_IMPORT_SITE_TOOL);
-						List selectedTools = (List) state
-								.getAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST);
+						List selectedTools = originalToolIds((List<String>) state
+								.getAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST), state);
 						importToolIntoSite(selectedTools, importTools,
 								existingSite);
 
@@ -7441,20 +7538,19 @@ public class SiteAction extends PagedResourceActionII {
 								SiteService.save(site);
 								
 								String realm = SiteService.siteReference(site.getId());
-								
-								try
+								try 
 								{
 									AuthzGroup realmEdit = AuthzGroupService.getAuthzGroup(realm);
-									if (siteType != null && siteType.equals((String) state.getAttribute(STATE_COURSE_SITE_TYPE)))
+									if (siteType != null && siteType.equals((String) state.getAttribute(STATE_COURSE_SITE_TYPE))) 
 									{
-										 // also remove the provider id attribute if any
+										// also remove the provider id attribute if any
 										realmEdit.setProviderGroupId(null);
 									}
 									
 									// add current user as the maintainer
 									realmEdit.addMember(UserDirectoryService.getCurrentUser().getId(), site.getMaintainRole(), true, false);
+									
 									AuthzGroupService.save(realmEdit);
-								
 								} catch (GroupNotDefinedException e) {
 									M_log.warn(this + ".actionForTemplate chef_siteinfo-duplicate: IdUnusedException, not found, or not an AuthzGroup object "+ realm, e);
 									addAlert(state, rb.getString("java.realm"));
@@ -7462,6 +7558,7 @@ public class SiteAction extends PagedResourceActionII {
 									addAlert(state, this + rb.getString("java.notaccess"));
 									M_log.warn(this + ".actionForTemplate chef_siteinfo-duplicate: " + rb.getString("java.notaccess"), e);
 								}
+							
 							} catch (IdUnusedException e) {
 								M_log.warn(this + " actionForTemplate chef_siteinfo-duplicate:: IdUnusedException when saving " + nSiteId);
 							} catch (PermissionException e) {
@@ -7509,8 +7606,11 @@ public class SiteAction extends PagedResourceActionII {
 			 */
 			if (forward) {
 				List providerChosenList = new Vector();
+				List providerDescriptionChosenList = new Vector();
+				
 				if (params.getStrings("providerCourseAdd") == null) {
 					state.removeAttribute(STATE_ADD_CLASS_PROVIDER_CHOSEN);
+					state.removeAttribute(STATE_ADD_CLASS_PROVIDER_DESCRIPTION_CHOSEN);
 					if (params.getString("manualAdds") == null) {
 						addAlert(state, rb.getString("java.manual") + " ");
 					}
@@ -7520,6 +7620,13 @@ public class SiteAction extends PagedResourceActionII {
 					if (params.getStrings("providerCourseAdd") != null) {
 						providerChosenList = new ArrayList(Arrays.asList(params
 								.getStrings("providerCourseAdd"))); // list of
+						// description choices
+						if (params.getStrings("providerCourseAddDescription") != null) {
+							providerDescriptionChosenList = new ArrayList(Arrays.asList(params
+									.getStrings("providerCourseAddDescription"))); // list of
+							state.setAttribute(STATE_ADD_CLASS_PROVIDER_DESCRIPTION_CHOSEN,
+								providerDescriptionChosenList);
+						}
 						// course
 						// ids
 						String userId = (String) state
@@ -7573,7 +7680,7 @@ public class SiteAction extends PagedResourceActionII {
 			break;
 		case 42:
 			/*
-			 * actionForTemplate chef_site-gradtoolsConfirm.vm
+			 * actionForTemplate chef_site-type-confirm.vm
 			 * 
 			 */
 			break;
@@ -7638,9 +7745,9 @@ public class SiteAction extends PagedResourceActionII {
 							}
 							if (soFound != null) cmRequestedCourseList.remove(soFound);
 						}
-						catch (Exception e)
+						catch (IdNotFoundException e)
 						{
-							M_log.warn( this + e.getMessage() + sectionId, e);
+							M_log.warn("actionForTemplate 43 editClass: Cannot find section " + sectionId);
 						}
 					}
 					state.setAttribute(STATE_CM_REQUESTED_SECTIONS, cmRequestedCourseList);
@@ -7960,6 +8067,7 @@ public class SiteAction extends PagedResourceActionII {
 		// remove related state variables
 		state.removeAttribute(STATE_ADD_CLASS_MANUAL);
 		state.removeAttribute(STATE_ADD_CLASS_PROVIDER_CHOSEN);
+		state.removeAttribute(STATE_ADD_CLASS_PROVIDER_DESCRIPTION_CHOSEN);
 		state.removeAttribute(STATE_MANUAL_ADD_COURSE_NUMBER);
 		state.removeAttribute(STATE_MANUAL_ADD_COURSE_FIELDS);
 		state.removeAttribute(STATE_SITE_QUEST_UNIQNAME);
@@ -8052,6 +8160,9 @@ public class SiteAction extends PagedResourceActionII {
 			}
 
 		}
+
+                //reload the site object after changes group realms have been removed from the site.
+                site = getStateSite(state); 
 
 		// the manual request course into properties
 		setSiteSectionProperty(manualCourseSectionList, site, PROP_SITE_REQUEST_COURSE);
@@ -8338,7 +8449,8 @@ public class SiteAction extends PagedResourceActionII {
 		}
 		siteInfo.site_type = (String) state.getAttribute(STATE_SITE_TYPE);
 		// title
-        if (siteTitleEditable(state, siteInfo.site_type) && params.getString("title") != null) 	 
+		boolean hasRosterAttached = params.getString("hasRosterAttached") != null ? Boolean.getBoolean(params.getString("hasRosterAttached")) : false;
+        if ((siteTitleEditable(state, siteInfo.site_type) || !hasRosterAttached) && params.getString("title") != null) 	 
         { 	 
 			// site titel is editable and could not be null
         	String title = StringUtils.trimToNull(params.getString("title"));
@@ -8353,6 +8465,7 @@ public class SiteAction extends PagedResourceActionII {
 				addAlert(state, rb.getFormattedMessage("site_group_title_length_limit", new Object[]{SiteConstants.SITE_GROUP_TITLE_LIMIT})); 	 
 			}
         }
+				
 		if (params.getString("description") != null) {
 			StringBuilder alertMsg = new StringBuilder();
 			String description = params.getString("description");
@@ -8450,8 +8563,7 @@ public class SiteAction extends PagedResourceActionII {
 
 	private boolean validateSiteAlias(String aliasId, SessionState state) {
 		if ( (aliasId = StringUtils.trimToNull(aliasId)) == null ) {
-			addAlert(state, rb.getString("java.alias") + " " + aliasId
-					+ " " + rb.getString("java.isinval"));
+			addAlert(state, rb.getFormattedMessage("java.alias.isinval", new Object[]{aliasId}));
 			return false;
 		}
 		boolean isSimpleResourceName = aliasId.equals(Validator.escapeResourceName(aliasId));
@@ -8462,8 +8574,7 @@ public class SiteAction extends PagedResourceActionII {
 			// here and disallow any aliases which would require special 
 			// encoding or would simply be ignored when building a valid 
 			// resource reference or outputting that reference as a URL.
-			addAlert(state, rb.getString("java.alias") + " " + aliasId
-					+ " " + rb.getString("java.isinval"));
+			addAlert(state, rb.getFormattedMessage("java.alias.isinval", new Object[]{aliasId}));
 			return false;
 		} else {
 			String currentSiteId = StringUtils.trimToNull((String) state.getAttribute(STATE_SITE_INSTANCE_ID));
@@ -8474,13 +8585,11 @@ public class SiteAction extends PagedResourceActionII {
 					String siteRef = SiteService.siteReference(currentSiteId);
 					boolean targetsCurrentSite = siteRef.equals(targetRef);
 					if ( !(targetsCurrentSite) ) {
-						addAlert(state, rb.getString("java.alias") + " " + aliasId
-							+ " " + rb.getString("java.exists"));
+						addAlert(state, rb.getFormattedMessage("java.alias.exists", new Object[]{aliasId}));
 						return false;
 					}
 				} else {
-					addAlert(state, rb.getString("java.alias") + " " + aliasId
-							+ " " + rb.getString("java.exists"));
+					addAlert(state, rb.getFormattedMessage("java.alias.exists", new Object[]{aliasId}));
 					return false;
 				}
 			} catch (IdUnusedException e) {
@@ -8958,6 +9067,12 @@ public class SiteAction extends PagedResourceActionII {
 						page.setTitle(toolRegFound.getTitle());
 					}
 					page.setLayout(SitePage.LAYOUT_SINGLE_COL);
+
+					// if so specified in the tool's registration file, 
+					// configure the tool's page to open in a new window.
+					if ("true".equals(toolRegFound.getRegisteredConfig().getProperty("popup"))) {
+					    page.setPopup(true);
+					}
 					ToolConfiguration tool = page.addTool();
 					tool.setTool(toolRegFound.getId(), toolRegFound);
 					addPage.toolId = toolId;
@@ -9092,12 +9207,10 @@ public class SiteAction extends PagedResourceActionII {
 	 * @return
 	 */
 	private boolean notStealthOrHiddenTool(String toolId) {
-		String stealthTools = ServerConfigurationService.getString("stealthTools@org.sakaiproject.tool.api.ActiveToolManager");
-		String hiddenTools = ServerConfigurationService.getString("hiddenTools@org.sakaiproject.tool.api.ActiveToolManager");
-				
-		return (ToolManager.getTool(toolId) != null
-		&& !(stealthTools != null && stealthTools.contains(toolId))
-		&& !(hiddenTools != null && hiddenTools.contains(toolId)));
+		Tool tool = ToolManager.getTool(toolId);
+		Set<Tool> tools = ToolManager.findTools(Collections.emptySet(), null);
+		return tool != null && tools.contains(tool);
+
 	}
 
 	/**
@@ -9449,6 +9562,13 @@ public class SiteAction extends PagedResourceActionII {
 				}
 
 				ResourcePropertiesEdit rp = site.getPropertiesEdit();
+				
+				/// site language information
+							
+				String locale_string = (String) state.getAttribute("locale_string");							
+								
+				rp.addProperty(PROP_SITE_LANGUAGE, locale_string);
+															
 				site.setShortDescription(siteInfo.short_description);
 				site.setPubView(siteInfo.include);
 				site.setJoinable(siteInfo.joinable);
@@ -9466,13 +9586,13 @@ public class SiteAction extends PagedResourceActionII {
 				commitSite(site);
 
 			} catch (IdUsedException e) {
-				addAlert(state, rb.getString("java.sitewithid") + " " + id + " " + rb.getString("java.exists"));
-				M_log.warn(this + ".addNewSite: " + rb.getString("java.sitewithid") + " " + id + " " + rb.getString("java.exists"), e);
+				addAlert(state, rb.getFormattedMessage("java.sitewithid.exists", new Object[]{id}));
+				M_log.warn(this + ".addNewSite: " + rb.getFormattedMessage("java.sitewithid.exists", new Object[]{id}), e);
 				state.setAttribute(STATE_TEMPLATE_INDEX, params.getString("templateIndex"));
 				return;
 			} catch (IdInvalidException e) {
-				addAlert(state, rb.getString("java.thesiteid") + " " + id + " " + rb.getString("java.notvalid"));
-				M_log.warn(this + ".addNewSite: " + rb.getString("java.thesiteid") + " " + id + " " + rb.getString("java.notvalid"), e);
+				addAlert(state, rb.getFormattedMessage("java.sitewithid.notvalid", new Object[]{id}));
+				M_log.warn(this + ".addNewSite: " + rb.getFormattedMessage("java.sitewithid.notvalid", new Object[]{id}), e);
 				state.setAttribute(STATE_TEMPLATE_INDEX, params.getString("templateIndex"));
 				return;
 			} catch (PermissionException e) {
@@ -9483,44 +9603,6 @@ public class SiteAction extends PagedResourceActionII {
 			}
 		}
 	} // addNewSite
-
-	private void sendTemplateUseNotification(Site site, User currentUser,
-			Site templateSite) {
-		// send an email to track who are using the template
-		String from = getSetupRequestEmailAddress();
- 
-		// send it to the email archive of the template site
-		// TODO: need a better way to get the email archive address
-		//String domain = from.substring(from.indexOf('@'));
-		String templateEmailArchive = templateSite.getId() 
-			+ "@" + ServerConfigurationService.getServerName();
-		String to = templateEmailArchive;
-		String headerTo = templateEmailArchive;
-		String replyTo = templateEmailArchive;
-		String message_subject = templateSite.getId() + ": copied by " + currentUser.getDisplayId ();					
-
-		if (from != null && templateEmailArchive != null) {
-			StringBuffer buf = new StringBuffer();
-			buf.setLength(0);
-
-			// email body
-			buf.append("Dear template maintainer,\n\n");
-			buf.append("Congratulations!\n\n");
-			buf.append("The following user just created a new site based on your template.\n\n");
-			buf.append("Template name: " + templateSite.getTitle() + "\n");
-			buf.append("User         : " + currentUser.getDisplayName() + " (" 
-					+ currentUser.getDisplayId () + ")\n");
-			buf.append("Date         : " + new java.util.Date() + "\n");
-			buf.append("New site Id  : " + site.getId() + "\n");
-			buf.append("New site name: " + site.getTitle() + "\n\n");
-			buf.append("Cheers,\n");
-			buf.append("Alliance Team\n");
-			String content = buf.toString();
-			
-			EmailService.send(from, to, message_subject, content, headerTo,
-					replyTo, null);
-		}
-	}
 	
 	/**
 	 * created based on setTermListForContext - Denny
@@ -9759,7 +9841,7 @@ public class SiteAction extends PagedResourceActionII {
 		String wSetupTool = NULL_STRING;
 		String wSetupToolId = NULL_STRING;
 		List wSetupPageList = new Vector();
-		Site site = getStateSite(state);
+		Site site = getStateSite(state, true);
 		List pageList = site.getPages();
 
 		// Put up tool lists filtered by category
@@ -10555,6 +10637,7 @@ public class SiteAction extends PagedResourceActionII {
 		public String site_contact_email = NULL_STRING; // site contact email
 		
 		public String term = NULL_STRING; // academic term
+				
 
 		public String getSiteId() {
 			return site_id;
@@ -10626,16 +10709,16 @@ public class SiteAction extends PagedResourceActionII {
 		
 		public void setTerm(String term) {
 			this.term = term;
-		}
+		}		
 
 	} // SiteInfo
 
-	// dissertation tool related
+	// customized type tool related
 	/**
-	 * doFinish_grad_tools is called when creation of a Grad Tools site is
+	 * doFinish_site_type_tools is called when creation of a customized type site is
 	 * confirmed
 	 */
-	public void doFinish_grad_tools(RunData data) {
+	public void doFinish_site_type_tools(RunData data) {
 		SessionState state = ((JetspeedRunData) data)
 				.getPortletSessionState(((JetspeedRunData) data).getJs_peid());
 		ParameterParser params = data.getParameters();
@@ -10646,8 +10729,8 @@ public class SiteAction extends PagedResourceActionII {
 				.intValue();
 		actionForTemplate("continue", index, params, state, data);
 
-		// add the pre-configured Grad Tools tools to a new site
-		addGradToolsFeatures(state);
+		// add the pre-configured site type tools to a new site
+		addSiteTypeFeatures(state);
 
 		// TODO: hard coding this frame id is fragile, portal dependent, and
 		// needs to be fixed -ggolden
@@ -10656,70 +10739,79 @@ public class SiteAction extends PagedResourceActionII {
 
 		resetPaging(state);
 
-	}// doFinish_grad_tools
+	}// doFinish_site-type_tools
 
 	/**
-	 * addGradToolsFeatures adds features to a new Grad Tools student site
+	 * addSiteTypeToolsFeatures adds features to a new customized type site
 	 * 
 	 */
-	private void addGradToolsFeatures(SessionState state) {
+	private void addSiteTypeFeatures(SessionState state) {
 		Site edit = null;
 		Site template = null;
-
-		// get a unique id
-		String id = IdManager.createUuid();
-
-		// get the Grad Tools student site template
-		try {
-			template = SiteService.getSite(SITE_GTS_TEMPLATE);
-		} catch (Exception e) {
-			M_log.warn(this + ".addGradToolsFeatures:" + e.getMessage() + SITE_GTS_TEMPLATE, e);
-		}
-		if (template != null) {
-			// create a new site based on the template
+		String type = (String) state.getAttribute(STATE_SITE_TYPE);
+		HashMap<String, String> templates = siteTypeProvider.getTemplateForSiteTypes();
+		// get the template site id for this site type
+		if (templates != null && templates.containsKey(type))
+		{
+			String templateId = templates.get(type);
+			
+			// get a unique id
+			String id = IdManager.createUuid();
+			
+	
+			// get the site template
 			try {
-				edit = SiteService.addSite(id, template);
+				template = SiteService.getSite(templateId);
 			} catch (Exception e) {
-				M_log.warn(this + ".addGradToolsFeatures:" + " add/edit site id=" + id, e);
+				M_log.warn(this + ".addSiteTypeFeatures:" + e.getMessage() + templateId, e);
 			}
-
-			// set the tab, etc.
-			if (edit != null) {
-				SiteInfo siteInfo = (SiteInfo) state
-						.getAttribute(STATE_SITE_INFO);
-				edit.setShortDescription(siteInfo.short_description);
-				edit.setTitle(siteInfo.title);
-				edit.setPublished(true);
-				edit.setPubView(false);
-				edit.setType(SITE_TYPE_GRADTOOLS_STUDENT);
-				// ResourcePropertiesEdit rpe = edit.getPropertiesEdit();
+			if (template != null) {
+				// create a new site based on the template
 				try {
-					SiteService.save(edit);
+					edit = SiteService.addSite(id, template);
 				} catch (Exception e) {
-					M_log.warn(this + ".addGradToolsFeatures:" + " commitEdit site id=" + id, e);
+					M_log.warn(this + ".addSiteTypeFeatures:" + " add/edit site id=" + id, e);
 				}
-
-				// now that the site and realm exist, we can set the email alias
-				// set the GradToolsStudent site alias as:
-				// gradtools-uniqname@servername
-				String alias = "gradtools-"
-						+ SessionManager.getCurrentSessionUserId();
-				String channelReference = mailArchiveChannelReference(id);
-				try {
-					AliasService.setAlias(alias, channelReference);
-				} catch (IdUsedException ee) {
-					addAlert(state, rb.getString("java.alias") + " " + alias + " " + rb.getString("java.exists"));
-					M_log.warn(this + ".addGradToolsFeatures:" + rb.getString("java.alias") + " " + alias + " " + rb.getString("java.exists"), ee);
-				} catch (IdInvalidException ee) {
-					addAlert(state, rb.getString("java.alias") + " " + alias + " " + rb.getString("java.isinval"));
-					M_log.warn(this + ".addGradToolsFeatures:" + rb.getString("java.alias") + " " + alias + " " + rb.getString("java.isinval"), ee);
-				} catch (PermissionException ee) {
-					M_log.warn(this + ".addGradToolsFeatures:" + SessionManager.getCurrentSessionUserId() + " does not have permission to add alias. ", ee);
+	
+				// set the tab, etc.
+				if (edit != null) {
+					SiteInfo siteInfo = (SiteInfo) state
+							.getAttribute(STATE_SITE_INFO);
+					edit.setShortDescription(siteInfo.short_description);
+					edit.setTitle(siteInfo.title);
+					edit.setPublished(true);
+					edit.setPubView(false);
+					edit.setType(templateId);
+					// ResourcePropertiesEdit rpe = edit.getPropertiesEdit();
+					try {
+						SiteService.save(edit);
+					} catch (Exception e) {
+						M_log.warn(this + ".addSiteTypeFeatures:" + " commitEdit site id=" + id, e);
+					}
+	
+					// now that the site and realm exist, we can set the email alias
+					// set the site alias as:
+					List<String> pList = new ArrayList<String>();
+					pList.add(SessionManager.getCurrentSessionUserId());
+					String alias = siteTypeProvider.getSiteAlias(type, pList);
+					String channelReference = mailArchiveChannelReference(id);
+					try {
+						AliasService.setAlias(alias, channelReference);
+					} catch (IdUsedException ee) {
+						addAlert(state, rb.getFormattedMessage("java.alias.exists", new Object[]{alias}));
+						M_log.warn(this + ".addSiteTypeFeatures:" + rb.getFormattedMessage("java.alias.exists", new Object[]{alias}), ee);
+					} catch (IdInvalidException ee) {
+						addAlert(state, rb.getFormattedMessage("java.alias.isinval", new Object[]{alias}));
+						M_log.warn(this + ".addSiteTypeFeatures:" + rb.getFormattedMessage("java.alias.isinval", new Object[]{alias}), ee);
+					} catch (PermissionException ee) {
+						addAlert(state, rb.getString("java.addalias"));
+						M_log.warn(this + ".addSiteTypeFeatures:" + SessionManager.getCurrentSessionUserId() + " does not have permission to add alias. ", ee);
+					}
 				}
 			}
 		}
 
-	} // addGradToolsFeatures
+	} // addSiteTypeFeatures
 
 	/**
 	 * handle with add site options
@@ -10750,66 +10842,6 @@ public class SiteAction extends PagedResourceActionII {
 			doContinue(data);
 		}
 	} // doDuplicate_site_option
-
-	/**
-	 * Special check against the Dissertation service, which might not be
-	 * here...
-	 * 
-	 * @return
-	 */
-	protected boolean isGradToolsCandidate(String userId) {
-		// DissertationService.isCandidate(userId) - but the hard way
-
-		Object service = ComponentManager
-				.get("org.sakaiproject.api.app.dissertation.DissertationService");
-		if (service == null)
-			return false;
-
-		// the method signature
-		Class[] signature = new Class[1];
-		signature[0] = String.class;
-
-		// the method name
-		String methodName = "isCandidate";
-
-		// find a method of this class with this name and signature
-		try {
-			Method method = service.getClass().getMethod(methodName, signature);
-
-			// the parameters
-			Object[] args = new Object[1];
-			args[0] = userId;
-
-			// make the call
-			Boolean rv = (Boolean) method.invoke(service, args);
-			return rv.booleanValue();
-		} catch (Throwable t) {
-		}
-
-		return false;
-	}
-
-	/**
-	 * User has a Grad Tools student site
-	 * 
-	 * @return
-	 */
-	protected boolean hasGradToolsStudentSite(String userId) {
-		boolean has = false;
-		int n = 0;
-		try {
-			n = SiteService.countSites(
-					org.sakaiproject.site.api.SiteService.SelectionType.UPDATE,
-					SITE_TYPE_GRADTOOLS_STUDENT, null, null);
-			if (n > 0)
-				has = true;
-		} catch (Exception e) {
-			M_log.warn(this + ".addGradToolsStudentSite:" + e.getMessage(), e);
-		}
-
-		return has;
-
-	}// hasGradToolsStudentSite
 
 	/**
 	 * Get the mail archive channel reference for the main container placement
@@ -11051,7 +11083,8 @@ public class SiteAction extends PagedResourceActionII {
 			terms = cms != null?cms.getAcademicSessions():null;
 		}
 		if (terms != null && terms.size() > 0) {
-			context.put("termList", terms);
+			
+			context.put("termList", sortAcademicSessions(terms));
 		}
 		return terms;
 	} // setTermListForContext
@@ -11121,7 +11154,7 @@ public class SiteAction extends PagedResourceActionII {
 		try {
 			section = cms.getSection(sectionEid);
 		} catch (IdNotFoundException e) {
-			M_log.warn(this + ".getCourseOfferingAndSectionMap:" + " cannot find section id=" + sectionEid, e);
+			M_log.warn("getCourseOfferingAndSectionMap: cannot find section " + sectionEid);
 		}
 		if (section != null) {
 			String courseOfferingEid = section.getCourseOfferingEid();
@@ -11217,7 +11250,7 @@ public class SiteAction extends PagedResourceActionII {
 			offeringList.add(o);
 		}
 
-		Collection offeringListSorted = sortOffering(offeringList);
+		Collection offeringListSorted = sortCourseOfferings(offeringList);
 		ArrayList resultedList = new ArrayList();
 
 		// use this to keep track of courseOffering that we have dealt with
@@ -11260,39 +11293,121 @@ public class SiteAction extends PagedResourceActionII {
 	} // prepareCourseAndSectionListing
 
 	/**
-	 * Sort CourseOffering by order of eid, title uisng velocity SortTool
+	 * Helper method for sortCmObject 
+	 * by order from sakai properties if specified or 
+	 * by default of eid, title
+	 * using velocity SortTool
 	 * 
-	 * @param offeringList
+	 * @param offerings
 	 * @return
 	 */
-	private Collection sortOffering(ArrayList offeringList) {
-		return sortCmObject(offeringList);
-		/*
-		 * List propsList = new ArrayList(); propsList.add("eid");
-		 * propsList.add("title"); SortTool sort = new SortTool(); return
-		 * sort.sort(offeringList, propsList);
-		 */
-	} // sortOffering
+	private Collection sortCourseOfferings(Collection<CourseOffering> offerings) {
+		// Get the keys from sakai.properties
+		String[] keys = ServerConfigurationService.getStrings(SORT_KEY_COURSE_OFFERING);
+		String[] orders = ServerConfigurationService.getStrings(SORT_ORDER_COURSE_OFFERING);
+
+		return sortCmObject(offerings, keys, orders);
+	} // sortCourseOffering
 
 	/**
-	 * sort any Cm object such as CourseOffering, CourseOfferingObject,
-	 * SectionObject provided object has getter & setter for eid & title
+	 * Helper method for sortCmObject 
+	 * by order from sakai properties if specified or 
+	 * by default of eid, title
+	 * using velocity SortTool
 	 * 
-	 * @param list
+	 * @param courses
 	 * @return
 	 */
-	private Collection sortCmObject(Collection collection) {
-		if (collection != null) {
+	private Collection sortCourseSets(Collection<CourseSet> courses) {
+		// Get the keys from sakai.properties
+		String[] keys = ServerConfigurationService.getStrings(SORT_KEY_COURSE_SET);
+		String[] orders = ServerConfigurationService.getStrings(SORT_ORDER_COURSE_SET);
+
+		return sortCmObject(courses, keys, orders);
+	} // sortCourseOffering
+
+	/**
+	 * Helper method for sortCmObject 
+	 * by order from sakai properties if specified or 
+	 * by default of eid, title
+	 * using velocity SortTool
+	 * 
+	 * @param sections
+	 * @return
+	 */
+	private Collection sortSections(Collection<Section> sections) {
+		// Get the keys from sakai.properties
+		String[] keys = ServerConfigurationService.getStrings(SORT_KEY_SECTION);
+		String[] orders = ServerConfigurationService.getStrings(SORT_ORDER_SECTION);
+
+		return sortCmObject(sections, keys, orders);
+	} // sortCourseOffering
+
+	/**
+	 * Helper method for sortCmObject 
+	 * by order from sakai properties if specified or 
+	 * by default of eid, title
+	 * using velocity SortTool
+	 * 
+	 * @param sessions
+	 * @return
+	 */
+	private Collection sortAcademicSessions(Collection<AcademicSession> sessions) {
+		// Get the keys from sakai.properties
+		String[] keys = ServerConfigurationService.getStrings(SORT_KEY_SESSION);
+		String[] orders = ServerConfigurationService.getStrings(SORT_ORDER_SESSION);
+
+		return sortCmObject(sessions, keys, orders);
+	} // sortCourseOffering
+	
+	/**
+	 * Custom sort CM collections using properties provided object has getter & setter for 
+	 * properties in keys and orders
+	 * defaults to eid & title if none specified
+	 * 
+	 * @param collection a collection to be sorted
+	 * @param keys properties to sort on
+	 * @param orders properties on how to sort (asc, dsc)
+	 * @return Collection the sorted collection
+	 */
+	private Collection sortCmObject(Collection collection, String[] keys, String[] orders) {
+		if (collection != null && !collection.isEmpty()) {
+			// Add them to a list for the SortTool (they must have the form
+			// "<key:order>" in this implementation)
 			List propsList = new ArrayList();
-			propsList.add("eid");
-			propsList.add("title");
+			
+			if (keys == null || orders == null || keys.length == 0 || orders.length == 0) {
+				// No keys are specified, so use the default sort order
+				propsList.add("eid");
+				propsList.add("title");
+			} else {
+				// Populate propsList
+				for (int i = 0; i < Math.min(keys.length, orders.length); i++) {
+					String key = keys[i];
+					String order = orders[i];
+					propsList.add(key + ":" + order);
+				}
+			}
+			// Sort the collection and return
 			SortTool sort = new SortTool();
 			return sort.sort(collection, propsList);
-		} else {
-			return collection;
 		}
+			
+		return Collections.emptyList();
+
 	} // sortCmObject
 
+	/**
+	 * Custom sort CM collections provided object has getter & setter for 
+	 *  eid & title
+	 * 
+	 * @param collection a collection to be sorted
+	 * @return Collection the sorted collection
+	 */
+	private Collection sortCmObject(Collection collection) {
+		return sortCmObject(collection, null, null);
+	}
+	
 	/**
 	 * this object is used for displaying purposes in chef_site-newSiteCourse.vm
 	 */
@@ -11312,6 +11427,8 @@ public class SiteAction extends PagedResourceActionII {
 		public boolean attached;
 
 		public List<String> authorizer;
+		
+		public String description;
 
 		public SectionObject(Section section) {
 			this.section = section;
@@ -11341,6 +11458,7 @@ public class SiteAction extends PagedResourceActionII {
 			} else {
 				this.attached = false;
 			}
+			this.description = section.getDescription();
 		}
 
 		public Section getSection() {
@@ -11370,7 +11488,11 @@ public class SiteAction extends PagedResourceActionII {
 		public boolean getAttached() {
 			return attached;
 		}
-
+		
+		public String getDescription() {
+			return description;
+		}
+		
 		public List<String> getAuthorizer() {
 			return authorizer;
 		}
@@ -11592,6 +11714,34 @@ public class SiteAction extends PagedResourceActionII {
 						providerChosenList);
 				siteInfo.title = title;
 			}
+			
+			if (state.getAttribute(STATE_ADD_CLASS_PROVIDER_DESCRIPTION_CHOSEN) != null)
+			{
+				List<String> providerDescriptionChosenList = (List<String>) state.getAttribute(STATE_ADD_CLASS_PROVIDER_DESCRIPTION_CHOSEN);
+				if (providerDescriptionChosenList != null)
+				{
+					for (String providerSectionId : providerDescriptionChosenList)
+					{
+						try
+						{
+							Section s = cms.getSection(providerSectionId);
+							if (s != null)
+							{
+								String sDescription = StringUtils.trimToNull(s.getDescription());
+								if (sDescription != null && !siteInfo.description.contains(sDescription))
+								{
+									siteInfo.description = siteInfo.description.concat(sDescription);
+								}
+							}
+						}
+						catch (IdNotFoundException e)
+						{
+							M_log.warn("collectNewSiteInfo: cannot find section " + providerSectionId);
+						}
+					}
+				}
+				
+			}
 			state.setAttribute(STATE_SITE_INFO, siteInfo);
 
 			if (params.getString("manualAdds") != null
@@ -11645,11 +11795,18 @@ public class SiteAction extends PagedResourceActionII {
 			return null;
 
 		if (cms != null) {
-			Set sections = cms.getSections(offeringEid);
-			if (sections != null)
+			try
 			{
-				Collection c = sortCmObject(new ArrayList(sections));
-				return (List) c;
+				Set sections = cms.getSections(offeringEid);
+				if (sections != null)
+				{
+					Collection c = sortSections(new ArrayList(sections));
+					return (List) c;
+				}
+			}
+			catch (IdNotFoundException e)
+			{
+				M_log.warn("getCMSections: Cannot find sections for " + offeringEid);
 			}
 		}
 
@@ -11676,7 +11833,7 @@ public class SiteAction extends PagedResourceActionII {
 						returnList.add(co);
 				}
 			}
-			Collection c = sortCmObject(returnList);
+			Collection c = sortCourseOfferings(returnList);
 
 			return (List) c;
 		}
@@ -11759,11 +11916,18 @@ public class SiteAction extends PagedResourceActionII {
 					String string = (String) selections.get(k);
 					if (string != null && string.length() > 0)
 					{
-						Section sect = cms.getSection(string);
-						if (sect != null)
+						try
 						{
-							SectionObject so = new SectionObject(sect);
-							soList.add(so);
+							Section sect = cms.getSection(string);
+							if (sect != null)
+							{
+								SectionObject so = new SectionObject(sect);
+								soList.add(so);
+							}
+						}
+						catch (IdNotFoundException e)
+						{
+							M_log.warn("prepFindPage: Cannot find section " + string);
 						}
 					}
 				}
@@ -12060,12 +12224,19 @@ public class SiteAction extends PagedResourceActionII {
 		if (sectionList != null) {
 			for (int i = 0; i < sectionList.size(); i++) {
 				String sectionEid = (String) sectionList.get(i);
-				Section s = cms.getSection(sectionEid);
-				if (s != null)
+				try
 				{
-					SectionObject so = new SectionObject(s);
-					so.setAuthorizer(new ArrayList(Arrays.asList(userId.split(","))));
-					list.add(so);
+					Section s = cms.getSection(sectionEid);
+					if (s != null)
+					{
+						SectionObject so = new SectionObject(s);
+						so.setAuthorizer(new ArrayList(Arrays.asList(userId.split(","))));
+						list.add(so);
+					}
+				}
+				catch (IdNotFoundException e)
+				{
+					M_log.warn("prepareSectionObject: Cannot find section " + sectionEid);
 				}
 			}
 		}
@@ -12312,7 +12483,8 @@ public class SiteAction extends PagedResourceActionII {
 			siteInfo.title = StringUtils.trimToNull(params.getString("siteTitleField"));
 			siteInfo.term = StringUtils.trimToNull(params.getString("selectTermTemplate"));
 			siteInfo.iconUrl = templateSite.getIconUrl();
-			siteInfo.description = templateSite.getDescription();
+			// description is site-specific. Shouldn't come from template
+			// siteInfo.description = templateSite.getDescription();
 			siteInfo.short_description = templateSite.getShortDescription();
 			siteInfo.joinable = templateSite.isJoinable();
 			siteInfo.joinerRole = templateSite.getJoinerRole();
@@ -12392,7 +12564,11 @@ public class SiteAction extends PagedResourceActionII {
 
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
 		ParameterParser params = data.getParameters();
-
+					
+		String locale_string = params.getString("locales"); 
+										
+		state.setAttribute("locale_string",locale_string);
+			
 		String option = params.getString("option");
 		if ("removeSection".equals(option))
 		{
@@ -12414,6 +12590,70 @@ public class SiteAction extends PagedResourceActionII {
 			// cancel
 			doCancel(data);
 		}
+	}
+		
+	/**
+	 * *
+	 * 
+	 * @return Locale based on its string representation (language_region)
+	 */
+	private Locale getLocaleFromString(String localeString)
+	{
+		String[] locValues = localeString.trim().split("_");
+		if (locValues.length >= 3)
+			return new Locale(locValues[0], locValues[1], locValues[2]); // language, country, variant
+		else if (locValues.length == 2)
+			return new Locale(locValues[0], locValues[1]); // language, country
+		else if (locValues.length == 1)
+			return new Locale(locValues[0]); // language
+		else
+			return Locale.getDefault();
+	}
+	
+	/**
+	 * @return Returns the prefLocales
+	 */
+	 
+	public List getPrefLocales()
+	{
+		// Initialize list of supported locales, if necessary
+		if (prefLocales.size() == 0)
+		{
+			Locale[] localeArray = null;
+			String localeString = ServerConfigurationService.getString(SAKAI_LOCALES);
+			String localeStringMore = ServerConfigurationService.getString(SAKAI_LOCALES_MORE);
+			
+			if ( localeString == null )
+				localeString = "";
+			if ( localeStringMore != null && !localeStringMore.equals("") )
+				localeString += ","+localeStringMore;
+
+			if ( !localeString.equals("") )
+			{
+				String[] sakai_locales = localeString.split(",");
+				localeArray = new Locale[sakai_locales.length + 1];
+				for (int i = 0; i < sakai_locales.length; i++)
+					localeArray[i] = getLocaleFromString(sakai_locales[i]);
+				localeArray[localeArray.length - 1] = Locale.getDefault();
+			}
+			else
+				// if no locales specified, get default list
+			{
+				localeArray = new Locale[] { Locale.getDefault() };
+			}
+
+			// Sort locales and add to prefLocales (removing duplicates)
+			Arrays.sort(localeArray, localeComparator);
+			for (int i = 0; i < localeArray.length; i++)
+			{
+				if (i == 0 || !localeArray[i].equals(localeArray[i - 1]))
+				{					
+					prefLocales.add(localeArray[i]);
+				}
+			}
+		}
+
+		return prefLocales;
 	}
 	
 }

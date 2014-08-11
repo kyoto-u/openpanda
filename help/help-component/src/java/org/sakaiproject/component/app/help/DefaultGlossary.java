@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/branches/sakai-2.8.x/help-component/src/java/org/sakaiproject/component/app/help/DefaultGlossary.java $
- * $Id: DefaultGlossary.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.0/help-component/src/java/org/sakaiproject/component/app/help/DefaultGlossary.java $
+ * $Id: DefaultGlossary.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,7 +24,6 @@ package org.sakaiproject.component.app.help;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -37,14 +36,14 @@ import org.sakaiproject.component.app.help.model.GlossaryEntryBean;
 
 /**
  * default glossary
- * @version $Id: DefaultGlossary.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * @version $Id: DefaultGlossary.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  */
 public class DefaultGlossary implements Glossary
 {
 
   private String file;
   private String url;
-  private Map glossary = new TreeMap();
+  private Map<String, GlossaryEntry> glossary = new TreeMap<String, GlossaryEntry>();
   private boolean initialized = false;
   protected final Log logger = LogFactory.getLog(getClass());
 
@@ -58,9 +57,9 @@ public class DefaultGlossary implements Glossary
     try
     {
       glossaryTerms.load(glossaryFile.openStream());
-      for (Enumeration i = glossaryTerms.propertyNames(); i.hasMoreElements();)
+      
+      for (String term : glossaryTerms.stringPropertyNames())
       {
-        String term = (String) i.nextElement();
         glossary.put(term.toLowerCase(), new GlossaryEntryBean(term
             .toLowerCase(), glossaryTerms.getProperty(term)));
       }
@@ -78,13 +77,13 @@ public class DefaultGlossary implements Glossary
   public GlossaryEntry find(String keyword)
   {
     if (!initialized) init();
-    return (GlossaryEntryBean) glossary.get(keyword.toLowerCase());
+    return glossary.get(keyword.toLowerCase());
   }
 
   /**
    * @see org.sakaiproject.api.app.help.Glossary#findAll()
    */
-  public Collection findAll()
+  public Collection<GlossaryEntry> findAll()
   {
     if (!initialized) init();
     return glossary.values();

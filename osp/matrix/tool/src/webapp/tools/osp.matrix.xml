@@ -5,10 +5,7 @@
 	<tool id="osp.matrix" title="Matrices" description="Create and use a structured, guided ePortfolio matrix">
 
       <category name="sakai.main" />
-      <category name="project" />
       <category name="portfolio" />
-      <category name="course" />
-      <category name="myworkspace" />
 
        <keyword name="matrix" />
        <keyword name="review" />

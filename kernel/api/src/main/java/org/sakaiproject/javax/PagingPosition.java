@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/javax/PagingPosition.java $
- * $Id: PagingPosition.java 89393 2011-03-08 08:34:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/javax/PagingPosition.java $
+ * $Id: PagingPosition.java 89335 2011-03-07 08:31:54Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/branches/sakai-2.8.x/help-tool/src/java/org/sakaiproject/tool/help/ContentServlet.java $
- * $Id: ContentServlet.java 81373 2010-08-17 14:41:50Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.0/help-tool/src/java/org/sakaiproject/tool/help/ContentServlet.java $
+ * $Id: ContentServlet.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@
 package org.sakaiproject.tool.help;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -35,12 +36,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.app.help.HelpManager;
+import org.sakaiproject.component.api.ServerConfigurationService;
+
 import org.sakaiproject.api.app.help.Resource;
+
 import org.sakaiproject.component.cover.ComponentManager;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Content Servlet serves help documents to document frame.
- * @version $Id: ContentServlet.java 81373 2010-08-17 14:41:50Z stephen.marquard@uct.ac.za $
+ * @version $Id: ContentServlet.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  */
 public class ContentServlet extends HttpServlet
 {
@@ -51,8 +57,10 @@ public class ContentServlet extends HttpServlet
   private static Log M_log = LogFactory.getLog(ContentServlet.class);
 
   private static final String DOC_ID = "docId";
+  
   private static final String TEXT_HTML = "text/html; charset=UTF-8";
   private HelpManager helpManager;
+  private ServerConfigurationService serverConfigurationService;
 
   /**
    * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -66,11 +74,33 @@ public class ContentServlet extends HttpServlet
       try {
           res.setContentType(TEXT_HTML);
 
-          Resource resource = getHelpManager().getResourceByDocId(docId);
-
-          URL url;
+          URL url = null;
+          Resource resource = null;
+          
+       	  resource = getHelpManager().getResourceByDocId(docId);
+          //Possibly a fileURL
+          if (resource == null && docId.indexOf('/') > 0) {
+        	  if (M_log.isDebugEnabled())
+        		  M_log.debug("Adding new resource:"+docId);
+        	  resource = getHelpManager().createResource();
+        	  resource.setLocation("/"+docId);
+        	  resource.setDocId(docId);
+        	  url = new URL(req.getScheme(),req.getLocalName(),req.getServerPort(),req.getContextPath()+"/"+docId);
+        	  //Can't save it without a category as is null
+        	  //getHelpManager().storeResource(resource);
+          } 
+          
           if (resource != null)
           {
+    	  		String sakaiHomePath = getServerConfigurationService().getSakaiHomePath();
+    	  		String localHelpPath = sakaiHomePath+getServerConfigurationService().getString("help.localpath","/help/");
+    	  		File localFile = new File(localHelpPath+resource.getLocation());
+    	  		boolean localFileIsFile = false;
+    	  		if(localFile.isFile()) { 
+    	  			M_log.debug("Local help file overrides: "+resource.getLocation());
+    	  			localFileIsFile = true;
+    	  		}
+
               if (!getHelpManager().getRestConfiguration().getOrganization()
                       .equalsIgnoreCase("sakai"))
               {
@@ -86,8 +116,25 @@ public class ContentServlet extends HttpServlet
                       }
                       else
                       {
-                          url = HelpManager.class.getResource(resource.getLocation());
+                    	  if(localFileIsFile) { 
+                    		  url = localFile.toURI().toURL();
+                    	  }
+                    	  else {
+                    		  //If url hasn't been set yet, look it up in the classpath
+                    		  if (url == null) {
+                    			  url = HelpManager.class.getResource(resource.getLocation());
+                    		  }
+                    	  }
+                	  }
+                      String defaultRepo = "/library/skin/";
+                      String skinRepo = getServerConfigurationService().getString("skin.repo",defaultRepo);
+                      String helpHeader = getServerConfigurationService().getString("help.header",null);
+                      String helpFooter = getServerConfigurationService().getString("help.footer",null);
+                      String resourceName = resource.getName();
+                      if (resourceName == null) {
+                    	  resourceName = "";
                       }
+                    	  
 
                       if (url == null) {
                     	  M_log.warn("Help document " + docId + " not found at: " + resource.getLocation());
@@ -98,8 +145,36 @@ public class ContentServlet extends HttpServlet
 	                          String sbuf;
 	                          while ((sbuf = br.readLine()) != null)
 	                          {
-	                              writer.write( sbuf );
-	                              writer.write( System.getProperty("line.separator") );
+								  //Replacements because help wasn't written as a template
+	                        	  if (!skinRepo.equals(defaultRepo)) {
+	                        		  if (StringUtils.contains(sbuf,defaultRepo)) {
+	                        			  sbuf = StringUtils.replace(sbuf, defaultRepo, skinRepo + "/");
+	                        			  //Reset to only do one replacement
+	                        			  skinRepo=defaultRepo;
+	                        		  }
+	                        	  }
+
+	                        	  if (helpHeader != null) {
+	                        		  //Hopefully nobody writes <BODY>
+	                        		  if (StringUtils.contains(sbuf,"<body>")) {
+	                        			  sbuf = StringUtils.replace(sbuf, "<body>", "<body>"+helpHeader);
+	                        			  //Reset to only do one replacement
+	                        			  //Replace special variables 
+	                        			  sbuf = StringUtils.replace(sbuf, "#ResourceBean.name", resourceName);
+	                        			  helpHeader = null;
+	                        		  }
+	                        	  }
+	                        	  if (helpFooter != null) {
+	                        		  if (StringUtils.contains(sbuf,"</body>")) {
+	                        			  sbuf = StringUtils.replace(sbuf, "</body>", helpFooter+"</body>");
+	                        			  sbuf = StringUtils.replace(sbuf, "#ResourceBean.name", resourceName);
+	                        			  //Reset to only do one replacement
+	                        			  helpFooter = null;
+	                        		  }
+	                        	  }
+															
+	                            writer.write( sbuf );
+	                            writer.write( System.getProperty("line.separator") );
 	                          }
 	                      } finally {
 	                          br.close();
@@ -135,6 +210,19 @@ public class ContentServlet extends HttpServlet
     }
     return helpManager;
   }
-}
 
+  /**
+   * get the component manager through cover
+   * @return serverconfigurationservicer
+   */
+  public ServerConfigurationService getServerConfigurationService()
+  {
+    if (serverConfigurationService == null)
+    {
+    	serverConfigurationService = (ServerConfigurationService) ComponentManager.get(ServerConfigurationService.class.getName()); 
+    	return serverConfigurationService;
+    }
+    return serverConfigurationService;
+  }
+}
 

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/spring/util/SpringTool.java $
- * $Id: SpringTool.java 118796 2013-01-25 01:36:38Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/spring/util/SpringTool.java $
+ * $Id: SpringTool.java 114418 2012-10-16 15:17:55Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -383,5 +383,5 @@ public class SpringTool extends HttpServlet {
 
 
 /**************************************************************************************************************************************************************************************************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-util/tool-lib/src/java/org/sakaiproject/spring/util/SpringTool.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-util/tool-lib/src/java/org/sakaiproject/spring/util/SpringTool.java $
  *************************************************************************************************************************************************************************************************************************************************************/

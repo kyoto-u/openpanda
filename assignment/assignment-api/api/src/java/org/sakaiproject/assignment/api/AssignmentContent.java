@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentContent.java $
- * $Id: AssignmentContent.java 93683 2011-06-09 23:15:54Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentContent.java $
+ * $Id: AssignmentContent.java 97668 2011-08-29 19:25:48Z zqian@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -185,4 +185,28 @@ public interface AssignmentContent extends Entity, AttachmentContainer
 	 * @return boolean - Is this AssignmentContent used by an Assignment.
 	 */
 	public boolean inUse();
+	
+	public String getSubmitReviewRepo();
+
+	public void setSubmitReviewRepo(String m_submitReviewRepo);
+
+	public String getGenerateOriginalityReport();
+
+	public void setGenerateOriginalityReport(String m_generateOriginalityReport);
+
+	public boolean isCheckTurnitin();
+
+	public void setCheckTurnitin(boolean m_checkTurnitin);
+
+	public boolean isCheckInternet();
+
+	public void setCheckInternet(boolean m_checkInternet);
+
+	public boolean isCheckPublications();
+
+	public void setCheckPublications(boolean m_checkPublications);
+
+	public boolean isCheckInstitution();
+
+	public void setCheckInstitution(boolean m_checkInstitution);
 }

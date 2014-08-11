@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/wizard/api/src/java/org/theospi/portfolio/wizard/mgt/WizardManager.java $
- * $Id: WizardManager.java 68687 2009-11-09 16:45:06Z chmaurer@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/wizard/api/src/java/org/theospi/portfolio/wizard/mgt/WizardManager.java $
+ * $Id: WizardManager.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -132,7 +132,7 @@ public interface WizardManager extends WorkflowEnabledManager {
 
 	public List findWizardsByOwner(String ownerId, String siteId);
 
-	public Collection getAvailableForms(String siteId, String type);
+	public Collection getAvailableForms(String siteId, String type, String currentUserId);
 
 	public CompletedWizard getCompletedWizard(Id completedWizardId);
 

@@ -11,7 +11,7 @@
     <bean id="org.sakaiproject.user.impl.UserServiceSqlOracle"    class="org.sakaiproject.user.impl.UserServiceSqlOracle"  singleton="true"/>
 
 	<bean id="org.sakaiproject.user.api.UserDirectoryService"
-			class="org.sakaiproject.user.impl.DbUserService"
+			class="org.sakaiproject.user.impl.PrecachingDbUserService"
 			init-method="init"
 			destroy-method="destroy"
 			singleton="true">
@@ -28,6 +28,7 @@
 		<lookup-method name="authzGroupService" bean="org.sakaiproject.authz.api.AuthzGroupService" />
 		<lookup-method name="timeService" bean="org.sakaiproject.time.api.TimeService" />
 		<lookup-method name="idManager" bean="org.sakaiproject.id.api.IdManager" />
+        <lookup-method name="formattedText" bean="org.sakaiproject.util.api.FormattedText" />
 
 		<!--  The provider can also be injected directly via "setProvider(UserDirectoryProvider provider)" -->
 		<property name="providerName" value="org.sakaiproject.user.api.UserDirectoryProvider"/>
@@ -52,7 +53,14 @@
            </map>
         </property>
 
+        <property name="directDbAccess" ><ref bean="org.sakaiproject.user.api.UserDirectoryService.directDbAccess" /></property>
+
 	</bean>
+
+    <bean id="org.sakaiproject.user.api.UserDirectoryService.directDbAccess" 
+            class="org.sakaiproject.user.impl.DirectDbAccess">
+        <property name="dataSource" ref="javax.sql.DataSource" />
+    </bean>
 
 	<bean id="org.sakaiproject.user.api.AuthenticationManager"
 			class="org.sakaiproject.user.impl.UserAuthnComponent"
@@ -93,31 +101,31 @@
     <bean id="org.sakaiproject.user.impl.AuthenticationCache"
         class="org.sakaiproject.user.impl.AuthenticationCache">
         <property name="authCache"
-            ref="memory.org.sakaiproject.user.api.AuthenticationManager.cache" />
+            ref="org.sakaiproject.user.api.AuthenticationManager.cache" />
     </bean>
 
 	<!-- Memory cache for user authentication. -->
-	<bean id="memory.org.sakaiproject.user.api.AuthenticationManager.cache"
-		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	<bean id="org.sakaiproject.user.api.AuthenticationManager.cache"
+		class="org.sakaiproject.memory.util.EhCacheFactoryBean">
 		<property name="cacheManager">
 			<ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
 		</property>
 		<property name="cacheName">
 			<value>org.sakaiproject.user.api.AuthenticationManager</value>
 		</property>
-		<property name="maxElementsInMemory" value="10000" />
+		<property name="maxElementsInMemory" value="250" />
 		<property name="diskPersistent" value="false" />
 		<property name="eternal" value="false" />
 		<property name="timeToLive" value="120" />
 	</bean>
 
 	<!-- Define an alias so that old cache settings (though sakai.properties) still work. -->
-	<alias name="memory.org.sakaiproject.user.api.UserDirectoryService.idEidCache"
+	<alias name="org.sakaiproject.user.api.UserDirectoryService.idEidCache"
 		alias="org.sakaiproject.user.api.UserDirectoryService.cache"/>
 
 	<!-- Memory cache for user ID/EID lookup. -->
-	<bean id="memory.org.sakaiproject.user.api.UserDirectoryService.idEidCache"
-	     class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	<bean id="org.sakaiproject.user.api.UserDirectoryService.idEidCache"
+	     class="org.sakaiproject.memory.util.EhCacheFactoryBean">
  		<property name="cacheManager">
     		<ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
   		</property>
@@ -128,8 +136,8 @@
         <property name="maxElementsInMemory" value="100000" />
         <property name="diskPersistent" value="false" />
         <property name="eternal" value="false" />
-        <property name="timeToLive" value="7200" />
-        <property name="timeToIdle" value="7200" />
+        <property name="timeToLive" value="86400" /><!-- 1 day -->
+        <property name="timeToIdle" value="86400" /><!-- 1 day -->
 	</bean>
 
     <!-- Password service, create this as a named bean so it can be configured if required. -->
@@ -153,7 +161,7 @@
 		<property name="authenticationCache" ref="org.sakaiproject.user.impl.AuthenticationCache"/>
 		<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
 		<property name="eventTrackingService" ref="org.sakaiproject.event.api.EventTrackingService"/>
-		<property name="userCache" ><ref bean="memory.org.sakaiproject.user.api.UserDirectoryService.idEidCache" /></property>
-	</bean>  
+		<property name="userCache" ><ref bean="org.sakaiproject.user.api.UserDirectoryService.idEidCache" /></property>
+	</bean>
 
 </beans>

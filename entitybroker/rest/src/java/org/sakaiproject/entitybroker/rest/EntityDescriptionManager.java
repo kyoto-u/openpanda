@@ -1,6 +1,6 @@
 /**
- * $Id: EntityDescriptionManager.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/java/org/sakaiproject/entitybroker/rest/EntityDescriptionManager.java $
+ * $Id: EntityDescriptionManager.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityDescriptionManager.java $
  * EntityDescriptionManager.java - entity-broker - Jul 22, 2008 12:18:48 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -56,7 +56,6 @@ import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.extension.URLRedirect;
 import org.sakaiproject.entitybroker.providers.EntityPropertiesService;
 import org.sakaiproject.entitybroker.providers.EntityRequestHandler;
-import org.sakaiproject.entitybroker.rest.caps.BatchProvider;
 import org.sakaiproject.entitybroker.util.TemplateParseUtil;
 import org.azeckoski.reflectutils.ArrayUtils;
 import org.azeckoski.reflectutils.ClassFields;
@@ -128,10 +127,9 @@ public class EntityDescriptionManager {
     }
 
     private EntityProvider describeEP = null;
-    private EntityProvider batchEP = null;
     public void init() {
         System.out.println("INFO: EntityDescriptionManager: init()");
-        // register the describe and batch prefixes to load up descriptions
+        // register the describe prefixes to load up descriptions
         describeEP = new DescribePropertiesable() {
             public String getEntityPrefix() {
                 return EntityRequestHandler.DESCRIBE;
@@ -144,22 +142,6 @@ public class EntityDescriptionManager {
             }
         };
         entityProviderManager.registerEntityProvider(describeEP);
-
-        batchEP = new BatchProvider() {
-            public String getEntityPrefix() {
-                return EntityRequestHandler.BATCH;
-            }
-            public String getBaseName() {
-                return getEntityPrefix();
-            }
-            public ClassLoader getResourceClassLoader() {
-                return EntityDescriptionManager.class.getClassLoader();
-            }
-            public String[] getHandledOutputFormats() {
-                return EntityEncodingManager.HANDLED_OUTPUT_FORMATS;
-            }
-        };
-        entityProviderManager.registerEntityProvider(batchEP);
     }
 
     public void destroy() {
@@ -172,13 +154,6 @@ public class EntityDescriptionManager {
 //                System.out.println("WARN: EntityDescriptionManager: Unable to unregister the describe description provider: " + e);
 //            }
 //        }
-        if (batchEP != null) {
-            try {
-                entityProviderManager.unregisterEntityProvider(batchEP);
-            } catch (RuntimeException e) {
-                System.out.println("WARN: EntityDescriptionManager: Unable to unregister the batch description provider: " + e);
-            }
-        }
     }
 
     private EntityViewAccessProviderManager entityViewAccessProviderManager;
@@ -331,7 +306,7 @@ public class EntityDescriptionManager {
      * @param locale used for translations
      * @return the entity description
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     protected String describeEntity(StringBuilder sb, String prefix, String id, String format, boolean extra, List<Class<? extends EntityProvider>> caps, Locale locale) {
         if (caps == null) {
             caps = entityProviderManager.getPrefixCapabilities(prefix);

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/readers/CSVReader.java $
- * $Id: CSVReader.java 84677 2010-11-12 18:41:23Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/readers/CSVReader.java $
+ * $Id: CSVReader.java 84220 2010-11-03 12:34:55Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

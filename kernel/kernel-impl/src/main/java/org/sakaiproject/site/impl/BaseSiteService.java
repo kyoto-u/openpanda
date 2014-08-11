@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/site/impl/BaseSiteService.java $
- * $Id: BaseSiteService.java 83104 2010-10-05 21:21:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/site/impl/BaseSiteService.java $
+ * $Id: BaseSiteService.java 113300 2012-09-21 15:49:06Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -468,12 +468,17 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 			functionManager().registerFunction(SITE_VISIT_UNPUBLISHED);
 			functionManager().registerFunction(SECURE_ADD_SITE);
 			functionManager().registerFunction(SECURE_ADD_USER_SITE);
+			functionManager().registerFunction(SECURE_ADD_PORTFOLIO_SITE);
 			functionManager().registerFunction(SECURE_REMOVE_SITE);
 			functionManager().registerFunction(SECURE_UPDATE_SITE);
 			functionManager().registerFunction(SECURE_VIEW_ROSTER);
 			functionManager().registerFunction(SECURE_UPDATE_SITE_MEMBERSHIP);
 			functionManager().registerFunction(SECURE_UPDATE_GROUP_MEMBERSHIP);
 			functionManager().registerFunction(SECURE_ADD_COURSE_SITE);
+			functionManager().registerFunction(SITE_VISIT_SOFTLY_DELETED);
+			functionManager().registerFunction(SECURE_REMOVE_SOFTLY_DELETED_SITE);
+			functionManager().registerFunction(SECURE_ADD_PROJECT_SITE);
+
 		}
 		catch (Exception t)
 		{
@@ -517,22 +522,47 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		try
 		{
 			Site site = getSite(id);
-			if (site.isPublished())
-			{
-				rv = unlockCheck(SITE_VISIT, site.getReference());
-			}
-
-			else
-			{
-				rv = unlockCheck(SITE_VISIT_UNPUBLISHED, site.getReference());
-			}
+			
+			allowAccessSite(site);
+			rv = true;
 		}
 		catch (Exception ignore)
 		{
+			// Not needed but makes the code clearer.
+			rv = false;
 		}
 
 		return rv;
 	}
+	
+	/**
+	 * Checks to see if the current user has access to the site and throws an exception if they don't.
+	 * This was extracted to keep the code common to getSiteVisit and allowSiteAccess
+	 * @throws PermissionException If the user isn't allowed to access the site.
+	 */
+	protected void allowAccessSite(Site site) throws PermissionException
+	{
+		if (site.isSoftlyDeleted())
+		{
+			unlock(SITE_VISIT_SOFTLY_DELETED, site.getReference());
+		}
+		else
+		{
+			if (site.isPublished())
+			{
+				unlock(SITE_VISIT, site.getReference());
+			}
+			else
+			{
+				String roleswap = securityService().getUserEffectiveRole(site.getReference());
+				if (roleswap!=null) // if in a swapped mode, treat it as a normal site else do the normal unpublished c
+					unlock(SITE_VISIT, site.getReference());
+				else
+					unlock(SITE_VISIT_UNPUBLISHED, site.getReference());
+			}
+		}
+	}
+
 
 	/**
 	 * Access site object from Cache (if available)
@@ -748,20 +778,9 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	{
 		// get the site
 		Site rv = getSite(id);
-
-		// check for visit permission
-		if (rv.isPublished())
-		{
-			unlock(SITE_VISIT, rv.getReference());
-		}
-		else
-		{
-			String roleswap = securityService().getUserEffectiveRole(rv.getReference());
-			if (roleswap!=null) // if in a swapped mode, treat it as a normal site else do the normal unpublished check
-				unlock(SITE_VISIT, rv.getReference());
-			else
-				unlock(SITE_VISIT_UNPUBLISHED, rv.getReference());
-		}
+		
+		// Check is user has access, throws PermissionException if the user doesn't
+		allowAccessSite(rv);
 
 		return rv;
 	}
@@ -1041,6 +1060,12 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		else if (id != null && isCourseSite(id)) {
 			return unlockCheck(SECURE_ADD_COURSE_SITE, siteReference(id));
 		}
+		else if (id != null && isPortfolioSite(id)) {
+			return unlockCheck(SECURE_ADD_PORTFOLIO_SITE, siteReference(id));
+		}
+		else if (id != null && isProjectSite(id)) {
+			return unlockCheck(SECURE_ADD_PROJECT_SITE, siteReference(id));
+		}
 		else
 		{
 			return unlockCheck(SECURE_ADD_SITE, siteReference(id));
@@ -1060,9 +1085,45 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		
 		return rv;
 	}
+
+	private boolean isPortfolioSite(String siteId) {
+		boolean rv = false;
+		try {
+			Site s = getSite(siteId);
+			if (serverConfigurationService().getString("portfolioSiteType", "portfolio").equals(s.getType())) 
+				return true;
+				
+		} catch (IdUnusedException e) {
+			M_log.warn("isPortfolioSite(): no site with id: " + siteId);
+		}
+		
+		return rv;
+	}
+	
+	private boolean isProjectSite(String siteId) {
+		boolean rv = false;
+		try {
+			Site s = getSite(siteId);
+			if (serverConfigurationService().getString("projectSiteType", "project").equals(s.getType())) 
+				return true;
+				
+		} catch (IdUnusedException e) {
+			M_log.warn("isProjectSite(): no site with id: " + siteId);
+		}
+		
+		return rv;
+	}
 	
 	public boolean allowAddCourseSite() {
 		return unlockCheck(SECURE_ADD_COURSE_SITE, siteReference(null));
+	}
+
+	public boolean allowAddPortfolioSite() {
+		return unlockCheck(SECURE_ADD_PORTFOLIO_SITE, siteReference(null));
+	}
+	
+	public boolean allowAddProjectSite() {
+		return unlockCheck(SECURE_ADD_PROJECT_SITE, siteReference(null));
 	}
 	
 	/**
@@ -1089,6 +1150,16 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		// SAK-12631
 		if (serverConfigurationService().getString("courseSiteType", "course").equals(type)) {
 			unlock(SECURE_ADD_COURSE_SITE, siteReference(id));
+		}
+
+		// KNL-703
+		if (serverConfigurationService().getString("portfolioSiteType", "portfolio").equals(type)) {
+			unlock(SECURE_ADD_PORTFOLIO_SITE, siteReference(id));
+		}
+		
+		// KNL-952
+		if (serverConfigurationService().getString("projectSiteType", "project").equals(type)) {
+			unlock(SECURE_ADD_PROJECT_SITE, siteReference(id));
 		}
 
 		// reserve a site with this id from the info store - if it's in use, this will return null
@@ -1136,6 +1207,16 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		// SAK=12631
 		if ( isCourseSite(other.getId()) ) {
 			unlock(SECURE_ADD_COURSE_SITE, siteReference(id));			
+		}
+
+		// KNL-703
+		if ( isPortfolioSite(other.getId()) ) {
+			unlock(SECURE_ADD_PORTFOLIO_SITE, siteReference(id));			
+		}
+		
+		// KNL-952
+		if ( isProjectSite(other.getId()) ) {
+			unlock(SECURE_ADD_PROJECT_SITE, siteReference(id));			
 		}
 
 		// reserve a site with this id from the info store - if it's in use, this will return null
@@ -1187,11 +1268,24 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	/**
 	 * @inheritDoc
 	 */
-	public void removeSite(Site site) throws PermissionException
+	public void removeSite(Site site) throws PermissionException, IdUnusedException
 	{
 		// check security (throws if not permitted)
 		unlock(SECURE_REMOVE_SITE, site.getReference());
 
+		// if soft site deletes are active
+		if(serverConfigurationService().getBoolean("site.soft.deletion", false)) {
+			// if site is not already softly deleted, softly delete it
+			// if already marked for deletion, check permission to hard delete, if ok, let continue.
+			if(!site.isSoftlyDeleted()) {
+				site.setSoftlyDeleted(true);
+				save(site);
+				return;
+			} else {
+				unlock(SECURE_REMOVE_SOFTLY_DELETED_SITE, site.getReference());
+			}
+		}
+		
 		// complete the edit
 		m_storage.remove(site);
 
@@ -1609,7 +1703,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	/**
 	 * {@inheritDoc}
 	 */
-	public List getSiteTypes()
+	public List<String> getSiteTypes()
 	{
 		return m_storage.getSiteTypes();
 	}
@@ -1617,10 +1711,17 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 	/**
 	 * @inheritDoc
 	 */
-	public List getSites(SelectionType type, Object ofType, String criteria, Map propertyCriteria, SortType sort,
+	public List<Site> getSites(SelectionType type, Object ofType, String criteria, Map propertyCriteria, SortType sort,
 			PagingPosition page)
 	{
 		return m_storage.getSites(type, ofType, criteria, propertyCriteria, sort, page);
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public List<Site> getSoftlyDeletedSites() {
+		return m_storage.getSoftlyDeletedSites();
 	}
 
 	/**
@@ -1764,7 +1865,7 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 					out.println("<title>");
 					out.println(site.getTitle());
 					out.println("</title>");
-					out.println("</head><body><div class=\"portletBody\">");					
+					out.println("</head><body class=\"siteDescriptionFrame\"><div class=\"portletBody siteDescription\">");					
 
 					// get the description - if missing, use the site title
 					String description = site.getDescription();
@@ -2551,6 +2652,13 @@ public abstract class BaseSiteService implements SiteService, StorageUser
 		 *        The Collection to fill in.
 		 */
 		public void readSiteGroups(Site site, Collection groups);
+		
+		/**
+		 * Get all sites that have been softly deleted
+		 * 
+		 * @return List of Sites or empty list if none.
+		 */
+		public List<Site> getSoftlyDeletedSites();
 	}
 
 	/**********************************************************************************************************************************************************************************************************************************************************

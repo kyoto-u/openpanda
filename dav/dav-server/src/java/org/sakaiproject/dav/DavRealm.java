@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/branches/sakai-2.8.x/dav-server/src/java/org/sakaiproject/dav/DavRealm.java $
- * $Id: DavRealm.java 64253 2009-06-27 13:34:09Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-2.9.0/dav-server/src/java/org/sakaiproject/dav/DavRealm.java $
+ * $Id: DavRealm.java 98832 2011-09-30 14:15:38Z hedrick@rutgers.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -25,6 +25,7 @@ import java.security.Principal;
 
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.realm.RealmBase;
+import org.apache.catalina.Wrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -94,36 +95,8 @@ public final class DavRealm extends RealmBase
 		return null;
 	}
 
-	/**
-	 * Prepare for active use of the public methods of this Component.
-	 * 
-	 * @exception IllegalStateException
-	 *            if this component has already been started
-	 * @exception LifecycleException
-	 *            if this component detects a fatal error that prevents it from being started
-	 */
-	public synchronized void start() throws LifecycleException
-	{
-		M_log.info("start()");
-
-		// Perform normal superclass initialization
-		super.start();
-	}
-
-	/**
-	 * Gracefully shut down active use of the public methods of this Component.
-	 * 
-	 * @exception IllegalStateException
-	 *            if this component has not been started
-	 * @exception LifecycleException
-	 *            if this component detects a fatal error that needs to be reported
-	 */
-	public synchronized void stop() throws LifecycleException
-	{
-		// Perform normal superclass finalization
-		super.stop();
-
-		// No shutdown activities required
+	public boolean hasRole(Wrapper wrapper, Principal principal, String role)  {
+	    return true;
 	}
 
 	public boolean hasRole(Principal principal, String role)

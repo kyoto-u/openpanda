@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/branches/common-1.1.x/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCAssessmentTranslator.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.0/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCAssessmentTranslator.java $
  * $Id: CCAssessmentTranslator.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

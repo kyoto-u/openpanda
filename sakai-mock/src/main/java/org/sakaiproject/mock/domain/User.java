@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/branches/mock-2.8.x/src/main/java/org/sakaiproject/mock/domain/User.java $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-mock-2.9.0/src/main/java/org/sakaiproject/mock/domain/User.java $
  * $Id: User.java 81281 2010-08-14 11:46:32Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

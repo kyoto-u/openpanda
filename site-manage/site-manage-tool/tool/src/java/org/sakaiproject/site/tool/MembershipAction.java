@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/branches/sakai-2.8.x/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/MembershipAction.java $
- * $Id: MembershipAction.java 86983 2011-01-10 18:28:16Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.0/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/MembershipAction.java $
+ * $Id: MembershipAction.java 86098 2010-12-07 19:35:00Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/branches/sakai-2.8.x/syllabus-impl/src/java/org/sakaiproject/syllabus/user/prefs/SyllabusUserNotificationPreferencesRegistrationImpl.java $
- * $Id: SyllabusUserNotificationPreferencesRegistrationImpl.java 83343 2010-10-18 17:51:38Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.0/syllabus-impl/src/java/org/sakaiproject/syllabus/user/prefs/SyllabusUserNotificationPreferencesRegistrationImpl.java $
+ * $Id: SyllabusUserNotificationPreferencesRegistrationImpl.java 82737 2010-09-24 13:52:32Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2010 The Sakai Foundation

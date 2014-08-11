@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/test/java/org/sakaiproject/content/impl/test/MockContentEntity.java $
- * $Id: MockContentEntity.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/test/java/org/sakaiproject/content/impl/test/MockContentEntity.java $
+ * $Id: MockContentEntity.java 96668 2011-08-09 09:08:21Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -22,6 +22,7 @@
 package org.sakaiproject.content.impl.test;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -268,6 +269,20 @@ public class MockContentEntity implements ContentEntity, GroupAwareEdit
 	{
 		return this.retractDate;
 	}
+	
+	
+	
+	public Date getReleaseTime() {
+		
+		return new Date(this.releaseDate.getTime());
+	}
+
+	
+	public Date getRetractTime() {
+		return new Date(this.getRetractDate().getTime());
+	}
+
+
 
 	/* (non-Javadoc)
 	 * @see org.sakaiproject.content.api.GroupAwareEntity#isAvailable()
@@ -413,6 +428,10 @@ public class MockContentEntity implements ContentEntity, GroupAwareEdit
 		this.releaseDate = TimeService.newTime(time.getTime());
 	}
 
+	public void setReleaseTime(Date time) 
+	{
+		this.releaseDate = TimeService.newTime(time.getTime());
+	}
 	/* (non-Javadoc)
 	 * @see org.sakaiproject.content.api.GroupAwareEdit#setResourceType(java.lang.String)
 	 */
@@ -425,6 +444,11 @@ public class MockContentEntity implements ContentEntity, GroupAwareEdit
 	 * @see org.sakaiproject.content.api.GroupAwareEdit#setRetractDate(org.sakaiproject.time.api.Time)
 	 */
 	public void setRetractDate(Time time)
+	{
+		this.retractDate = TimeService.newTime(time.getTime());
+	}
+	
+	public void setRetractTime(Date time)
 	{
 		this.retractDate = TimeService.newTime(time.getTime());
 	}

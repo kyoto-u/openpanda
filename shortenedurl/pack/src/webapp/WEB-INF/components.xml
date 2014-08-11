@@ -60,7 +60,7 @@
     	<property name="login"><value>${shortenedurl.implementation.bitly.login}</value></property>
     	<property name="apiKey"><value>${shortenedurl.implementation.bitly.key}</value></property>
 	</bean>
-	
+		
 	<!-- Add our HBM files to the Sakai global session factory -->
 	<bean id="org.sakaiproject.shortenedurl.hbm.HBMMappingList"
     	class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
@@ -80,7 +80,7 @@
 	
 	<!--  Cache -->
     <bean id="org.sakaiproject.shortenedurl.cache"
-        class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        class="org.sakaiproject.memory.util.EhCacheFactoryBean">
         <property name="cacheManager">
             <ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
         </property>
@@ -93,7 +93,7 @@
         <property name="timeToLive" value="3600" />
 		<property name="timeToIdle" value="3600" />
     </bean>
-  	
+	
 	
 
 </beans>

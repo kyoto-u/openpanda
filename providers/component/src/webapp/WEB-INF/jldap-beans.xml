@@ -146,6 +146,12 @@
 		<!--  property name="poolMaxConns">
 			<value>10</value>
 		</property -->
+
+		<!-- Optional. Maximum number of users to search for
+		     Defaults to DEFAULT_MAX_OBJECTS_TO_QUERY = 200
+		<property name="maxObjectsToQueryFor">
+		  <value>200</value>
+		</property>-->
 		
 		<!-- Optional. Defaults to an instance of 
 		edu.amc.sakai.user.SimpleLdapAttributeMapper -->
@@ -302,6 +308,11 @@
 				<entry key="facultyStaff"><value>faculty</value></entry> 
 				<entry key="students"><value>student</value></entry> 
 			</map>
+		</property -->
+
+		<!-- Optional. Defaults to false.  -->
+		<!-- property name="recurseRdnIfNoMapping">
+			<value>false</value>
 		</property -->
 				
 		<!-- Optional. Defaults to false.  -->

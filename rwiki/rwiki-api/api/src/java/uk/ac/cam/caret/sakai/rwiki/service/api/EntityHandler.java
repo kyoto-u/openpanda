@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-api/api/src/java/uk/ac/cam/caret/sakai/rwiki/service/api/EntityHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-api/api/src/java/uk/ac/cam/caret/sakai/rwiki/service/api/EntityHandler.java $
  * $Id: EntityHandler.java 20883 2007-02-02 00:09:11Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

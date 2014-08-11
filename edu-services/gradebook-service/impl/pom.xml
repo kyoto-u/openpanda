@@ -4,7 +4,8 @@
     <parent>
         <artifactId>edu-services</artifactId>
         <groupId>org.sakaiproject.edu-services</groupId>
-        <version>1.1.9-SNAPSHOT</version>
+        <version>1.2.0</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>org.sakaiproject.edu-services.gradebook</groupId>
     <artifactId>gradebook-service-impl</artifactId>
@@ -17,6 +18,10 @@
         <dependency>
             <groupId>org.sakaiproject.kernel</groupId>
             <artifactId>sakai-kernel-util</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.sakaiproject.kernel</groupId>
+          <artifactId>sakai-component-manager</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

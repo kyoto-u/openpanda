@@ -74,11 +74,11 @@ ${responseHead}
 <!-- END Header -->
 
 <!-- pda.vm -->
-#if ( ${wurflSmallDisplay} ) 
-<!-- Mobile Device ${wurflDevice} -->
+#if ( ${mobileSmallDisplay} ) 
+<!-- Mobile Device ${mobileDevice} -->
 #end
 ## Always assume small display
-#set ( $wurflSmallDisplay = 1 )
+#set ( $mobileSmallDisplay = 1 )
 <div class="portletpda">
 	<!-- include site html if exist-->
 	#if ($sitePdaHtmlInclude)
@@ -94,12 +94,23 @@ ${responseHead}
 #if ($currentSite)
   #if ( $currentSite.isChild )
   	## would be better to examine for each site if it has children, then reflect this in a nested list structure.
+	#set($last=$currentSite.pwd.size())
     #foreach ( $site in $currentSite.pwd )
+		
 		#set ($currentSiteChildren=$currentSiteChildren + 1)
- 		<li class="#if ($currentSiteChildren==1) currentSiteParentLink #else currentSiteChildLink #end"><span><a href="${site.siteUrl}" title="${site.siteTitle}">${site.siteTitle}</a></span></li>		
-    #end
+		#if ($last == $currentSiteChildren) #set($hierClass="lastChild") #else #set($hierClass="") #end
+ 		#if ( ! $site.isMyWorkspace )	
+			<li class="#if ($currentSiteChildren==1) currentSiteParentLink #else currentSiteChildLink #end"><span><a href="${site.siteUrl}" title="${site.siteTitle}">${site.siteTitle}</a></span></li>	
+		#else
+			<li class="#if ($currentSiteChildren==1) currentSiteParentLink #else currentSiteChildLink #end"><span><a href="${site.siteUrl}" title="$rloader.getString('sit_mywor')">$rloader.getString("sit_mywor")</a></span></li>	
+		#end
+	#end
   #else
-    <li class="currentSiteLink"><span><a href="${currentSite.siteUrl}" title="${currentSite.siteTitle}">${currentSite.siteTitle}</a></span></li>
+	#if ( ! $currentSite.isMyWorkspace )
+		<li class="currentSiteLink"><span><a href="${currentSite.siteUrl}" title="${currentSite.siteTitle}">${currentSite.siteTitle}</a></span></li>
+	#else
+		<li class="currentSiteLink"><span><a href="${currentSite.siteUrl}" title="$rloader.getString('sit_mywor')">$rloader.getString("sit_mywor")</a></span></li>
+	#end
   #end
 #end
 #if ($currentPlacement)
@@ -128,14 +139,14 @@ ${responseHead}
 #if (${currentPlacement.toolJSR168Edit} )
 	<li class="jsreditLink"><span><a accesskey="e" href="${currentPlacement.toolJSR168Edit}" title="${rloader.sit_edit}"><img src="${pageSkinRepo}/${pageSkin}/images/pda-edit-sett.png" alt="${rloader.sit_edit}" /></a></span></li>
 #end
-#if ( ${wurflSmallDisplay} ) 
-  <!-- WURFL Small Display -->
+#if ( ${mobileSmallDisplay} ) 
+  <!-- Mobile Small Display -->
   #if ( $loggedIn ) 
     <li class="logoutLink"><span><a href="${portalTopUrl}?force.logout=yes">$rloader.getString("pda_logout")</a></span></li>
   #else
     <li class="loginLink"><span><a href="${portalTopUrl}?force.login=yes">$rloader.getString("pda_login")</a></span></li>
   #end
-  <!-- End WURFL Small Display -->
+  <!-- End Mobile Small Display -->
 #else
 
 	  #if (${currentSite.sitePages.pageNavShowPresenceLoggedIn})
@@ -208,8 +219,13 @@ ${responseBody}
 		    	#foreach ( $site in $subSites ) 
 		          <li class="subSiteItem">
 					<span>
-		             <a href="${site.siteUrl}" title="${site.siteTitle}">
+					#if ( ! $site.isMyWorkspace )
+						<a href="${site.siteUrl}" title="${site.siteTitle}">
 		             	$rloader.getString("pda_subsite_lead")  ${site.siteTitle} <em class="textPanelFooter">$rloader.getString("pda_subsite")</em>
+					#else
+						<a href="${site.siteUrl}" title="${site.siteTitle}">
+		             	$rloader.getString("pda_subsite_lead")  $rloader.getString("sit_mywor") <em class="textPanelFooter">$rloader.getString("pda_subsite")</em>
+					#end
 		             </a>
 					<span> 
 		         </li>
@@ -233,8 +249,13 @@ ${responseBody}
 		            #end
 		      #end
 	        <span> 
-		        <a href="${site.siteUrl}" title="${site.siteTitle}">
-		          ${site.siteTitle}
+		        #if ( ! $site.isMyWorkspace )	
+					<a href="${site.siteUrl}" title="${site.siteTitle}">
+					${site.siteTitle}
+				#else
+					<a href="${site.siteUrl}" title="$rloader.getString('sit_mywor')">
+					$rloader.getString("sit_mywor")
+				#end
 		        </a>
 	        </span>
 	      </li>
@@ -244,7 +265,7 @@ ${responseBody}
   #end
 #end
 #if ($currentSite )
-#if ( ! ${wurflSmallDisplay} ) 
+#if ( ! ${mobileSmallDisplay} ) 
     #if (${currentSite.sitePages.pageNavShowPresenceLoggedIn})
 	<script type="text/javascript" language="JavaScript">
 		$(document).ready(function(){

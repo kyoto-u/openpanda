@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-render-impl/impl/src/java/org/sakaiproject/portal/render/iframe/IFrameToolRenderService.java $
- * $Id: IFrameToolRenderService.java 86928 2011-01-07 19:40:55Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-render-impl/impl/src/java/org/sakaiproject/portal/render/iframe/IFrameToolRenderService.java $
+ * $Id: IFrameToolRenderService.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,7 +58,7 @@ import org.sakaiproject.util.Web;
  * 
  * @author ddwolf
  * @since Sakai 2.4
- * @version $Rev: 86928 $
+ * @version $Rev: 110562 $
  */
 public class IFrameToolRenderService implements ToolRenderService
 {
@@ -96,7 +96,11 @@ public class IFrameToolRenderService implements ToolRenderService
 		{
 			toolUrl += URLstub;
 		}
-		toolUrl = URLUtils.addParameter(toolUrl, "panel", "Main");
+
+		String sakaiPanel = request.getParameter("panel");
+		if ( sakaiPanel != null && sakaiPanel.matches(".*[\"'<>].*" ) ) sakaiPanel=null;
+		if ( sakaiPanel == null ) sakaiPanel="Main";
+		toolUrl = URLUtils.addParameter(toolUrl, "panel", sakaiPanel);
 
 		final StringBuilder sb = new StringBuilder();
 	
@@ -104,6 +108,11 @@ public class IFrameToolRenderService implements ToolRenderService
                 //   of an XML "entity" like &lt; &gt;, etc.	
 	        toolUrl = toolUrl.replace("&", "&amp;");	
 		
+		// SAK-20462 - Pass through the sakai_action parameter
+                String sakaiAction = request.getParameter("sakai_action");
+                if ( sakaiAction != null && sakaiAction.matches(".*[\"'<>].*" ) ) sakaiAction=null;
+
+		// Produce the iframe markup
 		sb.append("<iframe").append("	name=\"").append(
 				Web.escapeJavascript("Main" + configuration.getId())).append("\"\n")
 				.append("	id=\"").append(
@@ -115,8 +124,14 @@ public class IFrameToolRenderService implements ToolRenderService
 						"	width=\"100%\"").append("\n").append("	frameborder=\"0\"")
 				.append("\n").append("	marginwidth=\"0\"").append("\n").append(
 						"	marginheight=\"0\"").append("\n").append("	scrolling=\"auto\"")
-				.append("\n").append("	src=\"").append(toolUrl).append("\">")
-				.append("\n").append("</iframe>");
+				.append("\n").append("	src=\"").append(toolUrl);
+		if ( sakaiAction != null ) 
+		{
+			sb.append( toolUrl.indexOf('?') >=0 ? '&' : '?');
+			sb.append("sakai_action=").append(Web.escapeHtml(sakaiAction));
+		}
+
+		sb.append("\">") .append("\n").append("</iframe>");
 		
 		final String[] buffered = bufferContent(portal,request, response, configuration);
 
@@ -280,8 +295,7 @@ public class IFrameToolRenderService implements ToolRenderService
 		Session s = SessionManager.getCurrentSession();
 		ToolSession ts = s.getToolSession(toolConfig.getId());
 		
-		if ("true".equals(req.getParameter(portalService.getResetStateParam()))
-				|| "true".equals(portalService.getResetState()))
+		if (portalService.isResetRequested(req))
 		{
 			ts.clearAttributes();
 		}

@@ -10,6 +10,11 @@
 	<p class="instruction">
 		$tlang.getString("instr.urls")
 	</p>
+	#if($ezproxyPrefix) 
+	  <p class="instruction">
+	    $tlang.getString("instr.ezproxy")
+	  </p>
+	#end
 	<div class="breadCrumb">
 		<h4>
 		$tlang.getString("gen.location")
@@ -38,11 +43,14 @@
 					<p class="shorttext" style="border:none">
 						<label for="content${DOT}$i">$tlang.getString("label.urls")</label>
 						## TODO add onchange event handler to seed file-name into displayName field
-						<input type="text" name="content${DOT}$i" id="content${DOT}$i" size="60" />
+						<input type="text" name="content${DOT}$i" id="content${DOT}$i" size="60" maxlength="512"/>
+						#if($ezproxyPrefix)
+						  <a class="indnt2" href="#" id="ezproxyTrigger${DOT}$i" title="$tlang.getString("label.ezproxy")">$tlang.getString("label.ezproxy")</a>
+						#end
 					</p>
 					<p class="shorttext" style="border:none"> 
 						<label for="displayName${DOT}$i">$tlang.getString("label.website")</label> 
-						<input type="text" id="displayName${DOT}$i" name="displayName${DOT}$i" /> 
+						<input type="text" id="displayName${DOT}$i" name="displayName${DOT}$i" maxlength="512"/> 
 						<a class="indnt2" href="#" id="propsTrigger${DOT}$i">$tlang.getString("edit.show")</a>
 						<a class="indnt2 remove" style="display: none" href="#" id="removeTrigger${DOT}$i" title="$tlang.getString("edit.remove")" >
 							<img src="#imageLink("sakai/cross.png")" alt="x" />
@@ -102,6 +110,7 @@
 			<input type="button" name="cancel" onclick="javascript:document.getElementById('addContentForm').action='#toolLink("ResourcesHelperAction" "doCancel")';submitform('addContentForm');" value="$tlang.getString("label.cancel")" accesskey="x" />
 			<span id="submitnotifxxx"  class="messageProgress"  style="visibility:hidden">$tlang.getString("processmessage.url")</span>
 		</p>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>
 #parse("/vm/resources/sakai_properties_scripts.vm")

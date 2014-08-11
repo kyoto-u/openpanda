@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/matrix/api-impl/src/java/org/theospi/portfolio/matrix/HibernateMatrixManagerImpl.java $
-* $Id: HibernateMatrixManagerImpl.java 90536 2011-03-24 19:46:06Z botimer@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/matrix/api-impl/src/java/org/theospi/portfolio/matrix/HibernateMatrixManagerImpl.java $
+* $Id: HibernateMatrixManagerImpl.java 112290 2012-09-11 17:44:18Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -34,6 +34,7 @@ import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,8 +42,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.zip.Adler32;
 import java.util.zip.CheckedOutputStream;
@@ -77,11 +78,9 @@ import org.sakaiproject.content.api.LockManager;
 import org.sakaiproject.email.cover.DigestService;
 import org.sakaiproject.email.cover.EmailService;
 import org.sakaiproject.entity.api.EntityManager;
-import org.sakaiproject.entity.api.EntityPropertyNotDefinedException;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
-import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
@@ -120,8 +119,8 @@ import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.ToolConfiguration;
-import org.sakaiproject.site.util.SiteConstants;
 import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.site.util.SiteConstants;
 import org.sakaiproject.taggable.api.Link;
 import org.sakaiproject.taggable.api.LinkManager;
 import org.sakaiproject.taggable.api.TaggableActivity;
@@ -162,6 +161,7 @@ import org.theospi.portfolio.review.mgt.ReviewManager;
 import org.theospi.portfolio.review.model.Review;
 import org.theospi.portfolio.security.Authorization;
 import org.theospi.portfolio.security.AuthorizationFacade;
+import org.theospi.portfolio.shared.model.CommonFormBean;
 import org.theospi.portfolio.shared.model.EvaluationContentWrapper;
 import org.theospi.portfolio.shared.model.Node;
 import org.theospi.portfolio.shared.model.ObjectWithWorkflow;
@@ -175,6 +175,8 @@ import org.theospi.portfolio.tagging.api.DecoratedTaggingProvider;
 import org.theospi.portfolio.tagging.impl.DecoratedTaggableItemImpl;
 import org.theospi.portfolio.tagging.impl.DecoratedTaggingProviderImpl;
 import org.theospi.portfolio.wizard.WizardFunctionConstants;
+import org.theospi.portfolio.wizard.mgt.WizardManager;
+import org.theospi.portfolio.wizard.model.Wizard;
 import org.theospi.portfolio.wizard.taggable.cover.WizardActivityProducer;
 import org.theospi.portfolio.workflow.mgt.WorkflowManager;
 import org.theospi.portfolio.workflow.model.Workflow;
@@ -210,6 +212,7 @@ public class HibernateMatrixManagerImpl extends HibernateDaoSupport
    private StyleManager styleManager;
    private LinkManager linkManager = null;
    private TaggingManager taggingManager;
+   public final static String FORM_TYPE = "form";
 
    private PreferencesService preferencesService = null;
    private EntityManager entityManager = null;
@@ -404,7 +407,6 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
       }
 
       //TODO move this into a callback
-      getHibernateTemplate().setCacheQueries(true);
 
       List list = getHibernateTemplate().find(query, params);
 
@@ -421,7 +423,6 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
    }
    
    public List getCells(Matrix matrix) {
-      getHibernateTemplate().setCacheQueries(true);
       return getHibernateTemplate().find("from Cell cell where cell.matrix.id=?",
             matrix.getId());
       
@@ -432,7 +433,6 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
       
       Object[] params = new Object[]{matrix.getId(),
                                      rootCriterion.getId(), level.getId()};
-      getHibernateTemplate().setCacheQueries(true);
       List list = getHibernateTemplate()
             .find("from Cell cell where cell.matrix.id=? and cell.scaffoldingCell.rootCriterion.id=? and cell.scaffoldingCell.level.id=?",
                   params);
@@ -1064,7 +1064,7 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
    public Set getPageForms(WizardPage page) {
       Set result = new HashSet();
       Set removes = new HashSet();
-      if (page.getPageForms() != null) {
+      if (page != null && page.getPageForms() != null) {
          for (Iterator iter = page.getPageForms().iterator(); iter.hasNext();) {
             WizardPageForm wpf = (WizardPageForm) iter.next();
             Node node = getNode(wpf.getArtifactId(), page, true);
@@ -1087,7 +1087,7 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
    public Set getPageContents(WizardPage page) {
       Set result = new HashSet();
       Set removes = new HashSet();
-      if (page.getAttachments() != null) {
+      if (page != null && page.getAttachments() != null) {
          for (Iterator iter = page.getAttachments().iterator(); iter.hasNext();) {
             Attachment attachment = (Attachment) iter.next();
             Node node = getNode(attachment.getArtifactId(), page, false);
@@ -1956,67 +1956,74 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
    public void checkPageAccess(String id) {
       Id pageId = getIdManager().getId(id);
       WizardPage page = getWizardPage(pageId);
+      WizardPageDefinition wpd = null;
+      Scaffolding scaffolding = null;
+      boolean owns = false;
+      if (page == null) {
+    	  wpd = getWizardPageDefinition(pageId);
+    	  scaffolding = this.getScaffoldingCellByWizardPageDef(wpd.getId()).getScaffolding();
+    	  owns = scaffolding.getOwner().getId().equals(getAuthnManager().getAgent().getId());
+      } else {
+    	  wpd = page.getPageDefinition();
+    	  scaffolding = this.getMatrixByPage(page.getId()).getScaffolding();
+    	  owns = page.getOwner().getId().equals(getAuthnManager().getAgent().getId());
+      }
       // todo need to figure out matrix or wizard authz stuff here
 
       // this should set the security advisor for the attached artifacts.
       //getPageArtifacts(page);
       
-      boolean isMatrix = page.getPageDefinition().getType().equals(page.getPageDefinition().WPD_MATRIX_TYPE);
+      boolean isMatrix = wpd.getType().equals(wpd.WPD_MATRIX_TYPE);
       
       boolean canEval = false, canReview = false, hideEvaluations = false;
       
-      if(page.getPageDefinition().isDefaultEvaluators()){
+      if(wpd.isDefaultEvaluators()){
     	  if(isMatrix){
-    		  Scaffolding scaffolding = this.getMatrixByPage(pageId).getScaffolding();
     		  canEval = hasPermission(scaffolding.getId(), scaffolding.getWorksiteId(), MatrixFunctionConstants.EVALUATE_MATRIX);
     	  }
       }else{
     	  canEval = getAuthzManager().isAuthorized(MatrixFunctionConstants.EVALUATE_MATRIX, 
-  	            page.getPageDefinition().getId());
+  	            wpd.getId());
       }
       
       //this is user specified reviewer access:
-      canReview = hasPermission(pageId, this.getIdManager().getId(page.getPageDefinition().getSiteId()), MatrixFunctionConstants.FEEDBACK_MATRIX);
+      canReview = hasPermission(pageId, this.getIdManager().getId(wpd.getSiteId()), MatrixFunctionConstants.FEEDBACK_MATRIX);
       
       
       if(!canReview){
-    	  if(page.getPageDefinition().isDefaultReviewers()){
+    	  if(wpd.isDefaultReviewers()){
     		  if(isMatrix){
     			  //currently, this can only be true if its a matrix
-    			  Scaffolding scaffolding = this.getMatrixByPage(pageId).getScaffolding();
     			  canReview = hasPermission(scaffolding.getId(), scaffolding.getWorksiteId(), MatrixFunctionConstants.REVIEW_MATRIX);
     		  }
     	  }else{
     		  canReview = getAuthzManager().isAuthorized(MatrixFunctionConstants.REVIEW_MATRIX, 
-    				  page.getPageDefinition().getId());
+    				  wpd.getId());
     	  }
       }
 
       if (!canReview) {
          canReview = getAuthzManager().isAuthorized(WizardFunctionConstants.REVIEW_WIZARD, 
-            getIdManager().getId(page.getPageDefinition().getSiteId()));
+            getIdManager().getId(wpd.getSiteId()));
       }
       
       if(isMatrix){
 
-    	  if(page.getPageDefinition().isDefaultEvaluationForm()){
-    		  Scaffolding scaffolding = this.getMatrixByPage(pageId).getScaffolding();
+    	  if(wpd.isDefaultEvaluationForm()){
     		  hideEvaluations = scaffolding.isHideEvaluations();
     	  }else{
-    		  hideEvaluations = page.getPageDefinition().isHideEvaluations();
+    		  hideEvaluations = wpd.isHideEvaluations();
     	  }
       }
 
       
       
       
-      boolean owns = page.getOwner().getId().equals(getAuthnManager().getAgent().getId());     
       boolean canAccessAllCells = false;
       boolean canViewOtherReviews = false;
       boolean canViewOtherEvals = false;
       
       if(isMatrix){
-    	  Scaffolding scaffolding = this.getMatrixByPage(pageId).getScaffolding();
     	  canAccessAllCells = getAuthzManager().isAuthorized(MatrixFunctionConstants.ACCESS_ALL_CELLS, getIdManager().getId(scaffolding.getReference()));
     	  canViewOtherReviews = getAuthzManager().isAuthorized(MatrixFunctionConstants.VIEW_FEEDBACK_OTHER, getIdManager().getId(scaffolding.getReference()));
     	  canViewOtherEvals = getAuthzManager().isAuthorized(MatrixFunctionConstants.VIEW_EVAL_OTHER, getIdManager().getId(scaffolding.getReference()));
@@ -2027,7 +2034,7 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
 
       String decPageId = (String) session.getAttribute("decPageId");
       if(decPageId != null && !decPageId.equals("")){
-    	  hasAccessThroughLink = canUserAccessWizardPageAndLinkedArtifcact(page.getPageDefinition().getSiteId(), decPageId, "/wizard/page/" + pageId.getValue());
+    	  hasAccessThroughLink = canUserAccessWizardPageAndLinkedArtifcact(wpd.getSiteId(), decPageId, "/wizard/page/" + pageId.getValue());
       }
 
       
@@ -2041,7 +2048,7 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
          //can I look at reviews/evals/reflections? - own, review or eval
          getReviewManager().getReviewsByParentAndType(
                id, Review.REFLECTION_TYPE,
-               page.getPageDefinition().getSiteId(),
+               wpd.getSiteId(),
                MatrixContentEntityProducer.MATRIX_PRODUCER);
          
          
@@ -2054,7 +2061,7 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
          //can I look at reviews/evals/reflections? - own or eval
          getReviewManager().getReviewsByParentAndType(
                id, Review.EVALUATION_TYPE,
-               page.getPageDefinition().getSiteId(),
+               wpd.getSiteId(),
                MatrixContentEntityProducer.MATRIX_PRODUCER);
       }
       
@@ -2062,7 +2069,7 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
          //can I look at reviews/evals/reflections? - own or review
          getReviewManager().getReviewsByParentAndType(
                id, Review.FEEDBACK_TYPE,
-               page.getPageDefinition().getSiteId(),
+               wpd.getSiteId(),
                MatrixContentEntityProducer.MATRIX_PRODUCER);         
       }
    }
@@ -2477,18 +2484,20 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
 
    public List getStyles(Id objectId) {
       WizardPage wp = getWizardPage(objectId);
+      ScaffoldingCell sCell = getScaffoldingCellByWizardPageDef(objectId);
 
-      if (wp != null) {
-         ScaffoldingCell sCell = getScaffoldingCellByWizardPageDef(
+      if (wp != null || sCell != null) {
+    	  if (sCell == null) {
+    		  sCell = getScaffoldingCellByWizardPageDef(
                      wp.getPageDefinition().getId());
-
+    	  }
          if (sCell != null) {
             List styles = new ArrayList();
             if (sCell.getScaffolding().getStyle() != null) {
                styles.add(sCell.getScaffolding().getStyle());
             }
-            if (wp.getPageDefinition().getStyle() != null) {
-               styles.add(wp.getPageDefinition().getStyle());
+            if (sCell.getWizardPageDefinition().getStyle() != null) {
+               styles.add(sCell.getWizardPageDefinition().getStyle());
             }
             return styles;
          }
@@ -3544,7 +3553,7 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
     	String emailBodyAnon = "";
     	String subjectAnon = "";
     	User user = UserDirectoryService.getCurrentUser();
-    	boolean isOwner = wizPage.getOwner().getId().equals(user.getEid());
+    	boolean isOwner = wizPage.getOwner().getId().getValue().equals(user.getEid());
     	Boolean isMatrix = wizPage.getPageDefinition().getType().equals(wizPage.getPageDefinition().WPD_MATRIX_TYPE);
     	String uCasePageType = isMatrix ? messages.getString("email_uppercase_matrixCell") : messages.getString("email_uppercase_wizardPage");
     	String pageType = isMatrix ? messages.getString("email_matrixCell") : messages.getString("email_wizardPage");
@@ -3895,14 +3904,16 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
 			//TODO: Make sure it's always okay to ignore the provider
 			for (DecoratedTaggingProvider provider : providers) {
 				for (Link link : links) {
+					TaggableActivityProducer producer = getTaggingManager().findProducerByRef(link.getActivityRef());
+					SecurityAdvisor myAdv = null;
+					if (producer.getItemPermissionOverride() != null) {
+						myAdv = new SimpleSecurityAdvisor(
+								SessionManager.getCurrentSessionUserId(), 
+								producer.getItemPermissionOverride());
+						getSecurityService().pushAdvisor(myAdv);
+					}
 					TaggableActivity activity = getTaggingManager().getActivity(link.getActivityRef(), provider.getProvider());
 					if (activity != null) {
-						TaggableActivityProducer producer = getTaggingManager().findProducerByRef(activity.getReference());
-						if (producer.getItemPermissionOverride() != null) {
-							getSecurityService().pushAdvisor(new SimpleSecurityAdvisor(
-									SessionManager.getCurrentSessionUserId(), 
-									producer.getItemPermissionOverride()));
-						}
 						List<TaggableItem> items = producer.getItems(activity, cellOwner, provider.getProvider(), true, criteriaRef);
 						
 						for (TaggableItem tagItem : items) {
@@ -3917,14 +3928,14 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
 						
 						activities.add(activity);
 						
-						if (producer.getItemPermissionOverride() != null) {
-							getSecurityService().popAdvisor();
-						}
 					}
 					else {
 						logger.warn("Link with ref " + link.getActivityRef() + " no longer exists.  Removing link.");
 						getLinkManager().removeLink(link);
 						links.remove(link);
+					}
+					if (producer.getItemPermissionOverride() != null && myAdv != null) {
+						getSecurityService().popAdvisor(myAdv);
 					}
 				}
 			}
@@ -4147,6 +4158,239 @@ private static final String SCAFFOLDING_ID_TAG = "scaffoldingId";
 
 	public UserNotificationPreferencesRegistration getWizardPreferencesConfig() {
 		return wizardPreferencesConfig;
+	}
+
+	public Map getConfirmFlagsForScaffolding(Scaffolding scaffolding){
+		Map model = new HashMap();
+		
+		//if scaffolding is published, warn user;    
+		if (scaffolding.isPublished()){
+			model.put(CONFIRM_PUBLISHED_FLAG, true);
+		}
+		
+		//Get reference of scaffolding, if scaffolding is new, grab default template:
+		String reference = "";
+		if(scaffolding.getId() == null){
+			//If site has not been created, grab the default template for scaffolding
+			try {
+				String realmTemplate = "!matrix.template.";
+				Site site = SiteService.getSite(scaffolding.getWorksiteId().getValue());
+				reference = realmTemplate + site.getType();
+			} catch (IdUnusedException e) {
+				e.printStackTrace();
+			}
+		}else{
+			reference = scaffolding.getReference();
+		}
+		
+		//get ID of scaffolding, if new, get default ID
+		Id scaffid;
+		//if scaffolding id does not exists (add matrix), 
+		//check if there is a "new"id, which acts like a temp id,
+		//if not, create one, then use the "new"id as a reference
+		if(scaffolding.getId() == null){
+			if(scaffolding.getNewId() == null){
+				scaffolding.setNewId(getIdManager().createId());
+			}
+			scaffid = scaffolding.getNewId();
+		}else{
+			scaffid = scaffolding.getId();
+		}
+		
+		model.putAll(getConfirmFlagsForRef(scaffolding.getWorksiteId().getValue(), scaffid, reference));
+
+		return model;
+	}
+	
+	public Map getConfirmFlagsForScaffoldingCell(ScaffoldingCell scaffoldingCell){
+		Map model = new HashMap();
+		if (scaffoldingCell.getScaffolding() == null) {
+			return model;
+		}
+		//if scaffolding is published, warn user;    
+		if (scaffoldingCell.getScaffolding().isPublished()){
+			model.put(CONFIRM_PUBLISHED_FLAG, true);
+		}
+		
+		model.putAll(getConfirmFlagsForRef(scaffoldingCell.getScaffolding()
+				.getWorksiteId().getValue(), scaffoldingCell
+				.isDefaultEvaluators() ? scaffoldingCell.getScaffolding()
+				.getId() : scaffoldingCell.getWizardPageDefinition().getId(), scaffoldingCell
+				.getScaffolding().getReference()));
+
+		return model;
+	}
+	
+	public Map getConfirmFlagsForRef(String siteId, Id id, String reference){
+		Map model = new HashMap();
+  	  
+  	  try {
+  		  //if site has groups, check to see evaluators have VIEW_ALL_GROUPS permission,
+  		  //if not, then warn the user about this
+  		  Site site = SiteService.getSite(siteId);
+  		  if(site != null && site.hasGroups()){
+  			  List evaluators = getAuthzManager().getAuthorizations(null,
+  					  MatrixFunctionConstants.EVALUATE_MATRIX, id);
+
+  			  
+  			  boolean warnUser = false;
+  			  HashSet rolesAllowedViewAllGroups = null;
+				try {
+					rolesAllowedViewAllGroups = (HashSet) AuthzGroupService.getAuthzGroup(reference).getRolesIsAllowed(MatrixFunctionConstants.VIEW_ALL_GROUPS);
+				} catch (GroupNotDefinedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+  			  for (Iterator iter = evaluators.iterator(); iter.hasNext();) {
+  				  boolean evaluatorViewAllGroups = true;	
+    			  boolean allEvalsAssignedToAGroup = true;
+  				  Authorization az = (Authorization) iter.next();
+  				  Agent agent = az.getAgent();
+  				  if(agent.isRole()){
+  					  if(rolesAllowedViewAllGroups != null)
+  						  evaluatorViewAllGroups = evaluatorViewAllGroups && rolesAllowedViewAllGroups.contains(agent.getDisplayName());
+  					  else
+  						  evaluatorViewAllGroups = false;
+
+  					  // check every user with this role to make sure they have at least 1 group assigned to them
+  					  if (!evaluatorViewAllGroups) {
+  						  Set<String> usersWithRole = (Set<String>) site
+  						  .getUsersHasRole(agent.getDisplayName());
+  						  for (String user : usersWithRole) {
+  							  Collection groups = site.getGroupsWithMember(user);
+  							  if (groups == null || groups.size() == 0) {
+  								  allEvalsAssignedToAGroup = false;
+  							  }
+  						  }
+  					  }
+
+  				  } else {
+  					  evaluatorViewAllGroups = evaluatorViewAllGroups
+  					  && getAuthzManager().isAuthorized(
+  							  agent,
+  							  MatrixFunctionConstants.VIEW_ALL_GROUPS,
+  							  getIdManager()
+  							  .getId(reference));
+  					  Collection groups = site.getGroupsWithMember(agent.getId().getValue());
+  					  if(groups == null || groups.size() == 0){
+  						  allEvalsAssignedToAGroup = false;
+  					  }
+  				  }
+  				  if(!evaluatorViewAllGroups && !allEvalsAssignedToAGroup){
+  					  warnUser = true;
+  					  break;
+  				  }
+  			  }
+  			  if(evaluators.size() > 0 && warnUser){
+  				  model.put(CONFIRM_EVAL_VIEW_ALL_GROUPS_FLAG, true);
+  			  }
+  		  }
+  	  } catch (IdUnusedException e) {
+  		  e.printStackTrace();
+  	  }
+  	  
+  	  return model;
+	}
+	
+
+	public Collection getFormsForSelect(String type, String currentSiteId, String currentUserId) {
+		Collection commentForms = getAvailableForms(currentSiteId, type, currentUserId);
+
+		List retForms = new ArrayList();
+		for (Iterator iter = commentForms.iterator(); iter.hasNext();) {
+			StructuredArtifactDefinitionBean sad = (StructuredArtifactDefinitionBean) iter
+			.next();
+			retForms.add(new CommonFormBean(sad.getId().getValue(), sad
+					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
+					.getName(), sad.getModified()));
+		}
+
+		Collections.sort(retForms, CommonFormBean.beanComparator);
+		return retForms;
+	}
+
+	protected Collection getAvailableForms(String siteId, String type, String currentUserId) {
+		return getStructuredArtifactDefinitionManager().findAvailableHomes(
+				getIdManager().getId(siteId), currentUserId, true, true);
+	}
+
+	protected Collection getWizardsForSelect(List wizards, String type, String currentSiteId) {		
+		List retWizards = new ArrayList();
+		for (Iterator iter = wizards.iterator(); iter.hasNext();) {
+			Wizard wizard = (Wizard) iter.next();
+			retWizards.add(new CommonFormBean(wizard.getId().getValue(), wizard
+					.getName(), WizardFunctionConstants.WIZARD_TYPE_SEQUENTIAL,
+					wizard.getOwner().getName(), wizard.getModified()));
+		}
+
+		Collections.sort(retWizards, CommonFormBean.beanComparator);
+		return retWizards;
+	}
+
+	public Collection getTypeDevices(List wizards, String siteId, Id deviceId, String type, String currentUserId) {
+		Collection all = getFormsForSelect(type, siteId, currentUserId);
+		all.addAll(getWizardsForSelect(wizards, type, siteId));
+
+		//add any of the forms that the user does not have access to but has been added to the matrix
+		//Id selectedId = scaffolding.getReviewDevice();
+
+		if (deviceId != null && !sadCollectionContainsId(all, deviceId.getValue())){
+			StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(deviceId);
+			all.add(new CommonFormBean(sad.getId().getValue(), sad
+					.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
+					.getName(), sad.getModified()));
+		}
+
+
+
+		return all;
+	}
+
+	private boolean sadCollectionContainsId(Collection sadCol, String id){
+		boolean contains = false;
+
+		for (Iterator iter = sadCol.iterator(); iter.hasNext();) {
+			CommonFormBean bean = (CommonFormBean) iter.next();
+
+			if(bean.getId().equals(id)){
+				contains = true;
+				break;
+			}
+		}
+
+		return contains;
+	}
+
+	public Collection getSelectedAdditionalFormDevices(Collection additionalForms, String siteId, String currentUserId) {
+		// cwm need to preserve the ordering
+		Collection returnCol = new ArrayList();
+		Collection col = getAdditionalFormDevices(siteId, currentUserId);
+		for (Iterator iter = col.iterator(); iter.hasNext();) {
+			CommonFormBean bean = (CommonFormBean) iter.next();
+			if (additionalForms.contains(bean.getId()))
+				returnCol.add(bean);
+		}
+
+		//add any of the forms that the user does not have access to but has been added to the matrix
+		//	Collection selectedIds = sCell.getAdditionalForms();
+		for (Iterator iterator = additionalForms.iterator(); iterator.hasNext();) {
+			String id = (String) iterator.next();
+			if (!sadCollectionContainsId(returnCol, id)){
+				StructuredArtifactDefinitionBean sad = getStructuredArtifactDefinitionManager().loadHome(getIdManager().getId(id));
+				returnCol.add(new CommonFormBean(sad.getId().getValue(), sad
+						.getDecoratedDescription(), FORM_TYPE, sad.getOwner()
+						.getName(), sad.getModified()));
+			}
+		}
+
+
+		return returnCol;
+	}
+
+	protected Collection getAdditionalFormDevices( String siteId, String currentUserId ) {
+		// Return all forms
+		return getFormsForSelect(null, siteId, currentUserId);
 	}
 
 }

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/reset-pass/branches/reset-pass-2.8.x/account-validator-impl/src/java/org/sakaiproject/accountvalidator/entity/impl/ValidationEntityProviderImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/reset-pass-2.9.0/account-validator-impl/src/java/org/sakaiproject/accountvalidator/entity/impl/ValidationEntityProviderImpl.java $
  * $Id: ValidationEntityProviderImpl.java 81430 2010-08-18 14:12:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

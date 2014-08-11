@@ -17,6 +17,13 @@ body{
 #portalContainer{
 }
 
+#portal_js_warn {
+    font-size: 1.2em;
+    background:#c00;
+    color:#fff;
+    padding:10px;
+}
+
 /*wrapper masthead  and site navigation 
  two possible states - logged in headerMax, not logged in - headerMin*/
 #headerMax,#headerMin{
@@ -28,11 +35,6 @@ body{
 	overflow:hidden;
 	border-bottom:2px solid #09C
 }
-
-/*accessibility links wrapper */
-#skipNav{
-}
-
 /*site hierarchy breadcrumb*/
 #siteHierarchy{
         clear:both;
@@ -57,7 +59,7 @@ a.lastBreadCrumb{
         display:inline;
 }
 #siteHierarchy li a, #siteHierarchy li a:visited{
-        color:#09c;
+        color:#15a;
 }
 
 /*wrapper for site content (includes as children #toolMenuWrap,#content and #footer)*/
@@ -120,12 +122,12 @@ site types are a local setting - adjust */
 }
 #footerLinks li{
 	margin:0;
-	border-right:1px solid #ccc;
+	border-left:1px solid #ccc;
 	display: inline;
 	list-style-type: none;
 	padding:0;
 }
-#footerLinks li:last-child{
+#footerLinks li:first-child{
 	border:none;
 }
 
@@ -223,7 +225,7 @@ that can be used or hidden,can also use a background:url(images/<image name>.<ex
 
 /*login links for CAS,logout link*/
 #mastLogin a,#mastLogin a:visited{
-	color: #09c;
+	color: #15a;
 	margin-top: 0;
 }
 
@@ -532,7 +534,6 @@ html>body .dhtml_more_tabs {
 	left:0;
 	filter:alpha(opacity=50);
 	opacity: 0.50;
-	-moz-opacity: 0.50;
 }
 
 /*block in case need to display any decorative element above or below the .tabHolder block*/
@@ -580,7 +581,6 @@ also hide if are going to be using icon links (as background of <a> nad <li>
 	filter:alpha(opacity=70);
 	color:#000;
 	opacity: 0.70;
-	-moz-opacity: 0.70;
 	text-decoration:none
 }
 
@@ -588,7 +588,7 @@ also hide if are going to be using icon links (as background of <a> nad <li>
 #subSites li a:link,#subSites li a{
 	display: block;
 	text-decoration: underline;
-	color: #09c;
+	color: #15a;
 	padding-bottom : 2px;
     padding-right : 23px !important;
     padding-top : 2px;
@@ -608,14 +608,14 @@ also hide if are going to be using icon links (as background of <a> nad <li>
 }
 
 #toolMenu li a.selected,
-#subSites li a:selected{
+#subSites li a.selected{
 	text-decoration: none;
 	color: #000;
 	cursor: text;
 }
 
 #toolMenu li a.selected:hover,
-#subSites li a:selected:hover{
+#subSites li a.selected:hover{
 	text-decoration: none;
 	color: #000;
 	cursor: text;
@@ -957,19 +957,52 @@ below they are contextually defined depending on the column as an example,as you
 
 /*a third wrapper - reserved for copyright blurbs*/
 .sakaiCopyrightInfo{
-	color: #09c;
+	color: #15a;
 }
 
 /*PART 8 - CONVENIENCE*/
 /*used to hide various blocks from sighted users that are in the source to help with accessibility*/
-.skip{
-	display: inline;
-	position: absolute;
-	top: -999px;
-	left: -999px;
-	height: 0;
+.portalBody .skip{
+    display: inline !important; 
+    position: fixed !important; 
+    height: 1px !important; 
+    width: 1px !important; 
+    overflow: hidden !important;
+    top:0px !important;
+    left:0px;
+		padding:0px 0px 0px 0px !important;
+} 
 
+/*jump-to links, tabbing into  */
+#skipNav a.internalSkip:focus, #skipNav a.internalSkip:active {
+    text-decoration:none;
+    font-size:90%;
+    position:fixed !important;
+    background:#0077b5;
+    border-color:#000;
+    border-width: 0 1px 1px 1px;
+    border-style:solid;
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    vertical-align:middle;
+    padding:6px 10px !important;
+    outline:none;
+    z-index:200000;
+    box-shadow:0px 0px 10px #000;
+    -webkit-box-shadow:0px 0px 10px #000;
+    -moz-box-shadow:0px 0px 10px #000000;
+    top:0 !important;
+    left:25%  !important;
+    height:auto  !important;
+    color:#fff;
+    width: auto  !important;
 }
+/*append the value of the accesskey attr to the text*/
+.internalSkip:after {content:' [' attr(accesskey) ']'}
 
 /* PART 9 - Tool Icons */
 
@@ -1043,6 +1076,10 @@ below they are contextually defined depending on the column as an example,as you
 
 .icon-sakai-iframe-site {
 	background-image: url(../../image/silk/house.png);
+}
+
+.icon-sakai-web-168 {
+    background-image: url(../../image/silk/application_go.png);
 }
 
 .icon-sakai-mailbox {
@@ -1238,6 +1275,9 @@ background-image: url(../../image/silk/comment.png);
 .icon-sakai-basiclti { 
 	background-image: url(../../image/silk/application_go.png); 
 }
+.icon-sakai-basiclti-admin { 
+	background-image: url(../../image/silk/application_go.png); 
+}
 .icon-sakai-mneme { 
 	background-image: url(../../image/sakai/tool-icons/sakai.mneme.png); 
 } 
@@ -1250,6 +1290,15 @@ background-image: url(../../image/silk/comment.png);
 .icon-sakai-melete { 
     background-image: url(../../image/sakai/tool-icons/sakai.melete.png); 
 } 
+.icon-sakai-lessonbuildertool {
+    background-image: url(../../image/silk/book_open.png);
+}
+.icon-sakai-signup {
+    background-image: url(../../image/silk/date.png);
+}
+.icon-sakai-site-roster2 { 
+	background-image: url(../../image/silk/vcard.png); 
+}
 
 /** Privacy Popup Styles **/
 div#privacy_tool_popup {
@@ -1273,7 +1322,6 @@ div#privacy_overlay {
 	height: 100%;
 	background-color: #000;
 	filter:alpha(opacity=70);
-	-moz-opacity: 0.7;
 	opacity: 0.7;
    z-index: 0;
 }
@@ -1292,3 +1340,96 @@ div#privacy_overlay {
 	font: normal 120% Verdana, Geneva, Arial, Helvetica, sans-serif;
 	text-decoration:none;
 }
+
+/* portal messages and alerts styles - not needed
+ * if not using tool from
+ * https://source.sakaiproject.org/contrib/umich/global-alert/
+ */
+#portalMessageContainer1_2{
+    z-index:3000;
+    height:auto;
+    position:fixed;
+    top:0;
+    left:30%;
+    right:30%;
+}
+#portalMessageContainer3{
+    z-index:3000;
+    height:auto;
+    position:fixed;
+    bottom:0;
+    left:30%;
+    right:30%;
+}
+.portalMessage{
+    padding:10px;
+    color:#fff;
+    margin-top:1px;
+    position:relative;
+    font-weight:bold;
+	-moz-box-shadow: 3px 3px 4px #000;
+	-webkit-box-shadow: 3px 3px 4px #000;
+	box-shadow: 3px 3px 4px #000;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+}
+.firstPortalMessage{
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.lastPortalMessage{
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+}    
+.portalMessagePriority1{
+    background:#c00;
+}
+.portalMessagePriority2{
+    background:#888;
+    padding:10px 25px 10px 10px;
+}
+.portalMessagePriority3{
+    background:green;
+    padding:10px 25px 10px 10px;
+}
+.portalMessage .dismissLink{
+    display:block;
+    padding:0 4px;
+    position:absolute;
+    top:3px;
+    right:3px;
+    cursor:pointer;
+    font-size:130%;
+    color:#fff;
+}
+
+.portletTitle .action a.tool-directurl{
+	padding:2px;
+	background: url(/library/image/silk/link.png) center right no-repeat;
+}
+        
+.portletTitle .action a.tool-directurl:hover{
+	background: url(/library/image/silk/link.png) center right no-repeat;
+}
+
+.direct-url-wrap {
+	font-size: 85%;
+	color: #555;
+}
+
+.direct-url-wrap textarea {
+	color: #000;
+	overflow:auto;
+	width:250px;
+	display:block;
+}
+

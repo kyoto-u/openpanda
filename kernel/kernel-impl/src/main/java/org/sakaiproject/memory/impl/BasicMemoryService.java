@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/memory/impl/BasicMemoryService.java $
- * $Id: BasicMemoryService.java 89397 2011-03-08 08:49:12Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/memory/impl/BasicMemoryService.java $
+ * $Id: BasicMemoryService.java 113396 2012-09-21 20:32:34Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -47,6 +47,7 @@ import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.CacheRefresher;
 import org.sakaiproject.memory.api.Cacher;
+import org.sakaiproject.memory.api.GenericMultiRefCache;
 import org.sakaiproject.memory.api.MemoryPermissionException;
 import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.memory.api.MultiRefCache;
@@ -515,7 +516,11 @@ public abstract class BasicMemoryService implements MemoryService, Observer
 				cache.setName(cacheName);
 				
 				// Not look for any custom configuration.
-				String config = serverConfigurationService().getString(name);
+				// Check for old configuration properties.
+				if(serverConfigurationService().getString(name) == null) {
+					M_log.warn("Old cache configuration "+ name+ " must be changed to memory."+ name);
+				}
+				String config = serverConfigurationService().getString("memory."+ name);
 				if (config != null && config.length() > 0) {
 					M_log.debug("Found configuration for cache: "+ name+ " of: "+ config);
 					new CacheInitializer().configure(config).initialize(
@@ -532,6 +537,16 @@ public abstract class BasicMemoryService implements MemoryService, Observer
 			cacheManager.addCache(name);
 			cache = cacheManager.getEhcache(name);		
 		}
+
+		//KNL-532 - Upgraded Ehcache 2.5.1 (2.1.0+) defaults to no stats collection.
+		//We may choose to allow configuration per-cache for performance tuning.
+		//For now, we default everything to on, while this property allows a system-wide override.
+		boolean override = false;
+		if (serverConfigurationService() != null) {
+			override = serverConfigurationService().getBoolean(
+					"memory.cache.statistics.force.disabled", false);
+		}
+		cache.setStatisticsEnabled(!override);
 		
 		return cache;
 		
@@ -619,6 +634,14 @@ public abstract class BasicMemoryService implements MemoryService, Observer
 	}
 
 	public MultiRefCache newMultiRefCache(String cacheName) {
+		return new MultiRefCacheImpl(
+				this,
+				eventTrackingService(),
+				authzGroupService(),
+				instantiateCache(cacheName));
+	}
+	
+	public GenericMultiRefCache newGenericMultiRefCache(String cacheName) {
 		return new MultiRefCacheImpl(
 				this,
 				eventTrackingService(),

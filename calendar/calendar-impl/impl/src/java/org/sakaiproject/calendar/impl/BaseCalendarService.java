@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
- * $Id: BaseCalendarService.java 118864 2013-01-25 19:11:10Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
+ * $Id: BaseCalendarService.java 104990 2012-02-23 15:13:38Z gjthomas@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -22,7 +22,6 @@
 package org.sakaiproject.calendar.impl;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
@@ -45,6 +44,7 @@ import java.util.Observable;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TimeZone;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,6 +78,7 @@ import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
 
 import org.apache.avalon.framework.logger.ConsoleLogger;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fop.apps.Driver;
@@ -92,7 +93,6 @@ import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.cover.AuthzGroupService;
 import org.sakaiproject.authz.cover.FunctionManager;
 import org.sakaiproject.authz.cover.SecurityService;
-import org.sakaiproject.assignment.api.AssignmentConstants;
 import org.sakaiproject.calendar.api.Calendar;
 import org.sakaiproject.calendar.api.CalendarEdit;
 import org.sakaiproject.calendar.api.CalendarEvent;
@@ -156,7 +156,6 @@ import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.SAXEntityReader;
 import org.sakaiproject.util.StorageUser;
-import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.Web;
 import org.sakaiproject.util.Xml;
@@ -167,7 +166,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
-import java.util.TimeZone;
 import java.util.Map.Entry;
 /**
  * <p>
@@ -197,7 +195,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	/** Security lock / event root for generic message events to make it a mail event. */
 	public static final String SECURE_SCHEDULE_ROOT = "calendar.";
 
-   private TransformerFactory transformerFactory = null;
+	private TransformerFactory transformerFactory = null;
    
    private DocumentBuilder docBuilder = null;
    
@@ -1319,7 +1317,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 	{
 		if (reference.startsWith(CalendarService.REFERENCE_ROOT))
 		{
-			String[] parts = StringUtil.split(reference, Entity.SEPARATOR);
+			String[] parts = reference.split(Entity.SEPARATOR);
 
 			String subType = null;
 			String context = null;
@@ -1802,7 +1800,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 														try
 														{
 															CalendarEdit calEdit = editCalendar(calendarRef);
-															String calFields = StringUtil.trimToNull(calEdit.getEventFields());
+															String calFields = StringUtils.trimToEmpty(calEdit.getEventFields());
 
 															if (calFields != null)
 																pValue = calFields + ADDFIELDS_DELIMITER + pValue;
@@ -1929,8 +1927,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			{
 				List oEvents = oCalendar.getEvents(null, null);
 
-				String oFields = StringUtil.trimToNull(oCalendar.getEventFields());
-				String nFields = StringUtil.trimToNull(nCalendar.getEventFields());
+				String oFields = StringUtils.trimToNull(oCalendar.getEventFields());
+				String nFields = StringUtils.trimToNull(nCalendar.getEventFields());
 				String allFields = "";
 
 				if (oFields != null)
@@ -1952,7 +1950,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 					try
 					{
 						// Skip calendar events based on assignment due dates
-						String assignmentId = oEvent.getField(AssignmentConstants.NEW_ASSIGNMENT_DUEDATE_CALENDAR_ASSIGNMENT_ID);
+						String assignmentId = oEvent.getField(CalendarUtil.NEW_ASSIGNMENT_DUEDATE_CALENDAR_ASSIGNMENT_ID);
 						if (assignmentId != null && assignmentId.length() > 0)
 							continue;
 
@@ -2929,11 +2927,13 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			BaseCalendarEventEdit bedit = (BaseCalendarEventEdit) edit;
 
 			// if the id has a time range encoded, as for one of a sequence of recurring events, separate that out
+			String indivEventEntityRef = null;
 			TimeRange timeRange = null;
 			int sequence = 0;
 			if (bedit.m_id.startsWith("!"))
 			{
-				String[] parts = StringUtil.split(bedit.m_id.substring(1), "!");
+				indivEventEntityRef = bedit.getReference();
+				String[] parts = bedit.m_id.substring(1).split("!");
 				try
 				{
 					timeRange = TimeService.newTimeRange(parts[0]);
@@ -2962,12 +2962,15 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 					// complete the edit
 					m_storage.commitEvent(this, edit);
+					// post event for excluding the instance
+					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_EXCLUSIONS, indivEventEntityRef, true));
 				}
 
 				// delete them all, i.e. the one initial event
 				else
 				{
 					m_storage.removeEvent(this, edit);
+					EventTrackingService.post(EventTrackingService.newEvent(EVENT_REMOVE_CALENDAR_EVENT, edit.getReference(), true));
 				}
 			}
 
@@ -2975,12 +2978,13 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			else
 			{
 				m_storage.removeEvent(this, edit);
+				EventTrackingService.post(EventTrackingService.newEvent(EVENT_REMOVE_CALENDAR_EVENT, edit.getReference(), true));
 			}
 
 			// track event
 			Event event = EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR, edit.getReference(), true);
 			EventTrackingService.post(event);
-
+			
 			// calendar notification
 			notify(event);
 
@@ -3052,7 +3056,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			int sequence = 0;
 			if (eventId.startsWith("!"))
 			{
-				String[] parts = StringUtil.split(eventId.substring(1), "!");
+				String[] parts = eventId.substring(1).split("!");
 				try
 				{
 					timeRange = TimeService.newTimeRange(parts[0]);
@@ -3131,7 +3135,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			}
 
 			BaseCalendarEventEdit bedit = (BaseCalendarEventEdit) edit;
-         
+			         
          // If creator doesn't exist, set it now (backward compatibility)
          if ( edit.getCreator() == null || edit.getCreator().equals("") )
             edit.setCreator(); 
@@ -3140,11 +3144,13 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
          edit.setModifiedBy(); 
 
 			// if the id has a time range encoded, as for one of a sequence of recurring events, separate that out
+         	String indivEventEntityRef = null;
 			TimeRange timeRange = null;
 			int sequence = 0;
 			if (bedit.m_id.startsWith("!"))
 			{
-				String[] parts = StringUtil.split(bedit.m_id.substring(1), "!");
+				indivEventEntityRef = bedit.getReference();
+				String[] parts = bedit.m_id.substring(1).split("!");
 				try
 				{
 					timeRange = TimeService.newTimeRange(parts[0]);
@@ -3171,6 +3177,8 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 					newEvent.setPartial(edit);
 					m_storage.commitEvent(this, newEvent);
 					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR, newEvent.getReference(), true));
+					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_EXCLUDED, newEvent.getReference(), true));
+					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_EXCLUSIONS, indivEventEntityRef, true));
 
 					// get the edit back to initial values... so only the exclusion is changed
 					edit = (CalendarEventEdit) m_storage.getEvent(this, bedit.m_id);
@@ -3192,12 +3200,15 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 
 					// adjust the base range if there was an edit to range
 					bedit.m_range.adjust(timeRange, newTimeRange);
+					
 				}
 			}
 
 			// update the properties
 			// addLiveUpdateProperties(edit.getPropertiesEdit());//%%%
-
+			
+			postEventsForChanges(bedit);
+			
 			// complete the edit
 			m_storage.commitEvent(this, edit);
 
@@ -3238,6 +3249,84 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 		} // commitEvent
 
 		/**
+		 * @param newEvent
+		 */
+		public void postEventsForChanges(BaseCalendarEventEdit newEvent) {
+			// determine which events should be posted by comparing with saved properties
+			BaseCalendarEventEdit savedEvent = (BaseCalendarEventEdit) this.findEvent(newEvent.m_id);
+			if(savedEvent == null) {
+				
+			} else {
+				// has type changed? 
+				String savedType = savedEvent.getType();
+				String newType = newEvent.getType();
+				if(savedType == null || newType == null) {
+					// TODO: is this an error?
+				} else {
+					if (!newType.equals(savedType))
+					{
+						// post type-change event
+						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_TYPE, newEvent.getReference() + "::" + savedType + "::" + newType, true));
+					}
+				}
+				
+				// has title changed?
+				if(savedEvent.getDisplayName() != null && ! savedEvent.getDisplayName().equals(newEvent.getDisplayName())) {
+					// post title-change event
+					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_TITLE, newEvent.getReference(), true));
+				}
+				
+				// has start-time changed?
+				TimeRange savedRange = savedEvent.getRange();
+				TimeRange newRange = newEvent.getRange();
+				if(savedRange == null || newRange == null) {
+					// TODO: Is this an error?
+				} else if(savedRange.firstTime() != null && savedRange.firstTime().compareTo(newRange.firstTime()) != 0) {
+					// post time-change event 
+					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_TIME, newEvent.getReference(), true));
+				}
+				
+				// has access changed?
+				if(savedEvent.getAccess() != newEvent.getAccess()) {
+					// post access-change event
+					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_ACCESS, newEvent.getReference(), true));
+				} else {
+					Collection savedGroups = savedEvent.getGroups();
+					Collection newGroups = newEvent.getGroups();
+					if(! (savedGroups.containsAll(newGroups) && newGroups.containsAll(savedGroups))) {
+						// post access-change event
+						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_ACCESS, newEvent.getReference(), true));
+					}
+				}
+				
+				// has frequency changed (other than exclusions)? 
+				RecurrenceRule savedRule = savedEvent.getRecurrenceRule();
+				RecurrenceRule newRule = newEvent.getRecurrenceRule();
+				if(savedRule == null && newRule == null) {
+					// do nothing -- no change
+				} else if(savedRule == null || newRule == null) {
+					// post frequency-change event
+					EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));
+				} else {
+					// check for changes in properties of the rules
+					// (rule.getCount() rule.getFrequency() rule.getInterval() rule.getUntil() 
+					if(savedRule.getCount() != newRule.getCount() || savedRule.getInterval() != newRule.getInterval()) {
+						// post frequency-change event
+						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));								
+					} else if((savedRule.getFrequency() != null && ! savedRule.getFrequency().equals(newRule.getFrequency())) || (savedRule.getFrequency() == null && newRule.getFrequency() != null)) {
+						// post frequency-change event
+						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));								
+					} else if((savedRule.getUntil() == null && newRule.getUntil() != null) 
+							|| (savedRule.getUntil() != null && newRule.getUntil() == null)
+							|| (savedRule.getUntil() != null && savedRule.getUntil().getTime() != newRule.getUntil().getTime())) {
+						// post frequency-change event
+						EventTrackingService.post(EventTrackingService.newEvent(EVENT_MODIFY_CALENDAR_EVENT_FREQUENCY, newEvent.getReference(), true));								
+					}
+				}
+			}
+		}
+
+		/**
 		 * Cancel the changes made to a CalendarEventEdit object, and release the lock. The CalendarEventEdit is disabled, and not to be used after this call.
 		 * 
 		 * @param edit
@@ -3260,7 +3349,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			int sequence = 0;
 			if (bedit.m_id.startsWith("!"))
 			{
-				String[] parts = StringUtil.split(bedit.m_id.substring(1), "!");
+				String[] parts = bedit.m_id.substring(1).split( "!");
 				try
 				{
 					timeRange = TimeService.newTimeRange(parts[0]);
@@ -3370,7 +3459,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 			int sequence = 0;
 			if (eventId.startsWith("!"))
 			{
-				String[] parts = StringUtil.split(eventId.substring(1), "!");
+				String[] parts = eventId.substring(1).split("!");
 				try
 				{
 					timeRange = TimeService.newTimeRange(parts[0]);
@@ -3833,7 +3922,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 								if (ruleChildElement.getTagName().equals("rule") || ruleChildElement.getTagName().equals("ex-rule"))
 								{
 									// get the rule name - modern style encoding
-									String ruleName = StringUtil.trimToNull(ruleChildElement.getAttribute("name"));
+									String ruleName = StringUtils.trimToNull(ruleChildElement.getAttribute("name"));
 
 									// deal with old data
 									if (ruleName == null)
@@ -4865,7 +4954,7 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 						else if ("rule".equals(qName) || "ex-rule".equals(qName))
 						{
 							// get the rule name - modern style encoding
-							String ruleName = StringUtil.trimToNull(attributes.getValue("name"));
+							String ruleName = StringUtils.trimToNull(attributes.getValue("name"));
 
 							// deal with old data
 							if (ruleName == null)
@@ -6543,10 +6632,11 @@ public abstract class BaseCalendarService implements CalendarService, StorageUse
 					description.append("\n");					
 				}
 			}
-			if(description.length() > 0)
-                                //Replace \r with \n
+			if(description.length() > 0) {
+                //Replace \r with \n
 				icalEvent.getProperties().add(new Description(description.toString().replace('\r', '\n')));			
-			
+            }
+		    	
 			if ( event.getLocation() != null && !event.getLocation().equals("") )
             icalEvent.getProperties().add(new Location(event.getLocation()));
 			

@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/branches/sakai-2.8.x/wizard/tool/src/java/org/theospi/portfolio/wizard/tool/WizardTool.java $
-* $Id: WizardTool.java 85788 2010-12-01 19:16:22Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.0/wizard/tool/src/java/org/theospi/portfolio/wizard/tool/WizardTool.java $
+* $Id: WizardTool.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -1166,7 +1166,7 @@ public class WizardTool extends BuilderTool {
       Placement placement = getToolManager().getCurrentPlacement();
       String currentSiteId = placement.getContext();
       Collection forms = 
-               getWizardManager().getAvailableForms(currentSiteId, type);
+               getWizardManager().getAvailableForms(currentSiteId, type, getSessionManager().getCurrentSessionUserId());
       
       List retForms = new ArrayList();
       for(Iterator iter = forms.iterator(); iter.hasNext();) {

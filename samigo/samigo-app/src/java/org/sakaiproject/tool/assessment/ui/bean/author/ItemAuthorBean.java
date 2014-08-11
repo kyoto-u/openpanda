@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemAuthorBean.java $
- * $Id: ItemAuthorBean.java 85236 2010-11-20 01:03:36Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemAuthorBean.java $
+ * $Id: ItemAuthorBean.java 113417 2012-09-21 21:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -34,6 +34,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
+import java.text.Collator;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
@@ -84,7 +87,7 @@ import org.sakaiproject.util.ResourceLoader;
 
 /**
  * Backing bean for Item Authoring, uses ItemBean for UI
- * $Id: ItemAuthorBean.java 85236 2010-11-20 01:03:36Z ktsao@stanford.edu $
+ * $Id: ItemAuthorBean.java 113417 2012-09-21 21:08:11Z ottenhoff@longsight.com $
  */
 public class ItemAuthorBean
   implements Serializable
@@ -720,6 +723,33 @@ public class ItemAuthorBean
     return list;
   }
 
+  public ArrayList getSelectRelativeWidthList() {
+	  ArrayList<SelectItem> list = new ArrayList();
+	  ResourceLoader rb = new ResourceLoader(
+		"org.sakaiproject.tool.assessment.bundle.AuthorMessages");
+	  
+	  final String[] widthLists = {
+			  rb.getString("matrix_width_list_default"),
+			  rb.getString("matrix_width_list_1"),
+			  rb.getString("matrix_width_list_2"),
+			  rb.getString("matrix_width_list_3"),
+			  rb.getString("matrix_width_list_4"),
+			  rb.getString("matrix_width_list_5"),
+			  rb.getString("matrix_width_list_6"),
+			  rb.getString("matrix_width_list_7"),
+			  rb.getString("matrix_width_list_8"),
+			  rb.getString("matrix_width_list_9")};
+	  
+	  for (int i=0; i<widthLists.length;i++)
+	  {
+		  SelectItem selectItem = new SelectItem();
+		  selectItem.setLabel(widthLists[i]);
+		  selectItem.setValue(Integer.toString(i));
+		  list.add(selectItem);
+	  }
+	  return list;
+  }
+  
   /**
 	 * Returns a generic Map of section options (for use by helpers that won't
 	 * be in the same class loader and would thus get class cast issues from
@@ -804,7 +834,12 @@ public class ItemAuthorBean
 		public int compare(Object o1, Object o2) {
 			SelectItem i1 = (SelectItem) o1;
 			SelectItem i2 = (SelectItem) o2;
-			return i1.getLabel().compareToIgnoreCase(i2.getLabel());
+			RuleBasedCollator collator_ini = (RuleBasedCollator)Collator.getInstance();
+			try {
+				RuleBasedCollator collator= new RuleBasedCollator(collator_ini.getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+				return collator.compare(i1.getLabel(), i2.getLabel());
+			} catch (ParseException e) {}
+			return Collator.getInstance().compare(i1.getLabel(), i2.getLabel());
 		}
 	}
   

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/entity/api/ResourceProperties.java $
- * $Id: ResourceProperties.java 74133 2010-03-03 09:19:49Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/entity/api/ResourceProperties.java $
+ * $Id: ResourceProperties.java 93399 2011-06-01 11:31:40Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -170,6 +170,9 @@ public interface ResourceProperties extends Serializable
 
 	/** Property name on a ContentEntity indicating the ResourceType that defines its properties. */
 	static final String PROP_RESOURCE_TYPE = "SAKAI:resource_type";
+	
+	/** Property name on a ContentEntity indicating if we should add HTML header/footer.*/
+	static final String PROP_ADD_HTML = "SAKAI:add_html";
 
 	/**
 	 * Property name on a Resource or Collection which will allow resources with
@@ -481,7 +484,7 @@ public interface ResourceProperties extends Serializable
 	 *        The DOM elements, the top of which is the containing element of the new "resource" element.
 	 * @return The newly added element.
 	 */
-	Element toXml(Document doc, Stack stack);
+	Element toXml(Document doc, Stack<Element> stack);
 
 	/**
 	 * Add a single valued property.

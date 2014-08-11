@@ -52,6 +52,7 @@
 		</p>	
 #if ($source)
 		<p class="shorttext indnt1">
+			<span class="reqStar">*</span>
 			<label for="source">$tlang.getString("gen.url")</label>
 			<input type="text" name="source" id="source" value="$!validator.escapeHtml($source)" size="40"/>
 		</p>
@@ -68,5 +69,6 @@
 			<input type="submit" accesskey ="s" class="active" name="$doUpdate" value="$tlang.getString('gen.save')" />
 			<input type="submit" accesskey ="x" name="$doCancel" value="$tlang.getString('gen.cancel')" />
 		</p>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>

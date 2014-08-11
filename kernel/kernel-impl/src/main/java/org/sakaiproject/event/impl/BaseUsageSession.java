@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseUsageSession.java $
- * $Id: BaseUsageSession.java 87900 2011-02-01 09:28:58Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseUsageSession.java $
+ * $Id: BaseUsageSession.java 87798 2011-01-28 07:00:38Z david.horwitz@uct.ac.za $
  **********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation.

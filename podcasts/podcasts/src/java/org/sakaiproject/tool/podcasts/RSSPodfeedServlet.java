@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/branches/sakai-2.8.x/podcasts/src/java/org/sakaiproject/tool/podcasts/RSSPodfeedServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.0/podcasts/src/java/org/sakaiproject/tool/podcasts/RSSPodfeedServlet.java $
  * $Id: RSSPodfeedServlet.java 59679 2009-04-03 23:27:51Z arwhyte@umich.edu $
  ***********************************************************************************
  *

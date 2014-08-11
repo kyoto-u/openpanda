@@ -9,7 +9,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: shortAnswer.jsp 84754 2010-11-15 20:17:34Z ktsao@stanford.edu $
+* $Id: shortAnswer.jsp 92665 2011-05-05 23:04:53Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -81,7 +81,7 @@
   <div class="tier2">
     <div class="shorttext">  <h:outputLabel value="#{authorMessages.answer_point_value}" />
     <h:inputText id="answerptr" value="#{itemauthor.currentItem.itemScore}" required="true" onchange="toPoint(this.id);">
-	<f:validateDoubleRange/>
+	<f:validateDoubleRange minimum="0.00"/>
 	</h:inputText>
 	<br/> 
 	<h:message for="answerptr" styleClass="validate"/>
@@ -133,7 +133,7 @@
  <!-- WYSIWYG -->
  <h:panelGrid>
    <samigo:wysiwyg rows="140" value="#{itemauthor.currentItem.corrAnswer}" hasToggle="yes">
-     <f:validateLength maximum="4000"/>
+     <f:validateLength maximum="60000"/>
    </samigo:wysiwyg>
 </h:panelGrid>
 <br/>

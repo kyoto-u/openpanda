@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/memory/api/MemoryService.java $
- * $Id: MemoryService.java 89397 2011-03-08 08:49:12Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/memory/api/MemoryService.java $
+ * $Id: MemoryService.java 93282 2011-05-26 15:17:24Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -193,6 +193,14 @@ public interface MemoryService
 	 */
 	MultiRefCache newMultiRefCache(String cacheName);
 
+	/**
+	 * Construct a multi-ref Cache. No automatic refresh: expire only, from time and events.
+	 * 
+	 * @param cacheName Load a defined bean from ComponentManager or create a default cache with this name.
+	 */
+	GenericMultiRefCache newGenericMultiRefCache(String cacheName);
+	
+	
 	/**
 	 * Get a status report of memory users.
 	 * 

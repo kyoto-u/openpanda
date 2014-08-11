@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-app/src/java/org/sakaiproject/jsf/app/SakaiViewHandler.java $
- * $Id: SakaiViewHandler.java 90596 2011-03-25 15:16:13Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-app/src/java/org/sakaiproject/jsf/app/SakaiViewHandler.java $
+ * $Id: SakaiViewHandler.java 108861 2012-06-01 20:21:55Z gjthomas@iupui.edu $
  **********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.tool.api.Tool;
+import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Web;
 
 /**
@@ -41,7 +42,7 @@ import org.sakaiproject.util.Web;
  * SakaiViewHandler extends the basic ViewHandler functionality for getActionURL(). getActionURL() is extended ...
  * 
  * @author University of Michigan, Sakai Software Development Team
- * @version $Revision: 90596 $
+ * @version $Revision: 108861 $
  */
 public class SakaiViewHandler extends ViewHandler
 {
@@ -59,6 +60,9 @@ public class SakaiViewHandler extends ViewHandler
 	/** The wrapped ViewHandler. */
 	private ViewHandler m_wrapped = null;
 
+	/** Resource bundle using current language locale. */
+	private ResourceLoader rb;
+
 	private SakaiViewHandler()
 	{
 	}
@@ -66,6 +70,7 @@ public class SakaiViewHandler extends ViewHandler
 	public SakaiViewHandler(ViewHandler wrapped)
 	{
 		m_wrapped = wrapped;
+		rb = new ResourceLoader();
 	}
 
 	public String getActionURL(FacesContext context, String viewId)
@@ -107,7 +112,7 @@ public class SakaiViewHandler extends ViewHandler
 
 	public Locale calculateLocale(FacesContext arg0)
 	{
-		return m_wrapped.calculateLocale(arg0);
+		return rb.getLocale();
 	}
 
 	public String calculateRenderKitId(FacesContext arg0)

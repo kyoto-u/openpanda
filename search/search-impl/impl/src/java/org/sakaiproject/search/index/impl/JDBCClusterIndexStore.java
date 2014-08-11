@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/index/impl/JDBCClusterIndexStore.java $
- * $Id: JDBCClusterIndexStore.java 118814 2013-01-25 03:21:38Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/index/impl/JDBCClusterIndexStore.java $
+ * $Id: JDBCClusterIndexStore.java 113414 2012-09-21 21:04:25Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -976,10 +976,7 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 		PreparedStatement segmentUpdate = null;
 		PreparedStatement segmentInsert = null;
 		FileChannel packetStream = null;
-		FileInputStream packetFIS = null;
 		FileChannel sharedStream = null;
-		FileOutputStream sharedFOS = null;
-		
 		File packetFile = null;
 		File sharedFinalFile = null;
 		File sharedTempFile = null;
@@ -992,14 +989,12 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 			packetFile = clusterStorage.packPatch();
 			if (packetFile.exists())
 			{
-				packetFIS = new FileInputStream(packetFile);
-				packetStream = packetFIS.getChannel();
+				packetStream = new FileInputStream(packetFile).getChannel();
 				File sharedTempFileParent = sharedTempFile.getParentFile();
 				if (!sharedTempFileParent.exists() && !sharedTempFileParent.mkdirs()) {
 					log.warn("couldn't create " + sharedTempFileParent.getPath());
 				}
-				sharedFOS = new FileOutputStream(sharedTempFile);
-				sharedStream = sharedFOS.getChannel();
+				sharedStream = new FileOutputStream(sharedTempFile).getChannel();
 
 				doBlockedStream(packetStream, sharedStream);
 
@@ -1047,13 +1042,11 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 		}
 		finally
 		{
-			
 			try
 			{
 				if (packetStream != null) 
 				{
 					packetStream.close();
-					packetFIS.close();
 				}
 			}
 			catch (Exception ex)
@@ -1073,7 +1066,6 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 				if (sharedStream != null)
 				{
 					sharedStream.close();
-					sharedFOS.close();
 				}
 			}
 			catch (Exception ex)
@@ -1722,10 +1714,7 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 		{
 			try
 			{
-				if (connection != null)
-				{
-					connection.rollback();
-				}
+				connection.rollback();
 			}
 			catch (Exception e)
 			{
@@ -1738,10 +1727,7 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 		{
 			try
 			{
-				if (connection != null) 
-				{
-					connection.close();
-				}
+				connection.close();
 			}
 			catch (Exception e)
 			{
@@ -1952,9 +1938,7 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 		PreparedStatement segmentUpdate = null;
 		PreparedStatement segmentInsert = null;
 		FileChannel packetStream = null;
-		FileInputStream packetFIS = null;
 		FileChannel sharedStream = null;
-		FileOutputStream sharedFOS = null;
 		File packetFile = null;
 		File sharedFinalFile = null;
 		File sharedTempFile = null;
@@ -1967,15 +1951,13 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 			packetFile = clusterStorage.packSegment(addsi, newVersion);
 			if (packetFile.exists())
 			{
-				packetFIS = new FileInputStream(packetFile);
-				packetStream = packetFIS.getChannel();
+				packetStream = new FileInputStream(packetFile).getChannel();
 				File parentFile = sharedTempFile.getParentFile();
 				if (!parentFile.exists() && !parentFile.mkdirs())
 				{
 					log.warn("Unable to create directory " + sharedTempFile.getParentFile().getPath());
 				}
-				sharedFOS = new FileOutputStream(sharedTempFile);
-				sharedStream = sharedFOS.getChannel();
+				sharedStream = new FileOutputStream(sharedTempFile).getChannel();
 
 				// Copy file contents from source to destination
 				doBlockedStream(packetStream, sharedStream);
@@ -2042,7 +2024,6 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 			try
 			{
 				packetStream.close();
-				packetFIS.close();
 			}
 			catch (Exception ex)
 			{
@@ -2059,7 +2040,6 @@ public class JDBCClusterIndexStore implements ClusterFilesystem
 			try
 			{
 				sharedStream.close();
-				sharedFOS.close();
 			}
 			catch (Exception ex)
 			{

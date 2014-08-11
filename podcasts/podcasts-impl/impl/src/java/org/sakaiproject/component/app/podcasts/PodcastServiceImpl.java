@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/branches/sakai-2.8.x/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/PodcastServiceImpl.java $
- * $Id: PodcastServiceImpl.java 93915 2011-06-21 14:00:49Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.0/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/PodcastServiceImpl.java $
+ * $Id: PodcastServiceImpl.java 113308 2012-09-21 16:32:56Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -24,28 +24,23 @@ package org.sakaiproject.component.app.podcasts;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.api.app.podcasts.PodcastService;
 import org.sakaiproject.api.app.podcasts.PodcastPermissionsService;
-import org.sakaiproject.authz.api.Member;
+import org.sakaiproject.api.app.podcasts.PodcastService;
+import org.sakaiproject.api.app.podcasts.exception.PodcastException;
 import org.sakaiproject.authz.api.SecurityAdvisor;
-import org.sakaiproject.authz.api.SecurityAdvisor.SecurityAdvice;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentCollectionEdit;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentResourceEdit;
-import org.sakaiproject.content.api.GroupAwareEntity.AccessMode;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityPropertyNotDefinedException;
 import org.sakaiproject.entity.api.EntityPropertyTypeException;
@@ -66,7 +61,7 @@ import org.sakaiproject.exception.OverQuotaException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
-import org.sakaiproject.site.api.Group;
+import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.cover.TimeService;
@@ -74,7 +69,6 @@ import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.Validator;
 
 public class PodcastServiceImpl implements PodcastService {
 	/** Used to retrieve global podcast title and description from podcast folder collection **/
@@ -263,13 +257,13 @@ public class PodcastServiceImpl implements PodcastService {
 		catch (TypeException e) {
 			LOG.error("TypeException when trying to get podcast collection for site: "
 							+ siteId + ": " + e.getMessage(), e);
-			throw new Error(e);
+			throw new PodcastException(e);
 
 		} 
 		catch (IdUnusedException e) {
 			LOG.warn("IdUnusedException while attempting to get podcast collection. "
 							+ "for site: " + siteId + ". " + e.getMessage(), e);
-			throw new Error(e);
+			throw e;
 
 		}
 		catch (PermissionException e) {
@@ -308,25 +302,25 @@ public class PodcastServiceImpl implements PodcastService {
 		catch (TypeException e) {
 			LOG.error("TypeException when trying to get podcast collection for site: "
 							+ siteId + ": " + e.getMessage(), e);
-			throw new Error(e);
+			throw new PodcastException(e);
 
 		} 
 		catch (IdUnusedException e) {
 			LOG.error("IdUnusedException when trying to get podcast collection for edit in site: "
 							+ siteId + " " + e.getMessage(), e);
-			throw new Error(e);
+			throw e;
 
 		} 
 		catch (PermissionException e) {
 			LOG.error("PermissionException when trying to get podcast collection for edit in site: "
 							+ siteId + " " + e.getMessage(), e);
-			throw new Error(e);
+			throw e;
 
 		} 
 		catch (InUseException e) {
 			LOG.warn("InUseException attempting to retrieve podcast folder " + podcastsCollection  
 							+ " for site: " + siteId + ". " + e.getMessage(), e);
-			throw new Error(e);
+			throw e;
 			
 		}
 
@@ -487,7 +481,7 @@ public class PodcastServiceImpl implements PodcastService {
 		catch (TypeException e1) {
 			LOG.error("TypeException while trying to determine correct podcast folder Id String "
 							+ " for site: " + siteId + ". " + e1.getMessage(), e1);
-			throw new Error(e1);
+			throw new PodcastException(e1);
 		} 
 		catch (IdUnusedException e2) {
 			// Podcasts is truly not the name of the folder, so drop through and try another
@@ -505,16 +499,20 @@ public class PodcastServiceImpl implements PodcastService {
 				//LOG.warn("IdUnusedException while trying to determine correct podcast folder id "
 				//		+ " for site: " + siteId + ". " + e.getMessage());
 				
+				if (!siteHasTool(siteId, "sakai.podcasts")) {
+					return null;
+				}
 				// if we get here it does not exist so create
 				if (isStudent) {
 					enablePodcastSecurityAdvisor();
 				}
 				createPodcastsFolder(siteCollection + COLLECTION_PODCASTS + Entity.SEPARATOR, siteId);
+				return siteCollection + COLLECTION_PODCASTS + Entity.SEPARATOR;
 			} 
 			catch (TypeException e) {
 				LOG.error("TypeException while trying to determine correct podcast folder Id String "
 						+ " for site: " + siteId + ". " + e.getMessage(), e);
-				throw new Error(e);
+				throw new PodcastException(e);
 			}
 		}
 		finally {
@@ -522,6 +520,29 @@ public class PodcastServiceImpl implements PodcastService {
 		}
 		
 		return null;
+	}
+
+	/**
+	 * Determines whether the site has the specified tool.
+	 * 
+	 * @param siteId
+	 *            The site id to check
+	 * @param toolId
+	 *            The tool id to check
+	 * @return True - if it has, false - otherwise
+	 */
+	private boolean siteHasTool(String siteId, String toolId) {
+		boolean result = false;
+		try {
+			Site site = SiteService.getSite(siteId);
+			if (site.getToolForCommonId(toolId) != null) {
+				result = true;
+			}
+		} catch (IdUnusedException e) {
+			LOG.warn("IdUnusedException while trying to determine whether site "
+					+ siteId + " has tool " + toolId + ". " + e.getMessage());
+		}
+		return result;
 	}
 
 	/**
@@ -616,7 +637,7 @@ public class PodcastServiceImpl implements PodcastService {
 		catch (TypeException e) {
 			LOG.error("TypeException while attempting to pull resource: "
 					+ resourceId + " for site: " + getSiteId() + ". " + e.getMessage(), e);
-			throw new Error(e);
+			throw new PodcastException(e);
 		}
 		
 		return crEdit;
@@ -642,7 +663,7 @@ public class PodcastServiceImpl implements PodcastService {
 		catch (TypeException e) {
 			LOG.error("TypeException while attempting to pull resource: "
 					+ resourceId + " for site: " + getSiteId() + ". " + e.getMessage(), e);
-			throw new Error(e);
+			throw new PodcastException(e);
 		}
 		catch (InUseException e) {
 			// Weirdness, should not be in use
@@ -940,13 +961,13 @@ public class PodcastServiceImpl implements PodcastService {
 		catch (IdUnusedException e) {
 			LOG.error(e.getMessage() + " while revising podcasts for site: "
 					+ getSiteId() + ". ", e);
-			throw new Error(e);
+			throw new PodcastException(e);
 
 		}
 		catch (TypeException e) {
 			LOG.error(e.getMessage() + " while revising podcasts for site: " 
 							+ getSiteId() + ". ", e);
-			throw new Error(e);
+			throw new PodcastException(e);
 
 		}
 	}
@@ -1160,7 +1181,7 @@ public class PodcastServiceImpl implements PodcastService {
 			//         EntityPropertyTypeException, ParseException
 			LOG.error(e.getMessage() + " while setting DISPLAY_DATE for "
 							+ "file in site " + siteId + ". " + e.getMessage(), e);
-			throw new Error(e);
+			throw new PodcastException(e);
 		} 
 
 		try {
@@ -1291,7 +1312,7 @@ public class PodcastServiceImpl implements PodcastService {
 		catch (TypeException e) {
 			LOG.error("TypeException while getting the resource " + resourceId
 					+ "'s URL. Resource from site " + getSiteId() + ". " + e.getMessage(), e);
-			throw new Error(e);
+			throw new PodcastException(e);
 		}
 
 		return Url;
@@ -1345,7 +1366,7 @@ public class PodcastServiceImpl implements PodcastService {
 				contentHostingService.commitCollection(collection);
 			} catch (Exception e) {
 				LOG.warn("Failed to update access for collection: "+ podcastsCollection);
-				throw new Error(e);
+				throw new PodcastException(e);
 			} finally {
 				if (collection != null && collection.isActiveEdit()) {
 					contentHostingService.cancelCollection(collection);
@@ -1355,7 +1376,7 @@ public class PodcastServiceImpl implements PodcastService {
 		catch (PermissionException e) {
 			LOG.warn("PermissionException attempting to retrieve podcast folder id "
 							+ " for site " + getSiteId() + ". " + e.getMessage(), e);
-			throw new Error(e);
+			throw new PodcastException(e);
 
 		}
 	}
@@ -1384,7 +1405,7 @@ public class PodcastServiceImpl implements PodcastService {
 		catch (PermissionException e) {
 			LOG.warn("PermissionException attempting to retrieve podcast folder id "
 							+ " for site " + getSiteId() + ". " + e.getMessage(), e);
-			throw new Error(e);
+			throw new PodcastException(e);
 			
 		}
 
@@ -1494,7 +1515,7 @@ public class PodcastServiceImpl implements PodcastService {
 			//			InUseException
 			LOG.error(e.getMessage() + " while attempting to create Podcasts folder: "
 							+ " for site: " + siteId + ". NOT CREATED... " + e.getMessage(), e);
-			throw new Error(e);
+			throw new PodcastException(e);
 		}
 	}
 

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseEventTrackingService.java $
- * $Id: BaseEventTrackingService.java 118907 2013-01-28 22:46:09Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseEventTrackingService.java $
+ * $Id: BaseEventTrackingService.java 92107 2011-04-22 11:17:01Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -634,15 +634,6 @@ public abstract class BaseEventTrackingService implements EventTrackingService
 				}
 			}
 			
-			// KNL-997
-			String uId = sessionManager().getCurrentSessionUserId();
-			if (uId == null)
-			{
-				uId = "?";
-			}
-			setUserId(uId);
-			
-			
 		}
 
 		/**
@@ -666,14 +657,6 @@ public abstract class BaseEventTrackingService implements EventTrackingService
 			m_modify = modify;
 			m_priority = priority;
 			m_context = context;
-			
-			// KNL-997
-			String uId = sessionManager().getCurrentSessionUserId();
-			if (uId == null)
-			{
-				uId = "?";
-			}
-			setUserId(uId);
 		}
 		
 		/**
@@ -694,6 +677,14 @@ public abstract class BaseEventTrackingService implements EventTrackingService
 		{
 			this(event, resource, context, modify, priority);
 			m_seq = seq;
+		}
+		
+		
+		public BaseEvent(long seq, String event, String resource, String context, boolean modify, int priority, Date eventDate)
+		{
+			this(event, resource, context, modify, priority);
+			m_seq = seq;
+			m_time = timeService().newTime(eventDate.getTime());
 		}
 
 		/**

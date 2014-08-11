@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputColorRenderer.java $
-* $Id: InputColorRenderer.java 68846 2009-11-13 12:27:32Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputColorRenderer.java $
+* $Id: InputColorRenderer.java 90089 2011-03-20 11:46:21Z david.horwitz@uct.ac.za $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -47,11 +47,11 @@ import org.sakaiproject.jsf.util.RendererUtil;
 public class InputColorRenderer extends Renderer
 {
   // icon height and width
-  private final String HEIGHT = "13";
-  private final String WIDTH = "15";
+  private static final String HEIGHT = "13";
+  private static final String WIDTH = "15";
 
   // later we may want to support hidden
-  private final String TYPE = "text";
+  private static final String TYPE = "text";
 
   private static final String CURSORSTYLE;
   private static final String CLICKALT;

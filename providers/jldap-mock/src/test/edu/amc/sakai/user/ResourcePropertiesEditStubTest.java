@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/branches/sakai-2.8.x/jldap-mock/src/test/edu/amc/sakai/user/ResourcePropertiesEditStubTest.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.0/jldap-mock/src/test/edu/amc/sakai/user/ResourcePropertiesEditStubTest.java $
  * $Id: ResourcePropertiesEditStubTest.java 61859 2009-05-05 17:58:22Z dmccallum@unicon.net $
  ***********************************************************************************
  *

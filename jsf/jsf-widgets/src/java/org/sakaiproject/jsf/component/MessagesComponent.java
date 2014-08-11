@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-widgets/src/java/org/sakaiproject/jsf/component/MessagesComponent.java $
- * $Id: MessagesComponent.java 68846 2009-11-13 12:27:32Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-widgets/src/java/org/sakaiproject/jsf/component/MessagesComponent.java $
+ * $Id: MessagesComponent.java 90841 2011-03-29 09:06:43Z david.horwitz@uct.ac.za $
  **********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -31,6 +31,8 @@ public class MessagesComponent extends HtmlMessages
 		setStyleClass("alertMessage");
 		setShowSummary(false);
 		setShowDetail(true);
+		
+		
 	}
 }
 

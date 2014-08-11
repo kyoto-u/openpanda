@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/branches/sakai-2.8.x/message-tool/tool/src/java/org/sakaiproject/message/tool/SynopticMessageAction.java $
- * $Id: SynopticMessageAction.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.0/message-tool/tool/src/java/org/sakaiproject/message/tool/SynopticMessageAction.java $
+ * $Id: SynopticMessageAction.java 92934 2011-05-17 18:43:01Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

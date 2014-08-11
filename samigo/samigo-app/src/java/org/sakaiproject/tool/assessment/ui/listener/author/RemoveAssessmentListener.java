@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemoveAssessmentListener.java $
- * $Id: RemoveAssessmentListener.java 118689 2013-01-23 19:35:25Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemoveAssessmentListener.java $
+ * $Id: RemoveAssessmentListener.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -24,28 +24,30 @@
 package org.sakaiproject.tool.assessment.ui.listener.author;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
-import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.cover.SessionManager;
 
 /**
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: RemoveAssessmentListener.java 118689 2013-01-23 19:35:25Z ktsao@stanford.edu $
+ * @version $Id: RemoveAssessmentListener.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
  */
 
 public class RemoveAssessmentListener implements ActionListener
 {
-  //private static Log log = LogFactory.getLog(RemoveAssessmentListener.class);
+  //rivate static Log log = LogFactory.getLog(RemoveAssessmentListener.class);
 	
   public RemoveAssessmentListener()
   {
@@ -60,9 +62,8 @@ public class RemoveAssessmentListener implements ActionListener
 
     // #1 - remove selected assessment on a separate thread
     String assessmentId = (String) assessmentBean.getAssessmentId();
-    //SAM-2004 we need the current placement -DH
-    String context = s.getAssessmentSiteId(assessmentId);
-    RemoveAssessmentThread thread = new RemoveAssessmentThread(assessmentId, SessionManager.getCurrentSessionUserId(), context);
+    AssessmentIfc assessment = s.getAssessment(assessmentId); 
+    RemoveAssessmentThread thread = new RemoveAssessmentThread(assessmentId, SessionManager.getCurrentSessionUserId());
     thread.start();
 
     // This should have been done inside AssessmentFacadeQueries.removeAssessment()

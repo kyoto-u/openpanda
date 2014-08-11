@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/CustomEventImpl.java $
- * $Id: CustomEventImpl.java 78632 2010-06-17 18:59:52Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/CustomEventImpl.java $
+ * $Id: CustomEventImpl.java 97032 2011-08-16 13:27:22Z steve.swinsburg@gmail.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -20,6 +20,7 @@ package org.sakaiproject.sitestats.impl;
 
 import java.util.Date;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.sakaiproject.event.api.Event;
 
 
@@ -84,5 +85,17 @@ public class CustomEventImpl implements Event {
 
 	public Date getEventTime() {
 		return date;
+	}
+	
+	public String toString(){
+		return new ToStringBuilder(this).
+	       append("date", date).
+	       append("event", event).
+	       append("ref", ref).
+	       append("context", context).
+	       append("sessionUser", sessionUser).
+	       append("sessionId", sessionId).
+	       append("modify", modify).
+	       toString();
 	}
 }

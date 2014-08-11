@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/login/branches/sakai-2.8.x/login-tool/tool/src/java/org/sakaiproject/login/tool/ContainerLogin.java $
- * $Id: ContainerLogin.java 74516 2010-03-10 23:13:05Z matthew.buckett@oucs.ox.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/login/tags/sakai-2.9.0/login-tool/tool/src/java/org/sakaiproject/login/tool/ContainerLogin.java $
+ * $Id: ContainerLogin.java 101197 2011-11-30 01:38:12Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -49,6 +49,8 @@ import org.sakaiproject.util.ExternalTrustedEvidence;
  */
 public class ContainerLogin extends HttpServlet
 {
+	private static final long serialVersionUID = -3589514330633190919L;
+
 	/** Our log (commons). */
 	private static Log M_log = LogFactory.getLog(ContainerLogin.class);
 	
@@ -112,7 +114,7 @@ public class ContainerLogin extends HttpServlet
 			Authentication a = AuthenticationManager.authenticate(e);
 
 			// login the user
-			if (UsageSessionService.login(a, req))
+			if (UsageSessionService.login(a.getUid(), a.getEid(), req.getRemoteAddr(), req.getHeader("user-agent"), UsageSessionService.EVENT_LOGIN_CONTAINER))
 			{
 				// get the return URL
 				String url = getUrl(session, Tool.HELPER_DONE_URL);
@@ -133,8 +135,8 @@ public class ContainerLogin extends HttpServlet
 		}
 
 		// mark the session and redirect (for login failuer or authentication exception)
-		session.setAttribute(LoginTool.ATTR_CONTAINER_CHECKED, LoginTool.ATTR_CONTAINER_CHECKED);
-		res.sendRedirect(res.encodeRedirectURL(getUrl(session, LoginTool.ATTR_RETURN_URL)));
+		session.setAttribute(SkinnableLogin.ATTR_CONTAINER_CHECKED, SkinnableLogin.ATTR_CONTAINER_CHECKED);
+		res.sendRedirect(res.encodeRedirectURL(getUrl(session, SkinnableLogin.ATTR_RETURN_URL)));
 	}
 
 	/**

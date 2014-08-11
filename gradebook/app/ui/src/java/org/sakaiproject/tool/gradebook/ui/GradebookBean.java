@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookBean.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+* $Id: GradebookBean.java 100110 2011-10-26 02:16:27Z aaronz@vt.edu $
 *
 ***********************************************************************************
 *
@@ -34,6 +34,7 @@ import org.sakaiproject.section.api.SectionAwareness;
 
 import org.sakaiproject.service.gradebook.shared.GradebookNotFoundException;
 import org.sakaiproject.service.gradebook.shared.GradebookPermissionService;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.tool.gradebook.Gradebook;
 import org.sakaiproject.tool.gradebook.business.GradebookManager;
 import org.sakaiproject.tool.gradebook.facades.*;
@@ -64,6 +65,7 @@ public class GradebookBean extends InitializableBean {
     private EventTrackingService eventTrackingService;
     private ConfigurationBean configurationBean;
     private GradebookPermissionService gradebookPermissionService;
+    private GradebookExternalAssessmentService gradebookExternalAssessmentService;
 
     /**
      * @return Returns the gradebookId.
@@ -216,6 +218,13 @@ public class GradebookBean extends InitializableBean {
 	}
 	public void setGradebookPermissionService(GradebookPermissionService gradebookPermissionService) {
 		this.gradebookPermissionService = gradebookPermissionService;
+	}
+	
+	public GradebookExternalAssessmentService getGradebookExternalAssessmentService() {
+		return gradebookExternalAssessmentService;
+	}
+	public void setGradebookExternalAssessmentService(GradebookExternalAssessmentService gradebookExternalAssessmentService) {
+		this.gradebookExternalAssessmentService = gradebookExternalAssessmentService;
 	}
 }
 

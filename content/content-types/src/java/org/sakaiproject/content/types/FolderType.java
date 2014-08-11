@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/branches/sakai-2.8.x/content-types/src/java/org/sakaiproject/content/types/FolderType.java $
- * $Id: FolderType.java 79978 2010-07-28 11:28:01Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-types/src/java/org/sakaiproject/content/types/FolderType.java $
+ * $Id: FolderType.java 99117 2011-10-10 21:36:52Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 Sakai Foundation
@@ -57,7 +57,6 @@ public class FolderType extends BaseResourceType implements ExpandableResourceTy
 {
 	protected String typeId = ResourceType.TYPE_FOLDER;
 	protected String helperId = "sakai.resource.type.helper";
-	// private static final String RESOURCES_ZIP_ENABLE = "resources.zip.enable"; //sakai.properties hack
 	
 	/** localized tool properties **/
 	private static final String DEFAULT_RESOURCECLASS = "org.sakaiproject.localization.util.TypeProperties";
@@ -98,11 +97,12 @@ public class FolderType extends BaseResourceType implements ExpandableResourceTy
 		// [WARN] Archive file handling compress/decompress feature contains bugs; exclude action item.
 		// Disable property setting masking problematic code per will of the Community.
 		// See Jira KNL-155/SAK-800 for more details.
-		/*
-		if (ServerConfigurationService.getBoolean(RESOURCES_ZIP_ENABLE,false)) {
+		
+		if (ServerConfigurationService.getBoolean(ContentHostingService.RESOURCES_ZIP_ENABLE, false)
+				|| ServerConfigurationService.getBoolean(ContentHostingService.RESOURCES_ZIP_ENABLE_COMPRESS, false)) {
 			actions.put(ResourceToolAction.COMPRESS_ZIP_FOLDER, new FolderCompressAction());
 		}
-		*/
+		
 		
 		// initialize actionMap with an empty List for each ActionType
 		for(ResourceToolAction.ActionType type : ResourceToolAction.ActionType.values())

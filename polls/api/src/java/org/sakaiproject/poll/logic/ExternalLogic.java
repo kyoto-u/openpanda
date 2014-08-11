@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/api/src/java/org/sakaiproject/poll/logic/ExternalLogic.java $
- * $Id: ExternalLogic.java 118828 2013-01-25 04:44:02Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/api/src/java/org/sakaiproject/poll/logic/ExternalLogic.java $
+ * $Id: ExternalLogic.java 94048 2011-06-24 09:33:53Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007 The Sakai Foundation
@@ -194,6 +194,13 @@ public interface ExternalLogic {
 	 * Needed to invoke helper tools
 	 */
 	public ToolSession getCurrentToolSession();
+	
+	/**
+	 * Are charts enabled on the results page?
+	 * poll.results.chart.enabled=true|false, default false
+	 * @return
+	 */
+	public boolean isResultsChartEnabled();
 	
 	/**
 	 * Is the current user using a mobile browser?

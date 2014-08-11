@@ -1,4 +1,4 @@
-<%-- $Id: MultipleChoiceSurvey.jsp 59352 2009-03-31 16:59:41Z arwhyte@umich.edu $
+<%-- $Id: MultipleChoiceSurvey.jsp 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
 include file for delivering multiple choice single correct survey questions
 should be included in file importing DeliveryMessages
 --%>
@@ -36,7 +36,9 @@ should be included in file importing DeliveryMessages
           <h:graphicImage id="image2"
              alt="#{authorMessages.not_correct}" url="/images/radiounchecked.gif" >
           </h:graphicImage>
-          <h:outputText escape="false" value="#{answer.text}" />
+          <h:outputText escape="false" value="#{answer.text}" >
+          	<f:converter converterId="org.sakaiproject.tool.assessment.jsf.convert.AnswerSurveyConverter" /> 
+          </h:outputText>
         </h:column>
       </h:dataTable>
 

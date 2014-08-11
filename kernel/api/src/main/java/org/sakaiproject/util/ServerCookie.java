@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/util/ServerCookie.java $
- * $Id: ServerCookie.java 86375 2010-12-14 12:26:40Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/util/ServerCookie.java $
+ * $Id: ServerCookie.java 86300 2010-12-11 09:54:14Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2010 Sakai Foundation

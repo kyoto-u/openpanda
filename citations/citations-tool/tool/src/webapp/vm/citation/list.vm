@@ -1,7 +1,7 @@
 <!--
 #*
- $URL: https://source.sakaiproject.org/svn/citations/branches/sakai-2.8.x/citations-tool/tool/src/webapp/vm/citation/list.vm $
- $Id: list.vm 59981 2009-04-11 16:29:26Z jimeng@umich.edu $
+ $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-tool/tool/src/webapp/vm/citation/list.vm $
+ $Id: list.vm 95805 2011-07-28 03:24:07Z ottenhoff@longsight.com $
 *#
  **********************************************************************************
  *
@@ -154,6 +154,7 @@
 				/>
 				#end
 			</div>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>
 </div>

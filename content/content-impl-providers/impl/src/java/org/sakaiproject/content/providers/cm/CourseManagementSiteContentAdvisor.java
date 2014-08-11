@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/branches/sakai-2.8.x/content-impl-providers/impl/src/java/org/sakaiproject/content/providers/cm/CourseManagementSiteContentAdvisor.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-impl-providers/impl/src/java/org/sakaiproject/content/providers/cm/CourseManagementSiteContentAdvisor.java $
  * $Id: CourseManagementSiteContentAdvisor.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: deliverAssessment.jsp 118132 2013-01-07 22:58:31Z ktsao@stanford.edu $
+* $Id: deliverAssessment.jsp 115294 2012-10-29 23:26:07Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -32,47 +32,83 @@
   <f:view>
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head><%= request.getAttribute("html.head") %>
-	  <script type="text/javascript" language="JavaScript" src="/samigo-app/js/saveForm.js"></script>
-	  	  
+	  <script type="text/javascript" src="/samigo-app/js/saveForm.js"></script>	  	  
       <title> <h:outputText value="#{delivery.assessmentTitle}"/>
       </title>
+      <style type="text/css">
+        .TableColumn {
+          text-align: center
+        }
+       .TableClass {
+         border-style: dotted;
+         border-width: 0.5px;
+         border-color: light grey;
+       }
+      </style>
       </head>
 	
-      <body onload="<%= request.getAttribute("html.body.onload") %>; checkRadio(); setLocation();SaveFormContentAsync('deliverAssessment', 'takeAssessmentForm', 'takeAssessmentForm:save', 'takeAssessmentForm:lastSubmittedDate1', 'takeAssessmentForm:lastSubmittedDate2',  <h:outputText value="#{delivery.autoSaveRepeatMilliseconds}"/>, <h:outputText  value="#{delivery.actionString=='takeAssessment'}"/>);" >
-  
+      <body onload="<%= request.getAttribute("html.body.onload") %>; setLocation(); checkRadio(); SaveFormContentAsync('deliverAssessment.faces', 'takeAssessmentForm', 'takeAssessmentForm:save', 'takeAssessmentForm:lastSubmittedDate1', 'takeAssessmentForm:lastSubmittedDate2',  <h:outputText value="#{delivery.autoSaveRepeatMilliseconds}"/>, true); setTimeout('setLocation2()',2)" >
+ 
       <h:outputText value="<a name='top'></a>" escape="false" />
       
-      <script type="text/javascript" language="JavaScript" src="/samigo-app/js/jquery-1.3.2.min.js"></script>
-      <script type="text/javascript" language="JavaScript" src="/samigo-app/js/jquery-ui-1.7.2.custom.min.js"></script>
-      <script type="text/javascript" language="JavaScript" src="/samigo-app/js/jquery.blockUI-2.31.js"></script>
-      <link type="text/css" href="/samigo-app/css/ui-lightness/jquery-ui-1.7.2.custom.css" rel="stylesheet" media="all"/>
+      <%@ include file="/jsf/delivery/deliveryjQuery.jsp" %>
       
       <script type="text/javascript">
-		$(document).ready(function(){
 		
-			$('input[type=submit]').click(function() { 
-				$.blockUI({ message: '',
-							overlayCSS: { 
-								backgroundColor: '#ff0',
-								opacity: 0}
-				}); 
+		function whichradio(obj){ 
 
-			}); 
-			
-			$('#timer-warning').dialog({
-				autoOpen: false,
-				width: 400,
-				modal: true,
-				resizable: false,
-				draggable: false
-			});
-			
-		});
+          var myId = String(obj.id);
+          //such as : takeAssessmentForm:_id48:0:_id105:1:deliverMatrixChoicesSurvey:matrixSurveyRadioTable:0:_id1198_0:myRadioId1
+          //find the table id for mutiple matrix questions tables on the same display page 
+          //take care of two different question, one set as forceRanking, another is not
+          var myIdParts = myId.split(":");
 
-		function showTimerWarning() {
-			$('#timer-warning').dialog('open');
-			return false;
-		}		
+          var node_list = document.getElementsByTagName('input');
+          for (var i=0; i<node_list.length; i++) {
+            var node = node_list[i];		
+            if (node.getAttribute('type') == 'hidden' && node.id.endsWith('forceRanking')){
+              var nodeIdParts = node.id.split(":");
+              if(nodeIdParts[4]==myIdParts[4] && node.value == 'true'){
+                //find the radio button table(s)
+                var tables = document.getElementsByTagName('table');
+
+                for(var i=0; i<tables.length; i++){
+                  var mytable = tables[i];
+                  var mytableParts = mytable.id.split(":");
+                  if(mytable.id.endsWith('matrixSurveyRadioTable') && mytableParts[4] == myIdParts[4]){
+                    //found the right table
+                    break;
+                  }
+                }
+
+                //index will be the begining of 'matrixSurveyRadioTable'
+                var index = myId.indexOf("matrixSurveyRadioTable");
+                var strBefore = myId.substring(0,index+'matrixSurveyRadioTable'.length);
+                //remove table no 
+                var strAfter = myId.substring(index+'matrixSurveyRadioTable'.length+2);
+                //find rows of mytable	
+                var iRow = mytable.getElementsByTagName('tr');
+                //one header row before the row containing the radio button
+                for (var i=0; i<iRow.length-1;i++){
+                    //alert(i);
+                  //construct radio button id in the same column
+                  var currentRadioButtonId= strBefore+":"+i+strAfter;
+                  //alert(currentRadioButtonId);
+                  var button=document.getElementById(currentRadioButtonId);
+                  var buttonIdStr = String(button.id);
+                  if(button.getAttribute('type') == 'radio' && button.checked == true && buttonIdStr != myId){
+                    obj.checked = false;
+                    alert("You are only allowed one selection per column, please try again.");
+                    return;
+                  }
+                }
+                return;
+              }
+            }
+          }
+		}
+
+
       </script>
       
       <div id="timer-warning" style="display:none;">
@@ -81,7 +117,7 @@
       </div>
  
  <h:outputText value="<div class='portletBody' style='#{delivery.settings.divBgcolor};#{delivery.settings.divBackground}'>" escape="false"/>
-      
+
 <!-- content... -->
 <h:form id="takeAssessmentForm" enctype="multipart/form-data"
    onsubmit="saveTime()">
@@ -89,7 +125,7 @@
 <!-- JAVASCRIPT -->
 <%@ include file="/js/delivery.js" %>
 
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 
 function checkRadio()
 {
@@ -105,10 +141,10 @@ function checkRadio()
   }
 }
 
-var formatByQuestion = <h:outputText value="#{delivery.settings.formatByQuestion}" />;
+var formatByQuestion = '<h:outputText value="#{delivery.settings.formatByQuestion}" />';
 function setLocation()
 {
-// reset questionindex to avoid a Safari bug
+    // reset questionindex to avoid a Safari bug
 	partIndex = document.forms[0].elements['takeAssessmentForm:partIndex'].value;
 	questionIndex = document.forms[0].elements['takeAssessmentForm:questionIndex'].value;
  	if (!formatByQuestion)
@@ -116,6 +152,7 @@ function setLocation()
 
 	formatByPart = document.forms[0].elements['takeAssessmentForm:formatByPart'].value;
 	formatByAssessment = document.forms[0].elements['takeAssessmentForm:formatByAssessment'].value;
+	
     //alert("partIndex = " + partIndex);
     //alert("questionIndex = " + questionIndex);
 	//alert("formatByPart = " + formatByPart);
@@ -128,6 +165,17 @@ function setLocation()
 	//    b. it is a question in any parts other than the first one
 	if ((formatByPart == 'true' && questionIndex != 0) || (formatByAssessment == 'true' && ((partIndex == 0 && questionIndex !=0) || partIndex != 0))) {
 		window.location = '#p' + ++partIndex + 'q' + ++questionIndex;
+		//alert("from TOC:" + window.location);
+	}
+}
+
+var redrawAnchorName = '<h:outputText value="#{delivery.redrawAnchorName}" />';
+function setLocation2()
+{
+	//alert("redrawAnchorName=" + redrawAnchorName);	
+	if (redrawAnchorName != null && redrawAnchorName != "") {
+		window.location = '#' + redrawAnchorName;
+		//alert("from redraw: window.location..." + window.location);
 	}
 }
 
@@ -181,6 +229,21 @@ String.prototype.endsWith = function(txt)
   return this.match(rgx) != null; 
 }
 
+function clickSaCharCountLink(field){
+var insertlinkid= field.id.replace("getAaCharCount", "hiddenlink");
+
+var newindex = 0;
+for (i=0; i<document.links.length; i++) {
+  if(document.links[i].id == insertlinkid)
+  {
+    newindex = i;
+    break;
+  }
+}
+
+document.links[newindex].onclick();
+}
+
 </script>
 
 
@@ -195,12 +258,14 @@ String.prototype.endsWith = function(txt)
 
 <!-- DONE BUTTON FOR PREVIEW -->
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton id="done" value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
  <f:verbatim></div></f:verbatim>
 </h:panelGroup>
 
+<!-- IF A SECURE DELIVERY MODULE HAS BEEN SELECTED, INJECT ITS HTML FRAGMENT (IF ANY) HERE -->
+<h:outputText  value="#{delivery.secureDeliveryHTMLFragment}" escape="false"  />
 
 <!-- HEADING -->
 <f:subview id="assessmentDeliveryHeading">
@@ -208,7 +273,7 @@ String.prototype.endsWith = function(txt)
 </f:subview>
 
 <!-- FORM ... note, move these hiddens to whereever they are needed as fparams-->
-<h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+<h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
 <h:inputHidden id="assessmentID" value="#{delivery.assessmentId}"/>
 <h:inputHidden id="assessTitle" value="#{delivery.assessmentTitle}" />
 <!-- h:inputHidden id="ItemIdent" value="#{item.ItemIdent}"/ -->
@@ -253,18 +318,17 @@ String.prototype.endsWith = function(txt)
 
 <h:panelGrid columns="2" width="100%" columnClasses="navView,navList">
          <h:panelGroup>
+           <f:verbatim><h5></f:verbatim>
            <h:outputText value="<a name='p#{part.number}q#{question.number}'></a>" escape="false" />
-
-        <h:outputText value="#{deliveryMessages.q} #{question.sequence} #{deliveryMessages.of} #{part.numbering}"/>
-<f:verbatim><h5></f:verbatim>
-</h:panelGroup>
+           <h:outputText value="#{deliveryMessages.q} #{question.sequence} #{deliveryMessages.of} #{part.numbering}"/>
+           <f:verbatim></h5></f:verbatim>
+         </h:panelGroup>
 <h:panelGroup>
 <h:outputText value=" #{question.pointsDisplayString} #{question.maxPoints} #{deliveryMessages.pt}" rendered="#{delivery.actionString=='reviewAssessment'}"/>
 
         <h:outputText value="#{question.maxPoints} #{deliveryMessages.pt}" rendered="#{delivery.actionString!='reviewAssessment'}" />
 </h:panelGroup>
 </h:panelGrid>
-        
           <f:verbatim><div class="tier3"></f:verbatim>
           <h:panelGroup rendered="#{question.itemData.typeId == 7}">
            <f:subview id="deliverAudioRecording">
@@ -311,10 +375,15 @@ String.prototype.endsWith = function(txt)
            <f:subview id="deliverTrueFalse">
            <%@ include file="/jsf/delivery/item/deliverTrueFalse.jsp" %>
            </f:subview>
-
+           </h:panelGroup>
+           
+           <h:panelGroup rendered="#{question.itemData.typeId == 13}">
+           <f:subview id="deliverMatrixChoicesSurvey">
+           <%@ include file="/jsf/delivery/item/deliverMatrixChoicesSurvey.jsp" %>
+           </f:subview>
+           </h:panelGroup>
+          
            <f:verbatim></div></f:verbatim>
-
-          </h:panelGroup>
 
         </h:column>
       </h:dataTable>
@@ -337,7 +406,7 @@ String.prototype.endsWith = function(txt)
                    || delivery.actionString=='takeAssessmentViaUrl'
 				   || delivery.actionString=='previewAssessment')
 				   && delivery.navigation eq '1' && !delivery.continue}" 
-      onclick="pauseTiming='false'; disableSubmit()" onkeypress="pauseTiming='false'"/>
+      onclick="pauseTiming='false'; disableSubmit()" />
   </h:panelGrid>
 
   <h:panelGrid columns="1" width="100%" border="0">
@@ -388,7 +457,7 @@ String.prototype.endsWith = function(txt)
   <%-- SAVE --%>
   <h:panelGrid columns="1" border="0" >
   <h:commandButton id="save" type="submit" value="#{deliveryMessages.button_save}"
-    action="#{delivery.save_work}" onclick="disableSave();" onkeypress="disableSave()" rendered="#{delivery.actionString=='previewAssessment'
+    action="#{delivery.save_work}" onclick="disableSave();" rendered="#{delivery.actionString=='previewAssessment'
                  || delivery.actionString=='takeAssessment'
                  || delivery.actionString=='takeAssessmentViaUrl'}" />
   </h:panelGrid>
@@ -398,23 +467,25 @@ String.prototype.endsWith = function(txt)
   <h:commandButton type="submit" value="#{deliveryMessages.button_exit}"
     action="#{delivery.saveAndExit}" id="saveAndExit"
     rendered="#{(delivery.actionString=='previewAssessment'  
-                 || delivery.actionString=='takeAssessment')
+                 || delivery.actionString=='takeAssessment'
+                 || (delivery.actionString=='takeAssessmentViaUrl' && !delivery.anonymousLogin))
               && delivery.navigation ne '1' && !delivery.hasTimeLimit}"  
-    onclick="pauseTiming='false'; disableSaveAndExit();" onkeypress="pauseTiming='false'; disableSaveAndExit();" />
+    onclick="pauseTiming='false'; disableSaveAndExit();" />
 
   <%-- SAVE AND EXIT DURING PAU WITH ANONYMOUS LOGIN--%>
   <h:commandButton  type="submit" value="#{deliveryMessages.button_exit}"
     action="#{delivery.saveAndExit}" id="quit"
     rendered="#{(delivery.actionString=='takeAssessmentViaUrl' && delivery.anonymousLogin) && !delivery.hasTimeLimit}"
-    onclick="pauseTiming='false'; disableQuit()" onkeypress="pauseTiming='false'; disableQuit()"  /> 
+    onclick="pauseTiming='false'; disableQuit()" /> 
 
   <%-- SAVE AND EXIT FOR LINEAR ACCESS --%>
   <h:commandButton type="submit" value="#{deliveryMessages.button_exit}"
     action="#{delivery.saveAndExit}" id="saveAndExit2"
     rendered="#{(delivery.actionString=='previewAssessment'  
-                 ||delivery.actionString=='takeAssessment')
+                 ||delivery.actionString=='takeAssessment'
+                 || (delivery.actionString=='takeAssessmentViaUrl' && !delivery.anonymousLogin))
             && delivery.navigation eq '1' && delivery.continue && !delivery.hasTimeLimit}"
-    onclick="disableSaveAndExit2();" onkeypress="disableSaveAndExit2();"/>
+    onclick="disableSaveAndExit2();" />
   </h:panelGrid>
 
   <h:panelGrid columns="1" width="100%" border="0" columnClasses="act">
@@ -424,13 +495,13 @@ String.prototype.endsWith = function(txt)
     rendered="#{(delivery.actionString=='takeAssessment' ||delivery.actionString=='takeAssessmentViaUrl' || delivery.actionString=='previewAssessment') 
              && delivery.navigation ne '1' 
              && !delivery.continue}"
-    onclick="disableSubmitForGrade()" onkeypress="disableSubmitForGrade()"/>
+    onclick="disableSubmitForGrade()" />
 
   <%-- SUBMIT FOR GRADE DURING PAU --%>
   <h:commandButton type="submit" value="#{deliveryMessages.button_submit}"
     action="#{delivery.confirmSubmit}"  id="submitForm1" styleClass="active"
     rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.continue}"
-    onclick="pauseTiming='false'; disableSubmit1();" onkeypress="pauseTiming='false';disableSubmit1()"/>
+    onclick="pauseTiming='false'; disableSubmit1();" />
 
   <%-- SUBMIT FOR GRADE FOR LINEAR ACCESS --%>
   <h:commandButton type="submit" value="#{deliveryMessages.button_submit_grading}"
@@ -439,7 +510,7 @@ String.prototype.endsWith = function(txt)
                    || delivery.actionString=='takeAssessmentViaUrl'
 				   || delivery.actionString=='previewAssessment')
 				   && delivery.navigation eq '1' && !delivery.continue}" 
-      onclick="pauseTiming='false'; disableSubmit()" onkeypress="pauseTiming='false';disableSubmit()"/>
+      onclick="pauseTiming='false'; disableSubmit()" />
 
   </h:panelGrid>
 </h:panelGrid>
@@ -451,7 +522,7 @@ String.prototype.endsWith = function(txt)
 
 <!-- DONE BUTTON IN PREVIEW -->
 <h:panelGroup rendered="#{delivery.actionString=='previewAssessment'}">
- <f:verbatim><div class="validation"></f:verbatim>
+ <f:verbatim><div class="previewMessage"></f:verbatim>
      <h:outputText value="#{deliveryMessages.ass_preview}" />
      <h:commandButton value="#{deliveryMessages.done}" action="#{person.cleanResourceIdListInPreview}" type="submit"/>
  <f:verbatim></div></f:verbatim>
@@ -459,6 +530,7 @@ String.prototype.endsWith = function(txt)
 </h:form>
 <!-- end content -->
 <f:verbatim></div></f:verbatim>
+<script type="text/JavaScript">fixImplicitLabeling();</script>
     </body>
   </html>
 </f:view>

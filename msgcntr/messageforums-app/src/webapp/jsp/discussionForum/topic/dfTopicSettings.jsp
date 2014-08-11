@@ -38,14 +38,20 @@
        		<sakai:script contextBase="/messageforums-tool" path="/js/forum.js"/>			
 		<%--//designNote: this just feels weird - presenting somehting that sort of looks like the form used to create the topic (with an editable permissions block!) to comfirm deletion --%>
 <!--jsp/discussionForum/topic/dfTopicSettings.jsp-->
-		<sakai:tool_bar_message value="#{msgs.cdfm_delete_topic_title}" />
+		<%--<sakai:tool_bar_message value="#{msgs.cdfm_delete_topic_title}"/>--%>
+        
 		<h:outputText styleClass="messageAlert" style="display:block" value="#{msgs.cdfm_delete_topic}" rendered="#{ForumTool.selectedTopic.markForDeletion}"/>
-		<div class="topicBloc" style="padding:0 .5em">
-			<p>	
+        <h:outputText styleClass="messageAlert" value="#{msgs.cdfm_duplicate_topic_confirm}" rendered="#{ForumTool.selectedTopic.markForDuplication}" style="display:block" />
+		<div class="topicBloc" style="padding:0 .5em"><h:messages styleClass="messageAlert" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}" />
+			<p>
 				<span class="title">
 					<h:graphicImage url="/images/silk/lock.png" alt="#{msgs.cdfm_forum_locked}" rendered="#{ForumTool.selectedTopic.topic.locked=='true'}"  style="margin-right:.3em"/>
 					<h:graphicImage url="/images/silk/lock_open.png" alt="#{msgs.cdfm_forum_locked}" rendered="#{ForumTool.selectedTopic.topic.locked=='false'}"  style="margin-right:.3em"/>
-    				  <h:outputText id="topic_title"  value="#{ForumTool.selectedTopic.topic.title}"/>
+					<h:outputText value="#{ForumTool.selectedTopic.topic.title}" rendered="#{!ForumTool.selectedTopic.markForDuplication}"/>
+                    <h:inputText size="50" value="#{ForumTool.selectedTopic.topic.title}" id="topic_title" rendered="#{ForumTool.selectedTopic.markForDuplication}">
+                        <f:validateLength maximum="255" minimum="1" />
+                    </h:inputText>                   
+                    
 				</span>
 				<h:outputText   value="#{msgs.cdfm_openb}"/>
 				<h:outputText   value="#{msgs.cdfm_moderated}"  rendered="#{ForumTool.selectedTopic.topic.moderated=='true'}" />
@@ -100,7 +106,7 @@
 
 		  
 				<div id="permissionReadOnly">	  
-	  <%@include file="/jsp/discussionForum/permissions/permissions_include.jsp"%>
+	  <%@ include file="/jsp/discussionForum/permissions/permissions_include.jsp"%>
 				 </div> 
 		  --%>	    
 	  <%--
@@ -184,24 +190,31 @@
 		</h:dataTable>	 	
       </mf:forumHideDivision>
       --%>
-      
+    
        <div class="act">
           <h:commandButton action="#{ForumTool.processActionReviseTopicSettings}" id="revise"  
-                           value="#{msgs.cdfm_button_bar_revise}" rendered="#{!ForumTool.selectedTopic.markForDeletion}"
+                           value="#{msgs.cdfm_button_bar_revise}" rendered="#{!ForumTool.selectedTopic.markForDeletion && !ForumTool.selectedTopic.markForDuplication}"
                            accesskey="r" styleClass="active"> 
     	 	  	<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/> 
     	 	  	<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>        
           </h:commandButton>
           <h:commandButton action="#{ForumTool.processActionDeleteTopicConfirm}" id="delete_confirm" 
-                           value="#{msgs.cdfm_button_bar_delete}" rendered="#{!ForumTool.selectedTopic.markForDeletion}"
+                           value="#{msgs.cdfm_button_bar_delete_topic}" rendered="#{!ForumTool.selectedTopic.markForDeletion && !ForumTool.selectedTopic.markForDuplication}"
                            >
 	        	<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
           </h:commandButton>
           <h:commandButton action="#{ForumTool.processActionDeleteTopic}" id="delete" 
-                           value="#{msgs.cdfm_button_bar_delete}" rendered="#{ForumTool.selectedTopic.markForDeletion}"
+                           value="#{msgs.cdfm_button_bar_delete_topic}" rendered="#{ForumTool.selectedTopic.markForDeletion}"
                            >
 	        	<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
           </h:commandButton>
+          
+          <h:commandButton id="duplicate" action="#{ForumTool.processActionDuplicateTopic}" 
+                           value="#{msgs.cdfm_duplicate_topic}" rendered="#{ForumTool.selectedTopic.markForDuplication}"
+                           accesskey="">
+	        	<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
+          </h:commandButton>
+          
           <h:commandButton immediate="true" action="#{ForumTool.processReturnToOriginatingPage}" id="cancel" 
                            value="#{msgs.cdfm_button_bar_cancel} " accesskey="x" />
        </div>

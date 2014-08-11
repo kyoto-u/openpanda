@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/test/java/org/sakaiproject/site/impl/test/SiteAliasCleanupNotificationActionIntegrationTest.java $
- * $Id: SiteAliasCleanupNotificationActionIntegrationTest.java 56155 2009-01-14 09:07:10Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/test/java/org/sakaiproject/site/impl/test/SiteAliasCleanupNotificationActionIntegrationTest.java $
+ * $Id: SiteAliasCleanupNotificationActionIntegrationTest.java 90984 2011-03-31 10:20:38Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 Sakai Foundation
@@ -29,6 +29,7 @@ import junit.framework.TestSuite;
 import org.sakaiproject.alias.api.AliasService;
 import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.exception.IdInvalidException;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.IdUsedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.id.api.IdManager;
@@ -79,7 +80,12 @@ public class SiteAliasCleanupNotificationActionIntegrationTest extends SakaiKern
 				createdSiteAliases.isEmpty());
 		
 		// the "real" code exercise
-		siteService.removeSite(site);
+		try {
+			siteService.removeSite(site);
+		} catch (IdUnusedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		List remainingSiteAliases = aliasService.getAliases(site.getReference());
 		assertEquals("Expected all site aliases to be deleted on site deletion", 0, 

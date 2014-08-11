@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-api/api/src/java/org/sakaiproject/search/api/InvalidSearchQueryException.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-api/api/src/java/org/sakaiproject/search/api/InvalidSearchQueryException.java $
  * $Id: InvalidSearchQueryException.java 75617 2010-04-05 09:51:02Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

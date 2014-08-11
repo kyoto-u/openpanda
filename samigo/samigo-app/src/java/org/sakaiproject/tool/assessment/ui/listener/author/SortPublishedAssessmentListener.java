@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SortPublishedAssessmentListener.java $
- * $Id: SortPublishedAssessmentListener.java 65883 2009-08-17 18:44:33Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SortPublishedAssessmentListener.java $
+ * $Id: SortPublishedAssessmentListener.java 84254 2010-11-03 23:12:02Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -68,10 +68,8 @@ public class SortPublishedAssessmentListener
 
     ArrayList publishedAssessmentList = publishedAssessmentService.getBasicInfoOfAllPublishedAssessments2(
  		   this.getPublishedOrderBy(author), author.isPublishedAscending(), AgentFacade.getCurrentSiteId());
-    HashMap startedCounts = gradingService.getInProgressCounts(AgentFacade.getCurrentSiteId());
-	HashMap submittedCounts = gradingService.getSubmittedCounts(AgentFacade.getCurrentSiteId());
-	ArrayList dividedPublishedAssessmentList = authorActionListener.getTakeableList(publishedAssessmentList);
-    authorActionListener.prepareActivePublishedAssessmentsList(author, (ArrayList) dividedPublishedAssessmentList.get(0), startedCounts, submittedCounts);
+    authorActionListener.prepareAllPublishedAssessmentsList(author, gradingService, publishedAssessmentList);
+    author.setJustPublishedAnAssessment(true);
   }
 
   /**

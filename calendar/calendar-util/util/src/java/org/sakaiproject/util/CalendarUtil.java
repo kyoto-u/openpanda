@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/branches/sakai-2.8.x/calendar-util/util/src/java/org/sakaiproject/util/CalendarUtil.java $
- * $Id: CalendarUtil.java 100614 2011-11-10 00:11:47Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.0/calendar-util/util/src/java/org/sakaiproject/util/CalendarUtil.java $
+ * $Id: CalendarUtil.java 100703 2011-11-12 00:56:28Z bkirschn@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -45,6 +45,8 @@ public class CalendarUtil
 	DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
 	ResourceLoader rb = new ResourceLoader("calendar");
 
+	public final static String NEW_ASSIGNMENT_DUEDATE_CALENDAR_ASSIGNMENT_ID = "new_assignment_duedate_calendar_assignment_id";
+	
 	/**
 	* Construct.
 	*/
@@ -378,7 +380,6 @@ public class CalendarUtil
 	 * @return
 	 */
 	public static String getLocalAMString() {
-		M_log.info("getLocalAMString()");
 		
 		//we need an AM date
 		DateTime dt = new DateTime().withTime(1, 0, 0, 0);
@@ -391,7 +392,6 @@ public class CalendarUtil
 	 * @return
 	 */
 	public static String getLocalPMString() {
-		M_log.info("getLocalPMString()");
 
 		//we need an PM date
 		DateTime dt = new DateTime().withTime(14, 0, 0, 0);

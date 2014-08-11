@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/branches/sakai-2.8.x/courier-tool/tool/src/java/org/sakaiproject/courier/tool/CourierTool.java $
- * $Id: CourierTool.java 77355 2010-05-11 11:32:34Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.0/courier-tool/tool/src/java/org/sakaiproject/courier/tool/CourierTool.java $
+ * $Id: CourierTool.java 101763 2011-12-14 19:43:07Z botimer@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -23,6 +23,7 @@ package org.sakaiproject.courier.tool;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -38,8 +39,9 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.courier.api.Delivery;
+import org.sakaiproject.courier.api.DeliveryProvider;
 import org.sakaiproject.courier.cover.CourierService;
-import org.sakaiproject.presence.cover.PresenceService;
+import org.sakaiproject.courier.cover.PresenceUpdater;
 import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
@@ -107,19 +109,39 @@ public class CourierTool extends HttpServlet
 					// find all deliveries for the requested deivery address
 					List deliveries = CourierService.getDeliveries(deliveryId);
 	
+					// see if any DeliveryProviders have deliveries
+					List<DeliveryProvider> providers = CourierService.getDeliveryProviders();
+					if(providers != null) {
+						List<Delivery> moreDeliveries = new ArrayList<Delivery>();
+						for(DeliveryProvider provider : providers) {
+							List<Delivery> d = provider.getDeliveries(session.getId(), placementId);
+							if(d != null && ! d.isEmpty()) {
+								moreDeliveries.addAll(d);
+							}
+						}
+						if(moreDeliveries.isEmpty()) {
+							// use deliveries
+						} else if (deliveries.isEmpty()) {
+							deliveries = moreDeliveries;
+						} else {
+							// both lists have deliveries, so add moreDeliveries to deliveries
+							deliveries.addAll(moreDeliveries);
+						}
+					}
+					
 					// form the reply
 					sendDeliveries(res, deliveries);
 	
 					// refresh our presence at the location (placement)
 					if (M_log.isDebugEnabled()) M_log.debug("setting presence: " + placementId);
-					PresenceService.setPresence(placementId);
+					PresenceUpdater.setPresence(placementId);
 	
 					// register another presence if present
 					if (parts.length == 3)
 					{
 						String secondPlacementId = parts[2];
 						if (M_log.isDebugEnabled()) M_log.debug("setting second presence: " + secondPlacementId);
-						PresenceService.setPresence(secondPlacementId);
+						PresenceUpdater.setPresence(secondPlacementId);
 					}
 				} else {
 					//This courier request was not meant for this user (i.e., session), so we won't honour it

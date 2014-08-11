@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jobscheduler/branches/jobscheduler-2.8.x/scheduler-component-shared/src/test/java/org/sakaiproject/component/app/scheduler/jobs/TestBeanJob.java $
-* $Id: TestBeanJob.java 87001 2011-01-10 19:38:17Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/jobscheduler/tags/scheduler-2.9.0/scheduler-component-shared/src/test/java/org/sakaiproject/component/app/scheduler/jobs/TestBeanJob.java $
+* $Id: TestBeanJob.java 83923 2010-10-29 17:07:57Z duffy@rsmart.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation

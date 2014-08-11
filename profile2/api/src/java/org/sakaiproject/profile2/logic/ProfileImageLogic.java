@@ -47,13 +47,6 @@ public interface ProfileImageLogic {
 	public ProfileImage getProfileImage(String userUuid, ProfilePreferences prefs, ProfilePrivacy privacy, int size);
 	
 	/**
-	 * Gets the official profile image for a user.
-	 * @param userUuid
-	 * @return The ProfileImage object, populated with either a url or binary data.
-	 */
-	public ProfileImage getOfficialProfileImage(String userUuid);
-	
-	/**
 	 * Get the profile image for a user. Takes into account all global settings, user preferences, privacy and permissions in the given site.
 	 * See getProfileImage(String, ProfilePreferences, ProfilePrivacy, int);
 	 * @param userUuid
@@ -101,12 +94,13 @@ public interface ProfileImageLogic {
 	 * <p>Will work, but not have visible effect if the setting for the image type used in sakai.properties is not url. ie its using an uploaded image instead
 	 * 
 	 * @param userUuid - uuid for the user
-	 * @param url - url for main image
-	 * @param thumbnail - thumbnail for main image to be used when thumbnail sizes are requested. 
+	 * @param fullSizeUrl - url for main image
+	 * @param thumbnailUrl - thumbnail for main image to be used when thumbnail sizes are requested. 
 	 * Leave blank or null for none and when a thumbnail is requested it will return the full image which can be scaled in the markup.
+	 * @param avatar - avatar for main image to be used when avatar sizes are requested. Can be blank and it will fallback as per thumbnail
 	 * @return
 	 */
-	public boolean setExternalProfileImage(String userUuid, String url, String thumbnail);
+	public boolean setExternalProfileImage(String userUuid, String fullSizeUrl, String thumbnailUrl,  String avatar);
 	
 	/**
 	 * Get the full URL to the default unavailable image defined in ProfileConstants
@@ -184,5 +178,16 @@ public interface ProfileImageLogic {
 	 * @return
 	 */
 	public int getGalleryImagesCount(final String userUuid);
+	
+	/**
+	 * Generate a gravatar URL for a user
+	 * 
+	 * <p>URLs are of the form http://www.gravatar.com/avatar/HASH?s=200 where HASH is an MD5 hash of the user's email address and s is the size.
+	 * We always use the larger size (200) and then scale it in the markup where required, to take advantage of caching.</p>
+	 * <p>If no email address for the user, returns null.</p>
+	 * @param userUuid	uuid for the user
+	 * @return gravatar URL or null
+	 */
+	public String getGravatarUrl(final String userUuid);
 	
 }

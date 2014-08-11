@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/SearchBuilderQueueManager.java $
- * $Id: SearchBuilderQueueManager.java 86672 2010-12-24 13:39:06Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/indexer/impl/SearchBuilderQueueManager.java $
+ * $Id: SearchBuilderQueueManager.java 86670 2010-12-24 13:30:18Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation

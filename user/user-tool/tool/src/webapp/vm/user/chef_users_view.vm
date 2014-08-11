@@ -93,5 +93,6 @@
 			</div>
 #end
 			<input type="hidden" id="id" name="id" value="$validator.escapeHtml($user.Id)" />
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>

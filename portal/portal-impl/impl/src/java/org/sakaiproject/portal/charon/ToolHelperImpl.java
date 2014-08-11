@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-impl/impl/src/java/org/sakaiproject/portal/charon/ToolHelperImpl.java $
- * $Id: ToolHelperImpl.java 108252 2012-05-17 18:01:56Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/ToolHelperImpl.java $
+ * $Id: ToolHelperImpl.java 114946 2012-10-22 14:43:24Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,6 +44,7 @@ public class ToolHelperImpl
 
 	
 	public static final String TOOLCONFIG_REQUIRED_PERMISSIONS = "functions.require";
+	public static final String PORTAL_VISIBLE = "sakai-portal:visible";
 
 	/**
 	 * The optional tool configuration tag "functions.require" describes a
@@ -74,11 +75,19 @@ public class ToolHelperImpl
 						return false;
 					}
 					if(session.getAttribute("delegatedaccess.deniedToolsMap") == null ||
-							!((Map<String, String[]>) session.getAttribute("delegatedaccess.deniedToolsMap")).containsKey(site.getReference())){
-						//a delegated access admin would have this map and site (even if it was set to null)
-						if(site.getMember(session.getUserId()) == null && site.getProperties().get("shopping-period-restricted-tools") != null){
+							!((Map<String, String[]>) session.getAttribute("delegatedaccess.deniedToolsMap")).containsKey(site.getReference())
+							|| ((Map<String, String[]>) session.getAttribute("delegatedaccess.deniedToolsMap")).get(site.getReference()) == null){
+						//a delegated access admin would have this map and site (even if it was set to null), if its null, that means the user is just has access to a different site and not this one
+						if(site.getMember(session.getUserId()) == null && 
+								(site.getProperties().get("shopping-period-public-tools") != null || site.getProperties().get("shopping-period-auth-tools") != null)){
 							//this is .anon or .auth role in a site that needs to restrict the tools:
-							return arrayContains(((String) site.getProperties().get("shopping-period-restricted-tools")).split(";"), placement.getToolId());
+							boolean anonAccess = site.getProperties().get("shopping-period-public-tools") != null 
+									&& arrayContains(((String) site.getProperties().get("shopping-period-public-tools")).split(";"), placement.getToolId());
+							if(session.getUserId() == null){
+								return anonAccess;
+							}else{
+								return anonAccess || (site.getProperties().get("shopping-period-auth-tools") != null && arrayContains(((String) site.getProperties().get("shopping-period-auth-tools")).split(";"), placement.getToolId()));
+							}
 						}
 					}
 				}catch (Exception e) {
@@ -146,6 +155,8 @@ public class ToolHelperImpl
 	public boolean isHidden(Placement placement)
 	{
 		if (placement == null) return true;
+		String visibility = placement.getConfig().getProperty(PORTAL_VISIBLE);
+		if ( "false".equals(visibility) ) return true;
 		String requiredPermissionsString = StringUtils.trimToNull(placement.getConfig().getProperty(TOOLCONFIG_REQUIRED_PERMISSIONS));
 		if (requiredPermissionsString == null)
 			return false;

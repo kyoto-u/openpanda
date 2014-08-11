@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-util/src/main/java/org/sakaiproject/util/BasicAuth.java $
- * $Id: BasicAuth.java 76915 2010-05-01 10:24:53Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-util/src/main/java/org/sakaiproject/util/BasicAuth.java $
+ * $Id: BasicAuth.java 111987 2012-08-30 18:04:53Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 Sakai Foundation
@@ -115,10 +115,13 @@ public class BasicAuth {
 		if (morepatterns != null) {
 			for (int i = 0; i < morepatterns.length; i++) {
 				String line = morepatterns[i];
-				String check = line.substring(0, 1);
-				mat.add(check);
-				line = line.substring(1);
-				pat.add(Pattern.compile(line));
+				// line shouldn't be null (API contract), but it might be empty.
+				if (line != null && line.length() > 0) {
+					String check = line.substring(0, 1);
+					mat.add(check);
+					line = line.substring(1);
+					pat.add(Pattern.compile(line));
+				}
 			}
 		}
 		for (int i = 0; i < matchPatterns.length; i++) {

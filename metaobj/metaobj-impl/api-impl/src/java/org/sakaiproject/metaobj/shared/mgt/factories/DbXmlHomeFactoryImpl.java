@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/branches/sakai-2.8.x/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/factories/DbXmlHomeFactoryImpl.java $
- * $Id: DbXmlHomeFactoryImpl.java 65328 2009-07-29 18:49:51Z bkirschn@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.0/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/factories/DbXmlHomeFactoryImpl.java $
+ * $Id: DbXmlHomeFactoryImpl.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -78,6 +78,10 @@ public class DbXmlHomeFactoryImpl extends HomeFactoryBase implements HomeFactory
 
    public Map getWorksiteHomes(Id worksiteId, boolean includeHidden) {
       return createHomes(getStructuredArtifactDefinitionManager().getWorksiteHomes(worksiteId, true));
+   }
+
+   public Map getWorksiteHomes(Id worksiteId, String currentUserId, boolean includeHidden) {
+      return createHomes(getStructuredArtifactDefinitionManager().getWorksiteHomes(worksiteId, currentUserId, true));
    }
 
    public Map getHomes() {

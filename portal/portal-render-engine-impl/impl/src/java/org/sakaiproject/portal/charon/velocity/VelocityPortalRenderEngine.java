@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-render-engine-impl/impl/src/java/org/sakaiproject/portal/charon/velocity/VelocityPortalRenderEngine.java $
- * $Id: VelocityPortalRenderEngine.java 71448 2010-01-14 13:22:38Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-render-engine-impl/impl/src/java/org/sakaiproject/portal/charon/velocity/VelocityPortalRenderEngine.java $
+ * $Id: VelocityPortalRenderEngine.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,7 +53,7 @@ import org.sakaiproject.tool.api.SessionManager;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 71448 $
+ * @version $Rev: 110562 $
  */
 
 public class VelocityPortalRenderEngine implements PortalRenderEngine
@@ -67,6 +67,8 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 	private List<Map<String, String>> availablePortalSkins;
 
 	private ServletContext context;
+
+	private String defaultSkin = "defaultskin";
 
 	private boolean styleAble = false;
 
@@ -87,6 +89,7 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 			styleAble = serverConfigurationService.getBoolean("portal.styleable", false);
 			styleAbleContentSummary = serverConfigurationService.getBoolean(
 					"portal.styleable.contentSummary", false);
+			defaultSkin = serverConfigurationService.getString("portal.templates", "neoskin");
 		}
 		catch (Exception ex)
 		{
@@ -117,14 +120,14 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 		vengine.init(p);
 		availablePortalSkins = new ArrayList<Map<String, String>>();
 		Map<String, String> m = new HashMap<String, String>();
-		m.put("name", "defaultskin");
+		m.put("name", defaultSkin);
 		m.put("display", "Default");
 		availablePortalSkins.add(m);
 		/*
 		 * m = new HashMap(); m.put("name", "skintwo"); m.put("display", "Skin
 		 * Two"); availablePortalSkins.add(m);
 		 */
-		vengine.getTemplate("/vm/defaultskin/macros.vm");
+		vengine.getTemplate("/vm/"+defaultSkin+"/macros.vm");
 		}
 		catch (IOException e) {
 			throw new RuntimeException("Exception encounterd:  " + e, e);
@@ -153,7 +156,7 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 		rc.put("styleableStyleSheet", generateStyleAbleStyleSheet());
 		rc.put("styleableJS", generateStyleAbleJavaScript());
 		rc.put("styleable", styleAble);
-		String portalSkin = "defaultskin";
+		String portalSkin = defaultSkin;
 
 		if (request != null)
 		{
@@ -171,7 +174,7 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 			{
 				if (portalSkin == null || portalSkin.length() == 0)
 				{
-					portalSkin = "defaultskin";
+					portalSkin = defaultSkin;
 					session.setAttribute("portalskin", portalSkin);
 
 				}
@@ -182,7 +185,7 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 		else
 		{
 			log.debug("No Request Object Skin is default");
-			rc.put("pageCurrentSkin", "defaultskin");
+			rc.put("pageCurrentSkin", defaultSkin);
 		}
 
 		InputStream stream = null;
@@ -219,9 +222,9 @@ public class VelocityPortalRenderEngine implements PortalRenderEngine
 		String skin = (String) vc.get("pageCurrentSkin");
 		if (skin == null || skin.length() == 0)
 		{
-			skin = "defaultskin";
+			skin = defaultSkin;
 		}
-		if (!"defaultskin".equals(skin))
+		if (!defaultSkin.equals(skin))
 		{
 			vengine.getTemplate("/vm/" + skin + "/macros.vm");
 		}

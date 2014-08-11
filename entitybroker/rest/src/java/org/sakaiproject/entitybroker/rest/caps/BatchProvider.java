@@ -1,6 +1,6 @@
 /**
  * $Id: BatchProvider.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/java/org/sakaiproject/entitybroker/rest/caps/BatchProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/java/org/sakaiproject/entitybroker/rest/caps/BatchProvider.java $
  * BatchProvider.java - entity-broker - Jan 14, 2009 3:36:31 PM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

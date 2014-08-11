@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/CourseImpl.java $
- * $Id: CourseImpl.java 94218 2011-06-29 12:32:28Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/CourseImpl.java $
+ * $Id: CourseImpl.java 93245 2011-05-25 11:31:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -36,7 +36,8 @@ public class CourseImpl implements Course, Serializable {
 	public static final String EXTERNALLY_MAINTAINED = "sections_externally_maintained";
 	public static final String STUDENT_REGISTRATION_ALLOWED = "sections_student_registration_allowed";
 	public static final String STUDENT_SWITCHING_ALLOWED = "sections_student_switching_allowed";
-	
+	public static final String STUDENT_OPEN_DATE = "sections_student_open_date";
+
 	/**
 	 * Creates a course from a sakai Site
 	 * 

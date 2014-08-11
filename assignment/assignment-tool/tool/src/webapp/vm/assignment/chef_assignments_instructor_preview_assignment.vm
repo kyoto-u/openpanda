@@ -1,32 +1,32 @@
-<!-- $Id: chef_assignments_instructor_preview_assignment.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_preview_assignment.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_preview_assignment.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_preview_assignment.vm,v 1.9 2005/06/14 14:47:34 zqian.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
 <div class="portletBody"  xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
 	<ul class="navIntraTool actionToolBar" role="menu">
 		#if ($allowAddAssignment)
-			<li  class="firstToolBarItem" role="menuitem" aria-disabled="true">
+			<li  class="firstToolBarItem">
 				<span class="current">$!tlang.getString("new")</span>
 			</li>
-			<li role="menuitem">
+			<li>
 				<span><a href="#toolLinkParam("$action" "doView" "view=lisofass1")" title = "$!tlang.getString('lisofass1')">$!tlang.getString("lisofass1")</a></span>
 			</li>				
 			#if ($withGrade && $!allowGradeSubmission)
-				<li role="menuitem">
+				<li>
 					<span><a href="#toolLinkParam("$action" "doView" "view=grarep")" title="$!tlang.getString("gen.grarep")">$!tlang.getString("gen.grarep")</a></span>
 				</li>
 			#end
-			<li role="menuitem">
+			<li>
 				<span><a href="#toolLinkParam("$action" "doView" "view=stuvie")" title="$!tlang.getString("gen.stuvie")">$!tlang.getString("gen.stuvie")</a></span>
 			</li>	
 		#end
 		#if (($allowAllGroups) && ($assignmentscheck))
-			<li role="menuitem"><span><a href="#toolLink("$action" "doReorder")" title="$tlang.getString('gen.reorder')">$tlang.getString('gen.reorder')</a></span></li>
+			<li><span><a href="#toolLink("$action" "doReorder")" title="$tlang.getString('gen.reorder')">$tlang.getString('gen.reorder')</a></span></li>
 		#end
 		#if ($allowUpdateSite)
-			<li role="menuitem"><span><a href="#toolLink("$action" "doPermissions")" title="$tlang.getString('permis')">$tlang.getString('permis')</a></span></li>
+			<li><span><a href="#toolLink("$action" "doPermissions")" title="$tlang.getString('permis')">$tlang.getString('permis')</a></span></li>
 			#if ($enableViewOption)	
-				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end  role="menuitem">
+				<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>
 					<span><a href="#toolLink("$action" "doOptions")" title="$tlang.getString('options')">$tlang.getString('options')</a></span>
 				</li>
 			#end
@@ -342,7 +342,7 @@
 						#end
 						## if honor pledge is required
 						#if ($value_CheckAddHonorPledge!="1")
-							<p class="checkbox">$tlang.getString("gen.honple2")<input name="Yes" id="yes" type="checkbox" value="" disabled="disabled" /><label for="yes"> $tlang.getString("gen.yes")</label>
+							<p class="checkbox">$honor_pledge_text<input name="Yes" id="yes" type="checkbox" value="" disabled="disabled" /><label for="yes"> $tlang.getString("gen.yes")</label>
 							<br />$tlang.getString("gen.youmus")</p>
 						#end
 					#end
@@ -367,6 +367,7 @@
 					onclick="javascript:document.previewAssignmentsForm.onsubmit();showNotif('submitnotif','done','previewAssignmentsForm');document.getElementById('option').value='done';document.previewAssignmentsForm.submit();return false;" />
 				<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 			</div>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>
 <!-- end: chef_assignments_instructor_preview_assignment.vm  -->

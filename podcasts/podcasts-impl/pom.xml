@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>podcasts-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.8-SNAPSHOT</version>
+    <version>2.9.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>sakai-podcasts-impl</name>
@@ -17,16 +17,12 @@
   <inceptionYear>2004</inceptionYear>
   <packaging>jar</packaging>
   <properties>
-    <deploy.target/>
+    <deploy.target />
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-kernel-util</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
@@ -49,23 +45,14 @@
       <artifactId>sakai-podcasts-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject.common</groupId>
-      <artifactId>archive-api</artifactId>
-    </dependency>
-    <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring</artifactId>
-      <version>${sakai.spring.version}</version>
     </dependency>
 <!--		Needed to construct the actual feed -->
     <dependency>
       <groupId>rome</groupId>
       <artifactId>rome</artifactId>
-      <version>0.8</version>
+      <version>1.0-sakai</version>
     </dependency>
     <dependency>
       <groupId>rome</groupId>
@@ -74,7 +61,7 @@
     </dependency>
   </dependencies>
   <build>
-    <resources/>
+    <resources />
     <sourceDirectory>impl/src/java</sourceDirectory>
   </build>
 </project>

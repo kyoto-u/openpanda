@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookExternalAssessmentServiceImpl.java 123688 2013-05-07 12:07:20Z jean-francois.leveque@upmc.fr $
+* $Id: GradebookExternalAssessmentServiceImpl.java 104526 2012-02-09 08:16:49Z miguel.carro@samoo.es $
 *
 ***********************************************************************************
 *
@@ -23,6 +23,8 @@ package org.sakaiproject.component.gradebook;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.DecimalFormat;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,10 +38,13 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.service.gradebook.shared.AssessmentNotFoundException;
 import org.sakaiproject.service.gradebook.shared.AssignmentHasIllegalPointsException;
 import org.sakaiproject.service.gradebook.shared.ConflictingAssignmentNameException;
 import org.sakaiproject.service.gradebook.shared.ConflictingExternalIdException;
+import org.sakaiproject.service.gradebook.shared.ExternalAssignmentProvider;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookNotFoundException;
 import org.sakaiproject.service.gradebook.shared.InvalidCategoryException;
@@ -65,6 +70,59 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
     public void setEventTrackingService(EventTrackingService eventTrackingService) {
         this.eventTrackingService = eventTrackingService;
     }
+
+	private ConcurrentHashMap<String, ExternalAssignmentProvider> externalProviders =
+			new ConcurrentHashMap<String, ExternalAssignmentProvider>();
+
+    public ConcurrentHashMap<String, ExternalAssignmentProvider> getExternalAssignmentProviders() {
+        if (externalProviders == null) {
+            externalProviders = new ConcurrentHashMap<String, ExternalAssignmentProvider>(0);
+        }
+        return externalProviders;
+    }
+
+    /* (non-Javadoc)
+     * @see org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService#registerExternalAssignmentProvider(org.sakaiproject.service.gradebook.shared.ExternalAssignmentProvider)
+     */
+    public void registerExternalAssignmentProvider(ExternalAssignmentProvider provider) {
+        if (provider == null) {
+            throw new IllegalArgumentException("provider cannot be null");
+        } else {
+            getExternalAssignmentProviders().put(provider.getAppKey(), provider);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService#unregisterExternalAssignmentProvider(java.lang.String)
+     */
+    public void unregisterExternalAssignmentProvider(String providerAppKey) {
+        if (providerAppKey == null || "".equals(providerAppKey)) {
+            throw new IllegalArgumentException("providerAppKey must be set");
+        } else {
+            getExternalAssignmentProviders().remove(providerAppKey);
+        }
+    }
+
+
+    public void init() {
+        log.info("INIT");
+    }
+
+    public void destroy() {
+        log.info("DESTROY");
+        if (externalProviders != null) {
+            externalProviders.clear();
+            externalProviders = null;
+        }
+    }
+
+
+    /**
+     * Property in sakai.properties used to allow this service to update scores in the db every
+     * time the update method is called. By default, scores are only updated if the
+     * score is different than what is currently in the db.
+     */
+    public static final String UPDATE_SAME_SCORE_PROP = "gradebook.externalAssessments.updateSameScore";
 
 	public void addExternalAssessment(final String gradebookUid, final String externalId, final String externalUrl,
 			final String title, final double points, final Date dueDate, final String externalServiceDescription)
@@ -226,10 +284,12 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
                 AssignmentGradeRecord agr = getAssignmentGradeRecord(asn, studentUid, session);
 
                 // Try to reduce data contention by only updating when the
-                // score has actually changed.
+                // score has actually changed or property has been set forcing a db update every time.
+                boolean alwaysUpdate = ServerConfigurationService.getBoolean(UPDATE_SAME_SCORE_PROP, false);
+                
                 Double oldPointsEarned = (agr == null) ? null : agr.getPointsEarned();
-                if ( ((points != null) && (!points.equals(oldPointsEarned))) ||
-					((points == null) && (oldPointsEarned != null)) ) {
+                if ( alwaysUpdate || (points != null && !points.equals(oldPointsEarned)) ||
+					(points == null && oldPointsEarned != null) ) {
 					if (agr == null) {
 						agr = new AssignmentGradeRecord(asn, studentUid, points);
 					} else {
@@ -294,10 +354,12 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
 				previouslyUnscoredStudents.remove(studentUid);
 
 				// Try to reduce data contention by only updating when a score
-				// has changed.
+				// has changed or property has been set forcing a db update every time.
+				boolean alwaysUpdate = ServerConfigurationService.getBoolean(UPDATE_SAME_SCORE_PROP, false);
+				
 				Double oldPointsEarned = agr.getPointsEarned();
 				Double newPointsEarned = (Double)studentUidsToScores.get(studentUid);
-				if ( ((newPointsEarned != null) && (!newPointsEarned.equals(oldPointsEarned))) || ((newPointsEarned == null) && (oldPointsEarned != null)) ) {
+				if ( alwaysUpdate || (newPointsEarned != null && !newPointsEarned.equals(oldPointsEarned)) || (newPointsEarned == null && oldPointsEarned != null) ) {
 					agr.setDateRecorded(now);
 					agr.setGraderId(graderId);
 					agr.setPointsEarned(newPointsEarned);
@@ -367,13 +429,15 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
 					previouslyUnscoredStudents.remove(studentUid);
 
 					// Try to reduce data contention by only updating when a score
-					// has changed.
-					//TODO: for ungraded items, needs to set ungraded-grades later...
+					// has changed or property has been set forcing a db update every time.
+	                boolean alwaysUpdate = ServerConfigurationService.getBoolean(UPDATE_SAME_SCORE_PROP, false);
+					
+	                //TODO: for ungraded items, needs to set ungraded-grades later...
 					Double oldPointsEarned = agr.getPointsEarned();
 					//Double newPointsEarned = (Double)studentUidsToScores.get(studentUid);
 					String newPointsEarnedString = (String)studentUidsToScores.get(studentUid);
 					Double newPointsEarned = (newPointsEarnedString == null) ? null : convertStringToDouble(newPointsEarnedString); 
-					if ( ((newPointsEarned != null) && (!newPointsEarned.equals(oldPointsEarned))) || ((newPointsEarned == null) && (oldPointsEarned != null)) ) {
+					if ( alwaysUpdate || (newPointsEarned != null && !newPointsEarned.equals(oldPointsEarned)) || (newPointsEarned == null && oldPointsEarned != null) ) {
 						agr.setDateRecorded(now);
 						agr.setGraderId(graderId);
 						if(newPointsEarned != null)
@@ -420,10 +484,59 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
         return (assignment != null);
     }
 
+	/* (non-Javadoc)
+	 * @see org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService#isExternalAssignmentDefined(java.lang.String, java.lang.String)
+	 */
 	public boolean isExternalAssignmentDefined(String gradebookUid, String externalId) throws GradebookNotFoundException {
+        // SAK-19668
         Assignment assignment = getExternalAssignment(gradebookUid, externalId);
         return (assignment != null);
 	}
+
+	/* (non-Javadoc)
+	 * @see org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService#isExternalAssignmentGrouped(java.lang.String, java.lang.String)
+	 */
+	public boolean isExternalAssignmentGrouped(String gradebookUid, String externalId)
+		throws GradebookNotFoundException
+	{
+        // SAK-19668
+		final Assignment assignment = getExternalAssignment(gradebookUid, externalId);
+		boolean result = false;
+		if (assignment == null) {
+            result = false;
+            log.info("No assignment found for external assignment check: gradebookUid="+gradebookUid+", externalId="+externalId);
+		} else {
+	        for (ExternalAssignmentProvider provider : getExternalAssignmentProviders().values()) {
+	            if (provider.isAssignmentDefined(externalId)) {
+	                result = provider.isAssignmentGrouped(externalId);
+	            }
+	        }
+		}
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService#isExternalAssignmentVisible(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public boolean isExternalAssignmentVisible(String gradebookUid, String externalId, String userId)
+		throws GradebookNotFoundException
+	{
+	    // SAK-19668
+		final Assignment assignment = getExternalAssignment(gradebookUid, externalId);
+		boolean result = false;
+		if (assignment == null) {
+		    result = false;
+			log.info("No assignment found for external assignment check: gradebookUid="+gradebookUid+", externalId="+externalId);
+		} else {
+    		for (ExternalAssignmentProvider provider : getExternalAssignmentProviders().values()) {
+    			if (provider.isAssignmentDefined(externalId)) {
+    			    result = provider.isAssignmentVisible(externalId, userId);
+    			}
+    		}
+		}
+		return result;
+	}
+
 
 	public void setExternalAssessmentToGradebookAssignment(final String gradebookUid, final String externalId) {
         final Assignment assignment = getExternalAssignment(gradebookUid, externalId);
@@ -587,12 +700,14 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
 				AssignmentGradeRecord agr = getAssignmentGradeRecord(asn, studentUid, session);
 
 				// Try to reduce data contention by only updating when the
-				// score has actually changed.
+				// score has actually changed or property has been set forcing a db update every time.
+                boolean alwaysUpdate = ServerConfigurationService.getBoolean(UPDATE_SAME_SCORE_PROP, false);
+                
 				//TODO: for ungraded items, needs to set ungraded-grades later...
 				Double oldPointsEarned = (agr == null) ? null : agr.getPointsEarned();
 				Double newPointsEarned = (points == null) ? null : convertStringToDouble(points); 
-				if ( ((newPointsEarned != null) && (!newPointsEarned.equals(oldPointsEarned))) ||
-						((newPointsEarned == null) && (oldPointsEarned != null)) ) {
+				if ( alwaysUpdate || (newPointsEarned != null && !newPointsEarned.equals(oldPointsEarned)) ||
+						(newPointsEarned == null && oldPointsEarned != null) ) {
 					if (agr == null) {
 						if(newPointsEarned != null)
 							agr = new AssignmentGradeRecord(asn, studentUid, Double.valueOf(newPointsEarned));
@@ -641,6 +756,12 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
 	    Double scoreAsDouble = null;
 	    if (doubleAsString != null) {
 	        try {
+				// check if grade uses a comma as separator because of number format and change to a comma y the external app sends a point as separator
+				DecimalFormat dcformat = (DecimalFormat) getNumberFormat();
+				String decSeparator = dcformat.getDecimalFormatSymbols().getDecimalSeparator() + "";
+				if (",".equals(decSeparator)) {
+					doubleAsString = doubleAsString.replace(".", ",");
+				}
 				Number numericScore = getNumberFormat().parse(doubleAsString.trim());
 				scoreAsDouble = numericScore.doubleValue();
 			} catch (ParseException e) {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html rsf:id="html" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script rsf:id="scr=portal-matter" type="text/javascript" language="JavaScript" src="/library/js/headscripts.js"></script>
+<link href="/sakai-lessonbuildertool-tool/css/Simplepagetool.css" rel="stylesheet" media="all" />
+<link rsf:id="scr=portal-matter" href="/library/skin/tool_base.css" type="text/css" rel="stylesheet" media="all" />
+<link rsf:id="scr=portal-matter" href="/library/skin/default/tool.css" type="text/css" rel="stylesheet" media="all" />
+<script type="text/javascript" src="$context/js/InfusionAll.js"></script>
+<script type="text/javascript" src="$context/js/reorder.js"></script>
+<link rel="stylesheet" rsf:id="scr=rewrite-url" href="../css/Simplepagetool.css" type="text/css"/>
+<title rsf:id="msg=simplepage.reorder_header"></title>
+</head>
+<body rsf:id="scr=sakai-body">
+	<div class="portletBody" role="application">
+		<h2 class="firstHeader bold" id="intro" rsf:id="intro"></h2>
+	
+		<div rsf:id="instructions" class="afterheader"></div>
+	
+		<br /><br /><br />
+	
+		<div class="error" id="error" rsf:id="error"></div>
+	
+		<table class="indent" id="itemTable" rsf:id="itemTable" border="0">
+			<tbody id="listx">
+				<tr rsf:id="item:" class="movable" style="border:1px solid #000">
+					<td rsf:id="seq"></td>
+					<td><a href="#" rsf:id="link-button"><span rsf:id="link-button-text"></span></a><a href="#" rsf:id="link"><span rsf:id="link-text"></span></a><span rsf:id="text-snippet"></span></td>
+					<td class="italic" rsf:id="description"></td>
+				</tr>
+			</tbody>
+		</table>
+	
+		<div rsf:id="subpage-div" style="margin-top:2em">
+		  <a href="#" id="subpage-choose" rsf:id="subpage-choose" ><span rsf:id="msg=simplepage.choose_existing_page"></span></a>
+		</div>
+
+		<form action="#" rsf:id="form" style="margin-top:2em">
+			<input type="hidden" rsf:id="otherpage" id="otherpage" />
+			<input type="hidden" rsf:id="order" id="order" />
+			<input type="submit" rsf:id="save" onclick="computeorder();" />
+			<input type="submit" rsf:id="cancel" />
+		</form>
+	
+	</div>
+</body>
+</html>

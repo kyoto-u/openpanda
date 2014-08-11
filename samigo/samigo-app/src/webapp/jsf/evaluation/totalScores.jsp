@@ -40,13 +40,13 @@
 			}
 		</style> 
       </head>
-      <body onload="<%= request.getAttribute("html.body.onload") %>">
+      <body onload="disableIt();<%= request.getAttribute("html.body.onload") %>">
  <div class="portletBody">
 
  <!-- JAVASCRIPT -->
 <%@ include file="/js/delivery.js" %>
 
-<script>
+<script type="text/javascript">
 function toPoint(id)
 {
   var x=document.getElementById(id).value
@@ -63,6 +63,26 @@ now = new Date();
 if (now.getTime() > exitTime)
 return;
 }
+}
+
+function inIt()
+{
+  var inputs= document.getElementsByTagName("INPUT");
+  for (var i = 0; i < inputs.length; i++) {
+    if (inputs[i].name.indexOf("applyScoreButton") >=0) {
+      inputs[i].disabled=false;
+    }
+  }
+}
+
+function disableIt()
+{
+  var inputs= document.getElementsByTagName("INPUT");
+  for (var i = 0; i < inputs.length; i++) {
+    if (inputs[i].name.indexOf("applyScoreButton") >=0) {
+      inputs[i].disabled=true;
+    }
+  }
 }
 
 </script>
@@ -110,9 +130,9 @@ return;
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScoreListener" />
     </h:commandLink>
 
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" />
+    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne ''}" />
     <h:commandLink title="#{evaluationMessages.t_histogram}" action="histogramScores" immediate="true"
-      rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" >
+      rendered="#{totalScores.firstItem ne ''}" >
       <h:outputText value="#{evaluationMessages.stat_view}" />
       <f:param name="hasNav" value="true"/>
       <f:actionListener
@@ -120,9 +140,9 @@ return;
     </h:commandLink>
 
 
-    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" />
+    <h:outputText value=" #{evaluationMessages.separator} " rendered="#{totalScores.firstItem ne ''}" />
     <h:commandLink title="#{evaluationMessages.t_itemAnalysis}" action="detailedStatistics" immediate="true"
-      rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" >
+      rendered="#{totalScores.firstItem ne ''}" >
       <h:outputText value="#{evaluationMessages.item_analysis}" />
       <f:param name="hasNav" value="true"/>
       <f:actionListener
@@ -138,7 +158,7 @@ return;
 
   </p>
 <div class="tier1">
-  <h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+  <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
   <!-- only shows Max Score Possible if this assessment does not contain random dawn parts -->
 
 <sakai:flowState bean="#{totalScores}" />
@@ -147,8 +167,19 @@ return;
     <h:panelGrid columns="1" columnClasses="samLeftNav" width="100%">
 	  <h:panelGroup rendered="#{!totalScores.hasRandomDrawPart}">
         <h:outputText value="#{evaluationMessages.max_score_poss}" style="instruction"/>
-        <h:outputText value="#{totalScores.maxScore}" style="instruction"/>
+        <h:outputText value=" #{totalScores.maxScore}" style="instruction"/>
       </h:panelGroup>
+	  
+	  <h:panelGroup rendered="#{totalScores.allSubmissions!='4'}">
+	    <h:commandButton value="#{evaluationMessages.applyGrades} " id="applyScoreButton" styleClass="active" type="submit">
+	  				<f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreUpdateListener" />
+	  	</h:commandButton>
+	  	<h:outputText value=" "/>
+	  	<h:inputText id="applyScoreUnsubmitted" value="#{totalScores.applyToUngraded}"  onkeydown="inIt()" onchange="toPoint(this.id);" size="5"/>
+		<h:outputText value=" #{evaluationMessages.applyGradesDesc}"/>
+	  </h:panelGroup>
+	  
+	  <h:outputText value="&nbsp;" escape="false"/>
 	  
 	  <h:panelGroup>
         <!-- SECTION AWARE -->
@@ -579,21 +610,14 @@ return;
         <h:outputText value="#{description.submittedDate}" rendered="#{description.attemptDate != null && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')}" >
           <f:convertDateTime pattern="#{generalMessages.output_data_picker_w_sec}"/>
         </h:outputText>
-		<h:panelGroup rendered="#{description.isAutoSubmitted == 'false' && description.isLate == 'true' && description.attemptDate != null
+		<h:panelGroup rendered="#{description.isLate == 'true' && description.attemptDate != null
                     && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')
 					&& !(totalScores.isTimedAssessment eq 'true' && totalScores.acceptLateSubmission eq 'false')}">
 			<f:verbatim><br/></f:verbatim>
 			<h:outputText style="color:red" value="#{evaluationMessages.late}"/>
 		</h:panelGroup>
 
-		<h:panelGroup rendered="#{description.isAutoSubmitted == 'true' && description.isAttemptDateAfterDueDate == 'true' && description.attemptDate != null
-                    && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')
-					&& !(totalScores.isTimedAssessment eq 'true' && totalScores.acceptLateSubmission eq 'false')}">
-			<f:verbatim><br/></f:verbatim>
-			<h:outputText style="color:red" value="#{evaluationMessages.late}"/>
-		</h:panelGroup>
-
-		<h:panelGroup rendered="#{description.isAutoSubmitted == 'true' && description.isAttemptDateAfterDueDate == 'false' && description.attemptDate != null
+		<h:panelGroup rendered="#{description.isAutoSubmitted == 'true' && description.isLate == 'false' && description.attemptDate != null
                     && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')
 					&& !totalScores.isTimedAssessment eq 'true'}">
 			<f:verbatim><br/></f:verbatim>
@@ -618,10 +642,17 @@ return;
           <f:convertDateTime pattern="#{generalMessages.output_data_picker_w_sec}"/>
         </h:outputText>
 		<h:panelGroup rendered="#{description.isLate == 'true' && description.attemptDate != null
-                    && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1') 
+                    && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')
 					&& !(totalScores.isTimedAssessment eq 'true' && totalScores.acceptLateSubmission eq 'false')}">
 			<f:verbatim><br/></f:verbatim>
 			<h:outputText style="color:red" value="#{evaluationMessages.late}"/>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{description.isAutoSubmitted == 'true' && description.isLate == 'false' && description.attemptDate != null
+                    && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')
+					&& !totalScores.isTimedAssessment eq 'true'}">
+			<f:verbatim><br/></f:verbatim>
+			<h:outputText style="color:red" value="#{evaluationMessages.auto_submit}"/>
 		</h:panelGroup>
 
         <h:outputText value="#{evaluationMessages.no_submission}"
@@ -642,12 +673,20 @@ return;
         <h:outputText value="#{description.submittedDate}" rendered="#{description.attemptDate != null && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')}" >
           <f:convertDateTime pattern="#{generalMessages.output_data_picker_w_sec}"/>
         </h:outputText>
-		<h:panelGroup rendered="#{description.isLate eq 'true' && description.attemptDate != null
-                    && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1') 
+		<h:panelGroup rendered="#{description.isLate == 'true' && description.attemptDate != null
+                    && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')
 					&& !(totalScores.isTimedAssessment eq 'true' && totalScores.acceptLateSubmission eq 'false')}">
 			<f:verbatim><br/></f:verbatim>
 			<h:outputText style="color:red" value="#{evaluationMessages.late}"/>
 		</h:panelGroup>
+
+		<h:panelGroup rendered="#{description.isAutoSubmitted == 'true' && description.isLate == 'false' && description.attemptDate != null
+                    && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')
+					&& !totalScores.isTimedAssessment eq 'true'}">
+			<f:verbatim><br/></f:verbatim>
+			<h:outputText style="color:red" value="#{evaluationMessages.auto_submit}"/>
+		</h:panelGroup>
+		
         <h:outputText value="#{evaluationMessages.no_submission}"
          rendered="#{description.attemptDate == null && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')}"/>
     </h:column>

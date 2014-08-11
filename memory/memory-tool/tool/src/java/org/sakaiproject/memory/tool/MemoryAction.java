@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/memory/branches/sakai-2.8.x/memory-tool/tool/src/java/org/sakaiproject/memory/tool/MemoryAction.java $
- * $Id: MemoryAction.java 89401 2011-03-08 09:21:35Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/memory/tags/sakai-2.9.0/memory-tool/tool/src/java/org/sakaiproject/memory/tool/MemoryAction.java $
+ * $Id: MemoryAction.java 88355 2011-02-11 10:09:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation

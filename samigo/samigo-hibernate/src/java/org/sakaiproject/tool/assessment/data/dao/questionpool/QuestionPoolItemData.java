@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/questionpool/QuestionPoolItemData.java $
- * $Id: QuestionPoolItemData.java 92455 2011-04-29 21:39:10Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/questionpool/QuestionPoolItemData.java $
+ * $Id: QuestionPoolItemData.java 92424 2011-04-28 23:18:05Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -28,7 +28,7 @@ import org.sakaiproject.tool.assessment.data.ifc.questionpool.QuestionPoolItemIf
 /**
  *
  * @author $author$
- * @version $Id: QuestionPoolItemData.java 92455 2011-04-29 21:39:10Z ktsao@stanford.edu $
+ * @version $Id: QuestionPoolItemData.java 92424 2011-04-28 23:18:05Z ktsao@stanford.edu $
  */
 public class QuestionPoolItemData
     implements Serializable, QuestionPoolItemIfc 

@@ -42,7 +42,7 @@
 				$tlang.getString("realm.edit.status")
 			</h4>				
 			<p class="checkbox">
-					<input type="radio" name="status" id="active" value="true" #if($grant.Active==true)checked="checked"#end/>
+					<input type="radio" name="status" id="active" value="true" #if($grant.Active!=false)checked="checked"#end/>
 					<label for="active">$tlang.getString("realm.edit.active")</label><br>
 					<input type="radio" name="status" id="inactive" value="false" #if($grant.Active==false)checked="checked"#end /> 
 					<label for="inactive">$tlang.getString("realm.edit.inactive")</label>
@@ -62,6 +62,7 @@
 						<input type="submit" class="active"  name="eventSubmit_doSave_user" value="$tlang.getString("realm.user.save")" accesskey="s" />
 						<input type="submit" name="eventSubmit_doCancel" value="$tlang.getString("realm.user.cancel")" accesskey="x"/>
 					</div>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>
 

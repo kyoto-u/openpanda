@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-impl/impl/src/java/org/sakaiproject/portal/charon/CharonPortal.java $
- * $Id: CharonPortal.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/CharonPortal.java $
+ * $Id: CharonPortal.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,7 +77,7 @@ import org.sakaiproject.util.Web;
  * Charon is the Sakai Site based portal.
  * </p>
  * @since Sakai 2.0
- * @version $Rev: 93969 $
+ * @version $Rev: 110562 $
  * 
  */
 public class CharonPortal extends HttpServlet 
@@ -186,7 +186,7 @@ public class CharonPortal extends HttpServlet
 		// error and we cannot use the error site...
 
 		// form a context sensitive title
-		String title = ServerConfigurationService.getString("ui.service") + " : Portal";
+		String title = ServerConfigurationService.getString("ui.service","Sakai") + " : Portal";
 
 		// start the response
 		PrintWriter out = startResponse(res, title, null, false);
@@ -284,7 +284,7 @@ public class CharonPortal extends HttpServlet
 		session.setAttribute(ATTR_SITE_PAGE + siteId, page.getId());
 
 		// form a context sensitive title
-		String title = ServerConfigurationService.getString("ui.service") + " : "
+		String title = ServerConfigurationService.getString("ui.service","Sakai") + " : "
 				+ site.getTitle() + " : " + page.getTitle();
 
 		// start the response
@@ -309,7 +309,7 @@ public class CharonPortal extends HttpServlet
 	protected void doGalleryTabs(HttpServletRequest req, HttpServletResponse res,
 			Session session, String siteId) throws IOException
 	{
-		String skin = SiteService.getSiteSkin(siteId);
+		String skin = getSiteSkin(siteId);
 
 		// start the response
 		PrintWriter out = startResponse(res, "Site Navigation", skin, false);
@@ -1006,7 +1006,7 @@ public class CharonPortal extends HttpServlet
 		}
 
 		// form a context sensitive title
-		String title = ServerConfigurationService.getString("ui.service") + " : "
+		String title = ServerConfigurationService.getString("ui.service","Sakai") + " : "
 				+ site.getTitle() + " : " + page.getTitle();
 
 		// start the response
@@ -1290,7 +1290,7 @@ public class CharonPortal extends HttpServlet
 		session.setAttribute(ATTR_SITE_PAGE + siteId, page.getId());
 
 		// form a context sensitive title
-		String title = ServerConfigurationService.getString("ui.service") + " : "
+		String title = ServerConfigurationService.getString("ui.service","Sakai") + " : "
 				+ site.getTitle() + " : " + page.getTitle();
 
 		// start the response
@@ -1376,7 +1376,7 @@ public class CharonPortal extends HttpServlet
 			Session session, String siteId) throws IOException
 	{
 		// get the site's skin
-		String skin = SiteService.getSiteSkin(siteId);
+		String skin = getSiteSkin(siteId);
 
 		// start the response
 		PrintWriter out = startResponse(res, "Site Navigation", skin, false);
@@ -1712,7 +1712,7 @@ public class CharonPortal extends HttpServlet
 		session.setAttribute(ATTR_SITE_PAGE + siteId, page.getId());
 
 		// form a context sensitive title
-		String title = ServerConfigurationService.getString("ui.service") + " : "
+		String title = ServerConfigurationService.getString("ui.service","Sakai") + " : "
 				+ site.getTitle() + " : " + page.getTitle();
 
 		// start the response
@@ -1888,11 +1888,7 @@ public class CharonPortal extends HttpServlet
 	protected void includeLogo(PrintWriter out, HttpServletRequest req, Session session,
 			String siteId) throws IOException
 	{
-		String skin = SiteService.getSiteSkin(siteId);
-		if (skin == null)
-		{
-			skin = ServerConfigurationService.getString("skin.default");
-		}
+		String skin = getSiteSkin(siteId);
 		String skinRepo = ServerConfigurationService.getString("skin.repo");
 
 		String logo = skinRepo + "/" + skin + "/images/logo_inst.gif";
@@ -1928,10 +1924,8 @@ public class CharonPortal extends HttpServlet
 
 		// check for the top.login (where the login fields are present instead
 		// of a login link, but ignore it if container.login is set
-		boolean topLogin = Boolean.TRUE.toString().equalsIgnoreCase(
-				ServerConfigurationService.getString("top.login"));
-		boolean containerLogin = Boolean.TRUE.toString().equalsIgnoreCase(
-				ServerConfigurationService.getString("container.login"));
+		boolean topLogin = ServerConfigurationService.getBoolean("top.login", true);
+		boolean containerLogin = ServerConfigurationService.getBoolean("container.login", false);
 		if (containerLogin) topLogin = false;
 
 		// if not logged in they get login
@@ -3113,4 +3107,23 @@ public class CharonPortal extends HttpServlet
 			throw e;
 		}
 	}
+
+	/**
+	 * Do the getSiteSkin, adjusting for the overall skin/templates for the portal.
+	 * 
+	 * @return The skin
+	 */
+	protected String getSiteSkin(String siteId)
+	{
+		String skin = SiteService.getSiteSkin(siteId);
+		if (skin == null)
+		{
+			skin = ServerConfigurationService.getString("skin.default");
+		}
+		String templates = ServerConfigurationService.getString("portal.templates", "neoskin");
+		String prefix = ServerConfigurationService.getString("portal.neoprefix", "neo-");
+		if ( "neoskin".equals(templates) ) skin = prefix + skin;
+		return skin;
+	}
+
 }

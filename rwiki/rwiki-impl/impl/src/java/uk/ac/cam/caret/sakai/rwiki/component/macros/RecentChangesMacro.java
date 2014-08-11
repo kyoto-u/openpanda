@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/RecentChangesMacro.java $
- * $Id: RecentChangesMacro.java 98771 2011-09-29 15:23:31Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/RecentChangesMacro.java $
+ * $Id: RecentChangesMacro.java 96569 2011-08-07 18:36:42Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

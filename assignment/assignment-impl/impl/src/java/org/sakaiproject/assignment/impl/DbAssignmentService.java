@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/DbAssignmentService.java $
- * $Id: DbAssignmentService.java 118613 2013-01-23 01:56:03Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/DbAssignmentService.java $
+ * $Id: DbAssignmentService.java 105581 2012-03-06 19:57:01Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation

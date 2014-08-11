@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-render-engine-impl/pack/src/test/org/sakaiproject/portal/charon/test/MockCharonPortal.java $
- * $Id: MockCharonPortal.java 82329 2010-09-16 20:25:06Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-render-engine-impl/pack/src/test/org/sakaiproject/portal/charon/test/MockCharonPortal.java $
+ * $Id: MockCharonPortal.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,8 +38,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.portal.api.PortalRenderContext;
 import org.sakaiproject.portal.charon.velocity.VelocityPortalRenderEngine;
-import org.sakaiproject.portal.util.BrowserDetector;
-import org.sakaiproject.util.ResourceLoader;
 import org.w3c.tidy.Tidy;
 
 /**
@@ -179,7 +177,7 @@ public class MockCharonPortal extends HttpServlet
                 rcontext.put("sakai_html_head_js", headJs);
 
 		rcontext.put("sitReset", "sitReset");
-		rcontext.put("browser", new BrowserDetector("Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/523.12.2 (KHTML, like Gecko) Version/3.0.4 Safari/523.12.2"));
+		//rcontext.put("browser", new BrowserDetector("Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/523.12.2 (KHTML, like Gecko) Version/3.0.4 Safari/523.12.2"));
 
 		return rcontext;
 	}
@@ -539,7 +537,9 @@ public class MockCharonPortal extends HttpServlet
 		int e = t.getParseErrors();
 		int w = t.getParseWarnings();
 		errorOut.close();
-		if ( e != 0 || w != 0 ) {
+		// JTidy r938 became more agressive about warnings
+		// if ( e != 0 || w != 0 ) {
+		if ( e != 0 ) {
 			log.info("Context Dump is " + rcontext.dump());
 			throw new RuntimeException("Error in HTML see "+errorFile);
 		}

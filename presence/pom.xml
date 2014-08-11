@@ -1,50 +1,62 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>base</artifactId>
-    <groupId>org.sakaiproject</groupId>
-    <version>2.8-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-  <name>Sakai Presence Project</name>
-  <groupId>org.sakaiproject</groupId>
-  <artifactId>presence-base</artifactId>
-  <packaging>pom</packaging>
-  <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/presence/trunk</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/presence/trunk</developerConnection>
-    <url>https://source.sakaiproject.org/svn/presence/trunk</url>
-  </scm>
-  <modules>
-    <module>presence-api/api</module>
-    <module>presence-impl/impl</module>
-    <module>presence-impl/pack</module>
-    <module>presence-tool/tool</module>
-    <module>presence-util/util</module>
-  </modules>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
         <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-presence-impl</artifactId>
-        <version>2.8-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-presence-util</artifactId>
-        <version>2.8-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-courier-util</artifactId>
-        <version>2.8-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-velocity-tool</artifactId>
-        <version>2.8-SNAPSHOT</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+        <artifactId>master</artifactId>
+        <version>2.9.0</version>
+		<relativePath>../master/pom.xml</relativePath>
+    </parent>
+
+    <name>sakai-presence base pom</name>
+    <groupId>org.sakaiproject.presence</groupId>
+    <artifactId>presence</artifactId>
+    <version>2.9.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>presence-api/api</module>
+        <module>presence-assembly</module>
+        <module>presence-impl/impl</module>
+        <module>presence-impl/pack</module>
+        <module>presence-tool/tool</module>
+        <module>presence-util/util</module>
+    </modules>
+
+    <scm>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/presence/tags/presence-2.9.0</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/presence/tags/presence-2.9.0</developerConnection>
+        <url>https://source.sakaiproject.org/svn/presence/tags/presence-2.9.0</url>
+    </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>sakai-presence-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>sakai-presence-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+    <repositories> 
+		<repository> 
+			<id>sonatype-nexus-snapshots</id> 
+			<name>Sonatype Nexus Snapshots</name> 
+			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
+			<releases> 
+				<enabled>false</enabled> 
+			</releases> 
+			<snapshots> 
+				<enabled>true</enabled> 
+			</snapshots> 
+		</repository> 
+	</repositories>
+    
 </project>

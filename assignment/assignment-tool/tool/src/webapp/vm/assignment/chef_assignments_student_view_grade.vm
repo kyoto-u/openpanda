@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_view_grade.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_student_view_grade.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_student_view_grade.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_student_view_grade.vm,v 1.2 2005/05/19 19:39:49 gsilver.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
@@ -10,20 +10,20 @@
         setupToggleAreas('toggleAnchor', 'toggledContent', false, 'fast');
     });
 </script>
-<div class="portletBody" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"  xmlns:aaa="http://www.w3.org/2005/07/aaa">
+<div class="portletBody">
 	#set ($assignment = $submission.Assignment)
 	#if ($taggable)
 		#if (!$itemHelpers.isEmpty())
-		<ul class="navIntraTool actionToolBar" role="menu">
+		<ul class="navIntraTool actionToolBar">
 				#set ($first = true)
 				#foreach ($helperInfo in $itemHelpers)
 					#if (!$first)
-						<li  class="firstToolBarItem" role="menuitem">
+						<li  class="firstToolBarItem">
 							<span><a href="#toolLinkParam("$action" "doHelp_item" "itemRef=$validator.escapeUrl($item.reference)&providerId=$validator.escapeUrl($helperInfo.provider.id)")" title="$!helperInfo.description">$!helperInfo.name</a></span>
 						</li>	
 					#else
 						#set ($first = false)
-						<li role="menuitem">	
+						<li>	
 						<span><a href="#toolLinkParam("$action" "doHelp_item" "itemRef=$validator.escapeUrl($item.reference)&providerId=$validator.escapeUrl($helperInfo.provider.id)")" title="$!helperInfo.description">$!helperInfo.name</a></span>
 					#end
 				#end
@@ -118,8 +118,10 @@
 							$tlang.getString("review.report")
 						</th>
 							<td>
-							#if (!$submission || $submission.getReviewReport().equalsIgnoreCase("Error"))
+							#if (!$submission)
 								$tlang.getString("review.notavail")
+							#elseif ($submission.getReviewReport().equals("Error"))
+								<div class="alertMessage" >$!submission.getReviewError()</div>
 							#else
 								<img src="$submission.getReviewIconUrl()" alt="$submission.getReviewScore()">
 							
@@ -369,6 +371,7 @@
 			<div class="act">
 				<input type="submit" accesskey="x" name="eventSubmit_doCancel_view_grade" value="$tlang.getString("gen.backtolist")" accesskey="x" class="active TB_hideControl"/>
 			</div>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>
 	

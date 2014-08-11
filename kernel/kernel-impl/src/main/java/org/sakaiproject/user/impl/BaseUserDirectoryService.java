@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
- * $Id: BaseUserDirectoryService.java 118911 2013-01-28 23:07:14Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
+ * $Id: BaseUserDirectoryService.java 113282 2012-09-21 14:59:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -66,6 +66,7 @@ import org.sakaiproject.user.api.AuthenticatedUserProvider;
 import org.sakaiproject.user.api.AuthenticationManager;
 import org.sakaiproject.user.api.ContextualUserDisplayService;
 import org.sakaiproject.user.api.DisplayAdvisorUDP;
+import org.sakaiproject.user.api.DisplaySortAdvisorUPD;
 import org.sakaiproject.user.api.ExternalUserSearchUDP;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserAlreadyDefinedException;
@@ -80,10 +81,10 @@ import org.sakaiproject.user.api.UserPermissionException;
 import org.sakaiproject.user.api.UsersShareEmailUDP;
 import org.sakaiproject.util.BaseResourceProperties;
 import org.sakaiproject.util.BaseResourcePropertiesEdit;
-import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.StorageUser;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.api.FormattedText;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -505,6 +506,11 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 	 */
 	protected abstract IdManager idManager();
 
+	/**
+	 * @return the FormattedTextProcessor collaborator
+	 */
+    protected abstract FormattedText formattedText();
+
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Init and Destroy
 	 *********************************************************************************************************************************************************************************************************************************************************/
@@ -534,7 +540,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 				M_log.warn("cacheCleanerSeconds@org.sakaiproject.user.api.UserDirectoryService is no longer supported");
 			}
 			m_callCache = memoryService().newCache(
-					"memory.org.sakaiproject.user.api.UserDirectoryService.callCache",
+					"org.sakaiproject.user.api.UserDirectoryService.callCache",
 					userReference(""));
 
 			// register as an entity producer
@@ -1428,6 +1434,15 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		// check security (throws if not permitted)
 		unlock(SECURE_ADD_USER, userFromXml.getReference());
 
+		// Check if this user is a provided one:
+		if (getProvidedUserByEid(userFromXml.getId(), userFromXml.getEid()) != null) {
+			// This doesn't mean we have a mapping from ID to EID mapping
+			if (m_storage.checkMapForId(userFromXml.getEid()) == null) {
+				m_storage.putMap(userFromXml.getId(), userFromXml.getEid());
+			}
+			throw new UserAlreadyDefinedException("Provided user: "+ userFromXml.getId() + " - " + userFromXml.getEid());
+		}
+		
 		// reserve a user with this id from the info store - if it's in use, this will return null
 		UserEdit user = m_storage.put(userFromXml.getId(), userFromXml.getEid());
 		if (user == null)
@@ -2395,6 +2410,16 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		{
 			if (m_sortName == null)
 			{
+				if (m_provider != null && m_provider instanceof DisplaySortAdvisorUPD)
+				{
+					String rv = ((DisplaySortAdvisorUPD) m_provider).getSortName(this); 
+					if (rv != null)
+					{
+						m_sortName = rv;
+						return rv;
+					}
+				} 
+
 				// Cache this locally in the object as otherwise when sorting users we generate lots of objects.
 				StringBuilder buf = new StringBuilder(128);
 				if (m_lastName != null) buf.append(m_lastName);
@@ -2410,6 +2435,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 
 				m_sortName = (buf.length() == 0)?getEid():buf.toString();
 			}
+
 			return m_sortName;
 		}
 
@@ -2534,7 +2560,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		{
 		    if(!m_restrictedFirstName) {
 		        // https://jira.sakaiproject.org/browse/SAK-20226 - removed html from name
-		    	m_firstName = FormattedText.convertFormattedTextToPlaintext(name);
+		    	m_firstName = formattedText().convertFormattedTextToPlaintext(name);
 		    	m_sortName = null;
 		    }
 		}
@@ -2546,7 +2572,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		{
 			if(!m_restrictedLastName) {
                 // https://jira.sakaiproject.org/browse/SAK-20226 - removed html from name
-		    	m_lastName = FormattedText.convertFormattedTextToPlaintext(name);
+		    	m_lastName = formattedText().convertFormattedTextToPlaintext(name);
 		    	m_sortName = null;
 		    }
 		}

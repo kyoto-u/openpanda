@@ -1,4 +1,4 @@
-<!-- $Id: questionTreeTable.jsp 69184 2009-11-23 22:41:09Z ktsao@stanford.edu $
+<!-- $Id: questionTreeTable.jsp 99002 2011-10-05 22:24:27Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -131,6 +131,7 @@ table.checkall td {padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bott
      <h:outputText rendered="#{question.typeId== 9}" value="#{authorMessages.matching}"/>
      <h:outputText rendered="#{question.typeId== 11}" value="#{authorMessages.fill_in_numeric}"/>
      <h:outputText rendered="#{question.typeId== 12}" value="#{authorMessages.multiple_choice_type}"/>
+     <h:outputText rendered="#{question.typeId== 13}" value="#{authorMessages.matrix_choice_surv}"/>
 
     </h:column>
 
@@ -138,9 +139,9 @@ table.checkall td {padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bott
       <f:facet name="header">
         <h:outputText value="#{questionPoolMessages.impToAuthor}"/>
       </f:facet>
- <h:selectManyCheckbox immediate="true" id="importCheckbox" value ="#{questionpool.destItems}">
-         <f:selectItem itemValue="#{question.itemIdString}" itemLabel=""/>
- </h:selectManyCheckbox>
+ 	  <h:selectManyCheckbox immediate="true" id="importCheckbox" value ="#{questionpool.destItems}">
+        <f:selectItem itemValue="#{question.itemIdString}" itemLabel=""/>
+ 	  </h:selectManyCheckbox>
      </h:column>
 
 

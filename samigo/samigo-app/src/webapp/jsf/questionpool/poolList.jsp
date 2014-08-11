@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  
-<!-- $Id: poolList.jsp 85588 2010-11-29 23:37:27Z ktsao@stanford.edu $
+<!-- $Id: poolList.jsp 98973 2011-10-05 05:52:39Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -31,7 +31,7 @@
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{questionPoolMessages.q_mgr}"/></title>
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 <%@ include file="/js/samigotree.js" %>
 
@@ -107,9 +107,9 @@
 <h:outputText rendered="#{questionpool.importToAuthoring == 'false' && authorization.createQuestionPool}" escape="false" value="</p>"/>
 </div>
 
-<h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
-
- <div class="tier2">
+<h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+ 
+<div class="tier2">
 <%@ include file="/jsf/questionpool/poolTreeTable.jsp" %>
 
  </div>

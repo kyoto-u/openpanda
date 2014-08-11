@@ -35,9 +35,10 @@
   			<sakai:tool_bar_item value="#{msgs.pvt_compose}" action="#{PrivateMessagesTool.processPvtMsgCompose}"  rendered="#{! PrivateMessagesTool.dispError}" />
   			<sakai:tool_bar_item value=" #{msgs.pvt_newfolder}" action="#{PrivateMessagesTool.processPvtMsgFolderSettingAdd}"  rendered="#{! PrivateMessagesTool.dispError}" />
  			<sakai:tool_bar_item value=" #{msgs.pvt_settings}" action="#{PrivateMessagesTool.processPvtMsgSettings}" />
+ 			<sakai:tool_bar_item value=" #{msgs.pvt_permissions}" action="#{PrivateMessagesTool.processActionPermissions}" rendered="#{PrivateMessagesTool.instructor}" />
  			</sakai:tool_bar>
  		
-			<h:panelGrid columns="2" summary="layout" width="100%"
+			<h:panelGrid columns="2" width="100%"
 				styleClass="navPanel  specialLink" >
 				<h:panelGroup>
 					<f:verbatim>
@@ -89,7 +90,7 @@
 						width="99%" cellpadding="0" cellspacing="0" style="margin:0;">
 						<h:column>
 
-							<h:panelGrid columns="2" summary="layout" width="100%"
+							<h:panelGrid columns="2" width="100%"
 												   cellpadding="0" cellspacing="0" styleClass="listHier"
 								           style="margin:0">
 								           

@@ -1,6 +1,6 @@
 /**********************************************************************************
  *
- * $Id: GradebookServiceNewTest.java 87561 2011-01-25 15:59:09Z arwhyte@umich.edu $
+ * $Id: GradebookServiceNewTest.java 97267 2011-08-22 12:38:23Z wagnermr@iupui.edu $
  *
  ***********************************************************************************
  *
@@ -167,10 +167,10 @@ public class GradebookServiceNewTest extends GradebookTestBase {
 		integrationSupport.addSectionMembership(TA_UID, section2.getUuid(), Role.TA);
 
 		// Add an internal assignment.
-		cat1Id = gradebookManager.createCategory(gradebookWithCat.getId(), CAT1_NAME, new Double(0), 0);
+		cat1Id = gradebookManager.createCategory(gradebookWithCat.getId(), CAT1_NAME, new Double(0), 0, 0, 0, false);
 		asn1IdWithCat = gradebookManager.createAssignmentForCategory(gradebookWithCat.getId(), cat1Id, ASN_TITLE1, ASN_POINTS1, new Date(), Boolean.FALSE,Boolean.FALSE);
 		
-		cat2Id = gradebookManager.createCategory(gradebookWithCat.getId(), CAT2_NAME, new Double(0), 0);
+		cat2Id = gradebookManager.createCategory(gradebookWithCat.getId(), CAT2_NAME, new Double(0), 0, 0, 0, false);
 		asn2IdWithCat = gradebookManager.createAssignmentForCategory(gradebookWithCat.getId(), cat2Id, ASN_TITLE2, ASN_POINTS2, new Date(), Boolean.FALSE,Boolean.FALSE);
 
 	}
@@ -179,8 +179,8 @@ public class GradebookServiceNewTest extends GradebookTestBase {
 		String className = this.getClass().getName();
 		gradebookFrameworkService.addGradebook(className, className);
 		Gradebook persistentGradebook = gradebookManager.getGradebook(this.getClass().getName());
-		Long cate1Long = gradebookManager.createCategory(persistentGradebook.getId(), "cate 1", new Double(0.40), 0);
-		Long cate2Long = gradebookManager.createCategory(persistentGradebook.getId(), "cate 2", new Double(0.60), 0);
+		Long cate1Long = gradebookManager.createCategory(persistentGradebook.getId(), "cate 1", new Double(0.40), 0, 0, 0, false);
+		Long cate2Long = gradebookManager.createCategory(persistentGradebook.getId(), "cate 2", new Double(0.60), 0, 0, 0, false);
 
 		List list = (List) gradebookManager.getCategories(persistentGradebook.getId());
 
@@ -1040,6 +1040,32 @@ public class GradebookServiceNewTest extends GradebookTestBase {
         // now try a gradebook w/o categories
         catDefs = gradebookService.getCategoryDefinitions(GRADEBOOK_UID_NO_CAT);
         assertEquals(0, catDefs.size());
+	}
+	
+	public void testIsPointsPossibleValid() throws Exception {
+	    // try some null values
+	    try {
+	        gradebookService.isPointsPossibleValid(null, new Assignment(), 5D);
+	        fail("Did not catch null gradebookUid passed to isPointsPossibleValid");
+	    } catch (IllegalArgumentException iae) {}
+	    
+	    try {
+            gradebookService.isPointsPossibleValid(GRADEBOOK_UID_NO_CAT, null, 5D);
+            fail("Did not catch null gradebookItem passed to isPointsPossibleValid");
+        } catch (IllegalArgumentException iae) {}
+        
+        // try passing a null points possible
+        assertEquals(GradebookService.PointsPossibleValidation.INVALID_NULL_VALUE, gradebookService.isPointsPossibleValid(GRADEBOOK_UID_NO_CAT, new Assignment(), null));
+        // try a negative
+        assertEquals(GradebookService.PointsPossibleValidation.INVALID_NUMERIC_VALUE, gradebookService.isPointsPossibleValid(GRADEBOOK_UID_NO_CAT, new Assignment(), -5D));
+        // try 0
+        assertEquals(GradebookService.PointsPossibleValidation.INVALID_NUMERIC_VALUE, gradebookService.isPointsPossibleValid(GRADEBOOK_UID_NO_CAT, new Assignment(), 0D));
+        // try more than 2 decimal places
+        assertEquals(GradebookService.PointsPossibleValidation.INVALID_DECIMAL, gradebookService.isPointsPossibleValid(GRADEBOOK_UID_NO_CAT, new Assignment(), 5.123D));
+        // try some valid points possible
+        assertEquals(GradebookService.PointsPossibleValidation.VALID, gradebookService.isPointsPossibleValid(GRADEBOOK_UID_NO_CAT, new Assignment(), 0.01D));
+        assertEquals(GradebookService.PointsPossibleValidation.VALID,gradebookService.isPointsPossibleValid(GRADEBOOK_UID_NO_CAT, new Assignment(), 100D));
+
 	}
 	
 }

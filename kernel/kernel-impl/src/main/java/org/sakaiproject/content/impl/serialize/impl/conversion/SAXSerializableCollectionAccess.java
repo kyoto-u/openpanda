@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/conversion/SAXSerializableCollectionAccess.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/conversion/SAXSerializableCollectionAccess.java $
  * $Id: SAXSerializableCollectionAccess.java 81528 2010-08-19 14:02:11Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

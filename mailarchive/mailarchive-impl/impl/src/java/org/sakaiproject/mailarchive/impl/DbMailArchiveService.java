@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/branches/sakai-2.8.x/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/DbMailArchiveService.java $
- * $Id: DbMailArchiveService.java 93969 2011-06-22 23:02:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.0/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/DbMailArchiveService.java $
+ * $Id: DbMailArchiveService.java 101750 2011-12-14 16:57:18Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -25,6 +25,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.db.api.SqlReader;
@@ -40,7 +41,6 @@ import org.sakaiproject.util.BaseDbDoubleStorage;
 import org.sakaiproject.util.StorageUser;
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.util.Xml;
-import org.sakaiproject.util.commonscodec.CommonsCodecBase64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -248,8 +248,8 @@ public class DbMailArchiveService extends BaseMailArchiveService
 
 			try 
 			{
-				byte[] decoded = CommonsCodecBase64.decodeBase64(body.getBytes("UTF-8"));
-				body = new String(decoded, "UTF-8");
+				byte[] decoded = Base64.decodeBase64(body); // UTF-8 by default
+                body = org.apache.commons.codec.binary.StringUtils.newStringUtf8(decoded);
 			} 
 			catch (Exception e) 
 			{
@@ -459,7 +459,7 @@ public class DbMailArchiveService extends BaseMailArchiveService
 						}
 						return null;
 					}
-					catch (Throwable ignore)
+					catch (Exception ignore)
 					{
 						return null;
 					}

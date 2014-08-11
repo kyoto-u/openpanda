@@ -53,6 +53,7 @@ public class DiscussionTopicBean
   private Long previousTopicId;
   private boolean readFullDesciption;
   private boolean markForDeletion;
+  private boolean markForDuplication;
   private UIPermissionsManager uiPermissionsManager;
   private DiscussionForumManager forumManager;
   private ArrayList contributorsList = new ArrayList();
@@ -77,6 +78,7 @@ public class DiscussionTopicBean
   private Boolean postToGradebook = null;
   private String locked = "";
   private String moderated = "";
+  private String postFirst = "";
   private String mustRespondBeforeReading = "";
   private String parentForumId = "";
   
@@ -375,13 +377,38 @@ public class DiscussionTopicBean
   }
   
   /**
-   * returns topic moderated status
-   * @return
+   * @return Returns the boolean value of locked.
    */
-  public boolean isTopicModerated()
+  public Boolean getTopicLocked()
   {
-	  return topic.getModerated().booleanValue();
+    LOG.debug("getTopicLocked()");
+    if ("".equals(locked)){
+	    if (topic == null || topic.getLocked() == null
+	        || topic.getLocked().booleanValue() == false)
+	    {
+	      locked = Boolean.FALSE.toString();
+	    }
+	    else
+	    {
+	      locked =  Boolean.TRUE.toString();
+	    }
+    }
+    return Boolean.parseBoolean(locked);
   }
+
+  /**
+   * @param Boolean locked
+   *          The locked to set.
+   */
+  public void setTopicLocked(Boolean locked)
+  {
+    if(LOG.isDebugEnabled())
+    {
+       LOG.debug("setTopicLocked(String "+ locked+")");
+    }
+    topic.setLocked(locked);
+  }
+  
   
   /**
    * @return Returns the moderated status.
@@ -424,6 +451,39 @@ public class DiscussionTopicBean
   }
   
   /**
+   * @return Returns the boolean value of moderated status.
+   */
+  public Boolean getTopicModerated()
+  {
+    LOG.debug("getTopicModerated()");
+    if ("".equals(moderated)){
+	    if (topic == null || topic.getModerated() == null
+	        || topic.getModerated().booleanValue() == false)
+	    {
+	      moderated = Boolean.FALSE.toString();
+	    }
+	    else
+	    {
+	      moderated = Boolean.TRUE.toString();
+	    }
+    }
+    return Boolean.parseBoolean(moderated);
+  }
+
+  /**
+   * @param Boolean moderated
+   * Set the moderated status.
+   */
+  public void setTopicModerated(Boolean moderated)
+  {
+    if(LOG.isDebugEnabled())
+    {
+       LOG.debug("setTopicModerated(String "+ moderated+")");
+    }
+    topic.setModerated(moderated);    
+  }
+  
+  /**
    * Returns the autoMarkThreadsRead value.
    */
   public String getAutoMarkThreadsRead()
@@ -448,6 +508,107 @@ public class DiscussionTopicBean
     
     topic.setAutoMarkThreadsRead(Boolean.parseBoolean(autoMarkThreadsRead));
   }
+  
+  /**
+   * @return Returns the postFirst status.
+   */
+  public String getPostFirst()
+  {
+    LOG.debug("getPostFirst()");
+    if ("".equals(postFirst)){
+	    if (topic == null || topic.getPostFirst() == null
+	        || topic.getPostFirst().booleanValue() == false)
+	    {
+	    	postFirst = Boolean.FALSE.toString();
+	    }
+	    else
+	    {
+	    	postFirst = Boolean.TRUE.toString();
+	    }
+    }
+    return postFirst;
+  }
+  
+  /**
+   * @param postFirst
+   * Set the postFirst status.
+   */
+  public void setPostFirst(String postFirst)
+  {
+    if(LOG.isDebugEnabled())
+    {
+       LOG.debug("setPostFirst(String "+ postFirst+")");
+    }
+    if (postFirst.equals(Boolean.TRUE.toString()))
+    {
+      topic.setPostFirst(Boolean.valueOf(true));
+    }
+    else
+    {
+      topic.setPostFirst(Boolean.valueOf(false));
+    }
+  }
+    
+
+  /**
+   * Returns boolean value of autoMarkThreadsRead value.
+   */
+  public Boolean getTopicAutoMarkThreadsRead()
+  {
+    LOG.debug("getTopicAutoMarkThreadsRead()");
+    if (topic == null || topic.getAutoMarkThreadsRead() == null) {
+      return false;
+    } else {
+      return topic.getAutoMarkThreadsRead();
+    }
+  }
+  
+  /**
+   * Set the boolean autoMarkThreadsRead value for this Discussion Topic.
+   */
+  public void setTopicAutoMarkThreadsRead(Boolean autoMarkThreadsRead)
+  {
+    if (LOG.isDebugEnabled()) 
+    {
+      LOG.debug("setTopicAutoMarkThreadsRead(String " + autoMarkThreadsRead + ")");
+    }    
+    topic.setAutoMarkThreadsRead(autoMarkThreadsRead);
+  }
+  
+  /**
+   * @return Returns boolean value of postFirst status.
+   */
+  public Boolean getTopicPostFirst()
+  {
+    LOG.debug("getTopicPostFirst()");
+    if ("".equals(postFirst)){
+	    if (topic == null || topic.getPostFirst() == null
+	        || topic.getPostFirst().booleanValue() == false)
+	    {
+	    	postFirst = Boolean.FALSE.toString();
+	    }
+	    else
+	    {
+	    	postFirst = Boolean.TRUE.toString();
+	    }
+    }
+    return Boolean.parseBoolean(postFirst);
+  }
+  
+  /**
+   * @param Boolean postFirst
+   * Set the postFirst status.
+   */
+  public void setTopicPostFirst(Boolean postFirst)
+  {
+    if(LOG.isDebugEnabled())
+    {
+       LOG.debug("setTopicPostFirst(String "+ postFirst+")");
+    }
+    topic.setPostFirst(postFirst);    
+  }
+    
+
 
   public void removeMessage(DiscussionMessageBean decoMessage)
   {
@@ -498,6 +659,28 @@ public class DiscussionTopicBean
        LOG.debug("setTopic(DiscussionTopic"+ topic+")");
     }
     this.topic = topic;
+  }
+
+  /**
+   * @return Returns the markForDuplication.
+   */
+  public boolean isMarkForDuplication()
+  {
+    LOG.debug("isMarkForDuplication()");
+    return markForDuplication;
+  }
+
+  /**
+   * @param markForDuplication
+   *          The markForDuplication to set.
+   */
+  public void setMarkForDuplication(boolean markForDuplication)
+  {
+    if(LOG.isDebugEnabled())
+    {
+       LOG.debug("setMarkForDuplication(boolean "+ markForDuplication+")");
+    }
+    this.markForDuplication = markForDuplication;
   }
 
   /**

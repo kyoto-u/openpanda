@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemovePartListener.java $
- * $Id: RemovePartListener.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemovePartListener.java $
+ * $Id: RemovePartListener.java 92666 2011-05-06 00:14:03Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -28,6 +28,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
@@ -38,7 +39,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: RemovePartListener.java 59684 2009-04-03 23:33:27Z arwhyte@umich.edu $
+ * @version $Id: RemovePartListener.java 92666 2011-05-06 00:14:03Z ktsao@stanford.edu $
  */
 
 public class RemovePartListener implements ActionListener
@@ -73,7 +74,7 @@ public class RemovePartListener implements ActionListener
       assessmentService.moveAllItems(sectionId,destSectionId);
     }
     assessmentService.removeSection(sectionId);
-    EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "removed sectionId=" + sectionId, true));
+    EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", removed sectionId=" + sectionId, true));
     
     // #2 - goto editAssessment.jsp, so reset assessmentBean
     //log.info("** assessmentId in RemovePartListener ="+assessmentBean.getAssessmentId());

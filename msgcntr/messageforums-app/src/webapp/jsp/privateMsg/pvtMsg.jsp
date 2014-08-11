@@ -41,15 +41,15 @@
  			</sakai:tool_bar>
 
 			<%--<sakai:tool_bar_message value="#{msgs.pvt_pvtmsg}- #{PrivateMessagesTool.msgNavMode}" /> --%>
-			<%@include file="topNav.jsp" %>
+			<%@ include file="topNav.jsp" %>
  
- 			<h:messages styleClass="alertMessage" id="errorMessages" /> 
+ 			<h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}"/> 
  			<!-- Display successfully moving checked messsages to Deleted folder -->
   			<h:outputText value="#{PrivateMessagesTool.multiDeleteSuccessMsg}" styleClass="success" rendered="#{PrivateMessagesTool.multiDeleteSuccess}" />
   			
-  		<%@include file="msgHeader.jsp"%>
+  		<%@ include file="msgHeader.jsp"%>
 		<%-- gsilver:this table needs a render atrtibute that will make it not display if there are no messages - and a companion text block classed as "instruction" that will render instead--%>	
-	  <h:dataTable styleClass="listHier lines nolines"cellpadding="0" cellspacing="0"  id="pvtmsgs" width="100%" value="#{PrivateMessagesTool.decoratedPvtMsgs}" var="rcvdItems" 
+	  <h:dataTable styleClass="listHier lines nolines" cellpadding="0" cellspacing="0"  id="pvtmsgs" width="100%" value="#{PrivateMessagesTool.decoratedPvtMsgs}" var="rcvdItems" 
 	  	             rendered="#{PrivateMessagesTool.selectView != 'threaded'}"
 	  	             summary="#{msgs.pvtMsgListSummary}"
 					 columnClasses="attach,attach,specialLink,bogus,bogus,bogus">
@@ -123,7 +123,7 @@
    		     <h:commandLink value="#{msgs.pvt_to}"
 		                      title="#{msgs.sort_to}">
 		         <h:graphicImage value="/images/sortascending.gif" style="border:0" 
-    	                       title="#{msgs.sort_author_asc}" alt="#{msgs.sort_to_asc}"
+    	                       title="#{msgs.sort_to_asc}" alt="#{msgs.sort_to_asc}"
     	                       rendered="#{PrivateMessagesTool.sortType == 'to_asc'}"/>
     	       <h:graphicImage value="/images/sortdescending.gif" style="border:0" 
     	                       title="#{msgs.sort_to_desc}" alt="#{msgs.sort_to_desc}"
@@ -149,10 +149,10 @@
     	       </h:commandLink>
 		    </f:facet>
 		     <h:outputText value="#{rcvdItems.msg.created}" rendered="#{rcvdItems.hasRead}">
-			     <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />
+			     <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>
 			 </h:outputText>
 		   <h:outputText styleClass="unreadMsg" value="#{rcvdItems.msg.created}" rendered="#{!rcvdItems.hasRead}">
-			   <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />
+			   <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>
 			 </h:outputText>
 		  </h:column>
 		  <h:column>
@@ -168,7 +168,7 @@
     	         <f:param name="sortColumn" value="label"/>
     	       </h:commandLink>
 		    </f:facet>
-		     <h:outputText value="#{rcvdItems.msg.label}"/>
+		     <h:outputText value="#{rcvdItems.label}"/>
 		  </h:column>
 		</h:dataTable>
 		
@@ -221,17 +221,17 @@
 		       <h:outputText value="#{msgs.pvt_date}"/>
 		    </f:facet>
 		     <h:outputText value="#{rcvdItems.msg.created}" rendered="#{rcvdItems.hasRead}">
-			     <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />
+			     <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>
 			 </h:outputText>
 		     <h:outputText styleClass="unreadMsg" value="#{rcvdItems.msg.created}" rendered="#{!rcvdItems.hasRead}">
-			     <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />
+			     <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>
 			 </h:outputText>
 		  </h:column>
 		  <h:column>
 		    <f:facet name="header">
 		       <h:outputText value="#{msgs.pvt_label}"/>
 		    </f:facet>
-		     <h:outputText value="#{rcvdItems.msg.label}"/>
+		     <h:outputText value="#{rcvdItems.label}"/>
 		  </h:column>
 		</mf:hierPvtMsgDataTable>
 		

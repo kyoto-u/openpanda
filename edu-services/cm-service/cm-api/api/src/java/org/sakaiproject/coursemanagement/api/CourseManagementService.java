@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/CourseManagementService.java $
- * $Id: CourseManagementService.java 86133 2010-12-08 08:14:58Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/CourseManagementService.java $
+ * $Id: CourseManagementService.java 83753 2010-10-26 10:51:54Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation

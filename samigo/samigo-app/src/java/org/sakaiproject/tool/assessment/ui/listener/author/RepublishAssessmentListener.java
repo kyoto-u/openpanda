@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +21,7 @@ import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentBaseIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.grading.AssessmentGradingIfc;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.GradebookFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
@@ -33,6 +35,9 @@ import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.PublishRepublishNotificationBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.PublishedAssessmentSettingsBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+import org.sakaiproject.tool.assessment.integration.helper.ifc.CalendarServiceHelper;
+import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.tool.assessment.ui.bean.author.PublishRepublishNotificationBean;
 
 public class RepublishAssessmentListener implements ActionListener {
 
@@ -42,6 +47,9 @@ public class RepublishAssessmentListener implements ActionListener {
 	    IntegrationContextFactory.getInstance().getGradebookServiceHelper();
 	private static final boolean integrated =
 	    IntegrationContextFactory.getInstance().isIntegrated();
+	
+	private CalendarServiceHelper calendarService = IntegrationContextFactory.getInstance().getCalendarServiceHelper();
+	private ResourceLoader rl= new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
 	  
 	public void processAction(ActionEvent ae) throws AbortProcessingException {
 		AssessmentBean assessmentBean = (AssessmentBean) ContextUtil
@@ -54,7 +62,7 @@ public class RepublishAssessmentListener implements ActionListener {
 		
 		// Go to database to get the newly updated data. The data inside beans might not be up to date.
 		PublishedAssessmentFacade assessment = publishedAssessmentService.getPublishedAssessment(publishedAssessmentId);
-		EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.republish", "publishedAssessmentId=" + publishedAssessmentId, true));
+		EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.republish", "siteId=" + AgentFacade.getCurrentSiteId() + ", publishedAssessmentId=" + publishedAssessmentId, true));
 
 		assessment.setStatus(AssessmentBaseIfc.ACTIVE_STATUS);
 		publishedAssessmentService.saveAssessment(assessment);
@@ -65,20 +73,21 @@ public class RepublishAssessmentListener implements ActionListener {
 			regradeRepublishedAssessment(publishedAssessmentService, assessment);
 		}
 		
-		EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.republish", "publishedAssessmentId=" + publishedAssessmentId, true));
+		EventTrackingService.post(EventTrackingService.newEvent("sam.pubassessment.republish", "siteId=" + AgentFacade.getCurrentSiteId() + ", publishedAssessmentId=" + publishedAssessmentId, true));
 		assessment.setStatus(AssessmentBaseIfc.ACTIVE_STATUS);
 		publishedAssessmentService.saveAssessment(assessment);
 		updateGB(assessment);
 		
 		PublishRepublishNotificationBean publishRepublishNotification = (PublishRepublishNotificationBean) ContextUtil.lookupBean("publishRepublishNotification");
+		
+		PublishedAssessmentSettingsBean publishedAssessmentSettings = (PublishedAssessmentSettingsBean) ContextUtil.lookupBean("publishedSettings");
+		PublishAssessmentListener publishAssessmentListener = new PublishAssessmentListener();
+		String subject = publishRepublishNotification.getNotificationSubject();
+		String notificationMessage = publishAssessmentListener.getNotificationMessage(publishRepublishNotification, publishedAssessmentSettings.getTitle(), publishedAssessmentSettings.getReleaseTo(), publishedAssessmentSettings.getStartDateString(), publishedAssessmentSettings.getPublishedUrl(),
+				publishedAssessmentSettings.getReleaseToGroupsAsString(), publishedAssessmentSettings.getDueDateString(), publishedAssessmentSettings.getTimedHours(), publishedAssessmentSettings.getTimedMinutes(), 
+				publishedAssessmentSettings.getUnlimitedSubmissions(), publishedAssessmentSettings.getSubmissionsAllowed(), publishedAssessmentSettings.getScoringType(), publishedAssessmentSettings.getFeedbackDelivery(), publishedAssessmentSettings.getFeedbackDateString());
 		if (publishRepublishNotification.getSendNotification()) {
-			PublishedAssessmentSettingsBean publishedAssessmentSettings = (PublishedAssessmentSettingsBean) ContextUtil.lookupBean("publishedSettings");
-			PublishAssessmentListener publishAssessmentListener = new PublishAssessmentListener();
-			publishAssessmentListener.sendNotification(assessment, publishedAssessmentService, publishRepublishNotification,
-					publishedAssessmentSettings.getReleaseTo(), publishedAssessmentSettings.getReleaseToGroupsAsString(), publishedAssessmentSettings.getTitle(), publishedAssessmentSettings.getPublishedUrl(),
-					publishedAssessmentSettings.getStartDateString(), publishedAssessmentSettings.getDueDateString(), publishedAssessmentSettings.getRetractDateString(),
-					publishedAssessmentSettings.getTimedHours(), publishedAssessmentSettings.getTimedMinutes(), publishedAssessmentSettings.getUnlimitedSubmissions(),
-					publishedAssessmentSettings.getSubmissionsAllowed(), publishedAssessmentSettings.getScoringType(), publishedAssessmentSettings.getFeedbackDelivery(), publishedAssessmentSettings.getFeedbackDateString());
+		    publishAssessmentListener.sendNotification(assessment, publishedAssessmentService, subject, notificationMessage, publishedAssessmentSettings.getReleaseTo());
 		}
 		
 		GradingService gradingService = new GradingService();
@@ -86,6 +95,14 @@ public class RepublishAssessmentListener implements ActionListener {
 		AuthorActionListener authorActionListener = new AuthorActionListener();
 		authorActionListener.prepareAssessmentsList(author, assessmentService, gradingService, publishedAssessmentService);
 		
+		// Tell AuthorBean that we just published an assessment
+		// This will allow us to jump directly to published assessments tab
+		author.setJustPublishedAnAssessment(true);
+		
+		//update Calendar Events
+       boolean addDueDateToCalendar = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("publishAssessmentForm:calendarDueDate") != null;
+       calendarService.updateAllCalendarEvents(assessment, publishedAssessmentSettings.getReleaseTo(), publishedAssessmentSettings.getGroupsAuthorized(), rl.getString("calendarDueDatePrefix") + " ", addDueDateToCalendar, notificationMessage);
+
 		author.setOutcome("author");
 	}
 	
@@ -178,9 +195,14 @@ public class RepublishAssessmentListener implements ActionListener {
 							log.debug("ag.scores " + ag.getTotalAutoScore());
 							// Send the average score if average was selected for multiple submissions
 							if (scoringType.equals(EvaluationModelIfc.AVERAGE_SCORE)) {
-								Float averageScore = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
-								getAverageSubmittedAssessmentGrading(Long.valueOf(assessment.getPublishedAssessmentId()), ag.getAgentId());
-								ag.setFinalScore(averageScore);
+								// status = 5: there is no submission but grader update something in the score page
+								if(ag.getStatus() ==5) {
+									ag.setFinalScore(ag.getFinalScore());
+								} else {
+									Float averageScore = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
+									getAverageSubmittedAssessmentGrading(Long.valueOf(assessment.getPublishedAssessmentId()), ag.getAgentId());
+									ag.setFinalScore(averageScore);
+								}	
 							}
 							gbsHelper.updateExternalAssessmentScore(ag, g);
 						} catch (Exception e) {

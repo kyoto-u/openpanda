@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site/branches/sakai-2.8.x/mergedlist-util/util/src/java/org/sakaiproject/util/MergedList.java $
+ * $URL: https://source.sakaiproject.org/svn/site/tags/site-2.9.0/mergedlist-util/util/src/java/org/sakaiproject/util/MergedList.java $
  * $Id: MergedList.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

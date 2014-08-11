@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-tool/tool/src/java/org/sakaiproject/portal/tool/ToolPortal.java $
- * $Id: ToolPortal.java 81610 2010-08-22 18:06:35Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-tool/tool/src/java/org/sakaiproject/portal/tool/ToolPortal.java $
+ * $Id: ToolPortal.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,7 +54,7 @@ import org.sakaiproject.util.Web;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 81610 $
+ * @version $Rev: 110562 $
  */
 
 public class ToolPortal extends HttpServlet

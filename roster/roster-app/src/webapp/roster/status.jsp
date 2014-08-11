@@ -15,7 +15,7 @@ response.setContentType("text/html; charset=UTF-8");
 			<h:form id="roster_form">
 
 				<t:aliasBean alias="#{viewBean}" value="#{status}">
-					<%@include file="inc/nav.jspf" %>
+					<%@ include file="inc/nav.jspf" %>
 				</t:aliasBean>
 
 

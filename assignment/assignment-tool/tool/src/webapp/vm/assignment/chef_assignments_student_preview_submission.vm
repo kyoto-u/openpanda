@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_preview_submission.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_student_preview_submission.vm 101707 2011-12-13 20:24:02Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_student_preview_submission.vm -->
 #parse("/vm/assignment/assignment_macros.vm")
 <div class="portletBody">
@@ -131,7 +131,7 @@
 	#if ($assignment.getContent().honorPledge!=1) 
 		#if ($honor_pledge_yes.equals("true"))
 			<p class="checkbox highlightPanel">
-				<label for="yes">$tlang.getString("gen.honple2")</label>
+				<label for="yes">$honor_pledge_text</label>
 				<input name="Yes" type="checkbox" value="" checked="checked" id="yes"  disabled="disabled" />
 			</p>	
 		#else
@@ -139,7 +139,7 @@
 				$tlang.getString("gen.honple2val")
 			</div>
 				<p class="checkbox highlightPanel">
-					<label for="yes">$tlang.getString("gen.honple2")</label>
+					<label for="yes">$honor_pledge_text</label>
 					<input name="Yes" type="checkbox" value="" disabled="disabled" />
 				</p>
 
@@ -206,6 +206,7 @@
 ##			/>
 			<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 		</div>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>
 <!-- end: chef_assignments_student_preview_submission.vm -->

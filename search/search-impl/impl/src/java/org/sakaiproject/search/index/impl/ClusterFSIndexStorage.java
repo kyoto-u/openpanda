@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/index/impl/ClusterFSIndexStorage.java $
- * $Id: ClusterFSIndexStorage.java 118814 2013-01-25 03:21:38Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/index/impl/ClusterFSIndexStorage.java $
+ * $Id: ClusterFSIndexStorage.java 91034 2011-04-01 09:46:01Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -293,10 +293,7 @@ public class ClusterFSIndexStorage extends BaseIndexStorage
 		{
 			try
 			{
-				if (indexSearcher != null)
-				{
-					indexSearcher.close();
-				}
+				indexSearcher.close();
 			}
 			catch (Exception ex)
 			{
@@ -310,9 +307,7 @@ public class ClusterFSIndexStorage extends BaseIndexStorage
 		{
 			try
 			{
-				if (indexSearcher != null) {
-					indexSearcher.close();
-				}
+				indexSearcher.close();
 			}
 			catch (Exception ex)
 			{
@@ -378,7 +373,7 @@ public class ClusterFSIndexStorage extends BaseIndexStorage
 						if (diagnostics)
 						{
 							log
-									.info("Curre	nt Segment not suitable, generating new segment "
+									.info("Current Segment not suitable, generating new segment "
 											+ (currentSegment.isDeleted() ? "deleted,"
 													: "")
 											+ (!currentSegment.isClusterSegment() ? "non-cluster,"
@@ -673,7 +668,7 @@ public class ClusterFSIndexStorage extends BaseIndexStorage
 							// remove old segments
 							mergeOk = true;
 						}
-						catch (Exception ex)
+						catch (IOException ex)
 						{
 							log.error("Failed to merge search segments "
 									+ ex.getMessage());

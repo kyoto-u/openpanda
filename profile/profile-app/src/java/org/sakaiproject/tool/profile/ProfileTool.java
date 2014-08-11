@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/profile/branches/profile-2.8.x/profile-app/src/java/org/sakaiproject/tool/profile/ProfileTool.java $
+ * $URL: https://source.sakaiproject.org/svn/profile/tags/profile-2.9.0/profile-app/src/java/org/sakaiproject/tool/profile/ProfileTool.java $
  * $Id: ProfileTool.java 60850 2009-04-22 15:10:00Z aaronz@vt.edu $
  ***********************************************************************************
  *

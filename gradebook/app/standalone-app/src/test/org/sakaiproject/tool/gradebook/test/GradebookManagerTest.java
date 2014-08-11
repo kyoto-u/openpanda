@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookManagerTest.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+* $Id: GradebookManagerTest.java 109820 2012-06-28 15:29:55Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -36,11 +36,14 @@ public class GradebookManagerTest extends GradebookTestBase {
         // Create a gradebook
         String className = this.getClass().getName();
         gradebookFrameworkService.addGradebook(className, className);
-        setComplete();
     }
 
     public void testUpdateGradebook() throws Exception {
-        // Fetch the gradebook
+        // Create a gradebook
+        String className = this.getClass().getName();
+        gradebookFrameworkService.addGradebook(className, className);
+
+    	// Fetch the gradebook
         Gradebook persistentGradebook = gradebookManager.getGradebook(this.getClass().getName());
 
         // Modify the gradebook (including the grade mapping)

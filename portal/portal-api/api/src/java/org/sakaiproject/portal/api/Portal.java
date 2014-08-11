@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-api/api/src/java/org/sakaiproject/portal/api/Portal.java $
- * $Id: Portal.java 82198 2010-09-10 00:33:08Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-api/api/src/java/org/sakaiproject/portal/api/Portal.java $
+ * $Id: Portal.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ import org.sakaiproject.tool.api.ToolException;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 82198 $
+ * @version $Rev: 110562 $
  */
 public interface Portal
 {
@@ -145,7 +145,23 @@ public interface Portal
 	 * Name of cookie that is set to signal that the user wants us to start minimized
 	 */
 	public static final String SAKAI_NAV_MINIMIZED = "sakai_nav_minimized";
+
+	/**
+         * Constants for SAK-19455 - The NEO Portlet Feature that allows a portlet
+	 * to suppress its title and add to the system breadcrumbs.
+	 */
+        public static final String SAKAI_PORTAL_ALLOW_NEO = "sakai-portal:allow-neo";
+        public static final String SAKAI_PORTAL_HELP_ACTION = "sakai-portal:help-action";
+        public static final String SAKAI_PORTAL_RESET_ACTION = "sakai-portal:reset-action";
+        public static final String SAKAI_PORTAL_BREADCRUMBS = "sakai-portal:breadcrumbs";
+        public static final String SAKAI_PORTAL_SUPPRESSTITLE = "sakai-portal:suppresstitle";
 	
+
+	/**
+	 * Tool property to allow the enabling/disabling of the direct url linking UI
+	 */
+	public static final String TOOL_DIRECTURL_ENABLED_PROP = "sakai:tool-directurl-enabled";
+        
 	/**
 	 * prepare the response and send it to the render engine
 	 * 

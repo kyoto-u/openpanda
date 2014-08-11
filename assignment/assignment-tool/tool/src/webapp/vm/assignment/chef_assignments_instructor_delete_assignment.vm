@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_delete_assignment.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_delete_assignment.vm 94881 2011-07-08 14:22:21Z ottenhoff@longsight.com $ -->
 <!-- start: chef_assignments_instructor_delete_assignment.vm  -->
 <div class="portletBody">
 	<h3>
@@ -55,6 +55,7 @@
 				<input type="submit" accesskey="s" class="active" name="eventSubmit_doDelete_assignment" value="$tlang.getString("delet")" />
 				<input type="submit" accesskey="x" name="eventSubmit_doCancel_delete_assignment" value="$tlang.getString("gen.can")" />
 			</p>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>
 	</div>
 <!-- end: chef_assignments_instructor_delete_assignment.vm  -->

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/branches/sakai-2.8.x/content-tool/tool/src/java/org/sakaiproject/content/tool/BasicRightsAssignment.java $
- * $Id: BasicRightsAssignment.java 84675 2010-11-12 18:36:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.0/content-tool/tool/src/java/org/sakaiproject/content/tool/BasicRightsAssignment.java $
+ * $Id: BasicRightsAssignment.java 84219 2010-11-03 11:44:59Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 The Sakai Foundation

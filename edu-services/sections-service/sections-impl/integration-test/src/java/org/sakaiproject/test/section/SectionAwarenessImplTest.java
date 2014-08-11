@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/sections-service/sections-impl/integration-test/src/java/org/sakaiproject/test/section/SectionAwarenessImplTest.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/integration-test/src/java/org/sakaiproject/test/section/SectionAwarenessImplTest.java $
  * $Id: SectionAwarenessImplTest.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

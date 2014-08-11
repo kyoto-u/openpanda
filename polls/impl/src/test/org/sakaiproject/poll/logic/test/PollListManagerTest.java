@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/impl/src/test/org/sakaiproject/poll/logic/test/PollListManagerTest.java $
- * $Id: PollListManagerTest.java 60214 2009-04-17 13:50:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/impl/src/test/org/sakaiproject/poll/logic/test/PollListManagerTest.java $
+ * $Id: PollListManagerTest.java 115365 2012-10-31 16:05:04Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -27,8 +27,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.poll.dao.PollDao;
 import org.sakaiproject.poll.logic.test.stubs.ExternalLogicStubb;
+import org.sakaiproject.poll.model.Option;
 import org.sakaiproject.poll.model.Poll;
+import org.sakaiproject.poll.model.Vote;
 import org.sakaiproject.poll.service.impl.PollListManagerImpl;
+import org.sakaiproject.poll.service.impl.PollVoteManagerImpl;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public class PollListManagerTest extends AbstractTransactionalSpringContextTests {
@@ -38,13 +41,14 @@ public class PollListManagerTest extends AbstractTransactionalSpringContextTests
 	private TestDataPreload tdp = new TestDataPreload();
 
 	private PollListManagerImpl pollListManager;
+	private PollVoteManagerImpl pollVoteManager;
 	private ExternalLogicStubb externalLogicStubb;
 	
 	protected String[] getConfigLocations() {
 		// point to the needed spring config files, must be on the classpath
 		// (add component/src/webapp/WEB-INF to the build path in Eclipse),
 		// they also need to be referenced in the project.xml file
-		return new String[] { "hibernate-test.xml", "spring-hibernate.xml" };
+		return new String[] { "hibernate-test.xml", "classpath:org/sakaiproject/poll/spring-hibernate.xml" };
 	}
 
 	// run this before each test starts
@@ -62,8 +66,14 @@ public class PollListManagerTest extends AbstractTransactionalSpringContextTests
 		pollListManager = new PollListManagerImpl();
 		pollListManager.setDao(dao);
 		
+		pollVoteManager = new PollVoteManagerImpl();
+		pollVoteManager.setDao(dao);
+		
+		
 		externalLogicStubb = new ExternalLogicStubb();
 		pollListManager.setExternalLogic(externalLogicStubb);
+		pollVoteManager.setExternalLogic(externalLogicStubb);
+		pollListManager.setPollVoteManager(pollVoteManager);
 		
 		// preload testData
 		tdp.preloadTestData(dao);
@@ -191,6 +201,30 @@ public class PollListManagerTest extends AbstractTransactionalSpringContextTests
 		
 		pollListManager.savePoll(poll1);
 		
+	    Option option1 = new Option();
+	    option1.setPollId(poll1.getPollId());
+	    option1.setOptionText("asdgasd");
+	    
+	    Option option2 = new Option();
+	    option2.setPollId(poll1.getPollId());
+	    option2.setOptionText("zsdbsdfb");
+	    
+	    pollListManager.saveOption(option2);
+	    pollListManager.saveOption(option1);
+	    
+	    Vote vote = new Vote();
+	    vote.setIp("Localhost");
+	    vote.setPollId(poll1.getPollId());
+	    vote.setPollOption(option1.getOptionId());
+	    
+	    
+	    pollVoteManager.saveVote(vote);
+	    
+	    Long option1Id = option1.getOptionId();
+	    Long option2Id = option2.getOptionId();
+	    Long voteId = vote.getId();
+	    
+	    
 		externalLogicStubb.currentUserId = TestDataPreload.USER_NO_ACCEESS;
 		
     	try {
@@ -210,6 +244,17 @@ public class PollListManagerTest extends AbstractTransactionalSpringContextTests
 			e.printStackTrace();
 			fail();
 		}
+		
+		
+		//check that child options are deteled
+		Vote v1 = pollVoteManager.getVoteById(voteId);
+		assertNull(v1);
+		
+		Option o1 = pollListManager.getOptionById(option1Id);
+		Option o2 = pollListManager.getOptionById(option2Id);
+		assertNull(o1);
+		assertNull(o2);
+		
 		
     }
 }

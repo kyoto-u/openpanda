@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/CSSFeedbackPanel.java $
- * $Id: CSSFeedbackPanel.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/CSSFeedbackPanel.java $
+ * $Id: CSSFeedbackPanel.java 87931 2011-02-02 12:12:01Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -18,6 +18,8 @@
  */
 package org.sakaiproject.sitestats.tool.wicket.components;
 
+import java.io.Serializable;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -32,7 +34,7 @@ public class CSSFeedbackPanel extends FeedbackPanel {
 		if(feedbackul != null){
 			feedbackul.add(new AttributeModifier("class", true, new Model() {
 				private static final long	serialVersionUID	= 1L;
-				public Object getObject() {
+				public Serializable getObject() {
 					if(anyErrorMessage()){
 						return "alertMessage";
 					}else if(anyMessage()){

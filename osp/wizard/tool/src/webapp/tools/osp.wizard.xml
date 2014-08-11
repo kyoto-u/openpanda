@@ -5,10 +5,7 @@
 	<tool id="osp.wizard" title="Wizards" description="Create and use a structured, guided ePortfolios wizard">
 
        <category name="sakai.main" />
-      <category name="project" />
       <category name="portfolio" />
-      <category name="course" />
-<!--      <category name="myworkspace" /> -->
 
       <keyword name="wizard" />
        <keyword name="help"/>

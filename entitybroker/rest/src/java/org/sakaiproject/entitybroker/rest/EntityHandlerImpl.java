@@ -1,6 +1,6 @@
 /**
- * $Id: EntityHandlerImpl.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/java/org/sakaiproject/entitybroker/rest/EntityHandlerImpl.java $
+ * $Id: EntityHandlerImpl.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityHandlerImpl.java $
  * EntityHandler.java - entity-broker - Apr 6, 2008 9:03:03 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -92,8 +92,8 @@ import org.sakaiproject.entitybroker.util.request.RequestUtils;
 @SuppressWarnings("deprecation")
 public class EntityHandlerImpl implements EntityRequestHandler {
     public static String APP_VERSION = "1.0.1";
-    public static String SVN_REVISION = "$Revision: 83385 $";
-    public static String SVN_LAST_UPDATE = "$Date: 2010-10-19 23:39:04 +0900 (Tue, 19 Oct 2010) $";
+    public static String SVN_REVISION = "$Revision: 104995 $";
+    public static String SVN_LAST_UPDATE = "$Date: 2012-02-24 00:32:56 +0900 (Fri, 24 Feb 2012) $";
 
     /**
      * Empty constructor
@@ -200,8 +200,6 @@ public class EntityHandlerImpl implements EntityRequestHandler {
             this.servletContext = servletContext;
             //System.out.println("Setting the REST servlet context to: " + servletContext);
             entityBrokerManager.setServletContext(servletContext);
-            entityRedirectsManager.setServletContext(servletContext);
-            entityBatchHandler.setServletContext(servletContext);
         }
     }
 
@@ -215,13 +213,13 @@ public class EntityHandlerImpl implements EntityRequestHandler {
      * @see org.sakaiproject.entitybroker.EntityRequestHandler#handleEntityAccess(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public String handleEntityAccess(HttpServletRequest req, HttpServletResponse res, String path) {
-        // set the servlet context if not set
-        if (this.servletContext == null) {
+        // set the servlet context if not set OR we know for sure we have a request object
+        if (this.servletContext == null || req != null) {
             setServletContext( RequestUtils.getServletContext(req) );
         }
 
         // get the path info if not set
-        if (path == null) {
+        if (req != null && path == null) {
             path = req.getPathInfo();
         }
 

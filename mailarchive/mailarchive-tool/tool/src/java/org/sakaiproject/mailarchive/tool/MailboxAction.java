@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/branches/sakai-2.8.x/mailarchive-tool/tool/src/java/org/sakaiproject/mailarchive/tool/MailboxAction.java $
- * $Id: MailboxAction.java 98770 2011-09-29 15:18:59Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.0/mailarchive-tool/tool/src/java/org/sakaiproject/mailarchive/tool/MailboxAction.java $
+ * $Id: MailboxAction.java 106617 2012-04-09 13:40:00Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -96,6 +96,8 @@ public class MailboxAction extends PagedResourceActionII
 	private static final String FORM_SENDTO = "sendto";
 
 	private static final String FORM_ALIAS = "alias";
+
+	private static final int FORM_ALIAS_MAX_LENGTH = 99;
 
         private static final String FORM_ITEM_NUMBER  = "item_number";
 
@@ -818,6 +820,7 @@ public class MailboxAction extends PagedResourceActionII
 		context.put("form-reply", FORM_REPLY);
 		context.put("form-sendto", FORM_SENDTO);
 		context.put("form-alias", FORM_ALIAS);
+		context.put("form-alias-max-length",FORM_ALIAS_MAX_LENGTH);
 		context.put("form-submit", BUTTON + "doUpdate");
 		context.put("form-cancel", BUTTON + "doCancel");
 

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/site/impl/SiteServiceSql.java $
- * $Id: SiteServiceSql.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/site/impl/SiteServiceSql.java $
+ * $Id: SiteServiceSql.java 90984 2011-03-31 10:20:38Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation
@@ -350,4 +350,17 @@ public interface SiteServiceSql
 	 * returns the sql statement which updates a site into the sakai_site table.
 	 */
 	String getUpdateSiteSql(String table);
+	
+	/**
+	 * returns the sql statement which is part of the where clause to retrieve sites which are softly deleted
+	 * TODO this could take a param which further filters on date-gracetime
+	 */
+	String getSitesWhereSoftlyDeletedOnlySql();
+	
+	/**
+	 * returns the sql statement which is part of the qhere clause to only retrieve sites that are NOT softly deleted
+	 * @return
+	 */
+	String getSitesWhereNotSoftlyDeletedSql();
+	
 }

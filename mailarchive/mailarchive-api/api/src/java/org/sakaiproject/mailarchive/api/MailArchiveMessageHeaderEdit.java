@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/branches/sakai-2.8.x/mailarchive-api/api/src/java/org/sakaiproject/mailarchive/api/MailArchiveMessageHeaderEdit.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.0/mailarchive-api/api/src/java/org/sakaiproject/mailarchive/api/MailArchiveMessageHeaderEdit.java $
  * $Id: MailArchiveMessageHeaderEdit.java 59675 2009-04-03 23:17:51Z arwhyte@umich.edu $
  ***********************************************************************************
  *

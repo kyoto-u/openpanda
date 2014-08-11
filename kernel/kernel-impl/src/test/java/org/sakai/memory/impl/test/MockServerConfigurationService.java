@@ -138,4 +138,29 @@ public class MockServerConfigurationService implements
 		return null;
 	}
 
+    public <T> T getConfig(String name, T defaultValue) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ConfigItem getConfigItem(String name) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ConfigData getConfigData() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ConfigItem registerConfigItem(ConfigItem configItem) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void registerListener(ConfigurationListener configurationListener) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/branches/sitestats-2.2.x/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeEventRegistryService.java $
- * $Id: FakeEventRegistryService.java 72172 2009-09-23 00:48:53Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.0/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeEventRegistryService.java $
+ * $Id: FakeEventRegistryService.java 96802 2011-08-11 12:57:41Z steve.swinsburg@gmail.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -18,6 +18,7 @@
  */
 package org.sakaiproject.sitestats.test.mocks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,10 @@ public class FakeEventRegistryService implements EventRegistryService {
 	public String getToolName(String toolId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<String> getServerEventIds() {
+		return new ArrayList<String>();
 	}
 
 }

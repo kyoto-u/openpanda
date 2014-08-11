@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: ipAccessError.jsp 82279 2010-09-15 19:00:39Z lydial@stanford.edu $
+* $Id: ipAccessError.jsp 104800 2012-02-17 01:07:35Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -41,7 +41,7 @@
   <h3><h:outputText value="#{deliveryMessages.access_denied}"/></h3>
  <h:form id="removeTemplateForm">
    <h:panelGroup>
-       <f:verbatim><div class="validation"></f:verbatim>
+       <f:verbatim><div class="messageSamigo"></f:verbatim>
        <h:outputText value="#{deliveryMessages.ip_denied}" escape="false" />
        <f:verbatim></div></f:verbatim>
    </h:panelGroup>

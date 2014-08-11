@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/branches/sakai-2.8.x/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/AddSectionsBean.java $
- * $Id: AddSectionsBean.java 97185 2011-08-18 21:17:21Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.0/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/AddSectionsBean.java $
+ * $Id: AddSectionsBean.java 96928 2011-08-14 10:26:01Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation

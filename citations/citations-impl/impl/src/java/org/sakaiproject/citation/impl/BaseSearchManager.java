@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/branches/sakai-2.8.x/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseSearchManager.java $
- * $Id: BaseSearchManager.java 100515 2011-11-08 03:37:25Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.0/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseSearchManager.java $
+ * $Id: BaseSearchManager.java 100441 2011-11-03 17:31:05Z jimeng@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -24,6 +24,8 @@ package org.sakaiproject.citation.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -1853,6 +1855,7 @@ public class BaseSearchManager implements SearchManager, Observer
 	public static final String SAKAI_HOST = "sakai.host";
 
 	public static final String SERVLET_NAME = "savecite";
+	public static final String WINDOW_PREFIX = "WebLearn Solo - ";
 
 	// Our types (defined in setupTypes())
 	protected static BasicType categoryAssetType;
@@ -2614,6 +2617,38 @@ public class BaseSearchManager implements SearchManager, Observer
 		}
     }
 
+    /**
+     * Supply the url for the savecite servlet to add a citation to a particular citation list.
+     * @param resourceId The identifier for the citation list.
+     */
+	public String getSaveciteUrl(String resourceId, String saveciteClientId) {
+    	StringBuilder buf = new StringBuilder();
+    	
+    	String serverUrl = serverConfigurationService.getServerUrl();
+    	buf.append(serverUrl);
+    	buf.append(Entity.SEPARATOR);
+    	buf.append(SERVLET_NAME);
+    	buf.append(Entity.SEPARATOR);
+    	buf.append(resourceId);
+    	buf.append('?');
+    	buf.append(SAKAI_SESSION);
+    	buf.append("=nada&client=");
+    	buf.append(saveciteClientId);
+    	buf.append("&");
+    	
+    	return buf.toString();
+    }
+
+    public String getExternalSearchWindowName(String resourceId)
+    {
+        String serverUrl = serverConfigurationService.getServerUrl() + Entity.SEPARATOR + SERVLET_NAME + Entity.SEPARATOR + resourceId;
+        try {
+            String encodedUrl = URLEncoder.encode(serverUrl, "UTF-8");
+            return WINDOW_PREFIX + encodedUrl;
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Does anywhere not have UTF-8?", e);
+        }
+    }
 	/**
      * @return the serverConfigurationService
      */

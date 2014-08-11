@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PDAHandler.java $
- * $Id: PDAHandler.java 107190 2012-04-17 01:21:38Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PDAHandler.java $
+ * $Id: PDAHandler.java 113317 2012-09-21 16:45:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,7 +57,7 @@ import org.sakaiproject.util.Web;
  * 
  * @author csev
  * @since Sakai 2.4
- * @version $Rev: 107190 $
+ * @version $Rev: 113317 $
  * 
  */
 @SuppressWarnings("deprecation")
@@ -77,8 +77,19 @@ public class PDAHandler extends PageHandler
 	private static final String SAKAI_COOKIE_DOMAIN = "sakai.cookieDomain"; //RequestFilter.SAKAI_COOKIE_DOMAIN
 	
 	private static final String TOOLCONFIG_SHOW_RESET_BUTTON = "reset.button";
-	
-	private static final String DEFAULT_BYPASS_PATTERN = "\\.jpg$|\\.gif$|\\.js$|\\.png$|\\.jpeg$|\\.css$|\\.zip$|\\.pdf\\.mov$|\\.json$|\\.jsonp$\\.xml$|\\.ajax$|\\.xls$|\\.xlsx$|\\.doc$|\\.docx$|uvbview$|linktracker$";
+
+    private static final String BYPASS_URL_PROP = "portal.pda.bypass";
+	private static final String DEFAULT_BYPASS_URL = "\\.jpg$|\\.gif$|\\.js$|\\.png$|\\.jpeg$|\\.prf$|\\.css$|\\.zip$|\\.pdf\\.mov$|\\.json$|\\.jsonp$\\.xml$|\\.ajax$|\\.xls$|\\.xlsx$|\\.doc$|\\.docx$|uvbview$|linktracker$|hideshowcolumns$";
+
+	// Make sure to lower-case the matching regex (i.e. don't use IResourceListener below)
+    private static final String BYPASS_QUERY_PROP = "portal.pda.bypass.query";
+	private static final String DEFAULT_BYPASS_QUERY = "wicket:interface=.*iresourcelistener:";
+
+    private static final String BYPASS_TYPE_PROP = "portal.pda.bypass.type";
+	private static final String DEFAULT_BYPASS_TYPE = "^application/|^image/|^audio/|^video/|^text/xml|^text/plain";
+
+	private static final String IFRAME_SUPPRESS_PROP = "portal.pda.iframesuppress";
+	private static final String IFRAME_SUPPRESS_DEFAULT = ":all:sakai.profile2:";
 	
 	public PDAHandler()
 	{
@@ -219,15 +230,49 @@ public class PDAHandler extends PageHandler
 				if ( siteTool != null ) {
 					String uri = req.getRequestURI();
 					String commonToolId = siteTool.getToolId();
-					String pattern = ServerConfigurationService .getString("portal.pda.bypass", DEFAULT_BYPASS_PATTERN);
-					pattern = ServerConfigurationService .getString("portal.pda.bypass."+commonToolId, pattern);
-					// System.out.println("Pat="+pattern);
-					Pattern p = Pattern.compile(pattern);
-					Matcher m = p.matcher(uri.toLowerCase());
-					if ( m.find() && parts.length >= 5 ) {
+					boolean matched = false;
+					// Check the URL for a pattern match
+					String pattern = null;
+					Pattern p = null;
+					Matcher m = null;
+					pattern = ServerConfigurationService .getString(BYPASS_URL_PROP, DEFAULT_BYPASS_URL);
+					pattern = ServerConfigurationService .getString(BYPASS_URL_PROP+"."+commonToolId, pattern);
+					if ( pattern.length() > 1 ) {
+						p = Pattern.compile(pattern);
+						m = p.matcher(uri.toLowerCase());
+						if ( m.find() ) {
+							matched = true;
+						}
+					}
+
+					// Check the query string for a pattern match
+					pattern = ServerConfigurationService .getString(BYPASS_QUERY_PROP, DEFAULT_BYPASS_QUERY);
+					pattern = ServerConfigurationService .getString(BYPASS_QUERY_PROP+"."+commonToolId, pattern);
+					String queryString = req.getQueryString();
+					if ( queryString == null ) queryString = "";
+					if ( pattern.length() > 1 ) {
+						p = Pattern.compile(pattern);
+						m = p.matcher(queryString.toLowerCase());
+						if ( m.find() ) {
+							matched = true;
+						}
+					}
+
+					// wicket-ajax request can not be buffered (PRFL-405)
+					if (Boolean.valueOf(req.getHeader("wicket-ajax"))) {
+						matched = true;
+					}
+
+					boolean allowBuffer = allowBufferContent(req, toolId);
+
+					// Pass this request through directly if this tool is bufferable
+					// and the request is some kind of straigh-through request like 
+					// an image ajax, etc.
+					// System.out.println("AB="+allowBuffer+" match="+matched+" tid="+commonToolId+" uri="+uri+" QS="+queryString);
+					if ( allowBuffer && matched && parts.length >= 5 ) {
 						String toolContextPath = req.getContextPath() + req.getServletPath() + Web.makePath(parts, 1, 5); 
 						String toolPathInfo = Web.makePath(parts, 5, parts.length);
-        					ActiveTool tool = ActiveToolManager.getActiveTool(commonToolId);
+       					ActiveTool tool = ActiveToolManager.getActiveTool(commonToolId);
 						portal.forwardTool(tool, req, res, siteTool, 
 							siteTool.getSkin(), toolContextPath, toolPathInfo);
 						return END;
@@ -250,7 +295,7 @@ public class PDAHandler extends PageHandler
 				portal.setupMobileDevice(req, rcontext);
 
 				// Optionally buffer tool content to eliminate iFrames
-				bufferContent(req, res, session, parts, toolId, rcontext);
+				boolean bc = bufferContent(req, res, session, parts, toolId, rcontext);
 
 				portal.sendResponse(rcontext, res, "pda", null);
 				
@@ -258,7 +303,9 @@ public class PDAHandler extends PageHandler
 					boolean presenceEvents = ServerConfigurationService.getBoolean("presence.events.log", true);
 					if (presenceEvents)
 						org.sakaiproject.presence.cover.PresenceService.setPresence(siteId + "-presence");
-				}catch(Exception e){}
+				}catch(Exception e){
+					return END;
+				}
 				return END;
 			}
 			catch (Exception ex)
@@ -273,42 +320,53 @@ public class PDAHandler extends PageHandler
 	}
 
 	/*
-	 * Optionally actually grab the tool's output and include it in the same
-	 * frame
+	 * Check to see if this tool allows the buffering of content
 	 */
-	public void bufferContent(HttpServletRequest req, HttpServletResponse res,
-			Session session, String[] parts, String toolId, PortalRenderContext rcontext)
+	public boolean allowBufferContent(HttpServletRequest req, String toolId)
 	{
-		if (toolId == null) return;
+		if (toolId == null) return false;
 
-		String tidAllow = ServerConfigurationService
-		.getString("portal.pda.iframesuppress");
+		String tidAllow = ServerConfigurationService.getString(IFRAME_SUPPRESS_PROP, IFRAME_SUPPRESS_DEFAULT);
 
-		if (tidAllow.indexOf(":none:") >= 0) return;
+		if (tidAllow.indexOf(":none:") >= 0) return false;
 
 		ToolConfiguration siteTool = SiteService.findTool(toolId);
-		if (siteTool == null) return;
+		if (siteTool == null) return false;
 
 		// JSR-168 portlets do not operate in iframes
-		if ( portal.isPortletPlacement(siteTool) ) return;
+		if ( portal.isPortletPlacement(siteTool) ) return false;
 
 		// If the property is set and :all: is not specified, then the 
 		// tools in the list are the ones that we accept
 		if (tidAllow.trim().length() > 0 && tidAllow.indexOf(":all:") < 0)
 		{
-			if (tidAllow.indexOf(siteTool.getToolId()) < 0) return;
+			if (tidAllow.indexOf(siteTool.getToolId()) < 0) return false;
 		}
 
 		// If the property is set and :all: is specified, then the 
 		// tools in the list are the ones that we render the old way
 		if (tidAllow.indexOf(":all:") >= 0)
 		{
-			if (tidAllow.indexOf(siteTool.getToolId()) >= 0) return;
+			if (tidAllow.indexOf(siteTool.getToolId()) >= 0) return false;
 		}
+
+		return true;
+	}
+
+	/*
+	 * Optionally actually grab the tool's output and include it in the same
+	 * frame
+	 */
+	public boolean bufferContent(HttpServletRequest req, HttpServletResponse res,
+			Session session, String[] parts, String toolId, PortalRenderContext rcontext)
+	{
+		if ( ! allowBufferContent(req, toolId) ) return false;
+
+		ToolConfiguration siteTool = SiteService.findTool(toolId);
+		if (siteTool == null) return false;
 
 		// Produce the buffered response
 		ByteArrayServletResponse bufferedResponse = new ByteArrayServletResponse(res);
-
 
 		boolean retval;
 		String toolContextPath = req.getContextPath() + req.getServletPath() + Web.makePath(parts, 1, 5);
@@ -316,15 +374,28 @@ public class PDAHandler extends PageHandler
 			retval = doToolBuffer(req, bufferedResponse, session, parts[4], 
 					toolContextPath, 
 					Web.makePath(parts, 5, parts.length));
-			if ( ! retval ) return;
+
+			if ( ! retval ) return false;
+
+			// Check the response contentType for a pattern match
+			String commonToolId = siteTool.getToolId();
+			String pattern = ServerConfigurationService .getString(BYPASS_TYPE_PROP, DEFAULT_BYPASS_TYPE);
+			pattern = ServerConfigurationService .getString(BYPASS_TYPE_PROP+"."+commonToolId, pattern);
+			if ( pattern.length() > 0 ) {
+				String contentType = res.getContentType();
+				if ( contentType == null ) contentType = "";
+				Pattern p = Pattern.compile(pattern);
+				Matcher mc = p.matcher(contentType.toLowerCase());
+				if ( mc.find() ) return false;
+			}
 		} catch (ToolException e) {
-			return;
+			return false;
 		} catch (IOException e) {
-			return;
+			return false;
 		}
 
 		String responseStr = bufferedResponse.getInternalBuffer();
-		if (responseStr == null || responseStr.length() < 1) return;
+		if (responseStr == null || responseStr.length() < 1) return false;
 
 		String responseStrLower = responseStr.toLowerCase();
 		int headStart = responseStrLower.indexOf("<head");
@@ -343,6 +414,7 @@ public class PDAHandler extends PageHandler
 		// start tag we simply - take the rest of the response
 		if ( bodyEnd < bodyStart ) bodyEnd = responseStrLower.length() - 1;
 
+		String tidAllow = ServerConfigurationService.getString(IFRAME_SUPPRESS_PROP, IFRAME_SUPPRESS_DEFAULT);
 		if( tidAllow.indexOf(":debug:") >= 0 )
 			log.info("Frameless HS="+headStart+" HE="+headEnd+" BS="+bodyStart+" BE="+bodyEnd);
 
@@ -369,6 +441,7 @@ public class PDAHandler extends PageHandler
 			rcontext.put("responseHead", headString);
 			rcontext.put("responseBody", bodyString);
 		}
+		return true;
 	}
 
 	private int findEndOfTag(String string, int startPos)
@@ -396,8 +469,7 @@ public class PDAHandler extends PageHandler
 		}
 
 		// Reset the tool state if requested
-		if ("true".equals(req.getParameter(portalService.getResetStateParam()))
-				|| "true".equals(portalService.getResetState()))
+		if (portalService.isResetRequested(req))
 		{
 			Session s = SessionManager.getCurrentSession();
 			ToolSession ts = s.getToolSession(placementId);

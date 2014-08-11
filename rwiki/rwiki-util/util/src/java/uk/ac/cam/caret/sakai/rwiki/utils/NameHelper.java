@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/NameHelper.java $
- * $Id: NameHelper.java 96750 2011-08-10 18:50:59Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/NameHelper.java $
+ * $Id: NameHelper.java 96735 2011-08-10 15:57:33Z aaronz@vt.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.

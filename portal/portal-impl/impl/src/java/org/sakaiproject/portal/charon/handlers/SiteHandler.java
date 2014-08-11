@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/branches/sakai-2.8.x/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/SiteHandler.java $
- * $Id: SiteHandler.java 96011 2011-08-01 22:35:56Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/SiteHandler.java $
+ * $Id: SiteHandler.java 113889 2012-10-02 13:53:54Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +40,7 @@ import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
@@ -47,6 +49,7 @@ import org.sakaiproject.portal.api.PortalHandlerException;
 import org.sakaiproject.portal.api.PortalRenderContext;
 import org.sakaiproject.portal.api.SiteView;
 import org.sakaiproject.portal.api.StoredState;
+import org.sakaiproject.portal.charon.site.AllSitesViewImpl;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.ToolConfiguration;
@@ -58,11 +61,12 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.PreferencesService;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.Web;
+import org.sakaiproject.util.ResourceLoader;
 
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 96011 $
+ * @version $Rev: 113889 $
  */
 public class SiteHandler extends WorksiteHandler
 {
@@ -80,6 +84,8 @@ public class SiteHandler extends WorksiteHandler
 	private int configuredTabsToDisplay = 5;
 
 	private boolean useDHTMLMore = false;
+	
+	private int showSearchWhen = 2; 
 
 	// When these strings appear in the URL they will be replaced by a calculated value based on the context.
 	// This can be replaced by the users myworkspace.
@@ -94,8 +100,10 @@ public class SiteHandler extends WorksiteHandler
 				Portal.CONFIG_DEFAULT_TABS, 5);
 		useDHTMLMore = Boolean.valueOf(ServerConfigurationService.getBoolean(
 				"portal.use.dhtml.more", false));
-        mutableSitename =  ServerConfigurationService.getString("portal.mutable.sitename", "-");
-        mutablePagename =  ServerConfigurationService.getString("portal.mutable.pagename", "-");
+		showSearchWhen = Integer.valueOf(ServerConfigurationService.getInt(
+				"portal.show.search.when", 2));
+		mutableSitename =  ServerConfigurationService.getString("portal.mutable.sitename", "-");
+		mutablePagename =  ServerConfigurationService.getString("portal.mutable.pagename", "-");
 	}
 
 	@Override
@@ -141,8 +149,8 @@ public class SiteHandler extends WorksiteHandler
 	public void doSite(HttpServletRequest req, HttpServletResponse res, Session session,
 			String siteId, String pageId, String toolContextPath) throws ToolException,
 			IOException
-	{
-
+	{		
+				
 		boolean doFrameTop = "true".equals(req.getParameter("sakai.frame.top"));
 		boolean doFrameSuppress = "true".equals(req.getParameter("sakai.frame.suppress"));
 
@@ -160,7 +168,13 @@ public class SiteHandler extends WorksiteHandler
 			else
 			{
 				// TODO Should maybe switch to portal.getSiteHelper().getMyWorkspace()
-				siteId = SiteService.getUserSiteId(session.getUserId());
+                                AllSitesViewImpl allSites = (AllSitesViewImpl)portal.getSiteHelper().getSitesView(SiteView.View.ALL_SITES_VIEW, req, session, siteId);
+                                List<Map> sites = (List<Map>)allSites.getRenderContextObject();
+                                if (sites.size() > 0) {
+                                	siteId = (String)sites.get(0).get("siteId");
+                                }
+                                else
+                                	siteId = SiteService.getUserSiteId(session.getUserId());
 			}
 		}
 
@@ -231,22 +245,23 @@ public class SiteHandler extends WorksiteHandler
 		if (mutablePagename.equalsIgnoreCase(pageId)) {
 			pageId = findPageIdFromToolId(pageId, req.getPathInfo(), site);
 		}
+		
+		// clear the last page visited
+		session.removeAttribute(Portal.ATTR_SITE_PAGE + siteId);
+
+		// form a context sensitive title
+		String title = ServerConfigurationService.getString("ui.service","Sakai") + " : "
+				+ site.getTitle();
 
 		// Lookup the page in the site - enforcing access control
 		// business rules
 		SitePage page = portal.getSiteHelper().lookupSitePage(pageId, site);
-		if (page == null)
+		if (page != null)
 		{
-			portal.doError(req, res, session, Portal.ERROR_SITE);
-			return;
+			// store the last page visited
+			session.setAttribute(Portal.ATTR_SITE_PAGE + siteId, page.getId());
+			title += " : " + page.getTitle();
 		}
-
-		// store the last page visited
-		session.setAttribute(Portal.ATTR_SITE_PAGE + siteId, page.getId());
-
-		// form a context sensitive title
-		String title = ServerConfigurationService.getString("ui.service") + " : "
-				+ site.getTitle() + " : " + page.getTitle();
 
 		// start the response
 		String siteType = portal.calcSiteType(siteId);
@@ -254,15 +269,24 @@ public class SiteHandler extends WorksiteHandler
 				.getSkin(), req);
 		
 		// Have we been requested to display minimized and are we logged in?
-		if (session.getUserId() != null) {
+		if (session.getUserId() != null ) {
 			Cookie c = portal.findCookie(req, portal.SAKAI_NAV_MINIMIZED);
+                        String reqParm = req.getParameter(portal.SAKAI_NAV_MINIMIZED);
+                	String minStr = ServerConfigurationService.getString("portal.allow.auto.minimize","true");
                 	if ( c != null && "true".equals(c.getValue()) ) {
+				rcontext.put(portal.SAKAI_NAV_MINIMIZED, Boolean.TRUE);
+			} else if ( reqParm != null &&  "true".equals(reqParm) && ! "false".equals(minStr) ) {
 				rcontext.put(portal.SAKAI_NAV_MINIMIZED, Boolean.TRUE);
 			}
 		}
 
 		// should we consider a frameset ?
 		boolean doFrameSet = includeFrameset(rcontext, res, req, session, page);
+				
+				
+		Locale locale = setSiteLanguage(site);	
+        rcontext.put("locale", locale.toString());			
+				
 		
 		includeSiteNav(rcontext, req, session, siteId);
 
@@ -316,6 +340,8 @@ public class SiteHandler extends WorksiteHandler
 			// This request is the destination of the request
 			portalService.setStoredState(null);
 		}
+		
+		
 	}
 
 	/*
@@ -458,11 +484,6 @@ public class SiteHandler extends WorksiteHandler
 		{
 
 			String skin = getSiteSkin(siteId);
-
-			if (skin == null)
-			{
-				skin = ServerConfigurationService.getString("skin.default");
-			}
 			String skinRepo = ServerConfigurationService.getString("skin.repo");
 			rcontext.put("logoSkin", skin);
 			rcontext.put("logoSkinRepo", skinRepo);
@@ -503,6 +524,15 @@ public class SiteHandler extends WorksiteHandler
 				// Ignore
 			}
 		}
+
+		if (skin == null)
+		{
+			skin = ServerConfigurationService.getString("skin.default");
+		}
+		String templates = ServerConfigurationService.getString("portal.templates", "neoskin");
+		String prefix = ServerConfigurationService.getString("portal.neoprefix", "neo-");
+        // Don't add the prefix twice
+        if ( "neoskin".equals(templates) && ! skin.startsWith(prefix) ) skin = prefix + skin;
 		return skin;
 	}
 
@@ -574,7 +604,9 @@ public class SiteHandler extends WorksiteHandler
             	{
 		            String switchRoleUrl = "";
 		            Role userRole = activeSite.getUserRole(session.getUserId()); // the user's role in the site
-		            if (roleswitchvalue != null && !userRole.getId().equals(roleswitchvalue))
+		            //if the userRole is null, this means they are more than likely a Delegated Access user.  Since the security check has already allowed
+		            //the user to "swaproles" @allowroleswap, we know they have access to this site
+		            if (roleswitchvalue != null && (userRole == null || !userRole.getId().equals(roleswitchvalue)))
 		            {
 		            	switchRoleUrl = ServerConfigurationService.getPortalUrl()
 						+ "/role-switch-out/"
@@ -637,6 +669,7 @@ public class SiteHandler extends WorksiteHandler
 			}
 
 			rcontext.put("useDHTMLMore", useDHTMLMore);
+			rcontext.put("showSearchWhen", showSearchWhen);
 			if (useDHTMLMore)
 			{
 				SiteView siteView = portal.getSiteHelper().getSitesView(
@@ -790,6 +823,51 @@ public class SiteHandler extends WorksiteHandler
 			if (framesetRequested) rcontext.put("sakaiFrameSetRequested", Boolean.TRUE);
 		}
 		return framesetRequested;
+	}
+	
+	/**
+	 * *
+	 * 
+	 * @return Locale based on its string representation (language_region)
+	 */
+	private Locale getLocaleFromString(String localeString)
+	{
+		String[] locValues = localeString.trim().split("_");
+		if (locValues.length >= 3)
+			return new Locale(locValues[0], locValues[1], locValues[2]); // language, country, variant
+		else if (locValues.length == 2)
+			return new Locale(locValues[0], locValues[1]); // language, country
+		else if (locValues.length == 1)
+			return new Locale(locValues[0]); // language
+		else
+			return Locale.getDefault();
+	}
+	
+		
+	private Locale setSiteLanguage(Site site)
+	{
+		ResourceLoader rl = new ResourceLoader();
+				
+		ResourcePropertiesEdit props = site.getPropertiesEdit();
+				
+		String locale_string = props.getProperty("locale_string");
+						
+		Locale loc;
+				
+		// if no language was specified when creating the site, set default language to session
+		if(locale_string == null || locale_string == "")
+		{					
+			loc = rl.setContextLocale(null);
+		}
+		
+		// if you have indicated a language when creating the site, set selected language to session
+		else
+		{				
+			Locale locale = getLocaleFromString(locale_string);			
+			loc = rl.setContextLocale(locale);			
+		}
+
+        return loc;
 	}
 
 }

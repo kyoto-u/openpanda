@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
- * $Id: AssignmentService.java 107093 2012-04-16 00:54:36Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
+ * $Id: AssignmentService.java 112290 2012-09-11 17:44:18Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -763,6 +763,16 @@ public interface AssignmentService extends EntityProducer
 	public String assignmentReference(String context, String id);
 
 	/**
+	 * Access the internal reference which can be used to assess security clearance.
+	 * This will make a database call, so might not be the best choice in every situation.
+	 * But, if you don't have the context (site id) and need the reference, it's the only way to get it.
+	 * @param id
+	 *        The assignment id string.
+	 * @return The the internal reference which can be used to access the resource from within the system.
+	 */
+	public String assignmentReference(String id);
+	
+	/**
 	 * Access the internal reference which can be used to access the resource from within the system.
 	 * 
 	 * @param id
@@ -814,6 +824,11 @@ public interface AssignmentService extends EntityProducer
 	 * Whether the current user can submit
 	 */
 	public boolean canSubmit(String context, Assignment a);
+	
+	/**
+	 * Allow that the instructor can submit an assignment on behalf of student
+	 */
+	public boolean getAllowSubmitByInstructor();
 	
 	/**
 	 * get appropriate submitter id list with group choice and site id

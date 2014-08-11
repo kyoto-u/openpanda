@@ -50,7 +50,7 @@
 	<sakai:view_title value="#{msgs.edit_page}" rendered="#{!freeForm.presentation.newObject}"/>
 	
 	<sakai:instruction_message value=""/>
-	<sakai:messages/>
+	<sakai:messages rendered="#{!empty facesContext.maximumSeverity}"/>
 	<ospx:xheader>
 	<ospx:xheadertitle id="styleTitle" value="#{msgs.page_information_title}"/>
 	<ospx:xheaderdrawer initiallyexpanded="#{freeForm.currentPage.expandedInformationSection}" cssclass="drawerBorder">

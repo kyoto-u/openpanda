@@ -1,6 +1,6 @@
 /**
- * $Id: EntityEncodingManager.java 83385 2010-10-19 14:39:04Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/rest/src/java/org/sakaiproject/entitybroker/rest/EntityEncodingManager.java $
+ * $Id: EntityEncodingManager.java 114417 2012-10-16 15:16:12Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/rest/src/java/org/sakaiproject/entitybroker/rest/EntityEncodingManager.java $
  * EntityEncodingManager.java - entity-broker - Jul 23, 2008 3:25:32 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -436,6 +436,14 @@ public class EntityEncodingManager {
             System.out.println("INFO: EntityEncodingManager: No entities to format ("+format+") and output for ref (" + ref + ")");
         }
 
+        // SAK-22738 - do not show form editing when batch processing is disabled
+        String replacementEncoding = null;
+        if (Formats.FORM.equals(format) 
+                && !entityBrokerManager.getExternalIntegrationProvider().getConfigurationSetting(EntityBatchHandler.CONFIG_BATCH_ENABLE, EntityBatchHandler.CONFIG_BATCH_DEFAULT)) {
+            String msg = "FORM editing is not enabled because the batch provider is disabled by sakai config: "+EntityBatchHandler.CONFIG_BATCH_ENABLE+"=false. Enable this config setting with "+EntityBatchHandler.CONFIG_BATCH_ENABLE+"=true to enable batch handling. See SAK-22619 for details.";
+            replacementEncoding = "<div style=\"font-weight:bold;color:red;\">"+msg+"</div>";
+        }
+
         String encoded = null;
         if (EntityView.VIEW_LIST.equals(view.getViewKey()) 
                 || ref.getId() == null) {
@@ -454,21 +462,25 @@ public class EntityEncodingManager {
                 sb.append(ref.getPrefix() + COLLECTION + "\n");
             }
 
-            // loop through and encode items
             int encodedEntities = 0;
-            for (EntityData entity : entities) {
-                try {
-                    String encode = encodeEntity(ref.getPrefix(), format, entity, view);
-                    if (encode.length() > 3) {
-                        if ((Formats.JSON.equals(format) || Formats.JSONP.equals(format)) 
-                                && encodedEntities > 0) {
-                            sb.append(",");
+            if (replacementEncoding != null) {
+                sb.append(replacementEncoding);
+            } else {
+                // loop through and encode items
+                for (EntityData entity : entities) {
+                    try {
+                        String encode = encodeEntity(ref.getPrefix(), format, entity, view);
+                        if (encode.length() > 3) {
+                            if ((Formats.JSON.equals(format) || Formats.JSONP.equals(format)) 
+                                    && encodedEntities > 0) {
+                                sb.append(",");
+                            }
+                            sb.append(encode);
+                            encodedEntities++;
                         }
-                        sb.append(encode);                     
-                        encodedEntities++;
+                    } catch (RuntimeException e) {
+                        throw new EntityEncodingException("Failure during internal output encoding of entity set on entity: " + ref, ref.toString(), e);
                     }
-                } catch (RuntimeException e) {
-                    throw new EntityEncodingException("Failure during internal output encoding of entity set on entity: " + ref, ref.toString(), e);
                 }
             }
 
@@ -487,14 +499,18 @@ public class EntityEncodingManager {
         } else {
             // encoding a single entity
             EntityData toEncode = entities.get(0);
-            if (toEncode == null) {
-                throw new EntityEncodingException("Failed to encode data for entity (" + ref 
-                        + "), entity object to encode could not be found (null object in list)", ref.toString());
+            if (replacementEncoding != null) {
+                encoded = replacementEncoding;
             } else {
-                try {
-                    encoded = encodeEntity(ref.getPrefix(), format, toEncode, view);
-                } catch (RuntimeException e) {
-                    throw new EntityEncodingException("Failure during internal output encoding of entity: " + ref, ref.toString(), e);
+                if (toEncode == null) {
+                    throw new EntityEncodingException("Failed to encode data for entity (" + ref 
+                            + "), entity object to encode could not be found (null object in list)", ref.toString());
+                } else {
+                    try {
+                        encoded = encodeEntity(ref.getPrefix(), format, toEncode, view);
+                    } catch (RuntimeException e) {
+                        throw new EntityEncodingException("Failure during internal output encoding of entity: " + ref, ref.toString(), e);
+                    }
                 }
             }
         }
@@ -542,37 +558,41 @@ public class EntityEncodingManager {
             // special handling for HTML
             StringBuilder sb = new StringBuilder(200);
             sb.append("  <div style='padding-left:1em;'>\n");
-            sb.append("    <div style='font-weight:bold;'>"+StringEscapeUtils.escapeHtml(entityData.getDisplayTitle())+"</div>\n");
-            sb.append("    <table border='1'>\n");
-            sb.append("      <caption style='font-weight:bold;'>Entity Data</caption>\n");
-            if (! entityData.isDataOnly()) {
-                sb.append("      <tr><td>entityReference</td><td>"+StringEscapeUtils.escapeHtml(entityData.getEntityReference())+"</td></tr>\n");
-                sb.append("      <tr><td>entityURL</td><td>"+StringEscapeUtils.escapeHtml(entityData.getEntityURL())+"</td></tr>\n");
-                if (entityData.getEntityRef() != null) {
-                    sb.append("      <tr><td>entityPrefix</td><td>"+StringEscapeUtils.escapeHtml(entityData.getEntityRef().getPrefix())+"</td></tr>\n");
-                    if (entityData.getEntityRef().getId() != null) {
-                        sb.append("      <tr><td>entityID</td><td>"+StringEscapeUtils.escapeHtml(entityData.getEntityRef().getId())+"</td></tr>\n");
+            if (entityData == null) {
+                sb.append("NO DATA to encode");
+            } else {
+                sb.append("    <div style='font-weight:bold;'>"+StringEscapeUtils.escapeHtml(entityData.getDisplayTitle())+"</div>\n");
+                sb.append("    <table border='1'>\n");
+                sb.append("      <caption style='font-weight:bold;'>Entity Data</caption>\n");
+                if (! entityData.isDataOnly()) {
+                    sb.append("      <tr><td>entityReference</td><td>"+StringEscapeUtils.escapeHtml(entityData.getEntityReference())+"</td></tr>\n");
+                    sb.append("      <tr><td>entityURL</td><td>"+StringEscapeUtils.escapeHtml(entityData.getEntityURL())+"</td></tr>\n");
+                    if (entityData.getEntityRef() != null) {
+                        sb.append("      <tr><td>entityPrefix</td><td>"+StringEscapeUtils.escapeHtml(entityData.getEntityRef().getPrefix())+"</td></tr>\n");
+                        if (entityData.getEntityRef().getId() != null) {
+                            sb.append("      <tr><td>entityID</td><td>"+StringEscapeUtils.escapeHtml(entityData.getEntityRef().getId())+"</td></tr>\n");
+                        }
                     }
                 }
-            }
-            if (entityData.getData() != null) {
-                sb.append("      <tr><td>entity-type</td><td>"+entityData.getData().getClass().getName()+"</td></tr>\n");
-                // dump entity data
-                sb.append("      <tr><td colspan='2'>Data:<br/>\n");
-                sb.append( encodeData(entityData.getData(), Formats.HTML, null, null) );
-                sb.append("      </td></tr>\n");
-            } else {
-                sb.append("      <tr><td>entity-object</td><td><i>null</i></td></tr>\n");
-            }
-            sb.append("    </table>\n");
-            Map<String, Object> props = entityData.getEntityProperties();
-            if (!props.isEmpty()) {
-                sb.append("    <table border='1'>\n");
-                sb.append("      <caption style='font-weight:bold;'>Properties</caption>\n");
-                for (Entry<String, Object> entry : props.entrySet()) {
-                    sb.append("      <tr><td>"+StringEscapeUtils.escapeHtml(entry.getKey())+"</td><td>"+StringEscapeUtils.escapeHtml(entry.getValue().toString())+"</td></tr>\n");
+                if (entityData.getData() != null) {
+                    sb.append("      <tr><td>entity-type</td><td>"+entityData.getData().getClass().getName()+"</td></tr>\n");
+                    // dump entity data
+                    sb.append("      <tr><td colspan='2'>Data:<br/>\n");
+                    sb.append( encodeData(entityData.getData(), Formats.HTML, null, null) );
+                    sb.append("      </td></tr>\n");
+                } else {
+                    sb.append("      <tr><td>entity-object</td><td><i>null</i></td></tr>\n");
                 }
                 sb.append("    </table>\n");
+                Map<String, Object> props = entityData.getEntityProperties();
+                if (!props.isEmpty()) {
+                    sb.append("    <table border='1'>\n");
+                    sb.append("      <caption style='font-weight:bold;'>Properties</caption>\n");
+                    for (Entry<String, Object> entry : props.entrySet()) {
+                        sb.append("      <tr><td>"+StringEscapeUtils.escapeHtml(entry.getKey())+"</td><td>"+StringEscapeUtils.escapeHtml(entry.getValue().toString())+"</td></tr>\n");
+                    }
+                    sb.append("    </table>\n");
+                }
             }
             sb.append("  </div>\n");
             encoded = sb.toString();
@@ -581,6 +601,7 @@ public class EntityEncodingManager {
             if (view == null) {
                 throw new IllegalArgumentException("the view must be set for FORM handling and generation");
             }
+
             boolean handle = false;
             boolean createable = entityProviderManager.getProviderByPrefixAndCapability(prefix, Createable.class) != null;
             boolean updateable = entityProviderManager.getProviderByPrefixAndCapability(prefix, Updateable.class) != null;
@@ -597,6 +618,7 @@ public class EntityEncodingManager {
                 // we handle these only if the stuff can be changed
                 handle = true;
             }
+
             if (handle) {
                 // fix up URL stuff first
                 String prefixUrl = entityBrokerManager.getServletContext();
@@ -734,7 +756,7 @@ public class EntityEncodingManager {
             // encode the entity itself
             Object toEncode = entityData; // default to encoding the entity data object
             Map<String, Object> entityProps = new ArrayOrderedMap<String, Object>();
-            if (entityData.getData() != null) {
+            if (entityData != null && entityData.getData() != null) {
                 if (entityData.isDataOnly()) {
                     toEncode = entityData.getData();
                     // no meta data except properties if there are any

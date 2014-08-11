@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/EvaluationModelIfc.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/EvaluationModelIfc.java $
  * $Id: EvaluationModelIfc.java 76242 2010-04-15 19:30:40Z ktsao@stanford.edu $
  ***********************************************************************************
  *

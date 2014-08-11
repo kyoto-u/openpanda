@@ -1,27 +1,28 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <parent>
-        <groupId>org.sakaiproject.purepoms</groupId>
-        <artifactId>sakai-basic-tool</artifactId>
-        <version>2.8.7</version>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>master</artifactId>
+        <version>2.9.0</version>
+		<relativePath>../master/pom.xml</relativePath>
     </parent>
-
+    
     <name>Sakai Entity Broker</name>
     <groupId>org.sakaiproject</groupId>
     <artifactId>entitybroker</artifactId>
-    <version>1.4.7-SNAPSHOT</version>
+    <version>1.5.0</version>
     <packaging>pom</packaging>
-
+    
     <organization>
         <name>Sakai Project</name>
         <url>http://sakaiproject.org/</url>
     </organization>
     <inceptionYear>2007</inceptionYear>
-
+    
     <url>http://confluence.sakaiproject.org/confluence/x/F7M</url>
-
+    
     <description>The Sakai Entity Broker is an entity system for use in Sakai. Ideally we
         want flexible entities which make development of integrated Sakai tools easier and
         more flexible. Our goals are to make the entity system easier on developers
@@ -30,14 +31,14 @@
         (Entity Producers and Entities) and entities created using entity providers are
         accessible in Sakai as if they were created using the legacy system. Send feedback
         or comments to Aaron Zeckoski (azeckoski@gmail.com, aaronz@vt.edu).</description>
-
+        
     <properties>
         <spring.test.version>2.5.6.SEC01</spring.test.version>
         <hsqldb.version>1.8.0.5</hsqldb.version>
         <easymock.version>2.0</easymock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    
     <!-- Define the modules that are part of this -->
     <profiles>
         <profile>
@@ -96,7 +97,7 @@
             </modules>
         </profile>
     </profiles>
-
+    
     <developers>
         <developer>
             <id>aaronz@vt.edu</id>
@@ -125,7 +126,7 @@
             <timezone>0</timezone>
         </developer>
     </developers>
-
+    
     <pluginRepositories>
         <pluginRepository>
             <id>maven2-central-repo</id>
@@ -149,7 +150,7 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
+    
     <repositories>
         <repository>
             <id>sakai-maven</id>
@@ -187,21 +188,24 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository> 
+			<id>sonatype-nexus-snapshots</id> 
+			<name>Sonatype Nexus Snapshots</name> 
+			<url> https://oss.sonatype.org/content/repositories/snapshots </url> 
+			<releases> 
+				<enabled>false</enabled> 
+			</releases> 
+			<snapshots> 
+				<enabled>true</enabled> 
+			</snapshots> 
+		</repository>
     </repositories>
-
-    <distributionManagement>
-        <site>
-            <id>sakai-site</id>
-            <name>Sakai release Site</name>
-            <url>scpexe://source.sakaiproject.org/var/www/html/release/entitybroker/${project.version}</url>
-        </site>
-    </distributionManagement>
-
+    
     <issueManagement>
         <system>JIRA</system>
         <url>http://jira.sakaiproject.org/jira/browse/SAK</url>
     </issueManagement>
-
+    
     <ciManagement>
         <system>Continuum</system>
         <url>http://saffron.caret.cam.ac.uk/continuum</url>
@@ -228,22 +232,22 @@
             </notifier>
         </notifiers>
     </ciManagement>
-
+    
     <licenses>
         <license>
             <name>Educational Community License, Version 2.0</name>
-            <url>http://www.osedu.org/licenses/ECL-2.0</url>
+            <url>http://www.opensource.org/licenses/ECL-2.0</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
-
+    
     <!-- define source code repository location -->
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x</developerConnection>
-        <url>https://source.sakaiproject.org/viewsvn/entitybroker/branches/entitybroker-1.4.x</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0</developerConnection>
+        <url>https://source.sakaiproject.org/viewsvn/entitybroker/tags/entitybroker-1.5.0</url>
     </scm>
-
+    
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -281,7 +285,7 @@
             <dependency>
                 <groupId>org.azeckoski</groupId>
                 <artifactId>reflectutils</artifactId>
-                <version>0.9.19</version>
+                <version>0.9.18</version>
             </dependency>
             <!-- testing -->
             <dependency>
@@ -327,8 +331,8 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <configuration>
                         <outputEncoding>UTF-8</outputEncoding>
-                        <source>1.5</source>
-                        <target>1.5</target>
+                        <source>${sakai.jdk.version}</source>
+                        <target>${sakai.jdk.version}</target>
                     </configuration>
                 </plugin>
             </plugins>
@@ -390,5 +394,4 @@
             </plugin>
         </plugins>
     </reporting>
-
 </project>

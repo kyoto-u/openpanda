@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/main/java/org/sakaiproject/db/impl/BasicSqlServiceSqlOracle.java $
- * $Id: BasicSqlServiceSqlOracle.java 96675 2011-08-09 15:13:01Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/main/java/org/sakaiproject/db/impl/BasicSqlServiceSqlOracle.java $
+ * $Id: BasicSqlServiceSqlOracle.java 96596 2011-08-08 11:48:42Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 Sakai Foundation

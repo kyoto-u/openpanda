@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/api/src/java/org/sakaiproject/poll/util/PollUtils.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/api/src/java/org/sakaiproject/poll/util/PollUtils.java $
  * $Id: PollUtils.java 60214 2009-04-17 13:50:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

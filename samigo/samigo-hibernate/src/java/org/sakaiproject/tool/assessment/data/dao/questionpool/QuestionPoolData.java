@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/questionpool/QuestionPoolData.java $
- * $Id: QuestionPoolData.java 92455 2011-04-29 21:39:10Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/questionpool/QuestionPoolData.java $
+ * $Id: QuestionPoolData.java 92424 2011-04-28 23:18:05Z ktsao@stanford.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -38,7 +38,7 @@ import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
  * DOCUMENTATION PENDING
  *
  * @author $author$
- * @version $Id: QuestionPoolData.java 92455 2011-04-29 21:39:10Z ktsao@stanford.edu $
+ * @version $Id: QuestionPoolData.java 92424 2011-04-28 23:18:05Z ktsao@stanford.edu $
  */
 public class QuestionPoolData
     implements Serializable, QuestionPoolDataIfc, Cloneable
@@ -461,7 +461,7 @@ public class QuestionPoolData
     newQ.setType(type);
     newQ.setIntellectualPropertyId(intellectualPropertyId);
     newQ.setOrganizationName(organizationName);
-
+    
     return newQ;
   }
   

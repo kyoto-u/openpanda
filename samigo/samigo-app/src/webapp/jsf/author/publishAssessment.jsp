@@ -7,8 +7,8 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
- * $Id: publishAssessment.jsp 118946 2013-01-29 01:25:31Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
+ * $Id: publishAssessment.jsp 115369 2012-10-31 16:11:04Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -46,8 +46,7 @@
 <div class="tier1">
 
   <!-- Error publishing assessment -->
-  <h:messages globalOnly="true" infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
-
+  <h:messages globalOnly="true"  styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
 <h:panelGrid border="0" width="100%">
   <h:outputText value=" " />
   <h:panelGroup rendered="#{author.isEditPendingAssessmentFlow}">
@@ -58,14 +57,14 @@
 
   <h:panelGroup rendered="#{!author.isEditPendingAssessmentFlow && !author.isRepublishAndRegrade}">
 	<h:panelGrid  columns="1">
-   	   <h:outputText value="#{assessmentSettingsMessages.republish_confirm_message_1} <b>#{assessmentSettingsMessages.republish_confirm_message_2}</b> #{assessmentSettingsMessages.republish_confirm_message_3}" escape="false"/>
-		<h:outputFormat value="#{assessmentSettingsMessages.cancel_message}">		
+   	   <h:outputText value="#{assessmentSettingsMessages.republish_confirm_message}" escape="false"/>
+		<h:outputFormat value="#{assessmentSettingsMessages.cancel_message}" escape="false">		
 		<f:param value="#{commonMessages.cancel_action}"/>
 		</h:outputFormat>	
 	</h:panelGrid>
   </h:panelGroup>
 
-  <h:outputText value="#{assessmentSettingsMessages.started_or_submitted}" rendered="#{!author.isEditPendingAssessmentFlow && author.isRepublishAndRegrade}" styleClass="validation"/> 
+  <h:outputText value="#{assessmentSettingsMessages.started_or_submitted}" rendered="#{!author.isEditPendingAssessmentFlow && author.isRepublishAndRegrade}" styleClass="messageSamigo2"/> 
 
 <h:panelGrid rendered="#{!author.isEditPendingAssessmentFlow && author.isRepublishAndRegrade}">
     <h:outputText value="#{assessmentSettingsMessages.score_discrepancies_note}" rendered="#{publishedSettings.itemNavigation ne '2' || !assessmentBean.hasSubmission}"/> 
@@ -77,9 +76,15 @@
 </h:panelGrid>
 </h:panelGrid>
 
-
- <f:verbatim><p class="act"></f:verbatim>
- <!-- Cancel button -->
+<f:verbatim>
+<style type="text/css">
+.topAlign{
+	vertical-align: TOP
+}
+</style>
+</f:verbatim>
+<h:panelGrid columns="5" styleClass="act" rowClasses="topAlign">
+  <!-- Cancel button -->
    <h:commandButton value="#{commonMessages.cancel_action}" type="submit" action="#{author.getFirstFromPage}" rendered="#{author.isEditPendingAssessmentFlow}"/>
    <h:commandButton value="#{commonMessages.cancel_action}" type="submit" action="editAssessment" rendered="#{!author.isEditPendingAssessmentFlow}">
 	  <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.EditAssessmentListener" />
@@ -107,12 +112,21 @@
 		<f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.RepublishAssessmentListener" />
 	</h:commandButton>
 
+<h:panelGrid columns="1" border="0">
 	<h:selectOneMenu id="number" value="1" onchange="document.forms[0].submit();">
           <f:selectItems value="#{publishRepublishNotification.notificationLevelChoices}" />
           <f:valueChangeListener type="org.sakaiproject.tool.assessment.ui.listener.author.PublishRepublishNotificationListener" />
     </h:selectOneMenu>
+	<h:panelGroup rendered="#{not empty assessmentSettings.dueDate && calendarServiceHelper.calendarExistsForSite}">
+		<h:selectBooleanCheckbox id="calendarDueDate" value="true"/>
+		<h:outputText value="#{assessmentSettingsMessages.calendarDueDate} #{calendarServiceHelper.calendarTitle}" escape="false"/>
+	</h:panelGroup>
+</h:panelGrid>
+	
 
-  <f:verbatim></p></f:verbatim>
+  </h:panelGrid>
+
+
 
 <h:panelGrid columns="1" border="0" width="78%" styleClass="settings">
 <h:panelGrid columns="1" border="0">
@@ -252,7 +266,7 @@
 
 <f:verbatim><p></p></f:verbatim>
 
-<script language="javascript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 var clicked = 'false';
 function toggle(){

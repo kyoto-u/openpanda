@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/branches/sakai-2.8.x/help-component-shared/src/java/org/sakaiproject/component/app/help/model/CategoryBean.java $
- * $Id: CategoryBean.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-2.9.0/help-component-shared/src/java/org/sakaiproject/component/app/help/model/CategoryBean.java $
+ * $Id: CategoryBean.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,18 +25,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.sakaiproject.api.app.help.Category;
+import org.sakaiproject.api.app.help.Resource;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 
 /**
  * category bean
- * @version $Id: CategoryBean.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
+ * @version $Id: CategoryBean.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
  */
-public class CategoryBean implements Category, Comparable
+public class CategoryBean implements Category, Comparable<CategoryBean>
 {
   private Long id;
   private String name;
-  private Set resources = new HashSet();
-  private Set categories = new HashSet();
+  private Set<Resource> resources = new HashSet<Resource>();
+  private Set<Category> categories = new HashSet<Category>();
   private Category parent;
 
   /**
@@ -60,7 +61,7 @@ public class CategoryBean implements Category, Comparable
   /**
    * @see org.sakaiproject.api.app.help.Category#getCategories()
    */
-  public Set getCategories()
+  public Set<Category> getCategories()
   {
     return categories;
   }
@@ -76,7 +77,7 @@ public class CategoryBean implements Category, Comparable
   /**
    * @see org.sakaiproject.api.app.help.Category#getResources()
    */
-  public Set getResources()
+  public Set<Resource> getResources()
   {
     return resources;
   }
@@ -84,7 +85,7 @@ public class CategoryBean implements Category, Comparable
   /**
    * @see org.sakaiproject.api.app.help.Category#setCategories(java.util.Set)
    */
-  public void setCategories(Set categories)
+  public void setCategories(Set<Category> categories)
   {
     this.categories = categories;
   }
@@ -100,7 +101,7 @@ public class CategoryBean implements Category, Comparable
   /**
    * @see org.sakaiproject.api.app.help.Category#setResources(java.util.Set)
    */
-  public void setResources(Set resources)
+  public void setResources(Set<Resource> resources)
   {
     this.resources = resources;
   }
@@ -135,9 +136,8 @@ public class CategoryBean implements Category, Comparable
     return name.hashCode();
   }
 
-  public int compareTo(Object o)
-  {
-    CategoryBean cb = (CategoryBean) o;
+  public int compareTo(CategoryBean cb)
+  {;
     
     if (!"".equals(ServerConfigurationService.getString("help.location"))){
       return id.compareTo(cb.id);	

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/entity/api/Reference.java $
- * $Id: Reference.java 80418 2010-07-31 11:17:35Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/entity/api/Reference.java $
+ * $Id: Reference.java 93399 2011-06-01 11:31:40Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -25,7 +25,7 @@ import java.util.Collection;
 
 /**
  * <p>
- * Reference holds an immutable reference to a Sakai entity.
+ * Reference holds an immutable(?) reference to a Sakai entity.
  * </p>
  */
 public interface Reference
@@ -34,29 +34,29 @@ public interface Reference
 	 * Add the AuthzGroup(s) for context as a site.
 	 * 
 	 * @param rv
-	 *        The list.
+	 *        The list of references.
 	 */
-	void addSiteContextAuthzGroup(Collection rv);
+	void addSiteContextAuthzGroup(Collection<String> rv);
 
 	/**
 	 * Add the AuthzGroup for this user id, or for the user's type template, or for the general template.
 	 * 
 	 * @param rv
-	 *        The list.
+	 *        The list of references.
 	 * @param id
 	 *        The user id.
 	 */
-	void addUserAuthzGroup(Collection rv, String id);
+	void addUserAuthzGroup(Collection<String> rv, String id);
 
 	/**
 	 * Add the AuthzGroup for this user id, or for the user's type template, or for the general template.
 	 * 
 	 * @param rv
-	 *        The list.
+	 *        The list of references.
 	 * @param id
 	 *        The user id.
 	 */
-	void addUserTemplateAuthzGroup(Collection rv, String id);
+	void addUserTemplateAuthzGroup(Collection<String> rv, String id);
 
 	/**
 	 * Access a single container id, the from most general (or only)

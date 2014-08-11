@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/cluster/api/ClusterService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/cluster/api/ClusterService.java $
  * $Id: ClusterService.java 66286 2009-09-04 13:47:34Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

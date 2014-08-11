@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiObjectImpl.java $
- * $Id: RWikiObjectImpl.java 84671 2010-11-12 18:27:24Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiObjectImpl.java $
+ * $Id: RWikiObjectImpl.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -35,7 +35,7 @@ import uk.ac.cam.caret.sakai.rwiki.service.api.model.RWikiPermissions;
  * </p>
  * 
  * @author University of Michigan, CHEF Software Development Team
- * @version $Revision: 84671 $
+ * @version $Revision: 84222 $
  */
 public abstract class RWikiObjectImpl implements RWikiObject
 {

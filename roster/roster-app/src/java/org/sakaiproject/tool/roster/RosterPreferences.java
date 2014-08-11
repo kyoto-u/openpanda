@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/branches/sakai-2.8.x/roster-app/src/java/org/sakaiproject/tool/roster/RosterPreferences.java $
- * $Id: RosterPreferences.java 66911 2009-09-29 01:38:59Z johnk@media.berkeley.edu $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.0/roster-app/src/java/org/sakaiproject/tool/roster/RosterPreferences.java $
+ * $Id: RosterPreferences.java 114413 2012-10-16 15:13:37Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -110,7 +110,7 @@ public class RosterPreferences {
 	
 	private String determineSortColumn() {
 		String sortColumn;
-		String defaultSortColumn = this.services.serverConfigurationService.getString("roster.defaultSortColumn");
+		String defaultSortColumn = this.services.serverConfigurationService.getString("roster.defaultSortColumn", Column.DISPLAY_NAME.toString());
 		if (valid(defaultSortColumn)) {
 			sortColumn = defaultSortColumn;
 		}

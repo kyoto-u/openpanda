@@ -1,5 +1,5 @@
 /*
- * $HeadURL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/utils/src/java/org/sakaiproject/entitybroker/util/http/EasySSLProtocolSocketFactory.java $
+ * $HeadURL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/utils/src/java/org/sakaiproject/entitybroker/util/http/EasySSLProtocolSocketFactory.java $
  * $Revision: 59674 $
  * $Date: 2009-04-04 08:05:58 +0900 (Sat, 04 Apr 2009) $
  **********************************************************************************

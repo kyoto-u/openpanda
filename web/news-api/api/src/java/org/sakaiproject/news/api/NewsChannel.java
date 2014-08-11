@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/branches/sakai-2.8.x/news-api/api/src/java/org/sakaiproject/news/api/NewsChannel.java $
- * $Id: NewsChannel.java 100620 2011-11-10 01:32:44Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.0/news-api/api/src/java/org/sakaiproject/news/api/NewsChannel.java $
+ * $Id: NewsChannel.java 97330 2011-08-23 21:49:34Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation

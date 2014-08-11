@@ -14,16 +14,18 @@
        		<sakai:script contextBase="/messageforums-tool" path="/js/sak-10625.js"/>
 		
     <sakai:tool_bar_message value="#{msgs.pvt_rename_folder_label}" />
-    <h:messages styleClass="alertMessage" id="errorMessages" /> 
+    <h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}" /> 
  
     <div class="instruction">
 	    <h:outputText value="#{msgs.cdfm_required}"/> <h:outputText value="#{msgs.pvt_star}" styleClass="reqStarInline"/>
 	</div>
 	
-		  <h:panelGrid styleClass="jsfFormTable" columns="2" summary="layout">
+		  <h:panelGrid styleClass="jsfFormTable" columns="2">
 			  <h:panelGroup styleClass="shorttext required">
+				  <h:outputLabel for="revised_title">
 				  <h:outputText value="#{msgs.pvt_star}" styleClass="reqStar"/>
-				  <h:outputLabel for="revised_title"><h:outputText value="#{msgs.pvt_folder_title} #{msgs.pvt_colon}"/></h:outputLabel>
+				  <h:outputText value="#{msgs.pvt_folder_title} #{msgs.pvt_colon}"/>
+				  </h:outputLabel>
 			  </h:panelGroup>
 			  <h:panelGroup styleClass="shorttext">	
 			  <h:inputText value="#{PrivateMessagesTool.selectedNewTopicTitle}" id="revised_title" />

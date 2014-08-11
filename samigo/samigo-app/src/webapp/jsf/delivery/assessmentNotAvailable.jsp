@@ -11,7 +11,7 @@
       <title><h:outputText value="#{deliveryMessages.invalid_assessment}"/></title>
       </head>
 <!--
-* $Id: assessmentNotAvailable.jsp 92043 2011-04-19 21:20:08Z ktsao@stanford.edu $
+* $Id: assessmentNotAvailable.jsp 104800 2012-02-17 01:07:35Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -37,8 +37,9 @@
 <div class="portletBody">
 <h3><h:outputText value="#{deliveryMessages.assessment_not_available}"/></h3>
 <h:form id="redirectLoginForm">
- <div class="validation">
-<h:outputText  value="#{deliveryMessages.assessment_not_available_message}" />
+ <div class="messageSamigo">
+<h:outputText  value="#{deliveryMessages.assessment_not_available_message}" rendered="#{delivery.actionString=='takeAssessment'}"/>
+<h:outputText  value="#{deliveryMessages.assessment_not_available_message_viaURL}" rendered="#{delivery.actionString=='takeAssessmentViaUrl'}"/>
  </div>
 
 <p class="act">

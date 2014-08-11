@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,6 +23,7 @@ import org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager;
 import org.sakaiproject.api.app.messageforums.ui.PrivateMessageManager;
 import org.sakaiproject.api.app.messageforums.ui.UIPermissionsManager;
 import org.sakaiproject.authz.cover.SecurityService;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.db.cover.SqlService;
 import org.sakaiproject.site.api.SiteService;
 
@@ -42,26 +44,40 @@ public class UpdateSynopticMessageCounts implements Job{
 	private static final boolean runOracleSQL = false;
 	//this SQL is more generic but also slower
 	private static final String FIND_ALL_SYNOPTIC_SITES_QUERY_GENERIC = "select SITE_ID, TITLE from SAKAI_SITE where IS_USER = 0 and PUBLISHED = 1 and IS_SPECIAL = 0";
+	private static final String FIND_ALL_SYNOPTIC_SITES_BY_SITE_QUERY_GENERIC = FIND_ALL_SYNOPTIC_SITES_QUERY_GENERIC + " and SITE_ID like ?";
 	//this SQL works for Oracle and runs faster than the Generic Query
-	private static final String FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE = "select q.SITE_ID, q.TITLE, sum(q.Decoded) as BINARY_FLAGS from (" +
+	private static final String FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE_PART1 = "select q.SITE_ID, q.TITLE, sum(q.Decoded) as BINARY_FLAGS from (" +
 																	"select ss.SITE_ID, ss.TITLE, " +
 																	"decode (sst.REGISTRATION,'sakai.messagecenter',100,'sakai.messages',10,'sakai.forums',1,0) as Decoded " +
 																	"from SAKAI_SITE ss, SAKAI_SITE_TOOL sst " +
 																	"where ss.IS_USER = 0 " +
 																	"and ss.PUBLISHED = 1 " +
 																	"and ss.IS_SPECIAL = 0 " +
-																	"and ss.SITE_ID = sst.SITE_ID " +
-																	"and sst.REGISTRATION in ('sakai.messagecenter','sakai.messages','sakai.forums')) q " +
+																	"and ss.SITE_ID = sst.SITE_ID ";
+	private static final String FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE_PART2 = "and sst.REGISTRATION in ('sakai.messagecenter','sakai.messages','sakai.forums')) q " +
 																	"Group By q.SITE_ID, q.TITLE";
+	private static final String FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE = FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE_PART1 + FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE_PART2;
+	private static final String FIND_ALL_SYNOPTIC_SITES_BY_SITE_QUERY_ORACLE = FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE_PART1 +
+																	"and ss.SITE_ID like ? " +
+																	FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE_PART2;
 	
 	private static final String UNREAD_MESSAGES_QUERY = "SELECT message.USER_ID, message.CONTEXT_ID, count(*) unread_messages " +
 															"FROM MFR_PVT_MSG_USR_T message " +										
 															"where READ_STATUS = 0 " +
 															"group by message.USER_ID, message.CONTEXT_ID";
+	private static final String UNREAD_MESSAGES_BY_SITE_QUERY = "SELECT message.USER_ID, message.CONTEXT_ID, count(*) unread_messages " +
+															"FROM MFR_PVT_MSG_USR_T message " +										
+															"where READ_STATUS = 0 " +
+															"and message.CONTEXT_ID like ?" +
+															"group by message.USER_ID, message.CONTEXT_ID";
 	
 	private static final String TOPICS_AND_FORUMS_QUERY = "select area.CONTEXT_ID, forum.ID as FORUM_ID, topic.ID as TOPIC_ID, forum.DRAFT as isForumDraft, topic.DRAFT as isTopicDraft, topic.MODERATED as isTopicModerated, forum.LOCKED as isForumLocked, topic.LOCKED as isTopicLocked, forum.CREATED_BY as forumCreatedBy, topic.CREATED_BY as topicCreatedBy " +
 															"from MFR_AREA_T area, MFR_OPEN_FORUM_T forum, MFR_TOPIC_T topic " +
 															"Where area.ID = forum.surrogateKey and forum.ID = topic.of_surrogateKey";
+	
+	private boolean updateNewMembersOnly = ServerConfigurationService.getBoolean("msgcntr.synoptic.updateMessageCounts.updateNewMembersOnly", false);
+	//by default, this job only updates/adds the counts when the counts for forums or messages isn't 0, this overrides that and forces updates for all items no matter what
+	private boolean addItemsWhenNoUnreadCounts = ServerConfigurationService.getBoolean("msgcntr.synoptic.updateMessageCounts.addItemsWhenNoUnreadCounts", false);
 	
 	public void init() {
 		
@@ -75,6 +91,10 @@ public class UpdateSynopticMessageCounts implements Job{
 		ResultSet unreadMessageCountRS = null;
 		ResultSet allTopicsAndForumsRS = null;
 		ResultSet synotpicSitesRS = null;
+		PreparedStatement unreadMessagesbySitePS = null;
+		PreparedStatement findSitesbySitePS = null;		
+		String siteFilter = ServerConfigurationService.getString("msgcntr.synoptic.updateMessageCountsSiteFilter");
+		boolean filterSites = siteFilter != null && !"".equals(siteFilter);
 		
 		
 		
@@ -88,7 +108,13 @@ public class UpdateSynopticMessageCounts implements Job{
 			statement = clConnection.createStatement();	
 			
 			//CREATE HASHMAP OF UNREAD MESSAGES COUNT
-			unreadMessageCountRS = statement.executeQuery(UNREAD_MESSAGES_QUERY);
+			if(filterSites){
+				unreadMessagesbySitePS = clConnection.prepareStatement(UNREAD_MESSAGES_BY_SITE_QUERY);
+				unreadMessagesbySitePS.setString(1, siteFilter);
+				unreadMessageCountRS = unreadMessagesbySitePS.executeQuery();
+			}else{
+				unreadMessageCountRS = statement.executeQuery(UNREAD_MESSAGES_QUERY);
+			}
 			HashMap<String, HashMap<String, Integer>> siteAndUserMessageCountHM = getSiteAndUserMessageCountHM(unreadMessageCountRS);
 			
 			
@@ -101,9 +127,21 @@ public class UpdateSynopticMessageCounts implements Job{
 			int BINARY_FLAGS;
 			
 			if(runOracleSQL){
-				synotpicSitesRS = statement.executeQuery(FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE);
+				if(filterSites){
+					findSitesbySitePS = clConnection.prepareStatement(FIND_ALL_SYNOPTIC_SITES_BY_SITE_QUERY_ORACLE);
+					findSitesbySitePS.setString(1, siteFilter);
+					synotpicSitesRS = findSitesbySitePS.executeQuery();
+				}else{
+					synotpicSitesRS = statement.executeQuery(FIND_ALL_SYNOPTIC_SITES_QUERY_ORACLE);
+				}
 			}else{
-				synotpicSitesRS = statement.executeQuery(FIND_ALL_SYNOPTIC_SITES_QUERY_GENERIC);
+				if(filterSites){
+					findSitesbySitePS = clConnection.prepareStatement(FIND_ALL_SYNOPTIC_SITES_BY_SITE_QUERY_GENERIC);
+					findSitesbySitePS.setString(1, siteFilter);
+					synotpicSitesRS = findSitesbySitePS.executeQuery();
+				}else{
+					synotpicSitesRS = statement.executeQuery(FIND_ALL_SYNOPTIC_SITES_QUERY_GENERIC);
+				}
 			}
 			
 			while (synotpicSitesRS.next()) {
@@ -171,6 +209,18 @@ public class UpdateSynopticMessageCounts implements Job{
 			} catch (Exception e) {
 				LOG.warn(e);
 			}	
+			try{
+				if(unreadMessagesbySitePS != null)
+					unreadMessagesbySitePS.close();				
+			}catch(Exception e){
+				LOG.warn(e);
+			}
+			try{
+				if(findSitesbySitePS != null)
+					findSitesbySitePS.close();				
+			}catch(Exception e){
+				LOG.warn(e);
+			}
 			SqlService.returnConnection(clConnection);
 		}
 		
@@ -238,9 +288,17 @@ public class UpdateSynopticMessageCounts implements Job{
 		ResultSet usersMap = null;
 
 		try{
-			getAllUsersInSiteQuery = clConnection.prepareStatement("select USER_ID from SAKAI_SITE_USER where SITE_ID = ?");
+			String allUsersQuery = "select USER_ID from SAKAI_SITE_USER where SITE_ID = ?";
+			if(updateNewMembersOnly){
+				allUsersQuery += " and USER_ID not in (select USER_ID from MFR_SYNOPTIC_ITEM where SITE_ID = ?)";
+			}
+			getAllUsersInSiteQuery = clConnection.prepareStatement(allUsersQuery);
+			
 			getAllUsersInSiteQuery.setString(1, siteId);
-
+			if(updateNewMembersOnly){
+				getAllUsersInSiteQuery.setString(2, siteId);
+			}
+			
 			usersMap = getAllUsersInSiteQuery.executeQuery();
 
 			//loop through all users in site and update their information:
@@ -268,18 +326,17 @@ public class UpdateSynopticMessageCounts implements Job{
 
 				//forums count:
 				HashMap<Long, DecoratedForumInfo> dfHM = null;
-				Set<Long> dfKeySet = null;
 				if (isMessageForumsPageInSite || isForumsPageInSite){			
 					dfHM = allTopicsAndForumsHM.get(siteId);
 					if(dfHM != null){
 						//site has forums added to the tool
-						dfKeySet = dfHM.keySet();
+						Set<Entry<Long, DecoratedForumInfo>> dfEntrySet = dfHM.entrySet();
 
+						for (Iterator<Entry<Long, DecoratedForumInfo>> iterator = dfEntrySet.iterator(); iterator.hasNext();) {
+							Entry<Long, DecoratedForumInfo> entry = iterator.next(); 
+							Long dfId = entry.getKey();
 
-						for (Iterator iterator = dfKeySet.iterator(); iterator.hasNext();) {
-							Long dfId = (Long) iterator.next();
-
-							DecoratedForumInfo dForum = dfHM.get(dfId);
+							DecoratedForumInfo dForum = entry.getValue();
 							boolean isInstructor = getForumManager().isInstructor(userId, "/site/" + siteId);
 
 							// Only count unread messages for forums the user can view:
@@ -331,7 +388,7 @@ public class UpdateSynopticMessageCounts implements Job{
 				}
 
 				//update synoptic tool info:
-				if(unreadPrivate != 0 || unreadForum != 0){
+				if(unreadPrivate != 0 || unreadForum != 0 || updateNewMembersOnly || addItemsWhenNoUnreadCounts){
 					SynopticMsgcntrManagerCover.createOrUpdateSynopticToolInfo(userId, siteId, siteTitle, unreadPrivate, unreadForum);
 				}
 			}

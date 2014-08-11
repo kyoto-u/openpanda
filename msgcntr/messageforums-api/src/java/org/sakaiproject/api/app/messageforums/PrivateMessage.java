@@ -54,6 +54,10 @@ public interface PrivateMessage extends Message {
     public String getRecipientsAsText() ;
     
     public void setRecipientsAsText(String recipientsAsText) ;
+    
+    public String getRecipientsAsTextBcc();
+    
+    public void setRecipientsAsTextBcc(String recipientsAsTextBcc) ;
         
         
 

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/memory/api/MultiRefCache.java $
- * $Id: MultiRefCache.java 66305 2009-09-06 10:14:27Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/memory/api/MultiRefCache.java $
+ * $Id: MultiRefCache.java 93282 2011-05-26 15:17:24Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 Sakai Foundation
@@ -26,6 +26,9 @@ import java.util.Collection;
 /**
  * <p>
  * MultiRefCache is a cache that holds objects and a set of references that the cached entry are dependent on - if any change, the entry is invalidated.
+ * The additional references can only be AuthzGroups.
+ * @see GenericMultiRefCache
+ * @deprecated Since Kernel 1.2
  * </p>
  */
 public interface MultiRefCache extends Cache
@@ -45,4 +48,5 @@ public interface MultiRefCache extends Cache
 	 *        AuthzGroup ids that, if the changed, will invalidate this entry.
 	 */
 	void put(Object key, Object payload, int duration, String ref, Collection<String> azgIds);
+
 }

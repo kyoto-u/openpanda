@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockSecurityService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/kernel-impl/src/test/java/org/sakai/memory/impl/test/MockSecurityService.java $
  * $Id: MockSecurityService.java 80446 2010-08-01 08:24:07Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

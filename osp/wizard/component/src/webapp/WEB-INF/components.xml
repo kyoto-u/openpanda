@@ -279,7 +279,7 @@
    </bean>
    
    <bean id="org.theospi.portfolio.wizard.mgt.impl.WizardManagerImpl.cache" 
-  			class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+  			class="org.sakaiproject.memory.util.EhCacheFactoryBean">
   	<property name="cacheManager"><ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/></property>
     <property name="cacheName"><value>org.theospi.portfolio.wizard.mgt.impl.WizardManagerImpl.cache</value></property>
     <property name="maxElementsInMemory" ><value>500</value></property>

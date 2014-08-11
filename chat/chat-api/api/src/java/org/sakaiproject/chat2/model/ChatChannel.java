@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/chat/branches/sakai-2.8.x/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatChannel.java $
- * $Id: ChatChannel.java 100610 2011-11-09 22:38:53Z steve.swinsburg@gmail.com $
+ * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.0/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatChannel.java $
+ * $Id: ChatChannel.java 100608 2011-11-09 22:16:05Z jbush@rsmart.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation

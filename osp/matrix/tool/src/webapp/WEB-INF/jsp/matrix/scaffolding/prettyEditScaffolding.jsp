@@ -141,7 +141,7 @@ function hrefViewCell(cellId) {
 
          <ul id="rows">
          	<c:forEach var="rowLabel" items="${matrixContents.rowLabels}" varStatus="rowLoopStatus" >
-            <li id="row_<c:out value="${rowLoopStatus.index}" />"class="matrix-row-heading" style="background-color:<c:out value="${rowLabel.color}"/>" bgcolor="<c:out value="${rowLabel.color}"/>" >
+            <li id="row_<c:out value="${rowLoopStatus.index}" />" class="matrix-row-heading" style="background-color:<c:out value="${rowLabel.color}"/>" bgcolor="<c:out value="${rowLabel.color}"/>" >
                   <osp-h:glossary link="true" hover="true">
                      <font color="<c:out value="${rowLabel.textColor}"/>">
                         <c:out value="${rowLabel.description}"/>

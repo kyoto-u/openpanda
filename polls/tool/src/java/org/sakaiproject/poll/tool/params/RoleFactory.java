@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/branches/polls-1.4.x/tool/src/java/org/sakaiproject/poll/tool/params/RoleFactory.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.0/tool/src/java/org/sakaiproject/poll/tool/params/RoleFactory.java $
  * $Id: RoleFactory.java 66331 2009-09-08 11:31:32Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/webapp/scripts/logger.js $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/webapp/scripts/logger.js $
  * $Id: logger.js 9644 2006-05-18 11:21:28Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/branches/sakai-2.8.x/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmissionEdit.java $
- * $Id: AssignmentSubmissionEdit.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.0/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmissionEdit.java $
+ * $Id: AssignmentSubmissionEdit.java 93990 2011-06-23 13:20:32Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -187,6 +187,14 @@ public interface AssignmentSubmissionEdit extends AssignmentSubmission, Edit
 	 * @param status
 	 */
 	public void setReviewStatus(String status);
+
+
+    /**
+     *
+     * @param error
+     */
+    public void setReviewError(String error);
+
 	/**
 	 * Set whether the grade has been released.
 	 * 

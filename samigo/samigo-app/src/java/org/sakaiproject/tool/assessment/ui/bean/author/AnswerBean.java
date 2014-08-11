@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/branches/samigo-2.8.x/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AnswerBean.java $
- * $Id: AnswerBean.java 92611 2011-05-04 22:37:29Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AnswerBean.java $
+ * $Id: AnswerBean.java 115378 2012-10-31 18:13:15Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.print.attribute.standard.Severity;
+import org.sakaiproject.tool.assessment.jsf.convert.AnswerSurveyConverter;
 
 public class AnswerBean implements Serializable{
 
@@ -57,36 +58,8 @@ public class AnswerBean implements Serializable{
   }
 
   public String getText() {
-	  if (text == null) {
-		  return text;
-	  }
-	  String status;
-	  if (text.equalsIgnoreCase("Agree"))
-		  status = "st_agree";
-	  else if (text.equalsIgnoreCase("Disagree"))
-		  status = "st_disagree";
-	  else if (text.equalsIgnoreCase("Undecided"))
-		  status = "st_undecided";
-	  else if (text.equalsIgnoreCase("Below Average"))
-		  status = "st_below_avg";
-	  else if (text.equalsIgnoreCase("Average"))
-		  status = "st_avg";
-	  else if (text.equalsIgnoreCase("Above Average"))
-		  status = "st_above_avg";
-	  else if (text.equalsIgnoreCase("Strongly Disagree"))
-		  status = "st_strong_disagree";
-	  else if (text.equalsIgnoreCase("Strongly agree"))
-		  status = "st_strong_agree";
-	  else if (text.equalsIgnoreCase("Unacceptable"))
-		  status = "st_unacceptable";
-	  else if (text.equalsIgnoreCase("Excellent"))
-		  status = "st_excellent";
-	  else status = text;
-	  String str = rb.getString(status);
-	  if (str.indexOf("missing key")!=-1)
-		  return text;
-	  else
-		  return str;
+	  AnswerSurveyConverter conv = new AnswerSurveyConverter();
+	  return conv.getAsString(null, null, text);
   }
 
   public void setText(String text) {

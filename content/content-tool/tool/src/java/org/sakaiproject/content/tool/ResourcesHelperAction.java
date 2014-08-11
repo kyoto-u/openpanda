@@ -220,6 +220,14 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		context.put("copyright_alert_url", COPYRIGHT_ALERT_URL);
 		context.put("DOT", ListItem.DOT);
 		context.put("calendarMap", new HashMap());
+
+                String ezproxy = ServerConfigurationService.getString("content.ezproxy.prefix", "");
+
+                if (ezproxy != null && ezproxy != "") {
+                    context.put("ezproxyPrefix", ezproxy);
+                } else {
+                    context.put("ezproxyPrefix", false);
+                }
 		
 		context.put("dateFormat", getDateFormatString());
 		
@@ -380,6 +388,14 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 			String dropboxNotificationsProperty = getDropboxNotificationsProperty();
 			context.put("dropboxNotificationAllowed", Boolean.valueOf(ResourcesAction.DROPBOX_NOTIFICATIONS_ALLOW.equals(dropboxNotificationsProperty)));
 		}
+
+                String ezproxy = ServerConfigurationService.getString("content.ezproxy.prefix", "");
+                
+                if (ezproxy != null && ezproxy != "") {
+                    context.put("ezproxyPrefix", ezproxy);
+                } else {
+                    context.put("ezproxyPrefix", false);
+                }
 		
 		ResourcesAction.copyrightChoicesIntoContext(state, context);
 		ResourcesAction.publicDisplayChoicesIntoContext(state, context);
@@ -923,7 +939,7 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 				return;
 			}
 			if (newFolder.numberFieldIsOutOfRange) {
-			    addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { newFolder.getConditionAssignmentPoints() }));
+				addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { newFolder.getConditionAssignmentPoints() }));
 				return;
 			}
 
@@ -975,6 +991,9 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 			pipe.setActionCanceled(false);
 			pipe.setErrorEncountered(true);
 			pipe.setActionCompleted(false);
+			logger.debug(this + ".doReplace() setting error on pipe");
+			String uploadMax = ServerConfigurationService.getString("content.upload.max");
+			addAlert(state, rb.getFormattedMessage("alert.over-per-upload-quota", new Object[]{uploadMax}));
 			return;
 		}
 		
@@ -1185,7 +1204,7 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 				return;
 			}
 			if (newFile.numberFieldIsOutOfRange) {
-			    addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { newFile.getConditionAssignmentPoints() }));
+				addAlert(state, rb.getFormattedMessage("conditions.condition.argument.outofrange", new String[] { newFile.getConditionAssignmentPoints() }));
 				return;
 			}
 			// notification

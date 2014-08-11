@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/branches/sakai-2.8.x/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/RequestScopeSuperBean.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/RequestScopeSuperBean.java $
  * $Id: RequestScopeSuperBean.java 58794 2009-03-19 16:16:56Z s.swinsburg@lancaster.ac.uk $
  ***********************************************************************************
  *

@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
     <packaging>pom</packaging>
     <name>Sakai Master</name>
-    <version>2.8-SNAPSHOT</version>
+    <version>2.9.0</version>
     
     <organization>
         <name>Sakai Project</name>
@@ -29,10 +33,6 @@
         </notifiers>
     </ciManagement>
     
-    <prerequisites>
-        <maven>2.2.1</maven>
-    </prerequisites>
- 
     <mailingLists>
         <mailingList>
             <name>Sakai User List</name>
@@ -59,26 +59,26 @@
     <licenses>
         <license>
             <name>Educational Community License, Version 2.0</name>
-            <url>http://www.osedu.org/licenses/ECL-2.0</url>
+            <url>http://www.opensource.org/licenses/ECL-2.0</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
     
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/master/trunk</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/master/trunk</developerConnection>
-        <url>https://source.sakaiproject.org/svn/master/trunk</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/master/tags/master-2.9.0</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/master/tags/master-2.9.0</developerConnection>
+        <url>https://source.sakaiproject.org/svn/master/tags/master-2.9.0</url>
     </scm>
     
     <properties>
-        <sakai.version>2.8-SNAPSHOT</sakai.version>
-        <sakai.kernel.version>1.2.9</sakai.kernel.version>
+        <sakai.version>2.9.0</sakai.version>
+        <sakai.kernel.version>1.3.0</sakai.kernel.version>
         <!-- Standard dependency versions -->
         <sakai.commons.lang.version>2.5</sakai.commons.lang.version>
         <sakai.commons.fileupload.version>1.2.1</sakai.commons.fileupload.version>
         <sakai.ehcache.groupId>net.sf.ehcache</sakai.ehcache.groupId>
         <sakai.ehcache.artifactId>ehcache-core</sakai.ehcache.artifactId>
-        <sakai.ehcache.version>1.7.2</sakai.ehcache.version>
+        <sakai.ehcache.version>2.5.1</sakai.ehcache.version>
         <sakai.hibernate.groupId>org.hibernate</sakai.hibernate.groupId>
         <sakai.hibernate.artifactId>hibernate</sakai.hibernate.artifactId>
         <sakai.hibernate.version>3.2.7.ga</sakai.hibernate.version>
@@ -88,51 +88,102 @@
         <sakai.servletapi.version>2.4</sakai.servletapi.version>
         <sakai.spring.groupId>org.springframework</sakai.spring.groupId>
         <sakai.spring.artifactId>spring</sakai.spring.artifactId>
-        <sakai.spring.version>2.5.6.SEC01</sakai.spring.version>
+        <sakai.spring.version>2.5.6.SEC03</sakai.spring.version>
         <sakai.spring.test.artifactId>spring-test</sakai.spring.test.artifactId>
-        <sakai.spring.test.version>2.5.6.SEC01</sakai.spring.test.version>
-        <sakai.tomcat.version>5.5.33</sakai.tomcat.version>
+        <sakai.spring.test.version>2.5.6.SEC03</sakai.spring.test.version>
+        <sakai.tomcat.version>7.0.21</sakai.tomcat.version>
         <sakai.xerces.impl.version>2.6.2</sakai.xerces.impl.version>
         <sakai.xerces.api.version>2.6.2</sakai.xerces.api.version>
+        <rsfutil.version>0.7.5</rsfutil.version> 
+        <sakairsf.components.version>0.7.5</sakairsf.components.version> 
+        <sakairsf.version>0.7.7</sakairsf.version>
         <!-- Sakai modules that are versioned separately -->
-		<sakai.basiclti.version>1.3.6</sakai.basiclti.version>
-		<sakai.common.version>1.1.8</sakai.common.version>
-		<sakai.contentreview.version>2.8.8</sakai.contentreview.version>
-		<sakai.edu-services.version>1.1.8</sakai.edu-services.version>
-		<sakai.ets.version>0.5.7</sakai.ets.version>
-		<sakai.entitybroker.version>1.4.6</sakai.entitybroker.version>
-		<sakai.hybrid.version>1.1.8</sakai.hybrid.version>
-		<sakai.jsf.version>2.8.5</sakai.jsf.version>
-		<sakai.msgcntr.version>2.8.4</sakai.msgcntr.version>
-		<sakai.polls.version>1.4.5</sakai.polls.version>
-		<sakai.profile.version>2.8.5</sakai.profile.version>
-		<sakai.profile2.version>1.4.12</sakai.profile2.version>
-		<sakai.resetpass.version>2.8.7</sakai.resetpass.version>
-		<sakai.sakai-mock.version>2.8.5</sakai.sakai-mock.version>
-		<sakai.samigo.version>2.8.6</sakai.samigo.version>
-		<sakai.scheduler.version>2.8.4</sakai.scheduler.version>
-		<sakai.search.version>1.3.7</sakai.search.version>
-		<sakai.shortenedurl.version>1.0.6</sakai.shortenedurl.version>
-		<sakai.sitestats.version>2.2.4</sakai.sitestats.version>
-		<sakai.webservices.version>1.0.5</sakai.webservices.version>
-		<!-- Set the source encoding to avoid maven warnings -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+        <sakai.announcement.version>2.9.0</sakai.announcement.version>
+        <sakai.assignment.version>2.9.0</sakai.assignment.version>
+        <sakai.basiclti.version>2.0.0</sakai.basiclti.version>
+        <sakai.calendar.version>2.9.0</sakai.calendar.version>
+        <sakai.common.version>1.2.0</sakai.common.version>
+        <sakai.contentreview.version>2.9.2</sakai.contentreview.version>
+        <sakai.courier.version>2.9.0</sakai.courier.version>
+        <sakai.edu-services.version>1.2.0</sakai.edu-services.version>
+        <sakai.ets.version>0.6.0</sakai.ets.version>
+        <sakai.entitybroker.version>1.5.0</sakai.entitybroker.version>
+        <sakai.hybrid.version>1.2.0</sakai.hybrid.version>
+        <sakai.jsf.version>2.9.0</sakai.jsf.version>
+        <sakai.lessonbuilder.version>1.4.0</sakai.lessonbuilder.version>
+        <sakai.mailarchive.version>2.9.0</sakai.mailarchive.version>
+        <sakai.mailsender.version>1.7.1</sakai.mailsender.version>
+        <sakai.message.version>2.9.0</sakai.message.version>
+        <sakai.msgcntr.version>3.0.0</sakai.msgcntr.version>
+        <sakai.portal.version>2.9.0</sakai.portal.version>
+        <sakai.polls.version>1.5.0</sakai.polls.version>
+        <sakai.presence.version>2.9.0</sakai.presence.version>
+        <sakai.profile.version>2.9.0</sakai.profile.version>
+        <sakai.profile2.version>1.5.0</sakai.profile2.version>
+        <sakai.resetpass.version>2.9.0</sakai.resetpass.version>
+        <sakai.sakai-mock.version>2.9.0</sakai.sakai-mock.version>
+        <sakai.samigo.version>2.9.0</sakai.samigo.version>
+        <sakai.scheduler.version>2.9.0</sakai.scheduler.version>
+        <sakai.search.version>1.4.0</sakai.search.version>
+        <sakai.site.version>2.9.0</sakai.site.version>
+        <sakai.shortenedurl.version>1.1.0</sakai.shortenedurl.version>
+        <sakai.sitestats.version>2.3.0</sakai.sitestats.version>
+        <sakai.taggable.version>2.9.0</sakai.taggable.version>
+        <sakai.velocity-tool.version>2.9.0</sakai.velocity-tool.version>
+        <sakai.warehouse.version>2.9.0</sakai.warehouse.version>
+	    <sakai.webservices.version>1.1.0</sakai.webservices.version>
+        <!-- Set the source encoding to avoid maven warnings -->
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+	<sakai.jdk.version>1.6</sakai.jdk.version> 
+        <sakai.build.directory>target</sakai.build.directory>
     </properties>
     
-    <distributionManagement>
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>sakai-maven2-scp</id>
-            <name>Sakai maven2 repository</name>
-            <url>scpexe://source.sakaiproject.org/var/www/html/maven2</url>
-            <layout>default</layout>
-        </repository>
-         <site>
-            <id>sakai-site</id>
-            <name>Sakai release Site</name>
-            <url>scpexe://source.sakaiproject.org/var/www/html/release/${project.version}</url>
-        </site>
-    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>sakai-release-local</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <uniqueVersion>false</uniqueVersion>
+                    <id>localRepo</id>
+                    <name>Local Test</name>
+                    <url>file:///tmp/maven2</url>
+                    <layout>default</layout>
+                </repository>
+                <site>
+                    <id>localSite</id>
+                    <name>Local Test</name>
+                    <url>file:///tmp/site</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>sakai-release</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <downloadUrl>http://source.sakaiproject.org/maven2/</downloadUrl>
+                <snapshotRepository>
+                    <uniqueVersion>false</uniqueVersion>
+                    <id>sakai-maven-snapshots-scp</id>
+                    <name>Sakai snapshot Repo</name>
+                    <url>scpexe://source.sakaiproject.org/var/www/html/maven2-snapshots
+                    </url>
+                    <layout>default</layout>
+                </snapshotRepository>
+                <repository>
+                    <uniqueVersion>false</uniqueVersion>
+                    <id>sakai-maven2-scp</id>
+                    <name>Sakai maven2 repository</name>
+                    <url>scpexe://source.sakaiproject.org/var/www/html/maven2</url>
+                    <layout>default</layout>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
     
     <pluginRepositories>
         <pluginRepository>
@@ -142,6 +193,16 @@
                 <enabled>true</enabled>
             </releases>
         </pluginRepository>
+        <pluginRepository>
+            <id>Sakai Plugin Repo Snapshots</id>
+            <url>http://source.sakaiproject.org/maven2-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+       </pluginRepository>
     </pluginRepositories>
     
     <repositories>
@@ -150,13 +211,8 @@
             <name>Sakai Maven Repo</name>
             <layout>default</layout>
             <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
             <snapshots>
                 <enabled>false</enabled>
-                <checksumPolicy>ignore</checksumPolicy>
             </snapshots>
         </repository>
         <repository>
@@ -164,13 +220,8 @@
             <name>Sakai Maven Repo</name>
             <layout>default</layout>
             <url>http://source.sakaiproject.org/maven2-snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
             <snapshots>
                 <enabled>true</enabled>
-                <checksumPolicy>ignore</checksumPolicy>
             </snapshots>
         </repository>
         <repository>
@@ -178,13 +229,8 @@
             <name>Maven Repository Switchboard</name>
             <layout>default</layout>
             <url>http://repo1.maven.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
             <snapshots>
                 <enabled>false</enabled>
-                <checksumPolicy>ignore</checksumPolicy>
             </snapshots>
         </repository>
         <!--
@@ -217,9 +263,14 @@
 			<type>pom</type>
 			<scope>import</scope>
 		</dependency>
-		 <dependency>
+            <dependency>
                 <groupId>org.sakaiproject.kernel</groupId>
                 <artifactId>sakai-kernel-util</artifactId>
+                <version>${sakai.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.kernel</groupId>
+                <artifactId>sakai-kernel-storage-util</artifactId>
                 <version>${sakai.kernel.version}</version>
             </dependency>
             <dependency>
@@ -266,6 +317,30 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>geronimo-spec</groupId>
+                <artifactId>geronimo-spec-jms</artifactId>
+                <version>1.1-rc4</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.jcr</groupId>
+                <artifactId>jcr</artifactId>
+                <version>${sakai.jcr.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.portlet</groupId>
+                <artifactId>portlet-api</artifactId>
+                <version>1.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>OKI</groupId>
+                <artifactId>OkiOSID</artifactId>
+                <version>2.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.pluto</groupId>
                 <artifactId>pluto-container</artifactId>
                 <version>${sakai.pluto.version}</version>
@@ -289,39 +364,14 @@
                 <version>${sakai.pluto.version}</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>javax.portlet</groupId>
-                <artifactId>portlet-api</artifactId>
-                <version>1.0</version>
-                <scope>provided</scope>
-            </dependency>
+            <!-- Job Scheduler deploys quartz to shared. -->
             <dependency>
                 <groupId>org.opensymphony.quartz</groupId>
                 <artifactId>quartz</artifactId>
                 <version>${sakai.quartz.version}</version>
                 <scope>provided</scope>
             </dependency>
-            <!-- Do not delete the seemingly redundant quartz-1.5.2 entry.
-              A number of contrib tools still reference the old quartz <groupId>. -->
-            <dependency>
-                <groupId>quartz</groupId>
-                <artifactId>quartz</artifactId>
-                <version>1.5.2</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>OKI</groupId>
-                <artifactId>OkiOSID</artifactId>
-                <version>2.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>javax.jcr</groupId>
-                <artifactId>jcr</artifactId>
-                <version>${sakai.jcr.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            
+ 
             <!-- Sakai apis -->
             <dependency>
                 <groupId>org.sakaiproject.common</groupId>
@@ -347,10 +397,15 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.courier</groupId>
                 <artifactId>sakai-courier-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.courier.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.courier</groupId>
+                <artifactId>sakai-courier-util</artifactId>
+                <version>${sakai.courier.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject</groupId>
@@ -365,27 +420,21 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.portal</groupId>
                 <artifactId>sakai-portal-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.portal.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.portal</groupId>
                 <artifactId>sakai-portal-render-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.portal.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.edu-services.sections</groupId>
                 <artifactId>sections-api</artifactId>
                 <version>${sakai.edu-services.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.sakaiproject</groupId>
-                <artifactId>sakai-velocity-tool-api</artifactId>
-                <version>${sakai.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -437,27 +486,27 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.announcement</groupId>
                 <artifactId>sakai-announcement-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.announcement.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.assignment</groupId>
                 <artifactId>sakai-assignment-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.assignment.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.taggable</groupId>
                 <artifactId>sakai-taggable-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.taggable.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.calendar</groupId>
                 <artifactId>sakai-calendar-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.calendar.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -551,16 +600,21 @@
             </dependency>
             <!--org.sakaiprojectsakai-jcr-api${sakai.version}provided-->
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.mailarchive</groupId>
                 <artifactId>sakai-mailarchive-api</artifactId>
                 <version>${sakai.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.message</groupId>
                 <artifactId>sakai-message-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.message.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.message</groupId>
+                <artifactId>sakai-message-impl</artifactId>
+                <version>${sakai.message.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.msgcntr</groupId>
@@ -569,10 +623,15 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.metaobj</groupId>
                 <artifactId>sakai-metaobj-api</artifactId>
                 <version>${sakai.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.mock</groupId>
+                <artifactId>sakai-mock</artifactId>
+                <version>${sakai.sakai-mock.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject</groupId>
@@ -599,9 +658,9 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.presence</groupId>
                 <artifactId>sakai-presence-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.presence.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -682,6 +741,11 @@
                 <version>${sakai.search.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.sakaiproject.site</groupId>
+                <artifactId>sakai-mergedlist-util</artifactId>
+                <version>${sakai.site.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.sakaiproject.sitestats</groupId>
                 <artifactId>sitestats-api</artifactId>
                 <version>${sakai.sitestats.version}</version>
@@ -700,9 +764,9 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject</groupId>
+                <groupId>org.sakaiproject.warehouse</groupId>
                 <artifactId>sakai-warehouse-api</artifactId>
-                <version>${sakai.version}</version>
+                <version>${sakai.warehouse.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -711,10 +775,47 @@
                 <version>${sakai.version}</version>
                 <scope>provided</scope>
             </dependency>
+
+            <!-- UI dependencies; our glue packages, not the raw libraries, -->
+            <!-- and only where we have duplication in dependencyManagement sections. -->
             <dependency>
-                <groupId>geronimo-spec</groupId>
-                <artifactId>geronimo-spec-jms</artifactId>
-                <version>1.1-rc4</version>
+                <groupId>org.sakaiproject.velocity</groupId>
+                <artifactId>sakai-velocity-tool</artifactId>
+                <version>${sakai.velocity-tool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.velocity</groupId>
+                <artifactId>sakai-velocity-tool-api</artifactId>
+                <version>${sakai.velocity-tool.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-tool</artifactId>
+                <version>${sakai.jsf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-app</artifactId>
+                <version>${sakai.jsf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>jsf-widgets-sun-depend</artifactId>
+                <version>${sakai.jsf.version}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.jsf</groupId>
+                <artifactId>myfaces-widgets-depend</artifactId>
+                <version>${sakai.jsf.version}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.osp</groupId>
+                <artifactId>osp-depend-jsf-widgets-sun</artifactId>
+                <version>${sakai.osp.version}</version>
+                <type>pom</type>
             </dependency>
         </dependencies>
    </dependencyManagement>
@@ -734,7 +835,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
+                <version>2.8</version>
                 <configuration>
                     <debug>true</debug>
                     <links>
@@ -753,6 +854,7 @@
                 <!-- junit test reports -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.11</version>
             </plugin>
             <plugin>
                 <!-- unit test coverage reporting -->
@@ -764,8 +866,9 @@
                 <!-- Code analysis report -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
+                <version>2.5</version>
                 <configuration>
-                    <targetjdk>1.5</targetjdk>
+                    <targetjdk>${sakai.jdk.version}</targetjdk>
                     <rulesets>
                         <ruleset>/rulesets/basic.xml</ruleset>
                         <ruleset>/rulesets/codesize.xml</ruleset>
@@ -787,6 +890,7 @@
                 <!-- Changelog report -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>changelog-maven-plugin</artifactId>
+                <version>2.0-beta-1</version>
                 <configuration>
                     <type>range</type>
                     <range>90</range>
@@ -797,6 +901,7 @@
                 <!-- TODO tags report -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>taglist-maven-plugin</artifactId>
+                <version>2.4</version>
                 <configuration>
                     <tags>
                         <tag>TODO</tag>
@@ -809,11 +914,13 @@
                 <!-- jdepend code analysis -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jdepend-maven-plugin</artifactId>
+                <version>2.0-beta-2</version>
             </plugin>
             <plugin>
                 <!-- jxr source code cross linking -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jxr-maven-plugin</artifactId>
+                <version>2.0-beta-1</version>
                 <configuration>
                     <linkJavadoc>true</linkJavadoc>
                     <javadocDir>apidocs</javadocDir>
@@ -828,15 +935,16 @@
                     <taglib.src.dir>src</taglib.src.dir>
                     <!-- <taglib.src.dir>src/webapp/WEB-INF</taglib.src.dir> -->
                 </configuration>
+                <version>2.4</version>
             </plugin>
         </plugins>
     </reporting>
-    
+
     <build>
-        <directory>target</directory>
-        <outputDirectory>target/classes</outputDirectory>
+        <directory>${sakai.build.directory}</directory>
+        <outputDirectory>${sakai.build.directory}/classes</outputDirectory>
         <finalName>${project.artifactId}-${project.version}</finalName>
-        <testOutputDirectory>target/test-classes</testOutputDirectory>
+        <testOutputDirectory>${sakai.build.directory}/test-classes</testOutputDirectory>
         <sourceDirectory>src/java</sourceDirectory>
         <scriptSourceDirectory>src/webapp</scriptSourceDirectory>
         <testSourceDirectory>src/test</testSourceDirectory>
@@ -856,19 +964,43 @@
         </resources>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>2.2.1</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>${sakai.jdk.version}</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <inherited>true</inherited>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>${sakai.jdk.version}</source>
+                    <target>${sakai.jdk.version}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <inherited>true</inherited>
                 <groupId>org.sakaiproject.maven.plugins</groupId>
                 <artifactId>sakai</artifactId>
-                <version>1.2.0</version>
+                <version>1.4.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <deployDirectory>${maven.tomcat.home}</deployDirectory>
@@ -899,12 +1031,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <!--
-                    A log4j passthrough bug exists in version 2.3 of the
-                    surefire plugin.
-                -->
                 <!-- (Plugin settings don't honor Maven version ranges : MNG-2742.) -->
-                <version>2.6</version>
+                <version>2.11</version>
                 <configuration>
                     <systemPropertyVariables>
                         <!-- Pass through important service-integration test properties. -->
@@ -913,15 +1041,20 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
         </plugins>
-        
-        <extensions>
-			<!-- Enabling the use of external ssh -->
-      		<extension>
-        		<groupId>org.apache.maven.wagon</groupId>
-         		<artifactId>wagon-ssh-external</artifactId>
-         		<version>2.2</version>
-      		</extension>
-		</extensions>
+        <extensions> 
+           <!-- Enable the use of external ssh for deploys --> 
+            <extension> 
+                <groupId>org.apache.maven.wagon</groupId> 
+                <artifactId>wagon-ssh-external</artifactId> 
+                <version>2.0</version> 
+            </extension> 
+        </extensions> 
     </build>
 </project>

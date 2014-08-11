@@ -1,6 +1,6 @@
 <%--
-    $URL: https://source.sakaiproject.org/svn/basiclti/branches/basiclti-1.3.x/basiclti-portlet/src/webapp/edit.jsp $
-    $Id: edit.jsp 96705 2011-08-09 17:55:35Z arwhyte@umich.edu $
+    $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.0/basiclti-portlet/src/webapp/edit.jsp $
+    $Id: edit.jsp 94143 2011-06-27 16:00:57Z csev@umich.edu $
     
     Copyright (c) 2009 The Sakai Foundation
 
@@ -79,19 +79,18 @@ Boolean allowContentLink = (Boolean) rReq.getAttribute("allowContentLink");
 
 %>
 <portlet:defineObjects/>
-<ul class="navIntraTool actionToolBar" role="menu">
-	<li class="firstToolBarItem" role="menuitem">
+<ul class="navIntraTool actionToolBar">
+	<li class="firstToolBarItem">
 		<span>
 			<a href="<%=viewURL.toString()%>"><%=rb.getString("edit.exit")%></a>
 		</span>
 	</li>	
-	<li role="menuitem">
+	<li>
 		<span>
 			<a href="<%=resetURL.toString()%>"><%=rb.getString("edit.clear.prefs")%></a>
 		</span>
 	</li>
 </ul>	
-<p/>
 <% if ( allow(sp,"launch") || allow(sp,"key") || allow(sp,"secret") || 
         allow(sp,"xml") ||
         allow(sp,"pagetitle") || allow(sp,"tooltitle") ||
@@ -105,7 +104,7 @@ Boolean allowContentLink = (Boolean) rReq.getAttribute("allowContentLink");
 <!-- If key and secret are final, then either xml or launch final means no launch change by the user -->
 <% if ( ( allow(sp,"launch") && allow(sp,"xml") ) || allow(sp,"key") || allow(sp,"secret") ) { %>
 
-<h3><%=rb.getString("required.information") %></h2>
+<h3><%=rb.getString("required.information") %></h3>
 <% if ( allow(sp,"launch") && allow(sp,"xml") ) { %>
 <script type="text/javascript">
 function switchui()
@@ -138,8 +137,8 @@ function switchui()
 </div>
 <% } %>
 <% if ( allow(sp,"launch") ) { %>
-<p id="url.input" class="shorttext" style="width:50%;clear:none;">
-<span class="reqStar">*</span><label for="imsti.launch"><%=rb.getString("tool.url") %></label>
+<p id="url.input" class="shorttext" style="clear:none;">
+<span class="reqStar">*</span><label for="imsti.launch"><%=rb.getString("tool.url") %></label><br/>
 <input type="text" size="80" name="imsti.launch" id="imsti.launch" value="<%=ov.getProperty("imsti.launch","")%>">
 <%=rb.getString("tool.url.detail") %>
 </p>
@@ -184,9 +183,17 @@ if ( document.getElementById("UISwitcher") ) switchui();
 
 <% } %>
 
-<% if ( allow(sp,"gradable") && assignments != null ) { %>
-
+<% if ( allow(sp,"gradable") ) { %>
 <h3><%=rb.getString("gradable.information") %></h3>
+<p  class="shorttext" style="clear:none;">
+<label for="imsti.newassignment"><%=rb.getString("gradable.newassignment") %></label>
+<input type="text" size="10" name="imsti.newassignment" id="imsti.newassignment" value="<%=ov.getProperty("imsti.newassignment","")%>"> 
+<span class="textPanelFooter"><%=rb.getString("gradable.newassignment.detail") %></span>
+</p>
+
+<% } %>
+
+<% if ( allow(sp,"gradable") && assignments != null ) { %>
 <p  class="shorttext" style="clear:none;">
 <%=rb.getString("gradable.title") %>
 <select name="imsti.assignment">
@@ -203,7 +210,6 @@ if ( document.getElementById("UISwitcher") ) switchui();
 </p>
 
 <% } %>
-
 
 <% if ( allow(sp,"frameheight") || allow(sp, "debug") || allow(sp, "newpage") || allow(sp, "maximize") ) { %>
 <h3><%=rb.getString("launch.information") %></h3>
@@ -264,6 +270,7 @@ if ( document.getElementById("UISwitcher") ) switchui();
    		/>
 		<% } %>
 		<label for="imsti.releasename"><%=rb.getString("privacy.releasename") %></label>
+	</p>
 <% } %>
 <% if ( allow(sp,"releaseemail") ) { %>
 	<p class="checkbox indnt1">
@@ -329,7 +336,6 @@ if ( document.getElementById("UISwitcher") ) switchui();
 </textarea>
 
 </p>
-</fieldset>
 <% } %>
 <p>
 <input type="submit" value="<%=rb.getString("update.options")%>">

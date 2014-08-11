@@ -26,7 +26,7 @@
 		</div>	
 		<sakai:tool_bar_message value="#{msgs.pvt_delcon}" />
 		
-		<h:messages styleClass="alertMessage" id="errorMessages" /> 
+		<h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}"/> 
 
     <sakai:panel_titled title="">
 	  <h:dataTable styleClass="listHier line nolines" id="pvtmsgdel" width="100%"  value="#{PrivateMessagesTool.selectedDeleteItems}" var="delItems" cellspacing="0" cellpadding="0">   
@@ -53,7 +53,7 @@
 		       <h:outputText value="#{msgs.pvt_date}"/>
 		    </f:facet>
 		     <h:outputText value="#{delItems.msg.created}">
-		         <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" />
+		         <f:convertDateTime pattern="#{msgs.date_format}" timeZone="#{PrivateMessagesTool.userTimeZone}" locale="#{PrivateMessagesTool.userLocale}"/>
 		     </h:outputText>
 		  </h:column>
 		</h:dataTable>

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/branches/edu-services-1.1.x/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/SectionManagerHibernateImpl.java $
- * $Id: SectionManagerHibernateImpl.java 94218 2011-06-29 12:32:28Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.0/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/SectionManagerHibernateImpl.java $
+ * $Id: SectionManagerHibernateImpl.java 93245 2011-05-25 11:31:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -35,6 +35,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Calendar;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -958,4 +959,22 @@ public class SectionManagerHibernateImpl extends HibernateDaoSupport implements
 		}
 		return hibernateEntities;
 	}
+
+	public Calendar getOpenDate(String courseUid) {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH,-1);
+		return c;
+	}
+
+	public void setOpenDate(final String courseUuid, final Calendar openDate) {
+		HibernateCallback hc = new HibernateCallback(){
+			public Object doInHibernate(Session session) throws HibernateException {
+				CourseImpl course = (CourseImpl)getCourseFromUuid(courseUuid, session);
+				//course.setOpenDate(openDate);
+				session.update(course);
+				return null;
+			}
+		};
+		getHibernateTemplate().execute(hc);
+	}	
 }

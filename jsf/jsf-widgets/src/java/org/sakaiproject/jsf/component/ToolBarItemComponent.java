@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/branches/jsf-2.8.x/jsf-widgets/src/java/org/sakaiproject/jsf/component/ToolBarItemComponent.java $
-* $Id: ToolBarItemComponent.java 68846 2009-11-13 12:27:32Z arwhyte@umich.edu $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.0/jsf-widgets/src/java/org/sakaiproject/jsf/component/ToolBarItemComponent.java $
+* $Id: ToolBarItemComponent.java 92520 2011-05-03 09:37:24Z david.horwitz@uct.ac.za $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -21,10 +21,10 @@
 
 package org.sakaiproject.jsf.component;
 
-import javax.faces.component.html.HtmlCommandLink;
+import javax.faces.component.html.HtmlCommandButton;
 
 
-public class ToolBarItemComponent extends HtmlCommandLink
+public class ToolBarItemComponent extends HtmlCommandButton
 {
   public ToolBarItemComponent()
   {

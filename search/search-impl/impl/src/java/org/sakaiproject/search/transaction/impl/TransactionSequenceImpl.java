@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/branches/search-1.3.x/search-impl/impl/src/java/org/sakaiproject/search/transaction/impl/TransactionSequenceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.0/search-impl/impl/src/java/org/sakaiproject/search/transaction/impl/TransactionSequenceImpl.java $
  * $Id: TransactionSequenceImpl.java 67320 2009-10-07 16:42:42Z arwhyte@umich.edu $
  ***********************************************************************************
  *

@@ -5,7 +5,7 @@
 	  <h:form id="gbForm">
 
 		<t:aliasBean alias="#{bean}" value="#{courseGradeDetailsBean}">
-			<%@include file="/inc/appMenu.jspf"%>
+			<%@ include file="/inc/appMenu.jspf"%>
 		</t:aliasBean>
 
 		<!-- Course Grade Summary -->
@@ -41,12 +41,12 @@
 		<h4><h:outputText value="#{msgs.assignment_details_grading_table}"/></h4>
 		<div class="indnt1">
 
-		<%@include file="/inc/globalMessages.jspf"%>
+		<%@ include file="/inc/globalMessages.jspf"%>
 		
 		<div class="instruction"><h:outputText value="#{msgs.course_grade_details_instruction}" escape="false"/></div>
 
 		<t:aliasBean alias="#{bean}" value="#{courseGradeDetailsBean}">
-			<%@include file="/inc/filterPaging.jspf"%>
+			<%@ include file="/inc/filterPaging.jspf"%>
 		</t:aliasBean>
 
 		<!-- Grading Table -->
@@ -140,7 +140,7 @@
 		</t:dataTable>
 
 		<t:aliasBean alias="#{bean}" value="#{courseGradeDetailsBean}">
-			<%@include file="/inc/gradingEventLogs.jspf"%>
+			<%@ include file="/inc/gradingEventLogs.jspf"%>
 		</t:aliasBean>
 
 		<p class="instruction">
@@ -149,7 +149,34 @@
 
 		</div> <!-- END OF INDNT1 -->
 
-		<p class="act">
+		<div class="act">
+			<h:commandButton
+				value="#{msgs.course_grade_details_export_course_grades_pdf}"
+				actionListener="#{courseGradeDetailsBean.exportPdf}"
+				rendered="#{!courseGradeDetailsBean.emptyEnrollments}"
+				/>
+
+			<h:commandButton
+				value="#{msgs.course_grade_details_export_course_grades}"
+				actionListener="#{courseGradeDetailsBean.exportCsv}"
+				rendered="#{!courseGradeDetailsBean.emptyEnrollments}"
+				style="margin-left: 5em;"
+				/>
+			<h:commandButton
+				value="#{msgs.course_grade_details_export_course_grades_excel}"
+				actionListener="#{courseGradeDetailsBean.exportExcel}"
+				rendered="#{!courseGradeDetailsBean.emptyEnrollments}"
+				style="margin-left: 5em;"
+				/>
+			<h:outputText rendered="#{!courseGradeDetailsBean.emptyEnrollments && courseGradeDetailsBean.enableCustomExport}" escape="false" value="<span class=\"highlightPanel\" style=\"padding:10px 5px 10px 10px\">"/>
+			    <h:outputText styleClass="instruction" style="padding-right:10px;" value="#{courseGradeDetailsBean.exportCustomLabel}" rendered="#{!courseGradeDetailsBean.emptyEnrollments && courseGradeDetailsBean.enableCustomExport}"/>
+                <h:commandButton
+    				value="#{msgs.course_grade_details_export_course_grades_institution_control}"
+    				actionListener="#{courseGradeDetailsBean.exportCustomCsv}"
+    				rendered="#{!courseGradeDetailsBean.emptyEnrollments && courseGradeDetailsBean.enableCustomExport}"
+    				/>
+			<h:outputText rendered="#{!courseGradeDetailsBean.emptyEnrollments && courseGradeDetailsBean.enableCustomExport}" escape="false" value="</span>" />
+			<br /><br /><hr class="itemSeparator"/><br />
 			<h:commandButton
 				id="saveButton"
 				styleClass="active"
@@ -172,18 +199,7 @@
 				rendered="#{courseGradeDetailsBean.userAbleToGradeAll}"
 				style="margin-left: 5em;"
 			/>
-			<h:commandButton
-				value="#{msgs.course_grade_details_export_course_grades}"
-				actionListener="#{courseGradeDetailsBean.exportCsv}"
-				rendered="#{!courseGradeDetailsBean.emptyEnrollments}"
-				style="margin-left: 5em;"
-				/>
-			<h:commandButton
-				value="#{msgs.course_grade_details_export_course_grades_excel}"
-				actionListener="#{courseGradeDetailsBean.exportExcel}"
-				rendered="#{!courseGradeDetailsBean.emptyEnrollments}"
-				/>
-		</p>
+		</div>
 
 	  </h:form>
 	</div>

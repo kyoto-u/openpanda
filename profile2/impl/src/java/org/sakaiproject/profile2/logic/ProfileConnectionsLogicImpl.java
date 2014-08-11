@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Setter;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.sakaiproject.memory.api.Cache;
@@ -14,6 +16,8 @@ import org.sakaiproject.profile2.dao.ProfileDao;
 import org.sakaiproject.profile2.hbm.model.ProfileFriend;
 import org.sakaiproject.profile2.model.BasicConnection;
 import org.sakaiproject.profile2.model.Person;
+import org.sakaiproject.profile2.types.EmailType;
+import org.sakaiproject.profile2.types.PrivacyType;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.user.api.User;
 
@@ -59,8 +63,7 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
  	 * {@inheritDoc}
  	 */	
 	public List<Person> getConnectionRequestsForUser(final String userId) {
-		List<User> users = new ArrayList<User>();
-		users = sakaiProxy.getUsers(dao.getRequestedConnectionUserIdsForUser(userId));
+		List<User> users = sakaiProxy.getUsers(dao.getRequestedConnectionUserIdsForUser(userId));
 		return profileLogic.getPersons(users);
 	}
 	
@@ -84,7 +87,7 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 		
 		//get friends of current user
 		//TODO change this to be a single lookup rather than iterating over a list
-		List<String> friendUuids = new ArrayList<String>(getConfirmedConnectionUserIdsForUser(userY));
+		List<String> friendUuids = getConfirmedConnectionUserIdsForUser(userY);
 		
 		//if list of confirmed friends contains this user, they are a friend
 		if(friendUuids.contains(userX)) {
@@ -127,9 +130,8 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 				
 				//if we need to check messaging privacy setting
 				if(forMessaging){
-					boolean friend = isUserXFriendOfUserY(p.getUuid(), currentUserUuid);
 					//if not allowed to be messaged by this user
-					if(!privacyLogic.isUserXAbleToBeMessagedByUserY(p.getUuid(), currentUserUuid, friend)){
+					if(!privacyLogic.isActionAllowed(p.getUuid(), currentUserUuid, PrivacyType.PRIVACY_OPTION_MESSAGES)){
 						continue;
 					}
 				} 
@@ -205,7 +207,8 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 			log.info("User: " + userId + " requested friend: " + friendId);  
 
 			//send email notification
-			sendConnectionEmailNotification(friendId, userId, ProfileConstants.EMAIL_NOTIFICATION_REQUEST);
+			sendConnectionEmailNotification(friendId, userId, EmailType.EMAIL_NOTIFICATION_REQUEST);
+			
 			return true;
 		}
 		return false;
@@ -258,7 +261,7 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 			
 			log.info("User: " + fromUser + " confirmed friend request from: " + toUser); 
 			//send email notification
-			sendConnectionEmailNotification(fromUser, toUser, ProfileConstants.EMAIL_NOTIFICATION_CONFIRM);
+			sendConnectionEmailNotification(fromUser, toUser, EmailType.EMAIL_NOTIFICATION_CONFIRM);
 			
 			//invalidate the confirmed connection caches for each user as they are now stale
 			evictFromCache(fromUser);
@@ -388,6 +391,10 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
  	 * {@inheritDoc}
  	 */
 	public int getOnlineStatus(String userUuid) {
+		
+		//TODO check prefs and privacy for the user. has the user allowed it?
+		
+		
 		//check if user has an active session
 		boolean active = sakaiProxy.isUserActive(userUuid);
 		if(!active) {
@@ -461,8 +468,7 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 		List<User> users = new ArrayList<User>();
 		
 		//check privacy
-		boolean friend = isUserXFriendOfUserY(userUuid, currentUserUuid);
-		if(!privacyLogic.isUserXFriendsListVisibleByUserY(userUuid, currentUserUuid, friend)) {
+		if(!privacyLogic.isActionAllowed(userUuid, currentUserUuid, PrivacyType.PRIVACY_OPTION_MYFRIENDS)) {
 			return users;
 		}
 		
@@ -470,18 +476,19 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 		return users;
 	}
 	
- 	/**
+
+	/**
 	 * Helper method to get the list of confirmed connections for a user as a List<String> of uuids.
-	 *
+	 * 
 	 * <p>First checks the cache and then goes to the dao if necessary.</p>
-	 *
+	 * 
 	 * @param userUuid
 	 * @return List<String> of uuids, empty if none.
 	 */
 	private List<String> getConfirmedConnectionUserIdsForUser(final String userUuid) {
 
 		List<String> userUuids = new ArrayList<String>();
-
+		
 		if(cache.containsKey(userUuid)){
 			log.debug("Fetching connections from cache for: " + userUuid);
 			userUuids = (List<String>)cache.get(userUuid);
@@ -493,7 +500,10 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 			}
 		}
 		return userUuids;
-	}	
+	}
+	
+	
+	
 	
 	/**
 	 * Sends an email notification to the users. Used for connections. This formats the data and calls {@link SakaiProxy.sendEmail(String userId, String emailTemplateKey, Map<String,String> replacementValues)}
@@ -501,14 +511,14 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 	 * @param fromUuid		uuid from
 	 * @param messageType	the message type to send from ProfileConstants. Retrieves the emailTemplateKey based on this value
 	 */
-	private void sendConnectionEmailNotification(String toUuid, final String fromUuid, final int messageType) {
+	private void sendConnectionEmailNotification(String toUuid, final String fromUuid, final EmailType messageType) {
 		//check if email preference enabled
-		if(!preferencesLogic.isEmailEnabledForThisMessageType(toUuid, messageType)) {
+		if(!preferencesLogic.isPreferenceEnabled(toUuid, messageType.toPreference())) {
 			return;
 		}
 		
 		//request
-		if(messageType == ProfileConstants.EMAIL_NOTIFICATION_REQUEST) {
+		if(messageType == EmailType.EMAIL_NOTIFICATION_REQUEST) {
 			
 			String emailTemplateKey = ProfileConstants.EMAIL_TEMPLATE_KEY_CONNECTION_REQUEST;
 			
@@ -525,7 +535,7 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 		}
 		
 		//confirm
-		if(messageType == ProfileConstants.EMAIL_NOTIFICATION_CONFIRM) {
+		if(messageType == EmailType.EMAIL_NOTIFICATION_CONFIRM) {
 			
 			String emailTemplateKey = ProfileConstants.EMAIL_TEMPLATE_KEY_CONNECTION_CONFIRM;
 			
@@ -544,52 +554,38 @@ public class ProfileConnectionsLogicImpl implements ProfileConnectionsLogic {
 	}
 	
 	/**
-	 * Helper to evict an item from a cache.
-	 * @param cacheKey      the id for the data in the cache
+	 * Helper to evict an item from a cache. 
+	 * @param cacheKey	the id for the data in the cache
 	 */
 	private void evictFromCache(String cacheKey) {
 		cache.remove(cacheKey);
 		log.info("Evicted data in cache for key: " + cacheKey);
 	}
+
 	
 	public void init() {
 		cache = cacheManager.createCache(CACHE_NAME);
 	}
 	
-	
+	@Setter
 	private SakaiProxy sakaiProxy;
-	public void setSakaiProxy(SakaiProxy sakaiProxy) {
-		this.sakaiProxy = sakaiProxy;
-	}
 	
+	@Setter
 	private ProfileDao dao;
-	public void setDao(ProfileDao dao) {
-		this.dao = dao;
-	}
 	
+	@Setter
 	private ProfileLogic profileLogic;
-	public void setProfileLogic(ProfileLogic profileLogic) {
-		this.profileLogic = profileLogic;
-	}
 	
+	@Setter
 	private ProfileLinkLogic linkLogic;
-	public void setLinkLogic(ProfileLinkLogic linkLogic) {
-		this.linkLogic = linkLogic;
-	}
 	
+	@Setter
 	private ProfilePrivacyLogic privacyLogic;
-	public void setPrivacyLogic(ProfilePrivacyLogic privacyLogic) {
-		this.privacyLogic = privacyLogic;
-	}
 	
+	@Setter
 	private ProfilePreferencesLogic preferencesLogic;
-	public void setPreferencesLogic(ProfilePreferencesLogic preferencesLogic) {
-		this.preferencesLogic = preferencesLogic;
-	}
 	
+	@Setter
 	private CacheManager cacheManager;
-	public void setCacheManager(CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
-	}
 
 }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/branches/kernel-1.2.x/api/src/main/java/org/sakaiproject/entity/api/EntityTransferrer.java $
- * $Id: EntityTransferrer.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.0/api/src/main/java/org/sakaiproject/entity/api/EntityTransferrer.java $
+ * $Id: EntityTransferrer.java 93399 2011-06-01 11:31:40Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008 Sakai Foundation
@@ -40,7 +40,7 @@ public interface EntityTransferrer
 	 * @param ids
 	 *        when null, all entities will be imported; otherwise, only entities with those ids will be imported
 	 */
-	void transferCopyEntities(String fromContext, String toContext, List ids);
+	void transferCopyEntities(String fromContext, String toContext, List<String> ids);
 
 	/**
 	 * Provide the string array of tool ids, for tools that we claim as manipulating our entities.
@@ -61,5 +61,5 @@ public interface EntityTransferrer
 	 * @param cleanup
 	 *        
 	 */
-	void transferCopyEntities(String fromContext, String toContext, List ids, boolean cleanup);
+	void transferCopyEntities(String fromContext, String toContext, List<String> ids, boolean cleanup);
 }

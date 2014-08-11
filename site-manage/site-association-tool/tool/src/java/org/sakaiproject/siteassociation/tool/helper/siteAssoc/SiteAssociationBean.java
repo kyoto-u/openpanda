@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/branches/sakai-2.8.x/site-association-tool/tool/src/java/org/sakaiproject/siteassociation/tool/helper/siteAssoc/SiteAssociationBean.java $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.0/site-association-tool/tool/src/java/org/sakaiproject/siteassociation/tool/helper/siteAssoc/SiteAssociationBean.java $
  * $Id: SiteAssociationBean.java 71049 2010-01-08 15:54:13Z savithap@umich.edu $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**
  * $Id: EntityBrokerCoreServiceManager.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/impl/src/java/org/sakaiproject/entitybroker/impl/EntityBrokerCoreServiceManager.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/impl/src/java/org/sakaiproject/entitybroker/impl/EntityBrokerCoreServiceManager.java $
  * EntityBrokerCoreServiceManager.java - entity-broker - Jan 14, 2009 5:59:42 PM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_view_submission_confirmation.vm 94199 2011-06-28 20:59:16Z holladay@longsight.com $ -->
+<!-- $Id: chef_assignments_student_view_submission_confirmation.vm 94881 2011-07-08 14:22:21Z ottenhoff@longsight.com $ -->
 <!-- start:  chef_assignments_student_view_submission_confirmation.vm  -->
 #parse("/vm/assignment/assignment_macros.vm")
 ## showing the submission confirmation page
@@ -144,6 +144,7 @@
 		<p class="act">
 			<input type="submit" accesskey="x" name="eventSubmit_doConfirm_assignment_submission" value="$tlang.getString('gen.backtolist')"  class="active" />
 		</p>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
 </div>
 <!-- end:  chef_assignments_student_view_submission_confirmation.vm  -->

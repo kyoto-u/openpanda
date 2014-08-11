@@ -7,7 +7,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: submitted.jsp 98595 2011-09-23 22:12:25Z ktsao@stanford.edu $
+* $Id: submitted.jsp 113416 2012-09-21 21:06:36Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -34,7 +34,7 @@
       <title><h:outputText value="#{deliveryMessages.submission}" /></title>
       </head>
 
-<script language="javascript" style="text/JavaScript">
+<script style="text/JavaScript">
 function reviewAssessment(field){
 var insertlinkid= field.id.replace("reviewAssessment", "hiddenlink");
 var newindex = 0;
@@ -48,9 +48,22 @@ for (i=0; i<document.links.length; i++) {
 
 document.links[newindex].onclick();
 }
+
+function closeWindow() {alert("1"); self.opener=this; self.close(); }
+
+function CloseWin()
+
+{
+window.opener = top ;
+
+window.close();
+}
 </script>
 
       <body onload="<%= request.getAttribute("html.body.onload") %>">
+      
+      <!-- IF A SECURE DELIVERY MODULE HAS BEEN SELECTED, INJECT ITS HTML FRAGMENT (IF ANY) HERE -->
+	  <h:outputText  value="#{delivery.secureDeliveryHTMLFragment}" escape="false" />
 
  <!--h:outputText value="<body #{delivery.settings.bgcolor} #{delivery.settings.background}>" escape="false" /-->
 <!--div class="portletBody"-->
@@ -62,18 +75,21 @@ document.links[newindex].onclick();
 <div class="tier1">
 <h4>
   <h:outputText value="#{delivery.assessmentTitle} " escape="false"/>
+  - 
   <h:outputText value="#{deliveryMessages.submission_info}" />
 </h4>
 
-<h:form id="submittedForm">
-<h:messages infoClass="validation" warnClass="validation" errorClass="validation" fatalClass="validation"/>
+<f:verbatim><br /></f:verbatim>
 
-	<h:outputText value="#{deliveryMessages.submission_confirmation_message_1}" rendered="#{!delivery.actionString=='takeAssessmentViaUrl' || !delivery.anonymousLogin}"/>
-    <h:outputText value="#{deliveryMessages.submission_confirmation_message_4}" rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.anonymousLogin}"/>
-    <h:outputText escape="false" value="<br /> #{delivery.submissionMessage}" />
+<h:form id="submittedForm">
+<h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+
+	<h:outputText value="#{deliveryMessages.submission_confirmation_message_1}" rendered="#{!delivery.actionString=='takeAssessmentViaUrl'}"/>
+    <h:outputText value="#{deliveryMessages.submission_confirmation_message_4}" rendered="#{delivery.actionString=='takeAssessmentViaUrl'}"/>
+    <h:outputText escape="false" value="<br /><br /> #{delivery.submissionMessage}" />
 
   <f:verbatim><p/></f:verbatim>
-  <h:panelGrid columns="2">
+  <h:panelGrid columns="2" width="900px" columnClasses="submissionInfoCol1, submissionInfoCol2">
 
     <h:outputLabel value="#{deliveryMessages.course_name}"/>
     <h:outputText value="#{delivery.courseName}" />
@@ -105,8 +121,11 @@ document.links[newindex].onclick();
        onclick="window.open('#{delivery.url}','new_window');" onkeypress="window.open('#{delivery.url}','new_window');">
         <h:outputText value="#{delivery.url}" escape="false"/>
     </h:outputLink>
+    
+    <h:outputLabel value="<b>#{deliveryMessages.anonymousScore}</b>" rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.anonymousLogin && (delivery.feedbackComponent.showImmediate || delivery.feedbackComponent.showOnSubmission || delivery.feedbackOnDate) && delivery.feedbackComponentOption=='1'}"/>
+    <h:outputText value="<b>#{delivery.roundedRawScoreViaURL}</b>" rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.anonymousLogin && (delivery.feedbackComponent.showImmediate || delivery.feedbackComponent.showOnSubmission || delivery.feedbackOnDate) && delivery.feedbackComponentOption=='1'}" escape="false"/>
+  </h:panelGrid>  
 
-  </h:panelGrid>
 </div>
 
 <br /><br />
@@ -115,21 +134,18 @@ document.links[newindex].onclick();
     <h:commandButton type="submit" value="#{deliveryMessages.button_continue}" action="select"
        rendered="#{delivery.actionString=='takeAssessment'}" />
 
-    <h:commandButton value="#{deliveryMessages.button_continue}" type="button" 
-       rendered="#{delivery.actionString=='takeAssessmentViaUrl' && !delivery.anonymousLogin}"
-       style="act" onclick="javascript:window.open('#{delivery.selectURL}','_top')" onkeypress="javascript:window.open('#{delivery.selectURL}','_top')" />
-
     <h:commandButton value="#{deliveryMessages.review_results}" type="button" id="reviewAssessment"
-       rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.anonymousLogin}" 
+       rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.anonymousLogin && (delivery.feedbackComponent.showImmediate || delivery.feedbackComponent.showOnSubmission || delivery.feedbackOnDate) && delivery.feedbackComponentOption=='2'}" 
        style="act" onclick="reviewAssessment(this);" onkeypress="reviewAssessment(this);" />
 
-    <h:commandLink id="hiddenlink" action="takeAssessment" rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.anonymousLogin}">
+    <h:commandLink id="hiddenlink" action="takeAssessment" rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.anonymousLogin && (delivery.feedbackComponent.showImmediate || delivery.feedbackComponent.showOnSubmission || delivery.feedbackOnDate) && delivery.feedbackComponentOption=='2'}">
       <f:param name="publishedId" value="#{delivery.assessmentId}" />
       <f:param name="nofeedback" value="false"/>
       <f:param name="actionString" value="reviewAssessment"/>
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.delivery.BeginDeliveryActionListener"/>
       <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.delivery.DeliveryActionListener"/>
     </h:commandLink>
+
   </h:panelGrid>
 </div>
 

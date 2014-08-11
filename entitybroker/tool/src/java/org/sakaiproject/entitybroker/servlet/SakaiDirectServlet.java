@@ -1,6 +1,6 @@
 /**
- * $Id: SakaiDirectServlet.java 66159 2009-08-29 13:35:19Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/branches/entitybroker-1.4.x/tool/src/java/org/sakaiproject/entitybroker/servlet/SakaiDirectServlet.java $
+ * $Id: SakaiDirectServlet.java 96848 2011-08-11 18:32:25Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.0/tool/src/java/org/sakaiproject/entitybroker/servlet/SakaiDirectServlet.java $
  * Example.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -55,6 +55,8 @@ import org.sakaiproject.util.Web;
 @SuppressWarnings("deprecation")
 public class SakaiDirectServlet extends DirectServlet {
 
+    private static final long serialVersionUID = 1L;
+
     private transient EntityBrokerRESTServiceManager entityRESTServiceManager;
     private transient BasicAuth basicAuth;
 
@@ -80,7 +82,7 @@ public class SakaiDirectServlet extends DirectServlet {
         EntityBrokerManager ebm = (EntityBrokerManager) ComponentManager.get(EntityBrokerManager.class.getName());
         // for legacy support
         HttpServletAccessProviderManager hsapm = (HttpServletAccessProviderManager) 
-            ComponentManager.get(HttpServletAccessProviderManager.class.getName());
+        ComponentManager.get(HttpServletAccessProviderManager.class.getName());
         entityRESTServiceManager = new EntityBrokerRESTServiceManager(ebm, hsapm);
         EntityRequestHandler erh = entityRESTServiceManager.getEntityRequestHandler();
         if (erh == null) {
