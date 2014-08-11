@@ -31,20 +31,7 @@
 		#if ($freq == "once")
 			<p class="instruction">
 				$tlang.getString("set.theonly")
-				#set($month = $savedData.getMonth())
-				#if ($month == 1)$tlang.getString("jan") #end
-				#if ($month == 2)$tlang.getString("feb") #end
-				#if ($month == 3)$tlang.getString("mar") #end
-				#if ($month == 4)$tlang.getString("apr") #end
-				#if ($month == 5)$tlang.getString("may") #end
-				#if ($month == 6)$tlang.getString("jun") #end
-				#if ($month == 7)$tlang.getString("jul") #end
-				#if ($month == 8)$tlang.getString("aug") #end
-				#if ($month == 9)$tlang.getString("sep") #end
-				#if ($month == 10)$tlang.getString("oct") #end
-				#if ($month == 11)$tlang.getString("nov") #end
-				#if ($month == 12)$tlang.getString("dec") #end
-				$savedData.Day, $savedData.Year
+				$freqOnceDate
 			</p>
 		#else ## for daily, weekly, and etc.
 			<p class="shorttext">
@@ -82,7 +69,7 @@
 				#end
 				<p class="checkbox">
 					<input type="radio" name="CountOrTill" value="Count" id="count" $isCountChecked><label for="count"> $tlang.getString("set.after")</label>
-					<select name="count">
+					<select name="count" id="selectCount">
 						#set ($count = $rule.Count)
 						#foreach($c in [1..100])
 							#if($count == $c)
@@ -91,7 +78,7 @@
 								<option >$c</option>
 							#end
 						#end
-					</select> $tlang.getString("set.times")
+					</select> <label for="selectCount" style="float:none">$tlang.getString("set.times")</label>
 				</p>
 				#set($month = $savedData.getMonth())
 				#set ($day = $savedData.Day)
@@ -119,7 +106,7 @@
 				</p>
 			#end ## end of if freq is only once
 			<p class="act">
-				<input type="submit" class="active" accesskey="s"  name="eventSubmit_doSavefrequency" value="$tlang.getString('gen.save') $tlang.getString('gen.freq')" />
+				<input type="submit" class="active" accesskey="s"  name="eventSubmit_doSavefrequency" value="$tlang.getString('gen.save')" />
 				<input type="submit" accesskey="x" name="eventSubmit_doCancel" value="$tlang.getString('gen.cancel')" />
 			</p>
 			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />

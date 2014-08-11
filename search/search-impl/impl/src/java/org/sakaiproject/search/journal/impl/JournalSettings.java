@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/JournalSettings.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/journal/impl/JournalSettings.java $
  * $Id: JournalSettings.java 67240 2009-10-06 12:36:45Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

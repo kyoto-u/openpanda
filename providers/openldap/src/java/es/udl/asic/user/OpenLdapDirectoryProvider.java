@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.1/openldap/src/java/es/udl/asic/user/OpenLdapDirectoryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/openldap/src/java/es/udl/asic/user/OpenLdapDirectoryProvider.java $
  * $Id: OpenLdapDirectoryProvider.java 81716 2010-08-24 14:05:41Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

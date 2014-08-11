@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_grading_submission.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_grading_submission.vm 122959 2013-04-18 13:23:01Z gsilver@umich.edu $ -->
 <!-- start: check_assignments_instructor_grading_submission.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_grading_submission.vm,v 1.10 2005/06/03 15:32:15 zqian.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
@@ -581,7 +581,7 @@ function handleEnterKeyPress(ev)
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="allowResubmitNumberSelect">
 								$tlang.getString("allow.resubmit.number")
 							</label>&nbsp;
-							<select name="$name_allowResubmitNumber" id="allowResubmitNumberSelect" onchange="if (document.getElementById('allowResubmitNumber').value!=0 && document.getElementById('closeTime') !=null){document.getElementById('closeTime').style.display = 'block';}else {document.getElementById('closeTime').style.display = 'none';}">
+							<select name="$name_allowResubmitNumber" id="allowResubmitNumberSelect">
 								#foreach ($i in [1..10])
 									<option value="$i" #if($i==$!value_allowResubmitNumber)selected="selected"#end>
 										$i
@@ -593,12 +593,13 @@ function handleEnterKeyPress(ev)
 						&nbsp;&nbsp;&nbsp;
 						<span id="allowResubmitTime" style="$!resubmitStyle">
 							## only show date selection when allowed to resubmit
-							<label for="$name_ResubmitMonth">
+							<label>
 								$tlang.getString("gen.acesubunt")
 							</label>&nbsp;
 							#chef_dateselectionwidget($name_ResubmitYear $name_ResubmitMonth $name_ResubmitDay $!value_year_from $!value_year_to $value_ResubmitYear $value_ResubmitMonth $value_ResubmitDay $dateFormat "")
 							$tlang.getString("gen.at") 
-							<select name="$name_ResubmitHour" id="$name_ResubmitHour">
+							<label class="skip" for="$name_ResubmitHour">$tlang.getString("dateselectionwidget.hour")</label>
+                            <select name="$name_ResubmitHour" id="$name_ResubmitHour">
 								#foreach ($i in [1..12])
 									#if ($i == $value_ResubmitHour)
 										<option value="$i" selected="selected">$i</option>
@@ -607,11 +608,13 @@ function handleEnterKeyPress(ev)
 									#end
 								#end
 							</select>
+                            <label class="skip" for="$name_ResubmitMin">$tlang.getString("dateselectionwidget.minute")</label>
 							<select name="$name_ResubmitMin" id="$name_ResubmitMin">
 								#foreach ($i in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
 									<option value="$i" #if($i == $value_ResubmitMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
 								#end
 							</select>
+                            <label class="skip" for="$name_ResubmitAMPM">$tlang.getString("dateselectionwidget.ampm")</label>
 							<select name="$name_ResubmitAMPM" id="$name_ResubmitAMPM">
 								#foreach ($i in ["AM", "PM"])
 									#if ($i == $value_ResubmitAMPM)

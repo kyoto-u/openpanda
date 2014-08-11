@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.1/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/impl/StructuredArtifactDefinitionManagerImpl.java $
- * $Id: StructuredArtifactDefinitionManagerImpl.java 98423 2011-09-20 15:52:28Z chmaurer@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.2/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/impl/StructuredArtifactDefinitionManagerImpl.java $
+ * $Id: StructuredArtifactDefinitionManagerImpl.java 121316 2013-03-16 17:47:26Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -1220,6 +1220,7 @@ public class StructuredArtifactDefinitionManagerImpl extends HibernateDaoSupport
 
    private StructuredArtifactDefinitionBean readSADfromXML(StructuredArtifactDefinitionBean bean, InputStream inStream) {
       SAXBuilder builder = new SAXBuilder();
+      builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // SAK-23245
 
       try {
          byte[] bytes = readStreamToBytes(inStream);

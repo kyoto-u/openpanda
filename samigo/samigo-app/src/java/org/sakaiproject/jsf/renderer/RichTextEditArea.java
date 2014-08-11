@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/java/org/sakaiproject/jsf/renderer/RichTextEditArea.java $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/jsf/renderer/RichTextEditArea.java $
 * $Id: RichTextEditArea.java 113415 2012-09-21 21:05:26Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

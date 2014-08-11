@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/db/impl/BasicSqlServiceSqlOracle.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/db/impl/BasicSqlServiceSqlOracle.java $
  * $Id: BasicSqlServiceSqlOracle.java 96596 2011-08-08 11:48:42Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

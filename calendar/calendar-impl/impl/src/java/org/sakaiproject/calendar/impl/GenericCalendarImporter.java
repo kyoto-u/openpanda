@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.1/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/GenericCalendarImporter.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/GenericCalendarImporter.java $
  * $Id: GenericCalendarImporter.java 87328 2011-01-15 12:45:53Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *

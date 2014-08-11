@@ -10,7 +10,7 @@
     <artifactId>master</artifactId>
     <packaging>pom</packaging>
     <name>Sakai Master</name>
-    <version>2.9.1</version>
+    <version>2.9.2</version>
     
     <organization>
         <name>Sakai Project</name>
@@ -65,14 +65,14 @@
     </licenses>
     
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/master/tags/master-2.9.1</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/master/tags/master-2.9.1</developerConnection>
-        <url>https://source.sakaiproject.org/svn/master/tags/master-2.9.1</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/master/tags/master-2.9.2</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/master/tags/master-2.9.2</developerConnection>
+        <url>https://source.sakaiproject.org/svn/master/tags/master-2.9.2</url>
     </scm>
     
     <properties>
-        <sakai.version>2.9.1</sakai.version>
-        <sakai.kernel.version>1.3.1</sakai.kernel.version>
+        <sakai.version>2.9.2</sakai.version>
+        <sakai.kernel.version>1.3.2</sakai.kernel.version>
         <!-- Standard dependency versions -->
         <sakai.commons.lang.version>2.5</sakai.commons.lang.version>
         <sakai.commons.fileupload.version>1.2.1</sakai.commons.fileupload.version>
@@ -91,47 +91,49 @@
         <sakai.spring.version>2.5.6.SEC03</sakai.spring.version>
         <sakai.spring.test.artifactId>spring-test</sakai.spring.test.artifactId>
         <sakai.spring.test.version>2.5.6.SEC03</sakai.spring.test.version>
-        <sakai.tomcat.version>7.0.21</sakai.tomcat.version>
+        <sakai.tomcat.version>7.0.39</sakai.tomcat.version>
         <sakai.xerces.impl.version>2.6.2</sakai.xerces.impl.version>
         <sakai.xerces.api.version>2.6.2</sakai.xerces.api.version>
         <rsfutil.version>0.7.5</rsfutil.version> 
         <sakairsf.components.version>0.7.5</sakairsf.components.version> 
         <sakairsf.version>0.7.7</sakairsf.version>
         <!-- Sakai modules that are versioned separately -->
-        <sakai.announcement.version>2.9.1</sakai.announcement.version>
-        <sakai.assignment.version>2.9.1</sakai.assignment.version>
-        <sakai.basiclti.version>2.0.1</sakai.basiclti.version>
-        <sakai.calendar.version>2.9.1</sakai.calendar.version>
-        <sakai.common.version>1.2.1</sakai.common.version>
-        <sakai.contentreview.version>2.9.3</sakai.contentreview.version>
-        <sakai.courier.version>2.9.1</sakai.courier.version>
-        <sakai.edu-services.version>1.2.1</sakai.edu-services.version>
-        <sakai.ets.version>0.6.1</sakai.ets.version>
-        <sakai.entitybroker.version>1.5.1</sakai.entitybroker.version>
-        <sakai.hybrid.version>1.2.1</sakai.hybrid.version>
-        <sakai.jsf.version>2.9.1</sakai.jsf.version>
-        <sakai.lessonbuilder.version>1.4.1</sakai.lessonbuilder.version>
-        <sakai.mailarchive.version>2.9.1</sakai.mailarchive.version>
-        <sakai.mailsender.version>1.7.2</sakai.mailsender.version>
-        <sakai.message.version>2.9.1</sakai.message.version>
-        <sakai.msgcntr.version>3.0.1</sakai.msgcntr.version>
-        <sakai.portal.version>2.9.1</sakai.portal.version>
-        <sakai.polls.version>1.5.1</sakai.polls.version>
-        <sakai.presence.version>2.9.1</sakai.presence.version>
-        <sakai.profile.version>2.9.1</sakai.profile.version>
-        <sakai.profile2.version>1.5.1</sakai.profile2.version>
-        <sakai.resetpass.version>2.9.1</sakai.resetpass.version>
-        <sakai.sakai-mock.version>2.9.1</sakai.sakai-mock.version>
-        <sakai.samigo.version>2.9.1</sakai.samigo.version>
-        <sakai.scheduler.version>2.9.1</sakai.scheduler.version>
-        <sakai.search.version>1.4.1</sakai.search.version>
-        <sakai.site.version>2.9.1</sakai.site.version>
-        <sakai.shortenedurl.version>1.1.1</sakai.shortenedurl.version>
-        <sakai.sitestats.version>2.3.3</sakai.sitestats.version>
-        <sakai.taggable.version>2.9.1</sakai.taggable.version>
-        <sakai.velocity-tool.version>2.9.1</sakai.velocity-tool.version>
-        <sakai.warehouse.version>2.9.1</sakai.warehouse.version>
-	    <sakai.webservices.version>1.1.1</sakai.webservices.version>
+        <sakai.announcement.version>2.9.2</sakai.announcement.version>
+        <sakai.assignment.version>2.9.2</sakai.assignment.version>
+        <sakai.basiclti.version>2.1.0</sakai.basiclti.version>
+        <sakai.calendar.version>2.9.2</sakai.calendar.version>
+        <sakai.common.version>1.2.2</sakai.common.version>
+        <sakai.contentreview.version>2.9.4</sakai.contentreview.version>
+        <sakai.courier.version>2.9.2</sakai.courier.version>
+        <sakai.edu-services.version>1.2.2</sakai.edu-services.version>
+        <sakai.ets.version>0.6.2</sakai.ets.version>
+        <sakai.entitybroker.version>1.5.2</sakai.entitybroker.version>
+        <sakai.hybrid.version>1.2.2</sakai.hybrid.version>
+        <sakai.jsf.version>2.9.2</sakai.jsf.version>
+        <sakai.lessonbuilder.version>1.4.2</sakai.lessonbuilder.version>
+        <sakai.mailarchive.version>2.9.2</sakai.mailarchive.version>
+        <sakai.mailsender.version>1.7.3</sakai.mailsender.version>
+        <sakai.message.version>2.9.2</sakai.message.version>
+        <sakai.msgcntr.version>3.0.2</sakai.msgcntr.version>
+        <sakai.portal.version>2.9.2</sakai.portal.version>
+        <sakai.polls.version>1.5.2</sakai.polls.version>
+        <sakai.presence.version>2.9.2</sakai.presence.version>
+        <sakai.profile.version>2.9.2</sakai.profile.version>
+        <sakai.profile2.version>1.5.2</sakai.profile2.version>
+        <sakai.resetpass.version>2.9.2</sakai.resetpass.version>
+        <sakai.sakai-mock.version>2.9.2</sakai.sakai-mock.version>
+        <sakai.samigo.version>2.9.2</sakai.samigo.version>
+        <sakai.scheduler.version>2.9.2</sakai.scheduler.version>
+        <sakai.search.version>1.4.2</sakai.search.version>
+        <sakai.site.version>2.9.2</sakai.site.version>
+        <sakai.shortenedurl.version>1.1.2</sakai.shortenedurl.version>
+        <sakai.sitestats.version>2.3.5</sakai.sitestats.version>
+        <sakai.taggable.version>2.9.2</sakai.taggable.version>
+        <sakai.velocity-tool.version>2.9.2</sakai.velocity-tool.version>
+        <!--
+        <sakai.warehouse.version>2.9.2-SNAPSHOT</sakai.warehouse.version>
+        -->
+	    <sakai.webservices.version>1.1.2</sakai.webservices.version>
         <!-- Set the source encoding to avoid maven warnings -->
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
 	<sakai.jdk.version>1.6</sakai.jdk.version> 
@@ -706,7 +708,7 @@
             <dependency>
                 <groupId>org.sakaiproject.warehouse</groupId>
                 <artifactId>sakai-warehouse-api</artifactId>
-                <version>${sakai.warehouse.version}</version>
+                <version>${sakai.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>

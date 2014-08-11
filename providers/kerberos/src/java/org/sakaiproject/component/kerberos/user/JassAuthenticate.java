@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.1/kerberos/src/java/org/sakaiproject/component/kerberos/user/JassAuthenticate.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/kerberos/src/java/org/sakaiproject/component/kerberos/user/JassAuthenticate.java $
  * $Id: JassAuthenticate.java 68832 2009-11-12 18:33:29Z slt@columbia.edu $
  ***********************************************************************************
  *

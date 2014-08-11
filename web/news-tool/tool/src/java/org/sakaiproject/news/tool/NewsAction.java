@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.1/news-tool/tool/src/java/org/sakaiproject/news/tool/NewsAction.java $
- * $Id: NewsAction.java 103566 2012-01-25 18:51:20Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.2/news-tool/tool/src/java/org/sakaiproject/news/tool/NewsAction.java $
+ * $Id: NewsAction.java 121667 2013-03-22 20:38:10Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -113,8 +113,6 @@ public class NewsAction extends VelocityPortletPaneledAction
 		// detect that we have not done this, yet
 		if (state.getAttribute(STATE_CHANNEL_TITLE) == null)
 		{
-			state.setAttribute(STATE_CHANNEL_TITLE, config.getTitle());
-
 			String channelUrl = StringUtils.trimToNull(config.getInitParameter(PARAM_CHANNEL_URL));
 			if (channelUrl == null)
 			{
@@ -124,11 +122,10 @@ public class NewsAction extends VelocityPortletPaneledAction
 
 		}
 		
-		if (state.getAttribute(STATE_PAGE_TITLE) == null)
-		{
-			SitePage p = SiteService.findPage(getCurrentSitePageId());
-			state.setAttribute(STATE_PAGE_TITLE, p.getTitle());
-		}
+		// always set the titles because they might have been changed in Page Order Helper.
+		state.setAttribute(STATE_CHANNEL_TITLE, config.getTitle());
+		SitePage p = SiteService.findPage(getCurrentSitePageId());
+		state.setAttribute(STATE_PAGE_TITLE, p.getTitle());
 
 		if (state.getAttribute(GRAPHIC_VERSION_TEXT) == null)
 		{

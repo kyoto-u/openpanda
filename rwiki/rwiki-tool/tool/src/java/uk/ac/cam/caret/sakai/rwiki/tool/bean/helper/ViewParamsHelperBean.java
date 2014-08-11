@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.1/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/helper/ViewParamsHelperBean.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/helper/ViewParamsHelperBean.java $
  * $Id: ViewParamsHelperBean.java 84225 2010-11-03 13:48:44Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

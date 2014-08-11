@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/gradebook/tags/sakai-2.9.1/sample-grade-finalizer/src/main/java/org/sakaiproject/gradebooksample/GradesFinalizer.java $
+ * $URL: https://source.sakaiproject.org/svn/gradebook/tags/sakai-2.9.2/sample-grade-finalizer/src/main/java/org/sakaiproject/gradebooksample/GradesFinalizer.java $
  * $Id: GradesFinalizer.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

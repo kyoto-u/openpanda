@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/ContentHostingContentProducer.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/ContentHostingContentProducer.java $
  * $Id: ContentHostingContentProducer.java 68448 2009-11-02 12:50:44Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

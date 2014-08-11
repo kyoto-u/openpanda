@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.1/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/PodcastServiceImpl.java $
- * $Id: PodcastServiceImpl.java 113308 2012-09-21 16:32:56Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.2/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/PodcastServiceImpl.java $
+ * $Id: PodcastServiceImpl.java 121811 2013-03-26 23:52:47Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -1599,6 +1599,26 @@ public class PodcastServiceImpl implements PodcastService {
 				return SecurityAdvice.ALLOWED;
 			}
 		});
+	}
+	
+	
+	public boolean allowOptions(int option) {
+		if (option == SITE) {
+			try{
+				String folderId = retrievePodcastFolderId(getSiteId());
+				ContentCollection parentCollection = contentHostingService.getCollection(folderId).getContainingCollection();
+				return !contentHostingService.isPubView(parentCollection.getId());
+			}catch(IdUnusedException e){
+				LOG.error("Shouldn't happen as folder should have already been created.", e);
+			}catch(PermissionException e){
+				LOG.error("Shouldn't happen as folder should have already been created correctly.", e);
+			}catch(TypeException e){
+				LOG.error("Shouldn't happen as folder should have already been created correctly.", e);
+			}
+		} else if (option == PUBLIC) {
+			// No special rules at the moment.
+		}
+		return true;
 	}
 
 }

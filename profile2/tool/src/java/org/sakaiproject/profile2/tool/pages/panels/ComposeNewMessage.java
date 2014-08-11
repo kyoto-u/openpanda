@@ -182,6 +182,17 @@ public class ComposeNewMessage extends Panel {
 					//target.appendJavascript("$('#" + form.getMarkupId() + "').slideUp();");
 					target.appendJavascript("setMainFrameHeight(window.name);");
 					
+					//PRFL-797 all fields when successful, to prevent multiple messages.
+					//User can just click Compose message again to get a new form
+					this.setEnabled(false);
+					autocompleteField.setEnabled(false);
+					subjectField.setEnabled(false);
+					messageField.setEnabled(false);
+					target.addComponent(this);
+					target.addComponent(autocompleteField);
+					target.addComponent(subjectField);
+					target.addComponent(messageField);
+					
 				} else {
 					//error
 					formFeedback.setDefaultModel(new ResourceModel("error.message.send.failed"));

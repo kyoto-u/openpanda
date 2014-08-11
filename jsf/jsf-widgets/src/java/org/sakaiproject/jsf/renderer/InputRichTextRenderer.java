@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.1/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputRichTextRenderer.java $
-* $Id: InputRichTextRenderer.java 109455 2012-06-21 16:24:18Z matthew@longsight.com $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.2/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputRichTextRenderer.java $
+* $Id: InputRichTextRenderer.java 121334 2013-03-16 18:34:34Z ottenhoff@longsight.com $
 ***********************************************************************************
 *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -70,7 +70,7 @@ import java.util.*;
  * <p>Copyright: Copyright (c) 2004 Sakai</p>
  * @author cwen@iu.edu
  * @author Ed Smiley esmiley@stanford.edu (modifications)
- * @version $Id: InputRichTextRenderer.java 109455 2012-06-21 16:24:18Z matthew@longsight.com $
+ * @version $Id: InputRichTextRenderer.java 121334 2013-03-16 18:34:34Z ottenhoff@longsight.com $
  */
 public class InputRichTextRenderer extends Renderer
 {
@@ -104,13 +104,13 @@ public class InputRichTextRenderer extends Renderer
     TOOLBAR_SCRIPT_SMALL = makeToolbarScript(cr.get("inputRichText_small"));
     TOOLBAR_SCRIPT_MEDIUM = makeToolbarScript(cr.get("inputRichText_medium"));
     TOOLBAR_SCRIPT_LARGE = makeToolbarScript(cr.get("inputRichText_large"));
-    DEFAULT_WIDTH_PX = Integer.parseInt(cr.get("inputRichTextDefaultWidthPx"));
+    DEFAULT_WIDTH_PX = Integer.parseInt(cr.get("inputRichTextDefaultWidthPx").trim());
     /*SAK-20809 if an erant white space is left after the value this could throw a
      * number format exception so we trim it
     */
     DEFAULT_HEIGHT_PX = Integer.parseInt(cr.get("inputRichTextDefaultHeightPx").trim());
-    DEFAULT_COLUMNS = Integer.parseInt(cr.get("inputRichTextDefaultTextareaColumns"));
-    DEFAULT_ROWS = Integer.parseInt(cr.get("inputRichTextDefaultTextareaRows"));
+    DEFAULT_COLUMNS = Integer.parseInt(cr.get("inputRichTextDefaultTextareaColumns").trim());
+    DEFAULT_ROWS = Integer.parseInt(cr.get("inputRichTextDefaultTextareaRows").trim());
     INSERT_IMAGE_LOC = "/" + RESOURCE_PATH + "/" + cr.get("inputRichTextFileInsertImage");
   }
 
@@ -139,6 +139,13 @@ public class InputRichTextRenderer extends Renderer
         value = (String) ((UIInput) component).getSubmittedValue();
     if (value == null && component instanceof ValueHolder)
         value = (String) ((ValueHolder) component).getValue();
+    // SAK-23313
+    // The rich-text editor will interpret a string like &lt;tag&gt; as a real tag
+    // So we double-escape the ampersand to create &amp;lt; so CKEditor displays this as text
+    if (value!=null) {
+    	java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("&([^\\s])");
+    	value = pattern.matcher(value).replaceAll("&amp;$1");
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // attributes

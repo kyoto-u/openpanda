@@ -1,6 +1,6 @@
 /**
  * $Id: EntityBrokerManager.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/api/src/java/org/sakaiproject/entitybroker/EntityBrokerManager.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/EntityBrokerManager.java $
  * EntityBrokerManager.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation

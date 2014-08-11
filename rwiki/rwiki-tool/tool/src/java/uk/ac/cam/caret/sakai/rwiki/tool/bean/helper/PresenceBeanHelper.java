@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.1/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/helper/PresenceBeanHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/helper/PresenceBeanHelper.java $
  * $Id: PresenceBeanHelper.java 9108 2006-05-08 14:30:57Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

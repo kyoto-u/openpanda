@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/type-api/src/java/org/sakaiproject/api/common/type/Typeable.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/type-api/src/java/org/sakaiproject/api/common/type/Typeable.java $
  * $Id: Typeable.java 59094 2009-03-25 13:32:59Z s.swinsburg@lancaster.ac.uk $
  ***********************************************************************************
  *

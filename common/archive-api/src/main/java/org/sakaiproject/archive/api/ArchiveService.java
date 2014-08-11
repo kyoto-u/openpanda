@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/archive-api/src/main/java/org/sakaiproject/archive/api/ArchiveService.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/archive-api/src/main/java/org/sakaiproject/archive/api/ArchiveService.java $
  * $Id: ArchiveService.java 82043 2010-09-01 16:44:13Z duffy@rsmart.com $
  ***********************************************************************************
  *

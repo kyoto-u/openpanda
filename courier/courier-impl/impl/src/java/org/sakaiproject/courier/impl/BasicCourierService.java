@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.1/courier-impl/impl/src/java/org/sakaiproject/courier/impl/BasicCourierService.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/courier-base-2.9.2/courier-impl/impl/src/java/org/sakaiproject/courier/impl/BasicCourierService.java $
  * $Id: BasicCourierService.java 109790 2012-06-28 13:36:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/content/api/ContentEntity.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/content/api/ContentEntity.java $
  * $Id: ContentEntity.java 97037 2011-08-16 14:07:06Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

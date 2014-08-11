@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/webservices/tags/webservices-1.1.1/util/src/java/org/sakaiproject/axis/util/XMLMap.java $
+ * $URL: https://source.sakaiproject.org/svn/webservices/tags/webservices-1.1.2/util/src/java/org/sakaiproject/axis/util/XMLMap.java $
  * $Id: XMLMap.java 118448 2013-01-17 20:59:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.1/jldap/src/java/edu/amc/sakai/user/EntryContainerRdnToUserTypeMapper.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/jldap/src/java/edu/amc/sakai/user/EntryContainerRdnToUserTypeMapper.java $
  * $Id: EntryContainerRdnToUserTypeMapper.java 86246 2010-12-09 19:57:07Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

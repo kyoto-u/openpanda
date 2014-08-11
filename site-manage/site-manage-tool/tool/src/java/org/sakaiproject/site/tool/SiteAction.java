@@ -1,7 +1,7 @@
 /**********************************************************************************
 
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.1/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
- * $Id: SiteAction.java 118854 2013-01-25 16:43:41Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-2.9.2/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
+ * $Id: SiteAction.java 123003 2013-04-18 18:23:33Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -683,9 +683,6 @@ public class SiteAction extends PagedResourceActionII {
 	private final static String SORT_ORDER_SECTION = "worksitesetup.sort.order.section";
 
 	private List prefLocales = new ArrayList();
-	private String SAKAI_LOCALES = "locales";
-	private String SAKAI_LOCALES_MORE = "locales.more";
-	private LocaleComparator localeComparator = new LocaleComparator();	
 	
 	/**
 	 * what are the tool ids within Home page?
@@ -3667,7 +3664,6 @@ public class SiteAction extends PagedResourceActionII {
 		}
 		// remove attributes
 		state.removeAttribute(ALL_ZIP_IMPORT_SITES);
-		state.removeAttribute(FINAL_ZIP_IMPORT_SITES);
 		state.removeAttribute(DIRECT_ZIP_IMPORT_SITES);
 		state.removeAttribute(CLASSIC_ZIP_FILE_NAME);
 		state.removeAttribute(SESSION_CONTEXT_ID);
@@ -4443,11 +4439,13 @@ public class SiteAction extends PagedResourceActionII {
 					siteInfo = (SiteInfo) state.getAttribute(STATE_SITE_INFO);
 				}
 				User currentUser = UserDirectoryService.getCurrentUser();
-				List<String> pList = new ArrayList<String>();
-				pList.add(currentUser.getId());
-				siteInfo.title = siteTypeProvider.getSiteTitle(type, pList);
-				siteInfo.description = siteTypeProvider.getSiteDescription(type, pList);
-				siteInfo.short_description = siteTypeProvider.getSiteShortDescription(type, pList);
+				List<String> idList = new ArrayList<String>();
+				idList.add(currentUser.getEid());
+				List<String> nameList = new ArrayList<String>();
+				nameList.add(currentUser.getDisplayName());
+				siteInfo.title = siteTypeProvider.getSiteTitle(type, idList);
+				siteInfo.description = siteTypeProvider.getSiteDescription(type, nameList);
+				siteInfo.short_description = siteTypeProvider.getSiteShortDescription(type, idList);
 				siteInfo.include = false;
 				state.setAttribute(STATE_SITE_INFO, siteInfo);
 
@@ -6210,12 +6208,36 @@ public class SiteAction extends PagedResourceActionII {
 	}
 	
 	/**
+	 * The triage function for saving modified features page
+	 * @param data
+	 */
+	public void doAddRemoveFeatureConfirm_option(RunData data) {
+		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+		ParameterParser params = data.getParameters();
+		
+		String option = params.getString("option");
+		if ("revise".equals(option))
+		{
+			// save the modified features
+			doSave_revised_features(state, params);
+		}
+		else if ("back".equals(option))
+		{
+			// back a step
+			doBack(data);
+		}
+		else if ("cancel".equals(option))
+		{
+			// cancel out
+			doCancel(data);
+		}
+	
+	}
+	
+	/**
 	 * doSave_revised_features
 	 */
-	public void doSave_revised_features(RunData data) {
-		SessionState state = ((JetspeedRunData) data)
-				.getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-		ParameterParser params = data.getParameters();
+	public void doSave_revised_features(SessionState state, ParameterParser params) {
 		
 		Site site = getStateSite(state);
 		
@@ -10821,7 +10843,7 @@ public class SiteAction extends PagedResourceActionII {
 					edit.setTitle(siteInfo.title);
 					edit.setPublished(true);
 					edit.setPubView(false);
-					edit.setType(templateId);
+					//edit.setType(templateId);
 					// ResourcePropertiesEdit rpe = edit.getPropertiesEdit();
 					try {
 						SiteService.save(edit);
@@ -10831,8 +10853,9 @@ public class SiteAction extends PagedResourceActionII {
 	
 					// now that the site and realm exist, we can set the email alias
 					// set the site alias as:
+					User currentUser = UserDirectoryService.getCurrentUser();
 					List<String> pList = new ArrayList<String>();
-					pList.add(SessionManager.getCurrentSessionUserId());
+					pList.add(currentUser != null ? currentUser.getEid():"");
 					String alias = siteTypeProvider.getSiteAlias(type, pList);
 					String channelReference = mailArchiveChannelReference(id);
 					try {
@@ -12639,62 +12662,26 @@ public class SiteAction extends PagedResourceActionII {
 	 */
 	private Locale getLocaleFromString(String localeString)
 	{
-		String[] locValues = localeString.trim().split("_");
-		if (locValues.length >= 3)
-			return new Locale(locValues[0], locValues[1], locValues[2]); // language, country, variant
-		else if (locValues.length == 2)
-			return new Locale(locValues[0], locValues[1]); // language, country
-		else if (locValues.length == 1)
-			return new Locale(locValues[0]); // language
-		else
-			return Locale.getDefault();
+	    org.sakaiproject.component.api.ServerConfigurationService scs = (org.sakaiproject.component.api.ServerConfigurationService) ComponentManager.get(org.sakaiproject.component.api.ServerConfigurationService.class);
+	    return scs.getLocaleFromString(localeString);
 	}
-	
+
 	/**
 	 * @return Returns the prefLocales
 	 */
-	 
-	public List getPrefLocales()
+	public List<Locale> getPrefLocales()
 	{
-		// Initialize list of supported locales, if necessary
-		if (prefLocales.size() == 0)
-		{
-			Locale[] localeArray = null;
-			String localeString = ServerConfigurationService.getString(SAKAI_LOCALES);
-			String localeStringMore = ServerConfigurationService.getString(SAKAI_LOCALES_MORE);
-			
-			if ( localeString == null )
-				localeString = "";
-			if ( localeStringMore != null && !localeStringMore.equals("") )
-				localeString += ","+localeStringMore;
-
-			if ( !localeString.equals("") )
-			{
-				String[] sakai_locales = localeString.split(",");
-				localeArray = new Locale[sakai_locales.length + 1];
-				for (int i = 0; i < sakai_locales.length; i++)
-					localeArray[i] = getLocaleFromString(sakai_locales[i]);
-				localeArray[localeArray.length - 1] = Locale.getDefault();
-			}
-			else
-				// if no locales specified, get default list
-			{
-				localeArray = new Locale[] { Locale.getDefault() };
-			}
-
-			// Sort locales and add to prefLocales (removing duplicates)
-			Arrays.sort(localeArray, localeComparator);
-			for (int i = 0; i < localeArray.length; i++)
-			{
-				if (i == 0 || !localeArray[i].equals(localeArray[i - 1]))
-				{					
-					prefLocales.add(localeArray[i]);
-				}
-			}
-		}
-
-		return prefLocales;
+	    // Initialize list of supported locales, if necessary
+	    if (prefLocales.size() == 0) {
+	        org.sakaiproject.component.api.ServerConfigurationService scs = (org.sakaiproject.component.api.ServerConfigurationService) ComponentManager.get(org.sakaiproject.component.api.ServerConfigurationService.class);
+	        Locale[] localeArray = scs.getSakaiLocales();
+	        // Add to prefLocales list
+	        for (int i = 0; i < localeArray.length; i++) {
+	            prefLocales.add(localeArray[i]);
+	        }
+	    }
+	    return prefLocales;
 	}
-	
+
 }
 

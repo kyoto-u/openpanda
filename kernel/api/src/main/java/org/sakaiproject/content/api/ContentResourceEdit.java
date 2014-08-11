@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/content/api/ContentResourceEdit.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/content/api/ContentResourceEdit.java $
  * $Id: ContentResourceEdit.java 66286 2009-09-04 13:47:34Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

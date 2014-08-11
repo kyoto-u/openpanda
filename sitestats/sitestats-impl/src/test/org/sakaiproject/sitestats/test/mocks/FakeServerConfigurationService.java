@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeServerConfigurationService.java $
- * $Id: FakeServerConfigurationService.java 98100 2011-09-13 02:44:21Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeServerConfigurationService.java $
+ * $Id: FakeServerConfigurationService.java 122984 2013-04-18 16:19:47Z arwhyte@umich.edu $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -21,6 +21,7 @@ package org.sakaiproject.sitestats.test.mocks;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
 import org.sakaiproject.component.api.ServerConfigurationService;
 
@@ -194,6 +195,14 @@ public class FakeServerConfigurationService implements ServerConfigurationServic
 
     public void registerListener(ConfigurationListener configurationListener) {
         
+    }
+
+    public Locale[] getSakaiLocales() {
+        return new Locale[] {Locale.getDefault()};
+    }
+
+    public Locale getLocaleFromString(String localeString) {
+        return Locale.getDefault();
     }
 
 }

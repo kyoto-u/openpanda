@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/user/impl/UserAuthnComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/user/impl/UserAuthnComponent.java $
  * $Id: UserAuthnComponent.java 69282 2009-11-27 15:23:04Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

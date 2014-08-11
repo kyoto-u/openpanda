@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.1/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/DbCalendarService.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/DbCalendarService.java $
  * $Id: DbCalendarService.java 84220 2010-11-03 12:34:55Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

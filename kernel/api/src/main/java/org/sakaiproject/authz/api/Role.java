@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/authz/api/Role.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/authz/api/Role.java $
  * $Id: Role.java 79508 2010-07-15 17:38:55Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

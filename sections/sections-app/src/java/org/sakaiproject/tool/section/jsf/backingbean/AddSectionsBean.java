@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.1/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/AddSectionsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.2/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/AddSectionsBean.java $
  * $Id: AddSectionsBean.java 96928 2011-08-14 10:26:01Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

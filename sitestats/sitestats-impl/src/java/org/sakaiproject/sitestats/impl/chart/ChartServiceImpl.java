@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/chart/ChartServiceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/chart/ChartServiceImpl.java $
  * $Id: ChartServiceImpl.java 78671 2010-06-21 15:20:56Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

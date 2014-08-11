@@ -23,7 +23,6 @@ var dhtml_view_sites = function(){
             });
             createDHTMLMask(dhtml_view_sites);
             jQuery('.selectedTab').bind('click', function(e){
-                console.log(e.pageX)
                 dhtml_view_sites();
                 return false;
             });
@@ -154,9 +153,9 @@ var setup_timeout_config = function(){
 }
 
 var poll_session_data = function(){
-    //Need to append Date.getTime as sakai still uses jquery pre 1.2.1 which doesn't support the cache: false parameter.
     jQuery.ajax({
-        url: "/direct/session/" + sessionId + ".json?auto=true&_=" + (new Date()).getTime(), //auto=true makes it not refresh the session lastaccessedtime
+        url: "/direct/session/" + sessionId + ".json?auto=true", //auto=true makes it not refresh the session lastaccessedtime
+        cache: false,
         dataType: "json",
         success: function(data){
             //get the maxInactiveInterval in the same ms
@@ -489,6 +488,18 @@ jQuery(document).ready(function(){
 		closeText: '<img src="/library/image/silk/cross.png" alt="close" />'
     });
 
+	// Shows or hides the subsites in a popout div. This isn't used unless
+	// portal.showSubsitesAsFlyout is set to true in sakai.properties.
+	jQuery("#toggleSubsitesLink").click(function (e) {
+        var subsitesLink = $(this);
+        if($('#subSites').css('display') == 'block') {
+            $('#subSites').hide();
+        } else {
+            var position = subsitesLink.position();
+            $('#subSites').css({'position': 'absolute','display': 'block','left': position.left + subsitesLink.width() + 14 + 'px','top': position.top + 'px'});
+        }
+    });
+
 });
 
 var setupSiteNav = function(){
@@ -555,7 +566,7 @@ var setupSiteNav = function(){
             var siteId = jqObjDrop.attr('data').replace(/!/g, '\\!').replace(/~/g, '\\~');
             var maxToolsInt = parseInt($('#maxToolsInt').text());
             var maxToolsText = $('#maxToolsAnchor').text();
-            var goToSite = '<li class=\"submenuitem\"><span><a role=\"menuitem\" class=\"icon-sakai-see-all-tools\" href=\"' + portal.portalPath + '/site/' + jqObjDrop.attr('data') + '\" title=\"' + maxToolsText + '\">' + maxToolsText + '</a></span></li>';
+            var goToSite = '<li class=\"submenuitem\"><span><a role=\"menuitem\" class=\"icon-sakai-see-all-tools\" href=\"' + portal.portalPath + '/site/' + siteId + '\" title=\"' + maxToolsText + '\">' + maxToolsText + '</a></span></li>';
             var siteURL = '/direct/site/' + jqObjDrop.attr('data') + '/pages.json';
             jQuery.ajax({
                 url: siteURL,

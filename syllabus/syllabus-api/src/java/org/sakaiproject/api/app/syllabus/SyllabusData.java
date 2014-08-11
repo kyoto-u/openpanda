@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.1/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusData.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.2/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusData.java $
  * $Id: SyllabusData.java 77661 2010-05-21 15:27:32Z gjthomas@iupui.edu $
  ***********************************************************************************
  *

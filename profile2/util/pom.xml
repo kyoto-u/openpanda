@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.sakaiproject.profile2</groupId>
 		<artifactId>profile2</artifactId>
-	    <version>1.5.1</version>
+	    <version>1.5.2</version>
 	</parent>
   	
   	<dependencies>
@@ -55,6 +55,10 @@
 		-->
 		
 		<!-- Sakai 2.6+ specific dependencies -->
+       	<dependency>
+         	<groupId>org.sakaiproject.kernel</groupId>
+         	<artifactId>sakai-kernel-api</artifactId>
+     	</dependency>
        	<dependency>
          	<groupId>org.sakaiproject.kernel</groupId>
          	<artifactId>sakai-kernel-util</artifactId>

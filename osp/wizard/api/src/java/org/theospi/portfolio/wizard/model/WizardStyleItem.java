@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.1/wizard/api/src/java/org/theospi/portfolio/wizard/model/WizardStyleItem.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.2/wizard/api/src/java/org/theospi/portfolio/wizard/model/WizardStyleItem.java $
 * $Id: WizardStyleItem.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
 ***********************************************************************************
 *

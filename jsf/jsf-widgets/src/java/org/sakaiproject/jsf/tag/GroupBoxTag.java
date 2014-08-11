@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.1/jsf-widgets/src/java/org/sakaiproject/jsf/tag/GroupBoxTag.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.2/jsf-widgets/src/java/org/sakaiproject/jsf/tag/GroupBoxTag.java $
 * $Id: GroupBoxTag.java 68846 2009-11-13 12:27:32Z arwhyte@umich.edu $
 ***********************************************************************************
 *

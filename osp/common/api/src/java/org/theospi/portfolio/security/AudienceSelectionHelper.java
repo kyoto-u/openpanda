@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.1/common/api/src/java/org/theospi/portfolio/security/AudienceSelectionHelper.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.2/common/api/src/java/org/theospi/portfolio/security/AudienceSelectionHelper.java $
 * $Id: AudienceSelectionHelper.java 68687 2009-11-09 16:45:06Z chmaurer@iupui.edu $
 ***********************************************************************************
 *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site/tags/site-2.9.1/site-tool/tool/src/java/org/sakaiproject/site/tool/AdminSitesAction.java $
+ * $URL: https://source.sakaiproject.org/svn/site/tags/site-2.9.2/site-tool/tool/src/java/org/sakaiproject/site/tool/AdminSitesAction.java $
  * $Id: AdminSitesAction.java 94263 2011-06-30 16:15:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

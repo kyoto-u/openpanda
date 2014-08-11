@@ -22,6 +22,8 @@
 var sakai = sakai || {};
 sakai.editor = sakai.editor || {};
 sakai.editor.editors = sakai.editor.editors || {};
+// Temporarily disable enableResourceSearch till citations plugin is ported (SAK-22862)
+sakai.editor.enableResourceSearch = false;
 
 sakai.editor.editors.ckeditor = {};
 // Please note that no more parameters should be added to this signature.
@@ -39,7 +41,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     }
 
     if (collectionId) {
-        folder = "&CurrentFolder=" + collectionId
+        folder = "CurrentFolder=" + collectionId
     }
 
     var language = sakai.locale && sakai.locale.userLanguage || '';
@@ -50,9 +52,11 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         defaultLanguage: 'en',
         language: language + (country ? '-' + country.toLowerCase() : ''),
         height: 310,
-        filebrowserBrowseUrl :'/library/editor/FCKeditor/editor/filemanager/browser/default/browser.html?Connector=/sakai-fck-connector/web/editor/filemanager/browser/default/connectors/jsp/connector' + collectionId + folder,
-        filebrowserImageBrowseUrl : '/library/editor/FCKeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=/sakai-fck-connector/web/editor/filemanager/browser/default/connectors/jsp/connector' + collectionId + folder,
-        filebrowserFlashBrowseUrl :'/library/editor/FCKeditor/editor/filemanager/browser/default/browser.html?Type=Flash&Connector=/sakai-fck-connector/web/editor/filemanager/browser/default/connectors/jsp/connector' + collectionId + folder,
+        fileConnectorUrl : '/sakai-fck-connector/web/editor/filemanager/browser/default/connectors/jsp/connector' + collectionId + '?' + folder,
+
+        filebrowserBrowseUrl :'/library/editor/FCKeditor/editor/filemanager/browser/default/browser.html?Connector=/sakai-fck-connector/web/editor/filemanager/browser/default/connectors/jsp/connector' + collectionId + '&' + folder,
+        filebrowserImageBrowseUrl : '/library/editor/FCKeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=/sakai-fck-connector/web/editor/filemanager/browser/default/connectors/jsp/connector' + collectionId + '&' + folder,
+        filebrowserFlashBrowseUrl :'/library/editor/FCKeditor/editor/filemanager/browser/default/browser.html?Type=Flash&Connector=/sakai-fck-connector/web/editor/filemanager/browser/default/connectors/jsp/connector' + collectionId + '&' + folder,
 				extraPlugins: (sakai.editor.enableResourceSearch ? 'resourcesearch,' : '')+'',
 
 
@@ -83,15 +87,18 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             ['BidiLtr', 'BidiRtl' ],
             ['Link','Unlink','Anchor'],
             (sakai.editor.enableResourceSearch
-                ? ['ResourceSearch', 'Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak']
-                : ['Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak']),
+                ? ['ResourceSearch', 'Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']
+                : ['Image','Movie','Flash','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula']),
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
             ['Maximize', 'ShowBlocks']
         ],
         toolbar: 'Full',
-        resize_dir: 'vertical'
+        resize_dir: 'vertical',
+        //SAK-23418
+        pasteFromWordRemoveFontStyles : false,
+        pasteFromWordRemoveStyles : false
     };
 
     //NOTE: The height and width properties are handled discretely here.
@@ -133,6 +140,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 		(function() { 
 		   CKEDITOR.plugins.addExternal('movieplayer',basePath+'movieplayer/', 'plugin.js'); 
 		   CKEDITOR.plugins.addExternal('wordcount',basePath+'wordcount/', 'plugin.js'); 
+		   CKEDITOR.plugins.addExternal('fmath_formula',basePath+'fmath_formula/', 'plugin.js'); 
 			 /*
 			  To enable after the deadline uncomment these two lines and add atd-ckeditor to toolbar
 			  and to extraPlugins. This also needs extra stylesheets.
@@ -145,7 +153,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 			 //ckconfig.extraPlugins+="movieplayer,wordcount,atd-ckeditor,stylesheetparser";
 			 //ckconfig.contentsCss = basePath+'/atd-ckeditor/atd.css';
 
-			 ckconfig.extraPlugins+="movieplayer,wordcount";
+			 ckconfig.extraPlugins+="movieplayer,wordcount,fmath_formula";
     })();
 
 	  CKEDITOR.replace(targetId, ckconfig);

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.1/api/src/java/org/sakaiproject/emailtemplateservice/logic/EmailTemplateServiceLogic.java $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.2/api/src/java/org/sakaiproject/emailtemplateservice/logic/EmailTemplateServiceLogic.java $
  * $Id: EmailTemplateServiceLogic.java 52893 2008-09-29 16:16:30Z bkirschn@umich.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/site/api/Site.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/site/api/Site.java $
  * $Id: Site.java 101392 2011-12-05 15:07:25Z aaronz@vt.edu $
  ***********************************************************************************
  *

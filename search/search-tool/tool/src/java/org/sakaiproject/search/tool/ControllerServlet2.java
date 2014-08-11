@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-tool/tool/src/java/org/sakaiproject/search/tool/ControllerServlet2.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-tool/tool/src/java/org/sakaiproject/search/tool/ControllerServlet2.java $
  * $Id: ControllerServlet2.java 70939 2010-01-06 08:18:47Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

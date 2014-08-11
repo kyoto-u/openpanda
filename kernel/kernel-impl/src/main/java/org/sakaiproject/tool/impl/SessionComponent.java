@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponent.java $
- * $Id: SessionComponent.java 83604 2010-10-21 15:52:09Z stephen.marquard@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponent.java $
+ * $Id: SessionComponent.java 122225 2013-04-04 21:52:10Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 Sakai Foundation
@@ -62,6 +62,7 @@ public abstract class SessionComponent implements SessionManager, SessionStore
 {
 	/** Our log (commons). */
 	private static Log M_log = LogFactory.getLog(SessionComponent.class);
+    public static final int MAX_SESSION_LENGTH = 36;
 
 	/** The sessions - keyed by session id. */
 	protected Map<String, Session> m_sessions = new ConcurrentHashMap<String, Session>();
@@ -258,10 +259,17 @@ public abstract class SessionComponent implements SessionManager, SessionStore
 		} catch (NoSuchAlgorithmException e) {
 			// Fallback to new uuid rather than a non-hashed id
 			sessionId = idManager().createUuid();
+            //This may need to be changed to a debug
+			M_log.warn("makeSessionId fallback to Uuid!",e);
+
 		} catch (UnsupportedEncodingException e) {
 			sessionId = idManager().createUuid();
+            //This may need to be changed to a debug
+			M_log.warn("makeSessionId fallback to Uuid!",e);
 		}
 		
+        //Trim the sessionId to MAX_SESSION_LENGTH characters
+        sessionId = sessionId.substring(0, Math.min(MAX_SESSION_LENGTH, sessionId.length()));
 		return sessionId;
 	}
 	

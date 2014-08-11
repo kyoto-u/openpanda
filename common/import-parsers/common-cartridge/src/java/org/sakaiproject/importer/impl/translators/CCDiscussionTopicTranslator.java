@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCDiscussionTopicTranslator.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCDiscussionTopicTranslator.java $
  * $Id: CCDiscussionTopicTranslator.java 67593 2009-10-11 10:57:49Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

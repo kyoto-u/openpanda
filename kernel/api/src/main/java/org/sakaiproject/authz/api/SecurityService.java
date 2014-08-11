@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/authz/api/SecurityService.java $
- * $Id: SecurityService.java 80446 2010-08-01 08:24:07Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/authz/api/SecurityService.java $
+ * $Id: SecurityService.java 122224 2013-04-04 21:50:53Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008, 2009 Sakai Foundation
@@ -24,6 +24,7 @@ package org.sakaiproject.authz.api;
 import java.util.Collection;
 import java.util.List;
 
+import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.user.api.User;
 
 /**
@@ -186,5 +187,12 @@ public interface SecurityService
 	 * Clear all effective roles for this user. Should be called on logout.
 	 */
 	void clearUserEffectiveRoles();
-	
+
+	/**
+	 * Clear all effective roles with the session.
+	 * @param sessionId the session identifier
+	 * @throws IllegalArgumentException if the session cannot be found (on this server)
+	 */
+	Session clearUserEffectiveRolesBySession(String sessionId);
+
 }

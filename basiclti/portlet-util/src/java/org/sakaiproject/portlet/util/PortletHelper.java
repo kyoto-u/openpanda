@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/portlet-util/src/java/org/sakaiproject/portlet/util/PortletHelper.java $
- * $Id: PortletHelper.java 98512 2011-09-22 17:59:08Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/portlet-util/src/java/org/sakaiproject/portlet/util/PortletHelper.java $
+ * $Id: PortletHelper.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2005-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,6 +66,7 @@ public class PortletHelper {
 		PortletSession pSession = request.getPortletSession(true);
 		pSession.removeAttribute("error.message");
 		pSession.removeAttribute("error.output");
+		pSession.removeAttribute("error.map");
 	}
 
 	public static String getErrorMessage(PortletRequest request)
@@ -83,6 +84,16 @@ public class PortletHelper {
 		PortletSession pSession = request.getPortletSession(true);
 		try {
 			return (String) pSession.getAttribute("error.output");
+		} catch (Throwable t) {
+			return null;
+		}
+	}
+
+	public static Map getErrorMap(PortletRequest request)
+	{   
+		PortletSession pSession = request.getPortletSession(true);
+		try {
+			return (Map) pSession.getAttribute("error.map");
 		} catch (Throwable t) {
 			return null;
 		}
@@ -119,6 +130,9 @@ public class PortletHelper {
 		errorOut.append("\n-->\n");
 
 		pSession.setAttribute("error.output",errorOut.toString());
+
+		Map map = request.getParameterMap();
+		pSession.setAttribute("error.map",map);
 	}  
 
 	public static void clearDebugOutput(PortletRequest request)

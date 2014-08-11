@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.1/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
- * $Id: ResourcesAction.java 113348 2012-09-21 18:16:21Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.2/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
+ * $Id: ResourcesAction.java 119835 2013-02-11 18:28:12Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -136,7 +136,7 @@ import org.w3c.dom.Element;
 * <p>ResourceAction is a ContentHosting application</p>
 *
 * @author University of Michigan, CHEF Software Development Team
-* @version $Revision: 113348 $
+* @version $Revision: 119835 $
 */
 public class ResourcesAction 
 	extends PagedResourceHelperAction // VelocityPortletPaneledAction
@@ -8455,23 +8455,16 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				ContentResourceEdit resource = ContentHostingService.addResource(collectionId,Validator.escapeResourceName(basename),Validator.escapeResourceName(extension),MAXIMUM_ATTEMPTS_FOR_UNIQUENESS);
 				
 				extractContent(fp, resource);
-//				byte[] content = fp.getRevisedContent();
-//				if(content == null)
-//				{
-//					InputStream stream = fp.getRevisedContentStream();
-//					if(stream == null)
-//					{
-//						logger.debug("pipe with null content and null stream: " + pipe.getFileName());
-//					}
-//					else
-//					{
-//						resource.setContent(stream);
-//					}
-//				}
-//				else
-//				{
-//					resource.setContent(content);
-//				}
+
+				// SAK-23171 - cleanup the URL spaces
+				String url = new String(resource.getContent());
+				String cleanedURL = StringUtils.trim(url);
+				cleanedURL = StringUtils.replace(cleanedURL, " ", "%20");
+				if (!StringUtils.equals(url, cleanedURL)) {
+				    // the url was cleaned up, log it and update it
+				    logger.info("Resources URL cleanup changed url to '"+cleanedURL+"' from '"+url+"'");
+				    resource.setContent(cleanedURL.getBytes());
+				}
 
 				resource.setContentType(fp.getRevisedMimeType());
 				resource.setResourceType(pipe.getAction().getTypeId());

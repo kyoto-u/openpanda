@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.1/calendar-api/api/src/java/org/sakaiproject/calendar/api/CalendarImporterService.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-api/api/src/java/org/sakaiproject/calendar/api/CalendarImporterService.java $
  * $Id: CalendarImporterService.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

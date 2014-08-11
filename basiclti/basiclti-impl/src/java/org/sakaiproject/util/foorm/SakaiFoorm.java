@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.db.api.SqlService;
 
 import org.apache.commons.logging.Log;
@@ -24,7 +25,7 @@ public class SakaiFoorm extends Foorm {
 	@Override
 		public String htmlSpecialChars(String str)
 		{
-			return str;
+			return FormattedText.escapeHtml(str, false);
 		}
 
 	// Abstract this away for testing purposes - return null if non existant
@@ -40,7 +41,8 @@ public class SakaiFoorm extends Foorm {
 			return super.loadI18N(str, loader);
 		}
 
-	public void autoDDL(String table, String[] model, SqlService m_sql, boolean doReset, Log M_log)
+	public void autoDDL(String table, String[] model, SqlService m_sql, boolean m_autoDdl, 
+				boolean doReset, Log M_log)
 	{
 		// Use very carefully - for testing table creation
 		if (doReset)
@@ -71,8 +73,21 @@ public class SakaiFoorm extends Foorm {
 
 		}
 		for (String sql : sqls) { 
-			M_log.info("SQL="+sql);  // Comment this out later...
-			if (m_sql.dbWriteFailQuiet(null, sql, null)) M_log.info(sql);
+			M_log.debug(sql);  
+			if ( m_autoDdl ) {
+				if (m_sql.dbWriteFailQuiet(null, sql, null)) {
+					// Schema modifications are more interesting
+					if ( sql.trim().toLowerCase().startsWith("alter") ) {
+						M_log.info("SQL Success:\n"+sql);
+					} else {
+						M_log.debug("SQL Success:\n"+sql);
+					}
+				} else {
+					M_log.error("SQL Failure:\n"+sql);
+				}
+			} else {
+				M_log.error("SQL Needed:\n"+sql);
+			}
 		}
 	}
 

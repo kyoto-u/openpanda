@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/gradebook-service/api/src/java/org/sakaiproject/service/gradebook/shared/Assignment.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.2/gradebook-service/api/src/java/org/sakaiproject/service/gradebook/shared/Assignment.java $
  * $Id: Assignment.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

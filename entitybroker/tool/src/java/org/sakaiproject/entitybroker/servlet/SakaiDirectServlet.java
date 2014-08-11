@@ -1,6 +1,6 @@
 /**
  * $Id: SakaiDirectServlet.java 96848 2011-08-11 18:32:25Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/tool/src/java/org/sakaiproject/entitybroker/servlet/SakaiDirectServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/tool/src/java/org/sakaiproject/entitybroker/servlet/SakaiDirectServlet.java $
  * Example.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation

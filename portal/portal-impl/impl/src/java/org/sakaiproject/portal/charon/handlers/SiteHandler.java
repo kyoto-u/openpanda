@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/SiteHandler.java $
- * $Id: SiteHandler.java 118537 2013-01-21 16:35:17Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/SiteHandler.java $
+ * $Id: SiteHandler.java 124895 2013-05-23 16:10:02Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.Role;
@@ -66,7 +67,7 @@ import org.sakaiproject.util.ResourceLoader;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 118537 $
+ * @version $Rev: 124895 $
  */
 public class SiteHandler extends WorksiteHandler
 {
@@ -527,9 +528,9 @@ public class SiteHandler extends WorksiteHandler
 			skin = ServerConfigurationService.getString("skin.default");
 		}
 		String templates = ServerConfigurationService.getString("portal.templates", "neoskin");
-		String prefix = ServerConfigurationService.getString("portal.neoprefix", "neo-");
+		String prefix = portalService.getSkinPrefix();
         // Don't add the prefix twice
-        if ( "neoskin".equals(templates) && ! skin.startsWith(prefix) ) skin = prefix + skin;
+        if ( "neoskin".equals(templates) && !StringUtils.startsWith(skin, prefix) ) skin = prefix + skin;
 		return skin;
 	}
 

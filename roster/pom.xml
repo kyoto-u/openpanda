@@ -4,13 +4,13 @@
   <parent>
     <artifactId>base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>2.9.1</version>
+    <version>2.9.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>Sakai Roster Project</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>roster-base</artifactId>
-  <version>2.9.1</version>
+  <version>2.9.2</version>
   <packaging>pom</packaging>
   <scm>
     <connection>scm:svn:https://source.sakaiproject.org/svn/roster/branches/sakai-2.9.x</connection>
@@ -29,17 +29,17 @@
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-roster-impl</artifactId>
-        <version>2.9.1</version>
+        <version>2.9.2</version>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-roster-model</artifactId>
-        <version>2.9.1</version>
+        <version>2.9.2</version>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-sections-app-util</artifactId>
-        <version>2.9.1</version>
+        <version>2.9.2</version>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.jsf</groupId>

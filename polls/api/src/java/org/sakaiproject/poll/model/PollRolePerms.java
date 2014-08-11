@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.1/api/src/java/org/sakaiproject/poll/model/PollRolePerms.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.2/api/src/java/org/sakaiproject/poll/model/PollRolePerms.java $
  * $Id: PollRolePerms.java 59704 2009-04-06 12:52:54Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

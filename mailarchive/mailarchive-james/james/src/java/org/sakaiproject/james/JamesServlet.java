@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.1/mailarchive-james/james/src/java/org/sakaiproject/james/JamesServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.2/mailarchive-james/james/src/java/org/sakaiproject/james/JamesServlet.java $
  * $Id: JamesServlet.java 92897 2011-05-17 13:29:42Z aaronz@vt.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/EnrollmentSet.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.2/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/EnrollmentSet.java $
  * $Id: EnrollmentSet.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *

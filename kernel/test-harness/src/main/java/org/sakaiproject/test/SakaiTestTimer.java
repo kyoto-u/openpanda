@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/test-harness/src/main/java/org/sakaiproject/test/SakaiTestTimer.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/test-harness/src/main/java/org/sakaiproject/test/SakaiTestTimer.java $
  * $Id: SakaiTestTimer.java 59688 2009-04-03 23:45:02Z arwhyte@umich.edu $
  ***********************************************************************************
  *

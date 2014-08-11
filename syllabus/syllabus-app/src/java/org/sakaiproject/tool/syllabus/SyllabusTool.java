@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.1/syllabus-app/src/java/org/sakaiproject/tool/syllabus/SyllabusTool.java $
- * $Id: SyllabusTool.java 104726 2012-02-15 18:41:09Z gjthomas@iupui.edu $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.2/syllabus-app/src/java/org/sakaiproject/tool/syllabus/SyllabusTool.java $
+ * $Id: SyllabusTool.java 121813 2013-03-27 00:08:31Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -397,7 +397,7 @@ public class SyllabusTool
 
     //Registramos el evento de que se ha accedido a Syllabus
     //Register the event when the syllabus is accessed
-    Event event = EventTrackingService.newEvent("syllabus.read","/syllabus/"+currentSiteId+"/1", true, 0);
+    Event event = EventTrackingService.newEvent("syllabus.read","/syllabus/"+currentSiteId+"/1", false, 0);
     EventTrackingService.post(event);
     
     return entries;

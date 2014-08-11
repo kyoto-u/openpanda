@@ -1,6 +1,6 @@
 /**
  * $Id: EntityEncodingManager.java 114417 2012-10-16 15:16:12Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/rest/src/java/org/sakaiproject/entitybroker/rest/EntityEncodingManager.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/rest/src/java/org/sakaiproject/entitybroker/rest/EntityEncodingManager.java $
  * EntityEncodingManager.java - entity-broker - Jul 23, 2008 3:25:32 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

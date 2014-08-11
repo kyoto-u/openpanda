@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/basiclti-portlet/src/java/org/sakaiproject/portlets/IMSBLTIPortlet.java $
- * $Id: IMSBLTIPortlet.java 98512 2011-09-22 17:59:08Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-portlet/src/java/org/sakaiproject/portlets/IMSBLTIPortlet.java $
+ * $Id: IMSBLTIPortlet.java 120430 2013-02-24 13:59:56Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,6 +29,7 @@ import java.net.URL;
 import java.net.URI;
 import java.util.UUID;
 import java.util.Properties;
+import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -65,14 +66,16 @@ import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.NotificationService;
 //import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.basiclti.LocalEventTrackingService;
 import org.sakaiproject.basiclti.util.SakaiBLTIUtil;
+import org.sakaiproject.basiclti.util.SimpleEncryption;
 
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.AssignmentHasIllegalPointsException;
@@ -130,6 +133,7 @@ public class IMSBLTIPortlet extends GenericPortlet {
 		fieldList.add("maximize");
 		fieldList.add("allowsettings");
 		fieldList.add("allowroster");
+		fieldList.add("allowlori");
 		fieldList.add("contentlink");
 	}
 
@@ -182,10 +186,10 @@ public class IMSBLTIPortlet extends GenericPortlet {
 
 				if ( "on".equals(newPage) ) {
 					String windowOpen = "window.open('"+iframeUrl+"','BasicLTI');"; 			
-					text.append("<script type=\"text/javascript\" language=\"JavaScript\">\n");
+					text.append("<p>\n");
+					text.append("<script type=\"text/javascript\">\n");
 					text.append(windowOpen+"\n");
 					text.append("</script>\n");
-					text.append("<p>\n");
 					text.append(rb.getString("new.page.launch"));
 					text.append("<br><a href=\""+iframeUrl+"\" onclick=\""+windowOpen+"\" target=\"BasicLTI\">"+rb.getString("noiframe.press.here")+"</a>");
 					text.append("</p>\n");
@@ -215,6 +219,7 @@ public class IMSBLTIPortlet extends GenericPortlet {
 				out.println(rb.getString("not.configured"));
 			}
 
+			clearErrorMessage(request);
 			dPrint("==== doView complete ====");
 		}
 
@@ -239,11 +244,28 @@ public class IMSBLTIPortlet extends GenericPortlet {
 
 		// Hand up the old values
 		Properties oldValues = new Properties();
+		Map map = getErrorMap(request);
+		String errorMsg = getErrorMessage(request);
+		request.setAttribute("error.message", errorMsg);
 		addProperty(oldValues, request, "launch", "");
 		for (String element : fieldList) {
 			if ( "launch".equals(element) ) continue;
+			String propKey = "imsti."+element;
 			// addProperty(oldValues, request, element, null);
 			String propValue = getCorrectProperty(request, element, null);
+
+			if ( map != null ) {
+				if ( map.containsKey(propKey) ) {
+					Object obj = null;
+					try {
+						String[] arr = (String []) map.get(propKey);
+						obj = arr[0];
+					} catch(Exception e) {
+						obj = null;
+					}
+					if ( obj instanceof String ) propValue = (String) obj;
+				}
+			}
 			if ( propValue != null ) {
 				if ( "xml".equals(element)) {
 					propValue = propValue.replace("&amp;","&amp;amp;");
@@ -251,17 +273,11 @@ public class IMSBLTIPortlet extends GenericPortlet {
 				if ( "secret".equals(element)) {
 					propValue = LEAVE_SECRET_ALONE;
 				}
-				oldValues.setProperty("imsti."+element, Validator.escapeHtml(propValue));
+				oldValues.setProperty(propKey, FormattedText.escapeHtml(propValue,false));
 			}
 		}
 
 		request.setAttribute("imsti.oldvalues", oldValues);
-
-		String allowOutcomes = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, null);
-		if ( "true".equals(allowOutcomes) ) {
-			List<String> assignments = getGradeBookAssignments();
-			if ( assignments != null && assignments.size() > 0 ) request.setAttribute("assignments", assignments);
-		}
 
 		String allowSettings = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED, null);
 		request.setAttribute("allowSettings", new Boolean("true".equals(allowSettings)));
@@ -269,6 +285,39 @@ public class IMSBLTIPortlet extends GenericPortlet {
 		request.setAttribute("allowRoster", new Boolean("true".equals(allowRoster)));
 		String allowContentLink = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_CONTENTLINK_ENABLED, null);
 		request.setAttribute("allowContentLink", new Boolean("true".equals(allowContentLink)));
+
+		// For outcomes and LORI we check for tools in the site before offering the options
+		String allowOutcomes = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, null);
+		String allowLori = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_LORI_ENABLED, null);
+
+		boolean foundLessons = false;
+		boolean foundGradebook = false;
+		ToolConfiguration toolConfig = SiteService.findTool(placement.getId());
+		try {
+			Site site = SiteService.getSite(toolConfig.getSiteId());
+			for (SitePage page : (List<SitePage>)site.getPages()) {
+				for(ToolConfiguration tool : (List<ToolConfiguration>) page.getTools()) {
+					String tid = tool.getToolId();
+					if ( "sakai.lessonbuildertool".equals(tid) ) foundLessons = true;
+					if ( "sakai.gradebook.tool".equals(tid) || "sakai.gradebook.gwt.rpc".equals(tid) ) foundGradebook = true;
+				}
+			}
+		} catch (IdUnusedException ex) {
+			M_log.warn("Could not load site.");
+		}
+
+		if ( ! foundLessons ) allowLori = "false";
+		if ( ! foundGradebook ) allowOutcomes = "false";
+
+		request.setAttribute("allowOutcomes", new Boolean("true".equals(allowOutcomes)));
+		request.setAttribute("allowLori", new Boolean("true".equals(allowLori)));
+		if ( "true".equals(allowOutcomes) ) {
+			List<String> assignments = getGradeBookAssignments();
+			if ( assignments != null && assignments.size() > 0 ) request.setAttribute("assignments", assignments);
+		}
+
+
+		clearErrorMessage(request);
 	}
 
 	public void addProperty(Properties values, RenderRequest request,
@@ -367,6 +416,7 @@ public class IMSBLTIPortlet extends GenericPortlet {
 				sendToJSP(request, response, "/edit.jsp");
 			}
 
+			clearErrorMessage(request);
 			dPrint("==== doEdit called ====");
 		}
 
@@ -377,6 +427,8 @@ public class IMSBLTIPortlet extends GenericPortlet {
 			String title = getTitleString(request);
 			if ( title != null ) response.setTitle(title);
 			sendToJSP(request, response, "/help.jsp");
+
+			clearErrorMessage(request);
 			dPrint("==== doHelp done  ====");
 		}
 
@@ -390,6 +442,7 @@ public class IMSBLTIPortlet extends GenericPortlet {
 
 			PortletSession pSession = request.getPortletSession(true);
 
+			// Clear before Action
 			clearErrorMessage(request);
 
 			String view = (String) pSession.getAttribute("sakai.view");
@@ -520,7 +573,7 @@ public class IMSBLTIPortlet extends GenericPortlet {
 			} else if ( imsTIUrl == null ) {
 				setErrorMessage(request, rb.getString("error.no.input") );
 				return;
-			} else {
+			} else if ( imsTIUrl.startsWith("http://") || imsTIUrl.startsWith("https://") ) {
 				try {
 					URL testUrl = new URL(imsTIUrl);
 					URI testUri = new URI(imsTIUrl);
@@ -529,6 +582,9 @@ public class IMSBLTIPortlet extends GenericPortlet {
 					setErrorMessage(request, rb.getString("error.bad.url") );
 					return;
 				}
+			} else {
+				setErrorMessage(request, rb.getString("error.bad.url") );
+				return;
 			}
 
 			// Prepare to store preferences
@@ -542,6 +598,7 @@ public class IMSBLTIPortlet extends GenericPortlet {
 			String allowOutcomes = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_OUTCOMES_ENABLED, null);
 			String allowSettings = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_SETTINGS_ENABLED, null);
 			String allowRoster = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_ROSTER_ENABLED, null);
+			String allowLori = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_LORI_ENABLED, null);
 
 			if ( "true".equals(allowOutcomes) && newAssignment != null && newAssignment.trim().length() > 1 ) {
 				if ( addGradeBookItem(request, newAssignment) ) {
@@ -552,7 +609,8 @@ public class IMSBLTIPortlet extends GenericPortlet {
 
 			// System.out.println("old placementsecret="+oldPlacementSecret);
 			if ( oldPlacementSecret == null && 
-					("true".equals(allowOutcomes) || "true".equals(allowSettings) || "true".equals(allowRoster) ) ) {
+					("true".equals(allowOutcomes) || "true".equals(allowSettings) || 
+                     "true".equals(allowRoster) || "true".equals(allowLori) ) ) {
 				try {
 					String uuid = UUID.randomUUID().toString();
 					Date date = new Date();
@@ -579,7 +637,7 @@ public class IMSBLTIPortlet extends GenericPortlet {
 				}
 				if ( ! found ) {
 					setErrorMessage(request, rb.getString("error.gradable.badassign") + 
-							" " + Validator.escapeHtml(assignment));
+							" " + FormattedText.escapeHtml(assignment,false));
 					return;
 				}
 			}
@@ -612,7 +670,8 @@ public class IMSBLTIPortlet extends GenericPortlet {
 					ToolConfiguration toolConfig = SiteService.findTool(placement.getId());
 					Site site = SiteService.getSite(toolConfig.getSiteId());
 					SitePage page = site.getPage(toolConfig.getPageId());
-					page.setTitle(imsTIPageTitle);
+					if ( imsTIPageTitle.length() > 99 ) imsTIPageTitle = imsTIPageTitle.substring(0,99);
+					page.setTitle(imsTIPageTitle.trim());
 					page.setTitleCustom(true);
 					SiteService.save(site);
 				} catch (Exception e) {
@@ -625,7 +684,23 @@ public class IMSBLTIPortlet extends GenericPortlet {
 			for (String element : fieldList) {
 				String formParm  = getFormParameter(request,sakaiProperties,element);
 				if ( "assignment".equals(element) ) formParm = assignment;
-				if ( "secret".equals(element) && LEAVE_SECRET_ALONE.equals(formParm) ) continue;
+
+				if ( "secret".equals(element) ) {
+					if ( LEAVE_SECRET_ALONE.equals(formParm) ) continue;
+					String key = ServerConfigurationService.getString(SakaiBLTIUtil.BASICLTI_ENCRYPTION_KEY, null);
+					if (key != null) {
+						try {
+							if ( formParm != null && formParm.trim().length() > 0 ) {
+									formParm = SimpleEncryption.encrypt(key, formParm);
+									// BLTI-195 convert old-style encrypted secrets
+									prefs.reset("sakai:imsti.encryptedsecret"); 
+							}
+						} catch (RuntimeException re) {
+							M_log.warn("Failed to encrypt secret, falling back to plaintext: "+ re.getMessage());
+						}
+					}
+				}
+
 				try {
 					prefs.setValue("sakai:imsti."+element, formParm);
 					changed = true;
@@ -702,10 +777,26 @@ public class IMSBLTIPortlet extends GenericPortlet {
 		PortletHelper.clearErrorMessage(request);
 	}
 
+	public Map getErrorMap(PortletRequest request)
+	{
+		return PortletHelper.getErrorMap(request);
+	}
+
+	public String getErrorOutput(PortletRequest request)
+	{
+		return PortletHelper.getErrorOutput(request);
+	}
+
 	public void setErrorMessage(PortletRequest request, String errorMsg)
 	{
 		PortletHelper.setErrorMessage(request,errorMsg);
 	}
+
+	public String getErrorMessage(PortletRequest request)
+	{
+		return PortletHelper.getErrorMessage(request);
+	}
+
 
 	public void setErrorMessage(PortletRequest request, String errorMsg, Throwable t)
 	{

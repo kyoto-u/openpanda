@@ -15,7 +15,7 @@
 	<parent>
 		<artifactId>common</artifactId>
 		<groupId>org.sakaiproject.common</groupId>
-		<version>1.2.1</version><!--common.version-->
+		<version>1.2.2</version><!--common.version-->
 	</parent>
 
 	<dependencies>

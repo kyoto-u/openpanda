@@ -1,6 +1,6 @@
 /**
  * $Id: ServiceTestManager.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/impl/src/test/org/sakaiproject/entitybroker/impl/ServiceTestManager.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/impl/src/test/org/sakaiproject/entitybroker/impl/ServiceTestManager.java $
  * TestManager.java - entity-broker - Jul 23, 2008 6:27:29 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**
  * $Id: OutputFormattable.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/OutputFormattable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/OutputFormattable.java $
  * HTMLdefineable.java - entity-broker - Apr 6, 2008 7:44:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

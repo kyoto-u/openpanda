@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.1/jsf/example/src/java/example/TestBean.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-2.9.2/jsf/example/src/java/example/TestBean.java $
 * $Id: TestBean.java 59678 2009-04-03 23:20:50Z arwhyte@umich.edu $
 ***********************************************************************************
 *

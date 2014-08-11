@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.1/citations-osid/xserver/src/java/org/sakaibrary/xserver/XServer.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-osid/xserver/src/java/org/sakaibrary/xserver/XServer.java $
  * $Id: XServer.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

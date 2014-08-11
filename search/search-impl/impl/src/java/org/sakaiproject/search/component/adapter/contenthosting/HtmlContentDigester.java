@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/HtmlContentDigester.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/HtmlContentDigester.java $
  * $Id: HtmlContentDigester.java 68269 2009-10-26 14:27:03Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/EntityCollections.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-util/src/main/java/org/sakaiproject/util/EntityCollections.java $
  * $Id: EntityCollections.java 95712 2011-07-27 08:11:29Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

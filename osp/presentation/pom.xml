@@ -5,7 +5,7 @@
   <parent>
     <artifactId>osp-base</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>2.9.1</version>
+    <version>2.9.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>osp-presentation</name>
@@ -32,12 +32,12 @@
       <dependency>
         <groupId>org.sakaiproject.osp</groupId>
         <artifactId>osp-presentation-impl</artifactId>
-        <version>2.9.1</version>
+        <version>2.9.2</version>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.osp</groupId>
         <artifactId>osp-presentation-tool-lib</artifactId>
-        <version>2.9.1</version>
+        <version>2.9.2</version>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.jsf</groupId>
@@ -52,7 +52,7 @@
       <dependency>
         <groupId>org.sakaiproject.osp</groupId>
         <artifactId>osp-depend-jsf-widgets-sun</artifactId>
-        <version>2.9.1</version>
+        <version>2.9.2</version>
         <type>pom</type>
       </dependency>
       <dependency>

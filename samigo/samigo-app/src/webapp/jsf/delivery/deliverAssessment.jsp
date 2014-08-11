@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: deliverAssessment.jsp 118584 2013-01-22 18:19:46Z ktsao@stanford.edu $
+* $Id: deliverAssessment.jsp 121847 2013-03-27 18:50:37Z ktsao@stanford.edu $
 <%--
 ***********************************************************************************
 *
@@ -111,7 +111,10 @@
 
       </script>
       
-      <div id="timer-warning" style="display:none;">
+      <div id="timer-warning" style="display:none" title="&nbsp;<span class='skip'> 
+      	<h:outputText value="#{deliveryMessages.warning_2} " />
+      	<h:outputText value="#{deliveryMessages.five_minutes_left1} " />
+      	<h:outputText value="#{deliveryMessages.five_minutes_left2}" /></span>">
       	<h3><h:outputText value="#{deliveryMessages.five_minutes_left1}" /></h3>
       	<p><h:outputText value="#{deliveryMessages.five_minutes_left2}" /></p>
       </div>
@@ -500,7 +503,7 @@ document.links[newindex].onclick();
   <%-- SUBMIT FOR GRADE DURING PAU --%>
   <h:commandButton type="submit" value="#{deliveryMessages.button_submit}"
     action="#{delivery.confirmSubmit}"  id="submitForm1" styleClass="active"
-    rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.continue}"
+    rendered="#{delivery.actionString=='takeAssessmentViaUrl' && delivery.continue && delivery.anonymousLogin}"
     onclick="pauseTiming='false'; disableSubmit1();" />
 
   <%-- SUBMIT FOR GRADE FOR LINEAR ACCESS --%>

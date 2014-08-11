@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.1/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ServerConfigurationServiceStub.java $
- * $Id: ServerConfigurationServiceStub.java 98102 2011-09-13 02:44:48Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.2/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ServerConfigurationServiceStub.java $
+ * $Id: ServerConfigurationServiceStub.java 122982 2013-04-18 16:00:57Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2008 The Sakai Foundation
@@ -24,6 +24,7 @@ package org.sakaiproject.poll.logic.test.stubs;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
 import org.sakaiproject.component.api.ServerConfigurationService;
 
@@ -187,6 +188,14 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 
     public void registerListener(ConfigurationListener configurationListener) {
         
+    }
+
+    public Locale[] getSakaiLocales() {
+        return new Locale[] {Locale.getDefault()};
+    }
+
+    public Locale getLocaleFromString(String localeString) {
+        return Locale.getDefault();
     }
 
 }

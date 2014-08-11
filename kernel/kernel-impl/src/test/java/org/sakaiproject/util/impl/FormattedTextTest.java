@@ -23,6 +23,7 @@ package org.sakaiproject.util.impl;
 
 import java.util.regex.Pattern;
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.util.api.FormattedText.Level;
 
 import junit.framework.TestCase;
 
@@ -34,6 +35,7 @@ public class FormattedTextTest extends TestCase {
     protected void setUp() throws Exception {
         ComponentManager.testingMode = true;
         formattedText = new FormattedTextImpl();
+        formattedText.setDefaultUseLegacyCleaner(false); // FORCE antisamy to be loaded and used by default
         formattedText.init();
     }
 
@@ -113,16 +115,17 @@ public class FormattedTextTest extends TestCase {
                 formattedText.escapeHtmlFormattedText("<b>simple</b><b class=\"AZ\">bold</b><a href=\"other.html\" class=\"azeckoski\">link</a><a href=\"other.html\" target=\"_AZ\" class=\"azeckoski\">link</a>") );
     }
 
-
-    // DISABLED TEST
-    public void donottestAntisamyProcessFormattedText() {
+    public void testAntisamyProcessFormattedText() {
         // TESTS using the antiSamy library
         String strFromBrowser = null;
         String result = null;
         StringBuilder errorMessages = null;
 
+        formattedText.setDefaultUseLegacyCleaner(false); // FORCE antisamy
+
         strFromBrowser = TEST1;
         errorMessages = new StringBuilder();
+        formattedText.setDefaultAddBlankTargetToLinks(false);
         result = formattedText.processFormattedText(strFromBrowser, errorMessages, false);
         assertNotNull(result);
         assertTrue( result.contains("href=\"blah.html\""));
@@ -130,6 +133,17 @@ public class FormattedTextTest extends TestCase {
         //assertTrue( result.contains("target=\"_blank\"")); // adds target in
         assertTrue( result.contains("<div>hello there</div>"));
         assertEquals("<a href=\"blah.html\" style=\"font-weight: bold;\">blah</a>\n<div>hello there</div>", result);
+
+        strFromBrowser = TEST1;
+        errorMessages = new StringBuilder();
+        formattedText.setDefaultAddBlankTargetToLinks(true);
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages, false);
+        assertNotNull(result);
+        assertTrue( result.contains("href=\"blah.html\""));
+        //assertFalse( result.contains("style=\"font-weight:bold;\"")); // strips this out
+        //assertTrue( result.contains("target=\"_blank\"")); // adds target in
+        assertTrue( result.contains("<div>hello there</div>"));
+        assertEquals("<a href=\"blah.html\" style=\"font-weight: bold;\" target=\"_blank\">blah</a>\n<div>hello there</div>", result);
 
         strFromBrowser = TEST2;
         errorMessages = new StringBuilder();
@@ -142,7 +156,7 @@ public class FormattedTextTest extends TestCase {
         errorMessages = new StringBuilder();
         result = formattedText.processFormattedText(strFromBrowser, errorMessages, false);
         assertNotNull(result);
-        assertEquals("", result);
+        assertEquals("<div>hello</div>", result);
     }
 
     public void testLegacyProcessFormattedText() {
@@ -160,7 +174,7 @@ public class FormattedTextTest extends TestCase {
         assertFalse( result.contains("style=\"font-weight:bold;\"")); // strips this out
         assertTrue( result.contains("target=\"_blank\"")); // adds target in
         assertTrue( result.contains("<div>hello there</div>"));
-        assertEquals("<a  href=\"blah.html\"  target=\"_blank\" >blah</a><div>hello there</div>", result);
+        assertEquals("<a  href=\"blah.html\" target=\"_blank\">blah</a><div>hello there</div>", result);
 
         strFromBrowser = TEST2;
         errorMessages = new StringBuilder();
@@ -175,9 +189,53 @@ public class FormattedTextTest extends TestCase {
         String result = null;
         StringBuilder errorMessages = null;
 
+        formattedText.setDefaultUseLegacyCleaner(false); // FORCE antisamy
+
         String SVG_GOOD = "<div>hello</div><embed allowscriptaccess=\"always\" type=\"image/svg+xml\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjAiIHg9IjAiIHk9IjAiIHdpZHRoPSIxOTQiIGhlaWdodD0iMjAwIiBpZD0ieHNzIj5pbWFnZTwvc3ZnPg==\"></embed>";
         String SVG_BAD = "<div>hello</div><embed allowscriptaccess=\"always\" type=\"image/svg+xml\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxuczpzdmc9Imh0dH A6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv MjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hs aW5rIiB2ZXJzaW9uPSIxLjAiIHg9IjAiIHk9IjAiIHdpZHRoPSIxOTQiIGhlaWdodD0iMjAw IiBpZD0ieHNzIj48c2NyaXB0IHR5cGU9InRleHQvZWNtYXNjcmlwdCI+YWxlcnQoIlh TUyIpOzwvc2NyaXB0Pjwvc3ZnPg==\"></embed>";
 
+        strFromBrowser = SVG_GOOD;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 50 );
+        assertTrue( result.contains("<div"));
+        assertFalse( result.contains("<embed"));
+
+        strFromBrowser = SVG_BAD;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 50 );
+        assertTrue( result.contains("<div"));
+        assertFalse( result.contains("<embed"));
+
+        /* CHANGED BEHAVIOR
+         * Antisamy strips the entire embed tag
+        strFromBrowser = SVG_GOOD;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() == 0 );
+        assertTrue( result.contains("<div"));
+        assertTrue( result.contains("<embed"));
+        assertTrue( result.contains("src="));
+        assertTrue( result.contains("data:image/svg+xml;base64"));
+        assertFalse( result.contains("<script"));
+
+        strFromBrowser = SVG_BAD;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("<div"));
+        assertTrue( result.contains("<embed"));
+        assertFalse( result.contains("src="));
+        assertFalse( result.contains("data:image/svg+xml;base64"));
+        assertFalse( result.contains("<script"));
+        */
+
+        // test legacy
         strFromBrowser = SVG_GOOD;
         errorMessages = new StringBuilder();
         result = formattedText.processFormattedText(strFromBrowser, errorMessages, true);
@@ -199,6 +257,81 @@ public class FormattedTextTest extends TestCase {
         assertFalse( result.contains("src="));
         assertFalse( result.contains("data:image/svg+xml;base64"));
         assertFalse( result.contains("<script"));
+    }
+
+    public void testDataAttributes() {
+        String[] passTests;
+        String[] failTests;
+        String[] failResults;
+        String result;
+        StringBuilder errors;
+
+        String oneK       = "<span class></span>"; // technically invalid
+        String oneKV      = "<span class=\"one\"></span>";
+        String twoK       = "<span class id></span>"; // technically invalid
+        String twoKV      = "<span class=\"one\" id=\"two\"></span>";
+        String mixed      = "<span class id=\"two\"></span>"; // technically invalid
+        String selfClose  = "<hr class=\"section\" title=\"Contents\" />";
+        String selfCloseL = "<hr class=\"section\" title=\"Contents\"/>";
+        String subAttr    = "<span id=\"name\" title=\"http://example.com/data-src\"></span>";
+        String subAttrs   = "<span class=\"data-name\" id=\"name\" title=\"http://example.com/\"></span>";
+
+        String repeatK    = "<span class class></span>";
+        String repeatKV   = "<span class=\"one\" class=\"two\"></span>";
+        String badK       = "<span class=\"foo\" class-></span>";
+        String badK2      = "<span class=\"foo\" data-></span>";
+        String badK3      = "<span class=\"foo\" data--></span>";
+        String badKV      = "<span class=\"foo\" class-=\"one\"></span>";
+
+        String resultRepeatK    = "<span></span>";
+        String resultRepeatKL   = "<span class></span>";
+        String resultRepeatKV   = "<span class=\"two\"></span>";
+        String resultRepeatKVL  = "<span class=\"one\"></span>"; // antisamy does not report duplicate attributes as errors
+        String resultBadK       = "<span class=\"foo\"></span>";
+        String resultBadKV      = "<span class=\"foo\"></span>";
+
+        // antisamy will not allow empty attributes OR unknown attributes
+        passTests   = new String[] { oneKV, twoKV, selfClose, subAttr, subAttrs };
+        failTests   = new String[] { repeatK, badK, badK2, badK3, badKV };
+        failResults = new String[] { resultRepeatK, resultBadK, resultBadK, resultBadK, resultBadKV };
+
+        formattedText.setDefaultUseLegacyCleaner(false); // FORCE antisamy
+
+        result = formattedText.processFormattedText(repeatKV, new StringBuilder());
+        assertEquals(resultRepeatKV, result);
+
+        for (String passTest : passTests) {
+            errors = new StringBuilder();
+            result = formattedText.processFormattedText(passTest, errors);
+            assertEquals(passTest+" != "+result, 0, errors.length());
+            assertEquals(passTest+" != "+result, passTest, result);
+        }
+
+        for (int i = 0; i < failTests.length; i++) {
+            errors = new StringBuilder();
+            result = formattedText.processFormattedText(failTests[i], errors);
+            assertEquals(failResults[i]+" != "+result, failResults[i], result);
+            assertTrue(failTests[i]+": "+failResults[i]+" != "+result, errors.length() > 10);
+        }
+
+        // LEGACY tests
+        passTests   = new String[] { oneK, oneKV, twoK, twoKV, mixed, selfCloseL, subAttr, subAttrs };
+        failTests   = new String[] { repeatK, repeatKV, badK, badK2, badK3, badKV };
+        failResults = new String[] { resultRepeatKL, resultRepeatKVL, resultBadK, resultBadK, resultBadK, resultBadKV };
+
+        for (String passTest : passTests) {
+            errors = new StringBuilder();
+            result = formattedText.processFormattedText(passTest, errors, true);
+            assertEquals(passTest, result);
+            assertTrue(errors.length() == 0);
+        }
+
+        for (int i = 0; i < failTests.length; i++) {
+            errors = new StringBuilder();
+            result = formattedText.processFormattedText(failTests[i], errors, true);
+            assertEquals(failResults[i], result);
+            assertTrue(result, errors.length() > 10);
+        }
     }
 
     public void testKNL_528() {
@@ -319,6 +452,206 @@ public class FormattedTextTest extends TestCase {
 
     }
 
+    public void testHighLowNoneScanning() {
+        // KNL-1048 KNL-1009
+        String strFromBrowser = null;
+        String result = null;
+        StringBuilder errorMessages = null;
+
+        String SCRIPT1 = "<div>testing</div><embed src=\"DANGER.swf\"><SCRIPT>alert(\"XSS\");//</SCRIPT>";
+        String SCRIPT2 = "<div>testing</div><script>alert(\"XSS\");<BR>";
+
+        formattedText.setDefaultUseLegacyCleaner(false); // FORCE antisamy
+
+        // Test KNL-1009
+        strFromBrowser = SCRIPT2;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages, Level.HIGH);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("<div>testing</div>"));
+        assertFalse( result.contains("XSS"));
+        assertFalse( result.contains("<script"));
+
+        // check the options
+        strFromBrowser = SCRIPT1;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages, null); // default: high
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("<div>testing</div>"));
+        assertFalse( result.contains("XSS"));
+        assertFalse( result.contains("<SCRIPT"));
+        assertFalse( result.contains("DANGER"));
+        assertFalse( result.contains("<embed"));
+
+        strFromBrowser = SCRIPT1;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages, Level.HIGH);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("<div>testing</div>"));
+        assertFalse( result.contains("XSS"));
+        assertFalse( result.contains("<SCRIPT"));
+        assertFalse( result.contains("DANGER"));
+        assertFalse( result.contains("<embed"));
+
+        strFromBrowser = SCRIPT1;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages, Level.LOW);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("<div>testing</div>"));
+        assertFalse( result.contains("XSS"));
+        assertFalse( result.contains("<SCRIPT"));
+        assertTrue( result.contains("DANGER"));
+        assertTrue( result.contains("<embed"));
+
+        strFromBrowser = SCRIPT1;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages, Level.NONE);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() == 0 );
+        assertTrue( result.contains("<div>testing</div>"));
+        assertTrue( result.contains("XSS"));
+        assertTrue( result.contains("<SCRIPT"));
+        assertTrue( result.contains("DANGER"));
+        assertTrue( result.contains("<embed"));
+    }
+
+    public void testKNL_1019() {
+        // https://jira.sakaiproject.org/browse/KNL-1029
+        String strFromBrowser = null;
+        String result = null;
+        StringBuilder errorMessages = null;
+
+        String youTubeObject = "<object width=\"560\" height=\"315\"><param name=\"movie\" value=\"http://www.youtube.com/v/1yqVD0swvWU?hl=en_US&amp;version=3&amp;rel=0\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"http://www.youtube.com/v/1yqVD0swvWU?hl=en_US&amp;version=3&amp;rel=0\" type=\"application/x-shockwave-flash\" width=\"560\" height=\"315\" allowscriptaccess=\"always\" allowfullscreen=\"true\"></embed></object>";
+        String youTubeIframe = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/1yqVD0swvWU?rel=0\" frameborder=\"0\" allowfullscreen></iframe>";
+        String youTubeIframeOptions = "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube-nocookie.com/embed/3pAnRKD4raY?rel=0\" frameborder=\"0\" allowfullscreen></iframe>";
+        String youTubeCK = "<object data=\"/library/editor/ckextraplugins/movieplayer/StrobeMediaPlayback.swf\" height=\"240\" id=\"movie941276\" type=\"application/x-shockwave-flash\" width=\"320\"><param name=\"movie\" value=\"http://www.youtube.com/v/1yqVD0swvWU\" /><param name=\"FlashVars\" value=\"src=http://www.youtube.com/v/1yqVD0swvWU&amp;showplayer=always&amp;width=320&amp;height=240&amp;showiconplay=true&amp;autoplay=0&amp;plugin_YouTubePlugin=/library/editor/ckextraplugins/movieplayer/YouTubePlugin.swf\" /><param name=\"allowFullScreen\" value=\"true\" /></object>";
+        String youTubeSpecialCK = "<object data=\"http://youtu.be/1yqVD0swvWU\" height=\"240\" id=\"movie791812\" type=\"video/x-ms-wmv\" width=\"320\"><param name=\"src\" value=\"http://youtu.be/1yqVD0swvWU\" /><param name=\"autostart\" value=\"0\" /><param name=\"controller\" value=\"true\" /></object>";
+
+        String dangerEmbed = "<div>SAFE</div><object data=\"/access/library/hacked/DANGER.swf\" height=\"240\" id=\"movie941276\" type=\"application/x-shockwave-flash\" width=\"320\"><param name=\"movie\" value=\"http://www.youtube.com/v/1yqVD0swvWU\" /><param name=\"FlashVars\" value=\"src=http://www.youtube.com/v/1yqVD0swvWU&amp;showplayer=always&amp;width=320&amp;height=240&amp;showiconplay=true&amp;autoplay=0&amp;plugin_YouTubePlugin=/library/editor/ckextraplugins/movieplayer/YouTubePlugin.swf\" /><param name=\"allowFullScreen\" value=\"true\" /></object>";
+        String dangerLibraryPath = "<div>SAFE</div><object data=\"/library/../access/content/user/myUser/DANGER.swf\" type=\"application/x-shockwave-flash\"><param name=\"FlashVars\" value=\"hacked=true\" /></object>";
+        String dangerLibraryPath2 = "<div>SAFE</div><object data=\"/library/happy/../../access/content/user/myUser/DANGER.swf\" type=\"application/x-shockwave-flash\"><param name=\"FlashVars\" value=\"hacked=true\" /></object>";
+        String dangerLibraryPath3 = "<div>SAFE</div><object data=\"/access/content/user/myUser/library/test/DANGER.swf\" type=\"application/x-shockwave-flash\"><param name=\"FlashVars\" value=\"hacked=true\" /></object>";
+        String dangerLibraryPath4 = "<div>SAFE</div><object data=\"/library\\../access/content/user/myUser/DANGER..swf\" type=\"application/x-shockwave-flash\"><param name=\"FlashVars\" value=\"hacked=true\" /></object>";
+        String dangerLibraryPath5 = "<div>SAFE</div><object data=\"/libraryAnyString/path/DANGER.swf\" type=\"application/x-shockwave-flash\"><param name=\"FlashVars\" value=\"hacked=true\" /></object>";
+        String dangerLibraryPath6 = "<div>SAFE</div><object data=\"/library/aaa\\..\\..\\access/content/user//myUser/DANGER..swf\" type=\"application/x-shockwave-flash\"><param name=\"FlashVars\" value=\"hacked=true\" /></object>";
+
+        formattedText.setDefaultUseLegacyCleaner(false); // FORCE antisamy
+
+        strFromBrowser = youTubeObject;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() == 0 );
+        assertTrue( result.contains("<object"));
+        assertTrue( result.contains("<embed"));
+        assertTrue( result.contains("www.youtube.com/v/1yqVD0swvWU"));
+
+        strFromBrowser = youTubeIframe;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() == 0 );
+        assertTrue( result.contains("<iframe"));
+        assertTrue( result.contains("allowfullscreen"));
+        assertTrue( result.contains("www.youtube.com/embed/1yqVD0swvWU"));
+
+        strFromBrowser = youTubeIframeOptions;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() == 0 );
+        assertTrue( result.contains("<iframe"));
+        assertTrue( result.contains("allowfullscreen"));
+        assertTrue( result.contains("www.youtube-nocookie.com/embed/3pAnRKD4raY"));
+
+        strFromBrowser = youTubeCK;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() == 0 );
+        assertTrue( result.contains("<object"));
+        assertTrue( result.contains("/library/editor/ckextraplugins"));
+        assertTrue( result.contains("www.youtube.com/v/1yqVD0swvWU"));
+
+        strFromBrowser = youTubeSpecialCK;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() == 0 );
+        assertTrue( result.contains("<object"));
+        assertTrue( result.contains("<param"));
+        assertTrue( result.contains("youtu.be/1yqVD0swvWU"));
+
+        // test bad stuff
+        strFromBrowser = dangerEmbed;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("SAFE"));
+        assertFalse( result.contains("<object"));
+        assertFalse( result.contains("DANGER"));
+
+        strFromBrowser = dangerLibraryPath;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("SAFE"));
+        assertFalse( result.contains("<object"));
+        assertFalse( result.contains("DANGER"));
+
+        strFromBrowser = dangerLibraryPath2;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("SAFE"));
+        assertFalse( result.contains("<object"));
+        assertFalse( result.contains("DANGER"));
+
+        strFromBrowser = dangerLibraryPath3;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("SAFE"));
+        assertFalse( result.contains("<object"));
+        assertFalse( result.contains("DANGER"));
+
+        strFromBrowser = dangerLibraryPath4;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("SAFE"));
+        assertFalse( result.contains("<object"));
+        assertFalse( result.contains("DANGER"));
+
+        strFromBrowser = dangerLibraryPath5;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("SAFE"));
+        assertFalse( result.contains("<object"));
+        assertFalse( result.contains("DANGER"));
+
+        strFromBrowser = dangerLibraryPath6;
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertTrue( errorMessages.length() > 10 );
+        assertTrue( result.contains("SAFE"));
+        assertFalse( result.contains("<object"));
+        assertFalse( result.contains("DANGER"));
+
+    }
+
     public void testNullParams() {
     	//KNL-862 test we don't NPE if a null string is passed with Newlines == true - DH
     	try {
@@ -326,6 +659,81 @@ public class FormattedTextTest extends TestCase {
     	} catch (Exception e) {
     		fail();
     	}
+    }
+
+    public void testKNL_1065() {
+        // https://jira.sakaiproject.org/browse/KNL-1065
+        String strFromBrowser = null;
+        String result = null;
+        StringBuilder errorMessages = null;
+
+        formattedText.setDefaultUseLegacyCleaner(false); // FORCE antisamy
+
+        strFromBrowser = "<span class=\"kaltura-media classValue\" rel=\"relValue::video\"><img src=\"https://cdnsecakmi.kaltura.com/p/999999/imgValue\" /></span>";
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertFalse( errorMessages.length() > 10 );
+        assertTrue( result.contains("classValue"));
+        assertTrue( result.contains("relValue"));
+        assertTrue( result.contains("imgValue"));
+
+        strFromBrowser = "<div class=\"classValue\">divValue<ins>insValue</ins><ins datetime=\"2013-10-29\" cite=\"/url/to/cite.html\">insComplexValue</ins><del>delValue</del></div>";
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertFalse( errorMessages.length() > 10 );
+        assertTrue( result.contains("<div "));
+        assertTrue( result.contains("<ins>"));
+        assertTrue( result.contains("<ins "));
+        assertTrue( result.contains("<del>"));
+        assertTrue( result.contains("divValue"));
+        assertTrue( result.contains("insValue"));
+        assertTrue( result.contains("delValue"));
+        assertTrue( result.contains("insComplexValue"));
+        assertTrue( result.contains("2013-10-29"));
+        assertTrue( result.contains("/url/to/cite.html"));
+    }
+
+    public void testKNL_1061() {
+        // https://jira.sakaiproject.org/browse/KNL-1061
+        String strFromBrowser = null;
+        String result = null;
+        StringBuilder errorMessages = null;
+
+        formattedText.setDefaultUseLegacyCleaner(false); // FORCE antisamy
+
+        strFromBrowser = "<div class=\"classValue\">divValue</div><img border=\"0\" data-mathml=\"%3Cmrow%3E%0A%20%20%20%20%20%20%20%20%3Cmo%20selected%3D%22true%22%3E%26frac23%3B%3C/mo%3E%0A%3C/mrow%3E\" id=\"MathMLEq1\" src=\"http://nightly2.sakaiproject.org:8085/access/content/group/mercury/fmath-equation-94BDA89D-E911-283D-53C1-32D6CCE53EB0.png\" />";
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertFalse( errorMessages.length() > 10 );
+        assertTrue( result.contains("<div "));
+        assertTrue( result.contains("divValue"));
+        assertTrue( result.contains("<img"));
+        assertTrue( result.contains("data-mathml"));
+        assertTrue( result.contains("%20selected%3D"));
+    }
+
+    public void testKNL_1071() {
+        // https://jira.sakaiproject.org/browse/KNL-1071
+        String strFromBrowser = null;
+        String result = null;
+        StringBuilder errorMessages = null;
+
+        formattedText.setDefaultUseLegacyCleaner(false); // FORCE antisamy
+
+        strFromBrowser = "<p><span style=\"background-color:yellow;\">aaa </span><tt>bbb </tt><code>ccc </code><kbd>ddd </kbd><del>eee </del><span dir=\"rtl\">fff </span><cite>ggg</cite></p>";
+
+        errorMessages = new StringBuilder();
+        result = formattedText.processFormattedText(strFromBrowser, errorMessages);
+        assertNotNull(result);
+        assertFalse( errorMessages.length() > 0 );
+        assertTrue( result.contains("<tt>"));
+        assertTrue( result.contains("ddd"));
+        assertTrue( result.contains("<cite>"));
+        assertTrue( result.contains("<kbd>"));
+        assertTrue( result.contains("<span dir=\"rtl\""));
     }
 
     public void testBasicUrlMatch() {

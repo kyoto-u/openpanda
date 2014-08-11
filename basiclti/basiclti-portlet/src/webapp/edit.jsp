@@ -1,23 +1,3 @@
-<%--
-    $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/basiclti-portlet/src/webapp/edit.jsp $
-    $Id: edit.jsp 94143 2011-06-27 16:00:57Z csev@umich.edu $
-    
-    Copyright (c) 2009 The Sakai Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-                http://www.osedu.org/licenses/ECL-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
---%>
-
 <%@ page import="javax.portlet.RenderRequest" %>
 <%@ page import="javax.portlet.RenderResponse" %>
 <%@ taglib uri="http://java.sun.com/portlet" prefix="portlet" %>
@@ -62,8 +42,7 @@ launchURL.setParameter("sakai.action","edit.save");
 
 PortletURL actionURL = rResp.createActionURL();
 
-String errorOutput = (String) pSession.getAttribute("error.output");
-if ( errorOutput != null ) out.println(errorOutput);
+String errorMsg = (String) rReq.getAttribute("error.message");
 
 Properties ov = (Properties) rReq.getAttribute("imsti.oldvalues");
 
@@ -71,34 +50,46 @@ Properties sp = (Properties) rReq.getAttribute("imsti.properties");
 
 List<String> assignments = (List<String>) rReq.getAttribute("assignments");
 
+Boolean allowOutcomes = (Boolean) rReq.getAttribute("allowOutcomes");
+
 Boolean allowSettings = (Boolean) rReq.getAttribute("allowSettings");
 
 Boolean allowRoster = (Boolean) rReq.getAttribute("allowRoster");
+
+Boolean allowLori = (Boolean) rReq.getAttribute("allowLori");
 
 Boolean allowContentLink = (Boolean) rReq.getAttribute("allowContentLink");
 
 %>
 <portlet:defineObjects/>
+<div class="portletBody">
 <ul class="navIntraTool actionToolBar">
 	<li class="firstToolBarItem">
 		<span>
 			<a href="<%=viewURL.toString()%>"><%=rb.getString("edit.exit")%></a>
 		</span>
 	</li>	
+ri
 	<li>
 		<span>
 			<a href="<%=resetURL.toString()%>"><%=rb.getString("edit.clear.prefs")%></a>
 		</span>
 	</li>
 </ul>	
-<% if ( allow(sp,"launch") || allow(sp,"key") || allow(sp,"secret") || 
+<% 
+    if ( errorMsg != null ) { %>
+		<div class="alertMessage"><%= errorMsg %></div>
+	<% }
+
+    if ( allow(sp,"launch") || allow(sp,"key") || allow(sp,"secret") || 
         allow(sp,"xml") ||
         allow(sp,"pagetitle") || allow(sp,"tooltitle") ||
         allow(sp,"resource") || allow(sp,"preferwidget") || 
         allow(sp,"height") || allow(sp,"width") || 
         allow(sp,"frameheight") || allow(sp,"custom") || 
         allow(sp, "releasename") || allow(sp,"releaseemail")  ||
-        allow(sp, "allowroster") || allow(sp,"allowsettings") 
+        allow(sp, "allowroster") || allow(sp,"allowsettings") ||
+        allow(sp, "allowlori")
 ) { %>
 <form method="post" action="<%=launchURL.toString()%>">
 <!-- If key and secret are final, then either xml or launch final means no launch change by the user -->
@@ -183,7 +174,7 @@ if ( document.getElementById("UISwitcher") ) switchui();
 
 <% } %>
 
-<% if ( allow(sp,"gradable") ) { %>
+<% if ( allowOutcomes && allow(sp,"gradable") ) { %>
 <h3><%=rb.getString("gradable.information") %></h3>
 <p  class="shorttext" style="clear:none;">
 <label for="imsti.newassignment"><%=rb.getString("gradable.newassignment") %></label>
@@ -193,7 +184,7 @@ if ( document.getElementById("UISwitcher") ) switchui();
 
 <% } %>
 
-<% if ( allow(sp,"gradable") && assignments != null ) { %>
+<% if ( allowOutcomes && allow(sp,"gradable") && assignments != null ) { %>
 <p  class="shorttext" style="clear:none;">
 <%=rb.getString("gradable.title") %>
 <select name="imsti.assignment">
@@ -259,7 +250,9 @@ if ( document.getElementById("UISwitcher") ) switchui();
 <% } %>
 
 <% if ( allow(sp,"releasename") || allow(sp, "releaseemail") || 
-        ( allow(sp, "allowroster") && allowRoster ) ) { %>
+        ( allow(sp, "allowroster") && allowRoster )  || 
+        ( allow(sp, "allowlori") && allowLori ) 
+) { %>
 <h3><%=rb.getString("launch.privacy") %></h3>
 <% if ( allow(sp,"releasename") ) { %>
 	<p class="checkbox indnt1">
@@ -295,6 +288,19 @@ if ( document.getElementById("UISwitcher") ) switchui();
 <% } %>
 <label for="imsti.allowroster"><%=rb.getString("privacy.allowroster") %></label>
 <span class="textPanelFooter"><%=rb.getString("allowroster.detail") %></span>
+</p>
+<% } %>
+<% if ( allow(sp,"allowlori") && allowLori ) { %>
+<p>
+
+<input type="checkbox" size="10" name="imsti.allowlori" id="imsti.allowlori" 
+<% if ( ov.getProperty("imsti.allowlori",null) != null ) { %>
+  checked="yes" />
+<% } else { %>
+   />
+<% } %>
+<label for="imsti.allowlori"><%=rb.getString("privacy.allowlori") %></label>
+<span class="textPanelFooter"><%=rb.getString("allowlori.detail") %></span>
 </p>
 <% } %>
 
@@ -346,3 +352,4 @@ if ( document.getElementById("UISwitcher") ) switchui();
 <% } else { %>
 <p class="instruction">Configuration has been pre-set and cannot be edited for this placement.</p>
 <% } %>
+</div>

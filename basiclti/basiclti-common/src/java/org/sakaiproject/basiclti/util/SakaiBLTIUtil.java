@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
- * $Id: SakaiBLTIUtil.java 113430 2012-09-21 22:20:38Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
+ * $Id: SakaiBLTIUtil.java 120424 2013-02-24 02:02:51Z csev@umich.edu $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *             http://www.osedu.org/licenses/ECL-2.0
+ *             http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,11 +36,14 @@ import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.api.privacy.PrivacyManager;
 import org.sakaiproject.authz.cover.AuthzGroupService;
 import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Web;
 
@@ -57,7 +60,10 @@ public class SakaiBLTIUtil {
 	public static final String BASICLTI_OUTCOMES_ENABLED = "basiclti.outcomes.enabled";
 	public static final String BASICLTI_SETTINGS_ENABLED = "basiclti.settings.enabled";
 	public static final String BASICLTI_ROSTER_ENABLED = "basiclti.roster.enabled";
+	public static final String BASICLTI_LORI_ENABLED = "basiclti.lori.enabled";
 	public static final String BASICLTI_CONTENTLINK_ENABLED = "basiclti.contentlink.enabled";
+	public static final String BASICLTI_CONSUMER_USERIMAGE_ENABLED = "basiclti.consumer.userimage.enabled";
+	public static final String BASICLTI_ENCRYPTION_KEY = "basiclti.encryption.key";
 
 	public static void dPrint(String str)
 	{
@@ -75,6 +81,9 @@ public class SakaiBLTIUtil {
 
 		String allowRoster = ServerConfigurationService.getString(BASICLTI_ROSTER_ENABLED, null);
 		if ( "allowroster".equals(propName) && ! "true".equals(allowRoster) ) return "false";
+
+		String allowLori = ServerConfigurationService.getString(BASICLTI_LORI_ENABLED, null);
+		if ( "allowlori".equals(propName) && ! "true".equals(allowLori) ) return "false";
 
 		String allowContentLink = ServerConfigurationService.getString(BASICLTI_CONTENTLINK_ENABLED, null);
 		if ( "contentlink".equals(propName) && ! "true".equals(allowContentLink) ) return null;
@@ -104,7 +113,19 @@ public class SakaiBLTIUtil {
 			if ( xml == null ) return false;
 			BasicLTIUtil.parseDescriptor(info, launch, xml);
 		}
-		setProperty(info, "secret", getCorrectProperty(config,"secret", placement) );
+
+		String secret = getCorrectProperty(config,"secret", placement);
+
+		// BLTI-195 - Compatibility mode for old-style encrypted secrets
+		if ( secret == null || secret.trim().length() < 1 ) {
+			String eSecret = getCorrectProperty(config,"encryptedsecret", placement);
+			if ( eSecret != null && eSecret.trim().length() > 0 ) {
+				secret = eSecret.trim() + ":" + SimpleEncryption.CIPHER;
+			}
+		}
+
+		setProperty(info, "secret", secret );
+
 		setProperty(info, "key", getCorrectProperty(config,"key", placement) );
 		setProperty(info, "debug", getCorrectProperty(config,"debug", placement) );
 		setProperty(info, "frameheight", getCorrectProperty(config,"frameheight", placement) );
@@ -144,6 +165,31 @@ public class SakaiBLTIUtil {
 		}
 	}
 
+	public static String encryptSecret(String orig)
+	{
+		if ( orig == null || orig.trim().length() < 1 ) return orig;
+		String encryptionKey = ServerConfigurationService.getString(BASICLTI_ENCRYPTION_KEY, null);
+		if ( encryptionKey == null ) return orig;
+	
+		// May throw runtime exception - just let it log as this is abnormal...
+		String newsecret = SimpleEncryption.encrypt(encryptionKey, orig);
+		return newsecret;
+	}
+
+	public static String decryptSecret(String orig)
+	{
+		if ( orig == null || orig.trim().length() < 1 ) return orig;
+		String encryptionKey = ServerConfigurationService.getString(BASICLTI_ENCRYPTION_KEY, null);
+		if ( encryptionKey == null ) return orig;
+		try {
+			String newsecret = SimpleEncryption.decrypt(encryptionKey, orig);
+			return newsecret;
+		} catch (RuntimeException re) {
+			dPrint("Exception when decrypting secret - this is normal if the secret is unencrypted");      
+			return orig;
+		}
+	}
+
 	public static boolean sakaiInfo(Properties props, Placement placement, ResourceLoader rb)
 	{
 		dPrint("placement="+ placement.getId());
@@ -170,6 +216,24 @@ public class SakaiBLTIUtil {
 				setProperty(props,BasicLTIConstants.LIS_COURSE_OFFERING_SOURCEDID,courseRoster);
 			}
 		}
+
+		// Fix up the return Url
+		String returnUrl =	ServerConfigurationService.getString("basiclti.consumer_return_url",null);
+		if ( returnUrl == null ) {
+			returnUrl = getOurServerUrl() + "/imsblis/service/return-url";  
+			Session s = SessionManager.getCurrentSession();
+			if (s != null) {
+				String controllingPortal = (String) s.getAttribute("sakai-controlling-portal");
+				if ( controllingPortal == null ) {
+					returnUrl = returnUrl + "/site";
+				} else {	
+					returnUrl = returnUrl + "/" + controllingPortal;
+				}
+			}
+			returnUrl = returnUrl + "/" + site.getId();
+		}
+
+		setProperty(props, BasicLTIConstants.LAUNCH_PRESENTATION_RETURN_URL, returnUrl);
 	}
 
 	public static void addRoleInfo(Properties props, String context)
@@ -177,13 +241,28 @@ public class SakaiBLTIUtil {
 		String theRole = "Learner";
 		if ( SecurityService.isSuperUser() )
 		{
-			theRole = "Instructor";
+			theRole = "Instructor,Administrator";
 		}
 		else if ( SiteService.allowUpdateSite(context) ) 
 		{
 			theRole = "Instructor";
 		}
-		setProperty(props,"roles",theRole);
+		setProperty(props,BasicLTIConstants.ROLES,theRole);
+
+		String realmId = SiteService.siteReference(context);
+		try {
+			User user = UserDirectoryService.getCurrentUser();
+			if ( user != null ) {
+				Role role = null;
+				String roleId = null;
+				AuthzGroup realm = AuthzGroupService.getAuthzGroup(realmId);
+				if ( realm != null ) role = realm.getUserRole(user.getId());
+				if ( role != null ) roleId = role.getId();
+				if ( roleId != null && roleId.length() > 0 ) setProperty(props, "ext_sakai_role", roleId);
+			}
+		} catch (GroupNotDefinedException e) {
+			dPrint("SiteParticipantHelper.getExternalRealmId: site realm not found"+e.getMessage());
+		}
 	}
 
 	// Retrieve the Sakai information about users, etc.
@@ -227,10 +306,23 @@ public class SakaiBLTIUtil {
 
 		User user = UserDirectoryService.getCurrentUser();
 
+        PrivacyManager pm = (PrivacyManager) 
+                ComponentManager.get("org.sakaiproject.api.privacy.PrivacyManager");
+
 		// TODO: Think about anonymus
 		if ( user != null )
 		{
+		    String context = placement.getContext();
+            boolean isViewable = pm.isViewable("/site/" + context, user.getId());
+            setProperty(props,"ext_sakai_privacy", isViewable ? "visible" : "hidden");
+
 			setProperty(props,BasicLTIConstants.USER_ID,user.getId());
+
+			if(ServerConfigurationService.getBoolean(SakaiBLTIUtil.BASICLTI_CONSUMER_USERIMAGE_ENABLED, true)) {
+                String imageUrl = getOurServerUrl() + "/direct/profile/" + user.getId() + "/image";                     
+                setProperty(props,BasicLTIConstants.USER_IMAGE,imageUrl);
+            }
+
 			if ( "on".equals(releasename) ) {
 				setProperty(props,BasicLTIConstants.LIS_PERSON_NAME_GIVEN,user.getFirstName());
 				setProperty(props,BasicLTIConstants.LIS_PERSON_NAME_FAMILY,user.getLastName());
@@ -261,6 +353,9 @@ public class SakaiBLTIUtil {
 
 			String allowRoster = toNull(getCorrectProperty(config,"allowroster", placement));
 			if ( ! "on".equals(allowRoster) ) allowRoster = null;
+
+			String allowLori = toNull(getCorrectProperty(config,"allowlori", placement));
+			if ( ! "on".equals(allowLori) ) allowLori = null;
 
 			String result_sourcedid = getSourceDID(user, placement, config);
 			if ( result_sourcedid != null ) {
@@ -296,6 +391,17 @@ public class SakaiBLTIUtil {
 					if ( roster_url == null ) roster_url = getOurServerUrl() + "/imsblis/service/";  
 					setProperty(props,"ext_ims_lis_memberships_url", roster_url);  
 				}
+
+				if ( "on".equals(allowLori) ) {
+					setProperty(props,"ext_lori_api_token", result_sourcedid);  
+					setProperty(props,"lis_result_sourcedid", result_sourcedid);  
+					String lori_url = ServerConfigurationService.getString("basiclti.consumer.ext_lori_api_url",null);
+					if ( lori_url == null ) lori_url = getOurServerUrl() + "/imsblis/service/";  
+					String lori_url_xml = ServerConfigurationService.getString("basiclti.consumer.ext_lori_api_url_xml",null);
+					if ( lori_url_xml == null ) lori_url_xml = getOurServerUrl() + "/imsblis/service/";  
+					setProperty(props,"ext_lori_api_url", lori_url);  
+					setProperty(props,"ext_lori_api_url_xml", lori_url_xml);  
+				}
 			}
 		}
 
@@ -303,6 +409,18 @@ public class SakaiBLTIUtil {
 		String contentlink = toNull(getCorrectProperty(config,"contentlink", placement));
 		if ( contentlink != null ) setProperty(props,"ext_resource_link_content",contentlink);
 
+		// Send along the signed session if requested
+		String sendsession = toNull(getCorrectProperty(config,"ext_sakai_session", placement));
+		if ( "true".equals(sendsession) ) {
+			Session s = SessionManager.getCurrentSession();
+			if (s != null) {
+				String sessionid = s.getId();
+				if (sessionid != null) {
+					sessionid = LinkToolUtil.encrypt(sessionid);
+					setProperty(props,"ext_sakai_session",sessionid);
+				}
+			}
+		}
 	} 
 
 	public static void addGlobalData(Properties props, ResourceLoader rb)
@@ -321,8 +439,6 @@ public class SakaiBLTIUtil {
 				ServerConfigurationService.getString("basiclti.consumer_instance_contact_email",null));
 		setProperty(props,BasicLTIConstants.TOOL_CONSUMER_INSTANCE_URL, 
 				ServerConfigurationService.getString("basiclti.consumer_instance_url",null));
-		setProperty(props,BasicLTIConstants.LAUNCH_PRESENTATION_RETURN_URL, 
-				ServerConfigurationService.getString("basiclti.consumer_return_url",null));
 
 		// Send along the CSS URL
 		String tool_css = ServerConfigurationService.getString("basiclti.consumer.launch_presentation_css_url",null);
@@ -335,15 +451,6 @@ public class SakaiBLTIUtil {
 		setProperty(props,BasicLTIConstants.TOOL_CONSUMER_INFO_PRODUCT_FAMILY_CODE, 
 			sakaiVersion);  
 		setProperty(props,BasicLTIConstants.TOOL_CONSUMER_INFO_VERSION, sakaiVersion);  
-		// Sakai-Unique fields - compatible with LinkTool
-		Session s = SessionManager.getCurrentSession();
-		if (s != null) {
-			String sessionid = s.getId();
-			if (sessionid != null) {
-				sessionid = LinkToolUtil.encrypt(sessionid);
-				setProperty(props,"ext_sakai_session",sessionid);
-			}
-		}
 
 		// We pass this along in the Sakai world - it might
 		// might be useful to the external tool
@@ -389,7 +496,9 @@ public class SakaiBLTIUtil {
 		int status = getInt(tool.get("status"));
 		if ( status == 1 ) return postError("<p>" + getRB(rb, "tool.disabled" ,"Tool is currently disabled")+"</p>" ); 
 
-		String launch_url = (String) tool.get("launch");
+		// Go with the content url first
+		String launch_url = (String) content.get("launch");
+		if ( launch_url == null ) launch_url = (String) tool.get("launch");
 		if ( launch_url == null ) return postError("<p>" + getRB(rb, "error.nolaunch" ,"This tool is not yet configured.")+"</p>" );
 
 		String context = (String) content.get("SITE_ID");
@@ -408,12 +517,15 @@ public class SakaiBLTIUtil {
 		addSiteInfo(ltiProps, site);
 		addRoleInfo(ltiProps, context);
 
-		setProperty(ltiProps,BasicLTIConstants.RESOURCE_LINK_ID,"content:"+content.get("id"));
+		String resource_link_id = "content:"+content.get("id");
+		setProperty(ltiProps,BasicLTIConstants.RESOURCE_LINK_ID,resource_link_id);
 
 		setProperty(toolProps, "launch_url", launch_url);
 
-		String secret = (String) tool.get("secret");
-		String key = (String) tool.get("consumerkey");
+		String secret = (String) content.get("secret");
+		if ( secret == null ) secret = (String) tool.get("secret");
+		String key = (String) content.get("consumerkey");
+		if ( key == null ) key = (String) tool.get("consumerkey");
 
 		if ( "-----".equals(key) && "-----".equals(secret) ) {
 			return postError("<p>" + getRB(rb, "error.tool.partial" ,"Tool item is incomplete, missing a key and secret.")+"</p>" ); 
@@ -422,9 +534,17 @@ public class SakaiBLTIUtil {
 		setProperty(toolProps, "secret", secret );
 		setProperty(toolProps, "key", key );
 
-		setProperty(toolProps, "debug", getInt(content.get("debug"))+"" );
-		setProperty(toolProps, "frameheight", getInt(content.get("frameheight"))+"" );
-		setProperty(toolProps, "newpage", getInt(content.get("newpage"))+"" );
+		int debug = getInt(tool.get("debug"));
+		if ( debug == 2 ) debug = getInt(content.get("debug"));
+		setProperty(toolProps, "debug", debug+"");
+
+		int frameheight = getInt(tool.get("frameheight"));
+		if ( frameheight == 2 ) frameheight = getInt(content.get("frameheight"));
+		setProperty(toolProps, "frameheight", frameheight+"" );
+
+		int newpage = getInt(tool.get("newpage"));
+		if ( newpage == 2 ) newpage = getInt(content.get("newpage"));
+		setProperty(toolProps, "newpage", newpage+"" );
 
 		String title = (String) content.get("title");
 		if ( title == null ) title = (String) tool.get("title");
@@ -452,6 +572,63 @@ public class SakaiBLTIUtil {
 			if ( releaseemail == 1 ) {
 				setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_CONTACT_EMAIL_PRIMARY,user.getEmail());
 				setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_SOURCEDID,user.getEid());
+				// Only send the display ID if it's different to the EID.
+				if (!user.getEid().equals(user.getDisplayId())) {
+					setProperty(ltiProps,BasicLTIConstants.EXT_SAKAI_PROVIDER_DISPLAYID,user.getDisplayId());
+				}
+			}
+		}
+
+		int allowoutcomes = getInt(tool.get("allowoutcomes"));
+		int allowroster = getInt(tool.get("allowroster"));
+		int allowsettings = getInt(tool.get("allowsettings"));
+		int allowlori = getInt(tool.get("allowlori"));
+		String placement_secret = (String) content.get("placementsecret");
+
+		String result_sourcedid = getSourceDID(user, resource_link_id, placement_secret);
+		if ( result_sourcedid != null ) {
+
+			if ( allowoutcomes == 1 ) {
+				setProperty(ltiProps,"lis_result_sourcedid", result_sourcedid);  
+
+				// New Basic Outcomes URL
+				String outcome_url = ServerConfigurationService.getString("basiclti.consumer.ext_ims_lis_basic_outcome_url",null);
+				if ( outcome_url == null ) outcome_url = getOurServerUrl() + "/imsblis/service/";  
+				setProperty(ltiProps,"ext_ims_lis_basic_outcome_url", outcome_url);  
+				outcome_url = ServerConfigurationService.getString("basiclti.consumer."+BasicLTIConstants.LIS_OUTCOME_SERVICE_URL,null);
+				if ( outcome_url == null ) outcome_url = getOurServerUrl() + "/imsblis/service/";  
+				setProperty(ltiProps,BasicLTIConstants.LIS_OUTCOME_SERVICE_URL, outcome_url);  
+			}
+
+			if ( allowsettings == 1 ) {
+				setProperty(ltiProps,"ext_ims_lti_tool_setting_id", result_sourcedid);  
+
+				String setting = (String) content.get("settings");
+				if ( setting != null ) {
+					setProperty(ltiProps,"ext_ims_lti_tool_setting", setting);  
+				}
+				String service_url = ServerConfigurationService.getString("basiclti.consumer.ext_ims_lti_tool_setting_url",null);
+				if ( service_url == null ) service_url = getOurServerUrl() + "/imsblis/service/";  
+				setProperty(ltiProps,"ext_ims_lti_tool_setting_url", service_url);  
+			}
+
+			if ( allowroster == 1 ) {
+				setProperty(ltiProps,"ext_ims_lis_memberships_id", result_sourcedid);  
+
+				String roster_url = ServerConfigurationService.getString("basiclti.consumer.ext_ims_lis_memberships_url",null);
+				if ( roster_url == null ) roster_url = getOurServerUrl() + "/imsblis/service/";  
+				setProperty(ltiProps,"ext_ims_lis_memberships_url", roster_url);  
+			}
+
+			if ( allowlori == 1 ) {
+				setProperty(ltiProps,"ext_lori_api_token", result_sourcedid);  
+				setProperty(ltiProps,"lis_result_sourcedid", result_sourcedid);  
+				String lori_url = ServerConfigurationService.getString("basiclti.consumer.ext_lori_api_url",null);
+				if ( lori_url == null ) lori_url = getOurServerUrl() + "/imsblis/service/";  
+				String lori_url_xml = ServerConfigurationService.getString("basiclti.consumer.ext_lori_api_url_xml",null);
+				if ( lori_url_xml == null ) lori_url_xml = getOurServerUrl() + "/imsblis/service/";  
+				setProperty(ltiProps,"ext_lori_api_url", lori_url);  
+				setProperty(ltiProps,"ext_lori_api_url_xml", lori_url_xml);  
 			}
 		}
 
@@ -512,6 +689,9 @@ public class SakaiBLTIUtil {
 			key = toNull(toolProps.getProperty("key"));
 		}
 
+		// If secret is encrypted, decrypt it
+		secret = decryptSecret(secret);
+
 		// Pull in all of the custom parameters
 		for(Object okey : toolProps.keySet() ) {
 			String skey = (String) okey;  
@@ -551,12 +731,17 @@ public class SakaiBLTIUtil {
 		return retval;
 	}
 
-
 	public static String getSourceDID(User user, Placement placement, Properties config)
 	{
 		String placementSecret = toNull(getCorrectProperty(config,"placementsecret", placement));
 		if ( placementSecret == null ) return null;
-		String suffix = ":::" +  user.getId() + ":::" + placement.getId();
+		return getSourceDID(user, placement.getId(), placementSecret);
+	}
+
+	public static String getSourceDID(User user, String placeStr, String placementSecret)
+	{
+		if ( placementSecret == null ) return null;
+		String suffix = ":::" +  user.getId() + ":::" + placeStr;
 		String base_string = placementSecret + suffix;
 		String signature = ShaUtil.sha256Hash(base_string);
 		return signature + suffix;

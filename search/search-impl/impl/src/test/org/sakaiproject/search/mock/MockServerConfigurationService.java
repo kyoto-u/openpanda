@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/test/org/sakaiproject/search/mock/MockServerConfigurationService.java $
- * $Id: MockServerConfigurationService.java 98101 2011-09-13 02:44:40Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/test/org/sakaiproject/search/mock/MockServerConfigurationService.java $
+ * $Id: MockServerConfigurationService.java 122968 2013-04-18 15:18:43Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -23,6 +23,7 @@ package org.sakaiproject.search.mock;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
 import org.sakaiproject.component.api.ServerConfigurationService;
 
@@ -280,6 +281,14 @@ public class MockServerConfigurationService implements ServerConfigurationServic
 
     public void registerListener(ConfigurationListener configurationListener) {
         
+    }
+
+    public Locale[] getSakaiLocales() {
+        return new Locale[] {Locale.getDefault()};
+    }
+
+    public Locale getLocaleFromString(String localeString) {
+        return Locale.getDefault();
     }
 
 }

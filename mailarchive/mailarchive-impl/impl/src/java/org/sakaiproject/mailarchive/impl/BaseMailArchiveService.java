@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.1/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/BaseMailArchiveService.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/mailarchive-2.9.2/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/BaseMailArchiveService.java $
  * $Id: BaseMailArchiveService.java 97074 2011-08-16 20:24:30Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

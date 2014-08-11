@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbContentService.java $
- * $Id: DbContentService.java 114480 2012-10-17 15:05:52Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbContentService.java $
+ * $Id: DbContentService.java 124903 2013-05-23 16:28:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -3263,10 +3263,10 @@ public class DbContentService extends BaseContentService
     {
         long size = 0L;
 
-        String sql = contentServiceSql.getQuotaQuerySql();
+        String sql = context.startsWith(COLLECTION_DROPBOX)?contentServiceSql.getDropBoxQuotaQuerySql():contentServiceSql.getQuotaQuerySql();
 
         Object [] fields = new Object[1];
-        fields[0] = context;
+        fields[0] = context.startsWith(COLLECTION_DROPBOX)?context+"%":context;
 
         List list = m_sqlService.dbRead(sql, fields, null);
         if(list != null && ! list.isEmpty())

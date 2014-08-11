@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.1/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesMetadata.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.2/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesMetadata.java $
  * $Id: ResourcesMetadata.java 79080 2010-07-06 11:58:13Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

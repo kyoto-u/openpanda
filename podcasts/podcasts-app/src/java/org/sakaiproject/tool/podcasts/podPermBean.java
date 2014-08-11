@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.1/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podPermBean.java $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-2.9.2/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podPermBean.java $
  * $Id: podPermBean.java 59679 2009-04-03 23:27:51Z arwhyte@umich.edu $
  ***********************************************************************************
  *

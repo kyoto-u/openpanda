@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.1/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
- * $Id: CalendarAction.java 118539 2013-01-21 16:46:53Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
+ * $Id: CalendarAction.java 123595 2013-05-03 18:01:44Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -61,6 +61,7 @@ import org.sakaiproject.calendar.api.RecurrenceRule;
 import org.sakaiproject.calendar.cover.CalendarImporterService;
 import org.sakaiproject.calendar.cover.CalendarService;
 import org.sakaiproject.calendar.cover.ExternalCalendarSubscriptionService;
+import org.sakaiproject.calendar.tool.CalendarActionState.LocalEvent;
 import org.sakaiproject.cheftool.Context;
 import org.sakaiproject.cheftool.JetspeedRunData;
 import org.sakaiproject.cheftool.RunData;
@@ -2440,6 +2441,7 @@ extends VelocityPortletStateAction
 		context.put("tlang",rb);
 		context.put("config",configProps);
 		context.put("dateFormat", getDateFormatString());
+		context.put("timeFormat", getTimeFormatString());
       
 		return template;
 		
@@ -2581,6 +2583,12 @@ extends VelocityPortletStateAction
 		
 		context.put("realDate", TimeService.newTime());
 				
+		if (DEFAULT_FREQ.equals(freq))
+		{
+			LocalEvent savedData = state.getNewData();
+			Time m_time = TimeService.newTimeLocal(savedData.getYearInt(), savedData.getMonth(), savedData.getDay(), 0, 0, 0, 0);
+			context.put("freqOnceDate", m_time.toStringLocalDate());
+		}
 	} // buildFrequencyContext
 	
 	/**

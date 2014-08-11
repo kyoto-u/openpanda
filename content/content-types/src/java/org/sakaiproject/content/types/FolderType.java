@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.1/content-types/src/java/org/sakaiproject/content/types/FolderType.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-2.9.2/content-types/src/java/org/sakaiproject/content/types/FolderType.java $
  * $Id: FolderType.java 99117 2011-10-10 21:36:52Z aaronz@vt.edu $
  ***********************************************************************************
  *

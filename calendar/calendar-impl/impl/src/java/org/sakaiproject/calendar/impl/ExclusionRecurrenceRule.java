@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.1/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/ExclusionRecurrenceRule.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/ExclusionRecurrenceRule.java $
  * $Id: ExclusionRecurrenceRule.java 90425 2011-03-23 09:38:42Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

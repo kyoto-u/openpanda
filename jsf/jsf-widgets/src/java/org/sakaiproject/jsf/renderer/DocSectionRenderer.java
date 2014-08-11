@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.1/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/DocSectionRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.2/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/DocSectionRenderer.java $
 * $Id: DocSectionRenderer.java 68846 2009-11-13 12:27:32Z arwhyte@umich.edu $
 ***********************************************************************************
 *

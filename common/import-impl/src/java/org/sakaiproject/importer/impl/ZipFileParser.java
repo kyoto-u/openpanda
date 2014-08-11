@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/import-impl/src/java/org/sakaiproject/importer/impl/ZipFileParser.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/import-impl/src/java/org/sakaiproject/importer/impl/ZipFileParser.java $
  * $Id: ZipFileParser.java 118449 2013-01-17 21:03:19Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

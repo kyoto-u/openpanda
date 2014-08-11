@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/component/impl/BasicConfigurationService.java $
- * $Id: BasicConfigurationService.java 109792 2012-06-28 13:42:54Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/component/impl/BasicConfigurationService.java $
+ * $Id: BasicConfigurationService.java 122992 2013-04-18 17:35:55Z azeckoski@unicon.net $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -27,10 +27,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -38,11 +40,15 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Arrays;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.api.ServerConfigurationService.ConfigurationListener.BlockingConfigItem;
+import org.sakaiproject.component.locales.SakaiLocales;
 import org.sakaiproject.thread_local.api.ThreadLocalManager;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.util.SakaiProperties;
@@ -102,6 +108,9 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
 
     /** default tool id to tool category maps mapped by site type */
     private Map<String, Map<String, String>> m_toolToToolCategoriesMap = new HashMap<String, Map<String, String>>();
+
+    private static final String SAKAI_LOCALES_KEY = "locales";
+    private static final String SAKAI_LOCALES_MORE = "locales.more"; // default is blank/null
 
 
     /**********************************************************************************************************************************************************************************************************************************************************
@@ -165,6 +174,11 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
             }
         }
         M_log.info("Configured "+this.secureConfigurationKeys.size()+" secured key names: "+this.secureConfigurationKeys);
+
+        // load up some things that are not part of the config but are used by it
+        this.addConfigItem(new ConfigItemImpl("sakai.home", this.getSakaiHomePath()), "SCS");
+        this.addConfigItem(new ConfigItemImpl("sakai.gatewaySiteId", this.getGatewaySiteId()), "SCS");
+        this.addConfigItem(new ConfigItemImpl("portal.loggedOutURL", this.getLoggedOutUrl()), "SCS");
 
         // put all the properties into the configuration map
         Map<String, Properties> allSakaiProps = sakaiProperties.getSeparateProperties();
@@ -497,8 +511,6 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
         if (ci != null) {
             if (ci.getValue() != null) {
                 value = StringUtils.trimToNull(ci.getValue().toString());
-                // check if we need to do any variable replacement
-                value = dereferenceValue(value);
             } else {
                 // if the default value is set then we will return that instead
                 if (ci.getDefaultValue() != null) {
@@ -507,6 +519,10 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
                     // the stored value and default value are null so we will allow the dflt to override
                 }
             }
+        }
+        if (StringUtils.isNotEmpty(value)) {
+            // check if we need to do any variable replacement
+            value = dereferenceValue(value);
         }
         return value;
     }
@@ -628,14 +644,21 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
             // store the array in the properties
             this.addConfigItem(new ConfigItemImpl(name, rv, TYPE_ARRAY, SOURCE_GET_STRINGS), SOURCE_GET_STRINGS);
         } else {
-            String value = getString(name);
-            if (!StringUtils.isBlank(value)) {
-                CSVParser csvParser = new CSVParser(',','"','\\',false,true); // should configure this for default CSV parsing
-                try {
-                    rv = csvParser.parseLine(value);
+            if (findConfigItem(name, null) != null) {
+                // the config name exists
+                String value = getString(name);
+                if (StringUtils.isBlank(value)) {
+                    // empty value is an empty array
+                    rv = new String[0];
                     this.addConfigItem(new ConfigItemImpl(name, rv, TYPE_ARRAY, SOURCE_GET_STRINGS), SOURCE_GET_STRINGS);
-                } catch (IOException e) {
-                    M_log.warn("Config property ("+name+") read as multi-valued string, but failure occurred while parsing: "+e, e);
+                } else {
+                    CSVParser csvParser = new CSVParser(',','"','\\',false,true); // should configure this for default CSV parsing
+                    try {
+                        rv = csvParser.parseLine(value);
+                        this.addConfigItem(new ConfigItemImpl(name, rv, TYPE_ARRAY, SOURCE_GET_STRINGS), SOURCE_GET_STRINGS);
+                    } catch (IOException e) {
+                        M_log.warn("Config property ("+name+") read as multi-valued string, but failure occurred while parsing: "+e, e);
+                    }
                 }
             }
         }
@@ -898,6 +921,91 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
         return id;
     }
 
+
+    /**
+     * Get the list of allowed locales as controlled by config params for {@value #SAKAI_LOCALES_KEY} and {@value #SAKAI_LOCALES_MORE}
+     * @return an array of all allowed Locales for this installation
+     */
+    public Locale[] getSakaiLocales() {
+        String localesStr = getString(SAKAI_LOCALES_KEY, SakaiLocales.SAKAI_LOCALES_DEFAULT);
+        if (localesStr == null) { // means locales= is set
+            localesStr = ""; // empty to get default locale only
+        } else if (StringUtils.isBlank(localesStr)) { // missing or not set
+            localesStr = SakaiLocales.SAKAI_LOCALES_DEFAULT;
+        }
+        String[] locales = StringUtils.split(localesStr, ','); // NOTE: these need to be trimmed (which getLocaleFromString will do)
+        String[] localesMore = getStrings(SAKAI_LOCALES_MORE);
+
+        locales = (String[]) ArrayUtils.addAll(locales, localesMore);
+        HashSet<Locale> localesSet = new HashSet<Locale>();
+        // always include the default locale
+        localesSet.add(Locale.getDefault());
+        if (!ArrayUtils.isEmpty(locales)) {
+            // convert from strings to Locales
+            for (int i = 0; i < locales.length; i++) {
+                localesSet.add(getLocaleFromString(locales[i]));
+            }
+        }
+        // Sort Locales and remove duplicates
+        Locale[] localesArray = localesSet.toArray(new Locale[localesSet.size()]);
+        Arrays.sort(localesArray, new LocaleComparator());
+        return localesArray;
+    }
+
+    /**
+     * Comparator for sorting locale by DisplayName
+     */
+    static final class LocaleComparator implements Comparator<Locale> {
+        /**
+         * Compares Locale objects by comparing the DisplayName
+         * 
+         * @param localeOne
+         *        1st Locale Object for comparison
+         * @param localeTwo
+         *        2nd Locale Object for comparison
+         * @return negative, zero, or positive integer
+         *        (obj1 charge is less than, equal to, or greater than the obj2 charge)
+         */
+        public int compare(Locale localeOne, Locale localeTwo) {
+            String displayNameOne = localeOne.getDisplayName();
+            String displayNameTwo = localeTwo.getDisplayName();
+            return displayNameOne.compareTo(displayNameTwo);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof LocaleComparator) {
+                return super.equals(obj);
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.sakaiproject.component.api.ServerConfigurationService#getLocaleFromString(java.lang.String)
+     */
+    public Locale getLocaleFromString(String localeString) {
+        // should this just use LocalUtils.toLocale()? - can't - it thinks en_GB is invalid for example
+        if (localeString != null) {
+            // force en-US (dash separated) values into underscore style
+            localeString = StringUtils.replaceChars(localeString, '-', '_');
+        } else {
+            return null;
+        }
+        String[] locValues = localeString.trim().split("_");
+        if (locValues.length >= 3 && StringUtils.isNotBlank(locValues[2])) {
+            return new Locale(locValues[0], locValues[1], locValues[2]); // language, country, variant
+        } else if (locValues.length == 2 && StringUtils.isNotBlank(locValues[1])) {
+            return new Locale(locValues[0], locValues[1]); // language, country
+        } else if (locValues.length == 1 && StringUtils.isNotBlank(locValues[0])) {
+            return new Locale(locValues[0]); // language
+        } else {
+            return Locale.getDefault();
+        }
+    }
+
+
     public void setSakaiProperties(SakaiProperties sakaiProperties) {
         this.sakaiProperties = sakaiProperties;
     }
@@ -974,41 +1082,83 @@ public class BasicConfigurationService implements ServerConfigurationService, Ap
     protected ConfigItemImpl addConfigItem(ConfigItemImpl configItem, String source) {
         ConfigItemImpl ci = null;
         if (configItem != null) {
+            ConfigItemImpl currentCI = null;
             if (configurationItems.containsKey(configItem.getName())) {
-                // update it
-                ConfigItemImpl currentCI = configurationItems.get(configItem.getName());
-                if (!SOURCE_GET_STRINGS.equals(source)) {
-                    // only update if the source is not the getStrings() method
-                    currentCI.changed(configItem.getValue(), source);
-                }
-                ci = currentCI;
-            } else {
-                // add it
-                configItem.setSource(source);
-                if (secureConfigurationKeys.contains(configItem.getName())) {
-                    configItem.secured = true;
-                }
-                configurationItems.put(configItem.getName(), configItem);
-                ci = configItem;
+                // item exists
+                currentCI = configurationItems.get(configItem.getName());
             }
 
-            // notify the listeners
+            // notify the before listeners
+            boolean haltProcessing = false;
             if (this.listeners != null && !this.listeners.isEmpty()) {
                 for (Entry<String, WeakReference<ConfigurationListener>> entry : this.listeners.entrySet()) {
                     // check if any listener refs are no longer valid
                     ConfigurationListener listener = entry.getValue().get();
                     if (listener != null) {
                         try {
-                            listener.changed(ci);
+                            ConfigItem rvci = listener.changing(currentCI, configItem);
+                            if (rvci == null) {
+                                // continue
+                            } else if (rvci instanceof BlockingConfigItem) {
+                                haltProcessing = true;
+                                M_log.info("add configItem ("+configItem+") processing halted by "+listener);
+                                break; // HALT processing
+                            } else {
+                                // merge in the safe changes to the config item
+                                configItem.merge(rvci);
+                            }
                         } catch (Exception e) {
                             M_log.warn("Exception when calling listener ("+listener+"): "+e);
                         }
                     } else {
+                        // cleanup bad listener ref
                         this.listeners.remove(entry.getKey());
                     }
                 }
             }
-            // DONE with notifying listeners
+
+            if (!haltProcessing) {
+                // update the config item
+                if (currentCI != null) {
+                    // update it
+                    if (!SOURCE_GET_STRINGS.equals(source)) {
+                        // only update if the source is not the getStrings() method
+                        currentCI.changed(configItem.getValue(), source);
+                        if (!currentCI.isRegistered() && configItem.isRegistered()) {
+                            // need to force items which are not yet registered to be registered
+                            currentCI.registered = true;
+                        }
+                    }
+                    ci = currentCI;
+                } else {
+                    // add the new one
+                    configItem.setSource(source);
+                    if (secureConfigurationKeys.contains(configItem.getName())) {
+                        configItem.secured = true;
+                    }
+                    configurationItems.put(configItem.getName(), configItem);
+                    ci = configItem;
+                }
+
+                // notify the after listeners
+                if (this.listeners != null && !this.listeners.isEmpty()) {
+                    for (Entry<String, WeakReference<ConfigurationListener>> entry : this.listeners.entrySet()) {
+                        // check if any listener refs are no longer valid
+                        ConfigurationListener listener = entry.getValue().get();
+                        if (listener != null) {
+                            try {
+                                listener.changed(ci, currentCI);
+                            } catch (Exception e) {
+                                M_log.warn("Exception when calling listener ("+listener+"): "+e);
+                            }
+                        } else {
+                            // cleanup bad listener ref
+                            this.listeners.remove(entry.getKey());
+                        }
+                    }
+                }
+                // DONE with notifying listeners
+            }
         }
         return ci;
     }

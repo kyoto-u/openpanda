@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/XLContentDigester.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/XLContentDigester.java $
  * $Id: XLContentDigester.java 67160 2009-10-05 11:10:05Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

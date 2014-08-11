@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.1/message-api/api/src/java/org/sakaiproject/message/api/MessageChannel.java $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.2/message-api/api/src/java/org/sakaiproject/message/api/MessageChannel.java $
  * $Id: MessageChannel.java 90084 2011-03-20 08:14:50Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

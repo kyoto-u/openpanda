@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>2.9.0</version>
+        <version>2.9.2</version>
 		<relativePath>../master/pom.xml</relativePath>
     </parent>
 
     <name>sakai-message base pom</name>
     <groupId>org.sakaiproject.message</groupId>
     <artifactId>message</artifactId>
-    <version>2.9.1</version>
+    <version>2.9.2</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -23,9 +23,9 @@
     </modules>
     
     <scm>
-        <connection>scm:svn:https://source.sakaiproject.org/svn/message/tags/message-2.9.1</connection>
-        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/message/tags/message-2.9.1</developerConnection>
-        <url>https://source.sakaiproject.org/svn/message/tags/message-2.9.1</url>
+        <connection>scm:svn:https://source.sakaiproject.org/svn/message/tags/message-2.9.2</connection>
+        <developerConnection>scm:svn:https://source.sakaiproject.org/svn/message/tags/message-2.9.2</developerConnection>
+        <url>https://source.sakaiproject.org/svn/message/tags/message-2.9.2</url>
     </scm>
     
     <dependencyManagement>

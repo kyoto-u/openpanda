@@ -1,6 +1,6 @@
 /*
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/basiclti-util/src/java/org/imsglobal/basiclti/BasicLTIUtil.java $
- * $Id: BasicLTIUtil.java 98512 2011-09-22 17:59:08Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-util/src/java/org/imsglobal/basiclti/BasicLTIUtil.java $
+ * $Id: BasicLTIUtil.java 120379 2013-02-21 23:51:30Z csev@umich.edu $
  *
  * Copyright (c) 2008 IMS GLobal Learning Consortium
  *
@@ -459,9 +459,9 @@ public class BasicLTIUtil {
 				String value = entry.getValue();
 				if (value == null)
 					continue;
-				text.append(key);
+				text.append(htmlspecialchars(key));
 				text.append("=");
-				text.append(value);
+				text.append(htmlspecialchars(value));
 				text.append("\n");
 			}
 			text.append("</pre>\n");

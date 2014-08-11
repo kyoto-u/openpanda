@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/authz/api/DisplayGroupProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/authz/api/DisplayGroupProvider.java $
  * $Id: DisplayGroupProvider.java 68306 2009-10-27 21:09:19Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

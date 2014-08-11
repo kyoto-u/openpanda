@@ -1,6 +1,6 @@
  /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.1/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
- * $Id: AnnouncementAction.java 116673 2012-11-21 16:13:57Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/announcement-2.9.2/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
+ * $Id: AnnouncementAction.java 122893 2013-04-17 13:06:11Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1427,7 +1427,7 @@ public class AnnouncementAction extends PagedResourceActionII
 	{
 		List messageList = new ArrayList();
 
-		MergedList mergedAnnouncementList = new MergedList();
+		MergedList mergedAnnouncementList = new MergedList(); 
 
 		// TODO - MERGE FIX
 		String[] channelArrayFromConfigParameterValue = null;	
@@ -1927,40 +1927,6 @@ public class AnnouncementAction extends PagedResourceActionII
 				}
 				AnnouncementMessageEdit edit = state.getEdit();
 
-				/*This part is a repetition and not needed
-				  
-				 // Get/set release information
-				Time releaseDate = null;
-				try 
-				{
-					releaseDate = edit.getProperties().getTimeProperty(AnnouncementService.RELEASE_DATE);					
-					context.put("useReleaseDate", Boolean.valueOf(true));
-				} 
-				catch (Exception e) 
-				{
-					// Set inital release date to creation date
-					releaseDate = edit.getHeader().getDate();
-				} 
-
-				context.put(AnnouncementService.RELEASE_DATE, releaseDate);
-
-				// Get/set retract information
-				Time retractDate = null;
-				try 
-				{
-					retractDate = edit.getProperties().getTimeProperty(AnnouncementService.RETRACT_DATE);
-					context.put("useRetractDate", Boolean.valueOf(true));
-				} 
-				catch (Exception e) 
-				{
-					// Set inital retract date to approx 2 months from today
-					final long futureTimeLong = TimeService.newTime().getTime() + MILLISECONDS_IN_DAY * FUTURE_DAYS;			
-					retractDate = TimeService.newTime(futureTimeLong);
-				}
-
-				context.put(AnnouncementService.RETRACT_DATE, retractDate);
-				*/
-
 				// group list which user can remove message from
 				// TODO: this is almost right (see chef_announcements-revise.vm)... ideally, we would let the check groups that they can add to,
 				// and uncheck groups they can remove from... only matters if the user does not have both add and remove -ggolden
@@ -1988,17 +1954,6 @@ public class AnnouncementAction extends PagedResourceActionII
 
 				if (groups.size() > 0)
 				{
-					/*String sort = (String) sstate.getAttribute(STATE_CURRENT_SORTED_BY);
-					boolean asc = sstate.getAttribute(STATE_CURRENT_SORT_ASC) != null ? ((Boolean) sstate
-							.getAttribute(STATE_CURRENT_SORT_ASC)).booleanValue() : true;
-					if (sort == null || (!sort.equals(SORT_GROUPTITLE) && !sort.equals(SORT_GROUPDESCRIPTION)))
-					{
-						sort = SORT_GROUPTITLE;
-						sstate.setAttribute(STATE_CURRENT_SORTED_BY, sort);
-						state.setCurrentSortedBy(sort);
-						//state.setCurrentSortAsc(Boolean.FALSE.booleanValue());
-						state.setCurrentSortAsc(state.getCurrentSortAsc());
-					}*/
 					Collection sortedGroups = new Vector();
 					//for (Iterator i = new SortedIterator(groups.iterator(), new AnnouncementComparator(sort, asc)); i.hasNext();)
 					for (Iterator i = new SortedIterator(groups.iterator(), new AnnouncementComparator(SORT_GROUPTITLE, true)); i.hasNext();)
@@ -2011,6 +1966,7 @@ public class AnnouncementAction extends PagedResourceActionII
 		}
 		catch (Exception ignore)
 		{
+			M_log.debug(ignore.getMessage());
 		}
 
 		List attachments = state.getAttachments();
@@ -2589,7 +2545,7 @@ public class AnnouncementAction extends PagedResourceActionII
 	} // doNewannouncement
 
 	/**
-	 * Dispatcher function for various actions on add/revise announcement page
+	 * Dispatcher function for various actions on add/revise announcement page (excluding attachments)
 	 */
 	public void doAnnouncement_form(RunData data, Context context)
 	{
@@ -2830,9 +2786,6 @@ public class AnnouncementAction extends PagedResourceActionII
 		
 		// announce to public?
 		final String announceTo = state.getTempAnnounceTo();
-//		Placement placement = ToolManager.getCurrentPlacement();
-//		if(placement!= null && ("MOTD".equals(placement.getTitle()) && placement.getId().contains("admin")))
-//			annouceTo="pubview";
 
 		// there is any error message caused by empty subject or body
 		if (sstate.getAttribute(STATE_MESSAGE) != null)
@@ -3684,9 +3637,9 @@ public class AnnouncementAction extends PagedResourceActionII
 	public void doAttachments(RunData data, Context context)
 	{
 		AnnouncementActionState actionState = (AnnouncementActionState) getState(context, data, AnnouncementActionState.class);
-		if (actionState.getChannelId().contains("motd")){
-		ToolSession session = SessionManager.getCurrentToolSession();
-        session.setAttribute(FilePickerHelper.FILE_PICKER_ATTACH_LINKS, new Boolean(true).toString());
+		if (actionState.getChannelId().contains("motd")){  //! message of the day 
+			ToolSession session = SessionManager.getCurrentToolSession();
+			session.setAttribute(FilePickerHelper.FILE_PICKER_ATTACH_LINKS, new Boolean(true).toString());
 		}
         
 		// get into helper mode with this helper tool
@@ -3695,37 +3648,6 @@ public class AnnouncementAction extends PagedResourceActionII
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
 		AnnouncementActionState myState = (AnnouncementActionState) getState(context, data, AnnouncementActionState.class);
 
-		// // setup... we'll use the ResourcesAction's mode
-		// state.setAttribute(ResourcesAction.STATE_MODE, ResourcesAction.MODE_HELPER);
-		// state.setAttribute(ResourcesAction.STATE_RESOURCES_HELPER_MODE, ResourcesAction.MODE_ATTACHMENT_SELECT);
-		// boolean show_other_sites = ServerConfigurationService.getBoolean("resources.show_all_collections.helper", ResourcesAction.SHOW_ALL_SITES_IN_FILE_PICKER);
-		// /** This attribute indicates whether "Other Sites" twiggle should show */
-		// state.setAttribute(ResourcesAction.STATE_SHOW_ALL_SITES, Boolean.toString(show_other_sites));
-		// /** This attribute indicates whether "Other Sites" twiggle should be open */
-		// state.setAttribute(ResourcesAction.STATE_SHOW_OTHER_SITES, Boolean.FALSE.toString());
-		//		
-		// String toolName = ToolManager.getCurrentTool().getTitle();
-		// state.setAttribute(ResourcesAction.STATE_ATTACH_TOOL_NAME, toolName);
-		//		
-		// String subject = myState.getTempSubject();
-		// String stateFromText = rb.getString("java.theann");//"the announcement";
-		// if (subject != null && subject.length() > 0)
-		// {
-		// stateFromText = rb.getString("java.ann")//"announcement "
-		// + '"' + subject + '"';
-		// }
-		// state.setAttribute(AttachmentAction.STATE_FROM_TEXT, stateFromText);
-		//
-		// List attachments = myState.getAttachments();
-		// // whether there is alread an attachment //%%%zqian
-		// if (attachments.size() > 0)
-		// {
-		// state.setAttribute(ResourcesAction.STATE_HAS_ATTACHMENT_BEFORE, Boolean.TRUE);
-		// }
-		// else
-		// {
-		// state.setAttribute(ResourcesAction.STATE_HAS_ATTACHMENT_BEFORE, Boolean.FALSE);
-		// }
 
 		state.setAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS, myState.getAttachments());
 
@@ -4400,20 +4322,6 @@ public class AnnouncementAction extends PagedResourceActionII
 			state.setAttribute(STATE_SELECTED_VIEW, VIEW_MODE_ALL);
 		}
 
-		// // get the current collection ID from state object or prolet initial parameter
-		// String collectionId = annState.getCollectionId();
-		// if (collectionId == null)
-		// {
-		// // get the current channel ID for prolet initial parameter
-		// collectionId = StringUtil.trimToNull(portlet.getPortletConfig().getInitParameter("collection"));
-		// if (collectionId == null)
-		// collectionId = ContentHostingService.getSiteCollection(PortalService.getCurrentSiteId());
-		//
-		// // let the state object have the current channel id
-		// annState.setCollectionId(collectionId);
-		// }
-
-		// String channel = StringUtil.trimToNull(config.getInitParameter(PARAM_CHANNEL));
 		// setup the observer to notify our main panel
 		if (state.getAttribute(STATE_INITED) == null)
 		{
@@ -4425,19 +4333,6 @@ public class AnnouncementAction extends PagedResourceActionII
 				state.setAttribute(STATE_CHANNEL_PUBVIEW, STATE_CHANNEL_PUBVIEW);
 			}
 
-			// // the delivery location for this tool
-			// String deliveryId = clientWindowId(state, portlet.getID());
-			//
-			// // the html element to update on delivery
-			// String elementId = mainPanelUpdateId(portlet.getID());
-			//
-			// // the event resource reference pattern to watch for
-			// Reference r = new Reference(channelId);
-			// String pattern = AnnouncementService.messageReference(r.getContext(), r.getId(), "");
-			//
-			// ObservingCourier observer = new ObservingCourier(deliveryId, elementId, pattern);
-			//			
-			// state.setAttribute(STATE_OBSERVER, observer);
 
 			MergedList mergedAnnouncementList = new MergedList();
 
@@ -4500,32 +4395,7 @@ public class AnnouncementAction extends PagedResourceActionII
 
 	} // initState
 
-	// /**
-	// * Adds the merged sites to the list of events that we're interested
-	// * in watching.
-	// */
-	// private void addMergedAnnouncementsToObserver(MergedList mergedAnnouncementList, AnnouncementActionState annState, ObservingCourier observer)
-	// {
-	// Iterator it = mergedAnnouncementList.iterator();
-	//		
-	// while (it.hasNext())
-	// {
-	// MergedList.MergedEntry entry = (MergedList.MergedEntry) it.next();
-	//
-	// if ( entry.isMerged() )
-	// {
-	// Reference ref = new Reference(entry.getReference());
-	//
-	// String pattern =
-	// AnnouncementService.messageReference(
-	// ref.getContext(),
-	// ref.getId(),
-	// "");
-	//	
-	// // observer.addResourcePattern(pattern);
-	// }
-	// }
-	// }
+
 
 	/**
 	 * Loads the display options object we save in the ActionState with the settings from the PortletConfig.

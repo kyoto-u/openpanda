@@ -186,7 +186,7 @@ public class BasicLTIConstants {
 	 * This field contains the LIS identifier for the user account that is 
 	 * performing this launch.    The example syntax of "school:user" 
 	 * is not the required format – lis_person_sourcedid is simply a
-	 * globally unique identifier (i.e., a normalized string). This field 
+	 * unique identifier (i.e., a normalized string). This field 
 	 * is optional and its content and meaning are defined by LIS.    
 	 */
 	public static final String LIS_PERSON_SOURCEDID = "lis_person_sourcedid";
@@ -351,6 +351,7 @@ public class BasicLTIConstants {
 	 * "tasty".
 	 */
 	public static final String TOOL_CONSUMER_INSTANCE_URL = "tool_consumer_instance_url";
+
 	/**
 	 * user_id=0ae836b9-7fc9-4060-006f-27b2066ac545
 	 * <p>
@@ -361,6 +362,16 @@ public class BasicLTIConstants {
 	 */
 	public static final String USER_ID = "user_id";
 
+    /**
+     * user_image=http://my.sakai.org/direct/profile/0ae836b9-7fc9-4060-006f-27b2066ac545/image
+     * <p>
+     * This attribute specifies the URI for an image of the user who launched this request.
+     * This image is suitable for use as a "profile picture" or an avatar representing the user.
+     * It is expected to be a relatively small graphic image file using a widely supported image
+     * format (i.e. PNG, JPG, or GIF) with a square aspect ratio. This parameter is optional.
+     */
+    public static final String USER_IMAGE = "user_image";
+
 	/**
 	 * ext_sakai_provider_eid=jsmith26
 	 * <p>
@@ -370,6 +381,16 @@ public class BasicLTIConstants {
 	 * This parameter is optional and is unique to the Sakai Basic LTI provider.
 	 */
 	public static final String EXT_SAKAI_PROVIDER_EID = "ext_sakai_provider_eid";
+	
+	/**
+	 * ext_sakai_provider_displayid=john.smith
+	 * <p>
+	 * If set, this will indicate to an external application that the user is normally
+	 * known by this ID and when displaying the ID to the user this ID should be used instead of the
+	 * user_id and ext_sakai_provider_eid.
+	 * This parameter is optional and is unique to the Sakai Basic LTI provider.
+	 */
+	public static final String EXT_SAKAI_PROVIDER_DISPLAYID = "ext_sakai_provider_displayid";
 
 	/**
 	 * Utility array useful for validating property names when building launch
@@ -391,5 +412,13 @@ public class BasicLTIConstants {
 		RESOURCE_LINK_TITLE, RESOURCE_LINK_DESCRIPTION, ROLES,
 		TOOL_CONSUMER_INSTANCE_CONTACT_EMAIL, TOOL_CONSUMER_INSTANCE_DESCRIPTION,
 		TOOL_CONSUMER_INSTANCE_GUID, TOOL_CONSUMER_INSTANCE_NAME,
-		TOOL_CONSUMER_INSTANCE_URL, USER_ID };
+		TOOL_CONSUMER_INSTANCE_URL, USER_ID, USER_IMAGE };
+	
+	/**
+	 * The default site type to use if a site needs to be created. Can be overriden in sakai.properties or as part of the launch.
+	 * This contains a number of preconfigured roles, so that the IMS role vocabulary can be used.
+	 * See BLTI-151
+	 */
+	public static final String NEW_SITE_TYPE = "lti";
+
 }

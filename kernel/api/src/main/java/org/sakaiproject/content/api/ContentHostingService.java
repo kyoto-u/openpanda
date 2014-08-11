@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/content/api/ContentHostingService.java $
- * $Id: ContentHostingService.java 99118 2011-10-10 21:40:15Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/content/api/ContentHostingService.java $
+ * $Id: ContentHostingService.java 121981 2013-03-30 13:33:08Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -117,8 +117,11 @@ public interface ContentHostingService extends EntityProducer
 	/** Name of the event when removing a resource. */
 	public static final String EVENT_RESOURCE_REMOVE = "content.delete";
 	
-	/** Name of the event when removing a resource. */
+	/** Name of the event when a resource becomes available (e.g. scheduled release date) */
 	public static final String EVENT_RESOURCE_AVAILABLE = "content.available";
+
+	/** Name of the event when a resource becomes unavailable (e.g. scheduled retract date) */
+	public static final String EVENT_RESOURCE_UNAVAILABLE = "content.unavailable";
 
 	/** 
 	 * Name of the event when the availability of a content-entity changes - includes 

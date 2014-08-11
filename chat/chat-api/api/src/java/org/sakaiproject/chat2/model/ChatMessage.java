@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.1/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatMessage.java $
+ * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-2.9.2/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatMessage.java $
  * $Id: ChatMessage.java 61133 2009-04-24 19:25:44Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

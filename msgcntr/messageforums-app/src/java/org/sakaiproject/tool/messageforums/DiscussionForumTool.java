@@ -249,6 +249,7 @@ public class DiscussionForumTool
   private static final String END_DATE_BEFORE_OPEN_DATE = "endDateBeforeOpenDate";
   private static final String NO_GROUP_SELECTED ="cdfm_no_group_selected";
   private static final String AUTOCREATE_TOPICS_ROLES_DESCRIPTION = "cdfm_autocreate_topics_desc_roles";
+  private static final String AUTOCREATE_TOPICS_GROUPS_DESCRIPTION = "cdfm_autocreate_topics_desc_groups";
   private static final String DUPLICATE_COPY_TITLE = "cdfm_duplicate_copy_title";
   
   private static final String FROM_PAGE = "msgForum:mainOrForumOrTopic";
@@ -7989,7 +7990,10 @@ public class DiscussionForumTool
 		}
 		
 		//MSGCNTR-741 need to filter out post first users
-		userlist.removeAll(getNeedToPostFirst(userlist, (DiscussionTopic)reply.getTopic(), reply.getTopic().getMessages()));
+		if (((DiscussionTopic)reply.getTopic()).getPostFirst()) {
+		    Topic topicWithMessages = forumManager.getTopicByIdWithMessagesAndAttachments(reply.getTopic().getId());
+		    userlist.removeAll(getNeedToPostFirst(userlist, (DiscussionTopic)reply.getTopic(), topicWithMessages.getMessages()));
+		}
 		
 		
 		// now printing out all users = # of messages in the thread - level 2 users
@@ -8705,6 +8709,11 @@ public class DiscussionForumTool
         return groupLevel;
     }
     
+	public String getAutoGroupsDesc() {
+		String level = getAutoGroupsPermConfig();
+		return getResourceBundleString(AUTOCREATE_TOPICS_GROUPS_DESCRIPTION, new Object[]{getResourceBundleString("perm_level_" + level.replaceAll(" ", "_").toLowerCase())});
+	}
+
     public boolean getHasTopicAccessPrivileges(String topicIdStr){
         String userId = getUserId();
         long topicId = -1;

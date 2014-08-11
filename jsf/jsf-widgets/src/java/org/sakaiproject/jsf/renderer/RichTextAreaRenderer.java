@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.1/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/RichTextAreaRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/jsf-2.9.2/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/RichTextAreaRenderer.java $
 * $Id: RichTextAreaRenderer.java 94496 2011-07-07 03:05:27Z steve.swinsburg@gmail.com $
 ***********************************************************************************
 *

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.1/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseCitationService.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BaseCitationService.java $
  * $Id: BaseCitationService.java 118387 2013-01-16 15:30:14Z holladay@longsight.com $
  * **********************************************************************************
  *

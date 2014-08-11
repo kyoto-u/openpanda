@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.1/tool/src/java/org/sakaiproject/cheftool/VelocityPortletPaneledAction.java $
- * $Id: VelocityPortletPaneledAction.java 109804 2012-06-28 15:11:30Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/velocity-2.9.2/tool/src/java/org/sakaiproject/cheftool/VelocityPortletPaneledAction.java $
+ * $Id: VelocityPortletPaneledAction.java 123593 2013-05-03 17:47:12Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -27,6 +27,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.text.DateFormat;
@@ -380,6 +382,16 @@ public abstract class VelocityPortletPaneledAction extends ToolServlet
 		UsageSession session = UsageSessionService.getSession();
 		if (session != null)
 		{
+            // SAK-23047 Set the proper country code in the chef_start generated markup
+            String userId = session.getUserId();
+            Locale locale = (new ResourceLoader(userId)).getLocale();
+            String languageCode = locale.getLanguage();
+            String countryCode = locale.getCountry();
+            if(countryCode != null && countryCode.length() > 0) {
+                languageCode += "_" + countryCode;
+            }
+            context.put("language",languageCode);
+
 			String browserId = session.getBrowserId();
 			if (UsageSession.WIN_IE.equals(browserId) || UsageSession.WIN_MZ.equals(browserId)
 					|| UsageSession.WIN_NN.equals(browserId) || UsageSession.MAC_MZ.equals(browserId)
@@ -1250,5 +1262,41 @@ public abstract class VelocityPortletPaneledAction extends ToolServlet
       } 
    }
 
+	private static final String[] DEFAULT_TIME_FORMAT_ARRAY = new String[] {"h", "m", "a"};
+
+	/**
+	 ** Return a String array containing the "h", "m", "a", or "H" characters (corresponding to hour, minute, am/pm, or 24-hour)
+	 ** in the locale specific order
+	 **/
+	public String[] getTimeFormatString()
+	{
+		SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getTimeInstance(DateFormat.SHORT, rb.getLocale());
+		String format = sdf.toPattern();
+
+		Set<String> formatSet = new LinkedHashSet<String>();
+		char curChar;
+		char lastChar = 0;
+		for (int i = 0; i < format.length(); i++)
+		{
+			curChar = format.charAt(i);
+			if ((curChar == 'h' || curChar == 'm' || curChar == 'a' || curChar == 'H') && curChar != lastChar)
+			{
+				formatSet.add(String.valueOf(curChar));
+				lastChar = curChar;
+			}
+		}
+
+		String[] formatArray = formatSet.toArray(new String[formatSet.size()]);
+		if (formatArray.length != DEFAULT_TIME_FORMAT_ARRAY.length
+				&& formatArray.length != DEFAULT_TIME_FORMAT_ARRAY.length - 1)
+		{
+			M_log.warn("Unknown time format string (using default): " + format);
+			return DEFAULT_TIME_FORMAT_ARRAY.clone();
+		}
+		else
+		{
+			return formatArray;
+		}
+	}
 } // class VelocityPortletPaneledAction
 

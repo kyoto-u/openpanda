@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.1/assignment-api/api/src/java/org/sakaiproject/assignment/taggable/api/AssignmentActivityProducer.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.2/assignment-api/api/src/java/org/sakaiproject/assignment/taggable/api/AssignmentActivityProducer.java $
  * $Id: AssignmentActivityProducer.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

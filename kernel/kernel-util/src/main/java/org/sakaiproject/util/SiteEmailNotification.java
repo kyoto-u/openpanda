@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/SiteEmailNotification.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-util/src/main/java/org/sakaiproject/util/SiteEmailNotification.java $
  * $Id: SiteEmailNotification.java 76924 2010-05-02 10:23:08Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

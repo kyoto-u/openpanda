@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/profile/tags/profile-2.9.1/profile-app/src/java/org/sakaiproject/tool/profile/ProfileImageServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/profile/tags/profile-2.9.2/profile-app/src/java/org/sakaiproject/tool/profile/ProfileImageServlet.java $
  * $Id: ProfileImageServlet.java 69817 2009-12-14 00:44:11Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

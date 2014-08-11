@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/textarea/tags/sakai-2.9.1/FCKeditor/connector/src/java/org/sakaiproject/connector/fck/FCKConnectorServlet.java $
- * $Id: FCKConnectorServlet.java 95361 2011-07-19 14:42:57Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/textarea/tags/sakai-2.9.2/FCKeditor/connector/src/java/org/sakaiproject/connector/fck/FCKConnectorServlet.java $
+ * $Id: FCKConnectorServlet.java 122251 2013-04-05 12:14:03Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -45,6 +45,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.codec.binary.Base64;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ComponentManager;
@@ -272,32 +273,60 @@ public class FCKConnectorServlet extends HttpServlet {
           
           String status="0";
 
-          if (!"FileUpload".equals(command) && !"QuickUpload".equals(command)) {
+          if (!"FileUpload".equals(command) && !"QuickUpload".equals(command) && !("QuickUploadEquation").equals(command)) {
                status = "203";
           }
           else {
                DiskFileUpload upload = new DiskFileUpload();
+               String mime;
+               byte [] bytes;
                try {
-                    List items = upload.parseRequest(request);
-               
-                    Map fields = new HashMap();
-               
-                    Iterator iter = items.iterator();
-                    while (iter.hasNext()) {
-                        FileItem item = (FileItem) iter.next();
-                        if (item.isFormField()) {
-                             fields.put(item.getFieldName(), item.getString());
-                        }
-                        else {
-                             fields.put(item.getFieldName(), item);
-                        }
-                    }
-                    FileItem uplFile = (FileItem)fields.get("NewFile");
+                   //Special case for uploading fmath equations
+                   if (("QuickUploadEquation").equals(command)) {
+                       String image = request.getParameter("image");
+                       String type = request.getParameter("type");
+                       // size protection 
+                       if(image==null || image.length()>1000000) return;
+                       bytes = Base64.decodeBase64(image);
+                       fileName = "fmath-equation-"+request.getParameter("name");
+                       if ("PNG".equals(type)) {
+                           mime = "image/png";
+                           if (fileName.indexOf(".") == -1) {
+                               fileName+=".png";
+                           }
+                       }
+                       else { 
+                           mime = "image/jpeg";
+                           if (fileName.indexOf(".") == -1) {
+                               fileName+=".jpg";
+                           }
+                       }
+                   }
+                   else {
+                       List items = upload.parseRequest(request);
 
-                    String filePath = uplFile.getName();
-                    filePath = filePath.replace('\\','/');
-                    String[] pathParts = filePath.split("/");
-                    fileName = pathParts[pathParts.length-1];
+                       Map fields = new HashMap();
+
+                       Iterator iter = items.iterator();
+                       while (iter.hasNext()) {
+                           FileItem item = (FileItem) iter.next();
+                           if (item.isFormField()) {
+                               fields.put(item.getFieldName(), item.getString());
+                           }
+                           else {
+                               fields.put(item.getFieldName(), item);
+                           }
+                       }
+                       FileItem uplFile = (FileItem)fields.get("NewFile");
+
+                       String filePath = uplFile.getName();
+                       filePath = filePath.replace('\\','/');
+                       String[] pathParts = filePath.split("/");
+                       fileName = pathParts[pathParts.length-1];
+                       mime = uplFile.getContentType();
+                       bytes = uplFile.get();
+                   }
+
                     
                     String nameWithoutExt = fileName; 
                     String ext = ""; 
@@ -307,7 +336,6 @@ public class FCKConnectorServlet extends HttpServlet {
                          ext = fileName.substring(fileName.lastIndexOf(".")); 
                     }
 
-                    String mime = uplFile.getContentType();
 
                     int counter = 1;
                     boolean done = false;
@@ -323,7 +351,7 @@ public class FCKConnectorServlet extends HttpServlet {
 
                              int noti = NotificationService.NOTI_NONE;
 
-                             contentHostingService.addResource(currentFolder+fileName, mime, uplFile.get(), 
+                             contentHostingService.addResource(currentFolder+fileName, mime, bytes, 
                                     resourceProperties, noti);
                              done = true;
                          }
@@ -350,18 +378,24 @@ public class FCKConnectorServlet extends HttpServlet {
 
           try {
                out = response.getWriter();
-               out.println("<script type=\"text/javascript\">");
-
-               if ("QuickUpload".equals(command)) {
-                    out.println("window.parent.OnUploadCompleted(" + status + ",'"
-                                + contentHostingService.getUrl(currentFolder) + fileName
-                                + "','" + fileName + "','" + errorMessage + "');");
+               if ("QuickUploadEquation".equals(command)) {
+                   out.println(contentHostingService.getUrl(currentFolder) + fileName);
                }
                else {
-                    out.println("window.parent.frames['frmUpload'].OnUploadCompleted("+status+",'"+fileName+"');");
-               }
+                   out.println("<script type=\"text/javascript\">");
 
-               out.println("</script>");
+                   if ("QuickUpload".equals(command)) {
+                       out.println("window.parent.OnUploadCompleted(" + status + ",'"
+                               + contentHostingService.getUrl(currentFolder) + fileName
+                               + "','" + fileName + "','" + errorMessage + "');");
+                   }
+
+                   else {
+                       out.println("window.parent.frames['frmUpload'].OnUploadCompleted("+status+",'"+fileName+"');");
+                   }
+
+                   out.println("</script>");
+               }
           }
           catch (Exception e) {
                e.printStackTrace();

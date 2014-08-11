@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/SearchResultResponseImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-impl/impl/src/java/org/sakaiproject/search/component/service/impl/SearchResultResponseImpl.java $
  * $Id: SearchResultResponseImpl.java 71219 2010-01-09 11:54:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SakaiSecurityTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/authz/impl/SakaiSecurityTest.java $
  * $Id: SakaiSecurityTest.java 52923 2008-09-29 22:01:38Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

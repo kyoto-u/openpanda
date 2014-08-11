@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.1/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/BaseFOPSerializer.java $
- * $Id: BaseFOPSerializer.java 71388 2010-01-12 09:46:27Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-2.9.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/BaseFOPSerializer.java $
+ * $Id: BaseFOPSerializer.java 121322 2013-03-16 18:01:06Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006 The Sakai Foundation.
@@ -138,9 +138,9 @@ public class BaseFOPSerializer extends ToXMLSAXHandler implements ContentHandler
 				stream = getClass()
 				.getResourceAsStream(configfile);
 				Configuration cfg = cfgBuild.build(stream);
-				FopFactory ff = FopFactory.newInstance();
+				final FopFactory ff = FopFactory.newInstance();
 				ff.setUserConfig(cfg);
-				FOUserAgent userAgent = new FOUserAgent(ff);
+				FOUserAgent userAgent = ff.newFOUserAgent();
 
 				userAgent.setURIResolver(new URIResolver()
 				{
@@ -181,6 +181,11 @@ public class BaseFOPSerializer extends ToXMLSAXHandler implements ContentHandler
 							}
 							else
 							{
+								// use default resolver to resolve font
+								if (base == null)
+								{
+									return ff.resolveURI(href, base);
+								}
 								URI uri = new URI(base);
 								String content = uri.resolve(href).toString();
 								source = new StreamSource(content);

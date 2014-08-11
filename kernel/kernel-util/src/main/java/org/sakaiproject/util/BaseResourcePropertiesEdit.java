@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/BaseResourcePropertiesEdit.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-util/src/main/java/org/sakaiproject/util/BaseResourcePropertiesEdit.java $
  * $Id: BaseResourcePropertiesEdit.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/Type1BaseContentResourceSerializer.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/Type1BaseContentResourceSerializer.java $
  * $Id: Type1BaseContentResourceSerializer.java 74464 2010-03-09 08:39:08Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

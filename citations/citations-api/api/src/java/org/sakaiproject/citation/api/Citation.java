@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.1/citations-api/api/src/java/org/sakaiproject/citation/api/Citation.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-2.9.2/citations-api/api/src/java/org/sakaiproject/citation/api/Citation.java $
  * $Id: Citation.java 118326 2013-01-14 18:29:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

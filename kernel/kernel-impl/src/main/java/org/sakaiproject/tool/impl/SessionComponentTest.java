@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponentTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponentTest.java $
  * $Id: SessionComponentTest.java 54470 2008-11-18 06:59:24Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

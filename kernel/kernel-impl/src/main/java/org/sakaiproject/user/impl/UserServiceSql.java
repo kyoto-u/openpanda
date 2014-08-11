@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/user/impl/UserServiceSql.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/user/impl/UserServiceSql.java $
  * $Id: UserServiceSql.java 52482 2008-09-18 22:33:18Z ray@media.berkeley.edu $
  ***********************************************************************************
  *

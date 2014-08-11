@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/email/impl/BasicEmailService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/email/impl/BasicEmailService.java $
  * $Id: BasicEmailService.java 92072 2011-04-21 11:01:41Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

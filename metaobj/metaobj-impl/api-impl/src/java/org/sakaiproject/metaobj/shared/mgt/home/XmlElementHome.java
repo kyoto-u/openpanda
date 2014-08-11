@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.1/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/home/XmlElementHome.java $
- * $Id: XmlElementHome.java 73530 2010-02-15 19:33:07Z botimer@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-2.9.2/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/home/XmlElementHome.java $
+ * $Id: XmlElementHome.java 121316 2013-03-16 17:47:26Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -214,6 +214,7 @@ public class XmlElementHome implements StructuredArtifactHomeInterface, Initiali
       File objectFile = new File(homeDirectory, id);
 
       SAXBuilder builder = new SAXBuilder();
+      builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); // SAK-23245
 
       try {
          Document doc = builder.build(objectFile);

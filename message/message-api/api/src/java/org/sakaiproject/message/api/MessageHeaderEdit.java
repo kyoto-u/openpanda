@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.1/message-api/api/src/java/org/sakaiproject/message/api/MessageHeaderEdit.java $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.2/message-api/api/src/java/org/sakaiproject/message/api/MessageHeaderEdit.java $
  * $Id: MessageHeaderEdit.java 81228 2010-08-13 15:03:43Z savithap@umich.edu $
  ***********************************************************************************
  *

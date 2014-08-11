@@ -1,6 +1,6 @@
 /**
  * $Id: AuthenticationCache.java 113397 2012-09-21 20:33:28Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/user/impl/AuthenticationCache.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/user/impl/AuthenticationCache.java $
  **************************************************************************
  * Copyright (c) 2007, 2008 Sakai Foundation
  *

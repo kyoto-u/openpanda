@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.1/message-tool/tool/src/java/org/sakaiproject/message/tool/SynopticMessageAction.java $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/message-2.9.2/message-tool/tool/src/java/org/sakaiproject/message/tool/SynopticMessageAction.java $
  * $Id: SynopticMessageAction.java 92934 2011-05-17 18:43:01Z aaronz@vt.edu $
  ***********************************************************************************
  *

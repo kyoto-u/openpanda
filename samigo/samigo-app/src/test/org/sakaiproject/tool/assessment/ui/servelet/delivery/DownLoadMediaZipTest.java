@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/test/org/sakaiproject/tool/assessment/ui/servelet/delivery/DownLoadMediaZipTest.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/test/org/sakaiproject/tool/assessment/ui/servelet/delivery/DownLoadMediaZipTest.java $
  * $Id: DownLoadMediaZipTest.java 113409 2012-09-21 20:48:02Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

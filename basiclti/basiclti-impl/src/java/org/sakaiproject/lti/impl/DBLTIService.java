@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/basiclti-impl/src/java/org/sakaiproject/lti/impl/DBLTIService.java $
- * $Id: DBLTIService.java 99044 2011-10-07 01:20:02Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-impl/src/java/org/sakaiproject/lti/impl/DBLTIService.java $
+ * $Id: DBLTIService.java 121300 2013-03-16 15:04:18Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.osedu.org/licenses/ECL-2.0
+ *       http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,6 +37,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,16 +110,12 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 			jdbcTemplate = new JdbcTemplate(dataSource);
 
 		try {
-			// if we are auto-creating our schema, check and create
-			if (m_autoDdl) {
-				// Use very carefully - for testing table creation
-				boolean doReset = false;
-				if (doReset) M_log.error("DO NOT RUN IN PRODUCTION WITH doReset TRUE");
+			boolean doReset = false;
+			if (doReset) M_log.error("DO NOT RUN IN PRODUCTION WITH doReset TRUE");
 
-				foorm.autoDDL("lti_mapping", LTIService.MAPPING_MODEL, m_sql, doReset, M_log);
-				foorm.autoDDL("lti_content", LTIService.CONTENT_MODEL, m_sql, doReset, M_log);
-				foorm.autoDDL("lti_tools", LTIService.TOOL_MODEL, m_sql, doReset, M_log);
-			}
+			foorm.autoDDL("lti_mapping", LTIService.MAPPING_MODEL, m_sql, m_autoDdl, doReset, M_log);
+			foorm.autoDDL("lti_content", LTIService.CONTENT_MODEL, m_sql, m_autoDdl, doReset, M_log);
+			foorm.autoDDL("lti_tools", LTIService.TOOL_MODEL, m_sql, m_autoDdl, doReset, M_log);
 			super.init();
 		} catch (Exception t) {
 			M_log.warn("init(): ", t);
@@ -131,7 +128,8 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * 
 	 */
 	public Object insertMapping(Properties newProps) {
-		return insertThing("lti_mapping", LTIService.MAPPING_MODEL, null, newProps);
+		return insertThingDao("lti_mapping", LTIService.MAPPING_MODEL, null, 
+			newProps, getContext(), isMaintain(getContext()));
 	}
 
 	/**
@@ -141,7 +139,7 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * @see org.sakaiproject.lti.api.LTIService#getMapping(java.lang.Long)
 	 */
 	public Map<String, Object> getMapping(Long key) {
-		return getThing("lti_mapping", LTIService.MAPPING_MODEL, key);
+		return getThingDao("lti_mapping", LTIService.MAPPING_MODEL, key, getContext(), isMaintain(getContext()));
 	}
 
 	/**
@@ -151,7 +149,7 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * @see org.sakaiproject.lti.api.LTIService#deleteMapping(java.lang.Long)
 	 */
 	public boolean deleteMapping(Long key) {
-		return deleteThing("lti_mapping", LTIService.MAPPING_MODEL, key);
+		return deleteThingDao("lti_mapping", LTIService.MAPPING_MODEL, key, getContext(), isMaintain(getContext()));
 	}
 
 	/**
@@ -162,7 +160,8 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 *      java.lang.Object)
 	 */
 	public Object updateMapping(Long key, Object newProps) {
-		return updateThing("lti_mapping", LTIService.MAPPING_MODEL, null, key, newProps);
+		return updateThingDao("lti_mapping", LTIService.MAPPING_MODEL, null, 
+			key, newProps, getContext(), isMaintain(getContext()));
 	}
 
 	/**
@@ -172,9 +171,9 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * @see org.sakaiproject.lti.api.LTIService#getMappings(java.lang.String,
 	 *      java.lang.String, int, int)
 	 */
-	public List<Map<String, Object>> getMappings(String search, String order, int first,
-			int last) {
-		return getThings("lti_mapping", LTIService.MAPPING_MODEL, search, order, first, last);
+	public List<Map<String, Object>> getMappings(String search, String order, int first, int last) {
+		return getThingsDao("lti_mapping", LTIService.MAPPING_MODEL, search, order, 
+			first, last, getContext(), isMaintain(getContext()));
 	}
 
 	// TODO: Actually check mappings
@@ -185,32 +184,22 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 		return url;
 	}
 
-	/* Tool Methods */
 	/**
 	 * 
 	 */
-	public Object insertTool(Properties newProps) {
-		return insertThing("lti_tools", LTIService.TOOL_MODEL, null, newProps);
+	public Object insertToolDao(Properties newProps, String siteId, boolean isMaintainRole) {
+		return insertThingDao("lti_tools", LTIService.TOOL_MODEL, null, newProps, siteId, isMaintainRole);
 	}
 
 	/**
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see org.sakaiproject.lti.api.LTIService#getTool(java.lang.Long)
+	 * @see org.sakaiproject.lti.api.LTIService#getToolDao(java.lang.Long, java.lang.String, boolean)
 	 */
-	public Map<String, Object> getTool(Long key) {
-		return getThing("lti_tools", LTIService.TOOL_MODEL, key);
-	}
-
-	/**
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see org.sakaiproject.lti.api.LTIService#getToolNoAuthz(java.lang.Long)
-	 */
-	public Map<String, Object> getToolNoAuthz(Long key) {
-		Map<String, Object> retval = getThingNoAuthz("lti_tools", LTIService.TOOL_MODEL, key);
+	protected Map<String, Object> getToolDao(Long key, String siteId, boolean isMaintainRole) 
+	{
+		Map<String, Object> retval = getThingDao("lti_tools", LTIService.TOOL_MODEL, key, siteId, isMaintainRole);
 		if (retval == null)
 			return retval;
 		String launch_url = (String) retval.get(LTIService.LTI_LAUNCH);
@@ -228,60 +217,39 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see org.sakaiproject.lti.api.LTIService#getTool(java.lang.String)
+	 * @see org.sakaiproject.lti.api.LTIService#deleteToolDao(java.lang.Long, java.lang.String, boolean)
 	 */
-	public Map<String, Object> getTool(String url) {
-		return null;
-	}
-
-	/**
-	 * 
-	 * @param urlorkey
-	 * @param retval
-	 * @return
-	 */
-	private boolean getTool(Object urlorkey, Map<String, Object> retval) {
-		return false;
+	public boolean deleteToolDao(Long key, String siteId, boolean isMaintainRole) {
+		return deleteThingDao("lti_tools", LTIService.TOOL_MODEL, key, siteId, isMaintainRole);
 	}
 
 	/**
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see org.sakaiproject.lti.api.LTIService#deleteTool(java.lang.Long)
+	 * @see org.sakaiproject.lti.impl.BaseLTIService#updateToolDao(java.lang.Long,
+	 *      java.lang.Object, java.lang.String, boolean)
 	 */
-	public boolean deleteTool(Long key) {
-		return deleteThing("lti_tools", LTIService.TOOL_MODEL, key);
+	public Object updateToolDao(Long key, Object newProps, String siteId, boolean isMaintainRole) {
+		return updateThingDao("lti_tools", LTIService.TOOL_MODEL, null, key, (Object) newProps, siteId, isMaintainRole);
 	}
 
 	/**
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see org.sakaiproject.lti.impl.BaseLTIService#updateTool(java.lang.Long,
-	 *      java.lang.Object)
+	 * @see org.sakaiproject.lti.api.LTIService#getToolsDao(java.lang.String, java.lang.String,
+	 *      int, int, java.lang.String, boolean)
 	 */
-	public Object updateTool(Long key, Object newProps) {
-		return updateThing("lti_tools", LTIService.TOOL_MODEL, null, key, newProps);
+	public List<Map<String, Object>> getToolsDao(String search, String order, int first,
+			int last, String siteId, boolean isMaintainRole) {
+		return getThingsDao("lti_tools", LTIService.TOOL_MODEL, search, order, first, last, siteId, isMaintainRole);
 	}
 
 	/**
 	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see org.sakaiproject.lti.api.LTIService#getTools(java.lang.String, java.lang.String,
-	 *      int, int)
 	 */
-	public List<Map<String, Object>> getTools(String search, String order, int first,
-			int last) {
-		return getThings("lti_tools", LTIService.TOOL_MODEL, search, order, first, last);
-	}
-
-	/* Content Methods */
-	/**
-	 * 
-	 */
-	public Object insertContent(Properties newProps) {
+	protected Object insertContentDao(Properties newProps, String siteId, boolean isMaintainRole) {
 		String toolId = newProps.getProperty(LTIService.LTI_TOOL_ID);
 		if (toolId == null)
 			return rb.getString("error.missing.toolid");
@@ -291,22 +259,64 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 		} catch (Exception e) {
 			return rb.getString("error.invalid.toolid");
 		}
-		String[] contentModel = getContentModel(toolKey);
+
+		// Load the tool we are aiming for Using DAO
+		Map<String, Object> tool = null;
+		tool = getToolDao(toolKey, siteId, isMaintainRole);
+			
+		if ( tool == null ) {
+			return rb.getString("error.invalid.toolid");
+		}
+
+		Long visible = foorm.getLongNull(tool.get(LTIService.LTI_VISIBLE));
+		if ( visible == null ) visible = new Long(0);
+		if ( ! isAdmin(siteId) ) {
+			if ( visible == 1 ) {
+				return rb.getString("error.invalid.toolid");
+			}
+		}
+
+		String[] contentModel = getContentModelDao(tool, siteId, isMaintainRole);
+		
+		// Since page title and title are both required and dynamically hideable, 
+		// They may not be in the model.  If they are not there, add them for the purpose
+		// of the insert, and then copy the values from the tool.
+		List<String> contentModelList = new ArrayList<String>(Arrays.asList(contentModel));
+		if (!contentModelList.contains(LTI_TITLE) || !contentModelList.contains(LTI_PAGETITLE))
+		{
+			String toolTitle = (String) tool.get(LTI_TITLE);
+			if ( toolTitle == null ) toolTitle = "...";  // should not happen
+			if (!contentModelList.contains(LTI_TITLE))
+			{
+				contentModelList.add(LTI_TITLE + ":text");
+				newProps.put(LTI_TITLE, toolTitle);
+			}
+
+			if (!contentModelList.contains(LTI_PAGETITLE))
+			{
+				// May happen for old / upgraded tool items
+				String pageTitle = (String) tool.get(LTI_PAGETITLE);
+				if ( pageTitle == null ) pageTitle = toolTitle;
+				contentModelList.add(LTI_PAGETITLE + ":text");
+				newProps.put(LTI_PAGETITLE, pageTitle);
+			}
+			contentModel = contentModelList.toArray(new String[contentModelList.size()]);
+		}
+		
 		if (contentModel == null)
 			return rb.getString("error.invalid.toolid");
-		return insertThing("lti_content", contentModel, LTIService.CONTENT_MODEL, newProps);
+		return insertThingDao("lti_content", contentModel, LTIService.CONTENT_MODEL, newProps, siteId, isMaintainRole);
 	}
 
 	/**
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see org.sakaiproject.lti.api.LTIService#getContent(java.lang.Long)
+	 * @see org.sakaiproject.lti.api.LTIService#getContentDao(java.lang.Long, java.lang.String, boolean)
 	 */
-	public Map<String, Object> getContent(Long key) {
-		Map<String, Object> retval = getThing("lti_content", LTIService.CONTENT_MODEL, key);
-		if (retval == null)
-			return retval;
+	public Map<String, Object> getContentDao(Long key, String siteId, boolean isMaintainRole) {
+		Map<String, Object> retval = getThingDao("lti_content", LTIService.CONTENT_MODEL, key, siteId, isMaintainRole);
+		if (retval == null) return retval;
 		retval.put("launch_url", getContentLaunch(retval));
 		return retval;
 	}
@@ -315,68 +325,77 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see org.sakaiproject.lti.api.LTIService#getContentNoAuthz(java.lang.Long)
+	 * @see org.sakaiproject.lti.api.LTIService#deleteContent(java.lang.Long, java.lang.String, boolean)
 	 */
-	public Map<String, Object> getContentNoAuthz(Long key) {
-		return getThingNoAuthz("lti_content", LTIService.CONTENT_MODEL, key);
+	public boolean deleteContentDao(Long key, String siteId, boolean isMaintainRole) {
+		// remove the content link first
+		deleteContentLink(key);
+		return deleteThingDao("lti_content", LTIService.CONTENT_MODEL, key, siteId, isMaintainRole);
 	}
 
 	/**
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see org.sakaiproject.lti.api.LTIService#deleteContent(java.lang.Long)
+	 * @see org.sakaiproject.lti.impl.BaseLTIService#updateContentDao(java.lang.Long, 
+	 *      java.lang.Object, java.lang.String, boolean)
 	 */
-	public boolean deleteContent(Long key) {
-		return deleteThing("lti_content", LTIService.CONTENT_MODEL, key);
-	}
-
-	/**
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see org.sakaiproject.lti.impl.BaseLTIService#updateContent(java.lang.Long, java.lang.Object)
-	 */
-	public Object updateContent(Long key, Object newProps) {
-		// Make sure we like the proposed tool_id
-		String toolId = (String) foorm.getField(newProps, LTIService.LTI_TOOL_ID);
-
-		if ( toolId == null ) {
-			Map<String,Object> content = getContent(key);
-			if (  content == null ) {
-				return rb.getString("error.content.not.found");
-			}
-			Long toolKey = foorm.getLongNull(content.get(LTIService.LTI_TOOL_ID));
-			if ( toolKey != null ) toolId = toolKey.toString();
+	public Object updateContentDao(Long key, Object newProps, String siteId, boolean isMaintainRole) {
+		// Load the content item
+		Map<String,Object> content = getContentDao(key, siteId, isMaintainRole);
+		if (  content == null ) {
+			return rb.getString("error.content.not.found");
 		}
+		Long oldToolKey = foorm.getLongNull(content.get(LTIService.LTI_TOOL_ID));
 
-		if (toolId == null)
-			return rb.getString("error.missing.toolid");
+		Object oToolId = (Object) foorm.getField(newProps, LTIService.LTI_TOOL_ID);
+		Long newToolKey = null;
+		if ( oToolId != null && oToolId instanceof Number ) {
+			newToolKey = new Long( ((Number) oToolId).longValue());
+		} else if ( oToolId != null ) {
+			try {
+				newToolKey = new Long((String) oToolId);
+			} catch (Exception e) {
+				return rb.getString("error.invalid.toolid");
+			}
+		}
+		if ( newToolKey == null || newToolKey < 0 ) newToolKey = oldToolKey;
 
-		Long toolKey = null;
-		try {
-			toolKey = new Long(toolId);
-		} catch (Exception e) {
+		// Load the tool we are aiming for
+		Map<String, Object> tool = getToolDao(newToolKey, siteId, isMaintainRole);
+		if ( tool == null ) {
 			return rb.getString("error.invalid.toolid");
 		}
-		String[] contentModel = getContentModel(toolKey);
+
+		// If the user is not an admin, they cannot switch to 
+		// a tool that is stealthed
+		Long visible = foorm.getLongNull(tool.get(LTIService.LTI_VISIBLE));
+		if ( visible == null ) visible = new Long(0);
+		if ( ( !isAdmin(siteId) ) && ( ! oldToolKey.equals(newToolKey) )  ) {
+			if ( visible == 1 ) {
+				return rb.getString("error.invalid.toolid");
+			}
+		}
+
+		String[] contentModel = getContentModelDao(tool, siteId, isMaintainRole);
 		if (contentModel == null)
 			return rb.getString("error.invalid.toolid");
 
-		return updateThing("lti_content", contentModel, LTIService.CONTENT_MODEL, key, newProps);
+		return updateThingDao("lti_content", contentModel, LTIService.CONTENT_MODEL, 
+			key, newProps, siteId, isMaintainRole);
 	}
 
 	/**
 	 * 
 	 * {@inheritDoc}
 	 * 
-	 * @see org.sakaiproject.lti.api.LTIService#getContents(java.lang.String,
+	 * @see org.sakaiproject.lti.api.LTIService#getContentsDao(java.lang.String,
 	 *      java.lang.String, int, int)
 	 */
-	public List<Map<String, Object>> getContents(String search, String order, int first,
-			int last) {
-		List<Map<String, Object>> contents = getThings("lti_content",
-				LTIService.CONTENT_MODEL, search, order, first, last);
+	public List<Map<String, Object>> getContentsDao(String search, String order, int first,
+			int last, String siteId, boolean isMaintainRole) {
+		List<Map<String, Object>> contents = getThingsDao("lti_content",
+				LTIService.CONTENT_MODEL, search, order, first, last, siteId, isMaintainRole);
 		for (Map<String, Object> content : contents) {
 			content.put("launch_url", getContentLaunch(content));
 		}
@@ -387,14 +406,15 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	/**
 	 * 
 	 */
-	public Object insertThing(String table, String[] formModel, String[] fullModel,
-			Properties newProps) {
-		if (table == null || formModel == null || newProps == null) {
+	public Object insertThingDao(String table, String[] formModel, String[] fullModel,
+			Properties newProps, String siteId, boolean isMaintainRole) {
+
+		if (table == null || formModel == null || newProps == null || siteId == null) {
 			throw new IllegalArgumentException(
-					"table, model, and newProps must all be non-null");
+					"siteId, table, model, and newProps must all be non-null");
 		}
-		if (!isMaintain())
-			return null;
+
+		if (!isMaintainRole) return null;
 
 		HashMap<String, Object> newMapping = new HashMap<String, Object>();
 
@@ -412,8 +432,8 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 			theKey = foorm.formSqlKey(fullModel);
 		}
 		if ((Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0)) {
-			if (!isAdmin() && newMapping.get(LTIService.LTI_SITE_ID) == null) {
-				newMapping.put(LTIService.LTI_SITE_ID, getContext());
+			if (!isAdmin(siteId) && newMapping.get(LTIService.LTI_SITE_ID) == null) {
+				newMapping.put(LTIService.LTI_SITE_ID, siteId);
 			}
 		}
 		String seqName = foorm.getSqlSequence(table, theKey, m_sql.getVendor());
@@ -479,33 +499,13 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * @param table
 	 * @param model
 	 * @param key
+	 * @param siteId - This is allowed to be null
+	 * @param isMaintainRole
 	 * @return
 	 */
-	public Map<String, Object> getThing(String table, String[] model, Long key) {
-		return getThing(table, model, key, true);
-	}
-
-	/**
-	 * 
-	 * @param table
-	 * @param model
-	 * @param key
-	 * @return
-	 */
-	public Map<String, Object> getThingNoAuthz(String table, String[] model, Long key) {
-		return getThing(table, model, key, false);
-	}
-
-	/**
-	 * 
-	 * @param table
-	 * @param model
-	 * @param key
-	 * @param doAuthz
-	 * @return
-	 */
-	private Map<String, Object> getThing(String table, String[] model, Long key,
-			boolean doAuthz) {
+	private Map<String, Object> getThingDao(String table, String[] model, Long key,
+			String siteId, boolean isMaintainRole)
+	{
 		if (table == null || model == null || key == null) {
 			throw new IllegalArgumentException("table, model, and key must all be non-null");
 		}
@@ -514,11 +514,11 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 		Object fields[] = null;
 		String[] columns = foorm.getFields(model);
 
-		if (doAuthz && Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0 && !isAdmin()) {
+		if (siteId != null && Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0 && !isAdmin(siteId)) {
 			statement += " AND (SITE_ID = ? OR SITE_ID IS NULL)";
 			fields = new Object[2];
 			fields[0] = key;
-			fields[1] = getContext();
+			fields[1] = siteId;
 		} else {
 			fields = new Object[1];
 			fields[0] = key;
@@ -530,7 +530,6 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 			return (Map<String, Object>) rv.get(0);
 		}
 		return null;
-
 	}
 
 	/**
@@ -541,24 +540,34 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * @param order
 	 * @param first
 	 * @param last
+	 * @param siteId
+	 * @param isMaintainRole
 	 * @return
 	 */
-	public List<Map<String, Object>> getThings(String table, String[] model, String search,
-			String order, int first, int last) {
-		if (table == null || model == null) {
-			throw new IllegalArgumentException("table and model must be non-null");
+	public List<Map<String, Object>> getThingsDao(String table, String[] model, String search,
+			String order, int first, int last, String siteId, boolean isMaintainRole) {
+		if (table == null || model == null || siteId == null ) {
+			throw new IllegalArgumentException("siteId, table, and model must be non-null");
 		}
 		String statement = "SELECT " + foorm.formSelect(model) + " FROM " + table;
 		String[] columns = foorm.getFields(model);
+		String whereClause = "";
 
 		Object fields[] = null;
-		if (Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0) {
-			if (!isAdmin()) {
-				statement += " WHERE (SITE_ID = ? OR SITE_ID IS NULL)";
+		if ( ! isAdmin(siteId) ) {
+			if (Arrays.asList(columns).indexOf(LTIService.LTI_VISIBLE) >= 0 && 
+				Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0 ) {
+				whereClause = " ("+LTIService.LTI_SITE_ID+" = ? OR "+
+					"("+LTIService.LTI_SITE_ID+" IS NULL AND "+LTIService.LTI_VISIBLE+" != 1 ) ) ";
 				fields = new Object[1];
-				fields[0] = getContext();
+				fields[0] = siteId;
+			} else if (Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0) {
+				whereClause = " ("+LTIService.LTI_SITE_ID+" = ? OR "+LTIService.LTI_SITE_ID+" IS NULL)";
+				fields = new Object[1];
+				fields[0] = siteId;
 			}
 		}
+		if ( whereClause.length() > 0 ) statement += " WHERE " + whereClause;
 
 		if (last != 0) {
 			String pagedStatement = foorm.getPagedSelect(statement, first, last,
@@ -575,9 +584,11 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * @param table
 	 * @param model
 	 * @param key
+	 * @param siteId
+	 * @param isMaintainRole
 	 * @return
 	 */
-	public boolean deleteThing(String table, String[] model, Long key) {
+	public boolean deleteThingDao(String table, String[] model, Long key, String siteId, boolean isMaintainRole) {
 		if (table == null || model == null || key == null) {
 			throw new IllegalArgumentException("table, model, and key must all be non-null");
 		}
@@ -587,28 +598,28 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 
 		// Hack to insure that We *Can* delete this since SqlService cannot tell us if updates
 		// work
-		if (!isAdmin()) {
-			Object thing = getThing(table, model, key);
+		if (!isAdmin(siteId)) {
+			Object thing = getThingDao(table, model, key, siteId, isMaintainRole);
 			if (thing == null || !(thing instanceof Map)) {
 				return false;
 			}
 
-			String siteId = (String) foorm.getField(thing, LTIService.LTI_SITE_ID);
+			String thingSite = (String) foorm.getField(thing, LTIService.LTI_SITE_ID);
 
-			if (siteId == null || !siteId.equals(getContext())) {
+			if (thingSite == null || !thingSite.equals(siteId)) {
 				return false;
 			}
 		}
 
-		if (Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0 && !isAdmin()) {
-			if (!isMaintain()) {
+		if (Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0 && !isAdmin(siteId) ) {
+			if (!isMaintainRole) {
 				M_log.info("Non-maintain attemped delete on " + table);
 				return false;
 			}
 			statement += " AND SITE_ID = ?";
 			fields = new Object[2];
 			fields[0] = key;
-			fields[1] = getContext();
+			fields[1] = siteId;
 		} else {
 			fields = new Object[1];
 			fields[0] = key;
@@ -627,17 +638,32 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 	 * @param fullModel
 	 * @param key
 	 * @param newProps
+	 * @param siteId
 	 * @return
 	 */
-	public Object updateThing(String table, String[] formModel, String[] fullModel,
-			Long key, Object newProps) {
+	public Object updateThingDao(String table, String[] formModel, String[] fullModel, Long key, Object newProps, String siteId) {
+		return updateThingDao(table, formModel, fullModel, key, newProps, siteId, isMaintain(siteId));
+	}
+
+	/**
+	 * 
+	 * @param table
+	 * @param formModel
+	 * @param fullModel
+	 * @param key
+	 * @param newProps
+	 * @param siteId
+	 * @param isMaintainRole
+	 * @return
+	 */
+	public Object updateThingDao(String table, String[] formModel, String[] fullModel,
+			Long key, Object newProps, String siteId, boolean isMaintainRole) {
 		if (table == null || formModel == null || key == null || newProps == null) {
 			throw new IllegalArgumentException(
 					"table, model, key, and newProps must all be non-null");
 		}
 
-		if (!isMaintain())
-			return null;
+		if (!isMaintainRole) return null;
 
 		HashMap<String, Object> newMapping = new HashMap<String, Object>();
 
@@ -652,18 +678,18 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 			columns = foorm.getFields(fullModel);
 		}
 
-		if ((Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0)) {
-			if (!isAdmin() && newMapping.get(LTIService.LTI_SITE_ID) == null) {
-				newMapping.put(LTIService.LTI_SITE_ID, getContext());
+		if ( (Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0)) {
+			if ( !isAdmin(siteId) && newMapping.get(LTIService.LTI_SITE_ID) == null) {
+				newMapping.put(LTIService.LTI_SITE_ID, siteId);
 			}
 		}
 
 		String sql = "UPDATE " + table + " SET " + foorm.updateForm(newMapping)
 			+ " WHERE id=" + key.toString();
 
-		if (isMaintain() && !isAdmin() && (Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0)) {
-			sql += " AND SITE_ID = '" + getContext() + "'";
-			foorm.setField(newMapping, LTIService.LTI_SITE_ID, getContext());
+		if ( isMaintainRole && !isAdmin(siteId) && (Arrays.asList(columns).indexOf(LTIService.LTI_SITE_ID) >= 0)) {
+			sql += " AND SITE_ID = '" + siteId + "'";
+			foorm.setField(newMapping, LTIService.LTI_SITE_ID, siteId);
 		}
 
 		// System.out.println("Upate="+sql);

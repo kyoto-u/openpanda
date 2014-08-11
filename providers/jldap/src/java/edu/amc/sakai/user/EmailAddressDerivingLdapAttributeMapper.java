@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.1/jldap/src/java/edu/amc/sakai/user/EmailAddressDerivingLdapAttributeMapper.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/jldap/src/java/edu/amc/sakai/user/EmailAddressDerivingLdapAttributeMapper.java $
  * $Id: EmailAddressDerivingLdapAttributeMapper.java 92938 2011-05-17 18:52:01Z aaronz@vt.edu $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.1/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
- * $Id: UserPrefsTool.java 111996 2012-08-30 19:53:13Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-2.9.2/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
+ * $Id: UserPrefsTool.java 123052 2013-04-19 19:16:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -270,8 +270,6 @@ public class UserPrefsTool
 	// user's currently selected regional language locale
 	private Locale m_locale = null;
 
-	private LocaleComparator localeComparator = new LocaleComparator();
-
 	/** The user id retrieved from UsageSessionService */
 	private String userId = "";
 
@@ -526,24 +524,6 @@ public class UserPrefsTool
 	}
 
 	/**
-	 * *
-	 * 
-	 * @return Locale based on its string representation (language_region)
-	 */
-	private Locale getLocaleFromString(String localeString)
-	{
-		String[] locValues = localeString.trim().split("_");
-		if (locValues.length >= 3)
-			return new Locale(locValues[0], locValues[1], locValues[2]); // language, country, variant
-		else if (locValues.length == 2)
-			return new Locale(locValues[0], locValues[1]); // language, country
-		else if (locValues.length == 1)
-			return new Locale(locValues[0]); // language
-		else
-			return Locale.getDefault();
-	}
-
-	/**
 	 * @return Returns the prefLocales
 	 */
 	public List getPrefLocales()
@@ -551,31 +531,8 @@ public class UserPrefsTool
 		// Initialize list of supported locales, if necessary
 		if (prefLocales.size() == 0)
 		{
-			Locale[] localeArray = null;
-			String localeString = ServerConfigurationService.getString(SAKAI_LOCALES);
-			String localeStringMore = ServerConfigurationService.getString(SAKAI_LOCALES_MORE);
-			
-			if ( localeString == null )
-				localeString = "";
-			if ( localeStringMore != null && !localeStringMore.equals("") )
-				localeString += ","+localeStringMore;
-
-			if ( !localeString.equals("") )
-			{
-				String[] sakai_locales = localeString.split(",");
-				localeArray = new Locale[sakai_locales.length + 1];
-				for (int i = 0; i < sakai_locales.length; i++)
-					localeArray[i] = getLocaleFromString(sakai_locales[i]);
-				localeArray[localeArray.length - 1] = Locale.getDefault();
-			}
-			else
-				// if no locales specified, get default list
-			{
-				localeArray = new Locale[] { Locale.getDefault() };
-			}
-
-			// Sort locales and add to prefLocales (removing duplicates)
-			Arrays.sort(localeArray, localeComparator);
+		    org.sakaiproject.component.api.ServerConfigurationService scs = (org.sakaiproject.component.api.ServerConfigurationService) ComponentManager.get(org.sakaiproject.component.api.ServerConfigurationService.class);
+		    Locale[] localeArray = scs.getSakaiLocales();
 			for (int i = 0; i < localeArray.length; i++)
 			{
 				if (i == 0 || !localeArray[i].equals(localeArray[i - 1]))
@@ -686,10 +643,12 @@ public class UserPrefsTool
 		ResourceProperties props = prefs.getProperties(ResourceLoader.APPLICATION_ID);
 		String prefLocale = props.getProperty(ResourceLoader.LOCALE_KEY);
 
-		if (hasValue(prefLocale))
-			m_locale = getLocaleFromString(prefLocale);
-		else
+		if (hasValue(prefLocale)) {
+		    org.sakaiproject.component.api.ServerConfigurationService scs = (org.sakaiproject.component.api.ServerConfigurationService) ComponentManager.get(org.sakaiproject.component.api.ServerConfigurationService.class);
+			m_locale = scs.getLocaleFromString(prefLocale);
+		} else {
 			m_locale = Locale.getDefault();
+		}
 
 		return m_locale;
 	}
@@ -716,7 +675,10 @@ public class UserPrefsTool
 	 */
 	public void setSelectedLocaleString(String selectedLocale)
 	{
-		if (selectedLocale != null) m_locale = getLocaleFromString(selectedLocale);
+		if (selectedLocale != null) {
+		    org.sakaiproject.component.api.ServerConfigurationService scs = (org.sakaiproject.component.api.ServerConfigurationService) ComponentManager.get(org.sakaiproject.component.api.ServerConfigurationService.class);
+		    m_locale = scs.getLocaleFromString(selectedLocale);
+		}
 	}
 
 	/**

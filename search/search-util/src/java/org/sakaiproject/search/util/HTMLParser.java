@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-util/src/java/org/sakaiproject/search/util/HTMLParser.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-util/src/java/org/sakaiproject/search/util/HTMLParser.java $
  * $Id: HTMLParser.java 67370 2009-10-08 14:20:14Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

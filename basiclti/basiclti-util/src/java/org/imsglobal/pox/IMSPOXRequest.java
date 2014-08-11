@@ -153,6 +153,11 @@ public class IMSPOXRequest {
 		return bodyMap;
 	}
 
+	public String getPostBody()
+	{
+		return postBody;
+	}
+
 	// Normal Constructor
 	public IMSPOXRequest(String oauth_consumer_key, String oauth_secret, HttpServletRequest request) 
 	{
@@ -245,8 +250,10 @@ public class IMSPOXRequest {
 
 	public void parsePostBody()
 	{
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setFeature("http://xml.org/sax/features/external-general-entities", false); 
+			dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false); 
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			postDom = db.parse(new ByteArrayInputStream(postBody.getBytes()));
 		}catch(Exception e) {
@@ -333,7 +340,7 @@ public class IMSPOXRequest {
 
 	static final String fatalMessage = 
 		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-		"<imsx_POXEnvelopeResponse xmlns = \"http://www.imsglobal.org/lis/oms1p0/pox\">\n" +
+		"<imsx_POXEnvelopeResponse xmlns = \"http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0\">\n" +
 		"    <imsx_POXHeader>\n" +
 		"        <imsx_POXResponseHeaderInfo>\n" + 
 		"            <imsx_version>V1.0</imsx_version>\n" +
@@ -360,7 +367,7 @@ public class IMSPOXRequest {
 
 	static final String responseMessage = 
 		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-		"<imsx_POXEnvelopeResponse xmlns = \"http://www.imsglobal.org/lis/oms1p0/pox\">\n" +
+		"<imsx_POXEnvelopeResponse xmlns = \"http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0\">\n" +
 		"  <imsx_POXHeader>\n" +
 		"    <imsx_POXResponseHeaderInfo>\n" + 
 		"      <imsx_version>V1.0</imsx_version>\n" +
@@ -467,7 +474,7 @@ public class IMSPOXRequest {
 
 	/** Unit Tests */
 	static final String inputTestData = "<?xml version = \"1.0\" encoding = \"UTF-8\"?>\n" +  
-		"<imsx_POXEnvelopeRequest xmlns = \"http://www.imsglobal.org/lis/oms1p0/pox\">\n" + 
+		"<imsx_POXEnvelopeRequest xmlns = \"http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0\">\n" + 
 		"<imsx_POXHeader>\n" + 
 		"<imsx_POXRequestHeaderInfo>\n" + 
 		"<imsx_version>V1.0</imsx_version>\n" + 

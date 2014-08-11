@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
- * $Id: FormattedText.java 101727 2011-12-13 23:26:16Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
+ * $Id: FormattedText.java 122360 2013-04-08 15:58:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -24,6 +24,7 @@ package org.sakaiproject.util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.util.api.FormattedText.Level;
 import org.sakaiproject.util.api.MockFormattedText;
 import org.w3c.dom.Element;
 
@@ -65,6 +66,13 @@ public class FormattedText {
         return getFormattedText().processFormattedText(strFromBrowser, errorMessages);
     }
 
+    /**
+     * @see org.sakaiproject.util.api.FormattedText#processFormattedText(String, StringBuilder, Level)
+     */
+    public static String processFormattedText(String strFromBrowser, StringBuilder errorMessages, Level level) {
+        return getFormattedText().processFormattedText(strFromBrowser, errorMessages, level);
+    }
+
     public static String processFormattedText(String strFromBrowser, StringBuilder errorMessages, boolean useLegacySakaiCleaner) {
         return getFormattedText().processFormattedText(strFromBrowser, errorMessages, useLegacySakaiCleaner);
     }
@@ -80,8 +88,17 @@ public class FormattedText {
 
     public static String processFormattedText(String strFromBrowser, StringBuilder errorMessages, boolean checkForEvilTags,
             boolean replaceWhitespaceTags, boolean useLegacySakaiCleaner) {
-        return getFormattedText().processFormattedText(strFromBrowser, errorMessages, checkForEvilTags, replaceWhitespaceTags,
-                useLegacySakaiCleaner);
+        return getFormattedText().processFormattedText(strFromBrowser, errorMessages, null, 
+                checkForEvilTags, replaceWhitespaceTags, useLegacySakaiCleaner);
+    }
+
+    /**
+     * @see org.sakaiproject.util.api.FormattedText#processFormattedText(String, StringBuilder, Level, boolean, boolean, boolean)
+     */
+    public static String processFormattedText(String strFromBrowser, StringBuilder errorMessages, Level level, 
+            boolean checkForEvilTags, boolean replaceWhitespaceTags, boolean useLegacySakaiCleaner) {
+        return getFormattedText().processFormattedText(strFromBrowser, errorMessages, level, 
+                checkForEvilTags, replaceWhitespaceTags, useLegacySakaiCleaner);
     }
 
     public static String escapeHtmlFormattedText(String value) {

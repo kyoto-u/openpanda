@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/import-impl/src/java/org/sakaiproject/importer/impl/importables/Assessment.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/import-impl/src/java/org/sakaiproject/importer/impl/importables/Assessment.java $
  * $Id: Assessment.java 67590 2009-10-11 10:34:36Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

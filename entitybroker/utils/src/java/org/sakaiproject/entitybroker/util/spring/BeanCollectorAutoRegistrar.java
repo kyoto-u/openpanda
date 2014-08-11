@@ -1,6 +1,6 @@
 /**
  * $Id: BeanCollectorAutoRegistrar.java 104995 2012-02-23 15:32:56Z gjthomas@iupui.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/java/org/sakaiproject/entitybroker/util/spring/BeanCollectorAutoRegistrar.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/utils/src/java/org/sakaiproject/entitybroker/util/spring/BeanCollectorAutoRegistrar.java $
  * BeanCollectorAutoRegistrar.java - entity-broker - Apr 15, 2008 4:29:18 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation

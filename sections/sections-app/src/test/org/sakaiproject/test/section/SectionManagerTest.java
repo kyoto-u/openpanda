@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.1/sections-app/src/test/org/sakaiproject/test/section/SectionManagerTest.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-2.9.2/sections-app/src/test/org/sakaiproject/test/section/SectionManagerTest.java $
  * $Id: SectionManagerTest.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

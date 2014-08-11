@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/authz/impl/FunctionManagerComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/authz/impl/FunctionManagerComponent.java $
  * $Id: FunctionManagerComponent.java 79841 2010-07-24 12:49:10Z stephen.marquard@uct.ac.za $
  ***********************************************************************************
  *

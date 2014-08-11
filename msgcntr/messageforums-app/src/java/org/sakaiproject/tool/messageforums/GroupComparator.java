@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.1/messageforums-app/src/java/org/sakaiproject/tool/messageforums/GroupComparator.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.2/messageforums-app/src/java/org/sakaiproject/tool/messageforums/GroupComparator.java $
  * $Id: GroupComparator.java 59677 2009-04-03 23:19:29Z arwhyte@umich.edu $
  ***********************************************************************************
  *

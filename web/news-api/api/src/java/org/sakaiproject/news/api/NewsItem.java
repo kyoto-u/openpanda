@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.1/news-api/api/src/java/org/sakaiproject/news/api/NewsItem.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.2/news-api/api/src/java/org/sakaiproject/news/api/NewsItem.java $
  * $Id: NewsItem.java 97330 2011-08-23 21:49:34Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *

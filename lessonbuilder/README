@@ -19,6 +19,62 @@ that this shouldn't conflict with the original tool.)
 It has only been tested on mysql, though I would expect it to work
 with the other databases.
 
+SECURITY WARNING
+
+In order to prevent "cross-site scripting" attacks, Sakai takes two
+precautions that would interfere with Lessons:
+
+* When you prepare content using an HTML editor, most of Sakai will
+  remove Javascript and other "dangerous" types of content
+* When you upload an HTML file to resources, and a user clicks on 
+  its link, the Resource tool will download the HTML file rather
+  than displaying it.
+
+Sakai's behavior is configurable. By default, it doesn't either of
+those things in older versions of Sakai. Starting in Sakai 2.9.2,
+Lessons will filter dangerous content in HTML.
+
+* If you add text using the "add text" button, we will display the
+  HTML without modification before Sakai 2.9.2. Starting with 2.9.2
+  we will use the kernel's HTML filtering. It should allow EMBED
+  but prohibit Javascript.
+* When you upload HTML files through Lessons, we will show them as
+  HTML in your browser.
+
+If you want the normal Sakai precautions to apply within Lessons,
+add the following properties in sakai.properties:
+
+lessonbuilder.filterhtml=true
+lessonbuilder.inlinehtml=false
+
+If you do this, you can still enable specific sites to use 
+Javascript and display HTML:
+
+* To allow an instance of Lessons to show "add text" blocks without
+  removing Javascript, add the property
+    filterHtml
+  to the instance of Lessons
+
+As an administrator, use the Sites tool to find the site.
+Use the "pages" button to show the pages in the site. That
+will show a list of pages. Click on the pageid for the specific
+instance of Lessons. Click "Properties". Add the property "filterHtml"
+with value "false".
+
+* To allow specific HTML files to be displayed rather than downloaded,
+  as an administrator, go to Resources. Find the site's resources.
+  Do "edit details" for the specific HTML file or for the folder in
+  which it is located. Click the box that says "Allow HTML file"
+  and save.
+
+Starting with Sakai 2.9.2 lessonbuilder.filterhtml and the
+filterhtml instance property can also be set to explicit antisamy
+filter levels: default, none, high, low.
+
+true is equivalent to low, false to none.
+
+The default is false before Sakai 2.9.2, true starting with 2.9.2.
+
 BUILDING
 
 To build, the normal Sakai maven commands will work. However you'll

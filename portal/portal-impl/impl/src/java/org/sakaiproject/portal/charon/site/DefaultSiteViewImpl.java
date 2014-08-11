@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/DefaultSiteViewImpl.java $
- * $Id: DefaultSiteViewImpl.java 116672 2012-11-21 16:12:39Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/DefaultSiteViewImpl.java $
+ * $Id: DefaultSiteViewImpl.java 121980 2013-03-30 13:23:06Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -28,6 +28,13 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.authz.api.Role;
+import org.sakaiproject.authz.cover.AuthzGroupService;
+import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
@@ -40,6 +47,7 @@ import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.user.api.Preferences;
 import org.sakaiproject.user.api.PreferencesService;
+import org.sakaiproject.user.cover.UserDirectoryService;
 
 import org.sakaiproject.util.Web;
 
@@ -48,6 +56,7 @@ import org.sakaiproject.util.Web;
  */
 public class DefaultSiteViewImpl extends AbstractSiteViewImpl
 {
+    private static final Log LOG = LogFactory.getLog(DefaultSiteViewImpl.class);
 
 	/**
 	 * @param siteHelper
@@ -180,6 +189,22 @@ public class DefaultSiteViewImpl extends AbstractSiteViewImpl
 		String preferencesToolId = serverConfigurationService.getString("portal.preferencestool","sakai.preferences");
 		String worksiteToolId = serverConfigurationService.getString("portal.worksitetool","sakai.sitesetup");
 
+        // SAK-22390. Need to make sure that the current user has permission to create a site.
+        boolean canAddSite = false;
+        try {
+            // See if current user is super duper and say yes if so
+            canAddSite = SecurityService.isSuperUser(session.getUserId());
+            if(!canAddSite) {
+                // Not super duper. Test the user template realm.
+                String type = UserDirectoryService.getUser(session.getUserId()).getType();
+                AuthzGroup ag = AuthzGroupService.getAuthzGroup("!user.template." + type);
+                Role role = ag.getRole(".auth");
+                canAddSite = role.isAllowed("site.add.course") || role.isAllowed("site.add.portfolio") || role.isAllowed("site.add.project");
+            }
+        } catch(Exception e) {
+            LOG.warn("Failed to set canAddSite for current user. Defaulting to false ...");
+        }
+
  		String profileToolUrl = null;
  		String worksiteToolUrl = null;
  		String prefsToolUrl = null;
@@ -215,7 +240,7 @@ public class DefaultSiteViewImpl extends AbstractSiteViewImpl
 		if ( prefsToolUrl != null ) {
 			renderContextMap.put("prefsToolUrl", prefsToolUrl);
 		}
-		if ( worksiteToolUrl != null ) {
+		if ( canAddSite && worksiteToolUrl != null ) {
 			renderContextMap.put("worksiteToolUrl", worksiteToolUrl);
 		}
 		if (serverConfigurationService.getBoolean("portal.use.tutorial", true)){

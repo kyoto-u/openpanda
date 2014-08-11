@@ -1,6 +1,6 @@
 /**
  * $Id: EntityBatchHandler.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBatchHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/rest/src/java/org/sakaiproject/entitybroker/rest/EntityBatchHandler.java $
  * EntityBatchHandler.java - entity-broker - Dec 18, 2008 11:40:39 AM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.1/news-api/api/src/java/org/sakaiproject/news/api/NewsService.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-2.9.2/news-api/api/src/java/org/sakaiproject/news/api/NewsService.java $
  * $Id: NewsService.java 59692 2009-04-03 23:47:17Z arwhyte@umich.edu $
  ***********************************************************************************
  *

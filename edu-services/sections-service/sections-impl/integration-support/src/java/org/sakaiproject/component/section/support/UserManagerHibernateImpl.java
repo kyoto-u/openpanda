@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/sections-service/sections-impl/integration-support/src/java/org/sakaiproject/component/section/support/UserManagerHibernateImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.2/sections-service/sections-impl/integration-support/src/java/org/sakaiproject/component/section/support/UserManagerHibernateImpl.java $
  * $Id: UserManagerHibernateImpl.java 59686 2009-04-03 23:37:55Z arwhyte@umich.edu $
  ***********************************************************************************
  *

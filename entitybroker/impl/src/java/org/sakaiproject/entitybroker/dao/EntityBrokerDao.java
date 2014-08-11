@@ -1,6 +1,6 @@
 /**
  * $Id: EntityBrokerDao.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/impl/src/java/org/sakaiproject/entitybroker/dao/EntityBrokerDao.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/impl/src/java/org/sakaiproject/entitybroker/dao/EntityBrokerDao.java $
  * EntityBrokerDao.java - entity-broker - May 3, 2008 4:46:19 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/user/api/User.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/user/api/User.java $
  * $Id: User.java 81278 2010-08-14 11:06:34Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

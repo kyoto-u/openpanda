@@ -94,7 +94,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	    }
 	    return preferencesService;
 	}
-
+	
 	/**
 	 * Default constructor (may be used to find user's default locale 
 	 *                      without specifying a bundle)
@@ -214,51 +214,50 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	/**
 	 ** Return user's prefered locale
 	 **	 First: return locale from Sakai user preferences, if available
-	 **	 Second: return locale from user session, if available
+	 **	 Second: return locale from session, if available
 	 **	 Last: return system default locale
 	 **
 	 ** @return user's Locale object
 	**
 	** @author Sugiura, Tatsuki (University of Nagoya)
 	** @author Jean-Francois Leveque (Universite Pierre et Marie Curie - Paris 6)
+	** @author Steve Swinsburg (steve.swinsburg@gmail.com)
 	 **/
 	public Locale getLocale()
 	{			 
-		 Locale loc = null;
-		 try
-		 {
-			 // check if locale is requested for specific user
-			 if ( this.userId != null )
-			 {
-				 loc = getLocale( this.userId );
-			 }
-			 
-			 else
-			 {
-				 loc = (Locale) getSessionManager().getCurrentSession().getAttribute(LOCALE_SESSION_KEY+getSessionManager().getCurrentSessionUserId());
-				 
-				 // The locale is not in the session. 
-				 // Look for it and set in session
-				 if (loc == null) 
-					 loc = setContextLocale(null);
-			 }
-		 }
-		 //FIXME NPE's should not be explicitly caught - rather check the session above for null
-		 catch(NullPointerException e) 
-		 {
-			if (M_log.isWarnEnabled()) {
-				M_log.warn("getLocale() swallowing NPE");
-				e.printStackTrace();
-			}
-			 // The locale is not in the session. 
-			 // Look for it and set in session
-			 loc = setContextLocale(null);
-		 } 
+	    Locale loc = null;
+	    // check if locale is requested for specific user
+	    if ( this.userId != null ) {
+	        loc = getLocale( this.userId );
+	    } else {
+	        try {
+	        	
+	        	//get current sessionId to use as the key.
+	        	//this allows the anon user to also have locale settings 
+	        	String sessionId = getSessionManager().getCurrentSession().getId();
+	        	M_log.debug("Retrieving locale for sessionId: " + sessionId);
+	            loc = (Locale) getSessionManager().getCurrentSession().getAttribute(LOCALE_SESSION_KEY+sessionId);
+	        
+	        } catch (NullPointerException e) {
+                loc = null;
+	            if (M_log.isWarnEnabled()) {
+	                M_log.warn("getLocale() swallowing NPE - caused by a null sessionmanager or null session, OK for tests, problem if production");
+	                //e.printStackTrace();
+	            }
+	        }
+	        	
+            // The locale is not in the session at all, so set in session
+            if (loc == null) {
+                loc = setContextLocale(null);
+            }
+	    }
 
-		if (loc == null) {
-			M_log.info("getLocale() Locale not found in preferences or session, returning default");
-			loc = Locale.getDefault();
-		}
+	    if (loc == null) {
+	        M_log.info("getLocale() Locale not found in preferences or session, returning default");
+	        loc = Locale.getDefault();
+	    } 
+	    	
+	    M_log.debug("Locale: " + loc.toString());
 
 		 return loc;
 	}
@@ -296,15 +295,22 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 	**
 	** @author Sugiura, Tatsuki (University of Nagoya)
 	** @author Jean-Francois Leveque (Universite Pierre et Marie Curie - Paris 6)
+	** @author Steve Swinsburg (steve.swinsburg@gmail.com)
 	 **/
 	public Locale setContextLocale(Locale loc)
 	{		 
+		
 		//	 First : find locale from Sakai user preferences, if available
 		if (loc == null) 
 		{
 			try
 			{
-				loc = getLocale( getSessionManager().getCurrentSessionUserId() );
+				String userId = getSessionManager().getCurrentSessionUserId();
+				
+				if (M_log.isDebugEnabled()) {
+					M_log.debug("setContextLocale(Locale), checking user preferences for userId: " + userId);
+				}
+				loc = getLocale(userId);
 			}
 			catch (Exception e)
 			{
@@ -320,7 +326,11 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 		{
 			try
 			{
+				if (M_log.isDebugEnabled()) {
+					M_log.debug("setContextLocale(Locale), checking browser session.");
+				}
 				loc = (Locale) getSessionManager().getCurrentSession().getAttribute("locale");
+				
 			}
 			catch (NullPointerException e)
 			{
@@ -337,7 +347,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 			// fallback to default.
 			loc = Locale.getDefault();
 			if (M_log.isDebugEnabled()) {
-				M_log.debug("setContextLocale(Locale), default locale");
+				M_log.debug("setContextLocale(Locale), using default locale");
 			}
 		}
 		else if (!Locale.getDefault().getLanguage().equals("en") && loc.getLanguage().equals("en") && !loc.toString().equals(DEBUG_LOCALE))
@@ -348,22 +358,34 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 				M_log.debug("setContextLocale(Locale), Tweak for English");
 			}
 		}
+		
+		if (M_log.isDebugEnabled()) {
+			M_log.debug("Locale is: "+ loc.toString());
+		}
+		
 
-		//Write the sakai locale in the session	
+		//Write the sakai locale into the session with sessionId as key.
+		//We do it this way so that anon users can also leverage the locale settings of sites, since anon users have a session.
+		//see KNL-984
 		try 
 		{
-			String sessionUser = getSessionManager().getCurrentSessionUserId();
-			if ( sessionUser != null )
-				getSessionManager().getCurrentSession().setAttribute(LOCALE_SESSION_KEY+sessionUser,loc);
+			String sessionId = getSessionManager().getCurrentSession().getId();
+
+			if (M_log.isDebugEnabled()) {
+				M_log.debug("Setting locale into session: " + sessionId);
+			}
+			
+			getSessionManager().getCurrentSession().setAttribute(LOCALE_SESSION_KEY+sessionId,loc);
 		}
 		catch (Exception e) 
 		{
 			if (M_log.isWarnEnabled()) {
 				M_log.warn("setContextLocale(Locale) swallowing Exception");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		} //Ignore and continue
-		 
+		
+		
 		return loc;		  
 	}
 
@@ -510,7 +532,7 @@ public class ResourceLoader extends DummyMap implements InternationalizedMessage
 
 
 	/**
-	 ** Return Resour�ceBundle properties as if Map.keySet() 
+	 ** Return ResourceBundle properties as if Map.keySet() 
 	 **/
 	public Set keySet()
 	{

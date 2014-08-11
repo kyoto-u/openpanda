@@ -4,22 +4,22 @@
   <parent>
     <artifactId>kernel</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>1.3.1</version>
+    <version>1.3.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>Sakai Kernel Component Package</name>
   <groupId>org.sakaiproject.kernel</groupId>
   <artifactId>sakai-kernel-component</artifactId>
-  <version>1.3.1</version>
+  <version>1.3.2</version>
   <organization>
     <name>Sakai Foundation</name>
     <url>http://sakaiproject.org/</url>
   </organization>
   <inceptionYear>2003</inceptionYear>
   <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-component</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-component</developerConnection>
-    <url>https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-component</url>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-component</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-component</developerConnection>
+    <url>https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-component</url>
   </scm>
 
   <packaging>sakai-component</packaging>
@@ -32,5 +32,17 @@
       <artifactId>sakai-kernel-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- antisamy XML deps - must include these jars at runtime for XML parsing libraries -->
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xmlParserAPIs</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- done antisamy XML deps -->
   </dependencies>
 </project>

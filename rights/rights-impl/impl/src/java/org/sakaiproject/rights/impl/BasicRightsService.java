@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rights/tags/sakai-2.9.1/rights-impl/impl/src/java/org/sakaiproject/rights/impl/BasicRightsService.java $
+ * $URL: https://source.sakaiproject.org/svn/rights/tags/sakai-2.9.2/rights-impl/impl/src/java/org/sakaiproject/rights/impl/BasicRightsService.java $
  * $Id: BasicRightsService.java 59682 2009-04-03 23:31:05Z arwhyte@umich.edu $
  ***********************************************************************************
  *

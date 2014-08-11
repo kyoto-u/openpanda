@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.1/roster-app/src/java/org/sakaiproject/tool/roster/RosterProfile.java $
+ * $URL: https://source.sakaiproject.org/svn/roster/tags/sakai-2.9.2/roster-app/src/java/org/sakaiproject/tool/roster/RosterProfile.java $
  * $Id: RosterProfile.java 72289 2010-01-22 15:41:10Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-private/src/main/java/org/sakaiproject/springframework/orm/hibernate/HibernateJMXAgent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-private/src/main/java/org/sakaiproject/springframework/orm/hibernate/HibernateJMXAgent.java $
  * $Id: HibernateJMXAgent.java 51317 2008-08-24 04:38:02Z csev@umich.edu $
  ***********************************************************************************
  *

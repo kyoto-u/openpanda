@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/DropboxNotification.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/content/impl/DropboxNotification.java $
  * $Id: DropboxNotification.java 113289 2012-09-21 15:16:20Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

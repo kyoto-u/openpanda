@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/entity/impl/ReferenceComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/entity/impl/ReferenceComponent.java $
  * $Id: ReferenceComponent.java 60137 2009-04-16 12:24:03Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.1/search-api/api/src/java/org/sakaiproject/search/api/StoredDigestContentProducer.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/search-1.4.2/search-api/api/src/java/org/sakaiproject/search/api/StoredDigestContentProducer.java $
  * $Id: StoredDigestContentProducer.java 67156 2009-10-05 10:07:23Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

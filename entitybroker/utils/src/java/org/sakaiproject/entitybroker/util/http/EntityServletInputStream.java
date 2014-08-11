@@ -1,6 +1,6 @@
 /**
  * $Id: EntityServletInputStream.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/java/org/sakaiproject/entitybroker/util/http/EntityServletInputStream.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/utils/src/java/org/sakaiproject/entitybroker/util/http/EntityServletInputStream.java $
  * BufferedServletInputStream.java - entity-broker - Dec 24, 2008 11:14:58 AM - azeckoski
  ***********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

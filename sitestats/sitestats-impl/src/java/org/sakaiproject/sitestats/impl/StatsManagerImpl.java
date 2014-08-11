@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsManagerImpl.java $
- * $Id: StatsManagerImpl.java 78671 2010-06-21 15:20:56Z nuno@ufp.edu.pt $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/StatsManagerImpl.java $
+ * $Id: StatsManagerImpl.java 120505 2013-02-27 21:07:10Z steve.swinsburg@gmail.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -36,6 +36,7 @@ import java.util.Observer;
 import java.util.Set;
 
 import org.apache.commons.digester.Digester;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -779,7 +780,7 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 		}
 		Reference r = M_em.newReference(ref);
 		if(r != null) {
-			return Validator.escapeHtml(r.getUrl());
+			return StringEscapeUtils.escapeHtml(r.getUrl());
 		}else{
 			return null;
 		}

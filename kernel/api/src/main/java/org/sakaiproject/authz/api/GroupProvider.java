@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/authz/api/GroupProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/authz/api/GroupProvider.java $
  * $Id: GroupProvider.java 98119 2011-09-13 11:28:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

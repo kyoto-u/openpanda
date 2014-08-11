@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/ItemDataIfc.java $
- * $Id: ItemDataIfc.java 69050 2009-11-16 23:16:32Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/ItemDataIfc.java $
+ * $Id: ItemDataIfc.java 122369 2013-04-08 16:39:49Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -125,13 +125,9 @@ public interface ItemDataIfc extends java.io.Serializable {
 
   void setItemMetaDataSet(Set itemMetaDataSet);
 
-  HashMap getItemMetaDataMap(Set itemMetaDataSet) ;
-
   Set getItemFeedbackSet();
 
   void setItemFeedbackSet(Set itemFeedbackSet);
-
-  HashMap getItemFeedbackMap(Set itemFeedbackSet) ;
 
   String getItemMetaDataByLabel(String label);
 

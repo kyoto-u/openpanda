@@ -1,6 +1,6 @@
 /**
  * $Id: HttpRESTUtilsTest.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/utils/src/test/org/sakaiproject/entitybroker/util/HttpRESTUtilsTest.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/utils/src/test/org/sakaiproject/entitybroker/util/HttpRESTUtilsTest.java $
  * HttpRESTUtilsTest.java - entity-broker - Dec 18, 2008 5:11:59 PM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

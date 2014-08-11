@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.1/api/src/java/org/sakaiproject/emailtemplateservice/model/EmailTemplate.java $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/emailtemplateservice-0.6.2/api/src/java/org/sakaiproject/emailtemplateservice/model/EmailTemplate.java $
  * $Id: EmailTemplate.java 113208 2012-09-20 16:05:02Z gjthomas@iupui.edu $
  ***********************************************************************************
  *

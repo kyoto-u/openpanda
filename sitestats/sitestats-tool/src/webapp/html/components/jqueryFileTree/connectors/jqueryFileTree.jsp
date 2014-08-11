@@ -1,6 +1,6 @@
 <%--
 
-    $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-tool/src/webapp/html/components/jqueryFileTree/connectors/jqueryFileTree.jsp $
+    $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-tool/src/webapp/html/components/jqueryFileTree/connectors/jqueryFileTree.jsp $
     $Id: jqueryFileTree.jsp 72174 2009-09-23 00:59:24Z arwhyte@umich.edu $
 
     Copyright (c) 2006-2009 The Sakai Foundation

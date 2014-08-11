@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/component-manager/src/main/java/org/sakaiproject/component/api/ServerConfigurationService.java $
- * $Id: ServerConfigurationService.java 98146 2011-09-13 23:31:42Z aaronz@vt.edu $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/component-manager/src/main/java/org/sakaiproject/component/api/ServerConfigurationService.java $
+ * $Id: ServerConfigurationService.java 122965 2013-04-18 15:02:58Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -22,7 +22,10 @@
 package org.sakaiproject.component.api;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import org.sakaiproject.component.locales.SakaiLocales;
 
 /**
  * <p>
@@ -142,21 +145,24 @@ public interface ServerConfigurationService
 
 	/**
 	 * Access some named configuration value as a string.
+	 * 1) IF "name=value" THEN this will return "value"
+	 * 2) IF "name=" THEN this will return null
+	 * 3) IF name is not defined in the config THEN this will return "" (empty string)
 	 * 
-	 * @param name
-	 *        The configuration value name.
-	 * @return The configuration value with this name, or "" if not found.
+	 * @param name The configuration value name (or key).
+	 * @return The configuration value for this name OR null if defined as 'blank' OR "" (empty string) if not defined.
 	 */
 	String getString(String name);
 
 	/**
 	 * Access some named configuration value as a string.
+	 * 1) IF "name=value" THEN this will return "value"
+	 * 2) IF "name=" THEN this will return null
+	 * 3) IF name is not defined in the config THEN this will return the provided default value
 	 * 
-	 * @param name
-	 *        The configuration value name.
-	 * @param dflt
-	 *        The value to return if not found.
-	 * @return The configuration value with this name, or the default value if not found.
+	 * @param name The configuration value name (or key).
+	 * @param dflt The value to return if not found in the config.
+	 * @return The configuration value for this name OR null if defined as 'blank' OR default value if not defined.
 	 */
 	String getString(String name, String dflt);
 
@@ -275,6 +281,20 @@ public interface ServerConfigurationService
     */
    Map<String, String> getToolToCategoryMap(String category);
 
+   /**
+    * Get the list of allowed locales as controlled by config params for "locales" and "locales.more"
+    * Defaults when nothing is specified in the config files come from {@link SakaiLocales#SAKAI_LOCALES_DEFAULT}
+    * @return an array of all allowed Locales for this installation
+    * @see SakaiLocales
+    */
+   public Locale[] getSakaiLocales();
+
+   /**
+    * Parse a string into a Locale
+    * @return Locale based on its string representation (language_region) OR default Locale if the string cannot be parsed
+    */
+   public Locale getLocaleFromString(String localeString);
+
 
    // improved methods
 
@@ -283,6 +303,13 @@ public interface ServerConfigurationService
    public static final String TYPE_INT = "int";
    public static final String TYPE_ARRAY = "array";
    public static final String TYPE_STRING = "string";
+   public static final String[] TYPES = {
+       TYPE_BOOLEAN,
+       TYPE_INT,
+       TYPE_ARRAY,
+       TYPE_STRING,
+       UNKNOWN
+   };
 
    /**
     * Retrieves config values from the configuration service
@@ -368,6 +395,7 @@ public interface ServerConfigurationService
     * Defines the config item holding class
     */
    public static interface ConfigItem {
+
        /**
         * Called whenever this config item is requested
         * @return the current number of times requested
@@ -398,7 +426,7 @@ public interface ServerConfigurationService
         */
        public Object getValue();
        /**
-        * @return the type of the value (string, int, boolean, array)
+        * @return the type of the value (string, int, boolean, array) - from {@link ServerConfigurationService#TYPES}
         */
        public String getType();
        /**
@@ -409,6 +437,10 @@ public interface ServerConfigurationService
         * @return the default value for this config (null indicates it is not set)
         */
        public Object getDefaultValue();
+       /**
+        * @return the human readable description of this configuration value
+        */
+       public String getDescription();
        /**
         * @return the number of times the config value was requested (or looked up)
         */
@@ -426,7 +458,7 @@ public interface ServerConfigurationService
         */
        public ConfigHistory[] getHistory();
        /**
-        * @return indicates is this config is registered (true) or if it is only requested (false)
+        * @return indicates if this config is registered (true) or if it is only requested (false)
         * (requested means someone asked for it but the setting has not been stored in the config service)
         */
        public boolean isRegistered();
@@ -439,6 +471,11 @@ public interface ServerConfigurationService
         * @return indicates is this config value should not be revealed because there are security implications
         */
        public boolean isSecured();
+       /**
+        * Indicates is this config item is dynamic or static (default is static)
+        * @return true is this config can be modified at runtime (dynamic), false if runtime changes are not allowed (static)
+        */
+       public boolean isDynamic();
    }
 
    /**
@@ -475,7 +512,7 @@ public interface ServerConfigurationService
     * so this is mainly for loading configurations very early in the system startup
     */
    public static interface ConfigurationProvider {
-       /* This is part of supporting a more flexible and persistent configuration
+       /* This is part of supporting a more flexible and persistent configuration -AZ
         */
 
        /**
@@ -491,22 +528,117 @@ public interface ServerConfigurationService
    }
 
    /**
-    * Allows a service to be notified when configuration settings are changed
+    * Allows a service to be notified when configuration settings are changed,
+    * It is up to the implementor to ignore the changes they do not care about.
+    * Filter on the {@link ConfigItem#getName()}.
     * 
     * NOTE: this does NOT include any changes which happen during the initial properties file loading
     */
    public static interface ConfigurationListener {
-       /* This is part of supporting a more flexible and persistent configuration
+       /* This is part of supporting a more flexible and persistent configuration -AZ
         */
 
        /**
-        * This will be called each time a {@link ConfigItem} is changed AFTER
-        * the initial registration of that config item and 
+        * This will be called each time a {@link ConfigItem} is changed,
+        * this will be called before the item has been changed and will reflect 
+        * the current values for this config item.
+        * NOTE: the default implementation of this should be to just return null
+        * if processing should be allowed to continue unimpeded
+        * 
+        * NOTE: it does NOT include the the initial registration of that config item and 
         * initial startup of the {@link ServerConfigurationService}
         * 
-        * @param configItem the {@link ConfigItem} which changed
+        * @param currentConfigItem the {@link ConfigItem} which is changing (will be null if item is new),
+        *   this item should not be changed by this method
+        * @param newConfigItem the {@link ConfigItem} which will become the new one
+        * @return null to allow processing to continue as usual
+        *   OR instance of {@link BlockingConfigItem} to block the change from happening (change will be discarded and processing will stop)
+        *   OR the modified newConfigItem item which will be used as the new config value
         */
-       public void changed(ConfigItem configItem);
+       public ConfigItem changing(ConfigItem currentConfigItem, ConfigItem newConfigItem);
+
+       /**
+        * This will be called each time a {@link ConfigItem} is changed,
+        * this will be called after the item has been changed and will reflect the new values
+        * for this config item
+        * 
+        * NOTE: it does NOT include the the initial registration of that config item and 
+        * initial startup of the {@link ServerConfigurationService}
+        * 
+        * @param configItem the {@link ConfigItem} which changed,
+        *   this item should not be changed by this method
+        * @param previousConfigItem the {@link ConfigItem} before the change (will be null if item is new)
+        */
+       public void changed(ConfigItem configItem, ConfigItem previousConfigItem);
+
+       /**
+        * This is a special marker class that is used in the {@link ServerConfigurationService.ConfigurationListener},
+        * returning this indicates that the config change should stop processing the change and retain the original value
+        */
+       public static class BlockingConfigItem implements ConfigItem {
+
+           public static BlockingConfigItem instance() {
+               return new BlockingConfigItem();
+           }
+
+           /**
+            * SPECIAL marker class, indicates that the config change should stop processing the change and retain the original value
+            */
+           public BlockingConfigItem() {}
+
+           public int requested() {
+               return 0;
+           }
+           public int changed(Object value, String source) {
+               return 0;
+           }
+           public ConfigItem copy() {
+               return new BlockingConfigItem();
+           }
+           public String getName() {
+               return "BLOCKING";
+           }
+           public Object getValue() {
+               return null;
+           }
+           public String getType() {
+               return "BLOCKING";
+           }
+           public String getDescription() {
+               return null;
+           }
+           public String getSource() {
+               return null;
+           }
+           public Object getDefaultValue() {
+               return null;
+           }
+           public int getRequested() {
+               return 0;
+           }
+           public int getChanged() {
+               return 0;
+           }
+           public int getVersion() {
+               return 0;
+           }
+           public ConfigHistory[] getHistory() {
+               return null;
+           }
+           public boolean isRegistered() {
+               return false;
+           }
+           public boolean isDefaulted() {
+               return false;
+           }
+           public boolean isSecured() {
+               return false;
+           }
+           public boolean isDynamic() {
+               return false;
+           }
+       }
+
    }
 
 }

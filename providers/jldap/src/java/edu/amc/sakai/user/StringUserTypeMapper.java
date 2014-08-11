@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.1/jldap/src/java/edu/amc/sakai/user/StringUserTypeMapper.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/jldap/src/java/edu/amc/sakai/user/StringUserTypeMapper.java $
  * $Id: StringUserTypeMapper.java 59681 2009-04-03 23:29:54Z arwhyte@umich.edu $
  ***********************************************************************************
  *

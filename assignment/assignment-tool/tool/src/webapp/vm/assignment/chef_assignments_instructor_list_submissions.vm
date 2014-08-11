@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_list_submissions.vm 113485 2012-09-24 20:04:21Z ottenhoff@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_list_submissions.vm 122959 2013-04-18 13:23:01Z gsilver@umich.edu $ -->
 <!-- start: chef_assignments_instructor_list_submissions.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_list_submissions.vm,v 1.10 2005/06/14 16:07:00 zqian.umich.edu Exp $ -->
 #parse("/vm/assignment/assignment_macros.vm")
@@ -372,15 +372,17 @@
 				<input type="hidden" name = "allowResToggle" id = "allowResToggle" value="checked" />
 				<p class="discTria">
 					<a href="#" onclick="javascript:showAllowResubmission();">
-					<img src="#imageLink("sakai/expand.gif")" alt="$tlang.getString("allowResubmission.show")" border="0" width="13" height="13" align="top" /></a>
+					<img src="#imageLink("sakai/expand.gif")" alt="$tlang.getString("allowResubmission.show")" border="0" width="13" height="13" align="top" />
 						$tlang.getString("allowResubmission.label")
+                 	</a>
 				</p>
 			</div>
 			<div id="allowResubmission_shown" #if ($!showAllowResubmission && $!value_SubmissionType != 4)style="display:block"#else style="display:none"#end>
 				<p class="discTria">
 					<a href="#" onclick="javascript:hideAllowResubmission();">
-					<img src="#imageLink("sakai/collapse.gif")" alt="$tlang.getString("allowResubmission.hide")" border="0" width="13" height="13" align="top" /></a>
+					<img src="#imageLink("sakai/collapse.gif")" alt="$tlang.getString("allowResubmission.hide")" border="0" width="13" height="13" align="top" />
 						$tlang.getString("allowResubmission.label")
+                 	</a>
 				</p>
 				<div id="allowResubmission_shownInner" style="display:none">
 				 <p class="instruction">
@@ -402,11 +404,12 @@
 							</p>
 							<p class="shorttext" id="allowResubmitTime" style="$!resubmitStyle">
 								## only show date selection when allowed to resubmit
-								<label for="$name_ResubmitMonth">
+								<label>
 									$tlang.getString("gen.acesubunt")
 								</label>
 								#chef_dateselectionwidget($name_ResubmitYear $name_ResubmitMonth $name_ResubmitDay $!value_year_from $!value_year_to $value_ResubmitYear $value_ResubmitMonth $value_ResubmitDay $dateFormat "")
-								$tlang.getString("gen.at") 
+								&nbsp;$tlang.getString("gen.at")&nbsp;
+                                <label class="skip" for="$name_ResubmitHour">$tlang.getString("dateselectionwidget.hour")</label>
 								<select name="$name_ResubmitHour" id="$name_ResubmitHour">
 									#foreach ($i in [1..12])
 										#if ($i == $value_ResubmitHour)
@@ -416,11 +419,13 @@
 										#end
 									#end
 								</select>
+                                <label class="skip" for="$name_ResubmitMin">$tlang.getString("dateselectionwidget.minute")</label>
 								<select name="$name_ResubmitMin" id="$name_ResubmitMin">
 									#foreach ($i in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
 										<option value="$i" #if($i == $value_ResubmitMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
 									#end
 								</select>
+                                <label class="skip" for="$name_ResubmitAMPM">$tlang.getString("dateselectionwidget.ampm")</label>
 								<select name="$name_ResubmitAMPM" id="$name_ResubmitAMPM">
 									#foreach ($i in ["AM", "PM"])
 										#if ($i == $value_ResubmitAMPM)
@@ -673,7 +678,7 @@
 	#end
 	
 	## assignment details
-	<h3  id="toggleModel" class="toggleAnchor specialLink"><img alt="expand" class="expand" src="/library/image/sakai/expand.gif" /><img alt="collapse" class="collapse" src="/library/image/sakai/collapse.gif" />$tlang.getString("gen.assdet")</h3>
+	<a id="toggleModel" href="javascript:;" class="toggleAnchor specialLink"><img alt="expand" class="expand" src="/library/image/sakai/expand.gif" /><img alt="collapse" class="collapse" src="/library/image/sakai/collapse.gif" /><h3>$tlang.getString("gen.assdet")</h3></a>
 	<div class="toggledContent">
 	<table class="itemSummary" border="0" cellspacing="0" summary="$tlang.getString("gen.theassinf")">
 		<tr> 

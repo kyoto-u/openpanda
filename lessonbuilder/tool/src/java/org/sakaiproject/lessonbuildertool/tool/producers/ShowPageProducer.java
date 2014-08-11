@@ -94,6 +94,7 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.util.FormattedText;
 
 import uk.org.ponder.localeutil.LocaleGetter;
 import uk.org.ponder.messageutil.MessageLocator;
@@ -1549,7 +1550,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 							UIOutput.make(tableRow, "item-groups2", itemGroupString);
 						}
 
-						item = UIOutput.make(tableRow, "iframe").decorate(new UIFreeAttributeDecorator("src", i.getItemURL(simplePageBean.getCurrentSiteId(),currentPage.getOwner())));
+						String itemUrl = i.getItemURL(simplePageBean.getCurrentSiteId(),currentPage.getOwner());
+						item = UIOutput.make(tableRow, "iframe").decorate(new UIFreeAttributeDecorator("src", itemUrl));
 						// if user specifies auto, use Javascript to resize the
 						// iframe when the
 						// content changes. This only works for URLs with the
@@ -3229,11 +3231,11 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		{
 			if(isURL)
 			{
-				itemPath+= "/<a target=\"_blank\" href=\"\" class=\"" + pathId + "\">" + itemPathTokens[tokenIndex] + "</a>";
+				itemPath+= "/<a target=\"_blank\" href=\"\" class=\"" + URLEncoder.encode(pathId) + "\">" + FormattedText.escapeHtml(itemPathTokens[tokenIndex],false) + "</a>";
 				isURL = false;
 			}
 			else
-				itemPath+="/" + itemPathTokens[tokenIndex];
+			    itemPath+="/" + FormattedText.escapeHtml(itemPathTokens[tokenIndex],false);
 			
 			isURL = itemPathTokens[tokenIndex].equals("urls") ? true: false;
 		}

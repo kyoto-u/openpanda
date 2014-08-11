@@ -679,6 +679,10 @@ public class SiteManageGroupSectionRoleHandler {
 			}
 			if (!selectedRosters.isEmpty())
 			{
+				//since RSF doesn't like "."s, they have been escaped.  Now unescape them
+				for(String s : selectedRoles){
+					s = s.replaceAll("-_p_-", ".");
+				}
 				// set provider id
 				group.setProviderGroupId(getProviderString(selectedRosters));
 			}
@@ -899,6 +903,8 @@ public class SiteManageGroupSectionRoleHandler {
         			group.getProperties().addProperty(SiteConstants.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
 		        		
 		        	// roster provider string
+        			//rsf doesn't like "."'s, so these have been escaped.  Now unescape them
+        			roster = roster.replaceAll("-_p_-", ".");
 		        	group.setProviderGroupId(roster);
 		        		
 		        	String title = truncateGroupTitle(roster);

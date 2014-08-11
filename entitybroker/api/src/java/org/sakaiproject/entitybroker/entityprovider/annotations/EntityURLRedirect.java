@@ -1,6 +1,6 @@
 /**
  * $Id: EntityURLRedirect.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/annotations/EntityURLRedirect.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/annotations/EntityURLRedirect.java $
  * EntityCustomAction.java - entity-broker - Jul 28, 2008 11:09:39 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

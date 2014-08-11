@@ -387,6 +387,9 @@ public class MyPreferences extends BasePage{
 				//resize iframe
 				target.appendJavascript("setMainFrameHeight(window.name);");
 				
+				//PRFL-775 - set focus to feedback message so it is announced to screenreaders
+				target.appendJavascript("$('#" + formFeedbackId + "').focus();");
+				
 				target.addComponent(formFeedback);
             }
 			

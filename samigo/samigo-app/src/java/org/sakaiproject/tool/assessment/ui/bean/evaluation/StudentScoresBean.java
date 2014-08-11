@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/StudentScoresBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/StudentScoresBean.java $
  * $Id: StudentScoresBean.java 62919 2009-05-26 19:08:31Z ktsao@stanford.edu $
  ***********************************************************************************
  *

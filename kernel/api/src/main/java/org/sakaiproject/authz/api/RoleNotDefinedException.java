@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/authz/api/RoleNotDefinedException.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/authz/api/RoleNotDefinedException.java $
  * $Id: RoleNotDefinedException.java 62985 2009-05-28 09:13:52Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

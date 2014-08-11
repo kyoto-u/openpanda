@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/CharonPortal.java $
- * $Id: CharonPortal.java 110562 2012-07-19 23:00:20Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/portal-base-2.9.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/CharonPortal.java $
+ * $Id: CharonPortal.java 124895 2013-05-23 16:10:02Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -77,7 +77,7 @@ import org.sakaiproject.util.Web;
  * Charon is the Sakai Site based portal.
  * </p>
  * @since Sakai 2.0
- * @version $Rev: 110562 $
+ * @version $Rev: 124895 $
  * 
  */
 public class CharonPortal extends HttpServlet 
@@ -3121,8 +3121,8 @@ public class CharonPortal extends HttpServlet
 			skin = ServerConfigurationService.getString("skin.default");
 		}
 		String templates = ServerConfigurationService.getString("portal.templates", "neoskin");
-		String prefix = ServerConfigurationService.getString("portal.neoprefix", "neo-");
-		if ( "neoskin".equals(templates) ) skin = prefix + skin;
+		String prefix = portalService.getSkinPrefix();
+		if ( "neoskin".equals(templates)) skin = prefix + skin;
 		return skin;
 	}
 

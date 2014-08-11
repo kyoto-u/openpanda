@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.1/presence-impl/impl/src/java/org/sakaiproject/presence/impl/ClusterPresenceService.java $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/presence-2.9.2/presence-impl/impl/src/java/org/sakaiproject/presence/impl/ClusterPresenceService.java $
  * $Id: ClusterPresenceService.java 92673 2011-05-06 09:54:49Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

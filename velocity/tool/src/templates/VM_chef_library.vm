@@ -132,7 +132,7 @@
 #macro (chef_start)
 #if ($sakai_fragment=='false')
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="#if($language)$language#{else}en#end" xml:lang="#if($language)$language#{else}en#end">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
@@ -275,7 +275,7 @@
     *#
     
     #if ($format=="m")
-    
+     <label for="$monthselect_id" class="skip"><span class="reqStar">*</span> $tlang.getString("dateselectionwidget.month")</label>
     #if ($onChangeAction)     
     <select name="$monthselect_id" id="$monthselect_id" onchange="$onChangeAction">
     #else
@@ -312,6 +312,7 @@
     *#
     
     #if ($format=="d")
+     <label for="$dayselect_id" class="skip"><span class="reqStar">*</span> $tlang.getString("dateselectionwidget.day")</label>
     #if ($onChangeAction)
     <select name="$dayselect_id" id="$dayselect_id" onchange="$onChangeAction">
     #else
@@ -331,6 +332,7 @@
     *#
     
     #if ($format=="y")
+      <label for="$yearselect_id" class="skip"><span class="reqStar">*</span> $tlang.getString("dateselectionwidget.year")</label>
       #if ($onChangeAction)
       <select name="$yearselect_id" id="$yearselect_id" onchange="$onChangeAction">
       #else
@@ -366,6 +368,11 @@
 *#
 #macro (chef_dateselectionwidgetpopup $yearselect_id $monthselect_id $dayselect_id)
 	
+	#set ($calendar_title = "")
+	#if ($!tlang.keySet().contains("calendar.title"))
+		#set ($calendar_title = $tlang.getString("calendar.title"))
+	#end
+
 	## Everything is in an our own external JavaScript library
 	## <script type="text/javascript" src="#libraryLink('jscalendar/sakai-jscalendar.js')"></script>
 	## Call a JavaScript function from within the library to do setup
@@ -374,7 +381,7 @@
 	## Everything is in an our own external JavaScript library
 	<script type="text/javascript" src="#libraryLink('calendar/sakai-calendar.js')"></script>
 	## Call a JavaScript function from within the library to do setup
-	<script type="text/javascript">chef_dateselectionwidgetpopup('$yearselect_id', '$monthselect_id', '$dayselect_id');</script>
+	<script type="text/javascript">chef_dateselectionwidgetpopup('$yearselect_id', '$monthselect_id', '$dayselect_id', null, "$calendar_title");</script>
 #end
 
 

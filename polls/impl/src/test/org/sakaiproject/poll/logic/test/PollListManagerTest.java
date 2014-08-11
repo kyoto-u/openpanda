@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.1/impl/src/test/org/sakaiproject/poll/logic/test/PollListManagerTest.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.2/impl/src/test/org/sakaiproject/poll/logic/test/PollListManagerTest.java $
  * $Id: PollListManagerTest.java 115365 2012-10-31 16:05:04Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

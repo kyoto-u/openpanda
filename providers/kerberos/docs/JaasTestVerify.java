@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.1/kerberos/docs/JaasTestVerify.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/kerberos/docs/JaasTestVerify.java $
  * $Id: JaasTestVerify.java 95501 2011-07-22 12:26:26Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

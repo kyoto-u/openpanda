@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.1/sections-service/sections-api/src/java/org/sakaiproject/section/api/SectionAwareness.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/edu-services-1.2.2/sections-service/sections-api/src/java/org/sakaiproject/section/api/SectionAwareness.java $
  * $Id: SectionAwareness.java 84221 2010-11-03 12:47:45Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

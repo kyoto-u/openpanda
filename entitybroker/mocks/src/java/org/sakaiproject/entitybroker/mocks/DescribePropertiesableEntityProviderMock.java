@@ -1,6 +1,6 @@
 /**
  * $Id: DescribePropertiesableEntityProviderMock.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/mocks/src/java/org/sakaiproject/entitybroker/mocks/DescribePropertiesableEntityProviderMock.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/mocks/src/java/org/sakaiproject/entitybroker/mocks/DescribePropertiesableEntityProviderMock.java $
  * DescribePropertiesableEntityProviderMock.java - entity-broker - Jul 19, 2008 9:40:43 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**
  * $Id: Createable.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/Createable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/Createable.java $
  * Createable.java - entity-broker - Apr 8, 2008 11:14:05 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

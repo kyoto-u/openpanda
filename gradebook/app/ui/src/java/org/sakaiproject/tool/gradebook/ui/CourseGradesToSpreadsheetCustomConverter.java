@@ -106,7 +106,7 @@ public class CourseGradesToSpreadsheetCustomConverter implements CourseGradesToS
 					row.add(student.getSortName());
 					break;
 
-				case coursegrades:
+				case coursegrade:
 					row.add(grade);
 					break;
 
@@ -139,7 +139,7 @@ public class CourseGradesToSpreadsheetCustomConverter implements CourseGradesToS
 
 	public enum GradeFields
 	{
-		userid, usereid, useremail, username, sortname, coursegrades, siteid, sitetitle, novalue;
+		userid, usereid, useremail, username, sortname, coursegrade, siteid, sitetitle, novalue;
 
 		public static boolean contains(String field) {
 			try {

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/SiteEmailNotificationContent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-impl/src/main/java/org/sakaiproject/content/impl/SiteEmailNotificationContent.java $
  * $Id: SiteEmailNotificationContent.java 101660 2011-12-13 00:05:46Z aaronz@vt.edu $
  ***********************************************************************************
  *

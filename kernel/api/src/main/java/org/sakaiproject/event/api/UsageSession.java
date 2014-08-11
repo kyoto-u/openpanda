@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/event/api/UsageSession.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/event/api/UsageSession.java $
  * $Id: UsageSession.java 54470 2008-11-18 06:59:24Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

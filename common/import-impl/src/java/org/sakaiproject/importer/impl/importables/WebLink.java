@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.1/import-impl/src/java/org/sakaiproject/importer/impl/importables/WebLink.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/common-1.2.2/import-impl/src/java/org/sakaiproject/importer/impl/importables/WebLink.java $
  * $Id: WebLink.java 59673 2009-04-03 23:02:03Z arwhyte@umich.edu $
  ***********************************************************************************
  *

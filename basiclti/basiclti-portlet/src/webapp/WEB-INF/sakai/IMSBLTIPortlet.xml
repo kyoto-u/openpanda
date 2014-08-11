@@ -2,20 +2,24 @@
 <registration>
         <tool
                         id="sakai.basiclti"
-                        title="Basic LTI"
-                        description="IMS Basic Learning Tools Interoperability.">
+                        title="External Tool"
+                        description="Launch external tools using IMS Learning Tools Interoperability.">
 
                 <configuration name="sakai:portlet-pre-render" value="true" />
 
                 <category name="course" />
                 <category name="project" />
-		<category name="portfolio" />
+				<category name="portfolio" />
 
-                <!-- Allow this to be set -->
+                <!-- Allow these to be set -->
                 <configuration name="functions.require" />
+				<!-- This allows an LTI Tool to choose a CSS class for its icon
+					other than the default.   It may require a new icon and 
+					CSS change to get it to work for a completely new icon. -->
+                <configuration name="sakai:menuClass"/>
 
-		<!-- The default / pre-configured settings for this 
-		     placement.  If you set a value here and don't make 
+                <!-- The default / pre-configured settings for this 
+                     placement.  If you set a value here and don't make 
                      it final below - it is just the default and the 
                      Intructor can edit it.   If you make it final
                      the Instructor won't even see the value.  
@@ -26,9 +30,11 @@
                      Adminitrators can set any of these Parameters in the
                      Sites tool and set the finalness of the parameters
                      as well.  -->
+
                 <configuration name="imsti.launch" />
                 <configuration name="imsti.xml" />
                 <configuration name="imsti.secret" />
+                <configuration name="imsti.encryptedsecret" />
                 <configuration name="imsti.key" />
                 <configuration name="imsti.pagetitle" />
                 <configuration name="imsti.tooltitle" />
@@ -42,6 +48,7 @@
                 <configuration name="imsti.allowsettings" />
                 <configuration name="imsti.allowroster" />
                 <configuration name="imsti.allowoutcomes" />
+                <configuration name="imsti.allowlori" />
                 <configuration name="imsti.contentlink" />
 
                 <!-- Setting these to true means the corresponding above values 
@@ -50,6 +57,7 @@
 		<!-- We default xml to final to suppress it in the configuration display -->
                 <configuration name="final.xml" value="true"/>
                 <configuration name="final.secret" value="false"/>
+                <configuration name="final.encryptedsecret" value="false"/>
                 <configuration name="final.key" value="false"/>
                 <configuration name="final.pagetitle" value="false"/>
                 <configuration name="final.tooltitle" value="false"/>
@@ -63,6 +71,7 @@
                 <configuration name="final.allowsettings" value="false"/>
                 <configuration name="final.allowroster" value="false"/>
                 <configuration name="final.allowoutcomes" value="false"/>
+                <configuration name="final.allowlori" value="false"/>
                 <configuration name="final.contentlink" value="false"/>
 
                 <!-- Allow multiple instances of this tool within one site -->
@@ -75,15 +84,16 @@
         <tool
                         id="sakai.imstestlti"
                         title="Awsomeness"
-                        description="IMS Basic LTI Test.">
+                        description="IMS LTI Test.">
 
                 <configuration name="sakai:portlet-pre-render" value="true" />
 
                 <category name="course" />
                 <category name="project" />
-		 <category name="portfolio" />
+				<category name="portfolio" />
 
                 <configuration name="functions.require" />
+                <configuration name="sakai:menuClass" value="icon-sakai-lessonbuildertool"/>
 
                 <configuration name="imsti.launch"
                    value="http://www.imsglobal.org/developers/BLTI/tool.php" />
@@ -103,6 +113,7 @@
                 <configuration name="imsti.allowsettings" value="on"/>
                 <configuration name="imsti.allowroster" value="on"/> 
                 <configuration name="imsti.allowoutcomes" value="on"/> 
+                <configuration name="imsti.allowlori" value="on"/> 
                 <configuration name="imsti.contentlink" />
 
                 <configuration name="final.launch" value="true"/>
@@ -122,6 +133,7 @@
                 <configuration name="final.allowsettings" value="true"/>
                 <configuration name="final.allowroster" value="true"/>
                 <configuration name="final.allowoutcomes" value="true"/>
+                <configuration name="final.allowlori" value="true"/>
                 <configuration name="final.contentlink" value="true"/>
         </tool>
         -->

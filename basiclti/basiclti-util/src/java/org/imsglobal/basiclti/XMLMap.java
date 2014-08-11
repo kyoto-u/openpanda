@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/basiclti-util/src/java/org/imsglobal/basiclti/XMLMap.java $
- * $Id: XMLMap.java 96931 2011-08-14 16:23:03Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-util/src/java/org/imsglobal/basiclti/XMLMap.java $
+ * $Id: XMLMap.java 121298 2013-03-16 14:05:44Z csev@umich.edu $
  **********************************************************************************
  *
  * Copyright (c) 2009 IMS GLobal Learning Consortium, Inc.
@@ -263,7 +263,10 @@ public class XMLMap {
 	public static Document documentFromString(String input)
 	{
 		try{
-			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); 
+			factory.setFeature("http://xml.org/sax/features/external-general-entities", false); 
+			factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false); 
+			DocumentBuilder parser = factory.newDocumentBuilder();
 			Document document = parser.parse(new ByteArrayInputStream(input.getBytes()));
 			return document;
 		} catch (Exception e) {
@@ -489,7 +492,10 @@ public class XMLMap {
 		Document document = null;
 
 		try{
-			DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); 
+			factory.setFeature("http://xml.org/sax/features/external-general-entities", false); 
+			factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false); 
+			DocumentBuilder parser = factory.newDocumentBuilder();
 			document = parser.newDocument();
 		} catch (Exception e) {
 			return null;
@@ -734,6 +740,14 @@ public class XMLMap {
 	// than all string together
 	public static String documentToString(Document document, boolean pretty)
 	{
+		return nodeToString(document, pretty);
+	}
+
+	// Optionally setup indenting to "pretty print"
+	// Note - this is not very pretty at least in my testing - but it is better
+	// than all string together
+	public static String nodeToString(Node node, boolean pretty)
+	{
 		try {
 			javax.xml.transform.Transformer tf =
 				javax.xml.transform.TransformerFactory.newInstance().newTransformer();
@@ -742,7 +756,7 @@ public class XMLMap {
 				tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			}
 			ByteArrayOutputStream baStream = new ByteArrayOutputStream();
-			tf.transform (new javax.xml.transform.dom.DOMSource (document),
+			tf.transform (new javax.xml.transform.dom.DOMSource (node),
 					new javax.xml.transform.stream.StreamResult (baStream));
 			return baStream.toString();
 		} catch (Exception e)  {

@@ -1,6 +1,6 @@
 /**
  * $Id: EntityData.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/extension/EntityData.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/extension/EntityData.java $
  * EntityData.java - entity-broker - Aug 3, 2008 6:03:53 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

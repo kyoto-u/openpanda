@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-2.9.1/postem-api/src/java/org/sakaiproject/api/app/postem/data/Template.java $
+ * $URL: https://source.sakaiproject.org/svn/postem/tags/sakai-2.9.2/postem-api/src/java/org/sakaiproject/api/app/postem/data/Template.java $
  * $Id: Template.java 59680 2009-04-03 23:28:39Z arwhyte@umich.edu $
  ***********************************************************************************
  *

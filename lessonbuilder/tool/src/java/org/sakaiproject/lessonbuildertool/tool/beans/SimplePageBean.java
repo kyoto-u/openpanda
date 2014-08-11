@@ -179,7 +179,7 @@ public class SimplePageBean {
 	private List<GroupEntry> currentGroups = null;
 	private Set<String> myGroups = null;
 
-	private boolean filterHtml = ServerConfigurationService.getBoolean(FILTERHTML, false);
+	private String filterHtml = ServerConfigurationService.getString(FILTERHTML);
 
 	public String selectedAssignment = null;
 	public String selectedBlti = null;
@@ -400,6 +400,29 @@ public class SimplePageBean {
 	}
 
     // End Injection
+    
+	static Class levelClass = null;
+	static Object[] levels = null;
+	static Class ftClass = null;
+	static Method ftMethod = null;
+	static Object ftInstance = setupFtStuff();
+
+	static Object setupFtStuff () {
+	    Object ret = null;
+	    try {
+		levelClass = Class.forName("org.sakaiproject.util.api.FormattedText$Level");
+		levels = levelClass.getEnumConstants();
+		ftClass = Class.forName("org.sakaiproject.util.api.FormattedText");
+		ftMethod = ftClass.getMethod("processFormattedText", 
+		   new Class[] { String.class, StringBuilder.class, levelClass }); 
+		ret = org.sakaiproject.component.cover.ComponentManager.get("org.sakaiproject.util.api.FormattedText");
+		return ret;
+	    } catch (Exception e) {
+		log.error("Formatted Text with levels not available: " + e);
+		return null;
+	    }
+	}
+
 
 	public void init () {	
 		if (groupCache == null) {
@@ -719,15 +742,80 @@ public class SimplePageBean {
 			// a lot of people feel users shouldn't be able to add javascript, etc
 			// to their HTML. I think enforcing that makes Sakai less than useful.
 			// So check config options to see whether to do that check
+			final Integer FILTER_DEFAULT=0;
+			final Integer FILTER_HIGH=1;
+			final Integer FILTER_LOW=2;
+			final Integer FILTER_NONE=3;
+
 			String html = contents;
-			if (getCurrentPage().getOwner() != null || filterHtml 
-					&& !"false".equals(placement.getPlacementConfig().getProperty("filterHtml")) ||
-					"true".equals(placement.getPlacementConfig().getProperty("filterHtml"))) {
-				html = FormattedText.processFormattedText(contents, error);
+
+			// figure out how to filter
+			Integer filter = FILTER_DEFAULT;
+			if (getCurrentPage().getOwner() != null) {
+			    filter = FILTER_DEFAULT; // always filter student content
 			} else {
+			    // this is instructor content.
+			    // see if specified
+			    String filterSpec = placement.getPlacementConfig().getProperty("filterHtml");
+			    if (filterSpec == null)
+				filterSpec = filterHtml;
+			    // no, default to LOW. That will allow embedding but not Javascript
+			    if (filterSpec == null) // should never be null. unspeciifed should give ""
+				filter = FILTER_LOW;
+			    // old specifications
+			    else if (filterSpec.equalsIgnoreCase("true"))
+				filter = FILTER_LOW; // old value of true produced the same result as missing
+			    else if (filterSpec.equalsIgnoreCase("false"))			    
+				filter = FILTER_NONE;
+			    // new ones
+			    else if (filterSpec.equalsIgnoreCase("default"))			    
+				filter = FILTER_DEFAULT;
+			    else if (filterSpec.equalsIgnoreCase("high")) 
+				filter = FILTER_HIGH;
+			    else if (filterSpec.equalsIgnoreCase("low")) 
+				filter = FILTER_LOW;
+			    else if (filterSpec.equalsIgnoreCase("none")) 
+				filter = FILTER_NONE;
+			    // unspecified
+			    else
+				filter = FILTER_LOW;
+			}			    
+			if (filter.equals(FILTER_NONE)) {
+			    html = FormattedText.processHtmlDocument(contents, error);
+			} else if (filter.equals(FILTER_DEFAULT)) {
+			    html = FormattedText.processFormattedText(contents, error);
+			} else if (ftInstance != null) {
+			    try {
+				// now filter is set. Implement it. Depends upon whether we have the anti-samy code
+				Object level = null;
+				if (filter.equals(FILTER_HIGH))
+				    level = levels[1];
+				else
+				    level = levels[2];
+
+				html = (String)ftMethod.invoke(ftInstance, new Object[] { contents, error, level });
+			    } catch (Exception e) {
+				// this should never happen. If it does, emulate what the anti-samy
+				// code does if antisamy is disabled. It always filters
+				html = FormattedText.processFormattedText(contents, error);
+			    }
+			} else {
+			    // don't have antisamy. For LOW, use old instructor behavior, since
+			    // LOW is the default. For high, it makes sense to filter
+			    if (filter.equals(FILTER_HIGH))
+				html = FormattedText.processFormattedText(contents, error);
+			    else
 				html = FormattedText.processHtmlDocument(contents, error);
+
 			}
-			
+
+			// if (getCurrentPage().getOwner() != null || filterHtml 
+			//		&& !"false".equals(placement.getPlacementConfig().getProperty("filterHtml")) ||
+			//		"true".equals(placement.getPlacementConfig().getProperty("filterHtml"))) {
+			//	html = FormattedText.processFormattedText(contents, error);
+			//} else {
+			//	html = FormattedText.processHtmlDocument(contents, error);
+
 			if (html != null) {
 				SimplePageItem item;
 				// itemid -1 means we're adding a new item to the page, 
@@ -1634,6 +1722,8 @@ public class SimplePageBean {
 		if(ret == null && page.getOwner() != null) {
 			ret = simplePageToolDao.findItemFromStudentPage(page.getPageId());
 		}
+		if (ret == null)
+		    return null;
 		try {
 			updatePageItem(ret.getId());
 		} catch (PermissionException e) {
@@ -4029,7 +4119,7 @@ public class SimplePageBean {
 		List<SimplePageItem> items = getItemsOnPage(Long.valueOf(findItem(itemId).getSakaiId()));
 
 		for (SimplePageItem item : items) {
-			if (!isItemComplete(item)) {
+			if (!isItemComplete(item) && isItemVisible(item)) {
 			    if (item.getType() == SimplePageItem.PAGE) {
 				// If we get here, must be not completed or isItemComplete would be true
 				SimplePageLogEntry entry = getLogEntry(item.getId());
@@ -4099,7 +4189,7 @@ public class SimplePageBean {
 			if (i.getSakaiId().equals(currentPageId)) {
 				return needed;  // reached current page. we're done
 			}
-			if (i.isRequired() && !isItemComplete(i))
+			if (i.isRequired() && !isItemComplete(i) && isItemVisible(i))
 				needed.add(i.getName());
 		}
 
@@ -4568,7 +4658,7 @@ public class SimplePageBean {
 					}
 					sakaiId = res.getId();
 
-					if("application/zip".equals(mimeType) && isWebsite) {
+					if(("application/zip".equals(mimeType) || "application/x-zip-compressed".equals(mimeType))  && isWebsite) {
 					    // We need to set the sakaiId to the resource id of the index file
 					    sakaiId = expandZippedResource(sakaiId);
 					    if (sakaiId == null)

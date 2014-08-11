@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/component-manager/src/main/java/org/sakaiproject/util/ComponentsLoader.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/component-manager/src/main/java/org/sakaiproject/util/ComponentsLoader.java $
  * $Id: ComponentsLoader.java 97201 2011-08-19 14:32:40Z aaronz@vt.edu $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.1/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
- * $Id: AssignmentAction.java 118846 2013-01-25 16:29:32Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/assignment-2.9.2/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
+ * $Id: AssignmentAction.java 121841 2013-03-27 16:27:25Z arwhyte@umich.edu $
  ***********************************************************************************
  *
  *
@@ -9523,7 +9523,7 @@ public class AssignmentAction extends PagedResourceActionII
 	 */
 	private class AssignmentComparator implements Comparator
 	{
-		Collator collator = Collator.getInstance();
+		Collator collator = null;
 		
 		/**
 		 * the SessionState object
@@ -9557,9 +9557,7 @@ public class AssignmentAction extends PagedResourceActionII
 		 */
 		public AssignmentComparator(SessionState state, String criteria, String asc)
 		{
-			m_state = state;
-			m_criteria = criteria;
-			m_asc = asc;
+			this(state, criteria, asc, null);
 
 		} // constructor
 
@@ -9581,6 +9579,17 @@ public class AssignmentAction extends PagedResourceActionII
 			m_criteria = criteria;
 			m_asc = asc;
 			m_user = user;
+			try
+			{
+				collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+			}
+			catch (ParseException e)
+			{
+				// error with init RuleBasedCollator with rules
+				// use the default Collator
+				collator = Collator.getInstance();
+				M_log.warn(this + " AssignmentComparator cannot init RuleBasedCollator. Will use the default Collator instead. " + e);
+			}
 		} // constructor
 
 		/**
@@ -10357,12 +10366,7 @@ public class AssignmentAction extends PagedResourceActionII
 			} else if (s1 == null) {
 				result = -1;
 			} else {
-				try{
-					RuleBasedCollator r_collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
-					result = r_collator.compare(s1.toLowerCase(), s2.toLowerCase());
-				}catch(ParseException e){
-					result = collator.compare(s1.toLowerCase(), s2.toLowerCase());
-				}
+				result = collator.compare(s1.toLowerCase(), s2.toLowerCase());
 			}
 			return result;
 		}

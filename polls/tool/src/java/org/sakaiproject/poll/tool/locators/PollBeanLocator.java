@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.1/tool/src/java/org/sakaiproject/poll/tool/locators/PollBeanLocator.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/polls-1.5.2/tool/src/java/org/sakaiproject/poll/tool/locators/PollBeanLocator.java $
  * $Id: PollBeanLocator.java 59700 2009-04-06 09:21:26Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

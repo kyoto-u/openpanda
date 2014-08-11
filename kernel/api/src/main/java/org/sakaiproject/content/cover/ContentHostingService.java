@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/content/cover/ContentHostingService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/content/cover/ContentHostingService.java $
  * $Id: ContentHostingService.java 79513 2010-07-15 20:13:54Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

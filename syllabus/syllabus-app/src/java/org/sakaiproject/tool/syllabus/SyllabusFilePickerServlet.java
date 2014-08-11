@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.1/syllabus-app/src/java/org/sakaiproject/tool/syllabus/SyllabusFilePickerServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.2/syllabus-app/src/java/org/sakaiproject/tool/syllabus/SyllabusFilePickerServlet.java $
  * $Id: SyllabusFilePickerServlet.java 77026 2010-05-03 18:52:59Z arwhyte@umich.edu $
  ***********************************************************************************
  *

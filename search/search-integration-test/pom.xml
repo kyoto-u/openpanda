@@ -5,7 +5,7 @@
   <parent>
     <artifactId>search</artifactId>
     <groupId>org.sakaiproject.search</groupId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>sakai-search-integration-test</name>

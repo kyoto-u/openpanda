@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/PublishAssessmentListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/samigo-2.9.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/PublishAssessmentListener.java $
  * $Id: PublishAssessmentListener.java 104664 2012-02-13 23:22:51Z ktsao@stanford.edu $
  ***********************************************************************************
  *

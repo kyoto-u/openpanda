@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.3/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/EventStatImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sitestats-2.3.5/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/EventStatImpl.java $
  * $Id: EventStatImpl.java 72276 2010-01-22 10:28:22Z nuno@ufp.edu.pt $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

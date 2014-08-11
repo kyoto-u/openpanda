@@ -1,6 +1,6 @@
 /**
  * $Id: EntityViewUrlCustomizable.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/EntityViewUrlCustomizable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/EntityViewUrlCustomizable.java $
  * EntityUrlCustomizable.java - entity-broker - Apr 11, 2008 6:20:50 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

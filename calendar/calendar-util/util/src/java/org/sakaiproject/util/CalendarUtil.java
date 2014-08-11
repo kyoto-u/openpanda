@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.1/calendar-util/util/src/java/org/sakaiproject/util/CalendarUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/calendar-2.9.2/calendar-util/util/src/java/org/sakaiproject/util/CalendarUtil.java $
  * $Id: CalendarUtil.java 100703 2011-11-12 00:56:28Z bkirschn@umich.edu $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.0.1/basiclti-impl/src/java/org/sakaiproject/util/foorm/Foorm.java $
- * $Id: Foorm.java 98512 2011-09-22 17:59:08Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/basiclti-2.1.0/basiclti-impl/src/java/org/sakaiproject/util/foorm/Foorm.java $
+ * $Id: Foorm.java 121290 2013-03-15 23:52:46Z csev@umich.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2011 The Sakai Foundation
@@ -9,7 +9,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *		   http://www.osedu.org/licenses/ECL-2.0
+ *		   http://www.opensource.org/licenses/ECL-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -434,6 +434,8 @@ public class Foorm {
 		int val = 0;
 		if (value != null && value instanceof Integer)
 			val = ((Integer) value).intValue();
+		if (value != null && value instanceof Number)
+			val = ((Number) value).intValue();
 		if (value != null && value instanceof String) {
 			Integer ival = new Integer((String) value);
 			val = ival.intValue();
@@ -569,17 +571,39 @@ public class Foorm {
 		Properties info = parseFormString(fieldinfo);
 		String field = info.getProperty("field", null);
 		String type = info.getProperty("type", null);
-		Object value = getField(row, field);
+		
 		if (field == null || type == null) {
 			throw new IllegalArgumentException(
 					"All model elements must include field name and type");
 		}
 
+		Object value = getField(row, field);
+		String label = info.getProperty("label", field);
+		
+		// look for tool id prefix
+		if (field.indexOf("_") != -1)
+		{
+			String[] array = field.split("_");
+			
+			try
+			{
+				// the first array item should be an long value
+				Long.parseLong(array[0]);
+				// reset the input value
+				value = getField(row, array[1]);
+				// reset the input label
+				label = info.getProperty("label", array[1]);
+			}
+			catch (NumberFormatException e)
+			{
+				// do nothing
+			}
+		}
+		
 		String hidden = info.getProperty("hidden", null);
 		if ("true".equals(hidden))
 			return "";
 
-		String label = info.getProperty("label", field);
 		boolean required = "true".equals(info.getProperty("required", "false"));
 		String size = info.getProperty("size", "40");
 		String cols = info.getProperty("cols", "40");
@@ -611,6 +635,12 @@ public class Foorm {
 			String[] choiceList = choices.split(",");
 			if (choiceList.length < 1)
 				return "\n<!-- Foorm.formInput() requires choices=on,off,part -->\n";
+			
+			// set the default value of radio button
+			if (value == null)
+			{
+				value= "0";
+			}
 			return formInputRadio(value, field, label, required, choiceList, loader);
 		}
 		if ("header".equals(type))
@@ -812,7 +842,8 @@ public class Foorm {
 			Object loader) {
 		int val = getInt(value);
 		String str = getI18N(label, loader);
-		if ( val != 1 ) str = "(Off) " + str;
+		String off = getI18N("bl_off", "(Off)", loader);
+		if ( val != 1 ) str = off + " " + str;
 		return formOutputText(str, field, label, loader);
 	}
 	/**
@@ -959,11 +990,23 @@ public class Foorm {
 			}
 			if ( "header".equals(type) ) continue;
 			String label = info.getProperty("label", field);
+			// System.out.println("field="+field+" type="+type);
+
+			// Check the automatically populate empty date fields
+			if ("autodate".equals(type) && dataMap != null && (!isFieldSet(parms, field)) ) {
+				java.sql.Timestamp sqlTimestamp = new java.sql.Timestamp(
+						new java.util.Date().getTime());
+				if ("updated_at".equals(field) || (forInsert && "created_at".equals(field))) {
+					dataMap.put(field, sqlTimestamp);
+				}
+			}
 
 			// For update, we don't worry about fields that are not set
 			if ((!forInsert) && (!isFieldSet(parms, field)))
 				continue;
+
 			Object dataField = getField(parms, field);
+			// System.out.println("field="+field+" data="+dataField);
 			String sdf = null;
 			if (dataField instanceof String)
 				sdf = (String) dataField;
@@ -972,18 +1015,9 @@ public class Foorm {
 				dataField = null;
 			}
 
-			if ("autodate".equals(type)
-					&& ("created_at".equals(field) || "updated_at".equals(field))) {
-				java.sql.Timestamp sqlTimestamp = new java.sql.Timestamp(
-						new java.util.Date().getTime());
-				if (dataMap != null)
-					dataMap.put(field, sqlTimestamp);
-			}
-			// System.out.println("field="+field+" data="+dataField);
-
 			if ("true".equals(info.getProperty("required")) && (dataField == null)) {
 				if (sb.length() > 0) sb.append(", ");
-				error = getI18N("foorm.missing.field", "Required Field: ", loader) + getI18N(label, loader);
+				error = getI18N("foorm.missing.field", "Required Field:", loader) + " " + getI18N(label, loader);
 				sb.append(error);
 				if ( errors != null ) errors.put(label, error);
 			}
@@ -999,8 +1033,8 @@ public class Foorm {
 					} else {
 						if (sb.length() > 0)
 							sb.append(", ");
-						error = getI18N("foorm.maxlength.field", "Field > " + maxlength
-								+ " Field: ", loader) + getI18N(label, loader);
+						error = getI18N("foorm.maxlength.field", "Field >", loader) + " " + maxlength
+								+ " " + getI18N(label, loader);
 						sb.append(error);
 						if ( errors != null ) errors.put(label, error);
 					}
@@ -1022,7 +1056,7 @@ public class Foorm {
 					} catch (Exception e) {
 						if (sb.length() > 0)
 							sb.append(", ");
-						error = getI18N("foorm.integer.field", "Field should be an integer: ", loader) + getI18N(label, loader);
+						error = getI18N("foorm.integer.field", "Field should be an integer:", loader) + " " + getI18N(label, loader);
 						sb.append(error);
 						if ( errors != null ) errors.put(label, error);
 					}
@@ -1039,7 +1073,7 @@ public class Foorm {
 				} else {
 					if (sb.length() > 0)
 						sb.append(", ");
-					error = getI18N("foorm.id.field", "Field has invalid characters: ", loader) + getI18N(label, loader);
+					error = getI18N("foorm.id.field", "Field has invalid characters:", loader) + " " + getI18N(label, loader);
 					sb.append(error);
 					if ( errors != null ) errors.put(label, error);
 				}
@@ -1055,7 +1089,7 @@ public class Foorm {
 				} else {
 					if (sb.length() > 0)
 						sb.append(", ");
-					error = getI18N("foorm.url.field", "Field is not a url: ", loader) + getI18N(label, loader);
+					error = getI18N("foorm.url.field", "Field is not a url:", loader) + " " + getI18N(label, loader);
 					sb.append(error);
 					if ( errors != null ) errors.put(label, error);
 				}
@@ -1230,18 +1264,22 @@ public class Foorm {
 			Properties fields = parseFormString(line);
 			String field = fields.getProperty("field", null);
 			String type = fields.getProperty("type", null);
+			String allowed = fields.getProperty("allowed", null);
 			if (field == null || type == null) {
 				throw new IllegalArgumentException(
 						"All model elements must include field name and type");
 			}
+			// We always assume radio and checkbox may be allowed
 			if ("radio".equals(type) || "checkbox".equals(type) ) {
 				// Field = Always Off (0), Always On (1), or Delegate(2)
 				int value = getInt(getField(controlRow, field));
 				if ( value == 2 || ! isFieldSet(controlRow, field) ) ret.add(line);
-			} else {
-				// Allow = 0ff (0) or On (1)
+			//  For allowed fields, allow = 0ff (0) or On (1)
+			} else if ("true".equals(allowed) ) {
 				int value = getInt(getField(controlRow, "allow" + field));
-				if (value == 1 || ! isFieldSet(controlRow, "allow"+field) ) ret.add(line);
+				if ( value == 1 || ! isFieldSet(controlRow, field) ) ret.add(line);
+			} else {
+				ret.add(line);
 			}
 		}
 		return ret.toArray(new String[ret.size()]);
@@ -1317,8 +1355,11 @@ public class Foorm {
 		if (schema == null)
 			return null;
 
-		if ("true".equals(required) && !(schema.indexOf("NOT NULL") > 0))
-			schema += " NOT NULL";
+		// BLTI-220 - This makes migrations challenging, adding columns
+		// With no data - the software can still enforce required - but	
+		// we leave it up to the insert and update code
+		//if ("true".equals(required) && !(schema.indexOf("NOT NULL") > 0))
+			//schema += " NOT NULL";
 		return "    " + field + " " + schema;
 	}
 

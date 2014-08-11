@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.1/syllabus-impl/src/java/org/sakaiproject/syllabus/user/prefs/SyllabusUserNotificationPreferencesRegistrationImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-2.9.2/syllabus-impl/src/java/org/sakaiproject/syllabus/user/prefs/SyllabusUserNotificationPreferencesRegistrationImpl.java $
  * $Id: SyllabusUserNotificationPreferencesRegistrationImpl.java 82737 2010-09-24 13:52:32Z chmaurer@iupui.edu $
  ***********************************************************************************
  *

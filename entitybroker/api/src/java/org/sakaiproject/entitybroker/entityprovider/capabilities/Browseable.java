@@ -1,6 +1,6 @@
 /**
  * $Id: Browseable.java 59674 2009-04-03 23:05:58Z arwhyte@umich.edu $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/Browseable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/Browseable.java $
  * Browseable.java - entity-broker - Aug 3, 2008 9:20:34 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

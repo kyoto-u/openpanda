@@ -1,6 +1,6 @@
 /**
  * $Id: EntityDescriptionManager.java 113500 2012-09-25 01:51:32Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.1/rest/src/java/org/sakaiproject/entitybroker/rest/EntityDescriptionManager.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/entitybroker-1.5.2/rest/src/java/org/sakaiproject/entitybroker/rest/EntityDescriptionManager.java $
  * EntityDescriptionManager.java - entity-broker - Jul 22, 2008 12:18:48 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

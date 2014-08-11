@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/api/src/main/java/org/sakaiproject/email/api/DigestMessage.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/api/src/main/java/org/sakaiproject/email/api/DigestMessage.java $
  * $Id: DigestMessage.java 79506 2010-07-15 17:16:06Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

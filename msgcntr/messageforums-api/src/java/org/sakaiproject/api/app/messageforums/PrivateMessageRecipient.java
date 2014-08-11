@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.1/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/PrivateMessageRecipient.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/msgcntr-3.0.2/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/PrivateMessageRecipient.java $
  * $Id: PrivateMessageRecipient.java 88696 2011-02-22 18:20:12Z wagnermr@iupui.edu $
  ***********************************************************************************
  *

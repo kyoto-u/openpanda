@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.1/jldap/src/test/edu/amc/sakai/user/JLDAPDirectoryProviderTest.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-2.9.2/jldap/src/test/edu/amc/sakai/user/JLDAPDirectoryProviderTest.java $
  * $Id: JLDAPDirectoryProviderTest.java 110799 2012-07-26 18:04:51Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>2.9.0</version>
+        <version>2.9.2</version>
         <relativePath>../master/pom.xml</relativePath>
         <!-- for 2.8 -->
         <!--
@@ -23,7 +23,7 @@
     <groupId>org.sakaiproject.mailsender</groupId>
     <artifactId>mailsender</artifactId>
     <name>Sakai Mail Sender Project</name>
-    <version>1.7.2</version>
+    <version>1.7.3</version>
     <description>Mail Sender base pom.</description>
     <organization>
         <name>Sakai Project</name>
@@ -54,8 +54,10 @@
 								<sakai.mailarchive.version>${project.version}</sakai.mailarchive.version>
 								-->
                 <sakai.message.groupId>org.sakaiproject.message</sakai.message.groupId>
-                <sakairsf.sakai.version>2.2.x</sakairsf.sakai.version>
-                <rsfutil.version>0.7.4</rsfutil.version>
+                <rsfutil.version>0.7.5</rsfutil.version> 
+                <sakairsf.components.version>0.7.5</sakairsf.components.version> 
+                <sakairsf.version>0.7.7</sakairsf.version>
+
                 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
                 <url.localsite>scpexe://source.sakaiproject.org/var/www/html/release/mailsender/${project.version}</url.localsite>
             </properties>
@@ -69,6 +71,10 @@
                 <sakai.message.version>2.8.1</sakai.message.version>
                 <sakairsf.sakai.version>2.2.x</sakairsf.sakai.version>
                 <rsfutil.version>0.7.4</rsfutil.version>
+                <sakairsf.components.version>0.7.5</sakairsf.components.version> 
+                <sakairsf.version>0.7.5</sakairsf.version>
+
+
                 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
                 <url.localsite>scpexe://source.sakaiproject.org/var/www/html/release/mailsender/${project.version}</url.localsite>
             </properties>
@@ -82,6 +88,9 @@
                 <sakai.message.version>2.7.2</sakai.message.version>
                 <sakairsf.sakai.version>2.2.x</sakairsf.sakai.version>
                 <rsfutil.version>0.7.4</rsfutil.version>
+                <sakairsf.components.version>0.7.5</sakairsf.components.version>
+                <sakairsf.version>0.7.5</sakairsf.version> 
+
                 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
                 <url.localsite>scpexe://source.sakaiproject.org/var/www/html/release/mailsender/${project.version}</url.localsite>
             </properties>
@@ -147,9 +156,9 @@
     </developers>
 
     <scm>
-				<connection>scm:svn:https://source.sakaiproject.org/svn/mailsender/tags/mailsender-1.7.2</connection>
-				<developerConnection>scm:svn:https://source.sakaiproject.org/svn/mailsender/tags/mailsender-1.7.2</developerConnection>
-				<url>https://source.sakaiproject.org/svn/mailsender/tags/mailsender-1.7.2</url>
+				<connection>scm:svn:https://source.sakaiproject.org/svn/mailsender/tags/mailsender-1.7.3</connection>
+				<developerConnection>scm:svn:https://source.sakaiproject.org/svn/mailsender/tags/mailsender-1.7.3</developerConnection>
+				<url>https://source.sakaiproject.org/svn/mailsender/tags/mailsender-1.7.3</url>
     </scm>
 
 <!--
@@ -198,19 +207,19 @@
             <dependency>
                 <groupId>uk.org.ponder.sakairsf</groupId>
                 <artifactId>sakairsf</artifactId>
-                <version>${rsfutil.version}-sakai_${sakairsf.sakai.version}</version>
+                <version>${sakairsf.version}</version>
                 <type>jar</type>
             </dependency>
             <dependency>
                 <groupId>uk.org.ponder.sakairsf</groupId>
                 <artifactId>SakaiRSFComponents-evolvers</artifactId>
-                <version>${rsfutil.version}-sakai_${sakairsf.sakai.version}</version>
+                <version>${sakairsf.components.version}</version>
                 <type>jar</type>
             </dependency>
             <dependency>
                 <groupId>uk.org.ponder.sakairsf</groupId>
                 <artifactId>SakaiRSFComponents-templates</artifactId>
-                <version>${rsfutil.version}-sakai_${sakairsf.sakai.version}</version>
+                <version>${sakairsf.components.version}</version>
                 <type>war</type>
             </dependency>
             <dependency>

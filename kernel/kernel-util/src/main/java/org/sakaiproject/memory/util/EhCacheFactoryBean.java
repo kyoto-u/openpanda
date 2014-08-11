@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.1/kernel-util/src/main/java/org/sakaiproject/memory/util/EhCacheFactoryBean.java $
- * $Id: EhCacheFactoryBean.java 114481 2012-10-17 15:11:19Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/kernel-1.3.2/kernel-util/src/main/java/org/sakaiproject/memory/util/EhCacheFactoryBean.java $
+ * $Id: EhCacheFactoryBean.java 120187 2013-02-18 12:11:46Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *
  * Copyright (c) 2012 Sakai Foundation
@@ -425,6 +425,8 @@ public class EhCacheFactoryBean implements FactoryBean, BeanNameAware, Initializ
 		if (this.disabled) {
 			cache.setDisabled(true);
 		}
+		net.sf.ehcache.config.CacheConfiguration config = cache.getCacheConfiguration();
+		config.setMaxEntriesLocalHeap(maxElementsInMemory);
 		return cache;
 	}
 
