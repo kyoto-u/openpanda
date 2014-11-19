@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.1/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/SubmitterIdAssignmentsConversionHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.2/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/SubmitterIdAssignmentsConversionHandler.java $
  * $Id: SubmitterIdAssignmentsConversionHandler.java 110665 2012-07-24 14:18:50Z azeckoski@unicon.net $
  ***********************************************************************************
  *

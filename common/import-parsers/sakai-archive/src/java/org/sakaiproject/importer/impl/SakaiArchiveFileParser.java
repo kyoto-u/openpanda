@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveFileParser.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.2/import-parsers/sakai-archive/src/java/org/sakaiproject/importer/impl/SakaiArchiveFileParser.java $
  * $Id: SakaiArchiveFileParser.java 118267 2013-01-10 22:29:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -27,6 +27,7 @@ import java.util.Vector;
 public class Gradebook {
     public String id;
     public String courseId;
+    public String averageCourseGrade;
 
     public List<Student> students = new Vector<Student>();
     public List<GradebookItem> items = new Vector<GradebookItem>();

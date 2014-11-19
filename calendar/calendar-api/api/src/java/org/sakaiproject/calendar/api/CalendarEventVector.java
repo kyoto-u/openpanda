@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-api/api/src/java/org/sakaiproject/calendar/api/CalendarEventVector.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-api/api/src/java/org/sakaiproject/calendar/api/CalendarEventVector.java $
  * $Id: CalendarEventVector.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -21,7 +21,7 @@ var dialogutil = dialogutil || {};
 			open: function() {
 				$("#" + divId).delay(500, function(){dialogutil.turnOnPortalOverlay();});
 				dialogutil.updateMainFrameHeight(window.name, frameId, vHeight);
-				
+				$("#" + divId).css("height", "300px");
 			}
 		});
 

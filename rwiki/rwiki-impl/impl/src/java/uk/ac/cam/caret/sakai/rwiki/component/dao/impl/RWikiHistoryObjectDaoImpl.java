@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/dao/impl/RWikiHistoryObjectDaoImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/dao/impl/RWikiHistoryObjectDaoImpl.java $
  * $Id: RWikiHistoryObjectDaoImpl.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

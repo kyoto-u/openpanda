@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/UpdatePreferencesCommand.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/UpdatePreferencesCommand.java $
  * $Id: UpdatePreferencesCommand.java 37495 2007-10-29 20:06:52Z mmmay@indiana.edu $
  ***********************************************************************************
  *

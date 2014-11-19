@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/ItemText.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/ItemText.java $
  * $Id: ItemText.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *

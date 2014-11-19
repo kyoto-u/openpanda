@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.1/assignment-impl/impl/src/test/org/sakaiproject/assignment/impl/AssignmentServiceTest.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.2/assignment-impl/impl/src/test/org/sakaiproject/assignment/impl/AssignmentServiceTest.java $
  * $Id: AssignmentServiceTest.java 307929 2014-04-08 18:43:32Z enietzel@anisakai.com $
  ***********************************************************************************
  *

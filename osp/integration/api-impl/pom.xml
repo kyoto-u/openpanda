@@ -4,7 +4,7 @@
   <parent>
     <artifactId>osp-integration</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>10.1</version>
+    <version>10.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>osp-integration-impl</artifactId>

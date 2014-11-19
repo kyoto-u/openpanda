@@ -5,7 +5,7 @@
     <parent>
         <artifactId>external-calendaring-service</artifactId>
         <groupId>org.sakaiproject.calendaring</groupId>
-        <version>10.1</version>
+        <version>10.2</version>
     </parent>
     
 	<name>External Calendaring Service :: Components</name>

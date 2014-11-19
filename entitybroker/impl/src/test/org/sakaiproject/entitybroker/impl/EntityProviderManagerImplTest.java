@@ -1,6 +1,6 @@
 /**
  * $Id: EntityProviderManagerImplTest.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/impl/src/test/org/sakaiproject/entitybroker/impl/EntityProviderManagerImplTest.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/impl/src/test/org/sakaiproject/entitybroker/impl/EntityProviderManagerImplTest.java $
  * EntityHandlerImplTest.java - entity-broker - Apr 6, 2008 12:08:39 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008 The Sakai Foundation

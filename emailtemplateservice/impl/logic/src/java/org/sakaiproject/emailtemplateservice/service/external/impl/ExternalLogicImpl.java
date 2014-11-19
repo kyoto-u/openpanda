@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/sakai-10.1/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/external/impl/ExternalLogicImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/sakai-10.2/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/external/impl/ExternalLogicImpl.java $
  * $Id: ExternalLogicImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

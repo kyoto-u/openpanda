@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.1/syllabus-hbm/src/java/org/sakaiproject/component/app/syllabus/SyllabusAttachmentImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.2/syllabus-hbm/src/java/org/sakaiproject/component/app/syllabus/SyllabusAttachmentImpl.java $
  * $Id: SyllabusAttachmentImpl.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

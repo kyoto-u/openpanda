@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/db/impl/BasicSqlService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/db/impl/BasicSqlService.java $
  * $Id: BasicSqlService.java 309954 2014-05-29 21:22:54Z enietzel@anisakai.com $
  ***********************************************************************************
  *

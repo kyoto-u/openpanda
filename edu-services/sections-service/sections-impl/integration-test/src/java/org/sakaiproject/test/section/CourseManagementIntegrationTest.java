@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.1/sections-service/sections-impl/integration-test/src/java/org/sakaiproject/test/section/CourseManagementIntegrationTest.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.2/sections-service/sections-impl/integration-test/src/java/org/sakaiproject/test/section/CourseManagementIntegrationTest.java $
  * $Id: CourseManagementIntegrationTest.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

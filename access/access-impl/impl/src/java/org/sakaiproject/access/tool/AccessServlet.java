@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/access/tags/sakai-10.1/access-impl/impl/src/java/org/sakaiproject/access/tool/AccessServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/access/tags/sakai-10.2/access-impl/impl/src/java/org/sakaiproject/access/tool/AccessServlet.java $
  * $Id: AccessServlet.java 309233 2014-05-06 20:03:16Z enietzel@anisakai.com $
  ***********************************************************************************
  *

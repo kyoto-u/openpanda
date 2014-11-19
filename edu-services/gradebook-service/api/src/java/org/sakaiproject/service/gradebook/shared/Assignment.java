@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.1/gradebook-service/api/src/java/org/sakaiproject/service/gradebook/shared/Assignment.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.2/gradebook-service/api/src/java/org/sakaiproject/service/gradebook/shared/Assignment.java $
  * $Id: Assignment.java 129393 2013-09-06 04:24:35Z matthew@longsight.com $
  ***********************************************************************************
  *

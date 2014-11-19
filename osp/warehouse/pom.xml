@@ -5,7 +5,7 @@
   <parent>
     <artifactId>osp-base</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>10.1</version>
+    <version>10.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>osp-warehouse</name>

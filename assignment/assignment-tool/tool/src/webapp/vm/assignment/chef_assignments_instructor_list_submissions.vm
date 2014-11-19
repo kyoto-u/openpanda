@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_list_submissions.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
+<!-- $Id: chef_assignments_instructor_list_submissions.vm 313929 2014-09-27 04:09:20Z enietzel@anisakai.com $ -->
 <!-- start: chef_assignments_instructor_list_submissions.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_list_submissions.vm,v 1.10 2005/06/14 16:07:00 zqian.umich.edu Exp $ -->
 <script type="text/javascript">
@@ -583,7 +583,6 @@
 					#set($submission = $userSubmission.Submission)
 					#set($siteUser=false)
 					#set($submittedBy=false)
-					#set($submitterId = $!siteUser.getId())
 					#set($submittedBy=$userSubmission.SubmittedBy)
 					#if ($assignment.isGroup())
 					   #set($siteUser = $userSubmission.Group)
@@ -594,6 +593,7 @@
 					   #set($submitterName=$!siteUser.sortName)
 					   #set($submitterDisplayId=$!siteUser.getDisplayId())
 					#end
+					#set($submitterId = $!siteUser.getId())
 					#if ($!submitterDisplayId)
 						##attach the displayId
 						#set($submitterName=$submitterName.concat(" (").concat($submitterDisplayId).concat(")"))

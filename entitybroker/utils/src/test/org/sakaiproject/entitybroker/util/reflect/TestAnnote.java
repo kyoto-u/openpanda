@@ -1,6 +1,6 @@
 /**
  * $Id: TestAnnote.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/utils/src/test/org/sakaiproject/entitybroker/util/reflect/TestAnnote.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/utils/src/test/org/sakaiproject/entitybroker/util/reflect/TestAnnote.java $
  * TestAnnote.java - entity-broker - May 5, 2008 1:23:37 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

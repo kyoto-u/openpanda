@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/PrefsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/PrefsBean.java $
  * $Id: PrefsBean.java 311795 2014-08-11 13:54:01Z enietzel@anisakai.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.1/src/main/java/org/sakaiproject/mock/domain/Group.java $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.2/src/main/java/org/sakaiproject/mock/domain/Group.java $
  * $Id: Group.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

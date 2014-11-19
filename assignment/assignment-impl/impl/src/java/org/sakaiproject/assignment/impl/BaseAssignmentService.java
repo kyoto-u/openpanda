@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.1/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
- * $Id: BaseAssignmentService.java 308854 2014-04-25 23:46:11Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.2/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
+ * $Id: BaseAssignmentService.java 313735 2014-09-18 23:58:17Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -22,6 +22,7 @@
 package org.sakaiproject.assignment.impl;
 
 import au.com.bytecode.opencsv.CSVWriter;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -90,6 +91,7 @@ import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.text.Normalizer;
 import java.text.NumberFormat;
@@ -97,6 +99,16 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+//Export to excel
+import java.text.ParseException;
+import java.text.DecimalFormat;
+
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.sakaiproject.util.Resource;
 
 /**
  * <p>
@@ -4670,6 +4682,10 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				{
 					List allowAddSubmissionUsers = allowAddSubmissionUsers(aRef);
 					
+					List allowAddAssignmentUsers = allowAddAssignmentUsers(contextString);
+					// SAK-25555 need to take away those users who can add assignment
+					allowAddSubmissionUsers.removeAll(allowAddAssignmentUsers);
+					
 					// Step 1: get group if any that is selected
 					rvUsers = getSelectedGroupUsers(allOrOneGroup, contextString, a, allowAddSubmissionUsers);
 					
@@ -6620,6 +6636,20 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							nAssignment.setSection(oAssignment.getSection());
 							nAssignment.setTitle(oAssignment.getTitle());
 							nAssignment.setPosition_order(oAssignment.getPosition_order());
+							
+							nAssignment.setAllowPeerAssessment(nAssignment.getAllowPeerAssessment());
+							nAssignment.setPeerAssessmentAnonEval(oAssignment.getPeerAssessmentAnonEval());
+							nAssignment.setPeerAssessmentInstructions(oAssignment.getPeerAssessmentInstructions());
+							nAssignment.setPeerAssessmentNumReviews(oAssignment.getPeerAssessmentNumReviews());
+							nAssignment.setPeerAssessmentStudentViewReviews(oAssignment.getPeerAssessmentStudentViewReviews());
+							nAssignment.setPeerAssessmentPeriod(oAssignment.getPeerAssessmentPeriod());
+							if(nAssignment.getPeerAssessmentPeriod() == null && nAssignment.getCloseTime() != null){
+								// set the peer period time to be 10 mins after accept until date
+								GregorianCalendar c = new GregorianCalendar();
+								c.setTimeInMillis(nAssignment.getCloseTime().getTime());
+								c.add(GregorianCalendar.MINUTE, 10);
+								nAssignment.setPeerAssessmentPeriod(TimeService.newTime(c.getTimeInMillis()));
+							}
 							// properties
 							ResourcePropertiesEdit p = nAssignment.getPropertiesEdit();
 							p.clear();
@@ -6872,7 +6902,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	public boolean canSubmit(String context, Assignment a)
 	{
 		// return false if not allowed to submit at all
-		if (!allowAddSubmissionCheckGroups(context, a)) return false;
+		if (!allowAddSubmissionCheckGroups(context, a) && !allowAddAssignment(context) /*SAK-25555 return true if user is allowed to add assignment*/) return false;
 		
 		String userId = SessionManager.getCurrentSessionUserId();
 

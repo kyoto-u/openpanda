@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/assessment/AssessmentHelperIfc.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/assessment/AssessmentHelperIfc.java $
  * $Id: AssessmentHelperIfc.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

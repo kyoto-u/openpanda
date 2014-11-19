@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/tests/src/java/org/sakaiproject/tool/assessment/test/integration/helper/ifc/TestPublishingTargetHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/tests/src/java/org/sakaiproject/tool/assessment/test/integration/helper/ifc/TestPublishingTargetHelper.java $
  * $Id: TestPublishingTargetHelper.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-impl/impl/src/test/org/sakaiproject/calendar/impl/DbCalendarServiceSerializationTest.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-impl/impl/src/test/org/sakaiproject/calendar/impl/DbCalendarServiceSerializationTest.java $
  * $Id: DbCalendarServiceSerializationTest.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

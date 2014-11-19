@@ -1,6 +1,6 @@
 /**
  * $Id: DescribePropertiesable.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/DescribePropertiesable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/DescribePropertiesable.java $
  * DescribePropFileable.java - entity-broker - Jul 18, 2008 5:35:19 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

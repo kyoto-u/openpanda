@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/ShowMediaServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/ShowMediaServlet.java $
  * $Id: ShowMediaServlet.java 309213 2014-05-06 16:19:44Z enietzel@anisakai.com $
  ***********************************************************************************
  *

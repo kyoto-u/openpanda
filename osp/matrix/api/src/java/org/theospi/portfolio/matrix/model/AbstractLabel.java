@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/matrix/api/src/java/org/theospi/portfolio/matrix/model/AbstractLabel.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/matrix/api/src/java/org/theospi/portfolio/matrix/model/AbstractLabel.java $
 * $Id: AbstractLabel.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

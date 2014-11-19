@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-api/api/src/java/uk/ac/cam/caret/sakai/rwiki/service/exception/PermissionException.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-api/api/src/java/uk/ac/cam/caret/sakai/rwiki/service/exception/PermissionException.java $
  * $Id: PermissionException.java 9108 2006-05-08 14:30:57Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

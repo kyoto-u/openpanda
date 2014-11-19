@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/site/api/SiteService.java $
- * $Id: SiteService.java 307866 2014-04-07 15:13:58Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/site/api/SiteService.java $
+ * $Id: SiteService.java 313738 2014-09-19 01:01:00Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -189,6 +189,21 @@ public interface SiteService extends EntityProducer
 	 * An event for ending the site import
 	 */
 	static final String EVENT_SITE_IMPORT_END = "site.import.end";
+
+	/**
+	 * An event for starting the site duplication
+	 */
+	static final String EVENT_SITE_DUPLICATE_START = "site.duplicate.start";
+	
+	/**
+	 * An event for ending the site duplication
+	 */
+	static final String EVENT_SITE_DUPLICATE_END = "site.duplicate.end";
+
+	/**
+	 * An event tracking roster add
+	 */
+	static final String EVENT_SITE_ROSTER_ADD = "site.roster.add";
 	
 	/**
 	 * <p>

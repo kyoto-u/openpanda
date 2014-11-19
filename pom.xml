@@ -1,18 +1,19 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>master</artifactId>
         <groupId>org.sakaiproject</groupId>
-        <version>10.1</version>
+        <version>10.2</version>
         <relativePath>master/pom.xml</relativePath>
     </parent>
 
     <name>Sakai base pom</name>
     <groupId>org.sakaiproject</groupId>
     <artifactId>base</artifactId>
-    <version>10.1</version>
+    <version>10.2</version>
     <packaging>pom</packaging>
 
     <organization>
@@ -250,6 +251,7 @@
 				<module>calendar/calendar-hbm</module>
 				<module>common/archive-api</module>
 				<module>common/impl</module>
+				<module>common/import-impl</module>
 				<module>common/edu-person-api</module>
 				<module>common/manager-api</module>
 				<module>common/type-api</module>
@@ -271,10 +273,12 @@
 				<module>edu-services/sections-service/sections-impl/sakai/model</module>
 				<module>emailtemplateservice/api</module>
 				<module>entitybroker/api</module>
+				<module>entitybroker/utils</module>
 				<module>hierarchy/api</module>
 				<module>kernel/component-manager</module>
 				<module>kernel/api</module>
 				<module>kernel/kernel-util</module>
+				<module>kernel/test-harness</module>
 				<module>lessonbuilder/api</module>
 				<module>lessonbuilder/hbm</module>
 				<module>login/login-api/api</module>
@@ -317,10 +321,12 @@
 				<module>samigo/samigo-api</module>
 				<module>samigo/samigo-hibernate</module>
 				<module>samigo/samigo-services</module>
+				<module>samigo/samigo-qti</module>
 				<module>jobscheduler/scheduler-api</module>
 				<module>jobscheduler/scheduler-component-shared</module>
 				<module>jobscheduler/scheduler-events-model</module>
 				<module>search/search-api/api</module>
+				<module>search/search-util</module>
 				<module>shortenedurl/api</module>
 				<module>signup/api</module>
 				<module>site-manage/site-association-api/api</module>

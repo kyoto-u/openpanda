@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.1/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ExternalLogicStubb.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.2/impl/src/test/org/sakaiproject/poll/logic/test/stubs/ExternalLogicStubb.java $
  * $Id: ExternalLogicStubb.java 134302 2014-02-10 14:26:43Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

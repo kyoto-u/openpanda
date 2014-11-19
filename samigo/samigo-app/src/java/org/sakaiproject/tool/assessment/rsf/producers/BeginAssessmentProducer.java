@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/rsf/producers/BeginAssessmentProducer.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/rsf/producers/BeginAssessmentProducer.java $
  * $Id: BeginAssessmentProducer.java 311805 2014-08-11 14:09:14Z enietzel@anisakai.com $
  **********************************************************************************
  *

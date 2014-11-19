@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.1/message-api/api/src/java/org/sakaiproject/message/api/Message.java $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.2/message-api/api/src/java/org/sakaiproject/message/api/Message.java $
  * $Id: Message.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

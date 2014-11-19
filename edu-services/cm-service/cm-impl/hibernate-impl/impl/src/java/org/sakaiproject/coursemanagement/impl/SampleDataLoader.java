@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.1/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/SampleDataLoader.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.2/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/SampleDataLoader.java $
  * $Id: SampleDataLoader.java 132202 2013-12-04 16:21:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

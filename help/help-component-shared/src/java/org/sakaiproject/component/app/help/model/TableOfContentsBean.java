@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.1/help-component-shared/src/java/org/sakaiproject/component/app/help/model/TableOfContentsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.2/help-component-shared/src/java/org/sakaiproject/component/app/help/model/TableOfContentsBean.java $
  * $Id: TableOfContentsBean.java 109039 2012-06-05 20:02:04Z holladay@longsight.com $
  ***********************************************************************************
  *

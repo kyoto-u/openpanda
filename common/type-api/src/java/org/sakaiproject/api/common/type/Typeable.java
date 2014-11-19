@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/type-api/src/java/org/sakaiproject/api/common/type/Typeable.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.2/type-api/src/java/org/sakaiproject/api/common/type/Typeable.java $
  * $Id: Typeable.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

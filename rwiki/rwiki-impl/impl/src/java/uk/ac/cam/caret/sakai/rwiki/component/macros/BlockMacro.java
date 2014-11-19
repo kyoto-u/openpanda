@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/BlockMacro.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/BlockMacro.java $
  * $Id: BlockMacro.java 124104 2013-05-15 16:38:44Z matthew@longsight.com $
  ***********************************************************************************
  *

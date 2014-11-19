@@ -1,6 +1,6 @@
 /**
  * $Id: EntityServerConfig.java 130232 2013-10-08 12:32:33Z azeckoski@unicon.net $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/EntityServerConfig.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/EntityServerConfig.java $
  * EntityServerConfig.java - entity-broker - Jul 17, 2008 12:14:38 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/cluster/impl/SakaiClusterService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/cluster/impl/SakaiClusterService.java $
  * $Id: SakaiClusterService.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

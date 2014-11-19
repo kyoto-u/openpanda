@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.1/courier-api/api/src/java/org/sakaiproject/courier/api/CourierService.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.2/courier-api/api/src/java/org/sakaiproject/courier/api/CourierService.java $
  * $Id: CourierService.java 131633 2013-11-15 21:36:42Z arwhyte@umich.edu $
  ***********************************************************************************
  *

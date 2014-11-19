@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/authz/api/SecurityService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/authz/api/SecurityService.java $
  * $Id: SecurityService.java 126062 2013-06-20 21:32:44Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

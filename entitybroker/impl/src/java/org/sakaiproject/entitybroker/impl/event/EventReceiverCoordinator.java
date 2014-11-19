@@ -1,6 +1,6 @@
 /**
  * $Id: EventReceiverCoordinator.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/impl/src/java/org/sakaiproject/entitybroker/impl/event/EventReceiverCoordinator.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/impl/src/java/org/sakaiproject/entitybroker/impl/event/EventReceiverCoordinator.java $
  * EBlogic.java - entity-broker - Apr 15, 2008 4:29:18 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation

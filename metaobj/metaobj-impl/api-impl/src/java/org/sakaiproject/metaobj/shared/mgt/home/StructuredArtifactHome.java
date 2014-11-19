@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.1/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/home/StructuredArtifactHome.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.2/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/shared/mgt/home/StructuredArtifactHome.java $
  * $Id: StructuredArtifactHome.java 120216 2013-02-18 19:44:04Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-render-impl/impl/src/java/org/sakaiproject/portal/render/portlet/servlet/SakaiServletUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-render-impl/impl/src/java/org/sakaiproject/portal/render/portlet/servlet/SakaiServletUtil.java $
  * $Id: SakaiServletUtil.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

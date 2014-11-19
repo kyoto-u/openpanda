@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-tool/tool/src/webapp/scripts/stateswitcher.js $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-tool/tool/src/webapp/scripts/stateswitcher.js $
  * $Id: stateswitcher.js 120427 2013-02-24 05:41:46Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

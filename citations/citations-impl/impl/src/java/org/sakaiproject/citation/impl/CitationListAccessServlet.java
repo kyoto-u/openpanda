@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.1/citations-impl/impl/src/java/org/sakaiproject/citation/impl/CitationListAccessServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.2/citations-impl/impl/src/java/org/sakaiproject/citation/impl/CitationListAccessServlet.java $
  * $Id: CitationListAccessServlet.java 124219 2013-05-17 21:10:51Z a.fish@lancaster.ac.uk $
  ***********************************************************************************
  *

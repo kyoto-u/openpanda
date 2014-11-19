@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.1/search-tool/tool/src/java/org/sakaiproject/search/tool/model/SearchPage.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.2/search-tool/tool/src/java/org/sakaiproject/search/tool/model/SearchPage.java $
  * $Id: SearchPage.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

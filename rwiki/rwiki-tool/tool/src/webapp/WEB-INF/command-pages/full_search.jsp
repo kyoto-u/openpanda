@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/full_search.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/full_search.jsp $
  * $Id: full_search.jsp 34228 2007-08-21 23:03:53Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

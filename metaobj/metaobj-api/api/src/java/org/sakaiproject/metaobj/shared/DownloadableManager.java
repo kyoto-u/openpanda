@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.1/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/DownloadableManager.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.2/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/DownloadableManager.java $
  * $Id: DownloadableManager.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

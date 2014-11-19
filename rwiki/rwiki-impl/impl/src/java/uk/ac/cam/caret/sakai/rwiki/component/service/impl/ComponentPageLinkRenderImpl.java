@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/ComponentPageLinkRenderImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/ComponentPageLinkRenderImpl.java $
  * $Id: ComponentPageLinkRenderImpl.java 74213 2010-03-05 04:48:15Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

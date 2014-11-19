@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/content/cover/ContentHostingService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/content/cover/ContentHostingService.java $
  * $Id: ContentHostingService.java 130683 2013-10-21 14:52:02Z azeckoski@unicon.net $
  ***********************************************************************************
  *

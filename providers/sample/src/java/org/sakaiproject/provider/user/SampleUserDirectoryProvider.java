@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.1/sample/src/java/org/sakaiproject/provider/user/SampleUserDirectoryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.2/sample/src/java/org/sakaiproject/provider/user/SampleUserDirectoryProvider.java $
  * $Id: SampleUserDirectoryProvider.java 132202 2013-12-04 16:21:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

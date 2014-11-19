@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/AbstractSiteViewImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/AbstractSiteViewImpl.java $
  * $Id: AbstractSiteViewImpl.java 110542 2012-07-19 15:15:56Z azeckoski@unicon.net $
  ***********************************************************************************
  *

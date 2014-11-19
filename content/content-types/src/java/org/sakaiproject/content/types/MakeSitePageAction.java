@@ -49,7 +49,10 @@ public class MakeSitePageAction extends BaseInteractionAction {
 	private ResourceLoader rb = new Resource().getLoader(resourceClass, resourceBundle);
 
 	public boolean available(ContentEntity entity) {
-		return ServerConfigurationService.getBoolean("content.make.site.page",true)
+		if (entity != null) {
+			return ServerConfigurationService.getBoolean("content.make.site.page",true)
 				&& !ContentHostingService.isInDropbox(entity.getId());
+		}
+		return false;
 	}
 }

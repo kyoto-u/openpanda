@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.1/jldap-integration-test/src/test/java/edu/amc/sakai/user/PropertyResolver.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.2/jldap-integration-test/src/test/java/edu/amc/sakai/user/PropertyResolver.java $
  * $Id: PropertyResolver.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

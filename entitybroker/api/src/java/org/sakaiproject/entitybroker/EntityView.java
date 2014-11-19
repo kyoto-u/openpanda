@@ -1,6 +1,6 @@
 /**
  * $Id: EntityView.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/api/src/java/org/sakaiproject/entitybroker/EntityView.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/api/src/java/org/sakaiproject/entitybroker/EntityView.java $
  * EntityView.java - entity-broker - Apr 10, 2008 6:26:47 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

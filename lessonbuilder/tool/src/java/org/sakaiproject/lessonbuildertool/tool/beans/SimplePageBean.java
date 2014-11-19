@@ -25,6 +25,7 @@
 package org.sakaiproject.lessonbuildertool.tool.beans;
 
 import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.AuthzGroup;
@@ -84,6 +85,7 @@ import java.text.DateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.sakaiproject.lessonbuildertool.tool.beans.helpers.ResourceHelper;
 /**
  * Backing bean for Simple pages
  * 
@@ -136,6 +138,7 @@ public class SimplePageBean {
 	private String subpageTitle = null;
 	private boolean subpageNext = false;
 	private boolean subpageButton = false;
+	private String csrfToken = null;
 
 	private List<Long> currentPath = null;
 	private Set<Long> allowedPages = null;    
@@ -857,6 +860,8 @@ public class SimplePageBean {
 		
 		if (!itemOk(itemId))
 		    return "permission-failed";
+		if (!checkCsrf())
+		    return "permission-failed";
 		
 		if (canEditPage()) {
 			Placement placement = toolManager.getCurrentPlacement();
@@ -1146,26 +1151,72 @@ public class SimplePageBean {
 		}
 
 		SimplePageItem i;
-		if (itemId != null && itemId != -1) {
+		if (itemId != null && itemId != -1) {  // updating existing item
 			i = findItem(itemId);
+			
+			// editing an existing item which might have customized properties
+			// retrieve the original resource and check for customizations
+			ResourceHelper resHelp = new ResourceHelper(getContentResource(i.getSakaiId()));
+			boolean hasCustomName = !isWebsite && resHelp.isNameCustom(i.getName());  // ignore website names for now
+			boolean hasCustomDesc = resHelp.isDescCustom(i.getDescription());
+			
 			i.setSakaiId(id);
 			if (mimeType != null)
 				i.setHtml(mimeType);
-			i.setName(name != null ? name : split[split.length - 1]);
+			if (!hasCustomName)
+			{
+				i.setName(name != null ? name : split[split.length - 1]);
+			}
+			if (!hasCustomDesc)
+			{
+				i.setDescription(description);
+			}
 			clearImageSize(i);
-		} else {
+		} else {  // adding new item
 			i = appendItem(id, (name != null ? name : split[split.length - 1]), type);
 			if (mimeType != null) {
 				i.setHtml(mimeType);
 			}
+			i.setDescription(description);
+			i.setSameWindow(false);
 		}
 		
-		i.setDescription(description);
-		i.setSameWindow(false);
 		i.setAttribute("addedby", getCurrentUserId());
 		update(i);
 
 		return "importing";
+	}
+	
+	private ContentResource getContentResource(String id)
+	{
+		ContentResource res = null;
+		boolean pushed = false;
+		try
+		{
+			pushed = pushAdvisor();
+			res = contentHostingService.getResource(id);
+		}
+		catch (PermissionException pe)
+		{
+			// ignore
+		}
+		catch (IdUnusedException iue)
+		{
+			// ignore
+		}
+		catch (TypeException te)
+		{
+			// ignore
+		}
+		finally
+		{
+			if (pushed)
+			{
+				popAdvisor();
+			}
+		}
+		
+		return res;
 	}
 
     // set default for image size for new objects
@@ -1366,6 +1417,8 @@ public class SimplePageBean {
 		if (!itemOk(itemId) || !canEditPage()) {
 		    return "permission-failed";
 		}
+		if (!checkCsrf())
+		    return "permission-failed";
 
 		SimplePageItem i = findItem(itemId);
 		if(i == null) {
@@ -2118,10 +2171,16 @@ public class SimplePageBean {
 	    subpageButton = s;
 	}
 
+	public void setCsrfToken(String s) {
+	    csrfToken = s;
+	}
+
     // called from "select page" dialog in Reorder to insert items from anoher page
 	public String selectPage()   {
 
 		if (!canEditPage())
+		    return "permission-failed";
+		if (!checkCsrf())
 		    return "permission-failed";
 
 		ToolSession toolSession = sessionManager.getCurrentToolSession();
@@ -2140,6 +2199,8 @@ public class SimplePageBean {
 		if (!itemOk(itemId))
 		    return "permission-failed";
 		if (!canEditPage())
+		    return "permission-failed";
+		if (!checkCsrf())
 		    return "permission-failed";
 
 		String title = subpageTitle;
@@ -2232,6 +2293,8 @@ public class SimplePageBean {
 	public String deleteOrphanPages() {
 	    if (getEditPrivs() != 0)
 	    	return "permission-failed";
+	    if (!checkCsrf())
+		return "permission-failed";
 
 	    // code is mostly from PagePickerProducer
 	    // list we're going to display
@@ -2276,6 +2339,8 @@ public class SimplePageBean {
 	public String deletePages() {
 	    if (getEditPrivs() != 0)
 	    	return "permission-failed";
+	    if (!checkCsrf())
+		return "permission-failed";
 
 	    String siteId = getCurrentSiteId();
 
@@ -2348,6 +2413,8 @@ public class SimplePageBean {
 		if (getEditPrivs() != 0) {
 			return "permission-failed";
 		}
+		if (!checkCsrf())
+		    return "permission-failed";
 		
 		//		if (removeId == 0)
 		//		    removeId = getCurrentPageId();
@@ -2389,6 +2456,8 @@ public class SimplePageBean {
 		if (!itemOk(itemId))
 		    return "permission-failed";
 		if (!canEditPage())
+		    return "permission-failed";
+		if (!checkCsrf())
 		    return "permission-failed";
 
 		if (name.length() < 1) {
@@ -2475,7 +2544,10 @@ public class SimplePageBean {
 			return;
 		}
 
-		if (i.getSakaiId().equals(SimplePageItem.DUMMY))
+		String sakaiId = i.getSakaiId();
+		// /sam_core/nnn isn't published. It can't have groups. When it is published
+		// we do a fixup which will call this again to create the real groups
+		if (sakaiId.equals(SimplePageItem.DUMMY) || sakaiId.startsWith("/sam_core/"))
 		    return;
 
 		SimplePageGroup group = simplePageToolDao.findGroup(i.getSakaiId());
@@ -2617,12 +2689,23 @@ public class SimplePageBean {
 	    return "/assignment/a/" + getCurrentSiteId() + "/" + id;
 	}
 
+        public boolean checkCsrf() {
+	    Object sessionToken = sessionManager.getCurrentSession().getAttribute("sakai.csrf.token");
+	    if (sessionToken != null && sessionToken.toString().equals(csrfToken)) {
+		return true;
+	    }
+	    else
+		return false;
+	}
+
     // called by add forum dialog. Create a new item that points to a forum or
     // update an existing item, depending upon whether itemid is set
         public String addForum() {
 		if (!itemOk(itemId))
 		    return "permission-failed";
 		if (!canEditPage())
+		    return "permission-failed";
+		if (!checkCsrf())
 		    return "permission-failed";
 
 		if (selectedEntity == null) {
@@ -2682,6 +2765,8 @@ public class SimplePageBean {
 		if (!itemOk(itemId))
 		    return "permission-failed";
 		if (!canEditPage())
+		    return "permission-failed";
+		if (!checkCsrf())
 		    return "permission-failed";
 
 		if (selectedAssignment == null) {
@@ -2753,6 +2838,8 @@ public class SimplePageBean {
 		if (!itemOk(itemId))
 		    return "permission-failed";
 		if (!canEditPage())
+		    return "permission-failed";
+		if (!checkCsrf())
 		    return "permission-failed";
 
 		if (selectedBlti == null || bltiEntity == null) {
@@ -2999,6 +3086,14 @@ public class SimplePageBean {
 	   // are set with prerequisite and some are not, that things
 	   // could get out of kilter. So I'm going to use the
 	   // SimplePageGroup if it exists, and the tool if not.
+
+	   // this can be needed if the call to getEntity causes us to recognize
+	   // a recently published test and replace the /sam_core with a /sam_pub
+	   // in that case the entity is up to date but the sakaiid is not
+	   if (i.getSakaiId().startsWith("/sam_core") && entity != null) {
+	       i.setSakaiId(entity.getReference());
+	   }
+
 
 	   SimplePageGroup simplePageGroup = simplePageToolDao.findGroup(i.getSakaiId());
 	   if (simplePageGroup != null) {
@@ -3328,6 +3423,8 @@ public class SimplePageBean {
 		    return "permission-failed";
 		if (!canEditPage())
 		    return "permission-failed";
+		if (!checkCsrf())
+		    return "permission-failed";
 
 		if (selectedQuiz == null) {
 			return "failure";
@@ -3460,6 +3557,8 @@ public class SimplePageBean {
 		    return "permission-failed";
 		if (!canEditPage())
 		    return "permission-failed";
+		if (!checkCsrf())
+		    return "permission-failed";
 
 		SimplePageItem i = findItem(itemId);
 		if (i != null && i.getType() == SimplePageItem.MULTIMEDIA) {
@@ -3488,6 +3587,8 @@ public class SimplePageBean {
 		if (!canEditPage()) {
 		    return "permission-failed";
 		}
+		if (!checkCsrf())
+		    return "permission-failed";
 
 		Placement placement = toolManager.getCurrentPlacement();
 		SimplePage page = getCurrentPage();
@@ -3755,6 +3856,8 @@ public class SimplePageBean {
 	public String addPages()  {
 		if (!canEditPage())
 			return "permission-fail";
+		if (!checkCsrf())
+		    return "permission-failed";
 
 		// javascript should have checked all this
 		if (newPageTitle == null || newPageTitle.equals(""))
@@ -3805,6 +3908,8 @@ public class SimplePageBean {
 	// Adds an existing page as a top level page
 	public String addOldPage() {
 		if (getEditPrivs() != 0)
+		    return "permission-failed";
+		if (!checkCsrf())
 		    return "permission-failed";
 		
 		SimplePage target = getPage(Long.valueOf(selectedEntity));
@@ -3961,6 +4066,8 @@ public class SimplePageBean {
 
 		if (!canEditPage())
 			return "permission-fail";
+		if (!checkCsrf())
+		    return "permission-failed";
 
 		if (order == null) {
 			return "cancel";
@@ -4459,7 +4566,8 @@ public class SimplePageBean {
 				return true;
 			} else {
 				Double grade = submission.getGrade();
-			    if (grade >= Double.valueOf(item.getRequirementText())) {
+			    // 1.99999 should match 2, so do a bit of rounding up
+			    if ((grade + 0.0001d) >= Double.valueOf(item.getRequirementText())) {
 			    	completeCache.put(itemId, true);
 			    	return true;
 			    } else {
@@ -4568,10 +4676,11 @@ public class SimplePageBean {
 			}
 		} else if (type == SimplePageItem.ASSIGNMENT) {
 			// assignment 2 uses gradebook, so we have a float value
+		        // use some fuzz so 1.9999 is the same as 2
 			if (submission.getGrade() != null)
-				return submission.getGrade() >= Float.valueOf(requirementString);
-			// otherwise use the String
-			if (Float.valueOf(Integer.valueOf(grade) / 10) >= Float.valueOf(requirementString)) {
+				return (submission.getGrade() + 0.0001d) >= Double.valueOf(requirementString);
+			// otherwise use the String. With two strings we can use exact decimal arithmetic
+			if (new BigDecimal(grade).compareTo(new BigDecimal(requirementString).multiply(new BigDecimal(10))) >= 0) {
 				return true;
 			} else {
 				return false;
@@ -4731,32 +4840,37 @@ public class SimplePageBean {
     // site and needs an update
     // only works if you have lessons write permission. Caller shold check
 	public void maybeUpdateLinks() {
+
 	    String needsFixup = getCurrentSite().getProperties().getProperty("lessonbuilder-needsfixup");
-	    if (needsFixup == null || !needsFixup.equals("true"))
-	    	return;
+	    if (needsFixup != null && needsFixup.length() != 0) {
 
-	    // it's important for only one process to do the update. So instead of depending upon something
-	    // that can be cached and is not synced across sites, do this directly in the DB with somehting
-	    // atomic. Also site save is veyr heavy weight, and not well interlocked. Much better just
-	    // to remove the property. This should only be needed for 10 min (cache lifetime), after which
-	    // the test above will show that it's not needed
-	    //   Permission note: this should work for a student. A full site save won't. However this
-	    // code only gets called for people with lessons.write. Normally lessons.write is also people
-	    // with site.upd, but maybe not always. It should be OK for anyone to clear this flag in this code
-
-	    int updated = 0;
-	    try {
-		updated = simplePageToolDao.clearNeedsFixup(getCurrentSiteId());
-	    } catch (Exception e) {
-		// should get here if the flag has been removed already by another process
-		log.warn("clearneedsfixup " + e);
+		// it's important for only one process to do the update. So instead of depending upon something
+		// that can be cached and is not synced across sites, do this directly in the DB with somehting
+		// atomic. Also site save is veyr heavy weight, and not well interlocked. Much better just
+		// to remove the property. This should only be needed for 10 min (cache lifetime), after which
+		// the test above will show that it's not needed
+		//   Permission note: this should work for a student. A full site save won't. However this
+		// code only gets called for people with lessons.write. Normally lessons.write is also people
+		// with site.upd, but maybe not always. It should be OK for anyone to clear this flag in this code
+		
+		int updated = 0;
+		try {
+		    updated = simplePageToolDao.clearNeedsFixup(getCurrentSiteId());
+		} catch (Exception e) {
+		    // should get here if the flag has been removed already by another process
+		    log.warn("clearneedsfixup " + e);
+		}
+		// only do this if there was a flag to delete
+		if (updated != 0) {
+		    lessonBuilderEntityProducer.updateEntityReferences(getCurrentSiteId());
+		    currentSite = null;  // force refetch next time
+		}
 	    }
-	    // only do this if there was a flag to delete
-	    if (updated == 0)
-		return;
 
-	    lessonBuilderEntityProducer.updateEntityReferences(getCurrentSiteId());
-	    currentSite = null;  // force refetch next time
+	    int fixupType = simplePageToolDao.clearNeedsGroupFixup(getCurrentSiteId());
+	    if (fixupType != 0)
+		lessonBuilderEntityProducer.fixupGroupRefs(getCurrentSiteId(), this, fixupType);
+
 	}
 
 	public boolean isItemAvailable(SimplePageItem item) {
@@ -5193,6 +5307,9 @@ public class SimplePageBean {
 				return;
 			if (!canEditPage())
 				return;
+			if (!checkCsrf())
+			    return;
+
 			
 			String name = null;
 			String sakaiId = null;
@@ -5357,8 +5474,17 @@ public class SimplePageBean {
 				item = findItem(itemId);
 				if (item == null)
 					return;
+				
+				// editing an existing item which might have customized properties
+				// retrieve original resource and check for customizations
+				ResourceHelper resHelp = new ResourceHelper(getContentResource(item.getSakaiId()));
+				boolean hasCustomName = resHelp.isNameCustom(item.getName());
+				
 				item.setSakaiId(sakaiId);
-				item.setName(name);
+				if (!hasCustomName)
+				{
+					item.setName(name);
+				}
 			}
 			
 			// remember who added it, for permission checks
@@ -5418,6 +5544,8 @@ public class SimplePageBean {
 
 	public void importCc() {
 	    if (!canEditPage())
+		return;
+	    if (!checkCsrf())
 		return;
 
 	    MultipartFile file = null;
@@ -5506,6 +5634,8 @@ public class SimplePageBean {
 		if (!itemOk(youtubeId))
 		    return;
 		if (!canEditPage())
+		    return;
+		if (!checkCsrf())
 		    return;
 
 		SimplePageItem item = findItem(youtubeId);
@@ -5631,6 +5761,8 @@ public class SimplePageBean {
 		    return;
 		if (!canEditPage())
 		    return;
+		if (!checkCsrf())
+		    return;
 
 		SimplePageItem item = findItem(itemId);
 		item.setHeight(height);
@@ -5688,6 +5820,9 @@ public class SimplePageBean {
 	
 	// May add or edit comments
 	public String addComment() {
+		if (!checkCsrf())
+		    return "permission-failed";
+
 		boolean html = false;
 		
 		// Patch in the fancy editor's comment, if it's been used
@@ -5740,6 +5875,9 @@ public class SimplePageBean {
 	}
 	
 	public String updateComments() {
+		if (!checkCsrf())
+		    return "permission-failed";
+
 		if(canEditPage()) {
 			SimplePageItem comment = findItem(itemId);
 			
@@ -6067,6 +6205,8 @@ public class SimplePageBean {
 			setErrMessage(messageLocator.getMessage("simplepage.permissions-general"));
 			return "failure";
 		}
+		if (!checkCsrf())
+		    return "permission-failed";
 		
 		if(questionType == null) {
 			setErrMessage(messageLocator.getMessage("simplepage.no-question-type"));
@@ -6268,6 +6408,9 @@ public class SimplePageBean {
 		
 		if (!itemOk(questionId) || !canReadPage())
 		    return "permission-failed";
+		if (!checkCsrf())
+		    return "permission-failed";
+
 		SimplePageItem question = findItem(questionId);
 
 		SimplePageQuestionResponse response = simplePageToolDao.findQuestionResponse(questionId, userId); 
@@ -6300,6 +6443,8 @@ public class SimplePageBean {
 		
 		if (!itemOk(questionId) || !canReadPage())
 		    return "permission-failed";
+		if (!checkCsrf())
+		    return "permission-failed";
 
 		SimplePageQuestionResponse response = simplePageToolDao.findQuestionResponse(questionId, userId); 
 		if(response != null) {
@@ -6323,6 +6468,9 @@ public class SimplePageBean {
 	}
 	
 	public String updateStudent() {
+		if (!checkCsrf())
+		    return "permission-failed";
+
 		if(canEditPage()) {
 			SimplePageItem page = findItem(itemId);
 			
@@ -6913,6 +7061,8 @@ public class SimplePageBean {
 		    setErrMessage(messageLocator.getMessage("simplepage.permissions-general"));
 		    return "permission-failed";
 		}
+		if (!checkCsrf())
+		    return "permission-failed";
 		
 		List<SimplePagePeerEvalResult> result = simplePageToolDao.findPeerEvalResult(getCurrentPage().getPageId(), userId, gradeeId); 
 		if(result != null) {

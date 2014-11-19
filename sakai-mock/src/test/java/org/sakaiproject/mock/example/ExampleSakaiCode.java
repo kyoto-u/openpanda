@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.1/src/test/java/org/sakaiproject/mock/example/ExampleSakaiCode.java $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.2/src/test/java/org/sakaiproject/mock/example/ExampleSakaiCode.java $
  * $Id: ExampleSakaiCode.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

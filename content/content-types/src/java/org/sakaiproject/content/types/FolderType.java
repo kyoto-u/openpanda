@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.1/content-types/src/java/org/sakaiproject/content/types/FolderType.java $
- * $Id: FolderType.java 134205 2014-02-07 03:12:54Z jbush@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.2/content-types/src/java/org/sakaiproject/content/types/FolderType.java $
+ * $Id: FolderType.java 312341 2014-08-21 23:26:06Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 Sakai Foundation
@@ -351,7 +351,11 @@ public class FolderType extends BaseResourceType implements ExpandableResourceTy
 		}
 
 		public boolean available(ContentEntity entity) {
-			return !getContentService().getAllDeletedResources(entity.getId()).isEmpty();
+
+			if (entity != null) {
+				return !getContentService().getAllDeletedResources(entity.getId()).isEmpty();
+			}
+			return false;
 		}
 
 		public ActionType getActionType() {

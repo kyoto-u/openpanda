@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/import-impl/src/java/org/sakaiproject/importer/impl/importables/HtmlDocument.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.2/import-impl/src/java/org/sakaiproject/importer/impl/importables/HtmlDocument.java $
  * $Id: HtmlDocument.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

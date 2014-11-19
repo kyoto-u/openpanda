@@ -139,7 +139,7 @@ jQuery(document).ready(function () {
                  <f:verbatim>">
                       <div class="demoSelector-layoutReorderer layoutReorderer-module-dragbar">
 		</f:verbatim>
-                <t:outputText value="#{item.label}" styleClass="siteLabel"></t:outputText>
+                <t:outputText value="#{item.label}" styleClass="siteLabel" title="#{item.description}"></t:outputText>
                 <f:verbatim>
                     <div class="checkBoxContainer">
                     <input type="checkbox" class="selectSiteCheck" title="
@@ -170,7 +170,7 @@ jQuery(document).ready(function () {
                  <f:verbatim>">
                       <div class="demoSelector-layoutReorderer layoutReorderer-module-dragbar">
 		</f:verbatim>
-                <t:outputText value="#{item.label}" styleClass="siteLabel"></t:outputText>
+                <t:outputText value="#{item.label}" styleClass="siteLabel" title="#{item.description}"></t:outputText>
                 <f:verbatim>
                     <div class="checkBoxContainer">
                     <input type="checkbox" class="selectSiteCheck" title="
@@ -199,7 +199,7 @@ jQuery(document).ready(function () {
                  <f:verbatim>">
                       <div class="demoSelector-layoutReorderer layoutReorderer-module-dragbar">
 		</f:verbatim>
-                <t:outputText value="#{item.label}" styleClass="siteLabel"></t:outputText>
+                <t:outputText value="#{item.label}" styleClass="siteLabel" title="#{item.description}"></t:outputText>
                 <f:verbatim>
                     <div class="checkBoxContainer">
                     <input type="checkbox" class="selectSiteCheck" title="

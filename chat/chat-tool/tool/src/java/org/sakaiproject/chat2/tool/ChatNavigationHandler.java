@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.1/chat-tool/tool/src/java/org/sakaiproject/chat2/tool/ChatNavigationHandler.java $
+* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.2/chat-tool/tool/src/java/org/sakaiproject/chat2/tool/ChatNavigationHandler.java $
 * $Id: ChatNavigationHandler.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/asi/Item.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/asi/Item.java $
  * $Id: Item.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *

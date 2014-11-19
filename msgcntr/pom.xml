@@ -4,14 +4,14 @@
   <parent>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
-    <version>10.1</version>
+    <version>10.2</version>
     <relativePath>../master/pom.xml</relativePath>
   </parent>
 
   <name>Sakai Message Center Base POM</name>
   <groupId>org.sakaiproject.msgcntr</groupId>
   <artifactId>msgcntr</artifactId>
-  <version>10.1</version>
+  <version>10.2</version>
   <packaging>pom</packaging>
 
   <modules>

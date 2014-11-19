@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/DigestHtml.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/DigestHtml.java $
  * $Id: DigestHtml.java 22845 2007-03-18 14:40:50Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

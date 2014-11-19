@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.1/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeResourceProperties.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.2/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeResourceProperties.java $
  * $Id: FakeResourceProperties.java 124652 2013-05-20 07:50:03Z david.horwitz@uct.ac.za $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

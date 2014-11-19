@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.1/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusService.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.2/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusService.java $
  * $Id: SyllabusService.java 125859 2013-06-17 14:41:17Z holladay@longsight.com $
  ***********************************************************************************
  *

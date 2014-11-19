@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.1/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/OptionsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.2/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/OptionsBean.java $
  * $Id: OptionsBean.java 271437 2014-02-13 19:12:39Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

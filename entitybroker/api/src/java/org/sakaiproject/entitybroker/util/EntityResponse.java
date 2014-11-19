@@ -1,6 +1,6 @@
 /**
  * $Id: EntityResponse.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/api/src/java/org/sakaiproject/entitybroker/util/EntityResponse.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/api/src/java/org/sakaiproject/entitybroker/util/EntityResponse.java $
  * HttpResponse.java - entity-broker - Jul 20, 2008 12:19:23 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

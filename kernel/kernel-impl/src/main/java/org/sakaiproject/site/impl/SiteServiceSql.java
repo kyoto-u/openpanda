@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/site/impl/SiteServiceSql.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/site/impl/SiteServiceSql.java $
  * $Id: SiteServiceSql.java 113964 2012-10-04 05:22:35Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.1/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/ParticipationRecordImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.2/sections-service/sections-impl/sakai/model/src/java/org/sakaiproject/component/section/sakai/ParticipationRecordImpl.java $
  * $Id: ParticipationRecordImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

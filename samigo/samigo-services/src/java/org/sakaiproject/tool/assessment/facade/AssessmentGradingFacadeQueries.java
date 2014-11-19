@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueries.java $
- * $Id: AssessmentGradingFacadeQueries.java 307095 2014-03-13 21:23:01Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueries.java $
+ * $Id: AssessmentGradingFacadeQueries.java 313635 2014-09-15 22:09:57Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -2978,6 +2978,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 						" where a.publishedAssessmentId = c.assessment.publishedAssessmentId " +
 						" and current_timestamp() >= c.retractDate " +
 						" and a.status not in (5) and (a.hasAutoSubmissionRun = 0 or a.hasAutoSubmissionRun is null) and c.autoSubmit = 1 " +
+						" and a.submittedDate is not null and a.attemptDate <= c.retractDate " +
 						" order by a.publishedAssessmentId, a.agentId, a.forGrade desc, a.assessmentGradingId");
 		
 	    Iterator iter = list.iterator();

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
- * $Id: FormattedText.java 311304 2014-07-30 18:23:13Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
+ * $Id: FormattedText.java 313737 2014-09-19 00:20:46Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -182,4 +182,17 @@ public class FormattedText {
         return getFormattedText().stripHtmlFromText(text, smartSpacing);
     }
 
+    /**
+     * @see org.sakaiproject.util.api.FormattedText#stripHtmlFromText(String,boolean,boolean)
+     */
+    public static String stripHtmlFromText(String text, boolean smartSpacing, boolean stripEscapeSequences) {
+        return getFormattedText().stripHtmlFromText(text, smartSpacing, stripEscapeSequences);
+    }
+
+    /**
+     * @see org.sakaiproject.util.api.FormattedText#makeShortenedText(String)
+     */
+    public static String makeShortenedText(String text, Integer maxLength, String separator, String cutMethod) {
+        return getFormattedText().makeShortenedText(text, maxLength, separator, cutMethod);
+}
 }

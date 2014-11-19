@@ -1,6 +1,6 @@
 /**
  * $Id: ValidationDao.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.1/account-validator-impl/src/java/org/sakaiproject/accountvalidator/logic/dao/ValidationDao.java $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.2/account-validator-impl/src/java/org/sakaiproject/accountvalidator/logic/dao/ValidationDao.java $
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
  *

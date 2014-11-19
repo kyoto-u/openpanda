@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/wizard/api-impl/src/java/org/theospi/portfolio/wizard/taggable/impl/WizardItemImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/wizard/api-impl/src/java/org/theospi/portfolio/wizard/taggable/impl/WizardItemImpl.java $
  * $Id: WizardItemImpl.java 108812 2012-05-31 17:47:53Z chmaurer@iupui.edu $
  ***********************************************************************************
  *

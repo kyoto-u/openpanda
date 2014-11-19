@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/test/org/sakaiproject/tool/assessment/jsf/TestBackingBean.java $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/test/org/sakaiproject/tool/assessment/jsf/TestBackingBean.java $
 * $Id: TestBackingBean.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
 ***********************************************************************************
 *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/archive-api/src/main/java/org/sakaiproject/importer/api/IMSResourceTranslator.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.2/archive-api/src/main/java/org/sakaiproject/importer/api/IMSResourceTranslator.java $
  * $Id: IMSResourceTranslator.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.1/citations-tool/tool/src/java/org/sakaiproject/citation/tool/CitationHelperAction.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.2/citations-tool/tool/src/java/org/sakaiproject/citation/tool/CitationHelperAction.java $
  * $Id: CitationHelperAction.java 307319 2014-03-20 20:08:25Z enietzel@anisakai.com $
  ***********************************************************************************
  *

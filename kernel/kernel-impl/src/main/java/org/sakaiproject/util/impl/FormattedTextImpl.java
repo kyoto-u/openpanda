@@ -1165,15 +1165,129 @@ public class FormattedTextImpl implements FormattedText
         if (text != null && !"".equals(text)) {
             if (smartSpacing) {
                 // replace block level html with an extra space (to try to preserve the intent)
-                text = text.replaceAll("/br>", "/br> ").replaceAll("/p>", "/p> ").replaceAll("/tr>", "/tr> ");
+                text = addSmartSpacing(text);
             }
             text = org.jsoup.Jsoup.clean(text, "", org.jsoup.safety.Whitelist.none(), new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false).outline(false));
             if (smartSpacing) {
-                text = text.replaceAll("\\s+", " ").trim(); // eliminate extra whitespaces
+                text = eliminateExtraWhiteSpace(text);
             }
         }
         return text;
     }
+
+    @Override
+    public String stripHtmlFromText(String text, boolean smartSpacing, boolean stripEscapeSequences)
+    {
+        // KNL-1267	--bbailla2
+        if (!stripEscapeSequences)
+        {
+            return stripHtmlFromText(text, smartSpacing);
+        }
+
+        if (smartSpacing)
+        {
+            text = addSmartSpacing(text);
+        }
+
+        org.jsoup.nodes.Document document = org.jsoup.Jsoup.parse(text);
+        org.jsoup.nodes.Element body = document.body();
+        //remove any html tags, unescape any escape characters
+        String strippedText = body.text();
+        //&nbsp; are converted to char code 160, java doesn't treat it like whitespace, so replace it with ' '
+        //Could there be others like this?
+        strippedText = strippedText.replace((char)160, ' ');
+        strippedText = eliminateExtraWhiteSpace(strippedText);
+        return strippedText;
+    }
+
+    private String addSmartSpacing(String text)
+    {
+        return text.replaceAll("/br>", "/br> ").replaceAll("/p>", "/p> ").replaceAll("/tr>", "/tr> ");
+    }
+
+    private String eliminateExtraWhiteSpace(String text)
+    {
+        return text.replaceAll("\\s+", " ").trim();
+    }
+
+    /**
+     * SAK-23567 Gets the shortened version of the title
+     *
+     * Controlled by "site.title.cut.method", "site.title.maxlength", and "site.title.cut.separator"
+     *
+     * @param text the full site title (or desc) to shorten
+     * @param maxLength maximum length for the string before it is shortened (and after shortening) (null defaults to 25)
+     * @param separator the separator string to use (null defaults to '...')
+     * @param cutMethod the string key method for cutting (null defaults to '100:0')
+     * @return the shortened string
+     */
+    public String makeShortenedText(String text, Integer maxLength, String separator, String cutMethod) {
+        // this method defines the defaults for the 3 configuration options
+        if (maxLength == null || maxLength < 1) {
+            maxLength = serverConfigurationService.getInt("site.title.maxlength", 25);
+        }
+        if (separator == null) {
+            separator = serverConfigurationService.getString("site.title.cut.separator", " ...");
+        }
+        if (cutMethod == null) {
+            cutMethod = serverConfigurationService.getString("site.title.cut.method", "100:0");
+        }
+        return makeShortText(text, cutMethod, maxLength, separator);
+    }
+
+    /**
+     * TESTING ONLY
+     * SAK-23567 Gets an array with 2 int values {left,right}
+     * 	left: left percentage (before cut separator)
+     * 	right: right percentage (after separator)
+     */
+    protected int[] getCutMethod(String siteTitleCutMethodString) {
+        String[] siteTitleCutMethod = siteTitleCutMethodString.split(":");
+        int[] cutMethod = new int[]{100,0};
+        try {
+            if (siteTitleCutMethod.length==2) {
+                cutMethod[0] = Integer.parseInt(siteTitleCutMethod[0]);
+                cutMethod[1] = Integer.parseInt(siteTitleCutMethod[1]);
+                if (cutMethod[0]+cutMethod[1]!=100) {
+                    throw new Exception("Invalid cut method values: "+cutMethod[0]+" + "+cutMethod[1]+" != 100");
+                }
+            }
+        } catch (Throwable ex) {
+            cutMethod[0] = 100; cutMethod[1] = 0;
+        }
+        return cutMethod;
+    }
+
+    /**
+     * TESTING ONLY
+     * use {@link #makeShortenedText(String)} instead
+     *
+     * SAK-23567 Gets the resumed version of the title
+     *
+     * @param text
+     * @param cutMethod
+     * @param siteTitleMaxLength
+     * @param cutSeparator
+     * @return the trimmed string
+     */
+    protected String makeShortText(String text, String cutMethod, int siteTitleMaxLength, String cutSeparator) {
+        String result = text;
+        if ( result != null ) {
+            result = result.trim();
+            if ( result.length() > siteTitleMaxLength && siteTitleMaxLength >= 10 ) {
+                int[] siteTitleCutMethod = getCutMethod(cutMethod);
+                int begin = Math.round(((siteTitleMaxLength-cutSeparator.length())*siteTitleCutMethod[0])/100);
+                int end = Math.round(((siteTitleMaxLength-cutSeparator.length())*siteTitleCutMethod[1])/100);
+                // Adjust odd character to the begin
+                begin += (siteTitleMaxLength - (begin + cutSeparator.length() + end));
+                result = ((begin>0)?result.substring(0,begin):"") + cutSeparator +((end>0)?result.substring(result.length()-end):"");
+            } else if ( result.length() > siteTitleMaxLength ) {
+                result = result.substring(0,siteTitleMaxLength);
+            }
+        }
+        return result;
+    }
+
 
     // PRIVATE STUFF
 

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/SiteNeighbourhoodServiceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/SiteNeighbourhoodServiceImpl.java $
  * $Id: SiteNeighbourhoodServiceImpl.java 309348 2014-05-08 19:55:03Z enietzel@anisakai.com $
  ***********************************************************************************
  *

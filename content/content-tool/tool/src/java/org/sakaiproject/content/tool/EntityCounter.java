@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.1/content-tool/tool/src/java/org/sakaiproject/content/tool/EntityCounter.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.2/content-tool/tool/src/java/org/sakaiproject/content/tool/EntityCounter.java $
  * $Id: EntityCounter.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

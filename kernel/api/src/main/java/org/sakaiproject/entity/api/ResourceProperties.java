@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/entity/api/ResourceProperties.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/entity/api/ResourceProperties.java $
  * $Id: ResourceProperties.java 124158 2013-05-16 15:37:05Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

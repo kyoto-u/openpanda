@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/manager-api/src/java/org/sakaiproject/api/common/manager/LifeCycleAware.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.2/manager-api/src/java/org/sakaiproject/api/common/manager/LifeCycleAware.java $
  * $Id: LifeCycleAware.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

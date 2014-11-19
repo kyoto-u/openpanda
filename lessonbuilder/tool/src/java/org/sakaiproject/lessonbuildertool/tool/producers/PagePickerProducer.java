@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Date;
 
 import org.sakaiproject.lessonbuildertool.service.LessonEntity;
+import org.sakaiproject.tool.cover.SessionManager;
 
 import org.sakaiproject.lessonbuildertool.SimplePage;
 import org.sakaiproject.lessonbuildertool.SimplePageItem;
@@ -341,6 +342,9 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		    UIOutput.make(tofill, "sharedpageexplanation");
 
 		UIForm form = UIForm.make(tofill, "page-picker");
+		Object sessionToken = SessionManager.getCurrentSession().getAttribute("sakai.csrf.token");
+		if (sessionToken != null)
+		    UIInput.make(form, "csrf", "simplePageBean.csrfToken", sessionToken.toString());
 
 		ArrayList<String> values = new ArrayList<String>();
 		ArrayList<String> initValues = new ArrayList<String>();
@@ -444,6 +448,7 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
                         } else {
                             UIOutput.make(itemListItem, "name", pageItem.getName());
                         }
+			//UIOutput.make(itemListItem, "page1", Boolean.toString(lessonsAccess.isItemAccessible(pageItem.getId(),simplePageBean.getCurrentSiteId(),"c08d3ac9-c717-472a-ad91-7ce0b434f42f", simplePageBean)));
                     }
                 }
 		    	index++;
@@ -483,6 +488,9 @@ public class PagePickerProducer implements ViewComponentProducer, NavigationCase
 		    }
 
 		    // debug code for development. this will be removed at some point
+		    //UIOutput.make(row, "page2", lessonsAccess.printPath(lessonsAccess.getPagePaths(entry.pageId)));
+		    //UIOutput.make(row, "page1", Boolean.toString(lessonsAccess.isPageAccessible(entry.pageId, simplePageBean.getCurrentSiteId(), "c08d3ac9-c717-472a-ad91-7ce0b434f42f", simplePageBean)));
+
 		    if (ServerConfigurationService.getBoolean("lessonbuilder.accessibilitydebug", false)) {
 			if (entry != null && entry.pageId != null && lessonsAccess.isPageAccessible(entry.pageId,simplePageBean.getCurrentSiteId(),"c08d3ac9-c717-472a-ad91-7ce0b434f42f", null)) {
 			    UIOutput.make(row, "page1");

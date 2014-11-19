@@ -1,6 +1,6 @@
 /**
  * $Id: ValidationLogicImpl.java 308859 2014-04-26 00:12:26Z enietzel@anisakai.com $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.1/account-validator-impl/src/java/org/sakaiproject/accountvalidator/logic/impl/ValidationLogicImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.2/account-validator-impl/src/java/org/sakaiproject/accountvalidator/logic/impl/ValidationLogicImpl.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

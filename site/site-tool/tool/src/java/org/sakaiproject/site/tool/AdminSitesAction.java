@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site/tags/sakai-10.1/site-tool/tool/src/java/org/sakaiproject/site/tool/AdminSitesAction.java $
+ * $URL: https://source.sakaiproject.org/svn/site/tags/sakai-10.2/site-tool/tool/src/java/org/sakaiproject/site/tool/AdminSitesAction.java $
  * $Id: AdminSitesAction.java 113961 2012-10-04 05:19:17Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

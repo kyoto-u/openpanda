@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/RWikiObjectServiceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/RWikiObjectServiceImpl.java $
  * $Id: RWikiObjectServiceImpl.java 96734 2011-08-10 15:57:13Z aaronz@vt.edu $
  ***********************************************************************************
  *

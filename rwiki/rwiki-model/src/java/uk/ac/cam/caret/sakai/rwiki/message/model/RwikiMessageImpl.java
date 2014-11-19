@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/message/model/RwikiMessageImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/message/model/RwikiMessageImpl.java $
  * $Id: RwikiMessageImpl.java 11112 2006-06-23 15:35:35Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

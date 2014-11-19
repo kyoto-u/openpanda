@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-util/src/main/java/org/sakaiproject/util/BaseResourceProperties.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-util/src/main/java/org/sakaiproject/util/BaseResourceProperties.java $
  * $Id: BaseResourceProperties.java 124158 2013-05-16 15:37:05Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

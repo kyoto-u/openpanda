@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.1/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/MessageForumsMessageManager.java $
- * $Id: MessageForumsMessageManager.java 130286 2013-10-09 19:27:24Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.2/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/MessageForumsMessageManager.java $
+ * $Id: MessageForumsMessageManager.java 313689 2014-09-18 03:47:07Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -74,9 +74,9 @@ public interface MessageForumsMessageManager {
     public void deleteUnreadStatus(Long topicId, Long messageId);
 
     public int findMessageCountByTopicId(Long topicId);
-    public int findMessageCountByForumId(Long forumId);
+    public List<Object[]> findMessageCountByForumId(Long forumId);
     
-    public int findMessageCountTotal();
+    public List<Object[]> findMessageCountTotal();
     
     public int findViewableMessageCountByTopicIdByUserId(Long topicId, String userId);
     

@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.1/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/widget/VisitsWidget.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.2/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/widget/VisitsWidget.java $
  * $Id: VisitsWidget.java 128561 2013-08-16 01:43:57Z matthew@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

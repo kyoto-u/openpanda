@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/wizard/tool/src/java/org/theospi/portfolio/wizard/tool/DecoratedListInterface.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/wizard/tool/src/java/org/theospi/portfolio/wizard/tool/DecoratedListInterface.java $
 * $Id: DecoratedListInterface.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

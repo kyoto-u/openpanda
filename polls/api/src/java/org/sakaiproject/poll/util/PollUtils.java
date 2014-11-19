@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.1/api/src/java/org/sakaiproject/poll/util/PollUtils.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.2/api/src/java/org/sakaiproject/poll/util/PollUtils.java $
  * $Id: PollUtils.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.1/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/SectionManagerHibernateImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.2/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/SectionManagerHibernateImpl.java $
  * $Id: SectionManagerHibernateImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

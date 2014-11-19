@@ -1,5 +1,5 @@
 /*
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.1/sitestats-tool/src/webapp/script/common.js $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.2/sitestats-tool/src/webapp/script/common.js $
  * $Id: common.js 105082 2012-02-24 23:26:34Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

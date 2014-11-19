@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.1/tool/src/java/org/sakaiproject/poll/tool/params/VoteCollectionViewParameters.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.2/tool/src/java/org/sakaiproject/poll/tool/params/VoteCollectionViewParameters.java $
  * $Id: VoteCollectionViewParameters.java 109827 2012-06-28 15:39:26Z azeckoski@unicon.net $
  ***********************************************************************************
  *

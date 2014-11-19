@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/common/api/src/java/org/theospi/portfolio/security/AudienceSelectionHelper.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/common/api/src/java/org/theospi/portfolio/security/AudienceSelectionHelper.java $
 * $Id: AudienceSelectionHelper.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
 ***********************************************************************************
 *

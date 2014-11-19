@@ -1,6 +1,6 @@
 /**********************************************************************************
  *
- * $Id: GradebookService.java 129384 2013-09-05 14:17:00Z holladay@longsight.com $
+ * $Id: GradebookService.java 313733 2014-09-18 23:31:51Z enietzel@anisakai.com $
  *
  ***********************************************************************************
  *
@@ -829,5 +829,11 @@ public interface GradebookService {
 	public PointsPossibleValidation isPointsPossibleValid(String gradebookUid, org.sakaiproject.service.gradebook.shared.Assignment gradebookItem, 
 	        Double pointsPossible);
 	   
+	/**
+	 * Computes the Average Course Grade as a letter.   
+	 * @param gradebookUid
+	 * @return
+	 */
+	public String getAverageCourseGrade(String gradebookUid);
 
 }

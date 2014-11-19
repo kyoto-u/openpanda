@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.1/message-tool/tool/src/java/org/sakaiproject/message/tool/SynopticMessageAction.java $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.2/message-tool/tool/src/java/org/sakaiproject/message/tool/SynopticMessageAction.java $
  * $Id: SynopticMessageAction.java 115617 2012-11-02 05:57:05Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**
  * $Id: TemplateMap.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/extension/TemplateMap.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/extension/TemplateMap.java $
  * TemplateMap.java - entity-broker - Jul 31, 2008 10:59:53 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

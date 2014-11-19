@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.1/content-tool/tool/src/java/org/sakaiproject/content/tool/FilePickerAction.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.2/content-tool/tool/src/java/org/sakaiproject/content/tool/FilePickerAction.java $
  * $Id: FilePickerAction.java 134421 2014-02-12 13:01:39Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *

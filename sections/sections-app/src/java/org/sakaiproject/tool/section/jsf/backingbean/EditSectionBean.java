@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.1/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/EditSectionBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.2/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/EditSectionBean.java $
  * $Id: EditSectionBean.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

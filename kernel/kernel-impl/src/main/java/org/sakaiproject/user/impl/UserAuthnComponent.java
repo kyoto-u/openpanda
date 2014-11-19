@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/user/impl/UserAuthnComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/user/impl/UserAuthnComponent.java $
  * $Id: UserAuthnComponent.java 116588 2012-11-20 15:10:06Z holladay@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.1/citations-osid/xserver/src/java/org/sakaibrary/osid/repository/xserver/CreatorPartStructure.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.2/citations-osid/xserver/src/java/org/sakaibrary/osid/repository/xserver/CreatorPartStructure.java $
  * $Id: CreatorPartStructure.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

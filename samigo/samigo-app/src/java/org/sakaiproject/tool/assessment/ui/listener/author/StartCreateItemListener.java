@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/StartCreateItemListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/StartCreateItemListener.java $
  * $Id: StartCreateItemListener.java 308360 2014-04-18 22:24:29Z ktsao@stanford.edu $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.1/basiclti-common/src/java/org/sakaiproject/basiclti/util/ShaUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.2/basiclti-common/src/java/org/sakaiproject/basiclti/util/ShaUtil.java $
  * $Id: ShaUtil.java 120423 2013-02-24 01:36:55Z csev@umich.edu $
  *
  * Copyright (c) 2010 The Sakai Foundation

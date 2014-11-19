@@ -1,6 +1,6 @@
 /**
  * $Id: PollVoteEntityProvider.java 127888 2013-07-29 11:54:18Z steve.swinsburg@gmail.com $
- * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.1/tool/src/java/org/sakaiproject/poll/tool/entityproviders/PollVoteEntityProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.2/tool/src/java/org/sakaiproject/poll/tool/entityproviders/PollVoteEntityProvider.java $
  * VoteEntityProvider.java - polls - Aug 22, 2008 9:50:39 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

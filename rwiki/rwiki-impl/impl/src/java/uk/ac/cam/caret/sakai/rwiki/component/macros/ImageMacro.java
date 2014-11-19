@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/ImageMacro.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/ImageMacro.java $
  * $Id: ImageMacro.java 29047 2007-04-18 07:40:45Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

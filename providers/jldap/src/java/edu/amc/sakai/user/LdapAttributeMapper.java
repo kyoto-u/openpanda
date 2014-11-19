@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.1/jldap/src/java/edu/amc/sakai/user/LdapAttributeMapper.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.2/jldap/src/java/edu/amc/sakai/user/LdapAttributeMapper.java $
  * $Id: LdapAttributeMapper.java 109333 2012-06-17 02:42:00Z azeckoski@unicon.net $
  ***********************************************************************************
  *

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>basiclti</artifactId>
         <groupId>org.sakaiproject.basiclti</groupId>
-        <version>10.1</version>
+        <version>10.2</version>
     </parent>
 
     <name>BasicLTI Portlet (imsblti)</name>
@@ -58,10 +58,6 @@
         <dependency>
             <groupId>javax.portlet</groupId>
             <artifactId>portlet-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
         </dependency>
         
         <!-- for the entityprovider -->

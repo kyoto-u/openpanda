@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-services/src/java/org/sakaiproject/tool/assessment/services/QuestionPoolService.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/java/org/sakaiproject/tool/assessment/services/QuestionPoolService.java $
  * $Id: QuestionPoolService.java 106521 2012-04-04 08:14:42Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

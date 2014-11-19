@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-api/api/src/java/org/sakaiproject/calendar/api/Calendar.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-api/api/src/java/org/sakaiproject/calendar/api/Calendar.java $
  * $Id: Calendar.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

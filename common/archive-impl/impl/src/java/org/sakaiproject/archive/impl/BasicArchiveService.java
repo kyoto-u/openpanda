@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/archive-impl/impl/src/java/org/sakaiproject/archive/impl/BasicArchiveService.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.2/archive-impl/impl/src/java/org/sakaiproject/archive/impl/BasicArchiveService.java $
  * $Id: BasicArchiveService.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

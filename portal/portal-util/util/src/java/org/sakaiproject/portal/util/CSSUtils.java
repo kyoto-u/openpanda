@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-util/util/src/java/org/sakaiproject/portal/util/CSSUtils.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-util/util/src/java/org/sakaiproject/portal/util/CSSUtils.java $
  * $Id: CSSUtils.java 127916 2013-07-29 17:48:03Z csev@umich.edu $
  ***********************************************************************************
  *

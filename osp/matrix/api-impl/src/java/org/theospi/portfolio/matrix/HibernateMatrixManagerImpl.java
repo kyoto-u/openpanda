@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/matrix/api-impl/src/java/org/theospi/portfolio/matrix/HibernateMatrixManagerImpl.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/matrix/api-impl/src/java/org/theospi/portfolio/matrix/HibernateMatrixManagerImpl.java $
 * $Id: HibernateMatrixManagerImpl.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
 ***********************************************************************************
 *

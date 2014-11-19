@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SectionsMacro.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SectionsMacro.java $
  * $Id: SectionsMacro.java 84224 2010-11-03 13:43:07Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

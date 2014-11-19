@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-util/src/main/java/org/sakaiproject/util/Resource.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-util/src/main/java/org/sakaiproject/util/Resource.java $
  * $Id: Resource.java 105139 2012-02-27 10:51:05Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

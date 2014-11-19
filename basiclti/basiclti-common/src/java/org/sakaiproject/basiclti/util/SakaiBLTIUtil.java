@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.1/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
- * $Id: SakaiBLTIUtil.java 309356 2014-05-08 21:13:08Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.2/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
+ * $Id: SakaiBLTIUtil.java 313713 2014-09-18 16:40:18Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -610,7 +610,7 @@ public class SakaiBLTIUtil {
         proxyBinding = ltiService.getProxyBindingDao(toolKey,context);
 
 		Long toolVersion = getLongNull(tool.get(LTIService.LTI_VERSION));
-		boolean isLTI1 = toolVersion == null || toolVersion == LTIService.LTI_VERSION_1;
+		boolean isLTI1 = toolVersion == null || toolVersion != LTIService.LTI_VERSION_2;
 
 		// Start building up the properties
 		Properties ltiProps = new Properties();

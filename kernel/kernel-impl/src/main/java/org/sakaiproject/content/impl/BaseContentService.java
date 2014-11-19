@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/BaseContentService.java $
- * $Id: BaseContentService.java 312248 2014-08-19 23:57:21Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/content/impl/BaseContentService.java $
+ * $Id: BaseContentService.java 312648 2014-09-02 12:24:52Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -4669,6 +4669,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	 */
 	public void addResourceToDeleteTable(ContentResourceEdit edit, String uuid, String userId) throws PermissionException, ServerOverloadException
 	{
+		if (m_bodyPathDeleted == null) {
+			return;
+		}
 		String id = edit.getId();
 		String content_type = edit.getContentType();
 

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.1/sections-app-util/src/java/org/sakaiproject/tool/section/jsf/MessagingBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.2/sections-app-util/src/java/org/sakaiproject/tool/section/jsf/MessagingBean.java $
  * $Id: MessagingBean.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

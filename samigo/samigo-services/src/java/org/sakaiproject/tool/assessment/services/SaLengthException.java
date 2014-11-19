@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-services/src/java/org/sakaiproject/tool/assessment/services/SaLengthException.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/java/org/sakaiproject/tool/assessment/services/SaLengthException.java $
  * $Id: SaLengthException.java 112207 2012-09-07 12:12:30Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

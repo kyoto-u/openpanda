@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
  * $Id: BaseCalendarService.java 309198 2014-05-06 15:21:33Z enietzel@anisakai.com $
  ***********************************************************************************
  *

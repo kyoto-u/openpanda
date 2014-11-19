@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.1/jldap/src/java/edu/amc/sakai/user/LdapEntryMapper.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.2/jldap/src/java/edu/amc/sakai/user/LdapEntryMapper.java $
  * $Id: LdapEntryMapper.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

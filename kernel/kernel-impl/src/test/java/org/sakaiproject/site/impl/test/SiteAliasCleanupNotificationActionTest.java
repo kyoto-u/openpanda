@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/test/java/org/sakaiproject/site/impl/test/SiteAliasCleanupNotificationActionTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/test/java/org/sakaiproject/site/impl/test/SiteAliasCleanupNotificationActionTest.java $
  * $Id: SiteAliasCleanupNotificationActionTest.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

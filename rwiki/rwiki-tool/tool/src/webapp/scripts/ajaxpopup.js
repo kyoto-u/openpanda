@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-tool/tool/src/webapp/scripts/ajaxpopup.js $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-tool/tool/src/webapp/scripts/ajaxpopup.js $
  * $Id: ajaxpopup.js 105082 2012-02-24 23:26:34Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

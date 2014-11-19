@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-api/api/src/java/org/sakaiproject/portal/api/PortalSiteHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-api/api/src/java/org/sakaiproject/portal/api/PortalSiteHelper.java $
  * $Id: PortalSiteHelper.java 115117 2012-10-25 15:15:30Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-util/src/main/java/org/sakaiproject/util/Authentication.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-util/src/main/java/org/sakaiproject/util/Authentication.java $
  * $Id: Authentication.java 105277 2012-02-29 13:40:41Z nbotimer@unicon.net $
  ***********************************************************************************
  *

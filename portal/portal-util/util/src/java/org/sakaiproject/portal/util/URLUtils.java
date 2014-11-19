@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-util/util/src/java/org/sakaiproject/portal/util/URLUtils.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-util/util/src/java/org/sakaiproject/portal/util/URLUtils.java $
  * $Id: URLUtils.java 134236 2014-02-07 20:58:13Z bkirschn@umich.edu $
  ***********************************************************************************
  *

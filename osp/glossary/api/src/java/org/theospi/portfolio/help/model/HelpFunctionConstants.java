@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/glossary/api/src/java/org/theospi/portfolio/help/model/HelpFunctionConstants.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/glossary/api/src/java/org/theospi/portfolio/help/model/HelpFunctionConstants.java $
 * $Id: HelpFunctionConstants.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

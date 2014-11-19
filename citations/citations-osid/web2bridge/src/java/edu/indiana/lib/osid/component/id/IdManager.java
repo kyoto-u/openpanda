@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.1/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/component/id/IdManager.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.2/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/component/id/IdManager.java $
  * $Id: IdManager.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

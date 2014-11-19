@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/BeginDeliveryActionListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/BeginDeliveryActionListener.java $
  * $Id: BeginDeliveryActionListener.java 307020 2014-03-12 00:02:31Z ktsao@stanford.edu $
  ***********************************************************************************
  *

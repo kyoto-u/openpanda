@@ -1,6 +1,6 @@
 /**
  * $Id: EntityHandlerImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/rest/src/java/org/sakaiproject/entitybroker/rest/EntityHandlerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/rest/src/java/org/sakaiproject/entitybroker/rest/EntityHandlerImpl.java $
  * EntityHandler.java - entity-broker - Apr 6, 2008 9:03:03 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation

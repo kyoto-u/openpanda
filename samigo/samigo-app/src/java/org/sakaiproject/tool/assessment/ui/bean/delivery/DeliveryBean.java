@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/DeliveryBean.java $
- * $Id: DeliveryBean.java 307020 2014-03-12 00:02:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/DeliveryBean.java $
+ * $Id: DeliveryBean.java 313928 2014-09-27 04:07:36Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -104,7 +104,7 @@ import uk.org.ponder.rsf.state.support.TMLFixer;
  *
  * @author casong
  * @author esmiley@stanford.edu added agentState
- * $Id: DeliveryBean.java 307020 2014-03-12 00:02:31Z ktsao@stanford.edu $
+ * $Id: DeliveryBean.java 313928 2014-09-27 04:07:36Z enietzel@anisakai.com $
  *
  * Used to be org.navigoproject.ui.web.asi.delivery.XmlDeliveryForm.java
  */
@@ -990,9 +990,17 @@ public class DeliveryBean
         sb.append("         - Assessment Title       : ").append(publishedAssessment.getTitle()).append("\n");
         sb.append("         - Assessment Site ID     : ").append(publishedAssessment.getOwnerSiteId());
         BeginDeliveryActionListener listener = new BeginDeliveryActionListener();
+        //settings variable may be populated by populateBeanFromPub
         listener.populateBeanFromPub(this, publishedAssessment);
       }
       log.warn(sb.toString());
+    }
+
+    //If the settings is still null, need to return something
+    if (settings == null) { 
+      log.warn("SAM-2410 - Delivery settings bean is still null, returning an empty bean");
+      SettingsDeliveryBean tempSettings = new SettingsDeliveryBean();
+      return tempSettings;
     }
 	
     return settings;

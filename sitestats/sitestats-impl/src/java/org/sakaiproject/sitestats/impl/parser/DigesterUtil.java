@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.1/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/parser/DigesterUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.2/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/parser/DigesterUtil.java $
  * $Id: DigesterUtil.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

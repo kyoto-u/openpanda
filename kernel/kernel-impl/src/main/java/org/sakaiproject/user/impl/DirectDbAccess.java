@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/user/impl/DirectDbAccess.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/user/impl/DirectDbAccess.java $
  * $Id: DirectDbAccess.java 106293 2012-03-27 13:32:29Z aaronz@vt.edu $
  ***********************************************************************************
  *

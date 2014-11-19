@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.1/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.2/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
  * $Id: AssignmentSubmission.java 133971 2014-01-31 16:53:55Z holladay@longsight.com $
  ***********************************************************************************
  *

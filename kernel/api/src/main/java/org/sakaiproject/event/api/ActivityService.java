@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/event/api/ActivityService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/event/api/ActivityService.java $
  * $Id: ActivityService.java 121849 2013-03-27 19:00:36Z azeckoski@unicon.net $
  ***********************************************************************************
  *

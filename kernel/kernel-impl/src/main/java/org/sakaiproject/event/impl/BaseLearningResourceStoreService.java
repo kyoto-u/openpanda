@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseLearningResourceStoreService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/event/impl/BaseLearningResourceStoreService.java $
  * $Id: BaseLearningResourceStoreService.java 124829 2013-05-22 12:55:35Z azeckoski@unicon.net $
  ***********************************************************************************
  *

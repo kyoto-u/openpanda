@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.1/content-tool/tool/src/java/org/sakaiproject/content/tool/ListItem.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.2/content-tool/tool/src/java/org/sakaiproject/content/tool/ListItem.java $
  * $Id: ListItem.java 308182 2014-04-14 18:35:16Z enietzel@anisakai.com $
  ***********************************************************************************
  *

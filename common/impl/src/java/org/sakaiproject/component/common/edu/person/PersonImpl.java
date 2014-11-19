@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/impl/src/java/org/sakaiproject/component/common/edu/person/PersonImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.2/impl/src/java/org/sakaiproject/component/common/edu/person/PersonImpl.java $
  * $Id: PersonImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

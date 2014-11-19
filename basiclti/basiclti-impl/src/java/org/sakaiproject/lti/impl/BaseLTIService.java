@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.1/basiclti-impl/src/java/org/sakaiproject/lti/impl/BaseLTIService.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.2/basiclti-impl/src/java/org/sakaiproject/lti/impl/BaseLTIService.java $
  * $Id: BaseLTIService.java 131688 2013-11-17 02:14:16Z csev@umich.edu $
  ***********************************************************************************
  *

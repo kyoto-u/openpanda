@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/SubscribeBean.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/SubscribeBean.java $
  * $Id: SubscribeBean.java 133363 2014-01-17 11:31:13Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *

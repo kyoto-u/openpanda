@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/log/impl/Log4jConfigurationManager.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/log/impl/Log4jConfigurationManager.java $
  * $Id: Log4jConfigurationManager.java 123029 2013-04-19 12:20:44Z azeckoski@unicon.net $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/i18n/InternationalizedMessages.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/i18n/InternationalizedMessages.java $
  * $Id: InternationalizedMessages.java 105821 2012-03-15 17:45:26Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

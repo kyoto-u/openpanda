@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
- * $Id: SavePublishedSettingsListener.java 133525 2014-01-22 00:26:29Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
+ * $Id: SavePublishedSettingsListener.java 313730 2014-09-18 23:21:44Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -84,7 +84,7 @@ import org.sakaiproject.tool.assessment.ui.bean.author.PublishRepublishNotificat
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: SavePublishedSettingsListener.java 133525 2014-01-22 00:26:29Z ktsao@stanford.edu $
+ * @version $Id: SavePublishedSettingsListener.java 313730 2014-09-18 23:21:44Z enietzel@anisakai.com $
  */
 
 public class SavePublishedSettingsListener
@@ -182,7 +182,9 @@ implements ActionListener
 	    	newTitle = assessment.getTitle();
 	    // getTitleDecoration() returns "" if null or NONE module is passed
 	    titleDecoration = secureDeliveryService.getTitleDecoration( assessmentSettings.getSecureDeliveryModule(), new ResourceLoader().getLocale() );
-	    newTitle = newTitle + " " + titleDecoration;
+	    if (titleDecoration != null && !titleDecoration.trim().equals("")) {
+	    	newTitle = newTitle + " " + titleDecoration;
+	    }
 	    assessment.setTitle( newTitle );
 	    assessment.updateAssessmentMetaData(SecureDeliveryServiceAPI.TITLE_DECORATION, titleDecoration );
 	    

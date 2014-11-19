@@ -1,5 +1,5 @@
 <!--
-* $Id: subpoolsTreeTable.jsp 84154 2010-11-02 21:05:12Z lydial@stanford.edu $
+* $Id: subpoolsTreeTable.jsp 313732 2014-09-18 23:27:36Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -70,7 +70,7 @@
 
 <!-- Add SubPools -->
 <h:commandLink title="#{questionPoolMessages.t_addSubpool}" rendered="#{questionpool.importToAuthoring != 'true' && pool.ownerId==questionpool.agentId}"  id="addlink" immediate="true" action="#{questionpool.addPool}">	
-  <h:outputText id="add" value="#{questionPoolMessages.add}"/>
+  <h:outputText id="add" value="#{questionPoolMessages.t_addSubpool}"/>
   <f:param name="qpid" value="#{pool.questionPoolId}"/>
 </h:commandLink>
 

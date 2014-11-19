@@ -1,5 +1,5 @@
 /*****************************************************************************
- * $URL: https://source.sakaiproject.org/svn/config/tags/sakai-10.1/localization/bundles/src/java/org/sakaiproject/localization/util/TypeProperties.java $
+ * $URL: https://source.sakaiproject.org/svn/config/tags/sakai-10.2/localization/bundles/src/java/org/sakaiproject/localization/util/TypeProperties.java $
  * $Id: TypeProperties.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  *****************************************************************************
  *

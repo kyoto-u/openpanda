@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.1/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/entity/UserPrefsEntityProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.2/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/entity/UserPrefsEntityProvider.java $
  * $Id: UserPrefsEntityProvider.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**
  * $Id: EntityUser.java 130611 2013-10-18 14:17:53Z azeckoski@unicon.net $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/EntityUser.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/core-providers/src/java/org/sakaiproject/entitybroker/providers/model/EntityUser.java $
  * EntityUser.java - entity-broker - Jun 28, 2008 5:24:57 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

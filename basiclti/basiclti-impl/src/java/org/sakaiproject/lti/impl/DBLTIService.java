@@ -1,6 +1,6 @@
 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.1/basiclti-impl/src/java/org/sakaiproject/lti/impl/DBLTIService.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.2/basiclti-impl/src/java/org/sakaiproject/lti/impl/DBLTIService.java $
  * $Id: DBLTIService.java 132636 2013-12-16 18:51:41Z csev@umich.edu $
  ***********************************************************************************
  *

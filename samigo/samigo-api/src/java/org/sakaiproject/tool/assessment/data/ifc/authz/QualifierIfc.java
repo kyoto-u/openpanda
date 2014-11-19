@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/authz/QualifierIfc.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/authz/QualifierIfc.java $
  * $Id: QualifierIfc.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

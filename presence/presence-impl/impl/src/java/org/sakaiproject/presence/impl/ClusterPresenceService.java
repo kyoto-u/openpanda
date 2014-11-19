@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/tags/sakai-10.1/presence-impl/impl/src/java/org/sakaiproject/presence/impl/ClusterPresenceService.java $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/sakai-10.2/presence-impl/impl/src/java/org/sakaiproject/presence/impl/ClusterPresenceService.java $
  * $Id: ClusterPresenceService.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

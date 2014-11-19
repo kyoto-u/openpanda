@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-services/src/test/org/sakaiproject/tool/assessment/services/GradingServiceTest.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/test/org/sakaiproject/tool/assessment/services/GradingServiceTest.java $
  * $Id: GradingServiceTest.java 124673 2013-05-20 15:40:31Z azeckoski@unicon.net $
  ***********************************************************************************
  *

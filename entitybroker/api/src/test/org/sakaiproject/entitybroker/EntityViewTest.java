@@ -1,6 +1,6 @@
 /**
  * $Id: EntityViewTest.java 125663 2013-06-12 13:43:37Z azeckoski@unicon.net $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/api/src/test/org/sakaiproject/entitybroker/EntityViewTest.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/api/src/test/org/sakaiproject/entitybroker/EntityViewTest.java $
  * EntityViewTest.java - entity-broker - Apr 10, 2008 7:20:29 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

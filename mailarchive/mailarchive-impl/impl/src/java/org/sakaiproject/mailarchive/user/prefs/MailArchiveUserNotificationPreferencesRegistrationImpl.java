@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.1/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/user/prefs/MailArchiveUserNotificationPreferencesRegistrationImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.2/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/user/prefs/MailArchiveUserNotificationPreferencesRegistrationImpl.java $
  * $Id: MailArchiveUserNotificationPreferencesRegistrationImpl.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

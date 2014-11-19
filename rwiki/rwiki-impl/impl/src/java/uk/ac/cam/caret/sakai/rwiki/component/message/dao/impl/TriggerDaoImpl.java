@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/message/dao/impl/TriggerDaoImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/message/dao/impl/TriggerDaoImpl.java $
  * $Id: TriggerDaoImpl.java 11112 2006-06-23 15:35:35Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

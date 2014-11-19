@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/section/SectionHelper12Impl.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/section/SectionHelper12Impl.java $
  * $Id: SectionHelper12Impl.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

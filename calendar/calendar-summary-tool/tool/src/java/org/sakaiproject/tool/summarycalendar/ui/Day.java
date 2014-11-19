@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/Day.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/Day.java $
  * $Id: Day.java 109868 2012-06-28 18:25:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

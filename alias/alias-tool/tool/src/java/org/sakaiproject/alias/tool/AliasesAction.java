@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/alias/tags/sakai-10.1/alias-tool/tool/src/java/org/sakaiproject/alias/tool/AliasesAction.java $
+ * $URL: https://source.sakaiproject.org/svn/alias/tags/sakai-10.2/alias-tool/tool/src/java/org/sakaiproject/alias/tool/AliasesAction.java $
  * $Id: AliasesAction.java 307522 2014-03-26 22:47:32Z enietzel@anisakai.com $
  ***********************************************************************************
  *

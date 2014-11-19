@@ -4,14 +4,14 @@
   <parent>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
-    <version>10.1</version>
+    <version>10.2</version>
     <relativePath>../master/pom.xml</relativePath>
   </parent>
 
   <name>Sakai Alias Project</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>alias-base</artifactId>
-  <version>10.1</version>
+  <version>10.2</version>
   <packaging>pom</packaging>
 
   <scm>

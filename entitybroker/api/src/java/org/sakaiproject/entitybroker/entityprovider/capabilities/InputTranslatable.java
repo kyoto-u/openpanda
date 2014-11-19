@@ -1,6 +1,6 @@
 /**
  * $Id: InputTranslatable.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/InputTranslatable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/InputTranslatable.java $
  * InputTranslatable.java - entity-broker - Apr 12, 2008 2:03:28 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

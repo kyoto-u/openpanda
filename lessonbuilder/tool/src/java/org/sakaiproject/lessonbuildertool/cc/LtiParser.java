@@ -21,7 +21,7 @@ package org.sakaiproject.lessonbuildertool.cc;
  */
 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/lessonbuilder/tags/sakai-10.1/tool/src/java/org/sakaiproject/lessonbuildertool/cc/LtiParser.java $
+ * $URL: https://source.sakaiproject.org/svn/lessonbuilder/tags/sakai-10.2/tool/src/java/org/sakaiproject/lessonbuildertool/cc/LtiParser.java $
  * $Id: LtiParser.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  **********************************************************************************
  *

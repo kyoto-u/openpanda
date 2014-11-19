@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/BasePortalHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/BasePortalHandler.java $
  * $Id: BasePortalHandler.java 307518 2014-03-26 22:33:18Z enietzel@anisakai.com $
  ***********************************************************************************
  *

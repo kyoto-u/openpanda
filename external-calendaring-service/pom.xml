@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>10.1</version>
+        <version>10.2</version>
         <relativePath>../master/pom.xml</relativePath>
     </parent>
 	
@@ -13,7 +13,7 @@
 	<groupId>org.sakaiproject.calendaring</groupId>
 	<artifactId>external-calendaring-service</artifactId>
 	<packaging>pom</packaging>
-	<version>10.1</version>
+	<version>10.2</version>
 	
 	<developers>
 		<developer>

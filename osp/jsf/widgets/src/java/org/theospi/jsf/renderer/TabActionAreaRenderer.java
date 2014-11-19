@@ -1,6 +1,6 @@
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/jsf/widgets/src/java/org/theospi/jsf/renderer/TabActionAreaRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/jsf/widgets/src/java/org/theospi/jsf/renderer/TabActionAreaRenderer.java $
 * $Id: TabActionAreaRenderer.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

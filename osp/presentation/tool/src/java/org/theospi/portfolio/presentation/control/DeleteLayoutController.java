@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/presentation/tool/src/java/org/theospi/portfolio/presentation/control/DeleteLayoutController.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/presentation/tool/src/java/org/theospi/portfolio/presentation/control/DeleteLayoutController.java $
 * $Id: DeleteLayoutController.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

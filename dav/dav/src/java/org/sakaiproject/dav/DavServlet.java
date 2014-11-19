@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.1/dav/src/java/org/sakaiproject/dav/DavServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.2/dav/src/java/org/sakaiproject/dav/DavServlet.java $
  * $Id: DavServlet.java 311259 2014-07-29 20:34:59Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

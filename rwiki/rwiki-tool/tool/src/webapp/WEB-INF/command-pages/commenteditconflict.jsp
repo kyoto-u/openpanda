@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/commenteditconflict.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/commenteditconflict.jsp $
  * $Id: commenteditconflict.jsp 34273 2007-08-22 21:54:54Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

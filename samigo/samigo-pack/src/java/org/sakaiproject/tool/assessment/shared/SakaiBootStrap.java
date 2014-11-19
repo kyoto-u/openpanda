@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-pack/src/java/org/sakaiproject/tool/assessment/shared/SakaiBootStrap.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-pack/src/java/org/sakaiproject/tool/assessment/shared/SakaiBootStrap.java $
  * $Id: SakaiBootStrap.java 113495 2012-09-24 23:16:45Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

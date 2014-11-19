@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.1/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/SiteEmailNotificationAnnc.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.2/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/SiteEmailNotificationAnnc.java $
  * $Id: SiteEmailNotificationAnnc.java 311919 2014-08-13 12:26:20Z holladay@longsight.com $
  ***********************************************************************************
  *

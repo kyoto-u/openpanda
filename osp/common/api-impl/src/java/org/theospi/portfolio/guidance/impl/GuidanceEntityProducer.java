@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/common/api-impl/src/java/org/theospi/portfolio/guidance/impl/GuidanceEntityProducer.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/common/api-impl/src/java/org/theospi/portfolio/guidance/impl/GuidanceEntityProducer.java $
 * $Id: GuidanceEntityProducer.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

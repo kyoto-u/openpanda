@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.1/search-api/api/src/java/org/sakaiproject/search/api/PortalUrlEnabledProducer.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.2/search-api/api/src/java/org/sakaiproject/search/api/PortalUrlEnabledProducer.java $
  * $Id: PortalUrlEnabledProducer.java 111677 2012-08-21 12:57:30Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

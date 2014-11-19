@@ -4,14 +4,14 @@
   <parent>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
-    <version>10.1</version>
+    <version>10.2</version>
     <relativePath>../master/pom.xml</relativePath>
   </parent>
 
   <groupId>org.sakaiproject.mailsender</groupId>
   <artifactId>mailsender</artifactId>
   <name>Sakai Mail Sender Project</name>
-  <version>10.1</version><!-- ProjectVersion -->
+  <version>10.2</version><!-- ProjectVersion -->
   <description>Mail Sender base pom.</description>
   <organization>
     <name>Sakai Project</name>

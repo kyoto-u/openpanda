@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: editPool.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+<!-- $Id: editPool.jsp 313732 2014-09-18 23:27:36Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -132,7 +132,7 @@ function textCounter(field, maxlimit) {
 <h:outputText rendered="#{questionpool.currentPool.numberOfSubpools == 0}" value=" #{questionPoolMessages.subps}"/>
 </h:panelGroup>
 <h:commandLink title="#{questionPoolMessages.t_addSubpool}" rendered="#{questionpool.importToAuthoring != 'true' && questionpool.owner==questionpool.currentPool.owner}" id="addlink" immediate="true" action="#{questionpool.addPool}">
-  <h:outputText  id="add" value="#{questionPoolMessages.add}"/>
+  <h:outputText  id="add" value="#{questionPoolMessages.t_addSubpool}"/>
   <f:param name="qpid" value="#{questionpool.currentPool.id}"/>
   <f:param name="addsource" value="editpool"/>
 </h:commandLink>
@@ -160,7 +160,7 @@ function textCounter(field, maxlimit) {
 <h:outputText rendered="#{questionpool.currentPool.numberOfQuestions ==0}" value=" #{questionPoolMessages.qs}"/>
 </h:panelGroup>
 <h:commandLink title="#{questionPoolMessages.t_addQuestion}" rendered="#{questionpool.importToAuthoring != 'true'}" id="addQlink" immediate="true" action="#{questionpool.selectQuestionType}">
-  <h:outputText id="addq" value="#{questionPoolMessages.add}"/>
+  <h:outputText id="addq" value="#{questionPoolMessages.t_addQuestion}"/>
   <f:param name="poolId" value="#{questionpool.currentPool.id}"/>
 </h:commandLink>
 </h:panelGrid>

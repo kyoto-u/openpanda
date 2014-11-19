@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/authz/cover/AuthzGroupService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/authz/cover/AuthzGroupService.java $
  * $Id: AuthzGroupService.java 112409 2012-09-13 14:11:16Z azeckoski@unicon.net $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/DbCalendarService.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/DbCalendarService.java $
  * $Id: DbCalendarService.java 120528 2013-02-28 16:34:37Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *

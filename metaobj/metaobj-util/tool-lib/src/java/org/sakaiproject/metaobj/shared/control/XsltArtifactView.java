@@ -1,5 +1,5 @@
 /*******************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.1/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/XsltArtifactView.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.2/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/XsltArtifactView.java $
  * $Id: XsltArtifactView.java 123167 2013-04-23 18:26:31Z chmaurer@iupui.edu $
  * **********************************************************************************
  *
