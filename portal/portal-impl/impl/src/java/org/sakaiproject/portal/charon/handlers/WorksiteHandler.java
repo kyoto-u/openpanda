@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/WorksiteHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/WorksiteHandler.java $
  * $Id: WorksiteHandler.java 132923 2013-12-26 21:35:50Z csev@umich.edu $
  ***********************************************************************************
  *

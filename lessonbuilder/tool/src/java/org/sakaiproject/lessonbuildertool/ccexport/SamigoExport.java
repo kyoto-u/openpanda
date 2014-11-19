@@ -188,20 +188,22 @@ public class SamigoExport {
 
     // are there any items in a pool?
 
-    public boolean havePoolItems() {
+    public List<Long> getAllPools() {
 
 	List<QuestionPoolDataIfc>pools = questionPoolFacadeQueries.getBasicInfoOfAllPools(UserDirectoryService.getCurrentUser().getId());
 
+	List<Long> ret = new ArrayList<Long>();
+
 	if (pools != null && pools.size() > 0) {
-	    int poolno = 1;
 	    for (QuestionPoolDataIfc pool: pools) {
 		List<ItemDataIfc> itemList = questionPoolFacadeQueries.getAllItems(pool.getQuestionPoolId());
 		if (itemList != null && itemList.size() > 0)
-		    return true;
+		    ret.add(pool.getQuestionPoolId());
 	    }
 	}
 
-	return false;
+	return ret;
+
     }
 
     public boolean outputEntity(String samigoId, ZipPrintStream out, PrintStream errStream, CCExport ccExport, CCExport.Resource resource, int version) {
@@ -226,6 +228,10 @@ public class SamigoExport {
 	    out.println("<questestinterop xmlns=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2\"");
 	    out.println("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/profile/cc/ccv1p1/ccv1p1_qtiasiv1p2p1_v1p0.xsd\">");
 	    break;
+	case CCExport.V13:
+	    out.println("<questestinterop xmlns=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2\"");
+	    out.println("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/profile/cc/ccv1p3/ccv1p3_qtiasiv1p2p1_v1p0.xsd\">");
+	    break;
 	default:
 	    out.println("<questestinterop xmlns=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2\"");
 	    out.println("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/profile/cc/ccv1p2/ccv1p2_qtiasiv1p2p1_v1p0.xsd\">");
@@ -243,7 +249,7 @@ public class SamigoExport {
 	return true;
    }
 
-    public boolean outputBank(ZipPrintStream out, PrintStream errStream, CCExport ccExport, CCExport.Resource resource, int version) {
+    public boolean outputBank(Long poolId, ZipPrintStream out, PrintStream errStream, CCExport ccExport, CCExport.Resource resource, int version) {
 
 	out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
 
@@ -252,6 +258,10 @@ public class SamigoExport {
 	    out.println("<questestinterop xmlns=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2\"");
 	    out.println("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/profile/cc/ccv1p1/ccv1p1_qtiasiv1p2p1_v1p0.xsd\">");
 	    break;
+	case CCExport.V13:
+	    out.println("<questestinterop xmlns=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2\"");
+	    out.println("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/profile/cc/ccv1p3/ccv1p3_qtiasiv1p2p1_v1p0.xsd\">");
+	    break;
 	default:
 	    out.println("<questestinterop xmlns=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2\"");
 	    out.println("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/profile/cc/ccv1p2/ccv1p2_qtiasiv1p2p1_v1p0.xsd\">");
@@ -259,14 +269,27 @@ public class SamigoExport {
 
 	out.println("  <objectbank ident=\"QDB_1\">");
 
-	List<QuestionPoolDataIfc>pools = questionPoolFacadeQueries.getBasicInfoOfAllPools(UserDirectoryService.getCurrentUser().getId());
-
-	if (pools != null && pools.size() > 0) {
-	    int poolno = 1;
-	    for (QuestionPoolDataIfc pool: pools) {
-		List<ItemDataIfc> itemList = questionPoolFacadeQueries.getAllItems(pool.getQuestionPoolId());
+	if (version >= CCExport.V13) {
+	    // 1.3 or later, specific pool
+	    QuestionPoolFacade pool = questionPoolFacadeQueries.getPoolById(poolId);
+	    if (pool != null) {
+		List<ItemDataIfc> itemList = questionPoolFacadeQueries.getAllItems(poolId);
 		if (itemList != null && itemList.size() > 0)
-		    outputQuestions(itemList, ("pool" + (poolno++)), pool.getTitle(), out, errStream, ccExport, resource, version);
+		    outputQuestions(itemList, "pool" + poolId, pool.getTitle(), out, errStream, ccExport, resource, version);
+	    }
+	} else {
+	    // older. all pools at once
+	    List<QuestionPoolDataIfc>pools = questionPoolFacadeQueries.getBasicInfoOfAllPools(UserDirectoryService.getCurrentUser().getId());
+
+	    System.out.println("pools " + pools.size());
+
+	    if (pools != null && pools.size() > 0) {
+		int poolno = 1;
+		for (QuestionPoolDataIfc pool: pools) {
+		    List<ItemDataIfc> itemList = questionPoolFacadeQueries.getAllItems(pool.getQuestionPoolId());
+		    if (itemList != null && itemList.size() > 0)
+			outputQuestions(itemList, ("pool" + (poolno++)), pool.getTitle(), out, errStream, ccExport, resource, version);
+		}
 	    }
 	}
 

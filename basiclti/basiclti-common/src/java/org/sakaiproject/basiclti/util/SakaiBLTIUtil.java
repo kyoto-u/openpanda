@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.1/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
  * $Id: SakaiBLTIUtil.java 309356 2014-05-08 21:13:08Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

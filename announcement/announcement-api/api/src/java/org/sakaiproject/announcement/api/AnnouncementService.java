@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.0/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementService.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.1/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementService.java $
  * $Id: AnnouncementService.java 127568 2013-07-23 12:01:49Z azeckoski@unicon.net $
  ***********************************************************************************
  *

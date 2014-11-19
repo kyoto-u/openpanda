@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.0/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusShowAreaRender.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.1/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusShowAreaRender.java $
  * $Id: SyllabusShowAreaRender.java 108741 2012-05-30 17:36:09Z matthew@longsight.com $
  ***********************************************************************************
  *

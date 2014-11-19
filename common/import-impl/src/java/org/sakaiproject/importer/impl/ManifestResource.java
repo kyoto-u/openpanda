@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-impl/src/java/org/sakaiproject/importer/impl/ManifestResource.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/import-impl/src/java/org/sakaiproject/importer/impl/ManifestResource.java $
  * $Id: ManifestResource.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

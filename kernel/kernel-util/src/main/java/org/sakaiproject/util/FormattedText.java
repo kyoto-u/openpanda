@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
- * $Id: FormattedText.java 133761 2014-01-28 19:12:38Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
+ * $Id: FormattedText.java 311304 2014-07-30 18:23:13Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -173,6 +173,13 @@ public class FormattedText {
      */
     public static String sanitizeHrefURL(String urlToSanitize) {
         return getFormattedText().sanitizeHrefURL(urlToSanitize);
+    }
+
+    /**
+     * @see org.sakaiproject.util.api.FormattedText#stripHtmlFromText(String,boolean)
+     */
+    public static String stripHtmlFromText(String text, boolean smartSpacing) {
+        return getFormattedText().stripHtmlFromText(text, smartSpacing);
     }
 
 }

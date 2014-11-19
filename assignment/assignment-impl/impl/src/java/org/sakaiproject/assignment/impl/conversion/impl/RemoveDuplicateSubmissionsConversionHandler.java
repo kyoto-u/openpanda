@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/RemoveDuplicateSubmissionsConversionHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.1/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/RemoveDuplicateSubmissionsConversionHandler.java $
  * $Id: RemoveDuplicateSubmissionsConversionHandler.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

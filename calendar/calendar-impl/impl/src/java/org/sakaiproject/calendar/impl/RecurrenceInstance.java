@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/RecurrenceInstance.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/RecurrenceInstance.java $
  * $Id: RecurrenceInstance.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

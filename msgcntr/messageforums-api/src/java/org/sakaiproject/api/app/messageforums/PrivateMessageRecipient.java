@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.0/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/PrivateMessageRecipient.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.1/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/PrivateMessageRecipient.java $
  * $Id: PrivateMessageRecipient.java 130099 2013-10-02 13:01:07Z holladay@longsight.com $
  ***********************************************************************************
  *

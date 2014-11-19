@@ -1,6 +1,6 @@
 /**
  * $Id: CheckValidations.java 106391 2012-03-30 07:45:31Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.0/account-validator-impl/src/java/org/sakaiproject/accountvalidator/impl/jobs/CheckValidations.java $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.1/account-validator-impl/src/java/org/sakaiproject/accountvalidator/impl/jobs/CheckValidations.java $
  *
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

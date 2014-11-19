@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.sakaiproject.shortenedurl</groupId>
 		<artifactId>shortenedurl</artifactId>
-		<version>10.0</version>
+		<version>10.1</version>
 	</parent>
 
    	<dependencies>

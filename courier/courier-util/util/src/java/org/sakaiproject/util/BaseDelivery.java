@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.0/courier-util/util/src/java/org/sakaiproject/util/BaseDelivery.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.1/courier-util/util/src/java/org/sakaiproject/util/BaseDelivery.java $
  * $Id: BaseDelivery.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

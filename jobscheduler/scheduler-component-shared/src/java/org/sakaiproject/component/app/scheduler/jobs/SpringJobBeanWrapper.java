@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jobscheduler/tags/sakai-10.0/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/SpringJobBeanWrapper.java $
+* $URL: https://source.sakaiproject.org/svn/jobscheduler/tags/sakai-10.1/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/SpringJobBeanWrapper.java $
 * $Id: SpringJobBeanWrapper.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

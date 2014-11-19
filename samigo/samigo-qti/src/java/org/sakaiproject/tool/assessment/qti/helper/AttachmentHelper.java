@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/AttachmentHelper.java $
- * $Id: AttachmentHelper.java 110817 2012-07-26 20:19:30Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/AttachmentHelper.java $
+ * $Id: AttachmentHelper.java 311096 2014-07-24 00:19:08Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import org.apache.commons.logging.Log;
@@ -59,8 +60,13 @@ public class AttachmentHelper {
 		int count = 0;
 			
 		try {
-			fullFilePath = URLDecoder.decode(fullFilePath, "UTF-8");
-			filename = URLDecoder.decode(filename, "UTF-8");
+			try{
+				fullFilePath = URLDecoder.decode(fullFilePath, "UTF-8");
+				filename = URLDecoder.decode(filename, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				log.error(e.getMessage());
+				e.printStackTrace();
+			}
 			
 			if (mimeType.equalsIgnoreCase("text/url")) {
 				content = filename.getBytes();

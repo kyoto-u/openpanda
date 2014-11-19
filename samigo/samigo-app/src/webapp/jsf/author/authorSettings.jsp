@@ -8,7 +8,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: authorSettings.jsp 308359 2014-04-18 22:13:40Z ktsao@stanford.edu $
+* $Id: authorSettings.jsp 311095 2014-07-24 00:17:13Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -62,6 +62,7 @@
           lockdownAnonyGrading(releaseToVal);
           lockdownGradebook(releaseToVal);
           showHideReleaseGroups();
+          checkUncheckTimeBox();
         });
       </script>
 
@@ -222,11 +223,11 @@
       <h:panelGroup rendered="#{assessmentSettings.valueMap.timedAssessment_isInstructorEditable==true}" >
         <h:outputText value="#{assessmentSettingsMessages.has_time_limit} " />
         <h:selectBooleanCheckbox id="selTimeAssess" onclick="checkUncheckTimeBox();setBlockDivs();" value="#{assessmentSettings.valueMap.hasTimeAssessment}" />
-        <h:selectOneMenu id="timedHours" value="#{assessmentSettings.timedHours}" disabled="#{!assessmentSettings.valueMap.hasTimeAssessment}" >
+        <h:selectOneMenu id="timedHours" value="#{assessmentSettings.timedHours}" >
           <f:selectItems value="#{assessmentSettings.hours}" />
         </h:selectOneMenu>
         <h:outputText value="#{assessmentSettingsMessages.timed_hours} " />
-        <h:selectOneMenu id="timedMinutes" value="#{assessmentSettings.timedMinutes}" disabled="#{!assessmentSettings.valueMap.hasTimeAssessment}">
+        <h:selectOneMenu id="timedMinutes" value="#{assessmentSettings.timedMinutes}" >
           <f:selectItems value="#{assessmentSettings.mins}" />
         </h:selectOneMenu>
         <h:outputText value="#{assessmentSettingsMessages.timed_minutes} " />

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/XLoginHandler.java $
- * $Id: XLoginHandler.java 111881 2012-08-27 23:11:05Z matthew@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/XLoginHandler.java $
+ * $Id: XLoginHandler.java 311424 2014-07-31 02:04:31Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -31,7 +31,7 @@ import org.sakaiproject.tool.api.Session;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 111881 $
+ * @version $Rev: 311424 $
  * 
  */
 public class XLoginHandler extends BasePortalHandler
@@ -58,7 +58,7 @@ public class XLoginHandler extends BasePortalHandler
 		{
 			try
 			{
-				portal.doLogin(req, res, session, "", true);
+				portal.doLogin(req, res, session, null, true);
 				return END;
 			}
 			catch (Exception ex)

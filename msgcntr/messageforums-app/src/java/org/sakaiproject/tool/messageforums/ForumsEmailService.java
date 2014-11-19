@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.0/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.1/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
  * $Id: ForumsEmailService.java 118276 2013-01-11 11:43:42Z darolmar@upvnet.upv.es $
  ***********************************************************************************
  *

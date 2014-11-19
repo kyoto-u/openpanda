@@ -4,14 +4,14 @@
     <parent>
       <groupId>org.sakaiproject</groupId>
       <artifactId>master</artifactId>
-      <version>10.0</version>
+      <version>10.1</version>
       <relativePath>../master/pom.xml</relativePath>
     </parent>
 
   <name>Sakai Help Project</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>help-base</artifactId>
-  <version>10.0</version>
+  <version>10.1</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -22,6 +22,30 @@
     <module>help-tool</module>
   </modules>
 
+  <dependencyManagement>
+      <dependencies>
+          <dependency>
+              <groupId>org.apache.lucene</groupId>
+              <artifactId>lucene-core</artifactId>
+              <version>${sakai.lucene.version}</version>
+          </dependency>
+          <dependency>
+              <groupId>org.apache.lucene</groupId>
+              <artifactId>lucene-queries</artifactId>
+              <version>${sakai.lucene.version}</version>
+          </dependency>
+          <dependency>
+              <groupId>org.apache.lucene</groupId>
+              <artifactId>lucene-queryparser</artifactId>
+              <version>${sakai.lucene.version}</version>
+          </dependency>
+          <dependency>
+              <groupId>org.apache.lucene</groupId>
+              <artifactId>lucene-analyzers-common</artifactId>
+              <version>${sakai.lucene.version}</version>
+          </dependency>
+      </dependencies>
+  </dependencyManagement>
   <scm>
     <connection>scm:svn:https://source.sakaiproject.org/svn/help/trunk</connection>
     <developerConnection>scm:svn:https://source.sakaiproject.org/svn/help/trunk</developerConnection>

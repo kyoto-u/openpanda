@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/component-manager/src/main/java/org/sakaiproject/component/locales/SakaiLocales.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/component-manager/src/main/java/org/sakaiproject/component/locales/SakaiLocales.java $
  * $Id: SakaiLocales.java 130655 2013-10-21 10:36:50Z azeckoski@unicon.net $
  ***********************************************************************************
  *

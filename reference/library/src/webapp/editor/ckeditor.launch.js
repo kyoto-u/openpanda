@@ -19,6 +19,17 @@
  *
  ******************************************************************************/
 
+//http://www.quirksmode.org/js/findpos.html
+function findPos(obj) {
+    var curleft = curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+        return [curleft,curtop];
+    }
+}
 var sakai = sakai || {};
 sakai.editor = sakai.editor || {};
 sakai.editor.editors = sakai.editor.editors || {};
@@ -168,9 +179,13 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 			  You have to actually setup a server or get an API key
 			  Hopefully this will get easier to configure soon.
 			 */
-			 //CKEDITOR.plugins.addExternal('atd-ckeditor',basePath+'atd-ckeditor/', 'plugin.js'); 
-			 //ckconfig.atd_rpc='/proxy/atd';
-			 //ckconfig.extraPlugins+="movieplayer,wordcount,atd-ckeditor,stylesheetparser";
+			 CKEDITOR.plugins.addExternal('atd-ckeditor',basePath+'atd-ckeditor/', 'plugin.js'); 
+			 /*
+			 Replace this with your own server if you download it from http://openatd.wordpress.com/
+			 Or you can proxy to the public one, see the page for more information.
+			 */
+			 //ckconfig.atd_rpc='//localhost/proxy/spellcheck';
+			 //ckconfig.extraPlugins+="atd-ckeditor,";
 			 //ckconfig.contentsCss = basePath+'/atd-ckeditor/atd.css';
 
 			 ckconfig.extraPlugins+="audiorecorder,movieplayer,wordcount,fmath_formula";
@@ -181,10 +196,31 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
       CKEDITOR.on('dialogDefinition', function(e) {
           var dialogName = e.data.name;
           var dialogDefinition = e.data.definition;
-          dialogDefinition.dialog.parts.dialog.setStyles(
-              {
-                  position : 'absolute'
-              });
+
+          var onShow = dialogDefinition.onShow;
+          dialogDefinition.onShow = function() {
+              var pos = findPos(e.editor.container.$);
+              this.move(this.getPosition().x, pos[1]);
+              if (typeof onShow !== 'undefined' && typeof onShow.call === 'function') {
+                  var result = onShow.call(this);
+                  return result;
+              }
+          }
+
+          if ( dialogName == 'link' )
+          {
+              var targetTab = dialogDefinition.getContents('target');
+              var linkTypeItems = targetTab.elements[0].children[0].items;
+              var itemsNoPopup = [];
+              for (i=0;i<linkTypeItems.length;i++) {
+                  if (linkTypeItems[i][1] != "popup") {
+                      itemsNoPopup.push(linkTypeItems[i]);
+                  }
+              }
+              targetTab.elements[0].children[0].items = itemsNoPopup;
+
+          }
+
       });
 }
 

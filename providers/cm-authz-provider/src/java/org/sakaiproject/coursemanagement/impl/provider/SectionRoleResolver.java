@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/SectionRoleResolver.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.1/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/SectionRoleResolver.java $
  * $Id: SectionRoleResolver.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

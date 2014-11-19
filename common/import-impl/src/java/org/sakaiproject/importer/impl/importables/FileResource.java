@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-impl/src/java/org/sakaiproject/importer/impl/importables/FileResource.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/import-impl/src/java/org/sakaiproject/importer/impl/importables/FileResource.java $
  * $Id: FileResource.java 106351 2012-03-28 20:21:21Z matthew@longsight.com $
  ***********************************************************************************
  *

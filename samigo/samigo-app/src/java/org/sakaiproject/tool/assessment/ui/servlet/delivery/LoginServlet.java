@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/LoginServlet.java $
- * $Id: LoginServlet.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/LoginServlet.java $
+ * $Id: LoginServlet.java 311789 2014-08-11 13:40:14Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -28,8 +28,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
+import javax.faces.component.UICommand;
+import javax.faces.component.UIComponent;
+import javax.faces.event.ActionEvent;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -61,7 +62,7 @@ import org.sakaiproject.user.cover.UserDirectoryService;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: LoginServlet.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * @version $Id: LoginServlet.java 311789 2014-08-11 13:40:14Z enietzel@anisakai.com $
  */
 
 public class LoginServlet
@@ -137,6 +138,9 @@ public class LoginServlet
     delivery.setAssessmentTitle(pub.getTitle());
     delivery.setPublishedAssessment(pub);
 
+    BeginDeliveryActionListener listener = new BeginDeliveryActionListener();
+    listener.populateBeanFromPub(delivery, pub);
+
     RequestDispatcher dispatcher = null;
     String path = "/jsf/delivery/invalidAssessment.faces";
     boolean relativePath = true;
@@ -184,7 +188,6 @@ public class LoginServlet
         // Assessment is available for taking
         else if ("safeToProceed".equals(nextAction)){
           // if assessment is available, set it in delivery bean for display in deliverAssessment.jsp
-          BeginDeliveryActionListener listener = new BeginDeliveryActionListener();
           listener.processAction(null);
           path = "/jsf/delivery/beginTakingAssessment_viaurl.faces";
         }
@@ -241,7 +244,11 @@ public class LoginServlet
         }
         else {
           DeliveryActionListener deliveryListener = new DeliveryActionListener();
-          deliveryListener.processAction(null);
+          //This has to be setup if it's coming from direct otherwise it doesn't start right
+          UIComponent uic = new UICommand();
+          uic.setId("beginAssessment");
+          ActionEvent ae = new ActionEvent(uic);
+          deliveryListener.processAction(ae);
         }
         
         //TODO: Should be something a bit more robust as validate() can retun a lot of things...

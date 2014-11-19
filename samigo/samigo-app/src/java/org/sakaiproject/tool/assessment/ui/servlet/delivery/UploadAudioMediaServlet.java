@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/UploadAudioMediaServlet.java $
- * $Id: UploadAudioMediaServlet.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/UploadAudioMediaServlet.java $
+ * $Id: UploadAudioMediaServlet.java 311273 2014-07-29 20:48:01Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008, 2009 The Sakai Foundation
@@ -58,7 +58,7 @@ import java.util.ArrayList;
  * This gets a posted input stream (from AudioRecorder.java in the client JVM)
  * and writes out to a file.</p>
  * @author Ed Smiley
- * @version $Id: UploadAudioMediaServlet.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
+ * @version $Id: UploadAudioMediaServlet.java 311273 2014-07-29 20:48:01Z ottenhoff@longsight.com $
  */
 
 public class UploadAudioMediaServlet extends HttpServlet
@@ -101,13 +101,20 @@ private static Log log = LogFactory.getLog(UploadAudioMediaServlet.class);
     // test for nonemptiness first
     if (mediaLocation != null && !(mediaLocation.trim()).equals(""))
     {
-      mediaLocation = repositoryPath+"/"+mediaLocation;
+      File repositoryPathDir = new File(repositoryPath);
+      mediaLocation = repositoryPathDir.getCanonicalPath() + "/" + mediaLocation;
       File mediaFile = new File(mediaLocation);
-      File mediaDir = mediaFile.getParentFile(); 
-      if (!mediaDir.exists())
-        mediaDir.mkdirs();
-      //log.debug("*** directory exist="+mediaDir.exists());
-      mediaIsValid=writeToFile(req, mediaLocation);
+      
+      if (mediaFile.getCanonicalPath().equals (mediaLocation)){
+    	  File mediaDir = mediaFile.getParentFile(); 
+          if (!mediaDir.exists())
+            mediaDir.mkdirs();
+          //log.debug("*** directory exist="+mediaDir.exists());
+          mediaIsValid=writeToFile(req, mediaLocation);  
+      }else{
+    	  log.debug ("****Error in file paths " + mediaFile.getCanonicalPath() + " is not equal to " + mediaLocation);
+    	  mediaIsValid=false;
+      }
 
       //this is progess for SAK-5792, comment is out for now
       //zip_mediaLocation = createZipFile(mediaDir.getPath(), mediaLocation);

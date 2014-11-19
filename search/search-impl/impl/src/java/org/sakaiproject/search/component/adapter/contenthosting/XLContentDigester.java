@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/XLContentDigester.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.1/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/XLContentDigester.java $
  * $Id: XLContentDigester.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

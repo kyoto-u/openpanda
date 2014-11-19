@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-util/src/main/java/org/sakaiproject/util/ResourceLoader.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-util/src/main/java/org/sakaiproject/util/ResourceLoader.java $
  * $Id: ResourceLoader.java 307313 2014-03-20 19:57:48Z enietzel@anisakai.com $
  ***********************************************************************************
  *

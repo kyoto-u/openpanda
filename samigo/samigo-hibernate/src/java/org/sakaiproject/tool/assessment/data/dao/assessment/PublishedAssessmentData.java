@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedAssessmentData.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedAssessmentData.java $
  * $Id: PublishedAssessmentData.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

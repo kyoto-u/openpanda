@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rights/tags/sakai-10.0/rights-impl/impl/src/java/org/sakaiproject/rights/impl/BasicRightsService.java $
+ * $URL: https://source.sakaiproject.org/svn/rights/tags/sakai-10.1/rights-impl/impl/src/java/org/sakaiproject/rights/impl/BasicRightsService.java $
  * $Id: BasicRightsService.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

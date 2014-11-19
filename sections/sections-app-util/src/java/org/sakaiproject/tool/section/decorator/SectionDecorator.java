@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.0/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/SectionDecorator.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.1/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/SectionDecorator.java $
  * $Id: SectionDecorator.java 124760 2013-05-21 15:17:30Z azeckoski@unicon.net $
  ***********************************************************************************
  *

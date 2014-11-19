@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/jldap/src/java/edu/amc/sakai/user/LdapUserData.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.1/jldap/src/java/edu/amc/sakai/user/LdapUserData.java $
  * $Id: LdapUserData.java 134278 2014-02-08 19:32:28Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

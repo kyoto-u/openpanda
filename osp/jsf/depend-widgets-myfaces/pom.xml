@@ -4,7 +4,7 @@
   <parent>
     <artifactId>osp-jsf</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>10.0</version>
+    <version>10.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>Sakai OSP JSF Widgets Dependencies for MyFaces</name>

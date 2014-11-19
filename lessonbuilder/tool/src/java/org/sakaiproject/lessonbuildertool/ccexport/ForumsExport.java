@@ -48,7 +48,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.sakaiproject.component.cover.ServerConfigurationService;
-import org.sakaiproject.component.cover.ComponentManager;
 
 import org.w3c.dom.Document;
 
@@ -60,6 +59,7 @@ import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.cover.ContentHostingService;
+import org.sakaiproject.component.cover.ComponentManager;
 
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.CacheRefresher;
@@ -228,8 +228,7 @@ public class ForumsExport {
 		if (!physical.startsWith("///")) {
 		    try {
 			ContentResource res = ContentHostingService.getResource(physical);
-			String type = res.getContentType();
-			if ("text/url".equals(type)) {
+			if (CCExport.islink(res)) {
 			    url = new String(res.getContent());
 			}
 		    } catch (Exception e) {
@@ -302,6 +301,8 @@ public class ForumsExport {
 // be files but not URLs, and they must be in a special directory for this forum topic.
 // Since we need to be able to support URLs, don't include any attachments. Instead, 
 // append it as URLs at the end of the document. 
+//   However none of their examples actually work this way. So I reimplemented it using
+// actual attachments.
 
 	out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 	switch (version) {
@@ -309,14 +310,50 @@ public class ForumsExport {
 	    out.println("<topic xmlns=\"http://www.imsglobal.org/xsd/imsccv1p1/imsdt_v1p1\"");
 	    out.println("  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.imsglobal.org/xsd/imsccv1p1/imsdt_v1p1 http://www.imsglobal.org/profile/cc/ccv1p1/ccv1p1_imsdt_v1p1.xsd\">");
 	    break;
+	case CCExport.V13:
+	    out.println("<topic xmlns=\"http://www.imsglobal.org/xsd/imsccv1p3/imsdt_v1p3\"");
+	    out.println("  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.imsglobal.org/xsd/imsccv1p3/imsdt_v1p3 http://www.imsglobal.org/profile/cc/ccv1p3/ccv1p3_imsdt_v1p3.xsd\">");
+	    break;
 	default:
 	    out.println("<topic xmlns=\"http://www.imsglobal.org/xsd/imsccv1p2/imsdt_v1p2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.imsglobal.org/xsd/imsccv1p2/imsdt_v1p2 http://www.imsglobal.org/profile/cc/ccv1p2/ccv1p2_imsdt_v1p2.xsd\">");
 	}
 	out.println("  <title>" + StringEscapeUtils.escapeXml(item.title) + "</title>");
 
-	String text = "<div>" + item.text + " </div>";
-
+	boolean useAttachments = (item.attachments.size() > 0);
+	List<String>attachments = new ArrayList<String>();
+	
+	// see if we can use <attachments>. We can't if any of the attachments are a URL
+	// construct a new list, which is SakaiIds, in case we need to use outputAttachments
 	for (ForumAttachment a: item.attachments) {
+	    String sakaiId = a.physical;
+	    if (sakaiId.startsWith("/content/"))
+		sakaiId = sakaiId.substring("/content".length());
+	    attachments.add(sakaiId);
+
+	    String URL = null;
+	    // if it is a URL, need the URL rather than copying the file
+	    if (!sakaiId.startsWith("///")) {
+		try {
+		    ContentResource res = ContentHostingService.getResource(sakaiId);
+		    if (CCExport.islink(res)) {
+			useAttachments = false;
+		    }
+		} catch (Exception e) {
+		}
+	    }
+	}
+
+	String text = bean.fixup("<div>" + item.text + " </div>", resource);
+
+	if (useAttachments || item.attachments.size() == 0 ) 
+	    out.println("  <text texttype=\"text/html\">" + text + "</text>");
+	else
+	    out.println("  <text texttype=\"text/html\">" + text + StringEscapeUtils.escapeXml(AssignmentExport.outputAttachments(resource, attachments, bean, "$IMS-CC-FILEBASE$../")) + "</text>");
+
+	if (useAttachments) {
+	    out.println("  <attachments>");
+
+	    for (ForumAttachment a: item.attachments) {
 
 	    String logical = a.logical;
 	    String physical = a.physical;
@@ -329,24 +366,26 @@ public class ForumsExport {
 	    if (!physical.startsWith("///")) {
 		try {
 		    ContentResource res = ContentHostingService.getResource(physical);
-		    String type = res.getContentType();
-		    if ("text/url".equals(type)) {
+		    if (CCExport.islink(res)) {
 			URL = new String(res.getContent());
 		    }
 		} catch (Exception e) {
 		}
 	    }
 
+	    // the spec doesn't seem to ask for URL encoding on file names
 	    if (URL != null)
 		lastAtom = URL; // for URL use the whole URL for the text
 	    else {
 		URL = "../" + bean.getLocation(physical); 
-		URL = "$IMS-CC-FILEBASE$" + Validator.escapeUrl(URL.replaceAll("//", "/"));
+		URL = StringEscapeUtils.escapeXml(URL.replaceAll("//", "/"));
 	    }
-	    text += "\n<a href=\"" + URL + "\">" + StringEscapeUtils.escapeHtml(lastAtom) + "</a><br/>";
+	    out.println("    <attachment href=\"" + URL + "\"/>");
 	    bean.addDependency(resource, physical);
+	    }
+
+	    out.println("  </attachments>");
 	}
-	out.println("  <text texttype=\"text/html\">" + bean.fixup(text, resource) + "</text>");
 	out.println("</topic>");
 
 	return true;

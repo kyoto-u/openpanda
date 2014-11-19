@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/site/cover/SiteService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/site/cover/SiteService.java $
  * $Id: SiteService.java 129462 2013-09-09 18:57:24Z holladay@longsight.com $
  ***********************************************************************************
  *

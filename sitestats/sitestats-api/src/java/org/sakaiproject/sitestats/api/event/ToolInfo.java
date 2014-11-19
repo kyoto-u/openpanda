@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-api/src/java/org/sakaiproject/sitestats/api/event/ToolInfo.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.1/sitestats-api/src/java/org/sakaiproject/sitestats/api/event/ToolInfo.java $
  * $Id: ToolInfo.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

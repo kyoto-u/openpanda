@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.0/jsf/example/src/java/example/TestSubBean.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/jsf/example/src/java/example/TestSubBean.java $
 * $Id: TestSubBean.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

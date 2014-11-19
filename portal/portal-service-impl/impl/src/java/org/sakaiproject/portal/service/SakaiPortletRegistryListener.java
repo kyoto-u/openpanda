@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/SakaiPortletRegistryListener.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-service-impl/impl/src/java/org/sakaiproject/portal/service/SakaiPortletRegistryListener.java $
  * $Id: SakaiPortletRegistryListener.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

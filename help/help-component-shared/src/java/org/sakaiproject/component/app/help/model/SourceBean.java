@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.0/help-component-shared/src/java/org/sakaiproject/component/app/help/model/SourceBean.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.1/help-component-shared/src/java/org/sakaiproject/component/app/help/model/SourceBean.java $
  * $Id: SourceBean.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

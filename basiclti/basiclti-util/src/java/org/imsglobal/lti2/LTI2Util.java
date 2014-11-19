@@ -1,5 +1,5 @@
 /*
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/basiclti-util/src/java/org/imsglobal/lti2/LTI2Util.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.1/basiclti-util/src/java/org/imsglobal/lti2/LTI2Util.java $
  * $Id: LTI2Util.java 134448 2014-02-12 18:32:12Z csev@umich.edu $
  *
  * Copyright (c) 2013 IMS GLobal Learning Consortium

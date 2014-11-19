@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.0/wizard/api/src/java/org/theospi/portfolio/wizard/model/WizardPageSequence.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/wizard/api/src/java/org/theospi/portfolio/wizard/model/WizardPageSequence.java $
 * $Id: WizardPageSequence.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

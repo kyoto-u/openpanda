@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.0/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/BasicPodfeedService.java $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.1/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/BasicPodfeedService.java $
  * $Id: BasicPodfeedService.java 120353 2013-02-21 15:58:11Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *

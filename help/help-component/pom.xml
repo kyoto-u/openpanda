@@ -4,7 +4,7 @@
   <parent>
     <artifactId>help-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>10.0</version>
+    <version>10.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>sakai-comp-help</name>
@@ -65,9 +65,24 @@
       <artifactId>sakai-comp-shared-help</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.lucene</groupId>
-      <artifactId>lucene-core</artifactId>
-      <version>3.5.0</version>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-core</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-queries</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-queryparser</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-analyzers-common</artifactId>
+        <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/component-manager/src/main/java/org/sakaiproject/component/cover/ComponentManager.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/component-manager/src/main/java/org/sakaiproject/component/cover/ComponentManager.java $
  * $Id: ComponentManager.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

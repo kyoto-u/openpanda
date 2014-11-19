@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.0/jsf-widgets/src/java/org/sakaiproject/jsf/component/TimerBarComponent.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.1/jsf-widgets/src/java/org/sakaiproject/jsf/component/TimerBarComponent.java $
 * $Id: TimerBarComponent.java 128959 2013-08-23 00:01:46Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

@@ -177,6 +177,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
         public boolean useSakaiIcons = ServerConfigurationService.getBoolean("lessonbuilder.use-sakai-icons", false);
         public boolean allowSessionId = ServerConfigurationService.getBoolean("session.parameter.allow", false);
         public boolean allowCcExport = ServerConfigurationService.getBoolean("lessonbuilder.cc-export", true);
+        public boolean allowDeleteOrphans = ServerConfigurationService.getBoolean("lessonbuilder.delete-orphans", false);
 
 
 	// I don't much like the static, because it opens us to a possible race
@@ -680,7 +681,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		// put out link to index of pages
 		GeneralViewParameters showAll = new GeneralViewParameters(PagePickerProducer.VIEW_ID);
 		showAll.setSource("summary");
-		UIInternalLink.make(tofill, "print-view", messageLocator.getMessage("simplepage.open_new_window"), showAll);
+		UIInternalLink.make(tofill, "print-view", messageLocator.getMessage("simplepage.print_view"), showAll);
 		UIInternalLink.make(tofill, "show-pages", messageLocator.getMessage("simplepage.showallpages"), showAll);
 		
 		if (canEditPage) {
@@ -721,6 +722,14 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 			if(simplePageBean.getEditPrivs() == 0 && (pageItem.getPageId() == 0)) {
 				UIOutput.make(tofill, "remove-li");
 				UIOutput.make(tofill, "remove-page").decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.remove-page-tooltip")));
+				
+				if (allowDeleteOrphans) {
+				    UIOutput.make(tofill, "delete-orphan-li");
+				    UIForm orphan =  UIForm.make(tofill, "delete-orphan-form");
+				    UICommand.make(orphan, "delete-orphan", "#{simplePageBean.deleteOrphanPages}");
+				    UIOutput.make(orphan, "delete-orphan-link").decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.delete-orphan-pages-desc")));
+				}
+
 			} else if (simplePageBean.getEditPrivs() == 0 && currentPage.getOwner() != null) {
 			    // getEditPrivs < 2 if we want to let the student delete. Currently we don't. There can be comments
 			    // from other students and the page can be shared
@@ -814,7 +823,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		}
 
 		if (helpurl != null) {
-		    UILink.make(tofill, (pageItem.getPageId() == 0 ? "helpbutton" : "helpbutton2")).
+		    UILink.make(tofill, (pageItem.getPageId() == 0 ? "helpbutton" : "helpbutton2"), helpurl).
 			decorate(new UIFreeAttributeDecorator("onclick",
 			         "openWindow('" + helpurl + "', 'Help', 'resizeable=yes,toolbar=no,scrollbars=yes,menubar=yes,width=800,height=600'); return false")).
 			decorate(new UIFreeAttributeDecorator("title",
@@ -827,7 +836,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		}
 
 		if (reseturl != null) {
-		    UILink.make(tofill, (pageItem.getPageId() == 0 ? "resetbutton" : "resetbutton2")).
+		    UILink.make(tofill, (pageItem.getPageId() == 0 ? "resetbutton" : "resetbutton2"), reseturl).
 			decorate(new UIFreeAttributeDecorator("onclick",
 				"location.href='" + reseturl + "'; return false")).
 			decorate(new UIFreeAttributeDecorator("title",
@@ -1272,6 +1281,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 									UIOutput.make(tableRow, "item-groups", itemGroupString);
 									if (!assignment.objectExists())
 									    entityDeleted = true;
+									else if (assignment.notPublished())
+									    notPublished = true;
 								}
 							}
 
@@ -1319,6 +1330,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 							UIOutput.make(tableRow, "item-groups", itemGroupString );
 							if (!blti.objectExists())
 							    entityDeleted = true;
+							else if (blti.notPublished())
+							    notPublished = true;
 						    }
 						} else if (i.getType() == SimplePageItem.FORUM) {
 							UIOutput.make(tableRow, "extra-info");
@@ -1333,6 +1346,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 								UIOutput.make(tableRow, "item-groups", itemGroupString);
 								if (!forum.objectExists())
 								    entityDeleted = true;
+								else if (forum.notPublished())
+								    notPublished = true;
+
 							}
 						} else if (i.getType() == SimplePageItem.PAGE) {
 							UIOutput.make(tableRow, "type", "page");
@@ -1370,6 +1386,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 								itemGroupString = simplePageBean.getItemGroupString(i, lessonEntity, true);
 							    if (!lessonEntity.objectExists())
 								entityDeleted = true;
+							    else if (lessonEntity.notPublished())
+								notPublished = true;
 							    break;
 							case SimplePageItem.ASSESSMENT:
 							    lessonEntity = quizEntity.getEntity(i.getSakaiId(),simplePageBean);
@@ -1386,6 +1404,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 								itemGroupString = simplePageBean.getItemGroupString(i, lessonEntity, true);
 							    if (!lessonEntity.objectExists())
 								entityDeleted = true;
+							    else if (lessonEntity.notPublished())
+								notPublished = true;
 							    break;
 							case SimplePageItem.BLTI:
 							    if (bltiEntity != null)
@@ -1394,6 +1414,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 								itemGroupString = simplePageBean.getItemGroupString(i, null, true);
 							    if (!lessonEntity.objectExists())
 								entityDeleted = true;
+							    else if (lessonEntity.notPublished())
+								notPublished = true;
 							    break;
 							case SimplePageItem.PAGE:
 							    itemGroupString = simplePageBean.getItemGroupString(i, null, true);
@@ -2815,11 +2837,12 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 				return false;
 			}
 		} else if (i.getType() == SimplePageItem.ASSIGNMENT) {
+		    // assignments won't let us get the entity if we're not in the group, so set up permissions before other tests
+			if (available && i.isPrerequisite()) {
+			    simplePageBean.checkItemPermissions(i, true);
+			}
 			LessonEntity lessonEntity = assignmentEntity.getEntity(i.getSakaiId(), simplePageBean);
-			if (available && lessonEntity != null) {
-				if (i.isPrerequisite()) {
-					simplePageBean.checkItemPermissions(i, true);
-				}
+			if (available && lessonEntity != null && (canEditPage || !lessonEntity.notPublished())) {
 
 				GeneralViewParameters params = new GeneralViewParameters(ShowItemProducer.VIEW_ID);
 				params.setSendingPage(currentPage.getPageId());
@@ -2834,11 +2857,12 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 				fake = true; // need to set this in case it's available for missing entity
 			}
 		} else if (i.getType() == SimplePageItem.ASSESSMENT) {
+		    // assignments won't let us get the entity if we're not in the group, so set up permissions before other tests
+			if (available && i.isPrerequisite()) {
+			    simplePageBean.checkItemPermissions(i, true);
+			}
 			LessonEntity lessonEntity = quizEntity.getEntity(i.getSakaiId(),simplePageBean);
-			if (available && lessonEntity != null) {
-				if (i.isPrerequisite()) {
-					simplePageBean.checkItemPermissions(i, true);
-				}
+			if (available && lessonEntity != null && (canEditPage || !quizEntity.notPublished(i.getSakaiId()))) {
 				// we've hacked Samigo to look at a special lesson builder
 				// session
 				// attribute. otherwise at the end of the test, Samigo replaces
@@ -2859,8 +2883,12 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 				fake = true; // need to set this in case it's available for missing entity
 			}
 		} else if (i.getType() == SimplePageItem.FORUM) {
+		    // assignments won't let us get the entity if we're not in the group, so set up permissions before other tests
+			if (available && i.isPrerequisite()) {
+			    simplePageBean.checkItemPermissions(i, true);
+			}
 			LessonEntity lessonEntity = forumEntity.getEntity(i.getSakaiId());
-			if (available && lessonEntity != null) {
+			if (available && lessonEntity != null && (canEditPage || !lessonEntity.notPublished())) {
 				if (i.isPrerequisite()) {
 					simplePageBean.checkItemPermissions(i, true);
 				}
@@ -3365,6 +3393,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		
 		UILink link = UIInternalLink.make(form, "mm-choose", messageLocator.getMessage("simplepage.choose_existing_or"), fileparams);
 
+		UIBoundBoolean.make(form, "mm-prerequisite", "#{simplePageBean.prerequisite}", false);
+
 		UICommand.make(form, "mm-add-item", messageLocator.getMessage("simplepage.save_message"), "#{simplePageBean.addMultimedia}");
 		UIInput.make(form, "mm-item-id", "#{simplePageBean.itemId}");
 		UIInput.make(form, "mm-is-mm", "#{simplePageBean.isMultimedia}");
@@ -3514,6 +3544,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		UIForm form = UIForm.make(tofill, "export-cc-form");
 
 		UIOutput.make(form, "export-cc-v11"); // value is handled by JS, so RSF doesn't need to treat it as input
+		UIOutput.make(form, "export-cc-v13"); // value is handled by JS, so RSF doesn't need to treat it as input
 		UIOutput.make(form, "export-cc-bank"); // value is handled by JS, so RSF doesn't need to treat it as input
 		UICommand.make(form, "export-cc-submit", messageLocator.getMessage("simplepage.exportcc-download"), "#{simplePageBean.importCc}");
 		UICommand.make(form, "export-cc-cancel", messageLocator.getMessage("simplepage.cancel"), null);
@@ -3602,7 +3633,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		fileparams.viewID = ResourcePickerProducer.VIEW_ID;
 		UIInternalLink.make(form, "change-resource-movie", messageLocator.getMessage("simplepage.change_resource"), fileparams);
 
-		UIBoundBoolean.make(form, "mm-prerequisite", "#{simplePageBean.prerequisite}",false);
+		UIBoundBoolean.make(form, "movie-prerequisite", "#{simplePageBean.prerequisite}",false);
 
 		UICommand.make(form, "delete-movie-item", messageLocator.getMessage("simplepage.delete"), "#{simplePageBean.deleteItem}");
 		UICommand.make(form, "update-movie", messageLocator.getMessage("simplepage.edit"), "#{simplePageBean.updateMovie}");
@@ -4198,7 +4229,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 	
 	private void makeSamplePeerEval(UIContainer parent)
 	{
-		UIOutput.make(parent, "peer-eval-sample-title", "Sample Peer Evaluation");
+		UIOutput.make(parent, "peer-eval-sample-title", messageLocator.getMessage("simplepage.peer-eval.sample.title"));
 		
 		UIBranchContainer peerReviewRows = UIBranchContainer.make(parent, "peer-eval-sample-data:");
 		UIOutput.make(peerReviewRows, "peer-eval-sample-id", "1");

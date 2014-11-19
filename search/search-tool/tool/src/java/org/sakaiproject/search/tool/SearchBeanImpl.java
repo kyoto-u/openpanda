@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchBeanImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.1/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchBeanImpl.java $
  * $Id: SearchBeanImpl.java 110962 2012-08-01 14:46:36Z zqian@umich.edu $
  ***********************************************************************************
  *

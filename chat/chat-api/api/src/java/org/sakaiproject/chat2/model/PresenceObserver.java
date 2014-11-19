@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.0/chat-api/api/src/java/org/sakaiproject/chat2/model/PresenceObserver.java $
+ * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.1/chat-api/api/src/java/org/sakaiproject/chat2/model/PresenceObserver.java $
  * $Id: PresenceObserver.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

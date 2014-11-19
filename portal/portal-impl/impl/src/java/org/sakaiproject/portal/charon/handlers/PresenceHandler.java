@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PresenceHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PresenceHandler.java $
  * $Id: PresenceHandler.java 128674 2013-08-20 15:14:33Z csev@umich.edu $
  ***********************************************************************************
  *

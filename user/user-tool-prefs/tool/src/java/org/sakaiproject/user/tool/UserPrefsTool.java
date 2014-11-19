@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.0/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.1/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
  * $Id: UserPrefsTool.java 133371 2014-01-17 14:05:06Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *

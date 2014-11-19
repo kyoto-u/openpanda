@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jobscheduler/tags/sakai-10.0/scheduler-api/src/java/org/sakaiproject/api/app/scheduler/JobBeanWrapper.java $
+* $URL: https://source.sakaiproject.org/svn/jobscheduler/tags/sakai-10.1/scheduler-api/src/java/org/sakaiproject/api/app/scheduler/JobBeanWrapper.java $
 * $Id: JobBeanWrapper.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

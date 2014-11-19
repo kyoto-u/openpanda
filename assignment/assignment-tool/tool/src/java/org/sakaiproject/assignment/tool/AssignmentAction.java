@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.0/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
- * $Id: AssignmentAction.java 310384 2014-06-24 16:19:59Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.1/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
+ * $Id: AssignmentAction.java 311804 2014-08-11 14:07:44Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  *
@@ -2484,7 +2484,14 @@ public class AssignmentAction extends PagedResourceActionII
 					state.setAttribute(SORTED_BY, sort);
 					state.setAttribute(SORTED_ASC, asc);
 				}
-				context.put("groups", new SortedIterator(groupsAllowAddAssignment.iterator(), new AssignmentComparator(state, sort, asc)));
+				
+                                
+				// SAK-26349 - need to add the collection; the iterator added below is only usable once in the velocity template
+				AssignmentComparator comp = new AssignmentComparator(state, sort, asc);
+				Collections.sort((List<Group>) groupsAllowAddAssignment, comp);
+				context.put("groupsList", groupsAllowAddAssignment);
+                                
+				context.put("groups", new SortedIterator(groupsAllowAddAssignment.iterator(), comp));
 				context.put("assignmentGroups", state.getAttribute(NEW_ASSIGNMENT_GROUPS));
 			}
 		}
@@ -3677,6 +3684,7 @@ public class AssignmentAction extends PagedResourceActionII
 		context.put("hideAssignmentFlag", state.getAttribute(VIEW_ASSIGNMENT_HIDE_ASSIGNMENT_FLAG));
 		context.put("hideStudentViewFlag", state.getAttribute(VIEW_ASSIGNMENT_HIDE_STUDENT_VIEW_FLAG));
 		context.put("contentTypeImageService", state.getAttribute(STATE_CONTENT_TYPE_IMAGE_SERVICE));
+		context.put("honor_pledge_text", ServerConfigurationService.getString("assignment.honor.pledge", rb.getString("gen.honple2")));
 		
 		String template = (String) getContext(data).get("template");
 		return template + TEMPLATE_INSTRUCTOR_VIEW_ASSIGNMENT;
@@ -5768,7 +5776,7 @@ public class AssignmentAction extends PagedResourceActionII
 		{
 			// check the submission inputs based on the submission type
 			int submissionType = a.getContent().getTypeOfSubmission();
-			if (submissionType == 1)
+			if (submissionType == Assignment.TEXT_ONLY_ASSIGNMENT_SUBMISSION)
 			{
 				// for the inline only submission
 				if (text.length() == 0)
@@ -5776,7 +5784,7 @@ public class AssignmentAction extends PagedResourceActionII
 					addAlert(state, rb.getString("youmust7"));
 				}
 			}
-			else if (submissionType == 2)
+			else if (submissionType == Assignment.ATTACHMENT_ONLY_ASSIGNMENT_SUBMISSION)
 			{
 				// for the attachment only submission
 				List v = (List) state.getAttribute(ATTACHMENTS);
@@ -5785,7 +5793,7 @@ public class AssignmentAction extends PagedResourceActionII
 					addAlert(state, rb.getString("youmust1"));
 				}
 			}
-			else if (submissionType == 3)
+			else if (submissionType == Assignment.TEXT_AND_ATTACHMENT_ASSIGNMENT_SUBMISSION)
 			{	
 				// for the inline and attachment submission
 				List v = (List) state.getAttribute(ATTACHMENTS);
@@ -5794,6 +5802,16 @@ public class AssignmentAction extends PagedResourceActionII
 					addAlert(state, rb.getString("youmust2"));
 				}
 			}
+			else if (submissionType == Assignment.SINGLE_ATTACHMENT_SUBMISSION)
+			{
+				// for the single uploaded file only submission
+				List v = (List) state.getAttribute(ATTACHMENTS);
+				if ((v == null) || (v.size() == 0))
+				{
+					addAlert(state, rb.getString("youmust1"));
+				}
+			}
+
 		}
 	}
 	
@@ -8049,10 +8067,12 @@ public class AssignmentAction extends PagedResourceActionII
 
 		try
 		{
+			// SAK-26349 - clear group selection before changing, otherwise it can result in a PermissionException
+			a.clearGroupAccess();
+
 			if ("site".equals(range))
 			{
 				a.setAccess(Assignment.AssignmentAccess.SITE);
-				a.clearGroupAccess();
 			}
 			else if ("groups".equals(range))
 			{
@@ -11172,9 +11192,9 @@ public class AssignmentAction extends PagedResourceActionII
 		HashMap n = new HashMap();
 		n.put(Integer.valueOf(2), rb.getString("letter"));
 		n.put(Integer.valueOf(3), rb.getString("points"));
-		n.put(Integer.valueOf(4), rb.getString("pass"));
+		n.put(Integer.valueOf(4), rb.getString("passfail"));
 		n.put(Integer.valueOf(5), rb.getString("check"));
-		n.put(Integer.valueOf(1), rb.getString("ungra"));
+		n.put(Integer.valueOf(1), rb.getString("gen.nograd"));
 		return n;
 
 	} // gradeTypeTable

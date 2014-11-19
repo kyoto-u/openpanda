@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.0/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/AddSectionsBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.1/sections-app/src/java/org/sakaiproject/tool/section/jsf/backingbean/AddSectionsBean.java $
  * $Id: AddSectionsBean.java 307517 2014-03-26 22:23:38Z enietzel@anisakai.com $
  ***********************************************************************************
  *

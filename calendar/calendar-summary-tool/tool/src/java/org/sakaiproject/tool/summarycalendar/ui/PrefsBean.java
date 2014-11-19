@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/PrefsBean.java $
- * $Id: PrefsBean.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/PrefsBean.java $
+ * $Id: PrefsBean.java 311795 2014-08-11 13:54:01Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -99,6 +100,7 @@ public class PrefsBean {
 	private static transient SessionManager		M_sm						= (SessionManager) ComponentManager.get(SessionManager.class.getName());
 	private static transient ServerConfigurationService M_cfg				= (ServerConfigurationService) ComponentManager.get(ServerConfigurationService.class.getName());
 
+	private static final Pattern COLOR_HEX_PATTERN = Pattern.compile("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
 	
 	// ######################################################################################
 	// Main methods
@@ -125,13 +127,25 @@ public class PrefsBean {
 		return false;
 	}
 	
+	private String getValidatedColorValue(String componentId) throws Exception {
+        
+		String value = getValueFromFacesContext(componentId).trim();
+		if ("".equals(value)) {
+			return value;
+		}
+		if (!COLOR_HEX_PATTERN.matcher(value).matches()) {
+			throw new Exception("Invalid hex color code.");
+		}
+		return value;
+	}
+	
 	public String update() {
 		try{
 			// read from FacesContext
 			setSelectedViewMode(getValueFromFacesContext("prefsForm:selectViewMode"));
-			setSelectedHighPriorityColor(getValueFromFacesContext("prefsForm:highPriorityColor"));
-			setSelectedMediumPriorityColor(getValueFromFacesContext("prefsForm:mediumPriorityColor"));
-			setSelectedLowPriorityColor(getValueFromFacesContext("prefsForm:lowPriorityColor"));
+			setSelectedHighPriorityColor(getValidatedColorValue("prefsForm:highPriorityColor"));
+			setSelectedMediumPriorityColor(getValidatedColorValue("prefsForm:mediumPriorityColor"));
+			setSelectedLowPriorityColor(getValidatedColorValue("prefsForm:lowPriorityColor"));
 			setSelectedHighPriorityEvents(getValuesFromFacesContext("prefsForm:highPriorityEvents"));
 			setSelectedMediumPriorityEvents(getValuesFromFacesContext("prefsForm:mediumPriorityEvents"));
 			setSelectedLowPriorityEvents(getValuesFromFacesContext("prefsForm:lowPriorityEvents"));

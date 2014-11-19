@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/CollectionAccessFormatter.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/CollectionAccessFormatter.java $
  * $Id: CollectionAccessFormatter.java 134214 2014-02-07 16:14:21Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *

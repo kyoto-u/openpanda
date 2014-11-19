@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-osid/xserver/src/java/org/sakaibrary/xserver/session/MetasearchSessionManager.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.1/citations-osid/xserver/src/java/org/sakaibrary/xserver/session/MetasearchSessionManager.java $
  * $Id: MetasearchSessionManager.java 309400 2014-05-09 21:29:07Z enietzel@anisakai.com $
  ***********************************************************************************
  *

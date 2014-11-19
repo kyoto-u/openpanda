@@ -835,4 +835,40 @@ public class FormattedTextTest extends TestCase {
                 formattedText.encodeUrlsAsHtml(formattedText.escapeHtml("http://www.nytimes.com/mem/MWredirect.html?MW=http://custom.marketwatch.com/custom/nyt-com/html-companyprofile.asp&symb=LLNW")));
     }
 
+    public void testKNL_1253() {
+        // https://jira.sakaiproject.org/browse/KNL-1253
+        String text = null;
+        String result = null;
+
+        // no change
+        text = null;
+        result = formattedText.stripHtmlFromText(text,true);
+        assertEquals(text, result);
+
+        text = "";
+        result = formattedText.stripHtmlFromText(text,true);
+        assertEquals(text, result);
+
+        text = "azeckoski";
+        result = formattedText.stripHtmlFromText(text,true);
+        assertEquals(text, result);
+
+        // changed
+        text = "<b>azeckoski</b>";
+        result = formattedText.stripHtmlFromText(text,true);
+        assertEquals("azeckoski", result);
+
+        text = "<a href='www.vt.edu'><b>azeckoski</b> is AZ</a>";
+        result = formattedText.stripHtmlFromText(text,true);
+        assertEquals("azeckoski is AZ", result);
+
+        text = "<table><tr><th>Column1</th></tr><tr><td>Row1</td></tr></table>";
+        result = formattedText.stripHtmlFromText(text,true);
+        assertEquals("Column1 Row1", result);
+
+        text = "<table><tr><th>Column1</th></tr><tr><td>Row1</td></tr></table>";
+        result = formattedText.stripHtmlFromText(text,false);
+        assertEquals("Column1Row1", result);
+    }
+
 }

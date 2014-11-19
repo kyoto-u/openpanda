@@ -1,6 +1,6 @@
 /**
  * $Id: Updateable.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/Updateable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/Updateable.java $
  * Updateable.java - entity-broker - Apr 8, 2008 11:40:19 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

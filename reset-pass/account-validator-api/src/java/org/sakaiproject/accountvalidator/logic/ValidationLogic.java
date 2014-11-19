@@ -1,6 +1,6 @@
 /**
  * $Id: ValidationLogic.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.0/account-validator-api/src/java/org/sakaiproject/accountvalidator/logic/ValidationLogic.java $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.1/account-validator-api/src/java/org/sakaiproject/accountvalidator/logic/ValidationLogic.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.0/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/impl/beans/AddableResourceBundleViewResolver.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.1/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/impl/beans/AddableResourceBundleViewResolver.java $
  * $Id: AddableResourceBundleViewResolver.java 125281 2013-05-31 03:42:46Z nbotimer@unicon.net $
  ***********************************************************************************
  *

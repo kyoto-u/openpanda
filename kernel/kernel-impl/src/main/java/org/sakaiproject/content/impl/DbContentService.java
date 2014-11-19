@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbContentService.java $
- * $Id: DbContentService.java 306037 2014-02-17 16:51:13Z matthew.buckett@it.ox.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbContentService.java $
+ * $Id: DbContentService.java 312248 2014-08-19 23:57:21Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -1885,14 +1885,16 @@ public class DbContentService extends BaseContentService
                    // if we have been configured to use an external file system
                    if (m_bodyPath != null)
                    {
-                       // form the file name
-                       File file = new File(externalResourceFileName(m_bodyPathDeleted, edit));
+                       if (m_bodyPathDeleted != null) {
+                           // form the file name
+                           File file = new File(externalResourceFileName(m_bodyPathDeleted, edit));
 
-                       // delete
-                       if (file.exists())
-                       {
-                           file.delete();
-                       }                   
+                           // delete
+                           if (file.exists())
+                           {
+                               file.delete();
+                           }                   
+                       }
                    }
 
                    // otherwise use the database
@@ -1967,6 +1969,10 @@ public class DbContentService extends BaseContentService
 		*/
 	   public void commitDeletedResource(ContentResourceEdit edit, String uuid) throws ServerOverloadException
 	   {
+
+		   if (m_bodyPathDeleted == null) { 
+			   return;
+		   }
 		   boolean goin = in();
 		   try
 		   {
@@ -2453,7 +2459,7 @@ public class DbContentService extends BaseContentService
 				// write the file
 				out = new FileOutputStream(file);
 
-				int byteCount = 0;
+				long byteCount = 0;
 				// chunk
 				byte[] chunk = new byte[STREAM_BUFFER_SIZE];
 				int lenRead;

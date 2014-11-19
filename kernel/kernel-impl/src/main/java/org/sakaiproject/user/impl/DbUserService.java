@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/DbUserService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/user/impl/DbUserService.java $
  * $Id: DbUserService.java 309199 2014-05-06 15:36:14Z enietzel@anisakai.com $
  ***********************************************************************************
  *

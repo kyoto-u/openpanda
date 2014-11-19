@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/StaticHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/StaticHandler.java $
  * $Id: StaticHandler.java 305995 2014-02-14 18:09:22Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

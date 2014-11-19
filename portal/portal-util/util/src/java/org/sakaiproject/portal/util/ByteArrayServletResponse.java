@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-util/util/src/java/org/sakaiproject/portal/util/ByteArrayServletResponse.java $
- * $Id: ByteArrayServletResponse.java 132924 2013-12-27 04:01:58Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-util/util/src/java/org/sakaiproject/portal/util/ByteArrayServletResponse.java $
+ * $Id: ByteArrayServletResponse.java 311844 2014-08-11 19:06:33Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
  * IllegalArgumentException will be thrown.
  * 
  * @since Sakai 2.2.4
- * @version $Rev: 132924 $
+ * @version $Rev: 311844 $
  */
 public class ByteArrayServletResponse extends HttpServletResponseWrapper
 {
@@ -46,10 +46,9 @@ public class ByteArrayServletResponse extends HttpServletResponseWrapper
 	 */
 	private PrintWriter writer = null;
 
-	/**
-	 * The default content type for all portlets.
-	 */
-	private String contentType = "text/html";
+	private String contentType = null;
+
+	private boolean isCommitted = false;
 
 	private int contentLength = -1;
 
@@ -72,6 +71,14 @@ public class ByteArrayServletResponse extends HttpServletResponseWrapper
 	}
 
 	@Override
+	public boolean isCommitted()
+	{
+		boolean retval = isCommitted || super.isCommitted();
+		// System.out.println("isCommitted ="+isCommitted+" retval="+retval);
+		return retval;
+	}
+
+	@Override
 	public String getContentType()
 	{
 		// System.out.println("contentType = "+contentType);
@@ -82,6 +89,7 @@ public class ByteArrayServletResponse extends HttpServletResponseWrapper
 	public void setContentType(String newType)
 	{
 		// System.out.println("setContentType = "+contentType);
+		super.setContentType(newType);
 		contentType = newType;
 	}
 
@@ -92,8 +100,10 @@ public class ByteArrayServletResponse extends HttpServletResponseWrapper
 
 	@Override
 	public void sendRedirect(String redirectUrl)
+        throws java.io.IOException
 	{
 		// System.out.println("sendRedirect = "+redirectUrl);
+		isCommitted = true;
 		redirect = redirectUrl;
 	}
 
@@ -101,6 +111,7 @@ public class ByteArrayServletResponse extends HttpServletResponseWrapper
 	public PrintWriter getWriter()
 	{
 		// System.out.println("getWriter()");
+		isCommitted = true;
 		return writer;
 	}
 
@@ -108,6 +119,7 @@ public class ByteArrayServletResponse extends HttpServletResponseWrapper
 	public ServletOutputStream getOutputStream() throws java.io.IOException
 	{
 		// System.out.println("getOutputStream()");
+		isCommitted = true;
 		return outStream;
 	}
 
@@ -139,7 +151,7 @@ public class ByteArrayServletResponse extends HttpServletResponseWrapper
 		throws IOException
 	{
 		// System.out.println("Forwarding request CT="+contentType+" CL="+contentLength);
-		super.setContentType(contentType);
+		if ( contentType != null ) super.setContentType(contentType);
 		if ( contentLength > 0 ) super.setContentLength(contentLength);
 		ServletOutputStream output = super.getOutputStream();
 		if ( redirect != null ) super.sendRedirect(redirect);

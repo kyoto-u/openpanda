@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/EditAuthZGroupCommand.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/EditAuthZGroupCommand.java $
  * $Id: EditAuthZGroupCommand.java 84222 2010-11-03 13:15:52Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

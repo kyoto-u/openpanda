@@ -23,7 +23,9 @@
 
 package org.sakaiproject.lessonbuildertool.service;
 
-import org.w3c.dom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
+
 import java.util.List;
 
 /**
@@ -34,6 +36,7 @@ import java.util.List;
  */
 public interface AssignmentInterface {
 
-    public String importObject(String title, String href, String mime);
+    public String importObject(String title, String href, String mime, boolean hide);
+    public String importObject(Element e, Namespace ns, String base, String baseDir, List<String>attachments, boolean hide);
 
 }

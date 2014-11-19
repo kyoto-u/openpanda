@@ -1,6 +1,6 @@
 /**
  * $Id: ResourceFinder.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/utils/src/java/org/sakaiproject/entitybroker/util/spring/ResourceFinder.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/utils/src/java/org/sakaiproject/entitybroker/util/spring/ResourceFinder.java $
  * ResourceFinder.java - caching - May 29, 2008 11:59:02 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

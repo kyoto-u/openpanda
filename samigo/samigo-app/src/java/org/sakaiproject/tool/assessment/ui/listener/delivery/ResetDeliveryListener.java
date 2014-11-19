@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/ResetDeliveryListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/ResetDeliveryListener.java $
  * $Id: ResetDeliveryListener.java 271441 2014-02-13 19:31:48Z ktsao@stanford.edu $
  ***********************************************************************************
  *

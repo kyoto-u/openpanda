@@ -4,7 +4,7 @@
   <parent>
     <artifactId>osp-warehouse</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>10.0</version>
+    <version>10.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>osp-warehouse-component</artifactId>

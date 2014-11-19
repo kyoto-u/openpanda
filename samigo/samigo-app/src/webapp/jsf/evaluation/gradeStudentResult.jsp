@@ -9,7 +9,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-$Id: gradeStudentResult.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+$Id: gradeStudentResult.jsp 311787 2014-08-11 13:38:10Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -43,8 +43,9 @@ $Id: gradeStudentResult.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
           border-color: light grey;
         }
       </style>
-      <title><h:outputText
-        value="#{commonMessages.total_scores}" /></title>
+      <title><h:outputText value="#{commonMessages.total_scores}" /></title>
+      <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+      <script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
     <samigo:script path="/jsf/widget/hideDivision/hideDivision.js" />
 
       </head>

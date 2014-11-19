@@ -4,14 +4,14 @@
   <parent>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
-    <version>10.0</version>
+    <version>10.1</version>
     <relativePath>../master/pom.xml</relativePath>
   </parent>
 
   <name>Sakai educational Services Project</name>
   <groupId>org.sakaiproject.edu-services</groupId>
   <artifactId>edu-services</artifactId>
-  <version>10.0</version><!-- ProjectVersion -->
+  <version>10.1</version><!-- ProjectVersion -->
   <packaging>pom</packaging>
 
   <modules>
@@ -97,33 +97,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <configuration>
-          <xrefLocation>${project.reporting.outputDirectory}/../xref</xrefLocation>
-          <sourceEncoding>utf-8</sourceEncoding>
-          <minimumTokens>20</minimumTokens>
-          <targetJdk>${sakai.jdk.version}</targetJdk>
-          <rulesets>
-            <ruleset>/rulesets/basic.xml</ruleset>
-            <ruleset>/rulesets/braces.xml</ruleset>
-            <ruleset>/rulesets/unusedcode.xml</ruleset>
-            <ruleset>/rulesets/clone.xml</ruleset>
-            <ruleset>/rulesets/codesize.xml</ruleset>
-            <ruleset>/rulesets/coupling.xml</ruleset>
-            <ruleset>/rulesets/design.xml</ruleset>
-            <ruleset>/rulesets/strictexception.xml</ruleset>
-            <ruleset>/rulesets/migrating.xml</ruleset>
-            <ruleset>/rulesets/junit.xml</ruleset>
-            <ruleset>/rulesets/strings.xml</ruleset>
-            <ruleset>/rulesets/javabeans.xml</ruleset>
-            <ruleset>/rulesets/finalizers.xml</ruleset>
-            <ruleset>/rulesets/optimizations.xml</ruleset>
-            <ruleset>/rulesets/j2ee.xml</ruleset>
-          </rulesets>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.0/basiclti-blis/src/java/org/sakaiproject/blti/ServiceServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.1/basiclti-blis/src/java/org/sakaiproject/blti/ServiceServlet.java $
  * $Id: ServiceServlet.java 134451 2014-02-12 18:56:18Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation

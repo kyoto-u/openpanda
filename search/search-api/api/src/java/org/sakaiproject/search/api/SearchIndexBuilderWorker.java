@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-api/api/src/java/org/sakaiproject/search/api/SearchIndexBuilderWorker.java $
- * $Id: SearchIndexBuilderWorker.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.1/search-api/api/src/java/org/sakaiproject/search/api/SearchIndexBuilderWorker.java $
+ * $Id: SearchIndexBuilderWorker.java 311892 2014-08-12 20:28:47Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -24,8 +24,6 @@ package org.sakaiproject.search.api;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.sakaiproject.search.model.SearchWriterLock;
-
 public interface SearchIndexBuilderWorker 
 {
 
@@ -39,17 +37,6 @@ public interface SearchIndexBuilderWorker
 	 * Should the thread be running
 	 */
 	boolean isRunning();
-	/**
-	 * get the current running Lock
-	 * @return
-	 */
-	SearchWriterLock getCurrentLock();
-
-	/**
-	 * get a list of node status records
-	 * @return
-	 */
-	List<SearchWriterLock> getNodeStatus();
 
 	/**
 	 * destroy the search index builder worker and release all resources

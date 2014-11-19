@@ -13,17 +13,29 @@
 
 <sakai:view title="Forums">
 <link rel="stylesheet" href="/messageforums-tool/css/msgcntr.css" type="text/css" />
-<link rel="stylesheet" href="/messageforums-tool/css/jquery-ui-1.7.2.custom.css" type="text/css" />
+<link rel="stylesheet" href="/library/js/jquery/ui/1.10.3/css/ui-lightness/jquery-ui-1.10.3.custom.min.css" type="text/css" />
 <link rel="stylesheet" href="/messageforums-tool/css/forum_rank.css" type="text/css" />
 
 <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
-<script type="text/javascript" src="/library/js/fluid-latest/InfusionAll.js"></script>
+<script type="text/javascript" src="/messageforums-tool/js/fluidframework-min.js"></script>
 <script type="text/javascript" src="/messageforums-tool/js/json2.js"></script>
 <script type="text/javascript" src="/messageforums-tool/js/Scroller.js"></script>
 <script type="text/javascript" src="/messageforums-tool/js/forum.js"></script>
 <script type="text/javascript" src="/messageforums-tool/js/forum_rank.js"></script>
-
+<script type="text/JavaScript">
+    var thresholdHint='<%=msgs.getString("rank_threshold_hint")%>';
+    function showThresholdHint(obj){
+        if (obj.value == '') {
+            obj.value=thresholdHint; 
+        }
+    }
+    function hideThresholdHint(obj){
+        if (obj.value == thresholdHint ) {
+            obj.value='';
+        }
+    }
+</script>
     <h:form enctype="multipart/form-data" id="addRank">
             <sakai:tool_bar_message value="#{msgs.edit_rank}" />
 
@@ -97,8 +109,8 @@
                     </h:selectOneRadio>
                     <f:verbatim></td><td id="minpostbox"  valign="bottom" style="padding: 0.1em 0;" ></f:verbatim>
                     <h:inputText  id="minpost" value="#{ForumTool.forumRankBean.minPosts}" 
-                                  onfocus="if (this.value == '- Enter threshold number -' ) this.value='';"  
-                                  onblur="if (this.value == '') { this.value='- Enter threshold number -'; }"/>
+                                  onfocus="hideThresholdHint(this)"  
+                                  onblur="showThresholdHint(this)"/>
                     <f:verbatim></td></tr></table></f:verbatim>
 
                     <f:verbatim><div class="addrank_msgbox"></f:verbatim>
@@ -165,7 +177,7 @@
           
     if (ranktype == "1") {
         type1div.style.display="block";
-        minpost.value='- Enter threshold number -';
+        minpost.value=thresholdHint;
         minpost.disabled=true;
         
         radio1.checked = true;

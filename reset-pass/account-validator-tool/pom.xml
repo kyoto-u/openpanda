@@ -15,7 +15,7 @@
    <parent>
      <groupId>org.sakaiproject.reset-pass</groupId>
 	<artifactId>reset-pass</artifactId>
-	<version>10.0</version>
+	<version>10.1</version>
    </parent>
 
    <properties>

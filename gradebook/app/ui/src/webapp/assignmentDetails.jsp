@@ -169,7 +169,7 @@
 			sortAscending="#{assignmentDetailsBean.sortAscending}"
 			columnClasses="gbMessageAbove,gbMessageAbove,gbMessageAbove,gbMessageAbove,gbMessageAbove"
 			headerClass="gbHeader"
-			styleClass="listHier">
+			styleClass="listHier lines nolines">
 			<h:column>
 				<f:facet name="header">
 		            <t:commandSortHeader columnName="studentSortName" arrow="true" immediate="false" actionListener="#{assignmentDetailsBean.sort}">
@@ -267,15 +267,12 @@
 			<h:column>
 				<f:facet name="header">
 					<h:panelGroup>
+						<h:outputText value="#{msgs.assignment_details_comments_read} " styleClass="tier0" />
 						<h:commandButton
 							value="#{assignmentDetailsBean.commentsToggle}"
 							actionListener="#{assignmentDetailsBean.toggleEditableComments}"
 							disabled="#{assignmentDetailsBean.assignment.externallyMaintained || assignmentDetailsBean.allStudentsViewOnly}"
 							rendered="#{!assignmentDetailsBean.allCommentsEditable}"/>
-						<h:outputText
-							value="#{assignmentDetailsBean.commentsToggle}"
-							rendered="#{assignmentDetailsBean.allCommentsEditable}"
-							styleClass="tier0"/>
 					</h:panelGroup>
 				</f:facet>
 				<h:message for="Score" styleClass="validationEmbedded gbMessageAdjustForContent"/>

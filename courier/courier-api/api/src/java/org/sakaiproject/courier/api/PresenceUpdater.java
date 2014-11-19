@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.0/courier-api/api/src/java/org/sakaiproject/courier/api/PresenceUpdater.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.1/courier-api/api/src/java/org/sakaiproject/courier/api/PresenceUpdater.java $
  * $Id: PresenceUpdater.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

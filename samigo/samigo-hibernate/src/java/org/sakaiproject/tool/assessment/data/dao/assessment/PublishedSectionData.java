@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedSectionData.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedSectionData.java $
  * $Id: PublishedSectionData.java 307095 2014-03-13 21:23:01Z ktsao@stanford.edu $
  ***********************************************************************************
  *

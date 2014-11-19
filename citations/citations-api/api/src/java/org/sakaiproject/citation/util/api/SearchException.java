@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-api/api/src/java/org/sakaiproject/citation/util/api/SearchException.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.1/citations-api/api/src/java/org/sakaiproject/citation/util/api/SearchException.java $
  * $Id: SearchException.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

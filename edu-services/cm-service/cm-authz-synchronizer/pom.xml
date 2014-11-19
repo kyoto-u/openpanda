@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.sakaiproject.edu-services</groupId>
         <artifactId>edu-services</artifactId>
-        <version>10.0</version>
+        <version>10.1</version>
     </parent>
     <name>cm-authz-synchronizer-job</name>
     <groupId>org.sakaiproject</groupId>

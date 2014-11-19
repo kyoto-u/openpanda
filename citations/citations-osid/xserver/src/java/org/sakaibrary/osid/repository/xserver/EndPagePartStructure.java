@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.0/citations-osid/xserver/src/java/org/sakaibrary/osid/repository/xserver/EndPagePartStructure.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.1/citations-osid/xserver/src/java/org/sakaibrary/osid/repository/xserver/EndPagePartStructure.java $
  * $Id: EndPagePartStructure.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

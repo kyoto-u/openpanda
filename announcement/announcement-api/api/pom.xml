@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.sakaiproject.announcement</groupId>
         <artifactId>announcement</artifactId>
-        <version>10.0</version>
+        <version>10.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <name>sakai-announcement-api</name>
     <groupId>org.sakaiproject.announcement</groupId>
     <artifactId>sakai-announcement-api</artifactId>
-  <version>10.0</version>
+  <version>10.1</version>
     <organization>
         <name>The Sakai Foundation</name>
         <url>http://sakaiproject.org/</url>

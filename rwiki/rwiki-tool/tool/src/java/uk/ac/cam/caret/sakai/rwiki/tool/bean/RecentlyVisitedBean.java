@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/RecentlyVisitedBean.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/RecentlyVisitedBean.java $
  * $Id: RecentlyVisitedBean.java 71388 2010-01-12 09:46:27Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

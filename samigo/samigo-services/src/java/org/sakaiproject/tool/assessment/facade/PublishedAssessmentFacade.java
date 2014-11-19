@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacade.java $
- * $Id: PublishedAssessmentFacade.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacade.java $
+ * $Id: PublishedAssessmentFacade.java 311430 2014-07-31 02:23:57Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -104,6 +104,7 @@ public class PublishedAssessmentFacade
   private int enrolledStudentCount;
   private Integer timeLimit;
   private String lastModifiedDateForDisplay;
+  private int groupCount;
   
   public PublishedAssessmentFacade() {
   }
@@ -151,6 +152,8 @@ public class PublishedAssessmentFacade
 	  this.lateHandling = lateHandling;
 	  this.unlimitedSubmissions = unlimitedSubmissions;
 	  this.submissionsAllowed = submissionsAllowed;
+          
+	  setGroupCount();
   }
 
   // constructor that whole min. info, used for listing
@@ -781,6 +784,19 @@ public class PublishedAssessmentFacade
   
   public ArrayList getReleaseToGroupsList() {
 	    return releaseToGroupsList;
+  }
+  
+  public void setGroupCount() {
+      if (releaseToGroupsList != null) {
+          groupCount = releaseToGroupsList.size();
+      }
+      else {
+          groupCount = 0;
+      }
+  }
+  
+  public int getGroupCount() {
+      return groupCount;
   }
 
   public int getInProgressCount() {

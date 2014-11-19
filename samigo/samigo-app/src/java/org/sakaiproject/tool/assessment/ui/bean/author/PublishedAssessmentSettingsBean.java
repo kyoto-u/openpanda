@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/PublishedAssessmentSettingsBean.java $
- * $Id: PublishedAssessmentSettingsBean.java 309448 2014-05-12 22:11:45Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/PublishedAssessmentSettingsBean.java $
+ * $Id: PublishedAssessmentSettingsBean.java 311095 2014-07-24 00:17:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -600,7 +600,7 @@ public class PublishedAssessmentSettingsBean
   }
 
   public void setTimedHours(Integer timedHours) {
-    this.timedHours = timedHours;
+    this.timedHours = (timedHours==null)?0:timedHours;
   }
 
   public Integer getTimedHours() {
@@ -608,7 +608,7 @@ public class PublishedAssessmentSettingsBean
   }
 
   public void setTimedMinutes(Integer timedMinutes) {
-    this.timedMinutes =  timedMinutes;
+    this.timedMinutes =  (timedMinutes==null)?0:timedMinutes;
   }
 
   public Integer getTimedMinutes() {

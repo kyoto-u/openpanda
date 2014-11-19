@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchAdminBeanImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.1/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchAdminBeanImpl.java $
  * $Id: SearchAdminBeanImpl.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

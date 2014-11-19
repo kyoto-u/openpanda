@@ -58,7 +58,7 @@
 			sortColumn="#{courseGradeDetailsBean.sortColumn}"
             sortAscending="#{courseGradeDetailsBean.sortAscending}"
             columnClasses="left,left,left,left,left"
-			styleClass="listHier">
+			styleClass="listHier lines nolines">
 			<h:column>
 				<f:facet name="header">
 		            <t:commandSortHeader columnName="studentSortName" propertyName="studentSortName" arrow="true" immediate="false" actionListener="#{courseGradeDetailsBean.sort}">
@@ -125,10 +125,10 @@
 						id="Grade"
 						value="#{scoreRow.enteredGrade}"
 						size="4"
+						title="#{msgs.course_grade_details_export_course_grades_options_gradeoverr_for} #{scoreRow.enrollment.user.sortName}"
 						onkeypress="return submitOnEnter(event, 'gbForm:saveButton');">
 						<f:converter converterId="org.sakaiproject.gradebook.jsf.converter.COURSE_GRADE" />
 					</h:inputText>
-                    <h:outputLabel for="Grade" value="#{msgs.course_grade_details_export_course_grades_options_gradeoverr}" />
 					<h:outputText rendered="#{!scoreRow.userCanGrade && scoreRow.enteredGrade != null}" value="#{scoreRow.enteredGrade}">
 						<f:converter converterId="org.sakaiproject.gradebook.jsf.converter.COURSE_GRADE" />
 					</h:outputText>

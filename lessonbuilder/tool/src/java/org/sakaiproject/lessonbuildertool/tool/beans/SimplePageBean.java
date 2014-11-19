@@ -54,6 +54,7 @@ import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
 import org.sakaiproject.lessonbuildertool.service.*;
 import org.sakaiproject.lessonbuildertool.tool.producers.ShowItemProducer;
 import org.sakaiproject.lessonbuildertool.tool.producers.ShowPageProducer;
+import org.sakaiproject.lessonbuildertool.tool.producers.PagePickerProducer;
 import org.sakaiproject.lessonbuildertool.tool.view.GeneralViewParameters;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.MemoryService;
@@ -498,8 +499,19 @@ public class SimplePageBean {
 		if (resourceCache == null) {
 			resourceCache = memoryService.newCache("org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean.resourceCache");
 		}
-	
 	}
+
+	static PagePickerProducer pagePickerProducer = null;
+       // need the bean, because findallpages uses a global that's in the class */
+	public PagePickerProducer pagePickerProducer() {
+	    if (pagePickerProducer == null) {
+		pagePickerProducer = new PagePickerProducer();
+		pagePickerProducer.setSimplePageBean(this);
+		pagePickerProducer.setSimplePageToolDao(simplePageToolDao);
+	    }
+	    return pagePickerProducer;
+	}
+
 
     // no destroy. We want to leave the cache intact when we exit, because there's one of us
     // per request. 
@@ -2217,6 +2229,50 @@ public class SimplePageBean {
 	}
 
 
+	public String deleteOrphanPages() {
+	    if (getEditPrivs() != 0)
+	    	return "permission-failed";
+
+	    // code is mostly from PagePickerProducer
+	    // list we're going to display
+	    List<PagePickerProducer.PageEntry> entries = new ArrayList<PagePickerProducer.PageEntry> ();
+	    // build map of all pages, so we can see if any are left over
+	    Map<Long,SimplePage> pageMap = new HashMap<Long,SimplePage>();
+	    Set<Long> sharedPages = new HashSet<Long>();
+
+	    // all pages
+	    List<SimplePage> pages = simplePageToolDao.getSitePages(getCurrentSiteId());
+	    for (SimplePage p: pages)
+		pageMap.put(p.getPageId(), p);
+
+	    List<SimplePageItem> sitePages =  simplePageToolDao.findItemsInSite(getCurrentSiteId());
+	    Set<Long> topLevelPages = new HashSet<Long>();
+	    for (SimplePageItem i : sitePages)
+		topLevelPages.add(Long.valueOf(i.getSakaiId()));
+
+	    // this adds everything you can find from top level pages to entries
+	    for (SimplePageItem sitePageItem : sitePages) {
+		// System.out.println("findallpages " + sitePageItem.getName() + " " + true);
+		pagePickerProducer().findAllPages(sitePageItem, entries, pageMap, topLevelPages, sharedPages, 0, true);
+	    }
+		    
+	    // everything we didn't find should be deleted. It's items remaining in pagemap
+	    List<String> orphans = new ArrayList<String>();
+	    if (pageMap.size() > 0) {
+		for (SimplePage p: pageMap.values()) {
+		    // non-null owner are student pages
+		    if(p.getOwner() == null) {
+			orphans.add(Long.toString(p.getPageId()));
+		    }
+		}
+		// do the deletetion
+		// selectedEntities is the argument for deletePages
+		selectedEntities = orphans.toArray(selectedEntities);
+		deletePages();
+	    }	    
+	    return "success";
+	}
+
 	public String deletePages() {
 	    if (getEditPrivs() != 0)
 	    	return "permission-failed";
@@ -2225,6 +2281,12 @@ public class SimplePageBean {
 
 	    for (int i = 0; i < selectedEntities.length; i++) {
 		deletePage(siteId, Long.valueOf(selectedEntities[i]));
+		if ((i % 10) == 0) {
+		    // we've seen situations with a million orphan pages
+		    // we don't want to leave those all in cache
+		    simplePageToolDao.flush();
+		    simplePageToolDao.clear();
+		}
 	    }
 	    return "success";
 	}
@@ -2436,6 +2498,8 @@ public class SimplePageBean {
 					if (lessonEntity != null) {
 					    String groups = getItemGroupString (i, lessonEntity, true);
 					    ourGroupName = messageLocator.getMessage("simplepage.access-group").replace("{}", getNameOfSakaiItem(i));
+					    // backup in case group was created by old code
+					    String oldGroupName = "Access: " + getNameOfSakaiItem(i);
 					    // this can produce duplicate names. Searches are actually done based
 					    // on entity reference, not title, so this is acceptable though confusing
 					    // to users. But using object ID's for the name would be just as confusing.
@@ -2443,7 +2507,7 @@ public class SimplePageBean {
 						ourGroupName = utf8truncate(ourGroupName, 99);
 					    else if (ourGroupName.length() > 99) 
 						ourGroupName = ourGroupName.substring(0, 99);
-					    String groupId = GroupPermissionsService.makeGroup(getCurrentPage().getSiteId(), ourGroupName, i.getSakaiId(), this);
+					    String groupId = GroupPermissionsService.makeGroup(getCurrentPage().getSiteId(), ourGroupName, oldGroupName, i.getSakaiId(), this);
 					    saveItem(simplePageToolDao.makeGroup(i.getSakaiId(), groupId, groups, getCurrentPage().getSiteId()));
 
 					    // update the tool access control to point to our access control group
@@ -2635,13 +2699,17 @@ public class SimplePageBean {
 
 				// if no change, don't worry
 				LessonEntity existing = assignmentEntity.getEntity(i.getSakaiId());
-				String ref = existing.getReference();
+				String ref = null;
+				if (existing != null)
+				    ref = existing.getReference();
 				// if same quiz, nothing to do
-				if (!ref.equals(selectedAssignment)) {
+				if ((existing == null) || !ref.equals(selectedAssignment)) {
 				    // if access controlled, clear restriction from old assignment and add to new
 				    if (i.isPrerequisite()) {
-					i.setPrerequisite(false);
-					checkControlGroup(i, false);
+					if (existing !=  null) {
+					    i.setPrerequisite(false);
+					    checkControlGroup(i, false);
+					}
 					// sakaiid and name are used in setting control
 					i.setSakaiId(selectedAssignment);
 					i.setName(selectedObject.getTitle());
@@ -2702,20 +2770,16 @@ public class SimplePageBean {
 
 				// if no change, don't worry
 				LessonEntity existing = bltiEntity.getEntity(i.getSakaiId());
-				String ref = existing.getReference();
+				String ref = null;
+				if (existing != null)
+				    ref = existing.getReference();
 				// if same item, nothing to do
-				if (!ref.equals(selectedBlti)) {
+				if ((existing == null) || !ref.equals(selectedBlti)) {
 				    // if access controlled, clear restriction from old assignment and add to new
-				    if (i.isPrerequisite()) {
-					i.setPrerequisite(false);
-					// sakaiid and name are used in setting control
-					i.setSakaiId(selectedBlti);
-					i.setName(selectedObject.getTitle());
-					i.setPrerequisite(true);
-				    } else {
-					i.setSakaiId(selectedBlti);
-					i.setName(selectedObject.getTitle());
-				    }
+				    // group access not used for BLTI items, so don't need the setcontrolgroup
+				    // logic from other item types
+				    i.setSakaiId(selectedBlti);
+				    i.setName(selectedObject.getTitle());
 				    if (format == null || format.trim().equals(""))
 					i.setFormat("");
 				    else
@@ -3279,13 +3343,17 @@ public class SimplePageBean {
 				i = findItem(itemId);
 				// do getEntity/getreference to normalize, in case sakaiid is old format
 				LessonEntity existing = quizEntity.getEntity(i.getSakaiId(),this);
-				String ref = existing.getReference();
+				String ref = null;
+				if (existing != null)
+				    ref = existing.getReference();
 				// if same quiz, nothing to do
-				if (!ref.equals(selectedQuiz)) {
+				if ((existing == null) || !ref.equals(selectedQuiz)) {
 				    // if access controlled, clear restriction from old quiz and add to new
 				    if (i.isPrerequisite()) {
-					i.setPrerequisite(false);
-					checkControlGroup(i, false);
+					if (existing != null) {
+					    i.setPrerequisite(false);
+					    checkControlGroup(i, false);
+					}
 					// sakaiid and name are used in setting control
 					i.setSakaiId(selectedQuiz);
 					i.setName(selectedObject.getTitle());
@@ -3573,6 +3641,37 @@ public class SimplePageBean {
 		}
 	}
 	
+	private boolean uploadSizeOk(MultipartFile file) {
+	    long uploadedFileSize = file.getSize();
+
+	    if (uploadedFileSize == 0) {
+		setErrMessage(messageLocator.getMessage("simplepage.filezero"));
+		return false;
+	    }
+
+	    // implement precedence rules: ceiling if set, else max, else 20
+	    String max = ServerConfigurationService.getString("content.upload.max", null);
+	    String ceiling = ServerConfigurationService.getString("content.upload.ceiling", null);
+	    String effective = ceiling;
+	    if (effective == null)
+		effective = max;
+	    if (effective == null)
+		effective = "20";
+	    long maxFileSizeInBytes = 20 * 1024 * 1024;
+	    try {
+		maxFileSizeInBytes = Long.parseLong(effective) * 1024 * 1024;
+	    } catch(NumberFormatException e) {
+		log.warn("Unable to parse content.upload.max retrieved from properties file during upload");
+	    }
+
+	    if (uploadedFileSize > maxFileSizeInBytes) {
+		String limit = Long.toString(maxFileSizeInBytes / (1024*1024));
+		setErrMessage(messageLocator.getMessage("simplepage.filetoobig").replace("{}", limit));
+		return false;
+	    }
+	    return true;
+	}
+
 	private String uploadFile(String collectionId) {
 		String name = null;
 		String mimeType = null;
@@ -3581,11 +3680,17 @@ public class SimplePageBean {
 		if (multipartMap.size() > 0) {
 			// 	user specified a file, create it
 			file = multipartMap.values().iterator().next();
-			if (file.isEmpty())
-				file = null;
 		}
 		
 		if (file != null) {
+
+			// uploadsizeok would otherwise complain about 0 length file. For
+			// this case it's valid. Means no file.
+			if (file.getSize() == 0)
+			    return null;
+			if (!uploadSizeOk(file))
+			    return null;
+
 			try {
 				contentHostingService.checkCollection(collectionId);
 			}catch(Exception ex) {
@@ -4175,11 +4280,43 @@ public class SimplePageBean {
 		}
 
 		Collection<String>itemGroups = null;
+		boolean pushed = false;
 		try {
-		    itemGroups = getItemGroups(item, null, false);
+		    pushAdvisorAlways();
+		    pushed = true;
+		    LessonEntity entity = null;
+		    if (!canSeeAll()) {
+			switch (item.getType()) {
+			case SimplePageItem.ASSIGNMENT:
+			    entity = assignmentEntity.getEntity(item.getSakaiId());
+			    if (entity == null || entity.notPublished())
+				return false;
+			    break;
+			case SimplePageItem.ASSESSMENT:
+			    if (quizEntity.notPublished(item.getSakaiId()))
+				return false;
+			    break;
+			case SimplePageItem.FORUM:
+			    entity = forumEntity.getEntity(item.getSakaiId());
+			    if (entity == null || entity.notPublished())
+				return false;
+			    break;
+			case SimplePageItem.BLTI:
+			    if (bltiEntity != null)
+				entity = bltiEntity.getEntity(item.getSakaiId());
+			    if (entity == null || entity.notPublished())
+				return false;
+			}
+		    }
+		    popAdvisor();
+		    pushed = false;
+		    // entity can be null. passing the actual entity just avoids a second lookup
+		    itemGroups = getItemGroups(item, entity, false);
 		} catch (IdUnusedException exc) {
 		    visibleCache.put(item.getId(), false);
 		    return false; // underlying entity missing, don't show it
+		} finally {
+		    if (pushed) popAdvisor();
 		}
 		if (itemGroups == null || itemGroups.size() == 0) {
 		    // this includes items for which for which visibility doesn't apply
@@ -4631,6 +4768,7 @@ public class SimplePageBean {
 			List<SimplePageItem> items = getItemsOnPage(pageId);
 
 			for (SimplePageItem i : items) {
+			    // System.out.println(i.getSequence() + " " + i.isRequired() + " " + isItemVisible(i) + " " + isItemComplete(i));
 				if (i.getSequence() >= item.getSequence()) {
 				    break;
 				} else if (i.isRequired() && isItemVisible(i)) {
@@ -5064,11 +5202,16 @@ public class SimplePageBean {
 			if (multipartMap.size() > 0) {
 				// 	user specified a file, create it
 				file = multipartMap.values().iterator().next();
+				// zero length is valid. We get that if it's not a file upload
 				if (file.isEmpty())
-					file = null;
+				    file = null;
+
 			}
 			
 			if (file != null) {
+				if (!uploadSizeOk(file))
+				    return;
+
 				String collectionId = getCollectionId(false);
 				// 	user specified a file, create it
 				name = file.getOriginalFilename();
@@ -5221,6 +5364,8 @@ public class SimplePageBean {
 			// remember who added it, for permission checks
 			item.setAttribute("addedby", getCurrentUserId());
 
+			item.setPrerequisite(this.prerequisite);
+
 			if (mimeType != null) {
 				item.setHtml(mimeType);
 			} else {
@@ -5280,11 +5425,12 @@ public class SimplePageBean {
 	    if (multipartMap.size() > 0) {
 		// user specified a file, create it
 		file = multipartMap.values().iterator().next();
-		if (file.isEmpty())
-		    file = null;
 	    }
 
 	    if (file != null) {
+		if (!uploadSizeOk(file))
+		    return;
+
 		File cc = null;
 		File root = null;
 		try {

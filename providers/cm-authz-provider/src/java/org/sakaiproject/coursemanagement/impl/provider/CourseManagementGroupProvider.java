@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.0/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseManagementGroupProvider.java $
- * $Id: CourseManagementGroupProvider.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.1/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseManagementGroupProvider.java $
+ * $Id: CourseManagementGroupProvider.java 311414 2014-07-31 01:52:43Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -104,8 +104,8 @@ public class CourseManagementGroupProvider implements GroupProvider {
 				for(Iterator<Entry<String, String>> rrRoleIter = rrUserRoleMap.entrySet().iterator(); rrRoleIter.hasNext();) {
 					Entry<String, String> entry = rrRoleIter.next();
 					String userEid = entry.getKey();
-					String existingRole = entry.getValue();
-					String rrRole = rrUserRoleMap.get(userEid);
+					String existingRole = userRoleMap.get(userEid);
+					String rrRole = entry.getValue();
 
 					// The Role Resolver has found no role for this user
 					if(rrRole == null) {

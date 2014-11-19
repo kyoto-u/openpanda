@@ -230,6 +230,13 @@ function resizeiframe(id) {
                       <a href="#" role="menuitem" rsf:id="remove-page" id="remove-page" class="remove-page"><span rsf:id="msg=simplepage.remove-page"></span></a>
                       <div rsf:id="msg=simplepage.remove-page-explanation"></div>
                     </li>
+                    <li rsf:id="delete-orphan-li">
+                      <form action="#" rsf:id="delete-orphan-form" method="post" enctype="multipart/form-data">
+			<input type="submit" style="display:none" rsf:id="delete-orphan" id="delete-orphan"/>
+                        <a rsf:id="delete-orphan-link" id="delete-orphan-link" href="#" role="menuitem" class="delete-orphan"><span rsf:id="msg=simplepage.delete-orphan-pages"></span></a>
+			<div rsf:id="msg=simplepage.delete-orphan-pages-desc"></div>
+		      </form>
+                    </li>
                     <li>
                       <a href="#" role="menuitem" rsf:id="import-cc" id="import-cc"><span rsf:id="msg=simplepage.import_cc_button"></span></a>
                       <!-- just a message, so will display when it should not-->
@@ -934,6 +941,10 @@ function resizeiframe(id) {
                             <label id="addLink_label" rsf:id="msg=simplepage.addLink_label_add_or" for="mm-url">URL</label>
                             <input type="text" name="mm-url" rsf:id="mm-url" id="mm-url" style="width:99%" class="edit-multimedia-input" />
                         </p>
+                        <p class="checkbox">
+                            <input type="checkbox" name="mm-prerequisite" id="mm-prerequisite" rsf:id="mm-prerequisite" />
+                            <label for="mm-prerequisite"><span rsf:id="msg=simplepage.prerequisites_label"></span></label>
+                        </p>
 
 			<div id="mm-test-embed-results" class="mm-test-text">
 			  <div id="mm-test-embed-contents" rsf:id="msg=simplepage.mm-test-embed"></div>
@@ -966,6 +977,7 @@ function resizeiframe(id) {
                         <input type="hidden" rsf:id="mm-mime-type" id="mm-mime-type" />
                         <input type="hidden" rsf:id="mm-is-website" id="mm-is-website" />
 		        <p id="checkingwithhost" rsf:id="msg=simplepage.checkingwithhost"></p>
+			<p id="mm-loading" rsf:id="msg=simplepage.loading"></p>
                     </div>
                 </form>			    
 			</div>
@@ -1082,7 +1094,7 @@ function resizeiframe(id) {
                         <input class="bold" type="submit" id="import-cc-submit" rsf:id="import-cc-submit" />
                         <input type="submit" rsf:id="mm-cancel" onclick="closeImportCcDialog(); return false" />
                       </p>
-                      <p class="hideOnDialog" id="loading" rsf:id="msg=simplepage.loading">
+                      <p id="import-cc-loading" rsf:id="msg=simplepage.loading">
                       </p>
 
 
@@ -1098,6 +1110,10 @@ function resizeiframe(id) {
 					    <label rsf:id="msg=simplepage.exportcc-use11" for="export-cc-v11" id="export-cc-v11-label">Use v1.1</label> <br />
 					  </p>
 					  <p class="required">
+					    <input type="checkbox" id="export-cc-v13" rsf:id="export-cc-v13"/>
+					    <label rsf:id="msg=simplepage.exportcc-use13" for="export-cc-v13" id="export-cc-v13-label">Use v1.3</label> <br />
+					  </p>
+					  <p class="required">
 					    <input type="checkbox" id="export-cc-bank" rsf:id="export-cc-bank"/>
 					    <label rsf:id="msg=simplepage.exportcc-includebank" for="export-cc-bank" id="export-cc-bank-label">Include bank</label> <br />
 					  </p>
@@ -1106,9 +1122,6 @@ function resizeiframe(id) {
 					    <input class="bold" type="submit" id="export-cc-submit" rsf:id="export-cc-submit" />
 					    <input type="submit" rsf:id="export-cc-cancel" onclick="closeExportCcDialog(); return false" />
 					  </p>
-					  <p class="hideOnDialog" id="loading" rsf:id="msg=simplepage.loading">
-					  </p>
-
 
 					</div>
 				</form>
@@ -1329,8 +1342,8 @@ function resizeiframe(id) {
 						  <a href="#"><span rsf:id="msg=simplepage.edit-group"></span></a>
 						</p>
                         <p class="checkbox">
-                            <input type="checkbox" name="mm-prerequisite" id="mm-prerequisite" rsf:id="mm-prerequisite" />
-                            <label for="mm-prerequisite"><span rsf:id="msg=simplepage.prerequisites_label"></span></label>
+                            <input type="checkbox" name="movie-prerequisite" id="movie-prerequisite" rsf:id="movie-prerequisite" />
+                            <label for="movie-prerequisite"><span rsf:id="msg=simplepage.prerequisites_label"></span></label>
                         </p>
                        <p class="act">  
                             <input class="bold" type="submit" onclick="event.returnValue = checkMovieForm($('#movie-width').val().trim(), $('#movie-height').val().trim()); return checkMovieForm($('#movie-width').val().trim(), $('#movie-height').val().trim());" id="update-movie" rsf:id="update-movie" />
@@ -1400,13 +1413,13 @@ function resizeiframe(id) {
 			  <form class="peer-eval-create-form">
 			    <div id="peer-eval-create-div">
 			      <div id="rubric-title">
-				<label for="rubric-title">Title</label>
+				<label for="rubric-title" rsf:id="msg=simplepage.student-peer-review-title">Title</label>
 				<!-- Put the rubric title input here. -->
 			      </div>
 			      <br /><br />
 			      <table id="peer-eval-create-table" style="width: 100%; height: 100%; border: 1px solid black;">
 				<thead><tr>
-				    <th></th>
+				    <th rsf:id="msg=simplepage.student-peer-review-category"></th>
 				    <th>4</th>
 				    <th>3</th>
 				    <th>2</th>

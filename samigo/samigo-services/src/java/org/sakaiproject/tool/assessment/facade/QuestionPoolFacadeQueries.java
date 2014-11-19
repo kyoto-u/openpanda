@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/QuestionPoolFacadeQueries.java $
- * $Id: QuestionPoolFacadeQueries.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/QuestionPoolFacadeQueries.java $
+ * $Id: QuestionPoolFacadeQueries.java 311428 2014-07-31 02:09:30Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -212,7 +212,7 @@ public class QuestionPoolFacadeQueries
   public ArrayList getBasicInfoOfAllPools(final String agentId) {
 	    final HibernateCallback hcb = new HibernateCallback(){
 	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
-	    		Query q = session.createQuery("select new QuestionPoolData(a.questionPoolId, a.title)from QuestionPoolData a where a.questionPoolId  " +
+	    		Query q = session.createQuery("select new QuestionPoolData(a.questionPoolId, a.title, a.parentPoolId)from QuestionPoolData a where a.questionPoolId  " +
 	    		                              "in (select ac.questionPoolId from QuestionPoolAccessData ac where agentId= ?)");
 	    		q.setString(0, agentId);
 	    		return q.list();
@@ -228,7 +228,7 @@ public class QuestionPoolFacadeQueries
     for (int i = 0; i < list.size(); i++) {
       QuestionPoolData a = (QuestionPoolData) list.get(i);
       QuestionPoolFacade f = new QuestionPoolFacade(a.getQuestionPoolId(),
-          a.getTitle());
+          a.getTitle(), a.getParentPoolId());
       poolList.add(f);
     }
     return poolList;

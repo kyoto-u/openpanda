@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/presencelist.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/presencelist.jsp $
  * $Id: presencelist.jsp 34228 2007-08-21 23:03:53Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

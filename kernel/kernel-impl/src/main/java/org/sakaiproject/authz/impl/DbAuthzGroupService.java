@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/authz/impl/DbAuthzGroupService.java $
- * $Id: DbAuthzGroupService.java 310335 2014-06-20 16:19:07Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/authz/impl/DbAuthzGroupService.java $
+ * $Id: DbAuthzGroupService.java 311092 2014-07-24 00:11:09Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2006 2007, 2007, 2008 Sakai Foundation
@@ -918,10 +918,9 @@ public abstract class DbAuthzGroupService extends BaseAuthzGroupService implemen
 			if (authzGroupIds == null || userid == null || authzGroupIds.size() < 1)
 				return new ArrayList(); // empty list
 
-			UserAndGroups uag = null;
 			// first consult the cache
-			if (authzUserGroupIdsCache.containsKey(userid)) {
-				uag = (UserAndGroups) authzUserGroupIdsCache.get(userid);
+			UserAndGroups uag = (UserAndGroups) authzUserGroupIdsCache.get(userid);
+			if (uag != null) {
 				List<String> result = uag.getRealmQuery(new HashSet<String>(authzGroupIds));
 				if (M_log.isDebugEnabled()) M_log.debug(uag);
 				if (result != null) {

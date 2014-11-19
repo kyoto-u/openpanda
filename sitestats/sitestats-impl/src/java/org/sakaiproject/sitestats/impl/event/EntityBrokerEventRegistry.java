@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.0/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EntityBrokerEventRegistry.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.1/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EntityBrokerEventRegistry.java $
  * $Id: EntityBrokerEventRegistry.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

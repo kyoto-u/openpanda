@@ -522,7 +522,7 @@ public class JForumEntity implements LessonEntity, ForumInterface {
 	return null;
     }
 
-    public String importObject(String title, String topicTitle, String text, boolean texthtml, String base, String siteId,  List<String>attachmenthrefs, boolean hide) {
+    public String importObject(String title, String topicTitle, String text, boolean texthtml, String base, String baseDir, String siteId,  List<String>attachmenthrefs, boolean hide) {
 	return SimplePageItem.DUMMY;
     }
 
@@ -531,6 +531,10 @@ public class JForumEntity implements LessonEntity, ForumInterface {
     }
 
     public boolean notPublished(String ref) {
+	return false;
+    }
+
+    public boolean notPublished() {
 	return false;
     }
 

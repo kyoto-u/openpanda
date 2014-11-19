@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
- * $Id: AuthorActionListener.java 130641 2013-10-18 23:44:13Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
+ * $Id: AuthorActionListener.java 311430 2014-07-31 02:23:57Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -75,7 +75,7 @@ import org.sakaiproject.entity.api.ResourceProperties;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: AuthorActionListener.java 130641 2013-10-18 23:44:13Z ktsao@stanford.edu $
+ * @version $Id: AuthorActionListener.java 311430 2014-07-31 02:23:57Z enietzel@anisakai.com $
  */
 
 public class AuthorActionListener
@@ -369,6 +369,8 @@ public class AuthorActionListener
 				  PublishedAssessmentSettingsBean publishedAssessmentSettingsBean = (PublishedAssessmentSettingsBean) ContextUtil.lookupBean("publishedSettings");
 				  publishedAssessmentSettingsBean.setAssessmentId(f.getPublishedAssessmentId());
 				  String [] groupsAuthorized = publishedAssessmentSettingsBean.getGroupsAuthorized();
+                                  
+				  if(groupsAuthorized != null && groupsAuthorized.length > 0) {
 				  for (int i = 0; i < groupsAuthorized.length; i++) {
 					  if (groupUsersIdMap.get(groupsAuthorized[i]) != null) {
 						  for (String userId : groupUsersIdMap.get(groupsAuthorized[i])) {
@@ -376,6 +378,7 @@ public class AuthorActionListener
 						  }
 					  }
 				  }
+			  }
 			  }
 			  else {
 				  userIdList = siteUsersIdList;

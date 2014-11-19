@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.0/mailarchive-api/api/src/java/org/sakaiproject/mailarchive/cover/MailArchiveService.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.1/mailarchive-api/api/src/java/org/sakaiproject/mailarchive/cover/MailArchiveService.java $
  * $Id: MailArchiveService.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

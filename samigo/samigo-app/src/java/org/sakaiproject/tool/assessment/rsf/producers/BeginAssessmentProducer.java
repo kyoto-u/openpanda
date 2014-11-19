@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/rsf/producers/BeginAssessmentProducer.java $
- * $Id: BeginAssessmentProducer.java 133598 2014-01-23 22:43:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/rsf/producers/BeginAssessmentProducer.java $
+ * $Id: BeginAssessmentProducer.java 311805 2014-08-11 14:09:14Z enietzel@anisakai.com $
  **********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -221,17 +221,6 @@ public class BeginAssessmentProducer implements ViewComponentProducer,
           UIBranchContainer.make(tofill, "unlimited:");
         }
         
-        if (delivery.getFeedbackComponent().getShowImmediate()) {
-          UIBranchContainer.make(tofill, "immediate:");
-        }
-        else if (delivery.getFeedbackComponent().getShowNoFeedback()) {
-          UIBranchContainer.make(tofill, "nofeedback:");
-        }
-        else if (delivery.getFeedbackComponent().getShowDateFeedback()) {
-          UIBranchContainer feedback = UIBranchContainer.make(tofill, "feedback:");
-          UIOutput.make(feedback, "feedBackDate", delivery.getSettings().getFeedbackDate().toString());
-        }
-
         if (delivery.getDueDate() != null) {
           UIBranchContainer duedate = UIBranchContainer.make(tofill, "duedate:");
           UIOutput.make(duedate, "duedate", delivery.getDueDateString());

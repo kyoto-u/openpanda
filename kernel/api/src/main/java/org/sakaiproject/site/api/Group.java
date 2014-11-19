@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/site/api/Group.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/site/api/Group.java $
  * $Id: Group.java 308857 2014-04-26 00:06:41Z enietzel@anisakai.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.0/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCWebLinkTranslator.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.1/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCWebLinkTranslator.java $
  * $Id: CCWebLinkTranslator.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

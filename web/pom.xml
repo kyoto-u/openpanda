@@ -4,14 +4,14 @@
   <parent>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
-    <version>10.0</version>
+    <version>10.1</version>
     <relativePath>../master/pom.xml</relativePath>
   </parent>
 
   <name>Sakai Web Project</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>web-base</artifactId>
-  <version>10.0</version>
+  <version>10.1</version>
   <packaging>pom</packaging>
 
   <scm>

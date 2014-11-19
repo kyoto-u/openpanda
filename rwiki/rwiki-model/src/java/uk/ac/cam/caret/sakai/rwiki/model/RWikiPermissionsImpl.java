@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiPermissionsImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiPermissionsImpl.java $
  * $Id: RWikiPermissionsImpl.java 84225 2010-11-03 13:48:44Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

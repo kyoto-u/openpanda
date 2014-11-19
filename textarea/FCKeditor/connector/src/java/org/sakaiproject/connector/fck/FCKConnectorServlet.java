@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/textarea/tags/sakai-10.0/FCKeditor/connector/src/java/org/sakaiproject/connector/fck/FCKConnectorServlet.java $
- * $Id: FCKConnectorServlet.java 130297 2013-10-09 21:02:55Z matthew@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/textarea/tags/sakai-10.1/FCKeditor/connector/src/java/org/sakaiproject/connector/fck/FCKConnectorServlet.java $
+ * $Id: FCKConnectorServlet.java 311893 2014-08-12 20:30:52Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -690,6 +690,8 @@ public class FCKConnectorServlet extends HttpServlet {
 			 element.setAttribute("url", contentHostingService.getUrl(current));
                         element.setAttribute("name", myCollection.getProperties().getProperty(
                                              myCollection.getProperties().getNamePropDisplayName()));
+                        // SAK-27756 Added children count to decide whether to show expand button as we removed nested iteration of files
+                        element.setAttribute("childrenCount", myCollection.getMemberCount()+"");
                         // by adding the folders to this collection, they will be sorted for display
                         sortedFolders.add(element);
                    }
@@ -701,7 +703,6 @@ public class FCKConnectorServlet extends HttpServlet {
               // now append the folderse to the parent document in sorted order
               for (Element folder: sortedFolders) {
                  Node addedFolder = folders.appendChild(folder);
-		  getResources(folder.getAttribute("path"), addedFolder, doc, collectionBase, type); 
               }
 
               getFilesOnly(dir, root, doc, type);

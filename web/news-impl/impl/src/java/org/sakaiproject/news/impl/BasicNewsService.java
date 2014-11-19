@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.0/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsService.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.1/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsService.java $
  * $Id: BasicNewsService.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *

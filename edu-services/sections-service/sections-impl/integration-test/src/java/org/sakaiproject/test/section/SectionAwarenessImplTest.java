@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.0/sections-service/sections-impl/integration-test/src/java/org/sakaiproject/test/section/SectionAwarenessImplTest.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.1/sections-service/sections-impl/integration-test/src/java/org/sakaiproject/test/section/SectionAwarenessImplTest.java $
  * $Id: SectionAwarenessImplTest.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

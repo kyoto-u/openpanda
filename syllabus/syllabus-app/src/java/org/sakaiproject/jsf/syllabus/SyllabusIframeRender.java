@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.0/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIframeRender.java $
- * $Id: SyllabusIframeRender.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.1/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIframeRender.java $
+ * $Id: SyllabusIframeRender.java 311010 2014-07-22 15:37:09Z holladay@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -78,7 +78,7 @@ public class SyllabusIframeRender extends Renderer
       writer.write(" style=\"margin-top:1em;clear:both\"");
       writer.write(" frameborder=\"0\"");
       writer.write(" scrolling=\"auto\"");      
-      writer.write("></iframe>");
+      writer.write("><script type='text/javascript'>window.onbeforeunload = function(){ return ''; }; $(window).load(function () {window.onbeforeunload = null;});</script></iframe>");
     }
   }
 }

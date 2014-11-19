@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemAuthorBean.java $
- * $Id: ItemAuthorBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemAuthorBean.java $
+ * $Id: ItemAuthorBean.java 311428 2014-07-31 02:09:30Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -89,7 +89,7 @@ import org.sakaiproject.util.ResourceLoader;
 
 /**
  * Backing bean for Item Authoring, uses ItemBean for UI
- * $Id: ItemAuthorBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $Id: ItemAuthorBean.java 311428 2014-07-31 02:09:30Z enietzel@anisakai.com $
  */
 public class ItemAuthorBean
   implements Serializable
@@ -826,15 +826,33 @@ public class ItemAuthorBean
 
 
     QuestionPoolService delegate = new QuestionPoolService();
-    ArrayList qplist = delegate.getBasicInfoOfAllPools(AgentFacade.getAgentString());
-    Iterator iter = qplist.iterator();
+    ArrayList<QuestionPoolFacade> qplist = delegate.getBasicInfoOfAllPools(AgentFacade.getAgentString());
+    Iterator<QuestionPoolFacade> iter = qplist.iterator();
 
     try {
       while(iter.hasNext())
       {
         QuestionPoolFacade pool = (QuestionPoolFacade) iter.next();
-        poolListSelectItems.add(new SelectItem((pool.getQuestionPoolId().toString()), FormattedText.convertFormattedTextToPlaintext(pool.getDisplayName())));
-
+        
+        // SAM-2269 - if the parent pool ID is greater than 0 (question pool IDs start at 1), get the parent pool
+        Long parentPoolID = pool.getParentPoolId();
+        QuestionPoolFacade parent = null;
+        if (parentPoolID > 0) {
+            for (QuestionPoolFacade qp : qplist) {
+                if (parentPoolID.equals(qp.getQuestionPoolId())) {
+                    parent = qp;
+                    break;
+                }
+            }
+        }
+        
+        // SAM-2269 - add the appropriate string to the list
+        String original = pool.getDisplayName() + " (" + delegate.getCountItems(pool.getQuestionPoolId()) + ")";
+        if (parent != null) {
+            poolListSelectItems.add(new SelectItem(pool.getQuestionPoolId().toString(), FormattedText.convertFormattedTextToPlaintext(parent.getDisplayName() + ": " + original)));
+        } else {
+            poolListSelectItems.add(new SelectItem(pool.getQuestionPoolId().toString(), FormattedText.convertFormattedTextToPlaintext(original)));
+        }
       }
 
     }

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.0/search-integration-test/src/test/org/sakaiproject/search/component/test/LoaderComponentIntegrationTest.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.1/search-integration-test/src/test/org/sakaiproject/search/component/test/LoaderComponentIntegrationTest.java $
  * $Id: LoaderComponentIntegrationTest.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

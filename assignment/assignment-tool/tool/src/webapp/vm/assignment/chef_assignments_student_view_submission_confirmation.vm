@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_view_submission_confirmation.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
+<!-- $Id: chef_assignments_student_view_submission_confirmation.vm 311453 2014-07-31 14:43:30Z enietzel@anisakai.com $ -->
 <!-- start:  chef_assignments_student_view_submission_confirmation.vm  -->
 ## showing the submission confirmation page
 <link href="/sakai-assignment-tool/css/assignment.css" type="text/css" rel="stylesheet" media="all" />
@@ -83,7 +83,7 @@
 			##assignment title
 			<tr>
 				<th>
-					$tlang.getString('assignment')
+					$tlang.getString('assignment.title')
 				</th>
 				<td>
                                         #assignmentTitleIcon($assignment)

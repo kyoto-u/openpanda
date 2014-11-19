@@ -3,10 +3,12 @@ var lessonBuilderAnimationLocked = false;
 var oldloc;
 var requirementType = 0;
 var importccactive = false;
+var mmactive = false;
 var insist = false;
 var delbutton;
 var mm_testing = 0;
 var editrow;
+var delete_orphan_enabled = true;
 
 // in case user includes the URL of a site that replaces top,
 // give them a way out. Handler is set up in the html file.
@@ -259,9 +261,18 @@ $(function() {
 			var position =  $(this).position();
 			$("#import-cc-dialog").dialog("option", "position", [position.left, position.top]);
 			oldloc = $(".dropdown a");
+			$("#import-cc-loading").hide();
 			importccactive = true;
 			$('#import-cc-dialog').dialog('open');
 			checksize($('#import-cc-dialog'));
+			return false;
+		});
+
+		$('#delete-orphan-link').click(function(){
+			if (delete_orphan_enabled) {
+			    delete_orphan_enabled = false;
+			    $('#delete-orphan').click();
+			}
 			return false;
 		});
 		
@@ -279,6 +290,8 @@ $(function() {
 			// jquery click doesn't actually click, so get the js object and do a native click call
                         if ($('#export-cc-v11').attr('checked') == 'checked') {
                             $("#export-cc-link").attr('href', $("#export-cc-link").attr('href').replace(/version=[0-9.]*/, "version=1.1"));
+			} else if ($('#export-cc-v13').attr('checked') == 'checked') {
+                            $("#export-cc-link").attr('href', $("#export-cc-link").attr('href').replace(/version=[0-9.]*/, "version=1.3"));
                         } else {
                             $("#export-cc-link").attr('href', $("#export-cc-link").attr('href').replace(/version=[0-9.]*/, "version=1.2"));
                         }
@@ -297,7 +310,7 @@ $(function() {
 			if (!importccactive)
 			    return false;
 			importccactive = false;
-			$('#loading').show();
+			$("#import-cc-loading").show();
 			return true;
 	    	});
 
@@ -374,6 +387,11 @@ $(function() {
 			    //  there's another button to try the other alterantive
 
 			}
+			// prevent double click
+			if (!mmactive)
+			    return false;
+			mmactive = false;
+			$('#mm-loading').show();
 			// actually do the submit
 			return true;
 	    	});
@@ -557,10 +575,10 @@ $(function() {
 			$("#movie-height").val(row.find(".mm-height").text());
 			$("#movie-width").val(row.find(".mm-width").text());
 			$("#description3").val(row.find(".description").text());
-			if(row.find(".movie-prerequisite").text() === 'true') {
-			    $('#mm-prerequisite').attr('checked','checked');
+			if (row.find(".movie-prerequisite").text() == 'true') {
+			    $('#movie-prerequisite').attr('checked','checked');
 			} else {
-			    $('#mm-prerequisite').removeAttr('checked');
+			    $('#movie-prerequisite').removeAttr('checked');
 			}
 			$("#mimetype4").val(row.find(".mm-type").text());
 			var position =  row.position();
@@ -1160,6 +1178,8 @@ $(function() {
 			$(".mm-additional-website").hide();
 			$(".mm-url-section").show();
 			$("#checkingwithhost").hide();
+			$("#mm-loading").hide();
+			mmactive = true;
 			$("#mm-error-container").hide();
 			insist = false;
 			$("#add-multimedia-dialog").dialog('open');
@@ -1483,6 +1503,8 @@ $(function() {
 			$(".mm-additional-website").hide();
 			$(".mm-url-section").show();
 			$("#checkingwithhost").hide();
+			$("#mm-loading").hide();
+			mmactive = true;
 			$("#mm-error-container").hide();
 			insist = false;
 			$("#add-multimedia-dialog").dialog('open');
@@ -1512,6 +1534,8 @@ $(function() {
 			$(".mm-additional-website").hide();
 			$(".mm-url-section").show();
 			$("#checkingwithhost").hide();
+			$("#mm-loading").hide();
+			mmactive = true;
 			$("#mm-error-container").hide();
 			insist = false;
 			oldloc = $(this);
@@ -1540,6 +1564,8 @@ $(function() {
 			$(".mm-additional-website").hide();
 			$(".mm-url-section").show();
 			$("#checkingwithhost").hide();
+			$("#mm-loading").hide();
+			mmactive = true;
 			$("#mm-error-container").hide();
 			insist = false;
 			oldloc = $(this);
@@ -1568,6 +1594,8 @@ $(function() {
 			$(".mm-url-section").hide();
 			oldloc = $(".dropdown a");
 			$("#checkingwithhost").hide();
+			$("#mm-loading").hide();
+			mmactive = true;
 			$("#mm-error-container").hide();
 			insist = false;
 			$("#add-multimedia-dialog").dialog('open');
@@ -1683,6 +1711,8 @@ $(function() {
 			$(".mm-additional-website").hide();
 			$(".mm-url-section").show();
 			$("#checkingwithhost").hide();
+			$("#mm-loading").hide();
+			mmactive = true;
 			$("#mm-error-container").hide();
 			insist = false;
 			$("#add-multimedia-dialog").dialog('open');
@@ -2332,6 +2362,7 @@ function buttonRemoveHighlightc() {
 function addHighlight(dropDiv) {
 	if(!lessonBuilderAnimationLocked) {
 		if(!dropDiv.is(":visible")) {
+			closeDropdowns();
 			lessonBuilderAnimationLocked = true;
 			hideMultimedia();
 			reposition();
@@ -2376,6 +2407,7 @@ function toggleDropdown(dropDiv, button) {
 			dropdownViaClick = false;
 			button.focus();
 		}else {
+			closeDropdowns();
 			lessonBuilderAnimationLocked = true;
 			hideMultimedia();
 			reposition();

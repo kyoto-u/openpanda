@@ -1,6 +1,6 @@
 /**
  * $Id: Order.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.0/api/src/java/org/sakaiproject/entitybroker/entityprovider/search/Order.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.1/api/src/java/org/sakaiproject/entitybroker/entityprovider/search/Order.java $
  * Order.java - genericdao - Aug 3, 2008 12:43:54 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.0/dav/src/java/org/sakaiproject/dav/DavServlet.java $
- * $Id: DavServlet.java 308543 2014-04-23 20:32:49Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.1/dav/src/java/org/sakaiproject/dav/DavServlet.java $
+ * $Id: DavServlet.java 311259 2014-07-29 20:34:59Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1550,6 +1550,8 @@ public class DavServlet extends HttpServlet
 				}
 				modificationDate = props.getTimeProperty(ResourceProperties.PROP_MODIFIED_DATE).getTime();
 				eTag = modificationDate + "+" + eTag;
+				// SAK-26593 if you don't clean the eTag you may send invalid XML to client
+				eTag = MD5Encoder.encode(md5Helper.digest(eTag.getBytes()));
 				if (M_log.isDebugEnabled()) M_log.debug("Path=" + path + " eTag=" + eTag);
 				creationDate = props.getTimeProperty(ResourceProperties.PROP_CREATION_DATE).getTime();
 				resourceLink = mbr.getUrl();
@@ -1996,19 +1998,20 @@ public class DavServlet extends HttpServlet
 		if(parts.length == 4 && parts[1].equals("group-user")){
 			try
 			{
-				// if successful, the context is already a valid user EID
-				UserDirectoryService.getUserByEid(parts[3]);
+				// try using it as an ID
+				resourceName = UserDirectoryService.getUserEid(parts[3]);
 			}
 			catch (UserNotDefinedException tryId)
 			{
 				try
 				{
-					// try using it as an ID
-					resourceName = UserDirectoryService.getUserEid(parts[3]);
+					// if successful, the context is already a valid user EID
+					UserDirectoryService.getUserByEid(parts[3]);
 				}
 				catch (UserNotDefinedException notId)
 				{
 					// if context was not a valid ID, leave it alone
+					M_log.warn("getResourceNameSAKAI could not find either id or eid: " + parts[3]);
 				}
 			}
 		 }

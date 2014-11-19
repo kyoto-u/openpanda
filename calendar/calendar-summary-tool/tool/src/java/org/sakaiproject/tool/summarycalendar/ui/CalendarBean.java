@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.0/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/CalendarBean.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.1/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/CalendarBean.java $
  * $Id: CalendarBean.java 134073 2014-02-04 18:01:31Z bkirschn@umich.edu $
  ***********************************************************************************
  *

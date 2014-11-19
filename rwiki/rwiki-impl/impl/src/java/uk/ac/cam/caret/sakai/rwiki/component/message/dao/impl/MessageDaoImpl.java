@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.0/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/message/dao/impl/MessageDaoImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.1/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/message/dao/impl/MessageDaoImpl.java $
  * $Id: MessageDaoImpl.java 11112 2006-06-23 15:35:35Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

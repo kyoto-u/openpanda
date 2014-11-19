@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
  * $Id: BaseUserDirectoryService.java 309201 2014-05-06 15:45:40Z enietzel@anisakai.com $
  ***********************************************************************************
  *

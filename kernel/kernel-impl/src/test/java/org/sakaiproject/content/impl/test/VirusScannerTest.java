@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/kernel-impl/src/test/java/org/sakaiproject/content/impl/test/VirusScannerTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/kernel-impl/src/test/java/org/sakaiproject/content/impl/test/VirusScannerTest.java $
  * $Id: VirusScannerTest.java 130227 2013-10-08 11:40:08Z azeckoski@unicon.net $
  ***********************************************************************************
  *

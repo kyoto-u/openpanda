@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.0/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatChannel.java $
+ * $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.1/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatChannel.java $
  * $Id: ChatChannel.java 129909 2013-09-23 19:30:28Z azeckoski@unicon.net $
  ***********************************************************************************
  *

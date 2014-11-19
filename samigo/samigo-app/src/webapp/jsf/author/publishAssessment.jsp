@@ -7,7 +7,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.0/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.1/samigo-app/src/webapp/jsf/author/publishAssessment.jsp $
  * $Id: publishAssessment.jsp 309448 2014-05-12 22:11:45Z enietzel@anisakai.com $
  ***********************************************************************************
  *

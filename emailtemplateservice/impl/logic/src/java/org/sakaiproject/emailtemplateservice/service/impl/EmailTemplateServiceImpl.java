@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/sakai-10.0/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/impl/EmailTemplateServiceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/emailtemplateservice/tags/sakai-10.1/impl/logic/src/java/org/sakaiproject/emailtemplateservice/service/impl/EmailTemplateServiceImpl.java $
  * $Id: EmailTemplateServiceImpl.java 308843 2014-04-25 20:22:49Z enietzel@anisakai.com $
  ***********************************************************************************
  *

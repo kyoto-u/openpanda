@@ -1,6 +1,6 @@
  /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.0/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
- * $Id: AnnouncementAction.java 307880 2014-04-07 15:56:25Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.1/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
+ * $Id: AnnouncementAction.java 311467 2014-07-31 19:58:45Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -200,8 +200,6 @@ public class AnnouncementAction extends PagedResourceActionII
 	/** state attribute names. */
 	private static final String STATE_CHANNEL_REF = "channelId";
 	
-	private static final String STATE_CHANNEL_PUBVIEW = "channelPubView";
-
 	private static final String PORTLET_CONFIG_PARM_NON_MERGED_CHANNELS = "nonMergedAnnouncementChannels";
 
 	private static final String PORTLET_CONFIG_PARM_MERGED_CHANNELS = "mergedAnnouncementChannels";
@@ -1175,14 +1173,11 @@ public class AnnouncementAction extends PagedResourceActionII
 		}
 				
 		//Check for MOTD, if yes then is not ok to show permissions button
-		if(placement!= null && ("MOTD".equals(placement.getTitle()) && placement.getId().contains("admin"))) {
-			buildMenu(portlet, context, rundata, state, menu_new, menu_delete, menu_revise, this.isOkToShowMergeButton(statusName),
-					false, this.isOkToShowOptionsButton(statusName), displayOptions);
-		}
-		else{
-		buildMenu(portlet, context, rundata, state, menu_new, menu_delete, menu_revise, this.isOkToShowMergeButton(statusName),
-				this.isOkToShowPermissionsButton(statusName), this.isOkToShowOptionsButton(statusName), displayOptions);
-		}
+		boolean showMerge = !isMotd(channelId) && isOkToShowMergeButton(statusName);
+		boolean showPermissions = !isMotd(channelId) && isOkToShowPermissionsButton(statusName);
+		boolean showOptions = this.isOkToShowOptionsButton(statusName);
+		buildMenu(portlet, context, rundata, state, menu_new, menu_delete, menu_revise, showMerge,
+					showPermissions, showOptions, displayOptions);
 			
 		// added by zqian for toolbar
 		context.put("allow_new", Boolean.valueOf(menu_new));
@@ -1284,7 +1279,7 @@ public class AnnouncementAction extends PagedResourceActionII
 	
 		context.put("showMessagesList", showMessagesList.iterator());
 		context.put("messageListVector", showMessagesList);
-
+		context.put("showMessagesList2", showMessagesList.iterator());
 		context.put("totalPageNumber", sstate.getAttribute(STATE_TOTAL_PAGENUMBER));
 		context.put("formPageNumber", FORM_PAGE_NUMBER);
 		context.put("prev_page_exists", sstate.getAttribute(STATE_PREV_PAGE_EXISTS));
@@ -2134,10 +2129,10 @@ public class AnnouncementAction extends PagedResourceActionII
 			context.put("tempSubject", state.getTempSubject());
 			context.put("tempBody", state.getTempBody());
 			
-			context.put("pubviewset", ((sstate.getAttribute(STATE_CHANNEL_PUBVIEW) ==  null) ? Boolean.FALSE : Boolean.TRUE));
+			context.put("pubviewset", isChannelPublic(channelId));
 			Placement placement = ToolManager.getCurrentPlacement();
 			//SAK-19516, default motd to pubview so it shows up in rss
-			context.put("motd",(placement!= null && ("MOTD".equals(placement.getTitle()) && placement.getId().contains("admin"))) ? Boolean.TRUE : Boolean.FALSE);
+			context.put("motd", isMotd(channelId));
 			
 			// output the sstate saved public view options
 			final boolean pubview = Boolean.valueOf((String) sstate.getAttribute(SSTATE_PUBLICVIEW_VALUE)).booleanValue();
@@ -2183,7 +2178,7 @@ public class AnnouncementAction extends PagedResourceActionII
 			context.put("message", edit);
 
 			// find out about pubview
-			context.put("pubviewset", ((sstate.getAttribute(STATE_CHANNEL_PUBVIEW) ==  null) ? Boolean.FALSE : Boolean.TRUE));
+			context.put("pubviewset", isChannelPublic(channelId));
 			context.put("pubview", Boolean.valueOf(edit.getProperties().getProperty(ResourceProperties.PROP_PUBVIEW) != null));
 
 			// Get/set release information
@@ -2425,7 +2420,7 @@ public class AnnouncementAction extends PagedResourceActionII
 			context.put("message", message);
 
 			// find out about pubview
-			context.put("pubviewset", ((sstate.getAttribute(STATE_CHANNEL_PUBVIEW) ==  null) ? Boolean.FALSE : Boolean.TRUE));
+			context.put("pubviewset", isChannelPublic(channel.getId()));
 			context.put("pubview", Boolean.valueOf(message.getProperties().getProperty(ResourceProperties.PROP_PUBVIEW) != null));
 
 			// show all the groups in this channal that user has get message in
@@ -2734,6 +2729,9 @@ public class AnnouncementAction extends PagedResourceActionII
 	 */
 	public void doAnnouncement_form(RunData data, Context context)
 	{
+		if (!"POST".equals(data.getRequest().getMethod())) {
+			return;
+		}
 
 		ParameterParser params = data.getParameters();
 
@@ -3090,7 +3088,7 @@ public class AnnouncementAction extends PagedResourceActionII
 				ParameterParser params = rundata.getParameters();
 				
 				// get release/retract dates
-				final String specify = params.getString(SPECIFY_DATES);
+				final String specify = params.getString(HIDDEN);
 				final boolean use_start_date = params.getBoolean("use_start_date");
 				final boolean use_end_date = params.getBoolean("use_end_date");
 				Time releaseDate = null;
@@ -3165,8 +3163,9 @@ public class AnnouncementAction extends PagedResourceActionII
 				
 				//announceTo
 				Placement placement = ToolManager.getCurrentPlacement();
-				//SAK-19516, default motd to pubview so it shows up in rss, motd will fail below try block
-				if(placement!= null && ("MOTD".equals(placement.getTitle()) && placement.getId().contains("admin")))
+				// If the channel into which we are saving is public mark the item as public so it shows up in the
+				// RSS feed.
+				if(isChannelPublic(channelId))
 				{
 					msg.getPropertiesEdit().addProperty(ResourceProperties.PROP_PUBVIEW, Boolean.TRUE.toString());
 					header.clearGroupAccess();
@@ -3817,7 +3816,7 @@ public class AnnouncementAction extends PagedResourceActionII
 	public void doAttachments(RunData data, Context context)
 	{
 		AnnouncementActionState actionState = (AnnouncementActionState) getState(context, data, AnnouncementActionState.class);
-		if (actionState.getChannelId().contains("motd")){  //! message of the day 
+		if (isMotd(actionState.getChannelId())){
 			ToolSession session = SessionManager.getCurrentToolSession();
 			session.setAttribute(FilePickerHelper.FILE_PICKER_ATTACH_LINKS, new Boolean(true).toString());
 		}
@@ -4526,13 +4525,6 @@ public class AnnouncementAction extends PagedResourceActionII
 		{
 			state.setAttribute(STATE_INITED, STATE_INITED);
 
-			// check if the channel is marked public read
-			if (m_securityService.unlock(UserDirectoryService.getAnonymousUser(), AnnouncementService.SECURE_ANNC_READ, channelId))
-			{
-				state.setAttribute(STATE_CHANNEL_PUBVIEW, STATE_CHANNEL_PUBVIEW);
-			}
-
-
 			MergedList mergedAnnouncementList = new MergedList();
 
 			String[] channelArrayFromConfigParameterValue = null;
@@ -4594,6 +4586,14 @@ public class AnnouncementAction extends PagedResourceActionII
 
 	} // initState
 
+	/**
+	 * Check if the channel (in effect the site) is public. This is useful for restricting the access options
+	 * for announcements in a public site.
+	 * @param channelId The channel ID.
+	 */
+	private boolean isChannelPublic(String channelId) {
+		return m_securityService.unlock(UserDirectoryService.getAnonymousUser(), AnnouncementService.SECURE_ANNC_READ, channelId);
+	}
 
 
 	/**
@@ -5061,7 +5061,7 @@ public class AnnouncementAction extends PagedResourceActionII
 	protected boolean notificationEnabled(AnnouncementActionState state)
 	{
 		// if it is motd, it does not send notification to user, hence the notification option is disabled. SAK-4559
-		if (state.getChannelId().contains("motd"))
+		if (isMotd(state.getChannelId()))
 		{
 				return false;
 		}
@@ -5341,6 +5341,15 @@ public class AnnouncementAction extends PagedResourceActionII
 	    final ResourceProperties props = prefs.getProperties(TABS_EXCLUDED_PREFS);
 	    final List<String> l = props.getPropertyList(TAB_EXCLUDED_SITES);
 	    return l;
+	}
+
+	/**
+	 * Is the channel the message of the day.
+	 * @param channelId The channel ID.
+	 * @return <code>true</code> if the channel is the Message Of The Day (MOTD).
+	 */
+	private boolean isMotd(String channelId) {
+		return channelId.endsWith("motd");
 	}
 
 }

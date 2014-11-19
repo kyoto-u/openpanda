@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.0/metaobj-api/api/src/java/org/sakaiproject/service/legacy/resource/DuplicatableToolService.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.1/metaobj-api/api/src/java/org/sakaiproject/service/legacy/resource/DuplicatableToolService.java $
  * $Id: DuplicatableToolService.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

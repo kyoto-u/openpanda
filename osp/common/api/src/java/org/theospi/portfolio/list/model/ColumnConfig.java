@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.0/common/api/src/java/org/theospi/portfolio/list/model/ColumnConfig.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.1/common/api/src/java/org/theospi/portfolio/list/model/ColumnConfig.java $
 * $Id: ColumnConfig.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

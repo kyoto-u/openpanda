@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.0/api/src/main/java/org/sakaiproject/event/api/LearningResourceStoreProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.1/api/src/main/java/org/sakaiproject/event/api/LearningResourceStoreProvider.java $
  * $Id: LearningResourceStoreProvider.java 122098 2013-04-03 13:45:36Z azeckoski@unicon.net $
  ***********************************************************************************
  *

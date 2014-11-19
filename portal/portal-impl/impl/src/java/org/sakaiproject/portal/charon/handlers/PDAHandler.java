@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.0/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PDAHandler.java $
- * $Id: PDAHandler.java 132939 2013-12-29 16:59:50Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.1/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PDAHandler.java $
+ * $Id: PDAHandler.java 310832 2014-07-16 22:21:05Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -65,7 +65,7 @@ import org.sakaiproject.util.Web;
  * 
  * @author csev
  * @since Sakai 2.4
- * @version $Rev: 132939 $
+ * @version $Rev: 310832 $
  * 
  */
 @SuppressWarnings("deprecation")
@@ -272,12 +272,17 @@ public class PDAHandler extends SiteHandler
 				}
 
 				// See if we can buffer the content, if not, pass the request through
+				boolean allowBuffer = false;
 				ToolConfiguration siteTool = SiteService.findTool(toolId);
 				String commonToolId = null;
+
 				String toolContextPath = null;
 				String toolPathInfo = null;
-				boolean allowBuffer = false;
 
+				if ( parts.length >= 5 ) {
+					toolContextPath = req.getContextPath() + req.getServletPath() + Web.makePath(parts, 1, 5);
+					toolPathInfo = Web.makePath(parts, 5, parts.length);
+				}
 				Object BC = null;
 				if ( siteTool != null && parts.length >= 5 ) {
 					commonToolId = siteTool.getToolId();
@@ -286,8 +291,6 @@ public class PDAHandler extends SiteHandler
 					allowBuffer = allowBufferContent(req, siteTool);
 
 					if ( allowBuffer ) {
-						toolContextPath = req.getContextPath() + req.getServletPath() + Web.makePath(parts, 1, 5);
-						toolPathInfo = Web.makePath(parts, 5, parts.length);
 
 						// Should we bypass buffering based on the request?
 						boolean matched = checkBufferBypass(req, siteTool);
@@ -339,7 +342,7 @@ public class PDAHandler extends SiteHandler
 					boolean showResetButton = !"false".equals(siteTool.getConfig().getProperty(
 								TOOLCONFIG_SHOW_RESET_BUTTON));
 					rcontext.put("showResetButton", Boolean.valueOf(showResetButton));
-					if (showResetButton)
+					if (toolContextPath != null && showResetButton)
 					{
 						rcontext.put("resetActionUrl", toolContextPath.replace("/tool/", "/tool-reset/"));
 					}

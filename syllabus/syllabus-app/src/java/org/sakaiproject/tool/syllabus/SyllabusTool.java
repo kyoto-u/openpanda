@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.0/syllabus-app/src/java/org/sakaiproject/tool/syllabus/SyllabusTool.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.1/syllabus-app/src/java/org/sakaiproject/tool/syllabus/SyllabusTool.java $
  * $Id: SyllabusTool.java 309810 2014-05-27 15:37:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *

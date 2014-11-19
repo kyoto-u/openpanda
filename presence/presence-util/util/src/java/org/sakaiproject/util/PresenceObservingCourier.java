@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/tags/sakai-10.0/presence-util/util/src/java/org/sakaiproject/util/PresenceObservingCourier.java $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/sakai-10.1/presence-util/util/src/java/org/sakaiproject/util/PresenceObservingCourier.java $
  * $Id: PresenceObservingCourier.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
