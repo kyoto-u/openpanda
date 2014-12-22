@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.2/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementMessageEdit.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.3/announcement-api/api/src/java/org/sakaiproject/announcement/api/AnnouncementMessageEdit.java $
  * $Id: AnnouncementMessageEdit.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

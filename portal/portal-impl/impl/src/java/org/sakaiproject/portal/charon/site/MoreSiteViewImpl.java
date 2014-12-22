@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/MoreSiteViewImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/MoreSiteViewImpl.java $
  * $Id: MoreSiteViewImpl.java 134284 2014-02-08 21:39:55Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

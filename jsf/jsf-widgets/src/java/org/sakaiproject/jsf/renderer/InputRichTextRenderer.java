@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.2/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputRichTextRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.3/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputRichTextRenderer.java $
 * $Id: InputRichTextRenderer.java 120900 2013-03-07 20:21:44Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

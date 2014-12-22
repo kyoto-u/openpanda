@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.2/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/api/SerializableSubmissionAccess.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.3/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/api/SerializableSubmissionAccess.java $
  * $Id: SerializableSubmissionAccess.java 120595 2013-03-01 20:33:37Z azeckoski@unicon.net $
  ***********************************************************************************
  *

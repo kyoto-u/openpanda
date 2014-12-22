@@ -49,12 +49,16 @@ import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.tool.api.SessionManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 public class AssignmentEntityProvider extends AbstractEntityProvider implements EntityProvider, 
 		CoreEntityProvider, Resolvable, ActionsExecutable, Describeable,
 		AutoRegisterEntityProvider, PropertyProvideable, Outputable, Inputable {
 
 	public final static String ENTITY_PREFIX = "assignment";
+	private static Log M_log = LogFactory.getLog(AssignmentEntityProvider.class);
 
 	@AllArgsConstructor
 	public class DecoratedAttachment implements Comparable<Object> {
@@ -243,6 +247,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
 			List<Reference> attachment_list = (List<Reference>) a.getContent()
 					.getAttachments();
 			for (Reference attachment : attachment_list) {
+					if (attachment != null && attachment.getProperties() != null) {
 				String url = attachment.getUrl();
 				String name = attachment.getProperties().getPropertyFormatted(
 						attachment.getProperties().getNamePropDisplayName());
@@ -250,6 +255,10 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
 						name, url);
 				this.attachments.add(decoratedAttachment);
 			}
+					else {
+						M_log.info("There was an attachment on assignment "+ a.getId() +" that was invalid");
+					}
+				}
 		}
 	}
 

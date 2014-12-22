@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/DeliveryActionListener.java $
- * $Id: DeliveryActionListener.java 309682 2014-05-20 18:52:15Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/DeliveryActionListener.java $
+ * $Id: DeliveryActionListener.java 315810 2014-12-01 17:50:41Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -45,6 +45,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.math.util.MathUtils;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.api.Event;
@@ -106,7 +107,7 @@ import org.sakaiproject.util.ResourceLoader;
  * <p>Purpose:  this module creates the lists of published assessments for the select index
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: DeliveryActionListener.java 309682 2014-05-20 18:52:15Z ktsao@stanford.edu $
+ * @version $Id: DeliveryActionListener.java 315810 2014-12-01 17:50:41Z enietzel@anisakai.com $
  */
 
 public class DeliveryActionListener
@@ -213,6 +214,8 @@ public class DeliveryActionListener
       AssessmentGradingData ag = null;
       SecureDeliveryServiceAPI secureDelivery = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI();
       boolean isFirstTimeBegin = false;
+      StringBuffer eventRef; 
+      Event event;
       
       switch (action){
       case 2: // preview assessment
@@ -272,7 +275,15 @@ public class DeliveryActionListener
             			  delivery.setBlockDelivery( true );
             		  }
             	  }                 	  
-              }  
+              }
+
+              // post event
+              eventRef = new StringBuffer("publishedAssessmentId=");
+              eventRef.append(delivery.getAssessmentId());
+              eventRef.append(", submissionId=");
+              eventRef.append(agData.getAssessmentGradingId());
+              event = EventTrackingService.newEvent("sam.assessment.review", eventRef.toString(), true);
+              EventTrackingService.post(event);
               break;
  
       case 4: // Grade assessment
@@ -423,7 +434,7 @@ public class DeliveryActionListener
                   eventService.saveOrUpdateEventLog(eventLogFacade);           	  
                   
             	  if (action == DeliveryBean.TAKE_ASSESSMENT) {
-            		  StringBuffer eventRef = new StringBuffer("publishedAssessmentId=");
+            		  eventRef = new StringBuffer("publishedAssessmentId=");
             		  eventRef.append(delivery.getAssessmentId());
             		  eventRef.append(", agentId=");
             		  eventRef.append(getAgentString());
@@ -434,13 +445,13 @@ public class DeliveryActionListener
             			  int timeRemaining = Integer.parseInt(delivery.getTimeLimit()) - Integer.parseInt(delivery.getTimeElapse());
             			  eventRef.append(timeRemaining);
             		  }
-                      Event event = EventTrackingService.newEvent("sam.assessment.take",
+                      event = EventTrackingService.newEvent("sam.assessment.take",
                               "siteId=" + site_id + ", " + eventRef.toString(), true);
                       EventTrackingService.post(event);
                       registerIrss(delivery, event, false);
             	  }
             	  else if (action == DeliveryBean.TAKE_ASSESSMENT_VIA_URL) {
-            		  StringBuffer eventRef = new StringBuffer("publishedAssessmentId=");
+            		  eventRef = new StringBuffer("publishedAssessmentId=");
             		  eventRef.append(delivery.getAssessmentId());
             		  eventRef.append(", agentId=");
             		  eventRef.append(getAgentString());
@@ -451,7 +462,7 @@ public class DeliveryActionListener
             			  int timeRemaining = Integer.parseInt(delivery.getTimeLimit()) - Integer.parseInt(delivery.getTimeElapse());
             			  eventRef.append(timeRemaining);
             		  }
-                      Event event = EventTrackingService.newEvent("sam.assessment.take.via_url",
+                      event = EventTrackingService.newEvent("sam.assessment.take.via_url",
                                 "siteId=" + site_id + ", " + eventRef.toString(), site_id, true, NotificationService.NOTI_REQUIRED);
                       EventTrackingService.post(event);
                       registerIrss(delivery, event, true);
@@ -459,6 +470,29 @@ public class DeliveryActionListener
               }
               else {
             	  setTimer(delivery, publishedAssessment, false, false);
+              }
+
+              if (ae != null && ae.getComponent().getId().startsWith("continueAssessment")) {
+                  String site_id = AgentFacade.getCurrentSiteId();
+                  //take assessment via url
+                  if(site_id == null) {
+                      PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
+                      site_id = publishedAssessmentService.getPublishedAssessmentOwner(Long.valueOf(delivery.getAssessmentId()));
+                  }
+            	  eventRef = new StringBuffer("publishedAssessmentId=");
+            	  eventRef.append(delivery.getAssessmentId());
+            	  eventRef.append(", agentId=");
+            	  eventRef.append(getAgentString());
+            	  if (delivery.isTimeRunning()) {
+            		  eventRef.append(", elapsed=");
+            		  eventRef.append(delivery.getTimeElapse());
+            		  eventRef.append(", remaining=");
+            		  int timeRemaining = Integer.parseInt(delivery.getTimeLimit()) - Integer.parseInt(delivery.getTimeElapse());
+            		  eventRef.append(timeRemaining);
+            	  }
+                  event = EventTrackingService.newEvent("sam.assessment.resume",
+                                "siteId=" + site_id + ", " + eventRef.toString(), site_id, true, NotificationService.NOTI_REQUIRED);
+                  EventTrackingService.post(event);
               }
               
               // extend session time out
@@ -1193,6 +1227,12 @@ public class DeliveryActionListener
       }
       //itemBean.setItemGradingAttachmentList(data.getItemGradingAttachmentList());
     }
+    
+    //If the value close enough to the maximum value just set it to the maximum value (precision issue)
+    if (MathUtils.equalsIncludingNaN(itemBean.getExactPoints(),itemBean.getMaxPoints(),0.001d)) {
+      itemBean.setPoints(itemBean.getMaxPoints());
+    }
+    
     itemBean.setItemGradingAttachmentList(itemGradingAttachmentList);
 
     // set question feedback.

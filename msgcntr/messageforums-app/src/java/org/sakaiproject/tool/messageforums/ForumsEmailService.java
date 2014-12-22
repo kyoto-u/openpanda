@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.2/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.3/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ForumsEmailService.java $
  * $Id: ForumsEmailService.java 313727 2014-09-18 23:11:29Z enietzel@anisakai.com $
  ***********************************************************************************
  *

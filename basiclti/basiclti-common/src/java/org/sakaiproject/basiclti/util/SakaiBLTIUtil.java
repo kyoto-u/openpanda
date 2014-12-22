@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.2/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
- * $Id: SakaiBLTIUtil.java 313713 2014-09-18 16:40:18Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.3/basiclti-common/src/java/org/sakaiproject/basiclti/util/SakaiBLTIUtil.java $
+ * $Id: SakaiBLTIUtil.java 315908 2014-12-04 15:07:59Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -22,6 +22,7 @@ package org.sakaiproject.basiclti.util;
 import java.util.Properties;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -602,12 +603,12 @@ public class SakaiBLTIUtil {
 		Map<String, Object> deploy = null; 
 
 		Long deployKey = getLongKey(tool.get(LTIService.LTI_DEPLOYMENT_ID));
-        if ( deployKey >= 0 ) {
-            deploy = ltiService.getDeployDao(deployKey);
-        }
+		if ( deployKey >= 0 ) {
+			deploy = ltiService.getDeployDao(deployKey);
+		}
 
 		Long toolKey = getLongKey(tool.get(LTIService.LTI_ID));
-        proxyBinding = ltiService.getProxyBindingDao(toolKey,context);
+		proxyBinding = ltiService.getProxyBindingDao(toolKey,context);
 
 		Long toolVersion = getLongNull(tool.get(LTIService.LTI_VERSION));
 		boolean isLTI1 = toolVersion == null || toolVersion != LTIService.LTI_VERSION_2;
@@ -787,7 +788,7 @@ public class SakaiBLTIUtil {
 		return postLaunchHTML(toolProps, ltiProps, rb);
 	}
 
-    // An LTI 2.0 Registration launch
+	// An LTI 2.0 Registration launch
 	// This must return an HTML message as the [0] in the array
 	// If things are successful - the launch URL is in [1]
 	public static String[] postRegisterHTML(Long deployKey, Map<String,Object> tool, ResourceLoader rb, String placementId)
@@ -830,13 +831,13 @@ public class SakaiBLTIUtil {
 		M_log.debug("ltiProps="+ltiProps);
 
 		boolean dodebug = debug == 1;
-		String postData = BasicLTIUtil.postLaunchHTML(ltiProps, launch_url, dodebug);
+		String postData = BasicLTIUtil.postLaunchHTML(ltiProps, launch_url, dodebug, null);
 
 		String [] retval = { postData, launch_url };
 		return retval;
 	}
 
-    // An LTI 2.0 ReRegistration launch
+	// An LTI 2.0 ReRegistration launch
 	// This must return an HTML message as the [0] in the array
 	// If things are successful - the launch URL is in [1]
 	public static String[] postReRegisterHTML(Long deployKey, Map<String,Object> deploy, ResourceLoader rb, String placementId)
@@ -872,13 +873,14 @@ public class SakaiBLTIUtil {
 		int debug = getInt(deploy.get(LTIService.LTI_DEBUG));
 		debug = 1;
 
+		Map<String,String> extra = new HashMap<String,String> ();
 		ltiProps = BasicLTIUtil.signProperties(ltiProps, launch_url, "POST", 
-				consumerkey, secret, null, null, null);
+				consumerkey, secret, null, null, null, extra);
 
 		M_log.debug("signed ltiProps="+ltiProps);
 
 		boolean dodebug = debug == 1;
-		String postData = BasicLTIUtil.postLaunchHTML(ltiProps, launch_url, dodebug);
+		String postData = BasicLTIUtil.postLaunchHTML(ltiProps, launch_url, dodebug, extra);
 
 		String [] retval = { postData, launch_url };
 		return retval;
@@ -963,15 +965,16 @@ public class SakaiBLTIUtil {
 			return postError("<p>" + getRB(rb, "error.nokey", "Error - must have a secret and a key.")+"</p>");
 		}
 
+		Map<String,String> extra = new HashMap<String,String> ();
 		ltiProps = BasicLTIUtil.signProperties(ltiProps, launch_url, "POST", 
-				key, secret, org_guid, org_desc, org_url);
+				key, secret, org_guid, org_desc, org_url, extra);
 
 		if ( ltiProps == null ) return postError("<p>" + getRB(rb, "error.sign", "Error signing message.")+"</p>");
 		dPrint("LAUNCH III="+ltiProps);
 
 		String debugProperty = toolProps.getProperty(LTIService.LTI_DEBUG);
 		boolean dodebug = "on".equals(debugProperty) || "1".equals(debugProperty);
-		String postData = BasicLTIUtil.postLaunchHTML(ltiProps, launch_url, dodebug);
+		String postData = BasicLTIUtil.postLaunchHTML(ltiProps, launch_url, dodebug, extra);
 
 		String [] retval = { postData, launch_url };
 		return retval;

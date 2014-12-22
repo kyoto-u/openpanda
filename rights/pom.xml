@@ -4,13 +4,13 @@
   <parent>
       <groupId>org.sakaiproject</groupId>
       <artifactId>master</artifactId>
-      <version>10.2</version>
+      <version>10.3</version>
       <relativePath>../master/pom.xml</relativePath>
   </parent>
   <name>Sakai Rights Project</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>rights-base</artifactId>
-  <version>10.2</version>
+  <version>10.3</version>
   <packaging>pom</packaging>
 
   <modules>

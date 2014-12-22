@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
- * $Id: AuthorActionListener.java 311430 2014-07-31 02:23:57Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
+ * $Id: AuthorActionListener.java 315356 2014-11-12 10:53:01Z jjmerono@um.es $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -75,7 +76,7 @@ import org.sakaiproject.entity.api.ResourceProperties;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: AuthorActionListener.java 311430 2014-07-31 02:23:57Z enietzel@anisakai.com $
+ * @version $Id: AuthorActionListener.java 315356 2014-11-12 10:53:01Z jjmerono@um.es $
  */
 
 public class AuthorActionListener
@@ -369,15 +370,17 @@ public class AuthorActionListener
 				  PublishedAssessmentSettingsBean publishedAssessmentSettingsBean = (PublishedAssessmentSettingsBean) ContextUtil.lookupBean("publishedSettings");
 				  publishedAssessmentSettingsBean.setAssessmentId(f.getPublishedAssessmentId());
 				  String [] groupsAuthorized = publishedAssessmentSettingsBean.getGroupsAuthorized();
-                                  
+				  //Use a set to avoid duplicated entries in the userList
+				  HashSet<String> uuser = new HashSet<String>();                
 				  if(groupsAuthorized != null && groupsAuthorized.length > 0) {
 				  for (int i = 0; i < groupsAuthorized.length; i++) {
 					  if (groupUsersIdMap.get(groupsAuthorized[i]) != null) {
-						  for (String userId : groupUsersIdMap.get(groupsAuthorized[i])) {
-							  userIdList.add(userId);
+						  for (String userId : groupUsersIdMap.get(groupsAuthorized[i])) {							
+							  uuser.add(userId);
 						  }
 					  }
 				  }
+				  userIdList = new ArrayList<String>(uuser);
 			  }
 			  }
 			  else {

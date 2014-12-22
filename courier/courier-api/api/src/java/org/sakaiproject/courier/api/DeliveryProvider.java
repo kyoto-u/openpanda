@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.2/courier-api/api/src/java/org/sakaiproject/courier/api/DeliveryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.3/courier-api/api/src/java/org/sakaiproject/courier/api/DeliveryProvider.java $
  * $Id: DeliveryProvider.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

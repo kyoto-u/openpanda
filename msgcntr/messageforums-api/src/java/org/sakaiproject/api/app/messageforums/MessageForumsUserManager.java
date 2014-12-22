@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.2/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/MessageForumsUserManager.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.3/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/MessageForumsUserManager.java $
  * $Id: MessageForumsUserManager.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

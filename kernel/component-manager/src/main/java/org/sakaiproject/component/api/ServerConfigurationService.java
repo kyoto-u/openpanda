@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/component-manager/src/main/java/org/sakaiproject/component/api/ServerConfigurationService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/component-manager/src/main/java/org/sakaiproject/component/api/ServerConfigurationService.java $
  * $Id: ServerConfigurationService.java 122219 2013-04-04 21:01:10Z azeckoski@unicon.net $
  ***********************************************************************************
  *

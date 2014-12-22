@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.2/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputColorRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.3/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/InputColorRenderer.java $
 * $Id: InputColorRenderer.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

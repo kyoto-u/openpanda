@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.2/content-types/src/java/org/sakaiproject/content/types/FolderType.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.3/content-types/src/java/org/sakaiproject/content/types/FolderType.java $
  * $Id: FolderType.java 312341 2014-08-21 23:26:06Z matthew@longsight.com $
  ***********************************************************************************
  *

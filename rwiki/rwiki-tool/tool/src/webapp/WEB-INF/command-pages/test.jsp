@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!--
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/test.jsp $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-tool/tool/src/webapp/WEB-INF/command-pages/test.jsp $
  * $Id: test.jsp 20413 2007-01-18 15:23:15Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

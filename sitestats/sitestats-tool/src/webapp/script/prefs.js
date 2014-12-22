@@ -1,5 +1,5 @@
 /*
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.2/sitestats-tool/src/webapp/script/prefs.js $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.3/sitestats-tool/src/webapp/script/prefs.js $
  * $Id: prefs.js 131093 2013-11-04 14:59:26Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

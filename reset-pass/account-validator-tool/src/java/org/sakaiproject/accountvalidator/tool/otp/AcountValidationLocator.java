@@ -1,6 +1,6 @@
 /**
- * $Id: AcountValidationLocator.java 308859 2014-04-26 00:12:26Z enietzel@anisakai.com $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.2/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/AcountValidationLocator.java $
+ * $Id: AcountValidationLocator.java 315804 2014-12-01 17:42:39Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.3/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/AcountValidationLocator.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -233,34 +233,10 @@ public class AcountValidationLocator implements BeanLocator  {
 		            }
 		          });
 
-			//don't let the user through if they've taken longer than accountValidator.maxPasswordResetMinutes
-			String strMinutes = developerHelperService.getConfigurationSetting("accountValidator.maxPasswordResetMinutes", (String) null);
-			if (strMinutes != null && !"".equals(strMinutes))
+			if (validationLogic.isTokenExpired(item))
 			{
-				if (item.getAccountStatus() != null && item.getAccountStatus().equals(ValidationAccount.ACCOUNT_STATUS_PASSWORD_RESET))
-				{
-					try
-					{
-						//get the time limit and convert to millis
-						int minutes = Integer.parseInt(strMinutes);
-						long maxMillis = minutes*60*1000;
-
-						//the time when the validation token was sent to the email server
-						long sentTime = item.getValidationSent().getTime();
-
-						if (System.currentTimeMillis() - sentTime > maxMillis)
-						{
-							//it's been too long, so invalidate the token and stop the user
-							item.setStatus(ValidationAccount.STATUS_EXPIRED);
-							//a TargettedMessage will be displayed by ValidationProducer
-							return "error!";
-						}
-					}
-					catch (NumberFormatException nfe)
-					{
-						log.warn("acountValidator.maxPasswordResetMinutes is not configured correctly");
-					}
-				}
+				// A TargettedMessage will be displayed by ValidationProducer
+				return "error!";
 			}
 				
 	        	UserEdit u = userDirectoryService.editUser(userId);

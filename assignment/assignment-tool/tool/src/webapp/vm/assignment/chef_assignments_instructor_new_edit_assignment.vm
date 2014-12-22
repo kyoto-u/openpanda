@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_new_edit_assignment.vm 313930 2014-09-27 04:10:20Z enietzel@anisakai.com $ -->
+<!-- $Id: chef_assignments_instructor_new_edit_assignment.vm 315807 2014-12-01 17:47:21Z enietzel@anisakai.com $ -->
 <!-- start: chef_assignments_instructor_new_edit_assignment.vm  -->
 ##<!-- $Header: Exp $ -->
 ## Assignments - Instructor new Assignment view
@@ -30,7 +30,7 @@ $(document).ready(function() {
 	 		});
 	 	});
  	#end
-
+	SetMaxPoint(document.getElementById('$name_GradeType'), document.getElementById('$name_GradePoints'));
 });
 </script>
 
@@ -76,6 +76,11 @@ $(document).ready(function() {
 <script type="text/javascript">
     function SetMaxPoint(obj_option, obj_textfield)
     {
+		if (obj_option === null || obj_textfield === null)
+		{
+			return;
+		}
+
 		if(obj_option.value==3)
 		{ 
 			obj_textfield.disabled = false;
@@ -133,8 +138,10 @@ $(document).ready(function() {
 		var section = document.getElementById("reviewServiceOptions");
 		if(checked){
 			section.style.display="block";
+			resizeFrame('grow');
 		}else{
 			section.style.display="none";
+			resizeFrame('shrink');
 		}
 	}
 	
@@ -249,51 +256,40 @@ $(document).ready(function() {
 					</span>
 				</p>	
 			*#
+		<script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
                 #if ($visible_date_enabled) 
                <p class="shorttext">
                 <p class="checkbox" id="tempVisibleDate" >
-                    <input type="checkbox" id="allowVisibleDateToggle" name="allowVisibleDateToggle" #if($!assignment.getVisibleTime())checked="checked"#end onclick="if(checked){jQuery('.visibleDatePanel').show();resizeFrame();}else{jQuery('.visibleDatePanel').hide();}" />
+                    <input type="checkbox" id="allowVisibleDateToggle" name="allowVisibleDateToggle" #if($!new_assignment_visibletoggle)checked="checked"#end onclick="if(checked){jQuery('.visibleDatePanel').show();resizeFrame();}else{jQuery('.visibleDatePanel').hide();}" />
                     <label for="allowVisibleDateToggle">$tlang.getString("allowVisibleDate")</label>
                 </p>
-               <p class="shorttext visibleDatePanel" #if(!$!assignment.getVisibleTime())style="display:none;"#end>
+               <p class="shorttext visibleDatePanel" #if(!$!new_assignment_visibletoggle)style="display:none;"#end>
 			<span class="reqStar">*</span>
 			<label>
 				$tlang.getString("gen.visible.date")
 			</label>
-			#chef_dateselectionwidgetwithtitles($name_VisibleYear $name_VisibleMonth $name_VisibleDay $!value_year_from $!value_year_to $value_VisibleYear $value_VisibleMonth $value_VisibleDay $dateFormat $tlang.getString("dateselectionwidget.month") $tlang.getString("dateselectionwidget.day") $tlang.getString("dateselectionwidget.year") "")
-				 &nbsp;$tlang.getString("gen.at")&nbsp;
-            <label class="skip" for="$name_VisibleHour">$tlang.getString("dateselectionwidget.hour")</label>
-			<select name="$name_VisibleHour" id="$name_VisibleHour" title="$tlang.getString("dateselectionwidget.hour")">
-				#foreach ($i in [1..12])
-					#if ($i == $value_VisibleHour)
-						<option value="$i" selected="selected">$i</option>
-					#else
-						<option value="$i">$i</option>
-					#end
-				#end
-			</select>
-            <label class="skip" for="$name_VisibleMin">$tlang.getString("dateselectionwidget.minute")</label>
-			<select name="$name_VisibleMin" id="$name_VisibleMin" title="$tlang.getString("dateselectionwidget.minute")">
-				#foreach ($i in [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55])
-					<option value="$i" #if($i == $value_VisibleMin)selected="selected"#end>#if($i ==0)00#elseif($i == 5)05#else$i#end</option>
-				#end
-			</select>
-            <label class="skip" for="$name_VisibleMin">$tlang.getString("dateselectionwidget.ampm")</label>
-			<select name="$name_VisibleAMPM" id="$name_VisibleAMPM" title="$tlang.getString("dateselectionwidget.ampm")">
-				#foreach ($i in ["AM", "PM"])
-					#if ($i == $value_VisibleAMPM)
-						<option value="$i" selected="selected">$i</option>
-					#else
-						<option value="$i">$i</option>
-					#end
-				#end
-			</select>
+			<input type="text" id="visibledate" name="visibledate" class="datepicker" value="">
+	
+			<script type="text/javascript">
+				localDatePicker({
+					input:'#visibledate', 
+					useTime:1, 
+					val:"$value_VisibleYear$H$value_VisibleMonth$H$value_VisibleDay $value_VisibleHour:$value_VisibleMin",
+					parseFormat: 'YYYY-MM-DD HH:mm',
+					ashidden:{
+						month:"new_assignment_visiblemonth",
+						day:"new_assignment_visibleday",
+						year:"new_assignment_visibleyear",
+						hour:"new_assignment_visiblehour",
+						minute:"new_assignment_visiblemin"
+					}
+				});
+			</script>
                     </p>
-               <p class="instruction labelindnt visibleDatePanel" #if(!$!assignment.getVisibleTime())style="display:none;"#end>
+               <p class="instruction labelindnt visibleDatePanel" #if(!$!new_assignment_visibletoggle)style="display:none;"#end>
 			$tlang.getString("gen.stuwonsee")
 		</p>
 		#end
-		<script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
 		<p class="shorttext">
 			<span class="reqStar">*</span>
 			<label>
@@ -772,6 +768,9 @@ $(document).ready(function() {
 				</div>
 			</div>
 		#end
+		#if( ($!withGrade && $!withGradebook) || ($enableAnonGrading || $value_CheckAnonymousGrading.equals("true")) )
+			<h4>$!tlang.getString('grading')</h4>
+		#end
 		#if ($!withGrade && $!withGradebook)
 			## show the "Add to Gradebook" choices or not
 			#if(!$!allowGroupAssignmentsInGradebook)
@@ -779,9 +778,6 @@ $(document).ready(function() {
 			#else
 				#set ($addToGBDisplay="block")
 			#end
-				<h4>
-					$!tlang.getString('grading')
-				</h4>
 				<div style="display:$!addToGBDisplay">
 				<div class="checkbox  indnt2" style="display:$!addToGBDisplay">
 					## hide the assignment list from Gradebook when clicked
@@ -909,6 +905,28 @@ $(document).ready(function() {
 				</p>
 			#end
 		#end
+
+		## SAK-17606 - Show the anonymous grading checkbox if enabled
+		#if( $enableAnonGrading || $value_CheckAnonymousGrading.equals("true") )
+			#if ($withGrade && $withGradebook)
+				<br />
+			#end
+			<p class="checkbox indnt2">
+				<input id="$name_CheckAnonymousGrading" name="$name_CheckAnonymousGrading" type="checkbox" value="true" 
+					#if ($value_CheckAnonymousGrading.equals("true"))
+						checked="checked"
+					#end
+					#if( !$enableAnonGrading )
+						disabled="disabled"
+					#end
+				/>
+			<label for="$name_CheckAnonymousGrading" #if( !$enableAnonGrading ) class="disabled" #end>
+				$tlang.getString("grading.anonymous") 
+			</label>
+			</p>
+		#end
+		## end anonymous check
+
 		## Peer Assessment
 		#if ($allowPeerAssessment)
 			<div style="display:block">
@@ -1745,15 +1763,15 @@ $(document).ready(function() {
 			</p>
 		</fieldset>
 			<div class="act">
-				<input accesskey ="s" type="button" class="active" name="post" value="$tlang.getString("gen.pos")" 
+				<input accesskey="s" type="button" class="active" name="post" id="post" value="$tlang.getString("gen.pos")" 
 						onclick="javascript:document.newAssignmentForm.onsubmit();showNotif('submitnotif','post','newAssignmentForm');document.getElementById('option').value='post';document.newAssignmentForm.submit();return false;" />
-				<input accesskey ="v" type="button" name="preview" value="$tlang.getString("gen.pre")" 
+				<input accesskey="v" type="button" name="preview" id="preview" value="$tlang.getString("gen.pre")" 
 						onclick="javascript:document.newAssignmentForm.onsubmit();showNotif('submitnotif','preview','newAssignmentForm');document.getElementById('option').value='preview';document.newAssignmentForm.submit();return false;" />
 				#if (!($!assignment && !$assignment.draft))
-					<input accesskey ="d" type="button" name="save" value="$tlang.getString("gen.savdra")" 
+					<input accesskey="d" type="button" name="save" id="save" value="$tlang.getString("gen.savdra")" 
 							onclick="javascript:document.newAssignmentForm.onsubmit();showNotif('submitnotif','save','newAssignmentForm');document.getElementById('option').value='save';document.newAssignmentForm.submit();return false;" />
 				#end
-				<input accesskey ="x" type="button" name="cancel" value="$tlang.getString("gen.can")" 
+				<input accesskey="x" type="button" name="cancel" id="cancel" value="$tlang.getString("gen.can")" 
 							onclick="javascript:document.newAssignmentForm.onsubmit();document.getElementById('option').value='canceledit';document.newAssignmentForm.submit();return false;" />
 				<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 			</div>

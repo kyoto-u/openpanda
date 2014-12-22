@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventSummary.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.3/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventSummary.java $
  * $Id: EventSummary.java 134073 2014-02-04 18:01:31Z bkirschn@umich.edu $
  ***********************************************************************************
  *

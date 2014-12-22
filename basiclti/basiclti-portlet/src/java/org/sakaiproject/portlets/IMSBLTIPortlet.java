@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.2/basiclti-portlet/src/java/org/sakaiproject/portlets/IMSBLTIPortlet.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.3/basiclti-portlet/src/java/org/sakaiproject/portlets/IMSBLTIPortlet.java $
  * $Id: IMSBLTIPortlet.java 133886 2014-01-30 04:09:22Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/authz/AuthorizationIteratorFacade.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/authz/AuthorizationIteratorFacade.java $
  * $Id: AuthorizationIteratorFacade.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.2/podcasts-api/src/java/org/sakaiproject/api/app/podcasts/PodfeedService.java $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.3/podcasts-api/src/java/org/sakaiproject/api/app/podcasts/PodfeedService.java $
  * $Id: PodfeedService.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

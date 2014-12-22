@@ -75,7 +75,7 @@ import org.sakaiproject.util.ResourceLoader;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @version $Id: HistogramListener.java 308213 2014-04-15 01:03:53Z ktsao@stanford.edu $
+ * @version $Id: HistogramListener.java 315812 2014-12-01 17:53:40Z enietzel@anisakai.com $
  */
 
 public class HistogramListener
@@ -466,12 +466,17 @@ public class HistogramListener
                                 //need to only get gradings for students that answered this question
                                 List<AssessmentGradingData> filteredGradings =
                             		filterGradingData(submissionsSortedForDiscrim, questionScores.getItemId());
+                                
+                                // SAM-2228: loop control issues because of unsynchronized collection access
+                                int filteredGradingsSize = filteredGradings.size();
+                                percent27ForThisQuestion = filteredGradingsSize*27/100;
+                                
                                 for (int i = 0; i < percent27ForThisQuestion; i++) {
                                     lowerQuartileStudents.add(((AssessmentGradingData)
                                 	filteredGradings.get(i)).getAgentId());
                                     //
                                     upperQuartileStudents.add(((AssessmentGradingData)
-                                    	filteredGradings.get(questionScores.getNumResponses()-1-i)).getAgentId());
+                                    filteredGradings.get(filteredGradingsSize-1-i)).getAgentId());
                                 }
                              }
                           }

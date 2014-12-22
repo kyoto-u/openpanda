@@ -80,8 +80,8 @@
 
 <script type="text/javascript" src="/sakai-roster2-tool/lib/es5-shim.min.js"></script>
 <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="/library/js/jquery/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="/library/js/jquery/i18n-properties/1.0.9/jquery.i18n.properties-1.0.9.js"></script>
+<script type="text/javascript" src="/library/js/jquery/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="/profile2-tool/javascript/profile2-eb.js"></script>
 <script type="text/javascript" src="/sakai-roster2-tool/lib/handlebars.runtime-v1.3.0.js"></script>
 <script type="text/javascript" src="/sakai-roster2-tool/templates/templates.handlebars"></script>

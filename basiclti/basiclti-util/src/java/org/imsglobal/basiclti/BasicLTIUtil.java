@@ -1,6 +1,6 @@
 /*
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.2/basiclti-util/src/java/org/imsglobal/basiclti/BasicLTIUtil.java $
- * $Id: BasicLTIUtil.java 133995 2014-02-02 22:06:40Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.3/basiclti-util/src/java/org/imsglobal/basiclti/BasicLTIUtil.java $
+ * $Id: BasicLTIUtil.java 315908 2014-12-04 15:07:59Z enietzel@anisakai.com $
  *
  * Copyright (c) 2008 IMS GLobal Learning Consortium
  *
@@ -308,7 +308,7 @@ public class BasicLTIUtil {
 	 * Add the necessary fields and sign.
 	 * 
 	 * @deprecated See:
-	 *			 {@link BasicLTIUtil#signProperties(Map, String, String, String, String, String, String, String, String, String)}
+	 *	 {@link BasicLTIUtil#signProperties(Map, String, String, String, String, String, String, String, String, String)}
 	 * 
 	 * @param postProp
 	 * @param url
@@ -321,14 +321,15 @@ public class BasicLTIUtil {
 	 *		  See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_DESCRIPTION}
 	 * @param org_url
 	 *		  See: {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_URL}
+	 * @param extra
 	 * @return
 	 */
 	public static Properties signProperties(Properties postProp, String url,
 			String method, String oauth_consumer_key, String oauth_consumer_secret,
-			String org_id, String org_desc, String org_url) {
+			String org_id, String org_desc, String org_url, Map<String,String> extra) {
 		final Map<String, String> signedMap = signProperties(
 				convertToMap(postProp), url, method, oauth_consumer_key,
-				oauth_consumer_secret, org_id, org_desc, org_url, null, null);
+				oauth_consumer_secret, org_id, org_desc, org_url, null, null, extra);
 		return convertToProperties(signedMap);
 	}
 
@@ -351,6 +352,7 @@ public class BasicLTIUtil {
 	 * @param tool_consumer_instance_contact_email
 	 *		  See:
 	 *		  {@link BasicLTIConstants#TOOL_CONSUMER_INSTANCE_CONTACT_EMAIL}
+	 * @param extra
 	 * @return
 	 */
 	public static Map<String, String> signProperties(
@@ -359,7 +361,9 @@ public class BasicLTIUtil {
 			String tool_consumer_instance_guid,
 			String tool_consumer_instance_description,
 			String tool_consumer_instance_url, String tool_consumer_instance_name,
-			String tool_consumer_instance_contact_email) {
+			String tool_consumer_instance_contact_email,
+			Map<String, String> extra) {
+
 		postProp = BasicLTIUtil.cleanupProperties(postProp);
 
 		if ( postProp.get(LTI_VERSION) == null ) postProp.put(LTI_VERSION, "LTI-1p0");
@@ -396,7 +400,11 @@ public class BasicLTIUtil {
 		OAuthAccessor acc = new OAuthAccessor(cons);
 		try {
 			oam.addRequiredParameters(acc);
-			// System.out.println("Base Message String\n"+OAuthSignatureMethod.getBaseString(oam)+"\n");
+			String base_string = OAuthSignatureMethod.getBaseString(oam);
+			M_log.fine("Base Message String\n"+base_string+"\n");
+			if ( extra != null ) {
+				extra.put("BaseString", base_string);
+			}
 
 			List<Map.Entry<String, String>> params = oam.getParameters();
 
@@ -500,12 +508,13 @@ public class BasicLTIUtil {
 	 *		  The LTI launch url.
 	 * @param debug
 	 *		  Useful for viewing the HTML before posting to end point.
+	 * @param extra
 	 * @return the HTML ready for IFRAME src = inclusion.
 	 */
 	public static String postLaunchHTML(final Properties cleanProperties,
-			String endpoint, boolean debug) {
+			String endpoint, boolean debug, Map<String,String> extra) {
 		Map<String, String> map = convertToMap(cleanProperties);
-		return postLaunchHTML(map, endpoint, debug);
+		return postLaunchHTML(map, endpoint, debug, extra);
 	}
 
 	/**
@@ -519,10 +528,14 @@ public class BasicLTIUtil {
 	 *		  The LTI launch url.
 	 * @param debug
 	 *		  Useful for viewing the HTML before posting to end point.
+	 * @param extra
+	 *		  Useful for viewing the HTML before posting to end point.
 	 * @return the HTML ready for IFRAME src = inclusion.
 	 */
 	public static String postLaunchHTML(
-			final Map<String, String> cleanProperties, String endpoint, boolean debug) {
+			final Map<String, String> cleanProperties, String endpoint, 
+			boolean debug, Map<String,String> extra) {
+
 		if (cleanProperties == null || cleanProperties.isEmpty()) {
 			throw new IllegalArgumentException(
 					"cleanProperties == null || cleanProperties.isEmpty()");
@@ -600,6 +613,14 @@ public class BasicLTIUtil {
 				text.append("\n");
 			}
 			text.append("</pre>\n");
+			if ( extra != null ) {
+				String base_string = extra.get("BaseString");
+				if ( base_string != null ) {
+					text.append("<!-- Base String\n");
+					text.append(base_string.replaceAll("-->","__>"));
+					text.append("\n-->\n");
+				}
+			}
 		} else {
 			// paint auto submit script
 			text

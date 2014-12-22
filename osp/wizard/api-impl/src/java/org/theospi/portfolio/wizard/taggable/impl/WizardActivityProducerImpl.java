@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/wizard/api-impl/src/java/org/theospi/portfolio/wizard/taggable/impl/WizardActivityProducerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.3/wizard/api-impl/src/java/org/theospi/portfolio/wizard/taggable/impl/WizardActivityProducerImpl.java $
  * $Id: WizardActivityProducerImpl.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
  ***********************************************************************************
  *

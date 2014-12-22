@@ -1,6 +1,6 @@
 /**
- * $Id: CheckValidations.java 106391 2012-03-30 07:45:31Z david.horwitz@uct.ac.za $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.2/account-validator-impl/src/java/org/sakaiproject/accountvalidator/impl/jobs/CheckValidations.java $
+ * $Id: CheckValidations.java 315804 2014-12-01 17:42:39Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.3/account-validator-impl/src/java/org/sakaiproject/accountvalidator/impl/jobs/CheckValidations.java $
  *
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -129,7 +129,19 @@ public class CheckValidations implements Job {
 		
 		
 		Calendar cal = new GregorianCalendar();
-		String maxDaysLocalStr = serverConfigurationService.getString("accountValidator.maxDays", "" + maxDays);
+		// check the old property first
+		String maxDaysLocalStr = serverConfigurationService.getString("accountValidator.maxDays", null);
+		if (maxDaysLocalStr == null)
+		{
+			log.warn("accountValidator.maxDays was found. The new property is accountValidator.maxReminderDays");
+		}
+		// overwrite it with the new property if it exists, default to the old one
+		maxDaysLocalStr = serverConfigurationService.getString("accountValidator.maxReminderDays", maxDaysLocalStr);
+		if (maxDaysLocalStr == null)
+		{
+			// neither of the two properties are set, use the default
+			maxDaysLocalStr = "" + maxDays;
+		}
 		try{
 			maxDays = Integer.parseInt(maxDaysLocalStr);
 		}catch (Exception e) {}
@@ -177,6 +189,10 @@ public class CheckValidations implements Job {
 					cal = new GregorianCalendar();
 					account.setvalidationReceived(cal.getTime());
 					validationLogic.save(account);
+				} 
+				else if (validationLogic.isTokenExpired(account))
+				{
+					// Note: ^ isTokenExpired has the side effect of expiring tokens. We are doing this intentionally, so please do not remove this empty 'else if' block.
 				} else {
 					//TODO What do we do in this case?
 				}
@@ -239,8 +255,11 @@ public class CheckValidations implements Job {
 				replacementValues.put("userList", userText.toString());
 				replacementValues.put("creatorName", creator.getDisplayName());
 				replacementValues.put("deleteDays", Integer.valueOf(maxDays).toString());
+				replacementValues.put("institution", serverConfigurationService.getString("ui.institution"));
 				//now we send an email
-				emailTemplateService.sendRenderedMessages("validation.deleted", userReferences, replacementValues, "help@vula.uct.ac.za", "Vula Help");
+				String fromEmail = serverConfigurationService.getString("accountValidator.checkValidations.fromEmailAddress", serverConfigurationService.getString("mail.support"));
+				String fromName = serverConfigurationService.getString("accountValidator.checkValidations.fromEmailName", serverConfigurationService.getString("mail.support"));
+				emailTemplateService.sendRenderedMessages("validate.deleted", userReferences, replacementValues, fromEmail, fromName);
 				
 				
 			} catch (UserNotDefinedException e) {

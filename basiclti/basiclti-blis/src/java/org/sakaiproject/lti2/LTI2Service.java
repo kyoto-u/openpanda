@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.2/basiclti-blis/src/java/org/sakaiproject/lti2/LTI2Service.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.3/basiclti-blis/src/java/org/sakaiproject/lti2/LTI2Service.java $
  * $Id: LTI2Service.java 133995 2014-02-02 22:06:40Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation

@@ -1,6 +1,6 @@
 /**
- * $Id: ValidationLogicImpl.java 308859 2014-04-26 00:12:26Z enietzel@anisakai.com $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.2/account-validator-impl/src/java/org/sakaiproject/accountvalidator/logic/impl/ValidationLogicImpl.java $
+ * $Id: ValidationLogicImpl.java 315804 2014-12-01 17:42:39Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.3/account-validator-impl/src/java/org/sakaiproject/accountvalidator/logic/impl/ValidationLogicImpl.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -23,7 +23,6 @@ package org.sakaiproject.accountvalidator.logic.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,7 +66,6 @@ import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.id.api.IdManager;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
-import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -85,11 +83,12 @@ public class ValidationLogicImpl implements ValidationLogic {
 	private static final String TEMPLATE_KEY_NEW_USER = "validate.newUser";
 	private static final String TEMPLATE_KEY_LEGACYUSER = "validate.legacyuser";
 	private static final String TEMPLATE_KEY_PASSWORDRESET = "validate.passwordreset";
+	private static final String TEMPLATE_KEY_DELETED = "validate.deleted";
 	
 	private static final int VALIDATION_PERIOD_MONTHS = -36;
 	private static Log log = LogFactory.getLog(ValidationLogicImpl.class);
 	
-	
+	private static final String MAX_PASSWORD_RESET_MINUTES = "accountValidator.maxPasswordResetMinutes";
 	
 	public void init(){
 		log.info("init()");
@@ -98,6 +97,7 @@ public class ValidationLogicImpl implements ValidationLogic {
 		loadTemplate("validate_existingUser.xml", TEMPLATE_KEY_EXISTINGUSER);
 		loadTemplate("validate_legacyUser.xml", TEMPLATE_KEY_LEGACYUSER);
 		loadTemplate("validate_newPassword.xml", TEMPLATE_KEY_PASSWORDRESET);
+		loadTemplate("validate_deleted.xml", TEMPLATE_KEY_DELETED);
 		
 		//seeing the GroupProvider is optional we need to load it here
 		if (groupProvider == null) {
@@ -261,7 +261,7 @@ public class ValidationLogicImpl implements ValidationLogic {
 			log.debug("no account found!");
 			return false;
 		} else {
-			if(ValidationAccount.STATUS_EXPIRED.equals((va.getStatus()))){
+			if(isTokenExpired(va)) {
 				return true;
 			}else if (va.getValidationReceived() == null && va.getValidationSent().after(validationDeadline)) {
 				log.debug("validation sent still awaiting reply");
@@ -280,6 +280,50 @@ public class ValidationLogicImpl implements ValidationLogic {
 		
 		log.debug("no conditions met assuming account is not validated");
 		return false;
+	}
+	
+	public boolean isTokenExpired(ValidationAccount va)
+	{
+		if (va == null)
+		{
+			throw new IllegalArgumentException("null ValidationAccount passed to isTokenExpired");
+		}
+		// check if it's expired in relation to accountValidator.maxPasswordResetMinutes sakai property
+		String strMinutes = serverConfigurationService.getString(MAX_PASSWORD_RESET_MINUTES);
+		if (strMinutes != null && !strMinutes.isEmpty())
+		{
+			// this property only applies to validation tokens coming from reset-pass
+			if (va.getAccountStatus() != null && va.getAccountStatus().equals(ValidationAccount.ACCOUNT_STATUS_PASSWORD_RESET))
+			{
+				try
+				{
+					// get the time limit and convert to millis
+					int minutes = Integer.parseInt(strMinutes);
+					long maxMillis = minutes * 60 * 1000;
+
+					// the time when the validation was sent to the email server
+					long sentTime = va.getValidationSent().getTime();
+
+					// all calls to setValidationSent use 'new Date()' whose time is equivalent to System.getCurrentTimeMillis(), so we can do this:
+					if (System.currentTimeMillis() - sentTime > maxMillis)
+					{
+						// it's been too long, so invalidate the token and return
+						va.setStatus(ValidationAccount.STATUS_EXPIRED);
+						Calendar cal = new GregorianCalendar();
+						va.setvalidationReceived(cal.getTime());
+						dao.save(va);
+						return true;
+					}
+				}
+				catch (NumberFormatException nfe)
+				{
+					log.warn("accountValidator.maxPasswordResetMinutes must be an integer");
+				}
+			}
+		}
+
+		// perhaps accountValidator.maxPasswordResetMinutes wasn't set, in which case a quartz job may have invalidated the token
+		return ValidationAccount.STATUS_EXPIRED.equals(va.getStatus());
 	}
 
 	public ValidationAccount getVaLidationAcountByUserId(String userId) {

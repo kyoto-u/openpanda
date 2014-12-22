@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: multipleChoice.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
+* $Id: multipleChoice.jsp 315260 2014-11-10 18:04:06Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -229,7 +229,7 @@
  <h:panelGrid>
 
    <samigo:wysiwyg rows="140" value="#{answer.text}" hasToggle="yes" >
-     <f:validateLength maximum="4000"/>
+     <f:validateLength maximum="60000"/>
    </samigo:wysiwyg>
  </h:panelGrid>
 			

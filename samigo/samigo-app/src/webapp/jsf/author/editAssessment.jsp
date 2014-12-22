@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: editAssessment.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+* $Id: editAssessment.jsp 315808 2014-12-01 17:48:52Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -306,6 +306,7 @@ document.links[newindex].onclick();
 	  
     </h:panelGrid>
       <f:verbatim></h4></f:verbatim>
+        <h:outputText escape="false" value="#{partBean.description}" />
 <f:verbatim><div class="tier2"></f:verbatim>
         <!-- PART ATTACHMENTS -->
         <%@ include file="/jsf/author/part_attachment.jsp" %>

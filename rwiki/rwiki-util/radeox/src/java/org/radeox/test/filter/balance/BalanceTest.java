@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-util/radeox/src/java/org/radeox/test/filter/balance/BalanceTest.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-util/radeox/src/java/org/radeox/test/filter/balance/BalanceTest.java $
  * $Id: BalanceTest.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

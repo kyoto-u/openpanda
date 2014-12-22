@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.2/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/SiteActivityImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.3/sitestats-impl-hib/src/java/org/sakaiproject/sitestats/impl/SiteActivityImpl.java $
  * $Id: SiteActivityImpl.java 133719 2014-01-27 11:20:56Z matthew.buckett@it.ox.ac.uk $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

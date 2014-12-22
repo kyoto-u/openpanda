@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.2/jsf-resource/src/webapp/hideDivision/hideDivision.js $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.3/jsf-resource/src/webapp/hideDivision/hideDivision.js $
 * $Id: hideDivision.js 105082 2012-02-24 23:26:34Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

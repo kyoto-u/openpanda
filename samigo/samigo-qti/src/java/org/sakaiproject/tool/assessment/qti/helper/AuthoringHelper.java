@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/AuthoringHelper.java $
- * $Id: AuthoringHelper.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/AuthoringHelper.java $
+ * $Id: AuthoringHelper.java 315156 2014-11-05 16:09:52Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -51,6 +51,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback;
+import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentMetaData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemMetaData;
 import org.sakaiproject.tool.assessment.data.dao.questionpool.QuestionPoolItemData;
@@ -95,7 +96,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley esmiley@stanford.edu
  * @author Shastri, Rashmi <rshastri@iupui.edu>
- * @version $Id: AuthoringHelper.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * @version $Id: AuthoringHelper.java 315156 2014-11-05 16:09:52Z ottenhoff@longsight.com $
  */
 public class AuthoringHelper
 {
@@ -718,6 +719,17 @@ public class AuthoringHelper
       {
         //log.info("NOT NULL: " + allowIp);
         exHelper.makeSecuredIPAddressSet(assessment, allowIp);
+		//Clean unnecesary ip metadata that fail when an assessment  
+		//with more than 256 charts in the field ALLOWED IPS is imported
+		Set assessmentSet = assessment.getAssessmentMetaDataSet();
+		Iterator assessmentSetIterator = assessmentSet.iterator();
+		while(assessmentSetIterator.hasNext()){
+			AssessmentMetaData assessmentMetaData = (AssessmentMetaData)assessmentSetIterator.next();
+			if("ALLOW_IP".equals(assessmentMetaData.getLabel())) {
+				assessmentSetIterator.remove();
+				break;
+			}
+		}
       }
       
       // Assessment Attachment

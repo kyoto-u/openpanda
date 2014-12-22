@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
- * $Id: FormattedText.java 313737 2014-09-19 00:20:46Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-util/src/main/java/org/sakaiproject/util/FormattedText.java $
+ * $Id: FormattedText.java 315360 2014-11-12 15:05:53Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -27,6 +27,7 @@ import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.util.api.FormattedText.Level;
 import org.sakaiproject.util.api.MockFormattedText;
 import org.w3c.dom.Element;
+import java.text.NumberFormat;
 
 /**
  * COVER
@@ -195,4 +196,26 @@ public class FormattedText {
     public static String makeShortenedText(String text, Integer maxLength, String separator, String cutMethod) {
         return getFormattedText().makeShortenedText(text, maxLength, separator, cutMethod);
 }
+    
+    /**
+     * @see org.sakaiproject.util.api.FormattedText#getDecimalSeparator()
+     */
+    public static String getDecimalSeparator() {
+        return getFormattedText().getDecimalSeparator();
+}
+    
+    /**
+     * @see org.sakaiproject.util.api.FormattedText#getNumberFormat(Integer,Integer,Boolean)
+     */
+    public static NumberFormat getNumberFormat(Integer maxFractionDigits, Integer minFractionDigits, Boolean groupingUsed) {
+    	return getFormattedText().getNumberFormat(maxFractionDigits, minFractionDigits, groupingUsed);
+    }
+
+    /**
+     * @see org.sakaiproject.util.api.FormattedText#getNumberFormat()
+     */
+    public static NumberFormat getNumberFormat() {
+    	return getFormattedText().getNumberFormat();
+    }
+    
 }

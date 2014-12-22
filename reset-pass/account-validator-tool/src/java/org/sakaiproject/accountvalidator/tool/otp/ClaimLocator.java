@@ -1,6 +1,6 @@
 /**
- * $Id: ClaimLocator.java 308859 2014-04-26 00:12:26Z enietzel@anisakai.com $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.2/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/ClaimLocator.java $
+ * $Id: ClaimLocator.java 315804 2014-12-01 17:42:39Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.3/account-validator-tool/src/java/org/sakaiproject/accountvalidator/tool/otp/ClaimLocator.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -146,6 +146,13 @@ public class ClaimLocator implements BeanLocator {
 		}
 
 		String oldUserRef = userDirectoryService.userReference(va.getUserId());
+
+		// don't let them claim the account if their validation token is expired
+		if (validationLogic.isTokenExpired(va))
+		{
+			// a TargettedMessage will be displayed by ValidationProducer
+			return "error";
+		}
 		
 		//Try set up the ussersession
 		authenticateUser(vc, oldUserRef);

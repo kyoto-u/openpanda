@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/exception/PermissionException.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/api/src/main/java/org/sakaiproject/exception/PermissionException.java $
  * $Id: PermissionException.java 306163 2014-02-18 23:09:09Z matthew@longsight.com $
  ***********************************************************************************
  *

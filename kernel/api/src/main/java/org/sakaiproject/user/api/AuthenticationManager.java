@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/user/api/AuthenticationManager.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/api/src/main/java/org/sakaiproject/user/api/AuthenticationManager.java $
  * $Id: AuthenticationManager.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

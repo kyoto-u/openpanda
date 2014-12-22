@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.2/src/main/java/org/sakaiproject/mock/domain/ToolConfiguration.java $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.3/src/main/java/org/sakaiproject/mock/domain/ToolConfiguration.java $
  * $Id: ToolConfiguration.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

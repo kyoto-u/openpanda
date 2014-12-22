@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-util/src/main/java/org/sakaiproject/util/BasicAuth.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-util/src/main/java/org/sakaiproject/util/BasicAuth.java $
  * $Id: BasicAuth.java 106499 2012-04-03 08:38:53Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

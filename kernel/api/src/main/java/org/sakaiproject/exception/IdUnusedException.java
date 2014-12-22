@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/exception/IdUnusedException.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/api/src/main/java/org/sakaiproject/exception/IdUnusedException.java $
  * $Id: IdUnusedException.java 107067 2012-04-13 15:20:04Z azeckoski@unicon.net $
  ***********************************************************************************
  *

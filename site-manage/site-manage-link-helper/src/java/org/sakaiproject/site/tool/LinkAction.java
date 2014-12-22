@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-10.2/site-manage-link-helper/src/java/org/sakaiproject/site/tool/LinkAction.java $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-10.3/site-manage-link-helper/src/java/org/sakaiproject/site/tool/LinkAction.java $
  * $Id: LinkAction.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

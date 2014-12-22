@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/QuestionPoolFacadeQueriesAPI.java $
- * $Id: QuestionPoolFacadeQueriesAPI.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/QuestionPoolFacadeQueriesAPI.java $
+ * $Id: QuestionPoolFacadeQueriesAPI.java 315345 2014-11-11 18:42:24Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -221,5 +221,8 @@ public interface QuestionPoolFacadeQueriesAPI
   public void removeQuestionPoolAccess(Tree tree, String user, Long questionPoolId, Long accessTypeId);   
 
   public List<AgentFacade> getAgentsWithAccess(final Long questionPoolId);
+  
+  //SAM-2049
+  public void transferPoolsOwnership(String ownerId, List<Long> poolIds);
 
 }

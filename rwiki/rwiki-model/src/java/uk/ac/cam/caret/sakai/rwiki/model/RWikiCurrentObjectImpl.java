@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.2/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiCurrentObjectImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-model/src/java/uk/ac/cam/caret/sakai/rwiki/model/RWikiCurrentObjectImpl.java $
  * $Id: RWikiCurrentObjectImpl.java 20447 2007-01-18 23:06:20Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

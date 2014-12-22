@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_report_submissions.vm 129945 2013-09-24 22:33:32Z matthew@longsight.com $ -->
+<!-- $Id: chef_assignments_instructor_report_submissions.vm 315364 2014-11-12 15:42:20Z enietzel@anisakai.com $ -->
 <!-- start: chef_assignments_instructory_report_submissions.vm  -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_report_submissions.vm,v 1.6 2005/06/03 15:38:27 gsilver.umich.edu Exp $ -->
 <div class="portletBody">
@@ -46,11 +46,12 @@
 		<div class="navPanel">
 			<div class="viewNav">
 			<br />
-			#if ($!groups.hasNext())
+			#if ($!groups.hasNext() || !$hasAtLeastOneAnonAssignment)
 			<form name="viewForm" class="inlineForm" method="post" action="#toolForm("AssignmentAction")">
 			<input type="hidden" name="option" id="option" value="x" />
 			<input type="hidden" name="eventSubmit_doView_submission_list_option" value="x" />
 			<span class="skip">$tlang.getString("newassig.selectmessage")</span>
+				#if( $!groups.hasNext() )
 				<div class="instruction">
 					$tlang.getString("view_instruction") 
 				</div>
@@ -68,13 +69,18 @@
 					#end
 				</select>
 				<p />
+				#end
+
+				#if( !$hasAtLeastOneAnonAssignment )
 				<label for="$form_search" class="skip">$tlang.getString("search")</label>
 				<input value="$validator.escapeHtml($searchString)" name="search" id="search" type="text" class="searchField"  size="20" />
 				<input type="button" value="$tlang.getString('search')" onclick="blur();document.getElementById('option').value='search';document.viewForm.submit();return false;" />
 				#if (($!searchString) && (!$searchString.equals("")))
 					<input type="button" class="button" value="$tlang.getString("search_clear")" onclick="blur();document.getElementById('option').value='clearSearch';document.viewForm.submit();return false;" />
 				#end
-									
+				<p />
+				#end
+
 				<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 			</form>
 			
@@ -231,7 +237,10 @@
 					</tr>
 					#foreach ($submission in $submissions)
 						#set ($assignment = $submission.getSubmission().getAssignment())
-						#set ($submissionType = $assignment.Content.TypeOfSubmission)
+                        #set ($assignmentContent = $assignment.getContent())
+                        #set ($submissionType = $assignmentContent.TypeOfSubmission)
+						#set ($typeOfGrade = $assignmentContent.getTypeOfGrade())
+						#set ($isAnon = $assignmentService.assignmentUsesAnonymousGrading($assignment))
 						<tr>
 							<td headers="studentname">
 							#set ($submitterNames = "")
@@ -262,7 +271,7 @@
 							<td headers="grade">
 								#if ($submission.getSubmission())
 									#if ($submission.getSubmission().Graded)
-										#if ($assignment.getContent().TypeOfGrade == 1)
+										#if ($typeOfGrade == 1)
 											$tlang.getString("gen.nograd")
 										#else
                                             #if ($submission.group)
@@ -280,7 +289,7 @@
 								&nbsp;
 							</td>
 							<td headers="scale">
-								#set ($gradeScale = $assignment.getContent().getTypeOfGrade())
+								#set ($gradeScale = $typeOfGrade)
 									#if ($gradeScale == -1)
 										## Grade type not set 
 										$tlang.getString("gen.notset")
@@ -292,7 +301,7 @@
 										A-F
 									#elseif ($gradeScale == 3)
 										## Score based grade type
-										0-$assignment.getContent().getMaxGradePointDisplay()
+										0-$assignmentContent.getMaxGradePointDisplay()
 									#elseif ($gradeScale == 4)
 										## Pass/fail grade type 
 										 $tlang.getString("gen.pf")
@@ -307,15 +316,19 @@
 								#else
 									#if ($submission.getSubmission())
 										#if ($submission.getSubmission().submitted)
-											#set($timeSubmitted=false)
-											#set($timeSubmitted=$submission.getSubmission().TimeSubmitted)
-											#if($!timeSubmitted)
-												$!timeSubmitted.toStringLocalFull()
-											#end
-											#if ($!timeSubmitted && $timeSubmitted.after($assignment.DueTime))
-												<span class="highlight">
-													$tlang.getString("gen.late2")
-												</span>
+											#if (!$isAnon)
+												#set($timeSubmitted=false)
+												#set($timeSubmitted=$submission.getSubmission().TimeSubmitted)
+												#if($!timeSubmitted)
+													$!timeSubmitted.toStringLocalFull()
+												#end
+												#if ($!timeSubmitted && $timeSubmitted.after($assignment.DueTime))
+													<span class="highlight">
+														$tlang.getString("gen.late2")
+													</span>
+												#end
+											#elseif ($!submission.getSubmission().TimeSubmitted.toStringLocalFull())
+												$tlang.getString("gen.subm4") $tlang.getString("submitted.date.redacted")
 											#end
 										#end
 									#end

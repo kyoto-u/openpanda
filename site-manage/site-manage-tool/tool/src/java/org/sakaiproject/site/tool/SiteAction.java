@@ -1,7 +1,7 @@
 /**********************************************************************************
 
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-10.2/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
- * $Id: SiteAction.java 313729 2014-09-18 23:20:24Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-10.3/site-manage-tool/tool/src/java/org/sakaiproject/site/tool/SiteAction.java $
+ * $Id: SiteAction.java 315797 2014-12-01 17:30:10Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -751,6 +751,8 @@ public class SiteAction extends PagedResourceActionII {
 	private List prefLocales = new ArrayList();
 	
 	private static final String VM_ALLOWED_ROLES_DROP_DOWN 	= "allowedRoles";
+	
+	private static final String SAK_PROP_IMPORT_NOTIFICATION = "site.setup.import.notification";
 	
 	// state variable for whether any multiple instance tool has been selected
 	private String STATE_MULTIPLE_TOOL_INSTANCE_SELECTED = "state_multiple_tool_instance_selected";
@@ -2050,7 +2052,7 @@ public class SiteAction extends PagedResourceActionII {
 				if(state.getAttribute(IMPORT_QUEUED) != null){
 					context.put("importQueued", true);
 					state.removeAttribute(IMPORT_QUEUED);
-					if(UserDirectoryService.getCurrentUser().getEmail() == null || "".equals(UserDirectoryService.getCurrentUser().getEmail())){
+					if(StringUtils.isBlank(UserDirectoryService.getCurrentUser().getEmail()) || !ServerConfigurationService.getBoolean(SAK_PROP_IMPORT_NOTIFICATION, true)){
 						context.put("importQueuedNoEmail", true);
 					}
 				}
@@ -8608,12 +8610,13 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 									EventTrackingService.post(EventTrackingService.newEvent(SiteService.EVENT_SITE_IMPORT_START, existingSite.getReference(), false));
 									SessionManager.setCurrentSession(session);
 									SessionManager.setCurrentToolSession(toolSession);
-									importToolIntoSite(selectedTools, importTools,
-											existingSite);
+									importToolIntoSite(selectedTools, importTools, existingSite);
 									existingSite = getStateSite(state); // refresh site for
 									// WC and News
 									commitSite(existingSite);
-									userNotificationProvider.notifySiteImportCompleted(userEmail, existingSite.getId(), existingSite.getTitle());
+									if (ServerConfigurationService.getBoolean(SAK_PROP_IMPORT_NOTIFICATION, true)) {
+										userNotificationProvider.notifySiteImportCompleted(userEmail, existingSite.getId(), existingSite.getTitle());
+									}
 									EventTrackingService.post(EventTrackingService.newEvent(SiteService.EVENT_SITE_IMPORT_END, existingSite.getReference(), false));
 								}
 							};
@@ -8675,9 +8678,10 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 									SessionManager.setCurrentSession(session);
 									SessionManager.setCurrentToolSession(toolSession);
 									// Remove all old contents before importing contents from new site
-									importToolIntoSiteMigrate(selectedTools, importTools,
-											existingSite);
-									userNotificationProvider.notifySiteImportCompleted(userEmail, existingSite.getId(), existingSite.getTitle());
+									importToolIntoSiteMigrate(selectedTools, importTools, existingSite);
+									if (ServerConfigurationService.getBoolean(SAK_PROP_IMPORT_NOTIFICATION, true)) {
+										userNotificationProvider.notifySiteImportCompleted(userEmail, existingSite.getId(), existingSite.getTitle());
+									}
 									EventTrackingService.post(EventTrackingService.newEvent(SiteService.EVENT_SITE_IMPORT_END, existingSite.getReference(), false));
 								}
 							};

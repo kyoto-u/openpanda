@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/presentation/api/src/java/org/theospi/portfolio/presentation/model/PresentationItemProperty.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.3/presentation/api/src/java/org/theospi/portfolio/presentation/model/PresentationItemProperty.java $
 * $Id: PresentationItemProperty.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

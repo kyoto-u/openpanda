@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemoveAssessmentListener.java $
- * $Id: RemoveAssessmentListener.java 115707 2012-11-05 13:09:54Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemoveAssessmentListener.java $
+ * $Id: RemoveAssessmentListener.java 315343 2014-11-11 18:38:04Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -29,6 +29,8 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import org.sakaiproject.event.api.NotificationService;
+import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
@@ -40,7 +42,7 @@ import org.sakaiproject.tool.cover.SessionManager;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: RemoveAssessmentListener.java 115707 2012-11-05 13:09:54Z david.horwitz@uct.ac.za $
+ * @version $Id: RemoveAssessmentListener.java 315343 2014-11-11 18:38:04Z enietzel@anisakai.com $
  */
 
 public class RemoveAssessmentListener implements ActionListener
@@ -55,22 +57,19 @@ public class RemoveAssessmentListener implements ActionListener
   {
     AssessmentService s = new AssessmentService();
 
-    AssessmentBean assessmentBean = (AssessmentBean) ContextUtil.lookupBean(
-                                                           "assessmentBean");
+    AssessmentBean assessmentBean = (AssessmentBean) ContextUtil.lookupBean("assessmentBean");
 
-    // #1 - remove selected assessment on a separate thread
-    String assessmentId = (String) assessmentBean.getAssessmentId();
-    //SAM-2004 we need the current placement -DH
-    String context = s.getAssessmentSiteId(assessmentId);
-    RemoveAssessmentThread thread = new RemoveAssessmentThread(assessmentId, SessionManager.getCurrentSessionUserId(), context);
-    thread.start();
+    final String assessmentId = (String) assessmentBean.getAssessmentId();
+    s.removeAssessment(assessmentId);
 
+    final String context = s.getAssessmentSiteId(assessmentId);
+    EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.remove", "assessmentId=" + assessmentId, context, true, NotificationService.NOTI_NONE));
+    
     // This should have been done inside AssessmentFacadeQueries.removeAssessment()
     // but it didn't work there nor inside RemoveAssessmentThread. 
     // Debugging log in Conntent Hosting doesn't show anything.
     // So I have to do it here
     // #2 - even if assessment is set to dead, we intend to remove any resources
-    //    List resourceIdList = s.getAssessmentResourceIdList(assessment);
     // s.deleteResources(resourceIdList);
 
     //#3 - goto authorIndex.jsp so fix the assessment List in author bean by

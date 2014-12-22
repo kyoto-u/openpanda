@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/LoginServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/LoginServlet.java $
  * $Id: LoginServlet.java 311789 2014-08-11 13:40:14Z enietzel@anisakai.com $
  ***********************************************************************************
  *

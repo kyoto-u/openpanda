@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/questionpool/ImportQuestionsToAuthoring.java $
- * $Id: ImportQuestionsToAuthoring.java 311281 2014-07-29 21:00:02Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/questionpool/ImportQuestionsToAuthoring.java $
+ * $Id: ImportQuestionsToAuthoring.java 315866 2014-12-03 13:42:20Z jjmerono@um.es $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -26,8 +26,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Collections;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
@@ -50,7 +49,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 /**
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
- * @version $Id: ImportQuestionsToAuthoring.java 311281 2014-07-29 21:00:02Z ottenhoff@longsight.com $
+ * @version $Id: ImportQuestionsToAuthoring.java 315866 2014-12-03 13:42:20Z jjmerono@um.es $
  */
 
 public class ImportQuestionsToAuthoring implements ActionListener
@@ -79,6 +78,8 @@ public class ImportQuestionsToAuthoring implements ActionListener
 
   public boolean importItems(QuestionPoolBean qpoolbean){
     try {
+      ArrayList destItems = ContextUtil.paramArrayValueLike("importCheckbox");
+      if (destItems.size() > 0) {
       AssessmentService assessdelegate = new AssessmentService();
       ItemService delegate = new ItemService();
       SectionService sectiondelegate = new SectionService();
@@ -89,37 +90,33 @@ public class ImportQuestionsToAuthoring implements ActionListener
       ItemFacade itemfacade = null;
       boolean newSectionCreated = false;
       
-      String itemId= "";
+        // SAM-2395 - sort based on question text
+      	// SAM-2437 - use an arrayList instead of treeset to allow duplicated title questions
+	      ArrayList<ItemFacade> sortedQuestions = new ArrayList<ItemFacade>();
 
-      ArrayList destItems= ContextUtil.paramArrayValueLike("importCheckbox");
-      
-      // SAM-2341 - sort based on question text
-      Map<ItemFacade, SectionFacade> copiedQuestions = new TreeMap<ItemFacade, SectionFacade>(new Comparator<ItemFacade>() {
-          @Override
-          public int compare(ItemFacade obj1, ItemFacade obj2) {
-              return obj1.getText().compareTo(obj2.getText());
-          }
-      });
-
-      if (destItems.size() > 0) {
-
-      //List items= new ArrayList();
-      Iterator iter = destItems.iterator();
-      while(iter.hasNext())
-      {
-        itemId = (String) iter.next();
-        ItemFacade poolitemfacade= delegate.getItem(Long.valueOf(itemId), AgentFacade.getAgentString());
-
-        ItemData clonedItem = delegate.cloneItem(poolitemfacade.getData());
+        // SAM-2395 - copy the questions into a sorted list
+        for (Object itemID : destItems) {
+          ItemFacade poolItemFacade = delegate.getItem(Long.valueOf((String) itemID), AgentFacade.getAgentString());
+          ItemData clonedItem = delegate.cloneItem( poolItemFacade.getData() );
         clonedItem.setItemId(Long.valueOf(0));
         clonedItem.setItemIdString("0");
         itemfacade = new ItemFacade(clonedItem);
+          sortedQuestions.add(itemfacade);
+        }
 
+        Collections.sort(sortedQuestions, new Comparator<ItemFacade>() {
+	        @Override
+	        public int compare(ItemFacade obj1, ItemFacade obj2) {
+	            return obj1.getText().compareTo(obj2.getText());
+	        }
+	    });
+
+        // SAM-2395 - iterate over the sorted list
+        Iterator iter = sortedQuestions.iterator();
+        while (iter.hasNext()) {
         // path instead. so we will fix it here
+          itemfacade = (ItemFacade) iter.next();
         setRelativePathInAttachment(itemfacade.getItemAttachmentList());
-
-        //AssessmentFacade assessment = assessdelegate.getAssessment(assessmentBean.getAssessmentId());
-
           if ("-1".equals(qpoolbean.getSelectedSection())) {
         	  if (!newSectionCreated) {
         		  // add a new section
@@ -133,48 +130,35 @@ public class ImportQuestionsToAuthoring implements ActionListener
 
         if (section!=null) {
           itemfacade.setSection(section);
-
-
-          if ( (itemauthor.getInsertPosition() ==null) || ("".equals(itemauthor.getInsertPosition())) ) {
-              if (newSectionCreated) {
-           		  itemfacade.setSequence(Integer.valueOf(itempos + 1));
+              if ((itemauthor.getInsertPosition() == null) || ("".equals(itemauthor.getInsertPosition()))) {
+                if (newSectionCreated) {
+                  itemfacade.setSequence(itempos + 1);
+              } else {
+                  // if adding to the end
+                if (section.getItemSet() != null) {
+                    itemfacade.setSequence(section.getItemSet().size() + 1);
+                } else {
+                    // this is a new part 
+                    itemfacade.setSequence(1);
+                }
               }
-              else {
-            	  // if adding to the end
-            	  if (section.getItemSet() != null) {
-            		  itemfacade.setSequence(Integer.valueOf(section.getItemSet().size() + 1));
-            	  }
-            	  else {
-            		  // this is a new part 
-            		  itemfacade.setSequence(Integer.valueOf(1));
-            	  }
-              }
-           }
-           else {
+          } else {
                 // if inserting or a question
-                String insertPos = itemauthor.getInsertPosition();
-                ItemAddListener itemAddListener = new ItemAddListener();
-                int insertPosIntvalue = Integer.valueOf(insertPos).intValue() + itempos;
-                itemAddListener.shiftSequences(delegate, section, Integer.valueOf(insertPosIntvalue));
-                int insertPosInt= insertPosIntvalue + 1 ;
-                itemfacade.setSequence(Integer.valueOf(insertPosInt));
-           }
-          
-          // SAM-2341 - add the items to a collection sorted on question title
-          copiedQuestions.put(itemfacade, section);
-        }
-        itempos= itempos+1;   // for next item in the destItem.
-      }
-      
-      // SAM-2341 - now do the copies after all selected questions have been sorted
-      for (ItemFacade item : copiedQuestions.keySet()) {
-          section = copiedQuestions.get(item);
-          delegate.saveItem(item);
+              ItemAddListener itemAddListener = new ItemAddListener();
+                int insertPosIntvalue = Integer.valueOf(itemauthor.getInsertPosition()) + itempos;
+                itemAddListener.shiftSequences(delegate, section, insertPosIntvalue);
+                itemfacade.setSequence(insertPosIntvalue + 1);
+          }
+
+              delegate.saveItem(itemfacade);
           // remove POOLID metadata if any,
-          delegate.deleteItemMetaData(item.getItemId(), ItemMetaData.POOLID, AgentFacade.getAgentString());
-          delegate.deleteItemMetaData(item.getItemId(), ItemMetaData.PARTID, AgentFacade.getAgentString());
-          delegate.addItemMetaData(item.getItemId(), ItemMetaData.PARTID, section.getSectionId().toString(), AgentFacade.getAgentString());
+              delegate.deleteItemMetaData(itemfacade.getItemId(), ItemMetaData.POOLID, AgentFacade.getAgentString());
+              delegate.deleteItemMetaData(itemfacade.getItemId(), ItemMetaData.PARTID, AgentFacade.getAgentString());
+              delegate.addItemMetaData(itemfacade.getItemId(), ItemMetaData.PARTID,section.getSectionId().toString(), AgentFacade.getAgentString());
       }
+
+            itempos++;   // for next item in the destItem.
+          }
 
       // reset InsertPosition
       itemauthor.setInsertPosition("");

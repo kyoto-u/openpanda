@@ -24,7 +24,7 @@
     // jquery.i18n
 	$.i18n.properties({
 	    name:'ui', 
-	    path:'/sakai-roster2-tool/bundle/',
+	    path:'/sakai-roster2-tool/i18n/',
 	    mode: 'both',
 	    language: roster.language
 	});
@@ -1154,6 +1154,10 @@
     Handlebars.registerPartial('user_info', Handlebars.partials['user_info']);
 
     Handlebars.registerHelper('translate', function (key) {
+        var t = roster.i18n[key];
+        if (key === 'title_msg') {
+            console.log('VAL:' + t);
+        }
         return roster.i18n[key];
     });
 

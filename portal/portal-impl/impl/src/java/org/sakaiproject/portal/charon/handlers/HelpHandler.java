@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/HelpHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/HelpHandler.java $
  * $Id: HelpHandler.java 310205 2014-06-12 18:20:03Z enietzel@anisakai.com $
  ***********************************************************************************
  *

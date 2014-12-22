@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-util/util/src/java/org/sakaiproject/util/CalendarUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.3/calendar-util/util/src/java/org/sakaiproject/util/CalendarUtil.java $
  * $Id: CalendarUtil.java 133270 2014-01-14 14:12:08Z jean-francois.leveque@upmc.fr $
  ***********************************************************************************
  *

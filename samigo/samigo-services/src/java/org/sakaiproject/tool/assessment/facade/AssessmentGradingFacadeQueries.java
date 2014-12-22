@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueries.java $
- * $Id: AssessmentGradingFacadeQueries.java 313635 2014-09-15 22:09:57Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueries.java $
+ * $Id: AssessmentGradingFacadeQueries.java 315811 2014-12-01 17:51:46Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -28,6 +28,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1684,7 +1685,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 	    final HibernateCallback hcb = new HibernateCallback(){
 	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
 	    		Query q = session.createQuery(
-	    				"select p.itemId " +
+	    				"select distinct p.itemId " +
 	    				"from PublishedItemData p, AssessmentGradingData a, ItemGradingData i " +
 	    				"where a.publishedAssessmentId=? and a.forGrade=? and p.section.id=? " +
 	    				"and i.assessmentGradingId = a.assessmentGradingId " +
@@ -2970,16 +2971,19 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 	}
 	
 	public void autoSubmitAssessments() {
+		java.util.Date currentTime = new java.util.Date();
+		Object [] values = {currentTime};
+
 		List list = getHibernateTemplate()
 				.find("select new AssessmentGradingData(a.assessmentGradingId, a.publishedAssessmentId, " +
 						" a.agentId, a.submittedDate, a.isLate, a.forGrade, a.totalAutoScore, a.totalOverrideScore, " +
 						" a.finalScore, a.comments, a.status, a.gradedBy, a.gradedDate, a.attemptDate, a.timeElapsed) " +
 						" from AssessmentGradingData a, PublishedAccessControl c " +
 						" where a.publishedAssessmentId = c.assessment.publishedAssessmentId " +
-						" and current_timestamp() >= c.retractDate " +
+						" and c.retractDate <= ?" +
 						" and a.status not in (5) and (a.hasAutoSubmissionRun = 0 or a.hasAutoSubmissionRun is null) and c.autoSubmit = 1 " +
 						" and a.submittedDate is not null and a.attemptDate <= c.retractDate " +
-						" order by a.publishedAssessmentId, a.agentId, a.forGrade desc, a.assessmentGradingId");
+						" order by a.publishedAssessmentId, a.agentId, a.forGrade desc, a.assessmentGradingId", values);
 		
 	    Iterator iter = list.iterator();
 	    String lastAgentId = "";
@@ -3355,7 +3359,13 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 				  cumulativeScore+=agd.getFinalScore();	
 			  }
 			  averageScore= cumulativeScore/assessmentGradings.size();
-			  averageScore= new Double((new DecimalFormat("0.##").format((double)averageScore)));
+			  
+			  DecimalFormat df = new DecimalFormat("0.##");
+			  DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+			  dfs.setDecimalSeparator('.');
+			  df.setDecimalFormatSymbols(dfs);
+			  
+			  averageScore= new Double(df.format((double)averageScore));
 		  }  
 		  return averageScore;
 	  }

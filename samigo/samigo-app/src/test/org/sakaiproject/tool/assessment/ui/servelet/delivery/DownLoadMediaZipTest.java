@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/test/org/sakaiproject/tool/assessment/ui/servelet/delivery/DownLoadMediaZipTest.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/test/org/sakaiproject/tool/assessment/ui/servelet/delivery/DownLoadMediaZipTest.java $
  * $Id: DownLoadMediaZipTest.java 108724 2012-05-30 10:03:22Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

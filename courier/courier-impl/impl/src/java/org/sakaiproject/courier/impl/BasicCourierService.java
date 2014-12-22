@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.2/courier-impl/impl/src/java/org/sakaiproject/courier/impl/BasicCourierService.java $
+ * $URL: https://source.sakaiproject.org/svn/courier/tags/sakai-10.3/courier-impl/impl/src/java/org/sakaiproject/courier/impl/BasicCourierService.java $
  * $Id: BasicCourierService.java 131633 2013-11-15 21:36:42Z arwhyte@umich.edu $
  ***********************************************************************************
  *

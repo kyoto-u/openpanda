@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.2/common/api-impl/src/java/org/theospi/portfolio/style/impl/StyleAuthorizerImpl.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.3/common/api-impl/src/java/org/theospi/portfolio/style/impl/StyleAuthorizerImpl.java $
 * $Id: StyleAuthorizerImpl.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

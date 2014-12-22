@@ -1,5 +1,5 @@
-/* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/ItemFacade.java $
- * $Id: ItemFacade.java 311533 2014-08-04 14:28:18Z enietzel@anisakai.com $
+/* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/ItemFacade.java $
+ * $Id: ItemFacade.java 315353 2014-11-12 08:39:19Z jjmerono@um.es $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -918,39 +918,6 @@ public class ItemFacade implements Serializable, ItemDataIfc, Comparable<ItemDat
     return this.data.getText();
   }
 
-  /**
-   * Utility method.
-   * Obeys the semantics and rules of the getText() but removes
-   * HTML tags.
-   *
-   * @see getText()
-   * @return text of question, removes
-   * HTML tags.
-   * @throws DataFacadeException
-   */
-  public String getTextHtmlStripped() throws DataFacadeException
-  {
-    String regexHTMLTag = "\\<.*?\\>";
-    String regexLineBreaks = "(\\r|\\n)";
-    return getText().replaceAll(regexLineBreaks,"").replaceAll(regexHTMLTag," ");
-  }
-
-  /**
-   * Utility method.
-   * Obeys the semantics and rules of the getText() but removes
-   * HTML tags. The differency of getTextHtmlStripped() is this
-   * API doesn't replace HTMLtags by white space.
-   *
-   * @see getText()
-   * @return text of question, removes
-   * HTML tags.
-   * @throws DataFacadeException
-   */
-  public String getTextHtmlStrippedAll() throws DataFacadeException
-  {
-    String regex = "\\<.*?\\>|\\n|\\r\\n";
-    return getText().replaceAll(regex,"");
-  }
   
   public ArrayList getItemTextArray() {
     ArrayList list = new ArrayList();

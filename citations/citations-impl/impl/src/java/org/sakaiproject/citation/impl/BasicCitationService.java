@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.2/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.3/citations-impl/impl/src/java/org/sakaiproject/citation/impl/BasicCitationService.java $
  * $Id: BasicCitationService.java 112008 2012-08-30 21:42:16Z jimeng@umich.edu $
  ***********************************************************************************
  *

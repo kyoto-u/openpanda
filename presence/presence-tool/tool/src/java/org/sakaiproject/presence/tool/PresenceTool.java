@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/presence/tags/sakai-10.2/presence-tool/tool/src/java/org/sakaiproject/presence/tool/PresenceTool.java $
+ * $URL: https://source.sakaiproject.org/svn/presence/tags/sakai-10.3/presence-tool/tool/src/java/org/sakaiproject/presence/tool/PresenceTool.java $
  * $Id: PresenceTool.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

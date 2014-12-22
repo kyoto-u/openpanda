@@ -89,12 +89,15 @@
 		<%-- If message actually deleted, don't display links --%>
 		<h:panelGroup rendered="#{!message.deleted}" styleClass="itemToolBar">
 				<%-- mark as read link --%>
-					<h:graphicImage value="/images/trans.gif"
-						alt="#{msgs.cdfm_mark_as_read}" 
+					<h:outputLink value="javascript:void(0);"
 						title="#{msgs.cdfm_mark_as_read}" 
 						rendered="#{!message.read}"
 						styleClass="markAsReadIcon"
-						onclick="doAjax(#{message.message.id}, #{ForumTool.selectedTopic.topic.id}, this);"/>
+						onclick="doAjax(#{message.message.id}, #{ForumTool.selectedTopic.topic.id}, this);">
+						<h:graphicImage value="/images/trans.gif"/>
+						<h:outputText value="#{msgs.cdfm_mark_as_read}"/>
+					</h:outputLink>
+					<h:outputText escape="false"  value="<span class=\"otherActions\">&nbsp;#{msgs.cdfm_toolbar_separator}&nbsp;</span>" rendered="#{!message.read}"/>
 				<%-- Reply link --%>
 				<h:panelGroup rendered="#{ForumTool.selectedTopic.isNewResponseToResponse && message.msgApproved && !ForumTool.selectedTopic.locked && !ForumTool.selectedForum.locked == 'true'}">
 					<h:commandLink action="#{ForumTool.processDfMsgReplyMsgFromEntire}" title="#{msgs.cdfm_reply}"> 
@@ -181,20 +184,18 @@
 
                                         <%-- End of div for messageMetadata --%>
 
-
-                                        <%-- Rank IMAGE --%>
-                    <h:panelGroup rendered="#{message.authorRank != null}">
-                        <h:outputText escape="false" value="<img src=\"#{message.authorRank.rankImage.attachmentUrl}\" height=\"35\" width=\"35\" />" />
-                    </h:panelGroup>
-
-                                        <%-- Rank NAME--%>
-                        <f:verbatim><div></f:verbatim>
-                        <h:outputText value="#{message.authorRank.title}" styleClass="forumsRankName"/>
-                        <f:verbatim></div></f:verbatim>
-                                        <%-- Number of Post --%>
-                        <f:verbatim><div></f:verbatim>
-			<h:outputText value="#{msgs.num_of_posts} #{message.authorPostCount}" styleClass="forumsRankName" rendered="#{message.authorRank.type == 2}"/>
-                        <f:verbatim></div></f:verbatim>
+					<%-- Rank --%>
+					<h:panelGroup rendered="#{message.authorRank != null}">
+					<f:verbatim><div class="forumsRank"></f:verbatim>
+						<h:outputText escape="false" rendered="#{not empty message.authorRank.rankImage.attachmentId}" value="<img src=\"#{message.authorRank.rankImage.attachmentUrl}\" class=\"rankImage\" alt=\"Rank Image\" height=\"35\" width=\"35\" />" />
+											
+						<f:verbatim><div class="forumsRankNameContainer"></f:verbatim>
+							<h:outputText value="#{message.authorRank.title}" styleClass="forumsRankName"/>
+							<h:outputText value="#{msgs.num_of_posts} #{message.authorPostCount}" styleClass="forumsRankName" rendered="#{message.authorRank.type == 2}"/>
+						<f:verbatim></div></f:verbatim>
+					<f:verbatim></div></f:verbatim>
+					</h:panelGroup>
+					<%-- End Rank --%>
 
 			<!-- close the div with class of specialLink -->
 	<%--<f:verbatim></div></f:verbatim>-->

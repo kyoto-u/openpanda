@@ -1,6 +1,6 @@
 /**
- * $Id: EntityHandlerImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/rest/src/java/org/sakaiproject/entitybroker/rest/EntityHandlerImpl.java $
+ * $Id: EntityHandlerImpl.java 315799 2014-12-01 17:34:05Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/rest/src/java/org/sakaiproject/entitybroker/rest/EntityHandlerImpl.java $
  * EntityHandler.java - entity-broker - Apr 6, 2008 9:03:03 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation
@@ -92,8 +92,8 @@ import org.sakaiproject.entitybroker.util.request.RequestUtils;
 @SuppressWarnings("deprecation")
 public class EntityHandlerImpl implements EntityRequestHandler {
     public static String APP_VERSION = "1.0.1";
-    public static String SVN_REVISION = "$Revision: 105077 $";
-    public static String SVN_LAST_UPDATE = "$Date: 2012-02-25 07:54:29 +0900 (Sat, 25 Feb 2012) $";
+    public static String SVN_REVISION = "$Revision: 315799 $";
+    public static String SVN_LAST_UPDATE = "$Date: 2014-12-02 02:34:05 +0900 (Tue, 02 Dec 2014) $";
 
     /**
      * Empty constructor
@@ -230,6 +230,8 @@ public class EntityHandlerImpl implements EntityRequestHandler {
         if (entityBrokerManager.getExternalIntegrationProvider() != null) {
             try {
                 entityBrokerManager.getExternalIntegrationProvider().handleUserSessionKey(req);
+            } catch (SecurityException se) {
+            	throw new EntityException(se.getMessage(), path, HttpServletResponse.SC_UNAUTHORIZED);
             } catch (Exception e) {
                 System.out.println("WARN: EntityRequestHandler: External handleUserSessionKey method failed, continuing...: " + e);
             }

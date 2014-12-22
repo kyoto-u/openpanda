@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/RecurrenceRuleBase.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.3/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/RecurrenceRuleBase.java $
  * $Id: RecurrenceRuleBase.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

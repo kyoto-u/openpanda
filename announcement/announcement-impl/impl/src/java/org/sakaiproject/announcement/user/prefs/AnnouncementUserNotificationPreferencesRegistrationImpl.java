@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.2/announcement-impl/impl/src/java/org/sakaiproject/announcement/user/prefs/AnnouncementUserNotificationPreferencesRegistrationImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.3/announcement-impl/impl/src/java/org/sakaiproject/announcement/user/prefs/AnnouncementUserNotificationPreferencesRegistrationImpl.java $
  * $Id: AnnouncementUserNotificationPreferencesRegistrationImpl.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

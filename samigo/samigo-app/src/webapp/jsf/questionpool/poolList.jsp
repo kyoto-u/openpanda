@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  
-<!-- $Id: poolList.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
+<!-- $Id: poolList.jsp 315345 2014-11-11 18:42:24Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -107,6 +107,14 @@
  <h:outputText value="#{questionPoolMessages.import}"/>
   <f:param name="qpid" value="0"/>
 </h:commandLink> 
+
+<!-- SAM-2049 -->
+<h:outputText value=" #{generalMessages.separator}" rendered="#{questionpool.importToAuthoring == 'false' && authorization.createQuestionPool}" />
+<h:commandLink title="#{questionPoolMessages.t_transferPool}" rendered="#{questionpool.importToAuthoring == 'false' && authorization.createQuestionPool}" 
+	id="transfer" immediate="true" action="#{questionpool.transferPool}">
+	<h:outputText value="#{questionPoolMessages.transfer_pool_ownership}" />
+	<f:param name="qpid" value="0" />
+</h:commandLink>
  
 <h:outputText rendered="#{questionpool.importToAuthoring == 'false' && authorization.createQuestionPool}" escape="false" value="</p>"/>
 </div>

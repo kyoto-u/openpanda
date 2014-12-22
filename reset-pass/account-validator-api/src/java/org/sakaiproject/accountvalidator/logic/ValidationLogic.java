@@ -1,6 +1,6 @@
 /**
- * $Id: ValidationLogic.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.2/account-validator-api/src/java/org/sakaiproject/accountvalidator/logic/ValidationLogic.java $
+ * $Id: ValidationLogic.java 315804 2014-12-01 17:42:39Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/reset-pass/tags/sakai-10.3/account-validator-api/src/java/org/sakaiproject/accountvalidator/logic/ValidationLogic.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -57,6 +57,18 @@ public interface ValidationLogic {
 	 * @return true if the account is currently validated
 	 */
 	public boolean isAccountValidated(String userId);
+	
+	/**
+	 * Determines whether a validation token is expired. 
+	 * Side effects: 
+	 * If the ValidationAccount is from reset-pass and the time specified by accountValidator.maxPasswordResetMinutes has elapsed, 
+	 * this method will set the ValidationAccount's status to expired and the validationRecived time will be set to the current time.
+	 * @param va the ValidationAcount whose expired status is to be determined
+	 * @return true when
+	 * -The ValidationAccount's status is set to expired
+	 * -The ValidationAccount is coming from reset-pass and it was emailed longer than x minutes ago where x is configurable by the accountValidator.maxPasswordResetMinutes sakai property.
+	 **/
+	public boolean isTokenExpired(ValidationAccount va);
 	
 	/**
 	 * Create a new validation request for a user

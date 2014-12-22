@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.2/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventTypes.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.3/calendar-summary-tool/tool/src/java/org/sakaiproject/tool/summarycalendar/ui/EventTypes.java $
  * $Id: EventTypes.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

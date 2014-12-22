@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/exception/ImportException.java $
- * $Id: ImportException.java 107067 2012-04-13 15:20:04Z azeckoski@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/api/src/main/java/org/sakaiproject/exception/ImportException.java $
+ * $Id: ImportException.java 315521 2014-11-18 20:35:48Z jjmerono@um.es $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -59,6 +59,10 @@ public class ImportException extends SakaiException
 	public ImportException(String message, Throwable cause)
 	{
 		super(message, cause);
+	}
+	
+	public String getMessage() {
+		return getId();
 	}
 
 }

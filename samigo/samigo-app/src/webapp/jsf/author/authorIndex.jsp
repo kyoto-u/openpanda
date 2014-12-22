@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
    
 <!--
-* $Id: authorIndex.jsp 311430 2014-07-31 02:23:57Z enietzel@anisakai.com $
+* $Id: authorIndex.jsp 315346 2014-11-11 18:44:04Z enietzel@anisakai.com $
 <%--
 **********************************************************************************
 *
@@ -233,13 +233,13 @@ $(document).ready(function() {
 
 <div id="tabs">
 	<ul>
-		<h:outputText escape="false" value="<li><a href=\"#tabs-1\">" rendered="#{authorization.adminCoreAssessment}"/>
+		<h:outputText escape="false" value="<li><a href=\"#tabs-1\" onclick=\"resizeFrame();\">" rendered="#{authorization.adminCoreAssessment}"/>
 		<h:outputText escape="false" value="#{authorFrontDoorMessages.assessment_pending}:" rendered="#{authorization.adminCoreAssessment}"/>
 		<h:outputText escape="false" value="<span class=\"samigo-tab-sub\">" rendered="#{authorization.adminCoreAssessment}"/>
 		<h:outputText escape="false" value="#{authorFrontDoorMessages.assessment_pending_sub}" rendered="#{authorization.adminCoreAssessment}"/>
 		<h:outputText escape="false" value="</span></a></li>" rendered="#{authorization.adminCoreAssessment}"/>
 		
-		<h:outputText escape="false" value="<li><a href=\"#tabs-2\">" rendered="#{authorization.adminPublishedAssessment}"/>
+		<h:outputText escape="false" value="<li><a href=\"#tabs-2\" onclick=\"resizeFrame();\">" rendered="#{authorization.adminPublishedAssessment}"/>
 		<h:outputText escape="false" value="#{authorFrontDoorMessages.assessment_pub}:" rendered="#{authorization.adminPublishedAssessment}"/>
 		<h:outputText escape="false" value="<span class=\"samigo-tab-sub\">" rendered="#{authorization.adminPublishedAssessment}"/>
 		<h:outputText escape="false" value="#{authorFrontDoorMessages.assessment_pub_sub}" rendered="#{authorization.adminPublishedAssessment}"/>

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-archive/sam-handlers/src/java/org/sakaiproject/importer/impl/handlers/SamigoAssessmentHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-archive/sam-handlers/src/java/org/sakaiproject/importer/impl/handlers/SamigoAssessmentHandler.java $
  * $Id: SamigoAssessmentHandler.java 106519 2012-04-04 07:12:37Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

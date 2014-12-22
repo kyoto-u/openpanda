@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.2/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/PagerRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.3/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/PagerRenderer.java $
 * $Id: PagerRenderer.java 116316 2012-11-13 21:31:50Z steve.swinsburg@gmail.com $
 ***********************************************************************************
 *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-util/util/src/java/org/sakaiproject/portal/util/ToolUtils.java $
- * $Id: ToolUtils.java 132936 2013-12-29 16:13:46Z csev@umich.edu $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.3/portal-util/util/src/java/org/sakaiproject/portal/util/ToolUtils.java $
+ * $Id: ToolUtils.java 315821 2014-12-01 20:16:05Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2013 The Sakai Foundation

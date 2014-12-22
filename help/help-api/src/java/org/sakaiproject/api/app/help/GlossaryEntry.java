@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.2/help-api/src/java/org/sakaiproject/api/app/help/GlossaryEntry.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.3/help-api/src/java/org/sakaiproject/api/app/help/GlossaryEntry.java $
  * $Id: GlossaryEntry.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

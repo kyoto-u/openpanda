@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/qti/XMLImportBean.java $
- * $Id: XMLImportBean.java 133267 2014-01-14 00:50:50Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/qti/XMLImportBean.java $
+ * $Id: XMLImportBean.java 314978 2014-10-28 21:05:14Z jjmerono@um.es $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -50,6 +51,7 @@ import org.sakaiproject.tool.assessment.facade.QuestionPoolFacade;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.qti.constants.QTIVersion;
+import org.sakaiproject.tool.assessment.ui.listener.util.TimeUtil;
 import org.sakaiproject.tool.assessment.qti.util.XmlUtil;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.services.qti.QTIService;
@@ -345,10 +347,19 @@ public class XMLImportBean implements Serializable
     
     ArrayList list = assessmentService.getBasicInfoOfAllActiveAssessments(
                      AssessmentFacadeQueries.TITLE,true);
+	TimeUtil tu = new TimeUtil();
+	String display_dateFormat= ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","output_data_picker_w_sec");
+	SimpleDateFormat displayFormat = new SimpleDateFormat(display_dateFormat, new ResourceLoader().getLocale());
     Iterator iter = list.iterator();
 	while (iter.hasNext()) {
 		AssessmentFacade assessmentFacade= (AssessmentFacade) iter.next();
 		assessmentFacade.setTitle(FormattedText.convertFormattedTextToPlaintext(assessmentFacade.getTitle()));
+		try {
+			String lastModifiedDateDisplay = tu.getDisplayDateTime(displayFormat, assessmentFacade.getLastModifiedDate());
+			assessmentFacade.setLastModifiedDateForDisplay(lastModifiedDateDisplay);  
+		} catch (Exception ex) {
+			log.warn("Unable to format date: " + ex.getMessage());
+		}
 	}
     authorBean.setAssessments(list);
   }

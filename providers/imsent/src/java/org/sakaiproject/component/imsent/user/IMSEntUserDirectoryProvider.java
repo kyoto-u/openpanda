@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.2/imsent/src/java/org/sakaiproject/component/imsent/user/IMSEntUserDirectoryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.3/imsent/src/java/org/sakaiproject/component/imsent/user/IMSEntUserDirectoryProvider.java $
  * $Id: IMSEntUserDirectoryProvider.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

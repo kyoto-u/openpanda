@@ -4,7 +4,7 @@
   <parent>
     <artifactId>osp-common</artifactId>
     <groupId>org.sakaiproject.osp</groupId>
-    <version>10.2</version>
+    <version>10.3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>osp-common-tool-lib</artifactId>

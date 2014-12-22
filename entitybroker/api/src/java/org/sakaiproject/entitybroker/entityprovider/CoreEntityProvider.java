@@ -1,6 +1,6 @@
 /**
  * $Id: CoreEntityProvider.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/CoreEntityProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/api/src/java/org/sakaiproject/entitybroker/entityprovider/CoreEntityProvider.java $
  * AutoRegister.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008 The Sakai Foundation

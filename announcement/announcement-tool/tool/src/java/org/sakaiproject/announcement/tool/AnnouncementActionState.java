@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.2/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementActionState.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.3/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementActionState.java $
  * $Id: AnnouncementActionState.java 109360 2012-06-18 21:24:35Z yorkadam@umich.edu $
  ***********************************************************************************
  *

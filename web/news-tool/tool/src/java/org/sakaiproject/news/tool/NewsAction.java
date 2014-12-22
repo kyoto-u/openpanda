@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.2/news-tool/tool/src/java/org/sakaiproject/news/tool/NewsAction.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.3/news-tool/tool/src/java/org/sakaiproject/news/tool/NewsAction.java $
  * $Id: NewsAction.java 121820 2013-03-27 11:21:14Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

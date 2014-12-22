@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.2/assignment-impl/impl/src/java/org/sakaiproject/assignment/taggable/impl/AssignmentActivityProducerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.3/assignment-impl/impl/src/java/org/sakaiproject/assignment/taggable/impl/AssignmentActivityProducerImpl.java $
  * $Id: AssignmentActivityProducerImpl.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
  ***********************************************************************************
  *

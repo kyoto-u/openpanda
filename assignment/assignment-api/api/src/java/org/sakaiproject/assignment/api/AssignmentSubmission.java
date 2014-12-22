@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.2/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
- * $Id: AssignmentSubmission.java 133971 2014-01-31 16:53:55Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.3/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
+ * $Id: AssignmentSubmission.java 315363 2014-11-12 15:39:46Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -56,6 +56,12 @@ public interface AssignmentSubmission extends Entity
 	 * @return the Assignment
 	 */
 	public Assignment getAssignment();
+	
+	/**
+	 * call this method to store the assignment object to avoid costly lookup by assignment id later
+	 * will do nothing if assignment ids don't match
+	 */
+	public void setAssignment(Assignment value);
 
 	/**
 	 * Access the ID for the Assignment for this Submission
@@ -273,4 +279,10 @@ public interface AssignmentSubmission extends Entity
      * @return error string, if any, returned from review service
      */
     public String getReviewError();
+        
+        /**
+        * SAK-17606 - Method to return a specialized string for anonymous grading.
+        * @return
+        */
+        public String getAnonymousSubmissionId();
 }

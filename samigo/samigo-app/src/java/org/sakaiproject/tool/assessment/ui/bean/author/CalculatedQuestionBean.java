@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/CalculatedQuestionBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/CalculatedQuestionBean.java $
  * $Id: CalculatedQuestionBean.java 124154 2013-05-16 14:04:00Z azeckoski@unicon.net $
  ***********************************************************************************
  *

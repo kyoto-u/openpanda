@@ -49,6 +49,9 @@ import com.lowagie.text.html.simpleparser.StyleSheet;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactoryImp;
+import com.lowagie.text.pdf.BaseFont;
 
 /**
  * 
@@ -104,7 +107,7 @@ public class PDFAssessmentBean implements Serializable {
 	 * @param intro in html
 	 */
 	public void setIntro(String intro) {
-		this.intro = FormattedText.unEscapeHtml(intro);
+		this.intro = FormattedText.convertPlaintextToFormattedText(FormattedText.convertFormattedTextToPlaintext(FormattedText.unEscapeHtml(intro)));
 	}
 
 	/**
@@ -250,6 +253,7 @@ public class PDFAssessmentBean implements Serializable {
 		DeliveryBean deliveryBean = (DeliveryBean) ContextUtil.lookupBean("delivery");
 
 		PrintSettingsBean printSetting = (PrintSettingsBean) ContextUtil.lookupBean("printSettings");
+		setBaseFontSize(printSetting.getFontSize());
 
 		if (printSetting.getShowPartIntros().booleanValue()) {
 			StringBuffer assessmentIntros = new StringBuffer();
@@ -765,6 +769,9 @@ public class PDFAssessmentBean implements Serializable {
 		input = input.replaceAll("<h6", text5.toString());
 
 		input = input.replaceAll("</h.>", "</font></div>");
+		if(!input.startsWith("<div><font")){
+			input = "<div><font size='"+baseFontSize+"'>#</font></div>".replaceAll("#", input);
+		}
 
 		return input;
 	}
@@ -817,6 +824,7 @@ public class PDFAssessmentBean implements Serializable {
 
 			float prevs = 0;
 
+			props.put("font_factory", new CustomFontFactory());
 			props.put("img_baseurl", ServerConfigurationService.getServerUrl());
 			worker.setInterfaceProps(props);
 
@@ -979,4 +987,22 @@ public class PDFAssessmentBean implements Serializable {
 		return "" + items;
 	}
 
+	/**
+	 * This class pulls in the default font from sakai.properties
+	 */
+	protected class CustomFontFactory extends FontFactoryImp {
+		private final String defaultFontname;
+
+		public CustomFontFactory() {
+			super();
+			
+			defaultFontname = ServerConfigurationService.getString("pdf.default.font", "DejaVu Sans");
+			registerDirectory(this.getClass().getResource("fonts").getFile());
+		}
+
+		@Override
+		public Font getFont(String fontname, String encoding, boolean embedded, float size, int style, Color color, boolean cached) {
+			return super.getFont(defaultFontname, BaseFont.IDENTITY_H, embedded, size, style, color, cached);
+		}
+	}
 }

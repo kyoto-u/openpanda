@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.2/jsf-app/src/java/org/sakaiproject/jsf/app/SakaiNavigationHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.3/jsf-app/src/java/org/sakaiproject/jsf/app/SakaiNavigationHandler.java $
  * $Id: SakaiNavigationHandler.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  **********************************************************************************
  *

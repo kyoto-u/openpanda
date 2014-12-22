@@ -4,7 +4,7 @@
   <parent>
     <artifactId>reset-pass</artifactId>
     <groupId>org.sakaiproject.reset-pass</groupId>
-    <version>10.2</version>
+    <version>10.3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>Reset pass</name>
@@ -47,7 +47,7 @@
     <dependency>
         <groupId>joda-time</groupId>
         <artifactId>joda-time</artifactId>
-        <version>2.3</version>
+        <version>2.4</version>
     </dependency>
 <!-- RSF dependencies -->
     <dependency>

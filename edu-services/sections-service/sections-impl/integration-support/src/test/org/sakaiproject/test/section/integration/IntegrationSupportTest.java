@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.2/sections-service/sections-impl/integration-support/src/test/org/sakaiproject/test/section/integration/IntegrationSupportTest.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.3/sections-service/sections-impl/integration-support/src/test/org/sakaiproject/test/section/integration/IntegrationSupportTest.java $
  * $Id: IntegrationSupportTest.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

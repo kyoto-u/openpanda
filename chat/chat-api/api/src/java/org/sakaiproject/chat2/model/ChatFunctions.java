@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.2/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatFunctions.java $
+* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.3/chat-api/api/src/java/org/sakaiproject/chat2/model/ChatFunctions.java $
 * $Id: ChatFunctions.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

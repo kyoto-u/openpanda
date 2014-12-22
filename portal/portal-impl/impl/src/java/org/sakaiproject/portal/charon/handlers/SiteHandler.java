@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/SiteHandler.java $
- * $Id: SiteHandler.java 311844 2014-08-11 19:06:33Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/SiteHandler.java $
+ * $Id: SiteHandler.java 315492 2014-11-18 09:15:50Z jjmerono@um.es $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -81,7 +81,7 @@ import org.sakaiproject.portal.charon.handlers.PDAHandler;
 /**
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 311844 $
+ * @version $Rev: 315492 $
  */
 public class SiteHandler extends WorksiteHandler
 {
@@ -801,6 +801,12 @@ public class SiteHandler extends WorksiteHandler
 				try
 				{
 					tabsToDisplay = (int) props.getLongProperty("tabs");					 
+				}
+				catch (Exception any)
+				{
+				}
+				try
+				{
 					tabDisplayLabel = (int) props.getLongProperty("tab:label");
 				}
 				catch (Exception any)

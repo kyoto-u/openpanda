@@ -52,6 +52,12 @@ var dhtml_view_sites = function(){
             var txtSearch = $('#txtSearch');
             if(txtSearch.length) {
                 $(txtSearch[0]).keydown(function (e) {
+                    if(e.keyCode ===27) {
+                        jQuery('div#selectSite div').hide();
+                        jQuery('div#selectSite').slideUp('fast'); // hide the box
+                        removeDHTMLMask();
+                        $('.more-tab a').focus();
+                    }
                     if (e.keyCode == 9 && e.shiftKey) {
                         e.preventDefault();
                     }
@@ -627,6 +633,11 @@ var setupToolToggle = function(toggleClass){
       }
   );
     $('#toggleToolMenu').click(function(){
+
+        // If the sub site flyout is enabled, we don't want to leave it
+        // hanging out in space, so hide it.
+        $('#subSites').filter(':visible').hide();
+
         if ($('#toggleNormal').is(':visible')) {
             sakaiRestoreNavigation();
             document.cookie = "sakai_nav_minimized=false; path=/";
@@ -651,8 +662,13 @@ function publishSite(siteId) {
 var setupSkipNav = function(){
     // function called from site.vm to enable skip links for all browsers
      $('#skipNav a.internalSkip').click(function(){
-         var target = $(this).attr('href');
-        $(target).attr('tabindex','-1').focus();
+         if ($(this).attr('id') === 'openDrawer') {
+            return dhtml_view_sites();
+         }
+         else {
+             var target = $(this).attr('href');
+             $(target).attr('tabindex', '-1').focus();
+         }
      });
 };
 

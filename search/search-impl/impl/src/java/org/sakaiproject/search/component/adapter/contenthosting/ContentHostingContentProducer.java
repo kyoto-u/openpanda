@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.2/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/ContentHostingContentProducer.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.3/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/contenthosting/ContentHostingContentProducer.java $
  * $Id: ContentHostingContentProducer.java 107465 2012-04-23 02:28:00Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

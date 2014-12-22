@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.2/jldap-mock/src/test/edu/amc/sakai/user/UserEditStubTest.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.3/jldap-mock/src/test/edu/amc/sakai/user/UserEditStubTest.java $
  * $Id: UserEditStubTest.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.2/message-util/util/src/java/org/sakaiproject/message/util/BaseMessage.java $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.3/message-util/util/src/java/org/sakaiproject/message/util/BaseMessage.java $
  * $Id: BaseMessage.java 313690 2014-09-18 03:50:31Z enietzel@anisakai.com $
  ***********************************************************************************
  *

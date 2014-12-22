@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/tool/impl/MySession.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/tool/impl/MySession.java $
  * $Id: MySession.java 308853 2014-04-25 23:40:21Z enietzel@anisakai.com $
  **********************************************************************************
  *

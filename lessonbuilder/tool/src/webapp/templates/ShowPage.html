@@ -117,6 +117,14 @@ function resizeiframe(id) {
                     <a href="#" rsf:id="gradingBack" style="margin-right:2px;" class="usebutton grading-nextprev">&#60;</a><img class="statusImg" src="$context/images/no-status.png" id="statusImg" height="16px" width="16px" alt=""></img><span style="*vertical-align:13%"  rsf:id="msg=simplepage.comments-points"></span><span style="display:none" class="uuidBox" rsf:id="commentsUUID"></span><span style="display:none" class="pointsSpan" rsf:id="commentPoints"></span> <input rsf:id="studentPointsBox"  id="studentPointsBox" type="text" style="font-size:100%"  size="3"></input> / <span rsf:id="topmaxpoints"></span> <a class="usebutton" href="#" rsf:id="msg=simplepage.submit" style="*vertical-align:13%;margin-right:.5em" id="submit-grading"></a> <a href="#" rsf:id="gradingForward" class="usebutton grading-nextprev">&#62;</a>
                 </span>
                 <span class="nextprev buttonset"> <a href="#" rsf:id="prev" class="nextprev">next</a> <a href="#" rsf:id="next" class="nextprev">next</a> </span>
+                  <a href="#" rsf:id="directurl" id="directurl" class="title-tools tool-directurl">
+                      <img rsf:id="directimage" src="/library/image/transparent.gif"/>
+	          </a>
+		  <div rsf:id="directurl-div" class="portlet title-tools direct-url-wrap">
+		    <input rsf:id="directurl-input" type="checkbox" class="portlet title-tools short-url"/>
+		    <span>Short URL</span>
+		    <textarea rsf:id="directurl-textarea" class="portlet title-tools"></textarea>
+		  </div>
                   <a href="#" rsf:id="helpbutton" target="_blank" class="help">
                       <img rsf:id="helpimage" src="/library/image/transparent.gif"/>
                       <span rsf:id="helpnewwindow" class="offscreen"></span>
@@ -209,6 +217,10 @@ function resizeiframe(id) {
                   <li rsf:id="addwebsite-li">
                     <a href="#" role="menuitem" rsf:id="add-website" class="add-website"><span rsf:id="msg.simplepage.website"></span></a>
                     <div rsf:id="msg=simplepage.addwebsite-descrip"></div>
+                  </li>
+                  <li rsf:id="blti-tool:">
+                    <a href="#" role="menuitem" rsf:id="add-blti-tool"><span rsf:id="msg.simplepage.blti"></span></a>
+                    <div rsf:id="add-blti-description"></div>
                   </li>
                   <li rsf:id="blti-li">
                     <a href="#" role="menuitem" rsf:id="add-blti"><span rsf:id="msg.simplepage.blti"></span></a>
@@ -404,6 +416,7 @@ function resizeiframe(id) {
 			</div>
 			<video rsf:id="h5video" controls="controls" class="html5video" style="display:none">
 			  <source rsf:id="h5source" />
+			  <track rsf:id="h5track" kind="captions" />
 			</video>
 			<audio rsf:id="h5audio" controls="controls" class="html5video" style="display:none">
 			  <source rsf:id="h5asource" />
@@ -740,6 +753,8 @@ function resizeiframe(id) {
 			  <p rsf:id="msg=simplepage.deletestudentsubmissionexist" id="simplepage.deletestudentsubmissionexist"></p>
 			  <p rsf:id="msg=simplepage.delete" id="simplepage.delete"></p>
 			  <p rsf:id="msg=simplepage.cancel_message" id="simplepage.cancel_message"></p>
+			  <p rsf:id="msg=simplepage.add_caption" id="simplepage.add_caption"></p>
+			  <p rsf:id="msg=simplepage.change_caption" id="simplepage.change_caption"></p>
 			  <p rsf:id="siteid" id="siteid"></p>
 			  <p rsf:id="locale" id="locale"></p>
 			</div>
@@ -951,7 +966,7 @@ function resizeiframe(id) {
                             <label id="addLink_label" rsf:id="msg=simplepage.addLink_label_add_or" for="mm-url">URL</label>
                             <input type="text" name="mm-url" rsf:id="mm-url" id="mm-url" style="width:99%" class="edit-multimedia-input" />
                         </p>
-                        <p class="checkbox">
+                        <p class="checkbox mm-prerequisite-section">
                             <input type="checkbox" name="mm-prerequisite" id="mm-prerequisite" rsf:id="mm-prerequisite" />
                             <label for="mm-prerequisite"><span rsf:id="msg=simplepage.prerequisites_label"></span></label>
                         </p>
@@ -976,16 +991,17 @@ function resizeiframe(id) {
 			  <iframe id="mm-test-iframe-iframe"></iframe>
 			</div>
 
-			<input type="button" class="bold" id="mm-test-tryother" value="Try other alternative"/>
+			<input type="button" class="bold" id="mm-test-tryother" rsf:id="mm-test-tryother" />
                         <input class="bold" type="submit" id="mm-test" rsf:id="mm-test" />
                         <input class="bold" type="submit" id="mm-add-item" rsf:id="mm-add-item" />
-			<input type="button" class="bold mm-test-reset" value="Start over"/>
+			<input type="button" class="bold mm-test-reset" rsf:id="mm-test-start-over" />
                         <input type="submit" rsf:id="mm-cancel" onclick="closeAddMultimediaDialog(); return false" />
                         <input type="hidden" rsf:id="mm-item-id" id="mm-item-id" />
                         <input type="hidden" rsf:id="mm-is-mm" id="mm-is-mm" />
                         <input type="hidden" rsf:id="mm-display-type" id="mm-display-type" />
                         <input type="hidden" rsf:id="mm-mime-type" id="mm-mime-type" />
                         <input type="hidden" rsf:id="mm-is-website" id="mm-is-website" />
+                        <input type="hidden" rsf:id="mm-is-caption" id="mm-is-caption" />
 		        <p id="checkingwithhost" rsf:id="msg=simplepage.checkingwithhost"></p>
 			<p id="mm-loading" rsf:id="msg=simplepage.loading"></p>
                     </div>
@@ -1355,7 +1371,10 @@ function resizeiframe(id) {
 						  <textarea name="description3" rsf:id="description3" id="description3" rows="5" class="edit-multimedia-input" ></textarea>
 						</p>
 						<p class="shorttext required" id="change-resource-movie-p">
-						  <a href="#" rsf:id="change-resource-movie" id="change-resource-movie"><span rsf:id="msg.simplepage.change_resource"></span></a>
+						  <a href="#" class="change-resource-movie" rsf:id="change-resource-movie" id="change-resource-movie"><span rsf:id="msg.simplepage.change_resource"></span></a>
+					        </p>
+						<p class="shorttext required" id="change-caption-movie-p">
+						  <a href="#" class="change-resource-movie" rsf:id="change-caption-movie" id="change-caption-movie"></a>
 					        </p>
 						<p id="editgroups-movie" class="edit-group">
 						  <a href="#"><span rsf:id="msg=simplepage.edit-group"></span></a>

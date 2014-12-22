@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbContentService.java $
- * $Id: DbContentService.java 312248 2014-08-19 23:57:21Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/content/impl/DbContentService.java $
+ * $Id: DbContentService.java 315780 2014-12-01 13:07:14Z jjmerono@um.es $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -1867,7 +1867,31 @@ public class DbContentService extends BaseContentService
                out();
            }
        }
-       
+
+       public void cancelDeletedResource(ContentResourceEdit edit)
+       {
+           boolean goin = in();
+           try
+           {
+               if (resolver != null && goin)
+               {
+                   // We don't support deleted resources in resolver at the moment.
+                   return;
+               }
+               else
+               {
+                   // clear the memory image of the body
+                   ((BaseResourceEdit) edit).m_body = null;
+                   m_resourceDeleteStore.cancelResource(edit);
+
+               }
+           }
+           finally
+           {
+               out();
+           }
+       }
+
        /** return deleted resource for the given  id */ 
        public void removeDeletedResource(ContentResourceEdit edit)
        {

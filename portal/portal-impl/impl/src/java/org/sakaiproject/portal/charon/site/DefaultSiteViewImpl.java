@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.2/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/DefaultSiteViewImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/DefaultSiteViewImpl.java $
  * $Id: DefaultSiteViewImpl.java 310500 2014-06-30 20:09:29Z enietzel@anisakai.com $
  ***********************************************************************************
  *

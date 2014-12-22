@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.2/jsf-widgets/src/java/org/sakaiproject/jsf/component/HideDivisionComponent.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.3/jsf-widgets/src/java/org/sakaiproject/jsf/component/HideDivisionComponent.java $
 * $Id: HideDivisionComponent.java 128959 2013-08-23 00:01:46Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

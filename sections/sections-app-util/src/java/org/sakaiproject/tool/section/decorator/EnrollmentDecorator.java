@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.2/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/EnrollmentDecorator.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.3/sections-app-util/src/java/org/sakaiproject/tool/section/decorator/EnrollmentDecorator.java $
  * $Id: EnrollmentDecorator.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

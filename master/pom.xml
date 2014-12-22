@@ -6,7 +6,7 @@
   <packaging>pom</packaging>
   <name>Sakai Master</name>
   <description>Corporate POM for the Sakai Open Source Collaborative Learning Environment/Learning Management System</description>
-  <version>10.2</version>
+  <version>10.3</version>
   <url>http://sakaiproject.org</url>
   <organization>
     <name>Sakai Project</name>
@@ -73,9 +73,9 @@
   </scm>
 
   <properties>
-    <sakai.version>10.2</sakai.version>
+    <sakai.version>10.3</sakai.version>
     <!-- kernel only versions -->
-    <sakai.kernel.version>10.2</sakai.kernel.version>
+    <sakai.kernel.version>10.3T</sakai.kernel.version>
     <kernel.spring.version>3.2.3.RELEASE</kernel.spring.version>
     <kernel.hibernate.version>3.6.10.Final</kernel.hibernate.version>
     <kernel.hibernate.annotations.version>3.2.0.Final</kernel.hibernate.annotations.version>
@@ -117,7 +117,7 @@
     <reflectutils.version>0.9.19</reflectutils.version>
     <!-- Sakai modules that are versioned separately -->
     <!-- lessonbuilder tool pom depends on msgcntr ver prop. Need to add a profile to the LB tool pom to mark change between 10.x master and earlier versions -->
-    <sakai.msgcntr.version>10.2</sakai.msgcntr.version> 
+    <sakai.msgcntr.version>10.3</sakai.msgcntr.version> 
     <!-- Set the source encoding to avoid maven warnings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sakai.jdk.version>1.6</sakai.jdk.version>

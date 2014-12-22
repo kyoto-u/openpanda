@@ -4,13 +4,13 @@
     <parent>
         <groupId>org.sakaiproject.userauditservice</groupId>
         <artifactId>userauditservice</artifactId>
-        <version>10.2</version>
+        <version>10.3</version>
     </parent>
 
     <name>Sakai Userauditservice Deploy POM</name>
     <groupId>org.sakaiproject.userauditservice</groupId>
     <artifactId>userauditservice-deploy</artifactId>
-    <version>10.2</version>
+    <version>10.3</version>
     <packaging>pom</packaging>
     
     <description>Userauditservice deploy POM.</description>

@@ -1,6 +1,6 @@
 /**
  * $Id: Formats.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/api/src/java/org/sakaiproject/entitybroker/entityprovider/extension/Formats.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/api/src/java/org/sakaiproject/entitybroker/entityprovider/extension/Formats.java $
  * Formatter.java - entity-broker - Apr 12, 2008 11:20:37 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

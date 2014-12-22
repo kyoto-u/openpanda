@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.2/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIframeRender.java $
- * $Id: SyllabusIframeRender.java 311010 2014-07-22 15:37:09Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.3/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIframeRender.java $
+ * $Id: SyllabusIframeRender.java 315279 2014-11-10 18:35:24Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -27,8 +27,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
+import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.util.ResourceLoader;
+
 public class SyllabusIframeRender extends Renderer
 {
+	private ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.syllabus.bundle.Messages");
+	
   public boolean supportsComponentType(UIComponent component)
   {
     return (component instanceof org.sakaiproject.jsf.syllabus.SyllabusIframeComponent);
@@ -72,13 +77,20 @@ public class SyllabusIframeRender extends Renderer
       {
       	redirectUrl = "http://" + redirectUrl;
       }
-      writer.write("<iframe src=\"" + redirectUrl + "\"");
-      writer.write(" width=\"" + widthIn + "\"");
-      writer.write(" height=\"" + heightIn + "\"");
-      writer.write(" style=\"margin-top:1em;clear:both\"");
-      writer.write(" frameborder=\"0\"");
-      writer.write(" scrolling=\"auto\"");      
-      writer.write("><script type='text/javascript'>window.onbeforeunload = function(){ return ''; }; $(window).load(function () {window.onbeforeunload = null;});</script></iframe>");
+      boolean secureHttp = ServerConfigurationService.getServerUrl().startsWith("https");
+      if(redirectUrl.startsWith("http:") && secureHttp){
+    	  writer.write("<script type='text/javascript'>window.open('" + redirectUrl + "');</script>");
+    	  writer.write(rb.getFormattedMessage("iframeSecurity", new String[]{redirectUrl}));
+      }else{
+    	  writer.write("<script type='text/javascript'>setTimeout(function(){mySetMainFrameHeight(mainframeId);}, 1000);</script>");
+    	  writer.write("<iframe src=\"" + redirectUrl + "\"");
+    	  writer.write(" width=\"" + widthIn + "\"");
+    	  writer.write(" height=\"" + heightIn + "\"");
+    	  writer.write(" style=\"margin-top:1em;clear:both\"");
+    	  writer.write(" frameborder=\"0\"");
+    	  writer.write(" scrolling=\"auto\"");      
+    	  writer.write("><script type='text/javascript'>window.onbeforeunload = function(){ return ''; }; $(window).load(function () {window.onbeforeunload = null;});</script></iframe>");
+      }
     }
   }
 }

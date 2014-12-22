@@ -666,6 +666,10 @@ html>body .dhtml_more_tabs {
 	text-align: right;
 }
 
+#subSites {
+    border: 1px solid #ccc;
+}
+
 /*span shim for fine grained manipulation of link display (decorative)
 also hide if are going to be using icon links (as background of <a> nad <li>
 */
@@ -808,7 +812,7 @@ a#toggleToolMenu{
 	background:#fff url(images/toggler-back.png) -80px 0 no-repeat
  }
 */
-.sakaiMinimizePageNavigation #toolMenu li a, .sakaiMinimizePageNavigation #subSites li a{
+.sakaiMinimizePageNavigation #toolMenu li a {
 	display:block;
 	height:16px;
 	padding-right:0 !important;
@@ -818,7 +822,7 @@ a#toggleToolMenu{
 	width:1px;
 }
 
-.sakaiMinimizePageNavigation #toolMenu li span,.sakaiMinimizePageNavigation #subSites li span{
+.sakaiMinimizePageNavigation #toolMenu li span {
     position:absolute; 
     left:-10000px; 
     top:auto; 

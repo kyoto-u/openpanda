@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.2/api/src/main/java/org/sakaiproject/event/api/LearningResourceStoreService.java $
- * $Id: LearningResourceStoreService.java 308846 2014-04-25 20:28:39Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/api/src/main/java/org/sakaiproject/event/api/LearningResourceStoreService.java $
+ * $Id: LearningResourceStoreService.java 315359 2014-11-12 15:02:04Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 Sakai Foundation
@@ -847,9 +847,6 @@ public interface LearningResourceStoreService {
             if (raw != null) {
                 if (this.min != null && raw.floatValue() < min.floatValue()) {
                     throw new IllegalArgumentException("score raw ("+raw+") must not be less than min ("+this.min+")");
-                }
-                if (this.max != null && raw.floatValue() > max.floatValue()) {
-                    throw new IllegalArgumentException("score raw ("+raw+") must not be greater than max ("+this.max+") inclusive");
                 }
             }
             this.raw = raw;

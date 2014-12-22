@@ -89,6 +89,7 @@ import org.sakaiproject.lessonbuildertool.service.LessonEntity;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean.GroupEntry;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean.Status;
+import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean.BltiTool;
 import org.sakaiproject.lessonbuildertool.tool.evolvers.SakaiFCKTextEvolver;
 import org.sakaiproject.lessonbuildertool.tool.view.CommentsGradingPaneViewParameters;
 import org.sakaiproject.lessonbuildertool.tool.view.CommentsViewParameters;
@@ -110,6 +111,7 @@ import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.util.Web;
 import org.sakaiproject.portal.util.CSSUtils;
 
 import uk.org.ponder.localeutil.LocaleGetter;
@@ -239,7 +241,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 	}
 
-	static final String ICONSTYLE = "\n.portletTitle .action img {\n        background: url({}/help.gif) center right no-repeat;\n}\n.portletTitle .action img:hover, .portletTitle .action img:focus {\n        background: url({}/help_h.gif) center right no-repeat\n}\n.portletTitle .title img {\n        background: url({}/reload.gif) center left no-repeat;\n}\n.portletTitle .title img:hover, .portletTitle .title img:focus {\n        background: url({}/reload_h.gif) center left no-repeat\n}\n";
+	static final String ICONSTYLE = "\n.portletTitle .action .help img {\n        background: url({}/help.gif) center right no-repeat !important;\n}\n.portletTitle .action .help img:hover, .portletTitle .action .help img:focus {\n        background: url({}/help_h.gif) center right no-repeat\n}\n.portletTitle .title img {\n        background: url({}/reload.gif) center left no-repeat;\n}\n.portletTitle .title img:hover, .portletTitle .title img:focus {\n        background: url({}/reload_h.gif) center left no-repeat\n}\n";
 
 	public String getViewID() {
 		return VIEW_ID;
@@ -809,6 +811,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		ToolSession toolSession = SessionManager.getCurrentToolSession();
 		String helpurl = (String)toolSession.getAttribute("sakai-portal:help-action");
 		String reseturl = (String)toolSession.getAttribute("sakai-portal:reset-action");
+		Placement placement = toolManager.getCurrentPlacement();
+
 		String skinName = null;
 		String skinRepo = null;
 		String iconBase = null;
@@ -843,6 +847,13 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 			         messageLocator.getMessage("simplepage.help-button")));
 		    UIOutput.make(tofill, (pageItem.getPageId() == 0 ? "helpnewwindow" : "helpnewwindow2"), 
 				  messageLocator.getMessage("simplepage.opens-in-new"));
+		    UILink.make(tofill, "directurl").
+			decorate(new UIFreeAttributeDecorator("rel", "#Main" + Web.escapeJavascript(placement.getId()) + "_directurl")).
+			decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.direct-link")));
+		// trunk code has a div with a new format of info. That only shows in the inline code, which
+		// isn't supported except in trunk
+			UIOutput.make(tofill, "directimage").decorate(new UIFreeAttributeDecorator("alt",
+				messageLocator.getMessage("simplepage.direct-link")));
 		}
 
 		if (reseturl != null) {
@@ -1758,7 +1769,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
                             if (sessionParameter != null)
                                 movieUrl = movieUrl + "?lb.session=" + sessionParameter;
 
-			    UIOutput.make(tableRow, "movie-link-div");
+			    UIComponent movieLink = UIOutput.make(tableRow, "movie-link-div");
 			    if (showDownloads)
 				UILink.make(tableRow, "movie-link-link", messageLocator.getMessage("simplepage.download_file"), movieUrl);
 
@@ -1775,6 +1786,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
                             // wrap whatever stuff we decide to put out in HTML5 if appropriate
                             // javascript is used to do the wrapping, because RSF can't really handle this
                             if (isHtml5) {
+				// flag for javascript
                                 boolean isAudio = mimeType.startsWith("audio/");
                                 UIComponent h5video = UIOutput.make(tableRow, (isAudio? "h5audio" : "h5video"));
                                 UIComponent h5source = UIOutput.make(tableRow, (isAudio? "h5asource" : "h5source"));
@@ -1784,6 +1796,21 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
                                 h5video.decorate(new UIFreeAttributeDecorator("width", width.getOld()));
                                 h5source.decorate(new UIFreeAttributeDecorator("src", movieUrl)).
                                 decorate(new UIFreeAttributeDecorator("type", mimeType));
+				String caption = i.getAttribute("captionfile");
+				if (!isAudio && caption != null && caption.length() > 0) {
+				    movieLink.decorate(new UIFreeAttributeDecorator("class", "has-caption allow-caption"));
+				    String captionUrl = "/access/lessonbuilder/item/" + i.getId() + caption;
+				    sessionParameter = getSessionParameter(captionUrl);
+				    // sessionParameter should always be non-null
+				    // because this overrides all other checks in /access/lessonbuilder,
+				    // we haven't adjusted it to handle these files otherwise
+				    if (sessionParameter != null)
+					captionUrl = captionUrl + "?lb.session=" + sessionParameter;
+				    UIOutput.make(tableRow, "h5track").
+					decorate(new UIFreeAttributeDecorator("src", captionUrl));
+				} else if (!isAudio) {
+				    movieLink.decorate(new UIFreeAttributeDecorator("class", "allow-caption"));
+				}
                             }
 
                             // FLV is special. There's no player for flash video in
@@ -1992,7 +2019,6 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 					    UIOutput.make(tableRow, "missing-prereqs", messageLocator.getMessage("simplepage.missing-prereqs"));
 					}else {
 						UIOutput.make(tableRow, "commentsDiv");
-						Placement placement = toolManager.getCurrentPlacement();
 						UIOutput.make(tableRow, "placementId", placement.getId());
 
 					        // note: the URL will be rewritten in comments.js to look like
@@ -3195,6 +3221,22 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 		    // in case we're on an old system without current BLTI
 		    if (bltiEntity != null && ((BltiInterface)bltiEntity).servicePresent()) {
+			Collection<BltiTool> bltiTools = simplePageBean.getBltiTools();
+			if (bltiTools != null) {
+			    int i = 0;
+			    for (BltiTool bltiTool: bltiTools) {
+				UIBranchContainer toolItems = UIBranchContainer.make(tofill, "blti-tool:", String.valueOf(i));
+				i++;
+				GeneralViewParameters params = new GeneralViewParameters();
+				params.setSendingPage(currentPage.getPageId());
+				params.addTool = bltiTool.id;
+				params.viewID = BltiPickerProducer.VIEW_ID;
+				UILink link = UIInternalLink.make(toolItems, "add-blti-tool", bltiTool.title, params);
+				link.decorate(new UITooltipDecorator(bltiTool.description));
+				if (bltiTool.description != null)
+				    UIOutput.make(toolItems, "add-blti-description", bltiTool.description);
+			    }
+			}
 			UIOutput.make(tofill, "blti-li");
 			createToolBarLink(BltiPickerProducer.VIEW_ID, tofill, "add-blti", "simplepage.blti", currentPage, "simplepage.blti.tooltip");
 		    }
@@ -3430,10 +3472,13 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		UIBoundBoolean.make(form, "mm-prerequisite", "#{simplePageBean.prerequisite}", false);
 
 		UICommand.make(form, "mm-add-item", messageLocator.getMessage("simplepage.save_message"), "#{simplePageBean.addMultimedia}");
+		UIOutput.make(form, "mm-test-tryother").decorate(new UIFreeAttributeDecorator("value", messageLocator.getMessage("simplepage.mm-test-tryother")));
+		UIOutput.make(form, "mm-test-start-over").decorate(new UIFreeAttributeDecorator("value", messageLocator.getMessage("simplepage.mm-test-start-over")));
 		UIInput.make(form, "mm-item-id", "#{simplePageBean.itemId}");
 		UIInput.make(form, "mm-is-mm", "#{simplePageBean.isMultimedia}");
 		UIInput.make(form, "mm-display-type", "#{simplePageBean.multimediaDisplayType}");
 		UIInput.make(form, "mm-is-website", "#{simplePageBean.isWebsite}");
+		UIInput.make(form, "mm-is-caption", "#{simplePageBean.isCaption}");
 		UICommand.make(form, "mm-cancel", messageLocator.getMessage("simplepage.cancel"), null);
 	}
 
@@ -3670,6 +3715,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		fileparams.setResourceType(true);
 		fileparams.viewID = ResourcePickerProducer.VIEW_ID;
 		UIInternalLink.make(form, "change-resource-movie", messageLocator.getMessage("simplepage.change_resource"), fileparams);
+
+		fileparams.setCaption(true);
+		UIInternalLink.make(form, "change-caption-movie", messageLocator.getMessage("simplepage.change_caption"), fileparams);
 
 		UIBoundBoolean.make(form, "movie-prerequisite", "#{simplePageBean.prerequisite}",false);
 

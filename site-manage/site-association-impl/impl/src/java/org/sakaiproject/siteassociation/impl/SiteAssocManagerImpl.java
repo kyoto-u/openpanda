@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-10.2/site-association-impl/impl/src/java/org/sakaiproject/siteassociation/impl/SiteAssocManagerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/site-manage/tags/sakai-10.3/site-association-impl/impl/src/java/org/sakaiproject/siteassociation/impl/SiteAssocManagerImpl.java $
  * $Id: SiteAssocManagerImpl.java 68686 2009-11-09 16:43:13Z chmaurer@iupui.edu $
  ***********************************************************************************
  *

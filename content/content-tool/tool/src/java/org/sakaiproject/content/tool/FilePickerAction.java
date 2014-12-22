@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.2/content-tool/tool/src/java/org/sakaiproject/content/tool/FilePickerAction.java $
- * $Id: FilePickerAction.java 134421 2014-02-12 13:01:39Z matthew.buckett@it.ox.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.3/content-tool/tool/src/java/org/sakaiproject/content/tool/FilePickerAction.java $
+ * $Id: FilePickerAction.java 315758 2014-11-29 14:29:45Z jjmerono@um.es $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1121,6 +1121,7 @@ public class FilePickerAction extends PagedResourceHelperAction
 	@SuppressWarnings("unchecked")
 	public void doAttachitem(RunData data)
 	{
+		
 		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
 		ToolSession toolSession = SessionManager.getCurrentToolSession();
 		ParameterParser params = data.getParameters ();
@@ -1167,6 +1168,10 @@ public class FilePickerAction extends PagedResourceHelperAction
 	@SuppressWarnings("unchecked")
 	public void doAttachupload(RunData data)
 	{
+		if (!"POST".equals(data.getRequest().getMethod())) {
+			return;
+		}
+		
 		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
 		ToolSession toolSession = SessionManager.getCurrentToolSession();
 		ParameterParser params = data.getParameters ();
@@ -1371,6 +1376,10 @@ public class FilePickerAction extends PagedResourceHelperAction
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public void doAttachurl(RunData data)
 	{
+		if (!"POST".equals(data.getRequest().getMethod())) {
+			return;
+		}
+		
 		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
 		ToolSession toolSession = SessionManager.getCurrentToolSession();
 		ParameterParser params = data.getParameters ();
@@ -1536,6 +1545,11 @@ public class FilePickerAction extends PagedResourceHelperAction
 	@SuppressWarnings("unchecked")
 	public void doAddattachments(RunData data)
 	{
+		
+		if (!"POST".equals(data.getRequest().getMethod())) {
+			return;
+		}
+		
 		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
 		ToolSession toolSession = SessionManager.getCurrentToolSession();
 
@@ -1976,6 +1990,10 @@ public class FilePickerAction extends PagedResourceHelperAction
 	@SuppressWarnings("unchecked")
 	public void doCompleteCreateWizard(RunData data)
 	{
+		if (!"POST".equals(data.getRequest().getMethod())) {
+			return;
+		}
+		
 		ToolSession toolSession = SessionManager.getCurrentToolSession();
 		SessionState state = ((JetspeedRunData)data).getPortletSessionState (((JetspeedRunData)data).getJs_peid ());
 
@@ -2205,6 +2223,10 @@ public class FilePickerAction extends PagedResourceHelperAction
 	@SuppressWarnings("unchecked")
 	public void doDispatchAction(RunData data)
 	{
+		if (!"POST".equals(data.getRequest().getMethod())) {
+			return;
+		}
+		
 		ToolSession toolSession = SessionManager.getCurrentToolSession();
 		
 		// find the ContentHosting service

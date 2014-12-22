@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.2/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/GatewaySyllabusImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.3/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/GatewaySyllabusImpl.java $
  * $Id: GatewaySyllabusImpl.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

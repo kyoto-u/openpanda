@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.2/search-tool/tool/src/java/org/sakaiproject/search/tool/RestSearchServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.3/search-tool/tool/src/java/org/sakaiproject/search/tool/RestSearchServlet.java $
  * $Id: RestSearchServlet.java 118402 2013-01-16 21:32:11Z jbush@rsmart.com $
  ***********************************************************************************
  *

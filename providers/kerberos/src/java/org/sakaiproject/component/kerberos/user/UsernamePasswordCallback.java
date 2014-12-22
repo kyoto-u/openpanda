@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.2/kerberos/src/java/org/sakaiproject/component/kerberos/user/UsernamePasswordCallback.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.3/kerberos/src/java/org/sakaiproject/component/kerberos/user/UsernamePasswordCallback.java $
  * $Id: UsernamePasswordCallback.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

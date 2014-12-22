@@ -1,6 +1,6 @@
 /**
  * $Id: EntityReference.java 130233 2013-10-08 14:00:47Z azeckoski@unicon.net $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/api/src/java/org/sakaiproject/entitybroker/EntityReference.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/api/src/java/org/sakaiproject/entitybroker/EntityReference.java $
  * AutoRegister.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation

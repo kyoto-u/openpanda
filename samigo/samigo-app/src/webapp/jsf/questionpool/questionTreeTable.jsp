@@ -1,4 +1,4 @@
-<!-- $Id: questionTreeTable.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+<!-- $Id: questionTreeTable.jsp 315727 2014-11-27 19:36:09Z jjmerono@um.es $
 <%--
 ***********************************************************************************
 *
@@ -69,7 +69,7 @@ table.checkall td {padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bott
 <h:commandLink title="#{questionPoolMessages.t_editQuestion}" id="modify" action="#{itemauthor.doit}">
 
     <h:outputText escape="false" value="#{question.themeText}" rendered="#{question.typeId == 14}"/>
-    <h:outputText escape="false" value="#{question.textHtmlStripped}" rendered="#{question.typeId ne 14}"/>
+	<h:outputText escape="false" value="#{itemContents.htmlStripped[question.text]}" rendered="#{question.typeId ne 14}"/>
     <f:actionListener
       type="org.sakaiproject.tool.assessment.ui.listener.author.ItemModifyListener" />
     <f:param name="itemid" value="#{question.itemId}"/>
@@ -141,9 +141,13 @@ table.checkall td {padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bott
 
     <h:column id="colimport" rendered="#{questionpool.importToAuthoring == 'true'}" >
       <f:facet name="header">
-        <h:outputText value="#{questionPoolMessages.impToAuthor}"/>
+        <h:panelGroup>
+        	<h:outputText value="#{questionPoolMessages.impToAuthor} "/>
+			<h:outputText value="#{questionPoolMessages.select_all}"/>
+        	<h:selectBooleanCheckbox id="importSelectAllCheck" onclick="toggleCheckboxes(this,'importCheckbox');" value="" />
+      	</h:panelGroup>
       </f:facet>
- 	  <h:selectManyCheckbox immediate="true" id="importCheckbox" value="#{questionpool.destItems}">
+ 	  <h:selectManyCheckbox immediate="true" id="importCheckbox" value="#{questionpool.destItems}" onclick="toggleSelectAllCheck(this,'importSelectAllCheck');">
         <f:selectItem itemValue="#{question.itemIdString}" itemLabel=""/>
  	  </h:selectManyCheckbox>
      </h:column>

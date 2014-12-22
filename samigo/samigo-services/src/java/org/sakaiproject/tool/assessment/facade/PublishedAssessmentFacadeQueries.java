@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueries.java $
- * $Id: PublishedAssessmentFacadeQueries.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueries.java $
+ * $Id: PublishedAssessmentFacadeQueries.java 315356 2014-11-12 10:53:01Z jjmerono@um.es $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1421,7 +1421,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		final ArrayList groupIds = getSiteGroupIdsForCurrentUser(siteId);
 		String query = "";
 		if (groupIds.size() > 0) {
-			query = "select new PublishedAssessmentData(p.publishedAssessmentId, p.title, "
+			query = "select distinct new PublishedAssessmentData(p.publishedAssessmentId, p.title, "
 				+ " c.releaseTo, c.startDate, c.dueDate, c.retractDate, "
 				+ " c.feedbackDate, f.feedbackDelivery, f.feedbackComponentOption, f.feedbackAuthoring, c.lateHandling, "
 				+ " c.unlimitedSubmissions, c.submissionsAllowed, em.scoringType, p.status, p.lastModifiedDate, c.timeLimit) "
@@ -2157,7 +2157,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		
 		// Get total no. of submission per assessment by the given agent
 		if (groupIds.size() > 0) {
-			final String hql = "select new AssessmentGradingData("
+			final String hql = "select distinct new AssessmentGradingData("
 				+ " a.assessmentGradingId, p.publishedAssessmentId, p.title, a.agentId,"
 				+ " a.submittedDate, a.isLate,"
 				+ " a.forGrade, a.totalAutoScore, a.totalOverrideScore,a.finalScore,"

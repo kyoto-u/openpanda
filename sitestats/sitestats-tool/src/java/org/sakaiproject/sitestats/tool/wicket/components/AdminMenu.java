@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.2/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/AdminMenu.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.3/sitestats-tool/src/java/org/sakaiproject/sitestats/tool/wicket/components/AdminMenu.java $
  * $Id: AdminMenu.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

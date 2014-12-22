@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.2/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ui/PrivateForumDecoratedBean.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.3/messageforums-app/src/java/org/sakaiproject/tool/messageforums/ui/PrivateForumDecoratedBean.java $
  * $Id: PrivateForumDecoratedBean.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

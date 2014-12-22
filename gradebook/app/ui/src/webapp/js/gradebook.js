@@ -160,7 +160,7 @@ function updateRunningTotal(thisForm) {
   	var weightInput = getTheElement(thisForm.name + ":categoriesTable:" + row + ":weightInput");
   	//just threw 10000 in there just in case as an out
   	while(weightInput && row < 10000){
-  		weight = parseFloat(weightInput.value);
+		weight = parseFloat(weightInput.value.replace(/,/, '.'));
   		var extraCreditCheckbox = getTheElement(thisForm.name + ":categoriesTable:" + row + ":catExtraCredit");
 		if (weight >= 0 && extraCreditCheckbox != null && !extraCreditCheckbox.checked) {
             runningTotal += weight;
@@ -174,8 +174,8 @@ function updateRunningTotal(thisForm) {
   var runningTotalValEl = getTheElement(thisForm.name + ":runningTotalVal");
   var runningTotalEl = getTheElement(thisForm.name + ":runningTotal");
   var neededTotalEl = getTheElement(thisForm.name + ":neededTotalVal");
-  runningTotalValEl.innerHTML = runningTotal;
-  neededTotalEl.innerHTML = neededTotal;
+  runningTotalValEl.innerHTML = (Math.round(runningTotal*100)/100).toFixed(2);
+  neededTotalEl.innerHTML = (Math.round(neededTotal*100)/100).toFixed(2);
   if (neededTotal == 0)
   	runningTotalEl.className="courseGrade";
   else

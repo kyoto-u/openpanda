@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.2/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/AddStructuredArtifactDefinitionController.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.3/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/shared/control/AddStructuredArtifactDefinitionController.java $
  * $Id: AddStructuredArtifactDefinitionController.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.2/sitestats-api/src/java/org/sakaiproject/sitestats/api/parser/EventFactory.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.3/sitestats-api/src/java/org/sakaiproject/sitestats/api/parser/EventFactory.java $
  * $Id: EventFactory.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

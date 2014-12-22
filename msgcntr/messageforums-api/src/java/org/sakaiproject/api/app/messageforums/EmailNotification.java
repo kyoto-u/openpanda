@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.2/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/EmailNotification.java $
+ * $URL: https://source.sakaiproject.org/svn/msgcntr/tags/sakai-10.3/messageforums-api/src/java/org/sakaiproject/api/app/messageforums/EmailNotification.java $
  * $Id: EmailNotification.java 68560 2009-11-04 08:31:19Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

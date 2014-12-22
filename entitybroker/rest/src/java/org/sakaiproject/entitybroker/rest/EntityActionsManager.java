@@ -1,6 +1,6 @@
 /**
  * $Id: EntityActionsManager.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/rest/src/java/org/sakaiproject/entitybroker/rest/EntityActionsManager.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/rest/src/java/org/sakaiproject/entitybroker/rest/EntityActionsManager.java $
  * EntityActionsManager.java - entity-broker - Jul 26, 2008 9:58:00 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.2/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseManagementGroupProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.3/cm-authz-provider/src/java/org/sakaiproject/coursemanagement/impl/provider/CourseManagementGroupProvider.java $
  * $Id: CourseManagementGroupProvider.java 311414 2014-07-31 01:52:43Z enietzel@anisakai.com $
  ***********************************************************************************
  *

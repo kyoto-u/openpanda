@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.2/help-api/src/java/org/sakaiproject/api/app/help/TableOfContents.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.3/help-api/src/java/org/sakaiproject/api/app/help/TableOfContents.java $
  * $Id: TableOfContents.java 106357 2012-03-28 23:18:54Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

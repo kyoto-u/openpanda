@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.2/message-api/api/src/java/org/sakaiproject/message/api/MessageService.java $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.3/message-api/api/src/java/org/sakaiproject/message/api/MessageService.java $
  * $Id: MessageService.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *

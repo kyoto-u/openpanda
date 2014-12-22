@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/util/TimeUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/util/TimeUtil.java $
  * $Id: TimeUtil.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *

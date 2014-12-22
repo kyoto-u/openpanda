@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_grading_submission.vm 311083 2014-07-23 23:52:41Z enietzel@anisakai.com $ -->
+<!-- $Id: chef_assignments_instructor_grading_submission.vm 315363 2014-11-12 15:39:46Z enietzel@anisakai.com $ -->
 <!-- start: check_assignments_instructor_grading_submission.vm  -->
 #set( $H = '-' )
 <script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
@@ -155,7 +155,7 @@ function handleEnterKeyPress(ev)
 						#set($submitterId = $submitter.getDisplayId())
 						#if ($!submitterId)
 							##attach the displayId
-							#set($submitterName=$submitterName.concat("(").concat($submitterId).concat(")"))
+							#set($submitterName=$submitterName.concat(" (").concat($submitterId).concat(")"))
 						#end
 						#if ($!submitterName)
 							#if ($count == 1)
@@ -166,7 +166,13 @@ function handleEnterKeyPress(ev)
 						#end
 						#set ($count = $count + 1)
 					#end
+					
+					## SAK-17606
+					#if ($value_CheckAnonymousGrading.equals("true"))
+						$validator.escapeHtml($submission.anonymousSubmissionId)
+					#else
 					$validator.escapeHtml($!submitterNames)
+					#end
 				</td>
 			</tr>
 			#if ($!submissionType != 4)

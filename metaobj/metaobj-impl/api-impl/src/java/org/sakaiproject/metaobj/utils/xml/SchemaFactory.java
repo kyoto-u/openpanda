@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.2/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/utils/xml/SchemaFactory.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.3/metaobj-impl/api-impl/src/java/org/sakaiproject/metaobj/utils/xml/SchemaFactory.java $
  * $Id: SchemaFactory.java 120216 2013-02-18 19:44:04Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

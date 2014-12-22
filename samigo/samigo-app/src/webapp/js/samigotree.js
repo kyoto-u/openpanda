@@ -541,3 +541,249 @@ function toggleRemove(){
   }
 }
 
+// **********************************************
+// ****************** SAM-2049 ******************
+// **********************************************
+
+function checkChildrenCheckboxes(item) {
+	var localItem = jQuery(item);
+	var itemChecked = localItem.is(':checked');
+
+	// Go to the item's parent table that has the tier. I would have used a wildcard selector but the version
+	// of jquery we are using doesn't seem to have that working well
+	var itemParentTable = localItem.parent().parent().parent().parent().parent();
+  
+	// Make sure we found something.  A length of 0 would be not found
+	if (itemParentTable.length == 1) {
+		// What is the css style of this parent table? we assume this is "tierX"
+		var itemTierClassName = itemParentTable.attr("class");
+		var itemCheckboxTierDigit = getTierDigit(itemTierClassName);
+		var itemParentTr = itemParentTable.parent().parent().parent();
+     
+		// Let's get all the other mega table rows
+		var itemPeerTrs = itemParentTr.nextAll(); // Get all sibling tr's AFTER this tr.
+
+		// This will be used if we find a tier level that is at a level the same or higher than the one being checked
+		var isKeepLooping = true;
+
+		for (var index = 0; (isKeepLooping && index < itemPeerTrs.length); index++) {	    	 
+			var siblingTr = jQuery(itemPeerTrs.get(index));
+			var siblingTierTable = siblingTr.find("table");
+			var siblingTierTableClassName = siblingTierTable.attr("class");	    	 
+			var siblingCheckboxTierDigit = getTierDigit(siblingTierTableClassName);
+
+			// If this tier level is greater than the initial item checked then these are child
+			// checkboxes that need to be set or unset.
+			if (siblingCheckboxTierDigit > itemCheckboxTierDigit) {
+				var siblingInputCheckbox = siblingTierTable.find("input:checkbox");
+				if (itemChecked) {
+					siblingInputCheckbox.attr("checked", "checked");
+					siblingInputCheckbox.attr("disabled", "disabled");
+				} else {
+					siblingInputCheckbox.removeAttr("checked");
+					siblingInputCheckbox.removeAttr("disabled");	    			  
+				}
+			} else {
+				// This tier level is NOT a child tier. No need to look at any more checkboxes
+				isKeepLooping = false;
+			}
+		}	      
+  	}
+}
+
+function getTierDigit(tierString) {
+	var classNameDigit = tierString.substr(4, tierString.length - 4);
+    return classNameDigit;
+}
+
+function checkAllCheckboxes( selectAllCheckbox )
+{
+	var allCheckboxes = jQuery(':checkbox');
+	var isSelectAllChecked = selectAllCheckbox.checked;
+	for( i = 0; i < allCheckboxes.length; i++ )
+	{
+		var checkbox = allCheckboxes[i];
+		if( selectAllCheckbox.id !== checkbox.id )
+		{
+			if( isSelectAllChecked )
+			{
+				checkbox.checked = true;
+				checkbox.disabled = true;
+			}
+			else
+			{
+				checkbox.checked = false;
+				checkbox.disabled = false;
+			}
+		}
+	}
+}
+
+function passSelectedPoolIds() {
+	var allCheckboxes = jQuery(':checkbox:checked');
+	var poolIds = new Array();
+	var checkAllChecked = jQuery('input[name$=checkAllCheckbox]').is(':checked');
+	var checkboxValue;
+	
+	// If check all checked, ignore the first value;
+	if (checkAllChecked) {
+		for (var index = 0; index < (allCheckboxes.length - 1); index++) {
+			checkboxValue = jQuery(allCheckboxes.get(index + 1)).val();
+			poolIds[index] = checkboxValue;
+		}
+	} else {
+		for (var index = 0; index < allCheckboxes.length; index++) {
+			checkboxValue = jQuery(allCheckboxes.get(index)).val();
+			poolIds[index] = checkboxValue;
+		}
+	}
+	
+	var hideInput = jQuery('input[name$=transferPoolIds]');
+	hideInput.val(poolIds);
+}
+
+function checkChildrenCheckboxesDisable(item) {
+	var localItem = jQuery(item);
+	var itemChecked = localItem.is(':checked');
+	var itemParentTable = localItem.parent().parent().parent().parent().parent();
+
+	if (itemParentTable.length == 1) {
+		var itemTierClassName = itemParentTable.attr("class");
+		var itemCheckboxTierDigit = getTierDigit(itemTierClassName);
+		var itemParentTr = itemParentTable.parent().parent().parent();
+		var itemPeerTrs = itemParentTr.nextAll(); // Get all sibling tr's AFTER this tr.
+		var isKeepLooping = true;
+
+		for (var index = 0; (isKeepLooping && index < itemPeerTrs.length); index++) {
+			var siblingTr = jQuery(itemPeerTrs.get(index));
+			var siblingTierTable = siblingTr.find("table");
+			var siblingTierTableClassName = siblingTierTable.attr("class");
+			var siblingCheckboxTierDigit = getTierDigit(siblingTierTableClassName);
+
+			if (siblingCheckboxTierDigit > itemCheckboxTierDigit) {
+				var siblingInputCheckbox = siblingTierTable.find("input:checkbox");
+				if (itemChecked) {
+					siblingInputCheckbox.attr("disabled", "disabled");
+				} else {
+					siblingInputCheckbox.removeAttr("disabled");
+				}
+			} else {
+				isKeepLooping = false;
+			}
+		}	      
+	}
+}
+
+function disableCheckboxes() {
+	var allCheckboxes = jQuery(':checkbox');
+	var checkAllChecked = jQuery('input[name$=checkAllCheckbox]').is(':checked');
+
+	for (var index = 1; index < allCheckboxes.length; index++) {
+		var checkboxItem = jQuery(allCheckboxes.get(index) );
+		if (checkAllChecked) {
+			checkboxItem.attr("disabled", "disabled");
+		} else {
+			checkboxItem.removeAttr("disabled");
+		}
+	}
+	
+	var otherCheckboxes = jQuery('input[name$=radiobtn]');
+	for (var i = 0; i < otherCheckboxes.length; i++) {
+		checkChildrenCheckboxesDisable(allCheckboxes.get(i));
+	}
+}
+
+function disableButtons() {
+
+	// Get the buttons
+	var elements = $(":submit");
+	for (i = 0; i < elements.length; i++) {
+
+		// Hide the original
+		var button = elements[i];
+		button.style.display = "none";
+
+		// Clone and disable the original
+		var newButton = document.createElement("input");
+		newButton.setAttribute("type", "button" );
+		newButton.setAttribute("id", button.getAttribute("id") + "Disabled");
+		newButton.setAttribute("name", button.getAttribute("name") + "Disabled");
+		newButton.setAttribute("value", button.getAttribute("value"));
+		newButton.setAttribute("className", button.getAttribute("className"));
+		newButton.setAttribute("disabled", "true");
+
+		// Add the clone where the original is in the DOM
+		var parent = button.parentNode;
+		parent.insertBefore(newButton, button);
+	}
+}
+
+/*
+  Toggle JSF checkboxes that match a controller checkbox  
+*/
+function toggleCheckboxes(checkbox,checkboxtargetname) {
+    // Render the transfer button if one or more checkboxes are selected
+    // Basically this needs to split out the ID from checkbox which will be named 
+    // editform:_id142:chk
+    //
+    // And either check or uncheck all boxes named depending on whether or not it (itself) is checked
+    // editform:_id142:#:*
+		// Add your controller checkbox with the name: 
+		// <h:selectBooleanCheckbox id="importCheckbox_chk" onclick="toggleCheckboxes(this);" value="" />
+		
+		//debugger;
+    if (checkboxtargetname) {
+				params = checkbox.name.split(":")
+		}
+		if (params && params.length == 3) {
+				params.pop();
+				params.push(checkboxtargetname);
+		}
+    else 
+			return; 
+
+		for (i = 0;; i++) {
+        id = params[0] + ":" + params[1] + ":" + i + ":" + params[2];
+        elem = null;
+        if (document.getElementsByName)
+            elem = document.getElementsByName(id);
+        if (elem == null || elem.length == 0) {
+            break;
+        } else {
+            if (elem.length == 1)
+                elem[0].checked = checkbox.checked;
+            //Not sure if it finds multiple elements with the same name, since this is a special JSF case
+            //It shouldn't happen
+        }
+    }
+}
+
+function toggleSelectAllCheck(checkbox,checkboxtargetname) {
+	if (checkboxtargetname) 
+		params = checkbox.name.split(":");
+	
+	if (params && params.length == 4) {
+		params.pop();
+		params.pop();
+		params.push(checkboxtargetname);
+	}
+	else
+		 return;
+
+	id = params[0] + ":" + params[1] + ":" + params[2];
+	elem = document.getElementsByName(id);
+	
+	if(elem == null || elem.length == 0)
+		return;
+	else{
+		
+		if(elem.length == 1){
+			if(elem[0].checked&&!checkbox.checked)
+				elem[0].checked = checkbox.checked;
+			else
+				return;
+		}
+		else 
+			return;
+	}
+}

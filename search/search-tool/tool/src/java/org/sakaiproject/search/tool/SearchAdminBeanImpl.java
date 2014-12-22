@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.2/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchAdminBeanImpl.java $
- * $Id: SearchAdminBeanImpl.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.3/search-tool/tool/src/java/org/sakaiproject/search/tool/SearchAdminBeanImpl.java $
+ * $Id: SearchAdminBeanImpl.java 315280 2014-11-10 18:36:55Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -101,7 +101,7 @@ public class SearchAdminBeanImpl implements SearchAdminBean
 
 	
 	
-
+	private ServerConfigurationService serverConfigurationService;
 	
 	private SearchService searchService = null;
 
@@ -134,6 +134,7 @@ public class SearchAdminBeanImpl implements SearchAdminBean
 			ToolManager toolManager, SessionManager sessionManager, SecurityService securityService, ServerConfigurationService serverConfigurationService)
 			throws IdUnusedException, PermissionException
 	{
+		this.serverConfigurationService = serverConfigurationService;
 		siteId = toolManager.getCurrentPlacement().getContext();
 		Site currentSite = siteService.getSite(siteId);
 		siteCheck = currentSite.getReference();
@@ -673,4 +674,10 @@ public class SearchAdminBeanImpl implements SearchAdminBean
 		return redirect;
 	}
 
+	public boolean isEnabled()
+	{
+		return ("true".equals(serverConfigurationService.getString("search.enable",
+				"false")));
+
+	}
 }

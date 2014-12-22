@@ -4,14 +4,14 @@
   <parent>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
-    <version>10.2</version>
+    <version>10.3</version>
     <relativePath>../master/pom.xml</relativePath>
   </parent>
 
   <name>sakai-announcement base pom</name>
   <groupId>org.sakaiproject.announcement</groupId>
   <artifactId>announcement</artifactId>
-  <version>10.2</version>
+  <version>10.3</version>
   <packaging>pom</packaging>
 
   <modules>

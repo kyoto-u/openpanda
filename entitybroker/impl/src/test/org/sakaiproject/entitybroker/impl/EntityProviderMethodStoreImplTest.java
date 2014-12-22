@@ -1,6 +1,6 @@
 /**
- * $Id: EntityProviderMethodStoreImplTest.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/impl/src/test/org/sakaiproject/entitybroker/impl/EntityProviderMethodStoreImplTest.java $
+ * $Id: EntityProviderMethodStoreImplTest.java 315272 2014-11-10 18:24:27Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/impl/src/test/org/sakaiproject/entitybroker/impl/EntityProviderMethodStoreImplTest.java $
  * EntityProviderMethodStoreImplTest.java - entity-broker - Jan 13, 2009 12:03:59 PM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -117,17 +117,17 @@ public class EntityProviderMethodStoreImplTest {
        URLRedirect[] redirects = entityProviderMethodStore.findURLRedirectMethods(td.entityProviderU1);
        assertNotNull(redirects);
        assertEquals(4, redirects.length);
-       assertEquals("/{prefix}/{id}/{thing}/go", redirects[0].template);
-       assertEquals("outsideRedirector", redirects[0].methodName);
+       assertEquals("/{prefix}/going/nowhere", redirects[0].template);
+       assertEquals("returningRedirector", redirects[0].methodName);
        assertNotNull(redirects[0].methodArgTypes);
-       assertEquals("/{prefix}/xml/{id}", redirects[1].template);
-       assertEquals("xmlRedirector", redirects[1].methodName);
+       assertEquals("/{prefix}/keep/moving", redirects[1].template);
+       assertEquals("neverRedirector", redirects[1].methodName);
        assertNotNull(redirects[1].methodArgTypes);
-       assertEquals("/{prefix}/going/nowhere", redirects[2].template);
-       assertEquals("returningRedirector", redirects[2].methodName);
+       assertEquals("/{prefix}/xml/{id}", redirects[2].template);
+       assertEquals("xmlRedirector", redirects[2].methodName);
        assertNotNull(redirects[2].methodArgTypes);
-       assertEquals("/{prefix}/keep/moving", redirects[3].template);
-       assertEquals("neverRedirector", redirects[3].methodName);
+       assertEquals("/{prefix}/{id}/{thing}/go", redirects[3].template);
+       assertEquals("outsideRedirector", redirects[3].methodName);
        assertNotNull(redirects[3].methodArgTypes);
 
        redirects = entityProviderMethodStore.findURLRedirectMethods(td.entityProvider3);

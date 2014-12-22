@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.2/help-component-shared/src/java/org/sakaiproject/component/app/help/model/RegistrationFile.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.3/help-component-shared/src/java/org/sakaiproject/component/app/help/model/RegistrationFile.java $
  * $Id: RegistrationFile.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

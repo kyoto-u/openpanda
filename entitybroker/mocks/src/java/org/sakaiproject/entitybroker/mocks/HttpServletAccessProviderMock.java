@@ -1,6 +1,6 @@
 /**
  * $Id: HttpServletAccessProviderMock.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.2/mocks/src/java/org/sakaiproject/entitybroker/mocks/HttpServletAccessProviderMock.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/mocks/src/java/org/sakaiproject/entitybroker/mocks/HttpServletAccessProviderMock.java $
  * HttpServletAccessProviderMock.java - entity-broker - Apr 6, 2008 12:18:50 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

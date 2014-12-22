@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_student_view_submission.vm 308845 2014-04-25 20:26:01Z enietzel@anisakai.com $ -->
+<!-- $Id: chef_assignments_student_view_submission.vm 315310 2014-11-10 23:19:48Z enietzel@anisakai.com $ -->
 <!-- start: chef_assignments_student_view_submission.vm  -->
 <script type="text/javascript">
 $(document).ready(function(){
@@ -189,16 +189,16 @@ function submitform(id)
 					</td>
 				</tr>
 				##resubmit number
-				#if($!resubmitNumber && !$!resubmitNumber.equals("0") )
 					<tr>
 						<th>
 							$tlang.getString("allow.resubmit.number")
 						</th>
 						<td>
-							$resubmitNumber
+							#if ($!resubmitNumber) $resubmitNumber #else 0 #end 
 						</td>
 					</tr>
-					## resubmit close time
+				## resubmit close time
+				#if($!resubmitNumber && !$!resubmitNumber.equals("0") )
 					<tr>
 						<th>
 							$tlang.getString("allow.resubmit.closeTime")

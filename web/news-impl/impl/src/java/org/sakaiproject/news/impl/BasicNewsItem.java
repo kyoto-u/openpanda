@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.2/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsItem.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.3/news-impl/impl/src/java/org/sakaiproject/news/impl/BasicNewsItem.java $
  * $Id: BasicNewsItem.java 115829 2012-11-07 13:07:22Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

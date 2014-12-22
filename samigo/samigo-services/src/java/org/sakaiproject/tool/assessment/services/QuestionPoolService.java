@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.2/samigo-services/src/java/org/sakaiproject/tool/assessment/services/QuestionPoolService.java $
- * $Id: QuestionPoolService.java 106521 2012-04-04 08:14:42Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-services/src/java/org/sakaiproject/tool/assessment/services/QuestionPoolService.java $
+ * $Id: QuestionPoolService.java 315345 2014-11-11 18:42:24Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -594,5 +594,15 @@ public class QuestionPoolService
 	  }
 
 	  return agents;
+  }
+  
+  // SAM-2049
+  public void transferPoolsOwnership(String ownerId, List<Long> poolIds) {
+	  try {
+		  PersistenceService.getInstance().getQuestionPoolFacadeQueries().transferPoolsOwnership(ownerId, poolIds);
+	  } catch (Exception ex) {
+		  log.error(ex);
+		  throw new RuntimeException(ex);
+	  }
   }
 }

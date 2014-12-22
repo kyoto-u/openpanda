@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rights/tags/sakai-10.2/rights-tool/tool/src/java/org/sakaiproject/rights/tool/RightsHelperAction.java $
+ * $URL: https://source.sakaiproject.org/svn/rights/tags/sakai-10.3/rights-tool/tool/src/java/org/sakaiproject/rights/tool/RightsHelperAction.java $
  * $Id: RightsHelperAction.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

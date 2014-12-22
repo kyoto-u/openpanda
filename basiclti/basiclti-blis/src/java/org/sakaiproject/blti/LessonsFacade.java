@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.2/basiclti-blis/src/java/org/sakaiproject/blti/LessonsFacade.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.3/basiclti-blis/src/java/org/sakaiproject/blti/LessonsFacade.java $
  * $Id: LessonsFacade.java 127566 2013-07-23 11:39:38Z csev@umich.edu $
  *
  * Copyright (c) 2009 The Sakai Foundation

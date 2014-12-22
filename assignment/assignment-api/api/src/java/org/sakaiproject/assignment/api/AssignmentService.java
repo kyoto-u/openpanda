@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.2/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
- * $Id: AssignmentService.java 127838 2013-07-26 15:55:26Z matthew.buckett@it.ox.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.3/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
+ * $Id: AssignmentService.java 315364 2014-11-12 15:42:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -884,4 +884,13 @@ public interface AssignmentService extends EntityProducer
 	public List<String> getSubmitterIdList(String searchFilterOnly, String allOrOneGroup, String search, String aRef, String contextString);	
 
 	public String escapeInvalidCharsEntry(String accentedString);
+	
+	/*
+	 * If the assignment uses anonymous grading returns true, else false
+	 *
+	 * SAK-27824
+	 *
+	 * Params: AssignmentSubmission s
+	 */
+	public boolean assignmentUsesAnonymousGrading(Assignment a);
 }
