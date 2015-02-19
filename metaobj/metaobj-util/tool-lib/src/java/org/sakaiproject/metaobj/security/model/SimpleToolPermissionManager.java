@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.3/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/security/model/SimpleToolPermissionManager.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.4/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/security/model/SimpleToolPermissionManager.java $
  * $Id: SimpleToolPermissionManager.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

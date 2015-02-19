@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/PublishedAssessmentIfc.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/PublishedAssessmentIfc.java $
  * $Id: PublishedAssessmentIfc.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

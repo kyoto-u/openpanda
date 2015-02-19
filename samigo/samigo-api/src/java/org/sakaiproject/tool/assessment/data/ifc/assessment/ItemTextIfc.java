@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/ItemTextIfc.java $
- * $Id: ItemTextIfc.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/ItemTextIfc.java $
+ * $Id: ItemTextIfc.java 316665 2015-01-09 17:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -60,8 +60,6 @@ public interface ItemTextIfc
   Set<ItemTextAttachmentIfc> getItemTextAttachmentSet();
 
   void setItemTextAttachmentSet(Set<ItemTextAttachmentIfc> itemTextAttachmentSet);
-
-  List<ItemTextAttachmentIfc> getItemTextAttachmentList();
 
     /**
      * This is an actual EMI Question Item (i.e. not Theme or Lead In Text or

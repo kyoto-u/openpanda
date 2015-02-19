@@ -49,6 +49,8 @@ function resizeiframe(id) {
 <script type="text/javascript" src="$context/js/jqBarGraph.1.1.customized.js"></script>
 <script type="text/javascript" src="$context/js/jquery.oembed.js"></script>
 <link rel="stylesheet" href="$context/js/jquery.oembed.css" type="text/css" />
+<script type="text/javascript" src="$context/js/jquery.cluetip.min.js"></script>
+<link rel="stylesheet" href="$context/css/jquery.cluetip.css" type="text/css" />
 <script type="text/javascript" src="$context/js/peer-eval.js"></script>
 <script type="text/javascript" src="$context/js/hoverIntent.js"></script>
 <script type="text/javascript" src="$context/js/show-page.js"></script>
@@ -122,7 +124,7 @@ function resizeiframe(id) {
 	          </a>
 		  <div rsf:id="directurl-div" class="portlet title-tools direct-url-wrap">
 		    <input rsf:id="directurl-input" type="checkbox" class="portlet title-tools short-url"/>
-		    <span>Short URL</span>
+		    <span rsf:id="directurl-shorten">Short URL</span>
 		    <textarea rsf:id="directurl-textarea" class="portlet title-tools"></textarea>
 		  </div>
                   <a href="#" rsf:id="helpbutton" target="_blank" class="help">
@@ -368,6 +370,7 @@ function resizeiframe(id) {
                       <div style="display:none" rsf:id="iframeWidth" class="mm-width"></div>
                       <div class="description" rsf:id="description5"></div>
                       <div style="display:none" rsf:id="mimetype3" class="mm-type"></div>
+                      <div style="display:none" rsf:id="embedtype" class="mm-embedtype"></div>
                       <div style="display:none" rsf:id="current-item-id3" class="mm-itemid"></div>
                       <div style="display:none" rsf:id="item-prereq2" class="prerequisite-info"></div>
                       <div style="display:none" rsf:id="item-groups2" class="item-groups"></div>
@@ -1013,12 +1016,12 @@ function resizeiframe(id) {
                 <form action="#" rsf:id="edit-multimedia-form" class="controlsPanel">
                   <input type="hidden" rsf:id="csrf10" />
                     <div class="">
-                        <p class="shorttext required">
+                        <p class="shorttext required" id="width-p">
                             <label rsf:id="width-label" for="width">Page Title</label>
                             <input type="text" name="width" rsf:id="width" id="width" length="30" class="edit-multimedia-input" /><br />
                         </p>
 
-                        <p class="shorttext required">
+                        <p class="shorttext required" id="height-p">
                             <label rsf:id="height-label" for="height">Page Title</label>
                             <input type="text" name="height" rsf:id="height" id="height" length="30" class="edit-multimedia-input" /><br /> 
                         </p>
@@ -1351,12 +1354,12 @@ function resizeiframe(id) {
 				<form action="#" rsf:id="movie-form" class="controlsPanel">
 				  <input type="hidden" rsf:id="csrf18" />
 						<input type="hidden" rsf:id="movieEditId" id="movieEditId" />
-						<p class="shorttext required">
+						<p class="shorttext required" id="movie-width-p">
 							<label for="movie-width">Width: </label>
 					 		<input type="text" name="width" rsf:id="movie-width" id="movie-width" length="30" class="edit-movie-input" /><br />
 						</p>
 						
-						<p class="shorttext required">
+						<p class="shorttext required" id="movie-height-p">
 							<label for="movie-height">Height: </label>
 					 		<input type="text" name="height" rsf:id="movie-height" id="movie-height" length="30" class="edit-movie-input" /><br />
 						</p>

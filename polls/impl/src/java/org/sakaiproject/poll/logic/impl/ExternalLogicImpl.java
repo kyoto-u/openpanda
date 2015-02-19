@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.3/impl/src/java/org/sakaiproject/poll/logic/impl/ExternalLogicImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.4/impl/src/java/org/sakaiproject/poll/logic/impl/ExternalLogicImpl.java $
  * $Id: ExternalLogicImpl.java 309907 2014-05-29 19:22:35Z enietzel@anisakai.com $
  ***********************************************************************************
  *

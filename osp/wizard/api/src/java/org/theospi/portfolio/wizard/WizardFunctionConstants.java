@@ -1,6 +1,6 @@
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.3/wizard/api/src/java/org/theospi/portfolio/wizard/WizardFunctionConstants.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.4/wizard/api/src/java/org/theospi/portfolio/wizard/WizardFunctionConstants.java $
 * $Id: WizardFunctionConstants.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
 ***********************************************************************************
 *

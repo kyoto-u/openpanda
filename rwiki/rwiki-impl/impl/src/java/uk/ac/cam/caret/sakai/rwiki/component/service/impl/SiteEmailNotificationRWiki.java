@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/SiteEmailNotificationRWiki.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.4/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/SiteEmailNotificationRWiki.java $
  * $Id: SiteEmailNotificationRWiki.java 315125 2014-11-04 10:11:29Z jjmerono@um.es $
  ***********************************************************************************
  *

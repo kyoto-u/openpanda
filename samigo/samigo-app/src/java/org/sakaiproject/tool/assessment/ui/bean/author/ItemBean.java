@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemBean.java $
  * $Id: ItemBean.java 315740 2014-11-28 13:20:59Z jjmerono@um.es $
  ***********************************************************************************
  *

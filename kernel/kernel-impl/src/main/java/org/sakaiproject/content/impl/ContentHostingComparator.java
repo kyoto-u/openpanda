@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/content/impl/ContentHostingComparator.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/content/impl/ContentHostingComparator.java $
  * $Id: ContentHostingComparator.java 127834 2013-07-26 15:34:45Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *

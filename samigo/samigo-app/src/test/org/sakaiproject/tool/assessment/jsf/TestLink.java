@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/test/org/sakaiproject/tool/assessment/jsf/TestLink.java $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/test/org/sakaiproject/tool/assessment/jsf/TestLink.java $
 * $Id: TestLink.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
 ***********************************************************************************
 *

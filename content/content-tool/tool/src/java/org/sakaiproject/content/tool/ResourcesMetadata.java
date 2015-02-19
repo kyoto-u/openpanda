@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.3/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesMetadata.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.4/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesMetadata.java $
  * $Id: ResourcesMetadata.java 109724 2012-06-27 04:22:36Z steve.swinsburg@gmail.com $
  ***********************************************************************************
  *

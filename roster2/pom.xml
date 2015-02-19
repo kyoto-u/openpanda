@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>10.3</version>
+        <version>10.4</version>
         <relativePath>../master/pom.xml</relativePath>
     </parent>
 
     <name>ROSTER2 TOOL</name>
     <groupId>org.sakaiproject.roster2</groupId>
     <artifactId>sakai-roster2-tool</artifactId>
-    <version>10.3</version>
+    <version>10.4</version>
     <organization>
         <name>Sakai Project</name>
         <url>http://sakaiproject.org/</url>
@@ -224,6 +224,44 @@
 					</execution>
 				</executions>
 			</plugin>
+
+            <plugin>
+                <groupId>com.github.jknack</groupId>
+                <artifactId>handlebars-maven-plugin</artifactId>
+                <version>2.0.0</version>
+                <executions>
+                    <execution>
+                        <id>precompile-templates</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>precompile</goal>
+                        </goals>
+                        <configuration>
+                            <output>${project.build.directory}/${project.build.finalName}/templates.js</output>
+                            <prefix>${basedir}/src/webapp/WEB-INF/templates</prefix>
+                            <suffix>.handlebars</suffix>
+                            <handlebarsJsFile>/handlebars-v1.3.0.js</handlebarsJsFile>
+                            <amd>false</amd>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>precompile-partials</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>precompile</goal>
+                        </goals>
+                        <configuration>
+                            <output>${project.build.directory}/${project.build.finalName}/partials.js</output>
+                            <prefix>${basedir}/src/webapp/WEB-INF/partials</prefix>
+                            <suffix>.handlebars</suffix>
+                            <handlebarsJsFile>/handlebars-v1.3.0.js</handlebarsJsFile>
+                            <amd>false</amd>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
             
 	</build>

@@ -1,6 +1,6 @@
 /**
  * $Id: BrowseEntity.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/api/src/java/org/sakaiproject/entitybroker/entityprovider/extension/BrowseEntity.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/api/src/java/org/sakaiproject/entitybroker/entityprovider/extension/BrowseEntity.java $
  * BrowseEntity.java - entity-broker - Aug 3, 2008 6:03:53 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

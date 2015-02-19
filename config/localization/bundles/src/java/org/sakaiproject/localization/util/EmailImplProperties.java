@@ -1,5 +1,5 @@
 /*****************************************************************************
- * $URL: https://source.sakaiproject.org/svn/config/tags/sakai-10.3/localization/bundles/src/java/org/sakaiproject/localization/util/EmailImplProperties.java $
+ * $URL: https://source.sakaiproject.org/svn/config/tags/sakai-10.4/localization/bundles/src/java/org/sakaiproject/localization/util/EmailImplProperties.java $
  * $Id: EmailImplProperties.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  *****************************************************************************
  *

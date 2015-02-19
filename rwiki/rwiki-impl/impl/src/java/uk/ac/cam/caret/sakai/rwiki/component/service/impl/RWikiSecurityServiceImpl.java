@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/RWikiSecurityServiceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.4/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/service/impl/RWikiSecurityServiceImpl.java $
  * $Id: RWikiSecurityServiceImpl.java 20447 2007-01-18 23:06:20Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

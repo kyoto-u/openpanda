@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.3/mailarchive-tool/tool/src/java/org/sakaiproject/mailarchive/tool/MailboxAction.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.4/mailarchive-tool/tool/src/java/org/sakaiproject/mailarchive/tool/MailboxAction.java $
  * $Id: MailboxAction.java 131929 2013-11-25 17:56:30Z dsobiera@indiana.edu $
  ***********************************************************************************
  *

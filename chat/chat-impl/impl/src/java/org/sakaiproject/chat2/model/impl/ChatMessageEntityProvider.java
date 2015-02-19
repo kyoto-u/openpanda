@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.3/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatMessageEntityProvider.java $
+* $URL: https://source.sakaiproject.org/svn/chat/tags/sakai-10.4/chat-impl/impl/src/java/org/sakaiproject/chat2/model/impl/ChatMessageEntityProvider.java $
 * $Id: ChatMessageEntityProvider.java 112500 2012-09-17 14:31:56Z david.horwitz@uct.ac.za $
 ***********************************************************************************
 *

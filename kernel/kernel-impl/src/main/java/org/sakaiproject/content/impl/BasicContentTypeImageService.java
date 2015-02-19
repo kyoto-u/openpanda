@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/content/impl/BasicContentTypeImageService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/content/impl/BasicContentTypeImageService.java $
  * $Id: BasicContentTypeImageService.java 307862 2014-04-07 15:00:04Z enietzel@anisakai.com $
  ***********************************************************************************
  *

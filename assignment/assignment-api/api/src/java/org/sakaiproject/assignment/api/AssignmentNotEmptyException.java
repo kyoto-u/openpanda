@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.3/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentNotEmptyException.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.4/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentNotEmptyException.java $
  * $Id: AssignmentNotEmptyException.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

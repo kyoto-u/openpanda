@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/event/impl/SessionServiceAdaptorTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/event/impl/SessionServiceAdaptorTest.java $
  * $Id: SessionServiceAdaptorTest.java 308852 2014-04-25 23:22:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *

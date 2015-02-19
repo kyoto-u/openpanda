@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/test/java/org/sakaiproject/content/impl/serialize/impl/test/Type1BaseContentCollectionSerializerTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/test/java/org/sakaiproject/content/impl/serialize/impl/test/Type1BaseContentCollectionSerializerTest.java $
  * $Id: Type1BaseContentCollectionSerializerTest.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

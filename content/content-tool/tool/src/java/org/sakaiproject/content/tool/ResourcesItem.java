@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.3/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesItem.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.4/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesItem.java $
  * $Id: ResourcesItem.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

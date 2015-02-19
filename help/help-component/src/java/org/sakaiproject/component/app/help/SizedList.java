@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.3/help-component/src/java/org/sakaiproject/component/app/help/SizedList.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.4/help-component/src/java/org/sakaiproject/component/app/help/SizedList.java $
  * $Id: SizedList.java 106357 2012-03-28 23:18:54Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

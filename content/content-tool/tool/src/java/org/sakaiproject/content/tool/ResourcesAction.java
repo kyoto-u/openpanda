@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.3/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.4/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
  * $Id: ResourcesAction.java 315758 2014-11-29 14:29:45Z jjmerono@um.es $
  ***********************************************************************************
  *

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>basiclti</artifactId>
         <groupId>org.sakaiproject.basiclti</groupId>
-        <version>10.3</version>
+        <version>10.4</version>
     </parent>
 
     <name>BasicLTI Docs (basiclti-docs)</name>

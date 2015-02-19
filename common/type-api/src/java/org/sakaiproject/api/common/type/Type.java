@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.3/type-api/src/java/org/sakaiproject/api/common/type/Type.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.4/type-api/src/java/org/sakaiproject/api/common/type/Type.java $
  * $Id: Type.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

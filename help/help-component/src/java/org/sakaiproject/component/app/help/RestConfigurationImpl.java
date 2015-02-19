@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.3/help-component/src/java/org/sakaiproject/component/app/help/RestConfigurationImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.4/help-component/src/java/org/sakaiproject/component/app/help/RestConfigurationImpl.java $
  * $Id: RestConfigurationImpl.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.3/basiclti-util/src/java/org/imsglobal/basiclti/XMLMap.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.4/basiclti-util/src/java/org/imsglobal/basiclti/XMLMap.java $
  * $Id: XMLMap.java 309356 2014-05-08 21:13:08Z enietzel@anisakai.com $
  **********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-private/src/main/java/org/sakaiproject/springframework/orm/hibernate/dialect/SQLServerDialect2005.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-private/src/main/java/org/sakaiproject/springframework/orm/hibernate/dialect/SQLServerDialect2005.java $
  * $Id: SQLServerDialect2005.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

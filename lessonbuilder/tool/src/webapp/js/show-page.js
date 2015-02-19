@@ -1669,6 +1669,14 @@ $(function() {
 
 			$("#height").val(row.find(".mm-height").text());
 			$("#width").val(row.find(".mm-width").text());
+			if (row.find(".mm-embedtype").text() == '1') {
+			    // embed code, can't edit size
+			    $('#width-p').hide();
+			    $('#height-p').hide();
+			} else {
+			    $('#width-p').show();
+			    $('#height-p').show();
+			}
 			$("#description2").val(row.find(".description").text());
 			$("#mimetype").val(row.find(".mm-type").text());
 			var tagname = row.find(".multimedia").get(0).nodeName.toLowerCase();
@@ -1881,6 +1889,19 @@ $(function() {
         resizeFrame('grow');
 	});
 	
+	// don't do this twice. if portal is loaded portal will do it
+        if(typeof portal == 'undefined')
+	$('a.tool-directurl').cluetip({
+		local: true,
+		    arrows: true,
+		    cluetipClass: 'jtip',
+		    sticky: true,
+		    cursor: 'pointer',
+		    activation: 'click',
+		    closePosition: 'title',
+		    closeText: '<img src="/library/image/silk/cross.png" alt="close" />'
+		    });
+
 	function submitgrading(item) {
 	    var img = item.parent().children("img");
 			
@@ -2713,4 +2734,18 @@ resizeFrame = function (updown) {
       }
     };
 
-    
+function toggleShortUrlOutput(defaultUrl, checkbox, textbox) {
+    if($(checkbox).is(':checked')) {
+	$.ajax({
+		url:'/direct/url/shorten?path='+encodeURI(defaultUrl),
+		    success: function(shortUrl) {
+		    $('.'+textbox).val(shortUrl);
+		}
+	    });
+    } else {
+	$('.'+textbox).val(defaultUrl);
+    }
+}
+
+
+

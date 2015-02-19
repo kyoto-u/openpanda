@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.3/search-tool/tool/src/java/org/sakaiproject/search/tool/api/SearchAdminBean.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.4/search-tool/tool/src/java/org/sakaiproject/search/tool/api/SearchAdminBean.java $
  * $Id: SearchAdminBean.java 315280 2014-11-10 18:36:55Z enietzel@anisakai.com $
  ***********************************************************************************
  *

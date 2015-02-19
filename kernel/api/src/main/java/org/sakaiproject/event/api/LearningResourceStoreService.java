@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/api/src/main/java/org/sakaiproject/event/api/LearningResourceStoreService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/api/src/main/java/org/sakaiproject/event/api/LearningResourceStoreService.java $
  * $Id: LearningResourceStoreService.java 315359 2014-11-12 15:02:04Z enietzel@anisakai.com $
  ***********************************************************************************
  *

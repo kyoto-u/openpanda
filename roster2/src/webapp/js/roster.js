@@ -881,7 +881,7 @@
         
         if (roster.site.siteGroups.length > 0) {
             
-            $('#roster_form_section_filter').val(roster.groupToViewText);
+            $('#roster_form_section_filter').val(roster.groupToView);
             $('#roster_form_section_filter').change(function (e) {
                 
                 if (this.options[this.selectedIndex].value != roster.i18n.roster_section_sep_line) {

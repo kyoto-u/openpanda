@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.3/dav-common/src/java/org/sakaiproject/dav/DavPrincipal.java $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.4/dav-common/src/java/org/sakaiproject/dav/DavPrincipal.java $
  * $Id: DavPrincipal.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**
  * $Id: InvalidEmailTemplateException.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.3/impl/src/java/org/sakaiproject/poll/logic/impl/InvalidEmailTemplateException.java $
+ * $URL: https://source.sakaiproject.org/svn/polls/tags/sakai-10.4/impl/src/java/org/sakaiproject/poll/logic/impl/InvalidEmailTemplateException.java $
  * 
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

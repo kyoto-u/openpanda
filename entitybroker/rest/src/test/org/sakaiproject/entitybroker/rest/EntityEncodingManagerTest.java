@@ -1,6 +1,6 @@
 /**
  * $Id: EntityEncodingManagerTest.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/rest/src/test/org/sakaiproject/entitybroker/rest/EntityEncodingManagerTest.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/rest/src/test/org/sakaiproject/entitybroker/rest/EntityEncodingManagerTest.java $
  * EntityHandlerImplTest.java - entity-broker - Apr 6, 2008 12:08:39 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

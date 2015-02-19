@@ -187,4 +187,7 @@ ${sakai_html_head_js}
 <script type="text/javascript">
 document.write('<!-- jquery version '+jQuery.fn.jquery+' -->\n');
 </script>
+
+## If there's some extra header code defined, included it here
+${includeExtraHead}
 </head>

@@ -1,6 +1,6 @@
 /**
  * $Id: SessionEntityProvider.java 130232 2013-10-08 12:32:33Z azeckoski@unicon.net $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/core-providers/src/java/org/sakaiproject/entitybroker/providers/SessionEntityProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/core-providers/src/java/org/sakaiproject/entitybroker/providers/SessionEntityProvider.java $
  * SessionEntityProvider.java - entity-broker - Jul 15, 2008 4:03:52 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

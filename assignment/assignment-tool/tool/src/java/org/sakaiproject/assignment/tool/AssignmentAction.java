@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.3/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
- * $Id: AssignmentAction.java 315999 2014-12-11 20:58:40Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.4/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
+ * $Id: AssignmentAction.java 316981 2015-01-28 22:26:14Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  *
@@ -3264,15 +3264,18 @@ public class AssignmentAction extends PagedResourceActionII
 	 */
 	private void putTimePropertiesInState(SessionState state, Time timeValue,
 											String month, String day, String year, String hour, String min) {
-
+		TimeBreakdown bTime = null;
 		try {
-		TimeBreakdown bTime = timeValue.breakdownLocal();
+			bTime = timeValue.breakdownLocal();
+		} catch (NullPointerException _npe) { 
+			bTime = TimeService.newTime().breakdownLocal();
+			bTime.setHour(12); bTime.setMin(0);
+		}
 		state.setAttribute(month, Integer.valueOf(bTime.getMonth()));
 		state.setAttribute(day, Integer.valueOf(bTime.getDay()));
 		state.setAttribute(year, Integer.valueOf(bTime.getYear()));
 		state.setAttribute(hour, Integer.valueOf(bTime.getHour()));
 		state.setAttribute(min, Integer.valueOf(bTime.getMin()));
-		} catch (NullPointerException _npe) { /* TODO empty exception block */ }
 	}
 
 	/**
@@ -10308,7 +10311,11 @@ public class AssignmentAction extends PagedResourceActionII
 					Integer score = item.getScore();
 					if(g != null && !"".equals(g)){
 						try{
-							Double dScore = Double.parseDouble(g);
+							String decSeparator = FormattedText.getDecimalSeparator();
+							g = StringUtils.replace(g, (",".equals(decSeparator)?".":","), decSeparator);
+							NumberFormat nbFormat = FormattedText.getNumberFormat(1,1,false);
+							DecimalFormat dcformat = (DecimalFormat) nbFormat;
+							Double dScore = dcformat.parse(g).doubleValue();
 							if(dScore < 0){
 								addAlert(state, rb.getString("peerassessment.alert.saveinvalidscore"));
 							}else{
@@ -10575,6 +10582,7 @@ public class AssignmentAction extends PagedResourceActionII
 					// check for grade overrides
 					if (a.isGroup()) {
 					    User[] _users = submission.getSubmitters();
+					    HashMap<String,String> scaledValues = new HashMap<String,String>();
 					    for (int i=0; _users != null && i < _users.length; i++) {
 					        String ug = StringUtil.trimToNull(params.getCleanString(GRADE_SUBMISSION_GRADE + "_" + _users[i].getId()));
 					        if ("null".equals(ug)) ug = null;
@@ -10616,10 +10624,16 @@ public class AssignmentAction extends PagedResourceActionII
 					                            M_log.warn(this + ":readGradeForm User " + e.getMessage());
 					                        }
 					                    }
-					                    state.setAttribute(GRADE_SUBMISSION_GRADE + "_" + _users[i].getId(), scalePointGrade(state,ugrade));
+					                    scaledValues.put(GRADE_SUBMISSION_GRADE + "_" + _users[i].getId(), scalePointGrade(state,ugrade));
 					                }
 					            }
 					        }
+					    }
+					    // SAK-28182 If all grades are right place scaled values in state
+					    if (state.getAttribute(STATE_MESSAGE) == null) {
+					    	for (Map.Entry<String,String> entry:scaledValues.entrySet()) {
+					    		state.setAttribute(entry.getKey(),entry.getValue());
+					    	}
 					    }
 					}
 

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.3/cm-service/cm-impl/hibernate-impl/impl/src/test/org/sakaiproject/coursemanagement/test/ClassPathCMSyncJobTest.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.4/cm-service/cm-impl/hibernate-impl/impl/src/test/org/sakaiproject/coursemanagement/test/ClassPathCMSyncJobTest.java $
  * $Id: ClassPathCMSyncJobTest.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

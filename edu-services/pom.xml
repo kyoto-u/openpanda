@@ -4,14 +4,14 @@
   <parent>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
-    <version>10.3</version>
+    <version>10.4</version>
     <relativePath>../master/pom.xml</relativePath>
   </parent>
 
   <name>Sakai educational Services Project</name>
   <groupId>org.sakaiproject.edu-services</groupId>
   <artifactId>edu-services</artifactId>
-  <version>10.3</version><!-- ProjectVersion -->
+  <version>10.4</version><!-- ProjectVersion -->
   <packaging>pom</packaging>
 
   <modules>

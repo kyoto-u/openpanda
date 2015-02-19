@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.3/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/site/SiteContentProducer.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.4/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/site/SiteContentProducer.java $
  * $Id: SiteContentProducer.java 118402 2013-01-16 21:32:11Z jbush@rsmart.com $
  ***********************************************************************************
  *

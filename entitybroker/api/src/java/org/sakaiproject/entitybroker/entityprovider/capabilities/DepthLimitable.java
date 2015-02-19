@@ -1,6 +1,6 @@
 /**
  * $Id: DepthLimitable.java 106282 2012-03-27 11:42:25Z nbotimer@unicon.net $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/DepthLimitable.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/api/src/java/org/sakaiproject/entitybroker/entityprovider/capabilities/DepthLimitable.java $
  **************************************************************************
  * Copyright (c) 2011 The Sakai Foundation
  *

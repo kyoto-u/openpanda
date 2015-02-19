@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/FavoriteColChoices.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/FavoriteColChoices.java $
  * $Id: FavoriteColChoices.java 107461 2012-04-22 08:18:19Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

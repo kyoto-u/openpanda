@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.3/help-tool/src/java/org/sakaiproject/tool/help/TOCDisplayTool.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.4/help-tool/src/java/org/sakaiproject/tool/help/TOCDisplayTool.java $
  * $Id: TOCDisplayTool.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ItemModifyListener.java $
- * $Id: ItemModifyListener.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ItemModifyListener.java $
+ * $Id: ItemModifyListener.java 316665 2015-01-09 17:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -41,6 +41,7 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
@@ -645,7 +646,11 @@ public class ItemModifyListener implements ActionListener
 				  }
 				  answerbean.setCorrectOptionLabels(correctOptionLabels);
 
-			      List attachmentList = itemfacade.getItemTextBySequence(answerbean.getSequence()).getItemTextAttachmentList();
+			      Set<ItemTextAttachmentIfc> attachmentSet = itemfacade.getItemTextBySequence(answerbean.getSequence()).getItemTextAttachmentSet();
+			      ArrayList<ItemTextAttachmentIfc> attachmentList = new ArrayList<ItemTextAttachmentIfc>();
+			      for (Iterator<ItemTextAttachmentIfc> it = attachmentSet.iterator(); it.hasNext();) {
+			    	  attachmentList.add(it.next());
+			      }
 				  answerbean.setAttachmentList(attachmentList);
 				  answerbean.setResourceHash(null);
 				  qaComboList.add(answerbean);

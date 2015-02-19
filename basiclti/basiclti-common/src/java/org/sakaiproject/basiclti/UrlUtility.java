@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.3/basiclti-common/src/java/org/sakaiproject/basiclti/UrlUtility.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.4/basiclti-common/src/java/org/sakaiproject/basiclti/UrlUtility.java $
  * $Id: UrlUtility.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2010 The Sakai Foundation

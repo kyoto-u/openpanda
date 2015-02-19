@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/util/XmlStringBuffer.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/util/XmlStringBuffer.java $
  * $Id: XmlStringBuffer.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *

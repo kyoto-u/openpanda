@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/XmlEscaper.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.4/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/XmlEscaper.java $
  * $Id: XmlEscaper.java 59285 2009-03-30 12:41:51Z s.swinsburg@lancaster.ac.uk $
  ***********************************************************************************
  *

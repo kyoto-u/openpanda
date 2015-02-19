@@ -1,5 +1,5 @@
 /******************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.3/user-tool/tool/src/webapp/js/userCreateValidation.js $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.4/user-tool/tool/src/webapp/js/userCreateValidation.js $
  * $Id: userCreateValidation.js 308075 2014-04-11 12:34:16Z azeckoski@unicon.net $
  ******************************************************************************
  *

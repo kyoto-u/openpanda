@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/conversion/SAXSerializableResourceAccess.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/content/impl/serialize/impl/conversion/SAXSerializableResourceAccess.java $
  * $Id: SAXSerializableResourceAccess.java 106560 2012-04-05 10:48:00Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

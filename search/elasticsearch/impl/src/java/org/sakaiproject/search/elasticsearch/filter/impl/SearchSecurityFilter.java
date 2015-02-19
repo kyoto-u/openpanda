@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.3/elasticsearch/impl/src/java/org/sakaiproject/search/elasticsearch/filter/impl/SearchSecurityFilter.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.4/elasticsearch/impl/src/java/org/sakaiproject/search/elasticsearch/filter/impl/SearchSecurityFilter.java $
  * $Id: SearchSecurityFilter.java 120867 2013-03-06 22:27:02Z jbush@rsmart.com $
  ***********************************************************************************
  *

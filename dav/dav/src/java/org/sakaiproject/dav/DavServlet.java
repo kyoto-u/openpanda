@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.3/dav/src/java/org/sakaiproject/dav/DavServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.4/dav/src/java/org/sakaiproject/dav/DavServlet.java $
  * $Id: DavServlet.java 315520 2014-11-18 20:31:51Z jjmerono@um.es $
  ***********************************************************************************
  *

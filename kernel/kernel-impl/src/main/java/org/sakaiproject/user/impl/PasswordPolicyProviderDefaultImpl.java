@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/user/impl/PasswordPolicyProviderDefaultImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/user/impl/PasswordPolicyProviderDefaultImpl.java $
  * $Id: PasswordPolicyProviderDefaultImpl.java 308855 2014-04-25 23:59:06Z enietzel@anisakai.com $
  ***********************************************************************************
  *

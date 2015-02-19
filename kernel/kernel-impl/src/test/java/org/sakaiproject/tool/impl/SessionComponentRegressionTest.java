@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/test/java/org/sakaiproject/tool/impl/SessionComponentRegressionTest.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/test/java/org/sakaiproject/tool/impl/SessionComponentRegressionTest.java $
  * $Id: SessionComponentRegressionTest.java 308853 2014-04-25 23:40:21Z enietzel@anisakai.com $
  ***********************************************************************************
  *

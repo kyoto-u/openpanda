@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.3/presentation/tool/src/java/org/theospi/portfolio/presentation/control/PublishLayoutController.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.4/presentation/tool/src/java/org/theospi/portfolio/presentation/control/PublishLayoutController.java $
 * $Id: PublishLayoutController.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

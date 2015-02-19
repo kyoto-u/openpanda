@@ -266,7 +266,8 @@ public class SimplePageBean {
 	private boolean peerEvalAllowSelfGrade;
 
     // almost ISO format. real thing can't be done until Java 7. uses -0400 rather than -04:00
-        SimpleDateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+    //        SimpleDateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        SimpleDateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	
 	public void setPeerEval(boolean peerEval) {
 		this.peerEval = peerEval;
@@ -290,11 +291,12 @@ public class SimplePageBean {
 	}
 	
         // format comes back as 2014-05-27T16:15:00-04:00
-        // have to remove the colon to get Java to parse it
+	// if user's computer is on a different time zone, we want the UI to match 
+        // Sakai. Hence we really want to handle everything as local time.
+        // That means we want to ignore the time zone on input
 	public void setPeerEvalDueDate(String date){
 	    try {
-		if (date.substring(22,23).equals(":"))
-		    date = date.substring(0,22) + date.substring(23,25);
+		date = date.substring(0,19);
 		this.peerEvalDueDate = isoDateFormat.parse(date);
 	    } catch (Exception e) {
 		System.out.println(e + "bad format duedate " + date);
@@ -307,8 +309,7 @@ public class SimplePageBean {
 	
 	public void setPeerEvalOpenDate(String date) {
 	    try {
-		if (date.substring(22,23).equals(":"))
-		    date = date.substring(0,22) + date.substring(23,25);
+		date = date.substring(0,19);
 		this.peerEvalOpenDate = isoDateFormat.parse(date);
 	    } catch (Exception e) {
 		System.out.println(e + "bad format duedate " + date);
@@ -574,6 +575,9 @@ public class SimplePageBean {
 
 
 	public void init () {	
+		TimeZone tz = TimeService.getLocalTimeZone();
+		isoDateFormat.setTimeZone(tz);
+
 		if (groupCache == null) {
 			groupCache = memoryService.newCache("org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean.groupCache");
 		}
@@ -701,15 +705,17 @@ public class SimplePageBean {
 	}
 
     // argument is in ISO8601 format, which has -04:00 time zone.
-    // unfortunately SimpleDateFormat can't handle that until Java 7, so we have to convert
-    // it to something that can be parsed
+    // if user's computer is on a different time zone, we want the UI to match 
+    // Sakai. Hence we really want to handle everything as local time.
+    // That means we want to ignore the time zone on input
 	public void setReleaseDate(String date) {
 	    if (date.equals(""))
 		this.releaseDate = null;
 	    else
 	    try {
-		if (date.substring(22,23).equals(":"))
-		    date = date.substring(0,22) + date.substring(23,25);
+		//  if (date.substring(22,23).equals(":"))
+		//    date = date.substring(0,22) + date.substring(23,25);
+		date = date.substring(0,19);
 		this.releaseDate = isoDateFormat.parse(date);
 	    } catch (Exception e) {
 		System.out.println(e + "bad format releasedate " + date);
@@ -5294,7 +5300,7 @@ public class SimplePageBean {
 	public String getCollectionId(boolean urls) {
 		String siteId = getCurrentPage().getSiteId();
 		String baseDir = ServerConfigurationService.getString("lessonbuilder.basefolder", null);
-	    
+		boolean hiddenDir = ServerConfigurationService.getBoolean("lessonbuilder.folder.hidden",false);
 		String pageOwner = getCurrentPage().getOwner();
 		String collectionId;
 		if (pageOwner == null) {
@@ -5303,6 +5309,24 @@ public class SimplePageBean {
 			    if (!baseDir.endsWith("/"))
 				baseDir = baseDir + "/";
 			    collectionId = collectionId + baseDir;
+			    // basedir which is hidden; have to create it if it doesn't exist, so we can make hidden
+			    if (hiddenDir) {
+				hiddenDir = false; // hiding base, done hide actual folder
+				try {
+				    try {
+					contentHostingService.checkCollection(collectionId);
+				    } catch (IdUnusedException idex) {
+					ContentCollectionEdit edit = contentHostingService.addCollection(collectionId);
+					edit.getPropertiesEdit().addProperty(ResourceProperties.PROP_DISPLAY_NAME,  Validator.escapeResourceName(baseDir.substring(0,baseDir.length()-1)));
+					edit.setHidden();
+					contentHostingService.commitCollection(edit);
+				    }
+				} catch (Exception ignore) {
+				    // I've been ignoring errors.
+				    // that will cause failure at a later stage where we can
+				    // return an error message. This may not be optimal.
+				}
+			    }
 			}
 		}else {
 			collectionId = "/user/" + getCurrentUserId() + "/stuff4/";
@@ -5330,12 +5354,14 @@ public class SimplePageBean {
 			try {
 				ContentCollectionEdit edit = contentHostingService.addCollection(root);
 				edit.getPropertiesEdit().addProperty(ResourceProperties.PROP_DISPLAY_NAME,  Validator.escapeResourceName(getPageTitle()));
+				if (hiddenDir)
+				    edit.setHidden();
 				contentHostingService.commitCollection(edit);
+				
 				// well, we got that far anyway
 				collectionId = root;
 			} catch (Exception ignore) {
 			}
-
 		}
 
 	    // now try creating what we want
@@ -5343,9 +5369,11 @@ public class SimplePageBean {
 	    	ContentCollectionEdit edit = contentHostingService.addCollection(folder);
 	    	if (urls)
 	    		edit.getPropertiesEdit().addProperty(ResourceProperties.PROP_DISPLAY_NAME, "urls");
-	    	else
+	    	else {
 	    		edit.getPropertiesEdit().addProperty(ResourceProperties.PROP_DISPLAY_NAME, Validator.escapeResourceName(getPageTitle()));
-		
+			if (hiddenDir)
+			    edit.setHidden();
+		}		
 	    	contentHostingService.commitCollection(edit);
 	    	return folder; // worked. use it
 		} catch (Exception ignore) {};

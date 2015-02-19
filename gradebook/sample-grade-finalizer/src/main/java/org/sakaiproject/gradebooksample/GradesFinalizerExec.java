@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/gradebook/tags/sakai-10.3/sample-grade-finalizer/src/main/java/org/sakaiproject/gradebooksample/GradesFinalizerExec.java $
+ * $URL: https://source.sakaiproject.org/svn/gradebook/tags/sakai-10.4/sample-grade-finalizer/src/main/java/org/sakaiproject/gradebooksample/GradesFinalizerExec.java $
  * $Id: GradesFinalizerExec.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

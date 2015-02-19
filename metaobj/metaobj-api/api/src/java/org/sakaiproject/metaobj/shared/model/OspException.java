@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.3/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/model/OspException.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.4/metaobj-api/api/src/java/org/sakaiproject/metaobj/shared/model/OspException.java $
  * $Id: OspException.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
  ***********************************************************************************
  *

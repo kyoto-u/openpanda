@@ -206,7 +206,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
     // jw can also handle audio: audio/mp4,audio/mpeg,audio/ogg
         private static String[] html5Types = null;
     // almost ISO. Full ISO isn't available until Java 7. this uses -0400 where ISO uses -04:00
-        SimpleDateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+	SimpleDateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     // WARNING: this must occur after memoryService, for obvious reasons. 
     // I'm doing it this way because it doesn't appear that Spring can do this kind of initialization
@@ -214,7 +214,6 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
     // an init method
 	private static Cache urlCache = memoryService.newCache("org.sakaiproject.lessonbuildertool.tool.producers.ShowPageProducer.url.cache");
         String browserString = ""; // set by checkIEVersion;
-
     	public static int majorVersion = getMajorVersion();
 
 	protected static final int DEFAULT_EXPIRATION = 10 * 60;
@@ -234,8 +233,6 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		    };
 		}
 	    }
-
-	    System.out.println("major version " + major);
 
 	    return major;
 
@@ -410,6 +407,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		boolean canSeeAll = simplePageBean.canSeeAll();  // always on if caneditpage
 		
 		boolean cameFromGradingPane = params.getPath().equals("none");
+
+		TimeZone localtz = timeService.getLocalTimeZone();
+		isoDateFormat.setTimeZone(localtz);
 
 		if (!canReadPage) {
 			// this code is intended for the situation where site permissions
@@ -850,10 +850,19 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		    UILink.make(tofill, "directurl").
 			decorate(new UIFreeAttributeDecorator("rel", "#Main" + Web.escapeJavascript(placement.getId()) + "_directurl")).
 			decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.direct-link")));
-		// trunk code has a div with a new format of info. That only shows in the inline code, which
-		// isn't supported except in trunk
-			UIOutput.make(tofill, "directimage").decorate(new UIFreeAttributeDecorator("alt",
-				messageLocator.getMessage("simplepage.direct-link")));
+		    UIOutput.make(tofill, "directurl-div").
+			decorate(new UIFreeAttributeDecorator("id", "Main" + Web.escapeJavascript(placement.getId()) + "_directurl"));
+		    // in general 2.9 doesn't have the url shortener
+		    if (majorVersion >= 10) {
+			UIOutput.make(tofill, "directurl-input").
+			    decorate(new UIFreeAttributeDecorator("onclick", "toggleShortUrlOutput('" + myUrl() + "/portal/directtool/" + placement.getId() + "/', this, 'Main" + Web.escapeJavascript(placement.getId()) + "_urlholder');"));
+			UIOutput.make(tofill, "directurl-shorten", messageLocator.getMessage("simplepage.short-url"));
+		    }
+		    UIOutput.make(tofill, "directurl-textarea", myUrl() + "/portal/directtool/" + placement.getId() + "/").
+			decorate(new UIFreeAttributeDecorator("class", "portlet title-tools Main" + Web.escapeJavascript(placement.getId()) + "_urlholder"));
+		    UIOutput.make(tofill, "directimage").decorate(new UIFreeAttributeDecorator("alt",
+			messageLocator.getMessage("simplepage.direct-link")));
+
 		}
 
 		if (reseturl != null) {
@@ -1987,6 +1996,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 							UIOutput.make(tableRow, "iframeWidth", getOrig(width));
 							UIOutput.make(tableRow, "mimetype3", mimeType);
 							UIOutput.make(tableRow, "item-prereq2", String.valueOf(i.isPrerequisite()));
+							UIOutput.make(tableRow, "embedtype", mmDisplayType);
 							UIOutput.make(tableRow, "current-item-id3", Long.toString(i.getId()));
 							UIOutput.make(tableRow, "editmm-td");
 							UILink.make(tableRow, "iframe-edit", messageLocator.getMessage("simplepage.editItem"), "").decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.edit-title.url").replace("{}", abbrevUrl(i.getURL()))));
@@ -2387,7 +2397,6 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 							
 							if (peerEvalDate != null && peerDueDate != null) {
 								DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, M_locale);
-								
 								//Open date from attribute string
 								peerevalcal.setTimeInMillis(Long.valueOf(peerEvalDate));
 								
@@ -2407,7 +2416,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 								//Default open and due date
 								Date now = new Date();
 								peerevalcal.setTime(now);
-								
+
 								//Default open date: now
 								String dateStr = isoDateFormat.format(peerevalcal.getTime());
 								

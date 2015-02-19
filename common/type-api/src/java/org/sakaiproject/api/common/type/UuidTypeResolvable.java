@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.3/type-api/src/java/org/sakaiproject/api/common/type/UuidTypeResolvable.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.4/type-api/src/java/org/sakaiproject/api/common/type/UuidTypeResolvable.java $
  * $Id: UuidTypeResolvable.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

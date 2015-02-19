@@ -1,6 +1,6 @@
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.3/matrix/tool/src/java/org/theospi/portfolio/matrix/control/ViewScaffoldingController.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.4/matrix/tool/src/java/org/theospi/portfolio/matrix/control/ViewScaffoldingController.java $
 * $Id: ViewScaffoldingController.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.3/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/InstructorRecordImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.4/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/InstructorRecordImpl.java $
  * $Id: InstructorRecordImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**
  * $Id: UserEntityProvider.java 130611 2013-10-18 14:17:53Z azeckoski@unicon.net $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/core-providers/src/java/org/sakaiproject/entitybroker/providers/UserEntityProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/core-providers/src/java/org/sakaiproject/entitybroker/providers/UserEntityProvider.java $
  * UserEntityProvider.java - entity-broker - Jun 28, 2008 2:59:57 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

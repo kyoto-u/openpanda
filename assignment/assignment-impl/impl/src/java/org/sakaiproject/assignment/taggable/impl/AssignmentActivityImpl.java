@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.3/assignment-impl/impl/src/java/org/sakaiproject/assignment/taggable/impl/AssignmentActivityImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.4/assignment-impl/impl/src/java/org/sakaiproject/assignment/taggable/impl/AssignmentActivityImpl.java $
  * $Id: AssignmentActivityImpl.java 111458 2012-08-14 20:00:12Z chmaurer@iupui.edu $
  ***********************************************************************************
  *

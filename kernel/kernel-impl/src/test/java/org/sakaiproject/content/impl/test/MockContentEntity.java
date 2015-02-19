@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/test/java/org/sakaiproject/content/impl/test/MockContentEntity.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/test/java/org/sakaiproject/content/impl/test/MockContentEntity.java $
  * $Id: MockContentEntity.java 130227 2013-10-08 11:40:08Z azeckoski@unicon.net $
  ***********************************************************************************
  *

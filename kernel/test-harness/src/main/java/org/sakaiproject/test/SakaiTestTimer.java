@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/test-harness/src/main/java/org/sakaiproject/test/SakaiTestTimer.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/test-harness/src/main/java/org/sakaiproject/test/SakaiTestTimer.java $
  * $Id: SakaiTestTimer.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

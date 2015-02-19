@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.3/sections-service/sections-impl/sakai/impl/src/java/org/sakaiproject/component/section/sakai/CourseSectionUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.4/sections-service/sections-impl/sakai/impl/src/java/org/sakaiproject/component/section/sakai/CourseSectionUtil.java $
  * $Id: CourseSectionUtil.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

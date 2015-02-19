@@ -1,6 +1,6 @@
 /**
  * $Id: DirectServlet.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/utils/src/java/org/sakaiproject/entitybroker/util/servlet/DirectServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/utils/src/java/org/sakaiproject/entitybroker/util/servlet/DirectServlet.java $
  * Example.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation

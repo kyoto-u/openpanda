@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SakaiLinkMacro.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.4/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/macros/SakaiLinkMacro.java $
  * $Id: SakaiLinkMacro.java 121903 2013-03-28 15:27:10Z matthew@longsight.com $
  ***********************************************************************************
  *

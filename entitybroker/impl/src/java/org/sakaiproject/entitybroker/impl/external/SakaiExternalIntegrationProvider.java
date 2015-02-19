@@ -1,6 +1,6 @@
 /**
  * $Id: SakaiExternalIntegrationProvider.java 315799 2014-12-01 17:34:05Z enietzel@anisakai.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/impl/src/java/org/sakaiproject/entitybroker/impl/external/SakaiExternalIntegrationProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/impl/src/java/org/sakaiproject/entitybroker/impl/external/SakaiExternalIntegrationProvider.java $
  * ExternalIntegrationProvider.java - entity-broker - Jan 12, 2009 6:24:04 PM - azeckoski
  **********************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

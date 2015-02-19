@@ -701,7 +701,7 @@ public class SakaiProxyImpl implements SakaiProxy {
 		List<RosterGroup> siteGroups = new ArrayList<RosterGroup>();
 
 		boolean viewAll = isAllowed(currentUserId,
-				RosterFunctions.ROSTER_FUNCTION_VIEWALL, site);
+				RosterFunctions.ROSTER_FUNCTION_VIEWALL, site.getReference());
 
 		for (Group group : site.getGroups()) {
 
@@ -759,15 +759,6 @@ public class SakaiProxyImpl implements SakaiProxy {
 			enrollmentSetIdsProcessed.add(enrollmentSet.getEid());
 		}
 		return siteEnrollmentSets;
-	}
-	
-	private boolean isAllowed(String userId, String permision, AuthzGroup authzGroup) {
-		
-		if (securityService.isSuperUser(userId)) {
-			return true;
-		}
-		
-		return authzGroup.isAllowed(userId, permision);
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.3/portal-impl/impl/src/java/org/sakaiproject/portal/charon/SkinnableCharonPortal.java $
- * $Id: SkinnableCharonPortal.java 311362 2014-07-31 00:29:47Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.4/portal-impl/impl/src/java/org/sakaiproject/portal/charon/SkinnableCharonPortal.java $
+ * $Id: SkinnableCharonPortal.java 317086 2015-02-04 21:34:38Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -137,7 +137,7 @@ import au.com.flyingkite.mobiledetect.UAgentInfo;
  * </p>
  * 
  * @since Sakai 2.4
- * @version $Rev: 311362 $
+ * @version $Rev: 317086 $
  * 
  */
 @SuppressWarnings("deprecation")
@@ -1155,6 +1155,9 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		rcontext.put("pageTop", Boolean.valueOf(true));
 		rcontext.put("rloader", rloader);
 		//rcontext.put("browser", new BrowserDetector(request));
+		// Allow for inclusion of extra header code via property
+		String includeExtraHead = ServerConfigurationService.getString("portal.include.extrahead", "");
+		rcontext.put("includeExtraHead",includeExtraHead);
 
         String analyticsId =  ServerConfigurationService.getString("portal.google.analytics_id", null);
 		if ( analyticsId != null ) {

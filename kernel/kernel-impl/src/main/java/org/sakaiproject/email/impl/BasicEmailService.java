@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/email/impl/BasicEmailService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/email/impl/BasicEmailService.java $
  * $Id: BasicEmailService.java 133314 2014-01-15 19:29:10Z matthew@longsight.com $
  ***********************************************************************************
  *

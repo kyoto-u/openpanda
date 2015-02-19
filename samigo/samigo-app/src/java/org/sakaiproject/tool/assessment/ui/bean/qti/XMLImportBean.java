@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/qti/XMLImportBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/qti/XMLImportBean.java $
  * $Id: XMLImportBean.java 314978 2014-10-28 21:05:14Z jjmerono@um.es $
  ***********************************************************************************
  *

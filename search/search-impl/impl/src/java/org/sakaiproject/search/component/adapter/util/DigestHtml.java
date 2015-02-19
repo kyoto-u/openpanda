@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.3/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/util/DigestHtml.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.4/search-impl/impl/src/java/org/sakaiproject/search/component/adapter/util/DigestHtml.java $
  * $Id: DigestHtml.java 105078 2012-02-24 23:00:38Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

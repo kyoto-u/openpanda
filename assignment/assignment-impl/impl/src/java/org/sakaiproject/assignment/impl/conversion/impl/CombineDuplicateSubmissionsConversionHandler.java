@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.3/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/CombineDuplicateSubmissionsConversionHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.4/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/conversion/impl/CombineDuplicateSubmissionsConversionHandler.java $
  * $Id: CombineDuplicateSubmissionsConversionHandler.java 105182 2012-02-27 20:23:29Z zqian@umich.edu $
  ***********************************************************************************
  *

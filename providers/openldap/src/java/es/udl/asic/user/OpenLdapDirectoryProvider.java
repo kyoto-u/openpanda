@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.3/openldap/src/java/es/udl/asic/user/OpenLdapDirectoryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.4/openldap/src/java/es/udl/asic/user/OpenLdapDirectoryProvider.java $
  * $Id: OpenLdapDirectoryProvider.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

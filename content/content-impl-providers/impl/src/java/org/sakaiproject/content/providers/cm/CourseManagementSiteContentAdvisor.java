@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.3/content-impl-providers/impl/src/java/org/sakaiproject/content/providers/cm/CourseManagementSiteContentAdvisor.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.4/content-impl-providers/impl/src/java/org/sakaiproject/content/providers/cm/CourseManagementSiteContentAdvisor.java $
  * $Id: CourseManagementSiteContentAdvisor.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

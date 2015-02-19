@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/api/src/main/java/org/sakaiproject/authz/api/AuthzGroupAdvisor.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/api/src/main/java/org/sakaiproject/authz/api/AuthzGroupAdvisor.java $
  * $Id: AuthzGroupAdvisor.java 129705 2013-09-13 16:02:52Z enietzel@anisakai.com $
  ***********************************************************************************
  *

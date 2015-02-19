@@ -1,5 +1,5 @@
  /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.3/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.4/announcement-tool/tool/src/java/org/sakaiproject/announcement/tool/AnnouncementAction.java $
  * $Id: AnnouncementAction.java 315552 2014-11-19 17:50:56Z jjmerono@um.es $
  ***********************************************************************************
  *

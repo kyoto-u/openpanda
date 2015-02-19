@@ -1,6 +1,6 @@
 /**
  * $Id: MembershipEntityProvider.java 308856 2014-04-26 00:03:02Z enietzel@anisakai.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/core-providers/src/java/org/sakaiproject/entitybroker/providers/MembershipEntityProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/core-providers/src/java/org/sakaiproject/entitybroker/providers/MembershipEntityProvider.java $
  * ServerConfigEntityProvider.java - entity-broker - Jul 17, 2008 2:19:03 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

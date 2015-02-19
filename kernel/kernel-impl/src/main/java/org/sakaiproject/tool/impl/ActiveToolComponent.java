@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ActiveToolComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ActiveToolComponent.java $
  * $Id: ActiveToolComponent.java 120927 2013-03-08 13:06:14Z azeckoski@unicon.net $
  ***********************************************************************************
  *

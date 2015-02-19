@@ -1,7 +1,7 @@
 package edu.indiana.lib.osid.base.repository;
 
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.3/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/base/repository/LongValueIterator.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.4/citations-osid/web2bridge/src/java/edu/indiana/lib/osid/base/repository/LongValueIterator.java $
  * $Id: LongValueIterator.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  **********************************************************************************
  *

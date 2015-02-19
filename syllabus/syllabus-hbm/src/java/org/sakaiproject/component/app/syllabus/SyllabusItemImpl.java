@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.3/syllabus-hbm/src/java/org/sakaiproject/component/app/syllabus/SyllabusItemImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.4/syllabus-hbm/src/java/org/sakaiproject/component/app/syllabus/SyllabusItemImpl.java $
  * $Id: SyllabusItemImpl.java 130450 2013-10-14 21:24:08Z jbush@anisakai.com $
  ***********************************************************************************
  *

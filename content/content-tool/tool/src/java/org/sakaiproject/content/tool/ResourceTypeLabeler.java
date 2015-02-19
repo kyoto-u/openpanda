@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.3/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourceTypeLabeler.java $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.4/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourceTypeLabeler.java $
  * $Id: ResourceTypeLabeler.java 133222 2014-01-10 17:46:39Z zqian@umich.edu $
  ***********************************************************************************
  *

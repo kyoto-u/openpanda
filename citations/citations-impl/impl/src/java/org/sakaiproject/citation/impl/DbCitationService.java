@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.3/citations-impl/impl/src/java/org/sakaiproject/citation/impl/DbCitationService.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.4/citations-impl/impl/src/java/org/sakaiproject/citation/impl/DbCitationService.java $
  * $Id: DbCitationService.java 119774 2013-02-08 09:58:57Z a.fish@lancaster.ac.uk $
  ***********************************************************************************
  *

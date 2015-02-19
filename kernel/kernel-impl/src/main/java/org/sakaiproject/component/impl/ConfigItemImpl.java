@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/component/impl/ConfigItemImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/component/impl/ConfigItemImpl.java $
  * $Id: ConfigItemImpl.java 309232 2014-05-06 20:01:53Z enietzel@anisakai.com $
  ***********************************************************************************
  *

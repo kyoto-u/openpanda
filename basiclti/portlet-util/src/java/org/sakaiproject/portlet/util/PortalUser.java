@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.3/portlet-util/src/java/org/sakaiproject/portlet/util/PortalUser.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.4/portlet-util/src/java/org/sakaiproject/portlet/util/PortalUser.java $
  * $Id: PortalUser.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  *
  * Copyright (c) 2005-2009 The Sakai Foundation

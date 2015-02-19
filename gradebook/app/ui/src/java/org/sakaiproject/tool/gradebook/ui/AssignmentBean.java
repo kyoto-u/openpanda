@@ -37,6 +37,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
@@ -58,6 +59,7 @@ public class AssignmentBean extends GradebookDependentBean implements Serializab
 	private Long assignmentId;
     private Assignment assignment;
     private List categoriesSelectList;
+    private String extraCreditCategories;
     private String assignmentCategory;
     // these 2 used to determine whether to zero-out the point value in applyPointsPossibleForDropScoreCategories
     private boolean categoryChanged;
@@ -99,7 +101,7 @@ public class AssignmentBean extends GradebookDependentBean implements Serializab
 		}
 
         // initialization; shouldn't enter here after category drop down changes
-		if(selectedCategory == null && !getLocalizedString("cat_unassigned").equalsIgnoreCase(assignmentCategory)) {
+		if(selectedCategory == null && !UNASSIGNED_CATEGORY.equals(assignmentCategory)) {
 			Category assignCategory = assignment.getCategory();
 			if (assignCategory != null) {
 				assignmentCategory = assignCategory.getId().toString();
@@ -114,7 +116,8 @@ public class AssignmentBean extends GradebookDependentBean implements Serializab
         }
 		
 		categoriesSelectList = new ArrayList();
-
+		//create comma seperate string representation of the list of EC categories
+		List<String> extraCreditCategoriesList = new ArrayList<String>();
 		// The first choice is always "Unassigned"
 		categoriesSelectList.add(new SelectItem(UNASSIGNED_CATEGORY, FacesUtil.getLocalizedString("cat_unassigned")));
 		List gbCategories = getGradebookManager().getCategories(getGradebookId());
@@ -124,8 +127,12 @@ public class AssignmentBean extends GradebookDependentBean implements Serializab
 			while (catIter.hasNext()) {
 				Category cat = (Category) catIter.next();
 				categoriesSelectList.add(new SelectItem(cat.getId().toString(), cat.getName()));
+				if(cat.isExtraCredit()){
+					extraCreditCategoriesList.add(cat.getId().toString());
+				}
 			}
 		}
+		extraCreditCategories = StringUtils.join(extraCreditCategoriesList, ",");
 
 		// To support bulk creation of assignments
 		if (newBulkItems == null) {
@@ -521,6 +528,10 @@ public class AssignmentBean extends GradebookDependentBean implements Serializab
     
     public List getCategoriesSelectList() {
     	return categoriesSelectList;
+    }
+    
+    public String getExtraCreditCategories(){
+    	return extraCreditCategories;
     }
     
     public List getAddItemSelectList() {

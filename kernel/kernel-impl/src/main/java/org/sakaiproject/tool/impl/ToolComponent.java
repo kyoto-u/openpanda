@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ToolComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/tool/impl/ToolComponent.java $
  * $Id: ToolComponent.java 307864 2014-04-07 15:05:21Z enietzel@anisakai.com $
  ***********************************************************************************
  *

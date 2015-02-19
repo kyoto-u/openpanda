@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.3/api/src/main/java/org/sakaiproject/content/api/ContentResourceFilter.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/api/src/main/java/org/sakaiproject/content/api/ContentResourceFilter.java $
  * $Id: ContentResourceFilter.java 105216 2012-02-28 10:57:02Z matthew.buckett@oucs.ox.ac.uk $
  ***********************************************************************************
  *

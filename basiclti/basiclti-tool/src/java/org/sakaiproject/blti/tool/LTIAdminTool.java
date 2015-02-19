@@ -1,4 +1,4 @@
-/********************************************************************************** * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.3/basiclti-tool/src/java/org/sakaiproject/blti/tool/LTIAdminTool.java $
+/********************************************************************************** * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.4/basiclti-tool/src/java/org/sakaiproject/blti/tool/LTIAdminTool.java $
  * $Id: LTIAdminTool.java 311798 2014-08-11 14:00:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.3/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/conversion/ExtractXMLToColumns.java $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.4/mailarchive-impl/impl/src/java/org/sakaiproject/mailarchive/impl/conversion/ExtractXMLToColumns.java $
  * $Id: ExtractXMLToColumns.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

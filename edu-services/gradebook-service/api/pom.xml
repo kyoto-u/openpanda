@@ -5,7 +5,7 @@
     <parent>
         <artifactId>edu-services</artifactId>
         <groupId>org.sakaiproject.edu-services</groupId>
-        <version>10.3</version><!-- ProjectVersion -->
+        <version>10.4</version><!-- ProjectVersion -->
         <relativePath>../../pom.xml</relativePath>
     </parent>
 

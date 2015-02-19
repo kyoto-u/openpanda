@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemoveAssessmentListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/RemoveAssessmentListener.java $
  * $Id: RemoveAssessmentListener.java 315343 2014-11-11 18:38:04Z enietzel@anisakai.com $
  ***********************************************************************************
  *

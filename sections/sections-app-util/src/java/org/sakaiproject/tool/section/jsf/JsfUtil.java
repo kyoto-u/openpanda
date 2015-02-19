@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.3/sections-app-util/src/java/org/sakaiproject/tool/section/jsf/JsfUtil.java $
+ * $URL: https://source.sakaiproject.org/svn/sections/tags/sakai-10.4/sections-app-util/src/java/org/sakaiproject/tool/section/jsf/JsfUtil.java $
  * $Id: JsfUtil.java 133639 2014-01-24 16:54:24Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

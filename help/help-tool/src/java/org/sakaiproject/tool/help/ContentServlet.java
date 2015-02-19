@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.3/help-tool/src/java/org/sakaiproject/tool/help/ContentServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/help/tags/sakai-10.4/help-tool/src/java/org/sakaiproject/tool/help/ContentServlet.java $
  * $Id: ContentServlet.java 309813 2014-05-27 15:41:49Z enietzel@anisakai.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/util/Iso8601TimeInterval.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/util/Iso8601TimeInterval.java $
  * $Id: Iso8601TimeInterval.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

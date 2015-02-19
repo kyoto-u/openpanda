@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.3/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
- * $Id: CalendarAction.java 311364 2014-07-31 00:34:32Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.4/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
+ * $Id: CalendarAction.java 317025 2015-02-02 16:51:25Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -176,6 +176,7 @@ extends VelocityPortletStateAction
 	
 	private static final String FORM_ALIAS			= "alias";
 	private static final String FORM_ICAL_ENABLE = "icalEnable";
+	private static final String ICAL_EXTENSION = ".ics";
 	
 	/** The attachments from assignment */
 	private static final String ATTACHMENTS = "Assignment.attachments";
@@ -4963,6 +4964,7 @@ extends VelocityPortletStateAction
 		CalendarActionState state = (CalendarActionState)getState(context, data, CalendarActionState.class);
 		
 		if (GENERIC_SELECT_FILE_IMPORT_WIZARD_STATE.equals(state.getImportWizardState())
+			|| ICAL_SELECT_FILE_IMPORT_WIZARD_STATE.equals(state.getImportWizardState())
 			|| OTHER_SELECT_FILE_IMPORT_WIZARD_STATE.equals(state.getImportWizardState()))
 		{
 			state.setImportWizardState(SELECT_TYPE_IMPORT_WIZARD_STATE);
@@ -5759,7 +5761,7 @@ extends VelocityPortletStateAction
 				// first, clear any alias set to this calendar
 				AliasService.removeTargetAliases(calendarObj.getReference());
 				
-				alias += ".ics";
+				alias += ICAL_EXTENSION;
 				AliasService.setAlias(alias, calendarObj.getReference());
 			}
 		}

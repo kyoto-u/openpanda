@@ -1,6 +1,6 @@
 /**
- * $Id: SiteEntityProvider.java 307875 2014-04-07 15:40:27Z enietzel@anisakai.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/core-providers/src/java/org/sakaiproject/entitybroker/providers/SiteEntityProvider.java $
+ * $Id: SiteEntityProvider.java 316810 2015-01-16 21:16:46Z matthew@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/core-providers/src/java/org/sakaiproject/entitybroker/providers/SiteEntityProvider.java $
  * SiteEntityProvider.java - entity-broker - Jun 29, 2008 8:35:55 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -874,6 +874,8 @@ RESTful, ActionsExecutable, Redirectable, RequestStorable, DepthLimitable {
                 s.setSkin(site.getSkin());
             if (site.getTitle() != null)
                 s.setTitle(site.getTitle());
+            if (site.getInfoUrl() != null) 
+            	s.setInfoUrl(site.getInfoUrl());
 
             // put in properties if admin, otherwise ignore
             if (admin) {

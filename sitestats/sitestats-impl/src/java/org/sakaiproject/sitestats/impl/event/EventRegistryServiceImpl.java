@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.3/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EventRegistryServiceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.4/sitestats-impl/src/java/org/sakaiproject/sitestats/impl/event/EventRegistryServiceImpl.java $
  * $Id: EventRegistryServiceImpl.java 308540 2014-04-23 20:30:50Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

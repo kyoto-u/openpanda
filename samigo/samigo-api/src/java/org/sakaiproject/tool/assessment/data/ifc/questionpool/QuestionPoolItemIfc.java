@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/questionpool/QuestionPoolItemIfc.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/questionpool/QuestionPoolItemIfc.java $
  * $Id: QuestionPoolItemIfc.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

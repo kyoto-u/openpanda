@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.3/portal-util/util/src/java/org/sakaiproject/portal/util/PortalUtils.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.4/portal-util/util/src/java/org/sakaiproject/portal/util/PortalUtils.java $
  * $Id: PortalUtils.java 132938 2013-12-29 16:50:12Z csev@umich.edu $
  ***********************************************************************************
  *

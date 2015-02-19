@@ -1,6 +1,6 @@
 /**
  * $Id: EntityProperty.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/impl/src/java/org/sakaiproject/entitybroker/dao/EntityProperty.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/impl/src/java/org/sakaiproject/entitybroker/dao/EntityProperty.java $
  * AutoRegister.java - entity-broker - 31 May 2007 7:01:11 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.3/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/PodcastPermissionsServiceImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.4/podcasts-impl/impl/src/java/org/sakaiproject/component/app/podcasts/PodcastPermissionsServiceImpl.java $
  * $Id: PodcastPermissionsServiceImpl.java 120353 2013-02-21 15:58:11Z matthew.buckett@it.ox.ac.uk $
  ***********************************************************************************
  *

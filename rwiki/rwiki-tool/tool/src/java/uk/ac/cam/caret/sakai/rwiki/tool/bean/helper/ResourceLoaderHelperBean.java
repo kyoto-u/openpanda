@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/helper/ResourceLoaderHelperBean.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.4/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/bean/helper/ResourceLoaderHelperBean.java $
  * $Id: ResourceLoaderHelperBean.java 20355 2007-01-17 14:06:29Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

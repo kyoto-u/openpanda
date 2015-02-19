@@ -4,13 +4,13 @@
     <parent>
       <groupId>org.sakaiproject</groupId>
       <artifactId>master</artifactId>
-      <version>10.3</version>
+      <version>10.4</version>
       <relativePath>../master/pom.xml</relativePath>
     </parent>
 	<name>Sakai Login Project</name>
 	<groupId>org.sakaiproject.login</groupId>
 	<artifactId>login</artifactId>
-  <version>10.3</version>
+  <version>10.4</version>
 	<packaging>pom</packaging>
 	<scm>
 		<connection>scm:svn:https://source.sakaiproject.org/svn/login/trunk

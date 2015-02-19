@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/login/tags/sakai-10.3/login-authn-tool/tool/src/java/org/sakaiproject/login/tool/AuthnPortal.java $
+ * $URL: https://source.sakaiproject.org/svn/login/tags/sakai-10.4/login-authn-tool/tool/src/java/org/sakaiproject/login/tool/AuthnPortal.java $
  * $Id: AuthnPortal.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

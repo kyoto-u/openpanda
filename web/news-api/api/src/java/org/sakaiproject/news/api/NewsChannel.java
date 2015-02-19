@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.3/news-api/api/src/java/org/sakaiproject/news/api/NewsChannel.java $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.4/news-api/api/src/java/org/sakaiproject/news/api/NewsChannel.java $
  * $Id: NewsChannel.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

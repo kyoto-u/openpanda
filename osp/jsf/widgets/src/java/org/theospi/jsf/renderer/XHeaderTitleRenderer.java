@@ -1,6 +1,6 @@
 
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.3/jsf/widgets/src/java/org/theospi/jsf/renderer/XHeaderTitleRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.4/jsf/widgets/src/java/org/theospi/jsf/renderer/XHeaderTitleRenderer.java $
 * $Id: XHeaderTitleRenderer.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

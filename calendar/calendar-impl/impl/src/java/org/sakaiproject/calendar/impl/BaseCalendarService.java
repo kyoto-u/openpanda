@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.3/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
- * $Id: BaseCalendarService.java 309198 2014-05-06 15:21:33Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.4/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/BaseCalendarService.java $
+ * $Id: BaseCalendarService.java 317111 2015-02-05 14:43:49Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -120,6 +120,9 @@ public abstract class BaseCalendarService implements CalendarService, DoubleStor
 	/** Security lock / event root for generic message events to make it a mail event. */
 	public static final String SECURE_SCHEDULE_ROOT = "calendar.";
 
+	/** SAK-29003 Google needs .ics at end of URL **/
+	public static final String ICAL_EXTENSION = ".ics";
+
 	private TransformerFactory transformerFactory = null;
    
    private DocumentBuilder docBuilder = null;
@@ -169,8 +172,10 @@ public abstract class BaseCalendarService implements CalendarService, DoubleStor
 	 */
 	protected boolean unlockCheck(String lock, String reference)
 	{
-		return m_securityService.unlock(lock, reference);
+		if (lock.equals(AUTH_READ_CALENDAR) &&  getExportEnabled(reference))
+			return true;
 
+		return m_securityService.unlock(lock, reference);
 	} // unlockCheck
 
 	/**
@@ -185,12 +190,7 @@ public abstract class BaseCalendarService implements CalendarService, DoubleStor
 	 */
 	protected void unlock(String lock, String reference) throws PermissionException
 	{
-		// check if publicly accessible via export
-		if ( getExportEnabled(reference) && lock.equals(AUTH_READ_CALENDAR) )
-			return;
-			
-		// otherwise check permissions
-		else if (!m_securityService.unlock(lock, reference))
+		if (!unlockCheck(lock, reference))
 			throw new PermissionException(m_sessionManager.getCurrentSessionUserId(), lock, reference);
 
 	} // unlock
@@ -7096,7 +7096,7 @@ public abstract class BaseCalendarService implements CalendarService, DoubleStor
 	{
 		// TODO: Currently not sure whether alias handling will be required for this or not.
 		OpaqueUrl opaqUrl = m_opaqueUrlDao.getOpaqueUrl(m_sessionManager.getCurrentSessionUserId(), ref.getReference());
-		return getAccessPoint(true) + Entity.SEPARATOR + REF_TYPE_CALENDAR_OPAQUEURL + Entity.SEPARATOR + opaqUrl.getOpaqueUUID() + Entity.SEPARATOR + ref.getId();
+		return getAccessPoint(true) + Entity.SEPARATOR + REF_TYPE_CALENDAR_OPAQUEURL + Entity.SEPARATOR + opaqUrl.getOpaqueUUID() + Entity.SEPARATOR + ref.getId() + ICAL_EXTENSION;
 	}
 	
 	/**

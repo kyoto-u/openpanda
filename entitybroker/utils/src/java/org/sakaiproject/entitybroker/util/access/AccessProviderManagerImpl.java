@@ -1,6 +1,6 @@
 /**
  * $Id: AccessProviderManagerImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/utils/src/java/org/sakaiproject/entitybroker/util/access/AccessProviderManagerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/utils/src/java/org/sakaiproject/entitybroker/util/access/AccessProviderManagerImpl.java $
  * AccessProviderManagerImpl.java - entity-broker - Apr 6, 2008 9:03:03 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2007, 2008, 2009 The Sakai Foundation

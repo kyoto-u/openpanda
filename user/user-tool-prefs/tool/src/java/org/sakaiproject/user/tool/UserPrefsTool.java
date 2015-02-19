@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.3/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.4/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
  * $Id: UserPrefsTool.java 313737 2014-09-19 00:20:46Z enietzel@anisakai.com $
  ***********************************************************************************
  *

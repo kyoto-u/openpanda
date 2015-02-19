@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/ifc/ServerConfigurationServiceHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/ifc/ServerConfigurationServiceHelper.java $
  * $Id: ServerConfigurationServiceHelper.java 106521 2012-04-04 08:14:42Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

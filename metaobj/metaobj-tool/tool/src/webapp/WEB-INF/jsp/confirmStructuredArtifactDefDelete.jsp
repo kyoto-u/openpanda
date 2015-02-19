@@ -1,6 +1,6 @@
 <%--
   ~ *********************************************************************************
-  ~  $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.3/metaobj-tool/tool/src/webapp/WEB-INF/jsp/confirmStructuredArtifactDefDelete.jsp $
+  ~  $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.4/metaobj-tool/tool/src/webapp/WEB-INF/jsp/confirmStructuredArtifactDefDelete.jsp $
   ~  $Id: confirmStructuredArtifactDefDelete.jsp 98451 2011-09-20 21:50:29Z botimer@umich.edu $
   ~ **********************************************************************************
   ~

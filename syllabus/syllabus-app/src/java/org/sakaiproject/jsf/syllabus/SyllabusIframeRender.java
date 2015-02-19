@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.3/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIframeRender.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.4/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusIframeRender.java $
  * $Id: SyllabusIframeRender.java 315279 2014-11-10 18:35:24Z enietzel@anisakai.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.3/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCLearningApplicationResourceTranslator.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.4/import-parsers/common-cartridge/src/java/org/sakaiproject/importer/impl/translators/CCLearningApplicationResourceTranslator.java $
  * $Id: CCLearningApplicationResourceTranslator.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

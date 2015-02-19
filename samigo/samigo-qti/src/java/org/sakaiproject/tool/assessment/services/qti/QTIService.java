@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-qti/src/java/org/sakaiproject/tool/assessment/services/qti/QTIService.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-qti/src/java/org/sakaiproject/tool/assessment/services/qti/QTIService.java $
  * $Id: QTIService.java 120835 2013-03-06 13:29:53Z azeckoski@unicon.net $
  ***********************************************************************************
  *

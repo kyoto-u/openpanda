@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.3/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/CourseManagementServiceHibernateImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.4/cm-service/cm-impl/hibernate-impl/impl/src/java/org/sakaiproject/coursemanagement/impl/CourseManagementServiceHibernateImpl.java $
  * $Id: CourseManagementServiceHibernateImpl.java 123501 2013-05-01 22:46:45Z matthew@longsight.com $
  ***********************************************************************************
  *

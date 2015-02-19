@@ -1,6 +1,6 @@
 /**
  * $Id: AccessFormats.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.3/api/src/java/org/sakaiproject/entitybroker/access/AccessFormats.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.4/api/src/java/org/sakaiproject/entitybroker/access/AccessFormats.java $
  * HTMLable.java - entity-broker - Apr 6, 2008 7:37:54 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 The Sakai Foundation

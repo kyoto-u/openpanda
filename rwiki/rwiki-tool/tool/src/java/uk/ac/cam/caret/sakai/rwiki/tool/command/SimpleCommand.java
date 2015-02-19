@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/SimpleCommand.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.4/rwiki-tool/tool/src/java/uk/ac/cam/caret/sakai/rwiki/tool/command/SimpleCommand.java $
  * $Id: SimpleCommand.java 21065 2007-02-07 00:15:30Z ian@caret.cam.ac.uk $
  ***********************************************************************************
  *

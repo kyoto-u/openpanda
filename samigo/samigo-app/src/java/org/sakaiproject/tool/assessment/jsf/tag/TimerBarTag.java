@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/tag/TimerBarTag.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/tag/TimerBarTag.java $
  * $Id: TimerBarTag.java 271441 2014-02-13 19:31:48Z ktsao@stanford.edu $
  ***********************************************************************************
  *

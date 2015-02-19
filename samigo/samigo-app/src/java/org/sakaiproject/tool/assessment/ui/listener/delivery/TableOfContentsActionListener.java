@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/TableOfContentsActionListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/TableOfContentsActionListener.java $
  * $Id: TableOfContentsActionListener.java 271441 2014-02-13 19:31:48Z ktsao@stanford.edu $
  ***********************************************************************************
  *

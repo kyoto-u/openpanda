@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.3/jldap/src/java/edu/amc/sakai/user/LdapConnectionManagerConfig.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.4/jldap/src/java/edu/amc/sakai/user/LdapConnectionManagerConfig.java $
  * $Id: LdapConnectionManagerConfig.java 132537 2013-12-13 00:23:13Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

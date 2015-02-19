@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.3/search-api/api/src/java/org/sakaiproject/search/api/SearchService.java $
+ * $URL: https://source.sakaiproject.org/svn/search/tags/sakai-10.4/search-api/api/src/java/org/sakaiproject/search/api/SearchService.java $
  * $Id: SearchService.java 118402 2013-01-16 21:32:11Z jbush@rsmart.com $
  ***********************************************************************************
  *

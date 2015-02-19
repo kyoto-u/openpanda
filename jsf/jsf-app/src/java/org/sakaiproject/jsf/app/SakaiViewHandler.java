@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.3/jsf-app/src/java/org/sakaiproject/jsf/app/SakaiViewHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.4/jsf-app/src/java/org/sakaiproject/jsf/app/SakaiViewHandler.java $
  * $Id: SakaiViewHandler.java 128959 2013-08-23 00:01:46Z ottenhoff@longsight.com $
  **********************************************************************************
  *

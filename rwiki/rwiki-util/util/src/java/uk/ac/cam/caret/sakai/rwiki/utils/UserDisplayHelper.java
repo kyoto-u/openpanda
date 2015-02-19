@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.3/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/UserDisplayHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.4/rwiki-util/util/src/java/uk/ac/cam/caret/sakai/rwiki/utils/UserDisplayHelper.java $
  * $Id: UserDisplayHelper.java 74816 2010-03-19 11:03:57Z david.horwitz@uct.ac.za $
  ***********************************************************************************
  *

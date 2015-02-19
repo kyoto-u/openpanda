@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/sakai-10.3/tool/src/java/org/sakaiproject/cheftool/NewPagedResourceAction.java $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/sakai-10.4/tool/src/java/org/sakaiproject/cheftool/NewPagedResourceAction.java $
  * $Id: NewPagedResourceAction.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

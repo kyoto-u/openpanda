@@ -60,6 +60,8 @@ setMainFrameHeight(window.name);
 <script type="text/javascript" language="JavaScript" rsf:id="redirect">
   location.href = document.getElementById("redirect-link").href;
 </script>
+<script type="text/javascript" src="$context/js/jquery.cluetip.min.js"></script>
+<link rel="stylesheet" href="$context/css/jquery.cluetip.css" type="text/css" />
 
 <script type="text/javascript" language="JavaScript">
 $(function() {
@@ -69,8 +71,32 @@ $(function() {
 	    // fake it; can't seem to get rid of underline though
 	    $('.usebutton').css('border', '1px solid black').css('padding', '1px 4px').css('color', 'black');
 	}
-        $("#directurl").attr('href', $("#directurl").attr('rel'));
+	// don't do this twice. if portal is loaded portal will do it
+        if(typeof portal == 'undefined')
+	$('a.tool-directurl').cluetip({
+		local: true,
+		    arrows: true,
+		    cluetipClass: 'jtip',
+		    sticky: true,
+		    cursor: 'pointer',
+		    activation: 'click',
+		    closePosition: 'title',
+		    closeText: '<img src="/library/image/silk/cross.png" alt="close" />'
+		    });
 });
+
+function toggleShortUrlOutput(defaultUrl, checkbox, textbox) {
+    if($(checkbox).is(':checked')) {
+	$.ajax({
+		url:'/direct/url/shorten?path='+encodeURI(defaultUrl),
+		    success: function(shortUrl) {
+		    $('.'+textbox).val(shortUrl);
+		}
+	    });
+    } else {
+	$('.'+textbox).val(defaultUrl);
+    }
+}
 
 </script>
 
@@ -109,7 +135,7 @@ $(function() {
 	            </a>
 		    <div rsf:id="directurl-div" class="portlet title-tools direct-url-wrap">
 		      <input rsf:id="directurl-input" type="checkbox" class="portlet title-tools short-url"/>
-		      <span>Short URL</span>
+		      <span rsf:id="directurl-shorten">Short URL</span>
 		      <textarea rsf:id="directurl-textarea" class="portlet title-tools"></textarea>
 		    </div>
                     <a href="#" rsf:id="helpbutton2" target="_blank" class="help"><img rsf:id="helpimage2" src="/library/image/transparent.gif" /><span rsf:id="helpnewwindow2" class="offscreen"></span></a>

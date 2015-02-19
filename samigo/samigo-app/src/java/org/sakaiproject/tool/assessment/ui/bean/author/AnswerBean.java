@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.3/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AnswerBean.java $
- * $Id: AnswerBean.java 308492 2014-04-22 20:11:51Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AnswerBean.java $
+ * $Id: AnswerBean.java 316665 2015-01-09 17:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -445,7 +445,14 @@ public class AnswerBean implements Serializable, Comparable{
 	        else if (itemText == null) {
 	        	return new ArrayList();
 	        }
-	        else return itemText.getItemTextAttachmentList();
+	        else {
+	        	ArrayList attachmentList = new ArrayList();
+	        	Set<ItemTextAttachmentIfc> itemTextAttachmentSet = itemText.getItemTextAttachmentSet();
+	        	for (Iterator<ItemTextAttachmentIfc> it = itemTextAttachmentSet.iterator(); it.hasNext();) {
+	        		attachmentList.add(it.next());
+	        	}
+	        	return attachmentList;
+	        }
 	      }
 
 	    private HashMap getResourceIdHash(Set attachmentSet){
