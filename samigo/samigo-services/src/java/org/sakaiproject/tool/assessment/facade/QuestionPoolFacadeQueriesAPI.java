@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/QuestionPoolFacadeQueriesAPI.java $
- * $Id: QuestionPoolFacadeQueriesAPI.java 315345 2014-11-11 18:42:24Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/QuestionPoolFacadeQueriesAPI.java $
+ * $Id: QuestionPoolFacadeQueriesAPI.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -140,7 +140,7 @@ public interface QuestionPoolFacadeQueriesAPI
    * @param itemId DOCUMENTATION PENDING
    * @param poolId DOCUMENTATION PENDING
    */
-  public void removeItemFromPool(String itemId, Long poolId);
+  public void removeItemFromPool(Long itemId, Long poolId);
 
   /**
    * DOCUMENTATION PENDING
@@ -148,7 +148,7 @@ public interface QuestionPoolFacadeQueriesAPI
    * @param itemId DOCUMENTATION PENDING
    * @param poolId DOCUMENTATION PENDING
    */
-  public void moveItemToPool(String itemId, Long sourceId, Long destId);
+  public void moveItemToPool(Long itemId, Long sourceId, Long destId);
 
   /**
    * DOCUMENTATION PENDING
@@ -185,7 +185,7 @@ public interface QuestionPoolFacadeQueriesAPI
    * @param poolId DOCUMENTATION PENDING
    */
 
-  public List getPoolIdsByAgent(String agentId);
+  public List<Long> getPoolIdsByAgent(String agentId);
 
   /**
    * Return a list of questionPoolId (java.lang.Long)
@@ -212,6 +212,8 @@ public interface QuestionPoolFacadeQueriesAPI
   public ItemFacade copyItemFacade2(ItemDataIfc itemData);
 
   public Integer getCountItemFacades(Long questionPoolId);
+  
+  public HashMap<Long, Integer> getCountItemFacadesForUser(String agentId);	  
   
   /**
    * Shared Pools with other user

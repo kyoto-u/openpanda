@@ -43,15 +43,6 @@ confirmation dialog
 <head><%= request.getAttribute("html.head") %>
 	<title><h:outputText value="#{authorMessages.item_display_author}"/></title>
     <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
-	<!-- HTMLAREA -->
-	<samigo:stylesheet path="/htmlarea/htmlarea.css"/>
-	<samigo:script path="/htmlarea/htmlarea.js"/>
-	<samigo:script path="/htmlarea/lang/en.js"/>
-	<samigo:script path="/htmlarea/dialog.js"/>
-	<samigo:script path="/htmlarea/popupwin.js"/>
-	<samigo:script path="/htmlarea/popups/popup.js"/>
-	<samigo:script path="/htmlarea/navigo_js/navigo_editor.js"/>
-	<samigo:script path="/jsf/widget/wysiwyg/samigo/wysiwyg.js"/>
 	<!-- AUTHORING -->
 	<samigo:script path="/js/authoring.js"/>
 	<script type="text/javascript">
@@ -191,7 +182,7 @@ confirmation dialog
 	
 	  	</h:panelGrid>
 	  
-	  	<h:commandButton rendered="#{itemauthor.target=='assessment'}" 
+	  	<h:commandButton rendered="#{itemauthor.target=='assessment' || itemauthor.target=='questionpool'}" 
 	  			value="#{authorMessages.calc_question_extract_button}" 
 	  			action="calculatedQuestion" 
 	  			styleClass="active">

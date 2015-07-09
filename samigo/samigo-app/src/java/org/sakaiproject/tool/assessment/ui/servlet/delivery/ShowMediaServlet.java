@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/ShowMediaServlet.java $
- * $Id: ShowMediaServlet.java 309213 2014-05-06 16:19:44Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/ShowMediaServlet.java $
+ * $Id: ShowMediaServlet.java 319811 2015-06-11 18:11:39Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -52,7 +52,7 @@ import org.apache.commons.logging.LogFactory;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: ShowMediaServlet.java 309213 2014-05-06 16:19:44Z enietzel@anisakai.com $
+ * @version $Id: ShowMediaServlet.java 319811 2015-06-11 18:11:39Z enietzel@anisakai.com $
  */
 
 public class ShowMediaServlet extends HttpServlet
@@ -295,8 +295,8 @@ public class ShowMediaServlet extends HttpServlet
 
   public boolean canGrade(HttpServletRequest req,  HttpServletResponse res,
                           String agentId, String currentSiteId){
-    boolean hasPrivilege_any = hasPrivilege(req, "grade_any_assessment", currentSiteId);
-    boolean hasPrivilege_own = hasPrivilege(req, "grade_own_assessment", currentSiteId);
+    boolean hasPrivilege_any = hasPrivilege(req, "assessment.gradeAssessment.any", currentSiteId);
+    boolean hasPrivilege_own = hasPrivilege(req, "assessment.gradeAssessment.own", currentSiteId);
     log.debug("hasPrivilege_any="+hasPrivilege_any);
     log.debug("hasPrivilege_own="+hasPrivilege_own);
     boolean hasPrivilege = (hasPrivilege_any || hasPrivilege_own);
@@ -311,8 +311,7 @@ public class ShowMediaServlet extends HttpServlet
     return isOwner;
   }
   
-  public boolean hasPrivilege(HttpServletRequest req, String functionKey, String context){
-	  String functionName=(String)ContextUtil.getLocalizedString(req,"org.sakaiproject.tool.assessment.bundle.AuthzPermissions", functionKey);
+  public boolean hasPrivilege(HttpServletRequest req, String functionName, String context){
 	  boolean privilege = SecurityService.unlock(functionName, "/site/"+context);
 	  return privilege;
   }

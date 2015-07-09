@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/DeliveryBean.java $
- * $Id: DeliveryBean.java 313928 2014-09-27 04:07:36Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/DeliveryBean.java $
+ * $Id: DeliveryBean.java 318220 2015-03-31 18:54:23Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -104,7 +104,7 @@ import uk.org.ponder.rsf.state.support.TMLFixer;
  *
  * @author casong
  * @author esmiley@stanford.edu added agentState
- * $Id: DeliveryBean.java 313928 2014-09-27 04:07:36Z enietzel@anisakai.com $
+ * $Id: DeliveryBean.java 318220 2015-03-31 18:54:23Z ottenhoff@longsight.com $
  *
  * Used to be org.navigoproject.ui.web.asi.delivery.XmlDeliveryForm.java
  */
@@ -3716,13 +3716,20 @@ public class DeliveryBean
 				  
 				  if (item.getItemData().getTypeId().longValue() == TypeIfc.MULTIPLE_CHOICE.longValue() || 
 						  item.getItemData().getTypeId().longValue() == TypeIfc.MULTIPLE_CORRECT_SINGLE_SELECTION.longValue() ||
-						  item.getItemData().getTypeId().longValue() == TypeIfc.MULTIPLE_CHOICE_SURVEY.longValue()) {
-
+						  item.getItemData().getTypeId().longValue() == TypeIfc.MULTIPLE_CHOICE_SURVEY.longValue() ||
+						  item.getItemData().getTypeId().longValue() == TypeIfc.MATRIX_CHOICES_SURVEY.longValue()) {
 					  item.setUnanswered(true);
-					  for (int k=0; k<item.getSelectionArray().size(); k++) {
-						  SelectionBean selection = (SelectionBean)item.getSelectionArray().get(k);
-						  //selection.setResponse(false);
-						  selection.setResponseFromCleanRadioButton();
+					  if(item.getItemData().getTypeId().longValue() == TypeIfc.MATRIX_CHOICES_SURVEY.longValue()){
+						  for (int k=0; k<item.getMatrixArray().size(); k++) {
+							  MatrixSurveyBean selection = (MatrixSurveyBean)item.getMatrixArray().get(k);
+							  selection.setResponseFromCleanRadioButton();
+						  }
+					  }else{
+						  for (int k=0; k<item.getSelectionArray().size(); k++) {
+							  SelectionBean selection = (SelectionBean)item.getSelectionArray().get(k);
+							  //selection.setResponse(false);
+							  selection.setResponseFromCleanRadioButton();
+						  }
 					  }
 					  
 					  ArrayList itemGradingData = new ArrayList();

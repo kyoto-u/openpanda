@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/api/src/main/java/org/sakaiproject/user/cover/UserDirectoryService.java $
- * $Id: UserDirectoryService.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/api/src/main/java/org/sakaiproject/user/cover/UserDirectoryService.java $
+ * $Id: UserDirectoryService.java 318808 2015-05-12 22:21:37Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -212,6 +212,15 @@ public class UserDirectoryService
 
 		return service.allowAddUser();
 	}
+	
+	public static boolean checkDuplicatedEmail(org.sakaiproject.user.api.User param0)
+	{
+		org.sakaiproject.user.api.UserDirectoryService service = getInstance();
+		if (service == null) return false;
+
+		return service.checkDuplicatedEmail(param0);
+	}
+
 
 	public static org.sakaiproject.user.api.UserEdit addUser(java.lang.String param0, java.lang.String param1)
 			throws org.sakaiproject.user.api.UserIdInvalidException, org.sakaiproject.user.api.UserAlreadyDefinedException,

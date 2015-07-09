@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.4/user-tool/tool/src/java/org/sakaiproject/user/tool/UsersAction.java $
- * $Id: UsersAction.java 308858 2014-04-26 00:08:52Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.5/user-tool/tool/src/java/org/sakaiproject/user/tool/UsersAction.java $
+ * $Id: UsersAction.java 318808 2015-05-12 22:21:37Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -648,10 +648,25 @@ public class UsersAction extends PagedResourceActionII
 			
 		List<ImportedUser> users = (List<ImportedUser>)state.getAttribute("importedUsers");
 		if(users !=null && users.size() > 0) {
-		
+			//Check if the email is duplicated
+			boolean allowEmailDuplicates = ServerConfigurationService.getBoolean("user.email.allowduplicates",true);
+			
+			
 			for(ImportedUser user: users) {
 				try {
+					
+					TempUser tempUser = new TempUser(user.getEid(), user.getEmail(), null, null, user.getEid(), user.getPassword(), null);
+					
+					if (!allowEmailDuplicates && UserDirectoryService.checkDuplicatedEmail(tempUser)){
+						addAlert(state, rb.getString("useact.theuseemail1") + ":" + tempUser.getEmail());
+						
+						//Try to import the rest
+						continue;
+					}
+					
 					User newUser = UserDirectoryService.addUser(null, user.getEid(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getType(), user.getProperties());
+			
+					
 				}
 				catch (UserAlreadyDefinedException e){
 					//ok, just skip
@@ -805,10 +820,21 @@ public class UsersAction extends PagedResourceActionII
 		// read the form - if rejected, leave things as they are
 		if (!readUserForm(data, state)) return;
 
+
+		
 		// commit the change
 		UserEdit edit = (UserEdit) state.getAttribute("user");
 		if (edit != null)
 		{
+			
+			//Check if the email is duplicated
+			boolean allowEmailDuplicates = ServerConfigurationService.getBoolean("user.email.allowduplicates",true);
+			
+			if (!allowEmailDuplicates && UserDirectoryService.checkDuplicatedEmail(edit)){
+				addAlert(state, rb.getString("useact.theuseemail1"));
+				return;
+			}
+			
 			try
 			{
 				UserDirectoryService.commitEdit(edit);
@@ -1209,11 +1235,20 @@ public class UsersAction extends PagedResourceActionII
 			}
 
 			// SAK-23568 - make sure password meets policy requirements
-			TempUser tempUser = new TempUser(eid, null, null, null, eid, pw, null);
+			TempUser tempUser = new TempUser(eid, email, null, null, eid, pw, null);
 			if (!validatePassword(pw, tempUser, state)) {
 				return false;
 			}
 
+			//Check if the email is duplicated
+			boolean allowEmailDuplicates = ServerConfigurationService.getBoolean("user.email.allowduplicates",true);
+			
+			if (!allowEmailDuplicates && UserDirectoryService.checkDuplicatedEmail(tempUser)){
+					addAlert(state, rb.getString("useact.theuseemail1"));
+					return false;
+			}
+			
+			
 			try
 			{
 				// add the user in one step so that all you need is add not update permission

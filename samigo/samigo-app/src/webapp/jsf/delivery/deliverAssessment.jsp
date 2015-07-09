@@ -8,7 +8,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-* $Id: deliverAssessment.jsp 315809 2014-12-01 17:49:46Z enietzel@anisakai.com $
+* $Id: deliverAssessment.jsp 319082 2015-05-20 22:21:15Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -82,8 +82,8 @@
                 //index will be the begining of 'matrixSurveyRadioTable'
                 var index = myId.indexOf("matrixSurveyRadioTable");
                 var strBefore = myId.substring(0,index+'matrixSurveyRadioTable'.length);
-                //remove table no 
-                var strAfter = myId.substring(index+'matrixSurveyRadioTable'.length+2);
+                //This needs to skip past the id which is on index 7 and the colon to add 1
+                var strAfter = myId.substring(index+'matrixSurveyRadioTable'.length+myIdParts[7].length+1);
                 //find rows of mytable	
                 var iRow = mytable.getElementsByTagName('tr');
                 //one header row before the row containing the radio button
@@ -112,7 +112,7 @@
  
       </head>
 	
-      <body onload="<%= request.getAttribute("html.body.onload") %>; setLocation(); checkRadio(); SaveFormContentAsync('deliverAssessment.faces', 'takeAssessmentForm', 'takeAssessmentForm:autoSave', 'takeAssessmentForm:lastSubmittedDate1', 'takeAssessmentForm:lastSubmittedDate2',  <h:outputText value="#{delivery.autoSaveRepeatMilliseconds}"/>, <h:outputText value="#{delivery.actionString=='takeAssessment'}"/>); setTimeout('setLocation2()',2)" >
+	<body>
  
       <h:outputText value="<a name='top'></a>" escape="false" />
       
@@ -603,7 +603,14 @@ document.links[newindex].onclick();
 </h:form>
 <!-- end content -->
 <f:verbatim></div></f:verbatim>
-<script type="text/JavaScript">fixImplicitLabeling();</script>
+<script type="text/JavaScript">
+	<%= request.getAttribute("html.body.onload") %> 
+	setLocation(); 
+	checkRadio();
+	fixImplicitLabeling();
+	SaveFormContentAsync('deliverAssessment.faces', 'takeAssessmentForm', 'takeAssessmentForm:autoSave', 'takeAssessmentForm:lastSubmittedDate1', 'takeAssessmentForm:lastSubmittedDate2',  <h:outputText value="#{delivery.autoSaveRepeatMilliseconds}"/>, <h:outputText value="#{delivery.actionString=='takeAssessment' or delivery.actionString=='takeAssessmentViaUrl'}"/>); 
+	setTimeout('setLocation2()',2);
+</script>
     </body>
   </html>
 </f:view>

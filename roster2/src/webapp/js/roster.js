@@ -239,8 +239,15 @@
                             'participants': roster.getCurrentlyDisplayingParticipants(roles)},
                             'roster_search');
 
+            var showOfficialPictures = false;
+
+            if ((arg && arg.forceOfficialPicture) || roster.rosterOfficialPictureMode) {
+                showOfficialPictures = true;
+            }   
+
                     roster.render('pics_wrapper',
-                                { 'viewOfficialPhoto': roster.currentUserPermissions.viewOfficialPhoto },
+                                { checkOfficialPicturesButton: showOfficialPictures,
+								viewOfficialPhoto: roster.currentUserPermissions.viewOfficialPhoto },
                                 'roster_content');
 
                     $(document).ready(function () {
@@ -1253,6 +1260,8 @@
             }
         }
     });
+
+    roster.rosterOfficialPictureMode = roster.officialPicturesByDefault;
 
     // Setup the current user's permissions
     if (roster.userId === roster.ADMIN) {

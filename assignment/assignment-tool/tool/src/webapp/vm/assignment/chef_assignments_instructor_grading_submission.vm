@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_grading_submission.vm 315363 2014-11-12 15:39:46Z enietzel@anisakai.com $ -->
+<!-- $Id: chef_assignments_instructor_grading_submission.vm 319588 2015-05-26 22:57:00Z matthew@longsight.com $ -->
 <!-- start: check_assignments_instructor_grading_submission.vm  -->
 #set( $H = '-' )
 <script type="text/javascript" src="/library/js/jquery/ui/1.10.3/jquery-ui.1.10.3.full.min.js"></script>
@@ -25,6 +25,7 @@ function handleEnterKeyPress(ev)
 			var $pan = $('#peerReviewInfo')
    	 		if ($pan.is(':visible') && ev.target.id !== 'peerReviewInfo' && ev.target.id !== 'infoImg' && ev.target.id !== 'grade') $pan.hide();
 		});
+		disableBackButton();
     });
 </script>
 <div class="portletBody">
@@ -33,7 +34,7 @@ function handleEnterKeyPress(ev)
 		#if ($allowAddAssignment)
 			#set($prevAction=true)
 			<li class="firstToolBarItem">
-				<span><a href="#toolLink("$action" "doNew_assignment")" title="$!tlang.getString("new")">$!tlang.getString("new")</a></span>
+				<span><a href="#" title = "$!tlang.getString('new')" onclick="javascript:document.gradeForm.onsubmit();document.getElementById('option').value='new';document.getElementById('view').value='new';document.gradeForm.submit();return false;">$!tlang.getString("new")</a></span>
 			</li>
 		#end
 		<li #if ($prevAction==false) class="firstToolBarItem" #set($prevAction=true)  #end>

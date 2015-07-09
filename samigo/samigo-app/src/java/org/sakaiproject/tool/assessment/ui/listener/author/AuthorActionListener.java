@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
- * $Id: AuthorActionListener.java 315356 2014-11-12 10:53:01Z jjmerono@um.es $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
+ * $Id: AuthorActionListener.java 319085 2015-05-20 22:49:23Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -76,7 +76,7 @@ import org.sakaiproject.entity.api.ResourceProperties;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: AuthorActionListener.java 315356 2014-11-12 10:53:01Z jjmerono@um.es $
+ * @version $Id: AuthorActionListener.java 319085 2015-05-20 22:49:23Z enietzel@anisakai.com $
  */
 
 public class AuthorActionListener
@@ -185,7 +185,10 @@ public class AuthorActionListener
 		author.setEditPubAssessmentRestricted(true);
 	}
     } 
-	
+
+	author.setEditPubAssessmentRestrictedAfterStarted(ServerConfigurationService.getBoolean("samigo.editPubAssessment.restricted.afterStart", false));
+	author.setCanRemovePublishedAssessmentsAfterStarted(ServerConfigurationService.getBoolean("samigo.removePubAssessment.restricted.afterStart", false));
+
 	AuthorizationBean authorizationBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
 	author.setIsGradeable(authorizationBean.getGradeAnyAssessment() || authorizationBean.getGradeOwnAssessment());
 	author.setIsEditable(authorizationBean.getEditAnyAssessment() || authorizationBean.getEditOwnAssessment());

@@ -138,7 +138,7 @@ function disableIt()
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScoreListener" />
     </h:commandLink>
 
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" />
+    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne ''}" />
     
     <h:commandLink title="#{evaluationMessages.t_histogram}" action="histogramScores" immediate="true"
       rendered="#{totalScores.firstItem ne ''}" >
@@ -148,7 +148,7 @@ function disableIt()
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.HistogramListener" />
     </h:commandLink>
 
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" />
+    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne ''}" />
 
     <h:commandLink title="#{evaluationMessages.t_itemAnalysis}" action="detailedStatistics" immediate="true"
       rendered="#{totalScores.firstItem ne ''}" >
@@ -200,6 +200,14 @@ function disableIt()
       <h:outputText value="&nbsp;" escape="false"/>
 	  <h:outputText value="#{evaluationMessages.view}"/>
 	  <h:panelGroup>
+
+     <h:selectOneMenu value="#{totalScores.allSubmissions}" id="allSubmissionsA1"
+        required="true" onchange="document.forms[0].submit();" rendered="#{totalScores.scoringOption eq '4' && totalScores.multipleSubmissionsAllowed eq 'true' }">
+      <f:selectItem itemValue="3" itemLabel="#{evaluationMessages.all_sub}" />
+      <f:selectItem itemValue="4" itemLabel="#{evaluationMessages.average_sub}" />
+      <f:valueChangeListener
+         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
+     </h:selectOneMenu>
 
      <h:selectOneMenu value="#{totalScores.allSubmissions}" id="allSubmissionsL1"
         required="true" onchange="document.forms[0].submit();" rendered="#{totalScores.scoringOption eq '2' && totalScores.multipleSubmissionsAllowed eq 'true' }">

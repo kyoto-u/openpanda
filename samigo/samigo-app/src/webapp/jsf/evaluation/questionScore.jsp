@@ -9,7 +9,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  
 <!--
-$Id: questionScore.jsp 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+$Id: questionScore.jsp 318796 2015-05-12 20:09:41Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -127,7 +127,7 @@ function hiddenLinkOnClick(){
   
     <h:outputText value="#{evaluationMessages.q_view}" />
 
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" /> 
+    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne ''}" /> 
      
 	<h:commandLink title="#{evaluationMessages.t_histogram}" action="histogramScores" immediate="true"
       rendered="#{totalScores.firstItem ne ''}" >
@@ -137,7 +137,7 @@ function hiddenLinkOnClick(){
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.HistogramListener" />
     </h:commandLink>
 
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" />   
+    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne ''}" />   
   
 	<h:commandLink title="#{evaluationMessages.t_itemAnalysis}" action="detailedStatistics" immediate="true"
       rendered="#{totalScores.firstItem ne ''}" >

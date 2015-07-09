@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.4/federating/src/java/org/sakaiproject/provider/user/FilterUserDirectoryProvider.java $
- * $Id: FilterUserDirectoryProvider.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.5/federating/src/java/org/sakaiproject/provider/user/FilterUserDirectoryProvider.java $
+ * $Id: FilterUserDirectoryProvider.java 318643 2015-05-05 13:35:24Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -79,7 +79,7 @@ import org.sakaiproject.user.api.UsersShareEmailUDP;
  * </pre>
  * 
  * @author Ian Boston, Andrew Thornton, Daniel Parry, Raad
- * @version $Revision: 105079 $
+ * @version $Revision: 318643 $
  */
 public class FilterUserDirectoryProvider implements UserDirectoryProvider, ExternalUserSearchUDP, UsersShareEmailUDP
 {
@@ -573,7 +573,13 @@ public class FilterUserDirectoryProvider implements UserDirectoryProvider, Exter
 				m_logger.debug("searchExternalUsers() criteria=" + criteria);
 			}
 			
-			users.addAll(extSearchUDP.searchExternalUsers(criteria, first, last, factory));
+			List<UserEdit> searchExternalUsers = extSearchUDP.searchExternalUsers(criteria, first, last, factory);
+			if (searchExternalUsers != null) {
+				users.addAll(searchExternalUsers);
+			} else {
+				// When something goes wrong with the search we want to pass this back up the stack.
+				return null;
+			}
 		}
 		
 		if ( nextProvider instanceof ExternalUserSearchUDP) {
@@ -583,7 +589,13 @@ public class FilterUserDirectoryProvider implements UserDirectoryProvider, Exter
 				m_logger.debug("nextProvider searchExternalUsers() criteria=" + criteria);
 			}
 			
-			users.addAll(extSearchUDP.searchExternalUsers(criteria, first, last, factory));
+			List<UserEdit> searchExternalUsers = extSearchUDP.searchExternalUsers(criteria, first, last, factory);
+			if (searchExternalUsers != null) {
+				users.addAll(searchExternalUsers);
+			} else {
+				// When something goes wrong with the search we want to pass this back up the stack.
+				return null;
+			}
 		}
 
 		return users;

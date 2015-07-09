@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ExportAssessmentListener.java $
- * $Id: ExportAssessmentListener.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ExportAssessmentListener.java $
+ * $Id: ExportAssessmentListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -32,6 +32,7 @@ import javax.faces.event.ActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
+import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.bean.qti.XMLController;
@@ -42,7 +43,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: ExportAssessmentListener.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * @version $Id: ExportAssessmentListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  */
 
 public class ExportAssessmentListener implements ActionListener
@@ -58,17 +59,22 @@ public class ExportAssessmentListener implements ActionListener
 	  String assessmentId = (String) ContextUtil.lookupParam("assessmentId");
 	  XMLDisplay xmlDisp = (XMLDisplay) ContextUtil.lookupBean("xml");
 	  log.info("ExportAssessmentListener assessmentId="+assessmentId);
-	  if (!passAuthz(assessmentId)) {
+	  
+	  AssessmentService assessmentService = new AssessmentService();
+	  AssessmentFacade assessmentFacade = assessmentService.getAssessment(assessmentId);
+	  
+	  AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
+	  if (!authzBean.isUserAllowedToEditAssessment(assessmentId, assessmentFacade.getCreatedBy(), false)) {
 		  xmlDisp.setOutcome("exportDenied");
-		  String thisIp = ( (javax.servlet.http.HttpServletRequest) FacesContext.
-				  getCurrentInstance().getExternalContext().getRequest()).
-				  getRemoteAddr();
-		  log.warn("Unauthorized attempt to access /samigo-app/jsf/qti/exportAssessment.xml?exportAssessmentId=" +  assessmentId + " from IP : " + thisIp);   // logging IP , as requested in SAK-17984
+		  String thisIp = ( (javax.servlet.http.HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+		  // logging IP , as requested in SAK-17984
+		  log.warn("Unauthorized attempt to access /samigo-app/jsf/qti/exportAssessment.xml?exportAssessmentId=" +  assessmentId + " from IP : " + thisIp);
 		  return;
 	  }
+
+
 	  //update random question pools (if any) before exporting
-	  AssessmentService assessmentService = new AssessmentService();
-	  int success = assessmentService.updateAllRandomPoolQuestions(assessmentService.getAssessment(assessmentId));
+	  int success = assessmentService.updateAllRandomPoolQuestions(assessmentFacade);
 	  if(success == AssessmentService.UPDATE_SUCCESS){
 
 		  XMLController xmlController = (XMLController) ContextUtil.lookupBean(
@@ -98,23 +104,4 @@ public class ExportAssessmentListener implements ActionListener
 
   }
 
-  private boolean passAuthz(String assessmentId){
-	  AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
-	  boolean hasPrivilege_any = authzBean.getEditAnyAssessment();
-	  boolean hasPrivilege_own0 = authzBean.getEditOwnAssessment();
-	  boolean hasPrivilege_own = (hasPrivilege_own0 && isOwner(assessmentId));
-	  boolean hasPrivilege = (hasPrivilege_any || hasPrivilege_own);
-	  
-	  return hasPrivilege;
-  }
-
-  private boolean isOwner(String assessmentId){
-	  boolean isOwner = false;
-	  String agentId = AgentFacade.getAgentString();
-	  AssessmentService assessmentService = new AssessmentService();
-	  String ownerId = assessmentService.getAssessmentCreatedBy(assessmentId);
-	  isOwner = agentId.equals(ownerId);
-	  log.debug("***isOwner="+isOwner);
-	  return isOwner;
-  }
 }

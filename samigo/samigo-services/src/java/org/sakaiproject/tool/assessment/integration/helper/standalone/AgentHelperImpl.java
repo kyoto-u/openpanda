@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/standalone/AgentHelperImpl.java $
- * $Id: AgentHelperImpl.java 130512 2013-10-15 23:46:40Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/standalone/AgentHelperImpl.java $
+ * $Id: AgentHelperImpl.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -55,7 +55,7 @@ import org.sakaiproject.user.cover.UserDirectoryService;
  */
 public class AgentHelperImpl implements AgentHelper
 {
-  private static Log log = LogFactory.getLog(AgentHelperImpl.class);
+  private Log log = LogFactory.getLog(AgentHelperImpl.class);
   String agentString;
 
 

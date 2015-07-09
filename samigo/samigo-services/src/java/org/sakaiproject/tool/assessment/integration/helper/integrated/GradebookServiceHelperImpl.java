@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/GradebookServiceHelperImpl.java $
- * $Id: GradebookServiceHelperImpl.java 127473 2013-07-21 00:04:12Z nbotimer@unicon.net $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/GradebookServiceHelperImpl.java $
+ * $Id: GradebookServiceHelperImpl.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -64,7 +64,7 @@ import org.sakaiproject.tool.cover.ToolManager;
  */
 public class GradebookServiceHelperImpl implements GradebookServiceHelper
 {
-  private static Log log = LogFactory.getLog(GradebookServiceHelperImpl.class);
+  private Log log = LogFactory.getLog(GradebookServiceHelperImpl.class);
 
   /**
    * Does a gradebook exist?

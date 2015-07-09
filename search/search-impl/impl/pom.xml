@@ -4,7 +4,7 @@
   <parent>
     <artifactId>search</artifactId>
     <groupId>org.sakaiproject.search</groupId>
-    <version>10.4</version><!-- ProjectVersion -->
+    <version>10.5</version><!-- ProjectVersion -->
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>search-impl</name>
@@ -49,7 +49,7 @@
             </dependencies>
             <properties>
                 <maven.test.jvmargs />
-                <poi.version>3.10-FINAL</poi.version>
+                <poi.version>3.10.1</poi.version>
                 <lucene.version>4.5.0</lucene.version>
                 <bouncycastle.artifact.version>jdk16</bouncycastle.artifact.version>
             </properties>
@@ -178,7 +178,7 @@
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox</artifactId>
-      <version>1.7.0</version>
+      <version>1.8.6</version>
       <type>jar</type>
     </dependency>
     <!-- PDF box uses BouncyCastle for crypotgraphic functions at runtime -->
@@ -195,12 +195,12 @@
     <dependency>
 	<groupId>org.apache.tika</groupId>
 	<artifactId>tika-core</artifactId>
-	<version>1.2</version>
+	<version>1.5</version>
 	</dependency>
     <dependency>
 	<groupId>org.apache.tika</groupId>
 	<artifactId>tika-parsers</artifactId>
-	<version>1.2</version>
+	<version>1.5</version>
 	</dependency>
     <dependency>
       <groupId>commons-codec</groupId>

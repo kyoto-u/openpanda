@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/MatrixSurveyBean.java $
- * $Id: MatrixSurveyBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/MatrixSurveyBean.java $
+ * $Id: MatrixSurveyBean.java 318220 2015-03-31 18:54:23Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -29,7 +29,7 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 
 /**
  * @author kimhuang@rutgers.edu
- * $Id: MatrixSurveyBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $Id: MatrixSurveyBean.java 318220 2015-03-31 18:54:23Z ottenhoff@longsight.com $
  */
 public class MatrixSurveyBean
 {
@@ -154,6 +154,7 @@ public class MatrixSurveyBean
 
 public void setResponseFromCleanRadioButton() {
             response = false; 
+            responseId = null;
             data = null;
  }
 

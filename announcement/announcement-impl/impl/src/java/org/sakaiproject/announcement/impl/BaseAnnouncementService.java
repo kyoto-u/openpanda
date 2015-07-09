@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.4/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/BaseAnnouncementService.java $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.5/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/BaseAnnouncementService.java $
  * $Id: BaseAnnouncementService.java 316193 2014-12-19 21:48:42Z matthew@longsight.com $
  ***********************************************************************************
  *

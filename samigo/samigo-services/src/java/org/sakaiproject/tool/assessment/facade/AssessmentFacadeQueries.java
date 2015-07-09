@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentFacadeQueries.java $
- * $Id: AssessmentFacadeQueries.java 315343 2014-11-11 18:38:04Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentFacadeQueries.java $
+ * $Id: AssessmentFacadeQueries.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -99,7 +99,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class AssessmentFacadeQueries extends HibernateDaoSupport implements
 		AssessmentFacadeQueriesAPI {
-	private static Log log = LogFactory.getLog(AssessmentFacadeQueries.class);
+	private Log log = LogFactory.getLog(AssessmentFacadeQueries.class);
 
 	// private ResourceBundle rb =
 	// ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.Messages");
@@ -811,6 +811,14 @@ public class AssessmentFacadeQueries extends HibernateDaoSupport implements
 				AssessmentData.class, assessmentId);
 		AssessmentFacade f = new AssessmentFacade(a.getAssessmentBaseId(), a
 				.getTitle(), a.getLastModifiedDate());
+		f.setCreatedBy(a.getCreatedBy());
+		return f;
+	}
+
+	public AssessmentFacade getBasicInfoOfAnAssessmentFromSectionId(Long sectionId) {
+		SectionData section = loadSection(sectionId);
+		AssessmentData a = (AssessmentData) section.getAssessment();
+		AssessmentFacade f = new AssessmentFacade(a.getAssessmentBaseId(), a.getTitle(), a.getLastModifiedDate());
 		f.setCreatedBy(a.getCreatedBy());
 		return f;
 	}

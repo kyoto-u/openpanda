@@ -32,8 +32,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.TimeZone;
+import java.text.SimpleDateFormat;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -51,6 +54,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import org.sakaiproject.content.api.ContentFilterService;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.authz.api.SecurityAdvisor;
@@ -109,6 +113,10 @@ public class LessonBuilderAccessService {
 	public static final String ATTR_SESSION = "sakai.session";
    
 	public static final String COPYRIGHT_ACCEPTED_REFS_ATTR = "Access.Copyright.Accepted";
+
+	// This is the date format for Last-Modified header
+	public static final String RFC1123_DATE = "EEE, dd MMM yyyy HH:mm:ss zzz";
+	public static final Locale LOCALE_US = Locale.US;
 
 	LessonBuilderAccessAPI lessonBuilderAccessAPI = null;
 
@@ -177,6 +185,12 @@ public class LessonBuilderAccessService {
 	}
 
 	LessonEntity assignmentEntity = null;
+
+	ContentFilterService contentFilterService;
+
+	public void setContentFilterService(ContentFilterService s) {
+		contentFilterService = s;
+	}
 
 	public void setAssignmentEntity(Object e) {
 		assignmentEntity = (LessonEntity) e;
@@ -587,6 +601,9 @@ public class LessonBuilderAccessService {
 					    throw new EntityCopyrightException(resource.getReference());
 					}  
 					try {
+						// Wrap it in any filtering needed.
+						resource = contentFilterService.wrap(resource);
+
 					    // following cast is redundant is current kernels, but is needed for Sakai 2.6.1
 						long len = (long)resource.getContentLength();
 						String contentType = resource.getContentType();
@@ -679,6 +696,33 @@ public class LessonBuilderAccessService {
 
 							// from contenthosting
 
+							res.addHeader("Cache-Control", "must-revalidate, private");
+							res.addHeader("Expires", "-1");
+							ResourceProperties rp = resource.getProperties();
+							long lastModTime = 0;
+
+							try {
+							    Time modTime = rp.getTimeProperty(ResourceProperties.PROP_MODIFIED_DATE);
+							    lastModTime = modTime.getTime();
+							} catch (Exception e1) {
+							    M_log.info("Could not retrieve modified time for: " + resource.getId());
+							}
+							
+							// KNL-1316 tell the browser when our file was last modified for caching reasons
+							if (lastModTime > 0) {
+							    SimpleDateFormat rfc1123Date = new SimpleDateFormat(RFC1123_DATE, LOCALE_US);
+							    rfc1123Date.setTimeZone(TimeZone.getTimeZone("GMT"));
+							    res.addHeader("Last-Modified", rfc1123Date.format(lastModTime));
+							}
+
+							// KNL-1316 let's see if the user already has a cached copy. Code copied and modified from Tomcat DefaultServlet.java
+							long headerValue = req.getDateHeader("If-Modified-Since");
+							if (headerValue != -1 && (lastModTime < headerValue + 1000)) {
+							    // The entity has not been modified since the date specified by the client. This is not an error case.
+							    res.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+							    return; 
+							}
+
 		        ArrayList<Range> ranges = parseRange(req, res, len);
 
 		        if (req.getHeader("Range") == null || (ranges == null) || (ranges.isEmpty())) {
@@ -698,6 +742,7 @@ public class LessonBuilderAccessService {
 						res.setContentType(contentType);
 						res.addHeader("Content-Disposition", disposition);
 						res.addHeader("Accept-Ranges", "bytes");
+						
 						// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4187336
  						if (len <= Integer.MAX_VALUE){
  							res.setContentLength((int)len);

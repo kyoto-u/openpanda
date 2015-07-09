@@ -1,6 +1,6 @@
 /******************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.4/user-tool/tool/src/java/org/sakaiproject/user/tool/PasswordPolicyHelper.java $
- * $Id: PasswordPolicyHelper.java 308858 2014-04-26 00:08:52Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.5/user-tool/tool/src/java/org/sakaiproject/user/tool/PasswordPolicyHelper.java $
+ * $Id: PasswordPolicyHelper.java 318808 2015-05-12 22:21:37Z enietzel@anisakai.com $
  ******************************************************************************
  *
  * Copyright (c) 2003-2014 The Apereo Foundation
@@ -137,7 +137,6 @@ public class PasswordPolicyHelper {
         @Override public String 			getDisplayId() 								{ return null; }
         @Override public String 			getDisplayName() 							{ return null; }
         @Override public String 			getEid() 									{ return null; }
-        @Override public String 			getEmail()									{ return null; }
         @Override public String 			getFirstName() 								{ return null; }
         @Override public String 			getLastName() 								{ return null; }
         @Override public String 			getReference() 								{ return null; }

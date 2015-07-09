@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: movePool.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
+<!-- $Id: movePool.jsp 319103 2015-05-21 13:52:58Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -85,13 +85,22 @@
 <p class="act">
   <h:commandButton type="submit" immediate="true" id="poolSubmit" value="#{questionPoolMessages.move}"
     action="#{questionpool.movePool}" rendered="#{questionpool.actionType == 'pool'}" styleClass="active">
+    <f:param name="qpid" value="#{questionpool.currentPool.parentPoolId}"/>
   </h:commandButton>
 
   <h:commandButton type="submit" immediate="true" id="itemSubmit" value="#{questionPoolMessages.move}"
     action="#{questionpool.moveQuestion}" rendered="#{questionpool.actionType == 'item'}" styleClass="active">
   </h:commandButton>
 
-  <h:commandButton id="cancel" value="#{commonMessages.cancel_action}" action="#{questionpool.cancelPool}"/>
+	<h:commandButton id="cancel" value="#{commonMessages.cancel_action}" action="#{questionpool.cancelPool}" rendered="#{questionpool.actionType == 'pool'}">
+		<f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.CancelPoolListener" />
+		<f:attribute name="returnToParentPool" value="true"/>
+	</h:commandButton>
+
+	<h:commandButton id="cancelItem" value="#{commonMessages.cancel_action}" action="#{questionpool.cancelPool}" rendered="#{questionpool.actionType == 'item'}">
+		<f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.CancelPoolListener" />
+		<f:attribute name="returnToParentPool" value="false"/>
+	</h:commandButton>
 
 </p>
 

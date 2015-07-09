@@ -264,6 +264,14 @@ public class SakaiProxyImpl implements SakaiProxy {
 	public List<RosterMember> getGroupMembership(String siteId, String groupId) {
 		return getMembership(siteId, groupId, false);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+    public Boolean getOfficialPicturesByDefault() {
+		return serverConfigurationService.getBoolean(
+				"roster.display.officialPicturesByDefault", true);
+    }
 	
 	private List<RosterMember> getMembership(String siteId, String groupId,
 			boolean includeConnectionStatus) {
@@ -820,7 +828,10 @@ public class SakaiProxyImpl implements SakaiProxy {
 	 * {@inheritDoc}
 	 */
 	public boolean isSiteMaintainer(String siteId) {
-		return hasUserSitePermission(getCurrentUserId(), SiteService.SECURE_UPDATE_SITE, siteId);
+
+		String userId = getCurrentUserId();
+		return hasUserSitePermission(userId, SiteService.SECURE_UPDATE_SITE, siteId)
+		        && hasUserSitePermission(userId, SiteService.SECURE_UPDATE_SITE_MEMBERSHIP, siteId);
 	}
 
 }

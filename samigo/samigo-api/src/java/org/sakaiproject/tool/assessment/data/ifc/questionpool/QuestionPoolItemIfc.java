@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/questionpool/QuestionPoolItemIfc.java $
- * $Id: QuestionPoolItemIfc.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/questionpool/QuestionPoolItemIfc.java $
+ * $Id: QuestionPoolItemIfc.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -28,8 +28,8 @@ package org.sakaiproject.tool.assessment.data.ifc.questionpool;
  */
 public interface QuestionPoolItemIfc
 {
-  public String getItemId();
-  public void setItemId(String itemId);
+  public Long getItemId();
+  public void setItemId(Long itemId);
   public Long getQuestionPoolId();
   public void setQuestionPoolId(Long questionPoolId);
 }

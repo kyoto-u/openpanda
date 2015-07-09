@@ -6,7 +6,7 @@
   <packaging>pom</packaging>
   <name>Sakai Master</name>
   <description>Corporate POM for the Sakai Open Source Collaborative Learning Environment/Learning Management System</description>
-  <version>10.4</version>
+  <version>10.5</version>
   <url>http://sakaiproject.org</url>
   <organization>
     <name>Sakai Project</name>
@@ -73,16 +73,16 @@
   </scm>
 
   <properties>
-    <sakai.version>10.4</sakai.version>
+    <sakai.version>10.5</sakai.version>
     <!-- kernel only versions -->
-    <sakai.kernel.version>10.4</sakai.kernel.version>
+    <sakai.kernel.version>10.5</sakai.kernel.version>
     <kernel.spring.version>3.2.3.RELEASE</kernel.spring.version>
     <kernel.hibernate.version>3.6.10.Final</kernel.hibernate.version>
     <kernel.hibernate.annotations.version>3.2.0.Final</kernel.hibernate.annotations.version>
     <kernel.hibernate.jpa.version>1.0.1.Final</kernel.hibernate.jpa.version>
     <!-- Standard dependency versions -->
     <sakai.commons.lang.version>2.5</sakai.commons.lang.version>
-    <sakai.commons-logging.version>1.1.1</sakai.commons-logging.version>
+    <sakai.commons-logging.version>1.2</sakai.commons-logging.version>
     <sakai.commons.fileupload.version>1.3.1</sakai.commons.fileupload.version>
     <sakai.ehcache.groupId>net.sf.ehcache</sakai.ehcache.groupId>
     <sakai.ehcache.artifactId>ehcache-core</sakai.ehcache.artifactId>
@@ -112,12 +112,12 @@
     <sakai.slf4j.version>1.7.5</sakai.slf4j.version>
     <rsfutil.version>0.8.0</rsfutil.version>
     <sakairsf.components.version>10.0</sakairsf.components.version>
-    <sakairsf.version>10.0</sakairsf.version>
+    <sakairsf.version>10.2</sakairsf.version>
     <generic-dao.version>0.9.18</generic-dao.version>
     <reflectutils.version>0.9.19</reflectutils.version>
     <!-- Sakai modules that are versioned separately -->
     <!-- lessonbuilder tool pom depends on msgcntr ver prop. Need to add a profile to the LB tool pom to mark change between 10.x master and earlier versions -->
-    <sakai.msgcntr.version>10.4</sakai.msgcntr.version> 
+    <sakai.msgcntr.version>10.5</sakai.msgcntr.version> 
     <!-- Set the source encoding to avoid maven warnings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sakai.jdk.version>1.6</sakai.jdk.version>
@@ -491,7 +491,7 @@
       <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
-        <version>1.1.1</version>
+        <version>1.2</version>
         <scope>provided</scope>
       </dependency>
       <dependency>

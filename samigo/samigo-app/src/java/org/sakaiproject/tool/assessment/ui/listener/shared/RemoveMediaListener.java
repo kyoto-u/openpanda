@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/shared/RemoveMediaListener.java $
- * $Id: RemoveMediaListener.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/shared/RemoveMediaListener.java $
+ * $Id: RemoveMediaListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -22,21 +22,27 @@
 
 package org.sakaiproject.tool.assessment.ui.listener.shared;
 
+import java.util.List;
+
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.services.shared.MediaService;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.DeliveryBean;
 import org.sakaiproject.tool.assessment.ui.bean.shared.MediaBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.ui.listener.delivery.DeliveryActionListener;
+import org.sakaiproject.tool.assessment.services.PersistenceService;
+import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
+import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 
 /**
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: RemoveMediaListener.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * @version $Id: RemoveMediaListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  */
 
 public class RemoveMediaListener implements ActionListener
@@ -66,6 +72,30 @@ public class RemoveMediaListener implements ActionListener
     // #1. get all the info need from bean
     String mediaId = mediaBean.getMediaId();
     Long itemGradingId = mediaBean.getItemGradingId();
+    Long mediaIdLong = new Long(mediaId);
+
+    ItemGradingData itemGradingData = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().getItemGradingData(itemGradingId);
+    if (itemGradingData == null) {
+      throw new IllegalArgumentException("Bad itemGradingId in remove media: " + itemGradingId);
+    }
+
+    if (!itemGradingData.getAgentId().equals(AgentFacade.getAgentString())) {
+      throw new IllegalArgumentException("User mis-match on grading item " + itemGradingId + " " + itemGradingData.getAgentId() + " " +  AgentFacade.getAgentString());
+    }
+
+    List<MediaData> mediaList = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().getMediaArray(itemGradingId);
+    
+    boolean found = false;
+    for (MediaData md: mediaList) {
+      if (md.getMediaId().equals(mediaIdLong)) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      throw new IllegalArgumentException("Media id not associated with grading item " + mediaId + " " + itemGradingId);
+    }
+
     mediaService.remove(mediaId, itemGradingId);
 
     // #2. update time based on server

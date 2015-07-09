@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.4/portal-render-api/api/src/java/org/sakaiproject/portal/render/cover/ToolRenderService.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.5/portal-render-api/api/src/java/org/sakaiproject/portal/render/cover/ToolRenderService.java $
  * $Id: ToolRenderService.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

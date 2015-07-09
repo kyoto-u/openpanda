@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-api/src/java/org/sakaiproject/tool/assessment/shared/api/questionpool/QuestionPoolServiceAPI.java $
- * $Id: QuestionPoolServiceAPI.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-api/src/java/org/sakaiproject/tool/assessment/shared/api/questionpool/QuestionPoolServiceAPI.java $
+ * $Id: QuestionPoolServiceAPI.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -95,12 +95,12 @@ public interface QuestionPoolServiceAPI
   /**
    * Save a question to a pool.
    */
-  public void addItemToPool(String itemId, Long poolId);
+  public void addItemToPool(Long itemId, Long poolId);
 
   /**
    * Move a question to a pool.
    */
-  public void moveItemToPool(String itemId, Long sourceId, Long destId);
+  public void moveItemToPool(Long itemId, Long sourceId, Long destId);
 
   /**
    * Is a pool a descendant of the other?
@@ -120,7 +120,7 @@ public interface QuestionPoolServiceAPI
   /**
    * removes a Question from the question pool. This does not  *delete* the question itself
    */
-  public void removeQuestionFromPool(String questionId, Long poolId);
+  public void removeQuestionFromPool(Long questionId, Long poolId);
 
   /**
    * Copy a subpool to a pool.

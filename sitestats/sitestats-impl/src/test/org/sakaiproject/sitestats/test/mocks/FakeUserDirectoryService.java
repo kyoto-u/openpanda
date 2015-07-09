@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.4/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUserDirectoryService.java $
- * $Id: FakeUserDirectoryService.java 308855 2014-04-25 23:59:06Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.5/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUserDirectoryService.java $
+ * $Id: FakeUserDirectoryService.java 318808 2015-05-12 22:21:37Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation
  *
@@ -153,6 +153,11 @@ public class FakeUserDirectoryService implements UserDirectoryService {
 		return (new FakeUser()).getId();
 	}
 
+	public boolean checkDuplicatedEmail(User user) {
+		//TODO Not used in the tests
+		return false;
+	}
+	
 	public List getUsers() {
 		// TODO Auto-generated method stub
 		return null;

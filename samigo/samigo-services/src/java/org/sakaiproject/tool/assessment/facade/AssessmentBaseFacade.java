@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentBaseFacade.java $
- * $Id: AssessmentBaseFacade.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentBaseFacade.java $
+ * $Id: AssessmentBaseFacade.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -45,7 +45,7 @@ import org.sakaiproject.tool.assessment.services.PersistenceService;
 
 public class AssessmentBaseFacade
     implements java.io.Serializable, AssessmentBaseIfc{
-  private static Log log = LogFactory.getLog(AssessmentBaseFacade.class);
+  private Log log = LogFactory.getLog(AssessmentBaseFacade.class);
 
   private AssessmentImpl assessmentImpl = new AssessmentImpl(); //<-- place holder
   protected org.osid.assessment.Assessment assessment =

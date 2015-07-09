@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.4/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/StaticHandler.java $
- * $Id: StaticHandler.java 305995 2014-02-14 18:09:22Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.5/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/StaticHandler.java $
+ * $Id: StaticHandler.java 319001 2015-05-18 14:38:30Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -43,7 +43,7 @@ import org.sakaiproject.portal.util.URLUtils;
  * 
  * @author ieb
  * @since Sakai 2.4
- * @version $Rev: 305995 $
+ * @version $Rev: 319001 $
  * 
  */
 public abstract class StaticHandler extends BasePortalHandler
@@ -174,7 +174,10 @@ public abstract class StaticHandler extends BasePortalHandler
 		}
 		catch (IOException ex)
 		{
-			log.info("Failed to send portal content ", ex);
+			log.info("Failed to send portal content");
+			if(log.isDebugEnabled()) {
+				log.debug("Full detail of exception is:", ex);
+			}
 			res.sendError(404, URLUtils.getSafePathInfo(req));
 		}
 

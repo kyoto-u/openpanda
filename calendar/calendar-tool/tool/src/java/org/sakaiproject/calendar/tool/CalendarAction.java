@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.4/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.5/calendar-tool/tool/src/java/org/sakaiproject/calendar/tool/CalendarAction.java $
  * $Id: CalendarAction.java 317025 2015-02-02 16:51:25Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

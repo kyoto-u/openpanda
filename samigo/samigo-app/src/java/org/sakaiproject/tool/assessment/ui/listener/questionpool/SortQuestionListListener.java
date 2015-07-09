@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/questionpool/SortQuestionListListener.java $
- * $Id: SortQuestionListListener.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/questionpool/SortQuestionListListener.java $
+ * $Id: SortQuestionListListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -23,6 +23,9 @@
 package org.sakaiproject.tool.assessment.ui.listener.questionpool;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import org.sakaiproject.tool.assessment.ui.bean.shared.PersonBean;
 
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
@@ -37,7 +40,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 /**
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
- * @version $Id: SortQuestionListListener.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * @version $Id: SortQuestionListListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  */
 
 public class SortQuestionListListener
@@ -66,7 +69,18 @@ public class SortQuestionListListener
     questionpoolbean.setSortQuestionAscending(Boolean.valueOf(ContextUtil.lookupParam("ascending")).booleanValue());
     
     String qpid=ContextUtil.lookupParam("qpid");
+
     QuestionPoolService delegate = new QuestionPoolService();
+
+    // Check permission to this pool
+    PersonBean person = (PersonBean) ContextUtil.lookupBean("person");
+    String userId = person.getId();
+
+    List<Long> poolsWithAccess = delegate.getPoolIdsByAgent(userId);
+    if (!poolsWithAccess.contains(Long.valueOf(qpid))) {
+        throw new IllegalArgumentException("userId " + userId + " does not have access to question pool id " + qpid);
+    }
+
     ArrayList list= null;
     if (getItems != null && getItems.trim().equals("false")){
     	log.debug("Do not getItems: getItems = " + getItems);

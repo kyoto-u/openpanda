@@ -52,7 +52,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 
 /**
  * <p>Title: Samigo</p>
- * @version $Id: DownloadCPServlet.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * @version $Id: DownloadCPServlet.java 319811 2015-06-11 18:11:39Z enietzel@anisakai.com $
  */
 
 public class DownloadCPServlet extends HttpServlet {
@@ -214,25 +214,19 @@ public class DownloadCPServlet extends HttpServlet {
 			String agentId, String currentSiteId, String createdBy) {
 		log.debug("agentId=" + agentId);
 		log.debug("currentSiteId=" + currentSiteId);
-		boolean hasPrivilege_any = hasPrivilege(req, "edit_any_assessment",
+		boolean hasPrivilege_any = hasPrivilege(req, "assessment.editAssessment.any",
 				currentSiteId);
-		boolean hasPrivilege_own = hasPrivilege(req, "edit_own_assessment",
+		boolean hasPrivilege_own = hasPrivilege(req, "assessment.editAssessment.own",
 				currentSiteId);
 		log.debug("hasPrivilege_any=" + hasPrivilege_any);
 		log.debug("hasPrivilege_own=" + hasPrivilege_own);
 		boolean hasPrivilege = (hasPrivilege_any || (hasPrivilege_own && isOwner(
 				agentId, createdBy)));
 		return hasPrivilege;
-
 	}
 
-	public boolean hasPrivilege(HttpServletRequest req, String functionKey,
-			String context) {
-		String functionName = (String) ContextUtil.getLocalizedString(req,
-				"org.sakaiproject.tool.assessment.bundle.AuthzPermissions",
-				functionKey);
-		boolean privilege = SecurityService.unlock(functionName, "/site/"
-				+ context);
+	public boolean hasPrivilege(HttpServletRequest req, String functionName, String context) {
+		boolean privilege = SecurityService.unlock(functionName, "/site/" + context);
 		return privilege;
 	}
 }

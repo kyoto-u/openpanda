@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/DownloadAllMediaServlet.java $
- * $Id: DownloadAllMediaServlet.java 108729 2012-05-30 10:31:44Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/servlet/delivery/DownloadAllMediaServlet.java $
+ * $Id: DownloadAllMediaServlet.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -64,7 +64,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: DownloadAllMediaServlet.java 108729 2012-05-30 10:31:44Z david.horwitz@uct.ac.za $
+ * @version $Id: DownloadAllMediaServlet.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  */
 
 public class DownloadAllMediaServlet extends HttpServlet
@@ -108,7 +108,9 @@ public class DownloadAllMediaServlet extends HttpServlet
     }
     // get assessment's ownerId
     String assessmentCreatedBy = req.getParameter("createdBy");
-    if (canGrade(req, res, agentIdString, currentSiteId, assessmentCreatedBy)) { 
+    
+    AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBeanFromExternalServlet("authorization", req, res);
+    if (authzBean.isUserAllowedToGradeAssessment(publishedItemId, assessmentCreatedBy, true)) {
     	accessDenied = false;
     }
     
@@ -416,34 +418,7 @@ private FileInputStream getFileStream(String mediaLocation){
       agentIdString = person.getAnonymousId();
     }
     return agentIdString;
-  }
-
-  public boolean canGrade(HttpServletRequest req,  HttpServletResponse res,
-                          String agentId, String currentSiteId, String assessmentCreatedBy){
-    AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBeanFromExternalServlet(
-			   "authorization", req, res);
-    
-    log.debug("agentId=" + agentId);
-    log.debug("currentSiteId=" + currentSiteId);
-    log.debug("assessmentCreatedBy=" + assessmentCreatedBy);
-    boolean hasPrivilege_any = authzBean.getGradeAnyAssessment(req, currentSiteId);
-    boolean hasPrivilege_own0 = authzBean.getGradeOwnAssessment(req, currentSiteId);
-    boolean hasPrivilege_own = (hasPrivilege_own0 && isOwner(agentId, assessmentCreatedBy));
-    boolean hasPrivilege = (hasPrivilege_any || hasPrivilege_own);
-    log.debug("hasPrivilege_any=" + hasPrivilege_any);
-    log.debug("hasPrivilege_own0=" + hasPrivilege_own0);
-    log.debug("hasPrivilege_own=" + hasPrivilege_own);
-    log.debug("hasPrivilege=" + hasPrivilege);
-    return hasPrivilege;    
-  }
-
-
-  public boolean isOwner(String agentId, String ownerId){
-    boolean isOwner = false;
-    isOwner = agentId.equals(ownerId);
-    log.debug("isOwner=" + isOwner);
-    return isOwner;
-  }
+  }    
   
   private String getPartNumAndQuestionNum(String itemId){
 	  log.debug("itemId = " + itemId);

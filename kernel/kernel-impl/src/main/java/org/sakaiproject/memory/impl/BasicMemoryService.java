@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/memory/impl/BasicMemoryService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/kernel-impl/src/main/java/org/sakaiproject/memory/impl/BasicMemoryService.java $
  * $Id: BasicMemoryService.java 316982 2015-01-28 22:27:25Z enietzel@anisakai.com $
  ***********************************************************************************
  *

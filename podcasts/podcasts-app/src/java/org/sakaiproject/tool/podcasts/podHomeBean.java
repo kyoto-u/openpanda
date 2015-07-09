@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.4/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podHomeBean.java $
+ * $URL: https://source.sakaiproject.org/svn/podcasts/tags/sakai-10.5/podcasts-app/src/java/org/sakaiproject/tool/podcasts/podHomeBean.java $
  * $Id: podHomeBean.java 123503 2013-05-01 23:03:51Z azeckoski@unicon.net $
  ***********************************************************************************
  *

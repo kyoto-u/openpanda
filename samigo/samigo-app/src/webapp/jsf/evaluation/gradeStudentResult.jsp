@@ -9,7 +9,7 @@
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <!--
-$Id: gradeStudentResult.jsp 311787 2014-08-11 13:38:10Z enietzel@anisakai.com $
+$Id: gradeStudentResult.jsp 318796 2015-05-12 20:09:41Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -98,7 +98,7 @@ function toPoint(id)
       <f:actionListener
         type="org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScoreListener" />
     </h:commandLink>
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" /> 
+    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne ''}" /> 
     <h:commandLink title="#{evaluationMessages.t_histogram}" action="histogramScores" immediate="true"
       rendered="#{totalScores.firstItem ne '' && !totalScores.hasRandomDrawPart}" >
       <h:outputText value="#{evaluationMessages.stat_view}" />

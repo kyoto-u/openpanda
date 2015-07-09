@@ -127,6 +127,13 @@ public interface SakaiProxy {
 	 */
 	public Boolean getViewUserDisplayId();
 
+	/**
+	 * Returns the value of the <code>roster.display.officialPicturesByDefault</code> Sakai property.
+	 * 
+	 * @return the value of the <code>roster.display.officialPicturesByDefault</code> Sakai property.
+	 */
+    public Boolean getOfficialPicturesByDefault();
+
 	public Site getSite(String siteId);
 		
 	/**

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueriesAPI.java $
- * $Id: PublishedAssessmentFacadeQueriesAPI.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueriesAPI.java $
+ * $Id: PublishedAssessmentFacadeQueriesAPI.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -294,6 +294,10 @@ public interface PublishedAssessmentFacadeQueriesAPI
    */
   public HashMap getAllAssessmentsReleasedToAuthenticatedUsers();
 
+  /* 
+   * This function returns a site id that "owns" the assessment not a user id.
+   * @return String the site that owns the assessment
+   */
   public String getPublishedAssessmentOwner(String publishedAssessmentId);
 
   public boolean publishedAssessmentTitleIsUnique(Long assessmentBaseId, String title);

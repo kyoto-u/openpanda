@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/shared/impl/questionpool/QuestionPoolServiceImpl.java $
- * $Id: QuestionPoolServiceImpl.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/shared/impl/questionpool/QuestionPoolServiceImpl.java $
+ * $Id: QuestionPoolServiceImpl.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -46,7 +46,7 @@ import org.sakaiproject.tool.assessment.services.QuestionPoolServiceException;
 public class QuestionPoolServiceImpl
   implements QuestionPoolServiceAPI
 {
-  private static Log log = LogFactory.getLog(QuestionPoolServiceImpl.class);
+  private Log log = LogFactory.getLog(QuestionPoolServiceImpl.class);
 
   /**
    * Creates a new QuestionPoolServiceImpl object.
@@ -242,7 +242,7 @@ public class QuestionPoolServiceImpl
   /**
    * Save a question to a pool.
    */
-  public void addItemToPool(String itemId, Long poolId)
+  public void addItemToPool(Long itemId, Long poolId)
   {
     try
     {
@@ -258,7 +258,7 @@ public class QuestionPoolServiceImpl
   /**
    * Move a question to a pool.
    */
-  public void moveItemToPool(String itemId, Long sourceId, Long destId)
+  public void moveItemToPool(Long itemId, Long sourceId, Long destId)
   {
     try
     {
@@ -322,7 +322,7 @@ public class QuestionPoolServiceImpl
   /**
    * removes a Question from the question pool. This does not  *delete* the question itself
    */
-  public void removeQuestionFromPool(String questionId, Long poolId)
+  public void removeQuestionFromPool(Long questionId, Long poolId)
   {
     try
     {

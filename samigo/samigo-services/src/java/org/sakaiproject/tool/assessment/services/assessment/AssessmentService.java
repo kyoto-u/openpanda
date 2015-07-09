@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/services/assessment/AssessmentService.java $
- * $Id: AssessmentService.java 306187 2014-02-19 19:32:59Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/services/assessment/AssessmentService.java $
+ * $Id: AssessmentService.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -83,7 +83,7 @@ import org.sakaiproject.tool.cover.ToolManager;
  * @author Rachel Gollub <rgollub@stanford.edu>
  */
 public class AssessmentService {
-	private static Log log = LogFactory.getLog(AssessmentService.class);
+	private Log log = LogFactory.getLog(AssessmentService.class);
 	public static final int UPDATE_SUCCESS = 0;
 	public static final int UPDATE_ERROR_DRAW_SIZE_TOO_LARGE = 1;
 
@@ -132,6 +132,15 @@ public class AssessmentService {
 			return PersistenceService.getInstance()
 					.getAssessmentFacadeQueries().getBasicInfoOfAnAssessment(
 							new Long(assessmentId));
+		} catch (Exception e) {
+			log.error(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	public AssessmentFacade getBasicInfoOfAnAssessmentFromSectionId(Long sectionId) {
+		try {
+			return PersistenceService.getInstance().getAssessmentFacadeQueries().getBasicInfoOfAnAssessmentFromSectionId(sectionId);
 		} catch (Exception e) {
 			log.error(e);
 			throw new RuntimeException(e);
@@ -975,6 +984,7 @@ public class AssessmentService {
 		}
 		catch (Exception e)
 		{
+			Log log = LogFactory.getLog(AssessmentService.class);
 			log.warn("escapeResourceName: ", e);
 			return id;
 		}

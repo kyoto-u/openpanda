@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: editPool.jsp 313732 2014-09-18 23:27:36Z enietzel@anisakai.com $
+<!-- $Id: editPool.jsp 319103 2015-05-21 13:52:58Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -115,6 +115,7 @@ function textCounter(field, maxlimit) {
 <div style="margin-top:1em;margin-bottom:2.5em">
   <h:commandButton id="Update" rendered="#{questionpool.importToAuthoring == 'false'}" action="#{questionpool.getOutcomeEdit}" value="#{questionPoolMessages.update}">
     <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.PoolSaveListener" />
+    <f:attribute name="addsource" value="editpoolattr"/>
   </h:commandButton>
 </div>
 
@@ -134,7 +135,7 @@ function textCounter(field, maxlimit) {
 <h:commandLink title="#{questionPoolMessages.t_addSubpool}" rendered="#{questionpool.importToAuthoring != 'true' && questionpool.owner==questionpool.currentPool.owner}" id="addlink" immediate="true" action="#{questionpool.addPool}">
   <h:outputText  id="add" value="#{questionPoolMessages.t_addSubpool}"/>
   <f:param name="qpid" value="#{questionpool.currentPool.id}"/>
-  <f:param name="addsource" value="editpool"/>
+  <f:param name="outCome" value="editPool"/>
 </h:commandLink>
 </h:panelGrid>
 </h4>
@@ -162,6 +163,7 @@ function textCounter(field, maxlimit) {
 <h:commandLink title="#{questionPoolMessages.t_addQuestion}" rendered="#{questionpool.importToAuthoring != 'true'}" id="addQlink" immediate="true" action="#{questionpool.selectQuestionType}">
   <h:outputText id="addq" value="#{questionPoolMessages.t_addQuestion}"/>
   <f:param name="poolId" value="#{questionpool.currentPool.id}"/>
+  <f:param name="outCome" value="editPool"/>
 </h:commandLink>
 </h:panelGrid>
 </h4>
@@ -169,6 +171,7 @@ function textCounter(field, maxlimit) {
 <div class="navIntraToolLink">
   <h:commandButton id="removeSubmit" rendered="#{questionpool.importToAuthoring == 'false'}" action="#{questionpool.doit}" value="#{commonMessages.remove_action}">
     <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.StartRemoveItemsListener" />
+    <f:param name="outCome" value="editPool"/>
   </h:commandButton>
  
  <h:outputText escape="false" value=" | " rendered="#{questionpool.importToAuthoring != 'true'}" />
@@ -214,9 +217,10 @@ function textCounter(field, maxlimit) {
   <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.ImportQuestionsToAuthoring" />
   </h:commandButton>
 
-  <h:commandButton style="act" value="#{commonMessages.cancel_action}" action="poolList" immediate="true">
-    <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.QuestionPoolListener" />
-  </h:commandButton>
+	<h:commandButton style="act" value="#{commonMessages.cancel_action}" action="#{questionpool.cancelPool}">
+		<f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.CancelPoolListener" />
+		<f:attribute name="returnToParentPool" value="true"/>
+	</h:commandButton>
 
  <h:outputText escape="false" value="<span id=\"submitnotif\" style=\"visibility:hidden\"> #{deliveryMessages.processing}</span>"/>
  </div>

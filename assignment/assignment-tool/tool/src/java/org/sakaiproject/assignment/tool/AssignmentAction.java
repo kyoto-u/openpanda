@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.4/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
- * $Id: AssignmentAction.java 316981 2015-01-28 22:26:14Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.5/assignment-tool/tool/src/java/org/sakaiproject/assignment/tool/AssignmentAction.java $
+ * $Id: AssignmentAction.java 319588 2015-05-26 22:57:00Z matthew@longsight.com $
  ***********************************************************************************
  *
  *
@@ -4437,9 +4437,9 @@ public class AssignmentAction extends PagedResourceActionII
 				Assignment a = getAssignment(assignmentRef, "integrateGradebook", state);
 				if (a != null)
 				{
+					String propAddToGradebook = a.getProperties().getProperty(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK);
 					if ("update".equals(updateRemoveSubmission)
-							&& a.getProperties().getProperty(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK) != null
-							&& !a.getProperties().getProperty(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK).equals(AssignmentService.GRADEBOOK_INTEGRATION_NO)
+							&& (StringUtils.equals( propAddToGradebook, AssignmentService.GRADEBOOK_INTEGRATION_ADD) || StringUtils.equals( propAddToGradebook, AssignmentService.GRADEBOOK_INTEGRATION_ASSOCIATE))
 							&& a.getContent().getTypeOfGrade() == Assignment.SCORE_GRADE_TYPE)
 					{
 						if (submissionRef == null)
@@ -9533,7 +9533,7 @@ public class AssignmentAction extends PagedResourceActionII
 			if (s != null)
 			{
 				state.setAttribute(GRADE_SUBMISSION_FEEDBACK_TEXT, s.getSubmittedText());
-				/*
+				
 				if ((s.getFeedbackText() == null) || (s.getFeedbackText().length() == 0))
 				{
 					state.setAttribute(GRADE_SUBMISSION_FEEDBACK_TEXT, s.getSubmittedText());
@@ -9542,7 +9542,7 @@ public class AssignmentAction extends PagedResourceActionII
 				{
 					state.setAttribute(GRADE_SUBMISSION_FEEDBACK_TEXT, s.getFeedbackText());
 				}
-				*/
+				
 				state.setAttribute(GRADE_SUBMISSION_FEEDBACK_COMMENT, s.getFeedbackComment());
 
 				List v = EntityManager.newReferenceList();
@@ -9905,6 +9905,9 @@ public class AssignmentAction extends PagedResourceActionII
 			{
 				// permissions
 				doPermissions(data);
+			}
+			else if ("new".equals(option)) {
+			    doNew_assignment(data,null);
 			}
 			else if ("returngrade".equals(option))
 			{

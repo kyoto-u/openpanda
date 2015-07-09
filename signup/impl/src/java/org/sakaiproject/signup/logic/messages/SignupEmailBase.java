@@ -252,7 +252,7 @@ abstract public class SignupEmailBase implements SignupEmailNotification, Meetin
 	}
 	
 	protected String getServerFromAddress() {
-		return getServiceName() +" <" + rb.getString("noReply@") + getSakaiFacade().getServerConfigurationService().getServerName() + ">";
+		return  getServiceName() +" <" + getSakaiFacade().getServerConfigurationService().getString("smtpFrom@org.sakaiproject.email.api.EmailService",rb.getString("noReply@") + getSakaiFacade().getServerConfigurationService().getServerName())+ ">";
 	}
 	
 }

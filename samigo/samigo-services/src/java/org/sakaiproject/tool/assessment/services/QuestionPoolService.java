@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/services/QuestionPoolService.java $
- * $Id: QuestionPoolService.java 315345 2014-11-11 18:42:24Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/services/QuestionPoolService.java $
+ * $Id: QuestionPoolService.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -48,7 +48,7 @@ import org.sakaiproject.tool.assessment.facade.QuestionPoolIteratorFacade;
  */
 public class QuestionPoolService
 {
-    private static Log log = LogFactory.getLog(QuestionPoolService.class);
+    private Log log = LogFactory.getLog(QuestionPoolService.class);
 
   /**
    * Creates a new QuestionPoolService object.
@@ -155,14 +155,12 @@ public class QuestionPoolService
   /**
    * Get pool id's by agent.
    */
-  public List getPoolIdsByAgent(String agentId)
+  public List<Long> getPoolIdsByAgent(String agentId)
   {
-    List idList = null;
+    List<Long> idList = null;
     try
     {
-      idList =
-        PersistenceService.getInstance().getQuestionPoolFacadeQueries().
-          getPoolIdsByAgent(agentId);
+      idList = PersistenceService.getInstance().getQuestionPoolFacadeQueries().getPoolIdsByAgent(agentId);
     }
     catch(Exception e)
     {
@@ -292,7 +290,7 @@ public class QuestionPoolService
   /**
    * Save a question to a pool.
    */
-  public void addItemToPool(String itemId, Long poolId)
+  public void addItemToPool(Long itemId, Long poolId)
   {
     try
     {
@@ -308,7 +306,7 @@ public class QuestionPoolService
   /**
    * Move a question to a pool.
    */
-  public void moveItemToPool(String itemId, Long sourceId, Long destId)
+  public void moveItemToPool(Long itemId, Long sourceId, Long destId)
   {
     try
     {
@@ -396,7 +394,7 @@ public class QuestionPoolService
   /**
    * removes a Question from the question pool. This does not  *delete* the question itself
    */
-  public void removeQuestionFromPool(String questionId, Long poolId)
+  public void removeQuestionFromPool(Long questionId, Long poolId)
   {
     try
     {
@@ -518,7 +516,7 @@ public class QuestionPoolService
 	 }
  
  /**
-  * Get the count of items for a published assessment from the back end.
+  * Get the count of items for one poolId from the back end.
   */
   public int getCountItems(Long poolId)
   {
@@ -528,10 +526,24 @@ public class QuestionPoolService
          PersistenceService.getInstance().
             getQuestionPoolFacadeQueries().getCountItemFacades(poolId);
      } catch (Exception e) {
-       e.printStackTrace();
+    	 log.error("getCountItems", e);
      }
      return result.intValue();
   }
+  
+  /**
+   * Get the count of items for all pools for one user
+   */
+   public HashMap<Long, Integer> getCountItemsForUser(String agentId)
+   {
+      HashMap<Long, Integer> result = new HashMap<Long, Integer>();
+      try {
+        result = PersistenceService.getInstance().getQuestionPoolFacadeQueries().getCountItemFacadesForUser(agentId);
+      } catch (Exception e) {
+        log.error("getCountItemsForUser", e);
+      }
+      return result;
+   }
 
   /**
    * Shared Pools with other user

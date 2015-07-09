@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: selectQuestionType.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
+<!-- $Id: selectQuestionType.jsp 319103 2015-05-21 13:52:58Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -61,8 +61,10 @@
    <f:param name="poolId" value="#{questionpool.currentPool.id}"/>
 </h:commandButton>
 
-  <h:commandButton type="button" id="Cancel" value="#{commonMessages.cancel_action}" immediate="true"
-    onclick="document.location='editPool.faces'" onkeypress="document.location='editPool.faces'"/>
+<h:commandButton type="button" id="Cancel" value="#{commonMessages.cancel_action}" action="#{questionpool.cancelPool}" immediate="true">
+	<f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.CancelPoolListener" />
+	<f:attribute name="returnToParentPool" value="false"/>
+</h:commandButton>
 </p>
 
 </h:form>

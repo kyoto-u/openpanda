@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/business/entity/RecordingData.java $
- * $Id: RecordingData.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/business/entity/RecordingData.java $
+ * $Id: RecordingData.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -67,7 +67,7 @@ import org.w3c.dom.Element;
  * </p>
  *
  * @author Ed Smiley
- * @version $Id: RecordingData.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * @version $Id: RecordingData.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  */
 public class RecordingData
   implements Serializable
@@ -76,8 +76,6 @@ public class RecordingData
 	 * 
 	 */
 	private static final long serialVersionUID = 4398684269227144959L;
-
-private static Log log = LogFactory.getLog(RecordingData.class);
 
   //properties
   private String agentName;
@@ -390,6 +388,7 @@ private static Log log = LogFactory.getLog(RecordingData.class);
  */
 public Document getXMLDataModel()
 {
+  Log log = LogFactory.getLog(RecordingData.class);
   Document document = null;
   DocumentBuilderFactory builderFactory =
     DocumentBuilderFactory.newInstance();
@@ -463,6 +462,8 @@ public Document getXMLDataModel()
    */
   public static void unitTest()
   {
+    Log log = LogFactory.getLog(RecordingData.class);
+
     RecordingData rd =
       new RecordingData(
         "Ed Smiley", "esmiley", "Intro to Wombats 101", "10", "30");

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.4/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusData.java $
- * $Id: SyllabusData.java 122076 2013-04-02 19:35:27Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.5/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusData.java $
+ * $Id: SyllabusData.java 319858 2015-06-17 20:39:56Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -109,9 +109,9 @@ public interface SyllabusData
    */
   public void setSyllabusItem(SyllabusItem syllabusItem);
   
-  public Set getAttachments();
+  public Set<SyllabusAttachment> getAttachments();
   
-  public void setAttachments(Set attachments);
+  public void setAttachments(Set<SyllabusAttachment> attachments);
   
   /**
    * @return Returns the syllabus' start time

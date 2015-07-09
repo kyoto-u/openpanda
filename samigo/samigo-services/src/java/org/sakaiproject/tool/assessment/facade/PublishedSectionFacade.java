@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedSectionFacade.java $
- * $Id: PublishedSectionFacade.java 106521 2012-04-04 08:14:42Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedSectionFacade.java $
+ * $Id: PublishedSectionFacade.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -40,7 +40,7 @@ import org.sakaiproject.tool.assessment.services.PersistenceService;
 public class PublishedSectionFacade extends SectionFacade implements Serializable, Comparable {
 
 	private static final long serialVersionUID = 5788637014806801101L;
-	private static Log log = LogFactory.getLog(PublishedSectionFacade.class);
+	private Log log = LogFactory.getLog(PublishedSectionFacade.class);
 	
   /**
    * This is a very important constructor. Please make sure that you have

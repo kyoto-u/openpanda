@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.4/src/main/java/org/sakaiproject/mock/service/UserDirectoryService.java $
- * $Id: UserDirectoryService.java 308855 2014-04-25 23:59:06Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.5/src/main/java/org/sakaiproject/mock/service/UserDirectoryService.java $
+ * $Id: UserDirectoryService.java 318823 2015-05-13 16:49:49Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -270,4 +270,7 @@ public class UserDirectoryService implements
 		return null;
     }
 
+    public boolean checkDuplicatedEmail(User user) {
+        return false;
+    }
 }

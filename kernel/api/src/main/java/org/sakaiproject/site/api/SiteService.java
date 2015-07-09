@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/api/src/main/java/org/sakaiproject/site/api/SiteService.java $
- * $Id: SiteService.java 313738 2014-09-19 01:01:00Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/api/src/main/java/org/sakaiproject/site/api/SiteService.java $
+ * $Id: SiteService.java 319098 2015-05-21 01:10:05Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -274,6 +274,9 @@ public interface SiteService extends EntityProducer
 
 		/** Get any non-user sites. */
 		public static final SelectionType NON_USER = new SelectionType("nonUser", false, true, false, true);
+
+		/** Get sites that the current user is a member of regardless whether site is published */
+		public static final SelectionType MEMBER = new SelectionType("member", true, true, false, true);
 		
 		/** Get my deleted sites. */
 		public static final SelectionType DELETED = new SelectionType("deleted", true, true, true, false);

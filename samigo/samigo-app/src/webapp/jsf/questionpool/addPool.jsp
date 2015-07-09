@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: addPool.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
+<!-- $Id: addPool.jsp 319103 2015-05-21 13:52:58Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -94,9 +94,11 @@ function textCounter(field, maxlimit) {
   <h:commandButton id="submit"  action="#{questionpool.doit}"
 	value="#{questionPoolMessages.save}" styleClass="active">
   <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.PoolSaveListener" />
+  <f:attribute name="addsource" value="editpool"/>
   </h:commandButton>
-  <h:commandButton style="act" value="#{commonMessages.cancel_action}" action="poolList" immediate="true">
-    <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.QuestionPoolListener" />
+  <h:commandButton style="act" value="#{commonMessages.cancel_action}" action="#{questionpool.cancelPool}" immediate="true">
+    <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.CancelPoolListener" />
+    <f:attribute name="returnToParentPool" value="true"/>
   </h:commandButton>
 
 </p>

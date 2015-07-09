@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/questionpool/QuestionPoolShareBean.java $
- * $Id: QuestionPoolShareBean.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/questionpool/QuestionPoolShareBean.java $
+ * $Id: QuestionPoolShareBean.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2008, 2009 The Sakai Foundation
@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.faces.context.FacesContext;
 
@@ -52,7 +53,7 @@ import org.sakaiproject.tool.assessment.business.questionpool.QuestionPoolTreeIm
  *
  * @author Rachel Gollub <rgollub@stanford.edu>
  * @author Lydia Li<lydial@stanford.edu>
- * $Id: QuestionPoolShareBean.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $Id: QuestionPoolShareBean.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  */
 public class QuestionPoolShareBean implements Serializable
 {
@@ -103,7 +104,12 @@ public class QuestionPoolShareBean implements Serializable
   		setQuestionPoolId(new Long(qpid));
   		setQuestionPoolOwnerId(thepool.getOwnerId());
   		setQuestionPoolName(thepool.getDisplayName());
-	
+
+  		List<Long> poolsWithAccess = delegate.getPoolIdsByAgent(AgentFacade.getAgentString());
+  		if (!poolsWithAccess.contains(this.getQuestionPoolId()) ) {
+  			throw new IllegalArgumentException("User " + AgentFacade.getAgentString() + " does not have access to question pool id " + this.getQuestionPoolId() + " for sharing");
+  		}
+
   		// order by default
   		sortAgentsWithAccess();
   		sortAgentsWithoutAccess();

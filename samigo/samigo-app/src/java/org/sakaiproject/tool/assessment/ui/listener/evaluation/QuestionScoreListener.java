@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreListener.java $
- * $Id: QuestionScoreListener.java 306187 2014-02-19 19:32:59Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreListener.java $
+ * $Id: QuestionScoreListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -57,6 +57,8 @@ import org.sakaiproject.tool.assessment.ui.bean.evaluation.PartData;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.QuestionScoresBean;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.SubmissionStatusBean;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.TotalScoresBean;
+import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
+import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.BeanSort;
 import org.sakaiproject.util.FormattedText;
@@ -117,6 +119,15 @@ public class QuestionScoreListener implements ActionListener,
 
 		// we probably want to change the poster to be consistent
 		String publishedId = ContextUtil.lookupParam("publishedId");
+
+		AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
+		AssessmentBean assessmentBean = (AssessmentBean) ContextUtil.lookupBean("assessmentBean");
+		PublishedAssessmentService pubService = new PublishedAssessmentService();
+		Long pubId = new Long(publishedId);
+		String assessmentOwner = pubService.getPublishedAssessmentOwner(pubId);
+		if (!authzBean.isUserAllowedToGradeAssessment(publishedId, assessmentOwner, true)) {
+			throw new IllegalArgumentException("QuestionScoreListener unauthorized attempt to get scores for " + publishedId);
+		}
 
 		if (!questionScores(publishedId, bean, false)) {
 			throw new RuntimeException("failed to call questionScores.");

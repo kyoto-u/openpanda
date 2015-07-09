@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/TemplateListener.java $
- * $Id: TemplateListener.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/TemplateListener.java $
+ * $Id: TemplateListener.java 318814 2015-05-12 23:16:53Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -70,8 +70,8 @@ public class TemplateListener extends TemplateBaseListener
     // look for some sort information passed as parameters
     processSortInfo(templateIndex);
 
-    String autoSubmitEnabled = ServerConfigurationService.getString("samigo.autoSubmit.enabled");
-    if (autoSubmitEnabled == null || autoSubmitEnabled.equals("") || !autoSubmitEnabled.equals("true")) {
+    boolean autoSubmitEnabled = ServerConfigurationService.getBoolean("samigo.autoSubmit.enabled", false);
+    if (!autoSubmitEnabled) {
     	templateIndex.setAutomaticSubmissionEnabled(false);
     }
     else {

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/services/GradingService.java $
- * $Id: GradingService.java 309474 2014-05-13 19:53:41Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/services/GradingService.java $
+ * $Id: GradingService.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -115,7 +115,7 @@ public class GradingService
   final Pattern CALCQ_FORMULA_SPLIT_PATTERN = Pattern.compile("(" + OPEN_BRACKET + OPEN_BRACKET + CALCQ_VAR_FORM_NAME + CLOSE_BRACKET + CLOSE_BRACKET + ")");
   final Pattern CALCQ_CALCULATION_PATTERN = Pattern.compile("\\[\\[([^\\[\\]]+?)\\]\\]?"); // non-greedy
 
-  private static Log log = LogFactory.getLog(GradingService.class);
+  private Log log = LogFactory.getLog(GradingService.class);
 
   /**
    * Get all scores for a published assessment from the back end.
@@ -2250,13 +2250,14 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
    * @param rationaleString
    * @param itemGradingCommentsString
    * @param useridMap
+   * @param responseCommentString
    * @return a list of responses or null if there are none
    */
-  public List getExportResponsesData(String publishedAssessmentId, boolean anonymous, String audioMessage, String fileUploadMessage, String noSubmissionMessage, boolean showPartAndTotalScoreSpreadsheetColumns, String poolString, String partString, String questionString, String textString, String rationaleString, String itemGradingCommentsString, Map useridMap) {
+  public List getExportResponsesData(String publishedAssessmentId, boolean anonymous, String audioMessage, String fileUploadMessage, String noSubmissionMessage, boolean showPartAndTotalScoreSpreadsheetColumns, String poolString, String partString, String questionString, String textString, String rationaleString, String itemGradingCommentsString, Map useridMap, String responseCommentString) {
 	  List list = null;
 	    try {
 	    	list = PersistenceService.getInstance().
-	        getAssessmentGradingFacadeQueries().getExportResponsesData(publishedAssessmentId, anonymous,audioMessage, fileUploadMessage, noSubmissionMessage, showPartAndTotalScoreSpreadsheetColumns, poolString, partString, questionString, textString, rationaleString, itemGradingCommentsString, useridMap);
+	        getAssessmentGradingFacadeQueries().getExportResponsesData(publishedAssessmentId, anonymous,audioMessage, fileUploadMessage, noSubmissionMessage, showPartAndTotalScoreSpreadsheetColumns, poolString, partString, questionString, textString, rationaleString, itemGradingCommentsString, useridMap, responseCommentString);
 	    } catch (Exception e) {
 	      e.printStackTrace();
 	    }
@@ -2917,14 +2918,15 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	  if (tempItemGradinglist.size() == 0) return false;
 	  
 	  Iterator iter = tempItemGradinglist.iterator();
-	  ItemGradingData itemCheck = (ItemGradingData) iter.next();
-	  Long itemId = itemCheck.getPublishedItemId();
-      ItemDataIfc item = (ItemDataIfc) publishedItemHash.get(itemId);
-      if (item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION)) {
-    	  return true;
-      }
-          
-      return false;
+	  while(iter.hasNext()){
+		  ItemGradingData itemCheck = (ItemGradingData) iter.next();
+		  Long itemId = itemCheck.getPublishedItemId();
+		  ItemDataIfc item = (ItemDataIfc) publishedItemHash.get(itemId);
+		  if (item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION)) {
+	    	  return true;
+	      }
+	  }
+	  return false;
   }
 
   

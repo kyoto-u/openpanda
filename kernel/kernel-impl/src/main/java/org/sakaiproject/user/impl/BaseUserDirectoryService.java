@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.4/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
- * $Id: BaseUserDirectoryService.java 309201 2014-05-06 15:45:40Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/kernel-impl/src/main/java/org/sakaiproject/user/impl/BaseUserDirectoryService.java $
+ * $Id: BaseUserDirectoryService.java 318808 2015-05-12 22:21:37Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -759,6 +759,28 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			user.setId(m_storage.checkMapForId(user.getEid()));
 			ensureMappedIdForProvidedUser(user);
 		}
+	}
+	
+	public boolean checkDuplicatedEmail (User user) 
+	{
+		//Check if another user has the same email
+		String email = StringUtils.trimToNull (user.getEmail());
+		
+		M_log.debug("commitEdit(): Check for mail " + email);
+		
+		if (email!=null)
+		{
+			Collection <User> usersByMail = findUsersByEmail(email);
+			for (User userToCheck : usersByMail)
+			{
+				if (!StringUtils.equals(userToCheck.getId(),user.getId()))
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 
 	/**

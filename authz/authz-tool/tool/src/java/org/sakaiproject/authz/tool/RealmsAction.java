@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/authz/tags/sakai-10.4/authz-tool/tool/src/java/org/sakaiproject/authz/tool/RealmsAction.java $
- * $Id: RealmsAction.java 307323 2014-03-20 20:15:13Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/authz/tags/sakai-10.5/authz-tool/tool/src/java/org/sakaiproject/authz/tool/RealmsAction.java $
+ * $Id: RealmsAction.java 318767 2015-05-12 14:51:06Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -1319,7 +1319,12 @@ public class RealmsAction extends PagedResourceActionII
 		if (realm != null && user != null)
 		{
 			// Need to grab the role before removing the user from the realm
-			String roleId = realm.getUserRole(user.getId()).getId();
+			// Need to grab the role before removing the user from the realm
+			Role role = realm.getUserRole(user.getId());
+			String roleId = "";
+			if (role != null) {
+				roleId = role.getId();
+			}
 			
 			// clear out this user's settings
 			realm.removeMember(user.getId());

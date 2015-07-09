@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.4/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusManagerImpl.java $
- * $Id: SyllabusManagerImpl.java 129426 2013-09-06 19:58:44Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.5/syllabus-impl/src/java/org/sakaiproject/component/app/syllabus/SyllabusManagerImpl.java $
+ * $Id: SyllabusManagerImpl.java 319858 2015-06-17 20:39:56Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -729,7 +729,7 @@ public class SyllabusManagerImpl extends HibernateDaoSupport implements Syllabus
           return new TreeSet();
         }
       };             
-      return (Set) getHibernateTemplate().execute(hcb);     
+      return (Set<SyllabusAttachment>) getHibernateTemplate().execute(hcb);
     }
   }  
 

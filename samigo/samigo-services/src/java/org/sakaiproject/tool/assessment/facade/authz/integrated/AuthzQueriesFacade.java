@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/authz/integrated/AuthzQueriesFacade.java $
- * $Id: AuthzQueriesFacade.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/authz/integrated/AuthzQueriesFacade.java $
+ * $Id: AuthzQueriesFacade.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -317,7 +317,7 @@ public class AuthzQueriesFacade
     return getHibernateTemplate().find(query, new String[]{agentId, functionId});
   }
 
-  public List getAuthorizationByFunctionAndQualifier(String functionId, String qualifierId) {
+  public List<AuthorizationData> getAuthorizationByFunctionAndQualifier(String functionId, String qualifierId) {
   return getHibernateTemplate().find(
 		"select a from AuthorizationData a where a.functionId=?"+
 		" and a.qualifierId=?",new String[]{functionId,qualifierId});

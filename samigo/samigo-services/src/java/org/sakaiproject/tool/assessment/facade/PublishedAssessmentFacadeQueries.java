@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueries.java $
- * $Id: PublishedAssessmentFacadeQueries.java 315356 2014-11-12 10:53:01Z jjmerono@um.es $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacadeQueries.java $
+ * $Id: PublishedAssessmentFacadeQueries.java 319084 2015-05-20 22:47:45Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -119,7 +119,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		implements PublishedAssessmentFacadeQueriesAPI {
 
-	private static Log log = LogFactory
+	private Log log = LogFactory
 			.getLog(PublishedAssessmentFacadeQueries.class);
 
 	public static final String STARTDATE = "assessmentAccessControl.startDate";
@@ -1804,16 +1804,15 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 	}
 
 	public String getPublishedAssessmentOwner(String publishedAssessmentId) {
-		// HashMap h = new HashMap();
-		String query = "select a from AuthorizationData a where "
-				+ " a.functionId=? and a.qualifierId=? ";
+		String query = "select a from AuthorizationData a where a.functionId=? and a.qualifierId=? ";
 		Object [] values = {"OWN_PUBLISHED_ASSESSMENT", publishedAssessmentId};
 	    List l = getHibernateTemplate().find(query, values);
 		if (l.size() > 0) {
 			AuthorizationData a = (AuthorizationData) l.get(0);
 			return a.getAgentIdString();
-		} else
+		} else {
 			return null;
+		}
 	}
 
 	public boolean publishedAssessmentTitleIsUnique(
@@ -2146,7 +2145,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			final String agentId, final String siteId, boolean allAssessments) {
 		
 		// take account of group release
-		final ArrayList groupIds = getSiteGroupIdsForCurrentUser(siteId);
+		final ArrayList<String> groupIds = getSiteGroupIdsForSubmittingAgent(agentId, siteId);
 		// sorted by submittedData DESC
 		final String order_last = " order by p.publishedAssessmentId DESC, a.submittedDate DESC";
 		// sorted by finalScore DESC
@@ -2272,20 +2271,16 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 			
 		List l = getHibernateTemplate().executeFind(eval_model);
 		HashMap scoringTypeMap = new HashMap();
-		HashMap subissionAllowedMap = new HashMap();
 		Iterator iter = l.iterator();
 		while (iter.hasNext()) {
 			Object o[] = (Object[]) iter.next(); 
 			scoringTypeMap.put(o[0], o[1]);
-			subissionAllowedMap.put(o[0], o[2]);
 		}
 		
 		// The sorting for each column will be done in the action listener.
 		ArrayList assessmentList = new ArrayList();
 		Long currentid = new Long("0");
 		Integer scoringOption = EvaluationModelIfc.LAST_SCORE; // use Last as
-		Integer submissionAllowed = null;
-		boolean multiSubmissionAllowed = false;
 
 		// now go through the last_list, and get the first entry in the list for
 		// each publishedAssessment, if
@@ -2302,25 +2297,14 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				// I use Last as default because it is what set above
 				scoringOption = EvaluationModelIfc.LAST_SCORE; 
 			}
-			if (subissionAllowedMap.get(a.getPublishedAssessmentId()) != null) {
-				submissionAllowed = (Integer) subissionAllowedMap.get(a.getPublishedAssessmentId());
-			}
-			else {
-				submissionAllowed = null;
-			}
-			if (submissionAllowed != null) {
-				if (submissionAllowed.intValue() == 1) {
-					scoringOption = EvaluationModelIfc.LAST_SCORE;
-				}
-			}
 			
 			if (EvaluationModelIfc.LAST_SCORE.equals(scoringOption)) {
 				if (!a.getPublishedAssessmentId().equals(currentid) || allAssessments) {
-					AssessmentGradingData f = a;
+
 					if (!a.getPublishedAssessmentId().equals(currentid)) {
-						f.setIsRecorded(true);
+						a.setIsRecorded(true);
 					}
-					assessmentList.add(f);
+					assessmentList.add(a);
 					currentid = a.getPublishedAssessmentId();
 				}	
 			}
@@ -2329,6 +2313,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		// now go through the highest_list ,and get the first entry in the list
 		// for each publishedAssessment.
 
+		currentid = 0L;
 		for (int i = 0; i < highest_list.size(); i++) {
 			AssessmentGradingData a = (AssessmentGradingData) highest_list
 					.get(i);
@@ -2341,38 +2326,21 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 				// I use Last as default because it is what set above
 				scoringOption = EvaluationModelIfc.LAST_SCORE; 
 			}
-			if (subissionAllowedMap.get(a.getPublishedAssessmentId()) != null) {
-				submissionAllowed = (Integer) subissionAllowedMap.get(a.getPublishedAssessmentId());
-			}
-			else {
-				submissionAllowed = null;
-			}
-			if (submissionAllowed != null) {
-				if (submissionAllowed.intValue() > 1) {
-					multiSubmissionAllowed = true;
-				}
-				else {
-					multiSubmissionAllowed = false;
-				}
-			}
-			else {
-				multiSubmissionAllowed = true;
-			}
 			
-			if (multiSubmissionAllowed && (EvaluationModelIfc.HIGHEST_SCORE.equals(scoringOption))) {
+			if (EvaluationModelIfc.HIGHEST_SCORE.equals(scoringOption)) {
 				if (!a.getPublishedAssessmentId().equals(currentid) || allAssessments) {
-					AssessmentGradingData f = a;
+					
 					if (!a.getPublishedAssessmentId().equals(currentid)) {
-						f.setIsRecorded(true);
+						a.setIsRecorded(true);
 					}
-					assessmentList.add(f);
+					assessmentList.add(a);
 					currentid = a.getPublishedAssessmentId();
 				}	
 			}
 
 			if (EvaluationModelIfc.AVERAGE_SCORE.equals(scoringOption)) {
-				AssessmentGradingData f = a;
-				assessmentList.add(f);
+				
+				assessmentList.add(a);
 			}
 
 		}
@@ -2687,17 +2655,17 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		this.siteService = siteService;
 	}
 	
-	private ArrayList getSiteGroupIdsForSubmittingAgent(String agentId, String siteId) {
+	private ArrayList<String> getSiteGroupIdsForSubmittingAgent(String agentId, String siteId) {
 
 		final ArrayList<String> groupIds = new ArrayList<String>();
-		// To accomodate the problem with Hibernate and empty array parameters 
+		// To accommodate the problem with Hibernate and empty array parameters 
 		// TODO: this should probably be handled in a more efficient way
 		groupIds.add("none");  
 		
 		if (siteId == null)
 			return groupIds;
 		
-		Collection siteGroups = null;
+		Collection<Group> siteGroups = null;
 		
 		try {
 			Site s = siteService.getSite(siteId);
@@ -2710,17 +2678,17 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport
 		}
 
 		if (siteGroups != null) {
-			Iterator groupsIter = siteGroups.iterator();
+			Iterator<Group> groupsIter = siteGroups.iterator();
 			
 			while (groupsIter.hasNext()) {
-				Group group = (Group) groupsIter.next(); 
+				Group group = groupsIter.next(); 
 				groupIds.add(group.getId());
 			}
 		}
 		return groupIds;
 	}
 	
-	private ArrayList getSiteGroupIdsForCurrentUser(final String siteId) {
+	private ArrayList<String> getSiteGroupIdsForCurrentUser(final String siteId) {
 		String currentUserId = UserDirectoryService.getCurrentUser().getId();
 		return getSiteGroupIdsForSubmittingAgent(currentUserId, siteId);
 	}

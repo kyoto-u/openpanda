@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/util/MimeType.java $
- * $Id: MimeType.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/util/MimeType.java $
+ * $Id: MimeType.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2008 The Sakai Foundation
@@ -31,11 +31,9 @@ import org.apache.commons.logging.LogFactory;
  * We could also load from config file/table...
  *
  * @author esmiley@stanford.edu
- * @version $Id: MimeType.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * @version $Id: MimeType.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  */
 public class MimeType {
-  private static Log log = LogFactory.getLog(MimeType.class);
-
   private static HashMap extensionMime = new HashMap();
   private static HashMap mimeExtension = new HashMap();
   private static boolean loaded = false;
@@ -47,6 +45,7 @@ public class MimeType {
    */
   public static void main(String[] args)
   {
+    Log log = LogFactory.getLog(MimeType.class);
     log.info("mime for BMP= " + get("BMP"));
     log.info("mime for .zip= " + get(".zip"));
     log.info("mime for .HTM= " + get (".HTM"));

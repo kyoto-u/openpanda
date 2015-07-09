@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookManager.java 315283 2014-11-10 18:43:27Z enietzel@anisakai.com $
+* $Id: GradebookManager.java 317967 2015-03-12 19:41:11Z ottenhoff@longsight.com $
 *
 ***********************************************************************************
 *
@@ -122,6 +122,16 @@ public interface GradebookManager {
     public List getAssignmentGradeRecords(Assignment assignment, Collection studentUids);
 
     /**
+     * Get one course grade record (with autocalculated fields) for the given
+     * gradebook and the given student UID
+     *
+     * @param gradebookId
+     * @param studentUid
+     * @return CourseGradeRecord
+     */
+    public CourseGradeRecord getPointsEarnedCourseGradeRecords(CourseGrade courseGrade, String studentUid);
+
+    /**
      * Get all course grade records (with autocalculated fields) for the given
      * gradebook and the given set of student UIDs
      *
@@ -241,11 +251,6 @@ public interface GradebookManager {
      * @return
      */
     public List getStudentGradeRecordsConverted(Long gradebookId, String studentId);
-
-    /**
-     * Gets the course grade for a single student.
-     */
-    public CourseGradeRecord getStudentCourseGradeRecord(Gradebook gradebook, String studentId);
 
     /**
      * Gets the grading events for the enrollments on the given gradable object.

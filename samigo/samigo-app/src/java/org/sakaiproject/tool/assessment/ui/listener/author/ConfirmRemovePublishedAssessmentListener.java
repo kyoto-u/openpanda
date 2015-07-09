@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmRemovePublishedAssessmentListener.java $
- * $Id: ConfirmRemovePublishedAssessmentListener.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmRemovePublishedAssessmentListener.java $
+ * $Id: ConfirmRemovePublishedAssessmentListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2007, 2008 The Sakai Foundation
@@ -45,7 +45,7 @@ import org.apache.commons.logging.LogFactory;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: ConfirmRemovePublishedAssessmentListener.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * @version $Id: ConfirmRemovePublishedAssessmentListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  */
 
 public class ConfirmRemovePublishedAssessmentListener implements ActionListener
@@ -61,8 +61,7 @@ public class ConfirmRemovePublishedAssessmentListener implements ActionListener
     FacesContext context = FacesContext.getCurrentInstance();
 
     // #1 - read the assessmentId from the form
-    String publishedAssessmentId = (String) FacesContext.getCurrentInstance().
-        getExternalContext().getRequestParameterMap().get("publishedAssessmentId");
+    String publishedAssessmentId = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("publishedAssessmentId");
     log.debug("publishedAssessmentId = " + publishedAssessmentId);
     
     // #2 -  and use it to set author bean, goto removeAssessment.jsp
@@ -73,10 +72,15 @@ public class ConfirmRemovePublishedAssessmentListener implements ActionListener
     if (publishedAssessment != null) {
     	// #3 - permission checking before proceeding - daisyf
     	AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
-    	if (!passAuthz(context, publishedAssessment.getCreatedBy())){
-    		author.setOutcome("author");
-    		return;
-    	}
+    	
+        AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
+        if (!authzBean.isUserAllowedToDeleteAssessment(publishedAssessmentId, publishedAssessment.getCreatedBy(), true)) {
+          String err=(String)ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages", "denied_delete_other_members_assessment_error");
+          context.addMessage(null,new FacesMessage(err));
+  		  author.setOutcome("author");
+  		  return;
+        }
+
     	author.setOutcome("confirmRemovePublishedAssessment");
     	
     	publishedAssessmentBean.setAssessmentId(publishedAssessmentId);
@@ -85,27 +89,6 @@ public class ConfirmRemovePublishedAssessmentListener implements ActionListener
     else {
     	log.warn("publishedAssessment is null");
     }
-  }
-
-  public boolean passAuthz(FacesContext context, String ownerId){
-    AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
-    boolean hasPrivilege_any = authzBean.getDeleteAnyAssessment();
-    boolean hasPrivilege_own0 = authzBean.getDeleteOwnAssessment();
-    boolean hasPrivilege_own = (hasPrivilege_own0 && isOwner(ownerId));
-    boolean hasPrivilege = (hasPrivilege_any || hasPrivilege_own);
-    if (!hasPrivilege){
-      String err=(String)ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages",
-				     "denied_delete_other_members_assessment_error");
-      context.addMessage(null,new FacesMessage(err));
-    }
-    return hasPrivilege;
-  }
-
-  public boolean isOwner(String ownerId){
-    boolean isOwner = false;
-    String agentId = AgentFacade.getAgentString();
-    isOwner = agentId.equals(ownerId);
-    return isOwner;
   }
 
 }

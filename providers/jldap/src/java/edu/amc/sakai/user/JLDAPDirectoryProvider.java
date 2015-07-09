@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.4/jldap/src/java/edu/amc/sakai/user/JLDAPDirectoryProvider.java $
- * $Id: JLDAPDirectoryProvider.java 134278 2014-02-08 19:32:28Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.5/jldap/src/java/edu/amc/sakai/user/JLDAPDirectoryProvider.java $
+ * $Id: JLDAPDirectoryProvider.java 318645 2015-05-05 13:37:23Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -944,7 +944,8 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 						"][max results = " + maxResults + "]" +
 						"][search scope = " + searchScope + "]");
 			}
-
+			long start = System.currentTimeMillis();
+			
 			LDAPSearchResults searchResults = 
 				conn.search(searchBaseDn, 
 						searchScope, 
@@ -952,7 +953,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 						searchResultPhysicalAttributeNames, 
 						false, 
 						constraints);
-
+			
 			List<LdapUserData> mappedResults = new ArrayList<LdapUserData>();
 			int resultCnt = 0;
 			while ( searchResults.hasMore() ) {
@@ -963,7 +964,10 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 				}
 				mappedResults.add((LdapUserData) mappedResult);
 			}
-
+			if (M_log.isDebugEnabled()) {
+				M_log.debug("Query took: "+ (System.currentTimeMillis() - start)+ "ms.");
+			}
+			
 			return mappedResults;
 
 		} catch (LDAPException e) {

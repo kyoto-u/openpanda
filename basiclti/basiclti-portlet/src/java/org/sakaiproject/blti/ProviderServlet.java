@@ -1,6 +1,6 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.4/basiclti-portlet/src/java/org/sakaiproject/blti/ProviderServlet.java $
- * $Id: ProviderServlet.java 131400 2013-11-11 15:57:48Z a.fish@lancaster.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.5/basiclti-portlet/src/java/org/sakaiproject/blti/ProviderServlet.java $
+ * $Id: ProviderServlet.java 318805 2015-05-12 22:09:20Z enietzel@anisakai.com $
  *
  * Copyright (c) 2009 The Sakai Foundation
  *
@@ -46,6 +46,7 @@ import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.lti.api.BLTIProcessor;
 import org.sakaiproject.lti.api.LTIException;
+import org.sakaiproject.lti.api.LTIRoleMapper;
 import org.sakaiproject.basiclti.util.ShaUtil;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
@@ -109,6 +110,8 @@ public class ProviderServlet extends HttpServlet {
     private Method getPreferencesRecordForUserMethod = null;
     private Method savePreferencesRecordMethod = null;
 
+    private LTIRoleMapper ltiRoleMapper = null;
+
     private List<BLTIProcessor> bltiProcessors = new ArrayList();
 
     private enum ProcessingState {
@@ -160,7 +163,15 @@ public class ProviderServlet extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
+
 		super.init(config);
+
+        ltiRoleMapper = (LTIRoleMapper) ComponentManager.getInstance().get("org.sakaiproject.lti.api.LTIRoleMapper");
+
+        if (ltiRoleMapper == null) {
+            throw new ServletException("Failed to set role mapper.");
+        }
+
         ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
 
         // load all instance of BLTIProcessor in component mgr by type detection
@@ -574,8 +585,7 @@ public class ProviderServlet extends HttpServlet {
             }
         } catch (Exception e) {
             M_log.warn(e.getLocalizedMessage(), e);
-            new LTIException( "launch.tool.search", "tool_id="+tool_id, e);
-
+            throw new LTIException( "launch.tool.search", "tool_id="+tool_id, e);
         }
 
         if (M_log.isDebugEnabled()) {
@@ -586,37 +596,30 @@ public class ProviderServlet extends HttpServlet {
         // Otherwise, add tool to the site
         ToolConfiguration toolConfig = null;
         if(BasicLTIUtil.isBlank(toolPlacementId)) {
-            if(trustedConsumer) {
-                new LTIException("launch.site.tool.missing", "tool_id="+tool_id + ", siteId="+site.getId(), null);
+            try {
+                SitePage sitePageEdit = null;
+                sitePageEdit = site.addPage();
+                sitePageEdit.setTitle(tool_id);
 
-            } else {
+                toolConfig = sitePageEdit.addTool();
+                toolConfig.setTool(tool_id, ToolManager.getTool(tool_id));
+                toolConfig.setTitle(tool_id);
+
+                Properties propsedit = toolConfig.getPlacementConfig();
+                propsedit.setProperty(BASICLTI_RESOURCE_LINK,  (String) payload.get(BasicLTIConstants.RESOURCE_LINK_ID));
+                pushAdvisor();
                 try {
-                    SitePage sitePageEdit = null;
-                    sitePageEdit = site.addPage();
-                    sitePageEdit.setTitle(tool_id);
-
-                    toolConfig = sitePageEdit.addTool();
-                    toolConfig.setTool(tool_id, ToolManager.getTool(tool_id));
-                    toolConfig.setTitle(tool_id);
-
-                    Properties propsedit = toolConfig.getPlacementConfig();
-                    propsedit.setProperty(BASICLTI_RESOURCE_LINK,  (String) payload.get(BasicLTIConstants.RESOURCE_LINK_ID));
-                    pushAdvisor();
-                    try {
-                        SiteService.save(site);
-                        M_log.info("Tool added, tool_id="+tool_id + ", siteId="+site.getId());
-                    } catch (Exception e) {
-                        new LTIException( "launch.site.save", "tool_id="+tool_id + ", siteId="+site.getId(), e);
-
-                    } finally {
-                        popAdvisor();
-                    }
-                    toolPlacementId = toolConfig.getId();
-
+                    SiteService.save(site);
+                    M_log.info("Tool added, tool_id="+tool_id + ", siteId="+site.getId());
                 } catch (Exception e) {
-                    new LTIException( "launch.tool.add", "tool_id="+tool_id + ", siteId="+site.getId(), e);
-
+                    throw new LTIException( "launch.site.save", "tool_id="+tool_id + ", siteId="+site.getId(), e);
+                } finally {
+                    popAdvisor();
                 }
+                toolPlacementId = toolConfig.getId();
+
+            } catch (Exception e) {
+                throw new LTIException( "launch.tool.add", "tool_id="+tool_id + ", siteId="+site.getId(), e);
             }
         }
 
@@ -635,126 +638,46 @@ public class ProviderServlet extends HttpServlet {
     }
 
     private Site addOrUpdateSiteMembership(Map payload, boolean trustedConsumer, User user, Site site) throws LTIException {
-        String userrole = getUserRole(payload, trustedConsumer);
 
-        // Check if the user is a member of the site already
-        boolean userExistsInSite = false;
+        Map.Entry<String, String> roleTuple = ltiRoleMapper.mapLTIRole(payload, user, site, trustedConsumer);
+        String userrole = roleTuple.getKey();
+        String newRole = roleTuple.getValue();
+
         try {
-            Member member = site.getMember(user.getId());
-            if(member != null && BasicLTIUtil.equals(member.getUserEid(), user.getEid())) {
-                userExistsInSite = true;
+            Role currentRoleObject = site.getUserRole(user.getId());
+            String currentRole = null;
+            if (currentRoleObject != null) {
+                currentRole = currentRoleObject.getId();
+            }
+
+            if (!newRole.equals(currentRole)) {
+                site.addMember(user.getId(), newRole, true, false);
+                if (currentRole == null) {
+                    M_log.info("Added role=" + newRole + " user=" + user.getId() + " site=" + site.getId() + " LMS Role=" + userrole);
+                } else {
+                    M_log.info("Old role=" + currentRole + " New role=" + newRole + " user=" + user.getId() + " site=" + site.getId()+ " LMS Role=" + userrole);
+                }
+
+                pushAdvisor();
+                String tool_id = (String) payload.get("tool_id");
+                try {
+                    SiteService.save(site);
+                    M_log.info("Site saved role=" + newRole + " user="+ user.getId() + " site=" + site.getId());
+
+                } catch (Exception e) {
+                    throw new LTIException("launch.site.save", "siteId="+ site.getId() + " tool_id=" + tool_id, e);
+                } finally {
+                    popAdvisor();
+                }
+
             }
         } catch (Exception e) {
+            M_log.warn("Could not add user to site role=" + userrole + " user="+ user.getId() + " site=" + site.getId());
             M_log.warn(e.getLocalizedMessage(), e);
-            throw new LTIException( "launch.site.invalid", "siteId="+site.getId(), e);
+            throw new LTIException( "launch.join.site", "siteId="+site.getId(), e);
 
         }
 
-        if (M_log.isDebugEnabled()) {
-            M_log.debug("userExistsInSite=" + userExistsInSite);
-        }
-
-        // If not a member of the site, and we are a trusted consumer, error
-        // Otherwise, add them to the site
-        if(!userExistsInSite) {
-            if(trustedConsumer) {
-                throw new LTIException( "launch.site.user.missing", "user_id="+user.getId()+ ", siteId="+site.getId(), null);
-            } else {
-                try {
-                    site = SiteService.getSite(site.getId());
-                    Set<Role> roles = site.getRoles();
-
-                    //BLTI-151 see if we can directly map the incoming role to the list of site roles
-                    String newRole = null;
-                    if (M_log.isDebugEnabled()) {
-                        M_log.debug("Incoming userrole:" + userrole);
-                    }
-                    for (Role r : roles) {
-                        String roleId = r.getId();
-
-                        if (BasicLTIUtil.equalsIgnoreCase(roleId, userrole)) {
-                            newRole = roleId;
-                            if (M_log.isDebugEnabled()) {
-                                M_log.debug("Matched incoming role to role in site:" + roleId);
-                            }
-                            break;
-                        }
-                    }
-
-                    //if we haven't mapped a role, check against the standard roles and fallback
-                    if (BasicLTIUtil.isBlank(newRole)) {
-
-                        if (M_log.isDebugEnabled()) {
-                            M_log.debug("No match, falling back to determine role");
-                        }
-
-                        String maintainRole = site.getMaintainRole();
-                        String joinerRole = site.getJoinerRole();
-
-                        for (Role r : roles) {
-                            String roleId = r.getId();
-                            if (maintainRole == null && (roleId.equalsIgnoreCase("maintain") || roleId.equalsIgnoreCase("instructor"))) {
-                                maintainRole = roleId;
-                            }
-
-                            if (joinerRole == null && (roleId.equalsIgnoreCase("access") || roleId.equalsIgnoreCase("student"))) {
-                                joinerRole = roleId;
-                            }
-                        }
-
-                        boolean isInstructor = userrole.indexOf("instructor") >= 0;
-                        newRole = joinerRole;
-                        if (isInstructor && maintainRole != null) {
-                            newRole = maintainRole;
-                        }
-
-                        if (M_log.isDebugEnabled()) {
-                            M_log.debug("Determined newRole as: " + newRole);
-                        }
-                    }
-                    if (newRole == null) {
-                        M_log.warn("Could not find Sakai role, role=" + userrole+ " user=" + user.getId() + " site=" + site.getId());
-                        throw new LTIException( "launch.role.missing", "siteId="+site.getId(), null);
-
-                    }
-
-
-                    Role currentRoleObject = site.getUserRole(user.getId());
-                    String currentRole = null;
-                    if (currentRoleObject != null) {
-                        currentRole = currentRoleObject.getId();
-                    }
-
-                    if (!newRole.equals(currentRole)) {
-                        site.addMember(user.getId(), newRole, true, false);
-                        if (currentRole == null) {
-                            M_log.info("Added role=" + newRole + " user=" + user.getId() + " site=" + site.getId() + " LMS Role=" + userrole);
-                        } else {
-                            M_log.info("Old role=" + currentRole + " New role=" + newRole + " user=" + user.getId() + " site=" + site.getId()+ " LMS Role=" + userrole);
-                        }
-
-
-                        pushAdvisor();
-                        String tool_id = (String) payload.get("tool_id");
-                        try {
-                            SiteService.save(site);
-                            M_log.info("Site saved role=" + newRole + " user="+ user.getId() + " site=" + site.getId());
-
-                        } catch (Exception e) {
-                            throw new LTIException("launch.site.save", "siteId="+ site.getId() + " tool_id=" + tool_id, e);
-                        } finally {
-                            popAdvisor();
-                        }
-
-                    }
-                } catch (Exception e) {
-                    M_log.warn("Could not add user to site role=" + userrole + " user="+ user.getId() + " site=" + site.getId());
-                    M_log.warn(e.getLocalizedMessage(), e);
-                    throw new LTIException( "launch.join.site", "siteId="+site.getId(), e);
-
-                }
-            }
-        }
         return site;
     }
 
@@ -924,21 +847,6 @@ public class ProviderServlet extends HttpServlet {
 			}
 		}
         return eid;
-    }
-
-    private String getUserRole(Map payload, boolean trustedConsumer) {
-        // Setup role in the site. If trusted, we don't need this as the user already has a role in the site
-        String userrole = null;
-
-        if(!trustedConsumer) {
-            userrole = (String) payload.get(BasicLTIConstants.ROLES);
-            if (userrole == null) {
-                userrole = "";
-            } else {
-                userrole = userrole.toLowerCase();
-            }
-        }
-        return userrole;
     }
 
     protected User findOrCreateUser(Map payload, boolean trustedConsumer) throws LTIException {

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.4/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
- * $Id: BaseAssignmentService.java 316978 2015-01-28 22:17:33Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.5/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
+ * $Id: BaseAssignmentService.java 318809 2015-05-12 22:27:09Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -4693,11 +4693,18 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				else
 				{
 					List allowAddSubmissionUsers = allowAddSubmissionUsers(aRef);
-					
-					List allowAddAssignmentUsers = allowAddAssignmentUsers(contextString);
-					// SAK-25555 need to take away those users who can add assignment
-					allowAddSubmissionUsers.removeAll(allowAddAssignmentUsers);
-					
+
+    				// SAK-28055 need to take away those users who have the permissions defined in sakai.properties
+    				String resourceString = getContextReference(a.getContext());
+    				String[] permissions = m_serverConfigurationService.getStrings("assignment.submitter.remove.permission");
+    				if (permissions!=null) {
+    					for (String permission:permissions) {
+    						allowAddSubmissionUsers.removeAll(securityService.unlockUsers(permission, resourceString));
+    					}
+    				} else {
+    					allowAddSubmissionUsers.removeAll(securityService.unlockUsers(SECURE_ADD_ASSIGNMENT, resourceString));
+    				}
+
 					// Step 1: get group if any that is selected
 					rvUsers = getSelectedGroupUsers(allOrOneGroup, contextString, a, allowAddSubmissionUsers);
 					
@@ -10785,7 +10792,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							intString = attributes.getValue("numberoflogs");
 							try
 							{
-							    numAttributes = Integer.parseInt(intString);
+							    numAttributes = NumberUtils.toInt(intString);
 							    for (int x = 0; x < numAttributes; x++)
 							    {
 							        attributeString = "log" + x;
@@ -10797,13 +10804,13 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							}
 							catch (Exception e)
 							{
-							    M_log.debug(" BaseAssignmentSubmission: CONSTRUCTOR : Exception reading logs : " + e);
+							    M_log.debug(" BaseAssignmentSubmission: error parsing 'numberoflogs' attribute : " + e);
 							}
 
 							intString = attributes.getValue("numberofgrades");
 							try
 							{
-							    numAttributes = Integer.parseInt(intString);
+							    numAttributes = NumberUtils.toInt(intString);
 							    for (int x = 0; x < numAttributes; x++)
 							    {
 							        attributeString = "grade" + x;
@@ -10813,7 +10820,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							}
 							catch (Exception e)
 							{
-							    M_log.warn(" BaseAssignmentSubmission: CONSTRUCTOR : Exception reading logs : " + e);
+							    M_log.warn(" BaseAssignmentSubmission: error parsing 'numberofgrades' property : " + e);
 							}
 
 							// READ THE SUBMITTERS
@@ -10821,7 +10828,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							intString = attributes.getValue("numberofsubmitters");
 							try
 							{
-								numAttributes = Integer.parseInt(intString);
+								numAttributes = NumberUtils.toInt(intString);
 
 								for (int x = 0; x < numAttributes; x++)
 								{
@@ -10846,7 +10853,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							intString = attributes.getValue("numberoffeedbackattachments");
 							try
 							{
-								numAttributes = Integer.parseInt(intString);
+								numAttributes = NumberUtils.toInt(intString);
 
 								for (int x = 0; x < numAttributes; x++)
 								{
@@ -10869,7 +10876,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							intString = attributes.getValue("numberofsubmittedattachments");
 							try
 							{
-								numAttributes = Integer.parseInt(intString);
+								numAttributes = NumberUtils.toInt(intString);
 
 								for (int x = 0; x < numAttributes; x++)
 								{
@@ -11229,46 +11236,17 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		 * @return Array of User objects.
 		 */
 		public User[] getSubmitters() {
-		    List retVal = new ArrayList();
-		    Assignment a = getAssignment();
-		    if (a.isGroup()) {
-		        try {
-		            Site site = SiteService.getSite(a.getContext());
-		            Group _g = site.getGroup(m_submitterId);
-		            if (_g != null) {
-		                Iterator<Member> _members = _g.getMembers().iterator();
-		                while (_members.hasNext()) {
-		                    Member _member = _members.next();
-		                    try
-		                    {
-		                        retVal.add(UserDirectoryService.getUser(_member.getUserId()));
-		                    }
-		                    catch (Exception e)
-		                    {   
-		                        M_log.warn(" BaseAssignmentSubmission Group getSubmitters" + e.getMessage() + _member.getUserId());
-		                    }
-		                }
-		            }
-		        } catch (IdUnusedException _iue) {
-		            throw new IllegalStateException("Site ("+a.getContext()+") not found: "+_iue, _iue);
-		        }
-		    } else { 
-			for (int x = 0; x < m_submitters.size(); x++)
-			{
-				String userId = (String) m_submitters.get(x);
-				try
-				{
+			List<User> retVal = new ArrayList();
+			for (String userId:(List<String>) getSubmitterIds()) {
+				try {
 					retVal.add(UserDirectoryService.getUser(userId));
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					M_log.warn(" BaseAssignmentSubmission getSubmitters" + e.getMessage() + userId);
 				}
 			}
-		    }
-		    // compare users on sortname
-		    java.util.Collections.sort(retVal, new UserComparator());                      
-			
+			// compare users on sortname
+			java.util.Collections.sort(retVal, new UserComparator());
+
 			// get the User[] array
 			int size = retVal.size();
 			User[] rv = new User[size];
@@ -11289,19 +11267,11 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		{
 		    Assignment a = getAssignment();
 		    if (a.isGroup()) {
-		        List retVal = new ArrayList();
-		        try {
-		            Site site = SiteService.getSite(a.getContext());
+		    	try {
+		    		Site site = SiteService.getSite(a.getContext());
 		            Group _g = site.getGroup(m_submitterId);
-		            if (_g != null) {
-		                Iterator<Member> _members = _g.getMembers().iterator();
-		                while (_members.hasNext()) {
-		                    Member _member = _members.next();
-		                    retVal.add(_member.getUserId());
-		                }
-		            }
-		            return retVal;
-		        } catch (IdUnusedException _iue) {
+		            return getSubmitterIdList("false", _g.getId(), null, a.getReference(), a.getContext());
+		    	} catch (IdUnusedException _iue) {
 		            return null;
 		        }
 		    } else { 

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.4/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusManager.java $
- * $Id: SyllabusManager.java 129426 2013-09-06 19:58:44Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.5/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusManager.java $
+ * $Id: SyllabusManager.java 319858 2015-06-17 20:39:56Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -71,7 +71,7 @@ public interface SyllabusManager
 
   public void removeSyllabusAttachSyllabusData(final SyllabusData syllabusData, final SyllabusAttachment syllabusAttach);
 
-  public Set getSyllabusAttachmentsForSyllabusData(final SyllabusData syllabusData);
+  public Set<SyllabusAttachment> getSyllabusAttachmentsForSyllabusData(final SyllabusData syllabusData);
 
   public SyllabusAttachment getSyllabusAttachment(final String syllabusAttachId);
   

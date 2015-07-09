@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  
-<!-- $Id: poolList.jsp 315345 2014-11-11 18:42:24Z enietzel@anisakai.com $
+<!-- $Id: poolList.jsp 319102 2015-05-21 13:45:20Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -99,6 +99,7 @@
 <h:commandLink title="#{questionPoolMessages.t_addPool}" rendered="#{questionpool.importToAuthoring == 'false' && authorization.createQuestionPool}" id="add" immediate="true" action="#{questionpool.addPool}">
  <h:outputText value="#{questionPoolMessages.add_new_pool}"/>
   <f:param name="qpid" value="0"/>
+  <f:param name="outCome" value="poolList"/>
 </h:commandLink>
 
 <h:outputText value=" #{generalMessages.separator}" rendered="#{questionpool.importToAuthoring == 'false' && authorization.createQuestionPool}" />
@@ -106,6 +107,7 @@
 <h:commandLink title="#{questionPoolMessages.t_importPool}" rendered="#{questionpool.importToAuthoring == 'false' && authorization.createQuestionPool}" id="import" immediate="true" action="importPool">
  <h:outputText value="#{questionPoolMessages.import}"/>
   <f:param name="qpid" value="0"/>
+ <f:param name="outCome" value="poolList"/>
 </h:commandLink> 
 
 <!-- SAM-2049 -->
@@ -114,6 +116,7 @@
 	id="transfer" immediate="true" action="#{questionpool.transferPool}">
 	<h:outputText value="#{questionPoolMessages.transfer_pool_ownership}" />
 	<f:param name="qpid" value="0" />
+	<f:param name="outCome" value="poolList"/>
 </h:commandLink>
  
 <h:outputText rendered="#{questionpool.importToAuthoring == 'false' && authorization.createQuestionPool}" escape="false" value="</p>"/>

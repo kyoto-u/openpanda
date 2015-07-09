@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.4/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/readers/CSVReader.java $
- * $Id: CSVReader.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.5/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/readers/CSVReader.java $
+ * $Id: CSVReader.java 318801 2015-05-12 21:38:31Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -44,6 +44,7 @@ import org.sakaiproject.util.ResourceLoader;
 public class CSVReader extends Reader
 {
    private ResourceLoader rb = new ResourceLoader("calendar");
+   private Map<String, String> defaultHeaderMap = getDefaultColumnMap();
    
 	private static final String COMMENT_LINE_PREFIX = "//";
 	/** 
@@ -239,7 +240,7 @@ public class CSVReader extends Reader
 		{
 			Map eventProperties = (Map)it.next();
 
-			Date startTime = (Date) eventProperties.get(GenericCalendarImporter.START_TIME_PROPERTY_NAME);
+			Date startTime = (Date) eventProperties.get(defaultHeaderMap.get(GenericCalendarImporter.START_TIME_DEFAULT_COLUMN_HEADER));
 			TimeBreakdown startTimeBreakdown = null;
 			
 			if ( startTime != null )
@@ -256,7 +257,7 @@ public class CSVReader extends Reader
                         0 );
 			}
 			
-			Integer durationInMinutes = (Integer)eventProperties.get(GenericCalendarImporter.DURATION_PROPERTY_NAME);
+			Integer durationInMinutes = (Integer)eventProperties.get(defaultHeaderMap.get(GenericCalendarImporter.DURATION_DEFAULT_COLUMN_HEADER));
 
 			if ( durationInMinutes == null )
 			{
@@ -287,7 +288,7 @@ public class CSVReader extends Reader
                        0 );
 			}
 
-			Date startDate = (Date) eventProperties.get(GenericCalendarImporter.DATE_PROPERTY_NAME);
+			Date startDate = (Date) eventProperties.get(defaultHeaderMap.get(GenericCalendarImporter.DATE_DEFAULT_COLUMN_HEADER));
 			TimeBreakdown startDateBreakdown = null;
 			
 			if ( startDate != null )

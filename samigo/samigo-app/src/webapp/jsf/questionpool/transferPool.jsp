@@ -20,7 +20,7 @@
 
             <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
         </head>
-    <body onload="checkSaveButton(); disableCheckboxes();<%= request.getAttribute("html.body.onload") %>">
+    <body onload="disableCheckboxes();<%= request.getAttribute("html.body.onload") %>">
 
             <!-- content... -->
             <div class="portletBody">
@@ -35,7 +35,7 @@
 
                     <br/>
                     <div class="tier4">
-                        <h:selectBooleanCheckbox id="checkAllCheckbox" onclick="checkAllCheckboxes(this); checkSaveButton();" value="#{questionpool.checkAll}" />
+                        <h:selectBooleanCheckbox id="checkAllCheckbox" onclick="checkAllCheckboxes(this); " value="#{questionpool.checkAll}" />
                         <h:outputText value="#{questionPoolMessages.transfer_pool_select_all}" />
                     </div>
 
@@ -46,7 +46,7 @@
                     <p class="act">
                         <h:commandButton accesskey="#{questionPoolMessages.a_transfer}" id="transferpoolSubmit" immediate="true" 
                             value="#{questionPoolMessages.tranfer_pool_continue}" action="#{questionpool.transferPoolContinue}" styleClass="active" 
-                            onclick="disableButtons(); passSelectedPoolIds(); getDisabledCheckbox();" />
+                            onclick="disableButtons(); passSelectedPoolIds();" />
                         <h:commandButton accesskey="#{questionPoolMessages.a_cancel}" id="transferpoolCancel" value="#{questionPoolMessages.transfer_pool_cancel}" 
                             action="#{questionpool.cancelTransferPool}" immediate="true" onclick="disableButtons();" />
                     </p>

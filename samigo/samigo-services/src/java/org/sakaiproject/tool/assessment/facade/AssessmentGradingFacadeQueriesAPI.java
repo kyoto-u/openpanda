@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueriesAPI.java $
- * $Id: AssessmentGradingFacadeQueriesAPI.java 307020 2014-03-12 00:02:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueriesAPI.java $
+ * $Id: AssessmentGradingFacadeQueriesAPI.java 318819 2015-05-13 14:37:43Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -137,8 +137,8 @@ public interface AssessmentGradingFacadeQueriesAPI
   public ItemGradingData getLastItemGradingDataByAgent(Long publishedItemId,
       String agentId);
 
-  public ItemGradingData getItemGradingData(Long assessmentGradingId,
-      Long publishedItemId);
+  public ItemGradingData getItemGradingData(Long assessmentGradingId);
+  public ItemGradingData getItemGradingData(Long assessmentGradingId, Long publishedItemId);
 
   public AssessmentGradingData load(Long id);
   
@@ -227,7 +227,7 @@ public interface AssessmentGradingFacadeQueriesAPI
 
   public int getLateSubmissionsNumberByAgentId(Long publishedAssessmentId, String agentIdString, Date dueDate);
   
-  public List getExportResponsesData(String publishedAssessmentId, boolean anonymous, String audioMessage, String fileUploadMessage, String noSubmissionMessage, boolean showPartAndTotalScoreSpreadsheetColumns, String poolString, String sectionString, String questionString, String textString, String rationaleString, String itemGradingCommentsString, Map useridMap);
+  public List getExportResponsesData(String publishedAssessmentId, boolean anonymous, String audioMessage, String fileUploadMessage, String noSubmissionMessage, boolean showPartAndTotalScoreSpreadsheetColumns, String poolString, String sectionString, String questionString, String textString, String rationaleString, String itemGradingCommentsString, Map useridMap, String responseCommentString);
   
   public boolean getHasGradingData(Long publishedAssessmentId);
 

@@ -27,6 +27,8 @@ public class Question {
 	private List answers;
 	private boolean hasPoints;
 	private String questionTypeAsString;
+	private String feedbackOK;
+	private String feedbackNOK;
 	
 	public Question() {
 		this.questionNumber = 0;
@@ -152,6 +154,22 @@ public class Question {
 
 	public void setQuestionTypeAsString(String questionTypeAsString) {
 		this.questionTypeAsString = questionTypeAsString;
+	}
+	
+	public String getFeedbackOK() {
+		return feedbackOK;
+	}
+
+	public void setFeedbackOK(String feedbackOK) {
+		this.feedbackOK = feedbackOK;
+	}
+
+	public String getFeedbackNOK() {
+		return feedbackNOK;
+	}
+
+	public void setFeedbackNOK(String feedbackNOK) {
+		this.feedbackNOK = feedbackNOK;
 	}
 
 //************ Theme and Lead-In Text ******************

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-archive/sam-handlers/src/java/org/sakaiproject/importer/impl/handlers/SamigoPoolHandler.java $
- * $Id: SamigoPoolHandler.java 107562 2012-04-25 11:53:21Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-archive/sam-handlers/src/java/org/sakaiproject/importer/impl/handlers/SamigoPoolHandler.java $
+ * $Id: SamigoPoolHandler.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2006, 2007, 2008 The Sakai Foundation
@@ -89,7 +89,7 @@ public class SamigoPoolHandler implements HandlesImportable {
 		for (int i = 0;i < questionItemsArray.length; i++) {
 			ItemFacade item = (ItemFacade)questionItemsArray[i];
 			item.setSequence(Integer.valueOf(i + 1));
-			qps.addItemToPool(item.getItemIdString(),savedPool.getQuestionPoolId());
+			qps.addItemToPool(item.getItemId(),savedPool.getQuestionPoolId());
 		}
 	}
 	

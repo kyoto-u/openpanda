@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/questionpool/QuestionPoolBean.java $
- * $Id: QuestionPoolBean.java 315345 2014-11-11 18:42:24Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/questionpool/QuestionPoolBean.java $
+ * $Id: QuestionPoolBean.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -44,6 +44,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts.upload.FormFile;
@@ -64,6 +65,7 @@ import org.sakaiproject.tool.assessment.services.ItemService;
 import org.sakaiproject.tool.assessment.services.QuestionPoolService;
 import org.sakaiproject.tool.assessment.services.SectionService;
 import org.sakaiproject.tool.assessment.ui.bean.author.ItemAuthorBean;
+import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.BeanSort;
 import org.sakaiproject.user.api.User;
@@ -76,14 +78,16 @@ import org.sakaiproject.event.cover.EventTrackingService;
 /**
  * This holds question pool information.
  *
- * $Id: QuestionPoolBean.java 315345 2014-11-11 18:42:24Z enietzel@anisakai.com $
+ * $Id: QuestionPoolBean.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  */
 public class QuestionPoolBean implements Serializable
 {
 	
 	  /** Use serialVersionUID for interoperability. */
 	  private final static long serialVersionUID = 418920360211039758L;
-
+  public final static String ORIGIN_TOP = "poolList";
+  public final static String EDIT_POOL = "editPool";
+  
   private String name;
   private Collection pools;
   private QuestionPoolDataBean currentPool;
@@ -168,6 +172,7 @@ public class QuestionPoolBean implements Serializable
  private String addOrEdit;
   private String outcome;
   private String outcomeEdit;
+  private long	 outcomePool;
   private String unsharePoolSource; 
   private String deletePoolSource;  // either from poolList.jsp , or from editPool.jsp
   private String addPoolSource;  // either from poolList.jsp , or from editPool.jsp
@@ -194,7 +199,7 @@ public class QuestionPoolBean implements Serializable
   public QuestionPoolDataModel getCopyQpools()
   {
 //	  if (qpDataModelCopy == null) {
-		  buildTreeCopy();
+		  buildTree();
 		  setQpDataModelByLevelCopy(getSortCopyPoolProperty(), getSortCopyPoolAscending());
 //	  }
 	  log.debug("getCopyQpools()");
@@ -1083,6 +1088,20 @@ public String getAddOrEdit()
     this.outcomeEdit= param;
   }
 
+  public long getOutcomePool()
+  {
+    return outcomePool;
+  }
+
+  /**
+   * set the outcome for doit()
+   * @param param
+   */
+  public void setOutcomePool(long param)
+  {
+    this.outcomePool= param;
+  }
+
   public String getDeletePoolSource()
   {
     return deletePoolSource;
@@ -1200,6 +1219,7 @@ public String getAddOrEdit()
 // Item level actions
   public String startCopyQuestion()
   {
+	  	setOutComeParams();
 	    this.sourcePart = null;
         getCheckedQuestion();
         return "copyPool";
@@ -1207,17 +1227,20 @@ public String getAddOrEdit()
 
   public String startMoveQuestion()
   {
+	  	setOutComeParams();
         getCheckedQuestion();
         return "movePool";
   }
 
 	public String startCopyQuestions() {
+		setOutComeParams("editPool");
 		this.sourcePart = null;
 		getCheckedQuestions();
 		return "copyPool";
 	}
 
 	public String startMoveQuestions() {
+		setOutComeParams("editPool");
 		getCheckedQuestions();
 		return "movePool";
 	}
@@ -1227,6 +1250,7 @@ public String getAddOrEdit()
 		String destId = "";
 		sourceId = this.getCurrentPool().getId().toString();
 		ArrayList sourceItemIds = this.getCurrentItemIds();
+		String originId = Long.toString(ORIGIN_TOP.equals(getOutcome())?0:getOutcomePool());
 
 		destId = ContextUtil.lookupParam("movePool:selectedRadioBtn");
 
@@ -1243,7 +1267,7 @@ public String getAddOrEdit()
 					// just to skip that item. One could argue for a warning
 					// message.
 					if (!hasItemInDestPool(sourceItemId, destId)) {
-						delegate.moveItemToPool(sourceItemId,
+						delegate.moveItemToPool(new Long(sourceItemId),
 								new Long(sourceId), new Long(destId));
 					}
 				}
@@ -1257,10 +1281,9 @@ public String getAddOrEdit()
 		EventTrackingService.post(EventTrackingService.newEvent("sam.questionpool.questionmoved", "/sam/" +AgentFacade.getCurrentSiteId() + "/sourceId=" + sourceId + " destId=" + destId, true));
 
 
-		buildTree();
-		setQpDataModelByLevel();
+		setOutComeTree(originId);
 		
-		return "poolList";
+	return getOutcome();
 	}
 
     // This is the link in edit assessment to copy all questions to a pool
@@ -1273,6 +1296,23 @@ public String getAddOrEdit()
 				.getAgentString());
 		Iterator iter = pools.iterator();
 
+		// verify that the sectionId is in the current assessment
+		String sectionId = ContextUtil.lookupParam("sectionId");
+		AssessmentBean assessmentBean = (AssessmentBean) ContextUtil.lookupBean("assessmentBean");
+		List<SelectItem> sectionList = assessmentBean.getSectionList();
+		boolean foundPart = false;
+		for (int i = 0; i < sectionList.size(); i++) {
+		    SelectItem s = sectionList.get(i);
+		    if (sectionId.equals((String)s.getValue())) foundPart = true;
+		}
+		if (!foundPart) {
+		    FacesContext context=FacesContext.getCurrentInstance();
+		    String err;
+		    err=rb.getString("no_pools_error");
+		    context.addMessage(null, new FacesMessage(err));
+		    return "editAssessment";
+		}
+
 		if (iter.hasNext()) {
 			// first pool, if there is one
 			QuestionPoolFacade pool = (QuestionPoolFacade) iter.next();
@@ -1280,7 +1320,7 @@ public String getAddOrEdit()
 			buildTree();
 			startEditPoolAgain(poolId);
 			setActionType("item");
-			this.sourcePart = ContextUtil.lookupParam("sectionId");
+			this.sourcePart = sectionId;
 			return "copyPool";
 		}
 		
@@ -1321,7 +1361,7 @@ public String getAddOrEdit()
 
 		ArrayList destpools = ContextUtil.paramArrayValueLike("checkboxes");
 		// sourceId = this.getCurrentPool().getId();
-
+		String originId = Long.toString(ORIGIN_TOP.equals(getOutcome())?0:getOutcomePool());
 		Iterator iter = destpools.iterator();
 		while (iter.hasNext()) {
 
@@ -1342,9 +1382,8 @@ public String getAddOrEdit()
 						// just to skip that item. One could argue for a warning
 						// message.
 						if (!hasItemInDestPool(sourceItemId, destId)) {
-							String copyItemFacadeId = questionPoolService
-									.copyItemFacade(sourceItem.getData())
-									.toString();
+							Long copyItemFacadeId = questionPoolService
+									.copyItemFacade(sourceItem.getData());
 							delegate.addItemToPool(copyItemFacadeId, new Long(
 									destId));
 						}
@@ -1357,9 +1396,9 @@ public String getAddOrEdit()
 			}
 		}
 
-		buildTree();
-		setQpDataModelByLevel();
-		return "poolList";
+	setOutComeTree(originId);
+	
+	return getOutcome();
 	}
 
   public String copyQuestionsFromPart() {
@@ -1385,7 +1424,7 @@ public String getAddOrEdit()
 					Iterator iter2 = itemSet.iterator();
 					while (iter2.hasNext()) {
 			            ItemDataIfc sourceItem = (ItemDataIfc)iter2.next();
-			            String sourceItemId = delegate.copyItemFacade(sourceItem).toString();
+			            Long sourceItemId = delegate.copyItemFacade(sourceItem);
 		                delegate.addItemToPool(sourceItemId, new Long(destId));
 					}
 				} catch (Exception e) {
@@ -1408,7 +1447,7 @@ public String getAddOrEdit()
      {
 
        ItemFacade itemfacade = (ItemFacade) iter.next();
-       String itemid = itemfacade.getItemIdString();
+       Long itemid = itemfacade.getItemId();
        QuestionPoolService delegate = new QuestionPoolService();
        delegate.removeQuestionFromPool(itemid, new Long(sourceId));
 
@@ -1500,6 +1539,7 @@ public String getAddOrEdit()
   public String startCopyPool()
   {
 	log.debug("inside startCopyPool()");
+	setOutComeParams();
 	getCheckedPool();
 	buildTreeCopy();
 	setActionType("pool");
@@ -1510,6 +1550,7 @@ public String getAddOrEdit()
   public String startMovePool()
   {
 	log.debug("inside startMovePool()");  
+	setOutComeParams();
 	getCheckedPool();
 	buildTreeCopy();
 	setActionType("pool");
@@ -1534,6 +1575,13 @@ public String getAddOrEdit()
 
           // Get all data from the database
           QuestionPoolService delegate = new QuestionPoolService();
+
+          // Does the user have permission to copy or move this pool?
+          List<Long> poolsWithAccess = delegate.getPoolIdsByAgent(AgentFacade.getAgentString());
+          if (!poolsWithAccess.contains(pool.getId())) {
+              throw new IllegalArgumentException("User " + AgentFacade.getAgentString() + " does not have access to question pool id " + pool.getId() + " for move or copy");
+          }
+
           QuestionPoolFacade thepool =
             delegate.getPool(
               new Long(qpid), AgentFacade.getAgentString());
@@ -1577,6 +1625,7 @@ public String getAddOrEdit()
 	ArrayList destpools= ContextUtil.paramArrayValueLike("checkboxes");
  	sourceId = this.getCurrentPool().getId();
         String currentName=this.getCurrentPool().getDisplayName();
+    String originId = Long.toString(ORIGIN_TOP.equals(getOutcome())?0:getOutcomePool());
 	Iterator iter = destpools.iterator();
      
       while(iter.hasNext())
@@ -1593,7 +1642,7 @@ public String getAddOrEdit()
                QuestionPoolFacade oldPool =delegate.getPool(sourceId, AgentFacade.getAgentString());
 	      //if dest != source's parent, then throw error if dest has a duplicate pool name 
 		if(!destId.equals((oldPool.getParentPoolId()).toString())){
-		    isUnique=delegate.poolIsUnique("0",currentName,destId, AgentFacade.getAgentString());
+		    isUnique=delegate.poolIsUnique(originId,currentName,destId, AgentFacade.getAgentString());
 		    if(!isUnique){
 		    	String err1=rb.getString("copy_duplicateName_error");
 		    	FacesContext context=FacesContext.getCurrentInstance();
@@ -1619,9 +1668,9 @@ public String getAddOrEdit()
 	  }
       }
 
-      buildTree();
-      setQpDataModelByLevel();
-      return "poolList";
+      setOutComeTree(originId);
+
+	return getOutcome();
 
   }
 
@@ -1631,6 +1680,7 @@ public String getAddOrEdit()
       String destId = "";
       sourceId = this.getCurrentPool().getId().toString();
       String currentName=this.getCurrentPool().getDisplayName();
+      String originId = Long.toString(ORIGIN_TOP.equals(getOutcome())?0:getOutcomePool());
       boolean isUnique=true;
 	destId= ContextUtil.lookupParam("movePool:selectedRadioBtn");
 
@@ -1640,7 +1690,7 @@ public String getAddOrEdit()
           try
           {
             QuestionPoolService delegate = new QuestionPoolService();
- isUnique=delegate.poolIsUnique("0",currentName,destId, AgentFacade.getAgentString());
+ isUnique=delegate.poolIsUnique(originId,currentName,destId, AgentFacade.getAgentString());
               if(!isUnique){
             	  String err1=rb.getString("move_duplicateName_error");
             	  FacesContext context = FacesContext.getCurrentInstance();
@@ -1660,16 +1710,15 @@ public String getAddOrEdit()
           }
         }
 
-      buildTree();
-      setQpDataModelByLevel();
+        setOutComeTree(originId);
       
-	return "poolList";
+	return getOutcome();
   }
 
   public String addPool() {
 		String addsource = "poollist";
-		addsource = (String) FacesContext.getCurrentInstance()
-				.getExternalContext().getRequestParameterMap().get("addsource");
+		setOutComeParams();
+		addsource = getOutcome();
 		this.setAddPoolSource(addsource);
 		startCreatePool();
 		this.setAddOrEdit("add");	
@@ -1741,6 +1790,7 @@ public String getAddOrEdit()
 
 
   public String confirmRemovePool(){
+	  setOutComeParams();
 // used by the editpool.jsp to remove one subpool at a time
 	this.setDeletePoolSource("editpool");
 
@@ -1822,9 +1872,18 @@ String poolId = ContextUtil.lookupParam("qpid");
   }
 
   public String cancelPool() {
-	  buildTree();
-	  setQpDataModelByLevel();
-	  return "poolList";
+	  if(ORIGIN_TOP.equals(getOutcome()) || getOutcomePool() == 0){		  
+		setCurrentPool(null);
+		setOutcome(ORIGIN_TOP);
+		buildTree();
+		setQpDataModelByLevel();
+	  }else{
+		  startEditPoolAgain(Long.toString(getOutcomePool()));
+	      buildTree();
+	      setSubQpDataModelByLevel(); 
+  }
+
+	  return getOutcome();
   }
 
   public String importPool(){
@@ -1860,6 +1919,7 @@ String poolId = ContextUtil.lookupParam("qpid");
   {
 	String qpid = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("qpid");
   	startEditPoolAgain(qpid);
+  	setOutComeParams();
   }
 
 
@@ -1954,6 +2014,7 @@ String poolId = ContextUtil.lookupParam("qpid");
 		ItemAuthorBean itemauthorbean = (ItemAuthorBean) ContextUtil.lookupBean("itemauthor");
 		String poolid = ContextUtil.lookupParam("poolId");
 		if (poolid != null) {
+			setOutComeParams();
 			itemauthorbean.setQpoolId(poolid);
 			itemauthorbean.setTarget(ItemAuthorBean.FROM_QUESTIONPOOL);
 
@@ -2157,12 +2218,16 @@ String poolId = ContextUtil.lookupParam("qpid");
   }
   
   	public void setQpDataModelByLevel() {
-		Collection objects = tree.getSortedObjects();
-
 		// construct the sortedList, pools need to be sorted one level at a time
 		// so the hierachical structure can be maintained. Here, we start from root = 0,
+		setQpDataModelByLevel(new Long("0"));
+	}
+  	
+  	public void setQpDataModelByLevel(Long poolId) {
+		Collection objects = tree.getSortedObjects();
+
 		if (objects != null) {
-			ArrayList sortedList = sortPoolByLevel(new Long("0"), objects,
+			ArrayList sortedList = sortPoolByLevel(poolId, objects,
 					getSortProperty(), getSortAscending());
 			ListDataModel model = new ListDataModel((List) sortedList);
 			QuestionPoolDataModel qpDataModel = new QuestionPoolDataModel(tree,
@@ -2390,12 +2455,21 @@ String poolId = ContextUtil.lookupParam("qpid");
                     return "transferPool";
                }
 
+		QuestionPoolService delegate = new QuestionPoolService();
+		List<Long> poolsWithAccess = delegate.getPoolIdsByAgent(AgentFacade.getAgentString());
+
 		String[] poolIds = transferPoolIds.split(",");
 		List<Long> transferPoolIdLong = new ArrayList<Long>();
 		for (int i = 0; i < poolIds.length; i++) {
-                        if (poolIds[i] != null && !poolIds[i].isEmpty()) {
-                                transferPoolIdLong.add(new Long(poolIds[i]));
-                        }
+			if (StringUtils.isNotBlank(poolIds[i])) {
+				Long poolId = new Long(poolIds[i]);
+				if (poolsWithAccess.contains(poolId)) {
+					transferPoolIdLong.add(poolId);
+				}
+				else {
+					throw new IllegalArgumentException("Cannot transfer pool: userId " + AgentFacade.getAgentString() + " does not have access to pool id " + poolId);
+				}
+			}
 		}
 		this.transferPools = transferPoolIdLong;	
 		
@@ -2498,5 +2572,29 @@ String poolId = ContextUtil.lookupParam("qpid");
 			e.printStackTrace();
 			return "";
 		}
+	}
+	
+	public void setOutComeTree(String originId){
+		if(ORIGIN_TOP.equals(getOutcome())){
+	    	  buildTree();
+	    	  setQpDataModelByLevel();
+	      }else{
+	    	  startEditPoolAgain(originId);
+		      buildTree();
+		      setSubQpDataModelByLevel();
+}
+	}
+	
+	public void setOutComeParams(){
+		setOutComeParams(null);
+	}
+	
+	public void setOutComeParams(String outcome){
+		if(outcome==null){
+			setOutcome((String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("outCome"));
+		}else{
+			setOutcome(outcome);
+		}
+		setOutcomePool((getCurrentPool()!=null)?getCurrentPool().getId():0);
 	}
 }

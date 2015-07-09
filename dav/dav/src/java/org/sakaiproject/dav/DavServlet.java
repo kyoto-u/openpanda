@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.4/dav/src/java/org/sakaiproject/dav/DavServlet.java $
- * $Id: DavServlet.java 315520 2014-11-18 20:31:51Z jjmerono@um.es $
+ * $URL: https://source.sakaiproject.org/svn/dav/tags/sakai-10.5/dav/src/java/org/sakaiproject/dav/DavServlet.java $
+ * $Id: DavServlet.java 319630 2015-05-28 14:33:36Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1551,7 +1551,8 @@ public class DavServlet extends HttpServlet
 				modificationDate = props.getTimeProperty(ResourceProperties.PROP_MODIFIED_DATE).getTime();
 				eTag = modificationDate + "+" + eTag;
 				// SAK-26593 if you don't clean the eTag you may send invalid XML to client
-				eTag = MD5Encoder.encode(md5Helper.digest(eTag.getBytes()));
+				// SAK-29338 Cyberduck started to see our md5 etag as an AWS s3-like checksum so let's add a prefix
+				eTag = "sakai-" + MD5Encoder.encode(md5Helper.digest(eTag.getBytes()));
 				if (M_log.isDebugEnabled()) M_log.debug("Path=" + path + " eTag=" + eTag);
 				creationDate = props.getTimeProperty(ResourceProperties.PROP_CREATION_DATE).getTime();
 				resourceLink = mbr.getUrl();

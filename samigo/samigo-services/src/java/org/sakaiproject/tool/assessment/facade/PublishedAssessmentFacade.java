@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacade.java $
- * $Id: PublishedAssessmentFacade.java 315346 2014-11-11 18:44:04Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/PublishedAssessmentFacade.java $
+ * $Id: PublishedAssessmentFacade.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -49,7 +49,7 @@ public class PublishedAssessmentFacade
     implements java.io.Serializable, PublishedAssessmentIfc, Cloneable
 {
   private static final long serialVersionUID = 7526471155622776147L;
-  private static Log log = LogFactory.getLog(PublishedAssessmentFacade.class);
+  private Log log = LogFactory.getLog(PublishedAssessmentFacade.class);
   public static final Integer ACTIVE_STATUS =  Integer.valueOf(1);
   public static final Integer INACTIVE_STATUS = Integer.valueOf(0);
   public static final Integer ANY_STATUS = Integer.valueOf(2);

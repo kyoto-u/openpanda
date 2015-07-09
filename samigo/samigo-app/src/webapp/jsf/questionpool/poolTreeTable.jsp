@@ -1,4 +1,4 @@
-<!-- $Id: poolTreeTable.jsp 313732 2014-09-18 23:27:36Z enietzel@anisakai.com $
+<!-- $Id: poolTreeTable.jsp 319103 2015-05-21 13:52:58Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -62,6 +62,7 @@
   <f:param name="orderBy" value="text"/>
   <f:param name="ascending" value="true"/>
   <f:param name="getItems" value="false"/>
+  <f:param name="outCome" value="editPool"/>
   <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.questionpool.SortQuestionListListener" />
 </h:commandLink>
 
@@ -77,12 +78,14 @@
  <h:commandLink title="#{questionPoolMessages.t_addSubpool}" rendered="#{questionpool.importToAuthoring != 'true' && authorization.createQuestionPool && pool.ownerId==questionpool.agentId}"  styleClass="tier#{questionpool.tree.currentLevel}" id="addlink" immediate="true" action="#{questionpool.addPool}">
   <h:outputText id="add" value="#{questionPoolMessages.t_addSubpool}"/>
   <f:param name="qpid" value="#{pool.questionPoolId}"/>
+  <f:param name="outCome" value="poolList"/>
 </h:commandLink>
 <!-- Copy Pool -->
 <h:outputText rendered="#{questionpool.importToAuthoring != 'true' && authorization.copyOwnQuestionPool && pool.ownerId==questionpool.agentId}" value=" #{questionPoolMessages.separator} " />
 <h:commandLink title="#{questionPoolMessages.t_copyPool}" rendered="#{questionpool.importToAuthoring != 'true' && authorization.copyOwnQuestionPool}" id="copylink" immediate="true" action="#{questionpool.startCopyPool}">
   <h:outputText id="copy" value="#{questionPoolMessages.copy}"/>
   <f:param name="qpid" value="#{pool.questionPoolId}"/>
+  <f:param name="outCome" value="poolList"/>
 </h:commandLink>
 <!-- Unshare Pool -->
 <h:outputText rendered="#{questionpool.importToAuthoring != 'true' && pool.ownerId!=questionpool.agentId}" value=" #{questionPoolMessages.separator} " />
@@ -95,6 +98,7 @@
 <h:commandLink title="#{questionPoolMessages.t_movePool}" rendered="#{questionpool.importToAuthoring != 'true' && authorization.editOwnQuestionPool && pool.ownerId==questionpool.agentId}" id="movelink" immediate="true" action="#{questionpool.startMovePool}">
   <h:outputText id="move" value="#{questionPoolMessages.move}"/>
   <f:param name="qpid" value="#{pool.questionPoolId}"/>
+  <f:param name="outCome" value="poolList"/>
 </h:commandLink>
 
 <!-- Share Pool -->

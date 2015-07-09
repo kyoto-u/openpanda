@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemAuthorBean.java $
- * $Id: ItemAuthorBean.java 311428 2014-07-31 02:09:30Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemAuthorBean.java $
+ * $Id: ItemAuthorBean.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -62,6 +62,7 @@ import org.sakaiproject.tool.assessment.services.PublishedItemService;
 import org.sakaiproject.tool.assessment.services.QuestionPoolService;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
+import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.SectionContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.questionpool.QuestionPoolBean;
 import org.sakaiproject.tool.assessment.ui.listener.author.ItemAddListener;
@@ -89,7 +90,7 @@ import org.sakaiproject.util.ResourceLoader;
 
 /**
  * Backing bean for Item Authoring, uses ItemBean for UI
- * $Id: ItemAuthorBean.java 311428 2014-07-31 02:09:30Z enietzel@anisakai.com $
+ * $Id: ItemAuthorBean.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  */
 public class ItemAuthorBean
   implements Serializable
@@ -1018,10 +1019,16 @@ public class ItemAuthorBean
 	  Integer  currSeq = itemf.getSequence();
 
 	  QuestionPoolService qpdelegate = new QuestionPoolService();
-	  if ((qpdelegate.getPoolIdsByItem(deleteId.toString()) ==  null) ||
-           (qpdelegate.getPoolIdsByItem(deleteId.toString()).isEmpty() )){
-		  // if no reference to this item at all, ie, this item is created in 
-		  // assessment but not assigned to any pool
+	  if (qpdelegate.getPoolIdsByItem(deleteId.toString()) ==  null || qpdelegate.getPoolIdsByItem(deleteId.toString()).isEmpty()){
+		  // if no reference to this item at all, ie, this item is created in assessment but not assigned to any pool
+
+		  AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
+		  AssessmentService assessdelegate = new AssessmentService();
+		  AssessmentFacade af = assessdelegate.getBasicInfoOfAnAssessmentFromSectionId(currSection.getSectionId());
+		  if (!authzBean.isUserAllowedToEditAssessment(af.getAssessmentBaseId().toString(), af.getCreatedBy(), false)) {
+		      throw new IllegalArgumentException("User does not have permission to delete item in assessment: " + af.getAssessmentBaseId());
+		  }
+
 		  delegate.deleteItem(deleteId, AgentFacade.getAgentString());
 	  }
 	  else {

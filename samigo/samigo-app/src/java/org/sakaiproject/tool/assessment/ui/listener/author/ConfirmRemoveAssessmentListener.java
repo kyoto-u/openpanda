@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmRemoveAssessmentListener.java $
- * $Id: ConfirmRemoveAssessmentListener.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmRemoveAssessmentListener.java $
+ * $Id: ConfirmRemoveAssessmentListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -45,7 +45,7 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: ConfirmRemoveAssessmentListener.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * @version $Id: ConfirmRemoveAssessmentListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  */
 
 public class ConfirmRemoveAssessmentListener implements ActionListener
@@ -73,34 +73,17 @@ public class ConfirmRemoveAssessmentListener implements ActionListener
     // #3 - permission checking before proceeding - daisyf
     AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
     author.setOutcome("confirmRemoveAssessment");
-    if (!passAuthz(context, assessment.getCreatedBy())){
-	author.setOutcome("author");
-	return;
+    
+    AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
+    if (!authzBean.isUserAllowedToDeleteAssessment(assessmentId, assessment.getCreatedBy(), false)) {
+        String err=(String)ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages", "denied_delete_other_members_assessment_error");
+        context.addMessage(null,new FacesMessage(err));
+        author.setOutcome("author");
+    	return;
     }
 
     assessmentBean.setAssessmentId(assessment.getAssessmentBaseId().toString());
     assessmentBean.setTitle(assessment.getTitle());
-  }
-
-  public boolean passAuthz(FacesContext context, String ownerId){
-    AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
-    boolean hasPrivilege_any = authzBean.getDeleteAnyAssessment();
-    boolean hasPrivilege_own0 = authzBean.getDeleteOwnAssessment();
-    boolean hasPrivilege_own = (hasPrivilege_own0 && isOwner(ownerId));
-    boolean hasPrivilege = (hasPrivilege_any || hasPrivilege_own);
-    if (!hasPrivilege){
-      String err=(String)ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages",
-				     "denied_delete_other_members_assessment_error");
-      context.addMessage(null,new FacesMessage(err));
-    }
-    return hasPrivilege;
-  }
-
-  public boolean isOwner(String ownerId){
-    boolean isOwner = false;
-    String agentId = AgentFacade.getAgentString();
-    isOwner = agentId.equals(ownerId);
-    return isOwner;
   }
 
 }

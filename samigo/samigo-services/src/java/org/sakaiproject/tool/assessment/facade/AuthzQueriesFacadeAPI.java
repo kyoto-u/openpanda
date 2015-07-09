@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AuthzQueriesFacadeAPI.java $
- * $Id: AuthzQueriesFacadeAPI.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AuthzQueriesFacadeAPI.java $
+ * $Id: AuthzQueriesFacadeAPI.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -61,8 +61,7 @@ public interface AuthzQueriesFacadeAPI
   public List getAuthorizationByAgentAndFunction(String agentId,
       String functionId);
 
-  public List getAuthorizationByFunctionAndQualifier(String functionId,
-      String qualifierId);
+  public List<AuthorizationData> getAuthorizationByFunctionAndQualifier(String functionId, String qualifierId);
 
   public boolean checkMembership(String siteId);
 

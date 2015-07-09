@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/AuthoringHelper.java $
- * $Id: AuthoringHelper.java 315156 2014-11-05 16:09:52Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-qti/src/java/org/sakaiproject/tool/assessment/qti/helper/AuthoringHelper.java $
+ * $Id: AuthoringHelper.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -96,7 +96,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley esmiley@stanford.edu
  * @author Shastri, Rashmi <rshastri@iupui.edu>
- * @version $Id: AuthoringHelper.java 315156 2014-11-05 16:09:52Z ottenhoff@longsight.com $
+ * @version $Id: AuthoringHelper.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  */
 public class AuthoringHelper
 {
@@ -856,7 +856,7 @@ public class AuthoringHelper
                
                QuestionPoolItemData questionPoolItem = new QuestionPoolItemData();
                questionPoolItem.setQuestionPoolId(questionpool.getQuestionPoolId());
-               questionPoolItem.setItemId(item.getItemIdString());         
+               questionPoolItem.setItemId(item.getItemId());         
                questionpool.addQuestionPoolItem((QuestionPoolItemIfc) questionPoolItem);
                
              } // ... end for each item

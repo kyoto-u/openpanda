@@ -1,5 +1,5 @@
-/* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/ItemFacade.java $
- * $Id: ItemFacade.java 315353 2014-11-12 08:39:19Z jjmerono@um.es $
+/* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/ItemFacade.java $
+ * $Id: ItemFacade.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -56,7 +56,7 @@ import org.sakaiproject.tool.assessment.services.PersistenceService;
  * agreement.
  */
 public class ItemFacade implements Serializable, ItemDataIfc, Comparable<ItemDataIfc> {
-  private static Log log = LogFactory.getLog(ItemFacade.class);
+  private Log log = LogFactory.getLog(ItemFacade.class);
 
   private static final long serialVersionUID = 7526471155622776147L;
   protected org.osid.assessment.Item item;

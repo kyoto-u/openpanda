@@ -1,6 +1,6 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/spring/SpringBeanLocator.java $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/spring/SpringBeanLocator.java $
-* $Id: SpringBeanLocator.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/spring/SpringBeanLocator.java $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/spring/SpringBeanLocator.java $
+* $Id: SpringBeanLocator.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
 ***********************************************************************************
 *
  * Copyright (c) 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -26,7 +26,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class SpringBeanLocator
 {
 
-  //private static Log log = LogFactory.getLog(SpringBeanLocator.class);
+  // The object callers wait on if the bean locator hasn't been set yet.
+  // This is needed because this bean allows the service to get at beans in the tool
+  // The job scheduler can run before the webapp has been started and therefore can
+  // attempt to get beans out of the tool before the tool has been started up.
+  private static Object waitLock = new Object();
   private static WebApplicationContext waCtx = null;
   private static ConfigurableApplicationContext caCtx = null;
   private static boolean inWebContext = false;
@@ -50,8 +54,12 @@ public class SpringBeanLocator
    */
   public static void setApplicationContext(WebApplicationContext context)
   {
-	  SpringBeanLocator.waCtx = context;
-	  SpringBeanLocator.inWebContext = true;
+    synchronized(waitLock)
+    {
+      SpringBeanLocator.waCtx = context;
+      SpringBeanLocator.inWebContext = true;
+      waitLock.notifyAll();
+    }
   }
 
   /**
@@ -62,20 +70,29 @@ public class SpringBeanLocator
   public static void setConfigurableApplicationContext(ConfigurableApplicationContext
                                                 ca)
   {
-    SpringBeanLocator.caCtx = ca;
-    SpringBeanLocator.inWebContext = false;
+    synchronized (waitLock)
+    {
+      SpringBeanLocator.caCtx = ca;
+      SpringBeanLocator.inWebContext = false;
+      waitLock.notifyAll();
+    }
   }
 
   public Object getBean(String name)
   {
+    if (waCtx == null && caCtx == null) {
+      try {
+        waitLock.wait();
+      } catch (InterruptedException e) {
+        throw new RuntimeException("Got interrupted waiting for bean to be setup.", e);
+      }
+    }
     if (inWebContext)
     {
-      //log.info("** context in Locator " + waCtx);
       return waCtx.getBean(name);
     }
     else
     {
-      //log.info("** context in Locator " + caCtx);
       return caCtx.getBean(name);
     }
 

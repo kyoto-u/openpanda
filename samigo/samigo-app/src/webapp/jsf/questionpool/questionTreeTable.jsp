@@ -1,4 +1,4 @@
-<!-- $Id: questionTreeTable.jsp 315727 2014-11-27 19:36:09Z jjmerono@um.es $
+<!-- $Id: questionTreeTable.jsp 319102 2015-05-21 13:45:20Z enietzel@anisakai.com $
 <%--
 ***********************************************************************************
 *
@@ -83,12 +83,14 @@ table.checkall td {padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bott
 <h:commandLink title="#{questionPoolMessages.t_copyQuestion}" rendered="#{questionpool.importToAuthoring != 'true'}" id="copylink" immediate="true" action="#{questionpool.startCopyQuestion}">
   <h:outputText id="copy" value="#{questionPoolMessages.copy}"/>
     <f:param name="itemid" value="#{question.itemId}"/>
+    <f:param name="outCome" value="editPool"/>
 </h:commandLink>
 <h:outputText  rendered="#{questionpool.importToAuthoring != 'true'}" value=" #{questionPoolMessages.separator} " />
 
 <h:commandLink title="#{questionPoolMessages.t_moveQuestion}" rendered="#{questionpool.importToAuthoring != 'true'}" id="movelink" immediate="true" action="#{questionpool.startMoveQuestion}">
   <h:outputText id="move" value="#{questionPoolMessages.move}"/>
     <f:param name="itemid" value="#{question.itemId}"/>
+    <f:param name="outCome" value="editPool"/>
 </h:commandLink>
 
  <f:verbatim></span></f:verbatim>

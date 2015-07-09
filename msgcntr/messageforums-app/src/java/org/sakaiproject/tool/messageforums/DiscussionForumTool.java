@@ -20,30 +20,30 @@
  **********************************************************************************/
 package org.sakaiproject.tool.messageforums;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Locale;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TimeZone;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 import java.util.TreeSet;
-import java.util.Map.Entry;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.DecimalFormatSymbols;
-import java.text.SimpleDateFormat;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
@@ -61,6 +61,8 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.app.messageforums.Area;
@@ -105,8 +107,8 @@ import org.sakaiproject.component.app.messageforums.dao.hibernate.util.comparato
 import org.sakaiproject.component.app.messageforums.dao.hibernate.RankImpl;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
-import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.Reference;
@@ -151,8 +153,6 @@ import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
-
-import org.apache.commons.fileupload.FileItem; 
 
 /**
  * @author <a href="mailto:rshastri@iupui.edu">Rashmi Shastri</a>
@@ -222,6 +222,9 @@ public class DiscussionForumTool
   private static final String FORUM_ID = "forumId";
   private static final String USER_ID = "userId";
   private static final String MESSAGE_ID = "messageId";
+  private static final String CURRENT_MESSAGE_ID = "currentMessageId";
+  private static final String CURRENT_TOPIC_ID = "currentTopicId";
+  private static final String CURRENT_FORUM_ID = "currentForumId";
   private static final String REDIRECT_PROCESS_ACTION = "redirectToProcessAction";
   private static final String FROMPAGE = "fromPage";
 
@@ -393,7 +396,6 @@ public class DiscussionForumTool
   private String selectedMsgId;
 
   private int selectedMessageCount = 0;
-  private int functionClick = 0;
   
   private List siteGroups = new ArrayList();
   private boolean createTopicsForGroups = false;  
@@ -3695,14 +3697,11 @@ public class DiscussionForumTool
   public String processDfMsgPost()
   {
 	LOG.debug("processDfMsgPost()");
-    Message dMsg = constructMessage();
-
-    
-    if(!canUserPostMessage("processDfMsgPost")){
-  		//this checks if the conditions are correct for the user to post for the current topic and forum
-  		//i.e. currentTopic != null, currentForum isn't locked, ect
+    if(!checkPermissionsForUser("processDfReplyTopicSaveDraft", false, true, false, false)){
     	return gotoMain();
     }
+    
+    Message dMsg = constructMessage();
     try{
     	forumManager.saveMessage(dMsg);
 
@@ -3873,9 +3872,7 @@ public class DiscussionForumTool
     Message dMsg = constructMessage();
     dMsg.setDraft(Boolean.TRUE);
 
-    if(!canUserPostMessage("processDfMsgSaveDraft")){
-  		//this checks if the conditions are correct for the user to post for the current topic and forum
-  		//i.e. currentTopic != null, currentForum isn't locked, ect
+    if(!checkPermissionsForUser("processDfReplyTopicSaveDraft", false, true, false, false)){
     	return gotoMain();
     }
     try{
@@ -4181,7 +4178,6 @@ public class DiscussionForumTool
   public String processDfMsgReplyMsg()
   {
 	  selectedMessageCount  = 0;
-	  functionClick ++;
     if(selectedMessage.getMessage().getTitle() != null && !selectedMessage.getMessage().getTitle().startsWith(getResourceBundleString(MSG_REPLY_PREFIX)))
 	  this.composeTitle = getResourceBundleString(MSG_REPLY_PREFIX) + " " + selectedMessage.getMessage().getTitle() + " ";
     else
@@ -4193,7 +4189,6 @@ public class DiscussionForumTool
   public String processDfMsgReplyThread()
   {
 	  selectedMessageCount  = 0;
-	  functionClick ++;
   	if(selectedTopic == null)
   	{
   		LOG.debug("selectedTopic is null in processDfMsgReplyThread");
@@ -4313,8 +4308,6 @@ public class DiscussionForumTool
   
   private String processDfMsgGrdHelper(String userId, String msgAssignmentName){
 	  selectedMessageCount = 0;
-	  functionClick ++;
-
 	  
   	grade_too_large_make_sure = false;
   	
@@ -4435,7 +4428,6 @@ public class DiscussionForumTool
   public String processDfMsgRvs()
   {
 	selectedMessageCount = 0;
-	functionClick ++;
 	
     attachments.clear();
 
@@ -4486,7 +4478,6 @@ public class DiscussionForumTool
   public String processDfMsgDeleteConfirm()
   {
 	selectedMessageCount = 0;
-	functionClick ++;
 	  // if coming from thread view, need to set message info
   	fromPage = getExternalParameterByKey(FROMPAGE);
     if (fromPage != null) {
@@ -4497,44 +4488,15 @@ public class DiscussionForumTool
     setErrorMessage(getResourceBundleString(CONFIRM_DELETE_MESSAGE));
     return MESSAGE_VIEW;
   }
-  
-  private boolean canUserPostMessage(String methodCalled){
-	  boolean allowedToPost = true;
-	  
-	  if(selectedTopic == null)
-	  {
-		  LOG.debug("selectedTopic is null in " + methodCalled);
-		  allowedToPost = false;
-	  }else if(!selectedTopic.getIsNewResponse() && !selectedTopic.getIsNewResponseToResponse()){
-		  setErrorMessage(getResourceBundleString(INSUFFICIENT_PRIVILEAGES_TO_POST_THREAD, new Object[]{selectedTopic.getTopic().getTitle()}));
-		  LOG.debug(methodCalled + ": Insufficient privileages for user to post to topic: " + selectedTopic.getTopic().getTitle());
-		  allowedToPost = false;
-	  }else if(selectedTopic.getTopic().getLocked()){
-		  setErrorMessage(getResourceBundleString(TOPIC_LOCKED, new Object[]{selectedTopic.getTopic().getTitle()}));
-		  LOG.debug(methodCalled + ": Topic is locked: " + selectedTopic.getTopic().getTitle());
-		  allowedToPost = false;
-	  }else if(selectedForum != null && selectedForum.getForum().getLocked()){
-		  setErrorMessage(getResourceBundleString(FORUM_LOCKED, new Object[]{selectedForum.getForum().getTitle()}));
-		  LOG.debug(methodCalled + ": Forum is locked: " + selectedTopic.getTopic().getTitle());
-		  allowedToPost = false;
-	  }
 
-	  return allowedToPost;
-  }
 
   public String processDfReplyMsgPost()
   {
-	  if(selectedMessageCount != 0 || functionClick != 1) {
-		  setErrorMessage(getResourceBundleString(STATE_INCONSISTENT));
-		  return null;
+
+	  //checks whether the user can post to the forum & topic based on the passed in message id
+	  if(!checkPermissionsForUser("processDfReplyMsgPost", true, true, false, false)){
+		  return gotoMain();
 	  }
-	  functionClick = 0;
-		
-  	if(!canUserPostMessage("processDfReplyMsgPost")){
-  		//this checks if the conditions are correct for the user to post for the current topic and forum
-  		//i.e. currentTopic != null, currentForum isn't locked, ect
-  		return gotoMain();
-  	}
   	try{
   		DiscussionTopic topicWithMsgs = (DiscussionTopic) forumManager.getTopicByIdWithMessages(selectedTopic.getTopic().getId());
   		List tempList = topicWithMsgs.getMessages();
@@ -4626,9 +4588,7 @@ public class DiscussionForumTool
 
   public String processDfReplyMsgSaveDraft()
   {
-	  if(!canUserPostMessage("processDfReplyMsgSaveDraft")){
-		  //this checks if the conditions are correct for the user to post for the current topic and forum
-		  //i.e. currentTopic != null, currentForum isn't locked, ect
+	  if(!checkPermissionsForUser("processDfReplyTopicSaveDraft", false, true, false, false)){
 		  return gotoMain();
 	  }
 	  try{
@@ -4730,7 +4690,6 @@ public class DiscussionForumTool
   public String processDfMsgRevisedCancel()
   {
 	  selectedMessageCount = 0;
-	  functionClick = 0;
 	  getThreadFromMessage();
 	  
 	  this.composeBody = null;
@@ -4745,14 +4704,8 @@ public class DiscussionForumTool
   
   public String processDfMsgRevisedPost()
   {
-	if(selectedMessageCount != 0 || functionClick != 1) {
-		setErrorMessage(getResourceBundleString(STATE_INCONSISTENT));
-		return null;
-	}
-	functionClick = 0;
-	if(!canUserPostMessage("processDfMsgRevisedPost")){
-		//this checks if the conditions are correct for the user to post for the current topic and forum
-		//i.e. currentTopic != null, currentForum isn't locked, ect
+	//checks whether the user can post to the forum & topic based on the passed in message id
+	if(!checkPermissionsForUser("processDfMsgRevisedPost", false, false, true, false)){
 		return gotoMain();
 	}
 	try{
@@ -4913,11 +4866,9 @@ public class DiscussionForumTool
 
   public String processDfMsgSaveRevisedDraft()
   {
-	  if(!canUserPostMessage("processDfMsgSaveRevisedDraft")){
-		  //this checks if the conditions are correct for the user to post for the current topic and forum
-		  //i.e. currentTopic != null, currentForum isn't locked, ect
-		  return gotoMain();
-	  }
+	  if(!checkPermissionsForUser("processDfReplyTopicSaveDraft", false, true, false, false)){
+	    	return gotoMain();
+	    }
 	  try{
 
 		  Message dMsg = selectedMessage.getMessage();
@@ -5039,7 +4990,6 @@ public class DiscussionForumTool
   public String processDfReplyMsgCancel()
   {
 	  selectedMessageCount = 0;
-	  functionClick = 0;
 	  
 	this.errorSynch = false;
     this.composeBody = null;
@@ -5055,7 +5005,6 @@ public class DiscussionForumTool
   public String processDfReplyThreadCancel()
   {
 	  selectedMessageCount = 0;
-	  functionClick = 0;
 	  this.errorSynch = false;
 	    this.composeBody = null;
 	    this.composeLabel = null;
@@ -5068,9 +5017,8 @@ public class DiscussionForumTool
 
   public String processDfReplyTopicPost()
   {
-	  if(!canUserPostMessage("processDfReplyTopicPost")){
-		  //this checks if the conditions are correct for the user to post for the current topic and forum
-		  //i.e. currentTopic != null, currentForum isn't locked, ect
+	  //checks whether the user can post to the forum & topic based on the passed in message id
+	  if(!checkPermissionsForUser("processDfReplyTopicPost", true, true, false, false)){
 		  return gotoMain();
 	  }
 	  try{
@@ -5107,9 +5055,8 @@ public class DiscussionForumTool
 
   public String processDfReplyTopicSaveDraft()
   {
-	  if(!canUserPostMessage("processDfReplyTopicSaveDraft'")){
-		  //this checks if the conditions are correct for the user to post for the current topic and forum
-		  //i.e. currentTopic != null, currentForum isn't locked, ect
+	  //checks whether the user can post to the forum & topic based on the passed in message id
+	  if(!checkPermissionsForUser("processDfReplyTopicSaveDraft", true, true, false, false)){
 		  return gotoMain();
 	  }
 	  try{
@@ -5185,13 +5132,11 @@ public class DiscussionForumTool
    */
   public String processDfMsgDeleteConfirmYes()
   {
-	  //selectedMessageCount can be 0 or 1 for single tab open. There are 2 places for deleting message. 
-	  if(selectedMessageCount > 1 || functionClick != 1) {
-			setErrorMessage(getResourceBundleString(STATE_INCONSISTENT));
-			return null;
-		}
+	  //checks whether the user can post to the forum & topic based on the passed in message id
+	  if(!checkPermissionsForUser("processDfReplyTopicSaveDraft", false, false, false, true)){
+		  return gotoMain();
+	  }
 	
-	  functionClick = 0;
   	if(selectedTopic == null)
   	{ 
   		LOG.debug("selectedTopic is null in processDfMsgDeleteConfirmYes");
@@ -5261,7 +5206,6 @@ public class DiscussionForumTool
   public String processDfMsgDeleteCancel()
   {
 	  selectedMessageCount = 0;
-	  functionClick = 0;
 	this.deleteMsg = false;
     this.errorSynch = false;
     
@@ -6182,7 +6126,6 @@ public class DiscussionForumTool
   public String processDfGradeCancel() 
   { 
 	  selectedMessageCount = 0;
-	  functionClick = 0;
     gradeNotify = false; 
     selectedAssign = DEFAULT_GB_ITEM; 
     resetGradeInfo();
@@ -6194,7 +6137,6 @@ public class DiscussionForumTool
   public String processDfGradeCancelFromDialog() 
   { 
 	  selectedMessageCount = 0;
-	  functionClick = 0;
     gradeNotify = false; 
     selectedAssign = DEFAULT_GB_ITEM; 
     resetGradeInfo();
@@ -6332,7 +6274,6 @@ public class DiscussionForumTool
 			setErrorMessage(getResourceBundleString(STATE_INCONSISTENT));
 			return null;
 		}
-	  functionClick = 0;
 	  selectedMessageCount = 0;
   	
 	  gbItemScore = gradePoint;
@@ -9240,9 +9181,6 @@ public class DiscussionForumTool
 	}
 
 	private List transformItemList(List members) {
-		Map<String, List<JSONObject>> allParticipantsMap = new HashMap<String, List<JSONObject>>(1);
-		allParticipantsMap.put("allParticipants", new ArrayList<JSONObject>(1));
-
 		Map<String, List<JSONObject>> rolesMap = new HashMap<String, List<JSONObject>>(1);
 		rolesMap.put("roles", new ArrayList<JSONObject>(1));
 
@@ -9254,9 +9192,7 @@ public class DiscussionForumTool
 
 		for (Iterator iterator = members.iterator(); iterator.hasNext();) {
 			MembershipItem item = (MembershipItem) iterator.next();
-			if (MembershipItem.TYPE_ALL_PARTICIPANTS.equals(item.getType())) {
-				parseAllParticipants(item, allParticipantsMap);
-			} else if (MembershipItem.TYPE_ROLE.equals(item.getType())) {
+			if (MembershipItem.TYPE_ROLE.equals(item.getType())) {
 				parseRoles(item, rolesMap);
 			} else if (MembershipItem.TYPE_GROUP.equals(item.getType())) {
 				parseGroups(item, groupsMap);
@@ -9283,8 +9219,7 @@ public class DiscussionForumTool
                 }
 			}
 		}
-		List allItemsList = new ArrayList(3);
-		allItemsList.add(allParticipantsMap);
+		List allItemsList = new ArrayList();
 		allItemsList.add(rolesMap);
 
 		// we only need the userIds to setup the individual user data
@@ -9351,16 +9286,6 @@ public class DiscussionForumTool
 			}
 		}
 		jsonMembershipItem.element("groups", memberGroupsArray);
-	}
-
-	private void parseAllParticipants(MembershipItem item, Map<String, List<JSONObject>> allParticipantsMap) {
-		List<JSONObject> allParticipantsList = allParticipantsMap.get("allParticipants");
-		if (allParticipantsList == null) {
-			allParticipantsList = new ArrayList<JSONObject>();
-		}
-		JSONObject jsonMembershipItem = new JSONObject();
-		jsonMembershipItem.element("name", item.getName()).element("membershipItemId", item.getId());
-		allParticipantsList.add(jsonMembershipItem);
 	}
 
 	public void setRankManager(RankManager rankManager) {
@@ -9901,6 +9826,163 @@ public class DiscussionForumTool
     private boolean alwaysShowFullDesc = false;
     public boolean isAlwaysShowFullDesc(){
     	return ServerConfigurationService.getBoolean("mc.alwaysShowFullDesc", false); 
+    }
+    
+    /**
+     * This method uses hidden input fields to verify that the selected message, topic and forum is correct.
+     * This is used to prevent the multiple tabs issue where these values can be wrong. However, we can't just
+     * assume they are correct either. We must verify that the user truly has permission for these current fields.
+     * This method will verify that the user has access to the requested action against the hidden inputs fields, and if so,
+     * update the selected fields to complete the user's action and make the page load properly. 
+     * 
+     * @param methodCalled
+     * @param formId
+     * @param canReply
+     * @param canCompose
+     * @param canEdit
+     * @param canDelete
+     * @return
+     */
+    public boolean checkPermissionsForUser(String methodCalled, boolean canReply, boolean canCompose, boolean canEdit, boolean canDelete){
+    	try{
+    		boolean checkCurrentMessageId = canReply || canEdit || canDelete;
+    		DiscussionMessageBean tmpSelectedMessage = selectedMessage;
+    		DiscussionTopicBean tmpSelectedTopic = selectedTopic;
+    		DiscussionForumBean tmpSelectedForum = selectedForum;
+    		DiscussionMessageBean tmpSelectedThreadHead = selectedThreadHead;
+    		String forumContextId = getSiteId();
+    		//Check Message input field
+    		if(checkCurrentMessageId){
+    			try{	
+    				String msgIdStr = getExternalParameterByKey(CURRENT_MESSAGE_ID);
+    				long msgId = Long.parseLong(msgIdStr);
+    				if(tmpSelectedMessage == null || tmpSelectedMessage.getMessage() == null 
+    						|| (!tmpSelectedMessage.getMessage().getId().equals(msgId))){
+    					Message threadMessage = messageManager.getMessageByIdWithAttachments(msgId);
+    					tmpSelectedMessage = new DiscussionMessageBean(threadMessage, messageManager);
+    					//selected message has changed, make sure we set the selected thread head
+    					tmpSelectedThreadHead = new DiscussionMessageBean(tmpSelectedMessage.getMessage(), messageManager);
+    				    //make sure we have the thread head of depth 0
+    				    while(tmpSelectedThreadHead.getMessage().getInReplyTo() != null){
+    				    	threadMessage = messageManager.getMessageByIdWithAttachments(tmpSelectedThreadHead.getMessage().getInReplyTo().getId());
+    				    	tmpSelectedThreadHead = new DiscussionMessageBean(threadMessage, messageManager);
+    				    }
+    				}
+    			}catch(Exception e){
+    				LOG.error(e.getMessage(), e);
+    			}
+    		}
+    		//Check Forum input field
+    		try{
+    			String forumIdStr = getExternalParameterByKey(CURRENT_FORUM_ID);
+    			long forumId = Long.parseLong(forumIdStr);
+    			if(tmpSelectedForum == null || tmpSelectedForum.getForum() == null 
+    					|| (!tmpSelectedForum.getForum().getId().equals(forumId))){
+    				DiscussionForum forum = forumManager.getForumById(forumId);
+    				tmpSelectedForum = getDecoratedForum(forum);
+    				//forum changed, so make sure you use that forum's site id:
+    				forumContextId = forumManager.getContextForForumById(forum.getId());
+    			}
+    		}catch(Exception e){
+    			LOG.error(e.getMessage(), e);
+    		}
+
+    		//Check Topic: input field
+    		try{
+    			String topicIdStr = getExternalParameterByKey(CURRENT_TOPIC_ID);
+    			long topicId = Long.parseLong(topicIdStr);
+    			if(tmpSelectedTopic == null || tmpSelectedTopic.getTopic() == null 
+    					|| (!tmpSelectedTopic.getTopic().getId().equals(topicId))){
+    				//selected message doesn't match the current message input,
+    				//verify user has access to parameter message and use that one
+
+    				DiscussionTopic topicWithMsgs = (DiscussionTopic) forumManager.getTopicByIdWithMessages(topicId);
+    				tmpSelectedTopic = getDecoratedTopic(topicWithMsgs);    			
+    			}
+    		}catch(Exception e){
+    			LOG.error(e.getMessage(), e);
+    		}
+    		//verify everything is set properly
+    		//Obviously this could be done in one huge if statement, but it's not as easy to ready and understand the logic,
+    		//so I left it broken out
+
+    		//is message set
+    		if(checkCurrentMessageId && (tmpSelectedMessage == null || tmpSelectedMessage.getMessage() == null)){
+    			LOG.info(methodCalled + ": can not check permissions against a null message. user: " + getUserId());
+    			return false;
+    		}
+    		//is forum set
+    		if(tmpSelectedForum == null || tmpSelectedForum.getForum() == null){
+    			LOG.info(methodCalled + ": can not check permissions against a null forum. user: " + getUserId());
+    			return false;
+    		}
+    		//is topic set
+    		if(tmpSelectedTopic == null || tmpSelectedTopic.getTopic() == null){
+    			LOG.info(methodCalled + ": can not check permissions against a null topic. user: " + getUserId());
+    			return false;
+    		}
+    		//check topic belongs to the forum
+    		if(!tmpSelectedForum.getForum().getId().equals(tmpSelectedTopic.getTopic().getBaseForum().getId())){
+    			LOG.info(methodCalled + ": topic: " + tmpSelectedTopic.getTopic().getId() + " does not belong to the forum: " + tmpSelectedForum.getForum().getId() + ". user: " + getUserId());
+    			return false;    				
+    		}
+    		//check message belongs to the topic
+    		if(checkCurrentMessageId && !tmpSelectedMessage.getMessage().getTopic().getId().equals(tmpSelectedTopic.getTopic().getId())){
+    			LOG.info(methodCalled + ": message: " + tmpSelectedMessage.getMessage().getId() + " does not belong to the topic: " + tmpSelectedTopic.getTopic().getId() + ".  user: " + getUserId());
+    			return false;
+    		}
+    		//is topic locked?
+    		if(tmpSelectedTopic.getTopic().getLocked()){
+    			setErrorMessage(getResourceBundleString(TOPIC_LOCKED, new Object[]{tmpSelectedTopic.getTopic().getTitle()}));
+    			LOG.info(methodCalled + ": Topic is locked: " + tmpSelectedTopic.getTopic().getTitle() + ".  user: " + getUserId());
+    			return false;
+    		}
+    		//is forum locked?
+    		if(tmpSelectedForum != null && tmpSelectedForum.getForum().getLocked()){
+    			setErrorMessage(getResourceBundleString(FORUM_LOCKED, new Object[]{tmpSelectedForum.getForum().getTitle()}));
+    			LOG.info(methodCalled + ": Forum is locked: " + tmpSelectedForum.getForum().getTitle() + ".  user: " + getUserId());
+    			return false;
+    		}
+    		//can the user compose a message
+    		if(canCompose && !uiPermissionsManager.isNewResponse(tmpSelectedTopic.getTopic(), tmpSelectedForum.getForum(), getUserId(), forumContextId)){
+    			setErrorMessage(getResourceBundleString(INSUFFICIENT_PRIVILEAGES_TO_POST_THREAD, new Object[]{tmpSelectedTopic.getTopic().getTitle()}));
+    			LOG.info(methodCalled + ": user can not create new messages in this topic: " + tmpSelectedTopic.getTopic().getId() + ".  user: " + getUserId());
+    			return false;
+    		}
+    		//can the user reply to messsages
+    		if(canReply && !uiPermissionsManager.isNewResponseToResponse(tmpSelectedTopic.getTopic(), tmpSelectedForum.getForum(), getUserId(), forumContextId)){
+    			setErrorMessage(getResourceBundleString(INSUFFICIENT_PRIVILEAGES_TO_POST_THREAD, new Object[]{tmpSelectedTopic.getTopic().getTitle()}));
+    			LOG.info(methodCalled + ": user can not reply with new messages in this topic: " + tmpSelectedTopic.getTopic().getId() + ".  user: " + getUserId());
+    			return false;
+    		}
+
+    		boolean messageOwner = tmpSelectedMessage != null && tmpSelectedMessage.getMessage() != null && tmpSelectedMessage.getMessage().getCreatedBy().equals(getUserId());
+    		//can the user edit this message
+    		if(canEdit && !((messageOwner && uiPermissionsManager.isReviseOwn(tmpSelectedTopic.getTopic(), tmpSelectedForum.getForum(), getUserId(), forumContextId)) 
+    						|| uiPermissionsManager.isReviseAny(tmpSelectedTopic.getTopic(), tmpSelectedForum.getForum(), getUserId(), forumContextId))){
+    			setErrorMessage(getResourceBundleString(INSUFFICIENT_PRIVILEAGES_TO_POST_THREAD, new Object[]{tmpSelectedTopic.getTopic().getTitle()}));
+    			LOG.info(methodCalled + ": Insufficient privileages for user to revise message in topic: " + tmpSelectedTopic.getTopic().getTitle() + ".  user: " + getUserId());
+    			return false;
+    		}
+    		//can the user delete this message
+    		if(canDelete && !((messageOwner && uiPermissionsManager.isDeleteOwn(tmpSelectedTopic.getTopic(), tmpSelectedForum.getForum(), getUserId(), forumContextId)) 
+    							|| uiPermissionsManager.isDeleteAny(tmpSelectedTopic.getTopic(), tmpSelectedForum.getForum(), getUserId(), forumContextId))){
+    			setErrorMessage(getResourceBundleString(INSUFFICIENT_PRIVILEGES_TO_DELETE, new Object[]{tmpSelectedTopic.getTopic().getTitle()}));
+    			LOG.info(methodCalled + ": Insufficient privileages for user to delete message: " + (tmpSelectedMessage == null ? "" : tmpSelectedMessage.getMessage().getId()) + ".  user: " + getUserId());
+    			return false;
+    		}
+
+    		//ok Everything matched, so set the current values in case they changed:
+    		selectedMessage = tmpSelectedMessage;
+    		selectedThreadHead = tmpSelectedThreadHead;
+    		selectedTopic = tmpSelectedTopic;
+    		selectedForum = tmpSelectedForum;
+
+    		return true;
+    	}catch(Exception e){
+    		LOG.error(methodCalled + ": " + e.getMessage(), e);
+    	}
+    	return false;
     }
 }
 

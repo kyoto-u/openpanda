@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/questionpool/QuestionPoolItemData.java $
- * $Id: QuestionPoolItemData.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/questionpool/QuestionPoolItemData.java $
+ * $Id: QuestionPoolItemData.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -28,7 +28,7 @@ import org.sakaiproject.tool.assessment.data.ifc.questionpool.QuestionPoolItemIf
 /**
  *
  * @author $author$
- * @version $Id: QuestionPoolItemData.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * @version $Id: QuestionPoolItemData.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  */
 public class QuestionPoolItemData
     implements Serializable, QuestionPoolItemIfc 
@@ -37,19 +37,19 @@ public class QuestionPoolItemData
   private final static long serialVersionUID = 9180085666292824370L;
 
   private Long questionPoolId;
-  private String itemId;
+  private Long itemId;
   private ItemData itemData; //<-- is the item
     //private QuestionPool questionPool;
 
   public QuestionPoolItemData(){
   }
 
-  public QuestionPoolItemData(Long questionPoolId, String itemId){
+  public QuestionPoolItemData(Long questionPoolId, Long itemId){
     this.questionPoolId = questionPoolId;
     this.itemId = itemId;
   }
 
-  public QuestionPoolItemData(Long questionPoolId, String itemId, ItemData itemData){
+  public QuestionPoolItemData(Long questionPoolId, Long itemId, ItemData itemData){
     this.questionPoolId = questionPoolId;
     this.itemId = itemId;
     this.itemData = itemData;
@@ -59,7 +59,7 @@ public class QuestionPoolItemData
     this.itemData = itemData;
     //this.questionPool = questionPool;
     //setQuestionPoolId(questionPoolProperties.getId());
-    setItemId(itemData.getItemIdString());
+    setItemId(itemData.getItemId());
     setQuestionPoolId(questionPoolData.getQuestionPoolId());
   }
 
@@ -73,12 +73,12 @@ public class QuestionPoolItemData
     this.questionPoolId = questionPoolId;
   }
 
-  public String getItemId()
+  public Long getItemId()
   {
     return itemId;
   }
 
-  public void setItemId(String itemId)
+  public void setItemId(Long itemId)
   {
     this.itemId = itemId;
   }

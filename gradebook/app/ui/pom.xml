@@ -4,7 +4,7 @@
    <parent>
     <artifactId>sakai-gradebook-app</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>10.4</version>
+    <version>10.5</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>org.sakaiproject</groupId>
@@ -286,12 +286,12 @@
     <dependency>
     	<groupId>org.apache.poi</groupId>
     	<artifactId>poi</artifactId>
-    	<version>3.10-FINAL</version>    
+    	<version>3.10.1</version>    
     </dependency>
      <dependency>
     	<groupId>org.apache.poi</groupId>
     	<artifactId>poi-ooxml</artifactId>
-    	<version>3.10-FINAL</version>    
+    	<version>3.10.1</version>    
     </dependency>
   </dependencies>
 

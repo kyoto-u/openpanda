@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.sakaiproject</groupId>
 		<artifactId>master</artifactId>
-		<version>10.4</version>
+		<version>10.5</version>
 		<relativePath>../master/pom.xml</relativePath>
 	</parent>
 
 	<name>Sakai Signup Module</name>
 	<groupId>org.sakaiproject.signup</groupId>
 	<artifactId>signup</artifactId>
-	<version>10.4</version>
+	<version>10.5</version>
 
 	<organization>
 		<name>Sakai Project</name>
@@ -146,7 +146,7 @@
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi</artifactId>
-				<version>3.10-FINAL</version>
+				<version>3.10.1</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>

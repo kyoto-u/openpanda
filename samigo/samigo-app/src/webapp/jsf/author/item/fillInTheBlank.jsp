@@ -7,7 +7,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: fillInTheBlank.jsp 115704 2012-11-05 12:37:08Z steve.swinsburg@gmail.com $
+* $Id: fillInTheBlank.jsp 318219 2015-03-31 18:53:34Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -42,6 +42,14 @@
 
 <%-- HEADING --%>
 <%@ include file="/jsf/author/item/itemHeadings.jsp" %>
+
+<%-- warning for editing FIB questions. SAM-2334 --%>
+<h:panelGroup rendered="#{!author.isEditPendingAssessmentFlow}" styleClass="messageSamigo2">
+	<h:panelGrid  columns="1">
+		<h:outputText value="#{authorMessages.edit_fib_warning}" />
+	</h:panelGrid>
+</h:panelGroup>
+
 <h:form id="itemForm">
 <p class="act">
  <h:commandButton rendered="#{itemauthor.target=='assessment'}" value="#{commonMessages.action_save}" action="#{itemauthor.currentItem.getOutcome}" styleClass="active">

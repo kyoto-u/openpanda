@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.4/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
- * $Id: ResourcesAction.java 315758 2014-11-29 14:29:45Z jjmerono@um.es $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.5/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
+ * $Id: ResourcesAction.java 318802 2015-05-12 21:40:11Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -153,7 +153,7 @@ import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 * <p>ResourceAction is a ContentHosting application</p>
 *
 * @author University of Michigan, CHEF Software Development Team
-* @version $Revision: 315758 $
+* @version $Revision: 318802 $
 */
 public class ResourcesAction 
 	extends PagedResourceHelperAction // VelocityPortletPaneledAction
@@ -3109,7 +3109,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			{
 				permissions.add(ContentPermissions.CREATE);
 			}
-			if((inheritedPermissions != null && inheritedPermissions.contains(ContentPermissions.DELETE)) || ContentHostingService.allowRemoveCollection(id))
+			if(ContentHostingService.allowRemoveCollection(id))
 			{
 				permissions.add(ContentPermissions.DELETE);
 			}
@@ -3117,7 +3117,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			{
 				permissions.add(ContentPermissions.READ);
 			}
-			if((inheritedPermissions != null && inheritedPermissions.contains(ContentPermissions.REVISE)) || ContentHostingService.allowUpdateCollection(id))
+			if(ContentHostingService.allowUpdateCollection(id))
 			{
 				permissions.add(ContentPermissions.REVISE);
 			}
@@ -3132,7 +3132,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			{
 				permissions.add(ContentPermissions.CREATE);
 			}
-			if((inheritedPermissions != null && inheritedPermissions.contains(ContentPermissions.DELETE)) || ContentHostingService.allowRemoveResource(id))
+			if(ContentHostingService.allowRemoveResource(id))
 			{
 				permissions.add(ContentPermissions.DELETE);
 			}
@@ -3140,7 +3140,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			{
 				permissions.add(ContentPermissions.READ);
 			}
-			if((inheritedPermissions != null && inheritedPermissions.contains(ContentPermissions.REVISE)) || ContentHostingService.allowUpdateResource(id))
+			if(ContentHostingService.allowUpdateResource(id))
 			{
 				permissions.add(ContentPermissions.REVISE);
 			}

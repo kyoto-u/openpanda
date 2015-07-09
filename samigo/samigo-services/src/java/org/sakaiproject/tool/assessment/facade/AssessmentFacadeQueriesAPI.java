@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentFacadeQueriesAPI.java $
- * $Id: AssessmentFacadeQueriesAPI.java 306187 2014-02-19 19:32:59Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentFacadeQueriesAPI.java $
+ * $Id: AssessmentFacadeQueriesAPI.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -99,7 +99,7 @@ public interface AssessmentFacadeQueriesAPI {
 	/**
 	 * 
 	 * @param assessmentId
-	 * @return the assement or null if non found
+	 * @return the assessment or null if not found
 	 */
 	public AssessmentFacade getAssessment(Long assessmentId);
 
@@ -138,6 +138,8 @@ public interface AssessmentFacadeQueriesAPI {
 			String siteAgentId);
 
 	public AssessmentFacade getBasicInfoOfAnAssessment(Long assessmentId);
+	
+	public AssessmentFacade getBasicInfoOfAnAssessmentFromSectionId(Long sectionId);
 
 	public ArrayList getSettingsOfAllActiveAssessments(String orderBy);
 

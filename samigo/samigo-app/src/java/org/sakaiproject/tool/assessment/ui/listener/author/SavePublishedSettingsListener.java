@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.4/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
- * $Id: SavePublishedSettingsListener.java 313730 2014-09-18 23:21:44Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
+ * $Id: SavePublishedSettingsListener.java 318814 2015-05-12 23:16:53Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -38,7 +38,7 @@ import javax.faces.event.ActionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
@@ -84,7 +84,7 @@ import org.sakaiproject.tool.assessment.ui.bean.author.PublishRepublishNotificat
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: SavePublishedSettingsListener.java 313730 2014-09-18 23:21:44Z enietzel@anisakai.com $
+ * @version $Id: SavePublishedSettingsListener.java 318814 2015-05-12 23:16:53Z enietzel@anisakai.com $
  */
 
 public class SavePublishedSettingsListener
@@ -268,18 +268,20 @@ implements ActionListener
 	    	error=true;
 	    	assessmentSettings.setStartDate(new Date());
 	    }
-	    if ((retractDate != null && startDate != null && retractDate.before(startDate)) ||
-	    	(retractDate != null && startDate == null && retractDate.before(new Date()))) {
-	    	String dateError2 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","retract_earlier_than_avaliable");
-	    	context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, dateError2, null));
-	    	error=true;
-	    	isRetractEarlierThanAvaliable = true;
-	    	assessmentSettings.setStartDate(new Date());
-	    }
-	    if (!isRetractEarlierThanAvaliable && (retractDate != null && dueDate != null && retractDate.before(dueDate))) {
-	    	String dateError3 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","retract_earlier_than_due");
-	    	context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, dateError3, null));
-	    	error=true;
+	    if(assessmentSettings.getLateHandling() != null && AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(assessmentSettings.getLateHandling())){
+		    if ((retractDate != null && startDate != null && retractDate.before(startDate)) ||
+		    	(retractDate != null && startDate == null && retractDate.before(new Date()))) {
+		    	String dateError2 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","retract_earlier_than_avaliable");
+		    	context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, dateError2, null));
+		    	error=true;
+		    	isRetractEarlierThanAvaliable = true;
+		    	assessmentSettings.setStartDate(new Date());
+		    }
+		    if (!isRetractEarlierThanAvaliable && (retractDate != null && dueDate != null && retractDate.before(dueDate))) {
+		    	String dateError3 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","retract_earlier_than_due");
+		    	context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, dateError3, null));
+		    	error=true;
+		    }
 	    }
 
 	    // SAM-1088
@@ -288,11 +290,15 @@ implements ActionListener
 	    		retractDate == null && dueDate != null && assessmentSettings.getAutoSubmit()) {
 	    	assessmentSettings.setRetractDate(dueDate);
 	    }
+
 	    // if auto-submit is enabled, make sure retract date is set
 	    if (assessmentSettings.getAutoSubmit() && retractDate == null) {
-	    	String dateError4 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","retract_required_with_auto_submit");
-	    	context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, dateError4, null));
-	    	error=true;
+	    	boolean autoSubmitEnabled = ServerConfigurationService.getBoolean("samigo.autoSubmit.enabled", false);
+	    	if (autoSubmitEnabled) {
+	    		String dateError4 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","retract_required_with_auto_submit");
+	    		context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, dateError4, null));
+	    		error=true;
+	    	}
 	    }
 	    	    
 		// if timed assessment, does it has value for time

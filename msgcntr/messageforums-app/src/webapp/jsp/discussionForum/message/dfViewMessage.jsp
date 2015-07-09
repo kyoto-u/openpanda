@@ -9,6 +9,9 @@
 <f:view>
 	<sakai:view toolCssHref="/messageforums-tool/css/msgcntr.css">
 		<h:form id="msgForum" styleClass="specialLink">
+			<f:verbatim><input type="hidden" id="currentMessageId" name="currentMessageId" value="</f:verbatim><h:outputText value="#{ForumTool.selectedMessage.message.id}"/><f:verbatim>"/></f:verbatim>
+			<f:verbatim><input type="hidden" id="currentTopicId" name="currentTopicId" value="</f:verbatim><h:outputText value="#{ForumTool.selectedTopic.topic.id}"/><f:verbatim>"/></f:verbatim>
+			<f:verbatim><input type="hidden" id="currentForumId" name="currentForumId" value="</f:verbatim><h:outputText value="#{ForumTool.selectedForum.forum.id}"/><f:verbatim>"/></f:verbatim>
 			<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
 			<script type="text/javascript" src="/library/js/jquery/qtip/jquery.qtip-latest.min.js"></script>
 			<link rel="stylesheet" type="text/css" href="/library/js/jquery/qtip/jquery.qtip-latest.min.css" />
@@ -296,13 +299,44 @@
 		
 			<%-- If deleting, tells where to go back to --%>	
 			<h:inputHidden value="#{ForumTool.fromPage}" />
-		
-			<sakai:button_bar rendered="#{ForumTool.deleteMsg}" > 
-				<sakai:button_bar_item action="#{ForumTool.processDfMsgDeleteConfirmYes}" value="#{msgs.cdfm_button_bar_delete}" accesskey="x" styleClass ="blockMeOnClick"/>
-				<sakai:button_bar_item action="#{ForumTool.processDfMsgDeleteCancel}" value="#{msgs.cdfm_button_bar_cancel}" accesskey="c" />
-                <h:outputText styleClass="messageProgress" style="display:none" value="#{msgs.cdfm_processing_submit_message}" />
-			</sakai:button_bar>
+			<p style="padding:0" class="act">
+				<h:commandButton id="post" action="#{ForumTool.processDfMsgDeleteConfirmYes}" value="#{msgs.cdfm_button_bar_delete}" accesskey="x" styleClass="active blockMeOnClick"/>
+				<h:commandButton action="#{ForumTool.processDfMsgDeleteCancel}" value="#{msgs.cdfm_button_bar_cancel}" immediate="true" accesskey="c" />
+				<h:outputText styleClass="messageProgress" style="display:none" value="#{msgs.cdfm_processing_submit_message}" />
+			</p>
 
+			<f:verbatim><br/><br/></f:verbatim>		
+			<h:panelGroup styleClass="itemNav">
+				<h:commandLink action="#{ForumTool.processDisplayPreviousMsg}" rendered="#{ForumTool.selectedMessage != null && ForumTool.selectedMessage.hasPre}" 
+						title=" #{msgs.cdfm_prev_msg}">
+					<h:outputText value="#{msgs.cdfm_prev_msg}" />
+				</h:commandLink>
+				<h:outputText value="#{msgs.cdfm_prev_msg}"  rendered="#{!ForumTool.selectedMessage.hasPre}" />
+				<f:verbatim><h:outputText value=" | " /></f:verbatim>
+				<h:commandLink action="#{ForumTool.processDfDisplayNextMsg}" rendered="#{ForumTool.selectedMessage != null && ForumTool.selectedMessage.hasNext}" 
+						title=" #{msgs.cdfm_next_msg}">
+					<h:outputText value="#{msgs.cdfm_next_msg}" />
+				</h:commandLink>
+				<h:outputText value="#{msgs.cdfm_next_msg}" rendered="#{!ForumTool.selectedMessage.hasNext}" />
+			</h:panelGroup>
+
+			<f:verbatim><br/><br/></f:verbatim>
+			<h:panelGroup styleClass="itemNav">
+				<h:outputText   value="#{msgs.cdfm_previous_thread}"  rendered="#{!ForumTool.selectedThreadHead.hasPreThread}" />
+				<h:commandLink action="#{ForumTool.processActionDisplayThread}" value="#{msgs.cdfm_previous_thread}"  rendered="#{ForumTool.selectedThreadHead.hasPreThread}">
+					<f:param value="#{ForumTool.selectedThreadHead.preThreadId}" name="messageId"/>
+					<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
+					<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+				</h:commandLink>
+				<f:verbatim><h:outputText  id="blankSpace2" value=" |  " /></f:verbatim>				
+				<h:outputText   value="#{msgs.cdfm_next_thread}" rendered="#{!ForumTool.selectedThreadHead.hasNextThread}" />
+				<h:commandLink action="#{ForumTool.processActionDisplayThread}" value="#{msgs.cdfm_next_thread}" rendered="#{ForumTool.selectedThreadHead.hasNextThread}">
+					<f:param value="#{ForumTool.selectedThreadHead.nextThreadId}" name="messageId"/>
+					<f:param value="#{ForumTool.selectedTopic.topic.id}" name="topicId"/>
+					<f:param value="#{ForumTool.selectedForum.forum.id}" name="forumId"/>
+				</h:commandLink>
+
+			 </h:panelGroup>
 		</h:form>
 	</sakai:view>
 </f:view>
