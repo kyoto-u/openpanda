@@ -901,7 +901,12 @@ public class SiteAddParticipantHandler {
 							}
 						}
 					}
-						
+
+					if (u == null) {
+						// Resolve alternative ID if the directory provider supports it
+						u = userDirectoryService.findUserByAlternativeId(officialAccount, "Site Info");
+					}
+
 					if (u != null)
 					{
 						log.debug("found user with eid " + u.getEid());
