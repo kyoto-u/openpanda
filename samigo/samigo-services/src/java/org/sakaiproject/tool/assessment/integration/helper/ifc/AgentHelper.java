@@ -55,6 +55,8 @@ public interface AgentHelper extends Serializable
 
   public String getDisplayName(String agentString);
 
+  public String getDisplayId(String agentString, String siteType);
+
   public String getFirstName(String agentString);
 
   public String getLastName(String agentString);

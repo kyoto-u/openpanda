@@ -396,6 +396,14 @@ log.debug("getEidById agentString s = " + s);
     return siteName;
   }
 
+   /**
+    * Get the current site Type.
+    * @return the site type.
+    */
+  public String getCurrentSiteType(boolean accessViaUrl){
+    return "Samigo Site Type";
+  }
+
   // should phrase out this one -daisyf
   /**
    * Get the display name for a specific agent id string.
@@ -539,5 +547,20 @@ log.debug("getEidById agentString s = " + s);
         return "";
     }
 
+   public String getDisplayId(String agentString, String siteType)
+   {
+     org.sakaiproject.user.api.ContextualUserDisplayService cus = (org.sakaiproject.user.api.ContextualUserDisplayService) ComponentManager.get(org.sakaiproject.user.api.ContextualUserDisplayService.class);
+ 
+     String s="";
+     try{
+       if (!agentString.startsWith("anonymous_"))
+       s = cus != null ? cus.getUserDisplayId(UserDirectoryService.getUser(agentString), siteType):"";
+       //  s=UserDirectoryService.getUser(agentString).getDisplayId();
+     }
+     catch(Exception e){
+       log.warn(e.getMessage());
+     }
+     return s;
+  }
 
 }
