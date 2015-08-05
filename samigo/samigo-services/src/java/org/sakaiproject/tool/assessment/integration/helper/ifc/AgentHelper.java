@@ -55,6 +55,10 @@ public interface AgentHelper extends Serializable
 
   public String getDisplayName(String agentString);
 
+  public String getDisplayId(String agentString, String siteType);
+
+  public String getDisplayId(String agentId);
+
   public String getFirstName(String agentString);
 
   public String getLastName(String agentString);
@@ -94,9 +98,5 @@ public interface AgentHelper extends Serializable
    * @return true unless it is turned off
    */
   public boolean isFileUploadAvailable();
-
-  public String getDisplayId(String agentId);
-
-  public String getDisplayId(String agentString, String siteType);
 
 }
