@@ -100,6 +100,13 @@ public class SpreadsheetUtil {
 		if (userAgent != null && userAgent.contains("MSIE")) {
 			response.setHeader("Content-Disposition", "attachment" +
 					((!StringUtils.isEmpty(escapedFilename)) ? ("; filename=\"" + escapedFilename + "\"") : ""));
+		}else if (userAgent != null && userAgent.contains("Safari")) { 
+			String filename_safari = fileName;
+			try{
+				filename_safari  = new String(fileName.getBytes("utf-8"), "8859_1");
+			}catch(Exception e){}
+			response.setHeader("Content-Disposition", "attachment" +
+					((!StringUtils.isEmpty(filename_safari)) ? ("; filename=\"" + filename_safari + "\"") : ""));
 		} else {
 			response.setHeader("Content-Disposition", "attachment" +
 					((!StringUtils.isEmpty(escapedFilename)) ? ("; filename*=utf-8''" + escapedFilename) : ""));
