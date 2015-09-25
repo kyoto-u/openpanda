@@ -1,0 +1,2767 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-16 03:02+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. java.importcal
+#: calendar/calendar-bundles/resources/calendar.properties:1
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.importcal"
+msgid "Import calendar"
+msgstr "カレンダをインポート"
+
+#. java.theend
+#: calendar/calendar-bundles/resources/calendar.properties:2
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.theend"
+msgid ""
+"The end date you have specified on the Frequency page is earlier than the "
+"start date. Change it please."
+msgstr "「頻度」ページでしている終了日時が開始日時より前になっています。変更してください．"
+
+#. java.merge
+#: calendar/calendar-bundles/resources/calendar.properties:3
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.merge"
+msgid "Merge"
+msgstr "マージ"
+
+#. java.byday
+#: calendar/calendar-bundles/resources/calendar.properties:4
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.byday"
+msgid "Calendar by Day"
+msgstr "日カレンダ"
+
+#. java.byweek
+#: calendar/calendar-bundles/resources/calendar.properties:5
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.byweek"
+msgid "Calendar by Week"
+msgstr "週カレンダ"
+
+#. java.bymonth
+#: calendar/calendar-bundles/resources/calendar.properties:6
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.bymonth"
+msgid "Calendar by Month"
+msgstr "月カレンダ"
+
+#. java.byyear
+#: calendar/calendar-bundles/resources/calendar.properties:7
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.byyear"
+msgid "Calendar by Year"
+msgstr "年カレンダ"
+
+#. java.listeve
+#: calendar/calendar-bundles/resources/calendar.properties:8
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.listeve"
+msgid "List of Events"
+msgstr "イベント一覧"
+
+#. java.fields
+#: calendar/calendar-bundles/resources/calendar.properties:9
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.fields"
+msgid "Fields"
+msgstr "フィールド"
+
+#. java.new
+#: calendar/calendar-bundles/resources/calendar.properties:10
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.new"
+msgid "Add"
+msgstr "追加"
+
+#. java.import
+#: calendar/calendar-bundles/resources/calendar.properties:11
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.import"
+msgid "Import"
+msgstr "インポート"
+
+#. java.export
+#: calendar/calendar-bundles/resources/calendar.properties:12
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.export"
+msgid "Export Public Calendar"
+msgstr "公開カレンダーをエクスポートする"
+
+#. java.subscriptions
+#: calendar/calendar-bundles/resources/calendar.properties:13
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.subscriptions"
+msgid "Subscribe to a Calendar"
+msgstr "カレンダを購読します"
+
+#. java.print
+#: calendar/calendar-bundles/resources/calendar.properties:14
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.print"
+msgid "Printable Version"
+msgstr "印刷バージョン"
+
+#. java.default_view
+#: calendar/calendar-bundles/resources/calendar.properties:15
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.default_view"
+msgid "Set as Default View"
+msgstr "デフォルト表示としてセット"
+
+#. java.alert.default_view
+#: calendar/calendar-bundles/resources/calendar.properties:16
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.default_view"
+msgid "This is now the default view"
+msgstr "これが現在のデフォルト表示です"
+
+#. java.permissions
+#: calendar/calendar-bundles/resources/calendar.properties:17
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.permissions"
+msgid "Permissions"
+msgstr "権限"
+
+#. java.set
+#: calendar/calendar-bundles/resources/calendar.properties:18
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.set"
+msgid "Set permissions for Schedule in worksite "
+msgstr "次のワークサイトのスケジュールの権限を設定します："
+
+#. java.error
+#: calendar/calendar-bundles/resources/calendar.properties:19
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.error"
+msgid "The event doesn't exist any more."
+msgstr "これ以上，イベントはありません．"
+
+#. ical.title
+#: calendar/calendar-bundles/resources/calendar.properties:20
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:ical.title"
+msgid "Calendar Subscription Export"
+msgstr "iCal エクスポート"
+
+#. ical.schedname
+#: calendar/calendar-bundles/resources/calendar.properties:21
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:ical.schedname"
+msgid "Calendar Name"
+msgstr "スケジュール名"
+
+#. ical.option
+#: calendar/calendar-bundles/resources/calendar.properties:22
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:ical.option"
+msgid "Enable Subscription?"
+msgstr "iCal エクスポートを有効化"
+
+#. ical.url
+#: calendar/calendar-bundles/resources/calendar.properties:23
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:ical.url"
+msgid "Subscription URL:"
+msgstr "購読 URL:"
+
+#. ical.info
+#: calendar/calendar-bundles/resources/calendar.properties:24
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:ical.info"
+msgid ""
+"Subscription enables all calendar events within a window plus/minus 6 months"
+" to be publicly subscribed and accessed, without authentication."
+msgstr "カレンダ購読エクスポートを有効にすると現時点の前後6ヶ月内のイベントを購読することができます．"
+
+#. java.alert.aliasreq
+#: calendar/calendar-bundles/resources/calendar.properties:25
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.aliasreq"
+msgid "An Alias is required to enable iCal exports."
+msgstr "iCal エクスポートを有効にするためにはエイリアスが必要です．"
+
+#. java.alert.youneed
+#: calendar/calendar-bundles/resources/calendar.properties:26
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.youneed"
+msgid "You need to enter the name of the field to be added."
+msgstr "追加するフィールド名を入力する必要があります．"
+
+#. java.alert.theadd
+#: calendar/calendar-bundles/resources/calendar.properties:27
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.theadd"
+msgid "The add field name is already in use."
+msgstr "追加しようとしているフィールド名はすでに使用されています．"
+
+#. java.alert.areyou
+#: calendar/calendar-bundles/resources/calendar.properties:28
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.areyou"
+msgid "Are you sure you want to remove the following field(s):"
+msgstr "次のフィールドを削除してもよろしいですか?"
+
+#. java.alert.ifyes
+#: calendar/calendar-bundles/resources/calendar.properties:29
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.ifyes"
+msgid "? If yes, click 'Save Field Changes' to continue."
+msgstr "よろしければ，「フィールドの変更を保存」をクリックして先に進んでください．"
+
+#. java.alert.thereis
+#: calendar/calendar-bundles/resources/calendar.properties:30
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.thereis"
+msgid "There are no activities that exist."
+msgstr "予定がありません．"
+
+#. java.alert.youdont
+#: calendar/calendar-bundles/resources/calendar.properties:31
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.youdont"
+msgid "You do not have permission to add calendar fields"
+msgstr "このカレンダにフィールドを追加する権限がありません．"
+
+#. java.alert.thereisno
+#: calendar/calendar-bundles/resources/calendar.properties:32
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.thereisno"
+msgid "There is no activities exist."
+msgstr "予定がありません．"
+
+#. java.alert.youdonthave
+#: calendar/calendar-bundles/resources/calendar.properties:33
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.youdonthave"
+msgid "You do not have permission to edit this calendar."
+msgstr "このカレンダを編集する権限がありません．"
+
+#. java.alert.someone
+#: calendar/calendar-bundles/resources/calendar.properties:34
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.someone"
+msgid "Someone else is editing this calendar."
+msgstr "他のユーザがカレンダを編集しています．"
+
+#. java.alert.therenoactv
+#: calendar/calendar-bundles/resources/calendar.properties:35
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.therenoactv"
+msgid ""
+"There is no activities exist. If you have permission to add activity, please"
+" click on New"
+msgstr "予定はありません．予定を追加する権限を持っている場合は，「新規」をクリックしてください．"
+
+#. java.alert.younotperm
+#: calendar/calendar-bundles/resources/calendar.properties:36
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.younotperm"
+msgid "You do not have permission to add  activities"
+msgstr "予定を追加する権限がありません．"
+
+#. java.alert.younotallow
+#: calendar/calendar-bundles/resources/calendar.properties:37
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.younotallow"
+msgid "You are not allowed to see activities in the calendar"
+msgstr "このカレンダの予定を表示することは許されていません"
+
+#. java.alert.younotpermadd
+#: calendar/calendar-bundles/resources/calendar.properties:38
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.younotpermadd"
+msgid "You do not have permission to add activities"
+msgstr "予定を追加する権限がありません"
+
+#. java.alert.younotallowsee
+#: calendar/calendar-bundles/resources/calendar.properties:39
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.younotallowsee"
+msgid "You are not allowed to see activities in the calendar"
+msgstr "このカレンダの予定を表示することは許されていません"
+
+#. java.alert.noexist
+#: calendar/calendar-bundles/resources/calendar.properties:40
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.noexist"
+msgid ""
+"There is no calendar that exists. If you have permission to create a "
+"calendar click on file then new to create a calendar."
+msgstr "カレンダがありません．カレンダを作成する権限を持っている場合は，ファイルをクリックして，カレンダを新規に作成します．"
+
+#. java.alert.youcreate
+#: calendar/calendar-bundles/resources/calendar.properties:41
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.youcreate"
+msgid "You do not have permission to create a calendar"
+msgstr "カレンダを作成する権限がありません．"
+
+#. java.alert.event
+#: calendar/calendar-bundles/resources/calendar.properties:42
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.event"
+msgid "The event doesn't exist any more."
+msgstr "これ以上イベントはありません．"
+
+#. java.alert.eventbeing
+#: calendar/calendar-bundles/resources/calendar.properties:43
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.eventbeing"
+msgid "The event is being edited by another user. Please try again later."
+msgstr "イベントは他のユーザが編集しています．後でもう一度試してください．"
+
+#. java.alert.past
+#: calendar/calendar-bundles/resources/calendar.properties:44
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.past"
+msgid ""
+"Are you sure you want this scheduled event to occur in the past?  If yes, "
+"click 'Save Event' to finish."
+msgstr "この予定されたイベントを過去に起こったことにしてよろしいですか?  よろしければ，「イベントを保存」をクリックしてください．"
+
+#. java.alert.invalid
+#: calendar/calendar-bundles/resources/calendar.properties:45
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.invalid"
+msgid "Invalid start or end date"
+msgstr "無効な開始日時あるいは終了日時です．"
+
+#. java.alert.start
+#: calendar/calendar-bundles/resources/calendar.properties:46
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.start"
+msgid "The start date must be before the end date"
+msgstr "開始日時は終了日時よりも前でなければなりません"
+
+#. java.alert.youchoosegroup
+#: calendar/calendar-bundles/resources/calendar.properties:47
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.youchoosegroup"
+msgid "You need to choose at least a group."
+msgstr "グループを少なくとも一つ選択する必要があります．"
+
+#. java.alert.dupalias
+#: calendar/calendar-bundles/resources/calendar.properties:48
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.dupalias"
+msgid "This name has already been used"
+msgstr "この名前はすでに使用されています"
+
+#. java.alert.subsnameempty
+#: calendar/calendar-bundles/resources/calendar.properties:49
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.subsnameempty"
+msgid "You need to enter a name for the calendar to be added."
+msgstr "追加するカレンダの名前を入力する必要があります．"
+
+#. java.alert.subsurlempty
+#: calendar/calendar-bundles/resources/calendar.properties:50
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.subsurlempty"
+msgid "You need to enter a url for the calendar to be added."
+msgstr "追加するカレンダの URL を入力する必要があります．"
+
+#. java.alert.subsurlinvalid
+#: calendar/calendar-bundles/resources/calendar.properties:51
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.subsurlinvalid"
+msgid "This URL seems to be invalid. Please, enter a valid URL."
+msgstr "このURLは無効のようです．有効な URL を入力して下さい．"
+
+#. java.alert.invalidname
+#: calendar/calendar-bundles/resources/calendar.properties:52
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.invalidname"
+msgid "This is an invalid calendar name -- please try again"
+msgstr "これは不正なカレンダ名です．もう一度入力してください．"
+
+#. java.alert.opendate
+#: calendar/calendar-bundles/resources/calendar.properties:53
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.opendate"
+msgid "This assignment is not yet available."
+msgstr "この割り当ては、まだ使用できません。"
+
+#. java.pleasetitle
+#: calendar/calendar-bundles/resources/calendar.properties:54
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.pleasetitle"
+msgid "Please enter a title."
+msgstr "タイトルを入力してください．"
+
+#. java.pleasetime
+#: calendar/calendar-bundles/resources/calendar.properties:55
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.pleasetime"
+msgid "Please enter a time."
+msgstr "時間を入力してください．"
+
+#. dateselectionwidget.day
+#: calendar/calendar-bundles/resources/calendar.properties:56
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.day"
+msgid "Select day"
+msgstr "日を選択"
+
+#. dateselectionwidget.month
+#: calendar/calendar-bundles/resources/calendar.properties:57
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.month"
+msgid "Select month"
+msgstr "月を選択"
+
+#. dateselectionwidget.year
+#: calendar/calendar-bundles/resources/calendar.properties:58
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.year"
+msgid "Select year"
+msgstr "年を選択"
+
+#. dateselectionwidget.hour
+#: calendar/calendar-bundles/resources/calendar.properties:59
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.hour"
+msgid "Select hour"
+msgstr "時を選択"
+
+#. dateselectionwidget.minute
+#: calendar/calendar-bundles/resources/calendar.properties:60
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.minute"
+msgid "Select minute"
+msgstr "分を選択"
+
+#. dateselectionwidget.ampm
+#: calendar/calendar-bundles/resources/calendar.properties:61
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.ampm"
+msgid "Select AM or PM"
+msgstr "午前/午後を選択"
+
+#. jan
+#: calendar/calendar-bundles/resources/calendar.properties:62
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:jan"
+msgid "JAN"
+msgstr "1月"
+
+#. feb
+#: calendar/calendar-bundles/resources/calendar.properties:63
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:feb"
+msgid "FEB"
+msgstr "2月"
+
+#. mar
+#: calendar/calendar-bundles/resources/calendar.properties:64
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:mar"
+msgid "MAR"
+msgstr "3月"
+
+#. apr
+#: calendar/calendar-bundles/resources/calendar.properties:65
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:apr"
+msgid "APR"
+msgstr "4月"
+
+#. may
+#: calendar/calendar-bundles/resources/calendar.properties:66
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:may"
+msgid "MAY"
+msgstr "5月"
+
+#. jun
+#: calendar/calendar-bundles/resources/calendar.properties:67
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:jun"
+msgid "JUN"
+msgstr "6月"
+
+#. jul
+#: calendar/calendar-bundles/resources/calendar.properties:68
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:jul"
+msgid "JUL"
+msgstr "7月"
+
+#. aug
+#: calendar/calendar-bundles/resources/calendar.properties:69
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:aug"
+msgid "AUG"
+msgstr "8月"
+
+#. sep
+#: calendar/calendar-bundles/resources/calendar.properties:70
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:sep"
+msgid "SEP"
+msgstr "9月"
+
+#. oct
+#: calendar/calendar-bundles/resources/calendar.properties:71
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:oct"
+msgid "OCT"
+msgstr "10月"
+
+#. nov
+#: calendar/calendar-bundles/resources/calendar.properties:72
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:nov"
+msgid "NOV"
+msgstr "11月"
+
+#. dec
+#: calendar/calendar-bundles/resources/calendar.properties:73
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:dec"
+msgid "DEC"
+msgstr "12月"
+
+#. java.thismonth
+#: calendar/calendar-bundles/resources/calendar.properties:74
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.thismonth"
+msgid "This month is not exist"
+msgstr "この月はありません。"
+
+#. gen.alert
+#: calendar/calendar-bundles/resources/calendar.properties:75
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.alert"
+msgid "Alert: "
+msgstr "警告: "
+
+#. gen.new
+#: calendar/calendar-bundles/resources/calendar.properties:76
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.new"
+msgid "New..."
+msgstr "新規..."
+
+#. gen.delete
+#: calendar/calendar-bundles/resources/calendar.properties:77
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.delete"
+msgid "Remove event"
+msgstr "削除"
+
+#. gen.revise
+#: calendar/calendar-bundles/resources/calendar.properties:78
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.revise"
+msgid "Edit"
+msgstr "確認"
+
+#. gen.site
+#: calendar/calendar-bundles/resources/calendar.properties:79
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.site"
+msgid "Site"
+msgstr "サイト"
+
+#. gen.from
+#: calendar/calendar-bundles/resources/calendar.properties:80
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.from"
+msgid "From"
+msgstr "から"
+
+#. gen.save
+#: calendar/calendar-bundles/resources/calendar.properties:81
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.save"
+msgid "Save"
+msgstr "保存"
+
+#. gen.cancel
+#: calendar/calendar-bundles/resources/calendar.properties:82
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. gen.file
+#: calendar/calendar-bundles/resources/calendar.properties:83
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.file"
+msgid "File"
+msgstr "ファイル: "
+
+#. gen.title
+#: calendar/calendar-bundles/resources/calendar.properties:84
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.title"
+msgid "Title"
+msgstr "タイトル:"
+
+#. gen.date
+#: calendar/calendar-bundles/resources/calendar.properties:85
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.date"
+msgid "Date"
+msgstr "日時:"
+
+#. gen.time
+#: calendar/calendar-bundles/resources/calendar.properties:86
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.time"
+msgid "Time"
+msgstr "時間:"
+
+#. gen.freq
+#: calendar/calendar-bundles/resources/calendar.properties:87
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.freq"
+msgid "Frequency"
+msgstr "頻度"
+
+#. gen.descr
+#: calendar/calendar-bundles/resources/calendar.properties:88
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.descr"
+msgid "Description"
+msgstr "説明"
+
+#. gen.attach
+#: calendar/calendar-bundles/resources/calendar.properties:89
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.attach"
+msgid "Attachments"
+msgstr "添付"
+
+#. gen.noattach
+#: calendar/calendar-bundles/resources/calendar.properties:90
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.noattach"
+msgid "No attachments Yet "
+msgstr "添付はまだありません"
+
+#. gen.continue
+#: calendar/calendar-bundles/resources/calendar.properties:91
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.continue"
+msgid "Continue"
+msgstr "続ける"
+
+#. gen.back
+#: calendar/calendar-bundles/resources/calendar.properties:92
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.back"
+msgid "Back"
+msgstr "戻る"
+
+#. gen.backtolist
+#: calendar/calendar-bundles/resources/calendar.properties:93
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:gen.backtolist"
+msgid "Back to Calendar"
+msgstr "カレンダに戻る"
+
+#. gen.fromsite
+#: calendar/calendar-bundles/resources/calendar.properties:94
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.fromsite"
+msgid "From Site"
+msgstr "サイトから"
+
+#. gen.owner
+#: calendar/calendar-bundles/resources/calendar.properties:95
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.owner"
+msgid "Owner"
+msgstr "所有者"
+
+#. gen.assatt
+#: calendar/calendar-bundles/resources/calendar.properties:96
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.assatt"
+msgid "Additional attachments from assignment"
+msgstr "テストからの追加の添付ファイル"
+
+#. gen.assignmentlink
+#: calendar/calendar-bundles/resources/calendar.properties:97
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:gen.assignmentlink"
+msgid "Assignment Link"
+msgstr "テストリンク"
+
+#. del.deleting
+#: calendar/calendar-bundles/resources/calendar.properties:98
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.deleting"
+msgid "Deleting schedule item..."
+msgstr "スケジュールアイテムを削除しています..."
+
+#. del.sure
+#: calendar/calendar-bundles/resources/calendar.properties:99
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.sure"
+msgid "Are you sure you want to remove this event?"
+msgstr "アイテムを削除してもよろしいですか?"
+
+#. del.every
+#: calendar/calendar-bundles/resources/calendar.properties:100
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.every"
+msgid "Every"
+msgstr "すべての"
+
+#. del.number
+#: calendar/calendar-bundles/resources/calendar.properties:101
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.number"
+msgid "Number of occurrences:"
+msgstr "繰り返し回数:"
+
+#. del.times
+#: calendar/calendar-bundles/resources/calendar.properties:102
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.times"
+msgid "Times"
+msgstr "回"
+
+#. del.endson
+#: calendar/calendar-bundles/resources/calendar.properties:103
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.endson"
+msgid "Ends on"
+msgstr "終了日時："
+
+#. del.one
+#: calendar/calendar-bundles/resources/calendar.properties:104
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.one"
+msgid "Activity occurs once."
+msgstr "予定は一度だけです．"
+
+#. del.item
+#: calendar/calendar-bundles/resources/calendar.properties:105
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.item"
+msgid "Event type"
+msgstr "アイテム種別"
+
+#. legend.key1
+#: calendar/calendar-bundles/resources/calendar.properties:106
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key1"
+msgid "Academic Calendar"
+msgstr "学事カレンダ"
+
+#. legend.key2
+#: calendar/calendar-bundles/resources/calendar.properties:107
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key2"
+msgid "Activity"
+msgstr "予定"
+
+#. legend.key3
+#: calendar/calendar-bundles/resources/calendar.properties:108
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key3"
+msgid "Cancellation"
+msgstr "取消"
+
+#. legend.key4
+#: calendar/calendar-bundles/resources/calendar.properties:109
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key4"
+msgid "Class section - Discussion"
+msgstr "クラス(ディスカッション)"
+
+#. legend.key5
+#: calendar/calendar-bundles/resources/calendar.properties:110
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key5"
+msgid "Class section - Lab"
+msgstr "クラス(実験)"
+
+#. legend.key6
+#: calendar/calendar-bundles/resources/calendar.properties:111
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key6"
+msgid "Class section - Lecture"
+msgstr "クラス(講義)"
+
+#. legend.key7
+#: calendar/calendar-bundles/resources/calendar.properties:112
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key7"
+msgid "Class section - Small Group "
+msgstr "クラス(小グループ)"
+
+#. legend.key8
+#: calendar/calendar-bundles/resources/calendar.properties:113
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key8"
+msgid "Class session "
+msgstr "クラス"
+
+#. legend.key9
+#: calendar/calendar-bundles/resources/calendar.properties:114
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key9"
+msgid "Computer Session "
+msgstr "コンピュータ"
+
+#. legend.key10
+#: calendar/calendar-bundles/resources/calendar.properties:115
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key10"
+msgid "Deadline "
+msgstr "締切"
+
+#. legend.key11
+#: calendar/calendar-bundles/resources/calendar.properties:116
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key11"
+msgid "Exam "
+msgstr "試験"
+
+#. legend.key12
+#: calendar/calendar-bundles/resources/calendar.properties:117
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key12"
+msgid "Meeting"
+msgstr "打合せ"
+
+#. legend.key13
+#: calendar/calendar-bundles/resources/calendar.properties:118
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key13"
+msgid "Multidisciplinary Conference "
+msgstr "学会"
+
+#. legend.key14
+#: calendar/calendar-bundles/resources/calendar.properties:119
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key14"
+msgid "Quiz "
+msgstr "テスト"
+
+#. legend.key15
+#: calendar/calendar-bundles/resources/calendar.properties:120
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key15"
+msgid "Special event "
+msgstr "特別なイベント"
+
+#. legend.key16
+#: calendar/calendar-bundles/resources/calendar.properties:121
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key16"
+msgid "Web Assignment "
+msgstr "ウェブ課題"
+
+#. del.deleteall
+#: calendar/calendar-bundles/resources/calendar.properties:122
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:del.deleteall"
+msgid "Delete all occurrences"
+msgstr "すべての予定を削除"
+
+#. del.deleteonly
+#: calendar/calendar-bundles/resources/calendar.properties:123
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:del.deleteonly"
+msgid "Delete only this occurrence"
+msgstr "現在の予定だけを削除"
+
+#. imp.step1
+#: calendar/calendar-bundles/resources/calendar.properties:124
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.step1"
+msgid "Step 1 of 3: Select  type of calendar to import  from"
+msgstr "ステップ 1/3: インポートするカレンダの種別を次から選択します："
+
+#. imp.step2
+#: calendar/calendar-bundles/resources/calendar.properties:125
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.step2"
+msgid "Step 2 of 3: Reformat data and select the file to import"
+msgstr "ステップ 2/3: データを再フォーマットしてインポートするファイルを選択します"
+
+#. imp.step2b
+#: calendar/calendar-bundles/resources/calendar.properties:126
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.step2b"
+msgid "Step 2 of 3: Select the file to import"
+msgstr "ステップ 2/3: インポートするファイルを選択します"
+
+#. imp.step3
+#: calendar/calendar-bundles/resources/calendar.properties:127
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.step3"
+msgid "Step 3 of 3: Review activities and confirm import"
+msgstr "ステップ 3/3: 予定を確認してインポートを完了します"
+
+#. imp.select
+#: calendar/calendar-bundles/resources/calendar.properties:128
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.select"
+msgid "Type of calendar to import"
+msgstr "インポートするカレンダの種別"
+
+#. imp.todo
+#: calendar/calendar-bundles/resources/calendar.properties:129
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.todo"
+msgid ""
+"To perform an import of generic calendar data, download the template package"
+" below. The package includes a 'Readme' file with instructions, as well as a"
+" CSV format example file that can be opened with Microsoft Excel or similar "
+"applications. Convert your data into the exact format shown in the CSV file "
+"to ensure compatibility."
+msgstr "一般的なカレンダデータのインポートを実行する場合，下のテンプレートパッケージをダウンロードします．パッケージには，指示が記された Readme ファイルがあるとともに，Microsoft Excel または同様のアプリケーションで開くことができる CSV フォーマットのサンプルファイルがあります．互換性を保障するために，データを CSV ファイルと全く同じフォーマットに変換してください．"
+
+#. imp.mm.outlook
+#: calendar/calendar-bundles/resources/calendar.properties:130
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.mm.outlook"
+msgid ""
+"Microsoft Outlook data must be exported into a CSV file (comma separated "
+"values); Meeting Maker data must be exported into a text file (tab-"
+"delimited)."
+msgstr "Microsoft Outlook 用のデータは CSV ファイル (カンマ区切り値) にエクスポートする必要があります．Meeting Marker 用データはテキストファイル (タブ区切り) にエクスポートする必要があります．"
+
+#. imp.ical.todo
+#: calendar/calendar-bundles/resources/calendar.properties:131
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.ical.todo"
+msgid "iCalendar imports do not currently support re-occuring events"
+msgstr "iCalendar では，繰り返しイベントは現在サポートされていません"
+
+#. imp.generic
+#: calendar/calendar-bundles/resources/calendar.properties:132
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.generic"
+msgid "Generic Import Template"
+msgstr "汎用インポートテンプレート"
+
+#. imp.when
+#: calendar/calendar-bundles/resources/calendar.properties:133
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.when"
+msgid ""
+"When you have your calendar information in the correct format, browse for "
+"the file below and upload it to the system."
+msgstr "　正しフォーマットでカレンダ情報が用意できたら，そのファイルを下で選択し，システムにアップロードします．"
+
+#. imp.browse
+#: calendar/calendar-bundles/resources/calendar.properties:134
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.browse"
+msgid ""
+"Browse your computer to find your exported calendar data, and upload it "
+"below."
+msgstr "エクスポートしたカレンダデータを選択し，下でアップロードします．"
+
+#. imp.yourcustom
+#: calendar/calendar-bundles/resources/calendar.properties:135
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.yourcustom"
+msgid "You are importing"
+msgstr "下に一覧表示された"
+
+#. imp.yourcustom2
+#: calendar/calendar-bundles/resources/calendar.properties:136
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.yourcustom2"
+msgid ""
+"activities, listed below. Uncheck the 'Import' box for any activity(s) you "
+"do not want to import. "
+msgstr "個の予定をインポートしています．インポートしたくないすべての予定の「削除」ボックスをチェックします．"
+
+#. imp.micro
+#: calendar/calendar-bundles/resources/calendar.properties:137
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.micro"
+msgid "Microsoft Outlook"
+msgstr "Microsoft Outlook"
+
+#. imp.mmaker
+#: calendar/calendar-bundles/resources/calendar.properties:138
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.mmaker"
+msgid "Meeting Maker"
+msgstr "Meeting Marker"
+
+#. imp.ical
+#: calendar/calendar-bundles/resources/calendar.properties:139
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.ical"
+msgid "iCalendar"
+msgstr "iCalendar"
+
+#. imp.gcalendar
+#: calendar/calendar-bundles/resources/calendar.properties:140
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.gcalendar"
+msgid "Generic calendar import (comma-separate values)"
+msgstr "汎用カレンダインポート(コンマ区切りの値)"
+
+#. imp.keep
+#: calendar/calendar-bundles/resources/calendar.properties:141
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.keep"
+msgid "Import?"
+msgstr "削除?"
+
+#. imp.actvtm
+#: calendar/calendar-bundles/resources/calendar.properties:142
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.actvtm"
+msgid "Activity and Time"
+msgstr "予定と時間"
+
+#. imp.addeve
+#: calendar/calendar-bundles/resources/calendar.properties:143
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.addeve"
+msgid "Import Events"
+msgstr "イベントをインポート"
+
+#. imp.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:144
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.list.summary"
+msgid ""
+"List of events being imported. Column 1: date. Column 2: activity and time. "
+"Column 3: checkbox - uncheck to exclude from import."
+msgstr "インポートされるイベント一覧．カラム 1 は「日付」，カラム 2 は「イベント名と時刻」，カラム 3 はインポートから排除するかどうかの「チェックボックス」です．"
+
+#. import.outlook.subject_header
+#: calendar/calendar-bundles/resources/calendar.properties:145
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.subject_header"
+msgid "Subject"
+msgstr "件名"
+
+#. import.outlook.start_date_header
+#: calendar/calendar-bundles/resources/calendar.properties:146
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.start_date_header"
+msgid "Start Date"
+msgstr "開始日"
+
+#. import.outlook.start_time_header
+#: calendar/calendar-bundles/resources/calendar.properties:147
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.start_time_header"
+msgid "Start Time"
+msgstr "開始時刻"
+
+#. import.outlook.end_date_header
+#: calendar/calendar-bundles/resources/calendar.properties:148
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.end_date_header"
+msgid "End Date"
+msgstr "終了日"
+
+#. import.outlook.end_time_header
+#: calendar/calendar-bundles/resources/calendar.properties:149
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.end_time_header"
+msgid "End Time"
+msgstr "終了時刻"
+
+#. import.outlook.all_day_event_header
+#: calendar/calendar-bundles/resources/calendar.properties:150
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.all_day_event_header"
+msgid "All day event"
+msgstr "全日イベント"
+
+#. import.outlook.description_header
+#: calendar/calendar-bundles/resources/calendar.properties:151
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.description_header"
+msgid "Description"
+msgstr "説明"
+
+#. import.outlook.location_header
+#: calendar/calendar-bundles/resources/calendar.properties:152
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.location_header"
+msgid "Location"
+msgstr "場所"
+
+#. import.outlook.charset
+#: calendar/calendar-bundles/resources/calendar.properties:153
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.charset"
+msgid "ISO-8859-1"
+msgstr "ISO-8859-1"
+
+#. import.outlook.note
+#: calendar/calendar-bundles/resources/calendar.properties:154
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:import.outlook.note"
+msgid ""
+"NOTE: The import is language sensitive. This means the language you are "
+"using with Microsoft Outlook have to be the same you are using in this "
+"platform."
+msgstr "注意：インポートは言語依存です．Microsoft Outlookで使っている言語がこのプラットフォームで使っているものと同じである必要があります．"
+
+#. new.adding
+#: calendar/calendar-bundles/resources/calendar.properties:155
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.adding"
+msgid "Add Event"
+msgstr "新規イベント"
+
+#. new.toadd
+#: calendar/calendar-bundles/resources/calendar.properties:156
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.toadd"
+msgid ""
+"To add an event to the schedule, complete the form and choose 'Save Event' "
+"at the bottom. "
+msgstr "スケジュールアイテムを追加する場合は，フォームに入力し，一番下の「イベントを保存」を選択します．"
+
+#. new.a
+#: calendar/calendar-bundles/resources/calendar.properties:157
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.a"
+msgid "Required items marked with"
+msgstr "必須アイテムには次の記号が付いています:"
+
+#. new.scheduleitem
+#: calendar/calendar-bundles/resources/calendar.properties:158
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:new.scheduleitem"
+msgid "Event "
+msgstr "イベント"
+
+#. new.title
+#: calendar/calendar-bundles/resources/calendar.properties:159
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.title"
+msgid "Title"
+msgstr "タイトル"
+
+#. new.descr
+#: calendar/calendar-bundles/resources/calendar.properties:160
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.descr"
+msgid "Message"
+msgstr "メッセージ"
+
+#. new.date
+#: calendar/calendar-bundles/resources/calendar.properties:161
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.date"
+msgid "Date"
+msgstr "日時"
+
+#. new.duration
+#: calendar/calendar-bundles/resources/calendar.properties:162
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.duration"
+msgid "Duration"
+msgstr "期間"
+
+#. new.end
+#: calendar/calendar-bundles/resources/calendar.properties:163
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.end"
+msgid "End Time"
+msgstr "終了日時"
+
+#. new.freq
+#: calendar/calendar-bundles/resources/calendar.properties:164
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.freq"
+msgid "Frequency"
+msgstr "頻度"
+
+#. new.every
+#: calendar/calendar-bundles/resources/calendar.properties:165
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.every"
+msgid "Every"
+msgstr "毎"
+
+#. new.number
+#: calendar/calendar-bundles/resources/calendar.properties:166
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.number"
+msgid "Number of occurrences:"
+msgstr "繰り返し回数:"
+
+#. new.times
+#: calendar/calendar-bundles/resources/calendar.properties:167
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.times"
+msgid "Times"
+msgstr "回"
+
+#. new.endson
+#: calendar/calendar-bundles/resources/calendar.properties:168
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.endson"
+msgid "Ends on"
+msgstr "終了日時："
+
+#. new.oneocc
+#: calendar/calendar-bundles/resources/calendar.properties:169
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.oneocc"
+msgid "Activity occurs once"
+msgstr "予定は一度だけです"
+
+#. new.setfreq
+#: calendar/calendar-bundles/resources/calendar.properties:170
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.setfreq"
+msgid "Frequency"
+msgstr "頻度"
+
+#. new.itemtype
+#: calendar/calendar-bundles/resources/calendar.properties:171
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.itemtype"
+msgid "Event Type"
+msgstr "イベント種別"
+
+#. new.location
+#: calendar/calendar-bundles/resources/calendar.properties:172
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.location"
+msgid "Event Location"
+msgstr "イベントの場所"
+
+#. new.addattach
+#: calendar/calendar-bundles/resources/calendar.properties:173
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:new.addattach"
+msgid "Add Attachments"
+msgstr "添付の追加"
+
+#. new.adddrop
+#: calendar/calendar-bundles/resources/calendar.properties:174
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.adddrop"
+msgid "Add/remove attachments"
+msgstr "添付を追加・削除"
+
+#. new.post
+#: calendar/calendar-bundles/resources/calendar.properties:175
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.post"
+msgid "Save Event"
+msgstr "イベントを保存"
+
+#. new.hours
+#: calendar/calendar-bundles/resources/calendar.properties:176
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.hours"
+msgid "Hours"
+msgstr "時間"
+
+#. new.minutes
+#: calendar/calendar-bundles/resources/calendar.properties:177
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.minutes"
+msgid "Minutes"
+msgstr "分"
+
+#. rev.revising
+#: calendar/calendar-bundles/resources/calendar.properties:178
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.revising"
+msgid "Editing event..."
+msgstr "スケジュールアイテムを確認しています..."
+
+#. rev.torev
+#: calendar/calendar-bundles/resources/calendar.properties:179
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.torev"
+msgid ""
+"To edit the event, update the form and choose 'Save Event' at the bottom."
+msgstr "スケジュールアイテムを確認する場合は，フォームを更新し，一番下の「イベントを保存」を選択します．"
+
+#. rev.start
+#: calendar/calendar-bundles/resources/calendar.properties:180
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.start"
+msgid "Start Time"
+msgstr "開始日時"
+
+#. rev.hours
+#: calendar/calendar-bundles/resources/calendar.properties:181
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.hours"
+msgid "hours"
+msgstr "時間"
+
+#. rev.minutes
+#: calendar/calendar-bundles/resources/calendar.properties:182
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.minutes"
+msgid "minutes"
+msgstr "分"
+
+#. rev.modify
+#: calendar/calendar-bundles/resources/calendar.properties:183
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.modify"
+msgid "Modify all occurrences"
+msgstr "すべての予定を修正"
+
+#. rev.modifyonly
+#: calendar/calendar-bundles/resources/calendar.properties:184
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:rev.modifyonly"
+msgid "Modify only this occurrence"
+msgstr "現在の予定だけ修正"
+
+#. start.hour
+#: calendar/calendar-bundles/resources/calendar.properties:185
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:start.hour"
+msgid "Start hour"
+msgstr "開始時間"
+
+#. start.minute
+#: calendar/calendar-bundles/resources/calendar.properties:186
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:start.minute"
+msgid "Start minute"
+msgstr "開始分"
+
+#. start.ampm
+#: calendar/calendar-bundles/resources/calendar.properties:187
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:start.ampm"
+msgid "Start am or pm"
+msgstr "開始時刻の AM / PM"
+
+#. end.hour
+#: calendar/calendar-bundles/resources/calendar.properties:188
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:end.hour"
+msgid "End hour"
+msgstr "終了時間"
+
+#. end.minute
+#: calendar/calendar-bundles/resources/calendar.properties:189
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:end.minute"
+msgid "End minute"
+msgstr "終了分"
+
+#. end.ampm
+#: calendar/calendar-bundles/resources/calendar.properties:190
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:end.ampm"
+msgid "End AM or PM"
+msgstr "終了時刻の AM / PM"
+
+#. set.setting
+#: calendar/calendar-bundles/resources/calendar.properties:191
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.setting"
+msgid "Frequency"
+msgstr "頻度"
+
+#. set.toset
+#: calendar/calendar-bundles/resources/calendar.properties:192
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.toset"
+msgid "Required items marked with "
+msgstr "必須アイテムは次のマークが付いています："
+
+#. set.select
+#: calendar/calendar-bundles/resources/calendar.properties:193
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.select"
+msgid "Event Frequency"
+msgstr "イベントの繰り返し頻度"
+
+#. set.the
+#: calendar/calendar-bundles/resources/calendar.properties:194
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.the"
+msgid "the event frequency:"
+msgstr "イベントの頻度:"
+
+#. set.once
+#: calendar/calendar-bundles/resources/calendar.properties:195
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.once"
+msgid "once"
+msgstr "1回"
+
+#. set.daily
+#: calendar/calendar-bundles/resources/calendar.properties:196
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.daily"
+msgid "daily"
+msgstr "毎日"
+
+#. set.weekly
+#: calendar/calendar-bundles/resources/calendar.properties:197
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.weekly"
+msgid "weekly"
+msgstr "毎週"
+
+#. set.monthly
+#: calendar/calendar-bundles/resources/calendar.properties:198
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.monthly"
+msgid "monthly"
+msgstr "毎月"
+
+#. set.yearly
+#: calendar/calendar-bundles/resources/calendar.properties:199
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.yearly"
+msgid "yearly"
+msgstr "毎年"
+
+#. set.theonly
+#: calendar/calendar-bundles/resources/calendar.properties:200
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.theonly"
+msgid "The only occurrence is on"
+msgstr "イベントは次の日だけ: "
+
+#. set.every
+#: calendar/calendar-bundles/resources/calendar.properties:201
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.every"
+msgid "Every:"
+msgstr "毎:"
+
+#. set.days
+#: calendar/calendar-bundles/resources/calendar.properties:202
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.days"
+msgid "day(s)"
+msgstr "日ごと"
+
+#. set.weeks
+#: calendar/calendar-bundles/resources/calendar.properties:203
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.weeks"
+msgid "week(s)"
+msgstr "週ごと"
+
+#. set.months
+#: calendar/calendar-bundles/resources/calendar.properties:204
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.months"
+msgid "month(s)"
+msgstr "月ごと"
+
+#. set.years
+#: calendar/calendar-bundles/resources/calendar.properties:205
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.years"
+msgid "year(s)"
+msgstr "年"
+
+#. set.ends
+#: calendar/calendar-bundles/resources/calendar.properties:206
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.ends"
+msgid "Ends:"
+msgstr "終了:"
+
+#. set.never
+#: calendar/calendar-bundles/resources/calendar.properties:207
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.never"
+msgid "Never"
+msgstr "無期限"
+
+#. set.on
+#: calendar/calendar-bundles/resources/calendar.properties:208
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.on"
+msgid "On"
+msgstr "On"
+
+#. set.after
+#: calendar/calendar-bundles/resources/calendar.properties:209
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.after"
+msgid "After"
+msgstr "後"
+
+#. set.times
+#: calendar/calendar-bundles/resources/calendar.properties:210
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.times"
+msgid "time(s)"
+msgstr "回後に"
+
+#. view.goto
+#: calendar/calendar-bundles/resources/calendar.properties:211
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.goto"
+msgid "Go to Next Day"
+msgstr "次の日に移動"
+
+#. view.gotopd
+#: calendar/calendar-bundles/resources/calendar.properties:212
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.gotopd"
+msgid "Go to Previous Day"
+msgstr "前の日に移動"
+
+#. view.golater
+#: calendar/calendar-bundles/resources/calendar.properties:213
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.golater"
+msgid "Go later"
+msgstr "さらに後へ移動"
+
+#. view.goearlier
+#: calendar/calendar-bundles/resources/calendar.properties:214
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.goearlier"
+msgid "Go earlier"
+msgstr "さらに前へ移動"
+
+#. view.gotoday
+#: calendar/calendar-bundles/resources/calendar.properties:215
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.gotoday"
+msgid "Go to Today"
+msgstr "今日へ移動"
+
+#. view.after
+#: calendar/calendar-bundles/resources/calendar.properties:216
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.after"
+msgid "Later"
+msgstr "さらに後"
+
+#. view.before
+#: calendar/calendar-bundles/resources/calendar.properties:217
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.before"
+msgid "Earlier"
+msgstr "さらに前"
+
+#. view.tomorrow
+#: calendar/calendar-bundles/resources/calendar.properties:218
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.tomorrow"
+msgid "Next Day"
+msgstr "次の日"
+
+#. view.yesterday
+#: calendar/calendar-bundles/resources/calendar.properties:219
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.yesterday"
+msgid "Previous Day"
+msgstr "前の日"
+
+#. view.view
+#: calendar/calendar-bundles/resources/calendar.properties:220
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.view"
+msgid "View"
+msgstr "表示"
+
+#. view.listnavselect
+#: calendar/calendar-bundles/resources/calendar.properties:221
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.listnavselect"
+msgid ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+msgstr "メニュー上でスクロールする場合は Alt + 上または下矢印を押します．"
+
+#. view.summary
+#: calendar/calendar-bundles/resources/calendar.properties:222
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.summary"
+msgid "Table represents a day - rows are half hours"
+msgstr "表は1日分です．1行は30分です．"
+
+#. view.calday
+#: calendar/calendar-bundles/resources/calendar.properties:223
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.calday"
+msgid "Calendar by Day"
+msgstr "日カレンダ"
+
+#. view.calweek
+#: calendar/calendar-bundles/resources/calendar.properties:224
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.calweek"
+msgid "Calendar by Week"
+msgstr "週カレンダ"
+
+#. view.calmonth
+#: calendar/calendar-bundles/resources/calendar.properties:225
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.calmonth"
+msgid "Calendar by Month"
+msgstr "月カレンダ"
+
+#. view.calyear
+#: calendar/calendar-bundles/resources/calendar.properties:226
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.calyear"
+msgid "Calendar by Year"
+msgstr "年カレンダ"
+
+#. view.show
+#: calendar/calendar-bundles/resources/calendar.properties:227
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.show"
+msgid "Show"
+msgstr "表示:"
+
+#. view.all
+#: calendar/calendar-bundles/resources/calendar.properties:228
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.all"
+msgid "All events"
+msgstr "すべての予定"
+
+#. view.activ
+#: calendar/calendar-bundles/resources/calendar.properties:229
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.activ"
+msgid "Events for today"
+msgstr "今日の予定"
+
+#. view.activw
+#: calendar/calendar-bundles/resources/calendar.properties:230
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.activw"
+msgid "Events for this week"
+msgstr "今週の予定"
+
+#. view.activm
+#: calendar/calendar-bundles/resources/calendar.properties:231
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.activm"
+msgid "Events for this month"
+msgstr "今月の予定"
+
+#. view.activy
+#: calendar/calendar-bundles/resources/calendar.properties:232
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.activy"
+msgid "Events for this year"
+msgstr "今年の予定"
+
+#. view.custom
+#: calendar/calendar-bundles/resources/calendar.properties:233
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.custom"
+msgid "Custom date range"
+msgstr "任意の期間"
+
+#. view.apply
+#: calendar/calendar-bundles/resources/calendar.properties:234
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.apply"
+msgid "Filter Events"
+msgstr "予定をフィルタ"
+
+#. view.lasday
+#: calendar/calendar-bundles/resources/calendar.properties:235
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.lasday"
+msgid "&lt; Previous Day"
+msgstr "< 前の日"
+
+#. view.nexday
+#: calendar/calendar-bundles/resources/calendar.properties:236
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.nexday"
+msgid "Next Day &gt;"
+msgstr "次の日 >"
+
+#. view.today
+#: calendar/calendar-bundles/resources/calendar.properties:237
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.today"
+msgid "Today"
+msgstr "今日"
+
+#. viewm.gotopm
+#: calendar/calendar-bundles/resources/calendar.properties:238
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewm.gotopm"
+msgid "Go to Previous Month"
+msgstr "前の月に移動"
+
+#. viewm.gotonm
+#: calendar/calendar-bundles/resources/calendar.properties:239
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewm.gotonm"
+msgid "Go to Next Month"
+msgstr "次の月に移動"
+
+#. viewm.lasm
+#: calendar/calendar-bundles/resources/calendar.properties:240
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewm.lasm"
+msgid "&lt; Previous Month"
+msgstr "< 前の月"
+
+#. vieww.nexm
+#: calendar/calendar-bundles/resources/calendar.properties:241
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.nexm"
+msgid "Next Month &gt;"
+msgstr "次の月 >"
+
+#. viewm.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:242
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewm.list.summary"
+msgid "Table represents month. Columns are week days."
+msgstr "表は月を表しています．カラムは各曜日です．"
+
+#. viewm.date_format
+#: calendar/calendar-bundles/resources/calendar.properties:243
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewm.date_format"
+msgid "MMMM yyyy"
+msgstr "MMMM yyyy"
+
+#. viewl.st
+#: calendar/calendar-bundles/resources/calendar.properties:244
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.st"
+msgid "Start:"
+msgstr "開始:"
+
+#. viewl.ed
+#: calendar/calendar-bundles/resources/calendar.properties:245
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.ed"
+msgid "End:"
+msgstr "終了:"
+
+#. viewl.date
+#: calendar/calendar-bundles/resources/calendar.properties:246
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.date"
+msgid "Date"
+msgstr "日時"
+
+#. viewl.time
+#: calendar/calendar-bundles/resources/calendar.properties:247
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.time"
+msgid "Time"
+msgstr "時間"
+
+#. viewl.desc
+#: calendar/calendar-bundles/resources/calendar.properties:248
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.desc"
+msgid "Description"
+msgstr "説明"
+
+#. viewl.folder
+#: calendar/calendar-bundles/resources/calendar.properties:249
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.folder"
+msgid "folder"
+msgstr "フォルダ"
+
+#. viewl.attach
+#: calendar/calendar-bundles/resources/calendar.properties:250
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.attach"
+msgid "attachment"
+msgstr "添付"
+
+#. viewl.froms
+#: calendar/calendar-bundles/resources/calendar.properties:251
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.froms"
+msgid "From Site:"
+msgstr "サイトから:"
+
+#. viewl.update
+#: calendar/calendar-bundles/resources/calendar.properties:252
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.update"
+msgid "Update"
+msgstr "更新"
+
+#. viewl.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:253
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewl.list.summary"
+msgid ""
+"List of events in schedule. Column 1: date. Column 2: time. Column 3: "
+"audience. Column 4: title and description."
+msgstr "スケジュール中のイベント一覧．カラム 1 は「日付」，カラム 2 は「時刻」，カラム 3 は「閲覧者」，カラム 4 は「タイトルと説明」です．"
+
+#. viewl.sortdateasc
+#: calendar/calendar-bundles/resources/calendar.properties:254
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewl.sortdateasc"
+msgid "Sort by date ascending"
+msgstr "日付で昇順にソート"
+
+#. viewl.sortdatedesc
+#: calendar/calendar-bundles/resources/calendar.properties:255
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewl.sortdatedesc"
+msgid "Sort by date descending"
+msgstr "日付で降順にソート"
+
+#. viewl.group.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:256
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:viewl.group.list.summary"
+msgid ""
+"Table contains list of groups. First will  contain checkboxes, second will "
+"contain the group name, third the group description. Header links can be "
+"used to sort."
+msgstr "表はグループ一覧です．最初のカラムは「チェックボックス」，2 番目のカラムは「グループ名」，3番目のカラムは「グループの説明」です．ヘッダをクリックするとソートされます．"
+
+#. vieww.summary
+#: calendar/calendar-bundles/resources/calendar.properties:257
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:vieww.summary"
+msgid "Table represents week - columns are days - rows are half hours"
+msgstr "表は1週間分です．カラムは1日，行は30分です．"
+
+#. vieww.goton
+#: calendar/calendar-bundles/resources/calendar.properties:258
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.goton"
+msgid "Go to Next Week"
+msgstr "次の週へ移動"
+
+#. vieww.gotop
+#: calendar/calendar-bundles/resources/calendar.properties:259
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.gotop"
+msgid "Go to previous week "
+msgstr "前の週へ移動"
+
+#. vieww.gotoe
+#: calendar/calendar-bundles/resources/calendar.properties:260
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.gotoe"
+msgid "Earlier"
+msgstr "さらに前"
+
+#. vieww.laswk
+#: calendar/calendar-bundles/resources/calendar.properties:261
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.laswk"
+msgid "&lt; Previous Week"
+msgstr "< 前の週"
+
+#. vieww.nexwk
+#: calendar/calendar-bundles/resources/calendar.properties:262
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.nexwk"
+msgid "Next Week &gt;"
+msgstr "次の週 >"
+
+#. vieww.gotol
+#: calendar/calendar-bundles/resources/calendar.properties:263
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.gotol"
+msgid "Later"
+msgstr "さらに後"
+
+#. viewy.gotop
+#: calendar/calendar-bundles/resources/calendar.properties:264
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewy.gotop"
+msgid "Go to Previous Year "
+msgstr "前の年へ移動"
+
+#. viewy.goton
+#: calendar/calendar-bundles/resources/calendar.properties:265
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewy.goton"
+msgid "Go to Next Year"
+msgstr "次の年へ移動"
+
+#. viewy.lasy
+#: calendar/calendar-bundles/resources/calendar.properties:266
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewy.lasy"
+msgid "&lt; Previous Year"
+msgstr "< 前の年"
+
+#. viewy.nexy
+#: calendar/calendar-bundles/resources/calendar.properties:267
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewy.nexy"
+msgid "Next Year &gt;"
+msgstr "次の年 >"
+
+#. viewy.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:268
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewy.list.summary"
+msgid ""
+"Table represents year. Each cell contains a table representing that month."
+msgstr "表は1年分です．各セルにはその月を表す表があります．"
+
+#. viewy.list.summary2
+#: calendar/calendar-bundles/resources/calendar.properties:269
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewy.list.summary2"
+msgid "Table represents the month of"
+msgstr "表は月を表しています: "
+
+#. viewy.list.summary3
+#: calendar/calendar-bundles/resources/calendar.properties:270
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewy.list.summary3"
+msgid "columns represent weekdays"
+msgstr "カラムは1週間です．"
+
+#. viewy.date_format
+#: calendar/calendar-bundles/resources/calendar.properties:271
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewy.date_format"
+msgid "yyyy"
+msgstr "yyyy"
+
+#. cust.addrev
+#: calendar/calendar-bundles/resources/calendar.properties:272
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.addrev"
+msgid "Add/Edit Fields"
+msgstr "フィールドの追加・訂正"
+
+#. cust.toadd
+#: calendar/calendar-bundles/resources/calendar.properties:273
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.toadd"
+msgid "To add fields, enter field name below and click 'Create Field'."
+msgstr "フィールドを追加する場合は，下のフィールド名を入力して「フィールドを作成」をクリックします．"
+
+#. cust.fname
+#: calendar/calendar-bundles/resources/calendar.properties:274
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.fname"
+msgid "Field Name"
+msgstr "フィールド名"
+
+#. cust.true
+#: calendar/calendar-bundles/resources/calendar.properties:275
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.true"
+msgid "True"
+msgstr "真"
+
+#. cust.rem
+#: calendar/calendar-bundles/resources/calendar.properties:276
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.rem"
+msgid "Remove?"
+msgstr "削除?"
+
+#. cust.add
+#: calendar/calendar-bundles/resources/calendar.properties:277
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.add"
+msgid "Create Field"
+msgstr "フィールドを作成"
+
+#. cust.save
+#: calendar/calendar-bundles/resources/calendar.properties:278
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.save"
+msgid "Save Field Changes"
+msgstr "フィールドの変更を保存"
+
+#. cust.list
+#: calendar/calendar-bundles/resources/calendar.properties:279
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.list"
+msgid ""
+"Table contains list of additional fields. First column contains the "
+"fieldname, second column a checkbox to take remove it."
+msgstr "表には追加フィールドの一覧があります．1列目はフィールド名，2列目は削除するかどうかのチェックボックスです．"
+
+#. subs.subscriptions
+#: calendar/calendar-bundles/resources/calendar.properties:280
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.subscriptions"
+msgid "Calendar Subscriptions"
+msgstr "カレンダ購読"
+
+#. subs.institutional
+#: calendar/calendar-bundles/resources/calendar.properties:281
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.institutional"
+msgid "Institutional Calendars"
+msgstr "機関カレンダ"
+
+#. subs.institutional.instruction
+#: calendar/calendar-bundles/resources/calendar.properties:282
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:subs.institutional.instruction"
+msgid "Select what Institutional Calendars you want to subscribe."
+msgstr "購読したい機関カレンダを選択します．"
+
+#. subs.institutional.summary
+#: calendar/calendar-bundles/resources/calendar.properties:283
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:subs.institutional.summary"
+msgid "List of Institutional Calendars"
+msgstr "機関カレンダ一覧"
+
+#. subs.calendar.name
+#: calendar/calendar-bundles/resources/calendar.properties:284
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.calendar.name"
+msgid "Calendar Name"
+msgstr "カレンダ名"
+
+#. subs.calendar.url
+#: calendar/calendar-bundles/resources/calendar.properties:285
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.calendar.url"
+msgid "URL"
+msgstr "URL"
+
+#. subs.calendar.sub
+#: calendar/calendar-bundles/resources/calendar.properties:286
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.calendar.sub"
+msgid "Subscribed?"
+msgstr "購読状態"
+
+#. subs.user
+#: calendar/calendar-bundles/resources/calendar.properties:287
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:subs.user"
+msgid "Other Calendars"
+msgstr "他のカレンダ"
+
+#. subs.user.instruction
+#: calendar/calendar-bundles/resources/calendar.properties:288
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:subs.user.instruction"
+msgid ""
+"To subscribe external calendars (in ICal format), enter a calendar name and "
+"url and click 'Subscribe'."
+msgstr "外部カレンダを購読する場合(iCal 形式)は，カレンダ名と URL を入力し，「購読」をクリックします．"
+
+#. subs.user.summary
+#: calendar/calendar-bundles/resources/calendar.properties:289
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.user.summary"
+msgid "List of User-specified Calendars"
+msgstr "ユーザ指定カレンダ一覧"
+
+#. subs.calendar.subscribe
+#: calendar/calendar-bundles/resources/calendar.properties:290
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:subs.calendar.subscribe"
+msgid "Subscribe"
+msgstr "購読"
+
+#. merge.merge
+#: calendar/calendar-bundles/resources/calendar.properties:291
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:merge.merge"
+msgid "Merging calendars..."
+msgstr "カレンダをマージ中..."
+
+#. merge.select
+#: calendar/calendar-bundles/resources/calendar.properties:292
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:merge.select"
+msgid ""
+"Select what calendars you want to merge into this site. This site's users "
+"will only see those events they had permission to see in the source site."
+msgstr "どのカレンダをこのサイトにマージするか選択します．"
+
+#. merge.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:293
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:merge.list.summary"
+msgid ""
+"List of calendars from sites you can merge into this one. Column 1: site "
+"name. Column 2: checkbox - select for merge. "
+msgstr "マージ可能なサイトからのカレンダの一覧です．カラム 1 は「名前」，カラム 2 はマージのための「チェックボックス」です．"
+
+#. merge.showsched
+#: calendar/calendar-bundles/resources/calendar.properties:294
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:merge.showsched"
+msgid "Show Schedule"
+msgstr "スケジュールを表示"
+
+#. det.lasact
+#: calendar/calendar-bundles/resources/calendar.properties:295
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:det.lasact"
+msgid "&lt; Last Event"
+msgstr "< 最後の予定"
+
+#. det.nexact
+#: calendar/calendar-bundles/resources/calendar.properties:296
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:det.nexact"
+msgid "Next Event &gt;"
+msgstr "次の予定 >"
+
+#. date.invalid
+#: calendar/calendar-bundles/resources/calendar.properties:297
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:date.invalid"
+msgid "Invalid setting for date."
+msgstr "無効な日付設定です．"
+
+#. group.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:298
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.summary"
+msgid ""
+"List of groups in the site. Column 1: group name. Column 2: description. "
+"Headers allow sorting on the columns."
+msgstr "サイト中のグループ一覧．カラム 1 は「グループ名」，カラム 2 は「説明」です．ヘッダをクリックするとソートされます．"
+
+#. group.list.toggle
+#: calendar/calendar-bundles/resources/calendar.properties:299
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.toggle"
+msgid "Toggle select all"
+msgstr "すべて選択をトグル"
+
+#. group.list.title
+#: calendar/calendar-bundles/resources/calendar.properties:300
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.title"
+msgid "Title"
+msgstr "タイトル"
+
+#. group.list.titlesort
+#: calendar/calendar-bundles/resources/calendar.properties:301
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.titlesort"
+msgid "Sort by group title"
+msgstr "グループタイトルでソート"
+
+#. group.list.titlesortasc
+#: calendar/calendar-bundles/resources/calendar.properties:302
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:group.list.titlesortasc"
+msgid "Sort by group title ascending"
+msgstr "グループタイトルで昇順にソート"
+
+#. group.list.titlesortdesc
+#: calendar/calendar-bundles/resources/calendar.properties:303
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:group.list.titlesortdesc"
+msgid "Sort by group title descending"
+msgstr "グループタイトルで降順にソート"
+
+#. group.list.descr
+#: calendar/calendar-bundles/resources/calendar.properties:304
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.descr"
+msgid "Description"
+msgstr "説明"
+
+#. group.list.descrsort
+#: calendar/calendar-bundles/resources/calendar.properties:305
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.descrsort"
+msgid "Sort by description"
+msgstr "説明でソート"
+
+#. group.list.descrsortasc
+#: calendar/calendar-bundles/resources/calendar.properties:306
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:group.list.descrsortasc"
+msgid "Sort by description ascending"
+msgstr "説明で昇順にソート"
+
+#. group.list.descrsortdesc
+#: calendar/calendar-bundles/resources/calendar.properties:307
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:group.list.descrsortdesc"
+msgid "Sort by description descending"
+msgstr "説明で降順にソート"
+
+#. displayto.public
+#: calendar/calendar-bundles/resources/calendar.properties:308
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayto.public"
+msgid "Display to public "
+msgstr "全員に表示"
+
+#. displayto.site
+#: calendar/calendar-bundles/resources/calendar.properties:309
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayto.site"
+msgid "Display to site"
+msgstr "サイトに表示"
+
+#. displayto.selected
+#: calendar/calendar-bundles/resources/calendar.properties:310
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayto.selected"
+msgid "Display to selected groups"
+msgstr "選択されたグループを表示"
+
+#. displayfrom.site
+#: calendar/calendar-bundles/resources/calendar.properties:311
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayfrom.site"
+msgid "Display site events"
+msgstr "サイトイベントを表示"
+
+#. displayfrom.selected
+#: calendar/calendar-bundles/resources/calendar.properties:312
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayfrom.selected"
+msgid "Display group events"
+msgstr "グループイベントを表示"
+
+#. imp.forsite
+#: calendar/calendar-bundles/resources/calendar.properties:313
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.forsite"
+msgid "Import events for site"
+msgstr "サイトのイベントをインポート"
+
+#. imp.forgroup
+#: calendar/calendar-bundles/resources/calendar.properties:314
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.forgroup"
+msgid "Import events for selected groups"
+msgstr "選択されたグループのイベントをインポート"
+
+#. view.for
+#: calendar/calendar-bundles/resources/calendar.properties:315
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.for"
+msgid "For"
+msgstr "対象: "
+
+#. group
+#: calendar/calendar-bundles/resources/calendar.properties:316
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:group"
+msgid "Group"
+msgstr "グループ"
+
+#. view.legend
+#: calendar/calendar-bundles/resources/calendar.properties:317
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.legend"
+msgid "Legend"
+msgstr "凡例"
+
+#. view.calevents
+#: calendar/calendar-bundles/resources/calendar.properties:318
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.calevents"
+msgid "List of Events"
+msgstr "イベント一覧"
+
+#. gen.eventtype.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:319
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:gen.eventtype.list.summary"
+msgid "List of event types in the calendar"
+msgstr "カレンダ内のイベント種別一覧"
+
+#. sched.for
+#: calendar/calendar-bundles/resources/calendar.properties:320
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:sched.for"
+msgid "Schedule for"
+msgstr "スケジュール: "
+
+#. err_no_dur
+#: calendar/calendar-bundles/resources/calendar.properties:321
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_no_dur"
+msgid ""
+"No duration time specified on line #{0}. Please make the appropriate changes"
+" to your template and save it again."
+msgstr "行番号 {0} に指定された継続時間はありません．テンプレートに適切な変更を加えて保存しなおしてください．"
+
+#. err_no_start
+#: calendar/calendar-bundles/resources/calendar.properties:322
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_no_start"
+msgid ""
+"No start date was specified on line #{0}. Please make the appropriate "
+"changes to your template and save it again."
+msgstr "開始日時が行番号 {0} に指定されていませんでした．テンプレートに適切な変更を加えて保存しなおしてください．"
+
+#. err_import
+#: calendar/calendar-bundles/resources/calendar.properties:323
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_import"
+msgid "Unable to create importer for {0}"
+msgstr "{0} に対するインポータを作成することができません"
+
+#. err_import_unknown
+#: calendar/calendar-bundles/resources/calendar.properties:324
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:err_import_unknown"
+msgid "Unknown import type"
+msgstr "不明なインポート種別です"
+
+#. err_no_stime
+#: calendar/calendar-bundles/resources/calendar.properties:325
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_no_stime"
+msgid ""
+"Unable to determine start times for an event. Please check that this is the "
+"correct file format."
+msgstr "イベントの開始時刻を決定することができません．正しいファイルフォーマットであるか確認してください．"
+
+#. err_no_etime
+#: calendar/calendar-bundles/resources/calendar.properties:326
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_no_etime"
+msgid ""
+"Unable to determine end times for an event. Please check that this is the "
+"correct file format."
+msgstr "イベントの終了時刻を決定することができません．正しいファイルフォーマットであるか確認してください．"
+
+#. err_no_stime_on
+#: calendar/calendar-bundles/resources/calendar.properties:327
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:err_no_stime_on"
+msgid "No start time specified on line #{0}"
+msgstr "行番号 {0} に開始時刻が指定されていません．"
+
+#. err_no_dtime_on
+#: calendar/calendar-bundles/resources/calendar.properties:328
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:err_no_dtime_on"
+msgid "No duration time specified on line #{0}"
+msgstr "行番号 {0} に継続時間が指定されていません．"
+
+#. err_time
+#: calendar/calendar-bundles/resources/calendar.properties:329
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_time"
+msgid ""
+"Illegal time format on row: {0}, column: {1}. Please make the appropriate "
+"changes to your template and save it again."
+msgstr "{0}行{1}列に不正な時刻フォーマットがあります．テンプレートに適切な変更を加えて保存しなおしてください．"
+
+#. err_date
+#: calendar/calendar-bundles/resources/calendar.properties:330
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_date"
+msgid ""
+"Illegal date format on row: {0}, column: {1}. Please make the appropriate "
+"changes to your template and save it again."
+msgstr "{0}行{1}列に不正な日付フォーマットがあります．テンプレートに適切な変更を加えて保存しなおしてください．"
+
+#. err_interval
+#: calendar/calendar-bundles/resources/calendar.properties:331
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_interval"
+msgid ""
+"Illegal interval format on row: {0}, column: {1}. Please make the "
+"appropriate changes to your template and save it again."
+msgstr "{0}行{1}列に不正な時間間隔フォーマットがあります．テンプレートに適切な変更を加えて保存しなおしてください．"
+
+#. err_notime
+#: calendar/calendar-bundles/resources/calendar.properties:332
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_notime"
+msgid ""
+"A start, end time or the duration was not specified on line #{0}. Please "
+"make the appropriate changes to your template and save it again."
+msgstr "開始時刻，終了時刻，継続時間が行番号 {0} に指定されていませんでした．テンプレートに適切な変更を加えて保存しなおしてください．"
+
+#. err_datebad
+#: calendar/calendar-bundles/resources/calendar.properties:333
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_datebad"
+msgid ""
+"Both a count and end date cannot be specified at the same time, error on "
+"line #{0}. Please make the appropriate changes to your template and save it "
+"again."
+msgstr "回数および終了日時の両方を同時に指定することはできません．テンプレートに適切な変更を加えて保存しなおしてください．"
+
+#. err_freqbad
+#: calendar/calendar-bundles/resources/calendar.properties:334
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_freqbad"
+msgid ""
+"A frequency was specified, but a recurrence rule could not be created due to"
+" missing data on line #{0}. Please make the appropriate changes to your "
+"template and save it again."
+msgstr "頻度が指定されましたが，行番号 {0} にデータがないために再帰ルールを作成することができませんでした．テンプレートに適切な変更を加えて保存しなおしてください．"
+
+#. event.site
+#: calendar/calendar-bundles/resources/calendar.properties:335
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event.site"
+msgid "Site:"
+msgstr "サイト:"
+
+#. event.event
+#: calendar/calendar-bundles/resources/calendar.properties:336
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event.event"
+msgid "Event:"
+msgstr "イベント:"
+
+#. event.type
+#: calendar/calendar-bundles/resources/calendar.properties:337
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event.type"
+msgid "Event type:"
+msgstr "イベントタイプ:"
+
+#. event.location
+#: calendar/calendar-bundles/resources/calendar.properties:338
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:event.location"
+msgid "Location:"
+msgstr "場所:"
+
+#. event.from
+#: calendar/calendar-bundles/resources/calendar.properties:339
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event.from"
+msgid "From:"
+msgstr "購読元:"
+
+#. tool_title
+#: calendar/calendar-bundles/resources/calendar.properties:340
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:tool_title"
+msgid "Calendar"
+msgstr "カレンダ "
+
+#. menu_calendar
+#: calendar/calendar-bundles/resources/calendar.properties:341
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:menu_calendar"
+msgid "Calendar"
+msgstr "カレンダ"
+
+#. menu_prefs
+#: calendar/calendar-bundles/resources/calendar.properties:342
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:menu_prefs"
+msgid "Options"
+msgstr "オプション"
+
+#. today
+#: calendar/calendar-bundles/resources/calendar.properties:343
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:today"
+msgid "Today"
+msgstr "今日"
+
+#. next
+#: calendar/calendar-bundles/resources/calendar.properties:344
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:next"
+msgid "Next"
+msgstr "次"
+
+#. previous
+#: calendar/calendar-bundles/resources/calendar.properties:345
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:previous"
+msgid "Previous"
+msgstr "前"
+
+#. selectedDayEvents
+#: calendar/calendar-bundles/resources/calendar.properties:346
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:selectedDayEvents"
+msgid "Events for"
+msgstr "イベント:"
+
+#. openInSchedule
+#: calendar/calendar-bundles/resources/calendar.properties:347
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:openInSchedule"
+msgid "Full details..."
+msgstr "詳細全部..."
+
+#. event
+#: calendar/calendar-bundles/resources/calendar.properties:348
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event"
+msgid "Event"
+msgstr "イベント"
+
+#. date
+#: calendar/calendar-bundles/resources/calendar.properties:349
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:date"
+msgid "Date:"
+msgstr "日付:"
+
+#. description
+#: calendar/calendar-bundles/resources/calendar.properties:350
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:description"
+msgid "Description:"
+msgstr "説明:"
+
+#. type
+#: calendar/calendar-bundles/resources/calendar.properties:351
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:type"
+msgid "Event Type:"
+msgstr "イベントのタイプ:"
+
+#. location
+#: calendar/calendar-bundles/resources/calendar.properties:352
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:location"
+msgid "Event Location:"
+msgstr "イベントの場所:"
+
+#. groups
+#: calendar/calendar-bundles/resources/calendar.properties:353
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:groups"
+msgid "Groups:"
+msgstr "グループ:"
+
+#. site
+#: calendar/calendar-bundles/resources/calendar.properties:354
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:site"
+msgid "Site:"
+msgstr "サイト:"
+
+#. attachments
+#: calendar/calendar-bundles/resources/calendar.properties:355
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:attachments"
+msgid "Attachments:"
+msgstr "添付ファイル:"
+
+#. every
+#: calendar/calendar-bundles/resources/calendar.properties:356
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:every"
+msgid "Every"
+msgstr "すべての"
+
+#. back
+#: calendar/calendar-bundles/resources/calendar.properties:357
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:back"
+msgid "Back"
+msgstr "戻る"
+
+#. instructions_preferences
+#: calendar/calendar-bundles/resources/calendar.properties:358
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:instructions_preferences"
+msgid "Set calendar preferences."
+msgstr "カレンダ設定をセットします．"
+
+#. prefs_updated
+#: calendar/calendar-bundles/resources/calendar.properties:359
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_updated"
+msgid "Preferences updated successfuly"
+msgstr "設定が更新されました"
+
+#. prefs_not_updated
+#: calendar/calendar-bundles/resources/calendar.properties:360
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_not_updated"
+msgid "An error occurred while updating preferences"
+msgstr "設定を更新中にエラーが発生しました．"
+
+#. update
+#: calendar/calendar-bundles/resources/calendar.properties:361
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:update"
+msgid "Update"
+msgstr "更新"
+
+#. cancel
+#: calendar/calendar-bundles/resources/calendar.properties:362
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. instructions_display
+#: calendar/calendar-bundles/resources/calendar.properties:363
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:instructions_display"
+msgid "Change your calendar's view."
+msgstr "あなたのカレンダ表示を変更します．"
+
+#. prefs_section_display
+#: calendar/calendar-bundles/resources/calendar.properties:364
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_section_display"
+msgid "Calendar display"
+msgstr "カレンダ表示"
+
+#. prefs_view_mode
+#: calendar/calendar-bundles/resources/calendar.properties:365
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_view_mode"
+msgid "View"
+msgstr "表示"
+
+#. month_view
+#: calendar/calendar-bundles/resources/calendar.properties:366
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:month_view"
+msgid "Calendar by Month"
+msgstr "月カレンダ"
+
+#. week_view
+#: calendar/calendar-bundles/resources/calendar.properties:367
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:week_view"
+msgid "Calendar by Week"
+msgstr "週カレンダ"
+
+#. prefs_section_priority
+#: calendar/calendar-bundles/resources/calendar.properties:368
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_section_priority"
+msgid "Priority events"
+msgstr "優先イベント"
+
+#. instructions_priority
+#: calendar/calendar-bundles/resources/calendar.properties:369
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:instructions_priority"
+msgid ""
+"Define event priorities and priority colors. Calendar will color days with "
+"the defined priority color for the highest event priority on that day."
+msgstr "イベント優先度と優先度色を定義します．カレンダでは，その日で優先度が一番高いイベント優先度に対して定義されている優先度色で日付を色づけします．"
+
+#. prefs_section_priority_eventypes
+#: calendar/calendar-bundles/resources/calendar.properties:370
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_section_priority_eventypes"
+msgid "Event types  "
+msgstr "イベントタイプ"
+
+#. prefs_section_priority_color
+#: calendar/calendar-bundles/resources/calendar.properties:371
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_section_priority_color"
+msgid "Colors"
+msgstr "色"
+
+#. prefs_high_priority
+#: calendar/calendar-bundles/resources/calendar.properties:372
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_high_priority"
+msgid "High priority"
+msgstr "高い優先度"
+
+#. prefs_medium_priority
+#: calendar/calendar-bundles/resources/calendar.properties:373
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_medium_priority"
+msgid "Medium priority"
+msgstr "中程度の優先度"
+
+#. prefs_low_priority
+#: calendar/calendar-bundles/resources/calendar.properties:374
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_low_priority"
+msgid "Low priority"
+msgstr "低い優先度"
+
+#. prefs_move_up
+#: calendar/calendar-bundles/resources/calendar.properties:375
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_move_up"
+msgid "Move up"
+msgstr "上へ移動"
+
+#. prefs_move_down
+#: calendar/calendar-bundles/resources/calendar.properties:376
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_move_down"
+msgid "Move down"
+msgstr "下へ移動"
+
+#. date_format
+#: calendar/calendar-bundles/resources/calendar.properties:377
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:date_format"
+msgid "MMMMM dd, yyyy"
+msgstr "yyyy年MM月dd日"
+
+#. date_link_format
+#: calendar/calendar-bundles/resources/calendar.properties:378
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:date_link_format"
+msgid "yyyy-MM-dd"
+msgstr "yyyy年MM月dd日"
+
+#. java.opaque_subscribe
+#: calendar/calendar-bundles/resources/calendar.properties:379
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.opaque_subscribe"
+msgid "Subscribe (Randomly named feeds)"
+msgstr "購読 ( ランダムな名前のフィード )"
+
+#. ical_opaqueurl_header
+#: calendar/calendar-bundles/resources/calendar.properties:380
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_header"
+msgid "Subscribe"
+msgstr "購読"
+
+#. ical_opaqueurl_explanation
+#: calendar/calendar-bundles/resources/calendar.properties:381
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_explanation"
+msgid ""
+"If you would like to generate a private URL for you to access the calendar "
+"in this site, please press the button below:"
+msgstr "このサイトのカレンダにアクセスするためにプライベートなURLを生成したければ下のボタンを押してください:"
+
+#. ical_opaqueurl_myworkspace
+#: calendar/calendar-bundles/resources/calendar.properties:382
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_myworkspace"
+msgid ""
+"Note: If you subscribe to the calendar in your 'My Workspace', it will "
+"aggregate the events from the calendars of all the sites of which you are a "
+"member."
+msgstr "注意：'My Workspace' のカレンダを購読すると，メンバーとなっているすべてのサイトのカレンダからイベントがまとめられます．"
+
+#. ical_opaqueurl_generate
+#: calendar/calendar-bundles/resources/calendar.properties:383
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_generate"
+msgid "Generate"
+msgstr "生成"
+
+#. ical_opaqueurl_webcal
+#: calendar/calendar-bundles/resources/calendar.properties:384
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_webcal"
+msgid ""
+"If you click on the link below, your browser should present you with a "
+"client (e.g. Outlook) that you can use to subscribe to this calendar:"
+msgstr "下のリンクをクリックすると，ブラウザはこのカレンダを購読するために使うことができるクライアント(例えば Outlook) を表示します．"
+
+#. ical_opaqueurl_http
+#: calendar/calendar-bundles/resources/calendar.properties:385
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:ical_opaqueurl_http"
+msgid ""
+"Alternatively, copy and paste this link to your web-based or desktop "
+"calendar client."
+msgstr "代わりに，このリンクをWebベースかデスクトップのカレンダクライアントにコピー＆ペーストします．"
+
+#. ical_opaqueurl_regenerate
+#: calendar/calendar-bundles/resources/calendar.properties:386
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_regenerate"
+msgid "Regenerate"
+msgstr "再生成"
+
+#. ical_opaqueurl_delete
+#: calendar/calendar-bundles/resources/calendar.properties:387
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_delete"
+msgid "Delete"
+msgstr "削除"
+
+#. calendar
+#: calendar/calendar-bundles/resources/calendar.properties:388
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:calendar"
+msgid "Represents calendar events."
+msgstr "カレンダーイベントを表します．"
+
+#. calendar.action.site
+#: calendar/calendar-bundles/resources/calendar.properties:389
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:calendar.action.site"
+msgid ""
+"Retrieve the calendar events for a site. The request url pattern: "
+"/direct/calendar/site/{siteId}.{format}"
+msgstr "サイトのカレンダイベントを取得します．リクエスト URL パタン：/direct/calendar/site/{siteId}.{format}"
+
+#. calendar.action.event
+#: calendar/calendar-bundles/resources/calendar.properties:390
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:calendar.action.event"
+msgid ""
+"Retrieve a calendar event details specified by the site id and event id. The"
+" request url pattern: /direct/calendar/event/{siteId}/{eventId}.{format}"
+msgstr "サイトIDおよびイベントIDで指定されたカレンダイベント詳細を取得します．リクエスト URL パタン： /direct/calendar/event/{siteId}/{eventId}.{format}"
+
+#. calendar.action.my
+#: calendar/calendar-bundles/resources/calendar.properties:391
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:calendar.action.my"
+msgid ""
+"Retrieve all my calendar events for all of my sites. The request url "
+"pattern: /direct/calendar/my.{format}"
+msgstr "すべてのサイトのすべてのカレンダイベントを取得します．リクエスト URL パタン：/direct/calendar/my.{format}"
+
+#. set.MWF.fm
+#: calendar/calendar-bundles/resources/calendar.properties:392
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.MWF.fm"
+msgid "{0}/{1}/{2}"
+msgstr "{0}/{1}/{2}"
+
+#. set.TTh.fm
+#: calendar/calendar-bundles/resources/calendar.properties:393
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.TTh.fm"
+msgid "{0}/{1}"
+msgstr "{0}/{1}"
+
+#. set.SMW.fm
+#: calendar/calendar-bundles/resources/calendar.properties:394
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.SMW.fm"
+msgid "{0}/{1}/{2}"
+msgstr "{0}/{1}/{2}"
+
+#. set.SMTW.fm
+#: calendar/calendar-bundles/resources/calendar.properties:395
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.SMTW.fm"
+msgid "{0}/{1}/{2}/{3}"
+msgstr "{0}/{1}/{2}/{3}"
+
+#. set.STT.fm
+#: calendar/calendar-bundles/resources/calendar.properties:396
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.STT.fm"
+msgid "{0}/{1}/{2}"
+msgstr "{0}/{1}/{2}"
+
+#. set.MW.fm
+#: calendar/calendar-bundles/resources/calendar.properties:397
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.MW.fm"
+msgid "{0}/{1}"
+msgstr "{0}/{1}"
+
+#. desc-calendar.new
+#: calendar/calendar-bundles/resources/permissions.properties:1
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-calendar.new"
+msgid "Create events"
+msgstr "イベントを作成します"
+
+#. desc-calendar.delete.own
+#: calendar/calendar-bundles/resources/permissions.properties:2
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.delete.own"
+msgid "Delete own events"
+msgstr "自分のイベントを削除します"
+
+#. desc-calendar.delete.any
+#: calendar/calendar-bundles/resources/permissions.properties:3
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.delete.any"
+msgid "Delete any  event"
+msgstr "すべてのイベントを削除します"
+
+#. desc-calendar.revise.own
+#: calendar/calendar-bundles/resources/permissions.properties:4
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.revise.own"
+msgid "Edit  own events"
+msgstr "自分のイベントを編集します"
+
+#. desc-calendar.revise.any
+#: calendar/calendar-bundles/resources/permissions.properties:5
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.revise.any"
+msgid "Edit any  event"
+msgstr "すべてのイベントを編集します"
+
+#. desc-calendar.subscribe
+#: calendar/calendar-bundles/resources/permissions.properties:6
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.subscribe"
+msgid "Subscribe to calendars"
+msgstr "カレンダを購読します"
+
+#. desc-calendar.import
+#: calendar/calendar-bundles/resources/permissions.properties:7
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.import"
+msgid "Import events"
+msgstr "イベントをインポート"
+
+#. desc-calendar.read
+#: calendar/calendar-bundles/resources/permissions.properties:8
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.read"
+msgid "View events"
+msgstr "イベントを表示します."
+
+#. desc-calendar.all.groups
+#: calendar/calendar-bundles/resources/permissions.properties:9
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.all.groups"
+msgid "Access/create group events"
+msgstr "グループイベントにアクセスまたは作成"
+
+#. desc-calendar.options
+#: calendar/calendar-bundles/resources/permissions.properties:10
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.options"
+msgid "Change calendar options"
+msgstr "カレンダーオプションを変更します"

@@ -1,0 +1,270 @@
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2014-11-20 10:48+0000\n"
+"Last-Translator: Juanjo Meroño <jjmerono@um.es>\n"
+"Language-Team: Spanish (http://www.transifex.com/apereo/sakai10x/language/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. alias.alert.message
+#: alias/alias-tool/tool/src/bundle/admin.properties:1
+msgctxt ""
+"alias/alias-tool/tool/src/bundle/admin.properties:alias.alert.message"
+msgid "Alert: {0}"
+msgstr "Aviso: {0}"
+
+#. alias.cancel
+#: alias/alias-tool/tool/src/bundle/admin.properties:2
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.cancel"
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. alias.alias
+#: alias/alias-tool/tool/src/bundle/admin.properties:3
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.alias"
+msgid "Alias"
+msgstr "Alias"
+
+#. alias.alias.label
+#: alias/alias-tool/tool/src/bundle/admin.properties:4
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.alias.label"
+msgid "Alias ({0} chars max):"
+msgstr "Alias ({0} carácteres máx):"
+
+#. alias.aliases
+#: alias/alias-tool/tool/src/bundle/admin.properties:5
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.aliases"
+msgid "Aliases"
+msgstr "Alias"
+
+#. alias.edit.list.summary
+#: alias/alias-tool/tool/src/bundle/admin.properties:6
+msgctxt ""
+"alias/alias-tool/tool/src/bundle/admin.properties:alias.edit.list.summary"
+msgid "Alias properties"
+msgstr "Propiedades del alias"
+
+#. alias.edit.created
+#: alias/alias-tool/tool/src/bundle/admin.properties:7
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.edit.created"
+msgid "Created:"
+msgstr "Creado:"
+
+#. alias.edit.createdby
+#: alias/alias-tool/tool/src/bundle/admin.properties:8
+msgctxt ""
+"alias/alias-tool/tool/src/bundle/admin.properties:alias.edit.createdby"
+msgid "Created By:"
+msgstr "Creado por:"
+
+#. alias.edit.mod
+#: alias/alias-tool/tool/src/bundle/admin.properties:9
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.edit.mod"
+msgid "Modified:"
+msgstr "Modificado:"
+
+#. alias.edit.modby
+#: alias/alias-tool/tool/src/bundle/admin.properties:10
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.edit.modby"
+msgid "Modified By:"
+msgstr "Modificado por:"
+
+#. alias.edit.review
+#: alias/alias-tool/tool/src/bundle/admin.properties:11
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.edit.review"
+msgid ""
+"Review and modify this Alias. Alias ID is restricted to 99 chars or less "
+"here, 40 chars in user UI."
+msgstr "Revisar y modificar este Alias. Es posible borrarlo con el menú superior."
+
+#. alias.edit.save
+#: alias/alias-tool/tool/src/bundle/admin.properties:12
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.edit.save"
+msgid "Save"
+msgstr "Guardar"
+
+#. alias.edit.target.label
+#: alias/alias-tool/tool/src/bundle/admin.properties:13
+msgctxt ""
+"alias/alias-tool/tool/src/bundle/admin.properties:alias.edit.target.label"
+msgid "Target ({0} chars max):"
+msgstr "Destino ({0} carácteres máx):"
+
+#. alias.invalid
+#: alias/alias-tool/tool/src/bundle/admin.properties:14
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.invalid"
+msgid "The alias id ''{0}'' is invalid."
+msgstr "El ID del alias no es válido"
+
+#. alias.list.show
+#: alias/alias-tool/tool/src/bundle/admin.properties:15
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.list.show"
+msgid "show {0} items..."
+msgstr "mostrar {0} elementos..."
+
+#. alias.list.listnavselect
+#: alias/alias-tool/tool/src/bundle/admin.properties:16
+msgctxt ""
+"alias/alias-tool/tool/src/bundle/admin.properties:alias.list.listnavselect"
+msgid ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+msgstr "Pulse alt y las flechas de arriba y abajo para desplazarse por el menú"
+
+#. alias.list.first
+#: alias/alias-tool/tool/src/bundle/admin.properties:17
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.list.first"
+msgid "First"
+msgstr "Primero"
+
+#. alias.list.previous.withsize
+#: alias/alias-tool/tool/src/bundle/admin.properties:18
+msgctxt ""
+"alias/alias-"
+"tool/tool/src/bundle/admin.properties:alias.list.previous.withsize"
+msgid "Previous {0}"
+msgstr "Anterior {0}"
+
+#. alias.list.next.withsize
+#: alias/alias-tool/tool/src/bundle/admin.properties:19
+msgctxt ""
+"alias/alias-tool/tool/src/bundle/admin.properties:alias.list.next.withsize"
+msgid "Next {0}"
+msgstr "Siguiente {0}"
+
+#. alias.list.last
+#: alias/alias-tool/tool/src/bundle/admin.properties:20
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.list.last"
+msgid "Last"
+msgstr "Último"
+
+#. alias.list.youare
+#: alias/alias-tool/tool/src/bundle/admin.properties:21
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.list.youare"
+msgid "You are viewing {0} - {1} of {2} results."
+msgstr "Está viendo {0} - {1} de {2} resultados"
+
+#. alias.list.summary
+#: alias/alias-tool/tool/src/bundle/admin.properties:22
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.list.summary"
+msgid ""
+"List of aliases. First column holds the alias name and links to edit them, "
+"second the target. "
+msgstr "Lista de alias. La primera columna contiene el nombre del alias y enlaces para editarlo y la segunda el usuario al que pertenece."
+
+#. alias.list.alias
+#: alias/alias-tool/tool/src/bundle/admin.properties:23
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.list.alias"
+msgid "Alias"
+msgstr "Alias"
+
+#. alias.list.defined
+#: alias/alias-tool/tool/src/bundle/admin.properties:24
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.list.defined"
+msgid ""
+"These are the Aliases defined within the system.  Click an Alias Id to edit "
+"or view detail."
+msgstr "Estos son los Alias definidos en el sistema.  Pulse en el ID del Alias para editar o ver en detalle."
+
+#. alias.list.nodefined
+#: alias/alias-tool/tool/src/bundle/admin.properties:25
+msgctxt ""
+"alias/alias-tool/tool/src/bundle/admin.properties:alias.list.nodefined"
+msgid "No aliases are defined."
+msgstr "No hay alias definidos."
+
+#. alias.target
+#: alias/alias-tool/tool/src/bundle/admin.properties:26
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.target"
+msgid "Target"
+msgstr "Destino"
+
+#. alias.new
+#: alias/alias-tool/tool/src/bundle/admin.properties:27
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.new"
+msgid "New Alias"
+msgstr "Nuevo Alias"
+
+#. alias.notfound
+#: alias/alias-tool/tool/src/bundle/admin.properties:28
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.notfound"
+msgid "Alias ''{0}'' not found"
+msgstr "no encontrado"
+
+#. alias.notpermis
+#: alias/alias-tool/tool/src/bundle/admin.properties:29
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.notpermis"
+msgid "You do not have permission to edit alias ''{0}''."
+msgstr "No tiene permiso para editar Alias"
+
+#. alias.notpermis1
+#: alias/alias-tool/tool/src/bundle/admin.properties:30
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.notpermis1"
+msgid "You do not have permission to remove alias ''{0}''."
+msgstr "No tiene permiso para borrar el Alias"
+
+#. alias.notpermis2
+#: alias/alias-tool/tool/src/bundle/admin.properties:31
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.notpermis2"
+msgid "You do not have permission to edit this alias ''{0}''."
+msgstr "No tiene permiso para editar este Alias"
+
+#. alias.remove
+#: alias/alias-tool/tool/src/bundle/admin.properties:32
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.remove"
+msgid "Remove Alias"
+msgstr "Borrar Alias"
+
+#. alias.remove.alias
+#: alias/alias-tool/tool/src/bundle/admin.properties:33
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.remove.alias"
+msgid "Alias"
+msgstr "Alias"
+
+#. alias.remove.list.summary
+#: alias/alias-tool/tool/src/bundle/admin.properties:34
+msgctxt ""
+"alias/alias-tool/tool/src/bundle/admin.properties:alias.remove.list.summary"
+msgid ""
+"List of aliases being removed - first column hold the Alias, second the "
+"target."
+msgstr "Listas de los alias que borrarán. La primera columna indica el alias y la segunda el destinatario."
+
+#. alias.remove.remove
+#: alias/alias-tool/tool/src/bundle/admin.properties:35
+msgctxt ""
+"alias/alias-tool/tool/src/bundle/admin.properties:alias.remove.remove"
+msgid "Remove"
+msgstr "Borrar"
+
+#. alias.remove.sure
+#: alias/alias-tool/tool/src/bundle/admin.properties:36
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.remove.sure"
+msgid "Are you sure you want to remove the following Alias:"
+msgstr "¿Está seguro de que sea borrar el siguiente Alias?"
+
+#. alias.someone
+#: alias/alias-tool/tool/src/bundle/admin.properties:37
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.someone"
+msgid "Someone else is currently editing this Alias:"
+msgstr "Alguien más está editando este Alias:"
+
+#. alias.use
+#: alias/alias-tool/tool/src/bundle/admin.properties:38
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.use"
+msgid "The alias id ''{0}'' is already in use."
+msgstr "El ID del Alias está actualmente en uso"
+
+#. alias.noaccess
+#: alias/alias-tool/tool/src/bundle/admin.properties:39
+msgctxt "alias/alias-tool/tool/src/bundle/admin.properties:alias.noaccess"
+msgid "You do not have permission to use this tool."
+msgstr "No tiene permiso para acceder a esta herramienta."

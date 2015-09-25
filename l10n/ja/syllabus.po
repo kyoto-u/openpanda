@@ -1,0 +1,2172 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-27 10:22+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. prefs_title
+#: syllabus/syllabus-impl/src/bundle/syllabus-noti-prefs.properties:1
+msgctxt ""
+"syllabus/syllabus-impl/src/bundle/syllabus-noti-prefs.properties:prefs_title"
+msgid "Syllabus"
+msgstr "シラバス"
+
+#. prefs_opt3
+#: syllabus/syllabus-impl/src/bundle/syllabus-noti-prefs.properties:2
+msgctxt ""
+"syllabus/syllabus-impl/src/bundle/syllabus-noti-prefs.properties:prefs_opt3"
+msgid "Send me each notification separately"
+msgstr "通知はそれぞれ個別に送る"
+
+#. prefs_opt2
+#: syllabus/syllabus-impl/src/bundle/syllabus-noti-prefs.properties:3
+msgctxt ""
+"syllabus/syllabus-impl/src/bundle/syllabus-noti-prefs.properties:prefs_opt2"
+msgid "Send me one email per day summarizing all notifications"
+msgstr "すべての通知を1日に1通だけまとめて送る"
+
+#. prefs_opt1
+#: syllabus/syllabus-impl/src/bundle/syllabus-noti-prefs.properties:4
+msgctxt ""
+"syllabus/syllabus-impl/src/bundle/syllabus-noti-prefs.properties:prefs_opt1"
+msgid "Do not send me low priority Syllabus items"
+msgstr "優先度の低いシラバスアイテムは受け取らない"
+
+#. anewres
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:1
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:anewres"
+msgid "A new resource has been added to"
+msgstr "新しいリソースが次のところに追加されました: "
+
+#. anewres2
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:2
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:anewres2"
+msgid "A resource has been updated in"
+msgstr "次のところにあるリソースが更新されました:"
+
+#. chan
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:3
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:chan"
+msgid "Changed"
+msgstr "変更済み"
+
+#. descrip
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:4
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:descrip"
+msgid "Description:"
+msgstr "説明:"
+
+#. locsit
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:5
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:locsit"
+msgid "Location: site"
+msgstr "場所: サイト"
+
+#. new
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:6
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:new"
+msgid "New"
+msgstr "新規"
+
+#. reso
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:7
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:reso"
+msgid "Resources"
+msgstr "リソース"
+
+#. reso2
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:8
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:reso2"
+msgid "Resource"
+msgstr "リソース"
+
+#. resour
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:9
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:resour"
+msgid "Resource:"
+msgstr "リソース:"
+
+#. sitat
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:10
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:sitat"
+msgid "site at"
+msgstr "サイト 場所:"
+
+#. the
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:11
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:the"
+msgid "the"
+msgstr "サイト名は"
+
+#. forthe
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:12
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:forthe"
+msgid "from the"
+msgstr "の"
+
+#. separator
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:13
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:separator"
+msgid "----------------------"
+msgstr "----------------------"
+
+#. site
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:14
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:site"
+msgid "site."
+msgstr "から送信されています．"
+
+#. this
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:15
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:this"
+msgid "This automatic notification message was sent by"
+msgstr "この自動通知メッセージは"
+
+#. youcan
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:16
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:youcan"
+msgid ""
+"You can modify how you receive notifications at My Workspace > Preferences."
+msgstr "通知をどう受け取るかは，マイワークスペース→設定で修正することができます．"
+
+#. syllabus.attachments.list
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:17
+msgctxt ""
+"syllabus/syllabus-"
+"impl/src/bundle/siteemacon.properties:syllabus.attachments.list"
+msgid "Attachments:"
+msgstr "添付ファイル:"
+
+#. event.syllabus.post.new
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:18
+msgctxt ""
+"syllabus/syllabus-"
+"impl/src/bundle/siteemacon.properties:event.syllabus.post.new"
+msgid "[ {0} New Posted Syllabus Item  ] {1}"
+msgstr "[ {0} 新しく投稿されたシラバスアイテム] {1}"
+
+#. event.syllabus.post.changed
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:19
+msgctxt ""
+"syllabus/syllabus-"
+"impl/src/bundle/siteemacon.properties:event.syllabus.post.changed"
+msgid "[ {0} Existing Syllabus Item Changed ] {1}"
+msgstr "[ {0} 既存のシラバスアイテムが変更されました] {1}"
+
+#. event.syllabus.post.delete
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:20
+msgctxt ""
+"syllabus/syllabus-"
+"impl/src/bundle/siteemacon.properties:event.syllabus.post.delete"
+msgid "[ {0} Posted Syllabus Item Has Been Deleted ] {1}"
+msgstr "[ {0} 投稿されたシラバスアイテムが削除されました] {1}"
+
+#. event.syllabus.delete
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:21
+msgctxt ""
+"syllabus/syllabus-"
+"impl/src/bundle/siteemacon.properties:event.syllabus.delete"
+msgid "Syllabus Item - {0} for Site - {1}  has been deleted."
+msgstr "サイト \"{0}\" に対する授業計画アイテム \"{1}\" が削除されました．"
+
+#. subject
+#: syllabus/syllabus-impl/src/bundle/siteemacon.properties:22
+msgctxt "syllabus/syllabus-impl/src/bundle/siteemacon.properties:subject"
+msgid "Subject: {0}"
+msgstr "件名: \"{0}\""
+
+#. syllabus
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/syllabus.properties:1
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/syllabus.properties:syllabus"
+msgid "Represents the Syllabus tool"
+msgstr "シラバスツールです"
+
+#. syllabus.action.site
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/syllabus.properties:2
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/syllabus.properties:syllabus.action.site"
+msgid ""
+"Gets the syllabus for a given site. If the Syllabus is a redirect, then the "
+"result will be an almost empty document with the URL specified. Otherwise "
+"the content of the syllabus will be returned in a structured document. Items"
+" returned for normal users will be only those with a posted status and "
+"within start and end datetime boundaries. If the user requesting the "
+"provider can update the site, then they can see all syllabus items."
+msgstr "指定されたサイトの授業計画を取得します．授業計画がリダイレクトである場合，結果は指定されたURLを持つほぼ空の文書になります．そうでなければ，授業計画のコンテンツは構造化された文書で返されます．一般ユーザに返されるアイテムは単に投稿された状態および開始/終了日時境界を持ちます．プロバイダに要求を出しているユーザはサイトを更新でき，すべての授業計画を見ることができます．"
+
+#. title_bar
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:1
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:title_bar"
+msgid "Syllabus tool"
+msgstr "シラバスツール"
+
+#. title_list
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:2
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:title_list"
+msgid "List"
+msgstr "一覧"
+
+#. title_read
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:3
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:title_read"
+msgid "Read"
+msgstr "読む"
+
+#. title_edit
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:4
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:title_edit"
+msgid "Edit"
+msgstr "編集"
+
+#. title_delete
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:5
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:title_delete"
+msgid "Delete"
+msgstr "削除"
+
+#. title_entry
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:6
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:title_entry"
+msgid "Entry"
+msgstr "入力"
+
+#. toolbar_delete
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:7
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:toolbar_delete"
+msgid "delete"
+msgstr "削除"
+
+#. toolbar_edit
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:8
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:toolbar_edit"
+msgid "edit"
+msgstr "編集"
+
+#. toolbar_new
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:9
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:toolbar_new"
+msgid "new"
+msgstr "新規"
+
+#. del_att__conf_listsummary
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:10
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:del_att__conf_listsummary"
+msgid ""
+"List of attachments to be deleted. Column 1: item title. Column 2: item "
+"size. Column 3: item type. Column 4: author. Column 5: last editor."
+msgstr "削除される添付ファイルの一覧．カラム 1 は「アイテムのタイトル」，カラム 2 は「アイテムのサイズ」，カラム 3 は「アイテムのタイプ」，カラム 4 は「作成者」，カラム 5 は「最終編集者」です．"
+
+#. del_conf_listsummary
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:11
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:del_conf_listsummary"
+msgid ""
+"List of items to be deleted. Column 1: item title. Column 2: item status. "
+"Column 3: item audience."
+msgstr "削除されるアイテムの一覧．カラム 1 は「アイテムのタイトル」，カラム 2 は「アイテムの状態」，カラム 3 は「アイテムの購読者」です．"
+
+#. edit_att_list_summary
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:12
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:edit_att_list_summary"
+msgid ""
+"List of attachments to this item. Column 1: item title, link to remove. "
+"Column 2: item size. Column 3: item type. Column 4: author. Column 5: last "
+"editor."
+msgstr "このアイテムへの添付ファイルの一覧．カラム 1 は「アイテムのタイトル」および削除リンク，カラム 2 は「アイテムのサイズ」，カラム 3 は「アイテムのタイプ」，カラム 4 は「作成者」，カラム 5 は「最終編集者」です．"
+
+#. instruction_delete
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:13
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:instruction_delete"
+msgid "delete"
+msgstr "削除"
+
+#. instruction_edit
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:14
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:instruction_edit"
+msgid "edit"
+msgstr "編集"
+
+#. instruction_new
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:15
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:instruction_new"
+msgid "new"
+msgstr "新規"
+
+#. col_hdr_name
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:16
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:col_hdr_name"
+msgid "name"
+msgstr "名前"
+
+#. col_hdr_rank
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:17
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:col_hdr_rank"
+msgid "rank"
+msgstr "ランク"
+
+#. col_hdr_serialNumber
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:18
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:col_hdr_serialNumber"
+msgid "serial number"
+msgstr "シリアル番号"
+
+#. prop_hdr_name
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:19
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:prop_hdr_name"
+msgid "name:"
+msgstr "名前:"
+
+#. prop_hdr_rank
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:20
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:prop_hdr_rank"
+msgid "rank:"
+msgstr "ランク:"
+
+#. prop_hdr_serialNumber
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:21
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:prop_hdr_serialNumber"
+msgid "serial number:"
+msgstr "シリアル番号:"
+
+#. prop_hdr_id
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:22
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:prop_hdr_id"
+msgid "id:"
+msgstr "ID:"
+
+#. prop_hdr_version
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:23
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:prop_hdr_version"
+msgid "version:"
+msgstr "バージョン:"
+
+#. bar_delete
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:24
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_delete"
+msgid "Delete"
+msgstr "削除"
+
+#. bar_delete_items
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:25
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_delete_items"
+msgid "Delete Selected Items"
+msgstr "選択したアイテムを削除"
+
+#. bar_cancel
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:26
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. bar_ok
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:27
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_ok"
+msgid "ok"
+msgstr "OK"
+
+#. bar_rearrange
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:28
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_rearrange"
+msgid "Rearrange Items"
+msgstr "アイテムを再調整"
+
+#. bar_save
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:29
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_save"
+msgid "save"
+msgstr "保存"
+
+#. bar_new
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:30
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_new"
+msgid "Add"
+msgstr "追加"
+
+#. bar_edit
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:31
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_edit"
+msgid "edit"
+msgstr "編集"
+
+#. bar_back
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:32
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_back"
+msgid "back"
+msgstr "戻る"
+
+#. bar_post
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:33
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_post"
+msgid "Post"
+msgstr "投稿"
+
+#. bar_preview
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:34
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_preview"
+msgid "Preview"
+msgstr "プレビュー"
+
+#. bar_save_draft
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:35
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_save_draft"
+msgid "Save Draft"
+msgstr "ドラフトを保存"
+
+#. bar_redirect
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:36
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_redirect"
+msgid "Redirect"
+msgstr "転送"
+
+#. bar_student_view
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:37
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_student_view"
+msgid "Go Back"
+msgstr "戻る"
+
+#. bar_create_edit
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:38
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_create_edit"
+msgid "Bulk Edit"
+msgstr "一括編集"
+
+#. bar_new_bulk
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:39
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bar_new_bulk"
+msgid "Bulk Add"
+msgstr "一括追加"
+
+#. error_general
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:40
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_general"
+msgid "server error occurred {0}"
+msgstr "サーバエラーが発生しました: {0}"
+
+#. error_permission
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:41
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_permission"
+msgid "permission error {0}"
+msgstr "権限エラー: {0}"
+
+#. error_delete_unused
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:42
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_delete_unused"
+msgid "delete unused {0}"
+msgstr "未使用の {0} を削除"
+
+#. error_version
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:43
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_version"
+msgid "version error {0}"
+msgstr "バージョンエラー: {0}"
+
+#. error_delete_select
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:44
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_delete_select"
+msgid "You haven't modified any items or selected any items to be removed."
+msgstr "アイテムを修正していないか削除すべきアイテムを選択していませんでした．"
+
+#. error_edit_select
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:45
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_edit_select"
+msgid "edit_select {0}"
+msgstr "選択した {0} を削除"
+
+#. error_invalid_entry
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:46
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_invalid_entry"
+msgid "Invalid entry for {0}: {1}"
+msgstr " {0}: {1}に対する無効な入力"
+
+#. error_invalid_entry_item
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:47
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_invalid_entry_item"
+msgid "item {0}"
+msgstr "アイテム {0}"
+
+#. reset
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:48
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:reset"
+msgid "Reset"
+msgstr "リセット"
+
+#. choose_type
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:49
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:choose_type"
+msgid "Choosing resource type..."
+msgstr "リソース種別を選択しています..."
+
+#. syllabus
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:50
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:syllabus"
+msgid "Syllabus"
+msgstr "シラバス"
+
+#. continue
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:51
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:continue"
+msgid "Continue"
+msgstr "続ける"
+
+#. cancel
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:52
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. update
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:53
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:update"
+msgid "Update"
+msgstr "更新"
+
+#. add_sylla
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:54
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:add_sylla"
+msgid "Add syllabus..."
+msgstr "シラバスを追加..."
+
+#. add_sylla_bulk
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:55
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:add_sylla_bulk"
+msgid "Bulk Create Syllabus Items"
+msgstr "授業計画アイテム一括作成"
+
+#. redirect_sylla
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:56
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:redirect_sylla"
+msgid "Redirect Syllabus"
+msgstr "シラバスを転送"
+
+#. newSyllabusForm1
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:57
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:newSyllabusForm1"
+msgid ""
+"Complete this form, then choose the appropriate button at the bottom. A "
+msgstr "このフォームを入力し，一番下の適切なボタンを選択します．"
+
+#. newSyllabusForm2
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:58
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:newSyllabusForm2"
+msgid "means required information."
+msgstr "は必須情報を意味します．"
+
+#. syllabus_noEntry
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:59
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:syllabus_noEntry"
+msgid "No Syllabus currently exists."
+msgstr "シラバスは現在存在しません．"
+
+#. newSyllabusBulkForm
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:60
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:newSyllabusBulkForm"
+msgid ""
+"Create syllabus items in bulk by either specifying the number of items you "
+"want to create or by a date range, in which a syllabus item will be created "
+"for each selected day of the week that falls between the start and end "
+"dates."
+msgstr "作成するアイテム数か授業計画アイテムが開始日と終了日の間に当たる週のそれぞれの選択した曜日に作成された日付により，指定された授業計画アイテムを一括作成します．"
+
+#. type_local_file
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:61
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:type_local_file"
+msgid "Local file on your computer"
+msgstr "自分のコンピュータ上のローカルファイル"
+
+#. type_url_link
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:62
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:type_url_link"
+msgid "URL to Display as Link to Website"
+msgstr "ウェブサイトへのリンクとして URL を表示"
+
+#. type_url_in_line
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:63
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:type_url_in_line"
+msgid "URL that displays in-line in Window"
+msgstr "ウィンドウ内のインラインに表示される URL"
+
+#. type_creat
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:64
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:type_creat"
+msgid "Create syllabus now"
+msgstr "今すぐシラバスを作成"
+
+#. syllabus_title
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:65
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:syllabus_title"
+msgid "Title"
+msgstr "タイトル"
+
+#. syllabus_content
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:66
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:syllabus_content"
+msgid "Content"
+msgstr "コンテンツ"
+
+#. syllabus_view
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:67
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:syllabus_view"
+msgid "Public View"
+msgstr "公開表示"
+
+#. syllabus_format
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:68
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:syllabus_format"
+msgid "Format"
+msgstr "フォーマット"
+
+#. syllabus_url
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:69
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:syllabus_url"
+msgid "URL"
+msgstr "URL"
+
+#. yesPublic
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:70
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:yesPublic"
+msgid "This syllabus item is publicly viewable."
+msgstr "このシラバスアイテムは誰でも見ることができます．"
+
+#. noPrivate
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:71
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:noPrivate"
+msgid "Only members of this site can see this syllabus item."
+msgstr "このサイトのメンバだけがこのシラバスアイテムを見ることができます．"
+
+#. yes
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:72
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:yes"
+msgid "Yes"
+msgstr "はい"
+
+#. no
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:73
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:no"
+msgid "No"
+msgstr "いいえ"
+
+#. yesValue
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:74
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:yesValue"
+msgid "yes"
+msgstr "はい"
+
+#. noValue
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:75
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:noValue"
+msgid "no"
+msgstr "いいえ"
+
+#. add_attach
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:76
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:add_attach"
+msgid "Add attachments"
+msgstr "添付ファイルを追加"
+
+#. smart_text
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:77
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:smart_text"
+msgid "Smart text"
+msgstr "スマートテキスト"
+
+#. html
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:78
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:html"
+msgid "HTML"
+msgstr "HTML"
+
+#. plain_text
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:79
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:plain_text"
+msgid "Plain Text"
+msgstr "プレーンテキスト"
+
+#. email_notify
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:80
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:email_notify"
+msgid "Email Notification"
+msgstr "メール通知"
+
+#. style
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:81
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:style"
+msgid "Style"
+msgstr "スタイル"
+
+#. upload
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:82
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:upload"
+msgid "Upload File"
+msgstr "ファイルをアップロード"
+
+#. notifyNone
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:83
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:notifyNone"
+msgid "None - No notification"
+msgstr "なし - 通知なし"
+
+#. notifyHigh
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:84
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:notifyHigh"
+msgid "High - All participants"
+msgstr "高い - 参加者すべて"
+
+#. notifyLow
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:85
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:notifyLow"
+msgid "Low - Not received by those who have opted out"
+msgstr "低い - アクセスしていない参加者は通知を受け取らない"
+
+#. none
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:86
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:none"
+msgid "none"
+msgstr "none"
+
+#. high
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:87
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:high"
+msgid "high"
+msgstr "high"
+
+#. low
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:88
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:low"
+msgid "low"
+msgstr "low"
+
+#. previewNotice
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:89
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:previewNotice"
+msgid "Preview Syllabus Item"
+msgstr "前のシラバスアイテム"
+
+#. editNotice
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:90
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:editNotice"
+msgid "Edit Syllabus Item"
+msgstr "シラバスアイテムを編集"
+
+#. delConfNotice
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:91
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfNotice"
+msgid "Deleting selected items"
+msgstr "選択されたアイテムを削除しています"
+
+#. delConfAlert
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:92
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfAlert"
+msgid ""
+"Are you sure you want to make the following changes to the specified "
+"item(s)?"
+msgstr "指定されたアイテムに以下の変更を行ってもよろしいですか?"
+
+#. delConfHeaderRemove
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:93
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfHeaderRemove"
+msgid "Remove"
+msgstr "削除"
+
+#. delConfHeaderItem
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:94
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfHeaderItem"
+msgid "Syllabus item"
+msgstr "シラバスアイテム"
+
+#. delConfHeaderStartTime
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:95
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfHeaderStartTime"
+msgid "Start Time"
+msgstr "開始時刻"
+
+#. delConfHeaderEndTime
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:96
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfHeaderEndTime"
+msgid "End Time"
+msgstr "終了時刻"
+
+#. delConfHeaderStatus
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:97
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfHeaderStatus"
+msgid "Status"
+msgstr "状態"
+
+#. delConfHeaderCalendar
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:98
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfHeaderCalendar"
+msgid "In Calendar"
+msgstr "カレンダにあります"
+
+#. delConfHeaderPublicView
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:99
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfHeaderPublicView"
+msgid "Public View"
+msgstr "公開表示"
+
+#. delConfRemoved
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:100
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delConfRemoved"
+msgid "Remove"
+msgstr "削除"
+
+#. delAttConfAlert
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:101
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:delAttConfAlert"
+msgid ""
+"Are you sure you want to remove the following attachment from the syllabus "
+"item?"
+msgstr "シラバスアイテムから次の添付を削除してもよろしいですか?"
+
+#. mainEditNotice
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:102
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditNotice"
+msgid "Syllabus Items"
+msgstr "シラバスアイテム"
+
+#. mainEditHeaderItem
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:103
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditHeaderItem"
+msgid "Syllabus Item"
+msgstr "シラバスアイテム"
+
+#. mainEditLinkUpTitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:104
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditLinkUpTitle"
+msgid "Move item up"
+msgstr "アイテムを一つ上へ"
+
+#. mainEditLinkDownTitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:105
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditLinkDownTitle"
+msgid "Move item down"
+msgstr "アイテムを一つ下へ"
+
+#. mainEditHeaderStatus
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:106
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditHeaderStatus"
+msgid "Post"
+msgstr "投稿"
+
+#. mainEditHeaderRemove
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:107
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditHeaderRemove"
+msgid "Remove"
+msgstr "削除"
+
+#. mainCaption
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:108
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainCaption"
+msgid ""
+"This table presents in one column all the syllabus items. Each group of "
+"three rows presents the title of the item, the body, and any attachments to "
+"the item.  "
+msgstr "この表にはシラバスアイテムがそれぞれ1列ごとに表示されています．3行で構成される各グループは，アイテムのタイトル，本文，アイテムへの添付を表しています．"
+
+#. mainEditListSummary
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:109
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditListSummary"
+msgid ""
+"List of syllabus items. Each row represents an item. Column 1: item title. "
+"Column 2: link to move item up in list. Column 3: link to move item down in "
+"list. Column 4: item status. Column 5: checkbox to select item for deletion."
+msgstr "シラバスアイテムの一覧．各行は一つのアイテムを表しています．カラム 1 は「アイテムのタイトル」，カラム 2 は一覧内での「アイテムの上への移動リンク」，カラム 3 は一覧内での「アイテムの下への移動リンク」，カラム 4 は「アイテムの状態」，カラム 5 は削除のためのアイテム選択の「チェックボックス」です．"
+
+#. mainDraft
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:110
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainDraft"
+msgid "DRAFT"
+msgstr "下書き"
+
+#. mainEditHeaderInCalendar
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:111
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditHeaderInCalendar"
+msgid "Calendar"
+msgstr "カレンダー"
+
+#. mainEditHeaderStartTime
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:112
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditHeaderStartTime"
+msgid "Start Time"
+msgstr "開始時刻"
+
+#. mainEditHeaderEndTime
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:113
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditHeaderEndTime"
+msgid "End Time"
+msgstr "終了時刻"
+
+#. mainEditHeaderTimeFormat
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:114
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mainEditHeaderTimeFormat"
+msgid "MM/dd/yyyy hh:mm a"
+msgstr "yyyy年MM月dd日ahh時mm分ss秒"
+
+#. jqueryDatePickerDateFormat
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:115
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:jqueryDatePickerDateFormat"
+msgid "mm/dd/yy"
+msgstr "mm/dd/yy"
+
+#. jqueryDatePickerTimeFormat
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:116
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:jqueryDatePickerTimeFormat"
+msgid "hh:mm tt"
+msgstr "hh:mm tt"
+
+#. empty_title_validate
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:117
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:empty_title_validate"
+msgid "Alert: Please specify a title. "
+msgstr "バリデーションエラー: タイトルを空にすることはできません．"
+
+#. empty_content_validate
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:118
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:empty_content_validate"
+msgid "Error:"
+msgstr "エラー:"
+
+#. invalid_dates
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:119
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:invalid_dates"
+msgid ""
+"Alert: You must enter valid dates and the start date must be before the end "
+"date."
+msgstr "警告：有効な日付を入力し，開始日を終了日より前にしなければなりません．"
+
+#. invalid_calendar
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:120
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:invalid_calendar"
+msgid ""
+"You must select a start date or end date before posting to the calendar."
+msgstr "カレンダに投稿する前に開始日と終了日を選択しなければなりません．"
+
+#. attachment
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:121
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:attachment"
+msgid "Attachments"
+msgstr "添付ファイル"
+
+#. attachment_local
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:122
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:attachment_local"
+msgid "Local File"
+msgstr "ローカルファイル"
+
+#. file_picker
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:123
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:file_picker"
+msgid "From Resourses"
+msgstr "リソースから"
+
+#. title_add_attach_local
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:124
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:title_add_attach_local"
+msgid "Attachment from a Local File"
+msgstr "ローカルファイルから添付"
+
+#. add_attach_prompt
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:125
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:add_attach_prompt"
+msgid ""
+"Browse to locate a file, then choose 'Attach'. Please be patient - uploads "
+"may take some time."
+msgstr "ファイルの位置をブラウズし，「添付」を選択します．アップロードには時間がかかる場合がありますので，しばらくお待ちください．"
+
+#. filename
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:126
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:filename"
+msgid "Filename: "
+msgstr "ファイル名: "
+
+#. attach_action
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:127
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:attach_action"
+msgid "Attach"
+msgstr "添付"
+
+#. title
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:128
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:title"
+msgid "Title"
+msgstr "タイトル"
+
+#. size
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:129
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:size"
+msgid "Size"
+msgstr "サイズ"
+
+#. type
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:130
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:type"
+msgid "Type"
+msgstr "タイプ"
+
+#. created_by
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:131
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:created_by"
+msgid "Created by"
+msgstr "作成者"
+
+#. last_modified
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:132
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:last_modified"
+msgid "Last modified"
+msgstr "最終修正日"
+
+#. openLinkNewWindow
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:133
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:openLinkNewWindow"
+msgid "Open this link in a new window"
+msgstr "新しいウィンドウにこのリンクを開く"
+
+#. goToItem
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:134
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:goToItem"
+msgid "Go to item"
+msgstr "アイテムへ行く"
+
+#. selectThisCheckBox
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:135
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:selectThisCheckBox"
+msgid "Select to Remove"
+msgstr "このアイテムを選択"
+
+#. selectThisCheckBoxPost
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:136
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:selectThisCheckBoxPost"
+msgid "Select to Post"
+msgstr "選択して投稿"
+
+#. selectThisCheckBoxCal
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:137
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:selectThisCheckBoxCal"
+msgid "Select to Link to Calendar"
+msgstr "選択してカレンダにリンク"
+
+#. attachmentTitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:138
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:attachmentTitle"
+msgid "Title"
+msgstr "タイトル"
+
+#. publicPrivate
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:139
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:publicPrivate"
+msgid "Select public or to site only"
+msgstr "「公開」か「サイトだけ」を選択します"
+
+#. removeAttachmentLink
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:140
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:removeAttachmentLink"
+msgid "Remove attachment "
+msgstr "添付ファイルを削除"
+
+#. save
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:141
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:save"
+msgid "Save"
+msgstr "保存"
+
+#. back
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:142
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:back"
+msgid "Back"
+msgstr "戻る"
+
+#. revise
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:143
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:revise"
+msgid "Edit"
+msgstr "編集"
+
+#. permission_error_permission
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:144
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:permission_error_permission"
+msgid "You have no permission for this action!"
+msgstr "このアクションの権限がありません!"
+
+#. posted
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:145
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:posted"
+msgid "Posted"
+msgstr "投稿済み"
+
+#. draft
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:146
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:draft"
+msgid "Draft"
+msgstr "ドラフト"
+
+#. button_save
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:147
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:button_save"
+msgid "Save this item"
+msgstr "このアイテムを保存"
+
+#. button_cancel
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:148
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:button_cancel"
+msgid "Cancel - go back"
+msgstr "キャンセルし戻る"
+
+#. button_preview
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:149
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:button_preview"
+msgid "Preview this item"
+msgstr "このアイテムをプレビュー"
+
+#. button_post
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:150
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:button_post"
+msgid "Post this item"
+msgstr "このアイテムを投稿"
+
+#. print_friendly
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:151
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:print_friendly"
+msgid "View a printable version of the current page"
+msgstr "現在のページの印刷用を表示"
+
+#. send_to_printer
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:152
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:send_to_printer"
+msgid "Send To Printer"
+msgstr "プリンタに送信"
+
+#. close_window
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:153
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:close_window"
+msgid "Close Window"
+msgstr "ウィンドウを閉じる"
+
+#. refresh
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:154
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:refresh"
+msgid "Syllabus tool has stale state. Please refresh the tool."
+msgstr "シラバスツールはステルス状態です．ツールをリフレッシュしてください．"
+
+#. error_redirect_empty
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:155
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_redirect_empty"
+msgid "Redirect URL cannot be blank."
+msgstr "転送 URL は空にはできません．"
+
+#. error_redirect_too_long
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:156
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_redirect_too_long"
+msgid "Redirect URL cannot be longer than 512 characters."
+msgstr "転送 URL は 512 文字より長くはできません．"
+
+#. error_redirect_ivalid
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:157
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error_redirect_ivalid"
+msgid "Redirect URL is invalid ({0})."
+msgstr "転送 URL が無効です ({0})．"
+
+#. dateheader
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:158
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:dateheader"
+msgid "Date"
+msgstr "日時"
+
+#. startdatetitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:159
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:startdatetitle"
+msgid "Start Date"
+msgstr "開始日時"
+
+#. enddatetitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:160
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:enddatetitle"
+msgid "End Date"
+msgstr "終了日時"
+
+#. starttimetitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:161
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:starttimetitle"
+msgid "Start Time"
+msgstr "開始時刻"
+
+#. endtimetitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:162
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:endtimetitle"
+msgid "End Time"
+msgstr "終了時刻"
+
+#. notificationheader
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:163
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:notificationheader"
+msgid "Notifications"
+msgstr "通知"
+
+#. linkcalendartitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:164
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:linkcalendartitle"
+msgid "Display dates on calendar"
+msgstr "カレンダに日付を表示"
+
+#. classMeetingDays
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:165
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:classMeetingDays"
+msgid "Class meeting days"
+msgstr "クラスミーティング日"
+
+#. now
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:166
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:now"
+msgid "Now"
+msgstr "現在"
+
+#. done
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:167
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:done"
+msgid "Done"
+msgstr "完了"
+
+#. am
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:168
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:am"
+msgid "AM"
+msgstr "午前"
+
+#. am2
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:169
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:am2"
+msgid "A"
+msgstr "注意:"
+
+#. pm
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:170
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:pm"
+msgid "PM"
+msgstr "午後"
+
+#. pm2
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:171
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:pm2"
+msgid "P"
+msgstr "P"
+
+#. time
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:172
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:time"
+msgid "Time"
+msgstr "時刻"
+
+#. hour
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:173
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:hour"
+msgid "Hour"
+msgstr "時間"
+
+#. minute
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:174
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:minute"
+msgid "Minute"
+msgstr "分"
+
+#. jan
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:175
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:jan"
+msgid "January"
+msgstr "1 月"
+
+#. feb
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:176
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:feb"
+msgid "February"
+msgstr "2 月"
+
+#. mar
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:177
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mar"
+msgid "March"
+msgstr "3 月"
+
+#. apr
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:178
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:apr"
+msgid "April"
+msgstr "4 月"
+
+#. may
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:179
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:may"
+msgid "May"
+msgstr "5 月"
+
+#. jun
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:180
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:jun"
+msgid "June"
+msgstr "6 月"
+
+#. jul
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:181
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:jul"
+msgid "July"
+msgstr "7 月"
+
+#. aug
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:182
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:aug"
+msgid "August"
+msgstr "8 月"
+
+#. sep
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:183
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:sep"
+msgid "September"
+msgstr "9 月"
+
+#. oct
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:184
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:oct"
+msgid "October"
+msgstr "10 月"
+
+#. nov
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:185
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:nov"
+msgid "November"
+msgstr "11 月"
+
+#. dec
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:186
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:dec"
+msgid "December"
+msgstr "12 月"
+
+#. monday
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:187
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:monday"
+msgid "Monday"
+msgstr "月曜日"
+
+#. tuesday
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:188
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:tuesday"
+msgid "Tuesday"
+msgstr "火曜日"
+
+#. wednesday
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:189
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:wednesday"
+msgid "Wednesday"
+msgstr "水曜日"
+
+#. thursday
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:190
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:thursday"
+msgid "Thursday"
+msgstr "木曜日"
+
+#. friday
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:191
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:friday"
+msgid "Friday"
+msgstr "金曜日"
+
+#. saturday
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:192
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:saturday"
+msgid "Saturday"
+msgstr "土曜日"
+
+#. sunday
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:193
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:sunday"
+msgid "Sunday"
+msgstr "日曜日"
+
+#. mon
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:194
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:mon"
+msgid "Mo"
+msgstr "(月)"
+
+#. tue
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:195
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:tue"
+msgid "Tu"
+msgstr "(火)"
+
+#. wed
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:196
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:wed"
+msgid "We"
+msgstr "(水)"
+
+#. thu
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:197
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:thu"
+msgid "Th"
+msgstr "(木)"
+
+#. fri
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:198
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:fri"
+msgid "Fr"
+msgstr "(金)"
+
+#. sat
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:199
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:sat"
+msgid "Sa"
+msgstr "(土)"
+
+#. sun
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:200
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:sun"
+msgid "Su"
+msgstr "(日)"
+
+#. choose_time
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:201
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:choose_time"
+msgid "Choose Time"
+msgstr "時間の選択"
+
+#. start_date_required
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:202
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:start_date_required"
+msgid "Start Date is required."
+msgstr "開始日は必須です．"
+
+#. end_date_required
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:203
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:end_date_required"
+msgid "End Date is required."
+msgstr "終了日は必須です．"
+
+#. start_time_required
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:204
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:start_time_required"
+msgid "Start Time is required."
+msgstr "開始時間は必須です．"
+
+#. dayOfWeekRequired
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:205
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:dayOfWeekRequired"
+msgid "At least one day of the week needs to be selected."
+msgstr "週のうち少なくともひとつの曜日を選択する必要があります．"
+
+#. bulkAddByItems
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:206
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bulkAddByItems"
+msgid "Create syllabus items by number of items needed"
+msgstr "必要とされるアイテム数にて授業計画アイテムを作成"
+
+#. bulkAddByDate
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:207
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bulkAddByDate"
+msgid "Create syllabus items by dates"
+msgstr "日付順で授業計画アイテムを作成"
+
+#. numberOfItems
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:208
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:numberOfItems"
+msgid "Number of Items"
+msgstr "アイテム数"
+
+#. bulk_items_invalid
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:209
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:bulk_items_invalid"
+msgid "The number of items to create must be a valid number from 1-100 "
+msgstr "作成するアイテム数は1 - 100の有効な数字である必要があります"
+
+#. clickToAddTitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:210
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToAddTitle"
+msgid "Click to add title"
+msgstr "クリックしてタイトルを追加"
+
+#. clickToAddStartDate
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:211
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToAddStartDate"
+msgid "Click to add start date"
+msgstr "クリックして開始日を追加"
+
+#. clickToAddEndDate
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:212
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToAddEndDate"
+msgid "Click to add end date"
+msgstr "クリックして終了日を追加"
+
+#. clickToAddBody
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:213
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToAddBody"
+msgid "Click to add body text"
+msgstr "クリックして本文を追加"
+
+#. clickToHideWorld
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:214
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToHideWorld"
+msgid "Click to make this syllabus item viewable to only this site"
+msgstr "クリックしてこのサイトだけが閲覧可能なこの授業計画アイテムを作成"
+
+#. clickToAddWorld
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:215
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToAddWorld"
+msgid "Click to make this syllabus item publicly viewable to the whole world"
+msgstr "クリックして全世界の誰でも閲覧可能なこの授業計画のアイテムを作成"
+
+#. dragToReorder
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:216
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:dragToReorder"
+msgid "Drag to reorder"
+msgstr "ドラッグして順序変更"
+
+#. clickToPublish
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:217
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToPublish"
+msgid "Click to publish"
+msgstr "クリックして公開"
+
+#. clickToUnpublish
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:218
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToUnpublish"
+msgid "Click to unpublish"
+msgstr "クリックして非公開"
+
+#. clickToAddCal
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:219
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToAddCal"
+msgid "Click to add to calendar"
+msgstr "クリックしてカレンダに追加"
+
+#. clickToRemoveCal
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:220
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToRemoveCal"
+msgid "Click to remove from calendar"
+msgstr "クリックしてカレンダから削除"
+
+#. expandAll
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:221
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:expandAll"
+msgid "Expand All"
+msgstr "すべて展開"
+
+#. collapseAll
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:222
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:collapseAll"
+msgid "Collapse All"
+msgstr "すべて折り畳む"
+
+#. main_edit_confirmDataChanged
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:223
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:main_edit_confirmDataChanged"
+msgid ""
+"You are about to navigate away from this page.  You will lose all unsaved "
+"data.  Continue?"
+msgstr "このページから移動しようとしています．保存していないデータは失われます．続けますか?"
+
+#. edit_details
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:224
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:edit_details"
+msgid "Edit Details"
+msgstr "詳細を編集"
+
+#. saved
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:225
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:saved"
+msgid "Saved"
+msgstr "保存完了"
+
+#. error
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:226
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:error"
+msgid "An error occurred while saving.  Refresh the page and try again."
+msgstr "保存中にエラーが発生しました．ページを更新して再度試して下さい．"
+
+#. required
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:227
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:required"
+msgid "This field is required."
+msgstr "このフィールドは必須入力項目です．"
+
+#. startBeforeEndDate
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:228
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:startBeforeEndDate"
+msgid "Start date must be before end date."
+msgstr "開始日は終了日の前に設定してください．"
+
+#. confirmDelete
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:229
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:confirmDelete"
+msgid "Are you sure you want to delete"
+msgstr "削除してもよろしいですか?"
+
+#. deleteItemTitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:230
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:deleteItemTitle"
+msgid "Delete Item"
+msgstr "アイテムを削除"
+
+#. clickToDelete
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:231
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToDelete"
+msgid "Click to delete item"
+msgstr "クリックしてアイテムを削除"
+
+#. addItemTitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:232
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:addItemTitle"
+msgid "Add Item"
+msgstr "アイテムを追加"
+
+#. clickToAddNewItem
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:233
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToAddNewItem"
+msgid "Click to add a new item"
+msgstr "クリックして新しいアイテムを追加"
+
+#. printView
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:234
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:printView"
+msgid "Print View"
+msgstr "印刷モード"
+
+#. calendarDatesNeeded
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:235
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:calendarDatesNeeded"
+msgid "Please select a start or end date before posting to the calendar."
+msgstr "カレンダに投稿する前に開始日と終了日を選択してください．"
+
+#. calendarDatesNeededToggle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:236
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:calendarDatesNeededToggle"
+msgid ""
+"Items without Start Time or End Time will not be added to the calendar."
+msgstr "開始時間と終了時間のないアイテムはカレンダに追加できません．"
+
+#. clickToRemoveAttachment
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:237
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToRemoveAttachment"
+msgid "Click to delete attachment"
+msgstr "クリックして添付を削除"
+
+#. deleteAttachmentTitle
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:238
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:deleteAttachmentTitle"
+msgid "Delete Attachment"
+msgstr "添付を削除"
+
+#. clickToExpandAndCollapse
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:239
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:clickToExpandAndCollapse"
+msgid "Click to expand/collapse, change attachments or edit body content."
+msgstr "クリックして展開または折り畳み，添付を変更もしくは本文のコンテツを編集して下さい．"
+
+#. iframeSecurity
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:240
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:iframeSecurity"
+msgid ""
+"For increased security, URL's that begin with 'http' rather than 'https' "
+"will open in a new window or tab.  If the page did not automatically open, "
+"click <a href='{0}' target=\"_blank\">here</a>"
+msgstr "セキュリティ向上のため，'https'ではなく 'http'で始まるURLは新しいウインドウかタブで開きます．ページが自動的に開かれない場合 ，<a href='{0}' target=\"_blank\">ここを</a>クリック"
+
+#. syllabus_PopupBlocked
+#: syllabus/syllabus-app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:241
+msgctxt ""
+"syllabus/syllabus-"
+"app/src/bundle/org/sakaiproject/tool/syllabus/bundle/Messages.properties:syllabus_PopupBlocked"
+msgid ""
+"If pop-up is blocked, <a target=\"syllabus\" href=\"{0}\">click here</a> or "
+"allow pop-ups."
+msgstr "ポップアップがブロックされたら<a target=\"syllabus\" href=\"{0}\">ここをクリック</a>またはポップアップを許可します．"

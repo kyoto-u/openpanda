@@ -1,0 +1,1723 @@
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-27 10:22+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. listScroll_first
+#: metaobj/metaobj-util/tool-lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:1
+msgctxt ""
+"metaobj/metaobj-util/tool-"
+"lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:listScroll_first"
+msgid "First"
+msgstr "最初"
+
+#. listScroll_previous
+#: metaobj/metaobj-util/tool-lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:2
+msgctxt ""
+"metaobj/metaobj-util/tool-"
+"lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:listScroll_previous"
+msgid "Previous"
+msgstr "前"
+
+#. listScroll_next
+#: metaobj/metaobj-util/tool-lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:3
+msgctxt ""
+"metaobj/metaobj-util/tool-"
+"lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:listScroll_next"
+msgid "Next"
+msgstr "次"
+
+#. listScroll_last
+#: metaobj/metaobj-util/tool-lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:4
+msgctxt ""
+"metaobj/metaobj-util/tool-"
+"lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:listScroll_last"
+msgid "Last"
+msgstr "最後"
+
+#. listScroll_viewing
+#: metaobj/metaobj-util/tool-lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:5
+msgctxt ""
+"metaobj/metaobj-util/tool-"
+"lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:listScroll_viewing"
+msgid "viewing {0} - {1} of {2} items"
+msgstr "{0} を表示 ({1}/{2})"
+
+#. errors.required
+#: metaobj/metaobj-util/tool-lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:6
+msgctxt ""
+"metaobj/metaobj-util/tool-"
+"lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:errors.required"
+msgid "{0} field is required."
+msgstr "「{0}」フィールドは必須です．"
+
+#. name
+#: metaobj/metaobj-util/tool-lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:7
+msgctxt ""
+"metaobj/metaobj-util/tool-"
+"lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:name"
+msgid "Name"
+msgstr "名前"
+
+#. schemaFile
+#: metaobj/metaobj-util/tool-lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:8
+msgctxt ""
+"metaobj/metaobj-util/tool-"
+"lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:schemaFile"
+msgid "Schema file"
+msgstr "スキーマファイル"
+
+#. docRootNode
+#: metaobj/metaobj-util/tool-lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:9
+msgctxt ""
+"metaobj/metaobj-util/tool-"
+"lib/src/bundle/org/sakaiproject/metaobj/bundle/Messages.properties:docRootNode"
+msgid "Document root node"
+msgstr "ドキュメントルートノード"
+
+#. button_save
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:1
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_save"
+msgid "Add Form"
+msgstr "保存"
+
+#. button_saveEdit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:2
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_saveEdit"
+msgid "Save Changes"
+msgstr "変更を保存"
+
+#. button_saveEditContinue
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:3
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:button_saveEditContinue"
+msgid "Continue"
+msgstr "続ける"
+
+#. button_back
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:4
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_back"
+msgid "Back"
+msgstr "戻る"
+
+#. button_cancel
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:5
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. button_yes
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:6
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_yes"
+msgid "Yes"
+msgstr "はい"
+
+#. button_no
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:7
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_no"
+msgid "No"
+msgstr "いいえ"
+
+#. button_update
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:8
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_update"
+msgid "Update"
+msgstr "更新"
+
+#. button_preview
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:9
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_preview"
+msgid "Preview"
+msgstr "プレビュー"
+
+#. button_addsubform
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:10
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_addsubform"
+msgid "Add"
+msgstr "追加"
+
+#. table_header_name
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:11
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_header_name"
+msgid "Name"
+msgstr "名前"
+
+#. table_header_description
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:12
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_header_description"
+msgid "Description"
+msgstr "説明"
+
+#. table_header_owner
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:13
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_header_owner"
+msgid "Owner"
+msgstr "所有者"
+
+#. table_header_summary
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:14
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_header_summary"
+msgid ""
+"List of forms available here. Column 1: name, links to act on item. Column "
+"2: Form owner. Column 3: the name of the site where form lives. Column 4: "
+"last time form was modified. Column 5: status of originating site. Column 6:"
+" status of the form - who can access it."
+msgstr "ここで利用可能なフォーム一覧．カラム 1: 名前．アイテム上で実行するリンクです．カラム 2: フォーム所有者．カラム 3: フォームがあるサイト名．カラム 4: フォームが修正された最後の時刻．カラム 5: 元サイトの状態．カラム 6: フォームの状態 - 誰がアクセス可能か．"
+
+#. instructions_requiredItems
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:15
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:instructions_requiredItems"
+msgid "Required items marked with <span class=\"reqStarInline\">*</span>"
+msgstr "必須アイテムには <span class=\"reqStarInline\">*</span> マークがついています"
+
+#. message_permissionsEdit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:16
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:message_permissionsEdit"
+msgid "Set permissions for {0} in worksite ''{1}''"
+msgstr "ワークサイト''{1}''の{0}の権限をセット"
+
+#. dateFormat_Middle
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:17
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:dateFormat_Middle"
+msgid "dd/MM/yyyy hh:mm a"
+msgstr "yyyy年MM月dd日(a)hh時mm分"
+
+#. date_format_hint
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:18
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:date_format_hint"
+msgid "dd-mm-yyyy"
+msgstr "yyyy-mm-dd"
+
+#. title_formManager
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:19
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:title_formManager"
+msgid "Manage Forms"
+msgstr "フォームを管理"
+
+#. action_new
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:20
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:action_new"
+msgid "Add"
+msgstr "追加"
+
+#. action_new_title
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:21
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:action_new_title"
+msgid "Add"
+msgstr "追加"
+
+#. action_import
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:22
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:action_import"
+msgid "Import"
+msgstr "インポート"
+
+#. action_import_title
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:23
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:action_import_title"
+msgid "Import"
+msgstr "インポート"
+
+#. action_permissions
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:24
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:action_permissions"
+msgid "Permissions"
+msgstr "権限"
+
+#. action_permissions_title
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:25
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:action_permissions_title"
+msgid "Permissions"
+msgstr "権限"
+
+#. table_header_siteId
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:26
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_header_siteId"
+msgid "Site Id"
+msgstr "サイト ID"
+
+#. table_header_modified
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:27
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_header_modified"
+msgid "Last Modified"
+msgstr "最終修正日"
+
+#. table_header_siteState
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:28
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_header_siteState"
+msgid "Site State"
+msgstr "サイト状態"
+
+#. table_header_globalState
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:29
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_header_globalState"
+msgid "Global State"
+msgstr "グローバル状態"
+
+#. table_action_edit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:30
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_action_edit"
+msgid "Edit"
+msgstr "編集"
+
+#. table_action_export
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:31
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_action_export"
+msgid "Export"
+msgstr "エクスポート"
+
+#. table_action_publish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:32
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_action_publish"
+msgid "Publish"
+msgstr "出版"
+
+#. table_action_delete
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:33
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_action_delete"
+msgid "Delete"
+msgstr "削除"
+
+#. table_action_globalPublish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:34
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_action_globalPublish"
+msgid "Global Publish"
+msgstr "グローバル出版"
+
+#. table_action_suggestPublishGlobal
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:35
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_action_suggestPublishGlobal"
+msgid "Publish Global"
+msgstr "グローバルに出版"
+
+#. table_action_approveGlobalPublish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:36
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_action_approveGlobalPublish"
+msgid "Approve Global Publish"
+msgstr "グローバル出版を承認"
+
+#. table_action_usage
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:37
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_action_usage"
+msgid "View Usage"
+msgstr "利用状況を表示"
+
+#. text_global
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:38
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:text_global"
+msgid "global"
+msgstr "グローバル"
+
+#. text_na
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:39
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:text_na"
+msgid "N/A"
+msgstr "利用不可"
+
+#. text_unpublished
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:40
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:text_unpublished"
+msgid "unpublished"
+msgstr "未出版"
+
+#. text_published
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:41
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:text_published"
+msgid "published"
+msgstr "出版済み"
+
+#. text_waitingForApproval
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:42
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_waitingForApproval"
+msgid "waiting for approval"
+msgstr "承認待ち"
+
+#. text_explainState
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:43
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:text_explainState"
+msgid ""
+"'Site State' refers to the state of this Form within the worksite (eg. "
+"unpublished/published). <br/><br/> ''Global State'' refers to the state of "
+"the Form within the system (eg. unpublished/waiting for "
+"approval/published).<br/><br/>"
+msgstr "「サイト状態」とは，ワークサイト内のこのフォームの状態を表します(つまり，未出版または出版済み)<br/><br/> 「グローバル状態」とは，システム内のフォームの状態を表します(つまり，未出版，承認待ち，または，出版済み)<br/><br/>"
+
+#. text_adminsApproveGlobalAccess
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:44
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_adminsApproveGlobalAccess"
+msgid "Only System Administrators can approve a Form for global access."
+msgstr "システム管理者だけがグローバルアクセスのフォームを承認することができます．"
+
+#. text_noFormsAvailable
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:45
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_noFormsAvailable"
+msgid "No Forms Available."
+msgstr "利用可能なフォームがありません．"
+
+#. text_clickAdd
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:46
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:text_clickAdd"
+msgid "Click ''Add'' to create one."
+msgstr "作成する場合は「追加」をクリックします．"
+
+#. title_addForm
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:47
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:title_addForm"
+msgid "Add Form"
+msgstr "フォームを追加"
+
+#. title_editForm
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:48
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:title_editForm"
+msgid "Edit Form"
+msgstr "フォームを編集"
+
+#. instructions_selectXSD
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:49
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:instructions_selectXSD"
+msgid "Please select an XSD file that defines your new form."
+msgstr "新しいフォームを定義する XSD ファイルを選択してください．"
+
+#. instructions_pleaseEdit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:50
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:instructions_pleaseEdit"
+msgid "Please edit your form properties"
+msgstr "フォームのプロパティを編集してください"
+
+#. text_editForm
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:51
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:text_editForm"
+msgid "Edit Form"
+msgstr "フォームを編集"
+
+#. instructions_editForm
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:52
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:instructions_editForm"
+msgid "Please edit your form properties"
+msgstr "フォームのプロパティを編集してください"
+
+#. header_form
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:53
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:header_form"
+msgid "Form"
+msgstr "フォーム"
+
+#. header_advancedOptions
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:54
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:header_advancedOptions"
+msgid "Advanced Options"
+msgstr "詳細オプション"
+
+#. label_name
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:55
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:label_name"
+msgid "Name"
+msgstr "名前"
+
+#. label_newName
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:56
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:label_newName"
+msgid "New Name"
+msgstr "新しい名前"
+
+#. label_schemaFile
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:57
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:label_schemaFile"
+msgid "Schema File (xsd)"
+msgstr "スキーマファイル (XSD)"
+
+#. label_altCreateFile
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:58
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:label_altCreateFile"
+msgid "Alternate Form Creation Renderer (xsl)"
+msgstr "代わりのフォーム作成レンダラ (XSL)"
+
+#. label_altViewFile
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:59
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:label_altViewFile"
+msgid "Alternate Form View Renderer (xsl)"
+msgstr "代わりのフォーム表示レンダラ (XSL)"
+
+#. text_selectXSD
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:60
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:text_selectXSD"
+msgid "Select Schema File"
+msgstr "スキーマファイルを選択"
+
+#. text_selectAltCreateXsl
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:61
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_selectAltCreateXsl"
+msgid "Select Xsl File"
+msgstr "XSL ファイルを選択"
+
+#. text_selectAltViewXsl
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:62
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_selectAltViewXsl"
+msgid "Select Xsl File"
+msgstr "XSL ファイルを選択"
+
+#. label_documentRoot
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:63
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:label_documentRoot"
+msgid "Document Root Node"
+msgstr "ドキュメントルートノード"
+
+#. label_Instructions
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:64
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:label_Instructions"
+msgid "Instruction"
+msgstr "説明"
+
+#. label_hiddenForm
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:65
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:label_hiddenForm"
+msgid "make this form hidden"
+msgstr "このフォームを非表示にする"
+
+#. text_selectXSD_instructions
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:66
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_selectXSD_instructions"
+msgid ""
+"Select the XML Schema file (XSD) that will provide the structure for your "
+"form."
+msgstr "フォームの構造を与える XML スキーマファイル (XSD) を選択します．"
+
+#. text_selectAltCreateXsl_instructions
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:67
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_selectAltCreateXsl_instructions"
+msgid "Select the XSLT File (XSL) that will render the \"Create\" and \"Edit\" forms."
+msgstr "「作成」フォームおよび「編集」フォームを描画する XSLT ファイル (XSL) を選択します．"
+
+#. text_selectAltViewXsl_instructions
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:68
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_selectAltViewXsl_instructions"
+msgid "Select the XSLT File (XSL) that will render the \"View\" form."
+msgstr "「表示」フォームを描画する XSLT ファイル (XSL) を選択します．"
+
+#. legend_confirm_publish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:69
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:legend_confirm_publish"
+msgid "Publish Form"
+msgstr "フォームを出版"
+
+#. legend_confirm_delete
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:70
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:legend_confirm_delete"
+msgid "Delete Form"
+msgstr "フォームを削除"
+
+#. confirm_publish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:71
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:confirm_publish"
+msgid ""
+"Publishing will make this Form available to others in the worksite. Are you "
+"sure you want to do this?"
+msgstr "出版するとワークサイトの他のユーザにこのフォームが利用可能になります．このようにしてよろしいですか?"
+
+#. confirm_globalPublish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:72
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:confirm_globalPublish"
+msgid ""
+"Global publishing will make this Form available to all users in all "
+"worksites. Are you sure you want to do this?"
+msgstr "グローバル出版するとワークサイトのすべてのユーザにこのフォームが利用可能になります．よろしいですか?"
+
+#. confirm_requestGlobalPublish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:73
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:confirm_requestGlobalPublish"
+msgid ""
+"You are submitting a request that this Form be made available on a global "
+"basis. A system administator will need to approve your suggestion. Are you "
+"sure you want to do this?"
+msgstr "グローバルベースでこのフォームが利用可能になるリクエストを提出しようとしています．システム管理者による承認が必要になります．よろしいですか?"
+
+#. confirm_delete
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:74
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:confirm_delete"
+msgid "You are about to delete this form.  Are you sure you want to do this?"
+msgstr "このフォームを削除しようとしています．よろしいですか?"
+
+#. text_authenticationFailed
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:75
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_authenticationFailed"
+msgid "Authorization failed for function {0} on object {1}"
+msgstr "オブジェクト {1} の機能 {0} に対する権限確認に失敗しました"
+
+#. instructions_publish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:76
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:instructions_publish"
+msgid ""
+"Publishing will make this Form available to others in the worksite. Are you "
+"sure you want to do this?"
+msgstr "出版するとワークサイトの他のユーザにこのフォームが利用可能になります．よろしいですか?"
+
+#. instructions_globalPublish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:77
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:instructions_globalPublish"
+msgid ""
+"Global publishing will make this Form available to all users in all "
+"worksites. Are you sure you want to do this?"
+msgstr "グローバル出版するとワークサイトのすべてのユーザにこのフォームが利用可能になります．よろしいですか?"
+
+#. instructions_submitGlobal
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:78
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:instructions_submitGlobal"
+msgid ""
+"You are submitting a request that this Form be made available on a global "
+"basis. A system administator will need to approve your suggestion. Are you "
+"sure you want to do this?"
+msgstr "グローバルベースでこのフォームが利用可能になるリクエストを提出しようとしています．システム管理者による承認が必要になります．よろしいですか?"
+
+#. tableHeader_role
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:79
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:tableHeader_role"
+msgid "Role"
+msgstr "ロール"
+
+#. imgAlt_readOnlyPerm
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:80
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:imgAlt_readOnlyPerm"
+msgid "This permission is read only"
+msgstr "この権限はリードオンリーです"
+
+#. duplicateUser
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:81
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:duplicateUser"
+msgid "User ''{0}'' already exists."
+msgstr "ユーザ ''{0}'' はすでに存在しています．"
+
+#. error.required
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:82
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:error.required"
+msgid "required"
+msgstr "必須"
+
+#. required value {0}
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:83
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:required value {0}"
+msgid "A value is required for {0}"
+msgstr "必須"
+
+#. Form name {0} exists
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:84
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:Form name {0} "
+"exists"
+msgid "Form name ''{0}'' exists. Please enter a new, unique name."
+msgstr "フォーム名 ''{0}'' が存在します．違う新しい名前を入力してください．"
+
+#. unable_to_delete_published
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:85
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:unable_to_delete_published"
+msgid "Unable to delete a published form that is in use."
+msgstr "出版済みフォームを削除することはできません．"
+
+#. invalid.query
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:86
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:invalid.query"
+msgid "invalid query"
+msgstr "無効なクエリ"
+
+#. osp.repository.read
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:87
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:osp.repository.read"
+msgid "Read"
+msgstr "読込"
+
+#. osp.repository.write
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:88
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.repository.write"
+msgid "Write"
+msgstr "書込"
+
+#. osp.repository.move
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:89
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:osp.repository.move"
+msgid "Move"
+msgstr "移動"
+
+#. osp.repository.copy
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:90
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:osp.repository.copy"
+msgid "Copy"
+msgstr "コピー"
+
+#. osp.repository.delete
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:91
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.repository.delete"
+msgid "Delete"
+msgstr "削除"
+
+#. osp.presentation.template.copy
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:92
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.template.copy"
+msgid "Copy"
+msgstr "コピー"
+
+#. osp.presentation.template.publish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:93
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.template.publish"
+msgid "Publish"
+msgstr "出版"
+
+#. osp.presentation.template.delete
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:94
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.template.delete"
+msgid "Delete"
+msgstr "削除"
+
+#. osp.presentation.template.create
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:95
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.template.create"
+msgid "Create"
+msgstr "作成"
+
+#. osp.presentation.template.edit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:96
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.template.edit"
+msgid "Edit"
+msgstr "編集"
+
+#. osp.presentation.template.export
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:97
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.template.export"
+msgid "Export"
+msgstr "エクスポート"
+
+#. osp.presentation.view
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:98
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.view"
+msgid "View"
+msgstr "表示"
+
+#. osp.presentation.comment
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:99
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.comment"
+msgid "Comment"
+msgstr "コメント"
+
+#. osp.presentation.delete
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:100
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.delete"
+msgid "Delete"
+msgstr "削除"
+
+#. osp.presentation.create
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:101
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.create"
+msgid "Create"
+msgstr "作成"
+
+#. osp.presentation.edit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:102
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.presentation.edit"
+msgid "Edit"
+msgstr "編集"
+
+#. osp.matrix.scaffolding.copy
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:103
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.matrix.scaffolding.copy"
+msgid "Copy"
+msgstr "コピー"
+
+#. osp.matrix.scaffolding.publish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:104
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.matrix.scaffolding.publish"
+msgid "Publish"
+msgstr "出版"
+
+#. osp.matrix.scaffolding.create
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:105
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.matrix.scaffolding.create"
+msgid "Create"
+msgstr "作成"
+
+#. osp.matrix.scaffolding.viewUsers
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:106
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.matrix.scaffolding.viewUsers"
+msgid "View Users"
+msgstr "ユーザを表示"
+
+#. osp.matrix.review
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:107
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:osp.matrix.review"
+msgid "Review"
+msgstr "確認"
+
+#. osp.matrix.unlockReview
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:108
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.matrix.unlockReview"
+msgid "Unlock Review"
+msgstr "確認を解除"
+
+#. osp.matrix.viewOwner
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:109
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.matrix.viewOwner"
+msgid "View Owner"
+msgstr "所有者を表示"
+
+#. reports.copy
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:110
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:reports.copy"
+msgid "Copy"
+msgstr "コピー"
+
+#. reports.publish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:111
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:reports.publish"
+msgid "Publish"
+msgstr "出版"
+
+#. reports.delete
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:112
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:reports.delete"
+msgid "Delete"
+msgstr "削除"
+
+#. reports.create
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:113
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:reports.create"
+msgid "Create"
+msgstr "作成"
+
+#. reports.edit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:114
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:reports.edit"
+msgid "Edit"
+msgstr "編集"
+
+#. osp.sad.create
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:115
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:osp.sad.create"
+msgid "Create"
+msgstr "作成"
+
+#. osp.sad.edit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:116
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:osp.sad.edit"
+msgid "Edit"
+msgstr "編集"
+
+#. osp.sad.publish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:117
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:osp.sad.publish"
+msgid "Publish"
+msgstr "出版"
+
+#. osp.sad.suggest_global_publish
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:118
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.sad.suggest_global_publish"
+msgid "Suggest Global Publish"
+msgstr "グローバル出版を指示"
+
+#. osp.help.glossary.delete
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:119
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.help.glossary.delete"
+msgid "Delete"
+msgstr "削除"
+
+#. osp.help.glossary.add
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:120
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.help.glossary.add"
+msgid "Add"
+msgstr "追加"
+
+#. osp.help.glossary.edit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:121
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.help.glossary.edit"
+msgid "Edit"
+msgstr "編集"
+
+#. error.invalidXmlElementName
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:122
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:error.invalidXmlElementName"
+msgid "not valid for use in xml element names"
+msgstr "xml エレメント名での使用が不正です"
+
+#. osp.review.rubric.value1
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:123
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.review.rubric.value1"
+msgid "Exceeds Expectations"
+msgstr "期待を越える"
+
+#. osp.review.rubric.value2
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:124
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.review.rubric.value2"
+msgid "Meets Expectations"
+msgstr "期待に一致"
+
+#. osp.review.rubric.value3
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:125
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.review.rubric.value3"
+msgid "Good Start"
+msgstr "好調に開始"
+
+#. osp.review.rubric.value4
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:126
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:osp.review.rubric.value4"
+msgid "Incomplete"
+msgstr "不完全"
+
+#. CHECKED_OUT
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:127
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:CHECKED_OUT"
+msgid "Checked Out"
+msgstr "チェックアウトしました"
+
+#. WAITING
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:128
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:WAITING"
+msgid "Waiting"
+msgstr "待機中"
+
+#. filePickerMessage.pickTransform
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:129
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:filePickerMessage.pickTransform"
+msgid "Please choose XSL Transformation File"
+msgstr "XSL 変換ファイルを選択してください"
+
+#. filePickerMessage.pickSchema
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:130
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:filePickerMessage.pickSchema"
+msgid "Please choose XSD Schema File"
+msgstr "XSD スキーマファイルを選択してください"
+
+#. filePickerMessage.pickAltCreateXsl
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:131
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:filePickerMessage.pickAltCreateXsl"
+msgid "Please choose XSL Transformation File"
+msgstr "「XSL 変換ファイル」を選択してください"
+
+#. filePickerMessage.pickAltViewXsl
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:132
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:filePickerMessage.pickAltViewXsl"
+msgid "Please choose XSL Transformation File"
+msgstr "「XSL 変換ファイル」を選択してください"
+
+#. metaobj.import.title
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:133
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:metaobj.import.title"
+msgid "Import Form"
+msgstr "メタオブジェクトをインポート"
+
+#. metaobj.import.importButton
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:134
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:metaobj.import.importButton"
+msgid "Import"
+msgstr "インポート"
+
+#. metaobj.import.cancelButton
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:135
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:metaobj.import.cancelButton"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. metaobj.import.importTheseFiles
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:136
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:metaobj.import.importTheseFiles"
+msgid "Import file"
+msgstr "ファイルをインポート"
+
+#. metaobj.import.pickFilesToImport
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:137
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:metaobj.import.pickFilesToImport"
+msgid "Select File..."
+msgstr "ファイルを選択..."
+
+#. date_pick_alt
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:138
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:date_pick_alt"
+msgid "Click Here to Pick Date"
+msgstr "ここをクリックして日付を選択します"
+
+#. display.name.label
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:139
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:display.name.label"
+msgid "Display Name:"
+msgstr "名前を表示:"
+
+#. manage_attachments
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:140
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:manage_attachments"
+msgid "Add/Remove Attachments"
+msgstr "添付ファイルを追加または削除"
+
+#. manage_attachments_title
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:141
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:manage_attachments_title"
+msgid "Go to file picker to add or remove attachments"
+msgstr "添付ファイルを追加または削除する場合はファイル選択へ移動します"
+
+#. add_attachments
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:142
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:add_attachments"
+msgid "Add Attachments"
+msgstr "添付ファイルを塚"
+
+#. add_attachments_title
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:143
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:add_attachments_title"
+msgid "Go to file picker to add attachments"
+msgstr "添付ファイルを追加する場合はファイル選択へ移動します"
+
+#. attachment_file_helper_title_single
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:144
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:attachment_file_helper_title_single"
+msgid "Add/Remove Attachment"
+msgstr "添付ファイルを追加または削除"
+
+#. attachment_file_helper_title_multiple
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:145
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:attachment_file_helper_title_multiple"
+msgid "Add/Remove Attachments"
+msgstr "添付ファイルを追加または削除"
+
+#. attachment_file_helper_instructions_single
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:146
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:attachment_file_helper_instructions_single"
+msgid "Select a file to attach to ''{0}''."
+msgstr "ファイルを選択して「{0}」に添付します．"
+
+#. attachment_file_helper_instructions_multiple
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:147
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:attachment_file_helper_instructions_multiple"
+msgid "Select up to {1} files to attach to ''{0}''."
+msgstr "最大{1}個のファイルを選択して「{0}」に添付します．"
+
+#. attachment_file_helper_instructions_multiple_unlim
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:148
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:attachment_file_helper_instructions_multiple_unlim"
+msgid "Select any number of files to attach to ''{0}''."
+msgstr "任意個のファイルを選択して「{0}」に添付します．"
+
+#. max_chars
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:149
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:max_chars"
+msgid "should be less than {0} characters"
+msgstr "{0} 文字より少なくなければなりません"
+
+#. at_least
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:150
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:at_least"
+msgid "should be at least {0} characters"
+msgstr "少なくとも {0} 文字でなければなりません"
+
+#. exactly
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:151
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:exactly"
+msgid "should be exactly {0} characters"
+msgstr "ぴったり {0} 文字でなければなりません"
+
+#. max_digs
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:152
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:max_digs"
+msgid "should be {0} numbers or less\t"
+msgstr "{0} 個か少なくなければなりません"
+
+#. less_or_equal_to
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:153
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:less_or_equal_to"
+msgid "value should be {0} or less"
+msgstr "値は {0} 以下でなくなければなりません"
+
+#. more_than_or_equal_to
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:154
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:more_than_or_equal_to"
+msgid "value should be {0} or more"
+msgstr "値は {0} 以上でなくなければなりません"
+
+#. less_than
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:155
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:less_than"
+msgid "value should be less than {0}"
+msgstr "値は {0} より少なくなければなりません"
+
+#. more_than
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:156
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:more_than"
+msgid "value should be more than {0}"
+msgstr "値は {0} より大きくなければなりません"
+
+#. schema_file_error
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:157
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:schema_file_error"
+msgid "error reading schema file: {0}"
+msgstr "スキーマファイルの読み込みエラーです: {0}"
+
+#. render_file_error
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:158
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:render_file_error"
+msgid "invalid render file: {0}"
+msgstr "不正なレンダーファイルです: {0}"
+
+#. invalid_schema_file_edit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:159
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:invalid_schema_file_edit"
+msgid "Invalid schema for editing this form"
+msgstr "このフォームを編集するためには不正なスキーマです"
+
+#. add_form_element
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:160
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:add_form_element"
+msgid "Add item like this one"
+msgstr "このようにアイテムを追加します"
+
+#. delete_form_element
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:161
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:delete_form_element"
+msgid "Remove this item"
+msgstr "このアイテムを削除"
+
+#. validationSuccessful
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:162
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:validationSuccessful"
+msgid "Form data validated successfully"
+msgstr "フォームデータが正しいことが検証されました"
+
+#. button_validate
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:163
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_validate"
+msgid "Validate"
+msgstr "検証"
+
+#. button_return
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:164
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:button_return"
+msgid "Return"
+msgstr "戻る"
+
+#. created
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:165
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:created"
+msgid "Created"
+msgstr "作成されました"
+
+#. modified
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:166
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:modified"
+msgid "Modified\t\t\t\t\t\t\t\t\t\t\t"
+msgstr "修正されました"
+
+#. items
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:167
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:items"
+msgid "items"
+msgstr "アイテム"
+
+#. itemsselected
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:168
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:itemsselected"
+msgid "items selected"
+msgstr "選択されたアイテム"
+
+#. table_top_summary
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:169
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_top_summary"
+msgid "table contains more tables with the form elements"
+msgstr "表にはフォーム要素を持つ表が含まれています"
+
+#. table_subform_summary
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:170
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_subform_summary"
+msgid "table contains items filled out in a subform"
+msgstr "表にはサブフォームに入力されたアイテムがあります"
+
+#. table_item_summary
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:171
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_item_summary"
+msgid "table contains an item"
+msgstr "表にはアイテムがあります"
+
+#. INVALID_LENGTH_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:172
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:INVALID_LENGTH_ERROR_CODE"
+msgid "Value {1} for field {0} must be {2} characters"
+msgstr "フィールド {0} の値 {1} は {2} 文字でなければなりません"
+
+#. INVALID_LENGTH_TOO_LONG_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:173
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:INVALID_LENGTH_TOO_LONG_ERROR_CODE"
+msgid "Value {1} for field {0} must be less than {2} characters"
+msgstr "フィールド {0} の値 {1} は {2} 文字より少なくなければなりません"
+
+#. INVALID_LENGTH_TOO_SHORT_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:174
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:INVALID_LENGTH_TOO_SHORT_ERROR_CODE"
+msgid "Value {1} for field {0} must be at least {2} characters"
+msgstr "フィールド {0} の値 {1} は少なくとも {2} 文字でなければなりません"
+
+#. INVALID_PATTERN_MATCH_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:175
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:INVALID_PATTERN_MATCH_ERROR_CODE"
+msgid "Value {1} for field {0} must match {2}"
+msgstr "フィールド {0} の値 {1} は {2} に一致しなければなりません"
+
+#. NOT_IN_ENUMERATION_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:176
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:NOT_IN_ENUMERATION_ERROR_CODE"
+msgid "Value {1} for field {0} must be in enueration"
+msgstr "フィールド {0} の値 {1} は列挙型でなければなりません"
+
+#. DATE_TOO_LATE_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:177
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:DATE_TOO_LATE_ERROR_CODE"
+msgid "Value {1} for field {0} must be before {2}"
+msgstr "フィールド {0} の値 {1} は {2} より前でなければなりません"
+
+#. DATE_TOO_EARLY_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:178
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:DATE_TOO_EARLY_ERROR_CODE"
+msgid "Value {1} for field {0} must be after {2}"
+msgstr "フィールド {0} の値 {1} は {2} より後でなければなりません"
+
+#. DATE_AFTER_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:179
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:DATE_AFTER_ERROR_CODE"
+msgid "Value {1} for field {0} must be not be after {2}"
+msgstr "フィールド {0} の値 {1} は {2} より後でなければなりません"
+
+#. DATE_BEFORE_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:180
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:DATE_BEFORE_ERROR_CODE"
+msgid "Value {1} for field {0} must be not be before {2}"
+msgstr "フィールド {0} の値 {1} は {2} より前でなければなりません"
+
+#. DATE_INVALID_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:181
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:DATE_INVALID_ERROR_CODE"
+msgid "Value {1} for field {0} is an invalid date"
+msgstr "フィールド {0} の値 {1} は不正な日付です"
+
+#. REQIRED_FIELD_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:182
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:REQIRED_FIELD_ERROR_CODE"
+msgid "A value is required for {0}"
+msgstr "{0} に対する値が必要です"
+
+#. TOO_LARGE_INCLUSIVE_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:183
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:TOO_LARGE_INCLUSIVE_ERROR_CODE"
+msgid "Value {1} for field {0} must be less than or equal to {2}"
+msgstr "フィールド {0} の値 {1} は {2} 以下でなければなりません"
+
+#. TOO_SMALL_INCLUSIVE_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:184
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:TOO_SMALL_INCLUSIVE_ERROR_CODE"
+msgid "Value {1} for field {0} must be more than or equal {2}"
+msgstr "フィールド {0} の値 {1} は {2} 以下でなければなりません"
+
+#. TOO_LARGE_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:185
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:TOO_LARGE_ERROR_CODE"
+msgid "Value {1} for field {0} must be less than {2}"
+msgstr "フィールド {0} の値 {1} は {2} より小さくなければなりません"
+
+#. TOO_SMALL_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:186
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:TOO_SMALL_ERROR_CODE"
+msgid "Value {1} for field {0} must be more than {2}"
+msgstr "フィールド {0} の値 {1} は {2} より大きくなければなりません"
+
+#. TOO_MANY_DIGITS_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:187
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:TOO_MANY_DIGITS_ERROR_CODE"
+msgid "Value {1} for field {0} must be less than {2} digits"
+msgstr "フィールド {0} の値 {1} は {2} より小さい数値でなければなりません"
+
+#. INVALID_DECIMAL_NUMBER_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:188
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:INVALID_DECIMAL_NUMBER_ERROR_CODE"
+msgid "Value {1} for field {0} must be a decimal number"
+msgstr "フィールド {0} の値 {1} は小数でなければなりません"
+
+#. INVALID_NUMBER_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:189
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:INVALID_NUMBER_ERROR_CODE"
+msgid "Value {1} for field {0} must be a number"
+msgstr "フィールド {0} の値 {1} は数値でなければなりません"
+
+#. INVALID_TYPE_ERROR_CODE
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:190
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:INVALID_TYPE_ERROR_CODE"
+msgid "Object {1} for field {0} should be class {2}"
+msgstr "フィールド {0} のオブジェクト {1} はクラス {2} でなければなりません"
+
+#. INVALID_URI
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:191
+msgctxt "metaobj/metaobj-tool/tool/src/bundle/messages.properties:INVALID_URI"
+msgid "Value {1} for field {0} is a malformed URI"
+msgstr "フィールド {0} の値 {1} は不正な形式の URI です．"
+
+#. FORM_ID_REQUIRED
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:192
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:FORM_ID_REQUIRED"
+msgid "Please select a form type from the list below."
+msgstr "以下の一覧からフォームタイプを選択してください．"
+
+#. RICH_TEXT_FORMAT_PASSTHROUGH
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:193
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:RICH_TEXT_FORMAT_PASSTHROUGH"
+msgid "Field {0} has invalid HTML: {1}"
+msgstr "フィールド {0} はに不正な HTML があります: {1}"
+
+#. form_type_title
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:194
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:form_type_title"
+msgid "Select a form"
+msgstr "フォームを選択します"
+
+#. form_type_global
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:195
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:form_type_global"
+msgid "Global Forms"
+msgstr "グローバルフォーム"
+
+#. form_type_instructions
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:196
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:form_type_instructions"
+msgid ""
+"Pick a form to use. Global forms that everyone can use everywhere are listed"
+" first. Forms that originate from sites you are a member of are listed next."
+" "
+msgstr "使用するフォームを選択します．誰でもどこででも利用可能なグローバルフォームが最初に一覧表示されています．あなたがメンバのサイトが元になっているフォームはその次にあります．"
+
+#. form_type_submit
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:197
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:form_type_submit"
+msgid "Continue"
+msgstr "続ける"
+
+#. form_type_cancel
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:198
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:form_type_cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. back_to_list
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:199
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:back_to_list"
+msgid "Back to list"
+msgstr "一覧に戻る"
+
+#. title_formUsage
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:200
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:title_formUsage"
+msgid "Form Usage for {0}"
+msgstr "「{0}」フォーム利用状況"
+
+#. table_header_type
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:201
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:table_header_type"
+msgid "Type"
+msgstr "種別"
+
+#. table_header_detail1
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:202
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_header_detail1"
+msgid "Detail 1"
+msgstr "詳細 1"
+
+#. table_header_detail2
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:203
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_header_detail2"
+msgid "Detail 2"
+msgstr "詳細 2"
+
+#. table_header_sitename
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:204
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:table_header_sitename"
+msgid "Site"
+msgstr "サイト"
+
+#. text_noUsageAvailable
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:205
+msgctxt ""
+"metaobj/metaobj-"
+"tool/tool/src/bundle/messages.properties:text_noUsageAvailable"
+msgid "No usage information found"
+msgstr "利用状況情報はありませんでした"
+
+#. error_submission
+#: metaobj/metaobj-tool/tool/src/bundle/messages.properties:206
+msgctxt ""
+"metaobj/metaobj-tool/tool/src/bundle/messages.properties:error_submission"
+msgid "Validation errors exists.  Read below for more detail."
+msgstr "バリデーションエラーがあります．詳しくは下記をご覧ください．"
+
+#. user_not_found
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/messages.properties:1
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/messages.properties:user_not_found"
+msgid "(User not found)"
+msgstr "(ユーザが見つかりませんでした)"
+
+#. content_resource_type
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/messages.properties:2
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/messages.properties:content_resource_type"
+msgid "Saved Form Resource"
+msgstr "保存されたフォームリソース"
+
+#. form_name
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/messages.properties:3
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/messages.properties:form_name"
+msgid "Form Name: "
+msgstr "フォーム名: "
+
+#. form_owner
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/messages.properties:4
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/messages.properties:form_owner"
+msgid "Form Owner: "
+msgstr "フォーム所有者: "
+
+#. unknown_file_err
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/messages.properties:5
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/messages.properties:unknown_file_err"
+msgid "Unknown file error"
+msgstr "未知のファイルエラー"
+
+#. perm_file_err
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/messages.properties:6
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/messages.properties:perm_file_err"
+msgid "Permission Error: resource may be locked"
+msgstr "権限エラー: リソースがロックされている可能性があります"
+
+#. quota_file_err
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/messages.properties:7
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/messages.properties:quota_file_err"
+msgid "Over quota error"
+msgstr "クオータ超過エラー"
+
+#. form_item
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/registry/messages.properties:1
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/registry/messages.properties:form_item"
+msgid "Form Item"
+msgstr "フォームアイテム"
+
+#. form_item_tip
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/registry/messages.properties:2
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/registry/messages.properties:form_item_tip"
+msgid "Form Item: {0}"
+msgstr "フォームアイテム: {0}"
+
+#. form_import_folder
+#: metaobj/metaobj-impl/api-impl/src/bundle/org/sakaiproject/metaobj/registry/messages.properties:3
+msgctxt ""
+"metaobj/metaobj-impl/api-"
+"impl/src/bundle/org/sakaiproject/metaobj/registry/messages.properties:form_import_folder"
+msgid "Imported Form Files"
+msgstr "インポートされたフォームファイル"

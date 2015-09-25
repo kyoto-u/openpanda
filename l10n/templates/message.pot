@@ -1,0 +1,350 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. aall_items
+#: message/message-tool/tool/src/bundle/recent.properties:1
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:aall_items"
+msgid "announcements"
+msgstr "announcements"
+
+#. all_items
+#: message/message-tool/tool/src/bundle/recent.properties:2
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:all_items"
+msgid "message"
+msgstr "message"
+
+#. aone_item
+#: message/message-tool/tool/src/bundle/recent.properties:3
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:aone_item"
+msgid "Announcement"
+msgstr "Announcement"
+
+#. atool_name
+#: message/message-tool/tool/src/bundle/recent.properties:4
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:atool_name"
+msgid "Announcement"
+msgstr "Announcement"
+
+#. atool_title
+#: message/message-tool/tool/src/bundle/recent.properties:5
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:atool_title"
+msgid "Message of The Day"
+msgstr "Message of The Day"
+
+#. call_items
+#: message/message-tool/tool/src/bundle/recent.properties:6
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:call_items"
+msgid "chat messages"
+msgstr "chat messages"
+
+#. cchannel_analog
+#: message/message-tool/tool/src/bundle/recent.properties:7
+msgctxt ""
+"message/message-tool/tool/src/bundle/recent.properties:cchannel_analog"
+msgid "Chat Room"
+msgstr "Chat Room"
+
+#. channel_analog
+#: message/message-tool/tool/src/bundle/recent.properties:8
+msgctxt ""
+"message/message-tool/tool/src/bundle/recent.properties:channel_analog"
+msgid "channel"
+msgstr "channel"
+
+#. charommes
+#: message/message-tool/tool/src/bundle/recent.properties:9
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:charommes"
+msgid "Chat Room Messages"
+msgstr "Chat Room Messages"
+
+#. cone_item
+#: message/message-tool/tool/src/bundle/recent.properties:10
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cone_item"
+msgid "Chat message"
+msgstr "Chat message"
+
+#. ctool_name
+#: message/message-tool/tool/src/bundle/recent.properties:11
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:ctool_name"
+msgid "Chat"
+msgstr "Chat"
+
+#. ctool_title
+#: message/message-tool/tool/src/bundle/recent.properties:12
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:ctool_title"
+msgid "Recent Chat"
+msgstr "Recent Chat"
+
+#. cus.cus
+#: message/message-tool/tool/src/bundle/recent.properties:13
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.cus"
+msgid "Customize"
+msgstr "Customize"
+
+#. cus.dis1
+#: message/message-tool/tool/src/bundle/recent.properties:14
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.dis1"
+msgid "Display"
+msgstr "Display"
+
+#. cus.dis2
+#: message/message-tool/tool/src/bundle/recent.properties:15
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.dis2"
+msgid "display in the"
+msgstr "display in the"
+
+#. cus.dis3
+#: message/message-tool/tool/src/bundle/recent.properties:16
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.dis3"
+msgid "Style"
+msgstr "Style"
+
+#. cus.frowhi
+#: message/message-tool/tool/src/bundle/recent.properties:17
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.frowhi"
+msgid "from which recent"
+msgstr "from which recent"
+
+#. cus.youare
+#: message/message-tool/tool/src/bundle/recent.properties:18
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.youare"
+msgid "You are currently setting options for"
+msgstr "You are currently setting options for"
+
+#. cus.howwill
+#: message/message-tool/tool/src/bundle/recent.properties:19
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.howwill"
+msgid "How will"
+msgstr "How will"
+
+#. cus.list
+#: message/message-tool/tool/src/bundle/recent.properties:20
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.list"
+msgid "list?"
+msgstr "list?"
+
+#. cus.maicha
+#: message/message-tool/tool/src/bundle/recent.properties:21
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.maicha"
+msgid "Main Chat Room"
+msgstr "Main Chat Room"
+
+#. cus.numof
+#: message/message-tool/tool/src/bundle/recent.properties:22
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.numof"
+msgid "Number of"
+msgstr "Number of"
+
+#. cus.numof2
+#: message/message-tool/tool/src/bundle/recent.properties:23
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.numof2"
+msgid "Number of characters per"
+msgstr "Number of characters per"
+
+#. cus.numpas
+#: message/message-tool/tool/src/bundle/recent.properties:24
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.numpas"
+msgid "Number of days in the past"
+msgstr "Number of days in the past"
+
+#. cus.selthe
+#: message/message-tool/tool/src/bundle/recent.properties:25
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.selthe"
+msgid "Select the"
+msgstr "Select the"
+
+#. cus.willbe
+#: message/message-tool/tool/src/bundle/recent.properties:26
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:cus.willbe"
+msgid "will be displayed."
+msgstr "will be displayed."
+
+#. dall_items
+#: message/message-tool/tool/src/bundle/recent.properties:27
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:dall_items"
+msgid "discussion items"
+msgstr "discussion items"
+
+#. done_item
+#: message/message-tool/tool/src/bundle/recent.properties:28
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:done_item"
+msgid "discussion item"
+msgstr "discussion item"
+
+#. dtool_name
+#: message/message-tool/tool/src/bundle/recent.properties:29
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:dtool_name"
+msgid "Discussion"
+msgstr "Discussion"
+
+#. dtool_title
+#: message/message-tool/tool/src/bundle/recent.properties:30
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:dtool_title"
+msgid "Recent Discussions"
+msgstr "Recent Discussions"
+
+#. gen.showabout
+#: message/message-tool/tool/src/bundle/recent.properties:31
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.showabout"
+msgid "Show about"
+msgstr "Show about"
+
+#. gen.oneline
+#: message/message-tool/tool/src/bundle/recent.properties:32
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.oneline"
+msgid "One Line"
+msgstr "One Line"
+
+#. gen.twoline
+#: message/message-tool/tool/src/bundle/recent.properties:33
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.twoline"
+msgid "Two Lines"
+msgstr "Two Lines"
+
+#. gen.allline
+#: message/message-tool/tool/src/bundle/recent.properties:34
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.allline"
+msgid "All Lines"
+msgstr "All Lines"
+
+#. gen.alert
+#: message/message-tool/tool/src/bundle/recent.properties:35
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. gen.bod
+#: message/message-tool/tool/src/bundle/recent.properties:36
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.bod"
+msgid "body"
+msgstr "body"
+
+#. gen.can
+#: message/message-tool/tool/src/bundle/recent.properties:37
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. gen.sav
+#: message/message-tool/tool/src/bundle/recent.properties:38
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.sav"
+msgid "Update"
+msgstr "Update"
+
+#. gen.show
+#: message/message-tool/tool/src/bundle/recent.properties:39
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.show"
+msgid "Show"
+msgstr "Show"
+
+#. gen.sub
+#: message/message-tool/tool/src/bundle/recent.properties:40
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.sub"
+msgid "subject"
+msgstr "subject"
+
+#. gen.options
+#: message/message-tool/tool/src/bundle/recent.properties:41
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.options"
+msgid "Options"
+msgstr "Options"
+
+#. gen.attach
+#: message/message-tool/tool/src/bundle/recent.properties:42
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:gen.attach"
+msgid "Attachments"
+msgstr "Attachments"
+
+#. motd.options
+#: message/message-tool/tool/src/bundle/recent.properties:43
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:motd.options"
+msgid "Message of the Day Options"
+msgstr "Message of the Day Options"
+
+#. chat.options
+#: message/message-tool/tool/src/bundle/recent.properties:44
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:chat.options"
+msgid "Recent Chat Options"
+msgstr "Recent Chat Options"
+
+#. disc.options
+#: message/message-tool/tool/src/bundle/recent.properties:45
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:disc.options"
+msgid "Recent Discussion Options"
+msgstr "Recent Discussion Options"
+
+#. lis.the
+#: message/message-tool/tool/src/bundle/recent.properties:46
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:lis.the"
+msgid "There are currently no messages at this location."
+msgstr "There are currently no messages at this location."
+
+#. one_item
+#: message/message-tool/tool/src/bundle/recent.properties:47
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:one_item"
+msgid "message"
+msgstr "message"
+
+#. recent1
+#: message/message-tool/tool/src/bundle/recent.properties:48
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:recent1"
+msgid "Recent"
+msgstr "Recent"
+
+#. recent2
+#: message/message-tool/tool/src/bundle/recent.properties:49
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:recent2"
+msgid "Recent Main Chat Room Messages"
+msgstr "Recent Main Chat Room Messages"
+
+#. tool_name
+#: message/message-tool/tool/src/bundle/recent.properties:50
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:tool_name"
+msgid "Recent Items"
+msgstr "Recent Items"
+
+#. tool_title
+#: message/message-tool/tool/src/bundle/recent.properties:51
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:tool_title"
+msgid "Recent Items"
+msgstr "Recent Items"
+
+#. youdonot
+#: message/message-tool/tool/src/bundle/recent.properties:52
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:youdonot"
+msgid "You do not have permission to view these messages"
+msgstr "You do not have permission to view these messages"
+
+#. tit.reset
+#: message/message-tool/tool/src/bundle/recent.properties:53
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:tit.reset"
+msgid "Reset"
+msgstr "Reset"
+
+#. tit.help
+#: message/message-tool/tool/src/bundle/recent.properties:54
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:tit.help"
+msgid "Help"
+msgstr "Help"
+
+#. tit.dock
+#: message/message-tool/tool/src/bundle/recent.properties:55
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:tit.dock"
+msgid "dock"
+msgstr "dock"
+
+#. tit.float
+#: message/message-tool/tool/src/bundle/recent.properties:56
+msgctxt "message/message-tool/tool/src/bundle/recent.properties:tit.float"
+msgid "float"
+msgstr "float"

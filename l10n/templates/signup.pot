@@ -1,0 +1,3931 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. subject.new.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:1
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.new.appointment.field"
+msgid "Meeting assignment by \"{0}\" for meeting {2} on {1}"
+msgstr "Meeting assignment by \"{0}\" for meeting {2} on {1}"
+
+#. subject.attendee.signup.field
+#: signup/impl/src/bundle/emailMessage.properties:2
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.attendee.signup.field"
+msgid "{1} has signed up for the meeting \"{3}\" on {0} in {2} "
+msgstr "{1} has signed up for the meeting \"{3}\" on {0} in {2} "
+
+#. subject.Cancel.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:3
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.Cancel.appointment.field"
+msgid "Appointment for meeting \"{2}\" on {0} has been canceled by {1}"
+msgstr "Appointment for meeting \"{2}\" on {0} has been canceled by {1}"
+
+#. subject.meeting.modification.field
+#: signup/impl/src/bundle/emailMessage.properties:4
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.meeting.modification.field"
+msgid "{0} has modified the meeting \"{4}\" for {1} on {2},{3}"
+msgstr "{0} has modified the meeting \"{4}\" for {1} on {2},{3}"
+
+#. subject.meeting.cancel.field
+#: signup/impl/src/bundle/emailMessage.properties:5
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.meeting.cancel.field"
+msgid "Appointment for meeting \"{0}\" in {1} has been canceled"
+msgstr "Appointment for meeting \"{0}\" in {1} has been canceled"
+
+#. subject.newMeeting.field
+#: signup/impl/src/bundle/emailMessage.properties:6
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.newMeeting.field"
+msgid "New meeting \"{2}\" announced by {0} on {1}"
+msgstr "New meeting \"{2}\" announced by {0} on {1}"
+
+#. subject.organizer.change.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:7
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.organizer.change.appointment.field"
+msgid "Meeting \"{2}\" on {0} {1} has been changed"
+msgstr "Meeting \"{2}\" on {0} {1} has been changed"
+
+#. subject.organizerPreAssign.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:8
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.organizerPreAssign.appointment.field"
+msgid "Meeting assignment for \"{2}\" by {0} on {1}"
+msgstr "Meeting assignment for \"{2}\" by {0} on {1}"
+
+#. subject.promote.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:9
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.promote.appointment.field"
+msgid "Promoted from wait list for meeting \"{1}\" on {0}"
+msgstr "Promoted from wait list for meeting \"{1}\" on {0}"
+
+#. subject.auto.reminder.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:10
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.auto.reminder.appointment.field"
+msgid "Your upcoming appointment for \"{3}\" on {0},{1},{2}"
+msgstr "Your upcoming appointment for \"{3}\" on {0},{1},{2}"
+
+#. subject.attendee.signup.own.field
+#: signup/impl/src/bundle/emailMessage.properties:11
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.attendee.signup.own.field"
+msgid "You have signed up for the meeting \"{0}\" in {1}"
+msgstr "You have signed up for the meeting \"{0}\" in {1}"
+
+#. subject.attendee.cancel.own.field
+#: signup/impl/src/bundle/emailMessage.properties:12
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.attendee.cancel.own.field"
+msgid "You have cancelled your appointment for the meeting \"{0}\" in {1}"
+msgstr "You have cancelled your appointment for the meeting \"{0}\" in {1}"
+
+#. noReply@
+#: signup/impl/src/bundle/emailMessage.properties:13
+msgctxt "signup/impl/src/bundle/emailMessage.properties:noReply@"
+msgid "postmaster@"
+msgstr "postmaster@"
+
+#. body.assigned.new.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:14
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.assigned.new.appointment.part"
+msgid "{0} has assigned you to a meeting for the {1} site on {2}:"
+msgstr "{0} has assigned you to a meeting for the {1} site on {2}:"
+
+#. body.meeting.recurrence
+#: signup/impl/src/bundle/emailMessage.properties:15
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.recurrence"
+msgid "Meeting Recurrence:"
+msgstr "Meeting Recurrence:"
+
+#. body.meeting.repeatDaily
+#: signup/impl/src/bundle/emailMessage.properties:16
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.repeatDaily"
+msgid "daily"
+msgstr "daily"
+
+#. body.meeting.repeatWeekdays
+#: signup/impl/src/bundle/emailMessage.properties:17
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.repeatWeekdays"
+msgid "weekdays (Mon-Fri)"
+msgstr "weekdays (Mon-Fri)"
+
+#. body.meeting.repeatWeekly
+#: signup/impl/src/bundle/emailMessage.properties:18
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.repeatWeekly"
+msgid "weekly"
+msgstr "weekly"
+
+#. body.meeting.repeatBiWeekly
+#: signup/impl/src/bundle/emailMessage.properties:19
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.repeatBiWeekly"
+msgid "biweekly"
+msgstr "biweekly"
+
+#. body.recurrence.meeting.status
+#: signup/impl/src/bundle/emailMessage.properties:20
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.recurrence.meeting.status"
+msgid "This meeting recurs <b>{0}</b> until: {1}"
+msgstr "This meeting recurs <b>{0}</b> until: {1}"
+
+#. body.meeting.assigned.all.recurringMeetings
+#: signup/impl/src/bundle/emailMessage.properties:21
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.assigned.all.recurringMeetings"
+msgid "<b>Attention:</B> you have been assigned to all recurring meetings."
+msgstr "<b>Attention:</B> you have been assigned to all recurring meetings."
+
+#. body.meeting.recurrences.changed.note
+#: signup/impl/src/bundle/emailMessage.properties:22
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.recurrences.changed.note"
+msgid "- All the remaining occurrences of this meeting have also changed."
+msgstr "- All the remaining occurrences of this meeting have also changed."
+
+#. body.meeting.recurrences.check.status.note
+#: signup/impl/src/bundle/emailMessage.properties:23
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.recurrences.check.status.note"
+msgid ""
+"- Please check your sign-up status in these consecutive meetings if you are "
+"on one of the waiting lists."
+msgstr ""
+"- Please check your sign-up status in these consecutive meetings if you are "
+"on one of the waiting lists."
+
+#. body.meeting.assigned.to.firstOne.recurringMeetings
+#: signup/impl/src/bundle/emailMessage.properties:24
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.assigned.to.firstOne.recurringMeetings"
+msgid "<b>Attention:</B> you have only been assigned to the current meeting."
+msgstr "<b>Attention:</B> you have only been assigned to the current meeting."
+
+#. body.meeting.place
+#: signup/impl/src/bundle/emailMessage.properties:25
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.meeting.place"
+msgid "Meeting Place:"
+msgstr "Meeting Place:"
+
+#. body.top.greeting.part
+#: signup/impl/src/bundle/emailMessage.properties:26
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.top.greeting.part"
+msgid "Dear {0},"
+msgstr "Dear {0},"
+
+#. body.meetingTopic.part
+#: signup/impl/src/bundle/emailMessage.properties:27
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meetingTopic.part"
+msgid "Meeting Title: {0}"
+msgstr "Meeting Title: {0}"
+
+#. body.timeslot
+#: signup/impl/src/bundle/emailMessage.properties:28
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.timeslot"
+msgid "Time slot:"
+msgstr "Time slot:"
+
+#. body.ownComment
+#: signup/impl/src/bundle/emailMessage.properties:29
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.ownComment"
+msgid "My Comment: {0}"
+msgstr "My Comment: {0}"
+
+#. body.commentBy
+#: signup/impl/src/bundle/emailMessage.properties:30
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.commentBy"
+msgid "Comment by {0}: {1}"
+msgstr "Comment by {0}: {1}"
+
+#. body.organizer.meeting.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:31
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.meeting.timeframe"
+msgid "Meeting Time: {0} - from {1} to {2} ({3})"
+msgstr "Meeting Time: {0} - from {1} to {2} ({3})"
+
+#. body.organizer.meeting.crossdays.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:32
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.meeting.crossdays.timeframe"
+msgid "Meeting Time: {0}, {1} to {2}, {3} ({4})"
+msgstr "Meeting Time: {0}, {1} to {2}, {3} ({4})"
+
+#. body.organizer.preassigned.attendee.meeting.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:33
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.preassigned.attendee.meeting.timeframe"
+msgid "Meeting Time: {0} - {1} on {2} ({3})"
+msgstr "Meeting Time: {0} - {1} on {2} ({3})"
+
+#. body.organizer.preassigned.attendee.meeting.crossdays.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:34
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.preassigned.attendee.meeting.crossdays.timeframe"
+msgid "Meeting Time: {0}, {1} - {2}, {3} ({4})"
+msgstr "Meeting Time: {0}, {1} - {2}, {3} ({4})"
+
+#. body.attendee.meeting.timeslot
+#: signup/impl/src/bundle/emailMessage.properties:35
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.meeting.timeslot"
+msgid "Time slot: {0} - {1} on {2} ({3})"
+msgstr "Time slot: {0} - {1} on {2} ({3})"
+
+#. body.attendee.meeting.crossdays.timeslot
+#: signup/impl/src/bundle/emailMessage.properties:36
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.meeting.crossdays.timeslot"
+msgid "Time slot: {0}, {1} - {2}, {3} ({4})"
+msgstr "Time slot: {0}, {1} - {2}, {3} ({4})"
+
+#. body.meeting.timeslot.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:37
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.timeslot.timeframe"
+msgid "{0} - {1} on {2} ({3})"
+msgstr "{0} - {1} on {2} ({3})"
+
+#. body.meeting.crossdays.timeslot.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:38
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.crossdays.timeslot.timeframe"
+msgid "{0}, {1} - {2}, {3} ({4})"
+msgstr "{0}, {1} - {2}, {3} ({4})"
+
+#. body.meeting.timeslot.detail.title
+#: signup/impl/src/bundle/emailMessage.properties:39
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.timeslot.detail.title"
+msgid "The time slot details are shown as followings:"
+msgstr "The time slot details are shown as followings:"
+
+#. body.attendee.custom.defined.meeting.timeslot
+#: signup/impl/src/bundle/emailMessage.properties:40
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.custom.defined.meeting.timeslot"
+msgid "- Time Slot {0} - "
+msgstr "- Time Slot {0} - "
+
+#. body.attendee.custom.defined.meeting.timeslot.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:41
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.custom.defined.meeting.timeslot.timeframe"
+msgid "time period: {0} - {1}"
+msgstr "time period: {0} - {1}"
+
+#. body.attendee.custom.defined.meeting.timeslot.timeframe.crossdays
+#: signup/impl/src/bundle/emailMessage.properties:42
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.custom.defined.meeting.timeslot.timeframe.crossdays"
+msgid "time period: {0}, {1} - {2}, {3}"
+msgstr "time period: {0}, {1} - {2}, {3}"
+
+#. body.attendee.custom.defined.meeting.timeslot.max.participants
+#: signup/impl/src/bundle/emailMessage.properties:43
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.custom.defined.meeting.timeslot.max.participants"
+msgid "max # of participants: {0}"
+msgstr "max # of participants: {0}"
+
+#. body.new.inidivual.type.message.detail
+#: signup/impl/src/bundle/emailMessage.properties:44
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.new.inidivual.type.message.detail"
+msgid ""
+"This meeting is divided into {0} time slots of {1} minutes. Each time slot "
+"permits {2} participant(s) to sign up."
+msgstr ""
+"This meeting is divided into {0} time slots of {1} minutes. Each time slot "
+"permits {2} participant(s) to sign up."
+
+#. body.new.group.limited.type.message.detail
+#: signup/impl/src/bundle/emailMessage.properties:45
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.new.group.limited.type.message.detail"
+msgid ""
+"This meeting is limited to {0} participant(s). Visit the site and click "
+"Sign-Up on the left menu to select a time slot."
+msgstr ""
+"This meeting is limited to {0} participant(s). Visit the site and click "
+"Sign-Up on the left menu to select a time slot."
+
+#. body.new.group.unlimited.type.message
+#: signup/impl/src/bundle/emailMessage.properties:46
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.new.group.unlimited.type.message"
+msgid ""
+"This meeting permits an unlimited number of participants. However, sign-up "
+"is required. Visit the site and click Sign-up on the left menu to select a "
+"time slot."
+msgstr ""
+"This meeting permits an unlimited number of participants. However, sign-up "
+"is required. Visit the site and click Sign-up on the left menu to select a "
+"time slot."
+
+#. body.new.announce.type.message
+#: signup/impl/src/bundle/emailMessage.properties:47
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.new.announce.type.message"
+msgid "No sign-up is required for this meeting."
+msgstr "No sign-up is required for this meeting."
+
+#. body.assigned.promote.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:48
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.assigned.promote.appointment.part"
+msgid ""
+"You have been promoted from the wait list to a confirmed place for the "
+"meeting for the {0} site on {1}:"
+msgstr ""
+"You have been promoted from the wait list to a confirmed place for the "
+"meeting for the {0} site on {1}:"
+
+#. body.organizer.change.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:49
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.change.appointment.part"
+msgid ""
+"{0} has changed your appointment for meeting: {1} on {2} for the {3} site on"
+" {4}"
+msgstr ""
+"{0} has changed your appointment for meeting: {1} on {2} for the {3} site on"
+" {4}"
+
+#. body.organizer.change.appointment.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:50
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.change.appointment.timeframe"
+msgid "From {0} - {1} {4}To {2} - {3}"
+msgstr "From {0} - {1} {4}To {2} - {3}"
+
+#. body.organizer.change.appointment.crossdays.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:51
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.change.appointment.crossdays.timeframe"
+msgid "From {0},{1}  -  {2}, {3} {8}To {4}, {5}  -  {6}, {7}"
+msgstr "From {0},{1}  -  {2}, {3} {8}To {4}, {5}  -  {6}, {7}"
+
+#. body.attendeeCheck.meetingStatus
+#: signup/impl/src/bundle/emailMessage.properties:52
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendeeCheck.meetingStatus"
+msgid ""
+"Details of this meeting are available on {0}.  If you have any questions, "
+"contact the meeting organizer."
+msgstr ""
+"Details of this meeting are available on {0}.  If you have any questions, "
+"contact the meeting organizer."
+
+#. body.attendeeCheck.meetingStatus.B
+#: signup/impl/src/bundle/emailMessage.properties:53
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendeeCheck.meetingStatus.B"
+msgid ""
+"Further details regarding this meeting are available on {0}. If you have any"
+" questions, contact the meeting organizer."
+msgstr ""
+"Further details regarding this meeting are available on {0}. If you have any"
+" questions, contact the meeting organizer."
+
+#. body.thankyou
+#: signup/impl/src/bundle/emailMessage.properties:54
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.thankyou"
+msgid "Thank you."
+msgstr "Thank you."
+
+#. body.attendee.hasSignup.part
+#: signup/impl/src/bundle/emailMessage.properties:55
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.hasSignup.part"
+msgid "{0} has signed up for the meeting for the {1} site on {2}:"
+msgstr "{0} has signed up for the meeting for the {1} site on {2}:"
+
+#. body.attendee.cancel.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:56
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.cancel.appointment.part"
+msgid "{0} has canceled the following meeting for the {1} site on {2}:"
+msgstr "{0} has canceled the following meeting for the {1} site on {2}:"
+
+#. body.organizerCancel.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:57
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerCancel.appointment.part"
+msgid "{0} has canceled the following meeting for the {1} site on {2}:"
+msgstr "{0} has canceled the following meeting for the {1} site on {2}:"
+
+#. body.organizerCancel.meeting.part
+#: signup/impl/src/bundle/emailMessage.properties:58
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerCancel.meeting.part"
+msgid "{0} has canceled the {1} meeting for the {2} site on {3}."
+msgstr "{0} has canceled the {1} meeting for the {2} site on {3}."
+
+#. body.organizerModified.meeting.field
+#: signup/impl/src/bundle/emailMessage.properties:59
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerModified.meeting.field"
+msgid ""
+"The following meeting for the {0} site on {1} has been modified by {2}:"
+msgstr ""
+"The following meeting for the {0} site on {1} has been modified by {2}:"
+
+#. body.organizerCreate.meeting.announ
+#: signup/impl/src/bundle/emailMessage.properties:60
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerCreate.meeting.announ"
+msgid "A new meeting has been announced for the {0} site on {1} by {2}."
+msgstr "A new meeting has been announced for the {0} site on {1} by {2}."
+
+#. body.organizerPreAssign.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:61
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerPreAssign.appointment.part"
+msgid ""
+"You have been assigned to attend a meeting for the {0} site on {1} by {2}:"
+msgstr ""
+"You have been assigned to attend a meeting for the {0} site on {1} by {2}:"
+
+#. body.cancelled.timeSlots
+#: signup/impl/src/bundle/emailMessage.properties:62
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.cancelled.timeSlots"
+msgid "The previous meeting has been canceled due to the following:"
+msgstr "The previous meeting has been canceled due to the following:"
+
+#. body.auto.reminder.part
+#: signup/impl/src/bundle/emailMessage.properties:63
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.auto.reminder.part"
+msgid "This is a reminder that you have a {0} appointment tomorrow."
+msgstr "This is a reminder that you have a {0} appointment tomorrow."
+
+#. body.auto.reminder.check.meetingStatus
+#: signup/impl/src/bundle/emailMessage.properties:64
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.auto.reminder.check.meetingStatus"
+msgid ""
+"Further details regarding this meeting are available on {0}. If you have any"
+" questions, contact the meeting organizer."
+msgstr ""
+"Further details regarding this meeting are available on {0}. If you have any"
+" questions, contact the meeting organizer."
+
+#. body.attendee.signup.own
+#: signup/impl/src/bundle/emailMessage.properties:65
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.signup.own"
+msgid "You have signed up for the following meeting in the {0} site on {1}:"
+msgstr "You have signed up for the following meeting in the {0} site on {1}:"
+
+#. body.attendee.cancel.own
+#: signup/impl/src/bundle/emailMessage.properties:66
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.cancel.own"
+msgid ""
+"You have cancelled your appointment for the following meeting in the {0} "
+"site on {1}:"
+msgstr ""
+"You have cancelled your appointment for the following meeting in the {0} "
+"site on {1}:"
+
+#. separator
+#: signup/impl/src/bundle/emailMessage.properties:67
+msgctxt "signup/impl/src/bundle/emailMessage.properties:separator"
+msgid "----------------------"
+msgstr "----------------------"
+
+#. body.footer.text
+#: signup/impl/src/bundle/emailMessage.properties:68
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.footer.text"
+msgid ""
+"This automatic notification message was sent by {0} ({1}) from the {2} site."
+" {3}You can access this site to check the latest sign-up status by clicking "
+"the link above."
+msgstr ""
+"This automatic notification message was sent by {0} ({1}) from the {2} site."
+" {3}You can access this site to check the latest sign-up status by clicking "
+"the link above."
+
+#. body.footer.text.no.access.link
+#: signup/impl/src/bundle/emailMessage.properties:69
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.footer.text.no.access.link"
+msgid "This automatic notification message was sent by {0} from the {1} site."
+msgstr ""
+"This automatic notification message was sent by {0} from the {1} site."
+
+#. ical.footer.text
+#: signup/impl/src/bundle/emailMessage.properties:70
+msgctxt "signup/impl/src/bundle/emailMessage.properties:ical.footer.text"
+msgid ""
+"Note that rejecting calendar invites does not remove you from the event. "
+"Please return to the site to make any modifications."
+msgstr ""
+"Note that rejecting calendar invites does not remove you from the event. "
+"Please return to the site to make any modifications."
+
+#. ical.footer.separator
+#: signup/impl/src/bundle/emailMessage.properties:71
+msgctxt "signup/impl/src/bundle/emailMessage.properties:ical.footer.separator"
+msgid "-------"
+msgstr "-------"
+
+#. Failed.remove.event
+#: signup/tool/src/bundle/messages.properties:1
+msgctxt "signup/tool/src/bundle/messages.properties:Failed.remove.event"
+msgid ""
+"An error occurred. The selected meeting(s) were not removed. Please try "
+"again."
+msgstr ""
+"An error occurred. The selected meeting(s) were not removed. Please try "
+"again."
+
+#. add_attachments
+#: signup/tool/src/bundle/messages.properties:2
+msgctxt "signup/tool/src/bundle/messages.properties:add_attachments"
+msgid "Add Attachments"
+msgstr "Add Attachments"
+
+#. add_more_ts
+#: signup/tool/src/bundle/messages.properties:3
+msgctxt "signup/tool/src/bundle/messages.properties:add_more_ts"
+msgid "Add a new timeslot."
+msgstr "Add a new timeslot."
+
+#. add_new_event
+#: signup/tool/src/bundle/messages.properties:4
+msgctxt "signup/tool/src/bundle/messages.properties:add_new_event"
+msgid "Add"
+msgstr "Add"
+
+#. add_remove_attachments
+#: signup/tool/src/bundle/messages.properties:5
+msgctxt "signup/tool/src/bundle/messages.properties:add_remove_attachments"
+msgid "Add / Remove Attachments"
+msgstr "Add / Remove Attachments"
+
+#. add_to_bottom
+#: signup/tool/src/bundle/messages.properties:6
+msgctxt "signup/tool/src/bundle/messages.properties:add_to_bottom"
+msgid "Bottom"
+msgstr "Bottom"
+
+#. add_to_top
+#: signup/tool/src/bundle/messages.properties:7
+msgctxt "signup/tool/src/bundle/messages.properties:add_to_top"
+msgid "Top"
+msgstr "Top"
+
+#. add_waitlist_button
+#: signup/tool/src/bundle/messages.properties:8
+msgctxt "signup/tool/src/bundle/messages.properties:add_waitlist_button"
+msgid "Join Wait List"
+msgstr "Join Wait List"
+
+#. apply_added_participants_to_allRecur_events
+#: signup/tool/src/bundle/messages.properties:9
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:apply_added_participants_to_allRecur_events"
+msgid ""
+"&nbsp;Yes, assign participants to the same time slot for all occurrences."
+msgstr ""
+"&nbsp;Yes, assign participants to the same time slot for all occurrences."
+
+#. assign_attendee_publish_button
+#: signup/tool/src/bundle/messages.properties:10
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:assign_attendee_publish_button"
+msgid "Assign Participants & Publish"
+msgstr "Assign Participants & Publish"
+
+#. assign_attendees
+#: signup/tool/src/bundle/messages.properties:11
+msgctxt "signup/tool/src/bundle/messages.properties:assign_attendees"
+msgid "Assign Participants"
+msgstr "Assign Participants"
+
+#. assign_participants_toAllRecurrences
+#: signup/tool/src/bundle/messages.properties:12
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:assign_participants_toAllRecurrences"
+msgid "Assign To All:"
+msgstr "Assign To All:"
+
+#. attachments
+#: signup/tool/src/bundle/messages.properties:13
+msgctxt "signup/tool/src/bundle/messages.properties:attachments"
+msgid "Attachments:"
+msgstr "Attachments:"
+
+#. attend_off
+#: signup/tool/src/bundle/messages.properties:14
+msgctxt "signup/tool/src/bundle/messages.properties:attend_off"
+msgid "OFF"
+msgstr "OFF"
+
+#. attend_on
+#: signup/tool/src/bundle/messages.properties:15
+msgctxt "signup/tool/src/bundle/messages.properties:attend_on"
+msgid "ON"
+msgstr "ON"
+
+#. attend_taken
+#: signup/tool/src/bundle/messages.properties:16
+msgctxt "signup/tool/src/bundle/messages.properties:attend_taken"
+msgid "Attendance will be taken"
+msgstr "Attendance will be taken"
+
+#. attend_track_selected
+#: signup/tool/src/bundle/messages.properties:17
+msgctxt "signup/tool/src/bundle/messages.properties:attend_track_selected"
+msgid "&nbsp;(you can track attendance to this meeting if selected)"
+msgstr "&nbsp;(you can track attendance to this meeting if selected)"
+
+#. attend_view_list_head
+#: signup/tool/src/bundle/messages.properties:18
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_list_head"
+msgid "Time slots and attendance"
+msgstr "Time slots and attendance"
+
+#. attend_view_list_slot_list_canceled
+#: signup/tool/src/bundle/messages.properties:19
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attend_view_list_slot_list_canceled"
+msgid "This time slot has been canceled"
+msgstr "This time slot has been canceled"
+
+#. attend_view_list_slot_list_empty_msg
+#: signup/tool/src/bundle/messages.properties:20
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attend_view_list_slot_list_empty_msg"
+msgid "No attendees signed up for this time slot"
+msgstr "No attendees signed up for this time slot"
+
+#. attend_view_list_slot_list_summary
+#: signup/tool/src/bundle/messages.properties:21
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attend_view_list_slot_list_summary"
+msgid ""
+"List of attendees for this meeting. Each row has a checkbox to take "
+"attendance. Checkbox in header checks and unchecks all."
+msgstr ""
+"List of attendees for this meeting. Each row has a checkbox to take "
+"attendance. Checkbox in header checks and unchecks all."
+
+#. attend_view_list_slot_list_wait_head
+#: signup/tool/src/bundle/messages.properties:22
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attend_view_list_slot_list_wait_head"
+msgid "Waitlist"
+msgstr "Waitlist"
+
+#. attend_view_list_summary
+#: signup/tool/src/bundle/messages.properties:23
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_list_summary"
+msgid ""
+"List of meetings. Each cell contains the meeting time (as a header) and a "
+"list of attendees with checkboxes to take attendance. Checkbox in header "
+"checks or unchecks all the children."
+msgstr ""
+"List of meetings. Each cell contains the meeting time (as a header) and a "
+"list of attendees with checkboxes to take attendance. Checkbox in header "
+"checks or unchecks all the children."
+
+#. attend_view_select_all
+#: signup/tool/src/bundle/messages.properties:24
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_select_all"
+msgid "Select all signed up"
+msgstr "Select all signed up"
+
+#. attend_view_title
+#: signup/tool/src/bundle/messages.properties:25
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_title"
+msgid "Attendance:"
+msgstr "Attendance:"
+
+#. attend_view_toggle
+#: signup/tool/src/bundle/messages.properties:26
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_toggle"
+msgid "Toggle waitlists"
+msgstr "Toggle waitlists"
+
+#. attendee.already.in.timeslot
+#: signup/tool/src/bundle/messages.properties:27
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attendee.already.in.timeslot"
+msgid "The participant is already in the timeslot."
+msgstr "The participant is already in the timeslot."
+
+#. attendee_enterEid
+#: signup/tool/src/bundle/messages.properties:28
+msgctxt "signup/tool/src/bundle/messages.properties:attendee_enterEid"
+msgid "Enter User ID or email address&nbsp;"
+msgstr "Enter User ID or email address&nbsp;"
+
+#. attendee_select
+#: signup/tool/src/bundle/messages.properties:29
+msgctxt "signup/tool/src/bundle/messages.properties:attendee_select"
+msgid "Select&nbsp;"
+msgstr "Select&nbsp;"
+
+#. basic
+#: signup/tool/src/bundle/messages.properties:30
+msgctxt "signup/tool/src/bundle/messages.properties:basic"
+msgid "Basic Information"
+msgstr "Basic Information"
+
+#. before_event_end
+#: signup/tool/src/bundle/messages.properties:31
+msgctxt "signup/tool/src/bundle/messages.properties:before_event_end"
+msgid "before meeting finishes"
+msgstr "before meeting finishes"
+
+#. before_event_start
+#: signup/tool/src/bundle/messages.properties:32
+msgctxt "signup/tool/src/bundle/messages.properties:before_event_start"
+msgid "before meeting begins"
+msgstr "before meeting begins"
+
+#. cancel_button
+#: signup/tool/src/bundle/messages.properties:33
+msgctxt "signup/tool/src/bundle/messages.properties:cancel_button"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. cancel_timeslot
+#: signup/tool/src/bundle/messages.properties:34
+msgctxt "signup/tool/src/bundle/messages.properties:cancel_timeslot"
+msgid "Cancel Time Slot"
+msgstr "Cancel Time Slot"
+
+#. cancel_timeslot_button
+#: signup/tool/src/bundle/messages.properties:35
+msgctxt "signup/tool/src/bundle/messages.properties:cancel_timeslot_button"
+msgid "Cancel Timeslot"
+msgstr "Cancel Timeslot"
+
+#. confirm_cancel
+#: signup/tool/src/bundle/messages.properties:36
+msgctxt "signup/tool/src/bundle/messages.properties:confirm_cancel"
+msgid ""
+"Are you sure you want to cancel the time slot? This will remove all the "
+"participants from the time slot and email will be sent to each of the "
+"participants."
+msgstr ""
+"Are you sure you want to cancel the time slot? This will remove all the "
+"participants from the time slot and email will be sent to each of the "
+"participants."
+
+#. continue_button
+#: signup/tool/src/bundle/messages.properties:37
+msgctxt "signup/tool/src/bundle/messages.properties:continue_button"
+msgid "Continue"
+msgstr "Continue"
+
+#. copy_event
+#: signup/tool/src/bundle/messages.properties:38
+msgctxt "signup/tool/src/bundle/messages.properties:copy_event"
+msgid "Copy"
+msgstr "Copy"
+
+#. create_instruction
+#: signup/tool/src/bundle/messages.properties:39
+msgctxt "signup/tool/src/bundle/messages.properties:create_instruction"
+msgid ""
+"To create a meeting, enter the required information and click <b>Next</b>."
+msgstr ""
+"To create a meeting, enter the required information and click <b>Next</b>."
+
+#. create_new_event
+#: signup/tool/src/bundle/messages.properties:40
+msgctxt "signup/tool/src/bundle/messages.properties:create_new_event"
+msgid "Create New Meeting:"
+msgstr "Create New Meeting:"
+
+#. crossDay.event.repeat.biweekly.problem
+#: signup/tool/src/bundle/messages.properties:41
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:crossDay.event.repeat.biweekly.problem"
+msgid ""
+"The meeting duration lasts over 14 days. Meetings of this type cannot be set"
+" to recur biweekly."
+msgstr ""
+"The meeting duration lasts over 14 days. Meetings of this type cannot be set"
+" to recur biweekly."
+
+#. crossDay.event.repeat.daily.problem
+#: signup/tool/src/bundle/messages.properties:42
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:crossDay.event.repeat.daily.problem"
+msgid ""
+"The meeting duration lasts over 24 hours. Meetings of this type cannot be "
+"set to recur daily."
+msgstr ""
+"The meeting duration lasts over 24 hours. Meetings of this type cannot be "
+"set to recur daily."
+
+#. crossDay.event.repeat.weekly.problem
+#: signup/tool/src/bundle/messages.properties:43
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:crossDay.event.repeat.weekly.problem"
+msgid ""
+"The meeting duration lasts over 7 days. Meetings of this type cannot be set "
+"to recur weekly."
+msgstr ""
+"The meeting duration lasts over 7 days. Meetings of this type cannot be set "
+"to recur weekly."
+
+#. db.error_or_event.notExisted
+#: signup/tool/src/bundle/messages.properties:44
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:db.error_or_event.notExisted"
+msgid "Either a database error has occurred or the meeting no longer exists."
+msgstr "Either a database error has occurred or the meeting no longer exists."
+
+#. delete_attandee_confirmation
+#: signup/tool/src/bundle/messages.properties:45
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:delete_attandee_confirmation"
+msgid "Are you sure you want to remove this participant from the time slot?"
+msgstr "Are you sure you want to remove this participant from the time slot?"
+
+#. dropDown_line_separator
+#: signup/tool/src/bundle/messages.properties:46
+msgctxt "signup/tool/src/bundle/messages.properties:dropDown_line_separator"
+msgid "----------------------------------"
+msgstr "----------------------------------"
+
+#. edit.failed_due_to_other_updated_db
+#: signup/tool/src/bundle/messages.properties:47
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:edit.failed_due_to_other_updated_db"
+msgid "Edit failed. Someone else updated the meeting. Please try again."
+msgstr "Edit failed. Someone else updated the meeting. Please try again."
+
+#. email.exception
+#: signup/tool/src/bundle/messages.properties:48
+msgctxt "signup/tool/src/bundle/messages.properties:email.exception"
+msgid "Email was not sent: an error has occurred."
+msgstr "Email was not sent: an error has occurred."
+
+#. error.calendarEvent.posted_failed
+#: signup/tool/src/bundle/messages.properties:49
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.posted_failed"
+msgid ""
+"The event was created successfully, but can not be added to the Schedule "
+"because the Schedule tool is not present on the site."
+msgstr ""
+"The event was created successfully, but can not be added to the Schedule "
+"because the Schedule tool is not present on the site."
+
+#. error.calendarEvent.posted_failed_due_to_permission
+#: signup/tool/src/bundle/messages.properties:50
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.posted_failed_due_to_permission"
+msgid ""
+"The event was created successfully, but can not be added to the Schedule on "
+"the site(s) because you do not have permission to add to the Schedule."
+msgstr ""
+"The event was created successfully, but can not be added to the Schedule on "
+"the site(s) because you do not have permission to add to the Schedule."
+
+#. error.calendarEvent.removal_failed
+#: signup/tool/src/bundle/messages.properties:51
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.removal_failed"
+msgid ""
+"An error occurred and calendarEvent removal in Schedule tool may have "
+"failed."
+msgstr ""
+"An error occurred and calendarEvent removal in Schedule tool may have "
+"failed."
+
+#. error.calendarEvent.updated_failed
+#: signup/tool/src/bundle/messages.properties:52
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.updated_failed"
+msgid ""
+"The event was updated successfully, but can not be updated to the Schedule "
+"on the site(s) because the Schedule tool is not present on the site."
+msgstr ""
+"The event was updated successfully, but can not be updated to the Schedule "
+"on the site(s) because the Schedule tool is not present on the site."
+
+#. error.calendarEvent.updated_failed_due_to_permission
+#: signup/tool/src/bundle/messages.properties:53
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.updated_failed_due_to_permission"
+msgid ""
+"The event was updated successfully, but can not be updated to the Schedule "
+"on the site(s) because you do not have permission to update the Schedule."
+msgstr ""
+"The event was updated successfully, but can not be updated to the Schedule "
+"on the site(s) because you do not have permission to update the Schedule."
+
+#. error.group_sync_failed
+#: signup/tool/src/bundle/messages.properties:54
+msgctxt "signup/tool/src/bundle/messages.properties:error.group_sync_failed"
+msgid ""
+"The group could not be synchronised. Has the group been manually deleted "
+"from Site Info? To restore this group, visit the modify the meeting page and"
+" click 'Publish Modification', then return here to synchronise again."
+msgstr ""
+"The group could not be synchronised. Has the group been manually deleted "
+"from Site Info? To restore this group, visit the modify the meeting page and"
+" click 'Publish Modification', then return here to synchronise again."
+
+#. error.no.change.group.title
+#: signup/tool/src/bundle/messages.properties:55
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.no.change.group.title"
+msgid ""
+"Some of the group title have not been synchronized since it's modified via "
+"Site Info tool already!"
+msgstr ""
+"Some of the group title have not been synchronized since it's modified via "
+"Site Info tool already!"
+
+#. error.no_group_for_timeslot
+#: signup/tool/src/bundle/messages.properties:56
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.no_group_for_timeslot"
+msgid ""
+"The group for this timeslot is missing. To restore this group, visit the "
+"modify the meeting page and click 'Publish Modification', then return here "
+"to synchronise again."
+msgstr ""
+"The group for this timeslot is missing. To restore this group, visit the "
+"modify the meeting page and click 'Publish Modification', then return here "
+"to synchronise again."
+
+#. error.occurred_try_again
+#: signup/tool/src/bundle/messages.properties:57
+msgctxt "signup/tool/src/bundle/messages.properties:error.occurred_try_again"
+msgid "An error occurred: please try again."
+msgstr "An error occurred: please try again."
+
+#. event.Signup.not.started.yet
+#: signup/tool/src/bundle/messages.properties:58
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.Signup.not.started.yet"
+msgid "Available on"
+msgstr "Available on"
+
+#. event.SignupNotRequire
+#: signup/tool/src/bundle/messages.properties:59
+msgctxt "signup/tool/src/bundle/messages.properties:event.SignupNotRequire"
+msgid "Sign-up Not Req"
+msgstr "Sign-up Not Req"
+
+#. event.available
+#: signup/tool/src/bundle/messages.properties:60
+msgctxt "signup/tool/src/bundle/messages.properties:event.available"
+msgid "Available"
+msgstr "Available"
+
+#. event.closed
+#: signup/tool/src/bundle/messages.properties:61
+msgctxt "signup/tool/src/bundle/messages.properties:event.closed"
+msgid "Closed"
+msgstr "Closed"
+
+#. event.create_custom_defined_TS_blocks
+#: signup/tool/src/bundle/messages.properties:62
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.create_custom_defined_TS_blocks"
+msgid ""
+"Please click 'Create Timeslot(s)' button to define a new custom timeslot."
+msgstr ""
+"Please click 'Create Timeslot(s)' button to define a new custom timeslot."
+
+#. event.endTime_should_after_startTime
+#: signup/tool/src/bundle/messages.properties:63
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.endTime_should_after_startTime"
+msgid "The meeting end time should occur after the meeting start time."
+msgstr "The meeting end time should occur after the meeting start time."
+
+#. event.endTimeslot_should_after_startTimeslot
+#: signup/tool/src/bundle/messages.properties:64
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.endTimeslot_should_after_startTimeslot"
+msgid ""
+"Row {0} - the end time must occur after the start time of the timeslot."
+msgstr ""
+"Row {0} - the end time must occur after the start time of the timeslot."
+
+#. event.inProgress
+#: signup/tool/src/bundle/messages.properties:65
+msgctxt "signup/tool/src/bundle/messages.properties:event.inProgress"
+msgid "In Progress"
+msgstr "In Progress"
+
+#. event.location_not_assigned
+#: signup/tool/src/bundle/messages.properties:66
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.location_not_assigned"
+msgid "Please assign a location."
+msgstr "Please assign a location."
+
+#. event.maxAttendee_should_be_valid
+#: signup/tool/src/bundle/messages.properties:67
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.maxAttendee_should_be_valid"
+msgid "Please enter valid number of attendees in Meeting Type."
+msgstr "Please enter valid number of attendees in Meeting Type."
+
+#. event.meeting.locked
+#: signup/tool/src/bundle/messages.properties:68
+msgctxt "signup/tool/src/bundle/messages.properties:event.meeting.locked"
+msgid "Sign-up is locked"
+msgstr "Sign-up is locked"
+
+#. event.repeatNnum.bigger.than.one
+#: signup/tool/src/bundle/messages.properties:69
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.repeatNnum.bigger.than.one"
+msgid "The number of occurrences must be bigger than 0."
+msgstr "The number of occurrences must be bigger than 0."
+
+#. event.repeatbeforestart
+#: signup/tool/src/bundle/messages.properties:70
+msgctxt "signup/tool/src/bundle/messages.properties:event.repeatbeforestart"
+msgid ""
+"Invalid end date. The 'End After:' date must occur at least one recurrence "
+"period past the date of the 'Start Time'."
+msgstr ""
+"Invalid end date. The 'End After:' date must occur at least one recurrence "
+"period past the date of the 'Start Time'."
+
+#. event.selectMeetingType
+#: signup/tool/src/bundle/messages.properties:71
+msgctxt "signup/tool/src/bundle/messages.properties:event.selectMeetingType"
+msgid "Please select meeting type."
+msgstr "Please select meeting type."
+
+#. event.signup.deadline.passed
+#: signup/tool/src/bundle/messages.properties:72
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.signup.deadline.passed"
+msgid "The Sign-up time is already expired."
+msgstr "The Sign-up time is already expired."
+
+#. event.timeslot_duration_should_not_lessThan_one
+#: signup/tool/src/bundle/messages.properties:73
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.timeslot_duration_should_not_lessThan_one"
+msgid ""
+"The meeting timeslot duration should not be less than one minute and please "
+"increase the meeting end time."
+msgstr ""
+"The meeting timeslot duration should not be less than one minute and please "
+"increase the meeting end time."
+
+#. event.unavailable
+#: signup/tool/src/bundle/messages.properties:74
+msgctxt "signup/tool/src/bundle/messages.properties:event.unavailable"
+msgid "Full"
+msgstr "Full"
+
+#. event.youOnWaitList
+#: signup/tool/src/bundle/messages.properties:75
+msgctxt "signup/tool/src/bundle/messages.properties:event.youOnWaitList"
+msgid "On Wait List"
+msgstr "On Wait List"
+
+#. event.youSignedUp
+#: signup/tool/src/bundle/messages.properties:76
+msgctxt "signup/tool/src/bundle/messages.properties:event.youSignedUp"
+msgid "Signed up"
+msgstr "Signed up"
+
+#. event_addSignup_attendee_page_title
+#: signup/tool/src/bundle/messages.properties:77
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_addSignup_attendee_page_title"
+msgid "Complete Sign-Up"
+msgstr "Complete Sign-Up"
+
+#. event_add_attendee
+#: signup/tool/src/bundle/messages.properties:78
+msgctxt "signup/tool/src/bundle/messages.properties:event_add_attendee"
+msgid "&nbsp;Add Participant"
+msgstr "&nbsp;Add Participant"
+
+#. event_add_comment_link
+#: signup/tool/src/bundle/messages.properties:79
+msgctxt "signup/tool/src/bundle/messages.properties:event_add_comment_link"
+msgid "Add a comment"
+msgstr "Add a comment"
+
+#. event_add_more_slots
+#: signup/tool/src/bundle/messages.properties:80
+msgctxt "signup/tool/src/bundle/messages.properties:event_add_more_slots"
+msgid "Number of Additional <br/>Time Slots:"
+msgstr "Number of Additional <br/>Time Slots:"
+
+#. event_addedit_Coordinators
+#: signup/tool/src/bundle/messages.properties:81
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_addedit_Coordinators"
+msgid "Add/Edit"
+msgstr "Add/Edit"
+
+#. event_alert_truncate_attendee
+#: signup/tool/src/bundle/messages.properties:82
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_alert_truncate_attendee"
+msgid ""
+"Are you sure want to copy this? Some participants might be truncated due to "
+"the smaller number of timeslots or allowed participants!"
+msgstr ""
+"Are you sure want to copy this? Some participants might be truncated due to "
+"the smaller number of timeslots or allowed participants!"
+
+#. event_allow_addComment
+#: signup/tool/src/bundle/messages.properties:83
+msgctxt "signup/tool/src/bundle/messages.properties:event_allow_addComment"
+msgid "Allow Adding Comment:"
+msgstr "Allow Adding Comment:"
+
+#. event_allow_waitList
+#: signup/tool/src/bundle/messages.properties:84
+msgctxt "signup/tool/src/bundle/messages.properties:event_allow_waitList"
+msgid "Allow Wait List:"
+msgstr "Allow Wait List:"
+
+#. event_allowed_slots
+#: signup/tool/src/bundle/messages.properties:85
+msgctxt "signup/tool/src/bundle/messages.properties:event_allowed_slots"
+msgid "Max # of  time slots per participant:"
+msgstr "Max # of  time slots per participant:"
+
+#. event_allowed_slots_comments
+#: signup/tool/src/bundle/messages.properties:86
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_allowed_slots_comments"
+msgid "&nbsp;Yes, allow participants to sign up for more than one time slot."
+msgstr "&nbsp;Yes, allow participants to sign up for more than one time slot."
+
+#. event_announcement_notice
+#: signup/tool/src/bundle/messages.properties:87
+msgctxt "signup/tool/src/bundle/messages.properties:event_announcement_notice"
+msgid "This is an open session meeting.  No sign-up is necessary."
+msgstr "This is an open session meeting.  No sign-up is necessary."
+
+#. event_appointment_date
+#: signup/tool/src/bundle/messages.properties:88
+msgctxt "signup/tool/src/bundle/messages.properties:event_appointment_date"
+msgid "Appointment Date:"
+msgstr "Appointment Date:"
+
+#. event_appointment_period
+#: signup/tool/src/bundle/messages.properties:89
+msgctxt "signup/tool/src/bundle/messages.properties:event_appointment_period"
+msgid "Appointment Period:"
+msgstr "Appointment Period:"
+
+#. event_assign_attendee_page_title
+#: signup/tool/src/bundle/messages.properties:90
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_assign_attendee_page_title"
+msgid "Assign Participants"
+msgstr "Assign Participants"
+
+#. event_attendee_eid
+#: signup/tool/src/bundle/messages.properties:91
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendee_eid"
+msgid "Participant UserId:"
+msgstr "Participant UserId:"
+
+#. event_attendee_name
+#: signup/tool/src/bundle/messages.properties:92
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendee_name"
+msgid "Participant Name:"
+msgstr "Participant Name:"
+
+#. event_attendee_noEmail
+#: signup/tool/src/bundle/messages.properties:93
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendee_noEmail"
+msgid "No Email"
+msgstr "No Email"
+
+#. event_attendee_role
+#: signup/tool/src/bundle/messages.properties:94
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendee_role"
+msgid "Participant Role:"
+msgstr "Participant Role:"
+
+#. event_attendance
+#: signup/tool/src/bundle/messages.properties:95
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendance"
+msgid "Attendance"
+msgstr "Attendance"
+
+#. event_button_finish
+#: signup/tool/src/bundle/messages.properties:96
+msgctxt "signup/tool/src/bundle/messages.properties:event_button_finish"
+msgid "Finish"
+msgstr "Finish"
+
+#. event_button_signup
+#: signup/tool/src/bundle/messages.properties:97
+msgctxt "signup/tool/src/bundle/messages.properties:event_button_signup"
+msgid "Sign Up"
+msgstr "Sign Up"
+
+#. event_cancel_timeslot_label
+#: signup/tool/src/bundle/messages.properties:98
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_cancel_timeslot_label"
+msgid "&nbsp;Cancel - delete the timeslot"
+msgstr "&nbsp;Cancel - delete the timeslot"
+
+#. event_canceled
+#: signup/tool/src/bundle/messages.properties:99
+msgctxt "signup/tool/src/bundle/messages.properties:event_canceled"
+msgid "Canceled"
+msgstr "Canceled"
+
+#. event_category
+#: signup/tool/src/bundle/messages.properties:100
+msgctxt "signup/tool/src/bundle/messages.properties:event_category"
+msgid "Category:"
+msgstr "Category:"
+
+#. event_category_custom
+#: signup/tool/src/bundle/messages.properties:101
+msgctxt "signup/tool/src/bundle/messages.properties:event_category_custom"
+msgid "enter a new category"
+msgstr "enter a new category"
+
+#. event_category_edit
+#: signup/tool/src/bundle/messages.properties:102
+msgctxt "signup/tool/src/bundle/messages.properties:event_category_edit"
+msgid "edit category"
+msgstr "edit category"
+
+#. event_check_all_chkbxn
+#: signup/tool/src/bundle/messages.properties:103
+msgctxt "signup/tool/src/bundle/messages.properties:event_check_all_chkbxn"
+msgid "Check All"
+msgstr "Check All"
+
+#. event_clear_all_chkbxn
+#: signup/tool/src/bundle/messages.properties:104
+msgctxt "signup/tool/src/bundle/messages.properties:event_clear_all_chkbxn"
+msgid "Clear All"
+msgstr "Clear All"
+
+#. event_close_other_default_setting
+#: signup/tool/src/bundle/messages.properties:105
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_close_other_default_setting"
+msgid "Hide the other default settings"
+msgstr "Hide the other default settings"
+
+#. event_comment
+#: signup/tool/src/bundle/messages.properties:106
+msgctxt "signup/tool/src/bundle/messages.properties:event_comment"
+msgid "Comment:"
+msgstr "Comment:"
+
+#. event_comments
+#: signup/tool/src/bundle/messages.properties:107
+msgctxt "signup/tool/src/bundle/messages.properties:event_comments"
+msgid "Comments"
+msgstr "Comments"
+
+#. event_comments_title
+#: signup/tool/src/bundle/messages.properties:108
+msgctxt "signup/tool/src/bundle/messages.properties:event_comments_title"
+msgid "Meeting Participants' Comments"
+msgstr "Meeting Participants' Comments"
+
+#. event_copy_meeting_page_title
+#: signup/tool/src/bundle/messages.properties:109
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_copy_meeting_page_title"
+msgid "Copy this Meeting"
+msgstr "Copy this Meeting"
+
+#. event_create_email_notification
+#: signup/tool/src/bundle/messages.properties:110
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_create_email_notification"
+msgid "Announce Availability:"
+msgstr "Announce Availability:"
+
+#. event_create_groups
+#: signup/tool/src/bundle/messages.properties:111
+msgctxt "signup/tool/src/bundle/messages.properties:event_create_groups"
+msgid "Create groups for timeslots"
+msgstr "Create groups for timeslots"
+
+#. event_current_site
+#: signup/tool/src/bundle/messages.properties:112
+msgctxt "signup/tool/src/bundle/messages.properties:event_current_site"
+msgid "(Current Site)"
+msgstr "(Current Site)"
+
+#. event_custom_undo
+#: signup/tool/src/bundle/messages.properties:113
+msgctxt "signup/tool/src/bundle/messages.properties:event_custom_undo"
+msgid "undo"
+msgstr "undo"
+
+#. event_custom_undo_tip
+#: signup/tool/src/bundle/messages.properties:114
+msgctxt "signup/tool/src/bundle/messages.properties:event_custom_undo_tip"
+msgid "Click to undo the input\t\t\t\t\t\t\t\t"
+msgstr "Click to undo the input\t\t\t\t\t\t\t\t"
+
+#. event_date
+#: signup/tool/src/bundle/messages.properties:115
+msgctxt "signup/tool/src/bundle/messages.properties:event_date"
+msgid "Meeting Date:"
+msgstr "Meeting Date:"
+
+#. event_description
+#: signup/tool/src/bundle/messages.properties:116
+msgctxt "signup/tool/src/bundle/messages.properties:event_description"
+msgid "Description:"
+msgstr "Description:"
+
+#. event_download_csv_button
+#: signup/tool/src/bundle/messages.properties:117
+msgctxt "signup/tool/src/bundle/messages.properties:event_download_csv_button"
+msgid "Export as CSV"
+msgstr "Export as CSV"
+
+#. event_download_xls_button
+#: signup/tool/src/bundle/messages.properties:118
+msgctxt "signup/tool/src/bundle/messages.properties:event_download_xls_button"
+msgid "Export as Excel"
+msgstr "Export as Excel"
+
+#. event_duration_each_timeslot
+#: signup/tool/src/bundle/messages.properties:119
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_duration_each_timeslot"
+msgid "Duration of Each <br/>Time Slot (min):"
+msgstr "Duration of Each <br/>Time Slot (min):"
+
+#. event_duration_each_timeslot_not_bold
+#: signup/tool/src/bundle/messages.properties:120
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_duration_each_timeslot_not_bold"
+msgid "Estimate duration per time slot (min):"
+msgstr "Estimate duration per time slot (min):"
+
+#. event_email_autoReminder
+#: signup/tool/src/bundle/messages.properties:121
+msgctxt "signup/tool/src/bundle/messages.properties:event_email_autoReminder"
+msgid "Auto Reminder:"
+msgstr "Auto Reminder:"
+
+#. event_email_not_send_out_label
+#: signup/tool/src/bundle/messages.properties:122
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_email_not_send_out_label"
+msgid ""
+"&nbsp;The current site is unpublished. No email notification will be sent."
+msgstr ""
+"&nbsp;The current site is unpublished. No email notification will be sent."
+
+#. event_email_notification
+#: signup/tool/src/bundle/messages.properties:123
+msgctxt "signup/tool/src/bundle/messages.properties:event_email_notification"
+msgid "Email Notification:"
+msgstr "Email Notification:"
+
+#. event_email_yes_label
+#: signup/tool/src/bundle/messages.properties:124
+msgctxt "signup/tool/src/bundle/messages.properties:event_email_yes_label"
+msgid ""
+"&nbsp;Yes, send email to notify the related participant(s) about the changes"
+" that have been made."
+msgstr ""
+"&nbsp;Yes, send email to notify the related participant(s) about the changes"
+" that have been made."
+
+#. event_end_after
+#: signup/tool/src/bundle/messages.properties:125
+msgctxt "signup/tool/src/bundle/messages.properties:event_end_after"
+msgid "End After:"
+msgstr "End After:"
+
+#. event_end_time
+#: signup/tool/src/bundle/messages.properties:126
+msgctxt "signup/tool/src/bundle/messages.properties:event_end_time"
+msgid "End Time:"
+msgstr "End Time:"
+
+#. event_endtime_auto_adjusted_warning
+#: signup/tool/src/bundle/messages.properties:127
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_endtime_auto_adjusted_warning"
+msgid ""
+"The meeting end time has been adjusted because the number of sessions cannot"
+" be divided evenly within the time period provided."
+msgstr ""
+"The meeting end time has been adjusted because the number of sessions cannot"
+" be divided evenly within the time period provided."
+
+#. event_error_alerts
+#: signup/tool/src/bundle/messages.properties:128
+msgctxt "signup/tool/src/bundle/messages.properties:event_error_alerts"
+msgid "ALERT:"
+msgstr "ALERT:"
+
+#. event_group_level
+#: signup/tool/src/bundle/messages.properties:129
+msgctxt "signup/tool/src/bundle/messages.properties:event_group_level"
+msgid "(Group Level)"
+msgstr "(Group Level)"
+
+#. event_hide_coordinators
+#: signup/tool/src/bundle/messages.properties:130
+msgctxt "signup/tool/src/bundle/messages.properties:event_hide_coordinators"
+msgid "Hide"
+msgstr "Hide"
+
+#. event_hide_custom_ts
+#: signup/tool/src/bundle/messages.properties:131
+msgctxt "signup/tool/src/bundle/messages.properties:event_hide_custom_ts"
+msgid "Hide custom defined timeslots"
+msgstr "Hide custom defined timeslots"
+
+#. event_hide_me_details
+#: signup/tool/src/bundle/messages.properties:132
+msgctxt "signup/tool/src/bundle/messages.properties:event_hide_me_details"
+msgid "&nbsp;Hide details"
+msgstr "&nbsp;Hide details"
+
+#. event_hide_meetingIfo_detail
+#: signup/tool/src/bundle/messages.properties:133
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_hide_meetingIfo_detail"
+msgid "&nbsp;Hide meeting info above"
+msgstr "&nbsp;Hide meeting info above"
+
+#. event_hide_site_group_detail
+#: signup/tool/src/bundle/messages.properties:134
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_hide_site_group_detail"
+msgid "&nbsp;Hide site(s)/group(s) details"
+msgstr "&nbsp;Hide site(s)/group(s) details"
+
+#. event_icalendar_label
+#: signup/tool/src/bundle/messages.properties:135
+msgctxt "signup/tool/src/bundle/messages.properties:event_icalendar_label"
+msgid "Download"
+msgstr "Download"
+
+#. event_icalendar_link
+#: signup/tool/src/bundle/messages.properties:136
+msgctxt "signup/tool/src/bundle/messages.properties:event_icalendar_link"
+msgid "iCalendar link:"
+msgstr "iCalendar link:"
+
+#. event_isOver
+#: signup/tool/src/bundle/messages.properties:137
+msgctxt "signup/tool/src/bundle/messages.properties:event_isOver"
+msgid "<font color='red'>This meeting has already occurred.</font>"
+msgstr "<font color='red'>This meeting has already occurred.</font>"
+
+#. event_is_canceled
+#: signup/tool/src/bundle/messages.properties:138
+msgctxt "signup/tool/src/bundle/messages.properties:event_is_canceled"
+msgid "Canceled"
+msgstr "Canceled"
+
+#. event_is_locked
+#: signup/tool/src/bundle/messages.properties:139
+msgctxt "signup/tool/src/bundle/messages.properties:event_is_locked"
+msgid "Locked"
+msgstr "Locked"
+
+#. event_is_open_session
+#: signup/tool/src/bundle/messages.properties:140
+msgctxt "signup/tool/src/bundle/messages.properties:event_is_open_session"
+msgid "This is an open session meeting. No sign-up is required."
+msgstr "This is an open session meeting. No sign-up is required."
+
+#. event_keep_current_attendees
+#: signup/tool/src/bundle/messages.properties:141
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_keep_current_attendees"
+msgid "Keep Current Participants:"
+msgstr "Keep Current Participants:"
+
+#. event_location
+#: signup/tool/src/bundle/messages.properties:142
+msgctxt "signup/tool/src/bundle/messages.properties:event_location"
+msgid "Location:"
+msgstr "Location:"
+
+#. event_lock_timeslot_label
+#: signup/tool/src/bundle/messages.properties:143
+msgctxt "signup/tool/src/bundle/messages.properties:event_lock_timeslot_label"
+msgid "&nbsp;Lock - prevent participant sign-up"
+msgstr "&nbsp;Lock - prevent participant sign-up"
+
+#. event_locked
+#: signup/tool/src/bundle/messages.properties:144
+msgctxt "signup/tool/src/bundle/messages.properties:event_locked"
+msgid "<b>Locked</b>"
+msgstr "<b>Locked</b>"
+
+#. event_max_attendee_each_timeslot
+#: signup/tool/src/bundle/messages.properties:145
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_max_attendee_each_timeslot"
+msgid "Max # of Participants <br/>per Time Slot:"
+msgstr "Max # of Participants <br/>per Time Slot:"
+
+#. event_max_attendee_each_timeslot_not_bold
+#: signup/tool/src/bundle/messages.properties:146
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_max_attendee_each_timeslot_not_bold"
+msgid "Max # of participants per time Slot:"
+msgstr "Max # of participants per time Slot:"
+
+#. event_max_attendees
+#: signup/tool/src/bundle/messages.properties:147
+msgctxt "signup/tool/src/bundle/messages.properties:event_max_attendees"
+msgid "&nbsp;Max # of Participants:"
+msgstr "&nbsp;Max # of Participants:"
+
+#. event_max_num_attendees
+#: signup/tool/src/bundle/messages.properties:148
+msgctxt "signup/tool/src/bundle/messages.properties:event_max_num_attendees"
+msgid "Max # of participants:"
+msgstr "Max # of participants:"
+
+#. event_meeting_default_notify_setting
+#: signup/tool/src/bundle/messages.properties:149
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_meeting_default_notify_setting"
+msgid "Default Notification setting:"
+msgstr "Default Notification setting:"
+
+#. event_missing_group
+#: signup/tool/src/bundle/messages.properties:150
+msgctxt "signup/tool/src/bundle/messages.properties:event_missing_group"
+msgid "Missing Groups:"
+msgstr "Missing Groups:"
+
+#. event_missing_site
+#: signup/tool/src/bundle/messages.properties:151
+msgctxt "signup/tool/src/bundle/messages.properties:event_missing_site"
+msgid "Missing Sites:"
+msgstr "Missing Sites:"
+
+#. event_modify_meeting_page_title
+#: signup/tool/src/bundle/messages.properties:152
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_modify_meeting_page_title"
+msgid "Modify Meeting"
+msgstr "Modify Meeting"
+
+#. event_modify_option
+#: signup/tool/src/bundle/messages.properties:153
+msgctxt "signup/tool/src/bundle/messages.properties:event_modify_option"
+msgid "Modify Options:"
+msgstr "Modify Options:"
+
+#. event_move
+#: signup/tool/src/bundle/messages.properties:154
+msgctxt "signup/tool/src/bundle/messages.properties:event_move"
+msgid "Move"
+msgstr "Move"
+
+#. event_moveToTimeslot
+#: signup/tool/src/bundle/messages.properties:155
+msgctxt "signup/tool/src/bundle/messages.properties:event_moveToTimeslot"
+msgid "Move to time slot&nbsp;"
+msgstr "Move to time slot&nbsp;"
+
+#. event_name
+#: signup/tool/src/bundle/messages.properties:156
+msgctxt "signup/tool/src/bundle/messages.properties:event_name"
+msgid "Title:"
+msgstr "Title:"
+
+#. event_timezone
+#: signup/tool/src/bundle/messages.properties:157
+msgctxt "signup/tool/src/bundle/messages.properties:event_timezone"
+msgid "Time zone:"
+msgstr "Time zone:"
+
+#. event_no_attachment
+#: signup/tool/src/bundle/messages.properties:158
+msgctxt "signup/tool/src/bundle/messages.properties:event_no_attachment"
+msgid "no attachment"
+msgstr "no attachment"
+
+#. event_no_comment_available
+#: signup/tool/src/bundle/messages.properties:159
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_no_comment_available"
+msgid "No Comment"
+msgstr "No Comment"
+
+#. event_no_comments
+#: signup/tool/src/bundle/messages.properties:160
+msgctxt "signup/tool/src/bundle/messages.properties:event_no_comments"
+msgid "There are no participant comments."
+msgstr "There are no participant comments."
+
+#. event_no_label
+#: signup/tool/src/bundle/messages.properties:161
+msgctxt "signup/tool/src/bundle/messages.properties:event_no_label"
+msgid "No"
+msgstr "No"
+
+#. event_not_start_signup_process
+#: signup/tool/src/bundle/messages.properties:162
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_not_start_signup_process"
+msgid ""
+"<font color='red'>The sign-up process has not started yet. However, if you "
+"have been pre-assigned, you can cancel your assigned time slot.</font>"
+msgstr ""
+"<font color='red'>The sign-up process has not started yet. However, if you "
+"have been pre-assigned, you can cancel your assigned time slot.</font>"
+
+#. event_num_participant_per_timeslot
+#: signup/tool/src/bundle/messages.properties:163
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_num_participant_per_timeslot"
+msgid "Number of participants per time slot:"
+msgstr "Number of participants per time slot:"
+
+#. event_num_slot_avail_for_signup
+#: signup/tool/src/bundle/messages.properties:164
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_num_slot_avail_for_signup"
+msgid "Number of slots available for sign-up:"
+msgstr "Number of slots available for sign-up:"
+
+#. event_num_timeslot
+#: signup/tool/src/bundle/messages.properties:165
+msgctxt "signup/tool/src/bundle/messages.properties:event_num_timeslot"
+msgid "Number of Time Slots:"
+msgstr "Number of Time Slots:"
+
+#. event_occurrences
+#: signup/tool/src/bundle/messages.properties:166
+msgctxt "signup/tool/src/bundle/messages.properties:event_occurrences"
+msgid "occurrences"
+msgstr "occurrences"
+
+#. event_on_waiting
+#: signup/tool/src/bundle/messages.properties:167
+msgctxt "signup/tool/src/bundle/messages.properties:event_on_waiting"
+msgid "On Wait List"
+msgstr "On Wait List"
+
+#. event_on_waiting_list
+#: signup/tool/src/bundle/messages.properties:168
+msgctxt "signup/tool/src/bundle/messages.properties:event_on_waiting_list"
+msgid "On Wait List"
+msgstr "On Wait List"
+
+#. event_organizer
+#: signup/tool/src/bundle/messages.properties:169
+msgctxt "signup/tool/src/bundle/messages.properties:event_organizer"
+msgid "Organizer:"
+msgstr "Organizer:"
+
+#. event_other_default_setting
+#: signup/tool/src/bundle/messages.properties:170
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_other_default_setting"
+msgid "Other Default Settings:"
+msgstr "Other Default Settings:"
+
+#. event_other_sites
+#: signup/tool/src/bundle/messages.properties:171
+msgctxt "signup/tool/src/bundle/messages.properties:event_other_sites"
+msgid "Other Sites"
+msgstr "Other Sites"
+
+#. event_overview
+#: signup/tool/src/bundle/messages.properties:172
+msgctxt "signup/tool/src/bundle/messages.properties:event_overview"
+msgid "Events Overview"
+msgstr "Events Overview"
+
+#. event_owner
+#: signup/tool/src/bundle/messages.properties:173
+msgctxt "signup/tool/src/bundle/messages.properties:event_owner"
+msgid "Organizer:"
+msgstr "Organizer:"
+
+#. event_pageTop_link_for_download
+#: signup/tool/src/bundle/messages.properties:174
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_pageTop_link_for_download"
+msgid "Export"
+msgstr "Export"
+
+#. event_pageTop_link_for_download_csv
+#: signup/tool/src/bundle/messages.properties:175
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_pageTop_link_for_download_csv"
+msgid "Export as CSV"
+msgstr "Export as CSV"
+
+#. event_pageTop_link_for_download_xls
+#: signup/tool/src/bundle/messages.properties:176
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_pageTop_link_for_download_xls"
+msgid "Export as Excel"
+msgstr "Export as Excel"
+
+#. event_participant_name
+#: signup/tool/src/bundle/messages.properties:177
+msgctxt "signup/tool/src/bundle/messages.properties:event_participant_name"
+msgid "Participant Name:"
+msgstr "Participant Name:"
+
+#. event_participant_view_page_title
+#: signup/tool/src/bundle/messages.properties:178
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_participant_view_page_title"
+msgid "Meeting Details"
+msgstr "Meeting Details"
+
+#. event_passed_deadline
+#: signup/tool/src/bundle/messages.properties:179
+msgctxt "signup/tool/src/bundle/messages.properties:event_passed_deadline"
+msgid ""
+"<font color='red'>The deadline for this meeting has passed. You cannot sign "
+"up for this meeting.</font>"
+msgstr ""
+"<font color='red'>The deadline for this meeting has passed. You cannot sign "
+"up for this meeting.</font>"
+
+#. event_publish_attendee_name
+#: signup/tool/src/bundle/messages.properties:180
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_publish_attendee_name"
+msgid "Display Participant Names:"
+msgstr "Display Participant Names:"
+
+#. event_publish_to
+#: signup/tool/src/bundle/messages.properties:181
+msgctxt "signup/tool/src/bundle/messages.properties:event_publish_to"
+msgid "Available To:"
+msgstr "Available To:"
+
+#. event_publish_to_calendar
+#: signup/tool/src/bundle/messages.properties:182
+msgctxt "signup/tool/src/bundle/messages.properties:event_publish_to_calendar"
+msgid "Publish to Calendar:"
+msgstr "Publish to Calendar:"
+
+#. event_receive_notification
+#: signup/tool/src/bundle/messages.properties:183
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_receive_notification"
+msgid "Send Notification:"
+msgstr "Send Notification:"
+
+#. event_recurrence
+#: signup/tool/src/bundle/messages.properties:184
+msgctxt "signup/tool/src/bundle/messages.properties:event_recurrence"
+msgid "Meeting Frequency:"
+msgstr "Meeting Frequency:"
+
+#. event_removeButton
+#: signup/tool/src/bundle/messages.properties:185
+msgctxt "signup/tool/src/bundle/messages.properties:event_removeButton"
+msgid "Remove Meetings"
+msgstr "Remove Meetings"
+
+#. event_repeat_num
+#: signup/tool/src/bundle/messages.properties:186
+msgctxt "signup/tool/src/bundle/messages.properties:event_repeat_num"
+msgid "Num of Repeats:"
+msgstr "Num of Repeats:"
+
+#. event_repeat_until
+#: signup/tool/src/bundle/messages.properties:187
+msgctxt "signup/tool/src/bundle/messages.properties:event_repeat_until"
+msgid "Repeats Until:"
+msgstr "Repeats Until:"
+
+#. event_replace
+#: signup/tool/src/bundle/messages.properties:188
+msgctxt "signup/tool/src/bundle/messages.properties:event_replace"
+msgid "Replace"
+msgstr "Replace"
+
+#. event_replaceby
+#: signup/tool/src/bundle/messages.properties:189
+msgctxt "signup/tool/src/bundle/messages.properties:event_replaceby"
+msgid "Replaced with&nbsp;"
+msgstr "Replaced with&nbsp;"
+
+#. event_replaceby_Eid
+#: signup/tool/src/bundle/messages.properties:190
+msgctxt "signup/tool/src/bundle/messages.properties:event_replaceby_Eid"
+msgid "Replaced with (User ID)&nbsp;"
+msgstr "Replaced with (User ID)&nbsp;"
+
+#. event_restore_timeslot_label
+#: signup/tool/src/bundle/messages.properties:191
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_restore_timeslot_label"
+msgid "&nbsp;Restore"
+msgstr "&nbsp;Restore"
+
+#. event_select_coordinators
+#: signup/tool/src/bundle/messages.properties:192
+msgctxt "signup/tool/src/bundle/messages.properties:event_select_coordinators"
+msgid "Meeting Coordinators:"
+msgstr "Meeting Coordinators:"
+
+#. event_select_coordinators_instruction
+#: signup/tool/src/bundle/messages.properties:193
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_select_coordinators_instruction"
+msgid ""
+"Coordinator(s) will receive email notification when an attendee changes "
+"status."
+msgstr ""
+"Coordinator(s) will receive email notification when an attendee changes "
+"status."
+
+#. event_show_attendee_public
+#: signup/tool/src/bundle/messages.properties:194
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_attendee_public"
+msgid "Show Participants To Public:"
+msgstr "Show Participants To Public:"
+
+#. event_show_custom_ts
+#: signup/tool/src/bundle/messages.properties:195
+msgctxt "signup/tool/src/bundle/messages.properties:event_show_custom_ts"
+msgid "Show custom-defined timeslots"
+msgstr "Show custom-defined timeslots"
+
+#. event_show_me_details
+#: signup/tool/src/bundle/messages.properties:196
+msgctxt "signup/tool/src/bundle/messages.properties:event_show_me_details"
+msgid "&nbsp;Show details"
+msgstr "&nbsp;Show details"
+
+#. event_show_meetingIfo_detail
+#: signup/tool/src/bundle/messages.properties:197
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_meetingIfo_detail"
+msgid "&nbsp;Show meeting info details"
+msgstr "&nbsp;Show meeting info details"
+
+#. event_show_no_attendee_info
+#: signup/tool/src/bundle/messages.properties:198
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_no_attendee_info"
+msgid "Private"
+msgstr "Private"
+
+#. event_show_other_default_setting
+#: signup/tool/src/bundle/messages.properties:199
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_other_default_setting"
+msgid "Show the other default settings"
+msgstr "Show the other default settings"
+
+#. event_show_schedule
+#: signup/tool/src/bundle/messages.properties:200
+msgctxt "signup/tool/src/bundle/messages.properties:event_show_schedule"
+msgid "Schedule Details:"
+msgstr "Schedule Details:"
+
+#. event_show_site_group_detail
+#: signup/tool/src/bundle/messages.properties:201
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_site_group_detail"
+msgid "&nbsp;Show site(s)/group(s) details"
+msgstr "&nbsp;Show site(s)/group(s) details"
+
+#. event_sign_up
+#: signup/tool/src/bundle/messages.properties:202
+msgctxt "signup/tool/src/bundle/messages.properties:event_sign_up"
+msgid "Signed up"
+msgstr "Signed up"
+
+#. event_signup_attendance
+#: signup/tool/src/bundle/messages.properties:203
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_attendance"
+msgid "Attendance:"
+msgstr "Attendance:"
+
+#. event_signup_begins
+#: signup/tool/src/bundle/messages.properties:204
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_begins"
+msgid "Sign-up begins:"
+msgstr "Sign-up begins:"
+
+#. event_signup_deadline
+#: signup/tool/src/bundle/messages.properties:205
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_deadline"
+msgid "Sign-up Ends:"
+msgstr "Sign-up Ends:"
+
+#. event_signup_deadline2
+#: signup/tool/src/bundle/messages.properties:206
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_deadline2"
+msgid "Sign-up ends:"
+msgstr "Sign-up ends:"
+
+#. event_signup_start
+#: signup/tool/src/bundle/messages.properties:207
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_start"
+msgid "Sign-up Begins:"
+msgstr "Sign-up Begins:"
+
+#. event_site_group_availability
+#: signup/tool/src/bundle/messages.properties:208
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_site_group_availability"
+msgid "Display Meeting To"
+msgstr "Display Meeting To"
+
+#. event_site_level
+#: signup/tool/src/bundle/messages.properties:209
+msgctxt "signup/tool/src/bundle/messages.properties:event_site_level"
+msgid "(Site Level)"
+msgstr "(Site Level)"
+
+#. event_site_title
+#: signup/tool/src/bundle/messages.properties:210
+msgctxt "signup/tool/src/bundle/messages.properties:event_site_title"
+msgid "Site Title:"
+msgstr "Site Title:"
+
+#. event_some_orig_sitegroup_unavail_due_to_your_create_permission
+#: signup/tool/src/bundle/messages.properties:211
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_some_orig_sitegroup_unavail_due_to_your_create_permission"
+msgid ""
+"Due to insufficient permissions, the following original Site(s) and Group(s)"
+" will be not available to you."
+msgstr ""
+"Due to insufficient permissions, the following original Site(s) and Group(s)"
+" will be not available to you."
+
+#. event_start_time
+#: signup/tool/src/bundle/messages.properties:212
+msgctxt "signup/tool/src/bundle/messages.properties:event_start_time"
+msgid "Start Time:"
+msgstr "Start Time:"
+
+#. event_status
+#: signup/tool/src/bundle/messages.properties:213
+msgctxt "signup/tool/src/bundle/messages.properties:event_status"
+msgid "Meeting Status:"
+msgstr "Meeting Status:"
+
+#. event_step4_page_title
+#: signup/tool/src/bundle/messages.properties:214
+msgctxt "signup/tool/src/bundle/messages.properties:event_step4_page_title"
+msgid "Sign-up Availability"
+msgstr "Sign-up Availability"
+
+#. event_step5_page_title
+#: signup/tool/src/bundle/messages.properties:215
+msgctxt "signup/tool/src/bundle/messages.properties:event_step5_page_title"
+msgid "Meeting Summary"
+msgstr "Meeting Summary"
+
+#. event_swap
+#: signup/tool/src/bundle/messages.properties:216
+msgctxt "signup/tool/src/bundle/messages.properties:event_swap"
+msgid "Swap"
+msgstr "Swap"
+
+#. event_swapWith
+#: signup/tool/src/bundle/messages.properties:217
+msgctxt "signup/tool/src/bundle/messages.properties:event_swapWith"
+msgid "Swap with&nbsp;"
+msgstr "Swap with&nbsp;"
+
+#. event_tab_check_all
+#: signup/tool/src/bundle/messages.properties:218
+msgctxt "signup/tool/src/bundle/messages.properties:event_tab_check_all"
+msgid "All"
+msgstr "All"
+
+#. event_time_period
+#: signup/tool/src/bundle/messages.properties:219
+msgctxt "signup/tool/src/bundle/messages.properties:event_time_period"
+msgid "Time Period:"
+msgstr "Time Period:"
+
+#. event_timeslot
+#: signup/tool/src/bundle/messages.properties:220
+msgctxt "signup/tool/src/bundle/messages.properties:event_timeslot"
+msgid "Time Slot:"
+msgstr "Time Slot:"
+
+#. event_tool_tip_on_signuplist
+#: signup/tool/src/bundle/messages.properties:221
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_on_signuplist"
+msgid "Currently on sign-up list."
+msgstr "Currently on sign-up list."
+
+#. event_tool_tip_on_waitinglist
+#: signup/tool/src/bundle/messages.properties:222
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_on_waitinglist"
+msgid "Currently on the wait list."
+msgstr "Currently on the wait list."
+
+#. event_tool_tip_ts_cancelled
+#: signup/tool/src/bundle/messages.properties:223
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_ts_cancelled"
+msgid "This time slot is canceled."
+msgstr "This time slot is canceled."
+
+#. event_tool_tip_ts_locked
+#: signup/tool/src/bundle/messages.properties:224
+msgctxt "signup/tool/src/bundle/messages.properties:event_tool_tip_ts_locked"
+msgid "This time slot is locked."
+msgstr "This time slot is locked."
+
+#. event_tool_tip_you_ranking_num
+#: signup/tool/src/bundle/messages.properties:225
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_you_ranking_num"
+msgid "Your current ranking Number:"
+msgstr "Your current ranking Number:"
+
+#. event_tool_tip_you_signed_up
+#: signup/tool/src/bundle/messages.properties:226
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_you_signed_up"
+msgid "You have signed up for this time slot."
+msgstr "You have signed up for this time slot."
+
+#. event_tool_tips_action_disabled_label
+#: signup/tool/src/bundle/messages.properties:227
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_action_disabled_label"
+msgid "Action not allowed because time slots are still available."
+msgstr "Action not allowed because time slots are still available."
+
+#. event_tool_tips_action_option_disabled_label
+#: signup/tool/src/bundle/messages.properties:228
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_action_option_disabled_label"
+msgid "The option has been disabled by the organizer."
+msgstr "The option has been disabled by the organizer."
+
+#. event_tool_tips_add
+#: signup/tool/src/bundle/messages.properties:229
+msgctxt "signup/tool/src/bundle/messages.properties:event_tool_tips_add"
+msgid "Click to add a participant"
+msgstr "Click to add a participant"
+
+#. event_tool_tips_cancel_label
+#: signup/tool/src/bundle/messages.properties:230
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_cancel_label"
+msgid "Click here to cancel the time slot."
+msgstr "Click here to cancel the time slot."
+
+#. event_tool_tips_collapse_recur_meeting
+#: signup/tool/src/bundle/messages.properties:231
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_collapse_recur_meeting"
+msgid "Collapse recurring Meetings."
+msgstr "Collapse recurring Meetings."
+
+#. event_tool_tips_delete
+#: signup/tool/src/bundle/messages.properties:232
+msgctxt "signup/tool/src/bundle/messages.properties:event_tool_tips_delete"
+msgid "Click to delete the participant"
+msgstr "Click to delete the participant"
+
+#. event_tool_tips_edit
+#: signup/tool/src/bundle/messages.properties:233
+msgctxt "signup/tool/src/bundle/messages.properties:event_tool_tips_edit"
+msgid "Click to edit the participant"
+msgstr "Click to edit the participant"
+
+#. event_tool_tips_expand_recur_meeting
+#: signup/tool/src/bundle/messages.properties:234
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_expand_recur_meeting"
+msgid "Expand recurring Meetings."
+msgstr "Expand recurring Meetings."
+
+#. event_tool_tips_hide_details
+#: signup/tool/src/bundle/messages.properties:235
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_hide_details"
+msgid "Click to hide details."
+msgstr "Click to hide details."
+
+#. event_tool_tips_lockOrcancel
+#: signup/tool/src/bundle/messages.properties:236
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_lockOrcancel"
+msgid "Click here to lock or cancel the time slot."
+msgstr "Click here to lock or cancel the time slot."
+
+#. event_tool_tips_lock_label
+#: signup/tool/src/bundle/messages.properties:237
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_lock_label"
+msgid "Click here to prevent participant sign-up."
+msgstr "Click here to prevent participant sign-up."
+
+#. event_tool_tips_recurrence
+#: signup/tool/src/bundle/messages.properties:238
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_recurrence"
+msgid "Recurring meeting"
+msgstr "Recurring meeting"
+
+#. event_tool_tips_restore_timeslot_label
+#: signup/tool/src/bundle/messages.properties:239
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_restore_timeslot_label"
+msgid "Click here to restore the timeslot."
+msgstr "Click here to restore the timeslot."
+
+#. event_tool_tips_show_details
+#: signup/tool/src/bundle/messages.properties:240
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_show_details"
+msgid "Click to show details."
+msgstr "Click to show details."
+
+#. event_tool_tips_unlock_label
+#: signup/tool/src/bundle/messages.properties:241
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_unlock_label"
+msgid "Click here to unlock the timeslot and allow participants to sign up."
+msgstr "Click here to unlock the timeslot and allow participants to sign up."
+
+#. event_total_duration
+#: signup/tool/src/bundle/messages.properties:242
+msgctxt "signup/tool/src/bundle/messages.properties:event_total_duration"
+msgid "Total Duration (min):"
+msgstr "Total Duration (min):"
+
+#. event_ts_availability_none
+#: signup/tool/src/bundle/messages.properties:243
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_ts_availability_none"
+msgid "None"
+msgstr "None"
+
+#. event_type
+#: signup/tool/src/bundle/messages.properties:244
+msgctxt "signup/tool/src/bundle/messages.properties:event_type"
+msgid "Meeting Type"
+msgstr "Meeting Type"
+
+#. event_type_title
+#: signup/tool/src/bundle/messages.properties:245
+msgctxt "signup/tool/src/bundle/messages.properties:event_type_title"
+msgid "Meeting Type:"
+msgstr "Meeting Type:"
+
+#. event_unlimited
+#: signup/tool/src/bundle/messages.properties:246
+msgctxt "signup/tool/src/bundle/messages.properties:event_unlimited"
+msgid "Unlimited"
+msgstr "Unlimited"
+
+#. event_unlimited_attendees
+#: signup/tool/src/bundle/messages.properties:247
+msgctxt "signup/tool/src/bundle/messages.properties:event_unlimited_attendees"
+msgid "Unlimited Participants:"
+msgstr "Unlimited Participants:"
+
+#. event_unlock_timeslot_label
+#: signup/tool/src/bundle/messages.properties:248
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_unlock_timeslot_label"
+msgid "&nbsp;Unlock"
+msgstr "&nbsp;Unlock"
+
+#. event_until
+#: signup/tool/src/bundle/messages.properties:249
+msgctxt "signup/tool/src/bundle/messages.properties:event_until"
+msgid "Until:"
+msgstr "Until:"
+
+#. event_use_eid_input_mode
+#: signup/tool/src/bundle/messages.properties:250
+msgctxt "signup/tool/src/bundle/messages.properties:event_use_eid_input_mode"
+msgid "User ID Input Mode:"
+msgstr "User ID Input Mode:"
+
+#. event_view_comment_page_title
+#: signup/tool/src/bundle/messages.properties:251
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_view_comment_page_title"
+msgid "View Comment"
+msgstr "View Comment"
+
+#. event_view_userDefined_Timeslot_page_title
+#: signup/tool/src/bundle/messages.properties:252
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_view_userDefined_Timeslot_page_title"
+msgid "Define Custom Timeslots"
+msgstr "Define Custom Timeslots"
+
+#. event_viewer
+#: signup/tool/src/bundle/messages.properties:253
+msgctxt "signup/tool/src/bundle/messages.properties:event_viewer"
+msgid "Viewer:"
+msgstr "Viewer:"
+
+#. event_warning_no_lower_than_cur_ts_num
+#: signup/tool/src/bundle/messages.properties:254
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_warning_no_lower_than_cur_ts_num"
+msgid ""
+"You may not decrease the number of time slots below the original value:"
+msgstr ""
+"You may not decrease the number of time slots below the original value:"
+
+#. event_yes_create_email_notification
+#: signup/tool/src/bundle/messages.properties:255
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_create_email_notification"
+msgid ""
+"&nbsp;Yes, send email to notify all the potential participants that this "
+"meeting has been published."
+msgstr ""
+"&nbsp;Yes, send email to notify all the potential participants that this "
+"meeting has been published."
+
+#. event_yes_create_groups
+#: signup/tool/src/bundle/messages.properties:256
+msgctxt "signup/tool/src/bundle/messages.properties:event_yes_create_groups"
+msgid ""
+"&nbsp;Yes, create a group for each timeslot that can be managed via Site "
+"Info > Manage Groups"
+msgstr ""
+"&nbsp;Yes, create a group for each timeslot that can be managed via Site "
+"Info > Manage Groups"
+
+#. event_yes_email_autoReminer_to_attendees
+#: signup/tool/src/bundle/messages.properties:257
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_email_autoReminer_to_attendees"
+msgid ""
+"&nbsp;Yes, send email to remind attendee of the meeting, one day in advance."
+msgstr ""
+"&nbsp;Yes, send email to remind attendee of the meeting, one day in advance."
+
+#. event_yes_email_notification
+#: signup/tool/src/bundle/messages.properties:258
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_email_notification"
+msgid "&nbsp;Yes, send an email notification about these changes to:"
+msgstr "&nbsp;Yes, send an email notification about these changes to:"
+
+#. event_yes_keep_current_attendees
+#: signup/tool/src/bundle/messages.properties:259
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_keep_current_attendees"
+msgid ""
+"&nbsp;Yes, keep all the participant(s) in their corresponding time slots."
+msgstr ""
+"&nbsp;Yes, keep all the participant(s) in their corresponding time slots."
+
+#. event_yes_label
+#: signup/tool/src/bundle/messages.properties:260
+msgctxt "signup/tool/src/bundle/messages.properties:event_yes_label"
+msgid "Yes"
+msgstr "Yes"
+
+#. event_yes_meeting_default_notify_setting
+#: signup/tool/src/bundle/messages.properties:261
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_meeting_default_notify_setting"
+msgid ""
+"&nbsp;Yes, pre-select the 'Email Notification' checkbox on the Modify "
+"Meeting page. "
+msgstr ""
+"&nbsp;Yes, pre-select the 'Email Notification' checkbox on the Modify "
+"Meeting page. "
+
+#. event_yes_publish_to_calendar
+#: signup/tool/src/bundle/messages.properties:262
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_publish_to_calendar"
+msgid "&nbsp;Yes, publish the meeting to the Schedule tool."
+msgstr "&nbsp;Yes, publish the meeting to the Schedule tool."
+
+#. event_yes_receive_notification
+#: signup/tool/src/bundle/messages.properties:263
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_receive_notification"
+msgid ""
+"&nbsp;Yes, send an email notification to the selected meeting coordinators "
+"when a participant signs up or cancels an appointment."
+msgstr ""
+"&nbsp;Yes, send an email notification to the selected meeting coordinators "
+"when a participant signs up or cancels an appointment."
+
+#. event_yes_show_attendee_public
+#: signup/tool/src/bundle/messages.properties:264
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_show_attendee_public"
+msgid "&nbsp;Yes, display names of participants to others."
+msgstr "&nbsp;Yes, display names of participants to others."
+
+#. event_yes_to_allow_addComment
+#: signup/tool/src/bundle/messages.properties:265
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_to_allow_addComment"
+msgid "&nbsp;Yes, participant can add a comment during sign-up."
+msgstr "&nbsp;Yes, participant can add a comment during sign-up."
+
+#. event_yes_to_allow_waitList
+#: signup/tool/src/bundle/messages.properties:266
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_to_allow_waitList"
+msgid "&nbsp;Yes, add Wait List option. Participants can join Wait List."
+msgstr "&nbsp;Yes, add Wait List option. Participants can join Wait List."
+
+#. event_yes_to_use_eid_input_mode
+#: signup/tool/src/bundle/messages.properties:267
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_to_use_eid_input_mode"
+msgid "&nbsp;Yes, I want to use User ID input mode for adding participants."
+msgstr "&nbsp;Yes, I want to use User ID input mode for adding participants."
+
+#. event_you_on_wait_list
+#: signup/tool/src/bundle/messages.properties:268
+msgctxt "signup/tool/src/bundle/messages.properties:event_you_on_wait_list"
+msgid "on waiting list"
+msgstr "on waiting list"
+
+#. event_you_signed_up
+#: signup/tool/src/bundle/messages.properties:269
+msgctxt "signup/tool/src/bundle/messages.properties:event_you_signed_up"
+msgid "You've Signed up"
+msgstr "You've Signed up"
+
+#. events_attendee_download_instruction
+#: signup/tool/src/bundle/messages.properties:270
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:events_attendee_download_instruction"
+msgid "Select the meetings and then click the Export button."
+msgstr "Select the meetings and then click the Export button."
+
+#. events_attendee_instruction
+#: signup/tool/src/bundle/messages.properties:271
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:events_attendee_instruction"
+msgid "To sign up for a meeting, click the meeting title."
+msgstr "To sign up for a meeting, click the meeting title."
+
+#. events_dropdownbox_title
+#: signup/tool/src/bundle/messages.properties:272
+msgctxt "signup/tool/src/bundle/messages.properties:events_dropdownbox_title"
+msgid "View:"
+msgstr "View:"
+
+#. events_organizer_download_instruction
+#: signup/tool/src/bundle/messages.properties:273
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:events_organizer_download_instruction"
+msgid "Select the meetings and then click the Export button."
+msgstr "Select the meetings and then click the Export button."
+
+#. events_organizer_instruction
+#: signup/tool/src/bundle/messages.properties:274
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:events_organizer_instruction"
+msgid ""
+"Click 'Add' to create a new meeting, or click a meeting title to modify or "
+"copy it."
+msgstr ""
+"Click 'Add' to create a new meeting, or click a meeting title to modify or "
+"copy it."
+
+#. exception.multiple.eids
+#: signup/tool/src/bundle/messages.properties:275
+msgctxt "signup/tool/src/bundle/messages.properties:exception.multiple.eids"
+msgid ""
+"{0} Matches multiple users. Please select from the following usernames: {1}"
+msgstr ""
+"{0} Matches multiple users. Please select from the following usernames: {1}"
+
+#. exception.no.such.user
+#: signup/tool/src/bundle/messages.properties:276
+msgctxt "signup/tool/src/bundle/messages.properties:exception.no.such.user"
+msgid "No user was found for user ID:&nbsp;"
+msgstr "No user was found for user ID:&nbsp;"
+
+#. expand_all_recur_events
+#: signup/tool/src/bundle/messages.properties:277
+msgctxt "signup/tool/src/bundle/messages.properties:expand_all_recur_events"
+msgid "&nbsp;Expand all recurring meetings."
+msgstr "&nbsp;Expand all recurring meetings."
+
+#. failed.cancel_or_restore_ts
+#: signup/tool/src/bundle/messages.properties:278
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.cancel_or_restore_ts"
+msgid ""
+"Cancel/Restore Failed. Someone has updated the meeting. Please update the "
+"meeting and try again."
+msgstr ""
+"Cancel/Restore Failed. Someone has updated the meeting. Please update the "
+"meeting and try again."
+
+#. failed.fetch_allEvents_from_db
+#: signup/tool/src/bundle/messages.properties:279
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.fetch_allEvents_from_db"
+msgid "Failed to fetch all meetings from the database."
+msgstr "Failed to fetch all meetings from the database."
+
+#. failed.lock_or_unlock_ts
+#: signup/tool/src/bundle/messages.properties:280
+msgctxt "signup/tool/src/bundle/messages.properties:failed.lock_or_unlock_ts"
+msgid ""
+"Lock/Unlock Failed. Someone has updated the meeting. Please update the "
+"meeting and try again."
+msgstr ""
+"Lock/Unlock Failed. Someone has updated the meeting. Please update the "
+"meeting and try again."
+
+#. failed.move.attendee_due_to_ts_isTaken
+#: signup/tool/src/bundle/messages.properties:281
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.move.attendee_due_to_ts_isTaken"
+msgid "Move failed. The participant is already in the timeslot."
+msgstr "Move failed. The participant is already in the timeslot."
+
+#. failed.move.due_to_attendee_notExisted
+#: signup/tool/src/bundle/messages.properties:282
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.move.due_to_attendee_notExisted"
+msgid ""
+"Move failed. Participant no longer in the timeslot. Someone has updated the "
+"meeting. Please update the meeting and try again."
+msgstr ""
+"Move failed. Participant no longer in the timeslot. Someone has updated the "
+"meeting. Please update the meeting and try again."
+
+#. failed.replace.someone.already.updated.db
+#: signup/tool/src/bundle/messages.properties:283
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.replace.someone.already.updated.db"
+msgid ""
+"Replace failed. Someone has updated the meeting. Please update the meeting "
+"and try again."
+msgstr ""
+"Replace failed. Someone has updated the meeting. Please update the meeting "
+"and try again."
+
+#. failed.replaced_due_to_already_in_ts
+#: signup/tool/src/bundle/messages.properties:284
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.replaced_due_to_already_in_ts"
+msgid "Replace failed. The participant is already in the timeslot."
+msgstr "Replace failed. The participant is already in the timeslot."
+
+#. failed.replaced_due_to_attendee_notExisted_in_ts
+#: signup/tool/src/bundle/messages.properties:285
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.replaced_due_to_attendee_notExisted_in_ts"
+msgid ""
+"Replace failed. The selected participant has already been deleted from the "
+"list."
+msgstr ""
+"Replace failed. The selected participant has already been deleted from the "
+"list."
+
+#. failed.swap.due_to_current_attendee_already_in_swapped_ts
+#: signup/tool/src/bundle/messages.properties:286
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.swap.due_to_current_attendee_already_in_swapped_ts"
+msgid "Swap failed. The current participant is already in the timeslot."
+msgstr "Swap failed. The current participant is already in the timeslot."
+
+#. failed.swap.due_to_swapped_attendee_already_in_ts
+#: signup/tool/src/bundle/messages.properties:287
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.swap.due_to_swapped_attendee_already_in_ts"
+msgid ""
+"Swap failed. The swapped participant is already in the current timeslot."
+msgstr ""
+"Swap failed. The swapped participant is already in the current timeslot."
+
+#. failed.swap_due_to_attendee_notExited
+#: signup/tool/src/bundle/messages.properties:288
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.swap_due_to_attendee_notExited"
+msgid "Swap failed. The participant has already removed himself/herself."
+msgstr "Swap failed. The participant has already removed himself/herself."
+
+#. failed.swap_due_to_selected_attendee_notExited
+#: signup/tool/src/bundle/messages.properties:289
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.swap_due_to_selected_attendee_notExited"
+msgid ""
+"Swap failed. The selected participant has already removed himself/herself."
+msgstr ""
+"Swap failed. The selected participant has already removed himself/herself."
+
+#. filter_by_category
+#: signup/tool/src/bundle/messages.properties:290
+msgctxt "signup/tool/src/bundle/messages.properties:filter_by_category"
+msgid "By category:"
+msgstr "By category:"
+
+#. filter_categories_top
+#: signup/tool/src/bundle/messages.properties:291
+msgctxt "signup/tool/src/bundle/messages.properties:filter_categories_top"
+msgid "All"
+msgstr "All"
+
+#. goback_button
+#: signup/tool/src/bundle/messages.properties:292
+msgctxt "signup/tool/src/bundle/messages.properties:goback_button"
+msgid "Back"
+msgstr "Back"
+
+#. group_description_default
+#: signup/tool/src/bundle/messages.properties:293
+msgctxt "signup/tool/src/bundle/messages.properties:group_description_default"
+msgid ""
+"This group ({0}) was automatically created via the Signups tool. Users in "
+"timeslots and this group's membership can be synchronised by clicking the "
+"'Synchronise' button for the timeslot in the Signup tool."
+msgstr ""
+"This group ({0}) was automatically created via the Signups tool. Users in "
+"timeslots and this group's membership can be synchronised by clicking the "
+"'Synchronise' button for the timeslot in the Signup tool."
+
+#. group_slot_in_group_titlename
+#: signup/tool/src/bundle/messages.properties:294
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:group_slot_in_group_titlename"
+msgid "slot"
+msgstr "slot"
+
+#. group_synchronise_button
+#: signup/tool/src/bundle/messages.properties:295
+msgctxt "signup/tool/src/bundle/messages.properties:group_synchronise_button"
+msgid "Synchronise"
+msgstr "Synchronise"
+
+#. group_synchronise_done
+#: signup/tool/src/bundle/messages.properties:296
+msgctxt "signup/tool/src/bundle/messages.properties:group_synchronise_done"
+msgid "Timeslot synchronisation complete"
+msgstr "Timeslot synchronisation complete"
+
+#. group_synchronise_heading
+#: signup/tool/src/bundle/messages.properties:297
+msgctxt "signup/tool/src/bundle/messages.properties:group_synchronise_heading"
+msgid "Group Membership"
+msgstr "Group Membership"
+
+#. ics_file_name_for_failure_warning
+#: signup/tool/src/bundle/messages.properties:298
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:ics_file_name_for_failure_warning"
+msgid "iCal_Failed_Warning.txt"
+msgstr "iCal_Failed_Warning.txt"
+
+#. ics_message_for_failure_warning
+#: signup/tool/src/bundle/messages.properties:299
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:ics_message_for_failure_warning"
+msgid ""
+"There was an error generating the iCal file, it is possible that you do not "
+"have permission to access this event."
+msgstr ""
+"There was an error generating the iCal file, it is possible that you do not "
+"have permission to access this event."
+
+#. javax.faces.component.UIInput.CONVERSION
+#: signup/tool/src/bundle/messages.properties:300
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:javax.faces.component.UIInput.CONVERSION"
+msgid "Invalid input"
+msgstr "Invalid input"
+
+#. javax.faces.component.UIInput.REQUIRED
+#: signup/tool/src/bundle/messages.properties:301
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:javax.faces.component.UIInput.REQUIRED"
+msgid "Please enter a value."
+msgstr "Please enter a value."
+
+#. javax.faces.validator.LengthValidator.MAXIMUM
+#: signup/tool/src/bundle/messages.properties:302
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:javax.faces.validator.LengthValidator.MAXIMUM"
+msgid "Your input is greater than allowable maximum of {0}."
+msgstr "Your input is greater than allowable maximum of {0}."
+
+#. javax.faces.validator.NOT_IN_RANGE
+#: signup/tool/src/bundle/messages.properties:303
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:javax.faces.validator.NOT_IN_RANGE"
+msgid "Your input is out of the range from {0} to {1}."
+msgstr "Your input is out of the range from {0} to {1}."
+
+#. label.select.attendee
+#: signup/tool/src/bundle/messages.properties:304
+msgctxt "signup/tool/src/bundle/messages.properties:label.select.attendee"
+msgid "Select a Participant"
+msgstr "Select a Participant"
+
+#. label_announcement
+#: signup/tool/src/bundle/messages.properties:305
+msgctxt "signup/tool/src/bundle/messages.properties:label_announcement"
+msgid "Open meeting (no sign-up required)"
+msgstr "Open meeting (no sign-up required)"
+
+#. label_biweekly
+#: signup/tool/src/bundle/messages.properties:306
+msgctxt "signup/tool/src/bundle/messages.properties:label_biweekly"
+msgid "Biweekly"
+msgstr "Biweekly"
+
+#. label_create_timeslots
+#: signup/tool/src/bundle/messages.properties:307
+msgctxt "signup/tool/src/bundle/messages.properties:label_create_timeslots"
+msgid "Create Timeslot(s)"
+msgstr "Create Timeslot(s)"
+
+#. label_custom_timeslots
+#: signup/tool/src/bundle/messages.properties:308
+msgctxt "signup/tool/src/bundle/messages.properties:label_custom_timeslots"
+msgid "Advanced user-defined timeslots"
+msgstr "Advanced user-defined timeslots"
+
+#. label_daily
+#: signup/tool/src/bundle/messages.properties:309
+msgctxt "signup/tool/src/bundle/messages.properties:label_daily"
+msgid "Daily"
+msgstr "Daily"
+
+#. label_days
+#: signup/tool/src/bundle/messages.properties:310
+msgctxt "signup/tool/src/bundle/messages.properties:label_days"
+msgid "Days"
+msgstr "Days"
+
+#. label_download_ics_meeting
+#: signup/tool/src/bundle/messages.properties:311
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_download_ics_meeting"
+msgid "Add this meeting to my personal calendar"
+msgstr "Add this meeting to my personal calendar"
+
+#. label_download_ics_timeslot
+#: signup/tool/src/bundle/messages.properties:312
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_download_ics_timeslot"
+msgid "Add this timeslot to my personal calendar"
+msgstr "Add this timeslot to my personal calendar"
+
+#. label_edit_timeslots
+#: signup/tool/src/bundle/messages.properties:313
+msgctxt "signup/tool/src/bundle/messages.properties:label_edit_timeslots"
+msgid "Edit Timeslot(s)"
+msgstr "Edit Timeslot(s)"
+
+#. label_email_all_people
+#: signup/tool/src/bundle/messages.properties:314
+msgctxt "signup/tool/src/bundle/messages.properties:label_email_all_people"
+msgid "All potential participants"
+msgstr "All potential participants"
+
+#. label_email_organizers_only
+#: signup/tool/src/bundle/messages.properties:315
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_email_organizers_only"
+msgid "Selected meeting coordinators"
+msgstr "Selected meeting coordinators"
+
+#. label_email_signed_up_ones_Organizers_only
+#: signup/tool/src/bundle/messages.properties:316
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_email_signed_up_ones_Organizers_only"
+msgid "Selected meeting coordinators and participants currently signed up"
+msgstr "Selected meeting coordinators and participants currently signed up"
+
+#. label_email_signed_up_ones_only
+#: signup/tool/src/bundle/messages.properties:317
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_email_signed_up_ones_only"
+msgid "Only participants currently signed up"
+msgstr "Only participants currently signed up"
+
+#. label_group
+#: signup/tool/src/bundle/messages.properties:318
+msgctxt "signup/tool/src/bundle/messages.properties:label_group"
+msgid "Single slot"
+msgstr "Single slot"
+
+#. label_hours
+#: signup/tool/src/bundle/messages.properties:319
+msgctxt "signup/tool/src/bundle/messages.properties:label_hours"
+msgid "Hours"
+msgstr "Hours"
+
+#. label_ics
+#: signup/tool/src/bundle/messages.properties:320
+msgctxt "signup/tool/src/bundle/messages.properties:label_ics"
+msgid "ICS"
+msgstr "ICS"
+
+#. label_individaul
+#: signup/tool/src/bundle/messages.properties:321
+msgctxt "signup/tool/src/bundle/messages.properties:label_individaul"
+msgid "Multiple slots"
+msgstr "Multiple slots"
+
+#. label_minutes
+#: signup/tool/src/bundle/messages.properties:322
+msgctxt "signup/tool/src/bundle/messages.properties:label_minutes"
+msgid "Minutes"
+msgstr "Minutes"
+
+#. label_monthly
+#: signup/tool/src/bundle/messages.properties:323
+msgctxt "signup/tool/src/bundle/messages.properties:label_monthly"
+msgid "Monthly"
+msgstr "Monthly"
+
+#. label_once
+#: signup/tool/src/bundle/messages.properties:324
+msgctxt "signup/tool/src/bundle/messages.properties:label_once"
+msgid "Once Only"
+msgstr "Once Only"
+
+#. label_startNow
+#: signup/tool/src/bundle/messages.properties:325
+msgctxt "signup/tool/src/bundle/messages.properties:label_startNow"
+msgid "Start Now"
+msgstr "Start Now"
+
+#. label_view_edit_ts
+#: signup/tool/src/bundle/messages.properties:326
+msgctxt "signup/tool/src/bundle/messages.properties:label_view_edit_ts"
+msgid "View or Edit Timeslot(s)"
+msgstr "View or Edit Timeslot(s)"
+
+#. label_weekdays
+#: signup/tool/src/bundle/messages.properties:327
+msgctxt "signup/tool/src/bundle/messages.properties:label_weekdays"
+msgid "Weekdays (Mon-Fri)"
+msgstr "Weekdays (Mon-Fri)"
+
+#. label_weekly
+#: signup/tool/src/bundle/messages.properties:328
+msgctxt "signup/tool/src/bundle/messages.properties:label_weekly"
+msgid "Weekly"
+msgstr "Weekly"
+
+#. max.num_attendee_changed_and_attendee_mayOver_limit_inTS
+#: signup/tool/src/bundle/messages.properties:329
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:max.num_attendee_changed_and_attendee_mayOver_limit_inTS"
+msgid ""
+"Maximum # of participants per timeslot has changed. Some timeslots may now "
+"be overbooked."
+msgstr ""
+"Maximum # of participants per timeslot has changed. Some timeslots may now "
+"be overbooked."
+
+#. meeting_confirmation_to_remove
+#: signup/tool/src/bundle/messages.properties:330
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:meeting_confirmation_to_remove"
+msgid "Are you sure you want to permanently remove the meeting(s)?"
+msgstr "Are you sure you want to permanently remove the meeting(s)?"
+
+#. meeting_confirmation_to_remove_multiple
+#: signup/tool/src/bundle/messages.properties:331
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:meeting_confirmation_to_remove_multiple"
+msgid ""
+"This will permanently remove the meeting and all recurring meeting(s). Are "
+"you sure you want to do this? If not, click Cancel, expand the list and "
+"remove the meetings individually."
+msgstr ""
+"This will permanently remove the meeting and all recurring meeting(s). Are "
+"you sure you want to do this? If not, click Cancel, expand the list and "
+"remove the meetings individually."
+
+#. modify_all
+#: signup/tool/src/bundle/messages.properties:332
+msgctxt "signup/tool/src/bundle/messages.properties:modify_all"
+msgid "Modify all future recurring meetings."
+msgstr "Modify all future recurring meetings."
+
+#. modify_current
+#: signup/tool/src/bundle/messages.properties:333
+msgctxt "signup/tool/src/bundle/messages.properties:modify_current"
+msgid "Modify current meeting only.  Meeting becomes single slot."
+msgstr "Modify current meeting only.  Meeting becomes single slot."
+
+#. modify_event
+#: signup/tool/src/bundle/messages.properties:334
+msgctxt "signup/tool/src/bundle/messages.properties:modify_event"
+msgid "Modify"
+msgstr "Modify"
+
+#. next_button
+#: signup/tool/src/bundle/messages.properties:335
+msgctxt "signup/tool/src/bundle/messages.properties:next_button"
+msgid "Next"
+msgstr "Next"
+
+#. no.permission_create_event
+#: signup/tool/src/bundle/messages.properties:336
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no.permission_create_event"
+msgid "You do not have permission to create a new meeting."
+msgstr "You do not have permission to create a new meeting."
+
+#. no.permissoin.do_it
+#: signup/tool/src/bundle/messages.properties:337
+msgctxt "signup/tool/src/bundle/messages.properties:no.permissoin.do_it"
+msgid "You don't have the required permission."
+msgstr "You don't have the required permission."
+
+#. no_addWaiter_button_due_to_unlimited
+#: signup/tool/src/bundle/messages.properties:338
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_addWaiter_button_due_to_unlimited"
+msgid "&nbsp;---"
+msgstr "&nbsp;---"
+
+#. no_events_in_future_organizer
+#: signup/tool/src/bundle/messages.properties:339
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_events_in_future_organizer"
+msgid ""
+"No future meetings have been created. Click 'Add' to create a new meeting."
+msgstr ""
+"No future meetings have been created. Click 'Add' to create a new meeting."
+
+#. no_events_in_this_period_attendee_orgnizer
+#: signup/tool/src/bundle/messages.properties:340
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_events_in_this_period_attendee_orgnizer"
+msgid "No meetings are available for this time frame."
+msgstr "No meetings are available for this time frame."
+
+#. no_events_in_timeframe_attendee
+#: signup/tool/src/bundle/messages.properties:341
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_events_in_timeframe_attendee"
+msgid "No meetings are available."
+msgstr "No meetings are available."
+
+#. no_events_in_timeframe_organizer
+#: signup/tool/src/bundle/messages.properties:342
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_events_in_timeframe_organizer"
+msgid "No meetings have been created. Click 'Add' to create a meeting."
+msgstr "No meetings have been created. Click 'Add' to create a meeting."
+
+#. no_future_events_I_have_signed_up
+#: signup/tool/src/bundle/messages.properties:343
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_future_events_I_have_signed_up"
+msgid "You are not signed up for any upcoming meetings."
+msgstr "You are not signed up for any upcoming meetings."
+
+#. no_future_events_in_immediate_available
+#: signup/tool/src/bundle/messages.properties:344
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_future_events_in_immediate_available"
+msgid "No meetings are available for immediate sign-up."
+msgstr "No meetings are available for immediate sign-up."
+
+#. ok_button
+#: signup/tool/src/bundle/messages.properties:345
+msgctxt "signup/tool/src/bundle/messages.properties:ok_button"
+msgid "OK"
+msgstr "OK"
+
+#. org.apache.myfaces.Date.INVALID
+#: signup/tool/src/bundle/messages.properties:346
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:org.apache.myfaces.Date.INVALID"
+msgid "Your date input is invalid."
+msgstr "Your date input is invalid."
+
+#. org.apache.myfaces.calendar.CONVERSION
+#: signup/tool/src/bundle/messages.properties:347
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:org.apache.myfaces.calendar.CONVERSION"
+msgid "The repeat date you chose is invalid."
+msgstr "The repeat date you chose is invalid."
+
+#. organizer_instruction_click
+#: signup/tool/src/bundle/messages.properties:348
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_click"
+msgid "- Click&nbsp;"
+msgstr "- Click&nbsp;"
+
+#. organizer_instruction_delete_image
+#: signup/tool/src/bundle/messages.properties:349
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_delete_image"
+msgid "&nbsp;to delete a participant."
+msgstr "&nbsp;to delete a participant."
+
+#. organizer_instruction_edit_image
+#: signup/tool/src/bundle/messages.properties:350
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_edit_image"
+msgid "&nbsp;to change or swap participants."
+msgstr "&nbsp;to change or swap participants."
+
+#. organizer_instruction_mailto_all_image
+#: signup/tool/src/bundle/messages.properties:351
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_mailto_all_image"
+msgid "&nbsp;to email all participants."
+msgstr "&nbsp;to email all participants."
+
+#. organizer_instruction_mailto_image
+#: signup/tool/src/bundle/messages.properties:352
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_mailto_image"
+msgid "&nbsp;to email a participant."
+msgstr "&nbsp;to email a participant."
+
+#. organizer_instruction_max_capacity
+#: signup/tool/src/bundle/messages.properties:353
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_max_capacity"
+msgid ""
+"- Meeting organizers can add participants even if the time slot is full."
+msgstr ""
+"- Meeting organizers can add participants even if the time slot is full."
+
+#. organizer_instruction_timeslot_link
+#: signup/tool/src/bundle/messages.properties:354
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_timeslot_link"
+msgid "- Click on a time slot to lock or cancel it."
+msgstr "- Click on a time slot to lock or cancel it."
+
+#. organizer_mailto_all
+#: signup/tool/src/bundle/messages.properties:355
+msgctxt "signup/tool/src/bundle/messages.properties:organizer_mailto_all"
+msgid "Email all participants"
+msgstr "Email all participants"
+
+#. organizer_mailto_all_short
+#: signup/tool/src/bundle/messages.properties:356
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_mailto_all_short"
+msgid "Email all"
+msgstr "Email all"
+
+#. organizer_note_name
+#: signup/tool/src/bundle/messages.properties:357
+msgctxt "signup/tool/src/bundle/messages.properties:organizer_note_name"
+msgid "<font color='red'>*</font>Note:"
+msgstr "<font color='red'>*</font>Note:"
+
+#. organizer_page_title
+#: signup/tool/src/bundle/messages.properties:358
+msgctxt "signup/tool/src/bundle/messages.properties:organizer_page_title"
+msgid "Meeting Details"
+msgstr "Meeting Details"
+
+#. participant_cancel_button
+#: signup/tool/src/bundle/messages.properties:359
+msgctxt "signup/tool/src/bundle/messages.properties:participant_cancel_button"
+msgid "Cancel Sign-up"
+msgstr "Cancel Sign-up"
+
+#. permission.info.for.group.scope
+#: signup/tool/src/bundle/messages.properties:360
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission.info.for.group.scope"
+msgid ""
+"Set permissions for Sign-up in the group: {1} in the site: {0}. (a) At the "
+"group realm level, only the permissions \"view\", \"attend\", "
+"\"create.group\", \"delete.group\" and \"update.group\" can be modified. "
+"Other permission settings at this level do not apply and have no effect. (b)"
+" For participants to view or attend a meeting open to this group, the "
+"\"view\" and \"attend\" permissions are required."
+msgstr ""
+"Set permissions for Sign-up in the group: {1} in the site: {0}. (a) At the "
+"group realm level, only the permissions \"view\", \"attend\", "
+"\"create.group\", \"delete.group\" and \"update.group\" can be modified. "
+"Other permission settings at this level do not apply and have no effect. (b)"
+" For participants to view or attend a meeting open to this group, the "
+"\"view\" and \"attend\" permissions are required."
+
+#. permission.info.for.site.scope
+#: signup/tool/src/bundle/messages.properties:361
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission.info.for.site.scope"
+msgid "Set permissions for Sign-up in worksite: {0} ({1})"
+msgstr "Set permissions for Sign-up in worksite: {0} ({1})"
+
+#. permission_feature_link
+#: signup/tool/src/bundle/messages.properties:362
+msgctxt "signup/tool/src/bundle/messages.properties:permission_feature_link"
+msgid "Permissions"
+msgstr "Permissions"
+
+#. permission_group_scope
+#: signup/tool/src/bundle/messages.properties:363
+msgctxt "signup/tool/src/bundle/messages.properties:permission_group_scope"
+msgid "group"
+msgstr "group"
+
+#. permission_note_for_admin_advice
+#: signup/tool/src/bundle/messages.properties:364
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_note_for_admin_advice"
+msgid ""
+"<UI><LI><b>Administrator:</b> You can manually enable the Permissions option"
+" for a specific worksite by granting the <B>realm.upd</B> permission to all "
+"of the site/group realm levels for any role(s) you wish to have this "
+"ability.  The member(s) of the role(s) must also be a member of every group "
+"in the site and the site must contain at least one group.</LI></UI>"
+msgstr ""
+"<UI><LI><b>Administrator:</b> You can manually enable the Permissions option"
+" for a specific worksite by granting the <B>realm.upd</B> permission to all "
+"of the site/group realm levels for any role(s) you wish to have this "
+"ability.  The member(s) of the role(s) must also be a member of every group "
+"in the site and the site must contain at least one group.</LI></UI>"
+
+#. permission_note_for_disabled_button_case
+#: signup/tool/src/bundle/messages.properties:365
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_note_for_disabled_button_case"
+msgid ""
+"<UI><LI>The <B>Edit Permission</B> button is only available to "
+"administrators or users with the <B>realm.upd</B> permission for the current"
+" site or group.  Contact your system administrator to be granted this "
+"permission.</LI></UI>"
+msgstr ""
+"<UI><LI>The <B>Edit Permission</B> button is only available to "
+"administrators or users with the <B>realm.upd</B> permission for the current"
+" site or group.  Contact your system administrator to be granted this "
+"permission.</LI></UI>"
+
+#. permission_note_for_group_realm_case
+#: signup/tool/src/bundle/messages.properties:366
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_note_for_group_realm_case"
+msgid ""
+"<UI><LI>In each <B>group</B> realm, only the permissions <B>view</B>, "
+"<B>attend</B>, <B>create.group</B>, <B>delete.group</B> and "
+"<B>update.group</B> can be modified. Other permission settings at this level"
+" do not apply and have no effect.</LI></UI>"
+msgstr ""
+"<UI><LI>In each <B>group</B> realm, only the permissions <B>view</B>, "
+"<B>attend</B>, <B>create.group</B>, <B>delete.group</B> and "
+"<B>update.group</B> can be modified. Other permission settings at this level"
+" do not apply and have no effect.</LI></UI>"
+
+#. permission_note_for_view_attend_group
+#: signup/tool/src/bundle/messages.properties:367
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_note_for_view_attend_group"
+msgid ""
+"For participants to view or attend a meeting open only to their specific "
+"group(s), you must grant the <B>view</B> and <B>attend</B> permission at the"
+" group realm level."
+msgstr ""
+"For participants to view or attend a meeting open only to their specific "
+"group(s), you must grant the <B>view</B> and <B>attend</B> permission at the"
+" group realm level."
+
+#. permission_page_title
+#: signup/tool/src/bundle/messages.properties:368
+msgctxt "signup/tool/src/bundle/messages.properties:permission_page_title"
+msgid "Permissions Update"
+msgstr "Permissions Update"
+
+#. permission_site_scope
+#: signup/tool/src/bundle/messages.properties:369
+msgctxt "signup/tool/src/bundle/messages.properties:permission_site_scope"
+msgid "site"
+msgstr "site"
+
+#. permission_tab_action
+#: signup/tool/src/bundle/messages.properties:370
+msgctxt "signup/tool/src/bundle/messages.properties:permission_tab_action"
+msgid "Action"
+msgstr "Action"
+
+#. permission_tab_edit_button
+#: signup/tool/src/bundle/messages.properties:371
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_tab_edit_button"
+msgid "Edit Permissions"
+msgstr "Edit Permissions"
+
+#. permission_tab_name
+#: signup/tool/src/bundle/messages.properties:372
+msgctxt "signup/tool/src/bundle/messages.properties:permission_tab_name"
+msgid "Name"
+msgstr "Name"
+
+#. permission_tab_realm_scope
+#: signup/tool/src/bundle/messages.properties:373
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_tab_realm_scope"
+msgid "Scope"
+msgstr "Scope"
+
+#. preAssign_note_backButton_message
+#: signup/tool/src/bundle/messages.properties:374
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:preAssign_note_backButton_message"
+msgid ""
+"- If you click the <B>Back</B> button, all pre-assigned participants will be"
+" lost."
+msgstr ""
+"- If you click the <B>Back</B> button, all pre-assigned participants will be"
+" lost."
+
+#. preAssign_note_max_number_message
+#: signup/tool/src/bundle/messages.properties:375
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:preAssign_note_max_number_message"
+msgid ""
+"- Meeting organizer can assign greater than specified maximum number of "
+"participants, if desired."
+msgstr ""
+"- Meeting organizer can assign greater than specified maximum number of "
+"participants, if desired."
+
+#. preAssign_note_publish_message
+#: signup/tool/src/bundle/messages.properties:376
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:preAssign_note_publish_message"
+msgid "- Click 'Publish' to finalize the meeting(s) creation process."
+msgstr "- Click 'Publish' to finalize the meeting(s) creation process."
+
+#. print_event
+#: signup/tool/src/bundle/messages.properties:377
+msgctxt "signup/tool/src/bundle/messages.properties:print_event"
+msgid "&nbsp;Print"
+msgstr "&nbsp;Print"
+
+#. print_friendly
+#: signup/tool/src/bundle/messages.properties:378
+msgctxt "signup/tool/src/bundle/messages.properties:print_friendly"
+msgid "Print this page"
+msgstr "Print this page"
+
+#. public_modify_button
+#: signup/tool/src/bundle/messages.properties:379
+msgctxt "signup/tool/src/bundle/messages.properties:public_modify_button"
+msgid "Publish Modification"
+msgstr "Publish Modification"
+
+#. publish.withAttendee.exception
+#: signup/tool/src/bundle/messages.properties:380
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:publish.withAttendee.exception"
+msgid "An unknown error has occurred.  Please try again."
+msgstr "An unknown error has occurred.  Please try again."
+
+#. publish_button
+#: signup/tool/src/bundle/messages.properties:381
+msgctxt "signup/tool/src/bundle/messages.properties:publish_button"
+msgid "Publish"
+msgstr "Publish"
+
+#. publish_processing_submit_message
+#: signup/tool/src/bundle/messages.properties:382
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:publish_processing_submit_message"
+msgid "Processing..."
+msgstr "Processing..."
+
+#. publish_new_evnt_button
+#: signup/tool/src/bundle/messages.properties:383
+msgctxt "signup/tool/src/bundle/messages.properties:publish_new_evnt_button"
+msgid "Publish New Meeting"
+msgstr "Publish New Meeting"
+
+#. put_In_Multiple_Calendar_Blocks_at_ScheduleTool
+#: signup/tool/src/bundle/messages.properties:384
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:put_In_Multiple_Calendar_Blocks_at_ScheduleTool"
+msgid ""
+"Yes, publish the meeting as multiple calendar events in the Schedule Tool if"
+" adjacent timeslots are more than two hours apart."
+msgstr ""
+"Yes, publish the meeting as multiple calendar events in the Schedule Tool if"
+" adjacent timeslots are more than two hours apart."
+
+#. recurrence
+#: signup/tool/src/bundle/messages.properties:385
+msgctxt "signup/tool/src/bundle/messages.properties:recurrence"
+msgid "Recurring meetings"
+msgstr "Recurring meetings"
+
+#. remove_waitlist_button
+#: signup/tool/src/bundle/messages.properties:386
+msgctxt "signup/tool/src/bundle/messages.properties:remove_waitlist_button"
+msgid "Remove from Wait List"
+msgstr "Remove from Wait List"
+
+#. required1
+#: signup/tool/src/bundle/messages.properties:387
+msgctxt "signup/tool/src/bundle/messages.properties:required1"
+msgid "A"
+msgstr "A"
+
+#. required2
+#: signup/tool/src/bundle/messages.properties:388
+msgctxt "signup/tool/src/bundle/messages.properties:required2"
+msgid "indicates required information."
+msgstr "indicates required information."
+
+#. save_button
+#: signup/tool/src/bundle/messages.properties:389
+msgctxt "signup/tool/src/bundle/messages.properties:save_button"
+msgid "Save"
+msgstr "Save"
+
+#. select.atleast.oneGroup
+#: signup/tool/src/bundle/messages.properties:390
+msgctxt "signup/tool/src/bundle/messages.properties:select.atleast.oneGroup"
+msgid "Please select at least a Site or Group before clicking <B>Next</B>."
+msgstr "Please select at least a Site or Group before clicking <B>Next</B>."
+
+#. select.atleast.oneGroup.for.copyMeeting
+#: signup/tool/src/bundle/messages.properties:391
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:select.atleast.oneGroup.for.copyMeeting"
+msgid ""
+"Please select at least a Site or Group before clicking <B>Publish New "
+"Meeting</B>."
+msgstr ""
+"Please select at least a Site or Group before clicking <B>Publish New "
+"Meeting</B>."
+
+#. select_category
+#: signup/tool/src/bundle/messages.properties:392
+msgctxt "signup/tool/src/bundle/messages.properties:select_category"
+msgid "-- select category --"
+msgstr "-- select category --"
+
+#. select_location
+#: signup/tool/src/bundle/messages.properties:393
+msgctxt "signup/tool/src/bundle/messages.properties:select_location"
+msgid "-- select location --"
+msgstr "-- select location --"
+
+#. sheet_name_Attendance_data
+#: signup/tool/src/bundle/messages.properties:394
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:sheet_name_Attendance_data"
+msgid "Attendance"
+msgstr "Attendance"
+
+#. sheet_name_Attendee_schedules
+#: signup/tool/src/bundle/messages.properties:395
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:sheet_name_Attendee_schedules"
+msgid "Attendees' Schedules"
+msgstr "Attendees' Schedules"
+
+#. signup.deadline.is.before.signup.begin
+#: signup/tool/src/bundle/messages.properties:396
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:signup.deadline.is.before.signup.begin"
+msgid "Sign-up Ends time must occur after Sign-up Begins time."
+msgstr "Sign-up Ends time must occur after Sign-up Begins time."
+
+#. signup.validator.stringWithSpaceOnly
+#: signup/tool/src/bundle/messages.properties:397
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:signup.validator.stringWithSpaceOnly"
+msgid "Only space(s) as input is not allowed."
+msgstr "Only space(s) as input is not allowed."
+
+#. signup_download
+#: signup/tool/src/bundle/messages.properties:398
+msgctxt "signup/tool/src/bundle/messages.properties:signup_download"
+msgid "Export Meetings"
+msgstr "Export Meetings"
+
+#. signup_start_deadline
+#: signup/tool/src/bundle/messages.properties:399
+msgctxt "signup/tool/src/bundle/messages.properties:signup_start_deadline"
+msgid "Sign-up Start & Deadline"
+msgstr "Sign-up Start & Deadline"
+
+#. signup_tool
+#: signup/tool/src/bundle/messages.properties:400
+msgctxt "signup/tool/src/bundle/messages.properties:signup_tool"
+msgid "Meetings"
+msgstr "Meetings"
+
+#. site_selection
+#: signup/tool/src/bundle/messages.properties:401
+msgctxt "signup/tool/src/bundle/messages.properties:site_selection"
+msgid "Site Selection"
+msgstr "Site Selection"
+
+#. someone.already.changed.ts.cancel_status
+#: signup/tool/src/bundle/messages.properties:402
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.changed.ts.cancel_status"
+msgid ""
+"Someone has just changed the cancellation status of this time slot. Please "
+"check it again and change as necessary."
+msgstr ""
+"Someone has just changed the cancellation status of this time slot. Please "
+"check it again and change as necessary."
+
+#. someone.already.changed.ts.lock_status
+#: signup/tool/src/bundle/messages.properties:403
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.changed.ts.lock_status"
+msgid "The lock status of this time slot has changed. Please check it again."
+msgstr "The lock status of this time slot has changed. Please check it again."
+
+#. someone.already.remove_you
+#: signup/tool/src/bundle/messages.properties:404
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.remove_you"
+msgid "Someone has already removed the intended participant."
+msgstr "Someone has already removed the intended participant."
+
+#. someone.already.removed_or_promoted_attendee
+#: signup/tool/src/bundle/messages.properties:405
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.removed_or_promoted_attendee"
+msgid "The participant has been deleted or promoted."
+msgstr "The participant has been deleted or promoted."
+
+#. someone.already.taken.theTimeslot
+#: signup/tool/src/bundle/messages.properties:406
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.taken.theTimeslot"
+msgid ""
+"The time slot has already been taken and is not available. Please join the "
+"Wait List to be notified of a cancellation."
+msgstr ""
+"The time slot has already been taken and is not available. Please join the "
+"Wait List to be notified of a cancellation."
+
+#. someone.already.updated.db
+#: signup/tool/src/bundle/messages.properties:407
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.updated.db"
+msgid ""
+"Someone else has modified the meeting. Please update the meeting and try "
+"again."
+msgstr ""
+"Someone else has modified the meeting. Please update the meeting and try "
+"again."
+
+#. someone.modified.event
+#: signup/tool/src/bundle/messages.properties:408
+msgctxt "signup/tool/src/bundle/messages.properties:someone.modified.event"
+msgid "Someone else has modified the meeting. Please refresh your screen."
+msgstr "Someone else has modified the meeting. Please refresh your screen."
+
+#. someone.modified.event.content
+#: signup/tool/src/bundle/messages.properties:409
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.modified.event.content"
+msgid "Someone else has modified the meeting content.  Please try again."
+msgstr "Someone else has modified the meeting content.  Please try again."
+
+#. star_character
+#: signup/tool/src/bundle/messages.properties:410
+msgctxt "signup/tool/src/bundle/messages.properties:star_character"
+msgid "*"
+msgstr "*"
+
+#. summary
+#: signup/tool/src/bundle/messages.properties:411
+msgctxt "signup/tool/src/bundle/messages.properties:summary"
+msgid "Summary"
+msgstr "Summary"
+
+#. tab_attendee
+#: signup/tool/src/bundle/messages.properties:412
+msgctxt "signup/tool/src/bundle/messages.properties:tab_attendee"
+msgid "Participants"
+msgstr "Participants"
+
+#. tab_attendees
+#: signup/tool/src/bundle/messages.properties:413
+msgctxt "signup/tool/src/bundle/messages.properties:tab_attendees"
+msgid "Participants"
+msgstr "Participants"
+
+#. tab_attendees_eids
+#: signup/tool/src/bundle/messages.properties:414
+msgctxt "signup/tool/src/bundle/messages.properties:tab_attendees_eids"
+msgid "Participants User IDs"
+msgstr "Participants User IDs"
+
+#. tab_end_time
+#: signup/tool/src/bundle/messages.properties:415
+msgctxt "signup/tool/src/bundle/messages.properties:tab_end_time"
+msgid "End Time"
+msgstr "End Time"
+
+#. tab_event_action
+#: signup/tool/src/bundle/messages.properties:416
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_action"
+msgid "Action"
+msgstr "Action"
+
+#. tab_event_availability
+#: signup/tool/src/bundle/messages.properties:417
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_availability"
+msgid "Status"
+msgstr "Status"
+
+#. tab_event_available_slots
+#: signup/tool/src/bundle/messages.properties:418
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_available_slots"
+msgid "Available Places"
+msgstr "Available Places"
+
+#. tab_event_category
+#: signup/tool/src/bundle/messages.properties:419
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_category"
+msgid "Category"
+msgstr "Category"
+
+#. tab_event_date
+#: signup/tool/src/bundle/messages.properties:420
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_date"
+msgid "Date"
+msgstr "Date"
+
+#. tab_event_location
+#: signup/tool/src/bundle/messages.properties:421
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_location"
+msgid "Location"
+msgstr "Location"
+
+#. tab_event_location_custom
+#: signup/tool/src/bundle/messages.properties:422
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_location_custom"
+msgid "enter a new location"
+msgstr "enter a new location"
+
+#. tab_event_name
+#: signup/tool/src/bundle/messages.properties:423
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_name"
+msgid "Meeting Title"
+msgstr "Meeting Title"
+
+#. tab_event_owner
+#: signup/tool/src/bundle/messages.properties:424
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_owner"
+msgid "Organizer"
+msgstr "Organizer"
+
+#. tab_event_remove
+#: signup/tool/src/bundle/messages.properties:425
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_remove"
+msgid "Remove"
+msgstr "Remove"
+
+#. tab_event_signed_attendee
+#: signup/tool/src/bundle/messages.properties:426
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_signed_attendee"
+msgid "Participants"
+msgstr "Participants"
+
+#. tab_event_time
+#: signup/tool/src/bundle/messages.properties:427
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_time"
+msgid "Time"
+msgstr "Time"
+
+#. tab_event_your_appointment_time
+#: signup/tool/src/bundle/messages.properties:428
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:tab_event_your_appointment_time"
+msgid "Time"
+msgstr "Time"
+
+#. tab_event_your_status
+#: signup/tool/src/bundle/messages.properties:429
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_your_status"
+msgid "Your Status"
+msgstr "Your Status"
+
+#. tab_max_attendee
+#: signup/tool/src/bundle/messages.properties:430
+msgctxt "signup/tool/src/bundle/messages.properties:tab_max_attendee"
+msgid "Max # of Participants"
+msgstr "Max # of Participants"
+
+#. tab_max_participants
+#: signup/tool/src/bundle/messages.properties:431
+msgctxt "signup/tool/src/bundle/messages.properties:tab_max_participants"
+msgid "Max # Of<br>Participants"
+msgstr "Max # Of<br>Participants"
+
+#. tab_start_time
+#: signup/tool/src/bundle/messages.properties:432
+msgctxt "signup/tool/src/bundle/messages.properties:tab_start_time"
+msgid "Start Time"
+msgstr "Start Time"
+
+#. tab_time_slot
+#: signup/tool/src/bundle/messages.properties:433
+msgctxt "signup/tool/src/bundle/messages.properties:tab_time_slot"
+msgid "Time Slot"
+msgstr "Time Slot"
+
+#. tab_waiting_list
+#: signup/tool/src/bundle/messages.properties:434
+msgctxt "signup/tool/src/bundle/messages.properties:tab_waiting_list"
+msgid "Wait List"
+msgstr "Wait List"
+
+#. tab_waiting_list_disabled
+#: signup/tool/src/bundle/messages.properties:435
+msgctxt "signup/tool/src/bundle/messages.properties:tab_waiting_list_disabled"
+msgid "&nbsp;[disabled]"
+msgstr "&nbsp;[disabled]"
+
+#. timeperiod_divider
+#: signup/tool/src/bundle/messages.properties:436
+msgctxt "signup/tool/src/bundle/messages.properties:timeperiod_divider"
+msgid "&nbsp;&nbsp;-&nbsp;&nbsp;"
+msgstr "&nbsp;&nbsp;-&nbsp;&nbsp;"
+
+#. timeslot.just.canceled
+#: signup/tool/src/bundle/messages.properties:437
+msgctxt "signup/tool/src/bundle/messages.properties:timeslot.just.canceled"
+msgid "This time slot has been canceled and is no longer available."
+msgstr "This time slot has been canceled and is no longer available."
+
+#. timeslot.just.locked
+#: signup/tool/src/bundle/messages.properties:438
+msgctxt "signup/tool/src/bundle/messages.properties:timeslot.just.locked"
+msgid "This time slot has been locked and is not available."
+msgstr "This time slot has been locked and is not available."
+
+#. title_tip_click_hide_schedule
+#: signup/tool/src/bundle/messages.properties:439
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:title_tip_click_hide_schedule"
+msgid "Click to hide schedule details."
+msgstr "Click to hide schedule details."
+
+#. title_tip_click_show_schedule
+#: signup/tool/src/bundle/messages.properties:440
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:title_tip_click_show_schedule"
+msgid "Click to show schedule details."
+msgstr "Click to show schedule details."
+
+#. title_tip_delete_this_ts
+#: signup/tool/src/bundle/messages.properties:441
+msgctxt "signup/tool/src/bundle/messages.properties:title_tip_delete_this_ts"
+msgid "delete the timeslot."
+msgstr "delete the timeslot."
+
+#. tool_tip_add_waitlist
+#: signup/tool/src/bundle/messages.properties:442
+msgctxt "signup/tool/src/bundle/messages.properties:tool_tip_add_waitlist"
+msgid "Add to Wait List"
+msgstr "Add to Wait List"
+
+#. unlimited_num_attendee
+#: signup/tool/src/bundle/messages.properties:443
+msgctxt "signup/tool/src/bundle/messages.properties:unlimited_num_attendee"
+msgid "Unlimited number of participants"
+msgstr "Unlimited number of participants"
+
+#. user.has.no.permission.attend
+#: signup/tool/src/bundle/messages.properties:444
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:user.has.no.permission.attend"
+msgid "The user:{0} has no permission to attend this event. "
+msgstr "The user:{0} has no permission to attend this event. "
+
+#. user.not.allowed.to.waitlist
+#: signup/tool/src/bundle/messages.properties:445
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:user.not.allowed.to.waitlist"
+msgid "The ability to join the Wait List has been disabled by the organizer."
+msgstr "The ability to join the Wait List has been disabled by the organizer."
+
+#. user.not.found
+#: signup/tool/src/bundle/messages.properties:446
+msgctxt "signup/tool/src/bundle/messages.properties:user.not.found"
+msgid "User is not found"
+msgstr "User is not found"
+
+#. view_all
+#: signup/tool/src/bundle/messages.properties:447
+msgctxt "signup/tool/src/bundle/messages.properties:view_all"
+msgid "All"
+msgstr "All"
+
+#. view_all_future_meetings
+#: signup/tool/src/bundle/messages.properties:448
+msgctxt "signup/tool/src/bundle/messages.properties:view_all_future_meetings"
+msgid "All Future Meetings"
+msgstr "All Future Meetings"
+
+#. view_current_month
+#: signup/tool/src/bundle/messages.properties:449
+msgctxt "signup/tool/src/bundle/messages.properties:view_current_month"
+msgid "Next 30 Days"
+msgstr "Next 30 Days"
+
+#. view_current_three_months
+#: signup/tool/src/bundle/messages.properties:450
+msgctxt "signup/tool/src/bundle/messages.properties:view_current_three_months"
+msgid "Next 90 Days"
+msgstr "Next 90 Days"
+
+#. view_immediate_avail_ones
+#: signup/tool/src/bundle/messages.properties:451
+msgctxt "signup/tool/src/bundle/messages.properties:view_immediate_avail_ones"
+msgid "Meetings Available For Sign-up"
+msgstr "Meetings Available For Sign-up"
+
+#. view_my_signed_up
+#: signup/tool/src/bundle/messages.properties:452
+msgctxt "signup/tool/src/bundle/messages.properties:view_my_signed_up"
+msgid "View Meetings I Am Signed Up For"
+msgstr "View Meetings I Am Signed Up For"
+
+#. view_previous_events
+#: signup/tool/src/bundle/messages.properties:453
+msgctxt "signup/tool/src/bundle/messages.properties:view_previous_events"
+msgid "All Past Meetings"
+msgstr "All Past Meetings"
+
+#. view_semi_year
+#: signup/tool/src/bundle/messages.properties:454
+msgctxt "signup/tool/src/bundle/messages.properties:view_semi_year"
+msgid "Current Semester"
+msgstr "Current Semester"
+
+#. waitlist.option.just.turn.off
+#: signup/tool/src/bundle/messages.properties:455
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:waitlist.option.just.turn.off"
+msgid "The Wait List option is just removed."
+msgstr "The Wait List option is just removed."
+
+#. warn_copy_recurred_event
+#: signup/tool/src/bundle/messages.properties:456
+msgctxt "signup/tool/src/bundle/messages.properties:warn_copy_recurred_event"
+msgid ""
+"You are copying a set of recurring meetings. Please check the recurring "
+"start/end dates and modify them accordingly."
+msgstr ""
+"You are copying a set of recurring meetings. Please check the recurring "
+"start/end dates and modify them accordingly."
+
+#. warn_reschedule_event
+#: signup/tool/src/bundle/messages.properties:457
+msgctxt "signup/tool/src/bundle/messages.properties:warn_reschedule_event"
+msgid ""
+"Some people may have already signed up in the meeting(s). You may need to "
+"contact them about the rescheduling."
+msgstr ""
+"Some people may have already signed up in the meeting(s). You may need to "
+"contact them about the rescheduling."
+
+#. warning.event.crossed_twoDays
+#: signup/tool/src/bundle/messages.properties:458
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.event.crossed_twoDays"
+msgid "The meeting is scheduled across two different days."
+msgstr "The meeting is scheduled across two different days."
+
+#. warning.event.crossed_twoMonths
+#: signup/tool/src/bundle/messages.properties:459
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.event.crossed_twoMonths"
+msgid "The meeting is scheduled across two different months."
+msgstr "The meeting is scheduled across two different months."
+
+#. warning.event.crossed_twoYears
+#: signup/tool/src/bundle/messages.properties:460
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.event.crossed_twoYears"
+msgid "The meeting is scheduled across two different years."
+msgstr "The meeting is scheduled across two different years."
+
+#. warning.some_timeslot_may_locked_canceled
+#: signup/tool/src/bundle/messages.properties:461
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.some_timeslot_may_locked_canceled"
+msgid ""
+"One or more timeslot(s) in the copied meeting is either locked or canceled."
+msgstr ""
+"One or more timeslot(s) in the copied meeting is either locked or canceled."
+
+#. warning.your.event.singup.begin.time.passed.today.time
+#: signup/tool/src/bundle/messages.properties:462
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.your.event.singup.begin.time.passed.today.time"
+msgid ""
+"Participants will be able to sign up for this meeting immediately because "
+"the Sign-up Begin time has already passed."
+msgstr ""
+"Participants will be able to sign up for this meeting immediately because "
+"the Sign-up Begin time has already passed."
+
+#. wksheet_appointment_duration
+#: signup/tool/src/bundle/messages.properties:463
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:wksheet_appointment_duration"
+msgid "Duration (min)"
+msgstr "Duration (min)"
+
+#. wksheet_appointment_start_time
+#: signup/tool/src/bundle/messages.properties:464
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:wksheet_appointment_start_time"
+msgid "Appointment Time"
+msgstr "Appointment Time"
+
+#. wksheet_attendance_UserID
+#: signup/tool/src/bundle/messages.properties:465
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_attendance_UserID"
+msgid "UserID"
+msgstr "UserID"
+
+#. wksheet_category
+#: signup/tool/src/bundle/messages.properties:466
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_category"
+msgid "Category"
+msgstr "Category"
+
+#. wksheet_location
+#: signup/tool/src/bundle/messages.properties:467
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_location"
+msgid "Location"
+msgstr "Location"
+
+#. wksheet_meeting_duration
+#: signup/tool/src/bundle/messages.properties:468
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_meeting_duration"
+msgid "Event Duration (min)"
+msgstr "Event Duration (min)"
+
+#. wksheet_meeting_name
+#: signup/tool/src/bundle/messages.properties:469
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_meeting_name"
+msgid "Event Name"
+msgstr "Event Name"
+
+#. wksheet_meeting_start_time
+#: signup/tool/src/bundle/messages.properties:470
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:wksheet_meeting_start_time"
+msgid "Event Start Time"
+msgstr "Event Start Time"
+
+#. wksheet_num_of_attendees
+#: signup/tool/src/bundle/messages.properties:471
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_num_of_attendees"
+msgid "#Num Attendees in Slot"
+msgstr "#Num Attendees in Slot"
+
+#. wksheet_organizer
+#: signup/tool/src/bundle/messages.properties:472
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_organizer"
+msgid "Organizer"
+msgstr "Organizer"
+
+#. wksheet_site_name
+#: signup/tool/src/bundle/messages.properties:473
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_site_name"
+msgid "Site Title"
+msgstr "Site Title"
+
+#. wksheet_user_comment
+#: signup/tool/src/bundle/messages.properties:474
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_user_comment"
+msgid "Attendees' Comment"
+msgstr "Attendees' Comment"
+
+#. wksheet_user_email
+#: signup/tool/src/bundle/messages.properties:475
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_user_email"
+msgid "Email"
+msgstr "Email"
+
+#. wksheet_user_id
+#: signup/tool/src/bundle/messages.properties:476
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_user_id"
+msgid "Attendees' User ID"
+msgstr "Attendees' User ID"
+
+#. wksheet_user_name
+#: signup/tool/src/bundle/messages.properties:477
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_user_name"
+msgid "Attendee Name"
+msgstr "Attendee Name"
+
+#. you.already.in_waiting_list
+#: signup/tool/src/bundle/messages.properties:478
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:you.already.in_waiting_list"
+msgid "You are already on the Wait List."
+msgstr "You are already on the Wait List."
+
+#. you.have.multiple.tabs.in.browser
+#: signup/tool/src/bundle/messages.properties:479
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:you.have.multiple.tabs.in.browser"
+msgid ""
+"You have multiple {0} tabs open in your browser.  Please close the extra {0}"
+" tabs and try again."
+msgstr ""
+"You have multiple {0} tabs open in your browser.  Please close the extra {0}"
+" tabs and try again."
+
+#. you.need.select.one.toDownload
+#: signup/tool/src/bundle/messages.properties:480
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:you.need.select.one.toDownload"
+msgid ""
+"No meetings have been selected. Please select at least one meeting to "
+"export."
+msgstr ""
+"No meetings have been selected. Please select at least one meeting to "
+"export."
+
+#. you.promoted.to.another.ts_meanwhile
+#: signup/tool/src/bundle/messages.properties:481
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:you.promoted.to.another.ts_meanwhile"
+msgid ""
+"You have been promoted from the Wait List in another timeslot. You cannot "
+"sign up for this timeslot."
+msgstr ""
+"You have been promoted from the Wait List in another timeslot. You cannot "
+"sign up for this timeslot."
+
+#. you_need_to_login
+#: signup/tool/src/bundle/messages.properties:482
+msgctxt "signup/tool/src/bundle/messages.properties:you_need_to_login"
+msgid "You need to log-in to view the meetings."
+msgstr "You need to log-in to view the meetings."

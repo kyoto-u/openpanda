@@ -1,0 +1,63 @@
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-17 08:23+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. memory.notpermis
+#: memory/memory-tool/tool/src/bundle/admin.properties:1
+msgctxt "memory/memory-tool/tool/src/bundle/admin.properties:memory.notpermis"
+msgid "You do not have permission to perform this action."
+msgstr "操作を行う権限がありません．"
+
+#. memory.vm.alert
+#: memory/memory-tool/tool/src/bundle/admin.properties:2
+msgctxt "memory/memory-tool/tool/src/bundle/admin.properties:memory.vm.alert"
+msgid "Alert:"
+msgstr "警告:"
+
+#. memory.vm.ava
+#: memory/memory-tool/tool/src/bundle/admin.properties:3
+msgctxt "memory/memory-tool/tool/src/bundle/admin.properties:memory.vm.ava"
+msgid "Available Memory:"
+msgstr "使用可能なメモリ:"
+
+#. memory.vm.memory
+#: memory/memory-tool/tool/src/bundle/admin.properties:4
+msgctxt "memory/memory-tool/tool/src/bundle/admin.properties:memory.vm.memory"
+msgid "Memory"
+msgstr "メモリ"
+
+#. memory.vm.reset
+#: memory/memory-tool/tool/src/bundle/admin.properties:5
+msgctxt "memory/memory-tool/tool/src/bundle/admin.properties:memory.vm.reset"
+msgid "Reset All Caches"
+msgstr "すべてのキャッシュをリセット"
+
+#. memory.vm.evict
+#: memory/memory-tool/tool/src/bundle/admin.properties:6
+msgctxt "memory/memory-tool/tool/src/bundle/admin.properties:memory.vm.evict"
+msgid "Evict Expired Members"
+msgstr "期限切れメンバを強制削除"
+
+#. memory.vm.status
+#: memory/memory-tool/tool/src/bundle/admin.properties:7
+msgctxt "memory/memory-tool/tool/src/bundle/admin.properties:memory.vm.status"
+msgid "Status"
+msgstr "状態"
+
+#. memory.noaccess
+#: memory/memory-tool/tool/src/bundle/admin.properties:8
+msgctxt "memory/memory-tool/tool/src/bundle/admin.properties:memory.noaccess"
+msgid "You do not have permission to use this tool."
+msgstr "このツールを使用する権限がありません．"

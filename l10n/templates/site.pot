@@ -1,0 +1,1541 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. siterole.title
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:1
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.title"
+msgid "Control Site Role Permissions for all sites"
+msgstr "Control Site Role Permissions for all sites"
+
+#. siterole.instructions
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:2
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.instructions"
+msgid ""
+"This will add or remove the selected permissions in all sites of the types "
+"selected and all roles selected. You must select at least one permission, "
+"one site type, and one role to do an update. This can be somewhat slow when "
+"updating a very large number of sites and will do the processing in a "
+"separate thread."
+msgstr ""
+"This will add or remove the selected permissions in all sites of the types "
+"selected and all roles selected. You must select at least one permission, "
+"one site type, and one role to do an update. This can be somewhat slow when "
+"updating a very large number of sites and will do the processing in a "
+"separate thread."
+
+#. siterole.add.command
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:3
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.add.command"
+msgid "Add Permissions"
+msgstr "Add Permissions"
+
+#. siterole.remove.command
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:4
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.remove.command"
+msgid "Remove Permissions"
+msgstr "Remove Permissions"
+
+#. siterole.sitetype.title
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:5
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.sitetype.title"
+msgid "Site Types"
+msgstr "Site Types"
+
+#. siterole.role.title
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:6
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.role.title"
+msgid "Site Roles"
+msgstr "Site Roles"
+
+#. siterole.perm.title
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:7
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.perm.title"
+msgid "Permissions"
+msgstr "Permissions"
+
+#. siterole.sitetype.header
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:8
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.sitetype.header"
+msgid "Select the site types to change the permissions in"
+msgstr "Select the site types to change the permissions in"
+
+#. siterole.role.header
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:9
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.role.header"
+msgid "Select the roles to apply the permission changes to"
+msgstr "Select the roles to apply the permission changes to"
+
+#. siterole.perm.header
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:10
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.perm.header"
+msgid "Select the permissions to add or remove"
+msgstr "Select the permissions to add or remove"
+
+#. siterole.message.processing.add
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:11
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.message.processing.add"
+msgid ""
+"Adding permissions ({0}) in sites of types ({1}) for the following roles "
+"({2}). {3}% completed..."
+msgstr ""
+"Adding permissions ({0}) in sites of types ({1}) for the following roles "
+"({2}). {3}% completed..."
+
+#. siterole.message.processing.remove
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:12
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.message.processing.remove"
+msgid ""
+"Removing permissions ({0}) in sites of types ({1}) for the following roles "
+"({2}). {3}% completed..."
+msgstr ""
+"Removing permissions ({0}) in sites of types ({1}) for the following roles "
+"({2}). {3}% completed..."
+
+#. siterole.message.permissions.added
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:13
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.message.permissions.added"
+msgid ""
+"Completed adding permissions ({0}) in {3} sites of types ({1}) for the "
+"following roles ({2}). There were {4} updates (of {5} successfully processed"
+" sites and {6} failures) over {7} seconds (paused for {8} seconds)."
+msgstr ""
+"Completed adding permissions ({0}) in {3} sites of types ({1}) for the "
+"following roles ({2}). There were {4} updates (of {5} successfully processed"
+" sites and {6} failures) over {7} seconds (paused for {8} seconds)."
+
+#. siterole.message.permissions.removed
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:14
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.message.permissions.removed"
+msgid ""
+"Completed removing permissions ({0}) in {3} sites of types ({1}) for the "
+"following roles ({2}). There were {4} updates (of {5} successfully processed"
+" sites and {6} failures) over {7} seconds (paused for {8} seconds)."
+msgstr ""
+"Completed removing permissions ({0}) in {3} sites of types ({1}) for the "
+"following roles ({2}). There were {4} updates (of {5} successfully processed"
+" sites and {6} failures) over {7} seconds (paused for {8} seconds)."
+
+#. siterole.message.illegal.submission
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:15
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.message.illegal.submission"
+msgid "You must include at least one of each site type, role, and permission"
+msgstr "You must include at least one of each site type, role, and permission"
+
+#. siterole.message.cannot.update
+#: site/admin-perms-tool/src/main/resources/i18n/Messages.properties:16
+msgctxt ""
+"site/admin-perms-"
+"tool/src/main/resources/i18n/Messages.properties:siterole.message.cannot.update"
+msgid ""
+"You cannot update site permissions now because there is already a "
+"permissions update running"
+msgstr ""
+"You cannot update site permissions now because there is already a "
+"permissions update running"
+
+#. sitact.site
+#: site/site-tool/tool/src/bundle/admin.properties:1
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.site"
+msgid "Site {0} not found"
+msgstr "Site {0} not found"
+
+#. sitact.newpag
+#: site/site-tool/tool/src/bundle/admin.properties:2
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.newpag"
+msgid "New Page"
+msgstr "New Page"
+
+#. sitact.newgrp
+#: site/site-tool/tool/src/bundle/admin.properties:3
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.newgrp"
+msgid "New Group"
+msgstr "New Group"
+
+#. sitact.newsit
+#: site/site-tool/tool/src/bundle/admin.properties:4
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.newsit"
+msgid "New Site"
+msgstr "New Site"
+
+#. sitact.newtoo
+#: site/site-tool/tool/src/bundle/admin.properties:5
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.newtoo"
+msgid "New Tool"
+msgstr "New Tool"
+
+#. sitact.plesel
+#: site/site-tool/tool/src/bundle/admin.properties:6
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.plesel"
+msgid "Please select a feature for this tool."
+msgstr "Please select a feature for this tool."
+
+#. sitact.plespe
+#: site/site-tool/tool/src/bundle/admin.properties:7
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.plespe"
+msgid "Please specify the page title."
+msgstr "Please specify the page title."
+
+#. sitact.rempag
+#: site/site-tool/tool/src/bundle/admin.properties:8
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.rempag"
+msgid "Remove Page"
+msgstr "Remove Page"
+
+#. sitact.remgrp
+#: site/site-tool/tool/src/bundle/admin.properties:9
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.remgrp"
+msgid "Remove Group"
+msgstr "Remove Group"
+
+#. sitact.remsit
+#: site/site-tool/tool/src/bundle/admin.properties:10
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.remsit"
+msgid "Remove Site"
+msgstr "Remove Site"
+
+#. sitact.remtoo
+#: site/site-tool/tool/src/bundle/admin.properties:11
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.remtoo"
+msgid "Remove Tool"
+msgstr "Remove Tool"
+
+#. sitact.savas
+#: site/site-tool/tool/src/bundle/admin.properties:12
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.savas"
+msgid "Save As"
+msgstr "Save As"
+
+#. sitact.thesit
+#: site/site-tool/tool/src/bundle/admin.properties:13
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.thesit"
+msgid "The Site's Page and Tool IDs have been re-generated."
+msgstr "The Site's Page and Tool IDs have been re-generated."
+
+#. sitact.thesitid
+#: site/site-tool/tool/src/bundle/admin.properties:14
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.thesitid"
+msgid "The site id {0} is already in use"
+msgstr "The site id {0} is already in use"
+
+#. sitact.thesitid2
+#: site/site-tool/tool/src/bundle/admin.properties:15
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.thesitid2"
+msgid "The site id {0} is invalid"
+msgstr "The site id {0} is invalid"
+
+#. sitact.notfound
+#: site/site-tool/tool/src/bundle/admin.properties:16
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.notfound"
+msgid "The site id \"{0}\" cannot be found."
+msgstr "The site id \"{0}\" cannot be found."
+
+#. sitact.youdonot1
+#: site/site-tool/tool/src/bundle/admin.properties:17
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.youdonot1"
+msgid "You do not have permission to update this Site {0}."
+msgstr "You do not have permission to update this Site {0}."
+
+#. sitact.youdonot2
+#: site/site-tool/tool/src/bundle/admin.properties:18
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.youdonot2"
+msgid "You do not have permission to create this Site {0}."
+msgstr "You do not have permission to create this Site {0}."
+
+#. sitact.youdonot3
+#: site/site-tool/tool/src/bundle/admin.properties:19
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.youdonot3"
+msgid "You do not have permission to remove Site {0}."
+msgstr "You do not have permission to remove Site {0}."
+
+#. sitact.sperol
+#: site/site-tool/tool/src/bundle/admin.properties:20
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitact.sperol"
+msgid "Please specify a qualified joiner's role."
+msgstr "Please specify a qualified joiner's role."
+
+#. sitconrem.alert
+#: site/site-tool/tool/src/bundle/admin.properties:21
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitconrem.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. sitconrem.can
+#: site/site-tool/tool/src/bundle/admin.properties:22
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitconrem.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. sitconrem.plecon
+#: site/site-tool/tool/src/bundle/admin.properties:23
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitconrem.plecon"
+msgid "Please confirm the removal of this Site:"
+msgstr "Please confirm the removal of this Site:"
+
+#. sitconrem.rem
+#: site/site-tool/tool/src/bundle/admin.properties:24
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitconrem.rem"
+msgid "Remove"
+msgstr "Remove"
+
+#. sitconrem.remvi
+#: site/site-tool/tool/src/bundle/admin.properties:25
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitconrem.remvi"
+msgid "Removing Site..."
+msgstr "Removing Site..."
+
+#. sitedi.alert
+#: site/site-tool/tool/src/bundle/admin.properties:26
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. sitedi.assnew
+#: site/site-tool/tool/src/bundle/admin.properties:27
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.assnew"
+msgid "Assign New IDs"
+msgstr "Assign New IDs"
+
+#. sitedi.can
+#: site/site-tool/tool/src/bundle/admin.properties:28
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. sitedi.comthesit
+#: site/site-tool/tool/src/bundle/admin.properties:29
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.comthesit"
+msgid "Complete the Site Edit"
+msgstr "Complete the Site Edit"
+
+#. sitedi.conedi
+#: site/site-tool/tool/src/bundle/admin.properties:30
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.conedi"
+msgid "Continue Editing"
+msgstr "Continue Editing"
+
+#. sitedi.cre
+#: site/site-tool/tool/src/bundle/admin.properties:31
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.cre"
+msgid "Created:"
+msgstr "Created:"
+
+#. sitedi.creby
+#: site/site-tool/tool/src/bundle/admin.properties:32
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.creby"
+msgid "Created by:"
+msgstr "Created by:"
+
+#. sitedi.des
+#: site/site-tool/tool/src/bundle/admin.properties:33
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.des"
+msgid "Description:"
+msgstr "Description:"
+
+#. sitedi.deleted
+#: site/site-tool/tool/src/bundle/admin.properties:34
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.deleted"
+msgid "Softly Deleted:"
+msgstr "Softly Deleted:"
+
+#. sitedi.deletedon
+#: site/site-tool/tool/src/bundle/admin.properties:35
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.deletedon"
+msgid "Softly Deleted on:"
+msgstr "Softly Deleted on:"
+
+#. sitedi.edisit
+#: site/site-tool/tool/src/bundle/admin.properties:36
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.edisit"
+msgid "Edit: Site"
+msgstr "Edit: Site"
+
+#. pagedi.edisit
+#: site/site-tool/tool/src/bundle/admin.properties:37
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:pagedi.edisit"
+msgid "Edit: Page"
+msgstr "Edit: Page"
+
+#. tooldi.edisit
+#: site/site-tool/tool/src/bundle/admin.properties:38
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:tooldi.edisit"
+msgid "Edit: Tool"
+msgstr "Edit: Tool"
+
+#. sitedi.joi
+#: site/site-tool/tool/src/bundle/admin.properties:39
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.joi"
+msgid "Joinable?:"
+msgstr "Joinable?:"
+
+#. sitedi.joirol
+#: site/site-tool/tool/src/bundle/admin.properties:40
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.joirol"
+msgid "Role to assign to joiners:"
+msgstr "Role to assign to joiners:"
+
+#. sitedi.mod
+#: site/site-tool/tool/src/bundle/admin.properties:41
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.mod"
+msgid "Modified:"
+msgstr "Modified:"
+
+#. sitedi.modby
+#: site/site-tool/tool/src/bundle/admin.properties:42
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.modby"
+msgid "Modified By:"
+msgstr "Modified By:"
+
+#. sitedi.no
+#: site/site-tool/tool/src/bundle/admin.properties:43
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.no"
+msgid "no"
+msgstr "no"
+
+#. sitedi.pag
+#: site/site-tool/tool/src/bundle/admin.properties:44
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.pag"
+msgid "Pages"
+msgstr "Pages"
+
+#. sitedi.grp
+#: site/site-tool/tool/src/bundle/admin.properties:45
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.grp"
+msgid "Groups"
+msgstr "Groups"
+
+#. sitedi.pub
+#: site/site-tool/tool/src/bundle/admin.properties:46
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.pub"
+msgid "Published:"
+msgstr "Published:"
+
+#. sitedi.pub2
+#: site/site-tool/tool/src/bundle/admin.properties:47
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.pub2"
+msgid "published"
+msgstr "published"
+
+#. sitedi.pubvie
+#: site/site-tool/tool/src/bundle/admin.properties:48
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.pubvie"
+msgid "Public View?:"
+msgstr "Public View?:"
+
+#. sitedi.revandmod
+#: site/site-tool/tool/src/bundle/admin.properties:49
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.revandmod"
+msgid "Review and modify this Site's information."
+msgstr "Review and modify this Site's information."
+
+#. sitedi.revsit
+#: site/site-tool/tool/src/bundle/admin.properties:50
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.revsit"
+msgid "Review Site information"
+msgstr "Review Site information"
+
+#. sitedi.sav
+#: site/site-tool/tool/src/bundle/admin.properties:51
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.sav"
+msgid "Save"
+msgstr "Save"
+
+#. sitedi.sho
+#: site/site-tool/tool/src/bundle/admin.properties:52
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.sho"
+msgid "Short Description:"
+msgstr "Short Description:"
+
+#. sitedi.sit
+#: site/site-tool/tool/src/bundle/admin.properties:53
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.sit"
+msgid "Site"
+msgstr "Site"
+
+#. sitedi.sit2
+#: site/site-tool/tool/src/bundle/admin.properties:54
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.sit2"
+msgid "Site Id:"
+msgstr "Site Id:"
+
+#. sitedi.sitcre
+#: site/site-tool/tool/src/bundle/admin.properties:55
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.sitcre"
+msgid ""
+"Sites created in prior versions may not have system-wide unique IDs for "
+"pages and tools. Use this converter to assign new IDs."
+msgstr ""
+"Sites created in prior versions may not have system-wide unique IDs for "
+"pages and tools. Use this converter to assign new IDs."
+
+#. sitedi.ski
+#: site/site-tool/tool/src/bundle/admin.properties:56
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.ski"
+msgid "Skin:"
+msgstr "Skin:"
+
+#. sitedi.specon
+#: site/site-tool/tool/src/bundle/admin.properties:57
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.specon"
+msgid "Special Conversion"
+msgstr "Special Conversion"
+
+#. sitedi.tit
+#: site/site-tool/tool/src/bundle/admin.properties:58
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.tit"
+msgid "Title:"
+msgstr "Title:"
+
+#. sitedi.typ
+#: site/site-tool/tool/src/bundle/admin.properties:59
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.typ"
+msgid "Type:"
+msgstr "Type:"
+
+#. sitedi.unpub
+#: site/site-tool/tool/src/bundle/admin.properties:60
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.unpub"
+msgid "unpublished"
+msgstr "unpublished"
+
+#. sitedi.worsit
+#: site/site-tool/tool/src/bundle/admin.properties:61
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.worsit"
+msgid "Worksite Icon URL:"
+msgstr "Worksite Icon URL:"
+
+#. sitedi.worsit2
+#: site/site-tool/tool/src/bundle/admin.properties:62
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.worsit2"
+msgid "Worksite Info URL:"
+msgstr "Worksite Info URL:"
+
+#. sitedi.yes
+#: site/site-tool/tool/src/bundle/admin.properties:63
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.yes"
+msgid "yes"
+msgstr "yes"
+
+#. sitedi.pro
+#: site/site-tool/tool/src/bundle/admin.properties:64
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.pro"
+msgid "Properties"
+msgstr "Properties"
+
+#. sitedi.info
+#: site/site-tool/tool/src/bundle/admin.properties:65
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.info"
+msgid "Info"
+msgstr "Info"
+
+#. sitedi.addeditprops
+#: site/site-tool/tool/src/bundle/admin.properties:66
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.addeditprops"
+msgid "Add/Edit Properties"
+msgstr "Add/Edit Properties"
+
+#. sitedi.props
+#: site/site-tool/tool/src/bundle/admin.properties:67
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.props"
+msgid "Properties"
+msgstr "Properties"
+
+#. sitedi.revandmodprops
+#: site/site-tool/tool/src/bundle/admin.properties:68
+msgctxt ""
+"site/site-tool/tool/src/bundle/admin.properties:sitedi.revandmodprops"
+msgid ""
+"Review and modify this Site's properties.  Remove a value to remove a "
+"property."
+msgstr ""
+"Review and modify this Site's properties.  Remove a value to remove a "
+"property."
+
+#. pagedi.revandmodprops
+#: site/site-tool/tool/src/bundle/admin.properties:69
+msgctxt ""
+"site/site-tool/tool/src/bundle/admin.properties:pagedi.revandmodprops"
+msgid ""
+"Review and modify this Page's properties.  Remove a value to remove a "
+"property."
+msgstr ""
+"Review and modify this Page's properties.  Remove a value to remove a "
+"property."
+
+#. tooldi.revandmodprops
+#: site/site-tool/tool/src/bundle/admin.properties:70
+msgctxt ""
+"site/site-tool/tool/src/bundle/admin.properties:tooldi.revandmodprops"
+msgid ""
+"Review and modify this Tool's properties.  Remove a value to remove a "
+"property."
+msgstr ""
+"Review and modify this Tool's properties.  Remove a value to remove a "
+"property."
+
+#. sitedi.newprop
+#: site/site-tool/tool/src/bundle/admin.properties:71
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.newprop"
+msgid "New Property"
+msgstr "New Property"
+
+#. sitedi.newpropinst
+#: site/site-tool/tool/src/bundle/admin.properties:72
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.newpropinst"
+msgid ""
+"Enter a new property name and value to add a new one.  Press the New "
+"Property button to add more."
+msgstr ""
+"Enter a new property name and value to add a new one.  Press the New "
+"Property button to add more."
+
+#. sitedi.name
+#: site/site-tool/tool/src/bundle/admin.properties:73
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.name"
+msgid "Name"
+msgstr "Name"
+
+#. sitedi.value
+#: site/site-tool/tool/src/bundle/admin.properties:74
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.value"
+msgid "Value"
+msgstr "Value"
+
+#. sitedipag.alert
+#: site/site-tool/tool/src/bundle/admin.properties:75
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. sitedipag.can
+#: site/site-tool/tool/src/bundle/admin.properties:76
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. sitedipag.comthesit
+#: site/site-tool/tool/src/bundle/admin.properties:77
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.comthesit"
+msgid "Complete the Site Edit"
+msgstr "Complete the Site Edit"
+
+#. sitedipag.conedi
+#: site/site-tool/tool/src/bundle/admin.properties:78
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.conedi"
+msgid "Continue Editing"
+msgstr "Continue Editing"
+
+#. sitedipag.don
+#: site/site-tool/tool/src/bundle/admin.properties:79
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.don"
+msgid "Done"
+msgstr "Done"
+
+#. sitedipag.edisit
+#: site/site-tool/tool/src/bundle/admin.properties:80
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.edisit"
+msgid "Edit: Site"
+msgstr "Edit: Site"
+
+#. sitedipag.lay
+#: site/site-tool/tool/src/bundle/admin.properties:81
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.lay"
+msgid "Layout:"
+msgstr "Layout:"
+
+#. sitedipag.pag
+#: site/site-tool/tool/src/bundle/admin.properties:82
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.pag"
+msgid "Page"
+msgstr "Page"
+
+#. sitedipag.pag2
+#: site/site-tool/tool/src/bundle/admin.properties:83
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.pag2"
+msgid "Page Id:"
+msgstr "Page Id:"
+
+#. sitedipag.pop
+#: site/site-tool/tool/src/bundle/admin.properties:84
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.pop"
+msgid "Popup?"
+msgstr "Popup?"
+
+#. sitedipag.custom
+#: site/site-tool/tool/src/bundle/admin.properties:85
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.custom"
+msgid "Custom Title?"
+msgstr "Custom Title?"
+
+#. sitedipag.revandmod
+#: site/site-tool/tool/src/bundle/admin.properties:86
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.revandmod"
+msgid "Review and modify this Page's information."
+msgstr "Review and modify this Page's information."
+
+#. sitedipag.sav
+#: site/site-tool/tool/src/bundle/admin.properties:87
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.sav"
+msgid "Save"
+msgstr "Save"
+
+#. sitedipag.tit
+#: site/site-tool/tool/src/bundle/admin.properties:88
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.tit"
+msgid "Title:"
+msgstr "Title:"
+
+#. sitedipag.too
+#: site/site-tool/tool/src/bundle/admin.properties:89
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.too"
+msgid "Tools"
+msgstr "Tools"
+
+#. sitedipag.tool.list.summary
+#: site/site-tool/tool/src/bundle/admin.properties:90
+msgctxt ""
+"site/site-tool/tool/src/bundle/admin.properties:sitedipag.tool.list.summary"
+msgid "List of tools in this page."
+msgstr "List of tools in this page."
+
+#. sitedipag.show5
+#: site/site-tool/tool/src/bundle/admin.properties:91
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.show5"
+msgid "show 5 items..."
+msgstr "show 5 items..."
+
+#. sitedipag.show10
+#: site/site-tool/tool/src/bundle/admin.properties:92
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.show10"
+msgid "show 10 items..."
+msgstr "show 10 items..."
+
+#. sitedipag.show20
+#: site/site-tool/tool/src/bundle/admin.properties:93
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.show20"
+msgid "show 20 items..."
+msgstr "show 20 items..."
+
+#. sitedipag.show50
+#: site/site-tool/tool/src/bundle/admin.properties:94
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.show50"
+msgid "show 50 items..."
+msgstr "show 50 items..."
+
+#. sitedipag.show100
+#: site/site-tool/tool/src/bundle/admin.properties:95
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.show100"
+msgid "show 100 items..."
+msgstr "show 100 items..."
+
+#. sitedipag.show200
+#: site/site-tool/tool/src/bundle/admin.properties:96
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.show200"
+msgid "show 200 items...."
+msgstr "show 200 items...."
+
+#. sitedipag.listnavselect
+#: site/site-tool/tool/src/bundle/admin.properties:97
+msgctxt ""
+"site/site-tool/tool/src/bundle/admin.properties:sitedipag.listnavselect"
+msgid "Press alt + up and down arrows to scroll through menu"
+msgstr "Press alt + up and down arrows to scroll through menu"
+
+#. sitedipag.first
+#: site/site-tool/tool/src/bundle/admin.properties:98
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.first"
+msgid "First"
+msgstr "First"
+
+#. sitedipag.previous
+#: site/site-tool/tool/src/bundle/admin.properties:99
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.previous"
+msgid "Previous"
+msgstr "Previous"
+
+#. sitedipag.next
+#: site/site-tool/tool/src/bundle/admin.properties:100
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.next"
+msgid "Next"
+msgstr "Next"
+
+#. sitedipag.last
+#: site/site-tool/tool/src/bundle/admin.properties:101
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.last"
+msgid "Last"
+msgstr "Last"
+
+#. sitedipag.list.viewing
+#: site/site-tool/tool/src/bundle/admin.properties:102
+msgctxt ""
+"site/site-tool/tool/src/bundle/admin.properties:sitedipag.list.viewing"
+msgid "You are viewing {0} - {1} of {2} results. "
+msgstr "You are viewing {0} - {1} of {2} results. "
+
+#. sitedipag.alias.isinval
+#: site/site-tool/tool/src/bundle/admin.properties:103
+msgctxt ""
+"site/site-tool/tool/src/bundle/admin.properties:sitedipag.alias.isinval"
+msgid "Alias {0} is invalid."
+msgstr "Alias {0} is invalid."
+
+#. sitedipag.alias.exists
+#: site/site-tool/tool/src/bundle/admin.properties:104
+msgctxt ""
+"site/site-tool/tool/src/bundle/admin.properties:sitedipag.alias.exists"
+msgid "Alias {0} already exists.\t\t\t"
+msgstr "Alias {0} already exists.\t\t\t"
+
+#. sitedipag.alias.nopermission
+#: site/site-tool/tool/src/bundle/admin.properties:105
+msgctxt ""
+"site/site-tool/tool/src/bundle/admin.properties:sitedipag.alias.nopermission"
+msgid "does not have permission to add alias."
+msgstr "does not have permission to add alias."
+
+#. sitedipag.url_alias
+#: site/site-tool/tool/src/bundle/admin.properties:106
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedipag.url_alias"
+msgid "Site URL Alias"
+msgstr "Site URL Alias"
+
+#. sitedigrp.alert
+#: site/site-tool/tool/src/bundle/admin.properties:107
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. sitedigrp.can
+#: site/site-tool/tool/src/bundle/admin.properties:108
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. sitedigrp.comthesit
+#: site/site-tool/tool/src/bundle/admin.properties:109
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.comthesit"
+msgid "Complete the Site Edit"
+msgstr "Complete the Site Edit"
+
+#. sitedigrp.conedi
+#: site/site-tool/tool/src/bundle/admin.properties:110
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.conedi"
+msgid "Continue Editing"
+msgstr "Continue Editing"
+
+#. sitedigrp.don
+#: site/site-tool/tool/src/bundle/admin.properties:111
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.don"
+msgid "Done"
+msgstr "Done"
+
+#. sitedigrp.edisit
+#: site/site-tool/tool/src/bundle/admin.properties:112
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.edisit"
+msgid "Edit: Site"
+msgstr "Edit: Site"
+
+#. sitedigrp.grp
+#: site/site-tool/tool/src/bundle/admin.properties:113
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.grp"
+msgid "Group"
+msgstr "Group"
+
+#. sitedigrp.grp2
+#: site/site-tool/tool/src/bundle/admin.properties:114
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.grp2"
+msgid "Group Id:"
+msgstr "Group Id:"
+
+#. sitedigrp.revandmod
+#: site/site-tool/tool/src/bundle/admin.properties:115
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.revandmod"
+msgid "Review and modify this Group's information."
+msgstr "Review and modify this Group's information."
+
+#. sitedigrp.sav
+#: site/site-tool/tool/src/bundle/admin.properties:116
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.sav"
+msgid "Save"
+msgstr "Save"
+
+#. sitedigrp.tit
+#: site/site-tool/tool/src/bundle/admin.properties:117
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.tit"
+msgid "Title:"
+msgstr "Title:"
+
+#. sitedigrp.des
+#: site/site-tool/tool/src/bundle/admin.properties:118
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedigrp.des"
+msgid "Description:"
+msgstr "Description:"
+
+#. siteditoo.alert
+#: site/site-tool/tool/src/bundle/admin.properties:119
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. siteditoo.can
+#: site/site-tool/tool/src/bundle/admin.properties:120
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. siteditoo.comthesit
+#: site/site-tool/tool/src/bundle/admin.properties:121
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.comthesit"
+msgid "Complete the Site Edit"
+msgstr "Complete the Site Edit"
+
+#. siteditoo.con
+#: site/site-tool/tool/src/bundle/admin.properties:122
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.con"
+msgid "Configuration"
+msgstr "Configuration"
+
+#. siteditoo.conedi
+#: site/site-tool/tool/src/bundle/admin.properties:123
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.conedi"
+msgid "Continue Editing"
+msgstr "Continue Editing"
+
+#. siteditoo.don
+#: site/site-tool/tool/src/bundle/admin.properties:124
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.don"
+msgid "Done"
+msgstr "Done"
+
+#. siteditoo.edisit
+#: site/site-tool/tool/src/bundle/admin.properties:125
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.edisit"
+msgid "Edit: Site"
+msgstr "Edit: Site"
+
+#. siteditoo.fea
+#: site/site-tool/tool/src/bundle/admin.properties:126
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.fea"
+msgid "Features:"
+msgstr "Features:"
+
+#. siteditoo.lay
+#: site/site-tool/tool/src/bundle/admin.properties:127
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.lay"
+msgid "LayoutHints"
+msgstr "LayoutHints"
+
+#. siteditoo.pag
+#: site/site-tool/tool/src/bundle/admin.properties:128
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.pag"
+msgid "Page"
+msgstr "Page"
+
+#. siteditoo.revandmod
+#: site/site-tool/tool/src/bundle/admin.properties:129
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.revandmod"
+msgid "Review and modify this Tool's information."
+msgstr "Review and modify this Tool's information."
+
+#. siteditoo.rowcol
+#: site/site-tool/tool/src/bundle/admin.properties:130
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.rowcol"
+msgid "(row, col 0 based):"
+msgstr "(row, col 0 based):"
+
+#. siteditoo.sav
+#: site/site-tool/tool/src/bundle/admin.properties:131
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.sav"
+msgid "Save"
+msgstr "Save"
+
+#. siteditoo.tit
+#: site/site-tool/tool/src/bundle/admin.properties:132
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.tit"
+msgid "Title:"
+msgstr "Title:"
+
+#. siteditoo.too
+#: site/site-tool/tool/src/bundle/admin.properties:133
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.too"
+msgid "Tool"
+msgstr "Tool"
+
+#. siteditoo.toocon
+#: site/site-tool/tool/src/bundle/admin.properties:134
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.toocon"
+msgid "Tool Configuration"
+msgstr "Tool Configuration"
+
+#. siteditoo.toofea
+#: site/site-tool/tool/src/bundle/admin.properties:135
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.toofea"
+msgid "Tool Feature"
+msgstr "Tool Feature"
+
+#. siteditoo.tooid
+#: site/site-tool/tool/src/bundle/admin.properties:136
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:siteditoo.tooid"
+msgid "Tool Id:"
+msgstr "Tool Id:"
+
+#. sitlis.alert
+#: site/site-tool/tool/src/bundle/admin.properties:137
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. sitlis.sites
+#: site/site-tool/tool/src/bundle/admin.properties:138
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.sites"
+msgid "Sites"
+msgstr "Sites"
+
+#. sitlis.list.summary
+#: site/site-tool/tool/src/bundle/admin.properties:139
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.list.summary"
+msgid ""
+"List of sites in the sytem. First column: site ID. Second: title. Third: "
+"published status. Fourth: joinable status. Fith: type. Sixth: description, "
+"other info.\t"
+msgstr ""
+"List of sites in the sytem. First column: site ID. Second: title. Third: "
+"published status. Fourth: joinable status. Fith: type. Sixth: description, "
+"other info.\t"
+
+#. sitlis.cre
+#: site/site-tool/tool/src/bundle/admin.properties:140
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.cre"
+msgid "Created:"
+msgstr "Created:"
+
+#. sitlis.des
+#: site/site-tool/tool/src/bundle/admin.properties:141
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.des"
+msgid "Description, URLs"
+msgstr "Description, URLs"
+
+#. sitlis.des2
+#: site/site-tool/tool/src/bundle/admin.properties:142
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.des2"
+msgid "Description:"
+msgstr "Description:"
+
+#. sitlis.ico
+#: site/site-tool/tool/src/bundle/admin.properties:143
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.ico"
+msgid "Icon URL:"
+msgstr "Icon URL:"
+
+#. sitlis.joi
+#: site/site-tool/tool/src/bundle/admin.properties:144
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.joi"
+msgid "Joinable?"
+msgstr "Joinable?"
+
+#. sitlis.joialt
+#: site/site-tool/tool/src/bundle/admin.properties:145
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.joialt"
+msgid "joinable"
+msgstr "joinable"
+
+#. sitlis.nosit
+#: site/site-tool/tool/src/bundle/admin.properties:146
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.nosit"
+msgid "No sites are defined that meet the search criteria."
+msgstr "No sites are defined that meet the search criteria."
+
+#. sitlis.pub
+#: site/site-tool/tool/src/bundle/admin.properties:147
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.pub"
+msgid "Published"
+msgstr "Published"
+
+#. sitlis.shodes
+#: site/site-tool/tool/src/bundle/admin.properties:148
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.shodes"
+msgid "Short Description:"
+msgstr "Short Description:"
+
+#. sitlis.sitid
+#: site/site-tool/tool/src/bundle/admin.properties:149
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.sitid"
+msgid "Site Id"
+msgstr "Site Id"
+
+#. sitlis.sitinf
+#: site/site-tool/tool/src/bundle/admin.properties:150
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.sitinf"
+msgid "Site info URL:"
+msgstr "Site info URL:"
+
+#. sitlis.theare
+#: site/site-tool/tool/src/bundle/admin.properties:151
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.theare"
+msgid ""
+"These are the Sites defined within the system that meet the search criteria."
+"  Click on an Id to edit."
+msgstr ""
+"These are the Sites defined within the system that meet the search criteria."
+"  Click on an Id to edit."
+
+#. sitlis.tit
+#: site/site-tool/tool/src/bundle/admin.properties:152
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.tit"
+msgid "Title"
+msgstr "Title"
+
+#. sitlis.typ
+#: site/site-tool/tool/src/bundle/admin.properties:153
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.typ"
+msgid "Type"
+msgstr "Type"
+
+#. sitlis.uid
+#: site/site-tool/tool/src/bundle/admin.properties:154
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.uid"
+msgid "User ID"
+msgstr "User ID"
+
+#. sitlis.sid
+#: site/site-tool/tool/src/bundle/admin.properties:155
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitlis.sid"
+msgid "Site ID"
+msgstr "Site ID"
+
+#. sitpag.alert
+#: site/site-tool/tool/src/bundle/admin.properties:156
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. sitpag.can
+#: site/site-tool/tool/src/bundle/admin.properties:157
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. sitpag.comthesit
+#: site/site-tool/tool/src/bundle/admin.properties:158
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.comthesit"
+msgid "Complete the Site Edit"
+msgstr "Complete the Site Edit"
+
+#. sitpag.conedi
+#: site/site-tool/tool/src/bundle/admin.properties:159
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.conedi"
+msgid "Continue Editing"
+msgstr "Continue Editing"
+
+#. sitpag.des
+#: site/site-tool/tool/src/bundle/admin.properties:160
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.des"
+msgid "Description"
+msgstr "Description"
+
+#. sitpag.don
+#: site/site-tool/tool/src/bundle/admin.properties:161
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.don"
+msgid "Done"
+msgstr "Done"
+
+#. sitpag.edisit
+#: site/site-tool/tool/src/bundle/admin.properties:162
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.edisit"
+msgid "Edit: Site"
+msgstr "Edit: Site"
+
+#. sitpag.fea
+#: site/site-tool/tool/src/bundle/admin.properties:163
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.fea"
+msgid "Features:"
+msgstr "Features:"
+
+#. sitpag.lay
+#: site/site-tool/tool/src/bundle/admin.properties:164
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.lay"
+msgid "Layout:"
+msgstr "Layout:"
+
+#. sitpag.lisofgro
+#: site/site-tool/tool/src/bundle/admin.properties:165
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.lisofgro"
+msgid ""
+"List of pages in site. First column has links to move them up and down. "
+"Second: Page ID. Third: title. Fourth: description and other info. "
+msgstr ""
+"List of pages in site. First column has links to move them up and down. "
+"Second: Page ID. Third: title. Fourth: description and other info. "
+
+#. sitpag.mopadown
+#: site/site-tool/tool/src/bundle/admin.properties:166
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.mopadown"
+msgid "move page down"
+msgstr "move page down"
+
+#. sitpag.mopaup
+#: site/site-tool/tool/src/bundle/admin.properties:167
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.mopaup"
+msgid "move page up"
+msgstr "move page up"
+
+#. sitpag.nopag
+#: site/site-tool/tool/src/bundle/admin.properties:168
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.nopag"
+msgid "No pages are defined."
+msgstr "No pages are defined."
+
+#. sitpag.pagid
+#: site/site-tool/tool/src/bundle/admin.properties:169
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.pagid"
+msgid "Page Id"
+msgstr "Page Id"
+
+#. sitpag.sav
+#: site/site-tool/tool/src/bundle/admin.properties:170
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.sav"
+msgid "Save"
+msgstr "Save"
+
+#. sitpag.theare
+#: site/site-tool/tool/src/bundle/admin.properties:171
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.theare"
+msgid ""
+"These are the Pages defined in this Site.  Click on one to edit.  Use the up"
+" and down arrows to re-arrange."
+msgstr ""
+"These are the Pages defined in this Site.  Click on one to edit.  Use the up"
+" and down arrows to re-arrange."
+
+#. sitpag.tit
+#: site/site-tool/tool/src/bundle/admin.properties:172
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.tit"
+msgid "Title"
+msgstr "Title"
+
+#. sitgrp.alert
+#: site/site-tool/tool/src/bundle/admin.properties:173
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. sitgrp.can
+#: site/site-tool/tool/src/bundle/admin.properties:174
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. sitgrp.comthesit
+#: site/site-tool/tool/src/bundle/admin.properties:175
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.comthesit"
+msgid "Complete the Site Edit"
+msgstr "Complete the Site Edit"
+
+#. sitgrp.conedi
+#: site/site-tool/tool/src/bundle/admin.properties:176
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.conedi"
+msgid "Continue Editing"
+msgstr "Continue Editing"
+
+#. sitgrp.des
+#: site/site-tool/tool/src/bundle/admin.properties:177
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.des"
+msgid "Description"
+msgstr "Description"
+
+#. sitgrp.don
+#: site/site-tool/tool/src/bundle/admin.properties:178
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.don"
+msgid "Done"
+msgstr "Done"
+
+#. sitgrp.edisit
+#: site/site-tool/tool/src/bundle/admin.properties:179
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.edisit"
+msgid "Edit: Site"
+msgstr "Edit: Site"
+
+#. sitgrp.lisofgrp
+#: site/site-tool/tool/src/bundle/admin.properties:180
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.lisofgrp"
+msgid "List of Groups"
+msgstr "List of Groups"
+
+#. sitgrp.nogrp
+#: site/site-tool/tool/src/bundle/admin.properties:181
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.nogrp"
+msgid "No groups are defined."
+msgstr "No groups are defined."
+
+#. sitgrp.grpid
+#: site/site-tool/tool/src/bundle/admin.properties:182
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.grpid"
+msgid "Group Id"
+msgstr "Group Id"
+
+#. sitgrp.sav
+#: site/site-tool/tool/src/bundle/admin.properties:183
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.sav"
+msgid "Save"
+msgstr "Save"
+
+#. sitgrp.theare
+#: site/site-tool/tool/src/bundle/admin.properties:184
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.theare"
+msgid "These are the Groups defined in this Site.  Click on one to edit."
+msgstr "These are the Groups defined in this Site.  Click on one to edit."
+
+#. sitgrp.tit
+#: site/site-tool/tool/src/bundle/admin.properties:185
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.tit"
+msgid "Title"
+msgstr "Title"
+
+#. sitgrp.plespe
+#: site/site-tool/tool/src/bundle/admin.properties:186
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitgrp.plespe"
+msgid "Please specify the Group title."
+msgstr "Please specify the Group title."
+
+#. sitpag.lay_sngl
+#: site/site-tool/tool/src/bundle/admin.properties:187
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.lay_sngl"
+msgid "Single Column Layout"
+msgstr "Single Column Layout"
+
+#. sitpag.lay_dbl
+#: site/site-tool/tool/src/bundle/admin.properties:188
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitpag.lay_dbl"
+msgid "Double Column Layout"
+msgstr "Double Column Layout"
+
+#. sitsav.alert
+#: site/site-tool/tool/src/bundle/admin.properties:189
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitsav.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. sitsav.can
+#: site/site-tool/tool/src/bundle/admin.properties:190
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitsav.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. sitsav.entnew
+#: site/site-tool/tool/src/bundle/admin.properties:191
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitsav.entnew"
+msgid ""
+"Enter a new site id to create a new site that is a copy of the selected "
+"site.<br/> Note: only the Site definition is copied, not related resources."
+msgstr ""
+"Enter a new site id to create a new site that is a copy of the selected "
+"site.<br/> Note: only the Site definition is copied, not related resources."
+
+#. sitsav.sav
+#: site/site-tool/tool/src/bundle/admin.properties:192
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitsav.sav"
+msgid "Save"
+msgstr "Save"
+
+#. sitsav.savas
+#: site/site-tool/tool/src/bundle/admin.properties:193
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitsav.savas"
+msgid "Save As ..."
+msgstr "Save As ..."
+
+#. sitsav.sit
+#: site/site-tool/tool/src/bundle/admin.properties:194
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitsav.sit"
+msgid "Site"
+msgstr "Site"
+
+#. sitsav.sitid
+#: site/site-tool/tool/src/bundle/admin.properties:195
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitsav.sitid"
+msgid "Site Id:"
+msgstr "Site Id:"
+
+#. sittoo.alert
+#: site/site-tool/tool/src/bundle/admin.properties:196
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. sittoo.can
+#: site/site-tool/tool/src/bundle/admin.properties:197
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. sittoo.comthe
+#: site/site-tool/tool/src/bundle/admin.properties:198
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.comthe"
+msgid "Complete the Site Edit"
+msgstr "Complete the Site Edit"
+
+#. sittoo.con
+#: site/site-tool/tool/src/bundle/admin.properties:199
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.con"
+msgid "Configuration:"
+msgstr "Configuration:"
+
+#. sittoo.conedi
+#: site/site-tool/tool/src/bundle/admin.properties:200
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.conedi"
+msgid "Continue Editing"
+msgstr "Continue Editing"
+
+#. sittoo.des
+#: site/site-tool/tool/src/bundle/admin.properties:201
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.des"
+msgid "Description:"
+msgstr "Description:"
+
+#. sittoo.don
+#: site/site-tool/tool/src/bundle/admin.properties:202
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.don"
+msgid "Done"
+msgstr "Done"
+
+#. sittoo.edisit
+#: site/site-tool/tool/src/bundle/admin.properties:203
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.edisit"
+msgid "Edit: Site"
+msgstr "Edit: Site"
+
+#. sittoo.fea
+#: site/site-tool/tool/src/bundle/admin.properties:204
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.fea"
+msgid "Features"
+msgstr "Features"
+
+#. sittoo.lay
+#: site/site-tool/tool/src/bundle/admin.properties:205
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.lay"
+msgid "Layout Hints:"
+msgstr "Layout Hints:"
+
+#. sittoo.pag
+#: site/site-tool/tool/src/bundle/admin.properties:206
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.pag"
+msgid "Page"
+msgstr "Page"
+
+#. sittoo.sav
+#: site/site-tool/tool/src/bundle/admin.properties:207
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.sav"
+msgid "Save"
+msgstr "Save"
+
+#. sittoo.theare
+#: site/site-tool/tool/src/bundle/admin.properties:208
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.theare"
+msgid ""
+"These are the Tools defined in this Page.  Click on one to edit.  Use the up"
+" and down arrows to re-arrange."
+msgstr ""
+"These are the Tools defined in this Page.  Click on one to edit.  Use the up"
+" and down arrows to re-arrange."
+
+#. sittoo.theareno
+#: site/site-tool/tool/src/bundle/admin.properties:209
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.theareno"
+msgid ""
+"There are no tools defined in this page. Click the 'New Tool' button to add "
+"a tool."
+msgstr ""
+"There are no tools defined in this page. Click the 'New Tool' button to add "
+"a tool."
+
+#. sittoo.tit
+#: site/site-tool/tool/src/bundle/admin.properties:210
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.tit"
+msgid "Title:"
+msgstr "Title:"
+
+#. sittoo.tooid
+#: site/site-tool/tool/src/bundle/admin.properties:211
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.tooid"
+msgid "Tool Id"
+msgstr "Tool Id"
+
+#. sittoo.motoup
+#: site/site-tool/tool/src/bundle/admin.properties:212
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.motoup"
+msgid "move tool up"
+msgstr "move tool up"
+
+#. sittoo.motodown
+#: site/site-tool/tool/src/bundle/admin.properties:213
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sittoo.motodown"
+msgid "move tool down"
+msgstr "move tool down"
+
+#. sites.noaccess
+#: site/site-tool/tool/src/bundle/admin.properties:214
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sites.noaccess"
+msgid "You do not have permission to use this tool."
+msgstr "You do not have permission to use this tool."
+
+#. sitedi.addeditpages
+#: site/site-tool/tool/src/bundle/admin.properties:215
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.addeditpages"
+msgid "Add/Edit pages"
+msgstr "Add/Edit pages"
+
+#. sitedi.addeditgroups
+#: site/site-tool/tool/src/bundle/admin.properties:216
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.addeditgroups"
+msgid "Add/Edit groups"
+msgstr "Add/Edit groups"
+
+#. term
+#: site/site-tool/tool/src/bundle/admin.properties:217
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:term"
+msgid "term"
+msgstr "term"
+
+#. sitedi.custom
+#: site/site-tool/tool/src/bundle/admin.properties:218
+msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.custom"
+msgid "Custom Page Order?:"
+msgstr "Custom Page Order?:"

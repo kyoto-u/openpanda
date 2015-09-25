@@ -1,0 +1,134 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-21 13:56+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. na
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:1
+msgctxt "taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:na"
+msgid "NA"
+msgstr "ー"
+
+#. column_exportable
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:2
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_exportable"
+msgid "Exportable"
+msgstr "エクスポート可能"
+
+#. column_criteria
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:3
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_criteria"
+msgid "Criteria"
+msgstr "基準"
+
+#. column_parent
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:4
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_parent"
+msgid "Parent"
+msgstr "親"
+
+#. column_rationale
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:5
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_rationale"
+msgid "Rationale"
+msgstr "論拠:"
+
+#. column_rubric
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:6
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_rubric"
+msgid "Rubric"
+msgstr "評価基準"
+
+#. column_visible
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:7
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_visible"
+msgid "Visible"
+msgstr "表示"
+
+#. column_worksite
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:8
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_worksite"
+msgid "Worksite"
+msgstr "ワークサイト"
+
+#. column_exportable_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:9
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_exportable_desc"
+msgid "Sort by exportable"
+msgstr "エクスポートの可否でソート"
+
+#. column_criteria_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:10
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_criteria_desc"
+msgid "Sort by criteria"
+msgstr "基準でソート"
+
+#. column_parent_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:11
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_parent_desc"
+msgid "Sort by parent"
+msgstr "親でソート"
+
+#. column_rationale_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:12
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_rationale_desc"
+msgid "Sort by rationale"
+msgstr "論拠でソート"
+
+#. column_rubric_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:13
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_rubric_desc"
+msgid "Sort by rubric"
+msgstr "ルーブリックでソート"
+
+#. column_visible_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:14
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_visible_desc"
+msgid "Sort by visibility"
+msgstr "閲覧可能性でソート"
+
+#. column_worksite_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:15
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_worksite_desc"
+msgid "Sort by worksite"
+msgstr "ワークサイトでソート"
