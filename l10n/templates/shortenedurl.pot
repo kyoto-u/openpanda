@@ -1,0 +1,38 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. url
+#: shortenedurl/impl/src/java/url.properties:1
+msgctxt "shortenedurl/impl/src/java/url.properties:url"
+msgid ""
+"An entity provider to allow shortening of URLs via the ShortenedUrlService"
+msgstr ""
+"An entity provider to allow shortening of URLs via the ShortenedUrlService"
+
+#. url.action.shorten
+#: shortenedurl/impl/src/java/url.properties:2
+msgctxt "shortenedurl/impl/src/java/url.properties:url.action.shorten"
+msgid ""
+"Shorten a given URL using the configured implementation. The URL should be "
+"passed in via the 'path' URL parameter and should be URL encoded. If you "
+"want to use the 'secure' method (RandomisedUrlService only), also pass it as"
+" a URL parameter and use true|false as the value. Note that by default, for "
+"security reasons, external URLs cannot be shortened. If you want to allow "
+"this, set shortenedurl.external.enabled=true in sakai.properties."
+msgstr ""
+"Shorten a given URL using the configured implementation. The URL should be "
+"passed in via the 'path' URL parameter and should be URL encoded. If you "
+"want to use the 'secure' method (RandomisedUrlService only), also pass it as"
+" a URL parameter and use true|false as the value. Note that by default, for "
+"security reasons, external URLs cannot be shortened. If you want to allow "
+"this, set shortenedurl.external.enabled=true in sakai.properties."

@@ -1,0 +1,461 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. navbar_overview
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:1
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_overview"
+msgid "Overview"
+msgstr "Overview"
+
+#. navbar_overview_tooltip
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:2
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_overview_tooltip"
+msgid "Overview of site members"
+msgstr "Overview of site members"
+
+#. navbar_pics
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:3
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_pics"
+msgid "Pictures"
+msgstr "Pictures"
+
+#. navbar_pics_tooltip
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:4
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_pics_tooltip"
+msgid "View site members with pictures"
+msgstr "View site members with pictures"
+
+#. navbar_group_membership
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:5
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_group_membership"
+msgid "Group Membership"
+msgstr "Group Membership"
+
+#. navbar_group_membership_tooltip
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:6
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_group_membership_tooltip"
+msgid "View site members organized by group"
+msgstr "View site members organized by group"
+
+#. navbar_status
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:7
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_status"
+msgid "Enrollment Status"
+msgstr "Enrollment Status"
+
+#. navbar_status_tooltip
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:8
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_status_tooltip"
+msgid "View site members organized by enrollment status"
+msgstr "View site members organized by enrollment status"
+
+#. navbar_permissions
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:9
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_permissions"
+msgid "Permissions"
+msgstr "Permissions"
+
+#. navbar_permissions_tooltip
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:10
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:navbar_permissions_tooltip"
+msgid "View and edit user permissions for this site"
+msgstr "View and edit user permissions for this site"
+
+#. title_overview
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:11
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:title_overview"
+msgid "Overview"
+msgstr "Overview"
+
+#. title_pictures
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:12
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:title_pictures"
+msgid "Pictures"
+msgstr "Pictures"
+
+#. title_group_membership
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:13
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:title_group_membership"
+msgid "Group Membership"
+msgstr "Group Membership"
+
+#. title_status
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:14
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:title_status"
+msgid "Enrollment Status"
+msgstr "Enrollment Status"
+
+#. title_permissions
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:15
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:title_permissions"
+msgid "Role Permissions"
+msgstr "Role Permissions"
+
+#. roster_search_text
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:16
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_search_text"
+msgid "Name or ID"
+msgstr "Name or ID"
+
+#. roster_search_button
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:17
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_search_button"
+msgid "Find"
+msgstr "Find"
+
+#. roster_clear_button
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:18
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_clear_button"
+msgid "Clear"
+msgstr "Clear"
+
+#. roster_sections_all
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:19
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_sections_all"
+msgid "All Available"
+msgstr "All Available"
+
+#. roster_section_sep_line
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:20
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_section_sep_line"
+msgid "---------------------"
+msgstr "---------------------"
+
+#. roster_group_ungrouped
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:21
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_group_ungrouped"
+msgid "Ungrouped"
+msgstr "Ungrouped"
+
+#. roster_group_bygroup
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:22
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_group_bygroup"
+msgid "By Group"
+msgstr "By Group"
+
+#. roster_group_unassigned
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:23
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_group_unassigned"
+msgid "Unassigned"
+msgstr "Unassigned"
+
+#. roster_enrollment_status_all
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:24
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_enrollment_status_all"
+msgid "All"
+msgstr "All"
+
+#. currently_displaying_participants
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:25
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:currently_displaying_participants"
+msgid "Currently showing {0} participants"
+msgstr "Currently showing {0} participants"
+
+#. currently_displaying_participant
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:26
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:currently_displaying_participant"
+msgid "Currently showing {0} participant"
+msgstr "Currently showing {0} participant"
+
+#. role_breakdown_fragment
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:27
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:role_breakdown_fragment"
+msgid "{0} in {1} role"
+msgstr "{0} in {1} role"
+
+#. enrollments_currently_displaying
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:28
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:enrollments_currently_displaying"
+msgid "Currently showing {0} {1} students"
+msgstr "Currently showing {0} {1} students"
+
+#. section_filter_pre
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:29
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:section_filter_pre"
+msgid "View"
+msgstr "View"
+
+#. section_filter_post
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:30
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:section_filter_post"
+msgid "Participants"
+msgstr "Participants"
+
+#. enrollment_status_filter
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:31
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:enrollment_status_filter"
+msgid "View students in"
+msgstr "View students in"
+
+#. enrollment_status_filter_label
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:32
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:enrollment_status_filter_label"
+msgid "Enrollment Status"
+msgstr "Enrollment Status"
+
+#. view_table
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:33
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:view_table"
+msgid "View in Table"
+msgstr "View in Table"
+
+#. view_single
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:34
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:view_single"
+msgid "View in Single Column"
+msgstr "View in Single Column"
+
+#. print_roster
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:35
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:print_roster"
+msgid "Print"
+msgstr "Print"
+
+#. export_roster
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:36
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:export_roster"
+msgid "Export"
+msgstr "Export"
+
+#. roster_show_names
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:37
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_show_names"
+msgid "Show Names"
+msgstr "Show Names"
+
+#. roster_hide_names
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:38
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_hide_names"
+msgid "Hide Names"
+msgstr "Hide Names"
+
+#. roster_show_official_pictures
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:39
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_show_official_pictures"
+msgid "Official Photos"
+msgstr "Official Photos"
+
+#. roster_show_profile_pictures
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:40
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_show_profile_pictures"
+msgid "Pictures from Profile"
+msgstr "Pictures from Profile"
+
+#. show_profile
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:41
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:show_profile"
+msgid "View Profile for this participant"
+msgstr "View Profile for this participant"
+
+#. profile_connection_accept
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:42
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:profile_connection_accept"
+msgid "Accept connection"
+msgstr "Accept connection"
+
+#. profile_connection_add
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:43
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:profile_connection_add"
+msgid "Add connection"
+msgstr "Add connection"
+
+#. profile_connection_remove
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:44
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:profile_connection_remove"
+msgid "Remove connection"
+msgstr "Remove connection"
+
+#. profile_connection_requested
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:45
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:profile_connection_requested"
+msgid "Connection requested"
+msgstr "Connection requested"
+
+#. profile_connection_self
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:46
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:profile_connection_self"
+msgid "This is you!"
+msgstr "This is you!"
+
+#. profile_email
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:47
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:profile_email"
+msgid "Email"
+msgstr "Email"
+
+#. profile_picture_alt
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:48
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:profile_picture_alt"
+msgid "Photo of"
+msgstr "Photo of"
+
+#. facet_name
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:49
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:facet_name"
+msgid "Name"
+msgstr "Name"
+
+#. facet_userId
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:50
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:facet_userId"
+msgid "User ID"
+msgstr "User ID"
+
+#. facet_email
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:51
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:facet_email"
+msgid "Email Address"
+msgstr "Email Address"
+
+#. facet_role
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:52
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:facet_role"
+msgid "Role"
+msgstr "Role"
+
+#. facet_status
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:53
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:facet_status"
+msgid "Status"
+msgstr "Status"
+
+#. facet_credits
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:54
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:facet_credits"
+msgid "Credits"
+msgstr "Credits"
+
+#. facet_groups
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:55
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:facet_groups"
+msgid "Groups"
+msgstr "Groups"
+
+#. title_msg
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:56
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:title_msg"
+msgid "To add or remove participants from the site, visit the Site Info tool."
+msgstr ""
+"To add or remove participants from the site, visit the Site Info tool."
+
+#. title_msg_groups
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:57
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:title_msg_groups"
+msgid "To add or remove participants from groups, visit the Site Info tool."
+msgstr "To add or remove participants from groups, visit the Site Info tool."
+
+#. title_msg_permissions
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:58
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:title_msg_permissions"
+msgid "Define permissions for the roles in the current site."
+msgstr "Define permissions for the roles in the current site."
+
+#. no_participants
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:59
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:no_participants"
+msgid "No results found"
+msgstr "No results found"
+
+#. no_participants_msg
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:60
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:no_participants_msg"
+msgid "No results found for \"{0}\""
+msgstr "No results found for \"{0}\""
+
+#. no_permission_msg
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:61
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:no_permission_msg"
+msgid "You do not have permission to view the Roster."
+msgstr "You do not have permission to view the Roster."
+
+#. roster_permissions_role
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:62
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_permissions_role"
+msgid "Role"
+msgstr "Role"
+
+#. roster_save_button
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:63
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_save_button"
+msgid "Save"
+msgstr "Save"
+
+#. roster_cancel_button
+#: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:64
+msgctxt ""
+"roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:roster_cancel_button"
+msgid "Cancel"
+msgstr "Cancel"

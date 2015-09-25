@@ -1,0 +1,87 @@
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-04 17:33+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. options
+#: velocity/tool/src/bundle/velocity-tool.properties:1
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:options"
+msgid "Options"
+msgstr "オプション"
+
+#. ref.autoref
+#: velocity/tool/src/bundle/velocity-tool.properties:2
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:ref.autoref"
+msgid "Auto Refresh"
+msgstr "自動更新"
+
+#. ref.manref
+#: velocity/tool/src/bundle/velocity-tool.properties:3
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:ref.manref"
+msgid "Manual Refresh"
+msgstr "手動更新"
+
+#. ref.refresh
+#: velocity/tool/src/bundle/velocity-tool.properties:4
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:ref.refresh"
+msgid "Refresh"
+msgstr "更新"
+
+#. sea.cleasea
+#: velocity/tool/src/bundle/velocity-tool.properties:5
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:sea.cleasea"
+msgid "Clear Search"
+msgstr "検索をクリア"
+
+#. sea.sea
+#: velocity/tool/src/bundle/velocity-tool.properties:6
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:sea.sea"
+msgid "Search"
+msgstr "検索"
+
+#. viepag.next
+#: velocity/tool/src/bundle/velocity-tool.properties:7
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:viepag.next"
+msgid "Next"
+msgstr "次"
+
+#. viepag.prev
+#: velocity/tool/src/bundle/velocity-tool.properties:8
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:viepag.prev"
+msgid "Previous"
+msgstr "前"
+
+#. lispag.first
+#: velocity/tool/src/bundle/velocity-tool.properties:9
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:lispag.first"
+msgid "First Page"
+msgstr "最初のページ"
+
+#. lispag.prev
+#: velocity/tool/src/bundle/velocity-tool.properties:10
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:lispag.prev"
+msgid "Previous Page"
+msgstr "前ページ"
+
+#. lispag.next
+#: velocity/tool/src/bundle/velocity-tool.properties:11
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:lispag.next"
+msgid "Next Page"
+msgstr "次ページ"
+
+#. lispag.last
+#: velocity/tool/src/bundle/velocity-tool.properties:12
+msgctxt "velocity/tool/src/bundle/velocity-tool.properties:lispag.last"
+msgid "Last Page"
+msgstr "最後のページ"

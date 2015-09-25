@@ -1,0 +1,403 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-17 09:53+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. tool_title
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:1
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:tool_title"
+msgid "User Membership"
+msgstr "ユーザメンバシップ"
+
+#. title_userlist
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:2
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:title_userlist"
+msgid "Users"
+msgstr "ユーザ"
+
+#. title_sitelist
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:3
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:title_sitelist"
+msgid "Membership"
+msgstr "メンバシップ"
+
+#. refresh
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:4
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:refresh"
+msgid "refresh"
+msgstr "リフレッシュ"
+
+#. help
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:5
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:help"
+msgid "help"
+msgstr "ヘルプ"
+
+#. bar_input_search
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:6
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:bar_input_search"
+msgid "Keyword: "
+msgstr "キーワード: "
+
+#. bar_input_search_inst
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:7
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:bar_input_search_inst"
+msgid "User name, ID or email"
+msgstr "ユーザ名，ID またはメール"
+
+#. bar_input_search_title
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:8
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:bar_input_search_title"
+msgid "Enter User Name, ID or Email Address to Search For."
+msgstr "検索したいユーザ名，ID またはメールアドレスを入力します．"
+
+#. bar_search
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:9
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:bar_search"
+msgid "Search"
+msgstr "検索"
+
+#. bar_clear_search
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:10
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:bar_clear_search"
+msgid "Clear search"
+msgstr "検索をクリア"
+
+#. instructions_userlist
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:11
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:instructions_userlist"
+msgid ""
+"Select a user from the search results to get site and group membership."
+msgstr "サイトまたはグループのメンバシップを取得する場合は検索結果からユーザを選択します．"
+
+#. instructions_sitelist
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:12
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:instructions_sitelist"
+msgid "Site and group membership for selected user."
+msgstr "選択されたユーザに対するサイトまたはグループのメンバシップです．"
+
+#. unauthorized
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:13
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:unauthorized"
+msgid ""
+"You are not authorized to use this tool. This incident will be reported."
+msgstr "このツールを使用する権限がありません．この問題は報告されます．"
+
+#. processing
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:14
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:processing"
+msgid "Processing user memberships..."
+msgstr "ユーザメンバシップを処理しています..."
+
+#. no_enrollments
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:15
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:no_enrollments"
+msgid "No users to display"
+msgstr "表示するユーザがいません"
+
+#. no_sitelist
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:16
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:no_sitelist"
+msgid "No sites to display"
+msgstr "表示するサイトがありません"
+
+#. users
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:17
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:users"
+msgid "users"
+msgstr "ユーザ"
+
+#. user_id
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:18
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_id"
+msgid "User ID"
+msgstr "ユーザ ID"
+
+#. internal_user_id
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:19
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:internal_user_id"
+msgid "Internal User ID"
+msgstr "内部ユーザ ID"
+
+#. user_name
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:20
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_name"
+msgid "Name"
+msgstr "名前"
+
+#. user_email
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:21
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_email"
+msgid "Email"
+msgstr "メール"
+
+#. user_type
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:22
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_type"
+msgid "Type"
+msgstr "種別"
+
+#. user_authority
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:23
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_authority"
+msgid "Authority"
+msgstr "認証源"
+
+#. user_status
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:24
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_status"
+msgid "status"
+msgstr "状態"
+
+#. user_created_on
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:25
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_created_on"
+msgid "Created On"
+msgstr "作成されたサイト:"
+
+#. user_modified_on
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:26
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_modified_on"
+msgid "Modified On"
+msgstr "修正されたサイト:"
+
+#. site_name
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:27
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:site_name"
+msgid "Site"
+msgstr "サイト"
+
+#. site_id
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:28
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:site_id"
+msgid "Site ID"
+msgstr "サイト ID"
+
+#. groups
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:29
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:groups"
+msgid "Groups"
+msgstr "グループ"
+
+#. site_type
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:30
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:site_type"
+msgid "Type"
+msgstr "種別"
+
+#. role_name
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:31
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:role_name"
+msgid "Role"
+msgstr "ロール"
+
+#. status
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:32
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:status"
+msgid "Site status"
+msgstr "サイト状態"
+
+#. status_published
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:33
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:status_published"
+msgid "Published"
+msgstr "公開済み"
+
+#. status_unpublished
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:34
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:status_unpublished"
+msgid "Unpublished"
+msgstr "未公開"
+
+#. site_user_status
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:35
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:site_user_status"
+msgid "User status"
+msgstr "ユーザ状態"
+
+#. site_user_status_active
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:36
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:site_user_status_active"
+msgid "Active"
+msgstr "アクティブ"
+
+#. site_user_status_inactive
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:37
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:site_user_status_inactive"
+msgid "Inactive"
+msgstr "非アクティブ"
+
+#. site_term
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:38
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:site_term"
+msgid "Term"
+msgstr "学期"
+
+#. userinfoheader
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:39
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:userinfoheader"
+msgid "Basic information:"
+msgstr "基本情報:"
+
+#. no_such_user
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:40
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:no_such_user"
+msgid "User does not exist"
+msgstr "ユーザが存在しません"
+
+#. return_to_portal
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:41
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:return_to_portal"
+msgid "Return to portal"
+msgstr "ポータルに戻る"
+
+#. membership_button
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:42
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:membership_button"
+msgid "Membership"
+msgstr "メンバシップ"
+
+#. back_button
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:43
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:back_button"
+msgid "Back to user list"
+msgstr "ユーザ一覧に戻る"
+
+#. export_csv_button
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:44
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:export_csv_button"
+msgid "Export CSV"
+msgstr "CSV をエクスポート"
+
+#. export_excel_button
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:45
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:export_excel_button"
+msgid "Export Excel"
+msgstr "Excel をエクスポート"
+
+#. export_filename_date_format
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:46
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:export_filename_date_format"
+msgid "yyyyMMdd"
+msgstr "yyyyMMdd"
+
+#. combo_user_type
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:47
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:combo_user_type"
+msgid "User Type: "
+msgstr "ユーザ種別: "
+
+#. combo_user_type_title
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:48
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:combo_user_type_title"
+msgid "Select user type to filter by."
+msgstr "フィルタするユーザ種別を選択します．"
+
+#. combo_user_ext
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:49
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:combo_user_ext"
+msgid "User Authority: "
+msgstr "ユーザ認証源: "
+
+#. combo_user_ext_title
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:50
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:combo_user_ext_title"
+msgid "Select user authority to filter by."
+msgstr "フィルタするユーザ権限を選択します．"
+
+#. user_type_all
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:51
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_type_all"
+msgid "All"
+msgstr "すべてのセクション"
+
+#. user_type_none
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:52
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_type_none"
+msgid "(no type)"
+msgstr "(タイプなし)"
+
+#. user_auth_all
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:53
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_auth_all"
+msgid "All"
+msgstr "すべてのセクション"
+
+#. user_auth_internal
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:54
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_auth_internal"
+msgid "Internal"
+msgstr "内部"
+
+#. user_auth_external
+#: usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:55
+msgctxt ""
+"usermembership/tool/src/bundle/org/sakaiproject/umem/tool/bundle/Messages.properties:user_auth_external"
+msgid "External"
+msgstr "外部"

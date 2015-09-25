@@ -1,0 +1,1638 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. portal-chat
+#: portal/portal-chat/tool/src/java/portal-chat.properties:1
+msgctxt "portal/portal-chat/tool/src/java/portal-chat.properties:portal-chat"
+msgid "Presents an HTTP interface onto Sakai's portal chat system."
+msgstr "Presents an HTTP interface onto Sakai's portal chat system."
+
+#. portal-chat.view.new
+#: portal/portal-chat/tool/src/java/portal-chat.properties:2
+msgctxt ""
+"portal/portal-chat/tool/src/java/portal-chat.properties:portal-chat.view.new"
+msgid ""
+"The URL format is \"/direct/portal-chat/new\" <br/> Send a message to "
+"another user. Takes two parameters, 'to' (a Sakai user id) and 'message'."
+msgstr ""
+"The URL format is \"/direct/portal-chat/new\" <br/> Send a message to "
+"another user. Takes two parameters, 'to' (a Sakai user id) and 'message'."
+
+#. portal-chat.action.latestData
+#: portal/portal-chat/tool/src/java/portal-chat.properties:3
+msgctxt ""
+"portal/portal-chat/tool/src/java/portal-chat.properties:portal-"
+"chat.action.latestData"
+msgid ""
+"The URL format is \"/direct/portal-"
+"chat/ANYTHING/latestData.json?online=true&siteId=SITEID\". <br/> Grabs all "
+"the latest data for the currently logged in user. This operation will also "
+"optionally set the heartbeat for the current user.<br/> If you don't want to"
+" show up in chattable lists, pass false for online and you'll be hidden from"
+" others. The latestData operation retrieves your connections <br /> , your "
+"messages, and, if you specify a siteId parameter, the list of users "
+"currently in that site."
+msgstr ""
+"The URL format is \"/direct/portal-"
+"chat/ANYTHING/latestData.json?online=true&siteId=SITEID\". <br/> Grabs all "
+"the latest data for the currently logged in user. This operation will also "
+"optionally set the heartbeat for the current user.<br/> If you don't want to"
+" show up in chattable lists, pass false for online and you'll be hidden from"
+" others. The latestData operation retrieves your connections <br /> , your "
+"messages, and, if you specify a siteId parameter, the list of users "
+"currently in that site."
+
+#. portal-chat.action.ping
+#: portal/portal-chat/tool/src/java/portal-chat.properties:4
+msgctxt ""
+"portal/portal-chat/tool/src/java/portal-chat.properties:portal-"
+"chat.action.ping"
+msgid ""
+"The URL format is \"/direct/portal-chat/USERTOPING/ping\" where USERTOPING "
+"is a Sakai user id. <br/> Returns the string \"success\" if an email is "
+"successfully sent to the user."
+msgstr ""
+"The URL format is \"/direct/portal-chat/USERTOPING/ping\" where USERTOPING "
+"is a Sakai user id. <br/> Returns the string \"success\" if an email is "
+"successfully sent to the user."
+
+#. log.email
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:1
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:log.email"
+msgid "email"
+msgstr "email"
+
+#. log.log
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:2
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:log.log"
+msgid "Log in"
+msgstr "Log in"
+
+#. log.login
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:3
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:log.login"
+msgid "Login"
+msgstr "Login"
+
+#. log.xlogin
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:4
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:log.xlogin"
+msgid "Guest Login"
+msgstr "Guest Login"
+
+#. log.pass
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:5
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:log.pass"
+msgid "password:"
+msgstr "password:"
+
+#. log.ple
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:6
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:log.ple"
+msgid "Please Login"
+msgstr "Please Login"
+
+#. log.userid
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:7
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:log.userid"
+msgid "user id:"
+msgstr "user id:"
+
+#. sit_log
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:8
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_log"
+msgid "Logout"
+msgstr "Logout"
+
+#. sit_more
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:9
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_more"
+msgid "More Sites"
+msgstr "More Sites"
+
+#. sit_more_tab
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:10
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_more_tab"
+msgid "My Active Sites"
+msgstr "My Active Sites"
+
+#. sit_notermkey
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:11
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_notermkey"
+msgid "Courses: No Term"
+msgstr "Courses: No Term"
+
+#. sit_moretab_inst
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:12
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_moretab_inst"
+msgid ""
+"<em>Hidden Sites</em> are not included in this menu. Access them in My "
+"Workspace -&gt; Worksite Setup.<br /> To hide a site, go to My Workspace -> "
+"Preferences -> Customize Tabs."
+msgstr ""
+"<em>Hidden Sites</em> are not included in this menu. Access them in My "
+"Workspace -&gt; Worksite Setup.<br /> To hide a site, go to My Workspace -> "
+"Preferences -> Customize Tabs."
+
+#. sit_selectmessage
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:13
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_selectmessage"
+msgid ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+msgstr ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+
+#. sit_mywor
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:14
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_mywor"
+msgid "My Workspace"
+msgstr "My Workspace"
+
+#. sit_worksite
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:15
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_worksite"
+msgid "site"
+msgstr "site"
+
+#. sit_worksites
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:16
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_worksites"
+msgid "Sites"
+msgstr "Sites"
+
+#. sit_accessibility
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:17
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_accessibility"
+msgid "go to accessibility information page"
+msgstr "go to accessibility information page"
+
+#. sit_jumpcontent
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:18
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_jumpcontent"
+msgid "jump to content"
+msgstr "jump to content"
+
+#. sit_jumptools
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:19
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_jumptools"
+msgid "jump to tools list"
+msgstr "jump to tools list"
+
+#. sit_jumpworksite
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:20
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_jumpworksite"
+msgid "jump to site list"
+msgstr "jump to site list"
+
+#. sit_jumpdrawer
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:21
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_jumpdrawer"
+msgid "open drawer"
+msgstr "open drawer"
+
+#. sit_worksiteshead
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:22
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_worksiteshead"
+msgid "Sites list begins here"
+msgstr "Sites list begins here"
+
+#. sit_toolshead
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:23
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_toolshead"
+msgid "Tools list begins here"
+msgstr "Tools list begins here"
+
+#. sit_contentshead
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:24
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_contentshead"
+msgid "Content begins here"
+msgstr "Content begins here"
+
+#. sit_presencehead
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:25
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_presencehead"
+msgid "Users present begins here"
+msgstr "Users present begins here"
+
+#. sit_contentporttit
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:26
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_contentporttit"
+msgid "Content"
+msgstr "Content"
+
+#. sit_presencetitle
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:27
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_presencetitle"
+msgid "Users present:"
+msgstr "Users present:"
+
+#. sit_presenceiframetit
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:28
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_presenceiframetit"
+msgid "Users Present in Site"
+msgstr "Users Present in Site"
+
+#. site_newwindow
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:29
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:site_newwindow"
+msgid "Opens in a new window"
+msgstr "Opens in a new window"
+
+#. sit_switch_mobile
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:30
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_switch_mobile"
+msgid "Switch to mobile"
+msgstr "Switch to mobile"
+
+#. sit_toggle_nav
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:31
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_toggle_nav"
+msgid "Expand/collapse tool navigation"
+msgstr "Expand/collapse tool navigation"
+
+#. sit_toggle_nav_exp
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:32
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_toggle_nav_exp"
+msgid "Expand tool navigation"
+msgstr "Expand tool navigation"
+
+#. sit_toggle_nav_min
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:33
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_toggle_nav_min"
+msgid "Minimize tool navigation"
+msgstr "Minimize tool navigation"
+
+#. sit_help
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:34
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_help"
+msgid "Help"
+msgstr "Help"
+
+#. sit_helpfor
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:35
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_helpfor"
+msgid "Help for {0}"
+msgstr "Help for {0}"
+
+#. sit_edit
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:36
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_edit"
+msgid "Edit"
+msgstr "Edit"
+
+#. sit_reset
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:37
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_reset"
+msgid "Reset"
+msgstr "Reset"
+
+#. sit_unpublished
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:38
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_unpublished"
+msgid "Unpublished Site"
+msgstr "Unpublished Site"
+
+#. sit_publish_now
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:39
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_publish_now"
+msgid "(Publish Now)"
+msgstr "(Publish Now)"
+
+#. sit_addmoretools
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:40
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_addmoretools"
+msgid "Add Tool"
+msgstr "Add Tool"
+
+#. sit_allsites
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:41
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_allsites"
+msgid "View All Sites"
+msgstr "View All Sites"
+
+#. sit_alltools
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:42
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_alltools"
+msgid "Go to the site to view all"
+msgstr "Go to the site to view all"
+
+#. sit_newsite
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:43
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_newsite"
+msgid "+ Add New Site"
+msgstr "+ Add New Site"
+
+#. sit_tutorial
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:44
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_tutorial"
+msgid "Tutorial"
+msgstr "Tutorial"
+
+#. sit_profile
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:45
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_profile"
+msgid "Profile"
+msgstr "Profile"
+
+#. sit_preferences
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:46
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_preferences"
+msgid "Preferences"
+msgstr "Preferences"
+
+#. sit_search
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:47
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_search"
+msgid "Search sites in this drawer"
+msgstr "Search sites in this drawer"
+
+#. sit_search_cancel
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:48
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_search_cancel"
+msgid "Cancel Search"
+msgstr "Cancel Search"
+
+#. sit_search_none
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:49
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_search_none"
+msgid "No search results found"
+msgstr "No search results found"
+
+#. sit_drawer
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:50
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:sit_drawer"
+msgid "Sites in drawer"
+msgstr "Sites in drawer"
+
+#. sit_othersitesclose
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:51
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_othersitesclose"
+msgid "Close this drawer"
+msgstr "Close this drawer"
+
+#. sit_noscript_message
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:52
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:sit_noscript_message"
+msgid ""
+"Sakai works much better when JavaScript is enabled. Please enable JavaScript"
+" in your Browser."
+msgstr ""
+"Sakai works much better when JavaScript is enabled. Please enable JavaScript"
+" in your Browser."
+
+#. rs_enterRoleSwap
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:53
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:rs_enterRoleSwap"
+msgid "Enter"
+msgstr "Enter"
+
+#. rs_exitRoleSwap
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:54
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:rs_exitRoleSwap"
+msgid "Exit"
+msgstr "Exit"
+
+#. rs_view
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:55
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:rs_view"
+msgid "View"
+msgstr "View"
+
+#. rs_viewSiteAs
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:56
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:rs_viewSiteAs"
+msgid "View Site As:"
+msgstr "View Site As:"
+
+#. rs_selectRole
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:57
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:rs_selectRole"
+msgid "- Select Role -"
+msgstr "- Select Role -"
+
+#. bread_separator
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:58
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:bread_separator"
+msgid ">"
+msgstr ">"
+
+#. moresite_projects
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:59
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:moresite_projects"
+msgid "PROJECTS"
+msgstr "PROJECTS"
+
+#. moresite_portfolios
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:60
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:moresite_portfolios"
+msgid "PORTFOLIOS"
+msgstr "PORTFOLIOS"
+
+#. moresite_administration
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:61
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:moresite_administration"
+msgid "ADMINISTRATION"
+msgstr "ADMINISTRATION"
+
+#. moresite_other
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:62
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:moresite_other"
+msgid "OTHER"
+msgstr "OTHER"
+
+#. moresite_unknown_term
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:63
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:moresite_unknown_term"
+msgid "(unknown academic term)"
+msgstr "(unknown academic term)"
+
+#. timeout_dialog_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:64
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:timeout_dialog_title"
+msgid "Timeout Alert"
+msgstr "Timeout Alert"
+
+#. timeout_dialog_warning_message
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:65
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:timeout_dialog_warning_message"
+msgid "Your session will timeout in <span>{0}</span> minutes."
+msgstr "Your session will timeout in <span>{0}</span> minutes."
+
+#. timeout_dialog_keepalive
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:66
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:timeout_dialog_keepalive"
+msgid "Keep My Session Active"
+msgstr "Keep My Session Active"
+
+#. subsite
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:67
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:subsite"
+msgid "SubSite:"
+msgstr "SubSite:"
+
+#. subsites
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:68
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:subsites"
+msgid "SubSites"
+msgstr "SubSites"
+
+#. subsitesTitle
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:69
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:subsitesTitle"
+msgid "Click to open, or close, the list of sub sites"
+msgstr "Click to open, or close, the list of sub sites"
+
+#. pda_sites
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:70
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:pda_sites"
+msgid "Sites"
+msgstr "Sites"
+
+#. pda_logout
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:71
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:pda_logout"
+msgid "Log Out"
+msgstr "Log Out"
+
+#. pda_present
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:72
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:pda_present"
+msgid "Users Present"
+msgstr "Users Present"
+
+#. pda_switch
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:73
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:pda_switch"
+msgid "Switch to Full View"
+msgstr "Switch to Full View"
+
+#. pda_back_to_sites
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:74
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pda_back_to_sites"
+msgid "Back to sites list"
+msgstr "Back to sites list"
+
+#. pda_subsite_lead
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:75
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pda_subsite_lead"
+msgid "--  "
+msgstr "--  "
+
+#. pda_subsite
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:76
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:pda_subsite"
+msgid "(Sub Site)"
+msgstr "(Sub Site)"
+
+#. join_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:77
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:join_title"
+msgid "Joinable Site"
+msgstr "Joinable Site"
+
+#. join_instr
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:78
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:join_instr"
+msgid "You are not currently a member of the site:"
+msgstr "You are not currently a member of the site:"
+
+#. join_question
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:79
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:join_question"
+msgid "Would you like to join the site?"
+msgstr "Would you like to join the site?"
+
+#. yes
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:80
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:yes"
+msgid "Yes"
+msgstr "Yes"
+
+#. no
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:81
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:no"
+msgid "No"
+msgstr "No"
+
+#. pc_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:82
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:pc_title"
+msgid "Chat"
+msgstr "Chat"
+
+#. pc_chat_close
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:83
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:pc_chat_close"
+msgid "Close this chat"
+msgstr "Close this chat"
+
+#. pc_showoffline_connections_checkbox
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:84
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_showoffline_connections_checkbox"
+msgid "Show offline connections"
+msgstr "Show offline connections"
+
+#. pc_go_offline_checkbox
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:85
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_go_offline_checkbox"
+msgid "Show as offline"
+msgstr "Show as offline"
+
+#. pc_connections_label
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:86
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_connections_label"
+msgid "My Connections"
+msgstr "My Connections"
+
+#. pc_site_users_label
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:87
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_site_users_label"
+msgid "In this site"
+msgstr "In this site"
+
+#. pc_ping
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:88
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:pc_ping"
+msgid "Ping"
+msgstr "Ping"
+
+#. pc_ping_connection
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:89
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_ping_connection"
+msgid "to come and chat"
+msgstr "to come and chat"
+
+#. pc_pinged_popup
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:90
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_pinged_popup"
+msgid "Pinged !"
+msgstr "Pinged !"
+
+#. pc_editor_tooltip
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:91
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_editor_tooltip"
+msgid "Enter chat message"
+msgstr "Enter chat message"
+
+#. pc_chat_server_unavailable
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:92
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_chat_server_unavailable"
+msgid ""
+"It looks like the chat server is unavailable. Check your network connection."
+msgstr ""
+"It looks like the chat server is unavailable. Check your network connection."
+
+#. pc_chat_server_error_send
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:93
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_chat_server_error_send"
+msgid "Failed to send message. Reason: "
+msgstr "Failed to send message. Reason: "
+
+#. pc_chat_server_error_send_error
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:94
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_chat_server_error_send_error"
+msgid "Error: "
+msgstr "Error: "
+
+#. tool_direct_link
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:95
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:tool_direct_link"
+msgid "Direct link to this tool"
+msgstr "Direct link to this tool"
+
+#. short_url
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:96
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:short_url"
+msgid "Short URL"
+msgstr "Short URL"
+
+#. site_servertime_label
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:97
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:site_servertime_label"
+msgid "Server Time:"
+msgstr "Server Time:"
+
+#. site_preferredtime_label
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:98
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:site_preferredtime_label"
+msgid "Your Preferred Time:"
+msgstr "Your Preferred Time:"
+
+#. site_softly_deleted
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:99
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:site_softly_deleted"
+msgid ""
+"This site is marked for deletion and will be purged as per the schedule set "
+"by your System Administrator"
+msgstr ""
+"This site is marked for deletion and will be purged as per the schedule set "
+"by your System Administrator"
+
+#. pnotify_notice
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:100
+msgctxt "portal/portal-impl/impl/src/bundle/sitenav.properties:pnotify_notice"
+msgid "Notice"
+msgstr "Notice"
+
+#. pc_video_off_checkbox
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:101
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_video_off_checkbox"
+msgid "Disable video"
+msgstr "Disable video"
+
+#. pc_video_status_setup
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:102
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_video_status_setup"
+msgid "Setting up your video..."
+msgstr "Setting up your video..."
+
+#. pc_video_status_user_hung
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:103
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_user_hung"
+msgid "User has hung up"
+msgstr "User has hung up"
+
+#. pc_video_status_hangup
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:104
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_video_status_hangup"
+msgid "You have hung up!"
+msgstr "You have hung up!"
+
+#. pc_video_status_user_refused
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:105
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_user_refused"
+msgid "User refused your request"
+msgstr "User refused your request"
+
+#. pc_video_status_incoming_call
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:106
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_incoming_call"
+msgid "You have an incoming call..."
+msgstr "You have an incoming call..."
+
+#. pc_video_status_call_timeout
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:107
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_call_timeout"
+msgid "Call timeout!"
+msgstr "Call timeout!"
+
+#. pc_video_status_waiting_peer
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:108
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_waiting_peer"
+msgid "Waiting for peer..."
+msgstr "Waiting for peer..."
+
+#. pc_video_status_call_accepted
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:109
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_call_accepted"
+msgid "Call accepted, establishing connection..."
+msgstr "Call accepted, establishing connection..."
+
+#. pc_video_status_call_not_accepted
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:110
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_call_not_accepted"
+msgid "Call not accepted or failed"
+msgstr "Call not accepted or failed"
+
+#. pc_video_status_call_in_progress
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:111
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_call_in_progress"
+msgid "Call in progress..."
+msgstr "Call in progress..."
+
+#. pc_video_status_answer_timeout
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:112
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_answer_timeout"
+msgid "Answer timeout!"
+msgstr "Answer timeout!"
+
+#. pc_video_status_connecting
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:113
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_connecting"
+msgid "Connecting ..."
+msgstr "Connecting ..."
+
+#. pc_video_status_connection_established
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:114
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_connection_established"
+msgid "Connection established"
+msgstr "Connection established"
+
+#. pc_video_status_call_failed
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:115
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_call_failed"
+msgid "Call failed"
+msgstr "Call failed"
+
+#. pc_video_status_you_ignored
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:116
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_status_you_ignored"
+msgid "You ignored that call"
+msgstr "You ignored that call"
+
+#. pc_video_accept_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:117
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_video_accept_title"
+msgid "Accept video call"
+msgstr "Accept video call"
+
+#. pc_video_ingnore_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:118
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_video_ingnore_title"
+msgid "Ignore video call"
+msgstr "Ignore video call"
+
+#. pc_video_maximize_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:119
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_maximize_title"
+msgid "Maximize video call"
+msgstr "Maximize video call"
+
+#. pc_video_end_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:120
+msgctxt ""
+"portal/portal-impl/impl/src/bundle/sitenav.properties:pc_video_end_title"
+msgid "End video call"
+msgstr "End video call"
+
+#. pc_video_do_videocall_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:121
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_do_videocall_title"
+msgid "Do a video call"
+msgstr "Do a video call"
+
+#. pc_video_unmute_local_audio_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:122
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_unmute_local_audio_title"
+msgid "Unmute your audio"
+msgstr "Unmute your audio"
+
+#. pc_video_mute_local_audio_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:123
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_mute_local_audio_title"
+msgid "Mute your audio"
+msgstr "Mute your audio"
+
+#. pc_video_enable_local_video_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:124
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_enable_local_video_title"
+msgid "Enable your video"
+msgstr "Enable your video"
+
+#. pc_video_disable_local_video_title
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:125
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_disable_local_video_title"
+msgid "Disable your video"
+msgstr "Disable your video"
+
+#. pc_video_askforincoming
+#: portal/portal-impl/impl/src/bundle/sitenav.properties:126
+msgctxt ""
+"portal/portal-"
+"impl/impl/src/bundle/sitenav.properties:pc_video_askforincoming"
+msgid "Do you want to answer?"
+msgstr "Do you want to answer?"
+
+#. bugreport.bugreport
+#: portal/portal-util/util/src/bundle/portal-util.properties:1
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.bugreport"
+msgid "Bug Report"
+msgstr "Bug Report"
+
+#. bugreport.bugid
+#: portal/portal-util/util/src/bundle/portal-util.properties:2
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.bugid"
+msgid "bug-id"
+msgstr "bug-id"
+
+#. bugreport.user
+#: portal/portal-util/util/src/bundle/portal-util.properties:3
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.user"
+msgid "user"
+msgstr "user"
+
+#. bugreport.email
+#: portal/portal-util/util/src/bundle/portal-util.properties:4
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.email"
+msgid "email"
+msgstr "email"
+
+#. bugreport.usagesession
+#: portal/portal-util/util/src/bundle/portal-util.properties:5
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.usagesession"
+msgid "usage-session"
+msgstr "usage-session"
+
+#. bugreport.digest
+#: portal/portal-util/util/src/bundle/portal-util.properties:6
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.digest"
+msgid "stack-trace-digest"
+msgstr "stack-trace-digest"
+
+#. bugreport.useragent
+#: portal/portal-util/util/src/bundle/portal-util.properties:7
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.useragent"
+msgid "user-agent"
+msgstr "user-agent"
+
+#. bugreport.browserid
+#: portal/portal-util/util/src/bundle/portal-util.properties:8
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.browserid"
+msgid "browser-id"
+msgstr "browser-id"
+
+#. bugreport.ip
+#: portal/portal-util/util/src/bundle/portal-util.properties:9
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.ip"
+msgid "IP"
+msgstr "IP"
+
+#. bugreport.path
+#: portal/portal-util/util/src/bundle/portal-util.properties:10
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.path"
+msgid "request-path"
+msgstr "request-path"
+
+#. bugreport.version-sakai
+#: portal/portal-util/util/src/bundle/portal-util.properties:11
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.version-"
+"sakai"
+msgid "sakai-version"
+msgstr "sakai-version"
+
+#. bugreport.version-service
+#: portal/portal-util/util/src/bundle/portal-util.properties:12
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.version-"
+"service"
+msgid "service-version"
+msgstr "service-version"
+
+#. bugreport.appserver
+#: portal/portal-util/util/src/bundle/portal-util.properties:13
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.appserver"
+msgid "app-server"
+msgstr "app-server"
+
+#. bugreport.usercomment
+#: portal/portal-util/util/src/bundle/portal-util.properties:14
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.usercomment"
+msgid "user comment"
+msgstr "user comment"
+
+#. bugreport.commentflag
+#: portal/portal-util/util/src/bundle/portal-util.properties:15
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.commentflag"
+msgid "(comment)"
+msgstr "(comment)"
+
+#. bugreport.time
+#: portal/portal-util/util/src/bundle/portal-util.properties:16
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.time"
+msgid "time"
+msgstr "time"
+
+#. bugreport.error
+#: portal/portal-util/util/src/bundle/portal-util.properties:17
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.error"
+msgid "Error"
+msgstr "Error"
+
+#. bugreport.stacktrace
+#: portal/portal-util/util/src/bundle/portal-util.properties:18
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.stacktrace"
+msgid "stack trace"
+msgstr "stack trace"
+
+#. bugreport.statement
+#: portal/portal-util/util/src/bundle/portal-util.properties:19
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.statement"
+msgid "An unexpected error has occurred."
+msgstr "An unexpected error has occurred."
+
+#. bugreport.sendtitle
+#: portal/portal-util/util/src/bundle/portal-util.properties:20
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.sendtitle"
+msgid "Send a bug report"
+msgstr "Send a bug report"
+
+#. bugreport.sendinstructions
+#: portal/portal-util/util/src/bundle/portal-util.properties:21
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.sendinstructions"
+msgid ""
+"To send a bug report, describe what you were doing when the problem "
+"occurred, in the space below, and press the submit button."
+msgstr ""
+"To send a bug report, describe what you were doing when the problem "
+"occurred, in the space below, and press the submit button."
+
+#. bugreport.sendsubmit
+#: portal/portal-util/util/src/bundle/portal-util.properties:22
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.sendsubmit"
+msgid "Submit Report"
+msgstr "Submit Report"
+
+#. bugreport.recoverytitle
+#: portal/portal-util/util/src/bundle/portal-util.properties:23
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.recoverytitle"
+msgid "Recovery"
+msgstr "Recovery"
+
+#. bugreport.recoveryinstructions
+#: portal/portal-util/util/src/bundle/portal-util.properties:24
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.recoveryinstructions"
+msgid ""
+"To recover from this error without sending in a bug report, please do the "
+"following:"
+msgstr ""
+"To recover from this error without sending in a bug report, please do the "
+"following:"
+
+#. bugreport.recoveryinstructions.reported
+#: portal/portal-util/util/src/bundle/portal-util.properties:25
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.recoveryinstructions.reported"
+msgid "To recover from this error please do the following:"
+msgstr "To recover from this error please do the following:"
+
+#. bugreport.recoveryinstructions1
+#: portal/portal-util/util/src/bundle/portal-util.properties:26
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.recoveryinstructions1"
+msgid "Press the Logout button above to logout."
+msgstr "Press the Logout button above to logout."
+
+#. bugreport.recoveryinstructions2
+#: portal/portal-util/util/src/bundle/portal-util.properties:27
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.recoveryinstructions2"
+msgid "Close your browser to assure a clean start."
+msgstr "Close your browser to assure a clean start."
+
+#. bugreport.recoveryinstructions3
+#: portal/portal-util/util/src/bundle/portal-util.properties:28
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.recoveryinstructions3"
+msgid "Re-open your browser and start again."
+msgstr "Re-open your browser and start again."
+
+#. bugreport.detailstitle
+#: portal/portal-util/util/src/bundle/portal-util.properties:29
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.detailstitle"
+msgid "Technical Details"
+msgstr "Technical Details"
+
+#. bugreport.detailsnote
+#: portal/portal-util/util/src/bundle/portal-util.properties:30
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.detailsnote"
+msgid "This information will automatically be included in your bug report."
+msgstr "This information will automatically be included in your bug report."
+
+#. bugreport.troublereporting
+#: portal/portal-util/util/src/bundle/portal-util.properties:31
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.troublereporting"
+msgid "trouble reporting error to user:"
+msgstr "trouble reporting error to user:"
+
+#. bugreport.troubleredirecting
+#: portal/portal-util/util/src/bundle/portal-util.properties:32
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.troubleredirecting"
+msgid "trouble redirecting after post:"
+msgstr "trouble redirecting after post:"
+
+#. bugreport.senttitle
+#: portal/portal-util/util/src/bundle/portal-util.properties:33
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.senttitle"
+msgid "Bug report sent"
+msgstr "Bug report sent"
+
+#. bugreport.sentnote
+#: portal/portal-util/util/src/bundle/portal-util.properties:34
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.sentnote"
+msgid "Thank you for your bug report."
+msgstr "Thank you for your bug report."
+
+#. bugreport.troublethanks
+#: portal/portal-util/util/src/bundle/portal-util.properties:35
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.troublethanks"
+msgid "trouble reporting thanks to user:"
+msgstr "trouble reporting thanks to user:"
+
+#. bugreport.placement
+#: portal/portal-util/util/src/bundle/portal-util.properties:36
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.placement"
+msgid "Tool Placement:"
+msgstr "Tool Placement:"
+
+#. bugreport.placement.id
+#: portal/portal-util/util/src/bundle/portal-util.properties:37
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.placement.id"
+msgid ":    ID:"
+msgstr ":    ID:"
+
+#. bugreport.placement.context
+#: portal/portal-util/util/src/bundle/portal-util.properties:38
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.placement.context"
+msgid ":    Context:"
+msgstr ":    Context:"
+
+#. bugreport.placement.title
+#: portal/portal-util/util/src/bundle/portal-util.properties:39
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.placement.title"
+msgid ":    Title:"
+msgstr ":    Title:"
+
+#. bugreport.request
+#: portal/portal-util/util/src/bundle/portal-util.properties:40
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.request"
+msgid "Request:"
+msgstr "Request:"
+
+#. bugreport.request.authtype
+#: portal/portal-util/util/src/bundle/portal-util.properties:41
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.authtype"
+msgid ":    AuthType:"
+msgstr ":    AuthType:"
+
+#. bugreport.request.charencoding
+#: portal/portal-util/util/src/bundle/portal-util.properties:42
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.charencoding"
+msgid ":    CharEncoding:"
+msgstr ":    CharEncoding:"
+
+#. bugreport.request.contentlength
+#: portal/portal-util/util/src/bundle/portal-util.properties:43
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.contentlength"
+msgid ":    ContentLength:"
+msgstr ":    ContentLength:"
+
+#. bugreport.request.contenttype
+#: portal/portal-util/util/src/bundle/portal-util.properties:44
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.contenttype"
+msgid ":    ContentType:"
+msgstr ":    ContentType:"
+
+#. bugreport.request.contextpath
+#: portal/portal-util/util/src/bundle/portal-util.properties:45
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.contextpath"
+msgid ":    ContextPath:"
+msgstr ":    ContextPath:"
+
+#. bugreport.request.localaddr
+#: portal/portal-util/util/src/bundle/portal-util.properties:46
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.localaddr"
+msgid ":    LocalAddress:"
+msgstr ":    LocalAddress:"
+
+#. bugreport.request.localname
+#: portal/portal-util/util/src/bundle/portal-util.properties:47
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.localname"
+msgid ":    LocalName:"
+msgstr ":    LocalName:"
+
+#. bugreport.request.localport
+#: portal/portal-util/util/src/bundle/portal-util.properties:48
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.localport"
+msgid ":    LocalPort:"
+msgstr ":    LocalPort:"
+
+#. bugreport.request.method
+#: portal/portal-util/util/src/bundle/portal-util.properties:49
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.method"
+msgid ":    Method:"
+msgstr ":    Method:"
+
+#. bugreport.request.pathinfo
+#: portal/portal-util/util/src/bundle/portal-util.properties:50
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.pathinfo"
+msgid ":    PathInfo:"
+msgstr ":    PathInfo:"
+
+#. bugreport.request.protocol
+#: portal/portal-util/util/src/bundle/portal-util.properties:51
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.protocol"
+msgid ":    Protocol:"
+msgstr ":    Protocol:"
+
+#. bugreport.request.querystring
+#: portal/portal-util/util/src/bundle/portal-util.properties:52
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.querystring"
+msgid ":    QueryString:"
+msgstr ":    QueryString:"
+
+#. bugreport.request.remoteaddr
+#: portal/portal-util/util/src/bundle/portal-util.properties:53
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.remoteaddr"
+msgid ":    RemoteAddress:"
+msgstr ":    RemoteAddress:"
+
+#. bugreport.request.remotehost
+#: portal/portal-util/util/src/bundle/portal-util.properties:54
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.remotehost"
+msgid ":    RemoteHost:"
+msgstr ":    RemoteHost:"
+
+#. bugreport.request.remoteport
+#: portal/portal-util/util/src/bundle/portal-util.properties:55
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.remoteport"
+msgid ":    RemotePort:"
+msgstr ":    RemotePort:"
+
+#. bugreport.request.remoteuser
+#: portal/portal-util/util/src/bundle/portal-util.properties:56
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.remoteuser"
+msgid ":    RemoteUser:"
+msgstr ":    RemoteUser:"
+
+#. bugreport.request.requestedsession
+#: portal/portal-util/util/src/bundle/portal-util.properties:57
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.requestedsession"
+msgid ":    RequestedSession:"
+msgstr ":    RequestedSession:"
+
+#. bugreport.request.requesturl
+#: portal/portal-util/util/src/bundle/portal-util.properties:58
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.requesturl"
+msgid ":    Requested URL:"
+msgstr ":    Requested URL:"
+
+#. bugreport.request.scheme
+#: portal/portal-util/util/src/bundle/portal-util.properties:59
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.scheme"
+msgid ":    Scheme:"
+msgstr ":    Scheme:"
+
+#. bugreport.request.servername
+#: portal/portal-util/util/src/bundle/portal-util.properties:60
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.servername"
+msgid ":    ServerName:"
+msgstr ":    ServerName:"
+
+#. bugreport.request.headers
+#: portal/portal-util/util/src/bundle/portal-util.properties:61
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.headers"
+msgid ":    Headers:"
+msgstr ":    Headers:"
+
+#. bugreport.request.header
+#: portal/portal-util/util/src/bundle/portal-util.properties:62
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.header"
+msgid ":        Header:"
+msgstr ":        Header:"
+
+#. bugreport.request.parameters
+#: portal/portal-util/util/src/bundle/portal-util.properties:63
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.parameters"
+msgid ":    Parameters:"
+msgstr ":    Parameters:"
+
+#. bugreport.request.parameter
+#: portal/portal-util/util/src/bundle/portal-util.properties:64
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.parameter"
+msgid ":        Parameter:"
+msgstr ":        Parameter:"
+
+#. bugreport.request.attributes
+#: portal/portal-util/util/src/bundle/portal-util.properties:65
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.attributes"
+msgid ":    Attributes:"
+msgstr ":    Attributes:"
+
+#. bugreport.request.attribute
+#: portal/portal-util/util/src/bundle/portal-util.properties:66
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.request.attribute"
+msgid ":        Attribute:"
+msgstr ":        Attribute:"
+
+#. bugreport.session
+#: portal/portal-util/util/src/bundle/portal-util.properties:67
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-util.properties:bugreport.session"
+msgid "Session:"
+msgstr "Session:"
+
+#. bugreport.session.creation
+#: portal/portal-util/util/src/bundle/portal-util.properties:68
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.session.creation"
+msgid ":    Created:"
+msgstr ":    Created:"
+
+#. bugreport.session.lastaccess
+#: portal/portal-util/util/src/bundle/portal-util.properties:69
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.session.lastaccess"
+msgid ":    LastAccess:"
+msgstr ":    LastAccess:"
+
+#. bugreport.session.creationdatetime
+#: portal/portal-util/util/src/bundle/portal-util.properties:70
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.session.creationdatetime"
+msgid ":    CreationDateAndTime:"
+msgstr ":    CreationDateAndTime:"
+
+#. bugreport.session.lastaccessdatetime
+#: portal/portal-util/util/src/bundle/portal-util.properties:71
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.session.lastaccessdatetime"
+msgid ":    LastAccessDateAndTime:"
+msgstr ":    LastAccessDateAndTime:"
+
+#. bugreport.session.maxinactive
+#: portal/portal-util/util/src/bundle/portal-util.properties:72
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.session.maxinactive"
+msgid ":    MaxInactive:"
+msgstr ":    MaxInactive:"
+
+#. bugreport.session.attributes
+#: portal/portal-util/util/src/bundle/portal-util.properties:73
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.session.attributes"
+msgid ":    Attributes:"
+msgstr ":    Attributes:"
+
+#. bugreport.session.attribute
+#: portal/portal-util/util/src/bundle/portal-util.properties:74
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.session.attribute"
+msgid ":        Attribute:"
+msgstr ":        Attribute:"
+
+#. bugreport.placement.none
+#: portal/portal-util/util/src/bundle/portal-util.properties:75
+msgctxt ""
+"portal/portal-util/util/src/bundle/portal-"
+"util.properties:bugreport.placement.none"
+msgid "No Placement"
+msgstr "No Placement"
+
+#. org.theospi.portfolio.portal.portfolio
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:1
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.portfolio"
+msgid "Portfolio"
+msgstr "Portfolio"
+
+#. org.theospi.portfolio.portal.portfolioAdmin
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:2
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.portfolioAdmin"
+msgid "Administration"
+msgstr "Administration"
+
+#. org.theospi.portfolio.portal.myWorkspace
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:3
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.myWorkspace"
+msgid "My Workspace"
+msgstr "My Workspace"
+
+#. org.theospi.portfolio.portal.gateway
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:4
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.gateway"
+msgid "Gateway"
+msgstr "Gateway"
+
+#. org.theospi.portfolio.portal.project
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:5
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.project"
+msgid "Project"
+msgstr "Project"
+
+#. org.theospi.portfolio.portal.course
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:6
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.course"
+msgid "Course"
+msgstr "Course"
+
+#. org.theospi.portfolio.portal.other
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:7
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.other"
+msgid "Other"
+msgstr "Other"
+
+#. org.theospi.portfolio.portal.model.collectReflect
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:8
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.model.collectReflect"
+msgid "Collect & Reflect"
+msgstr "Collect & Reflect"
+
+#. org.theospi.portfolio.portal.model.designPublish
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:9
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.model.designPublish"
+msgid "Design & Publish"
+msgstr "Design & Publish"
+
+#. org.theospi.portfolio.portal.model.guide
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:10
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.model.guide"
+msgid "Guide"
+msgstr "Guide"
+
+#. org.theospi.portfolio.portal.model.reviewEvaluate
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:11
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.model.reviewEvaluate"
+msgid "Review & Evaluate"
+msgstr "Review & Evaluate"
+
+#. org.theospi.portfolio.portal.model.analyzeReport
+#: portal/portal-xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:12
+msgctxt ""
+"portal/portal-"
+"xsl/tool/src/bundle/org/sakaiproject/portal/xsltcharon/messages.properties:org.theospi.portfolio.portal.model.analyzeReport"
+msgid "Analyze & Report"
+msgstr "Analyze & Report"

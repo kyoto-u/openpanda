@@ -1,0 +1,1288 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-04-28 16:07+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. javax.faces.validator.LongRangeValidator.MINIMUM
+#: sections/sections-app-util/src/bundle/sections.properties:1
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:javax.faces.validator.LongRangeValidator.MINIMUM"
+msgid "Please enter a number greater than {0}."
+msgstr "{0} より大きな数を入力してください．"
+
+#. student_view_header_available
+#: sections/sections-app-util/src/bundle/sections.properties:2
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_header_available"
+msgid "Avail."
+msgstr "受講可能"
+
+#. add_sections_add
+#: sections/sections-app-util/src/bundle/sections.properties:3
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:add_sections_add"
+msgid "Add Sections"
+msgstr "セクションを追加"
+
+#. no_sections_instructions
+#: sections/sections-app-util/src/bundle/sections.properties:4
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:no_sections_instructions"
+msgid "Please go to 'Add Sections' to create new sections."
+msgstr "新しいセクションを作成する場合は「セクションを追加」に移動します．"
+
+#. section_update_failure_title_too_long
+#: sections/sections-app-util/src/bundle/sections.properties:5
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_update_failure_title_too_long"
+msgid "The section name ''{0}'' exceeds the maximum length of {1} characters."
+msgstr "セクション名 \"{0}\" は最大文字数 {1} を越えています．"
+
+#. student_view_full
+#: sections/sections-app-util/src/bundle/sections.properties:6
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:student_view_full"
+msgid "Full"
+msgstr "満員"
+
+#. overview_table_header_managers
+#: sections/sections-app-util/src/bundle/sections.properties:7
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_table_header_managers"
+msgid "Teaching Assistant (TA)"
+msgstr "ティーチングアシスタント"
+
+#. student_view_header_title
+#: sections/sections-app-util/src/bundle/sections.properties:8
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_header_title"
+msgid "Section Name"
+msgstr "セクション名"
+
+#. overview_delete_section_confirmation_pre
+#: sections/sections-app-util/src/bundle/sections.properties:9
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_delete_section_confirmation_pre"
+msgid "Are you sure you want to remove the following sections:"
+msgstr "次のセクションを本当に削除しますか:"
+
+#. error_no_role
+#: sections/sections-app-util/src/bundle/sections.properties:10
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:error_no_role"
+msgid "You are not authorized to view sections in this site."
+msgstr "このサイトのセクションを表示する権限がありません．"
+
+#. student_view_switch
+#: sections/sections-app-util/src/bundle/sections.properties:11
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_switch"
+msgid "Switch"
+msgstr "変更"
+
+#. overview_table_header_available
+#: sections/sections-app-util/src/bundle/sections.properties:12
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_table_header_available"
+msgid "Avail."
+msgstr "受講可能"
+
+#. student_view_membership_full
+#: sections/sections-app-util/src/bundle/sections.properties:13
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_membership_full"
+msgid ""
+"{0} is full and cannot accept more members. Please choose another section "
+"(if available)."
+msgstr "{0} は満員でさらなるメンバを受け付けることができません．他のセクションを選択してください (もし可能であれば)．"
+
+#. sections_specify_limit
+#: sections/sections-app-util/src/bundle/sections.properties:14
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:sections_specify_limit"
+msgid "Please enter the size limit on the section."
+msgstr "セクションの制限サイズを入力してください．"
+
+#. options_update_successful
+#: sections/sections-app-util/src/bundle/sections.properties:15
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:options_update_successful"
+msgid "Section options were updated successfully!"
+msgstr "セクションオプションが更新されました．"
+
+#. nav_overview
+#: sections/sections-app-util/src/bundle/sections.properties:16
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:nav_overview"
+msgid "Overview"
+msgstr "概要"
+
+#. student_view_switch_sc
+#: sections/sections-app-util/src/bundle/sections.properties:17
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_switch_sc"
+msgid "(Switch to {0})"
+msgstr "({0}に切替)"
+
+#. edit_student_page_header
+#: sections/sections-app-util/src/bundle/sections.properties:18
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_page_header"
+msgid "Assign Students"
+msgstr "学生を割当"
+
+#. section_add_failure_title_too_long
+#: sections/sections-app-util/src/bundle/sections.properties:19
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_add_failure_title_too_long"
+msgid "The section name ''{0}'' exceeds the maximum length of {1} characters."
+msgstr "セクション名 \"{0}\" は最大文字数 {1} を越えています．"
+
+#. student_view_header_location
+#: sections/sections-app-util/src/bundle/sections.properties:20
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_header_location"
+msgid "Location"
+msgstr "場所"
+
+#. overview_link_managers
+#: sections/sections-app-util/src/bundle/sections.properties:21
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_link_managers"
+msgid "Assign TAs"
+msgstr "TA を割当"
+
+#. cancel
+#: sections/sections-app-util/src/bundle/sections.properties:22
+msgctxt "sections/sections-app-util/src/bundle/sections.properties:cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. edit_manager_update
+#: sections/sections-app-util/src/bundle/sections.properties:23
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_manager_update"
+msgid "Assign TAs"
+msgstr "TA を割当"
+
+#. validation_messages_present
+#: sections/sections-app-util/src/bundle/sections.properties:24
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:validation_messages_present"
+msgid "There were problems with the last action.  Please see details below."
+msgstr "最後の操作に問題がありました．詳しくは下をご覧ください．"
+
+#. options_externally_managed_description
+#: sections/sections-app-util/src/bundle/sections.properties:25
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:options_externally_managed_description"
+msgid ""
+"Automatically manage sections and memberships based on official registration"
+" information"
+msgstr "公式の登録情報に基づいてセクションとメンバシップを自動的に定義し管理"
+
+#. options_done
+#: sections/sections-app-util/src/bundle/sections.properties:26
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:options_done"
+msgid "Done"
+msgstr "完了"
+
+#. student_view_view
+#: sections/sections-app-util/src/bundle/sections.properties:27
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:student_view_view"
+msgid "View"
+msgstr "表示:"
+
+#. section_description
+#: sections/sections-app-util/src/bundle/sections.properties:28
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_description"
+msgid "{0}, meets {1}"
+msgstr "{0}, meets {1}"
+
+#. student_view_my
+#: sections/sections-app-util/src/bundle/sections.properties:29
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:student_view_my"
+msgid "My"
+msgstr "自分のセクション"
+
+#. options_self_switch_label
+#: sections/sections-app-util/src/bundle/sections.properties:30
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:options_self_switch_label"
+msgid "Students can switch sections"
+msgstr "学生はセクションを変更可能"
+
+#. student_view_already_member_in_category
+#: sections/sections-app-util/src/bundle/sections.properties:31
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_already_member_in_category"
+msgid "You are already a member of a section in this category."
+msgstr "このカテゴリのセクションのメンバにすでになっています．"
+
+#. edit_student_successful
+#: sections/sections-app-util/src/bundle/sections.properties:32
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_successful"
+msgid "Students in {0} were updated successfully!"
+msgstr "人の学生({0}人中)が更新されました．"
+
+#. section_max_size
+#: sections/sections-app-util/src/bundle/sections.properties:33
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_max_size"
+msgid "Section Size"
+msgstr "受講可能最大数"
+
+#. student_view_join
+#: sections/sections-app-util/src/bundle/sections.properties:34
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:student_view_join"
+msgid "Join"
+msgstr "参加"
+
+#. edit_student_unassigned
+#: sections/sections-app-util/src/bundle/sections.properties:35
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_unassigned"
+msgid "Unassigned Students"
+msgstr "学生を割当解除"
+
+#. update
+#: sections/sections-app-util/src/bundle/sections.properties:36
+msgctxt "sections/sections-app-util/src/bundle/sections.properties:update"
+msgid "Update"
+msgstr "更新"
+
+#. options_automatically_manage
+#: sections/sections-app-util/src/bundle/sections.properties:37
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:options_automatically_manage"
+msgid "Automatically Manage"
+msgstr "自動マージ"
+
+#. no_sections_available
+#: sections/sections-app-util/src/bundle/sections.properties:38
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:no_sections_available"
+msgid "There are no sections defined for this site."
+msgstr "このサイトには定義されたセクションがありません．"
+
+#. section_separator
+#: sections/sections-app-util/src/bundle/sections.properties:39
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_separator"
+msgid ","
+msgstr ","
+
+#. add_section_successful_singular
+#: sections/sections-app-util/src/bundle/sections.properties:40
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:add_section_successful_singular"
+msgid "has"
+msgstr "あります."
+
+#. add
+#: sections/sections-app-util/src/bundle/sections.properties:41
+msgctxt "sections/sections-app-util/src/bundle/sections.properties:add"
+msgid "Add"
+msgstr "追加"
+
+#. overview_link_students
+#: sections/sections-app-util/src/bundle/sections.properties:42
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_link_students"
+msgid "Assign Students"
+msgstr "学生を割当"
+
+#. add_sections
+#: sections/sections-app-util/src/bundle/sections.properties:43
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:add_sections"
+msgid "Add Sections"
+msgstr "セクションを追加"
+
+#. nav_print
+#: sections/sections-app-util/src/bundle/sections.properties:44
+msgctxt "sections/sections-app-util/src/bundle/sections.properties:nav_print"
+msgid "Print"
+msgstr "印刷"
+
+#. filter_my_category_sections
+#: sections/sections-app-util/src/bundle/sections.properties:45
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:filter_my_category_sections"
+msgid "My {0} Sections"
+msgstr "自分の{0}のセクション"
+
+#. student_view_join_sc
+#: sections/sections-app-util/src/bundle/sections.properties:46
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_join_sc"
+msgid "(Join {0})"
+msgstr "({0}に参加)"
+
+#. options_page_header
+#: sections/sections-app-util/src/bundle/sections.properties:47
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:options_page_header"
+msgid "Options"
+msgstr "オプション"
+
+#. edit_student_sections_page_header
+#: sections/sections-app-util/src/bundle/sections.properties:48
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_sections_page_header"
+msgid "Edit {0}''s Sections"
+msgstr "{0}のセクションを編集"
+
+#. filter_my_sections
+#: sections/sections-app-util/src/bundle/sections.properties:49
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:filter_my_sections"
+msgid "My Sections"
+msgstr "自分のセクション"
+
+#. roster_instructions
+#: sections/sections-app-util/src/bundle/sections.properties:50
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:roster_instructions"
+msgid "Click on a student's name to edit their section memberships"
+msgstr "セクションのメンバシップを編集する場合は，学生の名前をクリックします"
+
+#. student_view_no_sections_to_display
+#: sections/sections-app-util/src/bundle/sections.properties:51
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_no_sections_to_display"
+msgid ""
+"There are no sections to display.  Please change your filter settings above."
+msgstr "表示できるセクションがありません．上のフィルタ設定を変更してください．"
+
+#. section_start_time_default
+#: sections/sections-app-util/src/bundle/sections.properties:52
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_start_time_default"
+msgid "-enter start time-"
+msgstr "-開始時刻を入力-"
+
+#. overview_delete_section_choose
+#: sections/sections-app-util/src/bundle/sections.properties:53
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_delete_section_choose"
+msgid "Please choose the sections to remove before clicking 'Remove Section'."
+msgstr "「セクションを削除」をクリックする前にセクションを選択してください．"
+
+#. admin_role
+#: sections/sections-app-util/src/bundle/sections.properties:54
+msgctxt "sections/sections-app-util/src/bundle/sections.properties:admin_role"
+msgid "Administrator"
+msgstr "管理者"
+
+#. section_location_default
+#: sections/sections-app-util/src/bundle/sections.properties:55
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_location_default"
+msgid "-enter location-"
+msgstr "-場所を入力-"
+
+#. options_internally_managed_description
+#: sections/sections-app-util/src/bundle/sections.properties:56
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:options_internally_managed_description"
+msgid ""
+"Manually manage sections and membership (discontinues section and membership"
+" updates from the registration system)"
+msgstr "セクションとメンバシップを手動で管理 (登録システムとは切り離してセクションとメンバシップを更新)"
+
+#. student_view_page_header
+#: sections/sections-app-util/src/bundle/sections.properties:57
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_page_header"
+msgid "Section Memberships"
+msgstr "セクションメンバシップ"
+
+#. nav_roster
+#: sections/sections-app-util/src/bundle/sections.properties:58
+msgctxt "sections/sections-app-util/src/bundle/sections.properties:nav_roster"
+msgid "Student Memberships"
+msgstr "名簿"
+
+#. student_view_instructions_no_join_or_switch
+#: sections/sections-app-util/src/bundle/sections.properties:59
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_instructions_no_join_or_switch"
+msgid "You must contact your instructor to join or switch sections."
+msgstr "参加するためには担当教員に連絡を取るかセクションを変更する必要があります．"
+
+#. edit_manager_selected_label
+#: sections/sections-app-util/src/bundle/sections.properties:60
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_manager_selected_label"
+msgid "{0} Teaching Assistants"
+msgstr "{0} 人のティーチングアシスタント"
+
+#. sections_limited
+#: sections/sections-app-util/src/bundle/sections.properties:61
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:sections_limited"
+msgid "Limit number of students in section to"
+msgstr "セクションの受講可能人数の制限は"
+
+#. overview_link_edit
+#: sections/sections-app-util/src/bundle/sections.properties:62
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:overview_link_edit"
+msgid "Edit"
+msgstr "編集"
+
+#. student_view_no_sections_not_available
+#: sections/sections-app-util/src/bundle/sections.properties:63
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_no_sections_not_available"
+msgid ""
+"The section you selected is no longer available. Please choose another "
+"section"
+msgstr "選択したセクションはもはや利用可能ではありません．他のセクションを選択してください．"
+
+#. You
+#: sections/sections-app-util/src/bundle/sections.properties:64
+msgctxt "sections/sections-app-util/src/bundle/sections.properties:You"
+msgid ""
+"may only assign a student to one section within each category. If the "
+"student is already a member of a section in a category, they wil be removed "
+"from that section if you assign them to a new section."
+msgstr "各カテゴリ内では一つのセクションには受講者を一度だけしか割り当てできない場合があります．受講者が，カテゴリ内のセクションのメンバにすでになっている場合は，新しいセクションに割り当てるとその受講者は元のセクションから削除されます．"
+
+#. student_member
+#: sections/sections-app-util/src/bundle/sections.properties:65
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:student_member"
+msgid "Student Memberships"
+msgstr "受講者メンバーシップ"
+
+#. overview_table_header_current_size
+#: sections/sections-app-util/src/bundle/sections.properties:66
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_table_header_current_size"
+msgid "Current Size"
+msgstr "現在の人数"
+
+#. student_view_member
+#: sections/sections-app-util/src/bundle/sections.properties:67
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_member"
+msgid "Member"
+msgstr "メンバ"
+
+#. section_update_failure_end_without_start
+#: sections/sections-app-util/src/bundle/sections.properties:68
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_update_failure_end_without_start"
+msgid "If you specify an end time, you must also specify a start time."
+msgstr "終了時刻を指定する場合は，開始時刻も指定する必要があります．"
+
+#. overview_instructions_auto_instructor
+#: sections/sections-app-util/src/bundle/sections.properties:69
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_instructions_auto_instructor"
+msgid ""
+"Your sections are managed automatically based on the rosters connected to "
+"the site (as defined in the Site Info tool, under Edit Rosters).  To assign "
+"TAs to a section, click Assign TAs (below); all other information is "
+"available for viewing only.  To turn off auto-manage, click Options above."
+msgstr "あなたのセクションは，サイト(「クラス名簿を編集」下の「サイト情報」ツールで定義されています)に接続されたクラス名簿に基づいて自動的に管理されます．ティーチングアシスタントをセクションに割り当てる場合は，下の「TA を割当」をクリックします．すべての他の情報は表示のみ可能です．オフにする場合は，上の「オプション」をクリックします．"
+
+#. and
+#: sections/sections-app-util/src/bundle/sections.properties:70
+msgctxt "sections/sections-app-util/src/bundle/sections.properties:and"
+msgid "and"
+msgstr "と"
+
+#. add_section_category
+#: sections/sections-app-util/src/bundle/sections.properties:71
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:add_section_category"
+msgid "category"
+msgstr "個のカテゴリ"
+
+#. student_view_view_all
+#: sections/sections-app-util/src/bundle/sections.properties:72
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_view_all"
+msgid "View All"
+msgstr "すべて表示"
+
+#. filter_all_sections
+#: sections/sections-app-util/src/bundle/sections.properties:73
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:filter_all_sections"
+msgid "All Sections"
+msgstr "すべてのセクション"
+
+#. edit_student_sections_drop
+#: sections/sections-app-util/src/bundle/sections.properties:74
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_sections_drop"
+msgid "Unassign"
+msgstr "割り当て解除"
+
+#. add_section_add_meeting
+#: sections/sections-app-util/src/bundle/sections.properties:75
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:add_section_add_meeting"
+msgid "Add day(s) with a different meeting time and/or location"
+msgstr "異なる講義時間または場所で日数を追加"
+
+#. section_table_category_header
+#: sections/sections-app-util/src/bundle/sections.properties:76
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_table_category_header"
+msgid "{0} Sections"
+msgstr "{0}セクション"
+
+#. overview_table_header_remove
+#: sections/sections-app-util/src/bundle/sections.properties:77
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_table_header_remove"
+msgid "Remove"
+msgstr "削除"
+
+#. options_confirm
+#: sections/sections-app-util/src/bundle/sections.properties:78
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:options_confirm"
+msgid ""
+"The automatic setting will override any sections you have manually defined "
+"along with their memberships.  You will need to go to the Site Info tool and"
+" \"Edit Rosters\" to assign sections to the site for automatic membership "
+"management.  Would you like to continue?"
+msgstr "自動設定により，メンバシップに関する手動で定義したセクションは上書きされます．自動メンバシップ管理によりサイトにセクションを割り当てる場合は，「サイト情報」ツールにいき「名簿を編集」します．続けますか?"
+
+#. section_plural
+#: sections/sections-app-util/src/bundle/sections.properties:79
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_plural"
+msgid "sections"
+msgstr "個のセクションが"
+
+#. edit_section_page_header
+#: sections/sections-app-util/src/bundle/sections.properties:80
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_section_page_header"
+msgid "Edit Section"
+msgstr "セクションを編集"
+
+#. edit_manager_page_header
+#: sections/sections-app-util/src/bundle/sections.properties:81
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_manager_page_header"
+msgid "Assign Teaching Assistants"
+msgstr "ティーチングアシスタントを割当"
+
+#. overview_instructions_mandatory_auto_instructor
+#: sections/sections-app-util/src/bundle/sections.properties:82
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_instructions_mandatory_auto_instructor"
+msgid ""
+"Your sections are managed automatically based on the rosters connected to "
+"the site (as defined in the Site Info tool, under Edit Rosters).  To assign "
+"TAs to a section, click Assign TAs (below); all other information is "
+"available for viewing only."
+msgstr "あなたのセクションは，サイト(「クラス名簿を編集」下の「サイト情報」ツールで定義されています)に接続されたクラス名簿に基づいて自動的に管理されます．ティーチングアシスタントをセクションに割り当てる場合は，下の「TA を割当」をクリックします．すべての他の情報は表示のみ可能です．"
+
+#. section_update_successful
+#: sections/sections-app-util/src/bundle/sections.properties:83
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_update_successful"
+msgid "Your changes to {0} have been saved!"
+msgstr "{0} への変更が保存されました．"
+
+#. transfer_membership_move_selected
+#: sections/sections-app-util/src/bundle/sections.properties:84
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:transfer_membership_move_selected"
+msgid "Move Selected"
+msgstr "選択したものを移動"
+
+#. student_view_instructions_no_sections
+#: sections/sections-app-util/src/bundle/sections.properties:85
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_instructions_no_sections"
+msgid "There are no sections available for you to join."
+msgstr "参加可能なセクションがありません．"
+
+#. edit_student_sections_assign
+#: sections/sections-app-util/src/bundle/sections.properties:86
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_sections_assign"
+msgid "Assign"
+msgstr "割り当て"
+
+#. edit_student_sections_current_sections
+#: sections/sections-app-util/src/bundle/sections.properties:87
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_sections_current_sections"
+msgid "{0}''s current sections:"
+msgstr "{0}の現在のセクション:"
+
+#. overview_page_header
+#: sections/sections-app-util/src/bundle/sections.properties:88
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_page_header"
+msgid "{0}''s Overview"
+msgstr "{0}の概要"
+
+#. edit_manager_available_label
+#: sections/sections-app-util/src/bundle/sections.properties:89
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_manager_available_label"
+msgid "Available Teaching Assistants"
+msgstr "割当可能なティーチングアシスタント"
+
+#. student_view_instructions_join_or_switch
+#: sections/sections-app-util/src/bundle/sections.properties:90
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_instructions_join_or_switch"
+msgid ""
+"To join or switch sections, click the appropriate link.  You may only belong"
+" to one section of each type available (i.e. 1 Lecture, 1 Discussion, 1 Lab "
+"etc.).   By choosing switch you will be removed from your current section of"
+" that type."
+msgstr "セクションに参加または変更する場合は，該当のリンクをクリックします．各タイプのセクションには一つだけ所属することができます(例: 講義型1つ，演習型1つ，実験型1つ，等)．変更することにより，現在のセクションのタイプから削除されます．"
+
+#. section_end_time
+#: sections/sections-app-util/src/bundle/sections.properties:91
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_end_time"
+msgid "End Time"
+msgstr "終了時刻"
+
+#. section_logistics
+#: sections/sections-app-util/src/bundle/sections.properties:92
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_logistics"
+msgid "Meeting Details"
+msgstr "講義場所"
+
+#. add_section_instructions
+#: sections/sections-app-util/src/bundle/sections.properties:93
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:add_section_instructions"
+msgid "To begin, choose the category and number of sections to create."
+msgstr "はじめる場合は，作成したいカテゴリ名とセクション数を選びます．"
+
+#. role_config_error
+#: sections/sections-app-util/src/bundle/sections.properties:94
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:role_config_error"
+msgid ""
+"The roles in this site are not configured correctly.  Some or all of the "
+"features in this tool will not work until the roles are configured properly."
+" Contact your system administrator for help."
+msgstr "このサイトのロールが正しく設定されていません．正しくロールが設定されるまで，このツールのすべてまたはいくつかの機能は正しく機能しません．詳しくはシステム管理者に連絡してください．"
+
+#. overview_table_header_name
+#: sections/sections-app-util/src/bundle/sections.properties:95
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_table_header_name"
+msgid "Name"
+msgstr "名前"
+
+#. student_view_header_day
+#: sections/sections-app-util/src/bundle/sections.properties:96
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_header_day"
+msgid "Day"
+msgstr "日付"
+
+#. overview_table_header_location
+#: sections/sections-app-util/src/bundle/sections.properties:97
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_table_header_location"
+msgid "Location"
+msgstr "場所"
+
+#. section_end_time_default
+#: sections/sections-app-util/src/bundle/sections.properties:98
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_end_time_default"
+msgid "-enter end time-"
+msgstr "-終了時刻を入力-"
+
+#. section_update_failure_end_before_start
+#: sections/sections-app-util/src/bundle/sections.properties:99
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_update_failure_end_before_start"
+msgid "If you specify an end time, it must be after the start time."
+msgstr "終了時刻を指定する場合は，開始時刻より後でなければなりません．"
+
+#. error_section_deleted
+#: sections/sections-app-util/src/bundle/sections.properties:100
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:error_section_deleted"
+msgid "That section was removed by another user."
+msgstr "このセクションは他のユーザにより削除されました．"
+
+#. roster_pager_status
+#: sections/sections-app-util/src/bundle/sections.properties:101
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:roster_pager_status"
+msgid "Viewing {0} to {1} of {2} students"
+msgstr "{2}人のうち{0}番から{1}番の学生を表示"
+
+#. options_self_register_label
+#: sections/sections-app-util/src/bundle/sections.properties:102
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:options_self_register_label"
+msgid "Students can sign up for sections"
+msgstr "学生はセクションを申請可能"
+
+#. overview_delete_section_confirmation_post
+#: sections/sections-app-util/src/bundle/sections.properties:103
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_delete_section_confirmation_post"
+msgid ""
+"Students in these section(s) will be 'unassigned' (not in any section of "
+"this type).  Please use the 'Assign Students' link under another section to "
+"assign them to a new section."
+msgstr "これらのセクション中の学生は「未割り当て」になります (このタイプのどのセクションにも割り当てられません)．新しいセクションに学生を割り当てる場合は，「学生を割当」リンクを使用してください．"
+
+#. add_section_successful_plural
+#: sections/sections-app-util/src/bundle/sections.properties:104
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:add_section_successful_plural"
+msgid "have"
+msgstr "あります."
+
+#. overview_delete_short
+#: sections/sections-app-util/src/bundle/sections.properties:105
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_delete_short"
+msgid "Remove"
+msgstr "削除"
+
+#. section_location
+#: sections/sections-app-util/src/bundle/sections.properties:106
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_location"
+msgid "in"
+msgstr "場所: "
+
+#. roster_page_header
+#: sections/sections-app-util/src/bundle/sections.properties:107
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:roster_page_header"
+msgid "Student Memberships"
+msgstr "学生メンバシップ"
+
+#. edit_student_over_max_warning_try
+#: sections/sections-app-util/src/bundle/sections.properties:108
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_over_max_warning_try"
+msgid ""
+"You've tried to include {0} students in section {1} students while the "
+"maximum size is {2}!"
+msgstr "最大人数が {2} 人であるにもかかわらず，{0} 人の受講者をセクション \"{1}\" に含めようとしました!"
+
+#. overview_delete
+#: sections/sections-app-util/src/bundle/sections.properties:109
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:overview_delete"
+msgid "Remove Sections"
+msgstr "セクションを削除"
+
+#. edit_student_section_size
+#: sections/sections-app-util/src/bundle/sections.properties:110
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_section_size"
+msgid "Section Size:"
+msgstr "セクションサイズ:"
+
+#. edit_student_selected_title
+#: sections/sections-app-util/src/bundle/sections.properties:111
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_selected_title"
+msgid "/{0}"
+msgstr "/{0}"
+
+#. overview_instructions_auto_ta
+#: sections/sections-app-util/src/bundle/sections.properties:112
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_instructions_auto_ta"
+msgid ""
+"Your sections are managed automatically based on the rosters connected to "
+"the site (as defined by the instructor in the Site Info tool, under Edit "
+"Rosters). To assign students to a section, click Assign Students (below); "
+"all other information is available for viewing only. Only instructors may "
+"connect different rosters to this site, or set sections to be manually "
+"managed."
+msgstr "あなたのセクションは，サイト(「クラス名簿を編集」下の「サイト情報」ツールで定義されています)に接続されたクラス名簿に基づいて自動的に管理されます．ティーチングアシスタントをセクションに割り当てる場合は，下の「TA を割当」をクリックします．すべての他の情報は表示のみ可能です．このサイトに異なるクラス名簿を接続すること，または，手動で管理するようにセクションをセットすることができるのは教員だけである場合があります．"
+
+#. transfer_membership_move_all
+#: sections/sections-app-util/src/bundle/sections.properties:113
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:transfer_membership_move_all"
+msgid "Move All"
+msgstr "すべて移動"
+
+#. section_update_failure_duplicate_title
+#: sections/sections-app-util/src/bundle/sections.properties:114
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_update_failure_duplicate_title"
+msgid "There is another section in this site named {0}."
+msgstr "{0} という名前の別のセクションがサイトにあります．"
+
+#. edit_student_over_max_warning
+#: sections/sections-app-util/src/bundle/sections.properties:115
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_over_max_warning"
+msgid "{0} now includes {1} students, {2} over the Max size limit!"
+msgstr "{0} は現在 {1} 人の学生がいて，許容最大数を {2} 人超過しています．"
+
+#. student_view_instructions_join
+#: sections/sections-app-util/src/bundle/sections.properties:116
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_instructions_join"
+msgid ""
+"To join a section, click the Join link. You may only belong to one section "
+"of each type available (i.e. 1 Lecture, 1 Discussion, 1 Lab, etc.)."
+msgstr "セクションに参加する場合は，「参加」リンクをクリックします．各タイプのセクションには一つだけ所属することができます(例: 講義型1つ，演習型1つ，実験型1つ，等)．"
+
+#. sections_unlimited
+#: sections/sections-app-util/src/bundle/sections.properties:117
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:sections_unlimited"
+msgid "Unlimited number of students in section"
+msgstr "セクションの受講可能人数は無制限"
+
+#. roster_view_students
+#: sections/sections-app-util/src/bundle/sections.properties:118
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:roster_view_students"
+msgid "View Students in"
+msgstr "学生を表示: "
+
+#. nav_download
+#: sections/sections-app-util/src/bundle/sections.properties:119
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:nav_download"
+msgid "Download"
+msgstr "ダウンロード"
+
+#. section_title
+#: sections/sections-app-util/src/bundle/sections.properties:120
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_title"
+msgid "Name"
+msgstr "講義名"
+
+#. javax.faces.convert.DateTimeConverter.CONVERSION
+#: sections/sections-app-util/src/bundle/sections.properties:121
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:javax.faces.convert.DateTimeConverter.CONVERSION"
+msgid "Please enter a time value, such as '7', '8:00' or '12:30'."
+msgstr "時刻('7'，'8:00' や '12:30')を入力してください．"
+
+#. edit_manager_ta_note
+#: sections/sections-app-util/src/bundle/sections.properties:122
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_manager_ta_note"
+msgid ""
+"Note:  Don't see a Teaching Assistant here?  Go to the Site Info tool and "
+"add them as a site participant with the \"TA\" role."
+msgstr "注意:  ティーチングアシスタントが見えませんか? 見えない場合は，「サイト情報」ツールを使って \"TA\" ロールを持つサイト参加者として登録します．"
+
+#. nav_options
+#: sections/sections-app-util/src/bundle/sections.properties:123
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:nav_options"
+msgid "Options"
+msgstr "オプション"
+
+#. overview_table_header_day
+#: sections/sections-app-util/src/bundle/sections.properties:124
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_table_header_day"
+msgid "Day"
+msgstr "日付"
+
+#. options_page_subheader
+#: sections/sections-app-util/src/bundle/sections.properties:125
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:options_page_subheader"
+msgid "Section Rules For Class"
+msgstr "クラスのセクション規則"
+
+#. student_view_sections
+#: sections/sections-app-util/src/bundle/sections.properties:126
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_sections"
+msgid "Sections"
+msgstr "セクション"
+
+#. student_view_all
+#: sections/sections-app-util/src/bundle/sections.properties:127
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:student_view_all"
+msgid "All"
+msgstr "すべてのセクション"
+
+#. edit_student_update
+#: sections/sections-app-util/src/bundle/sections.properties:128
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_update"
+msgid "Assign students"
+msgstr "学生を割当"
+
+#. roster_table_header_id
+#: sections/sections-app-util/src/bundle/sections.properties:129
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:roster_table_header_id"
+msgid "Student ID"
+msgstr "学生番号"
+
+#. roster_table_header_ta
+#: sections/sections-app-util/src/bundle/sections.properties:130
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:roster_table_header_ta"
+msgid "Teaching Assistants"
+msgstr "ティーチングアシスタント"
+
+#. overview_link_sep_char
+#: sections/sections-app-util/src/bundle/sections.properties:131
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_link_sep_char"
+msgid "|"
+msgstr "|"
+
+#. edit_manager_successful
+#: sections/sections-app-util/src/bundle/sections.properties:132
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_manager_successful"
+msgid "Teaching Assistants for {0} were updated successfully!"
+msgstr "{0} のティーチングアシスタントが更新されました．"
+
+#. roster_search_button
+#: sections/sections-app-util/src/bundle/sections.properties:133
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:roster_search_button"
+msgid "Find"
+msgstr "検索"
+
+#. section_singular
+#: sections/sections-app-util/src/bundle/sections.properties:134
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_singular"
+msgid "section"
+msgstr "個のセクションが"
+
+#. student_view_header_instructor
+#: sections/sections-app-util/src/bundle/sections.properties:135
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_header_instructor"
+msgid "Teaching  Assistant(s)"
+msgstr "ティーチングアシスタント"
+
+#. section_max_size_unlimited
+#: sections/sections-app-util/src/bundle/sections.properties:136
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_max_size_unlimited"
+msgid "Unlimited"
+msgstr "無制限"
+
+#. roster_clear_button
+#: sections/sections-app-util/src/bundle/sections.properties:137
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:roster_clear_button"
+msgid "Clear"
+msgstr "クリア"
+
+#. student_view_category_sections
+#: sections/sections-app-util/src/bundle/sections.properties:138
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_category_sections"
+msgid "{0} Sections"
+msgstr "{0}セクション"
+
+#. roster_table_header_name
+#: sections/sections-app-util/src/bundle/sections.properties:139
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:roster_table_header_name"
+msgid "Student Name"
+msgstr "学生名"
+
+#. overview_table_header_time
+#: sections/sections-app-util/src/bundle/sections.properties:140
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_table_header_time"
+msgid "Time"
+msgstr "時刻"
+
+#. overview_delete_section_success
+#: sections/sections-app-util/src/bundle/sections.properties:141
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:overview_delete_section_success"
+msgid "Section deleted."
+msgstr "セクションが削除されました．"
+
+#. section_add_failure_duplicate_title
+#: sections/sections-app-util/src/bundle/sections.properties:142
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_add_failure_duplicate_title"
+msgid "A section named {0} already exists in this site."
+msgstr "{0} という名前のセクションがすでにこのサイトに存在します．"
+
+#. add_section_add
+#: sections/sections-app-util/src/bundle/sections.properties:143
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:add_section_add"
+msgid "Add"
+msgstr "追加"
+
+#. add_sections_select_one
+#: sections/sections-app-util/src/bundle/sections.properties:144
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:add_sections_select_one"
+msgid "- choose one -"
+msgstr "- 一つ選択 -"
+
+#. add_section_sections_of
+#: sections/sections-app-util/src/bundle/sections.properties:145
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:add_section_sections_of"
+msgid "sections of"
+msgstr "/"
+
+#. roster_search_text
+#: sections/sections-app-util/src/bundle/sections.properties:146
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:roster_search_text"
+msgid "Student name or ID"
+msgstr "学生名また学生番号"
+
+#. section_start_time
+#: sections/sections-app-util/src/bundle/sections.properties:147
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_start_time"
+msgid "Start time"
+msgstr "開始時刻"
+
+#. student_view_instructions_switch
+#: sections/sections-app-util/src/bundle/sections.properties:148
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_instructions_switch"
+msgid ""
+"To switch sections, click the Switch link for the section you would like to "
+"move into. You will automatically be removed from your current section for "
+"that section type."
+msgstr "セクションを変更する場合は，変更したいセクションの「変更」リンクをクリックします．すると，現在のセクションのタイプから自動的に削除されます．"
+
+#. student_view_header_time
+#: sections/sections-app-util/src/bundle/sections.properties:149
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:student_view_header_time"
+msgid "Time"
+msgstr "時刻"
+
+#. add_section_successful
+#: sections/sections-app-util/src/bundle/sections.properties:150
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:add_section_successful"
+msgid ""
+"{0} {1} been successfully created!  You may now assign TAs and students to "
+"the {2} by choosing the links under the section."
+msgstr "{0} {1} が作成されました．セクション下のリンクを選択することにより，TA や学生を {2} に割り当てることができます．"
+
+#. edit_student_sections_instructions
+#: sections/sections-app-util/src/bundle/sections.properties:151
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:edit_student_sections_instructions"
+msgid ""
+"To assign this student to a section, click Assign. You may only assign a "
+"student to one section within each category. If the student is already a "
+"member of a section in a category, they wil be removed from that section if "
+"you assign them to a new section."
+msgstr "セクションにこの学生を割り当てる場合は，「割り当て」をクリックします．各カテゴリ内では一つのセクションには学生を一回だけしか割り当てができない場合があります．カテゴリ内のセクションのメンバになっている場合は，新しいセクションに割り当てるとその学生は元のセクションから削除されます．"
+
+#. section_close_title
+#: sections/sections-app-util/src/bundle/sections.properties:152
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_close_title"
+msgid "Section Tool Closed"
+msgstr "セクションツールは閉じられました"
+
+#. section_close_desc
+#: sections/sections-app-util/src/bundle/sections.properties:153
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_close_desc"
+msgid ""
+"This tool is closed. You will be able to access the sections tool at the "
+"date and time your faculty specified."
+msgstr "このツールは閉鎖されました．担当者が指定した日時にセクションツールにアクセスすることができます．"
+
+#. section_close_opendate
+#: sections/sections-app-util/src/bundle/sections.properties:154
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_close_opendate"
+msgid "Open Date:"
+msgstr "公開日時:"
+
+#. section_open_info
+#: sections/sections-app-util/src/bundle/sections.properties:155
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:section_open_info"
+msgid "Close sections tool for students until Open Date:"
+msgstr "セクションツールを公開日時になるまで受講者に対して見せない:"
+
+#. section_refresh_info
+#: sections/sections-app-util/src/bundle/sections.properties:156
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:section_refresh_info"
+msgid "Refresh the page to see the groups after the due date."
+msgstr "ページを更新し，締切日時後のグループを表示します．"
+
+#. error_date_format
+#: sections/sections-app-util/src/bundle/sections.properties:157
+msgctxt ""
+"sections/sections-app-util/src/bundle/sections.properties:error_date_format"
+msgid "Error with the Date/Time format"
+msgstr "日時または時刻フォーマットのエラー"
+
+#. options_internally_manage_warning
+#: sections/sections-app-util/src/bundle/sections.properties:158
+msgctxt ""
+"sections/sections-app-"
+"util/src/bundle/sections.properties:options_internally_manage_warning"
+msgid ""
+"When using an Open Date, you must allow either self registration or self "
+"switch."
+msgstr "公開日時を使うとき，自己登録か自己切り替えのいずれかを許可してください．"

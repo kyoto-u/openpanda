@@ -1,0 +1,169 @@
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2014-11-20 10:48+0000\n"
+"Last-Translator: Juanjo Meroño <jjmerono@um.es>\n"
+"Language-Team: Spanish (http://www.transifex.com/apereo/sakai10x/language/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. archive
+#: archive/archive-tool/tool/src/bundle/admin.properties:1
+msgctxt "archive/archive-tool/tool/src/bundle/admin.properties:archive"
+msgid "Archiving tools and contents of site {0}:"
+msgstr "Guardando herramientas y contenidos del sitio de la asignatura {0}"
+
+#. archive.file
+#: archive/archive-tool/tool/src/bundle/admin.properties:2
+msgctxt "archive/archive-tool/tool/src/bundle/admin.properties:archive.file"
+msgid "Please specify a file name and a site id for import."
+msgstr "Por favor, indique un nombre de fichero y un sitio id para importar."
+
+#. archive.import
+#: archive/archive-tool/tool/src/bundle/admin.properties:3
+msgctxt "archive/archive-tool/tool/src/bundle/admin.properties:archive.import"
+msgid "import is limited to administrators.\n"
+msgstr "la importación está limitada a administradores.\n"
+
+#. archive.import1
+#: archive/archive-tool/tool/src/bundle/admin.properties:4
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.import1"
+msgid "import {0}: from file {1} to site {2}  with creator id {3} complete.  "
+msgstr "importar {0}: desde fichero {1} al sitio {2} con el id de creador {3} completar."
+
+#. archive.import2
+#: archive/archive-tool/tool/src/bundle/admin.properties:5
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.import2"
+msgid "import from file {0} to site {1} complete. \n"
+msgstr "importar desde fichero {0} al sitio {2} completar. \n"
+
+#. archive.limited
+#: archive/archive-tool/tool/src/bundle/admin.properties:6
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.limited"
+msgid "archive is limited to administrators.\n"
+msgstr "archivar está limitado a administradores.\n"
+
+#. archive.please
+#: archive/archive-tool/tool/src/bundle/admin.properties:7
+msgctxt "archive/archive-tool/tool/src/bundle/admin.properties:archive.please"
+msgid "Please specify a site to archive."
+msgstr "Por favor, indique un sitio para archivar."
+
+#. archive.vm.alert
+#: archive/archive-tool/tool/src/bundle/admin.properties:8
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.vm.alert"
+msgid "Alert:"
+msgstr "Alerta:"
+
+#. archive.vm.archive
+#: archive/archive-tool/tool/src/bundle/admin.properties:9
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.vm.archive"
+msgid "Archive and Import"
+msgstr "Archivar e importar"
+
+#. archive.vm.archive1
+#: archive/archive-tool/tool/src/bundle/admin.properties:10
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.vm.archive1"
+msgid "Archive"
+msgstr "Archivar"
+
+#. archive.vm.file
+#: archive/archive-tool/tool/src/bundle/admin.properties:11
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.vm.file"
+msgid "file"
+msgstr "fichero"
+
+#. archive.vm.from
+#: archive/archive-tool/tool/src/bundle/admin.properties:12
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.vm.from"
+msgid "from site"
+msgstr "desde el sitio"
+
+#. archive.vm.import
+#: archive/archive-tool/tool/src/bundle/admin.properties:13
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.vm.import"
+msgid "Import"
+msgstr "Importar"
+
+#. archive.vm.site
+#: archive/archive-tool/tool/src/bundle/admin.properties:14
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.vm.site"
+msgid "to site"
+msgstr "al sitio"
+
+#. archive.button.batch
+#: archive/archive-tool/tool/src/bundle/admin.properties:15
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.button.batch"
+msgid "Batch Export/Import"
+msgstr "Exportar/Importar por lotes"
+
+#. archive.button.nonbatch
+#: archive/archive-tool/tool/src/bundle/admin.properties:16
+msgctxt ""
+"archive/archive-"
+"tool/tool/src/bundle/admin.properties:archive.button.nonbatch"
+msgid "Non-Batch Import/Export"
+msgstr "Importar/Exportar sin lotes"
+
+#. archive.batch.auth
+#: archive/archive-tool/tool/src/bundle/admin.properties:17
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.batch.auth"
+msgid "Batch Import is limited to administrators."
+msgstr "Importar por lotes está restringido a usuarios administradores."
+
+#. archive.batch.missingname
+#: archive/archive-tool/tool/src/bundle/admin.properties:18
+msgctxt ""
+"archive/archive-"
+"tool/tool/src/bundle/admin.properties:archive.batch.missingname"
+msgid "Please specify a file name for batch site import."
+msgstr "Por favor, especifique un nombre de fichero para importar el sitio por lotes."
+
+#. archive.batch.wrongformat
+#: archive/archive-tool/tool/src/bundle/admin.properties:19
+msgctxt ""
+"archive/archive-"
+"tool/tool/src/bundle/admin.properties:archive.batch.wrongformat"
+msgid "Wrong format of batch import file. "
+msgstr "Formato del fichero erróneo. "
+
+#. archive.noaccess
+#: archive/archive-tool/tool/src/bundle/admin.properties:20
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.noaccess"
+msgid "You do not have permission to use this tool."
+msgstr "No tiene permiso para acceder a esta herramienta."
+
+#. archive.vm.export
+#: archive/archive-tool/tool/src/bundle/admin.properties:21
+msgctxt ""
+"archive/archive-tool/tool/src/bundle/admin.properties:archive.vm.export"
+msgid "Export"
+msgstr "Exportar"
+
+#. archive.vm.filebatchimport
+#: archive/archive-tool/tool/src/bundle/admin.properties:22
+msgctxt ""
+"archive/archive-"
+"tool/tool/src/bundle/admin.properties:archive.vm.filebatchimport"
+msgid "Batch import file"
+msgstr "Archivo por lotes para importar"

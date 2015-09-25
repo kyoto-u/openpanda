@@ -1,0 +1,4646 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. lessonbuilder.create
+#: lessonbuilder/tool/src/resources/Events.properties:1
+msgctxt ""
+"lessonbuilder/tool/src/resources/Events.properties:lessonbuilder.create"
+msgid "Lesson Builder: Create page or item"
+msgstr "Lesson Builder: Create page or item"
+
+#. lessonbuilder.delete
+#: lessonbuilder/tool/src/resources/Events.properties:2
+msgctxt ""
+"lessonbuilder/tool/src/resources/Events.properties:lessonbuilder.delete"
+msgid "Lesson Builder: Delete page or item"
+msgstr "Lesson Builder: Delete page or item"
+
+#. lessonbuilder.update
+#: lessonbuilder/tool/src/resources/Events.properties:3
+msgctxt ""
+"lessonbuilder/tool/src/resources/Events.properties:lessonbuilder.update"
+msgid "Lesson Builder: Update page or item"
+msgstr "Lesson Builder: Update page or item"
+
+#. lessonbuilder.read
+#: lessonbuilder/tool/src/resources/Events.properties:4
+msgctxt ""
+"lessonbuilder/tool/src/resources/Events.properties:lessonbuilder.read"
+msgid "Lesson Builder: Read page"
+msgstr "Lesson Builder: Read page"
+
+#. simplepage.text
+#: lessonbuilder/tool/src/resources/messages.properties:1
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.text"
+msgid "Add Text"
+msgstr "Add Text"
+
+#. simplepage.text.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:2
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.text.tooltip"
+msgid "Add a box that can contain text and other web content"
+msgstr "Add a box that can contain text and other web content"
+
+#. simplepage.instructions
+#: lessonbuilder/tool/src/resources/messages.properties:3
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.instructions"
+msgid "You have not yet created this simple page, click 'Edit page' to begin."
+msgstr ""
+"You have not yet created this simple page, click 'Edit page' to begin."
+
+#. simplepage.not_available
+#: lessonbuilder/tool/src/resources/messages.properties:4
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.not_available"
+msgid ""
+"This page has not yet been created by the course instructor or you do not "
+"have the necessary permissions to read it"
+msgstr ""
+"This page has not yet been created by the course instructor or you do not "
+"have the necessary permissions to read it"
+
+#. simplepage.impossible1
+#: lessonbuilder/tool/src/resources/messages.properties:5
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.impossible1"
+msgid "Unable to create page. This should be impossible. Please report it."
+msgstr "Unable to create page. This should be impossible. Please report it."
+
+#. simplepage.pagehidden
+#: lessonbuilder/tool/src/resources/messages.properties:6
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pagehidden"
+msgid ""
+"You have checked the 'Hide' box in the Settings window. This prevents "
+"standard users from seeing this page."
+msgstr ""
+"You have checked the 'Hide' box in the Settings window. This prevents "
+"standard users from seeing this page."
+
+#. simplepage.pagehidden.text
+#: lessonbuilder/tool/src/resources/messages.properties:7
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pagehidden.text"
+msgid ""
+"<strong>Note:</strong> This page is currently hidden from standard users. "
+"You can change this in the <strong>Settings</strong> window."
+msgstr ""
+"<strong>Note:</strong> This page is currently hidden from standard users. "
+"You can change this in the <strong>Settings</strong> window."
+
+#. simplepage.showallpages
+#: lessonbuilder/tool/src/resources/messages.properties:8
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.showallpages"
+msgid "Index of pages"
+msgstr "Index of pages"
+
+#. simplepage.adding-text
+#: lessonbuilder/tool/src/resources/messages.properties:9
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.adding-text"
+msgid "Adding text to:"
+msgstr "Adding text to:"
+
+#. simplepage.continue
+#: lessonbuilder/tool/src/resources/messages.properties:10
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.continue"
+msgid "Continue"
+msgstr "Continue"
+
+#. simplepage.toolbar
+#: lessonbuilder/tool/src/resources/messages.properties:11
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.toolbar"
+msgid "Editing tools"
+msgstr "Editing tools"
+
+#. simplepage.maincontent
+#: lessonbuilder/tool/src/resources/messages.properties:12
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.maincontent"
+msgid "Main page content"
+msgstr "Main page content"
+
+#. simplepage.notreleased
+#: lessonbuilder/tool/src/resources/messages.properties:13
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.notreleased"
+msgid ""
+"You have checked the 'Hide until release date' box in the Settings window, "
+"and the date has not arrived. Although the page will appear in the margin, "
+"users will not be able to use it yet."
+msgstr ""
+"You have checked the 'Hide until release date' box in the Settings window, "
+"and the date has not arrived. Although the page will appear in the margin, "
+"users will not be able to use it yet."
+
+#. simplepage.notreleased.text
+#: lessonbuilder/tool/src/resources/messages.properties:14
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.notreleased.text"
+msgid ""
+"<strong>Note:</strong> This page will not be available to standard users "
+"until {}. You can change this in the <strong>Settings</strong> window."
+msgstr ""
+"<strong>Note:</strong> This page will not be available to standard users "
+"until {}. You can change this in the <strong>Settings</strong> window."
+
+#. simplepage.page.gradebook
+#: lessonbuilder/tool/src/resources/messages.properties:15
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.gradebook"
+msgid "Create gradebook entry when page is completed."
+msgstr "Create gradebook entry when page is completed."
+
+#. simplepage.points
+#: lessonbuilder/tool/src/resources/messages.properties:16
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.points"
+msgid "points"
+msgstr "points"
+
+#. simplepage.overquota
+#: lessonbuilder/tool/src/resources/messages.properties:17
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.overquota"
+msgid "Unable to add resource: it would take your site over its quota"
+msgstr "Unable to add resource: it would take your site over its quota"
+
+#. simplepage.resourceerror
+#: lessonbuilder/tool/src/resources/messages.properties:18
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resourceerror"
+msgid "Unable to add resource: {}"
+msgstr "Unable to add resource: {}"
+
+#. simplepage.resourcepossibleerror
+#: lessonbuilder/tool/src/resources/messages.properties:19
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resourcepossibleerror"
+msgid ""
+"Possible error in saving file. The operation probably worked correctly, but "
+"you should verify that your file was uploaded or updated properly."
+msgstr ""
+"Possible error in saving file. The operation probably worked correctly, but "
+"you should verify that your file was uploaded or updated properly."
+
+#. simplepage.httphttps
+#: lessonbuilder/tool/src/resources/messages.properties:20
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.httphttps"
+msgid ""
+"You are adding a resource using http: on a page using https:. This will not "
+"display in all browsers. Please use https: if possible. Hit \"Save\" again "
+"to use this URL anyway."
+msgstr ""
+"You are adding a resource using http: on a page using https:. This will not "
+"display in all browsers. Please use https: if possible. Hit \"Save\" again "
+"to use this URL anyway."
+
+#. simplepage.new-page
+#: lessonbuilder/tool/src/resources/messages.properties:21
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page"
+msgid "Add More Pages"
+msgstr "Add More Pages"
+
+#. simplepage.new-page-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:22
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"tooltip"
+msgid "Add pages that will show in left bar"
+msgstr "Add pages that will show in left bar"
+
+#. simplepage.new-page-title
+#: lessonbuilder/tool/src/resources/messages.properties:23
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"title"
+msgid "Page Title"
+msgstr "Page Title"
+
+#. simplepage.new-page-number
+#: lessonbuilder/tool/src/resources/messages.properties:24
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"number"
+msgid "Number of pages"
+msgstr "Number of pages"
+
+#. simplepage.new-page-number-2
+#: lessonbuilder/tool/src/resources/messages.properties:25
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"number-2"
+msgid "blank gives one page"
+msgstr "blank gives one page"
+
+#. simplepage.new-page-copy
+#: lessonbuilder/tool/src/resources/messages.properties:26
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"copy"
+msgid ""
+"Make new pages copies of the current one (except that subpages are omitted)"
+msgstr ""
+"Make new pages copies of the current one (except that subpages are omitted)"
+
+#. simplepage.new-page-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:27
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"explanation"
+msgid ""
+"Create more pages in the left margin. To create pages within this one, use "
+"\"Add Subpage.\""
+msgstr ""
+"Create more pages in the left margin. To create pages within this one, use "
+"\"Add Subpage.\""
+
+#. simplepage.new-page-explanation-1
+#: lessonbuilder/tool/src/resources/messages.properties:28
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"explanation-1"
+msgid ""
+"You can create a group of pages at once if you put a number in the title."
+msgstr ""
+"You can create a group of pages at once if you put a number in the title."
+
+#. simplepage.new-page-explanation-2
+#: lessonbuilder/tool/src/resources/messages.properties:29
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"explanation-2"
+msgid ""
+"For example, if you specify \"Unit 4\" and request 3 pages, you'll get Unit "
+"4, Unit 5 and Unit 6."
+msgstr ""
+"For example, if you specify \"Unit 4\" and request 3 pages, you'll get Unit "
+"4, Unit 5 and Unit 6."
+
+#. simplepage.number_pages_not_number
+#: lessonbuilder/tool/src/resources/messages.properties:30
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.number_pages_not_number"
+msgid "Number of pages must be a number"
+msgstr "Number of pages must be a number"
+
+#. simplepage.title_no_number
+#: lessonbuilder/tool/src/resources/messages.properties:31
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title_no_number"
+msgid "Title must contain a number"
+msgstr "Title must contain a number"
+
+#. simplepage.remove-page
+#: lessonbuilder/tool/src/resources/messages.properties:32
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-page"
+msgid "Remove Page"
+msgstr "Remove Page"
+
+#. simplepage.remove-page-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:33
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-page-"
+"tooltip"
+msgid "Remove current page from left margin"
+msgstr "Remove current page from left margin"
+
+#. simplepage.remove-page-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:34
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-page-"
+"explanation"
+msgid ""
+"Remove the current page from the left margin. This does not delete the page."
+" To delete it, use the \"Index of pages\" button."
+msgstr ""
+"Remove the current page from the left margin. This does not delete the page."
+" To delete it, use the \"Index of pages\" button."
+
+#. simplepage.remove-student-page-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:35
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-"
+"student-page-explanation"
+msgid "Remove the current student page. This page will be deleted."
+msgstr "Remove the current student page. This page will be deleted."
+
+#. simplepage.remove
+#: lessonbuilder/tool/src/resources/messages.properties:36
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove"
+msgid "Remove"
+msgstr "Remove"
+
+#. simplepage.remove_page_done
+#: lessonbuilder/tool/src/resources/messages.properties:37
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove_page_done"
+msgid ""
+"This page has been removed from left margin. This change will be visible "
+"when you click \"Continue\". Note that the page has not been deleted from "
+"the system. You may choose it as a subpage for another page, or go to "
+"\"Index of Pages\" from any remaining page and delete it."
+msgstr ""
+"This page has been removed from left margin. This change will be visible "
+"when you click \"Continue\". Note that the page has not been deleted from "
+"the system. You may choose it as a subpage for another page, or go to "
+"\"Index of Pages\" from any remaining page and delete it."
+
+#. simplepage.not_yet_available_releasedate
+#: lessonbuilder/tool/src/resources/messages.properties:38
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.not_yet_available_releasedate"
+msgid "This page will not be available until {}."
+msgstr "This page will not be available until {}."
+
+#. simplepage.not_available_hidden
+#: lessonbuilder/tool/src/resources/messages.properties:39
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.not_available_hidden"
+msgid "This page is hidden."
+msgstr "This page is hidden."
+
+#. simplepage.hiddenpage
+#: lessonbuilder/tool/src/resources/messages.properties:40
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.hiddenpage"
+msgid "[Hidden]"
+msgstr "[Hidden]"
+
+#. simplepage.pagenotreleased
+#: lessonbuilder/tool/src/resources/messages.properties:41
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pagenotreleased"
+msgid "[Not released]"
+msgstr "[Not released]"
+
+#. simplepage.create_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:42
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_assignment"
+msgid "Create new assignment using Assignments"
+msgstr "Create new assignment using Assignments"
+
+#. simplepage.create_assignment2
+#: lessonbuilder/tool/src/resources/messages.properties:43
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_assignment2"
+msgid "Create new assignment using Assignment 2"
+msgstr "Create new assignment using Assignment 2"
+
+#. simplepage.create_blti
+#: lessonbuilder/tool/src/resources/messages.properties:44
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_blti"
+msgid "Manage or Install External Tools"
+msgstr "Manage or Install External Tools"
+
+#. simplepage.create_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:45
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_quiz"
+msgid "Create new quiz"
+msgstr "Create new quiz"
+
+#. simplepage.create_samigo
+#: lessonbuilder/tool/src/resources/messages.properties:46
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_samigo"
+msgid "Create new quiz using Tests and Quizzes"
+msgstr "Create new quiz using Tests and Quizzes"
+
+#. simplepage.create_mneme
+#: lessonbuilder/tool/src/resources/messages.properties:47
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_mneme"
+msgid "Create new quiz using Tasks, Tests and Surveys"
+msgstr "Create new quiz using Tasks, Tests and Surveys"
+
+#. simplepage.create_topic
+#: lessonbuilder/tool/src/resources/messages.properties:48
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_topic"
+msgid "Create new forum topic"
+msgstr "Create new forum topic"
+
+#. simplepage.create_forums
+#: lessonbuilder/tool/src/resources/messages.properties:49
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_forums"
+msgid "Create new topic using Forums"
+msgstr "Create new topic using Forums"
+
+#. simplepage.create_jforum
+#: lessonbuilder/tool/src/resources/messages.properties:50
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_jforum"
+msgid "Create new topic using Discussions and Private Messages"
+msgstr "Create new topic using Discussions and Private Messages"
+
+#. simplepage.create_yaft_topic
+#: lessonbuilder/tool/src/resources/messages.properties:51
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_yaft_topic"
+msgid "Create new topic using YAFT"
+msgstr "Create new topic using YAFT"
+
+#. simplepage.select_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:52
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_assignment"
+msgid "Existing assignments"
+msgstr "Existing assignments"
+
+#. simplepage.return_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:53
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_assignment"
+msgid ""
+"Continue with Add Assignment, after you have created the new assignment"
+msgstr ""
+"Continue with Add Assignment, after you have created the new assignment"
+
+#. simplepage.return_blti
+#: lessonbuilder/tool/src/resources/messages.properties:54
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_blti"
+msgid "Continue with Add External Tool"
+msgstr "Continue with Add External Tool"
+
+#. simplepage.select_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:55
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_quiz"
+msgid "Existing quizzes"
+msgstr "Existing quizzes"
+
+#. simplepage.return_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:56
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_quiz"
+msgid "Continue with Add Quiz, after you have created the new quiz"
+msgstr "Continue with Add Quiz, after you have created the new quiz"
+
+#. simplepage.select_topic
+#: lessonbuilder/tool/src/resources/messages.properties:57
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_topic"
+msgid "Existing topics"
+msgstr "Existing topics"
+
+#. simplepage.return_forum
+#: lessonbuilder/tool/src/resources/messages.properties:58
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_forum"
+msgid "Continue with Add Forum Topic, after you have created the new topic"
+msgstr "Continue with Add Forum Topic, after you have created the new topic"
+
+#. simplepage.no_assignments
+#: lessonbuilder/tool/src/resources/messages.properties:59
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_assignments"
+msgid ""
+"There are no assignments available in this site. Use the \"Create new "
+"assignment\" link to create one."
+msgstr ""
+"There are no assignments available in this site. Use the \"Create new "
+"assignment\" link to create one."
+
+#. simplepage.no_assignment_tools
+#: lessonbuilder/tool/src/resources/messages.properties:60
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_assignment_tools"
+msgid "There is no assignment tool available in the site."
+msgstr "There is no assignment tool available in the site."
+
+#. simplepage.assign_seeattach
+#: lessonbuilder/tool/src/resources/messages.properties:61
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assign_seeattach"
+msgid "See attached file for instructions"
+msgstr "See attached file for instructions"
+
+#. simplepage.no_topics
+#: lessonbuilder/tool/src/resources/messages.properties:62
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_topics"
+msgid ""
+"There are no forum topics available in this site. Use the \"Create new "
+"topic\" link to create one"
+msgstr ""
+"There are no forum topics available in this site. Use the \"Create new "
+"topic\" link to create one"
+
+#. simplepage.no_forum_tools
+#: lessonbuilder/tool/src/resources/messages.properties:63
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_forum_tools"
+msgid "There are no forum tools in the site."
+msgstr "There are no forum tools in the site."
+
+#. simplepage.no_assessments
+#: lessonbuilder/tool/src/resources/messages.properties:64
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_assessments"
+msgid ""
+"There are no assessments available in this site. Use the \"Create new quiz\""
+" link to create one."
+msgstr ""
+"There are no assessments available in this site. Use the \"Create new quiz\""
+" link to create one."
+
+#. simplepage.no_assessment_tool
+#: lessonbuilder/tool/src/resources/messages.properties:65
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_assessment_tool"
+msgid "There is no quiz tool in this site."
+msgstr "There is no quiz tool in this site."
+
+#. simplepage.noplugin
+#: lessonbuilder/tool/src/resources/messages.properties:66
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noplugin"
+msgid ""
+"Your browser does not seem to have the necessary plugin to display this "
+"content. You may use the following link to download the contents as a file."
+msgstr ""
+"Your browser does not seem to have the necessary plugin to display this "
+"content. You may use the following link to download the contents as a file."
+
+#. simplepage.forumdeleted
+#: lessonbuilder/tool/src/resources/messages.properties:67
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forumdeleted"
+msgid "This forum topic has been deleted."
+msgstr "This forum topic has been deleted."
+
+#. simplepage.menuItemTitle_label
+#: lessonbuilder/tool/src/resources/messages.properties:68
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.menuItemTitle_label"
+msgid "Menu item title"
+msgstr "Menu item title"
+
+#. simplepage.menuItemTitle_tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:69
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.menuItemTitle_tooltip"
+msgid "Displays in the site menu."
+msgstr "Displays in the site menu."
+
+#. simplepage.pageTitle_label
+#: lessonbuilder/tool/src/resources/messages.properties:70
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pageTitle_label"
+msgid "Page title"
+msgstr "Page title"
+
+#. simplepage.pageTitle_tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:71
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pageTitle_tooltip"
+msgid "Displays at the top of the page."
+msgstr "Displays at the top of the page."
+
+#. simplepage.editTitle
+#: lessonbuilder/tool/src/resources/messages.properties:72
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editTitle"
+msgid "Edit Title"
+msgstr "Edit Title"
+
+#. simplepage.editTitle-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:73
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editTitle-"
+"tooltip"
+msgid "Edit title, release date, and other page properties"
+msgstr "Edit title, release date, and other page properties"
+
+#. simplepage.edit-title.generic
+#: lessonbuilder/tool/src/resources/messages.properties:74
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.generic"
+msgid "Edit {}"
+msgstr "Edit {}"
+
+#. simplepage.edit-title.textbox
+#: lessonbuilder/tool/src/resources/messages.properties:75
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.textbox"
+msgid "Edit text box {}"
+msgstr "Edit text box {}"
+
+#. simplepage.edit-title.url
+#: lessonbuilder/tool/src/resources/messages.properties:76
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.url"
+msgid "Edit inline item {}"
+msgstr "Edit inline item {}"
+
+#. simplepage.edit-title.youtube
+#: lessonbuilder/tool/src/resources/messages.properties:77
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.youtube"
+msgid "Edit Youtube item"
+msgstr "Edit Youtube item"
+
+#. simplepage.edit-title.comments
+#: lessonbuilder/tool/src/resources/messages.properties:78
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.comments"
+msgid "Edit Comments Item"
+msgstr "Edit Comments Item"
+
+#. simplepage.edit-title.student
+#: lessonbuilder/tool/src/resources/messages.properties:79
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.student"
+msgid "Edit Student Content Item"
+msgstr "Edit Student Content Item"
+
+#. simplepage.edit-title.question
+#: lessonbuilder/tool/src/resources/messages.properties:80
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.question"
+msgid "Edit Question Item"
+msgstr "Edit Question Item"
+
+#. simplepage.fromhost
+#: lessonbuilder/tool/src/resources/messages.properties:81
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.fromhost"
+msgid "content from {}"
+msgstr "content from {}"
+
+#. simplepage.showpage
+#: lessonbuilder/tool/src/resources/messages.properties:82
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.showpage"
+msgid "Lesson Page"
+msgstr "Lesson Page"
+
+#. simplepage.showitem
+#: lessonbuilder/tool/src/resources/messages.properties:83
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.showitem"
+msgid "Lesson Item"
+msgstr "Lesson Item"
+
+#. simplepage.return
+#: lessonbuilder/tool/src/resources/messages.properties:84
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return"
+msgid "Return to Lesson"
+msgstr "Return to Lesson"
+
+#. simplepage.return.warning
+#: lessonbuilder/tool/src/resources/messages.properties:85
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return.warning"
+msgid "WARNING: Make sure you save or submit your work before returning."
+msgstr "WARNING: Make sure you save or submit your work before returning."
+
+#. simplepage.next
+#: lessonbuilder/tool/src/resources/messages.properties:86
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.next"
+msgid "Next"
+msgstr "Next"
+
+#. simplepage.back
+#: lessonbuilder/tool/src/resources/messages.properties:87
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.back"
+msgid "Back"
+msgstr "Back"
+
+#. simplepage.editor
+#: lessonbuilder/tool/src/resources/messages.properties:88
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editor"
+msgid "Editor"
+msgstr "Editor"
+
+#. simplepage.ckeditor
+#: lessonbuilder/tool/src/resources/messages.properties:89
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.ckeditor"
+msgid "Editor, type ALT-0 for help"
+msgstr "Editor, type ALT-0 for help"
+
+#. simplepage.preview
+#: lessonbuilder/tool/src/resources/messages.properties:90
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.preview"
+msgid "Preview of {}"
+msgstr "Preview of {}"
+
+#. simplepage.save_message
+#: lessonbuilder/tool/src/resources/messages.properties:91
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.save_message"
+msgid "Save"
+msgstr "Save"
+
+#. simplepage.cancel_message
+#: lessonbuilder/tool/src/resources/messages.properties:92
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cancel_message"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. simplepage.has_prerequistes
+#: lessonbuilder/tool/src/resources/messages.properties:93
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.has_prerequistes"
+msgid "Before viewing page, you must complete the following pages:"
+msgstr "Before viewing page, you must complete the following pages:"
+
+#. simplepage.has_prerequistes_2
+#: lessonbuilder/tool/src/resources/messages.properties:94
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.has_prerequistes_2"
+msgid ""
+"You need to complete a previous item before doing this one. Return to this "
+"page to do it. Look for an item with an asterisk to the left of it."
+msgstr ""
+"You need to complete a previous item before doing this one. Return to this "
+"page to do it. Look for an item with an asterisk to the left of it."
+
+#. simplepage.resource
+#: lessonbuilder/tool/src/resources/messages.properties:95
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource"
+msgid "Add Content Link"
+msgstr "Add Content Link"
+
+#. simplepage.resource.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:96
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource.tooltip"
+msgid ""
+"Add link: Upload file or use existing file in Resources tool and add link to"
+" it, or enter a URL for another site"
+msgstr ""
+"Add link: Upload file or use existing file in Resources tool and add link to"
+" it, or enter a URL for another site"
+
+#. simplepage.resource-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:97
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource-"
+"descrip"
+msgid ""
+"Add link: Upload file or use existing file in Resources tool and add link to"
+" it, or enter a URL for another site"
+msgstr ""
+"Add link: Upload file or use existing file in Resources tool and add link to"
+" it, or enter a URL for another site"
+
+#. simplepage.subpage
+#: lessonbuilder/tool/src/resources/messages.properties:98
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage"
+msgid "Add Subpage"
+msgstr "Add Subpage"
+
+#. simplepage.subpage-next
+#: lessonbuilder/tool/src/resources/messages.properties:99
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage-next"
+msgid ""
+"Next page, i.e. page replaces the current one rather than returning to the "
+"current one"
+msgstr ""
+"Next page, i.e. page replaces the current one rather than returning to the "
+"current one"
+
+#. simplepage.subpage-button
+#: lessonbuilder/tool/src/resources/messages.properties:100
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage-"
+"button"
+msgid "Show as button rather than link"
+msgstr "Show as button rather than link"
+
+#. simplepage.subpage.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:101
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage.tooltip"
+msgid "Create a new page and add a link to it here"
+msgstr "Create a new page and add a link to it here"
+
+#. simplepage.usenewwindow
+#: lessonbuilder/tool/src/resources/messages.properties:102
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.usenewwindow"
+msgid "Open item in a new window"
+msgstr "Open item in a new window"
+
+#. simplepage.assignment
+#: lessonbuilder/tool/src/resources/messages.properties:103
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assignment"
+msgid "Add Assignment"
+msgstr "Add Assignment"
+
+#. simplepage.assignment.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:104
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assignment.tooltip"
+msgid "Add a link to an assignment in the Assignment tool"
+msgstr "Add a link to an assignment in the Assignment tool"
+
+#. simplepage.assignment.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:105
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assignment.chooser"
+msgid "Pick an Assignment"
+msgstr "Pick an Assignment"
+
+#. simplepage.due
+#: lessonbuilder/tool/src/resources/messages.properties:106
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.due"
+msgid "Due"
+msgstr "Due"
+
+#. simplepage.chooser.name
+#: lessonbuilder/tool/src/resources/messages.properties:107
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.name"
+msgid "Page"
+msgstr "Page"
+
+#. simplepage.chooser.due
+#: lessonbuilder/tool/src/resources/messages.properties:108
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.due"
+msgid "Due Date"
+msgstr "Due Date"
+
+#. simplepage.chooser.link
+#: lessonbuilder/tool/src/resources/messages.properties:109
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.link"
+msgid "Link"
+msgstr "Link"
+
+#. simplepage.chooser.textitemplaceholder
+#: lessonbuilder/tool/src/resources/messages.properties:110
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.textitemplaceholder"
+msgid "This is a rich text item. To see it, click the parent page. "
+msgstr "This is a rich text item. To see it, click the parent page. "
+
+#. simplepage.select
+#: lessonbuilder/tool/src/resources/messages.properties:111
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select"
+msgid "Select"
+msgstr "Select"
+
+#. simplepage.select-for-deletion
+#: lessonbuilder/tool/src/resources/messages.properties:112
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select-for-"
+"deletion"
+msgid "Select for deletion"
+msgstr "Select for deletion"
+
+#. simplepage.delete-message
+#: lessonbuilder/tool/src/resources/messages.properties:113
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete-"
+"message"
+msgid ""
+"Only pages that are not currently included anywhere on the site are "
+"available for permanent deletion."
+msgstr ""
+"Only pages that are not currently included anywhere on the site are "
+"available for permanent deletion."
+
+#. simplepage.delete-selected
+#: lessonbuilder/tool/src/resources/messages.properties:114
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete-"
+"selected"
+msgid "Delete selected pages"
+msgstr "Delete selected pages"
+
+#. simplepage.chooser.select
+#: lessonbuilder/tool/src/resources/messages.properties:115
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.select"
+msgid "Use selected item"
+msgstr "Use selected item"
+
+#. simplepage.chooser.unused
+#: lessonbuilder/tool/src/resources/messages.properties:116
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.unused"
+msgid ""
+"The following pages are currently not in use. (No other page refers to "
+"them.)"
+msgstr ""
+"The following pages are currently not in use. (No other page refers to "
+"them.)"
+
+#. simplepage.change_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:117
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_assignment"
+msgid "Change Assignment"
+msgstr "Change Assignment"
+
+#. simplepage.change_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:118
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_quiz"
+msgid "Change Quiz"
+msgstr "Change Quiz"
+
+#. simplepage.change_forum
+#: lessonbuilder/tool/src/resources/messages.properties:119
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_forum"
+msgid "Change Forum Topic"
+msgstr "Change Forum Topic"
+
+#. simplepage.change_resource
+#: lessonbuilder/tool/src/resources/messages.properties:120
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_resource"
+msgid "Change File or URL"
+msgstr "Change File or URL"
+
+#. simplepage.change_caption
+#: lessonbuilder/tool/src/resources/messages.properties:121
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_caption"
+msgid "Change File or URL for caption file (must be VTT format)"
+msgstr "Change File or URL for caption file (must be VTT format)"
+
+#. simplepage.add_caption
+#: lessonbuilder/tool/src/resources/messages.properties:122
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add_caption"
+msgid "Add caption file (must be VTT format)"
+msgstr "Add caption file (must be VTT format)"
+
+#. simplepage.change_page
+#: lessonbuilder/tool/src/resources/messages.properties:123
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_page"
+msgid "Change Page"
+msgstr "Change Page"
+
+#. simplepage.quiz
+#: lessonbuilder/tool/src/resources/messages.properties:124
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.quiz"
+msgid "Add Quiz"
+msgstr "Add Quiz"
+
+#. simplepage.quiz.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:125
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.quiz.tooltip"
+msgid "Add a link to a quiz"
+msgstr "Add a link to a quiz"
+
+#. simplepage.quiz.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:126
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.quiz.chooser"
+msgid "Pick a Quiz"
+msgstr "Pick a Quiz"
+
+#. simplepage.forum
+#: lessonbuilder/tool/src/resources/messages.properties:127
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forum"
+msgid "Add Forum Topic"
+msgstr "Add Forum Topic"
+
+#. simplepage.forum.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:128
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forum.tooltip"
+msgid "Add a link to a forum topic in the Forums or JForum tool"
+msgstr "Add a link to a forum topic in the Forums or JForum tool"
+
+#. simplepage.forum.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:129
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forum.chooser"
+msgid "Pick a Forum Topic"
+msgstr "Pick a Forum Topic"
+
+#. simplepage.page.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:130
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.chooser"
+msgid "Pick a Page"
+msgstr "Pick a Page"
+
+#. simplepage.page.index
+#: lessonbuilder/tool/src/resources/messages.properties:131
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.index"
+msgid "Pages in Current Site"
+msgstr "Pages in Current Site"
+
+#. simplepage.page.onlyseen
+#: lessonbuilder/tool/src/resources/messages.properties:132
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.onlyseen"
+msgid "NOTE: Only pages you have seen are shown."
+msgstr "NOTE: Only pages you have seen are shown."
+
+#. simplepage.create
+#: lessonbuilder/tool/src/resources/messages.properties:133
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create"
+msgid "Create"
+msgstr "Create"
+
+#. simplepage.cancel
+#: lessonbuilder/tool/src/resources/messages.properties:134
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. simplepage.notitle
+#: lessonbuilder/tool/src/resources/messages.properties:135
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.notitle"
+msgid "A title is required."
+msgstr "A title is required."
+
+#. simplepage.subpage_header
+#: lessonbuilder/tool/src/resources/messages.properties:136
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage_header"
+msgid "Create A Subpage"
+msgstr "Create A Subpage"
+
+#. simplepage.page.showitems
+#: lessonbuilder/tool/src/resources/messages.properties:137
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.showitems"
+msgid "Show items"
+msgstr "Show items"
+
+#. simplepage.page.showitemstooltip
+#: lessonbuilder/tool/src/resources/messages.properties:138
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.showitemstooltip"
+msgid "Show the items under each page"
+msgstr "Show the items under each page"
+
+#. simplepage.page.hideitems
+#: lessonbuilder/tool/src/resources/messages.properties:139
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.hideitems"
+msgid "Hide items"
+msgstr "Hide items"
+
+#. simplepage.page.hideitemstooltip
+#: lessonbuilder/tool/src/resources/messages.properties:140
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.hideitemstooltip"
+msgid "Hide the items. Just show the pages."
+msgstr "Hide the items. Just show the pages."
+
+#. simplepage.copylink
+#: lessonbuilder/tool/src/resources/messages.properties:141
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copylink"
+msgid "Copy"
+msgstr "Copy"
+
+#. simplepage.copylink2
+#: lessonbuilder/tool/src/resources/messages.properties:142
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copylink2"
+msgid "Copy: {}"
+msgstr "Copy: {}"
+
+#. simplepage.startup_help
+#: lessonbuilder/tool/src/resources/messages.properties:143
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.startup_help"
+msgid "templates/instructions/general.html"
+msgstr "templates/instructions/general.html"
+
+#. simplepage.additional-instructions
+#: lessonbuilder/tool/src/resources/messages.properties:144
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.additional-"
+"instructions"
+msgid "instructions/multimedia.html"
+msgstr "instructions/multimedia.html"
+
+#. simplepage.additional-website-instructions
+#: lessonbuilder/tool/src/resources/messages.properties:145
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.additional-"
+"website-instructions"
+msgid "instructions/website.html"
+msgstr "instructions/website.html"
+
+#. simplepage.general-instructions
+#: lessonbuilder/tool/src/resources/messages.properties:146
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.general-"
+"instructions"
+msgid "instructions/general.html"
+msgstr "instructions/general.html"
+
+#. simplepage.help
+#: lessonbuilder/tool/src/resources/messages.properties:147
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.help"
+msgid "Help"
+msgstr "Help"
+
+#. simplepage.noitems_error_admin
+#: lessonbuilder/tool/src/resources/messages.properties:148
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noitems_error_admin"
+msgid ""
+"We suggest that you start out by using <b>Add Text</b> to put something on "
+"this page. Then you can add links or other content below it. Put your mouse "
+"over one of the items above to see what it does."
+msgstr ""
+"We suggest that you start out by using <b>Add Text</b> to put something on "
+"this page. Then you can add links or other content below it. Put your mouse "
+"over one of the items above to see what it does."
+
+#. simplepage.noitems_error_user
+#: lessonbuilder/tool/src/resources/messages.properties:149
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noitems_error_user"
+msgid "There are no items on this page currently visible to you."
+msgstr "There are no items on this page currently visible to you."
+
+#. simplepage.additional-instructions-label
+#: lessonbuilder/tool/src/resources/messages.properties:150
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.additional-"
+"instructions-label"
+msgid "Frequently Asked Questions about multimedia content"
+msgstr "Frequently Asked Questions about multimedia content"
+
+#. simplepage.additional-website-instructions-label
+#: lessonbuilder/tool/src/resources/messages.properties:151
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.additional-"
+"website-instructions-label"
+msgid "Frequently Asked Questions about uploading content from ZIP file"
+msgstr "Frequently Asked Questions about uploading content from ZIP file"
+
+#. simplepage.link
+#: lessonbuilder/tool/src/resources/messages.properties:152
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.link"
+msgid "Add Link"
+msgstr "Add Link"
+
+#. simplepage.addlink_header
+#: lessonbuilder/tool/src/resources/messages.properties:153
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addlink_header"
+msgid "Add A New Link"
+msgstr "Add A New Link"
+
+#. simplepage.addLink_label
+#: lessonbuilder/tool/src/resources/messages.properties:154
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addLink_label"
+msgid "URL:"
+msgstr "URL:"
+
+#. simplepage.addLink_label_add
+#: lessonbuilder/tool/src/resources/messages.properties:155
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addLink_label_add"
+msgid "Or add a URL:"
+msgstr "Or add a URL:"
+
+#. simplepage.addLink_label_add_or
+#: lessonbuilder/tool/src/resources/messages.properties:156
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addLink_label_add_or"
+msgid "Or add a URL or \"embed code\""
+msgstr "Or add a URL or \"embed code\""
+
+#. simplepage.editText
+#: lessonbuilder/tool/src/resources/messages.properties:157
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editText"
+msgid "Edit This Text"
+msgstr "Edit This Text"
+
+#. simplepage.editItem
+#: lessonbuilder/tool/src/resources/messages.properties:158
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editItem"
+msgid "Edit"
+msgstr "Edit"
+
+#. simplepage.editItemBelow
+#: lessonbuilder/tool/src/resources/messages.properties:159
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editItemBelow"
+msgid "Edit Item Below"
+msgstr "Edit Item Below"
+
+#. simplepage.textItemUnavailable
+#: lessonbuilder/tool/src/resources/messages.properties:160
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.textItemUnavailable"
+msgid ""
+"This text item will show when all pre-requisites, as marked by an asterisk "
+"(*), have been completed"
+msgstr ""
+"This text item will show when all pre-requisites, as marked by an asterisk "
+"(*), have been completed"
+
+#. simplepage.multimediaItemUnavailable
+#: lessonbuilder/tool/src/resources/messages.properties:161
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multimediaItemUnavailable"
+msgid ""
+"This multimedia item will show when all pre-requisites, as marked by an "
+"asterisk (*), have been completed"
+msgstr ""
+"This multimedia item will show when all pre-requisites, as marked by an "
+"asterisk (*), have been completed"
+
+#. simplepage.edit
+#: lessonbuilder/tool/src/resources/messages.properties:162
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.edit"
+msgid "Update Item"
+msgstr "Update Item"
+
+#. simplepage.description_label
+#: lessonbuilder/tool/src/resources/messages.properties:163
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.description_label"
+msgid "Item Description"
+msgstr "Item Description"
+
+#. simplepage.name_label
+#: lessonbuilder/tool/src/resources/messages.properties:164
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.name_label"
+msgid "Item Name"
+msgstr "Item Name"
+
+#. simplepage.edititem_header
+#: lessonbuilder/tool/src/resources/messages.properties:165
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edititem_header"
+msgid "Edit Item"
+msgstr "Edit Item"
+
+#. simplepage.multimedia
+#: lessonbuilder/tool/src/resources/messages.properties:166
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multimedia"
+msgid "Embed content on page"
+msgstr "Embed content on page"
+
+#. simplepage.multimedia.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:167
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multimedia.tooltip"
+msgid ""
+"Add an image, video, Flash file, web page, etc. Use this to embed the item "
+"on this page. Use Add Content Link instead if you want a link to an item "
+"rather than showing it on the page."
+msgstr ""
+"Add an image, video, Flash file, web page, etc. Use this to embed the item "
+"on this page. Use Add Content Link instead if you want a link to an item "
+"rather than showing it on the page."
+
+#. simplepage.multimedia-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:168
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multimedia-"
+"descrip"
+msgid ""
+"Add an image, video, Flash file, web page, etc. Use this to embed the item "
+"on this page. Use Add Content Link instead if you want a link to an item "
+"rather than showing it on the page."
+msgstr ""
+"Add an image, video, Flash file, web page, etc. Use this to embed the item "
+"on this page. Use Add Content Link instead if you want a link to an item "
+"rather than showing it on the page."
+
+#. simplepage.expert_toggle
+#: lessonbuilder/tool/src/resources/messages.properties:169
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.expert_toggle"
+msgid "Show details"
+msgstr "Show details"
+
+#. simplepage.expert_intro
+#: lessonbuilder/tool/src/resources/messages.properties:170
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.expert_intro"
+msgid "The following should not normally need to be changed:"
+msgstr "The following should not normally need to be changed:"
+
+#. simplepage.mimetype_label
+#: lessonbuilder/tool/src/resources/messages.properties:171
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mimetype_label"
+msgid "Mime type"
+msgstr "Mime type"
+
+#. simplepage.tag_is
+#: lessonbuilder/tool/src/resources/messages.properties:172
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.tag_is"
+msgid "This item is displayed with a tag of type"
+msgstr "This item is displayed with a tag of type"
+
+#. simplepage.tag_object
+#: lessonbuilder/tool/src/resources/messages.properties:173
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.tag_object"
+msgid "\"object\""
+msgstr "\"object\""
+
+#. simplepage.tag_img
+#: lessonbuilder/tool/src/resources/messages.properties:174
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.tag_img"
+msgid "\"img\""
+msgstr "\"img\""
+
+#. simplepage.tag_iframe
+#: lessonbuilder/tool/src/resources/messages.properties:175
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.tag_iframe"
+msgid "\"iframe\""
+msgstr "\"iframe\""
+
+#. simplepage.permissions
+#: lessonbuilder/tool/src/resources/messages.properties:176
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.permissions"
+msgid "Permissions"
+msgstr "Permissions"
+
+#. simplepage.permissions.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:177
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.permissions.tooltip"
+msgid ""
+"Change permissions associated with this tool for different types of user"
+msgstr ""
+"Change permissions associated with this tool for different types of user"
+
+#. simplepage.iframe.auto
+#: lessonbuilder/tool/src/resources/messages.properties:178
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.iframe.auto"
+msgid ""
+"Use \"auto\" in height field to use the full height of the content. Only "
+"works for URLs within this system."
+msgstr ""
+"Use \"auto\" in height field to use the full height of the content. Only "
+"works for URLs within this system."
+
+#. simplepage.nopermissions
+#: lessonbuilder/tool/src/resources/messages.properties:179
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nopermissions"
+msgid "You do not have permission to read this page"
+msgstr "You do not have permission to read this page"
+
+#. simplepage.nowrite
+#: lessonbuilder/tool/src/resources/messages.properties:180
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nowrite"
+msgid "You do not have permission to edit this page"
+msgstr "You do not have permission to edit this page"
+
+#. simplepage.savefailed
+#: lessonbuilder/tool/src/resources/messages.properties:181
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.savefailed"
+msgid "Unable to save or update item. Error was: "
+msgstr "Unable to save or update item. Error was: "
+
+#. simplepage.height_label
+#: lessonbuilder/tool/src/resources/messages.properties:182
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.height_label"
+msgid "Height:"
+msgstr "Height:"
+
+#. simplepage.width_label
+#: lessonbuilder/tool/src/resources/messages.properties:183
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.width_label"
+msgid "Width:"
+msgstr "Width:"
+
+#. simplepage.editMultimedia_header
+#: lessonbuilder/tool/src/resources/messages.properties:184
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editMultimedia_header"
+msgid "Edit Multimedia Size"
+msgstr "Edit Multimedia Size"
+
+#. simplepage.editMultimedia
+#: lessonbuilder/tool/src/resources/messages.properties:185
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editMultimedia"
+msgid "Edit Multimedia"
+msgstr "Edit Multimedia"
+
+#. simplepage.size-too-big
+#: lessonbuilder/tool/src/resources/messages.properties:186
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.size-too-big"
+msgid "Height or width greater than 3000 pixels"
+msgstr "Height or width greater than 3000 pixels"
+
+#. simplepage.deleted-group
+#: lessonbuilder/tool/src/resources/messages.properties:187
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.deleted-"
+"group"
+msgid "<Deleted Group>"
+msgstr "<Deleted Group>"
+
+#. simplepage.deleted-entity
+#: lessonbuilder/tool/src/resources/messages.properties:188
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.deleted-"
+"entity"
+msgid "*Deleted*"
+msgstr "*Deleted*"
+
+#. simplepage.not-published
+#: lessonbuilder/tool/src/resources/messages.properties:189
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.not-"
+"published"
+msgid "*Not published; not visible to students*"
+msgstr "*Not published; not visible to students*"
+
+#. simplepage.add_file_instructions
+#: lessonbuilder/tool/src/resources/messages.properties:190
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add_file_instructions"
+msgid ""
+"You may upload a new file, select an existing file from Resources, or supply"
+" a URL to a file on the web."
+msgstr ""
+"You may upload a new file, select an existing file from Resources, or supply"
+" a URL to a file on the web."
+
+#. simplepage.upload_label
+#: lessonbuilder/tool/src/resources/messages.properties:191
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.upload_label"
+msgid "Upload file"
+msgstr "Upload file"
+
+#. simplepage.choose_existing
+#: lessonbuilder/tool/src/resources/messages.properties:192
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choose_existing"
+msgid "Choose Existing File"
+msgstr "Choose Existing File"
+
+#. simplepage.choose_existing_or
+#: lessonbuilder/tool/src/resources/messages.properties:193
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choose_existing_or"
+msgid "Or select an existing resource"
+msgstr "Or select an existing resource"
+
+#. simplepage.choose_existing_page
+#: lessonbuilder/tool/src/resources/messages.properties:194
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choose_existing_page"
+msgid "Choose Existing Page (Does not create a new copy of the page)"
+msgstr "Choose Existing Page (Does not create a new copy of the page)"
+
+#. simplepage.lm_existing_page
+#: lessonbuilder/tool/src/resources/messages.properties:195
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.lm_existing_page"
+msgid "Put existing page in the left margin. "
+msgstr "Put existing page in the left margin. "
+
+#. simplepage.lm-existing_explanation
+#: lessonbuilder/tool/src/resources/messages.properties:196
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.lm-"
+"existing_explanation"
+msgid ""
+"Does not create a new copy of the page. You can use this to restore a page "
+"that has been deleted to the left margin."
+msgstr ""
+"Does not create a new copy of the page. You can use this to restore a page "
+"that has been deleted to the left margin."
+
+#. simplepage.import_cc_button
+#: lessonbuilder/tool/src/resources/messages.properties:197
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_button"
+msgid "Import CC"
+msgstr "Import CC"
+
+#. simplepage.import_cc
+#: lessonbuilder/tool/src/resources/messages.properties:198
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc"
+msgid "Import IMS Common Cartridge file"
+msgstr "Import IMS Common Cartridge file"
+
+#. simplepage.import_cc.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:199
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc.tooltip"
+msgid ""
+"Import file in IMS Common Cartridge format. These files often come from "
+"textbook vendors, but you can also use this to move courses between "
+"different Course Management Systems."
+msgstr ""
+"Import file in IMS Common Cartridge format. These files often come from "
+"textbook vendors, but you can also use this to move courses between "
+"different Course Management Systems."
+
+#. simplepage.import_cc_file
+#: lessonbuilder/tool/src/resources/messages.properties:200
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_file"
+msgid "IMS Common Cartridge file (ZIP file):"
+msgstr "IMS Common Cartridge file (ZIP file):"
+
+#. simplepage.import_cc_syllabus
+#: lessonbuilder/tool/src/resources/messages.properties:201
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_syllabus"
+msgid "Syllabus"
+msgstr "Syllabus"
+
+#. simplepage.import_cc_lessonplan
+#: lessonbuilder/tool/src/resources/messages.properties:202
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_lessonplan"
+msgid "Lesson Plan"
+msgstr "Lesson Plan"
+
+#. simplepage.import_cc_pattern
+#: lessonbuilder/tool/src/resources/messages.properties:203
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_pattern"
+msgid "[Pattern match]"
+msgstr "[Pattern match]"
+
+#. simplepage.import_cc_usespattern
+#: lessonbuilder/tool/src/resources/messages.properties:204
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_usespattern"
+msgid ""
+"This cartridge contains Fill in the Blank assessment questions that use "
+"pattern matching. This system does not support pattern matching. These "
+"questions will be flagged using [Pattern match] at the beginning of the "
+"question. Please review them and make the necessary changes."
+msgstr ""
+"This cartridge contains Fill in the Blank assessment questions that use "
+"pattern matching. This system does not support pattern matching. These "
+"questions will be flagged using [Pattern match] at the beginning of the "
+"question. Please review them and make the necessary changes."
+
+#. simplepage.import-toplevel-label
+#: lessonbuilder/tool/src/resources/messages.properties:205
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import-"
+"toplevel-label"
+msgid "Import resources into top-level folder"
+msgstr "Import resources into top-level folder"
+
+#. simplepage.cc_apip
+#: lessonbuilder/tool/src/resources/messages.properties:206
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc_apip"
+msgid "Accessible Portable Item Protocol (APIP)"
+msgstr "Accessible Portable Item Protocol (APIP)"
+
+#. simplepage.cc_iwb
+#: lessonbuilder/tool/src/resources/messages.properties:207
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc_iwb"
+msgid "Interactive Whiteboard"
+msgstr "Interactive Whiteboard"
+
+#. simplepage.cc_epub3
+#: lessonbuilder/tool/src/resources/messages.properties:208
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc_epub3"
+msgid "EPUB 3"
+msgstr "EPUB 3"
+
+#. simplepage.cc_ext_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:209
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc_ext_assignment"
+msgid "Assignment (extended definition)"
+msgstr "Assignment (extended definition)"
+
+#. simplepage.cc-has-badtypes
+#: lessonbuilder/tool/src/resources/messages.properties:210
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-has-"
+"badtypes"
+msgid ""
+"This cartridge contains resources of types with no specific support in this "
+"system. They will be treated as ordinary files: {}"
+msgstr ""
+"This cartridge contains resources of types with no specific support in this "
+"system. They will be treated as ordinary files: {}"
+
+#. simplepage.export_cc
+#: lessonbuilder/tool/src/resources/messages.properties:211
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.export_cc"
+msgid "Export CC"
+msgstr "Export CC"
+
+#. simplepage.export_cc.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:212
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.export_cc.tooltip"
+msgid ""
+"Create file in IMS Common Cartridge format. This may be used to save the "
+"contents of a course for later use. Most other Course Management Systems can"
+" read Common Cartridge files. The file will contain all content from "
+"Lessons, Assignments, Forum Topics, Quizzes, and Question Pools. However not"
+" all details will be saved."
+msgstr ""
+"Create file in IMS Common Cartridge format. This may be used to save the "
+"contents of a course for later use. Most other Course Management Systems can"
+" read Common Cartridge files. The file will contain all content from "
+"Lessons, Assignments, Forum Topics, Quizzes, and Question Pools. However not"
+" all details will be saved."
+
+#. simplepage.export-cc-title
+#: lessonbuilder/tool/src/resources/messages.properties:213
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.export-cc-"
+"title"
+msgid "Export IMS Common Cartridge file"
+msgstr "Export IMS Common Cartridge file"
+
+#. simplepage.exportcc-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:214
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"descrip"
+msgid "Export contents of site in IMS CC format."
+msgstr "Export contents of site in IMS CC format."
+
+#. simplepage.exportcc-fileerr
+#: lessonbuilder/tool/src/resources/messages.properties:215
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"fileerr"
+msgid "Error creating files for export: {}"
+msgstr "Error creating files for export: {}"
+
+#. simplepage.exportcc-noresource
+#: lessonbuilder/tool/src/resources/messages.properties:216
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"noresource"
+msgid ""
+"Error creating files for export: Please verify that the Resources tool is in"
+" your site"
+msgstr ""
+"Error creating files for export: Please verify that the Resources tool is in"
+" your site"
+
+#. simplepage.exportcc-use11
+#: lessonbuilder/tool/src/resources/messages.properties:217
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"use11"
+msgid ""
+"Use old version of file (version 1.1), recommended for Moodle and Blackboard"
+msgstr ""
+"Use old version of file (version 1.1), recommended for Moodle and Blackboard"
+
+#. simplepage.exportcc-use13
+#: lessonbuilder/tool/src/resources/messages.properties:218
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"use13"
+msgid "Use newest version of file (version 1.3), recommended for Canvas"
+msgstr "Use newest version of file (version 1.3), recommended for Canvas"
+
+#. simplepage.exportcc-includebank
+#: lessonbuilder/tool/src/resources/messages.properties:219
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"includebank"
+msgid "Include all question pools you can access as a single question bank"
+msgstr "Include all question pools you can access as a single question bank"
+
+#. simplepage.exportcc-sam-undefinedtype
+#: lessonbuilder/tool/src/resources/messages.properties:220
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-undefinedtype"
+msgid ""
+"Question {1} in quiz {2} has a type not supported by Common Cartridge. The "
+"question will be skipped."
+msgstr ""
+"Question {1} in quiz {2} has a type not supported by Common Cartridge. The "
+"question will be skipped."
+
+#. simplepage.exportcc-sam-too-many-blanks
+#: lessonbuilder/tool/src/resources/messages.properties:221
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-too-many-blanks"
+msgid ""
+"Question {1} in quiz {2} is fill in the blank with {3} blanks. Common "
+"Cartridge only supports one blank. Only the first blank will be used."
+msgstr ""
+"Question {1} in quiz {2} is fill in the blank with {3} blanks. Common "
+"Cartridge only supports one blank. Only the first blank will be used."
+
+#. simplepage.exportcc-sam-mcss
+#: lessonbuilder/tool/src/resources/messages.properties:222
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-mcss"
+msgid ""
+"Question {1} in quiz {2} is Multiple Correct, Single Selection. Versions of "
+"Common Cartridge before 1.2 did not support this format. Only the first "
+"correct answer will be shown."
+msgstr ""
+"Question {1} in quiz {2} is Multiple Correct, Single Selection. Versions of "
+"Common Cartridge before 1.2 did not support this format. Only the first "
+"correct answer will be shown."
+
+#. simplepage.exportcc-sam-fib-too-many-star
+#: lessonbuilder/tool/src/resources/messages.properties:223
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-fib-too-many-star"
+msgid ""
+"Question {1} in quiz {2} is Fill in the Blank using asterisks. The correct "
+"answer is shown as {3}. The Common Cartridge format is only able to handle a"
+" single alternative using asterisks."
+msgstr ""
+"Question {1} in quiz {2} is Fill in the Blank using asterisks. The correct "
+"answer is shown as {3}. The Common Cartridge format is only able to handle a"
+" single alternative using asterisks."
+
+#. simplepage.exportcc-sam-fib-star
+#: lessonbuilder/tool/src/resources/messages.properties:224
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-fib-star"
+msgid ""
+"Question {1} in quiz {2} is Fill in the Blank using asterisks. The correct "
+"answer is shown as {3}. In the export, the answer will be considered correct"
+" if {4} appears anywhere in the answer."
+msgstr ""
+"Question {1} in quiz {2} is Fill in the Blank using asterisks. The correct "
+"answer is shown as {3}. In the export, the answer will be considered correct"
+" if {4} appears anywhere in the answer."
+
+#. simplepage.exportcc-sam-fib-bad-star
+#: lessonbuilder/tool/src/resources/messages.properties:225
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-fib-bad-star"
+msgid ""
+"Question {1} in quiz {2} is Fill in the Blank using asterisks. The correct "
+"answer is shown as {3}. Common Cartridge is unable to handle this answer."
+msgstr ""
+"Question {1} in quiz {2} is Fill in the Blank using asterisks. The correct "
+"answer is shown as {3}. Common Cartridge is unable to handle this answer."
+
+#. simplepage.exportcc-pagealreadydone
+#: lessonbuilder/tool/src/resources/messages.properties:226
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"pagealreadydone"
+msgid ""
+"Subpage {2} appears on page {1}. However it has already been included as a "
+"subpage of another page. It will not be included a second time."
+msgstr ""
+"Subpage {2} appears on page {1}. However it has already been included as a "
+"subpage of another page. It will not be included a second time."
+
+#. simplepage.exportcc-bad-type
+#: lessonbuilder/tool/src/resources/messages.properties:227
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"bad-type"
+msgid ""
+"Item {2} on page {1} is of a type that can't be put in a Common Cartridge: "
+"{3}"
+msgstr ""
+"Item {2} on page {1} is of a type that can't be put in a Common Cartridge: "
+"{3}"
+
+#. simplepage.exportcc-download
+#: lessonbuilder/tool/src/resources/messages.properties:228
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"download"
+msgid "Download"
+msgstr "Download"
+
+#. simplepage.delete
+#: lessonbuilder/tool/src/resources/messages.properties:229
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete"
+msgid "Delete"
+msgstr "Delete"
+
+#. simplepage.editTitle_header
+#: lessonbuilder/tool/src/resources/messages.properties:230
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editTitle_header"
+msgid "Edit Page Title"
+msgstr "Edit Page Title"
+
+#. simplepage.title
+#: lessonbuilder/tool/src/resources/messages.properties:231
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title"
+msgid "Settings"
+msgstr "Settings"
+
+#. simplepage.alt_label
+#: lessonbuilder/tool/src/resources/messages.properties:232
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.alt_label"
+msgid "Alt Text"
+msgstr "Alt Text"
+
+#. simplepage.reorder
+#: lessonbuilder/tool/src/resources/messages.properties:233
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder"
+msgid "Reorder"
+msgstr "Reorder"
+
+#. simplepage.reorder-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:234
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"tooltip"
+msgid "Change order of items, delete items, or import items from another page"
+msgstr ""
+"Change order of items, delete items, or import items from another page"
+
+#. simplepage.reorder_header
+#: lessonbuilder/tool/src/resources/messages.properties:235
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder_header"
+msgid "Reorder Page Items"
+msgstr "Reorder Page Items"
+
+#. simplepage.reorder_instructions
+#: lessonbuilder/tool/src/resources/messages.properties:236
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder_instructions"
+msgid ""
+"Please drag and drop the items below to reorder them. To delete, drag item "
+"to delete bin."
+msgstr ""
+"Please drag and drop the items below to reorder them. To delete, drag item "
+"to delete bin."
+
+#. simplepage.reorder_instructions_sr
+#: lessonbuilder/tool/src/resources/messages.properties:237
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder_instructions_sr"
+msgid ""
+"Or select one and use the control key plus up-arrow or downarrow to reorder "
+"and control + shift to move them between bins."
+msgstr ""
+"Or select one and use the control key plus up-arrow or downarrow to reorder "
+"and control + shift to move them between bins."
+
+#. simplepage.reorder.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:238
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder.tooltip"
+msgid "Change the order of items on this page"
+msgstr "Change the order of items on this page"
+
+#. simplepage.reorder-duplicates
+#: lessonbuilder/tool/src/resources/messages.properties:239
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"duplicates"
+msgid "Unable to continue. Some of the items have duplicate sequences."
+msgstr "Unable to continue. Some of the items have duplicate sequences."
+
+#. simplepage.reorder-belowdelete
+#: lessonbuilder/tool/src/resources/messages.properties:240
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"belowdelete"
+msgid "Move items below this marker to delete them"
+msgstr "Move items below this marker to delete them"
+
+#. simplepage.reorder-aboveuse
+#: lessonbuilder/tool/src/resources/messages.properties:241
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"aboveuse"
+msgid "Move items above this marker to put them on the page"
+msgstr "Move items above this marker to put them on the page"
+
+#. simplepage.reorder-addpage
+#: lessonbuilder/tool/src/resources/messages.properties:242
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"addpage"
+msgid "Add items from another page"
+msgstr "Add items from another page"
+
+#. simplepage.reorder_delebox
+#: lessonbuilder/tool/src/resources/messages.properties:243
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder_delebox"
+msgid ""
+"Drop items here to delete, or click the X. You may drag deleted items from "
+"here back onto the page."
+msgstr ""
+"Drop items here to delete, or click the X. You may drag deleted items from "
+"here back onto the page."
+
+#. simplepage.save
+#: lessonbuilder/tool/src/resources/messages.properties:244
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.save"
+msgid "Save"
+msgstr "Save"
+
+#. simplepage.edit_youtubelink
+#: lessonbuilder/tool/src/resources/messages.properties:245
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_youtubelink"
+msgid "Edit YouTube Link"
+msgstr "Edit YouTube Link"
+
+#. simplepage.edit_youtube
+#: lessonbuilder/tool/src/resources/messages.properties:246
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_youtube"
+msgid "Edit YouTube Link Below"
+msgstr "Edit YouTube Link Below"
+
+#. simplepage.edit_movie
+#: lessonbuilder/tool/src/resources/messages.properties:247
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_movie"
+msgid "Edit Item Below"
+msgstr "Edit Item Below"
+
+#. simplepage.download_file
+#: lessonbuilder/tool/src/resources/messages.properties:248
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.download_file"
+msgid "Download file"
+msgstr "Download file"
+
+#. simplepage.open_new_window
+#: lessonbuilder/tool/src/resources/messages.properties:249
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.open_new_window"
+msgid "Open in new window"
+msgstr "Open in new window"
+
+#. simplepage.print_view
+#: lessonbuilder/tool/src/resources/messages.properties:250
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.print_view"
+msgid "Print view"
+msgstr "Print view"
+
+#. simplepage.edititems
+#: lessonbuilder/tool/src/resources/messages.properties:251
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edititems"
+msgid "Edit Items"
+msgstr "Edit Items"
+
+#. simplepage.itemstatus
+#: lessonbuilder/tool/src/resources/messages.properties:252
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.itemstatus"
+msgid "Item Status"
+msgstr "Item Status"
+
+#. simplepage.items
+#: lessonbuilder/tool/src/resources/messages.properties:253
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.items"
+msgid "Items"
+msgstr "Items"
+
+#. simplepage.edit_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:254
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_quiz"
+msgid "Edit Quiz"
+msgstr "Edit Quiz"
+
+#. simplepage.edit_quiz_settings
+#: lessonbuilder/tool/src/resources/messages.properties:255
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_quiz_settings"
+msgid "Edit Quiz Settings"
+msgstr "Edit Quiz Settings"
+
+#. simplepage.edit_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:256
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_assignment"
+msgid "Edit Assignment"
+msgstr "Edit Assignment"
+
+#. simplepage.edit_topic
+#: lessonbuilder/tool/src/resources/messages.properties:257
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_topic"
+msgid "Edit Forum Topic"
+msgstr "Edit Forum Topic"
+
+#. simplepage.return_from_edit
+#: lessonbuilder/tool/src/resources/messages.properties:258
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_from_edit"
+msgid "Return to lesson, after you have finished editing the item"
+msgstr "Return to lesson, after you have finished editing the item"
+
+#. simplepage.status.completed
+#: lessonbuilder/tool/src/resources/messages.properties:259
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.completed"
+msgid "Completed"
+msgstr "Completed"
+
+#. simplepage.status.notavailable
+#: lessonbuilder/tool/src/resources/messages.properties:260
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.notavailable"
+msgid "Not Yet Available"
+msgstr "Not Yet Available"
+
+#. simplepage.status.failed
+#: lessonbuilder/tool/src/resources/messages.properties:261
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.failed"
+msgid "Failed"
+msgstr "Failed"
+
+#. simplepage.status.required
+#: lessonbuilder/tool/src/resources/messages.properties:262
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.required"
+msgid "Required"
+msgstr "Required"
+
+#. simplepage.status.notrequired
+#: lessonbuilder/tool/src/resources/messages.properties:263
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.notrequired"
+msgid "Not Required"
+msgstr "Not Required"
+
+#. simplepage.status.needsgrading
+#: lessonbuilder/tool/src/resources/messages.properties:264
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.needsgrading"
+msgid "Needs Grading"
+msgstr "Needs Grading"
+
+#. simplepage.status.inprogress
+#: lessonbuilder/tool/src/resources/messages.properties:265
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.inprogress"
+msgid "In Progress"
+msgstr "In Progress"
+
+#. simplepage.status.level
+#: lessonbuilder/tool/src/resources/messages.properties:266
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.level"
+msgid "Level {}"
+msgstr "Level {}"
+
+#. simplepage.refresh_prompt
+#: lessonbuilder/tool/src/resources/messages.properties:267
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.refresh_prompt"
+msgid "After completing a required item, please"
+msgstr "After completing a required item, please"
+
+#. simplepage.refresh
+#: lessonbuilder/tool/src/resources/messages.properties:268
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.refresh"
+msgid "refresh"
+msgstr "refresh"
+
+#. simplepage.last-visited
+#: lessonbuilder/tool/src/resources/messages.properties:269
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.last-visited"
+msgid "Return to most recent page from previous session:"
+msgstr "Return to most recent page from previous session:"
+
+#. simplepage.update_icons
+#: lessonbuilder/tool/src/resources/messages.properties:270
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.update_icons"
+msgid "to update status icons."
+msgstr "to update status icons."
+
+#. simplepage.prerequisites_label
+#: lessonbuilder/tool/src/resources/messages.properties:271
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.prerequisites_label"
+msgid "Don't Release Item Until All Prerequisites are Completed"
+msgstr "Don't Release Item Until All Prerequisites are Completed"
+
+#. simplepage.page_prerequisites_label
+#: lessonbuilder/tool/src/resources/messages.properties:272
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page_prerequisites_label"
+msgid "Don't Release Page Until All Prerequisite Pages are Completed"
+msgstr "Don't Release Page Until All Prerequisite Pages are Completed"
+
+#. simplepage.require
+#: lessonbuilder/tool/src/resources/messages.properties:273
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require"
+msgid "Require This Item"
+msgstr "Require This Item"
+
+#. simplepage.page_require
+#: lessonbuilder/tool/src/resources/messages.properties:274
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page_require"
+msgid "Require This Page"
+msgstr "Require This Page"
+
+#. simplepage.youtube_url
+#: lessonbuilder/tool/src/resources/messages.properties:275
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.youtube_url"
+msgid "YouTube URL:"
+msgstr "YouTube URL:"
+
+#. simplepage.youtube_player
+#: lessonbuilder/tool/src/resources/messages.properties:276
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.youtube_player"
+msgid "YouTube player"
+msgstr "YouTube player"
+
+#. simplepage.mm_player
+#: lessonbuilder/tool/src/resources/messages.properties:277
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm_player"
+msgid "Multimedia player for {}"
+msgstr "Multimedia player for {}"
+
+#. simplepage.web_content
+#: lessonbuilder/tool/src/resources/messages.properties:278
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.web_content"
+msgid "Web {}"
+msgstr "Web {}"
+
+#. simplepage.youtube.needflash
+#: lessonbuilder/tool/src/resources/messages.properties:279
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.youtube.needflash"
+msgid "You need Flash player 8+ and Javascript enabled to view this video"
+msgstr "You need Flash player 8+ and Javascript enabled to view this video"
+
+#. simplepage.hide_page_label
+#: lessonbuilder/tool/src/resources/messages.properties:280
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.hide_page_label"
+msgid "Hide This Page:"
+msgstr "Hide This Page:"
+
+#. simplepage.hide_page_from_users
+#: lessonbuilder/tool/src/resources/messages.properties:281
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.hide_page_from_users"
+msgid "Hide this page from users (page will not appear in left margin)"
+msgstr "Hide this page from users (page will not appear in left margin)"
+
+#. simplepage.page.releasedate
+#: lessonbuilder/tool/src/resources/messages.properties:282
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.releasedate"
+msgid ""
+"Hide page until the following date (the page will be listed with the release"
+" date)"
+msgstr ""
+"Hide page until the following date (the page will be listed with the release"
+" date)"
+
+#. simplepage.error
+#: lessonbuilder/tool/src/resources/messages.properties:283
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.error"
+msgid "Error"
+msgstr "Error"
+
+#. simplepage.error_colon
+#: lessonbuilder/tool/src/resources/messages.properties:284
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.error_colon"
+msgid "Error:"
+msgstr "Error:"
+
+#. simplepage.complete_required
+#: lessonbuilder/tool/src/resources/messages.properties:285
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.complete_required"
+msgid ""
+"Please complete all of the above required items before viewing this item."
+msgstr ""
+"Please complete all of the above required items before viewing this item."
+
+#. simplepage.prerequisites_tag
+#: lessonbuilder/tool/src/resources/messages.properties:286
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.prerequisites_tag"
+msgid "Has prerequisites"
+msgstr "Has prerequisites"
+
+#. simplepage.editpermissions
+#: lessonbuilder/tool/src/resources/messages.properties:287
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editpermissions"
+msgid "Set permissions for"
+msgstr "Set permissions for"
+
+#. simplepage.filepicker_instructions
+#: lessonbuilder/tool/src/resources/messages.properties:288
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.filepicker_instructions"
+msgid "Please Choose a File or Web Page (URL) to Add to the Page."
+msgstr "Please Choose a File or Web Page (URL) to Add to the Page."
+
+#. simplepage.require_submit_assessment
+#: lessonbuilder/tool/src/resources/messages.properties:289
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_assessment"
+msgid "Require that the student submit this assessment."
+msgstr "Require that the student submit this assessment."
+
+#. simplepage.require_submit_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:290
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_assignment"
+msgid "Require that the student submit this assignment."
+msgstr "Require that the student submit this assignment."
+
+#. simplepage.require_submit_forum
+#: lessonbuilder/tool/src/resources/messages.properties:291
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_forum"
+msgid "Require that the student submit a posting to this topic."
+msgstr "Require that the student submit a posting to this topic."
+
+#. simplepage.require_receive
+#: lessonbuilder/tool/src/resources/messages.properties:292
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_receive"
+msgid "Require that the student receive "
+msgstr "Require that the student receive "
+
+#. simplepage.require_points_assessment
+#: lessonbuilder/tool/src/resources/messages.properties:293
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_points_assessment"
+msgid "points on this assessment."
+msgstr "points on this assessment."
+
+#. simplepage.require_points_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:294
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_points_assignment"
+msgid "points on this assignment."
+msgstr "points on this assignment."
+
+#. simplepage.require_pass_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:295
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_pass_assignment"
+msgid "Require that the student <b>Pass</b> this assignment"
+msgstr "Require that the student <b>Pass</b> this assignment"
+
+#. simplepage.require_atleast
+#: lessonbuilder/tool/src/resources/messages.properties:296
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_atleast"
+msgid "Require that the student receive at least a"
+msgstr "Require that the student receive at least a"
+
+#. simplepage.require_checkmark
+#: lessonbuilder/tool/src/resources/messages.properties:297
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_checkmark"
+msgid "Require that the student receive a Checkmark"
+msgstr "Require that the student receive a Checkmark"
+
+#. simplepage.title_notblank
+#: lessonbuilder/tool/src/resources/messages.properties:298
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title_notblank"
+msgid "Title must not be blank."
+msgstr "Title must not be blank."
+
+#. simplepage.must_be_youtube
+#: lessonbuilder/tool/src/resources/messages.properties:299
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.must_be_youtube"
+msgid "This must be a YouTube URL"
+msgstr "This must be a YouTube URL"
+
+#. simplepage.item_notblank
+#: lessonbuilder/tool/src/resources/messages.properties:300
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.item_notblank"
+msgid "Item Name must not be blank"
+msgstr "Item Name must not be blank"
+
+#. simplepage.page_notblank
+#: lessonbuilder/tool/src/resources/messages.properties:301
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page_notblank"
+msgid "Page Title must not be blank."
+msgstr "Page Title must not be blank."
+
+#. simplepage.copied.assignment
+#: lessonbuilder/tool/src/resources/messages.properties:302
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copied.assignment"
+msgid ""
+"This item was copied from another site. It won't work until you do \"Edit\" "
+"and \"Change Assignment\" to pick an assignment that is valid in this site."
+msgstr ""
+"This item was copied from another site. It won't work until you do \"Edit\" "
+"and \"Change Assignment\" to pick an assignment that is valid in this site."
+
+#. simplepage.copied.assessment
+#: lessonbuilder/tool/src/resources/messages.properties:303
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copied.assessment"
+msgid ""
+"This item was copied from another site. It won't work until you do \"Edit\" "
+"and \"Change Quiz\" to pick a quiz that is valid in this site."
+msgstr ""
+"This item was copied from another site. It won't work until you do \"Edit\" "
+"and \"Change Quiz\" to pick a quiz that is valid in this site."
+
+#. simplepage.copied.forum
+#: lessonbuilder/tool/src/resources/messages.properties:304
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copied.forum"
+msgid ""
+"This item was copied from another site. It won't work until you do \"Edit\" "
+"and \"Change Forum Topic\" to pick a forum topic that is valid in this site."
+msgstr ""
+"This item was copied from another site. It won't work until you do \"Edit\" "
+"and \"Change Forum Topic\" to pick a forum topic that is valid in this site."
+
+#. simplepage.nosite
+#: lessonbuilder/tool/src/resources/messages.properties:305
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nosite"
+msgid "Can't determine current site"
+msgstr "Can't determine current site"
+
+#. simplepage.create.resource.failed
+#: lessonbuilder/tool/src/resources/messages.properties:306
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create.resource.failed"
+msgid "Unable to create file while importing Common Cartridge: {}"
+msgstr "Unable to create file while importing Common Cartridge: {}"
+
+#. simplepage.create.object.failed
+#: lessonbuilder/tool/src/resources/messages.properties:307
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create.object.failed"
+msgid "Unable to import resource while importing Common Cartridge: {}"
+msgstr "Unable to import resource while importing Common Cartridge: {}"
+
+#. simplepage.resource100
+#: lessonbuilder/tool/src/resources/messages.properties:308
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource100"
+msgid ""
+"Unable to create file while importing Common Cartridge: 100 copies already "
+"exist: {}"
+msgstr ""
+"Unable to create file while importing Common Cartridge: 100 copies already "
+"exist: {}"
+
+#. simplepage.noquizengines
+#: lessonbuilder/tool/src/resources/messages.properties:309
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noquizengines"
+msgid ""
+"<b style=\"color:#c00\">WARNING:</b> Please add a quiz tool to this site. "
+"Without it, no quizzes can be loaded from the cartridge"
+msgstr ""
+"<b style=\"color:#c00\">WARNING:</b> Please add a quiz tool to this site. "
+"Without it, no quizzes can be loaded from the cartridge"
+
+#. simplepage.choosequizengine
+#: lessonbuilder/tool/src/resources/messages.properties:310
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choosequizengine"
+msgid "Please choose which quiz tool to use for quizzes in this cartridge"
+msgstr "Please choose which quiz tool to use for quizzes in this cartridge"
+
+#. simplepage.notopicengines
+#: lessonbuilder/tool/src/resources/messages.properties:311
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.notopicengines"
+msgid ""
+"<b style=\"color:#c00\">WARNING:</b> Please add a forum tool to this site. "
+"Without it, no forums can be loaded from the cartridge"
+msgstr ""
+"<b style=\"color:#c00\">WARNING:</b> Please add a forum tool to this site. "
+"Without it, no forums can be loaded from the cartridge"
+
+#. simplepage.choosetopicengine
+#: lessonbuilder/tool/src/resources/messages.properties:312
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choosetopicengine"
+msgid "Please choose which forum tool to use for forums in this cartridge"
+msgstr "Please choose which forum tool to use for forums in this cartridge"
+
+#. simplepage.noassignengines
+#: lessonbuilder/tool/src/resources/messages.properties:313
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noassignengines"
+msgid ""
+"<b style=\"color:#c00\">WARNING:</b> Please add an assignment tool to this "
+"site. Without it, no assignments can be loaded from the cartridge"
+msgstr ""
+"<b style=\"color:#c00\">WARNING:</b> Please add an assignment tool to this "
+"site. Without it, no assignments can be loaded from the cartridge"
+
+#. simplepage.chooseassignengine
+#: lessonbuilder/tool/src/resources/messages.properties:314
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooseassignengine"
+msgid ""
+"Please choose which assignment tool to use for assignments in this cartridge"
+msgstr ""
+"Please choose which assignment tool to use for assignments in this cartridge"
+
+#. simplepage.loading
+#: lessonbuilder/tool/src/resources/messages.properties:315
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.loading"
+msgid "Loading, please wait ..."
+msgstr "Loading, please wait ..."
+
+#. simplepage.checkingwithhost
+#: lessonbuilder/tool/src/resources/messages.properties:316
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.checkingwithhost"
+msgid "Please wait while we check with the web server ..."
+msgstr "Please wait while we check with the web server ..."
+
+#. simplepage.needpermissions
+#: lessonbuilder/tool/src/resources/messages.properties:317
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.needpermissions"
+msgid ""
+"You do not have the permission needed to use this tool. Since your role "
+"indicates that you should, we suspect that the permissions are not set up "
+"properly for your site. Use the following link to open the permissions tool."
+" We suggest giving lessonbuilder.read to all roles, and lessonbuilder.upd to"
+" any role that you want to be able to edit content. Typically this is "
+"maintain, Instructor, and maybe some of the TA roles."
+msgstr ""
+"You do not have the permission needed to use this tool. Since your role "
+"indicates that you should, we suspect that the permissions are not set up "
+"properly for your site. Use the following link to open the permissions tool."
+" We suggest giving lessonbuilder.read to all roles, and lessonbuilder.upd to"
+" any role that you want to be able to edit content. Typically this is "
+"maintain, Instructor, and maybe some of the TA roles."
+
+#. simplepage.wrong-cc-version
+#: lessonbuilder/tool/src/resources/messages.properties:318
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.wrong-cc-"
+"version"
+msgid "Unrecognized Common Cartridge format. File must be version 1.0 or 1.1."
+msgstr ""
+"Unrecognized Common Cartridge format. File must be version 1.0 or 1.1."
+
+#. simplepage.cc-error
+#: lessonbuilder/tool/src/resources/messages.properties:319
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-error"
+msgid ""
+"Error when trying to import Common Cartridge file. File may be invalid."
+msgstr ""
+"Error when trying to import Common Cartridge file. File may be invalid."
+
+#. simplepage.cc-noresource
+#: lessonbuilder/tool/src/resources/messages.properties:320
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-"
+"noresource"
+msgid ""
+"Cartridge is invalid. It has an item whose associated resource is missing. "
+"The item will be skipped. Resource ID is {}."
+msgstr ""
+"Cartridge is invalid. It has an item whose associated resource is missing. "
+"The item will be skipped. Resource ID is {}."
+
+#. simplepage.cc-uses-auth
+#: lessonbuilder/tool/src/resources/messages.properties:321
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-uses-auth"
+msgid "Cannot import Common Cartridges with authorization restrictions"
+msgstr "Cannot import Common Cartridges with authorization restrictions"
+
+#. simplepage.cc-uses-role
+#: lessonbuilder/tool/src/resources/messages.properties:322
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-uses-role"
+msgid ""
+"This cartridge has at least one resource restricted to Mentor or Instructor."
+" We have created groups with those names, but not placed any users into the "
+"groups."
+msgstr ""
+"This cartridge has at least one resource restricted to Mentor or Instructor."
+" We have created groups with those names, but not placed any users into the "
+"groups."
+
+#. simplepage.cc-uses-curriculum
+#: lessonbuilder/tool/src/resources/messages.properties:323
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-uses-"
+"curriculum"
+msgid ""
+"This cartridge uses a curriculum standard. Curriculum standards are not "
+"currently implemented, and will be ignored."
+msgstr ""
+"This cartridge uses a curriculum standard. Curriculum standards are not "
+"currently implemented, and will be ignored."
+
+#. simplepage.cc-defaultforum
+#: lessonbuilder/tool/src/resources/messages.properties:324
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-"
+"defaultforum"
+msgid "Forum"
+msgstr "Forum"
+
+#. simplepage.cc-defaulttopic
+#: lessonbuilder/tool/src/resources/messages.properties:325
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-"
+"defaulttopic"
+msgid "Topic"
+msgstr "Topic"
+
+#. simplepage.comments-section
+#: lessonbuilder/tool/src/resources/messages.properties:326
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"section"
+msgid "Comments Section"
+msgstr "Comments Section"
+
+#. simplepage.replace-with-comments
+#: lessonbuilder/tool/src/resources/messages.properties:327
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.replace-"
+"with-comments"
+msgid "Loading Comments ..."
+msgstr "Loading Comments ..."
+
+#. simplepage.comments
+#: lessonbuilder/tool/src/resources/messages.properties:328
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments"
+msgid "Add Comments Tool"
+msgstr "Add Comments Tool"
+
+#. simplepage.comments.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:329
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments.tooltip"
+msgid "Add a section that allows students to make comments"
+msgstr "Add a section that allows students to make comments"
+
+#. simplepage.add-comment
+#: lessonbuilder/tool/src/resources/messages.properties:330
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-comment"
+msgid "Add Comment"
+msgstr "Add Comment"
+
+#. simplepage.in-reply-to
+#: lessonbuilder/tool/src/resources/messages.properties:331
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.in-reply-to"
+msgid "In reply to {1}, {2}"
+msgstr "In reply to {1}, {2}"
+
+#. simplepage.comment-reply
+#: lessonbuilder/tool/src/resources/messages.properties:332
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"reply"
+msgid "Reply to comment from {}"
+msgstr "Reply to comment from {}"
+
+#. simplepage.missing-prereqs
+#: lessonbuilder/tool/src/resources/messages.properties:333
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.missing-"
+"prereqs"
+msgid ""
+"There is an area for comments, but you must complete all required items "
+"above before you can see it."
+msgstr ""
+"There is an area for comments, but you must complete all required items "
+"above before you can see it."
+
+#. simplepage.fake-missing-prereqs
+#: lessonbuilder/tool/src/resources/messages.properties:334
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.fake-"
+"missing-prereqs"
+msgid ""
+"If you were a student, you wouldn't be able to see comments, because you "
+"haven't completed all required items above."
+msgstr ""
+"If you were a student, you wouldn't be able to see comments, because you "
+"haven't completed all required items above."
+
+#. simplepage.edit-comment
+#: lessonbuilder/tool/src/resources/messages.properties:335
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-comment"
+msgid "Edit"
+msgstr "Edit"
+
+#. simplepage.comment-edit
+#: lessonbuilder/tool/src/resources/messages.properties:336
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-edit"
+msgid "Edit Comment from {}"
+msgstr "Edit Comment from {}"
+
+#. simplepage.see_all_comments
+#: lessonbuilder/tool/src/resources/messages.properties:337
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.see_all_comments"
+msgid "See All {} comments ..."
+msgstr "See All {} comments ..."
+
+#. simplepage.see_new_comments
+#: lessonbuilder/tool/src/resources/messages.properties:338
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.see_new_comments"
+msgid "See All {} new comments ..."
+msgstr "See All {} new comments ..."
+
+#. simplepage.edit_commentslink
+#: lessonbuilder/tool/src/resources/messages.properties:339
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_commentslink"
+msgid "Edit Comments Section"
+msgstr "Edit Comments Section"
+
+#. simplepage.comments-anonymous
+#: lessonbuilder/tool/src/resources/messages.properties:340
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"anonymous"
+msgid "Keep Comments Anonymous"
+msgstr "Keep Comments Anonymous"
+
+#. simplepage.comments-graded
+#: lessonbuilder/tool/src/resources/messages.properties:341
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"graded"
+msgid "Create gradebook entries for these"
+msgstr "Create gradebook entries for these"
+
+#. simplepage.comments-max
+#: lessonbuilder/tool/src/resources/messages.properties:342
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-max"
+msgid "Maximum points:"
+msgstr "Maximum points:"
+
+#. simplepage.integer-expected
+#: lessonbuilder/tool/src/resources/messages.properties:343
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.integer-"
+"expected"
+msgid "Points must be set to a valid number."
+msgstr "Points must be set to a valid number."
+
+#. simplepage.gbname-expected
+#: lessonbuilder/tool/src/resources/messages.properties:344
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.gbname-"
+"expected"
+msgid "Gradebook item name must be supplied."
+msgstr "Gradebook item name must be supplied."
+
+#. simplepage.comment-delete
+#: lessonbuilder/tool/src/resources/messages.properties:345
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"delete"
+msgid "Delete comment from {}"
+msgstr "Delete comment from {}"
+
+#. simplepage.delete_comment_confirm
+#: lessonbuilder/tool/src/resources/messages.properties:346
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete_comment_confirm"
+msgid "Are you sure you want to delete this comment written by {}?"
+msgstr "Are you sure you want to delete this comment written by {}?"
+
+#. simplepage.empty-comment-error
+#: lessonbuilder/tool/src/resources/messages.properties:347
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.empty-"
+"comment-error"
+msgid "Comments must not be empty."
+msgstr "Comments must not be empty."
+
+#. simplepage.comment-permissions-error
+#: lessonbuilder/tool/src/resources/messages.properties:348
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"permissions-error"
+msgid "You do not have the required permissions to delete that comment."
+msgstr "You do not have the required permissions to delete that comment."
+
+#. simplepage.permissions-general
+#: lessonbuilder/tool/src/resources/messages.properties:349
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.permissions-"
+"general"
+msgid "You do not have the required permissions to do that."
+msgstr "You do not have the required permissions to do that."
+
+#. simplepage.comment-unknown-user
+#: lessonbuilder/tool/src/resources/messages.properties:350
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"unknown-user"
+msgid "Unknown User"
+msgstr "Unknown User"
+
+#. simplepage.comment-you
+#: lessonbuilder/tool/src/resources/messages.properties:351
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-you"
+msgid "You"
+msgstr "You"
+
+#. simplepage.comment-anonymous-message
+#: lessonbuilder/tool/src/resources/messages.properties:352
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"anonymous-message"
+msgid ""
+"Normal users can only see the Anonymous names. The commenters' actual names "
+"are shown only to you and other site administrators."
+msgstr ""
+"Normal users can only see the Anonymous names. The commenters' actual names "
+"are shown only to you and other site administrators."
+
+#. simplepage.comment-edit-message
+#: lessonbuilder/tool/src/resources/messages.properties:353
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"edit-message"
+msgid "You may only edit or delete your comment until it is 30 minutes old."
+msgstr "You may only edit or delete your comment until it is 30 minutes old."
+
+#. simplepage.comment-grading-message
+#: lessonbuilder/tool/src/resources/messages.properties:354
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"grading-message"
+msgid ""
+"Type the number of points you wish to assign a particular comment in the "
+"\"Points\" box next to the comment, and then press the Enter key to submit "
+"the grade.  Any grades that are typed in but not submitted are displayed in "
+"red."
+msgstr ""
+"Type the number of points you wish to assign a particular comment in the "
+"\"Points\" box next to the comment, and then press the Enter key to submit "
+"the grade.  Any grades that are typed in but not submitted are displayed in "
+"red."
+
+#. simplepage.comment-author-owner
+#: lessonbuilder/tool/src/resources/messages.properties:355
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"author-owner"
+msgid "Page Owner"
+msgstr "Page Owner"
+
+#. simplepage.nothing-over-100-percent
+#: lessonbuilder/tool/src/resources/messages.properties:356
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nothing-"
+"over-100-percent"
+msgid "You may not have a height or width larger than 100%."
+msgstr "You may not have a height or width larger than 100%."
+
+#. simplepage.width-height
+#: lessonbuilder/tool/src/resources/messages.properties:357
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.width-height"
+msgid ""
+"The width and height must be positive numbers, i.e. \"500\" or \"500px,\" or"
+" a percentage below 100%"
+msgstr ""
+"The width and height must be positive numbers, i.e. \"500\" or \"500px,\" or"
+" a percentage below 100%"
+
+#. simplepage.seconds
+#: lessonbuilder/tool/src/resources/messages.properties:358
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.seconds"
+msgid "Seconds Ago"
+msgstr "Seconds Ago"
+
+#. simplepage.one_min
+#: lessonbuilder/tool/src/resources/messages.properties:359
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_min"
+msgid "1 Minute Ago"
+msgstr "1 Minute Ago"
+
+#. simplepage.x_min
+#: lessonbuilder/tool/src/resources/messages.properties:360
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_min"
+msgid "{} Minutes Ago"
+msgstr "{} Minutes Ago"
+
+#. simplepage.one_hour
+#: lessonbuilder/tool/src/resources/messages.properties:361
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_hour"
+msgid "1 Hour Ago"
+msgstr "1 Hour Ago"
+
+#. simplepage.x_hour
+#: lessonbuilder/tool/src/resources/messages.properties:362
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_hour"
+msgid "{} Hours Ago"
+msgstr "{} Hours Ago"
+
+#. simplepage.one_day
+#: lessonbuilder/tool/src/resources/messages.properties:363
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_day"
+msgid "1 Day Ago"
+msgstr "1 Day Ago"
+
+#. simplepage.x_day
+#: lessonbuilder/tool/src/resources/messages.properties:364
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_day"
+msgid "{} Days Ago"
+msgstr "{} Days Ago"
+
+#. simplepage.one_month
+#: lessonbuilder/tool/src/resources/messages.properties:365
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_month"
+msgid "1 Month Ago"
+msgstr "1 Month Ago"
+
+#. simplepage.x_month
+#: lessonbuilder/tool/src/resources/messages.properties:366
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_month"
+msgid "{} Months Ago"
+msgstr "{} Months Ago"
+
+#. simplepage.one_year
+#: lessonbuilder/tool/src/resources/messages.properties:367
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_year"
+msgid "1 Year Ago"
+msgstr "1 Year Ago"
+
+#. simplepage.x_year
+#: lessonbuilder/tool/src/resources/messages.properties:368
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_year"
+msgid "{} Years Ago"
+msgstr "{} Years Ago"
+
+#. simplepage.select-group
+#: lessonbuilder/tool/src/resources/messages.properties:369
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select-group"
+msgid ""
+"Select groups for which this item should be shown [if none selected, show to"
+" all]"
+msgstr ""
+"Select groups for which this item should be shown [if none selected, show to"
+" all]"
+
+#. simplepage.edit-group
+#: lessonbuilder/tool/src/resources/messages.properties:370
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-group"
+msgid "Edit the groups for which this item should be shown"
+msgstr "Edit the groups for which this item should be shown"
+
+#. simplepage.select-resource-group
+#: lessonbuilder/tool/src/resources/messages.properties:371
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select-"
+"resource-group"
+msgid ""
+"NOTE: You may prefer to set group access in the Resources tool. That will "
+"let you set it for a whole folder rather than for each resource separately."
+msgstr ""
+"NOTE: You may prefer to set group access in the Resources tool. That will "
+"let you set it for a whole folder rather than for each resource separately."
+
+#. simplepage.resource-group-inherited
+#: lessonbuilder/tool/src/resources/messages.properties:372
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource-"
+"group-inherited"
+msgid ""
+"Group or public access has been set for the folder in which this item is "
+"contained. So groups can't be adjusted here."
+msgstr ""
+"Group or public access has been set for the folder in which this item is "
+"contained. So groups can't be adjusted here."
+
+#. simplepage.edit_studentlink
+#: lessonbuilder/tool/src/resources/messages.properties:373
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_studentlink"
+msgid "Edit Student Content Section"
+msgstr "Edit Student Content Section"
+
+#. simplepage.student-content
+#: lessonbuilder/tool/src/resources/messages.properties:374
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"content"
+msgid "Student Content Section"
+msgstr "Student Content Section"
+
+#. simplepage.add-student-content
+#: lessonbuilder/tool/src/resources/messages.properties:375
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-student-"
+"content"
+msgid "Add Student Content"
+msgstr "Add Student Content"
+
+#. simplepage.student
+#: lessonbuilder/tool/src/resources/messages.properties:376
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student"
+msgid "Student Pages"
+msgstr "Student Pages"
+
+#. simplepage.add-page
+#: lessonbuilder/tool/src/resources/messages.properties:377
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-page"
+msgid "Add Your Own Page"
+msgstr "Add Your Own Page"
+
+#. simplepage.page-exists
+#: lessonbuilder/tool/src/resources/messages.properties:378
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page-exists"
+msgid "You already have a page in that tool."
+msgstr "You already have a page in that tool."
+
+#. simplepage.new-student-page
+#: lessonbuilder/tool/src/resources/messages.properties:379
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"page"
+msgid "New"
+msgstr "New"
+
+#. simplepage.new-student-content-page
+#: lessonbuilder/tool/src/resources/messages.properties:380
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"content-page"
+msgid "New Page"
+msgstr "New Page"
+
+#. simplepage.new-student-content
+#: lessonbuilder/tool/src/resources/messages.properties:381
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"content"
+msgid "New Content"
+msgstr "New Content"
+
+#. simplepage.new-student-comments
+#: lessonbuilder/tool/src/resources/messages.properties:382
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"comments"
+msgid "New Comments"
+msgstr "New Comments"
+
+#. simplepage.new-student-content-page-1
+#: lessonbuilder/tool/src/resources/messages.properties:383
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"content-page-1"
+msgid "New Page by {}"
+msgstr "New Page by {}"
+
+#. simplepage.new-student-content-1
+#: lessonbuilder/tool/src/resources/messages.properties:384
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"content-1"
+msgid "New Content by {}"
+msgstr "New Content by {}"
+
+#. simplepage.new-student-comments-1
+#: lessonbuilder/tool/src/resources/messages.properties:385
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"comments-1"
+msgid "New Comments on content by {}"
+msgstr "New Comments on content by {}"
+
+#. simplepage.student-content-page
+#: lessonbuilder/tool/src/resources/messages.properties:386
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"content-page"
+msgid "Student Content Page"
+msgstr "Student Content Page"
+
+#. simplepage.student-anonymous
+#: lessonbuilder/tool/src/resources/messages.properties:387
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"anonymous"
+msgid "Make these student pages anonymous"
+msgstr "Make these student pages anonymous"
+
+#. simplepage.student-comments
+#: lessonbuilder/tool/src/resources/messages.properties:388
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"comments"
+msgid "Add a comments section to each page"
+msgstr "Add a comments section to each page"
+
+#. simplepage.student-comments-anon
+#: lessonbuilder/tool/src/resources/messages.properties:389
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"comments-anon"
+msgid "Make these comments anonymous"
+msgstr "Make these comments anonymous"
+
+#. simplepage.anonymous
+#: lessonbuilder/tool/src/resources/messages.properties:390
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.anonymous"
+msgid "Anonymous"
+msgstr "Anonymous"
+
+#. simplepage.student-missing-prereqs
+#: lessonbuilder/tool/src/resources/messages.properties:391
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"missing-prereqs"
+msgid ""
+"There is an area for student content, but you must complete all required "
+"items above before you can see it."
+msgstr ""
+"There is an area for student content, but you must complete all required "
+"items above before you can see it."
+
+#. simplepage.student-fake-missing-prereqs
+#: lessonbuilder/tool/src/resources/messages.properties:392
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"fake-missing-prereqs"
+msgid ""
+"If you were a student, you wouldn't be able to see student content, because "
+"you haven't completed all required items above."
+msgstr ""
+"If you were a student, you wouldn't be able to see student content, because "
+"you haven't completed all required items above."
+
+#. simplepage.website
+#: lessonbuilder/tool/src/resources/messages.properties:393
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.website"
+msgid "Upload content in ZIP file"
+msgstr "Upload content in ZIP file"
+
+#. simplepage.website.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:394
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.website.tooltip"
+msgid ""
+"There is specific support for Camtasia, Wimba Create and Articulate, but any"
+" ZIP file may be uploaded. See the help in the dialog for more information."
+msgstr ""
+"There is specific support for Camtasia, Wimba Create and Articulate, but any"
+" ZIP file may be uploaded. See the help in the dialog for more information."
+
+#. simplepage.addwebsite-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:395
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addwebsite-"
+"descrip"
+msgid ""
+"There is specific support for Camtasia, Wimba Create and Articulate, but any"
+" ZIP file may be uploaded. See the help in the dialog for more information."
+msgstr ""
+"There is specific support for Camtasia, Wimba Create and Articulate, but any"
+" ZIP file may be uploaded. See the help in the dialog for more information."
+
+#. simplepage.website.noindex
+#: lessonbuilder/tool/src/resources/messages.properties:396
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.website.noindex"
+msgid ""
+"We have uploaded your ZIP file. The files in it are now in folder {} in "
+"Resources. But are unable to find the file in it that should be displayed. "
+"You may use \"Add Resource\" with \"Choose Existing File\"  to choose the "
+"correct file yourself."
+msgstr ""
+"We have uploaded your ZIP file. The files in it are now in folder {} in "
+"Resources. But are unable to find the file in it that should be displayed. "
+"You may use \"Add Resource\" with \"Choose Existing File\"  to choose the "
+"correct file yourself."
+
+#. simplepage.website.cantexpand
+#: lessonbuilder/tool/src/resources/messages.properties:397
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.website.cantexpand"
+msgid "Unable to extract the files from your ZIP file"
+msgstr "Unable to extract the files from your ZIP file"
+
+#. simplepage.blti
+#: lessonbuilder/tool/src/resources/messages.properties:398
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.blti"
+msgid "Add External Tool"
+msgstr "Add External Tool"
+
+#. simplepage.blti.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:399
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.tooltip"
+msgid ""
+"Add item from external service that supports the IMS LTI standard. Ask your "
+"campus support staff to find out what tools are supported by your campus."
+msgstr ""
+"Add item from external service that supports the IMS LTI standard. Ask your "
+"campus support staff to find out what tools are supported by your campus."
+
+#. simplepage.change_blti
+#: lessonbuilder/tool/src/resources/messages.properties:400
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_blti"
+msgid "Change external tool"
+msgstr "Change external tool"
+
+#. simplepage.require_submit_blti
+#: lessonbuilder/tool/src/resources/messages.properties:401
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_blti"
+msgid "Require that the student use this item"
+msgstr "Require that the student use this item"
+
+#. simplepage.edit_blti
+#: lessonbuilder/tool/src/resources/messages.properties:402
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_blti"
+msgid "Edit external tool"
+msgstr "Edit external tool"
+
+#. simplepage.blti.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:403
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.chooser"
+msgid "External Tool Selector"
+msgstr "External Tool Selector"
+
+#. simplepage.blti.tools.manage
+#: lessonbuilder/tool/src/resources/messages.properties:404
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.tools.manage"
+msgid "Manage tools and items"
+msgstr "Manage tools and items"
+
+#. simplepage.blti.tools.text
+#: lessonbuilder/tool/src/resources/messages.properties:405
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.tools.text"
+msgid "Click on a tool to create an item based on that tool"
+msgstr "Click on a tool to create an item based on that tool"
+
+#. simplepage.blti.tools.create
+#: lessonbuilder/tool/src/resources/messages.properties:406
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.tools.create"
+msgid ""
+"Click on the following to manage tools and items. This will let you create "
+"your own new tool, based on information from an external service, and to "
+"edit or delete existing tools or items. However most authors will use the "
+"sections above, not this one."
+msgstr ""
+"Click on the following to manage tools and items. This will let you create "
+"your own new tool, based on information from an external service, and to "
+"edit or delete existing tools or items. However most authors will use the "
+"sections above, not this one."
+
+#. simplepage.select_blti
+#: lessonbuilder/tool/src/resources/messages.properties:407
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_blti"
+msgid "Select item"
+msgstr "Select item"
+
+#. simplepage.select_blti.text
+#: lessonbuilder/tool/src/resources/messages.properties:408
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_blti.text"
+msgid ""
+"Select an item and then hit \"Use Selected Item\" to add it to your page. "
+"Click on an item to see what the tool is going to look like."
+msgstr ""
+"Select an item and then hit \"Use Selected Item\" to add it to your page. "
+"Click on an item to see what the tool is going to look like."
+
+#. simplepage.no_blti_items
+#: lessonbuilder/tool/src/resources/messages.properties:409
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_blti_items"
+msgid ""
+"No items have been created. Select a tool above to create an item based on "
+"it, or use \"Manage Tools and Items\" below to create a new tool based on "
+"information from an external service."
+msgstr ""
+"No items have been created. Select a tool above to create an item based on "
+"it, or use \"Manage Tools and Items\" below to create a new tool based on "
+"information from an external service."
+
+#. simplepage.no_blti_native
+#: lessonbuilder/tool/src/resources/messages.properties:410
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_blti_native"
+msgid "No items have been created. Use the link above to create one."
+msgstr "No items have been created. Use the link above to create one."
+
+#. simplepage.format.heading
+#: lessonbuilder/tool/src/resources/messages.properties:411
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.heading"
+msgid "How should this item be displayed?"
+msgstr "How should this item be displayed?"
+
+#. simplepage.format.window
+#: lessonbuilder/tool/src/resources/messages.properties:412
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.window"
+msgid "New Window: in a new window"
+msgstr "New Window: in a new window"
+
+#. simplepage.format.inline
+#: lessonbuilder/tool/src/resources/messages.properties:413
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.inline"
+msgid "In line: in a box in the current page"
+msgstr "In line: in a box in the current page"
+
+#. simplepage.format.page
+#: lessonbuilder/tool/src/resources/messages.properties:414
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.page"
+msgid "New page: in a separate page with \"next\" and \"back\" buttons"
+msgstr "New page: in a separate page with \"next\" and \"back\" buttons"
+
+#. simplepage.format.item_removed
+#: lessonbuilder/tool/src/resources/messages.properties:415
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.item_removed"
+msgid ""
+"<p style='font-family:arial, helvetica; padding:4px; font-size:80%; "
+"border:2px solid black'><span style='color:#c00'>ERROR:</span> The item that"
+" should have been displayed here has been removed. Please use the \"Edit\" "
+"button next to this item and pick \"Change external tool\" to recreate the "
+"item or choose a new one.</p>"
+msgstr ""
+"<p style='font-family:arial, helvetica; padding:4px; font-size:80%; "
+"border:2px solid black'><span style='color:#c00'>ERROR:</span> The item that"
+" should have been displayed here has been removed. Please use the \"Edit\" "
+"button next to this item and pick \"Change external tool\" to recreate the "
+"item or choose a new one.</p>"
+
+#. simplepage.more-tools
+#: lessonbuilder/tool/src/resources/messages.properties:416
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.more-tools"
+msgid "More Tools"
+msgstr "More Tools"
+
+#. simplepage.forum-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:417
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forum-"
+"descrip"
+msgid "Add a link to a forum topic."
+msgstr "Add a link to a forum topic."
+
+#. simplepage.blti-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:418
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti-descrip"
+msgid ""
+"Link to a web service that uses the IMS LTI standard to integrate with this "
+"system."
+msgstr ""
+"Link to a web service that uses the IMS LTI standard to integrate with this "
+"system."
+
+#. simplepage.comments-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:419
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"descrip"
+msgid "Add a section allows students to enter comments."
+msgstr "Add a section allows students to enter comments."
+
+#. simplepage.student-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:420
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"descrip"
+msgid "Add a section where students may create their own pages."
+msgstr "Add a section where students may create their own pages."
+
+#. simplepage.title-student-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:421
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title-"
+"student-descrip"
+msgid "Edit page title"
+msgstr "Edit page title"
+
+#. simplepage.title-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:422
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title-"
+"descrip"
+msgid "Edit page title or style."
+msgstr "Edit page title or style."
+
+#. simplepage.title-top-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:423
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title-top-"
+"descrip"
+msgid "Edit page title, release, or style."
+msgstr "Edit page title, release, or style."
+
+#. simplepage.remove-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:424
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-"
+"descrip"
+msgid "Remove this page."
+msgstr "Remove this page."
+
+#. simplepage.newpage-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:425
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.newpage-"
+"descrip"
+msgid "Add new top-level page(s)."
+msgstr "Add new top-level page(s)."
+
+#. simplepage.importcc-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:426
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.importcc-"
+"descrip"
+msgid "Load file in IMS CC format."
+msgstr "Load file in IMS CC format."
+
+#. simplepage.importcc-assigntitle
+#: lessonbuilder/tool/src/resources/messages.properties:427
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.importcc-"
+"assigntitle"
+msgid "Assignment {}"
+msgstr "Assignment {}"
+
+#. simplepage.importcc-texttitle
+#: lessonbuilder/tool/src/resources/messages.properties:428
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.importcc-"
+"texttitle"
+msgid "Instructions"
+msgstr "Instructions"
+
+#. simplepage.importcc-embedtitle
+#: lessonbuilder/tool/src/resources/messages.properties:429
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.importcc-"
+"embedtitle"
+msgid "Embedded video"
+msgstr "Embedded video"
+
+#. simplepage.add-content
+#: lessonbuilder/tool/src/resources/messages.properties:430
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-content"
+msgid "Add Content"
+msgstr "Add Content"
+
+#. simplepage.addtext-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:431
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addtext-"
+"descrip"
+msgid "Add an item using rich text editor"
+msgstr "Add an item using rich text editor"
+
+#. simplepage.subpage-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:432
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage-"
+"descrip"
+msgid ""
+"Create a new page on which you can create content, or link to an existing "
+"one"
+msgstr ""
+"Create a new page on which you can create content, or link to an existing "
+"one"
+
+#. simplepage.question-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:433
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"descrip"
+msgid ""
+"Create simple multiple-choice or short-answer question, can show results as "
+"poll"
+msgstr ""
+"Create simple multiple-choice or short-answer question, can show results as "
+"poll"
+
+#. simplepage.assignment-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:434
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assignment-"
+"descrip"
+msgid "Link to an assignment"
+msgstr "Link to an assignment"
+
+#. simplepage.quiz-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:435
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.quiz-descrip"
+msgid "Link to a test or quiz"
+msgstr "Link to a test or quiz"
+
+#. simplepage.broken-css
+#: lessonbuilder/tool/src/resources/messages.properties:436
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.broken-css"
+msgid "The customized CSS file could not be found."
+msgstr "The customized CSS file could not be found."
+
+#. simplepage.css-dropdown-label
+#: lessonbuilder/tool/src/resources/messages.properties:437
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.css-"
+"dropdown-label"
+msgid "Custom CSS File:"
+msgstr "Custom CSS File:"
+
+#. simplepage.css-upload-label
+#: lessonbuilder/tool/src/resources/messages.properties:438
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.css-upload-"
+"label"
+msgid "or upload your own:"
+msgstr "or upload your own:"
+
+#. simplepage.css-default-instructions
+#: lessonbuilder/tool/src/resources/messages.properties:439
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.css-default-"
+"instructions"
+msgid ""
+"(If this file is named default.css, it will become the site-wide default.)"
+msgstr ""
+"(If this file is named default.css, it will become the site-wide default.)"
+
+#. simplepage.default-css
+#: lessonbuilder/tool/src/resources/messages.properties:440
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.default-css"
+msgid "Use Default"
+msgstr "Use Default"
+
+#. simplepage.site
+#: lessonbuilder/tool/src/resources/messages.properties:441
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.site"
+msgid "Site CSS"
+msgstr "Site CSS"
+
+#. simplepage.system
+#: lessonbuilder/tool/src/resources/messages.properties:442
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.system"
+msgid "System CSS"
+msgstr "System CSS"
+
+#. simplepage.comments-points
+#: lessonbuilder/tool/src/resources/messages.properties:443
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"points"
+msgid "Points:"
+msgstr "Points:"
+
+#. simplepage.question-points
+#: lessonbuilder/tool/src/resources/messages.properties:444
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"points"
+msgid "Points:"
+msgstr "Points:"
+
+#. simplepage.submit
+#: lessonbuilder/tool/src/resources/messages.properties:445
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.submit"
+msgid "Submit"
+msgstr "Submit"
+
+#. simplepage.student-comments-graded
+#: lessonbuilder/tool/src/resources/messages.properties:446
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"comments-graded"
+msgid "Grade these comments"
+msgstr "Grade these comments"
+
+#. simplepage.gradingpane
+#: lessonbuilder/tool/src/resources/messages.properties:447
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.gradingpane"
+msgid "Grading Pane"
+msgstr "Grading Pane"
+
+#. simplepage.show-grading-pane
+#: lessonbuilder/tool/src/resources/messages.properties:448
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-"
+"grading-pane"
+msgid "Show Grading Pane"
+msgstr "Show Grading Pane"
+
+#. simplepage.show-grading-pane-comments
+#: lessonbuilder/tool/src/resources/messages.properties:449
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-"
+"grading-pane-comments"
+msgid "Show Grading Pane for Comments"
+msgstr "Show Grading Pane for Comments"
+
+#. simplepage.show-grading-pane-content
+#: lessonbuilder/tool/src/resources/messages.properties:450
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-"
+"grading-pane-content"
+msgid "Show Grading Pane for Comments on Student Content"
+msgstr "Show Grading Pane for Comments on Student Content"
+
+#. simplepage.grading-student
+#: lessonbuilder/tool/src/resources/messages.properties:451
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"student"
+msgid "Student Name"
+msgstr "Student Name"
+
+#. simplepage.grading-unique
+#: lessonbuilder/tool/src/resources/messages.properties:452
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"unique"
+msgid "Pages"
+msgstr "Pages"
+
+#. simplepage.grading-total-posts
+#: lessonbuilder/tool/src/resources/messages.properties:453
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"total-posts"
+msgid "Comments"
+msgstr "Comments"
+
+#. simplepage.grading-response
+#: lessonbuilder/tool/src/resources/messages.properties:454
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"response"
+msgid "Response"
+msgstr "Response"
+
+#. simplepage.grading-grade
+#: lessonbuilder/tool/src/resources/messages.properties:455
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"grade"
+msgid "Grade"
+msgstr "Grade"
+
+#. simplepage.click-to-expand
+#: lessonbuilder/tool/src/resources/messages.properties:456
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.click-to-"
+"expand"
+msgid "Toggle Comments"
+msgstr "Toggle Comments"
+
+#. simplepage.grade-for-student
+#: lessonbuilder/tool/src/resources/messages.properties:457
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grade-for-"
+"student"
+msgid "Grade for {}"
+msgstr "Grade for {}"
+
+#. simplepage.expand-for-student
+#: lessonbuilder/tool/src/resources/messages.properties:458
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.expand-for-"
+"student"
+msgid "Show or hide comments by {}"
+msgstr "Show or hide comments by {}"
+
+#. simplepage.context-link-title-1
+#: lessonbuilder/tool/src/resources/messages.properties:459
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.context-"
+"link-title-1"
+msgid "Show context for comment by {}"
+msgstr "Show context for comment by {}"
+
+#. simplepage.context-link-title-2
+#: lessonbuilder/tool/src/resources/messages.properties:460
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.context-"
+"link-title-2"
+msgid "Show context for comment by {1} on content by {2}"
+msgstr "Show context for comment by {1} on content by {2}"
+
+#. simplepage.student-comments-grading
+#: lessonbuilder/tool/src/resources/messages.properties:461
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"comments-grading"
+msgid "Comments on Student Content on \"{}\""
+msgstr "Comments on Student Content on \"{}\""
+
+#. simplepage.comments-grading
+#: lessonbuilder/tool/src/resources/messages.properties:462
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"grading"
+msgid "Comments on \"{}\""
+msgstr "Comments on \"{}\""
+
+#. simplepage.question-grading
+#: lessonbuilder/tool/src/resources/messages.properties:463
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"grading"
+msgid "Responses to \"{}\""
+msgstr "Responses to \"{}\""
+
+#. simplepage.nothing-here
+#: lessonbuilder/tool/src/resources/messages.properties:464
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nothing-here"
+msgid "There is nothing to grade here."
+msgstr "There is nothing to grade here."
+
+#. simplepage.no-gradebook
+#: lessonbuilder/tool/src/resources/messages.properties:465
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no-gradebook"
+msgid ""
+"This item couldn't be marked for grading. The most likely issue is that no "
+"Gradebook tool has been added to this site yet."
+msgstr ""
+"This item couldn't be marked for grading. The most likely issue is that no "
+"Gradebook tool has been added to this site yet."
+
+#. simplepage.show-context
+#: lessonbuilder/tool/src/resources/messages.properties:466
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-context"
+msgid "Show Context"
+msgstr "Show Context"
+
+#. simplepage.student-peer-review-title
+#: lessonbuilder/tool/src/resources/messages.properties:467
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-title"
+msgid "Title"
+msgstr "Title"
+
+#. simplepage.student-peer-review-category
+#: lessonbuilder/tool/src/resources/messages.properties:468
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-category"
+msgid "Category"
+msgstr "Category"
+
+#. simplepage.student-peer-review-add
+#: lessonbuilder/tool/src/resources/messages.properties:469
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-add"
+msgid "Add a peer review rubric to each page"
+msgstr "Add a peer review rubric to each page"
+
+#. simplepage.student-peer-review-create
+#: lessonbuilder/tool/src/resources/messages.properties:470
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-create"
+msgid "Create a new rubric"
+msgstr "Create a new rubric"
+
+#. simplepage.student-peer-review-select-rubric
+#: lessonbuilder/tool/src/resources/messages.properties:471
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-select-rubric"
+msgid "Please select a rubric"
+msgstr "Please select a rubric"
+
+#. simplepage.peer-eval-create-title
+#: lessonbuilder/tool/src/resources/messages.properties:472
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval-"
+"create-title"
+msgid "Create Peer Evaluation Rubric"
+msgstr "Create Peer Evaluation Rubric"
+
+#. simplepage.student-peer-review-add-row
+#: lessonbuilder/tool/src/resources/messages.properties:473
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-add-row"
+msgid "Add Row"
+msgstr "Add Row"
+
+#. simplepage.add-peereval
+#: lessonbuilder/tool/src/resources/messages.properties:474
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-peereval"
+msgid "Start Peer Evaluation"
+msgstr "Start Peer Evaluation"
+
+#. simplepage.view-peereval
+#: lessonbuilder/tool/src/resources/messages.properties:475
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.view-"
+"peereval"
+msgid "Display Peer Evaluation"
+msgstr "Display Peer Evaluation"
+
+#. simplepage.student-peer-eval.require_due_date
+#: lessonbuilder/tool/src/resources/messages.properties:476
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-eval.require_due_date"
+msgid "Set Due Date ?"
+msgstr "Set Due Date ?"
+
+#. simplepage.peer-eval.invalid_open_date
+#: lessonbuilder/tool/src/resources/messages.properties:477
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.invalid_open_date"
+msgid "Please enter Open Date in the format MM/DD/YY."
+msgstr "Please enter Open Date in the format MM/DD/YY."
+
+#. simplepage.peer-eval.invalid_open_time
+#: lessonbuilder/tool/src/resources/messages.properties:478
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.invalid_open_time"
+msgid "Please enter Open Time in the format HH:MM AM/PM."
+msgstr "Please enter Open Time in the format HH:MM AM/PM."
+
+#. simplepage.peer-eval.invalid_due_date
+#: lessonbuilder/tool/src/resources/messages.properties:479
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.invalid_due_date"
+msgid "Please enter Due Date in the format MM/DD/YY."
+msgstr "Please enter Due Date in the format MM/DD/YY."
+
+#. simplepage.peer-eval.invalid_due_time
+#: lessonbuilder/tool/src/resources/messages.properties:480
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.invalid_due_time"
+msgid "Please enter Due Time in the format HH:MM AM/PM."
+msgstr "Please enter Due Time in the format HH:MM AM/PM."
+
+#. simplepage.peer-eval.open_date
+#: lessonbuilder/tool/src/resources/messages.properties:481
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.open_date"
+msgid "Open Date"
+msgstr "Open Date"
+
+#. simplepage.peer-eval.due_date
+#: lessonbuilder/tool/src/resources/messages.properties:482
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.due_date"
+msgid "Due Date"
+msgstr "Due Date"
+
+#. simplepage.peer-eval-allow-selfgrade
+#: lessonbuilder/tool/src/resources/messages.properties:483
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval-"
+"allow-selfgrade"
+msgid "Allow self-grade"
+msgstr "Allow self-grade"
+
+#. simplepage.peer-eval-stats
+#: lessonbuilder/tool/src/resources/messages.properties:484
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval-"
+"stats"
+msgid "Peer Evaluation Statistics"
+msgstr "Peer Evaluation Statistics"
+
+#. simplepage.peer-eval.sample.title
+#: lessonbuilder/tool/src/resources/messages.properties:485
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.title"
+msgid "Sample Peer Evaluation"
+msgstr "Sample Peer Evaluation"
+
+#. simplepage.peer-eval.sample.1
+#: lessonbuilder/tool/src/resources/messages.properties:486
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.1"
+msgid "Quality of work"
+msgstr "Quality of work"
+
+#. simplepage.peer-eval.sample.2
+#: lessonbuilder/tool/src/resources/messages.properties:487
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.2"
+msgid "Supporting information"
+msgstr "Supporting information"
+
+#. simplepage.peer-eval.sample.3
+#: lessonbuilder/tool/src/resources/messages.properties:488
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.3"
+msgid "Organization"
+msgstr "Organization"
+
+#. simplepage.peer-eval.sample.4
+#: lessonbuilder/tool/src/resources/messages.properties:489
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.4"
+msgid "Punctuation, spelling, grammar"
+msgstr "Punctuation, spelling, grammar"
+
+#. simplepage.user.activity
+#: lessonbuilder/tool/src/resources/messages.properties:490
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.user.activity"
+msgid "Peers Evaluated"
+msgstr "Peers Evaluated"
+
+#. simplepage.peer-eval-stats.directions
+#: lessonbuilder/tool/src/resources/messages.properties:491
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval-"
+"stats.directions"
+msgid ""
+"Click on a name to show or hide a user's information. Click on \"Peers "
+"Evaluated\" to highlight the grades the user gave to the other participants."
+" Click again to remove the highlighting. Click on a cell to see a list of "
+"users who gave that grade to the selected user. "
+msgstr ""
+"Click on a name to show or hide a user's information. Click on \"Peers "
+"Evaluated\" to highlight the grades the user gave to the other participants."
+" Click again to remove the highlighting. Click on a cell to see a list of "
+"users who gave that grade to the selected user. "
+
+#. simplepage.peer-cell-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:492
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-cell-"
+"tooltip"
+msgid ""
+"Click on a cell to see a list of users who gave that grade to the selected "
+"user. "
+msgstr ""
+"Click on a cell to see a list of users who gave that grade to the selected "
+"user. "
+
+#. simplepage.peer-eval.past-due-date
+#: lessonbuilder/tool/src/resources/messages.properties:493
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval"
+".past-due-date"
+msgid "The due date for grading has passed."
+msgstr "The due date for grading has passed."
+
+#. simplepage.peer-eval.cant-eval-yourself
+#: lessonbuilder/tool/src/resources/messages.properties:494
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval"
+".cant-eval-yourself"
+msgid "You cannot evaluate your own work."
+msgstr "You cannot evaluate your own work."
+
+#. simplepage.peer-eval.click-on-cell
+#: lessonbuilder/tool/src/resources/messages.properties:495
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval"
+".click-on-cell"
+msgid "Click on a cell to grade."
+msgstr "Click on a cell to grade."
+
+#. simplepage.peer-eval.inactive-members
+#: lessonbuilder/tool/src/resources/messages.properties:496
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval"
+".inactive-members"
+msgid "Site members who have not yet created a student page."
+msgstr "Site members who have not yet created a student page."
+
+#. simplepage.dueDatebeforopenDate
+#: lessonbuilder/tool/src/resources/messages.properties:497
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.dueDatebeforopenDate"
+msgid ""
+"This item has not been saved, the due date of peer evaluation is before the "
+"open date"
+msgstr ""
+"This item has not been saved, the due date of peer evaluation is before the "
+"open date"
+
+#. simplepage.reset-button
+#: lessonbuilder/tool/src/resources/messages.properties:498
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reset-button"
+msgid "Reset"
+msgstr "Reset"
+
+#. simplepage.help-button
+#: lessonbuilder/tool/src/resources/messages.properties:499
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.help-button"
+msgid "Help for Lessons"
+msgstr "Help for Lessons"
+
+#. simplepage.opens-in-new
+#: lessonbuilder/tool/src/resources/messages.properties:500
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.opens-in-new"
+msgid "Opens in new window"
+msgstr "Opens in new window"
+
+#. simplepage.direct-link
+#: lessonbuilder/tool/src/resources/messages.properties:501
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.direct-link"
+msgid "Direct link to this tool"
+msgstr "Direct link to this tool"
+
+#. simplepage.short-url
+#: lessonbuilder/tool/src/resources/messages.properties:502
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.short-url"
+msgid "Short URL"
+msgstr "Short URL"
+
+#. simplepage.edit-page
+#: lessonbuilder/tool/src/resources/messages.properties:503
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-page"
+msgid "Edit Page"
+msgstr "Edit Page"
+
+#. simplepage.delete_page_confirm
+#: lessonbuilder/tool/src/resources/messages.properties:504
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete_page_confirm"
+msgid "Are you sure you want to delete this?"
+msgstr "Are you sure you want to delete this?"
+
+#. simplepage.path
+#: lessonbuilder/tool/src/resources/messages.properties:505
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.path"
+msgid "Path (in Resources)"
+msgstr "Path (in Resources)"
+
+#. desc-lessonbuilder.upd
+#: lessonbuilder/tool/src/resources/messages.properties:506
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:desc-lessonbuilder.upd"
+msgid "Update pages or items"
+msgstr "Update pages or items"
+
+#. desc-lessonbuilder.read
+#: lessonbuilder/tool/src/resources/messages.properties:507
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:desc-lessonbuilder.read"
+msgid "Read pages"
+msgstr "Read pages"
+
+#. desc-lessonbuilder.seeall
+#: lessonbuilder/tool/src/resources/messages.properties:508
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:desc-"
+"lessonbuilder.seeall"
+msgid "See items regardless of release controls"
+msgstr "See items regardless of release controls"
+
+#. simplepage.owner-groups
+#: lessonbuilder/tool/src/resources/messages.properties:509
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.owner-groups"
+msgid "Student pages will be associated with groups rather than individuals."
+msgstr "Student pages will be associated with groups rather than individuals."
+
+#. simplepage.owner-groups-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:510
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.owner-"
+"groups-explanation"
+msgid ""
+"Select the groups that can be associated with pages. Each student should be "
+"part of only one group. If you don't select any, all groups will be used."
+msgstr ""
+"Select the groups that can be associated with pages. Each student should be "
+"part of only one group. If you don't select any, all groups will be used."
+
+#. simplepage.owner-groups-nogroup
+#: lessonbuilder/tool/src/resources/messages.properties:511
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.owner-"
+"groups-nogroup"
+msgid ""
+"Student pages are associated with groups, but you're not in any allowable "
+"group. Please report this to your instructor."
+msgstr ""
+"Student pages are associated with groups, but you're not in any allowable "
+"group. Please report this to your instructor."
+
+#. simplepage.update-points
+#: lessonbuilder/tool/src/resources/messages.properties:512
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.update-"
+"points"
+msgid "Update points"
+msgstr "Update points"
+
+#. simplepage.edit_questionlink
+#: lessonbuilder/tool/src/resources/messages.properties:513
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_questionlink"
+msgid "Edit Question Section"
+msgstr "Edit Question Section"
+
+#. simplepage.answer
+#: lessonbuilder/tool/src/resources/messages.properties:514
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.answer"
+msgid "Answer:"
+msgstr "Answer:"
+
+#. simplepage.question-text-input
+#: lessonbuilder/tool/src/resources/messages.properties:515
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"text-input"
+msgid "Question Text:"
+msgstr "Question Text:"
+
+#. simplepage.question-answer-input
+#: lessonbuilder/tool/src/resources/messages.properties:516
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"answer-input"
+msgid "Correct Answer:"
+msgstr "Correct Answer:"
+
+#. simplepage.question-possible-answer
+#: lessonbuilder/tool/src/resources/messages.properties:517
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"possible-answer"
+msgid "Possible Answer"
+msgstr "Possible Answer"
+
+#. simplepage.short-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:518
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.short-"
+"explanation"
+msgid ""
+"Leave possible answers blank to collect feedback from students, or if you "
+"want to grade manually."
+msgstr ""
+"Leave possible answers blank to collect feedback from students, or if you "
+"want to grade manually."
+
+#. simplepage.short-explanation2
+#: lessonbuilder/tool/src/resources/messages.properties:519
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.short-"
+"explanation2"
+msgid ""
+"To grade manually, leave possible answers blank, then select \"Grade this "
+"question.\" "
+msgstr ""
+"To grade manually, leave possible answers blank, then select \"Grade this "
+"question.\" "
+
+#. simplepage.question-correct-answer
+#: lessonbuilder/tool/src/resources/messages.properties:520
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"correct-answer"
+msgid "Following answer is correct"
+msgstr "Following answer is correct"
+
+#. simplepage.question-graded
+#: lessonbuilder/tool/src/resources/messages.properties:521
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"graded"
+msgid "Grade this question."
+msgstr "Grade this question."
+
+#. simplepage.questionLinkText
+#: lessonbuilder/tool/src/resources/messages.properties:522
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.questionLinkText"
+msgid "Add Question"
+msgstr "Add Question"
+
+#. simplepage.questionDescription
+#: lessonbuilder/tool/src/resources/messages.properties:523
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.questionDescription"
+msgid "Add a simple question for students to answer"
+msgstr "Add a simple question for students to answer"
+
+#. simplepage.multipleChoice
+#: lessonbuilder/tool/src/resources/messages.properties:524
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multipleChoice"
+msgid "Multiple Choice"
+msgstr "Multiple Choice"
+
+#. simplepage.shortanswer
+#: lessonbuilder/tool/src/resources/messages.properties:525
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.shortanswer"
+msgid "Short Answer"
+msgstr "Short Answer"
+
+#. simplepage.answers
+#: lessonbuilder/tool/src/resources/messages.properties:526
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.answers"
+msgid "Possible Answers:"
+msgstr "Possible Answers:"
+
+#. simplepage.addAnswer
+#: lessonbuilder/tool/src/resources/messages.properties:527
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addAnswer"
+msgid "Add New Answer"
+msgstr "Add New Answer"
+
+#. simplepage.answer_question
+#: lessonbuilder/tool/src/resources/messages.properties:528
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.answer_question"
+msgid "Submit Answer"
+msgstr "Submit Answer"
+
+#. simplepage.questionName
+#: lessonbuilder/tool/src/resources/messages.properties:529
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.questionName"
+msgid "Simple Question"
+msgstr "Simple Question"
+
+#. simplepage.no-question-type
+#: lessonbuilder/tool/src/resources/messages.properties:530
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no-question-"
+"type"
+msgid "No question type provided"
+msgstr "No question type provided"
+
+#. simplepage.question-max
+#: lessonbuilder/tool/src/resources/messages.properties:531
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-max"
+msgid "Maximum points:"
+msgstr "Maximum points:"
+
+#. simplepage.question-gradebook-title
+#: lessonbuilder/tool/src/resources/messages.properties:532
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"gradebook-title"
+msgid "Title in Gradebook:"
+msgstr "Title in Gradebook:"
+
+#. simplepage.permissions-question
+#: lessonbuilder/tool/src/resources/messages.properties:533
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.permissions-"
+"question"
+msgid "You have already answered that question!"
+msgstr "You have already answered that question!"
+
+#. simplepage.correct-text
+#: lessonbuilder/tool/src/resources/messages.properties:534
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.correct-text"
+msgid "Text shown if answer is correct:"
+msgstr "Text shown if answer is correct:"
+
+#. simplepage.incorrect-text
+#: lessonbuilder/tool/src/resources/messages.properties:535
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.incorrect-"
+"text"
+msgid "Text shown if answer is incorrect:"
+msgstr "Text shown if answer is incorrect:"
+
+#. simplepage.show-poll
+#: lessonbuilder/tool/src/resources/messages.properties:536
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-poll"
+msgid "Show Poll"
+msgstr "Show Poll"
+
+#. simplepage.hide-poll
+#: lessonbuilder/tool/src/resources/messages.properties:537
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.hide-poll"
+msgid "Hide Poll"
+msgstr "Hide Poll"
+
+#. simplepage.question-show-poll-option
+#: lessonbuilder/tool/src/resources/messages.properties:538
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"show-poll-option"
+msgid ""
+"Show students a graph of how others responded after they answer the question"
+msgstr ""
+"Show students a graph of how others responded after they answer the question"
+
+#. simplepage.missing-question-text
+#: lessonbuilder/tool/src/resources/messages.properties:539
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.missing-"
+"question-text"
+msgid "Please supply text for the question"
+msgstr "Please supply text for the question"
+
+#. simplepage.question-need-2
+#: lessonbuilder/tool/src/resources/messages.properties:540
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"need-2"
+msgid "Please supply at least 2 alternatives for this question"
+msgstr "Please supply at least 2 alternatives for this question"
+
+#. simplepage.question-need-1
+#: lessonbuilder/tool/src/resources/messages.properties:541
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"need-1"
+msgid "Please supply at least 1 correct answer for this question"
+msgstr "Please supply at least 1 correct answer for this question"
+
+#. simplepage.go-back
+#: lessonbuilder/tool/src/resources/messages.properties:542
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.go-back"
+msgid "Go Back"
+msgstr "Go Back"
+
+#. simplepage.expand-all
+#: lessonbuilder/tool/src/resources/messages.properties:543
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.expand-all"
+msgid "Expand All"
+msgstr "Expand All"
+
+#. simplepage.collapse-all
+#: lessonbuilder/tool/src/resources/messages.properties:544
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.collapse-all"
+msgid "Collapse All"
+msgstr "Collapse All"
+
+#. simplepage.mm-test-embed
+#: lessonbuilder/tool/src/resources/messages.properties:545
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"embed"
+msgid ""
+"Because the value you pasted has a < in it, we are treating it as an \"embed"
+" code.\" If you intended to paste a URL, please try again and paste the "
+"complete URL."
+msgstr ""
+"Because the value you pasted has a < in it, we are treating it as an \"embed"
+" code.\" If you intended to paste a URL, please try again and paste the "
+"complete URL."
+
+#. simplepage.mm-test-addedhttp-1
+#: lessonbuilder/tool/src/resources/messages.properties:546
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"addedhttp-1"
+msgid "NOTE: We changed this to "
+msgstr "NOTE: We changed this to "
+
+#. simplepage.mm-test-addedhttp-2
+#: lessonbuilder/tool/src/resources/messages.properties:547
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"addedhttp-2"
+msgid "We hope that's what you meant."
+msgstr "We hope that's what you meant."
+
+#. simplepage.mm-test-oembed
+#: lessonbuilder/tool/src/resources/messages.properties:548
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"oembed"
+msgid ""
+"First, we will try this as the URL of a video/audio sharing site. Please see"
+" if this shows the contents of the site properly."
+msgstr ""
+"First, we will try this as the URL of a video/audio sharing site. Please see"
+" if this shows the contents of the site properly."
+
+#. simplepage.mm-test-iframe
+#: lessonbuilder/tool/src/resources/messages.properties:549
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"iframe"
+msgid ""
+"Now we are trying to put the contents of the URL in using a different "
+"technique (an IFRAME). Please see if this shows the contents of the site "
+"properly."
+msgstr ""
+"Now we are trying to put the contents of the URL in using a different "
+"technique (an IFRAME). Please see if this shows the contents of the site "
+"properly."
+
+#. simplepage.mm-test-tryother
+#: lessonbuilder/tool/src/resources/messages.properties:550
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"tryother"
+msgid "Try other alternative"
+msgstr "Try other alternative"
+
+#. simplepage.mm-test-start-over
+#: lessonbuilder/tool/src/resources/messages.properties:551
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"start-over"
+msgid "Start over"
+msgstr "Start over"
+
+#. simplepage.sharedpage
+#: lessonbuilder/tool/src/resources/messages.properties:552
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.sharedpage"
+msgid "[Shared page]"
+msgstr "[Shared page]"
+
+#. simplepage.sharedpageexplanation
+#: lessonbuilder/tool/src/resources/messages.properties:553
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.sharedpageexplanation"
+msgid ""
+"is used when the same page appears more than one place. Any changes to the "
+"page will be reflected everywhere that it appears."
+msgstr ""
+"is used when the same page appears more than one place. Any changes to the "
+"page will be reflected everywhere that it appears."
+
+#. simplepage.deletecommentsubmissionexist
+#: lessonbuilder/tool/src/resources/messages.properties:554
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.deletecommentsubmissionexist"
+msgid ""
+"If you delete this section, comments already created by students will be "
+"lost. Are you sure?"
+msgstr ""
+"If you delete this section, comments already created by students will be "
+"lost. Are you sure?"
+
+#. simplepage.deletestudentsubmissionexist
+#: lessonbuilder/tool/src/resources/messages.properties:555
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.deletestudentsubmissionexist"
+msgid ""
+"If you delete this section, pages already created by students will be lost. "
+"Are you sure?"
+msgstr ""
+"If you delete this section, pages already created by students will be lost. "
+"Are you sure?"
+
+#. simplepage.groupcheckfailed
+#: lessonbuilder/tool/src/resources/messages.properties:556
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.groupcheckfailed"
+msgid "Unable to check selected groups. System returned error: {}"
+msgstr "Unable to check selected groups. System returned error: {}"
+
+#. simplepage.groupcheckoverlaps
+#: lessonbuilder/tool/src/resources/messages.properties:557
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.groupcheckoverlaps"
+msgid "The following groups overlap: {}"
+msgstr "The following groups overlap: {}"
+
+#. simplepage.groupchecknogroups
+#: lessonbuilder/tool/src/resources/messages.properties:558
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.groupchecknogroups"
+msgid "The following users are not in any groups: {}"
+msgstr "The following users are not in any groups: {}"
+
+#. simplepage.insist
+#: lessonbuilder/tool/src/resources/messages.properties:559
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.insist"
+msgid "To continue anyway, hit Update Item again."
+msgstr "To continue anyway, hit Update Item again."
+
+#. simplepage.dont-show-downloads
+#: lessonbuilder/tool/src/resources/messages.properties:560
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.dont-show-"
+"downloads"
+msgid ""
+"Don't show download links for embedded videos, etc. (This setting applies to"
+" all pages in this site.)"
+msgstr ""
+"Don't show download links for embedded videos, etc. (This setting applies to"
+" all pages in this site.)"
+
+#. simplepage.access-group
+#: lessonbuilder/tool/src/resources/messages.properties:561
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.access-group"
+msgid "Access: {}"
+msgstr "Access: {}"
+
+#. simplepage.delete-orphan-pages
+#: lessonbuilder/tool/src/resources/messages.properties:562
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete-"
+"orphan-pages"
+msgid "Delete removed pages"
+msgstr "Delete removed pages"
+
+#. simplepage.delete-orphan-pages-desc
+#: lessonbuilder/tool/src/resources/messages.properties:563
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete-"
+"orphan-pages-desc"
+msgid ""
+"Permanently remove all pages that no longer appear as top-level pages or "
+"subpages"
+msgstr ""
+"Permanently remove all pages that no longer appear as top-level pages or "
+"subpages"
+
+#. simplepage.filezero
+#: lessonbuilder/tool/src/resources/messages.properties:564
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.filezero"
+msgid "Uploaded file is zero size"
+msgstr "Uploaded file is zero size"
+
+#. simplepage.filetoobig
+#: lessonbuilder/tool/src/resources/messages.properties:565
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.filetoobig"
+msgid "Uploaded file is larger than {} MB"
+msgstr "Uploaded file is larger than {} MB"

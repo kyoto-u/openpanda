@@ -1,0 +1,75 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. up_one_level
+#: dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:1
+msgctxt ""
+"dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:up_one_level"
+msgid "Up one level"
+msgstr "Up one level"
+
+#. contents_of
+#: dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:2
+msgctxt ""
+"dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:contents_of"
+msgid "Contents of"
+msgstr "Contents of"
+
+#. folder
+#: dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:3
+msgctxt ""
+"dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:folder"
+msgid "[Folder]"
+msgstr "[Folder]"
+
+#. choose
+#: dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:4
+msgctxt ""
+"dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:choose"
+msgid "Choose"
+msgstr "Choose"
+
+#. file_folder
+#: dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:5
+msgctxt ""
+"dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:file_folder"
+msgid "File folder"
+msgstr "File folder"
+
+#. permission_to_view
+#: dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:6
+msgctxt ""
+"dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:permission_to_view"
+msgid "View permissions"
+msgstr "View permissions"
+
+#. resource_not_exists
+#: dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:7
+msgctxt ""
+"dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:resource_not_exists"
+msgid "This resource does not exist"
+msgstr "This resource does not exist"
+
+#. empty_resource
+#: dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:8
+msgctxt ""
+"dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:empty_resource"
+msgid "Empty resource"
+msgstr "Empty resource"
+
+#. error_setting_header_values
+#: dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:9
+msgctxt ""
+"dav/dav/src/bundle/org/sakaiproject/tool/dav/bundle/Messages.properties:error_setting_header_values"
+msgid "Error setting header values"
+msgstr "Error setting header values"

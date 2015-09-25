@@ -1,0 +1,130 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. na
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:1
+msgctxt "taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:na"
+msgid "NA"
+msgstr "NA"
+
+#. column_exportable
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:2
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_exportable"
+msgid "Exportable"
+msgstr "Exportable"
+
+#. column_criteria
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:3
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_criteria"
+msgid "Criteria"
+msgstr "Criteria"
+
+#. column_parent
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:4
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_parent"
+msgid "Parent"
+msgstr "Parent"
+
+#. column_rationale
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:5
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_rationale"
+msgid "Rationale"
+msgstr "Rationale"
+
+#. column_rubric
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:6
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_rubric"
+msgid "Rubric"
+msgstr "Rubric"
+
+#. column_visible
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:7
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_visible"
+msgid "Visible"
+msgstr "Visible"
+
+#. column_worksite
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:8
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_worksite"
+msgid "Worksite"
+msgstr "Worksite"
+
+#. column_exportable_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:9
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_exportable_desc"
+msgid "Sort by exportable"
+msgstr "Sort by exportable"
+
+#. column_criteria_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:10
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_criteria_desc"
+msgid "Sort by criteria"
+msgstr "Sort by criteria"
+
+#. column_parent_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:11
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_parent_desc"
+msgid "Sort by parent"
+msgstr "Sort by parent"
+
+#. column_rationale_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:12
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_rationale_desc"
+msgid "Sort by rationale"
+msgstr "Sort by rationale"
+
+#. column_rubric_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:13
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_rubric_desc"
+msgid "Sort by rubric"
+msgstr "Sort by rubric"
+
+#. column_visible_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:14
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_visible_desc"
+msgid "Sort by visibility"
+msgstr "Sort by visibility"
+
+#. column_worksite_desc
+#: taggable/taggable-impl/impl/src/bundle/taggable-impl.properties:15
+msgctxt ""
+"taggable/taggable-impl/impl/src/bundle/taggable-"
+"impl.properties:column_worksite_desc"
+msgid "Sort by worksite"
+msgstr "Sort by worksite"

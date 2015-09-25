@@ -1,0 +1,787 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-17 09:55+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. desc-content.new
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties:1
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties"
+":desc-content.new"
+msgid "Create podcasts"
+msgstr "ポッドキャストを作成"
+
+#. desc-content.read
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties:2
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties"
+":desc-content.read"
+msgid "Read podcasts"
+msgstr "ポッドキャストを読む"
+
+#. desc-content.revise.any
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties:3
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties"
+":desc-content.revise.any"
+msgid "Edit any podcasts"
+msgstr "すべてのポッドキャストを編集"
+
+#. desc-content.revise.own
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties:4
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties"
+":desc-content.revise.own"
+msgid "Edit own podcasts"
+msgstr "自分のポッドキャストを編集"
+
+#. desc-content.delete.any
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties:5
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties"
+":desc-content.delete.any"
+msgid "Delete any podcasts"
+msgstr "すべてのポッドキャストを削除"
+
+#. desc-content.delete.own
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties:6
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties"
+":desc-content.delete.own"
+msgid "Delete own podcasts"
+msgstr "自分のポッドキャストを削除"
+
+#. desc-content.hidden
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties:7
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/permissions.properties"
+":desc-content.hidden"
+msgid "Read hidden podcasts"
+msgstr "非表示ポッドキャストを読む"
+
+#. podcast_home_title
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:1
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:podcast_home_title"
+msgid "Podcasts"
+msgstr "ポッドキャスト"
+
+#. podcast_home_sub
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:2
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:podcast_home_sub"
+msgid ""
+"Subscribe now by copying this RSS feed address and pasting it into your "
+"favorite"
+msgstr "この RSS フィードアドレスをコピーし自分の好きな「ポッドキャッチャー」にペーストすることにより，今すぐ購読します．"
+
+#. podcatcher
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:3
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:podcatcher"
+msgid "podcatcher"
+msgstr "ポッドキャッチャー"
+
+#. feed_title
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:4
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:feed_title"
+msgid "'s official Podcast."
+msgstr "ポッドキャストの対象: "
+
+#. feed_desc1
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:5
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:feed_desc1"
+msgid " official podcast."
+msgstr " 公式ポッドキャストです．"
+
+#. feed_desc2
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:6
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:feed_desc2"
+msgid " Please check back throughout the semester for updates. "
+msgstr " 最新がないかどうか学期を通じて確認してください．"
+
+#. feed_copyright
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:7
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:feed_copyright"
+msgid "Copyright 2007 The Sakai Foundation. All rights reserved."
+msgstr "Copyright 2006 The Sakai Foundation. All rights reserved."
+
+#. no_podcasts
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:8
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:no_podcasts"
+msgid "There are currently no podcasts at this location."
+msgstr "この場所には現在，ポッドキャストはありません．"
+
+#. no_access
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:9
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:no_access"
+msgid ""
+"You are not authorized to view this tool. Contact your local support center "
+"for assistance."
+msgstr "このツールを表示する権限がありません．詳しくはあなたの大学のサポートセンターに連絡してください．"
+
+#. posted_by
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:10
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:posted_by"
+msgid "Posted by "
+msgstr "作成者: "
+
+#. access
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:11
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:access"
+msgid "Access"
+msgstr "アクセス"
+
+#. add
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:12
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:add"
+msgid "Add"
+msgstr "追加"
+
+#. at
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:13
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:at"
+msgid "at "
+msgstr "at "
+
+#. cancel
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:14
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. colon
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:15
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:colon"
+msgid ":"
+msgstr ":"
+
+#. delete
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:16
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:delete"
+msgid "Delete"
+msgstr "削除"
+
+#. download
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:17
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:download"
+msgid "Download"
+msgstr "ダウンロード"
+
+#. maint
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:18
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:maint"
+msgid "Maintain"
+msgstr "保守"
+
+#. new
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:19
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:new"
+msgid "New"
+msgstr "新規"
+
+#. on
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:20
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:on"
+msgid "on "
+msgstr "on "
+
+#. options
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:21
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:options"
+msgid "Options"
+msgstr "オプション"
+
+#. permissions
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:22
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:permissions"
+msgid "Permissions"
+msgstr "権限"
+
+#. read
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:23
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:read"
+msgid "Read"
+msgstr "既読"
+
+#. revise
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:24
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:revise"
+msgid "Edit"
+msgstr "確認"
+
+#. role
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:25
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:role"
+msgid "Role"
+msgstr "ロール"
+
+#. subscribe
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:26
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:subscribe"
+msgid "Subscribe:"
+msgstr "購読:"
+
+#. close_paren
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:27
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:close_paren"
+msgid ")"
+msgstr ")"
+
+#. open_paren
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:28
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:open_paren"
+msgid "("
+msgstr "("
+
+#. spacer_bar
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:29
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:spacer_bar"
+msgid "| "
+msgstr "| "
+
+#. publish_date_format
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:30
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:publish_date_format"
+msgid "EEEEEE',' dd MMMMM yyyy hh:mm a z"
+msgstr "EEEEEE',' dd MMMMM yyyy hh:mm a z"
+
+#. date_picker_format
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:31
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:date_picker_format"
+msgid "MM/dd/yyyy hh:mm:ss a"
+msgstr "yyyy年MM月dd日ahh時mm分ss秒"
+
+#. date_by_hand_format
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:32
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:date_by_hand_format"
+msgid "MM/dd/yyyy hh:mm a"
+msgstr "yyyy年MM月dd日ahh時mm分ss秒"
+
+#. date_picker_format_string
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:33
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:date_picker_format_string"
+msgid "(Format: MM/DD/YYYY HH:MM AM/PM)"
+msgstr "(フォーマット: YYYY年MM月DD日午前/午後HH時MM分)"
+
+#. internal_date_format
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:34
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:internal_date_format"
+msgid "yyyyMMddhhmmssSSS"
+msgstr "yyyyMMddhhmmssSSS"
+
+#. popup_text
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:35
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:popup_text"
+msgid ""
+"A podcatcher is a computer program used to automatically download podcasts."
+"  iTunes is a popular podcatcher, but is not the only software available for"
+" this purpose."
+msgstr "ポッドキャッチャーは自動的にポッドキャストをダウンロードするために使用されるコンピュータプログラムです．iTunes もポッドキャッチャーですが，この目的には利用できないものです．"
+
+#. current_file
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:36
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:current_file"
+msgid "Current File"
+msgstr "現在のファイル"
+
+#. current_date
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:37
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:current_date"
+msgid "Current Publish Date/Time"
+msgstr "現在の出版日時"
+
+#. required_prompt
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:38
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:required_prompt"
+msgid "Required items marked with a "
+msgstr "必須アイテムのマーク: "
+
+#. file_prompt
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:39
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:file_prompt"
+msgid "Choose a file "
+msgstr "ファイルを選択します"
+
+#. date_prompt
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:40
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:date_prompt"
+msgid "Publish Date/Time "
+msgstr "出版日時"
+
+#. title_prompt
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:41
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:title_prompt"
+msgid "Title"
+msgstr "タイトル"
+
+#. change_submit
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:42
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:change_submit"
+msgid "Save Changes"
+msgstr "変更を保存"
+
+#. file_to_upload
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:43
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:file_to_upload"
+msgid "File to Upload"
+msgstr "アップロードするファイル"
+
+#. add_title
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:44
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:add_title"
+msgid "Add Podcast"
+msgstr "ポッドキャストを追加"
+
+#. add_directions
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:45
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:add_directions"
+msgid "Complete the form, then choose the appropriate button at the bottom."
+msgstr "フォームを入力し，一番下の適切なボタンを選択します．"
+
+#. description_prompt
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:46
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:description_prompt"
+msgid "Description"
+msgstr "説明"
+
+#. email_prompt
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:47
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:email_prompt"
+msgid "Email Notification"
+msgstr "メール通知"
+
+#. delete_title
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:48
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:delete_title"
+msgid "Deleting Podcast..."
+msgstr "ポッドキャストを削除しています..."
+
+#. delete_submit
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:49
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:delete_submit"
+msgid "Delete"
+msgstr "削除"
+
+#. del_confirm
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:50
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:del_confirm"
+msgid "Are you sure you want to delete the following podcast?"
+msgstr "以下のポッドキャストを削除してもよろしいですか?"
+
+#. revise_title
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:51
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:revise_title"
+msgid "Edit Podcast"
+msgstr "ポッドキャストを編集"
+
+#. revise_directions
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:52
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:revise_directions"
+msgid "Update the form, then choose the appropriate button at the bottom."
+msgstr "フォームを更新し，一番下の適切なボタンを選択します．"
+
+#. perm_title
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:53
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:perm_title"
+msgid "Permissions"
+msgstr "権限"
+
+#. perm_directions
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:54
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:perm_directions"
+msgid "Set permissions for Podcasts in worksite "
+msgstr "ワークサイトのポッドキャストの権限をセットします"
+
+#. permission_directions
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:55
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:permission_directions"
+msgid "Set permissions for Podcasts folder in worksite {0}"
+msgstr "ワークサイト \"{0}\" のポッドキャストフォルダの権限を設定"
+
+#. options_title
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:56
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:options_title"
+msgid "Options"
+msgstr "オプション"
+
+#. options_directions1
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:57
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:options_directions1"
+msgid "To provide access to your podcasts through a"
+msgstr "を通じてあなたのポッドキャストへのアクセスする"
+
+#. options_directions2
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:58
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:options_directions2"
+msgid ""
+"choose Display to non-members (publicly available). To restrict access to "
+"your podcasts to your site's participants and disable access through a"
+msgstr "を通じたポッドキャストへのアクセスをさせたい場合は，「非メンバに表示(誰でも表示可能)」を選びます．choose Display to non-members (publicly available). サイト参加者にポッドキャストへのアクセスを制限し，"
+
+#. options_directions3
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:59
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:options_directions3"
+msgid "choose Display to Site."
+msgstr "を通じたアクセスを禁止する場合は「サイトに表示」を選択します．"
+
+#. options_public
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:60
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:options_public"
+msgid "Display to non-members (publicly viewable)"
+msgstr "非メンバに表示(誰でも表示可能)"
+
+#. options_site
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:61
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:options_site"
+msgid "Display to site"
+msgstr "サイトに表示"
+
+#. options_site_disabled
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:62
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:options_site_disabled"
+msgid ""
+"Disabled to site is unavailable, this may be because the whole site is "
+"already public."
+msgstr "サイトを無効にすることはできません．すべてのサイトが既に公開済であるためである可能性があります．"
+
+#. option_change_confirm
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:63
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:option_change_confirm"
+msgid ""
+"The permissions for the Podcasts feed have changed. This feed is no longer "
+"publicly viewable. For non-participants to access the podcast feed for this "
+"site, select the Options link above and select the radio button next to "
+"Display to non-members (publicly viewable)."
+msgstr "ポッドキャストフィードの権限が変更されてました．このフィードはすでに誰も表示することはできません．参加者でないユーザにこのサイトのポッドキャストフィードにアクセスさせたい場合は，上の「オプション」リンクを選択し，「非メンバに表示(誰でも表示可能)」の隣のラジオボタンを選択します．"
+
+#. no_resource_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:64
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:no_resource_alert"
+msgid "To use the Podcasts tool, you must first add the {0} tool."
+msgstr "「ポッドキャスト」ツールを使用するためには，まず， {0} ツールを追加しなければなりません．"
+
+#. nofile_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:65
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:nofile_alert"
+msgid "Alert: You must choose a file"
+msgstr "警告: You must choose a file"
+
+#. nodate_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:66
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:nodate_alert"
+msgid "Alert: You must enter a date and time"
+msgstr "警告: 日付を入力しなければなりません"
+
+#. notitle_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:67
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:notitle_alert"
+msgid "Alert: You must enter a title"
+msgstr "警告: タイトルを入力しなければなりません"
+
+#. notitle
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:68
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:notitle"
+msgid "You must enter a title"
+msgstr "タイトルを入力しなければなりません"
+
+#. length_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:69
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:length_alert"
+msgid ""
+"The podcast URL, including the file name, cannot exceed 254 characters. To "
+"add this podcast successfully, reduce the length of the file name and try "
+"again."
+msgstr "ポッドキャストの URL は，ファイル名を含み，半角英数字で 254 文字を越えることはできません．このポッドキャストを追加するためには，ファイル名の長さを短くしてから再度試してください．"
+
+#. quota_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:70
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:quota_alert"
+msgid ""
+"You have exceeded your quota in Resources.  Delete items and try again."
+msgstr "リソースがクオータを超過しています．アイテムを削除し，再度試してください．"
+
+#. max_size_exceeded_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:71
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:max_size_exceeded_alert"
+msgid "Alert: The upload size limit of {0} MB has been exceeded."
+msgstr "警告: アップロードサイズ制限が{0}MB越えています．"
+
+#. permission_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:72
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:permission_alert"
+msgid "You do not have permission to delete the selected file."
+msgstr "選択されたファイルを削除する権限がありません．"
+
+#. internal_error_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:73
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:internal_error_alert"
+msgid ""
+"An internal error prevented your operation from being completed. Please try "
+"again."
+msgstr "内部エラーにより，操作を完了できませんでした．再度試してください．"
+
+#. id_unused_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:74
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:id_unused_alert"
+msgid ""
+"The ID for the resource does not correspond to a valid resource. Please try "
+"again and if this reoccurs, contact support to help resolve."
+msgstr "リソース用の ID が有効なリソースに対応していません．再度試してみてください．もし再発するようであれば，サポートに連絡してください．"
+
+#. id_invalid_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:75
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:id_invalid_alert"
+msgid ""
+"The ID for the resource is invalid resource. Please try again and if "
+"reoccurs, contact support to help resolve."
+msgstr "リソース用の ID が無効です．再度試してみてください．もし再発するようであれば，サポートに連絡してください．"
+
+#. io_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:76
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:io_alert"
+msgid ""
+"There was a problem uploading your file. Please check the pathname or re-"
+"select and try again."
+msgstr "ファイルを更新中に問題がありました．パス名を確認するか選択し直してから再度試してください．"
+
+#. id_used_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:77
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:id_used_alert"
+msgid "The ID for the resource is already in use. Please retry."
+msgstr "リソース用の ID がすでに使用されています．再入力してください．"
+
+#. invalid_date_alert
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:78
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:invalid_date_alert"
+msgid ""
+"You must enter the date in the following format: MM/DD/YYYY HH:MM AM/PM"
+msgstr "日付は次のフォーマットで入力しなければなりません: YYYY年MM月DD日午前/午後HH時MM分"
+
+#. podfeed_revise_title
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:79
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:podfeed_revise_title"
+msgid "Edit Podcast Feed"
+msgstr "ポッドキャストフィードを編集"
+
+#. podfeed_revise_directions
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:80
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:podfeed_revise_directions"
+msgid ""
+"The title and description of the podcast feed will be available to site "
+"participants from within their podcatcher.  Update the form, then choose the"
+" appropriate button at the bottom. "
+msgstr "ポッドキャストフィードのタイトルおよび説明はサイト参加者のポッドキャッチャーを通じて利用可能になります．フォームを更新し，一番下の適切なボタンをクリックします．"
+
+#. podfeed_revise_url_caption
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:81
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:podfeed_revise_url_caption"
+msgid "RSS feed address"
+msgstr "RSS フィードアドレス"
+
+#. podfeed_author
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:82
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:podfeed_author"
+msgid "Created by Sakai"
+msgstr "Created by Sakai"
+
+#. podfeed_copyrighttext
+#: podcasts/podcasts-api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:83
+msgctxt ""
+"podcasts/podcasts-"
+"api/src/bundle/org/sakaiproject/api/podcasts/bundle/Messages.properties:podfeed_copyrighttext"
+msgid "Copyright {0}."
+msgstr "Copyright 2006."
+
+#. podcast
+#: podcasts/podcasts-app/src/bundle/podcast.properties:1
+msgctxt "podcasts/podcasts-app/src/bundle/podcast.properties:podcast"
+msgid "Represents the Podcast tool"
+msgstr "ポッドキャストツールです"
+
+#. podcast.action.site
+#: podcasts/podcasts-app/src/bundle/podcast.properties:2
+msgctxt ""
+"podcasts/podcasts-app/src/bundle/podcast.properties:podcast.action.site"
+msgid "Gets the podcast items for a given site."
+msgstr "指定されたサイトでポッドキャストアイテムをすべて取得します"

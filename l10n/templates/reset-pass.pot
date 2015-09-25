@@ -1,0 +1,746 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. msg.noSuchValidation
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:1
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:msg.noSuchValidation"
+msgid "{0} is not a valid validation code "
+msgstr "{0} is not a valid validation code "
+
+#. msg.alreadyValidated
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:2
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:msg.alreadyValidated"
+msgid "You have already completed this form"
+msgstr "You have already completed this form"
+
+#. msg.expiredValidationRealTime
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:3
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:msg.expiredValidationRealTime"
+msgid ""
+"Your password reset link has expired. For security purposes, links expire "
+"after {0}."
+msgstr ""
+"Your password reset link has expired. For security purposes, links expire "
+"after {0}."
+
+#. msg.expiredValidation
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:4
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:msg.expiredValidation"
+msgid "{0} has expired"
+msgstr "{0} has expired"
+
+#. msg.noCode
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:5
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:msg.noCode"
+msgid "Please enter a validation code"
+msgstr "Please enter a validation code"
+
+#. msg.thanks
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:6
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:msg.thanks"
+msgid "Thank you for validating your account."
+msgstr "Thank you for validating your account."
+
+#. msg.acceptInvitation
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:7
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:msg.acceptInvitation"
+msgid "Accept your {0} invitation."
+msgstr "Accept your {0} invitation."
+
+#. msg.resetPassword
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:8
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:msg.resetPassword"
+msgid "Reset your {0} password."
+msgstr "Reset your {0} password."
+
+#. validate.title
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:9
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.title"
+msgid "Account Validation"
+msgstr "Account Validation"
+
+#. validate.invalidPassword
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:10
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.invalidPassword"
+msgid "Password is incorrect"
+msgstr "Password is incorrect"
+
+#. validate.passNotMatch
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:11
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.passNotMatch"
+msgid "Passwords don't match"
+msgstr "Passwords don't match"
+
+#. validate.userNotDefined
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:12
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.userNotDefined"
+msgid "Your account does not exist"
+msgstr "Your account does not exist"
+
+#. validate.acceptTerms
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:13
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.acceptTerms"
+msgid "You must accept the terms and conditions."
+msgstr "You must accept the terms and conditions."
+
+#. validate.welcome1
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:14
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.welcome1"
+msgid "Welcome to {0}!"
+msgstr "Welcome to {0}!"
+
+#. validate.welcome1.reset
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:15
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.welcome1.reset"
+msgid "Reset your password in {0}"
+msgstr "Reset your password in {0}"
+
+#. validate.welcome
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:16
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.welcome"
+msgid "You have been invited to join the following site(s) in {0}:"
+msgstr "You have been invited to join the following site(s) in {0}:"
+
+#. validate.welcome.reset
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:17
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.welcome.reset"
+msgid "You have access to the following site(s) in {0}:"
+msgstr "You have access to the following site(s) in {0}:"
+
+#. validate.welcome2
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:18
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.welcome2"
+msgid "A new account has been reserved for you with user ID {3}."
+msgstr "A new account has been reserved for you with user ID {3}."
+
+#. validate.wait.newUser.1
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:19
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.wait.newUser.1"
+msgid "Wait!"
+msgstr "Wait!"
+
+#. validate.wait.newUser.2
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:20
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.wait.newUser.2"
+msgid "I already have an account in {0}"
+msgstr "I already have an account in {0}"
+
+#. validate.wait.transfer.1
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:21
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.wait.transfer.1"
+msgid "Wait, I changed my mind!"
+msgstr "Wait, I changed my mind!"
+
+#. validate.wait.transfer.2
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:22
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.wait.transfer.2"
+msgid "Activate the {0} account"
+msgstr "Activate the {0} account"
+
+#. validate.sameAccount
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:23
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.sameAccount"
+msgid "You can't use the same account to merge to"
+msgstr "You can't use the same account to merge to"
+
+#. validate.loginFailed
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:24
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.loginFailed"
+msgid "Login failed!"
+msgstr "Login failed!"
+
+#. validate.requestanother.label
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:25
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.requestanother.label"
+msgid "Forgot your password?"
+msgstr "Forgot your password?"
+
+#. validate.requestanother
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:26
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.requestanother"
+msgid "Reset your password."
+msgstr "Reset your password."
+
+#. validate.requestanother.reset
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:27
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.requestanother.reset"
+msgid "Request again."
+msgstr "Request again."
+
+#. validate.expirationtime
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:28
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.expirationtime"
+msgid ""
+"You have {0} from the time of your original request to submit this form."
+msgstr ""
+"You have {0} from the time of your original request to submit this form."
+
+#. validate.imnew
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:29
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.imnew"
+msgid "I am new to {0}"
+msgstr "I am new to {0}"
+
+#. validate.oneaccount
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:30
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.oneaccount"
+msgid "I have one account in {0}"
+msgstr "I have one account in {0}"
+
+#. validate.claim
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:31
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.claim"
+msgid "Activate your new {0} account."
+msgstr "Activate your new {0} account."
+
+#. validate.reset
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:32
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.reset"
+msgid "Reset the password for your {0} account."
+msgstr "Reset the password for your {0} account."
+
+#. validate.alreadyhave
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:33
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.alreadyhave"
+msgid "I have an account in {0} already"
+msgstr "I have an account in {0} already"
+
+#. validate.alreadyhave.reset
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:34
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.alreadyhave.reset"
+msgid "I have another {0} account"
+msgstr "I have another {0} account"
+
+#. validate.loginexisting
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:35
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.loginexisting"
+msgid ""
+"Discard the account for {0} and transfer all new site memberships to the "
+"account entered below. Existing site memberships for the account below will "
+"not be affected."
+msgstr ""
+"Discard the account for {0} and transfer all new site memberships to the "
+"account entered below. Existing site memberships for the account below will "
+"not be affected."
+
+#. validate.loginexisting.reset
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:36
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.loginexisting.reset"
+msgid ""
+"Login with your other {0} account (it will be given access to the site(s) "
+"above)."
+msgstr ""
+"Login with your other {0} account (it will be given access to the site(s) "
+"above)."
+
+#. validate.loginexisting.transfer
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:37
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.loginexisting.transfer"
+msgid ""
+"To become a member of the site(s) above, log in with your existing {0} "
+"account."
+msgstr ""
+"To become a member of the site(s) above, log in with your existing {0} "
+"account."
+
+#. validate.loginexisting.accountReserved
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:38
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.loginexisting.accountReserved"
+msgid ""
+"The account reserved for {0} will be deleted. The account you have entered "
+"will become a member of the sites listed above."
+msgstr ""
+"The account reserved for {0} will be deleted. The account you have entered "
+"will become a member of the sites listed above."
+
+#. validate.loginexisting.transferMemberships
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:39
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.loginexisting.transferMemberships"
+msgid "Accept invitation and log in"
+msgstr "Accept invitation and log in"
+
+#. validate.or
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:40
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.or"
+msgid "OR"
+msgstr "OR"
+
+#. validate.password.fail
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:41
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:validate.password.fail"
+msgid ""
+"Password does not meet minimum strength requirements. Strong passwords are "
+"long and/or use a mix of character types (ie. letters, numbers, symbols, "
+"etc.). They do not contain all or part of the user id."
+msgstr ""
+"Password does not meet minimum strength requirements. Strong passwords are "
+"long and/or use a mix of character types (ie. letters, numbers, symbols, "
+"etc.). They do not contain all or part of the user id."
+
+#. username.new
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:42
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:username.new"
+msgid "Your login user ID will be:"
+msgstr "Your login user ID will be:"
+
+#. username.new.reset
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:43
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:username.new.reset"
+msgid "Change the password for your {0} account:"
+msgstr "Change the password for your {0} account:"
+
+#. username
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:44
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:username"
+msgid "User ID"
+msgstr "User ID"
+
+#. firstname
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:45
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:firstname"
+msgid "First name"
+msgstr "First name"
+
+#. firstname.required
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:46
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:firstname.required"
+msgid "First name is a required field"
+msgstr "First name is a required field"
+
+#. lastname
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:47
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:lastname"
+msgid "Last name"
+msgstr "Last name"
+
+#. lastname.required
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:48
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:lastname.required"
+msgid "Last name is a required field"
+msgstr "Last name is a required field"
+
+#. password
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:49
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:password"
+msgid "Password"
+msgstr "Password"
+
+#. newpassword
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:50
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:newpassword"
+msgid "New password"
+msgstr "New password"
+
+#. password2
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:51
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:password2"
+msgid "Confirm new password"
+msgstr "Confirm new password"
+
+#. password.fail
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:52
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:password.fail"
+msgid "Strength: too weak"
+msgstr "Strength: too weak"
+
+#. password.weak
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:53
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:password.weak"
+msgid "Strength: weak"
+msgstr "Strength: weak"
+
+#. password.moderate
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:54
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:password.moderate"
+msgid "Strength: moderate"
+msgstr "Strength: moderate"
+
+#. password.strong
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:55
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:password.strong"
+msgid "Strength: strong"
+msgstr "Strength: strong"
+
+#. password.strengthInfo
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:56
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:password.strengthInfo"
+msgid ""
+"Strong passwords are long and/or use a mix of character types (ie. letters, "
+"numbers, symbols, etc.). They do not contain all or part of the user id."
+msgstr ""
+"Strong passwords are long and/or use a mix of character types (ie. letters, "
+"numbers, symbols, etc.). They do not contain all or part of the user id."
+
+#. password.match
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:57
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:password.match"
+msgid "Passwords match"
+msgstr "Passwords match"
+
+#. password.noMatch
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:58
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:password.noMatch"
+msgid "Passwords do not match"
+msgstr "Passwords do not match"
+
+#. terms
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:59
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:terms"
+msgid "I accept the {0} of use."
+msgstr "I accept the {0} of use."
+
+#. terms.link
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:60
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:terms.link"
+msgid "Terms and Conditions"
+msgstr "Terms and Conditions"
+
+#. submit.login
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:61
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:submit.login"
+msgid "Login"
+msgstr "Login"
+
+#. submit.new.account
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:62
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:submit.new.account"
+msgid "Activate your account and log in"
+msgstr "Activate your account and log in"
+
+#. submit.new.reset
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:63
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:submit.new.reset"
+msgid "Change password and log in"
+msgstr "Change password and log in"
+
+#. activateAccount.title
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:64
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:activateAccount.title"
+msgid "Activate your account"
+msgstr "Activate your account"
+
+#. transferMemberships.title
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:65
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:transferMemberships.title"
+msgid "Accept invitation"
+msgstr "Accept invitation"
+
+#. passwordReset.title
+#: reset-pass/account-validator-tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:66
+msgctxt ""
+"reset-pass/account-validator-"
+"tool/src/bundle/org/sakaiproject/accountvalidator/bundle/messages.properties:passwordReset.title"
+msgid "Reset your password"
+msgstr "Reset your password"
+
+#. wrongtype
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:1
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:wrongtype"
+msgid "You cannot use this service to reset your password"
+msgstr "You cannot use this service to reset your password"
+
+#. nosuchuser
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:2
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:nosuchuser"
+msgid "Email address not found"
+msgstr "Email address not found"
+
+#. noemailprovided
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:3
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:noemailprovided"
+msgid "You must provide your email address"
+msgstr "You must provide your email address"
+
+#. morethanone
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:4
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:morethanone"
+msgid "More than one user has that email address"
+msgstr "More than one user has that email address"
+
+#. mainTitle
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:5
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mainTitle"
+msgid "Reset your password"
+msgstr "Reset your password"
+
+#. mainText
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:6
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mainText"
+msgid "This password service is only available for guest users on {0}."
+msgstr "This password service is only available for guest users on {0}."
+
+#. formLabel
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:7
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:formLabel"
+msgid "Your email address"
+msgstr "Your email address"
+
+#. postForm
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:8
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:postForm"
+msgid "Send Password"
+msgstr "Send Password"
+
+#. postForm2
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:9
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:postForm2"
+msgid "Request Password Change"
+msgstr "Request Password Change"
+
+#. explanation
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:10
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:explanation"
+msgid ""
+"Upon submission, an email will be sent to you containing a link where you "
+"can securely set your password. You will have {0} before this link expires."
+msgstr ""
+"Upon submission, an email will be sent to you containing a link where you "
+"can securely set your password. You will have {0} before this link expires."
+
+#. confirm
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:11
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:confirm"
+msgid "Your new password has been sent to {0}"
+msgstr "Your new password has been sent to {0}"
+
+#. confirm.validate
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:12
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:confirm.validate"
+msgid "A password change confirmation email has been sent to {0}."
+msgstr "A password change confirmation email has been sent to {0}."
+
+#. supportMessage
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:13
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:supportMessage"
+msgid "For any further assistance, contact "
+msgstr "For any further assistance, contact "
+
+#. mailSubject
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:14
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mailSubject"
+msgid "New Password for {0} "
+msgstr "New Password for {0} "
+
+#. mailBodyPre
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:15
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mailBodyPre"
+msgid "Dear {0}"
+msgstr "Dear {0}"
+
+#. mailBody1
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:16
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mailBody1"
+msgid "Your password for {0} ({1}) has been reset at your request."
+msgstr "Your password for {0} ({1}) has been reset at your request."
+
+#. mailBody2
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:17
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mailBody2"
+msgid "Your username is: {0}"
+msgstr "Your username is: {0}"
+
+#. mailBody3
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:18
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mailBody3"
+msgid "Your password is: {0}"
+msgstr "Your password is: {0}"
+
+#. mailBody4
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:19
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mailBody4"
+msgid "For further assistance, contact {0}"
+msgstr "For further assistance, contact {0}"
+
+#. mailBodySalut
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:20
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mailBodySalut"
+msgid "Regards"
+msgstr "Regards"
+
+#. mailBodySalut1
+#: reset-pass/reset-pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:21
+msgctxt ""
+"reset-pass/reset-"
+"pass/src/bundle/org/sakaiproject/tool/resetpass/bundle/Messages.properties:mailBodySalut1"
+msgid "The {0} Team"
+msgstr "The {0} Team"
