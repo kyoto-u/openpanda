@@ -1,0 +1,2852 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. java.importcal
+#: calendar/calendar-bundles/resources/calendar.properties:1
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.importcal"
+msgid "Import calendar"
+msgstr "Import calendar"
+
+#. java.theend
+#: calendar/calendar-bundles/resources/calendar.properties:2
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.theend"
+msgid ""
+"The end date you have specified on the Frequency page is earlier than the "
+"start date. Change it please."
+msgstr ""
+"The end date you have specified on the Frequency page is earlier than the "
+"start date. Change it please."
+
+#. java.merge
+#: calendar/calendar-bundles/resources/calendar.properties:3
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.merge"
+msgid "Merge"
+msgstr "Merge"
+
+#. java.byday
+#: calendar/calendar-bundles/resources/calendar.properties:4
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.byday"
+msgid "Calendar by Day"
+msgstr "Calendar by Day"
+
+#. java.byweek
+#: calendar/calendar-bundles/resources/calendar.properties:5
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.byweek"
+msgid "Calendar by Week"
+msgstr "Calendar by Week"
+
+#. java.bymonth
+#: calendar/calendar-bundles/resources/calendar.properties:6
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.bymonth"
+msgid "Calendar by Month"
+msgstr "Calendar by Month"
+
+#. java.byyear
+#: calendar/calendar-bundles/resources/calendar.properties:7
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.byyear"
+msgid "Calendar by Year"
+msgstr "Calendar by Year"
+
+#. java.listeve
+#: calendar/calendar-bundles/resources/calendar.properties:8
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.listeve"
+msgid "List of Events"
+msgstr "List of Events"
+
+#. java.fields
+#: calendar/calendar-bundles/resources/calendar.properties:9
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.fields"
+msgid "Fields"
+msgstr "Fields"
+
+#. java.new
+#: calendar/calendar-bundles/resources/calendar.properties:10
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.new"
+msgid "Add"
+msgstr "Add"
+
+#. java.import
+#: calendar/calendar-bundles/resources/calendar.properties:11
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.import"
+msgid "Import"
+msgstr "Import"
+
+#. java.export
+#: calendar/calendar-bundles/resources/calendar.properties:12
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.export"
+msgid "Export Public Calendar"
+msgstr "Export Public Calendar"
+
+#. java.subscriptions
+#: calendar/calendar-bundles/resources/calendar.properties:13
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.subscriptions"
+msgid "Subscribe to a Calendar"
+msgstr "Subscribe to a Calendar"
+
+#. java.print
+#: calendar/calendar-bundles/resources/calendar.properties:14
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.print"
+msgid "Printable Version"
+msgstr "Printable Version"
+
+#. java.default_view
+#: calendar/calendar-bundles/resources/calendar.properties:15
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.default_view"
+msgid "Set as Default View"
+msgstr "Set as Default View"
+
+#. java.alert.default_view
+#: calendar/calendar-bundles/resources/calendar.properties:16
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.default_view"
+msgid "This is now the default view"
+msgstr "This is now the default view"
+
+#. java.permissions
+#: calendar/calendar-bundles/resources/calendar.properties:17
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.permissions"
+msgid "Permissions"
+msgstr "Permissions"
+
+#. java.set
+#: calendar/calendar-bundles/resources/calendar.properties:18
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.set"
+msgid "Set permissions for Schedule in worksite "
+msgstr "Set permissions for Schedule in worksite "
+
+#. java.error
+#: calendar/calendar-bundles/resources/calendar.properties:19
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:java.error"
+msgid "The event doesn't exist any more."
+msgstr "The event doesn't exist any more."
+
+#. ical.title
+#: calendar/calendar-bundles/resources/calendar.properties:20
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:ical.title"
+msgid "Calendar Subscription Export"
+msgstr "Calendar Subscription Export"
+
+#. ical.schedname
+#: calendar/calendar-bundles/resources/calendar.properties:21
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:ical.schedname"
+msgid "Calendar Name"
+msgstr "Calendar Name"
+
+#. ical.option
+#: calendar/calendar-bundles/resources/calendar.properties:22
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:ical.option"
+msgid "Enable Subscription?"
+msgstr "Enable Subscription?"
+
+#. ical.url
+#: calendar/calendar-bundles/resources/calendar.properties:23
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:ical.url"
+msgid "Subscription URL:"
+msgstr "Subscription URL:"
+
+#. ical.info
+#: calendar/calendar-bundles/resources/calendar.properties:24
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:ical.info"
+msgid ""
+"Subscription enables all calendar events within a window plus/minus 6 months"
+" to be publicly subscribed and accessed, without authentication."
+msgstr ""
+"Subscription enables all calendar events within a window plus/minus 6 months"
+" to be publicly subscribed and accessed, without authentication."
+
+#. java.alert.aliasreq
+#: calendar/calendar-bundles/resources/calendar.properties:25
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.aliasreq"
+msgid "An Alias is required to enable iCal exports."
+msgstr "An Alias is required to enable iCal exports."
+
+#. java.alert.youneed
+#: calendar/calendar-bundles/resources/calendar.properties:26
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.youneed"
+msgid "You need to enter the name of the field to be added."
+msgstr "You need to enter the name of the field to be added."
+
+#. java.alert.theadd
+#: calendar/calendar-bundles/resources/calendar.properties:27
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.theadd"
+msgid "The add field name is already in use."
+msgstr "The add field name is already in use."
+
+#. java.alert.areyou
+#: calendar/calendar-bundles/resources/calendar.properties:28
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.areyou"
+msgid "Are you sure you want to remove the following field(s):"
+msgstr "Are you sure you want to remove the following field(s):"
+
+#. java.alert.ifyes
+#: calendar/calendar-bundles/resources/calendar.properties:29
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.ifyes"
+msgid "? If yes, click 'Save Field Changes' to continue."
+msgstr "? If yes, click 'Save Field Changes' to continue."
+
+#. java.alert.thereis
+#: calendar/calendar-bundles/resources/calendar.properties:30
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.thereis"
+msgid "There are no activities that exist."
+msgstr "There are no activities that exist."
+
+#. java.alert.youdont
+#: calendar/calendar-bundles/resources/calendar.properties:31
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.youdont"
+msgid "You do not have permission to add calendar fields"
+msgstr "You do not have permission to add calendar fields"
+
+#. java.alert.thereisno
+#: calendar/calendar-bundles/resources/calendar.properties:32
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.thereisno"
+msgid "There is no activities exist."
+msgstr "There is no activities exist."
+
+#. java.alert.youdonthave
+#: calendar/calendar-bundles/resources/calendar.properties:33
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.youdonthave"
+msgid "You do not have permission to edit this calendar."
+msgstr "You do not have permission to edit this calendar."
+
+#. java.alert.someone
+#: calendar/calendar-bundles/resources/calendar.properties:34
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.someone"
+msgid "Someone else is editing this calendar."
+msgstr "Someone else is editing this calendar."
+
+#. java.alert.therenoactv
+#: calendar/calendar-bundles/resources/calendar.properties:35
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.therenoactv"
+msgid ""
+"There is no activities exist. If you have permission to add activity, please"
+" click on New"
+msgstr ""
+"There is no activities exist. If you have permission to add activity, please"
+" click on New"
+
+#. java.alert.younotperm
+#: calendar/calendar-bundles/resources/calendar.properties:36
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.younotperm"
+msgid "You do not have permission to add  activities"
+msgstr "You do not have permission to add  activities"
+
+#. java.alert.younotallow
+#: calendar/calendar-bundles/resources/calendar.properties:37
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.younotallow"
+msgid "You are not allowed to see activities in the calendar"
+msgstr "You are not allowed to see activities in the calendar"
+
+#. java.alert.younotpermadd
+#: calendar/calendar-bundles/resources/calendar.properties:38
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.younotpermadd"
+msgid "You do not have permission to add activities"
+msgstr "You do not have permission to add activities"
+
+#. java.alert.younotallowsee
+#: calendar/calendar-bundles/resources/calendar.properties:39
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.younotallowsee"
+msgid "You are not allowed to see activities in the calendar"
+msgstr "You are not allowed to see activities in the calendar"
+
+#. java.alert.noexist
+#: calendar/calendar-bundles/resources/calendar.properties:40
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.noexist"
+msgid ""
+"There is no calendar that exists. If you have permission to create a "
+"calendar click on file then new to create a calendar."
+msgstr ""
+"There is no calendar that exists. If you have permission to create a "
+"calendar click on file then new to create a calendar."
+
+#. java.alert.youcreate
+#: calendar/calendar-bundles/resources/calendar.properties:41
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.youcreate"
+msgid "You do not have permission to create a calendar"
+msgstr "You do not have permission to create a calendar"
+
+#. java.alert.event
+#: calendar/calendar-bundles/resources/calendar.properties:42
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.event"
+msgid "The event doesn't exist any more."
+msgstr "The event doesn't exist any more."
+
+#. java.alert.eventbeing
+#: calendar/calendar-bundles/resources/calendar.properties:43
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.eventbeing"
+msgid "The event is being edited by another user. Please try again later."
+msgstr "The event is being edited by another user. Please try again later."
+
+#. java.alert.past
+#: calendar/calendar-bundles/resources/calendar.properties:44
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.past"
+msgid ""
+"Are you sure you want this scheduled event to occur in the past?  If yes, "
+"click 'Save Event' to finish."
+msgstr ""
+"Are you sure you want this scheduled event to occur in the past?  If yes, "
+"click 'Save Event' to finish."
+
+#. java.alert.invalid
+#: calendar/calendar-bundles/resources/calendar.properties:45
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.invalid"
+msgid "Invalid start or end date"
+msgstr "Invalid start or end date"
+
+#. java.alert.start
+#: calendar/calendar-bundles/resources/calendar.properties:46
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.start"
+msgid "The start date must be before the end date"
+msgstr "The start date must be before the end date"
+
+#. java.alert.youchoosegroup
+#: calendar/calendar-bundles/resources/calendar.properties:47
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.youchoosegroup"
+msgid "You need to choose at least a group."
+msgstr "You need to choose at least a group."
+
+#. java.alert.dupalias
+#: calendar/calendar-bundles/resources/calendar.properties:48
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.dupalias"
+msgid "This name has already been used"
+msgstr "This name has already been used"
+
+#. java.alert.subsnameempty
+#: calendar/calendar-bundles/resources/calendar.properties:49
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.subsnameempty"
+msgid "You need to enter a name for the calendar to be added."
+msgstr "You need to enter a name for the calendar to be added."
+
+#. java.alert.subsurlempty
+#: calendar/calendar-bundles/resources/calendar.properties:50
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.subsurlempty"
+msgid "You need to enter a url for the calendar to be added."
+msgstr "You need to enter a url for the calendar to be added."
+
+#. java.alert.subsurlinvalid
+#: calendar/calendar-bundles/resources/calendar.properties:51
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.subsurlinvalid"
+msgid "This URL seems to be invalid. Please, enter a valid URL."
+msgstr "This URL seems to be invalid. Please, enter a valid URL."
+
+#. java.alert.invalidname
+#: calendar/calendar-bundles/resources/calendar.properties:52
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.alert.invalidname"
+msgid "This is an invalid calendar name -- please try again"
+msgstr "This is an invalid calendar name -- please try again"
+
+#. java.alert.opendate
+#: calendar/calendar-bundles/resources/calendar.properties:53
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.alert.opendate"
+msgid "This assignment is not yet available."
+msgstr "This assignment is not yet available."
+
+#. java.pleasetitle
+#: calendar/calendar-bundles/resources/calendar.properties:54
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.pleasetitle"
+msgid "Please enter a title."
+msgstr "Please enter a title."
+
+#. java.pleasetime
+#: calendar/calendar-bundles/resources/calendar.properties:55
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.pleasetime"
+msgid "Please enter a time."
+msgstr "Please enter a time."
+
+#. dateselectionwidget.day
+#: calendar/calendar-bundles/resources/calendar.properties:56
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.day"
+msgid "Select day"
+msgstr "Select day"
+
+#. dateselectionwidget.month
+#: calendar/calendar-bundles/resources/calendar.properties:57
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.month"
+msgid "Select month"
+msgstr "Select month"
+
+#. dateselectionwidget.year
+#: calendar/calendar-bundles/resources/calendar.properties:58
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.year"
+msgid "Select year"
+msgstr "Select year"
+
+#. dateselectionwidget.hour
+#: calendar/calendar-bundles/resources/calendar.properties:59
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.hour"
+msgid "Select hour"
+msgstr "Select hour"
+
+#. dateselectionwidget.minute
+#: calendar/calendar-bundles/resources/calendar.properties:60
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.minute"
+msgid "Select minute"
+msgstr "Select minute"
+
+#. dateselectionwidget.ampm
+#: calendar/calendar-bundles/resources/calendar.properties:61
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:dateselectionwidget.ampm"
+msgid "Select AM or PM"
+msgstr "Select AM or PM"
+
+#. jan
+#: calendar/calendar-bundles/resources/calendar.properties:62
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:jan"
+msgid "JAN"
+msgstr "JAN"
+
+#. feb
+#: calendar/calendar-bundles/resources/calendar.properties:63
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:feb"
+msgid "FEB"
+msgstr "FEB"
+
+#. mar
+#: calendar/calendar-bundles/resources/calendar.properties:64
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:mar"
+msgid "MAR"
+msgstr "MAR"
+
+#. apr
+#: calendar/calendar-bundles/resources/calendar.properties:65
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:apr"
+msgid "APR"
+msgstr "APR"
+
+#. may
+#: calendar/calendar-bundles/resources/calendar.properties:66
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:may"
+msgid "MAY"
+msgstr "MAY"
+
+#. jun
+#: calendar/calendar-bundles/resources/calendar.properties:67
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:jun"
+msgid "JUN"
+msgstr "JUN"
+
+#. jul
+#: calendar/calendar-bundles/resources/calendar.properties:68
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:jul"
+msgid "JUL"
+msgstr "JUL"
+
+#. aug
+#: calendar/calendar-bundles/resources/calendar.properties:69
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:aug"
+msgid "AUG"
+msgstr "AUG"
+
+#. sep
+#: calendar/calendar-bundles/resources/calendar.properties:70
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:sep"
+msgid "SEP"
+msgstr "SEP"
+
+#. oct
+#: calendar/calendar-bundles/resources/calendar.properties:71
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:oct"
+msgid "OCT"
+msgstr "OCT"
+
+#. nov
+#: calendar/calendar-bundles/resources/calendar.properties:72
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:nov"
+msgid "NOV"
+msgstr "NOV"
+
+#. dec
+#: calendar/calendar-bundles/resources/calendar.properties:73
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:dec"
+msgid "DEC"
+msgstr "DEC"
+
+#. java.thismonth
+#: calendar/calendar-bundles/resources/calendar.properties:74
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:java.thismonth"
+msgid "This month is not exist"
+msgstr "This month is not exist"
+
+#. gen.alert
+#: calendar/calendar-bundles/resources/calendar.properties:75
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.alert"
+msgid "Alert: "
+msgstr "Alert: "
+
+#. gen.new
+#: calendar/calendar-bundles/resources/calendar.properties:76
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.new"
+msgid "New..."
+msgstr "New..."
+
+#. gen.delete
+#: calendar/calendar-bundles/resources/calendar.properties:77
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.delete"
+msgid "Remove event"
+msgstr "Remove event"
+
+#. gen.revise
+#: calendar/calendar-bundles/resources/calendar.properties:78
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.revise"
+msgid "Edit"
+msgstr "Edit"
+
+#. gen.site
+#: calendar/calendar-bundles/resources/calendar.properties:79
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.site"
+msgid "Site"
+msgstr "Site"
+
+#. gen.from
+#: calendar/calendar-bundles/resources/calendar.properties:80
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.from"
+msgid "From"
+msgstr "From"
+
+#. gen.save
+#: calendar/calendar-bundles/resources/calendar.properties:81
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.save"
+msgid "Save"
+msgstr "Save"
+
+#. gen.cancel
+#: calendar/calendar-bundles/resources/calendar.properties:82
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. gen.file
+#: calendar/calendar-bundles/resources/calendar.properties:83
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.file"
+msgid "File"
+msgstr "File"
+
+#. gen.title
+#: calendar/calendar-bundles/resources/calendar.properties:84
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.title"
+msgid "Title"
+msgstr "Title"
+
+#. gen.date
+#: calendar/calendar-bundles/resources/calendar.properties:85
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.date"
+msgid "Date"
+msgstr "Date"
+
+#. gen.time
+#: calendar/calendar-bundles/resources/calendar.properties:86
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.time"
+msgid "Time"
+msgstr "Time"
+
+#. gen.freq
+#: calendar/calendar-bundles/resources/calendar.properties:87
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.freq"
+msgid "Frequency"
+msgstr "Frequency"
+
+#. gen.descr
+#: calendar/calendar-bundles/resources/calendar.properties:88
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.descr"
+msgid "Description"
+msgstr "Description"
+
+#. gen.attach
+#: calendar/calendar-bundles/resources/calendar.properties:89
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.attach"
+msgid "Attachments"
+msgstr "Attachments"
+
+#. gen.noattach
+#: calendar/calendar-bundles/resources/calendar.properties:90
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.noattach"
+msgid "No attachments Yet "
+msgstr "No attachments Yet "
+
+#. gen.continue
+#: calendar/calendar-bundles/resources/calendar.properties:91
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.continue"
+msgid "Continue"
+msgstr "Continue"
+
+#. gen.back
+#: calendar/calendar-bundles/resources/calendar.properties:92
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.back"
+msgid "Back"
+msgstr "Back"
+
+#. gen.backtolist
+#: calendar/calendar-bundles/resources/calendar.properties:93
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:gen.backtolist"
+msgid "Back to Calendar"
+msgstr "Back to Calendar"
+
+#. gen.fromsite
+#: calendar/calendar-bundles/resources/calendar.properties:94
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.fromsite"
+msgid "From Site"
+msgstr "From Site"
+
+#. gen.owner
+#: calendar/calendar-bundles/resources/calendar.properties:95
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.owner"
+msgid "Owner"
+msgstr "Owner"
+
+#. gen.assatt
+#: calendar/calendar-bundles/resources/calendar.properties:96
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:gen.assatt"
+msgid "Additional attachments from assignment"
+msgstr "Additional attachments from assignment"
+
+#. gen.assignmentlink
+#: calendar/calendar-bundles/resources/calendar.properties:97
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:gen.assignmentlink"
+msgid "Assignment Link"
+msgstr "Assignment Link"
+
+#. del.deleting
+#: calendar/calendar-bundles/resources/calendar.properties:98
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.deleting"
+msgid "Deleting schedule item..."
+msgstr "Deleting schedule item..."
+
+#. del.sure
+#: calendar/calendar-bundles/resources/calendar.properties:99
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.sure"
+msgid "Are you sure you want to remove this event?"
+msgstr "Are you sure you want to remove this event?"
+
+#. del.every
+#: calendar/calendar-bundles/resources/calendar.properties:100
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.every"
+msgid "Every"
+msgstr "Every"
+
+#. del.number
+#: calendar/calendar-bundles/resources/calendar.properties:101
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.number"
+msgid "Number of occurrences:"
+msgstr "Number of occurrences:"
+
+#. del.times
+#: calendar/calendar-bundles/resources/calendar.properties:102
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.times"
+msgid "Times"
+msgstr "Times"
+
+#. del.endson
+#: calendar/calendar-bundles/resources/calendar.properties:103
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.endson"
+msgid "Ends on"
+msgstr "Ends on"
+
+#. del.one
+#: calendar/calendar-bundles/resources/calendar.properties:104
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.one"
+msgid "Activity occurs once."
+msgstr "Activity occurs once."
+
+#. del.item
+#: calendar/calendar-bundles/resources/calendar.properties:105
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:del.item"
+msgid "Event type"
+msgstr "Event type"
+
+#. legend.key1
+#: calendar/calendar-bundles/resources/calendar.properties:106
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key1"
+msgid "Academic Calendar"
+msgstr "Academic Calendar"
+
+#. legend.key2
+#: calendar/calendar-bundles/resources/calendar.properties:107
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key2"
+msgid "Activity"
+msgstr "Activity"
+
+#. legend.key3
+#: calendar/calendar-bundles/resources/calendar.properties:108
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key3"
+msgid "Cancellation"
+msgstr "Cancellation"
+
+#. legend.key4
+#: calendar/calendar-bundles/resources/calendar.properties:109
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key4"
+msgid "Class section - Discussion"
+msgstr "Class section - Discussion"
+
+#. legend.key5
+#: calendar/calendar-bundles/resources/calendar.properties:110
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key5"
+msgid "Class section - Lab"
+msgstr "Class section - Lab"
+
+#. legend.key6
+#: calendar/calendar-bundles/resources/calendar.properties:111
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key6"
+msgid "Class section - Lecture"
+msgstr "Class section - Lecture"
+
+#. legend.key7
+#: calendar/calendar-bundles/resources/calendar.properties:112
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key7"
+msgid "Class section - Small Group "
+msgstr "Class section - Small Group "
+
+#. legend.key8
+#: calendar/calendar-bundles/resources/calendar.properties:113
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key8"
+msgid "Class session "
+msgstr "Class session "
+
+#. legend.key9
+#: calendar/calendar-bundles/resources/calendar.properties:114
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key9"
+msgid "Computer Session "
+msgstr "Computer Session "
+
+#. legend.key10
+#: calendar/calendar-bundles/resources/calendar.properties:115
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key10"
+msgid "Deadline "
+msgstr "Deadline "
+
+#. legend.key11
+#: calendar/calendar-bundles/resources/calendar.properties:116
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key11"
+msgid "Exam "
+msgstr "Exam "
+
+#. legend.key12
+#: calendar/calendar-bundles/resources/calendar.properties:117
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key12"
+msgid "Meeting"
+msgstr "Meeting"
+
+#. legend.key13
+#: calendar/calendar-bundles/resources/calendar.properties:118
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key13"
+msgid "Multidisciplinary Conference "
+msgstr "Multidisciplinary Conference "
+
+#. legend.key14
+#: calendar/calendar-bundles/resources/calendar.properties:119
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key14"
+msgid "Quiz "
+msgstr "Quiz "
+
+#. legend.key15
+#: calendar/calendar-bundles/resources/calendar.properties:120
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key15"
+msgid "Special event "
+msgstr "Special event "
+
+#. legend.key16
+#: calendar/calendar-bundles/resources/calendar.properties:121
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:legend.key16"
+msgid "Web Assignment "
+msgstr "Web Assignment "
+
+#. del.deleteall
+#: calendar/calendar-bundles/resources/calendar.properties:122
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:del.deleteall"
+msgid "Delete all occurrences"
+msgstr "Delete all occurrences"
+
+#. del.deleteonly
+#: calendar/calendar-bundles/resources/calendar.properties:123
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:del.deleteonly"
+msgid "Delete only this occurrence"
+msgstr "Delete only this occurrence"
+
+#. imp.step1
+#: calendar/calendar-bundles/resources/calendar.properties:124
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.step1"
+msgid "Step 1 of 3: Select  type of calendar to import  from"
+msgstr "Step 1 of 3: Select  type of calendar to import  from"
+
+#. imp.step2
+#: calendar/calendar-bundles/resources/calendar.properties:125
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.step2"
+msgid "Step 2 of 3: Reformat data and select the file to import"
+msgstr "Step 2 of 3: Reformat data and select the file to import"
+
+#. imp.step2b
+#: calendar/calendar-bundles/resources/calendar.properties:126
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.step2b"
+msgid "Step 2 of 3: Select the file to import"
+msgstr "Step 2 of 3: Select the file to import"
+
+#. imp.step3
+#: calendar/calendar-bundles/resources/calendar.properties:127
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.step3"
+msgid "Step 3 of 3: Review activities and confirm import"
+msgstr "Step 3 of 3: Review activities and confirm import"
+
+#. imp.select
+#: calendar/calendar-bundles/resources/calendar.properties:128
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.select"
+msgid "Type of calendar to import"
+msgstr "Type of calendar to import"
+
+#. imp.todo
+#: calendar/calendar-bundles/resources/calendar.properties:129
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.todo"
+msgid ""
+"To perform an import of generic calendar data, download the template package"
+" below. The package includes a 'Readme' file with instructions, as well as a"
+" CSV format example file that can be opened with Microsoft Excel or similar "
+"applications. Convert your data into the exact format shown in the CSV file "
+"to ensure compatibility."
+msgstr ""
+"To perform an import of generic calendar data, download the template package"
+" below. The package includes a 'Readme' file with instructions, as well as a"
+" CSV format example file that can be opened with Microsoft Excel or similar "
+"applications. Convert your data into the exact format shown in the CSV file "
+"to ensure compatibility."
+
+#. imp.mm.outlook
+#: calendar/calendar-bundles/resources/calendar.properties:130
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.mm.outlook"
+msgid ""
+"Microsoft Outlook data must be exported into a CSV file (comma separated "
+"values); Meeting Maker data must be exported into a text file (tab-"
+"delimited)."
+msgstr ""
+"Microsoft Outlook data must be exported into a CSV file (comma separated "
+"values); Meeting Maker data must be exported into a text file (tab-"
+"delimited)."
+
+#. imp.ical.todo
+#: calendar/calendar-bundles/resources/calendar.properties:131
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.ical.todo"
+msgid "iCalendar imports do not currently support re-occuring events"
+msgstr "iCalendar imports do not currently support re-occuring events"
+
+#. imp.generic
+#: calendar/calendar-bundles/resources/calendar.properties:132
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.generic"
+msgid "Generic Import Template"
+msgstr "Generic Import Template"
+
+#. imp.when
+#: calendar/calendar-bundles/resources/calendar.properties:133
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.when"
+msgid ""
+"When you have your calendar information in the correct format, browse for "
+"the file below and upload it to the system."
+msgstr ""
+"When you have your calendar information in the correct format, browse for "
+"the file below and upload it to the system."
+
+#. imp.browse
+#: calendar/calendar-bundles/resources/calendar.properties:134
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.browse"
+msgid ""
+"Browse your computer to find your exported calendar data, and upload it "
+"below."
+msgstr ""
+"Browse your computer to find your exported calendar data, and upload it "
+"below."
+
+#. imp.yourcustom
+#: calendar/calendar-bundles/resources/calendar.properties:135
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.yourcustom"
+msgid "You are importing"
+msgstr "You are importing"
+
+#. imp.yourcustom2
+#: calendar/calendar-bundles/resources/calendar.properties:136
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.yourcustom2"
+msgid ""
+"activities, listed below. Uncheck the 'Import' box for any activity(s) you "
+"do not want to import. "
+msgstr ""
+"activities, listed below. Uncheck the 'Import' box for any activity(s) you "
+"do not want to import. "
+
+#. imp.micro
+#: calendar/calendar-bundles/resources/calendar.properties:137
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.micro"
+msgid "Microsoft Outlook"
+msgstr "Microsoft Outlook"
+
+#. imp.mmaker
+#: calendar/calendar-bundles/resources/calendar.properties:138
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.mmaker"
+msgid "Meeting Maker"
+msgstr "Meeting Maker"
+
+#. imp.ical
+#: calendar/calendar-bundles/resources/calendar.properties:139
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.ical"
+msgid "iCalendar"
+msgstr "iCalendar"
+
+#. imp.gcalendar
+#: calendar/calendar-bundles/resources/calendar.properties:140
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.gcalendar"
+msgid "Generic calendar import (comma-separate values)"
+msgstr "Generic calendar import (comma-separate values)"
+
+#. imp.keep
+#: calendar/calendar-bundles/resources/calendar.properties:141
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.keep"
+msgid "Import?"
+msgstr "Import?"
+
+#. imp.actvtm
+#: calendar/calendar-bundles/resources/calendar.properties:142
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.actvtm"
+msgid "Activity and Time"
+msgstr "Activity and Time"
+
+#. imp.addeve
+#: calendar/calendar-bundles/resources/calendar.properties:143
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.addeve"
+msgid "Import Events"
+msgstr "Import Events"
+
+#. imp.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:144
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:imp.list.summary"
+msgid ""
+"List of events being imported. Column 1: date. Column 2: activity and time. "
+"Column 3: checkbox - uncheck to exclude from import."
+msgstr ""
+"List of events being imported. Column 1: date. Column 2: activity and time. "
+"Column 3: checkbox - uncheck to exclude from import."
+
+#. import.outlook.subject_header
+#: calendar/calendar-bundles/resources/calendar.properties:145
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.subject_header"
+msgid "Subject"
+msgstr "Subject"
+
+#. import.outlook.start_date_header
+#: calendar/calendar-bundles/resources/calendar.properties:146
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.start_date_header"
+msgid "Start Date"
+msgstr "Start Date"
+
+#. import.outlook.start_time_header
+#: calendar/calendar-bundles/resources/calendar.properties:147
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.start_time_header"
+msgid "Start Time"
+msgstr "Start Time"
+
+#. import.outlook.end_date_header
+#: calendar/calendar-bundles/resources/calendar.properties:148
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.end_date_header"
+msgid "End Date"
+msgstr "End Date"
+
+#. import.outlook.end_time_header
+#: calendar/calendar-bundles/resources/calendar.properties:149
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.end_time_header"
+msgid "End Time"
+msgstr "End Time"
+
+#. import.outlook.all_day_event_header
+#: calendar/calendar-bundles/resources/calendar.properties:150
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.all_day_event_header"
+msgid "All day event"
+msgstr "All day event"
+
+#. import.outlook.description_header
+#: calendar/calendar-bundles/resources/calendar.properties:151
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.description_header"
+msgid "Description"
+msgstr "Description"
+
+#. import.outlook.location_header
+#: calendar/calendar-bundles/resources/calendar.properties:152
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.location_header"
+msgid "Location"
+msgstr "Location"
+
+#. import.outlook.charset
+#: calendar/calendar-bundles/resources/calendar.properties:153
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:import.outlook.charset"
+msgid "ISO-8859-1"
+msgstr "ISO-8859-1"
+
+#. import.outlook.note
+#: calendar/calendar-bundles/resources/calendar.properties:154
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:import.outlook.note"
+msgid ""
+"NOTE: The import is language sensitive. This means the language you are "
+"using with Microsoft Outlook have to be the same you are using in this "
+"platform."
+msgstr ""
+"NOTE: The import is language sensitive. This means the language you are "
+"using with Microsoft Outlook have to be the same you are using in this "
+"platform."
+
+#. new.adding
+#: calendar/calendar-bundles/resources/calendar.properties:155
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.adding"
+msgid "Add Event"
+msgstr "Add Event"
+
+#. new.toadd
+#: calendar/calendar-bundles/resources/calendar.properties:156
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.toadd"
+msgid ""
+"To add an event to the schedule, complete the form and choose 'Save Event' "
+"at the bottom. "
+msgstr ""
+"To add an event to the schedule, complete the form and choose 'Save Event' "
+"at the bottom. "
+
+#. new.a
+#: calendar/calendar-bundles/resources/calendar.properties:157
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.a"
+msgid "Required items marked with"
+msgstr "Required items marked with"
+
+#. new.scheduleitem
+#: calendar/calendar-bundles/resources/calendar.properties:158
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:new.scheduleitem"
+msgid "Event "
+msgstr "Event "
+
+#. new.title
+#: calendar/calendar-bundles/resources/calendar.properties:159
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.title"
+msgid "Title"
+msgstr "Title"
+
+#. new.descr
+#: calendar/calendar-bundles/resources/calendar.properties:160
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.descr"
+msgid "Message"
+msgstr "Message"
+
+#. new.date
+#: calendar/calendar-bundles/resources/calendar.properties:161
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.date"
+msgid "Date"
+msgstr "Date"
+
+#. new.duration
+#: calendar/calendar-bundles/resources/calendar.properties:162
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.duration"
+msgid "Duration"
+msgstr "Duration"
+
+#. new.end
+#: calendar/calendar-bundles/resources/calendar.properties:163
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.end"
+msgid "End Time"
+msgstr "End Time"
+
+#. new.freq
+#: calendar/calendar-bundles/resources/calendar.properties:164
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.freq"
+msgid "Frequency"
+msgstr "Frequency"
+
+#. new.every
+#: calendar/calendar-bundles/resources/calendar.properties:165
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.every"
+msgid "Every"
+msgstr "Every"
+
+#. new.number
+#: calendar/calendar-bundles/resources/calendar.properties:166
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.number"
+msgid "Number of occurrences:"
+msgstr "Number of occurrences:"
+
+#. new.times
+#: calendar/calendar-bundles/resources/calendar.properties:167
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.times"
+msgid "Times"
+msgstr "Times"
+
+#. new.endson
+#: calendar/calendar-bundles/resources/calendar.properties:168
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.endson"
+msgid "Ends on"
+msgstr "Ends on"
+
+#. new.oneocc
+#: calendar/calendar-bundles/resources/calendar.properties:169
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.oneocc"
+msgid "Activity occurs once"
+msgstr "Activity occurs once"
+
+#. new.setfreq
+#: calendar/calendar-bundles/resources/calendar.properties:170
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.setfreq"
+msgid "Frequency"
+msgstr "Frequency"
+
+#. new.itemtype
+#: calendar/calendar-bundles/resources/calendar.properties:171
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.itemtype"
+msgid "Event Type"
+msgstr "Event Type"
+
+#. new.location
+#: calendar/calendar-bundles/resources/calendar.properties:172
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.location"
+msgid "Event Location"
+msgstr "Event Location"
+
+#. new.addattach
+#: calendar/calendar-bundles/resources/calendar.properties:173
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:new.addattach"
+msgid "Add Attachments"
+msgstr "Add Attachments"
+
+#. new.adddrop
+#: calendar/calendar-bundles/resources/calendar.properties:174
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.adddrop"
+msgid "Add/remove attachments"
+msgstr "Add/remove attachments"
+
+#. new.post
+#: calendar/calendar-bundles/resources/calendar.properties:175
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.post"
+msgid "Save Event"
+msgstr "Save Event"
+
+#. new.hours
+#: calendar/calendar-bundles/resources/calendar.properties:176
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.hours"
+msgid "Hours"
+msgstr "Hours"
+
+#. new.minutes
+#: calendar/calendar-bundles/resources/calendar.properties:177
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:new.minutes"
+msgid "Minutes"
+msgstr "Minutes"
+
+#. rev.revising
+#: calendar/calendar-bundles/resources/calendar.properties:178
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.revising"
+msgid "Editing event..."
+msgstr "Editing event..."
+
+#. rev.torev
+#: calendar/calendar-bundles/resources/calendar.properties:179
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.torev"
+msgid ""
+"To edit the event, update the form and choose 'Save Event' at the bottom."
+msgstr ""
+"To edit the event, update the form and choose 'Save Event' at the bottom."
+
+#. rev.start
+#: calendar/calendar-bundles/resources/calendar.properties:180
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.start"
+msgid "Start Time"
+msgstr "Start Time"
+
+#. rev.hours
+#: calendar/calendar-bundles/resources/calendar.properties:181
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.hours"
+msgid "hours"
+msgstr "hours"
+
+#. rev.minutes
+#: calendar/calendar-bundles/resources/calendar.properties:182
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.minutes"
+msgid "minutes"
+msgstr "minutes"
+
+#. rev.modify
+#: calendar/calendar-bundles/resources/calendar.properties:183
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:rev.modify"
+msgid "Modify all occurrences"
+msgstr "Modify all occurrences"
+
+#. rev.modifyonly
+#: calendar/calendar-bundles/resources/calendar.properties:184
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:rev.modifyonly"
+msgid "Modify only this occurrence"
+msgstr "Modify only this occurrence"
+
+#. start.hour
+#: calendar/calendar-bundles/resources/calendar.properties:185
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:start.hour"
+msgid "Start hour"
+msgstr "Start hour"
+
+#. start.minute
+#: calendar/calendar-bundles/resources/calendar.properties:186
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:start.minute"
+msgid "Start minute"
+msgstr "Start minute"
+
+#. start.ampm
+#: calendar/calendar-bundles/resources/calendar.properties:187
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:start.ampm"
+msgid "Start am or pm"
+msgstr "Start am or pm"
+
+#. end.hour
+#: calendar/calendar-bundles/resources/calendar.properties:188
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:end.hour"
+msgid "End hour"
+msgstr "End hour"
+
+#. end.minute
+#: calendar/calendar-bundles/resources/calendar.properties:189
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:end.minute"
+msgid "End minute"
+msgstr "End minute"
+
+#. end.ampm
+#: calendar/calendar-bundles/resources/calendar.properties:190
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:end.ampm"
+msgid "End AM or PM"
+msgstr "End AM or PM"
+
+#. set.setting
+#: calendar/calendar-bundles/resources/calendar.properties:191
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.setting"
+msgid "Frequency"
+msgstr "Frequency"
+
+#. set.toset
+#: calendar/calendar-bundles/resources/calendar.properties:192
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.toset"
+msgid "Required items marked with "
+msgstr "Required items marked with "
+
+#. set.select
+#: calendar/calendar-bundles/resources/calendar.properties:193
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.select"
+msgid "Event Frequency"
+msgstr "Event Frequency"
+
+#. set.the
+#: calendar/calendar-bundles/resources/calendar.properties:194
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.the"
+msgid "the event frequency:"
+msgstr "the event frequency:"
+
+#. set.once
+#: calendar/calendar-bundles/resources/calendar.properties:195
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.once"
+msgid "once"
+msgstr "once"
+
+#. set.daily
+#: calendar/calendar-bundles/resources/calendar.properties:196
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.daily"
+msgid "daily"
+msgstr "daily"
+
+#. set.weekly
+#: calendar/calendar-bundles/resources/calendar.properties:197
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.weekly"
+msgid "weekly"
+msgstr "weekly"
+
+#. set.monthly
+#: calendar/calendar-bundles/resources/calendar.properties:198
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.monthly"
+msgid "monthly"
+msgstr "monthly"
+
+#. set.yearly
+#: calendar/calendar-bundles/resources/calendar.properties:199
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.yearly"
+msgid "yearly"
+msgstr "yearly"
+
+#. set.theonly
+#: calendar/calendar-bundles/resources/calendar.properties:200
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.theonly"
+msgid "The only occurrence is on"
+msgstr "The only occurrence is on"
+
+#. set.every
+#: calendar/calendar-bundles/resources/calendar.properties:201
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.every"
+msgid "Every:"
+msgstr "Every:"
+
+#. set.days
+#: calendar/calendar-bundles/resources/calendar.properties:202
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.days"
+msgid "day(s)"
+msgstr "day(s)"
+
+#. set.weeks
+#: calendar/calendar-bundles/resources/calendar.properties:203
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.weeks"
+msgid "week(s)"
+msgstr "week(s)"
+
+#. set.months
+#: calendar/calendar-bundles/resources/calendar.properties:204
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.months"
+msgid "month(s)"
+msgstr "month(s)"
+
+#. set.years
+#: calendar/calendar-bundles/resources/calendar.properties:205
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.years"
+msgid "year(s)"
+msgstr "year(s)"
+
+#. set.ends
+#: calendar/calendar-bundles/resources/calendar.properties:206
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.ends"
+msgid "Ends:"
+msgstr "Ends:"
+
+#. set.never
+#: calendar/calendar-bundles/resources/calendar.properties:207
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.never"
+msgid "Never"
+msgstr "Never"
+
+#. set.on
+#: calendar/calendar-bundles/resources/calendar.properties:208
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.on"
+msgid "On"
+msgstr "On"
+
+#. set.after
+#: calendar/calendar-bundles/resources/calendar.properties:209
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.after"
+msgid "After"
+msgstr "After"
+
+#. set.times
+#: calendar/calendar-bundles/resources/calendar.properties:210
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.times"
+msgid "time(s)"
+msgstr "time(s)"
+
+#. view.goto
+#: calendar/calendar-bundles/resources/calendar.properties:211
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.goto"
+msgid "Go to Next Day"
+msgstr "Go to Next Day"
+
+#. view.gotopd
+#: calendar/calendar-bundles/resources/calendar.properties:212
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.gotopd"
+msgid "Go to Previous Day"
+msgstr "Go to Previous Day"
+
+#. view.golater
+#: calendar/calendar-bundles/resources/calendar.properties:213
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.golater"
+msgid "Go later"
+msgstr "Go later"
+
+#. view.goearlier
+#: calendar/calendar-bundles/resources/calendar.properties:214
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.goearlier"
+msgid "Go earlier"
+msgstr "Go earlier"
+
+#. view.gotoday
+#: calendar/calendar-bundles/resources/calendar.properties:215
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.gotoday"
+msgid "Go to Today"
+msgstr "Go to Today"
+
+#. view.after
+#: calendar/calendar-bundles/resources/calendar.properties:216
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.after"
+msgid "Later"
+msgstr "Later"
+
+#. view.before
+#: calendar/calendar-bundles/resources/calendar.properties:217
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.before"
+msgid "Earlier"
+msgstr "Earlier"
+
+#. view.tomorrow
+#: calendar/calendar-bundles/resources/calendar.properties:218
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.tomorrow"
+msgid "Next Day"
+msgstr "Next Day"
+
+#. view.yesterday
+#: calendar/calendar-bundles/resources/calendar.properties:219
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.yesterday"
+msgid "Previous Day"
+msgstr "Previous Day"
+
+#. view.view
+#: calendar/calendar-bundles/resources/calendar.properties:220
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.view"
+msgid "View"
+msgstr "View"
+
+#. view.listnavselect
+#: calendar/calendar-bundles/resources/calendar.properties:221
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.listnavselect"
+msgid ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+msgstr ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+
+#. view.summary
+#: calendar/calendar-bundles/resources/calendar.properties:222
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.summary"
+msgid "Table represents a day - rows are half hours"
+msgstr "Table represents a day - rows are half hours"
+
+#. view.calday
+#: calendar/calendar-bundles/resources/calendar.properties:223
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.calday"
+msgid "Calendar by Day"
+msgstr "Calendar by Day"
+
+#. view.calweek
+#: calendar/calendar-bundles/resources/calendar.properties:224
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.calweek"
+msgid "Calendar by Week"
+msgstr "Calendar by Week"
+
+#. view.calmonth
+#: calendar/calendar-bundles/resources/calendar.properties:225
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.calmonth"
+msgid "Calendar by Month"
+msgstr "Calendar by Month"
+
+#. view.calyear
+#: calendar/calendar-bundles/resources/calendar.properties:226
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.calyear"
+msgid "Calendar by Year"
+msgstr "Calendar by Year"
+
+#. view.show
+#: calendar/calendar-bundles/resources/calendar.properties:227
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.show"
+msgid "Show"
+msgstr "Show"
+
+#. view.all
+#: calendar/calendar-bundles/resources/calendar.properties:228
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.all"
+msgid "All events"
+msgstr "All events"
+
+#. view.activ
+#: calendar/calendar-bundles/resources/calendar.properties:229
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.activ"
+msgid "Events for today"
+msgstr "Events for today"
+
+#. view.activw
+#: calendar/calendar-bundles/resources/calendar.properties:230
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.activw"
+msgid "Events for this week"
+msgstr "Events for this week"
+
+#. view.activm
+#: calendar/calendar-bundles/resources/calendar.properties:231
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.activm"
+msgid "Events for this month"
+msgstr "Events for this month"
+
+#. view.activy
+#: calendar/calendar-bundles/resources/calendar.properties:232
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.activy"
+msgid "Events for this year"
+msgstr "Events for this year"
+
+#. view.custom
+#: calendar/calendar-bundles/resources/calendar.properties:233
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.custom"
+msgid "Custom date range"
+msgstr "Custom date range"
+
+#. view.apply
+#: calendar/calendar-bundles/resources/calendar.properties:234
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.apply"
+msgid "Filter Events"
+msgstr "Filter Events"
+
+#. view.lasday
+#: calendar/calendar-bundles/resources/calendar.properties:235
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.lasday"
+msgid "&lt; Previous Day"
+msgstr "&lt; Previous Day"
+
+#. view.nexday
+#: calendar/calendar-bundles/resources/calendar.properties:236
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.nexday"
+msgid "Next Day &gt;"
+msgstr "Next Day &gt;"
+
+#. view.today
+#: calendar/calendar-bundles/resources/calendar.properties:237
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.today"
+msgid "Today"
+msgstr "Today"
+
+#. viewm.gotopm
+#: calendar/calendar-bundles/resources/calendar.properties:238
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewm.gotopm"
+msgid "Go to Previous Month"
+msgstr "Go to Previous Month"
+
+#. viewm.gotonm
+#: calendar/calendar-bundles/resources/calendar.properties:239
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewm.gotonm"
+msgid "Go to Next Month"
+msgstr "Go to Next Month"
+
+#. viewm.lasm
+#: calendar/calendar-bundles/resources/calendar.properties:240
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewm.lasm"
+msgid "&lt; Previous Month"
+msgstr "&lt; Previous Month"
+
+#. vieww.nexm
+#: calendar/calendar-bundles/resources/calendar.properties:241
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.nexm"
+msgid "Next Month &gt;"
+msgstr "Next Month &gt;"
+
+#. viewm.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:242
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewm.list.summary"
+msgid "Table represents month. Columns are week days."
+msgstr "Table represents month. Columns are week days."
+
+#. viewm.date_format
+#: calendar/calendar-bundles/resources/calendar.properties:243
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewm.date_format"
+msgid "MMMM yyyy"
+msgstr "MMMM yyyy"
+
+#. viewl.st
+#: calendar/calendar-bundles/resources/calendar.properties:244
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.st"
+msgid "Start:"
+msgstr "Start:"
+
+#. viewl.ed
+#: calendar/calendar-bundles/resources/calendar.properties:245
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.ed"
+msgid "End:"
+msgstr "End:"
+
+#. viewl.date
+#: calendar/calendar-bundles/resources/calendar.properties:246
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.date"
+msgid "Date"
+msgstr "Date"
+
+#. viewl.time
+#: calendar/calendar-bundles/resources/calendar.properties:247
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.time"
+msgid "Time"
+msgstr "Time"
+
+#. viewl.desc
+#: calendar/calendar-bundles/resources/calendar.properties:248
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.desc"
+msgid "Description"
+msgstr "Description"
+
+#. viewl.folder
+#: calendar/calendar-bundles/resources/calendar.properties:249
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.folder"
+msgid "folder"
+msgstr "folder"
+
+#. viewl.attach
+#: calendar/calendar-bundles/resources/calendar.properties:250
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.attach"
+msgid "attachment"
+msgstr "attachment"
+
+#. viewl.froms
+#: calendar/calendar-bundles/resources/calendar.properties:251
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.froms"
+msgid "From Site:"
+msgstr "From Site:"
+
+#. viewl.update
+#: calendar/calendar-bundles/resources/calendar.properties:252
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewl.update"
+msgid "Update"
+msgstr "Update"
+
+#. viewl.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:253
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewl.list.summary"
+msgid ""
+"List of events in schedule. Column 1: date. Column 2: time. Column 3: "
+"audience. Column 4: title and description."
+msgstr ""
+"List of events in schedule. Column 1: date. Column 2: time. Column 3: "
+"audience. Column 4: title and description."
+
+#. viewl.sortdateasc
+#: calendar/calendar-bundles/resources/calendar.properties:254
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewl.sortdateasc"
+msgid "Sort by date ascending"
+msgstr "Sort by date ascending"
+
+#. viewl.sortdatedesc
+#: calendar/calendar-bundles/resources/calendar.properties:255
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewl.sortdatedesc"
+msgid "Sort by date descending"
+msgstr "Sort by date descending"
+
+#. viewl.group.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:256
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:viewl.group.list.summary"
+msgid ""
+"Table contains list of groups. First will  contain checkboxes, second will "
+"contain the group name, third the group description. Header links can be "
+"used to sort."
+msgstr ""
+"Table contains list of groups. First will  contain checkboxes, second will "
+"contain the group name, third the group description. Header links can be "
+"used to sort."
+
+#. vieww.summary
+#: calendar/calendar-bundles/resources/calendar.properties:257
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:vieww.summary"
+msgid "Table represents week - columns are days - rows are half hours"
+msgstr "Table represents week - columns are days - rows are half hours"
+
+#. vieww.goton
+#: calendar/calendar-bundles/resources/calendar.properties:258
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.goton"
+msgid "Go to Next Week"
+msgstr "Go to Next Week"
+
+#. vieww.gotop
+#: calendar/calendar-bundles/resources/calendar.properties:259
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.gotop"
+msgid "Go to previous week "
+msgstr "Go to previous week "
+
+#. vieww.gotoe
+#: calendar/calendar-bundles/resources/calendar.properties:260
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.gotoe"
+msgid "Earlier"
+msgstr "Earlier"
+
+#. vieww.laswk
+#: calendar/calendar-bundles/resources/calendar.properties:261
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.laswk"
+msgid "&lt; Previous Week"
+msgstr "&lt; Previous Week"
+
+#. vieww.nexwk
+#: calendar/calendar-bundles/resources/calendar.properties:262
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.nexwk"
+msgid "Next Week &gt;"
+msgstr "Next Week &gt;"
+
+#. vieww.gotol
+#: calendar/calendar-bundles/resources/calendar.properties:263
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:vieww.gotol"
+msgid "Later"
+msgstr "Later"
+
+#. viewy.gotop
+#: calendar/calendar-bundles/resources/calendar.properties:264
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewy.gotop"
+msgid "Go to Previous Year "
+msgstr "Go to Previous Year "
+
+#. viewy.goton
+#: calendar/calendar-bundles/resources/calendar.properties:265
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewy.goton"
+msgid "Go to Next Year"
+msgstr "Go to Next Year"
+
+#. viewy.lasy
+#: calendar/calendar-bundles/resources/calendar.properties:266
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewy.lasy"
+msgid "&lt; Previous Year"
+msgstr "&lt; Previous Year"
+
+#. viewy.nexy
+#: calendar/calendar-bundles/resources/calendar.properties:267
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:viewy.nexy"
+msgid "Next Year &gt;"
+msgstr "Next Year &gt;"
+
+#. viewy.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:268
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewy.list.summary"
+msgid ""
+"Table represents year. Each cell contains a table representing that month."
+msgstr ""
+"Table represents year. Each cell contains a table representing that month."
+
+#. viewy.list.summary2
+#: calendar/calendar-bundles/resources/calendar.properties:269
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewy.list.summary2"
+msgid "Table represents the month of"
+msgstr "Table represents the month of"
+
+#. viewy.list.summary3
+#: calendar/calendar-bundles/resources/calendar.properties:270
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewy.list.summary3"
+msgid "columns represent weekdays"
+msgstr "columns represent weekdays"
+
+#. viewy.date_format
+#: calendar/calendar-bundles/resources/calendar.properties:271
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:viewy.date_format"
+msgid "yyyy"
+msgstr "yyyy"
+
+#. cust.addrev
+#: calendar/calendar-bundles/resources/calendar.properties:272
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.addrev"
+msgid "Add/Edit Fields"
+msgstr "Add/Edit Fields"
+
+#. cust.toadd
+#: calendar/calendar-bundles/resources/calendar.properties:273
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.toadd"
+msgid "To add fields, enter field name below and click 'Create Field'."
+msgstr "To add fields, enter field name below and click 'Create Field'."
+
+#. cust.fname
+#: calendar/calendar-bundles/resources/calendar.properties:274
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.fname"
+msgid "Field Name"
+msgstr "Field Name"
+
+#. cust.true
+#: calendar/calendar-bundles/resources/calendar.properties:275
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.true"
+msgid "True"
+msgstr "True"
+
+#. cust.rem
+#: calendar/calendar-bundles/resources/calendar.properties:276
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.rem"
+msgid "Remove?"
+msgstr "Remove?"
+
+#. cust.add
+#: calendar/calendar-bundles/resources/calendar.properties:277
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.add"
+msgid "Create Field"
+msgstr "Create Field"
+
+#. cust.save
+#: calendar/calendar-bundles/resources/calendar.properties:278
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.save"
+msgid "Save Field Changes"
+msgstr "Save Field Changes"
+
+#. cust.list
+#: calendar/calendar-bundles/resources/calendar.properties:279
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cust.list"
+msgid ""
+"Table contains list of additional fields. First column contains the "
+"fieldname, second column a checkbox to take remove it."
+msgstr ""
+"Table contains list of additional fields. First column contains the "
+"fieldname, second column a checkbox to take remove it."
+
+#. subs.subscriptions
+#: calendar/calendar-bundles/resources/calendar.properties:280
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.subscriptions"
+msgid "Calendar Subscriptions"
+msgstr "Calendar Subscriptions"
+
+#. subs.institutional
+#: calendar/calendar-bundles/resources/calendar.properties:281
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.institutional"
+msgid "Institutional Calendars"
+msgstr "Institutional Calendars"
+
+#. subs.institutional.instruction
+#: calendar/calendar-bundles/resources/calendar.properties:282
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:subs.institutional.instruction"
+msgid "Select what Institutional Calendars you want to subscribe."
+msgstr "Select what Institutional Calendars you want to subscribe."
+
+#. subs.institutional.summary
+#: calendar/calendar-bundles/resources/calendar.properties:283
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:subs.institutional.summary"
+msgid "List of Institutional Calendars"
+msgstr "List of Institutional Calendars"
+
+#. subs.calendar.name
+#: calendar/calendar-bundles/resources/calendar.properties:284
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.calendar.name"
+msgid "Calendar Name"
+msgstr "Calendar Name"
+
+#. subs.calendar.url
+#: calendar/calendar-bundles/resources/calendar.properties:285
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.calendar.url"
+msgid "URL"
+msgstr "URL"
+
+#. subs.calendar.sub
+#: calendar/calendar-bundles/resources/calendar.properties:286
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.calendar.sub"
+msgid "Subscribed?"
+msgstr "Subscribed?"
+
+#. subs.user
+#: calendar/calendar-bundles/resources/calendar.properties:287
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:subs.user"
+msgid "Other Calendars"
+msgstr "Other Calendars"
+
+#. subs.user.instruction
+#: calendar/calendar-bundles/resources/calendar.properties:288
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:subs.user.instruction"
+msgid ""
+"To subscribe external calendars (in ICal format), enter a calendar name and "
+"url and click 'Subscribe'."
+msgstr ""
+"To subscribe external calendars (in ICal format), enter a calendar name and "
+"url and click 'Subscribe'."
+
+#. subs.user.summary
+#: calendar/calendar-bundles/resources/calendar.properties:289
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:subs.user.summary"
+msgid "List of User-specified Calendars"
+msgstr "List of User-specified Calendars"
+
+#. subs.calendar.subscribe
+#: calendar/calendar-bundles/resources/calendar.properties:290
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:subs.calendar.subscribe"
+msgid "Subscribe"
+msgstr "Subscribe"
+
+#. merge.merge
+#: calendar/calendar-bundles/resources/calendar.properties:291
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:merge.merge"
+msgid "Merging calendars..."
+msgstr "Merging calendars..."
+
+#. merge.select
+#: calendar/calendar-bundles/resources/calendar.properties:292
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:merge.select"
+msgid ""
+"Select what calendars you want to merge into this site. This site's users "
+"will only see those events they had permission to see in the source site."
+msgstr ""
+"Select what calendars you want to merge into this site. This site's users "
+"will only see those events they had permission to see in the source site."
+
+#. merge.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:293
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:merge.list.summary"
+msgid ""
+"List of calendars from sites you can merge into this one. Column 1: site "
+"name. Column 2: checkbox - select for merge. "
+msgstr ""
+"List of calendars from sites you can merge into this one. Column 1: site "
+"name. Column 2: checkbox - select for merge. "
+
+#. merge.showsched
+#: calendar/calendar-bundles/resources/calendar.properties:294
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:merge.showsched"
+msgid "Show Schedule"
+msgstr "Show Schedule"
+
+#. det.lasact
+#: calendar/calendar-bundles/resources/calendar.properties:295
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:det.lasact"
+msgid "&lt; Last Event"
+msgstr "&lt; Last Event"
+
+#. det.nexact
+#: calendar/calendar-bundles/resources/calendar.properties:296
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:det.nexact"
+msgid "Next Event &gt;"
+msgstr "Next Event &gt;"
+
+#. date.invalid
+#: calendar/calendar-bundles/resources/calendar.properties:297
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:date.invalid"
+msgid "Invalid setting for date."
+msgstr "Invalid setting for date."
+
+#. group.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:298
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.summary"
+msgid ""
+"List of groups in the site. Column 1: group name. Column 2: description. "
+"Headers allow sorting on the columns."
+msgstr ""
+"List of groups in the site. Column 1: group name. Column 2: description. "
+"Headers allow sorting on the columns."
+
+#. group.list.toggle
+#: calendar/calendar-bundles/resources/calendar.properties:299
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.toggle"
+msgid "Toggle select all"
+msgstr "Toggle select all"
+
+#. group.list.title
+#: calendar/calendar-bundles/resources/calendar.properties:300
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.title"
+msgid "Title"
+msgstr "Title"
+
+#. group.list.titlesort
+#: calendar/calendar-bundles/resources/calendar.properties:301
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.titlesort"
+msgid "Sort by group title"
+msgstr "Sort by group title"
+
+#. group.list.titlesortasc
+#: calendar/calendar-bundles/resources/calendar.properties:302
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:group.list.titlesortasc"
+msgid "Sort by group title ascending"
+msgstr "Sort by group title ascending"
+
+#. group.list.titlesortdesc
+#: calendar/calendar-bundles/resources/calendar.properties:303
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:group.list.titlesortdesc"
+msgid "Sort by group title descending"
+msgstr "Sort by group title descending"
+
+#. group.list.descr
+#: calendar/calendar-bundles/resources/calendar.properties:304
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.descr"
+msgid "Description"
+msgstr "Description"
+
+#. group.list.descrsort
+#: calendar/calendar-bundles/resources/calendar.properties:305
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:group.list.descrsort"
+msgid "Sort by description"
+msgstr "Sort by description"
+
+#. group.list.descrsortasc
+#: calendar/calendar-bundles/resources/calendar.properties:306
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:group.list.descrsortasc"
+msgid "Sort by description ascending"
+msgstr "Sort by description ascending"
+
+#. group.list.descrsortdesc
+#: calendar/calendar-bundles/resources/calendar.properties:307
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:group.list.descrsortdesc"
+msgid "Sort by description descending"
+msgstr "Sort by description descending"
+
+#. displayto.public
+#: calendar/calendar-bundles/resources/calendar.properties:308
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayto.public"
+msgid "Display to public "
+msgstr "Display to public "
+
+#. displayto.site
+#: calendar/calendar-bundles/resources/calendar.properties:309
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayto.site"
+msgid "Display to site"
+msgstr "Display to site"
+
+#. displayto.selected
+#: calendar/calendar-bundles/resources/calendar.properties:310
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayto.selected"
+msgid "Display to selected groups"
+msgstr "Display to selected groups"
+
+#. displayfrom.site
+#: calendar/calendar-bundles/resources/calendar.properties:311
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayfrom.site"
+msgid "Display site events"
+msgstr "Display site events"
+
+#. displayfrom.selected
+#: calendar/calendar-bundles/resources/calendar.properties:312
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:displayfrom.selected"
+msgid "Display group events"
+msgstr "Display group events"
+
+#. imp.forsite
+#: calendar/calendar-bundles/resources/calendar.properties:313
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.forsite"
+msgid "Import events for site"
+msgstr "Import events for site"
+
+#. imp.forgroup
+#: calendar/calendar-bundles/resources/calendar.properties:314
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:imp.forgroup"
+msgid "Import events for selected groups"
+msgstr "Import events for selected groups"
+
+#. view.for
+#: calendar/calendar-bundles/resources/calendar.properties:315
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.for"
+msgid "For"
+msgstr "For"
+
+#. group
+#: calendar/calendar-bundles/resources/calendar.properties:316
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:group"
+msgid "Group"
+msgstr "Group"
+
+#. view.legend
+#: calendar/calendar-bundles/resources/calendar.properties:317
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:view.legend"
+msgid "Legend"
+msgstr "Legend"
+
+#. view.calevents
+#: calendar/calendar-bundles/resources/calendar.properties:318
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:view.calevents"
+msgid "List of Events"
+msgstr "List of Events"
+
+#. gen.eventtype.list.summary
+#: calendar/calendar-bundles/resources/calendar.properties:319
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:gen.eventtype.list.summary"
+msgid "List of event types in the calendar"
+msgstr "List of event types in the calendar"
+
+#. sched.for
+#: calendar/calendar-bundles/resources/calendar.properties:320
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:sched.for"
+msgid "Schedule for"
+msgstr "Schedule for"
+
+#. err_no_dur
+#: calendar/calendar-bundles/resources/calendar.properties:321
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_no_dur"
+msgid ""
+"No duration time specified on line #{0}. Please make the appropriate changes"
+" to your template and save it again."
+msgstr ""
+"No duration time specified on line #{0}. Please make the appropriate changes"
+" to your template and save it again."
+
+#. err_no_start
+#: calendar/calendar-bundles/resources/calendar.properties:322
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_no_start"
+msgid ""
+"No start date was specified on line #{0}. Please make the appropriate "
+"changes to your template and save it again."
+msgstr ""
+"No start date was specified on line #{0}. Please make the appropriate "
+"changes to your template and save it again."
+
+#. err_import
+#: calendar/calendar-bundles/resources/calendar.properties:323
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_import"
+msgid "Unable to create importer for {0}"
+msgstr "Unable to create importer for {0}"
+
+#. err_import_unknown
+#: calendar/calendar-bundles/resources/calendar.properties:324
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:err_import_unknown"
+msgid "Unknown import type"
+msgstr "Unknown import type"
+
+#. err_no_stime
+#: calendar/calendar-bundles/resources/calendar.properties:325
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_no_stime"
+msgid ""
+"Unable to determine start times for an event. Please check that this is the "
+"correct file format."
+msgstr ""
+"Unable to determine start times for an event. Please check that this is the "
+"correct file format."
+
+#. err_no_etime
+#: calendar/calendar-bundles/resources/calendar.properties:326
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_no_etime"
+msgid ""
+"Unable to determine end times for an event. Please check that this is the "
+"correct file format."
+msgstr ""
+"Unable to determine end times for an event. Please check that this is the "
+"correct file format."
+
+#. err_no_stime_on
+#: calendar/calendar-bundles/resources/calendar.properties:327
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:err_no_stime_on"
+msgid "No start time specified on line #{0}"
+msgstr "No start time specified on line #{0}"
+
+#. err_no_dtime_on
+#: calendar/calendar-bundles/resources/calendar.properties:328
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:err_no_dtime_on"
+msgid "No duration time specified on line #{0}"
+msgstr "No duration time specified on line #{0}"
+
+#. err_time
+#: calendar/calendar-bundles/resources/calendar.properties:329
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_time"
+msgid ""
+"Illegal time format on row: {0}, column: {1}. Please make the appropriate "
+"changes to your template and save it again."
+msgstr ""
+"Illegal time format on row: {0}, column: {1}. Please make the appropriate "
+"changes to your template and save it again."
+
+#. err_date
+#: calendar/calendar-bundles/resources/calendar.properties:330
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_date"
+msgid ""
+"Illegal date format on row: {0}, column: {1}. Please make the appropriate "
+"changes to your template and save it again."
+msgstr ""
+"Illegal date format on row: {0}, column: {1}. Please make the appropriate "
+"changes to your template and save it again."
+
+#. err_interval
+#: calendar/calendar-bundles/resources/calendar.properties:331
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_interval"
+msgid ""
+"Illegal interval format on row: {0}, column: {1}. Please make the "
+"appropriate changes to your template and save it again."
+msgstr ""
+"Illegal interval format on row: {0}, column: {1}. Please make the "
+"appropriate changes to your template and save it again."
+
+#. err_notime
+#: calendar/calendar-bundles/resources/calendar.properties:332
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_notime"
+msgid ""
+"A start, end time or the duration was not specified on line #{0}. Please "
+"make the appropriate changes to your template and save it again."
+msgstr ""
+"A start, end time or the duration was not specified on line #{0}. Please "
+"make the appropriate changes to your template and save it again."
+
+#. err_datebad
+#: calendar/calendar-bundles/resources/calendar.properties:333
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_datebad"
+msgid ""
+"Both a count and end date cannot be specified at the same time, error on "
+"line #{0}. Please make the appropriate changes to your template and save it "
+"again."
+msgstr ""
+"Both a count and end date cannot be specified at the same time, error on "
+"line #{0}. Please make the appropriate changes to your template and save it "
+"again."
+
+#. err_freqbad
+#: calendar/calendar-bundles/resources/calendar.properties:334
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:err_freqbad"
+msgid ""
+"A frequency was specified, but a recurrence rule could not be created due to"
+" missing data on line #{0}. Please make the appropriate changes to your "
+"template and save it again."
+msgstr ""
+"A frequency was specified, but a recurrence rule could not be created due to"
+" missing data on line #{0}. Please make the appropriate changes to your "
+"template and save it again."
+
+#. event.site
+#: calendar/calendar-bundles/resources/calendar.properties:335
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event.site"
+msgid "Site:"
+msgstr "Site:"
+
+#. event.event
+#: calendar/calendar-bundles/resources/calendar.properties:336
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event.event"
+msgid "Event:"
+msgstr "Event:"
+
+#. event.type
+#: calendar/calendar-bundles/resources/calendar.properties:337
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event.type"
+msgid "Event type:"
+msgstr "Event type:"
+
+#. event.location
+#: calendar/calendar-bundles/resources/calendar.properties:338
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:event.location"
+msgid "Location:"
+msgstr "Location:"
+
+#. event.from
+#: calendar/calendar-bundles/resources/calendar.properties:339
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event.from"
+msgid "From:"
+msgstr "From:"
+
+#. tool_title
+#: calendar/calendar-bundles/resources/calendar.properties:340
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:tool_title"
+msgid "Calendar"
+msgstr "Calendar"
+
+#. menu_calendar
+#: calendar/calendar-bundles/resources/calendar.properties:341
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:menu_calendar"
+msgid "Calendar"
+msgstr "Calendar"
+
+#. menu_prefs
+#: calendar/calendar-bundles/resources/calendar.properties:342
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:menu_prefs"
+msgid "Options"
+msgstr "Options"
+
+#. today
+#: calendar/calendar-bundles/resources/calendar.properties:343
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:today"
+msgid "Today"
+msgstr "Today"
+
+#. next
+#: calendar/calendar-bundles/resources/calendar.properties:344
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:next"
+msgid "Next"
+msgstr "Next"
+
+#. previous
+#: calendar/calendar-bundles/resources/calendar.properties:345
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:previous"
+msgid "Previous"
+msgstr "Previous"
+
+#. selectedDayEvents
+#: calendar/calendar-bundles/resources/calendar.properties:346
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:selectedDayEvents"
+msgid "Events for"
+msgstr "Events for"
+
+#. openInSchedule
+#: calendar/calendar-bundles/resources/calendar.properties:347
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:openInSchedule"
+msgid "Full details..."
+msgstr "Full details..."
+
+#. event
+#: calendar/calendar-bundles/resources/calendar.properties:348
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:event"
+msgid "Event"
+msgstr "Event"
+
+#. date
+#: calendar/calendar-bundles/resources/calendar.properties:349
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:date"
+msgid "Date:"
+msgstr "Date:"
+
+#. description
+#: calendar/calendar-bundles/resources/calendar.properties:350
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:description"
+msgid "Description:"
+msgstr "Description:"
+
+#. type
+#: calendar/calendar-bundles/resources/calendar.properties:351
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:type"
+msgid "Event Type:"
+msgstr "Event Type:"
+
+#. location
+#: calendar/calendar-bundles/resources/calendar.properties:352
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:location"
+msgid "Event Location:"
+msgstr "Event Location:"
+
+#. groups
+#: calendar/calendar-bundles/resources/calendar.properties:353
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:groups"
+msgid "Groups:"
+msgstr "Groups:"
+
+#. site
+#: calendar/calendar-bundles/resources/calendar.properties:354
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:site"
+msgid "Site:"
+msgstr "Site:"
+
+#. attachments
+#: calendar/calendar-bundles/resources/calendar.properties:355
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:attachments"
+msgid "Attachments:"
+msgstr "Attachments:"
+
+#. every
+#: calendar/calendar-bundles/resources/calendar.properties:356
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:every"
+msgid "Every"
+msgstr "Every"
+
+#. back
+#: calendar/calendar-bundles/resources/calendar.properties:357
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:back"
+msgid "Back"
+msgstr "Back"
+
+#. instructions_preferences
+#: calendar/calendar-bundles/resources/calendar.properties:358
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:instructions_preferences"
+msgid "Set calendar preferences."
+msgstr "Set calendar preferences."
+
+#. prefs_updated
+#: calendar/calendar-bundles/resources/calendar.properties:359
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_updated"
+msgid "Preferences updated successfuly"
+msgstr "Preferences updated successfuly"
+
+#. prefs_not_updated
+#: calendar/calendar-bundles/resources/calendar.properties:360
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_not_updated"
+msgid "An error occurred while updating preferences"
+msgstr "An error occurred while updating preferences"
+
+#. update
+#: calendar/calendar-bundles/resources/calendar.properties:361
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:update"
+msgid "Update"
+msgstr "Update"
+
+#. cancel
+#: calendar/calendar-bundles/resources/calendar.properties:362
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. instructions_display
+#: calendar/calendar-bundles/resources/calendar.properties:363
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:instructions_display"
+msgid "Change your calendar's view."
+msgstr "Change your calendar's view."
+
+#. prefs_section_display
+#: calendar/calendar-bundles/resources/calendar.properties:364
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_section_display"
+msgid "Calendar display"
+msgstr "Calendar display"
+
+#. prefs_view_mode
+#: calendar/calendar-bundles/resources/calendar.properties:365
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_view_mode"
+msgid "View"
+msgstr "View"
+
+#. month_view
+#: calendar/calendar-bundles/resources/calendar.properties:366
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:month_view"
+msgid "Calendar by Month"
+msgstr "Calendar by Month"
+
+#. week_view
+#: calendar/calendar-bundles/resources/calendar.properties:367
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:week_view"
+msgid "Calendar by Week"
+msgstr "Calendar by Week"
+
+#. prefs_section_priority
+#: calendar/calendar-bundles/resources/calendar.properties:368
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_section_priority"
+msgid "Priority events"
+msgstr "Priority events"
+
+#. instructions_priority
+#: calendar/calendar-bundles/resources/calendar.properties:369
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:instructions_priority"
+msgid ""
+"Define event priorities and priority colors. Calendar will color days with "
+"the defined priority color for the highest event priority on that day."
+msgstr ""
+"Define event priorities and priority colors. Calendar will color days with "
+"the defined priority color for the highest event priority on that day."
+
+#. prefs_section_priority_eventypes
+#: calendar/calendar-bundles/resources/calendar.properties:370
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_section_priority_eventypes"
+msgid "Event types  "
+msgstr "Event types  "
+
+#. prefs_section_priority_color
+#: calendar/calendar-bundles/resources/calendar.properties:371
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_section_priority_color"
+msgid "Colors"
+msgstr "Colors"
+
+#. prefs_high_priority
+#: calendar/calendar-bundles/resources/calendar.properties:372
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_high_priority"
+msgid "High priority"
+msgstr "High priority"
+
+#. prefs_medium_priority
+#: calendar/calendar-bundles/resources/calendar.properties:373
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:prefs_medium_priority"
+msgid "Medium priority"
+msgstr "Medium priority"
+
+#. prefs_low_priority
+#: calendar/calendar-bundles/resources/calendar.properties:374
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_low_priority"
+msgid "Low priority"
+msgstr "Low priority"
+
+#. prefs_move_up
+#: calendar/calendar-bundles/resources/calendar.properties:375
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_move_up"
+msgid "Move up"
+msgstr "Move up"
+
+#. prefs_move_down
+#: calendar/calendar-bundles/resources/calendar.properties:376
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:prefs_move_down"
+msgid "Move down"
+msgstr "Move down"
+
+#. date_format
+#: calendar/calendar-bundles/resources/calendar.properties:377
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:date_format"
+msgid "MMMMM dd, yyyy"
+msgstr "MMMMM dd, yyyy"
+
+#. date_link_format
+#: calendar/calendar-bundles/resources/calendar.properties:378
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:date_link_format"
+msgid "yyyy-MM-dd"
+msgstr "yyyy-MM-dd"
+
+#. java.opaque_subscribe
+#: calendar/calendar-bundles/resources/calendar.properties:379
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:java.opaque_subscribe"
+msgid "Subscribe (Randomly named feeds)"
+msgstr "Subscribe (Randomly named feeds)"
+
+#. ical_opaqueurl_header
+#: calendar/calendar-bundles/resources/calendar.properties:380
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_header"
+msgid "Subscribe"
+msgstr "Subscribe"
+
+#. ical_opaqueurl_explanation
+#: calendar/calendar-bundles/resources/calendar.properties:381
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_explanation"
+msgid ""
+"If you would like to generate a private URL for you to access the calendar "
+"in this site, please press the button below:"
+msgstr ""
+"If you would like to generate a private URL for you to access the calendar "
+"in this site, please press the button below:"
+
+#. ical_opaqueurl_myworkspace
+#: calendar/calendar-bundles/resources/calendar.properties:382
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_myworkspace"
+msgid ""
+"Note: If you subscribe to the calendar in your 'My Workspace', it will "
+"aggregate the events from the calendars of all the sites of which you are a "
+"member."
+msgstr ""
+"Note: If you subscribe to the calendar in your 'My Workspace', it will "
+"aggregate the events from the calendars of all the sites of which you are a "
+"member."
+
+#. ical_opaqueurl_generate
+#: calendar/calendar-bundles/resources/calendar.properties:383
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_generate"
+msgid "Generate"
+msgstr "Generate"
+
+#. ical_opaqueurl_webcal
+#: calendar/calendar-bundles/resources/calendar.properties:384
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_webcal"
+msgid ""
+"If you click on the link below, your browser should present you with a "
+"client (e.g. Outlook) that you can use to subscribe to this calendar:"
+msgstr ""
+"If you click on the link below, your browser should present you with a "
+"client (e.g. Outlook) that you can use to subscribe to this calendar:"
+
+#. ical_opaqueurl_http
+#: calendar/calendar-bundles/resources/calendar.properties:385
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:ical_opaqueurl_http"
+msgid ""
+"Alternatively, copy and paste this link to your web-based or desktop "
+"calendar client."
+msgstr ""
+"Alternatively, copy and paste this link to your web-based or desktop "
+"calendar client."
+
+#. ical_opaqueurl_regenerate
+#: calendar/calendar-bundles/resources/calendar.properties:386
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_regenerate"
+msgid "Regenerate"
+msgstr "Regenerate"
+
+#. ical_opaqueurl_delete
+#: calendar/calendar-bundles/resources/calendar.properties:387
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:ical_opaqueurl_delete"
+msgid "Delete"
+msgstr "Delete"
+
+#. calendar
+#: calendar/calendar-bundles/resources/calendar.properties:388
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:calendar"
+msgid "Represents calendar events."
+msgstr "Represents calendar events."
+
+#. calendar.action.site
+#: calendar/calendar-bundles/resources/calendar.properties:389
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:calendar.action.site"
+msgid ""
+"Retrieve the calendar events for a site. The request url pattern: "
+"/direct/calendar/site/{siteId}.{format}"
+msgstr ""
+"Retrieve the calendar events for a site. The request url pattern: "
+"/direct/calendar/site/{siteId}.{format}"
+
+#. calendar.action.event
+#: calendar/calendar-bundles/resources/calendar.properties:390
+msgctxt ""
+"calendar/calendar-"
+"bundles/resources/calendar.properties:calendar.action.event"
+msgid ""
+"Retrieve a calendar event details specified by the site id and event id. The"
+" request url pattern: /direct/calendar/event/{siteId}/{eventId}.{format}"
+msgstr ""
+"Retrieve a calendar event details specified by the site id and event id. The"
+" request url pattern: /direct/calendar/event/{siteId}/{eventId}.{format}"
+
+#. calendar.action.my
+#: calendar/calendar-bundles/resources/calendar.properties:391
+msgctxt ""
+"calendar/calendar-bundles/resources/calendar.properties:calendar.action.my"
+msgid ""
+"Retrieve all my calendar events for all of my sites. The request url "
+"pattern: /direct/calendar/my.{format}"
+msgstr ""
+"Retrieve all my calendar events for all of my sites. The request url "
+"pattern: /direct/calendar/my.{format}"
+
+#. set.MWF.fm
+#: calendar/calendar-bundles/resources/calendar.properties:392
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.MWF.fm"
+msgid "{0}/{1}/{2}"
+msgstr "{0}/{1}/{2}"
+
+#. set.TTh.fm
+#: calendar/calendar-bundles/resources/calendar.properties:393
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.TTh.fm"
+msgid "{0}/{1}"
+msgstr "{0}/{1}"
+
+#. set.SMW.fm
+#: calendar/calendar-bundles/resources/calendar.properties:394
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.SMW.fm"
+msgid "{0}/{1}/{2}"
+msgstr "{0}/{1}/{2}"
+
+#. set.SMTW.fm
+#: calendar/calendar-bundles/resources/calendar.properties:395
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.SMTW.fm"
+msgid "{0}/{1}/{2}/{3}"
+msgstr "{0}/{1}/{2}/{3}"
+
+#. set.STT.fm
+#: calendar/calendar-bundles/resources/calendar.properties:396
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.STT.fm"
+msgid "{0}/{1}/{2}"
+msgstr "{0}/{1}/{2}"
+
+#. set.MW.fm
+#: calendar/calendar-bundles/resources/calendar.properties:397
+msgctxt "calendar/calendar-bundles/resources/calendar.properties:set.MW.fm"
+msgid "{0}/{1}"
+msgstr "{0}/{1}"
+
+#. desc-calendar.new
+#: calendar/calendar-bundles/resources/permissions.properties:1
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-calendar.new"
+msgid "Create events"
+msgstr "Create events"
+
+#. desc-calendar.delete.own
+#: calendar/calendar-bundles/resources/permissions.properties:2
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.delete.own"
+msgid "Delete own events"
+msgstr "Delete own events"
+
+#. desc-calendar.delete.any
+#: calendar/calendar-bundles/resources/permissions.properties:3
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.delete.any"
+msgid "Delete any  event"
+msgstr "Delete any  event"
+
+#. desc-calendar.revise.own
+#: calendar/calendar-bundles/resources/permissions.properties:4
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.revise.own"
+msgid "Edit  own events"
+msgstr "Edit  own events"
+
+#. desc-calendar.revise.any
+#: calendar/calendar-bundles/resources/permissions.properties:5
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.revise.any"
+msgid "Edit any  event"
+msgstr "Edit any  event"
+
+#. desc-calendar.subscribe
+#: calendar/calendar-bundles/resources/permissions.properties:6
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.subscribe"
+msgid "Subscribe to calendars"
+msgstr "Subscribe to calendars"
+
+#. desc-calendar.import
+#: calendar/calendar-bundles/resources/permissions.properties:7
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.import"
+msgid "Import events"
+msgstr "Import events"
+
+#. desc-calendar.read
+#: calendar/calendar-bundles/resources/permissions.properties:8
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.read"
+msgid "View events"
+msgstr "View events"
+
+#. desc-calendar.all.groups
+#: calendar/calendar-bundles/resources/permissions.properties:9
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.all.groups"
+msgid "Access/create group events"
+msgstr "Access/create group events"
+
+#. desc-calendar.options
+#: calendar/calendar-bundles/resources/permissions.properties:10
+msgctxt ""
+"calendar/calendar-bundles/resources/permissions.properties:desc-"
+"calendar.options"
+msgid "Change calendar options"
+msgstr "Change calendar options"

@@ -1,0 +1,3762 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-21 13:56+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. subject.new.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:1
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.new.appointment.field"
+msgid "Meeting assignment by \"{0}\" for meeting {2} on {1}"
+msgstr "{1} の{2} ミーティングのために\"{0}\" によって割り当てられたミーティング"
+
+#. subject.attendee.signup.field
+#: signup/impl/src/bundle/emailMessage.properties:2
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.attendee.signup.field"
+msgid "{1} has signed up for the meeting \"{3}\" on {0} in {2} "
+msgstr "{1} が{0} に {2}でミーティング \"{3}\" にサインアップしました．"
+
+#. subject.Cancel.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:3
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.Cancel.appointment.field"
+msgid "Appointment for meeting \"{2}\" on {0} has been canceled by {1}"
+msgstr "{0} のミーティング \"{2}\" の予約は {1}によってキャンセルされました．"
+
+#. subject.meeting.modification.field
+#: signup/impl/src/bundle/emailMessage.properties:4
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.meeting.modification.field"
+msgid "{0} has modified the meeting \"{4}\" for {1} on {2},{3}"
+msgstr "{0} が {2},{3}の{1} のためのミーティング \"{4}\" を修正しました．"
+
+#. subject.meeting.cancel.field
+#: signup/impl/src/bundle/emailMessage.properties:5
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.meeting.cancel.field"
+msgid "Appointment for meeting \"{0}\" in {1} has been canceled"
+msgstr "{1} のミーティング \"{0}\" の予約はキャンセルされました．"
+
+#. subject.newMeeting.field
+#: signup/impl/src/bundle/emailMessage.properties:6
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.newMeeting.field"
+msgid "New meeting \"{2}\" announced by {0} on {1}"
+msgstr "{0} によって {1}にアナウンスされた新しいミーティング \"{2}\""
+
+#. subject.organizer.change.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:7
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.organizer.change.appointment.field"
+msgid "Meeting \"{2}\" on {0} {1} has been changed"
+msgstr "{0} {1} のミーティング \"{2}\" は変更されました"
+
+#. subject.organizerPreAssign.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:8
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.organizerPreAssign.appointment.field"
+msgid "Meeting assignment for \"{2}\" by {0} on {1}"
+msgstr "{0} によって {1} に\"{2}\"のために割り当てられたミーティング"
+
+#. subject.promote.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:9
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.promote.appointment.field"
+msgid "Promoted from wait list for meeting \"{1}\" on {0}"
+msgstr "{0}のミーティング \"{1}\" の順番待一覧から移動"
+
+#. subject.auto.reminder.appointment.field
+#: signup/impl/src/bundle/emailMessage.properties:10
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.auto.reminder.appointment.field"
+msgid "Your upcoming appointment for \"{3}\" on {0},{1},{2}"
+msgstr "{0},{1},{2} の\"{3}\" に対するあなた直近の予約 "
+
+#. subject.attendee.signup.own.field
+#: signup/impl/src/bundle/emailMessage.properties:11
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.attendee.signup.own.field"
+msgid "You have signed up for the meeting \"{0}\" in {1}"
+msgstr "{1} のミーティング \"{0}\" にサインアップしました．"
+
+#. subject.attendee.cancel.own.field
+#: signup/impl/src/bundle/emailMessage.properties:12
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:subject.attendee.cancel.own.field"
+msgid "You have cancelled your appointment for the meeting \"{0}\" in {1}"
+msgstr "{1} のミーティング \"{0}\" の予約をキャンセルしました"
+
+#. noReply@
+#: signup/impl/src/bundle/emailMessage.properties:13
+msgctxt "signup/impl/src/bundle/emailMessage.properties:noReply@"
+msgid "postmaster@"
+msgstr "postmaster@"
+
+#. body.assigned.new.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:14
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.assigned.new.appointment.part"
+msgid "{0} has assigned you to a meeting for the {1} site on {2}:"
+msgstr "{0} があなたを {2} のサイト {1} のミーティングに割り当てました:"
+
+#. body.meeting.recurrence
+#: signup/impl/src/bundle/emailMessage.properties:15
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.recurrence"
+msgid "Meeting Recurrence:"
+msgstr "ミーティング繰り返し:"
+
+#. body.meeting.repeatDaily
+#: signup/impl/src/bundle/emailMessage.properties:16
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.repeatDaily"
+msgid "daily"
+msgstr "毎日"
+
+#. body.meeting.repeatWeekdays
+#: signup/impl/src/bundle/emailMessage.properties:17
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.repeatWeekdays"
+msgid "weekdays (Mon-Fri)"
+msgstr "平日(月-金)"
+
+#. body.meeting.repeatWeekly
+#: signup/impl/src/bundle/emailMessage.properties:18
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.repeatWeekly"
+msgid "weekly"
+msgstr "毎週"
+
+#. body.meeting.repeatBiWeekly
+#: signup/impl/src/bundle/emailMessage.properties:19
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.repeatBiWeekly"
+msgid "biweekly"
+msgstr "隔週"
+
+#. body.recurrence.meeting.status
+#: signup/impl/src/bundle/emailMessage.properties:20
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.recurrence.meeting.status"
+msgid "This meeting recurs <b>{0}</b> until: {1}"
+msgstr "このミーティングは<b>{0}</b> 繰り返します．期限: {1}"
+
+#. body.meeting.assigned.all.recurringMeetings
+#: signup/impl/src/bundle/emailMessage.properties:21
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.assigned.all.recurringMeetings"
+msgid "<b>Attention:</B> you have been assigned to all recurring meetings."
+msgstr "<b>注意:</B> すべての繰り返されるミーティングに割り当てられています．"
+
+#. body.meeting.recurrences.changed.note
+#: signup/impl/src/bundle/emailMessage.properties:22
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.recurrences.changed.note"
+msgid "- All the remaining occurrences of this meeting have also changed."
+msgstr "- このミーティングのすべての残りの繰り返しも変更されました．"
+
+#. body.meeting.recurrences.check.status.note
+#: signup/impl/src/bundle/emailMessage.properties:23
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.recurrences.check.status.note"
+msgid ""
+"- Please check your sign-up status in these consecutive meetings if you are "
+"on one of the waiting lists."
+msgstr "- いずれかの順番待一覧にあれば，連続するミーティングにてサインアップ状況を確認して下さい．"
+
+#. body.meeting.assigned.to.firstOne.recurringMeetings
+#: signup/impl/src/bundle/emailMessage.properties:24
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.assigned.to.firstOne.recurringMeetings"
+msgid "<b>Attention:</B> you have only been assigned to the current meeting."
+msgstr "<b>注意:</B> まだ現在のミーティングに割り当てられています."
+
+#. body.meeting.place
+#: signup/impl/src/bundle/emailMessage.properties:25
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.meeting.place"
+msgid "Meeting Place:"
+msgstr "ミーティング場所:"
+
+#. body.top.greeting.part
+#: signup/impl/src/bundle/emailMessage.properties:26
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.top.greeting.part"
+msgid "Dear {0},"
+msgstr "{0} さん,"
+
+#. body.meetingTopic.part
+#: signup/impl/src/bundle/emailMessage.properties:27
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meetingTopic.part"
+msgid "Meeting Title: {0}"
+msgstr "ミーティング議題: {0}"
+
+#. body.timeslot
+#: signup/impl/src/bundle/emailMessage.properties:28
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.timeslot"
+msgid "Time slot:"
+msgstr "時間帯:"
+
+#. body.ownComment
+#: signup/impl/src/bundle/emailMessage.properties:29
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.ownComment"
+msgid "My Comment: {0}"
+msgstr "私のコメント: {0}"
+
+#. body.commentBy
+#: signup/impl/src/bundle/emailMessage.properties:30
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.commentBy"
+msgid "Comment by {0}: {1}"
+msgstr "{0} によるコメント: {1}"
+
+#. body.organizer.meeting.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:31
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.meeting.timeframe"
+msgid "Meeting Time: {0} - from {1} to {2} ({3})"
+msgstr "ミーティング時間: {0} -  {1} から {2} ({3})"
+
+#. body.organizer.meeting.crossdays.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:32
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.meeting.crossdays.timeframe"
+msgid "Meeting Time: {0}, {1} to {2}, {3} ({4})"
+msgstr "ミーティング時間: {0}, {1} から {2}, {3} ({4})"
+
+#. body.organizer.preassigned.attendee.meeting.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:33
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.preassigned.attendee.meeting.timeframe"
+msgid "Meeting Time: {0} - {1} on {2} ({3})"
+msgstr "ミーティング時間: {0} -  {1}  {2} にて({3})"
+
+#. body.organizer.preassigned.attendee.meeting.crossdays.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:34
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.preassigned.attendee.meeting.crossdays.timeframe"
+msgid "Meeting Time: {0}, {1} - {2}, {3} ({4})"
+msgstr "ミーティング時間: {0}, {1} - {2}, {3} ({4})"
+
+#. body.attendee.meeting.timeslot
+#: signup/impl/src/bundle/emailMessage.properties:35
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.meeting.timeslot"
+msgid "Time slot: {0} - {1} on {2} ({3})"
+msgstr "時間帯: {0} -  {1}  {2} にて({3})"
+
+#. body.attendee.meeting.crossdays.timeslot
+#: signup/impl/src/bundle/emailMessage.properties:36
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.meeting.crossdays.timeslot"
+msgid "Time slot: {0}, {1} - {2}, {3} ({4})"
+msgstr "時間帯: {0}, {1} - {2}, {3} ({4})"
+
+#. body.meeting.timeslot.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:37
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.timeslot.timeframe"
+msgid "{0} - {1} on {2} ({3})"
+msgstr "{0} -  {1}  {2} にて({3})"
+
+#. body.meeting.crossdays.timeslot.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:38
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.crossdays.timeslot.timeframe"
+msgid "{0}, {1} - {2}, {3} ({4})"
+msgstr "{0}, {1} - {2}, {3} ({4})"
+
+#. body.meeting.timeslot.detail.title
+#: signup/impl/src/bundle/emailMessage.properties:39
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.meeting.timeslot.detail.title"
+msgid "The time slot details are shown as followings:"
+msgstr "時間帯の詳細は次のように表示されます．"
+
+#. body.attendee.custom.defined.meeting.timeslot
+#: signup/impl/src/bundle/emailMessage.properties:40
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.custom.defined.meeting.timeslot"
+msgid "- Time Slot {0} - "
+msgstr "- 時間帯 {0} - "
+
+#. body.attendee.custom.defined.meeting.timeslot.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:41
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.custom.defined.meeting.timeslot.timeframe"
+msgid "time period: {0} - {1}"
+msgstr "時間間隔: {0} - {1}"
+
+#. body.attendee.custom.defined.meeting.timeslot.timeframe.crossdays
+#: signup/impl/src/bundle/emailMessage.properties:42
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.custom.defined.meeting.timeslot.timeframe.crossdays"
+msgid "time period: {0}, {1} - {2}, {3}"
+msgstr "時間間隔: {0}, {1} - {2}, {3}"
+
+#. body.attendee.custom.defined.meeting.timeslot.max.participants
+#: signup/impl/src/bundle/emailMessage.properties:43
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.custom.defined.meeting.timeslot.max.participants"
+msgid "max # of participants: {0}"
+msgstr "最大出席者数: {0}"
+
+#. body.new.inidivual.type.message.detail
+#: signup/impl/src/bundle/emailMessage.properties:44
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.new.inidivual.type.message.detail"
+msgid ""
+"This meeting is divided into {0} time slots of {1} minutes. Each time slot "
+"permits {2} participant(s) to sign up."
+msgstr "このミーティングは{1} 分の {0} 時間帯に分割されます．各時間帯は {2} 出席者のサインアップを許可します．"
+
+#. body.new.group.limited.type.message.detail
+#: signup/impl/src/bundle/emailMessage.properties:45
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.new.group.limited.type.message.detail"
+msgid ""
+"This meeting is limited to {0} participant(s). Visit the site and click "
+"Sign-Up on the left menu to select a time slot."
+msgstr "このミーティングは {0} 出席者に制限されています．時間帯を選択するにはサイトにアクセスし左メニューのサインアップをクリックします．"
+
+#. body.new.group.unlimited.type.message
+#: signup/impl/src/bundle/emailMessage.properties:46
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.new.group.unlimited.type.message"
+msgid ""
+"This meeting permits an unlimited number of participants. However, sign-up "
+"is required. Visit the site and click Sign-up on the left menu to select a "
+"time slot."
+msgstr "このミーティングは何人でも出席者を許可します．ただし，サインアップは必要です．時間帯を選択するにはサイトにアクセスし左メニューのサインアップをクリックします．"
+
+#. body.new.announce.type.message
+#: signup/impl/src/bundle/emailMessage.properties:47
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.new.announce.type.message"
+msgid "No sign-up is required for this meeting."
+msgstr "このミーティングにはサインアップは不要です．"
+
+#. body.assigned.promote.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:48
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.assigned.promote.appointment.part"
+msgid ""
+"You have been promoted from the wait list to a confirmed place for the "
+"meeting for the {0} site on {1}:"
+msgstr "順番待一覧から{1}のサイト{0}のミーティングの確定済の場所に移動しました:"
+
+#. body.organizer.change.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:49
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.change.appointment.part"
+msgid ""
+"{0} has changed your appointment for meeting: {1} on {2} for the {3} site on"
+" {4}"
+msgstr "{0} があなたのミーティングの予約を変更しました: {4} のサイト {3} の {2}の {1}"
+
+#. body.organizer.change.appointment.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:50
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.change.appointment.timeframe"
+msgid "From {0} - {1} {4}To {2} - {3}"
+msgstr "{0} - {1} {4}から{2} - {3}まで"
+
+#. body.organizer.change.appointment.crossdays.timeframe
+#: signup/impl/src/bundle/emailMessage.properties:51
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizer.change.appointment.crossdays.timeframe"
+msgid "From {0},{1}  -  {2}, {3} {8}To {4}, {5}  -  {6}, {7}"
+msgstr "{0},{1}  -  {2}, {3} {8} から {4}, {5}  -  {6}, {7}まで"
+
+#. body.attendeeCheck.meetingStatus
+#: signup/impl/src/bundle/emailMessage.properties:52
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendeeCheck.meetingStatus"
+msgid ""
+"Details of this meeting are available on {0}.  If you have any questions, "
+"contact the meeting organizer."
+msgstr "このミーティングの詳細は {0} にて利用できます．質問がある場合は，ミーティングオーガナイザに連絡して下さい．"
+
+#. body.attendeeCheck.meetingStatus.B
+#: signup/impl/src/bundle/emailMessage.properties:53
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendeeCheck.meetingStatus.B"
+msgid ""
+"Further details regarding this meeting are available on {0}. If you have any"
+" questions, contact the meeting organizer."
+msgstr "このミーティングに関するさらなる詳細は {0} にて利用できます．質問がある場合は，ミーティングオーガナイザに連絡して下さい．"
+
+#. body.thankyou
+#: signup/impl/src/bundle/emailMessage.properties:54
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.thankyou"
+msgid "Thank you."
+msgstr "ありがとうございました．"
+
+#. body.attendee.hasSignup.part
+#: signup/impl/src/bundle/emailMessage.properties:55
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.hasSignup.part"
+msgid "{0} has signed up for the meeting for the {1} site on {2}:"
+msgstr "{2} のサイト {1} のミーティング に {0} がサインアップしました．"
+
+#. body.attendee.cancel.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:56
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.cancel.appointment.part"
+msgid "{0} has canceled the following meeting for the {1} site on {2}:"
+msgstr "{0} がキャンセルした{2} のサイト {1} の次のミーティング:"
+
+#. body.organizerCancel.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:57
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerCancel.appointment.part"
+msgid "{0} has canceled the following meeting for the {1} site on {2}:"
+msgstr " {0} がキャンセルした {2} のサイト {1} の次のミーティング:"
+
+#. body.organizerCancel.meeting.part
+#: signup/impl/src/bundle/emailMessage.properties:58
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerCancel.meeting.part"
+msgid "{0} has canceled the {1} meeting for the {2} site on {3}."
+msgstr " {0} がキャンセルした {3} のサイト {2} のミーティング {1}:"
+
+#. body.organizerModified.meeting.field
+#: signup/impl/src/bundle/emailMessage.properties:59
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerModified.meeting.field"
+msgid ""
+"The following meeting for the {0} site on {1} has been modified by {2}:"
+msgstr " {1} のサイト {0} の次のミーティングは {2} によって修正されました:"
+
+#. body.organizerCreate.meeting.announ
+#: signup/impl/src/bundle/emailMessage.properties:60
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerCreate.meeting.announ"
+msgid "A new meeting has been announced for the {0} site on {1} by {2}."
+msgstr "新しいミーティングが{2} により {1}にサイト{0} にアナウンスされました．"
+
+#. body.organizerPreAssign.appointment.part
+#: signup/impl/src/bundle/emailMessage.properties:61
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.organizerPreAssign.appointment.part"
+msgid ""
+"You have been assigned to attend a meeting for the {0} site on {1} by {2}:"
+msgstr "{2} によって{1}のサイト{0}のミーティングに割り当てられました:"
+
+#. body.cancelled.timeSlots
+#: signup/impl/src/bundle/emailMessage.properties:62
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.cancelled.timeSlots"
+msgid "The previous meeting has been canceled due to the following:"
+msgstr "前のミーティングは次の理由でキャンセルされました．"
+
+#. body.auto.reminder.part
+#: signup/impl/src/bundle/emailMessage.properties:63
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.auto.reminder.part"
+msgid "This is a reminder that you have a {0} appointment tomorrow."
+msgstr "これは明日の予約 {0} のリマンダです．"
+
+#. body.auto.reminder.check.meetingStatus
+#: signup/impl/src/bundle/emailMessage.properties:64
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.auto.reminder.check.meetingStatus"
+msgid ""
+"Further details regarding this meeting are available on {0}. If you have any"
+" questions, contact the meeting organizer."
+msgstr "このミーティングに関するさらなる詳細は {0} にて利用できます．質問がある場合は，ミーティングオーガナイザに連絡して下さい．"
+
+#. body.attendee.signup.own
+#: signup/impl/src/bundle/emailMessage.properties:65
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.signup.own"
+msgid "You have signed up for the following meeting in the {0} site on {1}:"
+msgstr "{1} のサイト {0} の次のミーティングにサインアップしました:"
+
+#. body.attendee.cancel.own
+#: signup/impl/src/bundle/emailMessage.properties:66
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.attendee.cancel.own"
+msgid ""
+"You have cancelled your appointment for the following meeting in the {0} "
+"site on {1}:"
+msgstr "{1} のサイト {0} の次のミーティングの予約をキャンセルしました:"
+
+#. separator
+#: signup/impl/src/bundle/emailMessage.properties:67
+msgctxt "signup/impl/src/bundle/emailMessage.properties:separator"
+msgid "----------------------"
+msgstr "----------------------"
+
+#. body.footer.text
+#: signup/impl/src/bundle/emailMessage.properties:68
+msgctxt "signup/impl/src/bundle/emailMessage.properties:body.footer.text"
+msgid ""
+"This automatic notification message was sent by {0} ({1}) from the {2} site."
+" {3}You can access this site to check the latest sign-up status by clicking "
+"the link above."
+msgstr "この自動通知メッセージは {2} から {0} ({1}) によって送信されました．このサイトにアクセスし，上のリンクをクリックすることにより最新のサインアップの状況をチェックできます．"
+
+#. body.footer.text.no.access.link
+#: signup/impl/src/bundle/emailMessage.properties:69
+msgctxt ""
+"signup/impl/src/bundle/emailMessage.properties:body.footer.text.no.access.link"
+msgid "This automatic notification message was sent by {0} from the {1} site."
+msgstr "この自動通知メッセージはサイト {1} から {0} により送信されました．"
+
+#. ical.footer.text
+#: signup/impl/src/bundle/emailMessage.properties:70
+msgctxt "signup/impl/src/bundle/emailMessage.properties:ical.footer.text"
+msgid ""
+"Note that rejecting calendar invites does not remove you from the event. "
+"Please return to the site to make any modifications."
+msgstr "カレンダからの招待を拒否するとイベントから削除できなくなることを注意して下さい．修正をするためにサイトに戻って下さい．"
+
+#. ical.footer.separator
+#: signup/impl/src/bundle/emailMessage.properties:71
+msgctxt "signup/impl/src/bundle/emailMessage.properties:ical.footer.separator"
+msgid "-------"
+msgstr "-------"
+
+#. Failed.remove.event
+#: signup/tool/src/bundle/messages.properties:1
+msgctxt "signup/tool/src/bundle/messages.properties:Failed.remove.event"
+msgid ""
+"An error occurred. The selected meeting(s) were not removed. Please try "
+"again."
+msgstr "エラーが発生しました．選択したミーティングは削除されませんでした．再度試してみて下さい．"
+
+#. add_attachments
+#: signup/tool/src/bundle/messages.properties:2
+msgctxt "signup/tool/src/bundle/messages.properties:add_attachments"
+msgid "Add Attachments"
+msgstr "添付ファイルを追加"
+
+#. add_more_ts
+#: signup/tool/src/bundle/messages.properties:3
+msgctxt "signup/tool/src/bundle/messages.properties:add_more_ts"
+msgid "Add a new timeslot."
+msgstr "新しい時間帯を追加"
+
+#. add_new_event
+#: signup/tool/src/bundle/messages.properties:4
+msgctxt "signup/tool/src/bundle/messages.properties:add_new_event"
+msgid "Add"
+msgstr "追加"
+
+#. add_remove_attachments
+#: signup/tool/src/bundle/messages.properties:5
+msgctxt "signup/tool/src/bundle/messages.properties:add_remove_attachments"
+msgid "Add / Remove Attachments"
+msgstr "添付を追加または削除"
+
+#. add_to_bottom
+#: signup/tool/src/bundle/messages.properties:6
+msgctxt "signup/tool/src/bundle/messages.properties:add_to_bottom"
+msgid "Bottom"
+msgstr "下揃え"
+
+#. add_to_top
+#: signup/tool/src/bundle/messages.properties:7
+msgctxt "signup/tool/src/bundle/messages.properties:add_to_top"
+msgid "Top"
+msgstr "上揃え"
+
+#. add_waitlist_button
+#: signup/tool/src/bundle/messages.properties:8
+msgctxt "signup/tool/src/bundle/messages.properties:add_waitlist_button"
+msgid "Join Wait List"
+msgstr "順番待一覧に参加"
+
+#. apply_added_participants_to_allRecur_events
+#: signup/tool/src/bundle/messages.properties:9
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:apply_added_participants_to_allRecur_events"
+msgid ""
+"&nbsp;Yes, assign participants to the same time slot for all occurrences."
+msgstr "&nbsp;はい，すべての繰り返しの同じ時間帯に出席者を割り当てます．"
+
+#. assign_attendee_publish_button
+#: signup/tool/src/bundle/messages.properties:10
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:assign_attendee_publish_button"
+msgid "Assign Participants & Publish"
+msgstr "出席者割り当ておよび公開"
+
+#. assign_attendees
+#: signup/tool/src/bundle/messages.properties:11
+msgctxt "signup/tool/src/bundle/messages.properties:assign_attendees"
+msgid "Assign Participants"
+msgstr "出席者割り当て"
+
+#. assign_participants_toAllRecurrences
+#: signup/tool/src/bundle/messages.properties:12
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:assign_participants_toAllRecurrences"
+msgid "Assign To All:"
+msgstr "すべてを割り当て:"
+
+#. attachments
+#: signup/tool/src/bundle/messages.properties:13
+msgctxt "signup/tool/src/bundle/messages.properties:attachments"
+msgid "Attachments:"
+msgstr "添付ファイル:"
+
+#. attend_off
+#: signup/tool/src/bundle/messages.properties:14
+msgctxt "signup/tool/src/bundle/messages.properties:attend_off"
+msgid "OFF"
+msgstr "OFF"
+
+#. attend_on
+#: signup/tool/src/bundle/messages.properties:15
+msgctxt "signup/tool/src/bundle/messages.properties:attend_on"
+msgid "ON"
+msgstr "ON"
+
+#. attend_taken
+#: signup/tool/src/bundle/messages.properties:16
+msgctxt "signup/tool/src/bundle/messages.properties:attend_taken"
+msgid "Attendance will be taken"
+msgstr "出席者を確認する．"
+
+#. attend_track_selected
+#: signup/tool/src/bundle/messages.properties:17
+msgctxt "signup/tool/src/bundle/messages.properties:attend_track_selected"
+msgid "&nbsp;(you can track attendance to this meeting if selected)"
+msgstr "&nbsp;(選択した場合，このミーティングへの出席者情報を追跡できます)"
+
+#. attend_view_list_head
+#: signup/tool/src/bundle/messages.properties:18
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_list_head"
+msgid "Time slots and attendance"
+msgstr "時間帯および出席者"
+
+#. attend_view_list_slot_list_canceled
+#: signup/tool/src/bundle/messages.properties:19
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attend_view_list_slot_list_canceled"
+msgid "This time slot has been canceled"
+msgstr "この時間帯はキャンセルされました．"
+
+#. attend_view_list_slot_list_empty_msg
+#: signup/tool/src/bundle/messages.properties:20
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attend_view_list_slot_list_empty_msg"
+msgid "No attendees signed up for this time slot"
+msgstr "この時間帯にサインアップした参加者はいません．"
+
+#. attend_view_list_slot_list_summary
+#: signup/tool/src/bundle/messages.properties:21
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attend_view_list_slot_list_summary"
+msgid ""
+"List of attendees for this meeting. Each row has a checkbox to take "
+"attendance. Checkbox in header checks and unchecks all."
+msgstr "このミーティングの出席者一覧．すべての列に出席をとるためのチェックボックスがあります．ヘッダーのチェックボックスはすべてをチェックするかチェックを外します．"
+
+#. attend_view_list_slot_list_wait_head
+#: signup/tool/src/bundle/messages.properties:22
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attend_view_list_slot_list_wait_head"
+msgid "Waitlist"
+msgstr "順番待一覧"
+
+#. attend_view_list_summary
+#: signup/tool/src/bundle/messages.properties:23
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_list_summary"
+msgid ""
+"List of meetings. Each cell contains the meeting time (as a header) and a "
+"list of attendees with checkboxes to take attendance. Checkbox in header "
+"checks or unchecks all the children."
+msgstr "ミーティング一覧．すべてのセルは出席を取るためのチェックボックスとともに(ヘッダーとして)ミーティング時間と出席者一覧を含みます．ヘッダーのチェックボックスはすべての下位チェックボックスをチェックするかチェックを外します．"
+
+#. attend_view_select_all
+#: signup/tool/src/bundle/messages.properties:24
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_select_all"
+msgid "Select all signed up"
+msgstr "すべてのサインップを選択"
+
+#. attend_view_title
+#: signup/tool/src/bundle/messages.properties:25
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_title"
+msgid "Attendance:"
+msgstr "出席者:"
+
+#. attend_view_toggle
+#: signup/tool/src/bundle/messages.properties:26
+msgctxt "signup/tool/src/bundle/messages.properties:attend_view_toggle"
+msgid "Toggle waitlists"
+msgstr "順番待一覧をトグル"
+
+#. attendee.already.in.timeslot
+#: signup/tool/src/bundle/messages.properties:27
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:attendee.already.in.timeslot"
+msgid "The participant is already in the timeslot."
+msgstr "出席者は既に時間帯にいます．"
+
+#. attendee_enterEid
+#: signup/tool/src/bundle/messages.properties:28
+msgctxt "signup/tool/src/bundle/messages.properties:attendee_enterEid"
+msgid "Enter User ID or email address&nbsp;"
+msgstr "ユーザIDまたはメールアドレスを入力してください&nbsp;"
+
+#. attendee_select
+#: signup/tool/src/bundle/messages.properties:29
+msgctxt "signup/tool/src/bundle/messages.properties:attendee_select"
+msgid "Select&nbsp;"
+msgstr "選択&nbsp;"
+
+#. basic
+#: signup/tool/src/bundle/messages.properties:30
+msgctxt "signup/tool/src/bundle/messages.properties:basic"
+msgid "Basic Information"
+msgstr "基本情報"
+
+#. before_event_end
+#: signup/tool/src/bundle/messages.properties:31
+msgctxt "signup/tool/src/bundle/messages.properties:before_event_end"
+msgid "before meeting finishes"
+msgstr "ミーティング終了前:"
+
+#. before_event_start
+#: signup/tool/src/bundle/messages.properties:32
+msgctxt "signup/tool/src/bundle/messages.properties:before_event_start"
+msgid "before meeting begins"
+msgstr "ミーティング開始前:"
+
+#. cancel_button
+#: signup/tool/src/bundle/messages.properties:33
+msgctxt "signup/tool/src/bundle/messages.properties:cancel_button"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. cancel_timeslot
+#: signup/tool/src/bundle/messages.properties:34
+msgctxt "signup/tool/src/bundle/messages.properties:cancel_timeslot"
+msgid "Cancel Time Slot"
+msgstr "時間帯をキャンセル"
+
+#. cancel_timeslot_button
+#: signup/tool/src/bundle/messages.properties:35
+msgctxt "signup/tool/src/bundle/messages.properties:cancel_timeslot_button"
+msgid "Cancel Timeslot"
+msgstr "時間帯をキャンセル"
+
+#. confirm_cancel
+#: signup/tool/src/bundle/messages.properties:36
+msgctxt "signup/tool/src/bundle/messages.properties:confirm_cancel"
+msgid ""
+"Are you sure you want to cancel the time slot? This will remove all the "
+"participants from the time slot and email will be sent to each of the "
+"participants."
+msgstr "この時間帯をキャンセルしてもよろしいですか？この時間帯からすべての出席者を削除し，それぞれの出席者にメールが送信されます．"
+
+#. continue_button
+#: signup/tool/src/bundle/messages.properties:37
+msgctxt "signup/tool/src/bundle/messages.properties:continue_button"
+msgid "Continue"
+msgstr "続ける"
+
+#. copy_event
+#: signup/tool/src/bundle/messages.properties:38
+msgctxt "signup/tool/src/bundle/messages.properties:copy_event"
+msgid "Copy"
+msgstr "コピー"
+
+#. create_instruction
+#: signup/tool/src/bundle/messages.properties:39
+msgctxt "signup/tool/src/bundle/messages.properties:create_instruction"
+msgid ""
+"To create a meeting, enter the required information and click <b>Next</b>."
+msgstr "ミーティングを作成するには，必須情報を入力し，<b>次</b>をクリックして下さい．"
+
+#. create_new_event
+#: signup/tool/src/bundle/messages.properties:40
+msgctxt "signup/tool/src/bundle/messages.properties:create_new_event"
+msgid "Create New Meeting:"
+msgstr "新しいミーティング作成:"
+
+#. crossDay.event.repeat.biweekly.problem
+#: signup/tool/src/bundle/messages.properties:41
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:crossDay.event.repeat.biweekly.problem"
+msgid ""
+"The meeting duration lasts over 14 days. Meetings of this type cannot be set"
+" to recur biweekly."
+msgstr "ミーティング期間は14日を超えて継続します．このタイプのミーティングは隔週を繰り返して設定できません．"
+
+#. crossDay.event.repeat.daily.problem
+#: signup/tool/src/bundle/messages.properties:42
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:crossDay.event.repeat.daily.problem"
+msgid ""
+"The meeting duration lasts over 24 hours. Meetings of this type cannot be "
+"set to recur daily."
+msgstr "ミーティング期間は24時間を超えて継続します．このタイプのミーティングは毎日を繰り返して設定できません．"
+
+#. crossDay.event.repeat.weekly.problem
+#: signup/tool/src/bundle/messages.properties:43
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:crossDay.event.repeat.weekly.problem"
+msgid ""
+"The meeting duration lasts over 7 days. Meetings of this type cannot be set "
+"to recur weekly."
+msgstr "ミーティング期間は7日を超えて継続します．このタイプのミーティングは週を繰り返して設定できません．"
+
+#. db.error_or_event.notExisted
+#: signup/tool/src/bundle/messages.properties:44
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:db.error_or_event.notExisted"
+msgid "Either a database error has occurred or the meeting no longer exists."
+msgstr "データベースエラーが発生したか，ミーティングが存在しないのいずれかです．"
+
+#. delete_attandee_confirmation
+#: signup/tool/src/bundle/messages.properties:45
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:delete_attandee_confirmation"
+msgid "Are you sure you want to remove this participant from the time slot?"
+msgstr "この時間帯からこの出席者を削除してもよろしいですか?"
+
+#. dropDown_line_separator
+#: signup/tool/src/bundle/messages.properties:46
+msgctxt "signup/tool/src/bundle/messages.properties:dropDown_line_separator"
+msgid "----------------------------------"
+msgstr "----------------------------------"
+
+#. edit.failed_due_to_other_updated_db
+#: signup/tool/src/bundle/messages.properties:47
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:edit.failed_due_to_other_updated_db"
+msgid "Edit failed. Someone else updated the meeting. Please try again."
+msgstr "編集に失敗しました．誰かがミーティングを更新しました．再度試してみて下さい．"
+
+#. email.exception
+#: signup/tool/src/bundle/messages.properties:48
+msgctxt "signup/tool/src/bundle/messages.properties:email.exception"
+msgid "Email was not sent: an error has occurred."
+msgstr "メールは送信されませんでした: エラーが発生しました．"
+
+#. error.calendarEvent.posted_failed
+#: signup/tool/src/bundle/messages.properties:49
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.posted_failed"
+msgid ""
+"The event was created successfully, but can not be added to the Schedule "
+"because the Schedule tool is not present on the site."
+msgstr "イベントは正常に作成されましたが，サイトにスケジュールツールがないためスケジュールに追加されません．"
+
+#. error.calendarEvent.posted_failed_due_to_permission
+#: signup/tool/src/bundle/messages.properties:50
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.posted_failed_due_to_permission"
+msgid ""
+"The event was created successfully, but can not be added to the Schedule on "
+"the site(s) because you do not have permission to add to the Schedule."
+msgstr "イベントは正常に作成されましたが，スケジュールに追加する権限がないためサイトのスケジュールに追加されません．"
+
+#. error.calendarEvent.removal_failed
+#: signup/tool/src/bundle/messages.properties:51
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.removal_failed"
+msgid ""
+"An error occurred and calendarEvent removal in Schedule tool may have "
+"failed."
+msgstr "エラーが発生し，スケジュールツールのカレンダイベント削除が失敗しました．"
+
+#. error.calendarEvent.updated_failed
+#: signup/tool/src/bundle/messages.properties:52
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.updated_failed"
+msgid ""
+"The event was updated successfully, but can not be updated to the Schedule "
+"on the site(s) because the Schedule tool is not present on the site."
+msgstr "イベントは正常に更新されましたが，サイトにスケジュールツールがないためサイトのスケジュールが更新されません．"
+
+#. error.calendarEvent.updated_failed_due_to_permission
+#: signup/tool/src/bundle/messages.properties:53
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.calendarEvent.updated_failed_due_to_permission"
+msgid ""
+"The event was updated successfully, but can not be updated to the Schedule "
+"on the site(s) because you do not have permission to update the Schedule."
+msgstr "イベントは正常に更新されましたが，スケジュールを更新する権限がないためサイトのスケジュールが更新されません．"
+
+#. error.group_sync_failed
+#: signup/tool/src/bundle/messages.properties:54
+msgctxt "signup/tool/src/bundle/messages.properties:error.group_sync_failed"
+msgid ""
+"The group could not be synchronised. Has the group been manually deleted "
+"from Site Info? To restore this group, visit the modify the meeting page and"
+" click 'Publish Modification', then return here to synchronise again."
+msgstr "グループが同期できませんでした．グループをサイト情報から手動で削除しませんでしたか？このグループを復元するには，ミーティングページの修正に移動し，'修正を公開'をクリックし，再同期のためにここに戻って下さい．"
+
+#. error.no.change.group.title
+#: signup/tool/src/bundle/messages.properties:55
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.no.change.group.title"
+msgid ""
+"Some of the group title have not been synchronized since it's modified via "
+"Site Info tool already!"
+msgstr "すでにサイト情報ツール経由で修正されているためグループタイトルの幾つかは同期されませんでした．"
+
+#. error.no_group_for_timeslot
+#: signup/tool/src/bundle/messages.properties:56
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:error.no_group_for_timeslot"
+msgid ""
+"The group for this timeslot is missing. To restore this group, visit the "
+"modify the meeting page and click 'Publish Modification', then return here "
+"to synchronise again."
+msgstr "グループが同期できませんでした．このグループを復元するには，ミーティングページの修正に移動し，'修正を公開'をクリックし，再同期のためにここに戻って下さい．"
+
+#. error.occurred_try_again
+#: signup/tool/src/bundle/messages.properties:57
+msgctxt "signup/tool/src/bundle/messages.properties:error.occurred_try_again"
+msgid "An error occurred: please try again."
+msgstr "エラーが発生しました．再度試して下さい．"
+
+#. event.Signup.not.started.yet
+#: signup/tool/src/bundle/messages.properties:58
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.Signup.not.started.yet"
+msgid "Available on"
+msgstr "利用できます"
+
+#. event.SignupNotRequire
+#: signup/tool/src/bundle/messages.properties:59
+msgctxt "signup/tool/src/bundle/messages.properties:event.SignupNotRequire"
+msgid "Sign-up Not Req"
+msgstr "サインアップは必須ではありません"
+
+#. event.available
+#: signup/tool/src/bundle/messages.properties:60
+msgctxt "signup/tool/src/bundle/messages.properties:event.available"
+msgid "Available"
+msgstr "利用可能"
+
+#. event.closed
+#: signup/tool/src/bundle/messages.properties:61
+msgctxt "signup/tool/src/bundle/messages.properties:event.closed"
+msgid "Closed"
+msgstr "終了"
+
+#. event.create_custom_defined_TS_blocks
+#: signup/tool/src/bundle/messages.properties:62
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.create_custom_defined_TS_blocks"
+msgid ""
+"Please click 'Create Timeslot(s)' button to define a new custom timeslot."
+msgstr "新しいカスタム時間帯を定義するには'時間帯作成'ボタンをクリックして下さい．"
+
+#. event.endTime_should_after_startTime
+#: signup/tool/src/bundle/messages.properties:63
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.endTime_should_after_startTime"
+msgid "The meeting end time should occur after the meeting start time."
+msgstr "ミーティング終了時刻はミーティング開始時刻より後でなければなりません．"
+
+#. event.endTimeslot_should_after_startTimeslot
+#: signup/tool/src/bundle/messages.properties:64
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.endTimeslot_should_after_startTimeslot"
+msgid ""
+"Row {0} - the end time must occur after the start time of the timeslot."
+msgstr "列 {0} - 終了時刻は時間帯の開始時刻より後でなければなりません．"
+
+#. event.inProgress
+#: signup/tool/src/bundle/messages.properties:65
+msgctxt "signup/tool/src/bundle/messages.properties:event.inProgress"
+msgid "In Progress"
+msgstr "実施中"
+
+#. event.location_not_assigned
+#: signup/tool/src/bundle/messages.properties:66
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.location_not_assigned"
+msgid "Please assign a location."
+msgstr "場所を割り当ててください．"
+
+#. event.maxAttendee_should_be_valid
+#: signup/tool/src/bundle/messages.properties:67
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.maxAttendee_should_be_valid"
+msgid "Please enter valid number of attendees in Meeting Type."
+msgstr "ミーティングタイプに有効な出席者数を入力してください．"
+
+#. event.meeting.locked
+#: signup/tool/src/bundle/messages.properties:68
+msgctxt "signup/tool/src/bundle/messages.properties:event.meeting.locked"
+msgid "Sign-up is locked"
+msgstr "サインアップはロックされています"
+
+#. event.repeatNnum.bigger.than.one
+#: signup/tool/src/bundle/messages.properties:69
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.repeatNnum.bigger.than.one"
+msgid "The number of occurrences must be bigger than 0."
+msgstr "繰り返し回数は0以上である必要があります．"
+
+#. event.repeatbeforestart
+#: signup/tool/src/bundle/messages.properties:70
+msgctxt "signup/tool/src/bundle/messages.properties:event.repeatbeforestart"
+msgid ""
+"Invalid end date. The 'End After:' date must occur at least one recurrence "
+"period past the date of the 'Start Time'."
+msgstr "不正な終了日．日付'後に終了'は'開始時刻'の日付後の少なくともひとつの繰り返し期間でなければなりません．"
+
+#. event.selectMeetingType
+#: signup/tool/src/bundle/messages.properties:71
+msgctxt "signup/tool/src/bundle/messages.properties:event.selectMeetingType"
+msgid "Please select meeting type."
+msgstr "ミーティング種別を選択してください．"
+
+#. event.signup.deadline.passed
+#: signup/tool/src/bundle/messages.properties:72
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.signup.deadline.passed"
+msgid "The Sign-up time is already expired."
+msgstr "サインアップ時間はすでに期限切れです．"
+
+#. event.timeslot_duration_should_not_lessThan_one
+#: signup/tool/src/bundle/messages.properties:73
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event.timeslot_duration_should_not_lessThan_one"
+msgid ""
+"The meeting timeslot duration should not be less than one minute and please "
+"increase the meeting end time."
+msgstr "ミーティング時間帯の期間は1分以下にはできませんのでミーティング終了時間を遅らせて下さい．"
+
+#. event.unavailable
+#: signup/tool/src/bundle/messages.properties:74
+msgctxt "signup/tool/src/bundle/messages.properties:event.unavailable"
+msgid "Full"
+msgstr "満員"
+
+#. event.youOnWaitList
+#: signup/tool/src/bundle/messages.properties:75
+msgctxt "signup/tool/src/bundle/messages.properties:event.youOnWaitList"
+msgid "On Wait List"
+msgstr "順番待一覧に表示"
+
+#. event.youSignedUp
+#: signup/tool/src/bundle/messages.properties:76
+msgctxt "signup/tool/src/bundle/messages.properties:event.youSignedUp"
+msgid "Signed up"
+msgstr "サインアップ"
+
+#. event_addSignup_attendee_page_title
+#: signup/tool/src/bundle/messages.properties:77
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_addSignup_attendee_page_title"
+msgid "Complete Sign-Up"
+msgstr "サインアップを完了"
+
+#. event_add_attendee
+#: signup/tool/src/bundle/messages.properties:78
+msgctxt "signup/tool/src/bundle/messages.properties:event_add_attendee"
+msgid "&nbsp;Add Participant"
+msgstr "&nbsp;出席者を追加"
+
+#. event_add_comment_link
+#: signup/tool/src/bundle/messages.properties:79
+msgctxt "signup/tool/src/bundle/messages.properties:event_add_comment_link"
+msgid "Add a comment"
+msgstr "コメントの追加"
+
+#. event_add_more_slots
+#: signup/tool/src/bundle/messages.properties:80
+msgctxt "signup/tool/src/bundle/messages.properties:event_add_more_slots"
+msgid "Number of Additional <br/>Time Slots:"
+msgstr "追加の<br/>時間帯数:"
+
+#. event_addedit_Coordinators
+#: signup/tool/src/bundle/messages.properties:81
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_addedit_Coordinators"
+msgid "Add/Edit"
+msgstr "追加または編集"
+
+#. event_alert_truncate_attendee
+#: signup/tool/src/bundle/messages.properties:82
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_alert_truncate_attendee"
+msgid ""
+"Are you sure want to copy this? Some participants might be truncated due to "
+"the smaller number of timeslots or allowed participants!"
+msgstr "これをコピーしてもよろしいですか？少ない数の時間帯または許可された出席者のためにある出席者が参加できなかったかもしれません!"
+
+#. event_allow_addComment
+#: signup/tool/src/bundle/messages.properties:83
+msgctxt "signup/tool/src/bundle/messages.properties:event_allow_addComment"
+msgid "Allow Adding Comment:"
+msgstr "コメントの追加を許可:"
+
+#. event_allow_waitList
+#: signup/tool/src/bundle/messages.properties:84
+msgctxt "signup/tool/src/bundle/messages.properties:event_allow_waitList"
+msgid "Allow Wait List:"
+msgstr "許可される順番待一覧:"
+
+#. event_allowed_slots
+#: signup/tool/src/bundle/messages.properties:85
+msgctxt "signup/tool/src/bundle/messages.properties:event_allowed_slots"
+msgid "Max # of  time slots per participant:"
+msgstr "出席者あたりの最大時間帯数:"
+
+#. event_allowed_slots_comments
+#: signup/tool/src/bundle/messages.properties:86
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_allowed_slots_comments"
+msgid "&nbsp;Yes, allow participants to sign up for more than one time slot."
+msgstr "&nbsp;はい，ひとつ以上の時間帯にサインアップすることを出席者に許可します．"
+
+#. event_announcement_notice
+#: signup/tool/src/bundle/messages.properties:87
+msgctxt "signup/tool/src/bundle/messages.properties:event_announcement_notice"
+msgid "This is an open session meeting.  No sign-up is necessary."
+msgstr "これは公開セッションミーティングです．登録は不要です．"
+
+#. event_appointment_date
+#: signup/tool/src/bundle/messages.properties:88
+msgctxt "signup/tool/src/bundle/messages.properties:event_appointment_date"
+msgid "Appointment Date:"
+msgstr "予約日:"
+
+#. event_appointment_period
+#: signup/tool/src/bundle/messages.properties:89
+msgctxt "signup/tool/src/bundle/messages.properties:event_appointment_period"
+msgid "Appointment Period:"
+msgstr "予約期間:"
+
+#. event_assign_attendee_page_title
+#: signup/tool/src/bundle/messages.properties:90
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_assign_attendee_page_title"
+msgid "Assign Participants"
+msgstr "出席者割り当て"
+
+#. event_attendee_eid
+#: signup/tool/src/bundle/messages.properties:91
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendee_eid"
+msgid "Participant UserId:"
+msgstr "出席者ユーザID:"
+
+#. event_attendee_name
+#: signup/tool/src/bundle/messages.properties:92
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendee_name"
+msgid "Participant Name:"
+msgstr "出席者名前:"
+
+#. event_attendee_noEmail
+#: signup/tool/src/bundle/messages.properties:93
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendee_noEmail"
+msgid "No Email"
+msgstr "メールはありません．"
+
+#. event_attendee_role
+#: signup/tool/src/bundle/messages.properties:94
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendee_role"
+msgid "Participant Role:"
+msgstr "出席者役割:"
+
+#. event_attendance
+#: signup/tool/src/bundle/messages.properties:95
+msgctxt "signup/tool/src/bundle/messages.properties:event_attendance"
+msgid "Attendance"
+msgstr "出席者"
+
+#. event_button_finish
+#: signup/tool/src/bundle/messages.properties:96
+msgctxt "signup/tool/src/bundle/messages.properties:event_button_finish"
+msgid "Finish"
+msgstr "終了"
+
+#. event_button_signup
+#: signup/tool/src/bundle/messages.properties:97
+msgctxt "signup/tool/src/bundle/messages.properties:event_button_signup"
+msgid "Sign Up"
+msgstr "サインアップ"
+
+#. event_cancel_timeslot_label
+#: signup/tool/src/bundle/messages.properties:98
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_cancel_timeslot_label"
+msgid "&nbsp;Cancel - delete the timeslot"
+msgstr "&nbsp;キャンセル - 時間帯を削除"
+
+#. event_canceled
+#: signup/tool/src/bundle/messages.properties:99
+msgctxt "signup/tool/src/bundle/messages.properties:event_canceled"
+msgid "Canceled"
+msgstr "キャンセルされました"
+
+#. event_category
+#: signup/tool/src/bundle/messages.properties:100
+msgctxt "signup/tool/src/bundle/messages.properties:event_category"
+msgid "Category:"
+msgstr "カテゴリ:"
+
+#. event_category_custom
+#: signup/tool/src/bundle/messages.properties:101
+msgctxt "signup/tool/src/bundle/messages.properties:event_category_custom"
+msgid "enter a new category"
+msgstr "新しいカテゴリを入力する"
+
+#. event_category_edit
+#: signup/tool/src/bundle/messages.properties:102
+msgctxt "signup/tool/src/bundle/messages.properties:event_category_edit"
+msgid "edit category"
+msgstr "カテゴリを編集"
+
+#. event_check_all_chkbxn
+#: signup/tool/src/bundle/messages.properties:103
+msgctxt "signup/tool/src/bundle/messages.properties:event_check_all_chkbxn"
+msgid "Check All"
+msgstr "すべて選択"
+
+#. event_clear_all_chkbxn
+#: signup/tool/src/bundle/messages.properties:104
+msgctxt "signup/tool/src/bundle/messages.properties:event_clear_all_chkbxn"
+msgid "Clear All"
+msgstr "すべてをクリア"
+
+#. event_close_other_default_setting
+#: signup/tool/src/bundle/messages.properties:105
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_close_other_default_setting"
+msgid "Hide the other default settings"
+msgstr "他のデフォルト設定を非表示"
+
+#. event_comment
+#: signup/tool/src/bundle/messages.properties:106
+msgctxt "signup/tool/src/bundle/messages.properties:event_comment"
+msgid "Comment:"
+msgstr "コメント:"
+
+#. event_comments
+#: signup/tool/src/bundle/messages.properties:107
+msgctxt "signup/tool/src/bundle/messages.properties:event_comments"
+msgid "Comments"
+msgstr "コメント"
+
+#. event_comments_title
+#: signup/tool/src/bundle/messages.properties:108
+msgctxt "signup/tool/src/bundle/messages.properties:event_comments_title"
+msgid "Meeting Participants' Comments"
+msgstr "ミーティング出席者のコメント"
+
+#. event_copy_meeting_page_title
+#: signup/tool/src/bundle/messages.properties:109
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_copy_meeting_page_title"
+msgid "Copy this Meeting"
+msgstr "このミーティングをコピー"
+
+#. event_create_email_notification
+#: signup/tool/src/bundle/messages.properties:110
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_create_email_notification"
+msgid "Announce Availability:"
+msgstr "お知らせ可否:"
+
+#. event_create_groups
+#: signup/tool/src/bundle/messages.properties:111
+msgctxt "signup/tool/src/bundle/messages.properties:event_create_groups"
+msgid "Create groups for timeslots"
+msgstr "時間帯用グループ作成"
+
+#. event_current_site
+#: signup/tool/src/bundle/messages.properties:112
+msgctxt "signup/tool/src/bundle/messages.properties:event_current_site"
+msgid "(Current Site)"
+msgstr "(現在のサイト)"
+
+#. event_custom_undo
+#: signup/tool/src/bundle/messages.properties:113
+msgctxt "signup/tool/src/bundle/messages.properties:event_custom_undo"
+msgid "undo"
+msgstr "元に戻す"
+
+#. event_custom_undo_tip
+#: signup/tool/src/bundle/messages.properties:114
+msgctxt "signup/tool/src/bundle/messages.properties:event_custom_undo_tip"
+msgid "Click to undo the input\t\t\t\t\t\t\t\t"
+msgstr "入力を元に戻す場合はクリックします\t\t\t\t\t\t\t\t"
+
+#. event_date
+#: signup/tool/src/bundle/messages.properties:115
+msgctxt "signup/tool/src/bundle/messages.properties:event_date"
+msgid "Meeting Date:"
+msgstr "ミーティング日時:"
+
+#. event_description
+#: signup/tool/src/bundle/messages.properties:116
+msgctxt "signup/tool/src/bundle/messages.properties:event_description"
+msgid "Description:"
+msgstr "説明:"
+
+#. event_download_csv_button
+#: signup/tool/src/bundle/messages.properties:117
+msgctxt "signup/tool/src/bundle/messages.properties:event_download_csv_button"
+msgid "Export as CSV"
+msgstr "CSV としてエクスポート"
+
+#. event_download_xls_button
+#: signup/tool/src/bundle/messages.properties:118
+msgctxt "signup/tool/src/bundle/messages.properties:event_download_xls_button"
+msgid "Export as Excel"
+msgstr "エクセルとしてエクスポート"
+
+#. event_duration_each_timeslot
+#: signup/tool/src/bundle/messages.properties:119
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_duration_each_timeslot"
+msgid "Duration of Each <br/>Time Slot (min):"
+msgstr "各時間帯 <br/>の期間 (分):"
+
+#. event_duration_each_timeslot_not_bold
+#: signup/tool/src/bundle/messages.properties:120
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_duration_each_timeslot_not_bold"
+msgid "Estimate duration per time slot (min):"
+msgstr "時間帯あたりの推定期間(分):"
+
+#. event_email_autoReminder
+#: signup/tool/src/bundle/messages.properties:121
+msgctxt "signup/tool/src/bundle/messages.properties:event_email_autoReminder"
+msgid "Auto Reminder:"
+msgstr "自動リマインダ"
+
+#. event_email_not_send_out_label
+#: signup/tool/src/bundle/messages.properties:122
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_email_not_send_out_label"
+msgid ""
+"&nbsp;The current site is unpublished. No email notification will be sent."
+msgstr "&nbsp;現在のサイトは公開されません．メール通知は送信されません．"
+
+#. event_email_notification
+#: signup/tool/src/bundle/messages.properties:123
+msgctxt "signup/tool/src/bundle/messages.properties:event_email_notification"
+msgid "Email Notification:"
+msgstr "メール通知:"
+
+#. event_email_yes_label
+#: signup/tool/src/bundle/messages.properties:124
+msgctxt "signup/tool/src/bundle/messages.properties:event_email_yes_label"
+msgid ""
+"&nbsp;Yes, send email to notify the related participant(s) about the changes"
+" that have been made."
+msgstr "&nbsp;はい，関係する出席者に変更が行われたことを通知するメールを送信します．"
+
+#. event_end_after
+#: signup/tool/src/bundle/messages.properties:125
+msgctxt "signup/tool/src/bundle/messages.properties:event_end_after"
+msgid "End After:"
+msgstr "この後終了:"
+
+#. event_end_time
+#: signup/tool/src/bundle/messages.properties:126
+msgctxt "signup/tool/src/bundle/messages.properties:event_end_time"
+msgid "End Time:"
+msgstr "終了日時:"
+
+#. event_endtime_auto_adjusted_warning
+#: signup/tool/src/bundle/messages.properties:127
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_endtime_auto_adjusted_warning"
+msgid ""
+"The meeting end time has been adjusted because the number of sessions cannot"
+" be divided evenly within the time period provided."
+msgstr "与えられた時間内にセッション数が均等に分割できなかったためにミーティングの終了時刻は調整されました．"
+
+#. event_error_alerts
+#: signup/tool/src/bundle/messages.properties:128
+msgctxt "signup/tool/src/bundle/messages.properties:event_error_alerts"
+msgid "ALERT:"
+msgstr "警告:"
+
+#. event_group_level
+#: signup/tool/src/bundle/messages.properties:129
+msgctxt "signup/tool/src/bundle/messages.properties:event_group_level"
+msgid "(Group Level)"
+msgstr "(グループレベル)"
+
+#. event_hide_coordinators
+#: signup/tool/src/bundle/messages.properties:130
+msgctxt "signup/tool/src/bundle/messages.properties:event_hide_coordinators"
+msgid "Hide"
+msgstr "非表示"
+
+#. event_hide_custom_ts
+#: signup/tool/src/bundle/messages.properties:131
+msgctxt "signup/tool/src/bundle/messages.properties:event_hide_custom_ts"
+msgid "Hide custom defined timeslots"
+msgstr "カスタム定義の時間帯を非表示"
+
+#. event_hide_me_details
+#: signup/tool/src/bundle/messages.properties:132
+msgctxt "signup/tool/src/bundle/messages.properties:event_hide_me_details"
+msgid "&nbsp;Hide details"
+msgstr "&nbsp;詳細を隠す"
+
+#. event_hide_meetingIfo_detail
+#: signup/tool/src/bundle/messages.properties:133
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_hide_meetingIfo_detail"
+msgid "&nbsp;Hide meeting info above"
+msgstr "&nbsp;上のミーティング情報を非表示"
+
+#. event_hide_site_group_detail
+#: signup/tool/src/bundle/messages.properties:134
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_hide_site_group_detail"
+msgid "&nbsp;Hide site(s)/group(s) details"
+msgstr "&nbsp;サイト/グループの詳細を非表示"
+
+#. event_icalendar_label
+#: signup/tool/src/bundle/messages.properties:135
+msgctxt "signup/tool/src/bundle/messages.properties:event_icalendar_label"
+msgid "Download"
+msgstr "ダウンロード"
+
+#. event_icalendar_link
+#: signup/tool/src/bundle/messages.properties:136
+msgctxt "signup/tool/src/bundle/messages.properties:event_icalendar_link"
+msgid "iCalendar link:"
+msgstr "iCalendar リンク:"
+
+#. event_isOver
+#: signup/tool/src/bundle/messages.properties:137
+msgctxt "signup/tool/src/bundle/messages.properties:event_isOver"
+msgid "<font color='red'>This meeting has already occurred.</font>"
+msgstr "<font color='red'>このミーティングはすでに済んでいます.</font>"
+
+#. event_is_canceled
+#: signup/tool/src/bundle/messages.properties:138
+msgctxt "signup/tool/src/bundle/messages.properties:event_is_canceled"
+msgid "Canceled"
+msgstr "キャンセルされました"
+
+#. event_is_locked
+#: signup/tool/src/bundle/messages.properties:139
+msgctxt "signup/tool/src/bundle/messages.properties:event_is_locked"
+msgid "Locked"
+msgstr "ロック中"
+
+#. event_is_open_session
+#: signup/tool/src/bundle/messages.properties:140
+msgctxt "signup/tool/src/bundle/messages.properties:event_is_open_session"
+msgid "This is an open session meeting. No sign-up is required."
+msgstr "これは公開セッションミーティングです．登録は不要です．"
+
+#. event_keep_current_attendees
+#: signup/tool/src/bundle/messages.properties:141
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_keep_current_attendees"
+msgid "Keep Current Participants:"
+msgstr "現在の出席者のままにする:"
+
+#. event_location
+#: signup/tool/src/bundle/messages.properties:142
+msgctxt "signup/tool/src/bundle/messages.properties:event_location"
+msgid "Location:"
+msgstr "場所:"
+
+#. event_lock_timeslot_label
+#: signup/tool/src/bundle/messages.properties:143
+msgctxt "signup/tool/src/bundle/messages.properties:event_lock_timeslot_label"
+msgid "&nbsp;Lock - prevent participant sign-up"
+msgstr "&nbsp;ロック - 出席者のサインアップを禁止"
+
+#. event_locked
+#: signup/tool/src/bundle/messages.properties:144
+msgctxt "signup/tool/src/bundle/messages.properties:event_locked"
+msgid "<b>Locked</b>"
+msgstr "<b>ロック中</b>"
+
+#. event_max_attendee_each_timeslot
+#: signup/tool/src/bundle/messages.properties:145
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_max_attendee_each_timeslot"
+msgid "Max # of Participants <br/>per Time Slot:"
+msgstr "時間帯あたりの<br/>出席者の最大数:"
+
+#. event_max_attendee_each_timeslot_not_bold
+#: signup/tool/src/bundle/messages.properties:146
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_max_attendee_each_timeslot_not_bold"
+msgid "Max # of participants per time Slot:"
+msgstr "時間帯あたりの出席者数:"
+
+#. event_max_attendees
+#: signup/tool/src/bundle/messages.properties:147
+msgctxt "signup/tool/src/bundle/messages.properties:event_max_attendees"
+msgid "&nbsp;Max # of Participants:"
+msgstr "&nbsp;出席者の最大数"
+
+#. event_max_num_attendees
+#: signup/tool/src/bundle/messages.properties:148
+msgctxt "signup/tool/src/bundle/messages.properties:event_max_num_attendees"
+msgid "Max # of participants:"
+msgstr "参加者の最大数:"
+
+#. event_meeting_default_notify_setting
+#: signup/tool/src/bundle/messages.properties:149
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_meeting_default_notify_setting"
+msgid "Default Notification setting:"
+msgstr "デフォルトの通知設定:"
+
+#. event_missing_group
+#: signup/tool/src/bundle/messages.properties:150
+msgctxt "signup/tool/src/bundle/messages.properties:event_missing_group"
+msgid "Missing Groups:"
+msgstr "グループがありません："
+
+#. event_missing_site
+#: signup/tool/src/bundle/messages.properties:151
+msgctxt "signup/tool/src/bundle/messages.properties:event_missing_site"
+msgid "Missing Sites:"
+msgstr "サイトがありません:"
+
+#. event_modify_meeting_page_title
+#: signup/tool/src/bundle/messages.properties:152
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_modify_meeting_page_title"
+msgid "Modify Meeting"
+msgstr "ミーティング修正"
+
+#. event_modify_option
+#: signup/tool/src/bundle/messages.properties:153
+msgctxt "signup/tool/src/bundle/messages.properties:event_modify_option"
+msgid "Modify Options:"
+msgstr "オプション修正:"
+
+#. event_move
+#: signup/tool/src/bundle/messages.properties:154
+msgctxt "signup/tool/src/bundle/messages.properties:event_move"
+msgid "Move"
+msgstr "移動"
+
+#. event_moveToTimeslot
+#: signup/tool/src/bundle/messages.properties:155
+msgctxt "signup/tool/src/bundle/messages.properties:event_moveToTimeslot"
+msgid "Move to time slot&nbsp;"
+msgstr "時間帯に移動&nbsp;"
+
+#. event_name
+#: signup/tool/src/bundle/messages.properties:156
+msgctxt "signup/tool/src/bundle/messages.properties:event_name"
+msgid "Title:"
+msgstr "タイトル:"
+
+#. event_timezone
+#: signup/tool/src/bundle/messages.properties:157
+msgctxt "signup/tool/src/bundle/messages.properties:event_timezone"
+msgid "Time zone:"
+msgstr "タイムゾーン:"
+
+#. event_no_attachment
+#: signup/tool/src/bundle/messages.properties:158
+msgctxt "signup/tool/src/bundle/messages.properties:event_no_attachment"
+msgid "no attachment"
+msgstr "添付なし"
+
+#. event_no_comment_available
+#: signup/tool/src/bundle/messages.properties:159
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_no_comment_available"
+msgid "No Comment"
+msgstr "コメントなし"
+
+#. event_no_comments
+#: signup/tool/src/bundle/messages.properties:160
+msgctxt "signup/tool/src/bundle/messages.properties:event_no_comments"
+msgid "There are no participant comments."
+msgstr "出席者のコメントはありません．"
+
+#. event_no_label
+#: signup/tool/src/bundle/messages.properties:161
+msgctxt "signup/tool/src/bundle/messages.properties:event_no_label"
+msgid "No"
+msgstr "いいえ"
+
+#. event_not_start_signup_process
+#: signup/tool/src/bundle/messages.properties:162
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_not_start_signup_process"
+msgid ""
+"<font color='red'>The sign-up process has not started yet. However, if you "
+"have been pre-assigned, you can cancel your assigned time slot.</font>"
+msgstr "<font color='red'>サインアップ処理はまだ開始されていません．しかし，あらかじめ割り当てられていれば，割り当てられた時間帯をキャンセルできます．</font>"
+
+#. event_num_participant_per_timeslot
+#: signup/tool/src/bundle/messages.properties:163
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_num_participant_per_timeslot"
+msgid "Number of participants per time slot:"
+msgstr "時間帯あたりの出席者数:"
+
+#. event_num_slot_avail_for_signup
+#: signup/tool/src/bundle/messages.properties:164
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_num_slot_avail_for_signup"
+msgid "Number of slots available for sign-up:"
+msgstr "サインアップに必要な時間帯数:"
+
+#. event_num_timeslot
+#: signup/tool/src/bundle/messages.properties:165
+msgctxt "signup/tool/src/bundle/messages.properties:event_num_timeslot"
+msgid "Number of Time Slots:"
+msgstr "時間帯数:"
+
+#. event_occurrences
+#: signup/tool/src/bundle/messages.properties:166
+msgctxt "signup/tool/src/bundle/messages.properties:event_occurrences"
+msgid "occurrences"
+msgstr "繰り返し"
+
+#. event_on_waiting
+#: signup/tool/src/bundle/messages.properties:167
+msgctxt "signup/tool/src/bundle/messages.properties:event_on_waiting"
+msgid "On Wait List"
+msgstr "順番待一覧に表示"
+
+#. event_on_waiting_list
+#: signup/tool/src/bundle/messages.properties:168
+msgctxt "signup/tool/src/bundle/messages.properties:event_on_waiting_list"
+msgid "On Wait List"
+msgstr "順番待一覧に表示"
+
+#. event_organizer
+#: signup/tool/src/bundle/messages.properties:169
+msgctxt "signup/tool/src/bundle/messages.properties:event_organizer"
+msgid "Organizer:"
+msgstr "主催者:"
+
+#. event_other_default_setting
+#: signup/tool/src/bundle/messages.properties:170
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_other_default_setting"
+msgid "Other Default Settings:"
+msgstr "他のデフォルトの設定:"
+
+#. event_other_sites
+#: signup/tool/src/bundle/messages.properties:171
+msgctxt "signup/tool/src/bundle/messages.properties:event_other_sites"
+msgid "Other Sites"
+msgstr "他のサイト"
+
+#. event_overview
+#: signup/tool/src/bundle/messages.properties:172
+msgctxt "signup/tool/src/bundle/messages.properties:event_overview"
+msgid "Events Overview"
+msgstr "イベント概要"
+
+#. event_owner
+#: signup/tool/src/bundle/messages.properties:173
+msgctxt "signup/tool/src/bundle/messages.properties:event_owner"
+msgid "Organizer:"
+msgstr "主催者:"
+
+#. event_pageTop_link_for_download
+#: signup/tool/src/bundle/messages.properties:174
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_pageTop_link_for_download"
+msgid "Export"
+msgstr "エクスポート"
+
+#. event_pageTop_link_for_download_csv
+#: signup/tool/src/bundle/messages.properties:175
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_pageTop_link_for_download_csv"
+msgid "Export as CSV"
+msgstr "CSV としてエクスポート"
+
+#. event_pageTop_link_for_download_xls
+#: signup/tool/src/bundle/messages.properties:176
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_pageTop_link_for_download_xls"
+msgid "Export as Excel"
+msgstr "エクセルとしてエクスポート"
+
+#. event_participant_name
+#: signup/tool/src/bundle/messages.properties:177
+msgctxt "signup/tool/src/bundle/messages.properties:event_participant_name"
+msgid "Participant Name:"
+msgstr "出席者名前:"
+
+#. event_participant_view_page_title
+#: signup/tool/src/bundle/messages.properties:178
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_participant_view_page_title"
+msgid "Meeting Details"
+msgstr "ミーティングの詳細"
+
+#. event_passed_deadline
+#: signup/tool/src/bundle/messages.properties:179
+msgctxt "signup/tool/src/bundle/messages.properties:event_passed_deadline"
+msgid ""
+"<font color='red'>The deadline for this meeting has passed. You cannot sign "
+"up for this meeting.</font>"
+msgstr "<font color='red'>このミーティングの締め切りは過ぎています.このミーティングにサインアップできません．</font>"
+
+#. event_publish_attendee_name
+#: signup/tool/src/bundle/messages.properties:180
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_publish_attendee_name"
+msgid "Display Participant Names:"
+msgstr "出席者名を表示:"
+
+#. event_publish_to
+#: signup/tool/src/bundle/messages.properties:181
+msgctxt "signup/tool/src/bundle/messages.properties:event_publish_to"
+msgid "Available To:"
+msgstr "利用可能なユーザ: "
+
+#. event_publish_to_calendar
+#: signup/tool/src/bundle/messages.properties:182
+msgctxt "signup/tool/src/bundle/messages.properties:event_publish_to_calendar"
+msgid "Publish to Calendar:"
+msgstr "カレンダー公開:"
+
+#. event_receive_notification
+#: signup/tool/src/bundle/messages.properties:183
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_receive_notification"
+msgid "Send Notification:"
+msgstr "通知を送信:"
+
+#. event_recurrence
+#: signup/tool/src/bundle/messages.properties:184
+msgctxt "signup/tool/src/bundle/messages.properties:event_recurrence"
+msgid "Meeting Frequency:"
+msgstr "ミーティングの繰り返し頻度:"
+
+#. event_removeButton
+#: signup/tool/src/bundle/messages.properties:185
+msgctxt "signup/tool/src/bundle/messages.properties:event_removeButton"
+msgid "Remove Meetings"
+msgstr "ミーティングを削除"
+
+#. event_repeat_num
+#: signup/tool/src/bundle/messages.properties:186
+msgctxt "signup/tool/src/bundle/messages.properties:event_repeat_num"
+msgid "Num of Repeats:"
+msgstr "繰り返し回数:"
+
+#. event_repeat_until
+#: signup/tool/src/bundle/messages.properties:187
+msgctxt "signup/tool/src/bundle/messages.properties:event_repeat_until"
+msgid "Repeats Until:"
+msgstr "繰り返し期限:"
+
+#. event_replace
+#: signup/tool/src/bundle/messages.properties:188
+msgctxt "signup/tool/src/bundle/messages.properties:event_replace"
+msgid "Replace"
+msgstr "置換"
+
+#. event_replaceby
+#: signup/tool/src/bundle/messages.properties:189
+msgctxt "signup/tool/src/bundle/messages.properties:event_replaceby"
+msgid "Replaced with&nbsp;"
+msgstr "置換&nbsp;"
+
+#. event_replaceby_Eid
+#: signup/tool/src/bundle/messages.properties:190
+msgctxt "signup/tool/src/bundle/messages.properties:event_replaceby_Eid"
+msgid "Replaced with (User ID)&nbsp;"
+msgstr "置換 (ユーザID)&nbsp;"
+
+#. event_restore_timeslot_label
+#: signup/tool/src/bundle/messages.properties:191
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_restore_timeslot_label"
+msgid "&nbsp;Restore"
+msgstr "&nbsp;リストア"
+
+#. event_select_coordinators
+#: signup/tool/src/bundle/messages.properties:192
+msgctxt "signup/tool/src/bundle/messages.properties:event_select_coordinators"
+msgid "Meeting Coordinators:"
+msgstr "ミーティングコーディネータ:"
+
+#. event_select_coordinators_instruction
+#: signup/tool/src/bundle/messages.properties:193
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_select_coordinators_instruction"
+msgid ""
+"Coordinator(s) will receive email notification when an attendee changes "
+"status."
+msgstr "参加者がステータスを変更するとコーディネータはメール通知を受信します．"
+
+#. event_show_attendee_public
+#: signup/tool/src/bundle/messages.properties:194
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_attendee_public"
+msgid "Show Participants To Public:"
+msgstr "出席者を公開:"
+
+#. event_show_custom_ts
+#: signup/tool/src/bundle/messages.properties:195
+msgctxt "signup/tool/src/bundle/messages.properties:event_show_custom_ts"
+msgid "Show custom-defined timeslots"
+msgstr "カスタム定義された時間帯を表示"
+
+#. event_show_me_details
+#: signup/tool/src/bundle/messages.properties:196
+msgctxt "signup/tool/src/bundle/messages.properties:event_show_me_details"
+msgid "&nbsp;Show details"
+msgstr "&nbsp;詳細を表示"
+
+#. event_show_meetingIfo_detail
+#: signup/tool/src/bundle/messages.properties:197
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_meetingIfo_detail"
+msgid "&nbsp;Show meeting info details"
+msgstr "&nbsp;ミーティング情報の詳細を表示"
+
+#. event_show_no_attendee_info
+#: signup/tool/src/bundle/messages.properties:198
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_no_attendee_info"
+msgid "Private"
+msgstr "プライベート"
+
+#. event_show_other_default_setting
+#: signup/tool/src/bundle/messages.properties:199
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_other_default_setting"
+msgid "Show the other default settings"
+msgstr "他のデフォルト設定を表示"
+
+#. event_show_schedule
+#: signup/tool/src/bundle/messages.properties:200
+msgctxt "signup/tool/src/bundle/messages.properties:event_show_schedule"
+msgid "Schedule Details:"
+msgstr "スケジュール詳細:"
+
+#. event_show_site_group_detail
+#: signup/tool/src/bundle/messages.properties:201
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_show_site_group_detail"
+msgid "&nbsp;Show site(s)/group(s) details"
+msgstr "&nbsp;サイト/グループの詳細を表示"
+
+#. event_sign_up
+#: signup/tool/src/bundle/messages.properties:202
+msgctxt "signup/tool/src/bundle/messages.properties:event_sign_up"
+msgid "Signed up"
+msgstr "サインアップ"
+
+#. event_signup_attendance
+#: signup/tool/src/bundle/messages.properties:203
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_attendance"
+msgid "Attendance:"
+msgstr "出席者:"
+
+#. event_signup_begins
+#: signup/tool/src/bundle/messages.properties:204
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_begins"
+msgid "Sign-up begins:"
+msgstr "サインアップ開始:"
+
+#. event_signup_deadline
+#: signup/tool/src/bundle/messages.properties:205
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_deadline"
+msgid "Sign-up Ends:"
+msgstr "サインアップ終了:"
+
+#. event_signup_deadline2
+#: signup/tool/src/bundle/messages.properties:206
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_deadline2"
+msgid "Sign-up ends:"
+msgstr "サインアップ終了:"
+
+#. event_signup_start
+#: signup/tool/src/bundle/messages.properties:207
+msgctxt "signup/tool/src/bundle/messages.properties:event_signup_start"
+msgid "Sign-up Begins:"
+msgstr "サインアップ開始:"
+
+#. event_site_group_availability
+#: signup/tool/src/bundle/messages.properties:208
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_site_group_availability"
+msgid "Display Meeting To"
+msgstr "ミーティング表示先"
+
+#. event_site_level
+#: signup/tool/src/bundle/messages.properties:209
+msgctxt "signup/tool/src/bundle/messages.properties:event_site_level"
+msgid "(Site Level)"
+msgstr "(サイトレベル)"
+
+#. event_site_title
+#: signup/tool/src/bundle/messages.properties:210
+msgctxt "signup/tool/src/bundle/messages.properties:event_site_title"
+msgid "Site Title:"
+msgstr "サイトタイトル:"
+
+#. event_some_orig_sitegroup_unavail_due_to_your_create_permission
+#: signup/tool/src/bundle/messages.properties:211
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_some_orig_sitegroup_unavail_due_to_your_create_permission"
+msgid ""
+"Due to insufficient permissions, the following original Site(s) and Group(s)"
+" will be not available to you."
+msgstr "不完全な権限のため，次のオリジナルサイトとグループは利用できません．"
+
+#. event_start_time
+#: signup/tool/src/bundle/messages.properties:212
+msgctxt "signup/tool/src/bundle/messages.properties:event_start_time"
+msgid "Start Time:"
+msgstr "開始日時:"
+
+#. event_status
+#: signup/tool/src/bundle/messages.properties:213
+msgctxt "signup/tool/src/bundle/messages.properties:event_status"
+msgid "Meeting Status:"
+msgstr "ミーティングの状態:"
+
+#. event_step4_page_title
+#: signup/tool/src/bundle/messages.properties:214
+msgctxt "signup/tool/src/bundle/messages.properties:event_step4_page_title"
+msgid "Sign-up Availability"
+msgstr "サインアップ利用可否"
+
+#. event_step5_page_title
+#: signup/tool/src/bundle/messages.properties:215
+msgctxt "signup/tool/src/bundle/messages.properties:event_step5_page_title"
+msgid "Meeting Summary"
+msgstr "ミーティング概要"
+
+#. event_swap
+#: signup/tool/src/bundle/messages.properties:216
+msgctxt "signup/tool/src/bundle/messages.properties:event_swap"
+msgid "Swap"
+msgstr "交代"
+
+#. event_swapWith
+#: signup/tool/src/bundle/messages.properties:217
+msgctxt "signup/tool/src/bundle/messages.properties:event_swapWith"
+msgid "Swap with&nbsp;"
+msgstr "交代&nbsp;"
+
+#. event_tab_check_all
+#: signup/tool/src/bundle/messages.properties:218
+msgctxt "signup/tool/src/bundle/messages.properties:event_tab_check_all"
+msgid "All"
+msgstr "すべてのセクション"
+
+#. event_time_period
+#: signup/tool/src/bundle/messages.properties:219
+msgctxt "signup/tool/src/bundle/messages.properties:event_time_period"
+msgid "Time Period:"
+msgstr "期間:"
+
+#. event_timeslot
+#: signup/tool/src/bundle/messages.properties:220
+msgctxt "signup/tool/src/bundle/messages.properties:event_timeslot"
+msgid "Time Slot:"
+msgstr "時間帯:"
+
+#. event_tool_tip_on_signuplist
+#: signup/tool/src/bundle/messages.properties:221
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_on_signuplist"
+msgid "Currently on sign-up list."
+msgstr "サインアップ一覧の状況."
+
+#. event_tool_tip_on_waitinglist
+#: signup/tool/src/bundle/messages.properties:222
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_on_waitinglist"
+msgid "Currently on the wait list."
+msgstr "順番待一覧の状況."
+
+#. event_tool_tip_ts_cancelled
+#: signup/tool/src/bundle/messages.properties:223
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_ts_cancelled"
+msgid "This time slot is canceled."
+msgstr "この時間帯はキャンセルされます．"
+
+#. event_tool_tip_ts_locked
+#: signup/tool/src/bundle/messages.properties:224
+msgctxt "signup/tool/src/bundle/messages.properties:event_tool_tip_ts_locked"
+msgid "This time slot is locked."
+msgstr "この時間帯はロックされます．"
+
+#. event_tool_tip_you_ranking_num
+#: signup/tool/src/bundle/messages.properties:225
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_you_ranking_num"
+msgid "Your current ranking Number:"
+msgstr "現在の順位付番号: "
+
+#. event_tool_tip_you_signed_up
+#: signup/tool/src/bundle/messages.properties:226
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tip_you_signed_up"
+msgid "You have signed up for this time slot."
+msgstr "この時間帯にサインアップしました．"
+
+#. event_tool_tips_action_disabled_label
+#: signup/tool/src/bundle/messages.properties:227
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_action_disabled_label"
+msgid "Action not allowed because time slots are still available."
+msgstr "時間帯はまだ利用できるため操作は許可されません．"
+
+#. event_tool_tips_action_option_disabled_label
+#: signup/tool/src/bundle/messages.properties:228
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_action_option_disabled_label"
+msgid "The option has been disabled by the organizer."
+msgstr "オプションはオーガナイザによって非表示になりました．"
+
+#. event_tool_tips_add
+#: signup/tool/src/bundle/messages.properties:229
+msgctxt "signup/tool/src/bundle/messages.properties:event_tool_tips_add"
+msgid "Click to add a participant"
+msgstr "出席者を追加する場合はクリックします"
+
+#. event_tool_tips_cancel_label
+#: signup/tool/src/bundle/messages.properties:230
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_cancel_label"
+msgid "Click here to cancel the time slot."
+msgstr "時間帯をキャンセルする場合はここをクリックします．"
+
+#. event_tool_tips_collapse_recur_meeting
+#: signup/tool/src/bundle/messages.properties:231
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_collapse_recur_meeting"
+msgid "Collapse recurring Meetings."
+msgstr "繰り返されるミーティングを折り畳む"
+
+#. event_tool_tips_delete
+#: signup/tool/src/bundle/messages.properties:232
+msgctxt "signup/tool/src/bundle/messages.properties:event_tool_tips_delete"
+msgid "Click to delete the participant"
+msgstr "出席者を削除する場合はクリックします"
+
+#. event_tool_tips_edit
+#: signup/tool/src/bundle/messages.properties:233
+msgctxt "signup/tool/src/bundle/messages.properties:event_tool_tips_edit"
+msgid "Click to edit the participant"
+msgstr "出席者を編集する場合はクリックします"
+
+#. event_tool_tips_expand_recur_meeting
+#: signup/tool/src/bundle/messages.properties:234
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_expand_recur_meeting"
+msgid "Expand recurring Meetings."
+msgstr "繰り返されるミーティングを展開"
+
+#. event_tool_tips_hide_details
+#: signup/tool/src/bundle/messages.properties:235
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_hide_details"
+msgid "Click to hide details."
+msgstr "詳細を非表示にする場合はクリックします．"
+
+#. event_tool_tips_lockOrcancel
+#: signup/tool/src/bundle/messages.properties:236
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_lockOrcancel"
+msgid "Click here to lock or cancel the time slot."
+msgstr "時間帯をロックするかキャンセルする場合はここをクリックします．"
+
+#. event_tool_tips_lock_label
+#: signup/tool/src/bundle/messages.properties:237
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_lock_label"
+msgid "Click here to prevent participant sign-up."
+msgstr "出席者がサインアップすることを防ぐ場合はここをクリックします．"
+
+#. event_tool_tips_recurrence
+#: signup/tool/src/bundle/messages.properties:238
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_recurrence"
+msgid "Recurring meeting"
+msgstr "繰り返されるミーティング"
+
+#. event_tool_tips_restore_timeslot_label
+#: signup/tool/src/bundle/messages.properties:239
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_restore_timeslot_label"
+msgid "Click here to restore the timeslot."
+msgstr "時間帯を復元する場合はここをクリックします．"
+
+#. event_tool_tips_show_details
+#: signup/tool/src/bundle/messages.properties:240
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_show_details"
+msgid "Click to show details."
+msgstr "詳細非表示する場合はクリックします．"
+
+#. event_tool_tips_unlock_label
+#: signup/tool/src/bundle/messages.properties:241
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_tool_tips_unlock_label"
+msgid "Click here to unlock the timeslot and allow participants to sign up."
+msgstr "時間帯をロック解除し出席者がサインアップできるようにするにはここをクリックします．"
+
+#. event_total_duration
+#: signup/tool/src/bundle/messages.properties:242
+msgctxt "signup/tool/src/bundle/messages.properties:event_total_duration"
+msgid "Total Duration (min):"
+msgstr "全期間 (分):"
+
+#. event_ts_availability_none
+#: signup/tool/src/bundle/messages.properties:243
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_ts_availability_none"
+msgid "None"
+msgstr "なし"
+
+#. event_type
+#: signup/tool/src/bundle/messages.properties:244
+msgctxt "signup/tool/src/bundle/messages.properties:event_type"
+msgid "Meeting Type"
+msgstr "ミーティングタイプ"
+
+#. event_type_title
+#: signup/tool/src/bundle/messages.properties:245
+msgctxt "signup/tool/src/bundle/messages.properties:event_type_title"
+msgid "Meeting Type:"
+msgstr "ミーティングタイプ:"
+
+#. event_unlimited
+#: signup/tool/src/bundle/messages.properties:246
+msgctxt "signup/tool/src/bundle/messages.properties:event_unlimited"
+msgid "Unlimited"
+msgstr "無制限"
+
+#. event_unlimited_attendees
+#: signup/tool/src/bundle/messages.properties:247
+msgctxt "signup/tool/src/bundle/messages.properties:event_unlimited_attendees"
+msgid "Unlimited Participants:"
+msgstr "参加者数無制限: "
+
+#. event_unlock_timeslot_label
+#: signup/tool/src/bundle/messages.properties:248
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_unlock_timeslot_label"
+msgid "&nbsp;Unlock"
+msgstr "&nbsp;ロック解除"
+
+#. event_until
+#: signup/tool/src/bundle/messages.properties:249
+msgctxt "signup/tool/src/bundle/messages.properties:event_until"
+msgid "Until:"
+msgstr "期限:"
+
+#. event_use_eid_input_mode
+#: signup/tool/src/bundle/messages.properties:250
+msgctxt "signup/tool/src/bundle/messages.properties:event_use_eid_input_mode"
+msgid "User ID Input Mode:"
+msgstr "ユーザIDインプットモード:"
+
+#. event_view_comment_page_title
+#: signup/tool/src/bundle/messages.properties:251
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_view_comment_page_title"
+msgid "View Comment"
+msgstr "コメントを表示する"
+
+#. event_view_userDefined_Timeslot_page_title
+#: signup/tool/src/bundle/messages.properties:252
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_view_userDefined_Timeslot_page_title"
+msgid "Define Custom Timeslots"
+msgstr "カスタム時間帯を定義"
+
+#. event_viewer
+#: signup/tool/src/bundle/messages.properties:253
+msgctxt "signup/tool/src/bundle/messages.properties:event_viewer"
+msgid "Viewer:"
+msgstr "表示者: "
+
+#. event_warning_no_lower_than_cur_ts_num
+#: signup/tool/src/bundle/messages.properties:254
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_warning_no_lower_than_cur_ts_num"
+msgid ""
+"You may not decrease the number of time slots below the original value:"
+msgstr "元の値以下には時間帯数を減らすことはできません: "
+
+#. event_yes_create_email_notification
+#: signup/tool/src/bundle/messages.properties:255
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_create_email_notification"
+msgid ""
+"&nbsp;Yes, send email to notify all the potential participants that this "
+"meeting has been published."
+msgstr "&nbsp;はい，このミーティングが公開されたことをすべての潜在的な出席者に通知するメールを送信します．"
+
+#. event_yes_create_groups
+#: signup/tool/src/bundle/messages.properties:256
+msgctxt "signup/tool/src/bundle/messages.properties:event_yes_create_groups"
+msgid ""
+"&nbsp;Yes, create a group for each timeslot that can be managed via Site "
+"Info > Manage Groups"
+msgstr "&nbsp;はい，サイト情報 > グループ管理で管理できるように各時間帯にグループを作成します．"
+
+#. event_yes_email_autoReminer_to_attendees
+#: signup/tool/src/bundle/messages.properties:257
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_email_autoReminer_to_attendees"
+msgid ""
+"&nbsp;Yes, send email to remind attendee of the meeting, one day in advance."
+msgstr "&nbsp;はい，一日前に，参加者にミーティングをお知らせするメールを送信します．"
+
+#. event_yes_email_notification
+#: signup/tool/src/bundle/messages.properties:258
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_email_notification"
+msgid "&nbsp;Yes, send an email notification about these changes to:"
+msgstr "&nbsp;はい，これらの変更をメール通知を送信します．"
+
+#. event_yes_keep_current_attendees
+#: signup/tool/src/bundle/messages.properties:259
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_keep_current_attendees"
+msgid ""
+"&nbsp;Yes, keep all the participant(s) in their corresponding time slots."
+msgstr "&nbsp;はい，該当する時間帯にてすべての出席者のままにします．"
+
+#. event_yes_label
+#: signup/tool/src/bundle/messages.properties:260
+msgctxt "signup/tool/src/bundle/messages.properties:event_yes_label"
+msgid "Yes"
+msgstr "はい"
+
+#. event_yes_meeting_default_notify_setting
+#: signup/tool/src/bundle/messages.properties:261
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_meeting_default_notify_setting"
+msgid ""
+"&nbsp;Yes, pre-select the 'Email Notification' checkbox on the Modify "
+"Meeting page. "
+msgstr "はい，修正ミーティングページの'メール通知'チェックボックスをあらかじめ選択します．"
+
+#. event_yes_publish_to_calendar
+#: signup/tool/src/bundle/messages.properties:262
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_publish_to_calendar"
+msgid "&nbsp;Yes, publish the meeting to the Schedule tool."
+msgstr "&nbsp;はい，このミーティングをスケジュールツールに公開します．"
+
+#. event_yes_receive_notification
+#: signup/tool/src/bundle/messages.properties:263
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_receive_notification"
+msgid ""
+"&nbsp;Yes, send an email notification to the selected meeting coordinators "
+"when a participant signs up or cancels an appointment."
+msgstr "&nbsp;はい，出席者が予約を登録もしくはキャンセルしたときに，選択されたミーティングコーディネータに通知メールを送信します．"
+
+#. event_yes_show_attendee_public
+#: signup/tool/src/bundle/messages.properties:264
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_show_attendee_public"
+msgid "&nbsp;Yes, display names of participants to others."
+msgstr "&nbsp;はい，出席者の名前を他の人に表示します．"
+
+#. event_yes_to_allow_addComment
+#: signup/tool/src/bundle/messages.properties:265
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_to_allow_addComment"
+msgid "&nbsp;Yes, participant can add a comment during sign-up."
+msgstr "&nbsp;はい，出席者はサインアップ中にコメントを追加できます．"
+
+#. event_yes_to_allow_waitList
+#: signup/tool/src/bundle/messages.properties:266
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_to_allow_waitList"
+msgid "&nbsp;Yes, add Wait List option. Participants can join Wait List."
+msgstr "&nbsp;はい，順番待オプションを追加します．出席者は順番待一覧に加わります．"
+
+#. event_yes_to_use_eid_input_mode
+#: signup/tool/src/bundle/messages.properties:267
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:event_yes_to_use_eid_input_mode"
+msgid "&nbsp;Yes, I want to use User ID input mode for adding participants."
+msgstr "&nbsp;はい，参加者の追加にユーザIDインプットモードを使います．"
+
+#. event_you_on_wait_list
+#: signup/tool/src/bundle/messages.properties:268
+msgctxt "signup/tool/src/bundle/messages.properties:event_you_on_wait_list"
+msgid "on waiting list"
+msgstr "順番待一覧に表示"
+
+#. event_you_signed_up
+#: signup/tool/src/bundle/messages.properties:269
+msgctxt "signup/tool/src/bundle/messages.properties:event_you_signed_up"
+msgid "You've Signed up"
+msgstr "サインアップされました"
+
+#. events_attendee_download_instruction
+#: signup/tool/src/bundle/messages.properties:270
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:events_attendee_download_instruction"
+msgid "Select the meetings and then click the Export button."
+msgstr "ミーティングを選択し，エクスポートボタンをクリックします．"
+
+#. events_attendee_instruction
+#: signup/tool/src/bundle/messages.properties:271
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:events_attendee_instruction"
+msgid "To sign up for a meeting, click the meeting title."
+msgstr "ミーティングにサインアップする場合は，ミーティングタイトルをクリックします．"
+
+#. events_dropdownbox_title
+#: signup/tool/src/bundle/messages.properties:272
+msgctxt "signup/tool/src/bundle/messages.properties:events_dropdownbox_title"
+msgid "View:"
+msgstr "表示:"
+
+#. events_organizer_download_instruction
+#: signup/tool/src/bundle/messages.properties:273
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:events_organizer_download_instruction"
+msgid "Select the meetings and then click the Export button."
+msgstr "ミーティングを選択し，エクスポートボタンをクリックします．"
+
+#. events_organizer_instruction
+#: signup/tool/src/bundle/messages.properties:274
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:events_organizer_instruction"
+msgid ""
+"Click 'Add' to create a new meeting, or click a meeting title to modify or "
+"copy it."
+msgstr "新しいミーティングを作成する場合は'追加'をクリックするか，それを修正またはコピーするためにミーティングタイトルをクリックします．"
+
+#. exception.multiple.eids
+#: signup/tool/src/bundle/messages.properties:275
+msgctxt "signup/tool/src/bundle/messages.properties:exception.multiple.eids"
+msgid ""
+"{0} Matches multiple users. Please select from the following usernames: {1}"
+msgstr "{0}は複数のユーザに一致します．次のユーザ名から選択して下さい: {1}"
+
+#. exception.no.such.user
+#: signup/tool/src/bundle/messages.properties:276
+msgctxt "signup/tool/src/bundle/messages.properties:exception.no.such.user"
+msgid "No user was found for user ID:&nbsp;"
+msgstr "このユーザIDのユーザはみつかりませんでした:&nbsp;"
+
+#. expand_all_recur_events
+#: signup/tool/src/bundle/messages.properties:277
+msgctxt "signup/tool/src/bundle/messages.properties:expand_all_recur_events"
+msgid "&nbsp;Expand all recurring meetings."
+msgstr "&nbsp;繰り返されるすべてのミーティングを展開"
+
+#. failed.cancel_or_restore_ts
+#: signup/tool/src/bundle/messages.properties:278
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.cancel_or_restore_ts"
+msgid ""
+"Cancel/Restore Failed. Someone has updated the meeting. Please update the "
+"meeting and try again."
+msgstr "キャンセル/復元に失敗しました．誰かがミーティングを更新しました．ミーティングを更新し再度試してみて下さい．"
+
+#. failed.fetch_allEvents_from_db
+#: signup/tool/src/bundle/messages.properties:279
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.fetch_allEvents_from_db"
+msgid "Failed to fetch all meetings from the database."
+msgstr "データベースからすべてのミーティングを取得できませんでした．"
+
+#. failed.lock_or_unlock_ts
+#: signup/tool/src/bundle/messages.properties:280
+msgctxt "signup/tool/src/bundle/messages.properties:failed.lock_or_unlock_ts"
+msgid ""
+"Lock/Unlock Failed. Someone has updated the meeting. Please update the "
+"meeting and try again."
+msgstr "ロック/ロック解除に失敗しました．誰かがミーティングを更新しました．ミーティングを更新し再度試してみて下さい．"
+
+#. failed.move.attendee_due_to_ts_isTaken
+#: signup/tool/src/bundle/messages.properties:281
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.move.attendee_due_to_ts_isTaken"
+msgid "Move failed. The participant is already in the timeslot."
+msgstr "移動に失敗しました．出席者は既に時間帯にいます．"
+
+#. failed.move.due_to_attendee_notExisted
+#: signup/tool/src/bundle/messages.properties:282
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.move.due_to_attendee_notExisted"
+msgid ""
+"Move failed. Participant no longer in the timeslot. Someone has updated the "
+"meeting. Please update the meeting and try again."
+msgstr "移動に失敗しました．出席者は時間帯にいません．誰かがミーティングを更新しました．ミーティングを更新し再度試してみて下さい．"
+
+#. failed.replace.someone.already.updated.db
+#: signup/tool/src/bundle/messages.properties:283
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.replace.someone.already.updated.db"
+msgid ""
+"Replace failed. Someone has updated the meeting. Please update the meeting "
+"and try again."
+msgstr "交代に失敗しました．誰かがミーティングを更新しました．ミーティングを更新し再度試してみて下さい．"
+
+#. failed.replaced_due_to_already_in_ts
+#: signup/tool/src/bundle/messages.properties:284
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.replaced_due_to_already_in_ts"
+msgid "Replace failed. The participant is already in the timeslot."
+msgstr "交代に失敗しました．出席者は既に時間帯にいます．"
+
+#. failed.replaced_due_to_attendee_notExisted_in_ts
+#: signup/tool/src/bundle/messages.properties:285
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.replaced_due_to_attendee_notExisted_in_ts"
+msgid ""
+"Replace failed. The selected participant has already been deleted from the "
+"list."
+msgstr "交代に失敗しました．選択した出席者は既に一覧から削除されました．"
+
+#. failed.swap.due_to_current_attendee_already_in_swapped_ts
+#: signup/tool/src/bundle/messages.properties:286
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.swap.due_to_current_attendee_already_in_swapped_ts"
+msgid "Swap failed. The current participant is already in the timeslot."
+msgstr "交代に失敗しました．現在の出席者は既にその時間帯にいます．"
+
+#. failed.swap.due_to_swapped_attendee_already_in_ts
+#: signup/tool/src/bundle/messages.properties:287
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.swap.due_to_swapped_attendee_already_in_ts"
+msgid ""
+"Swap failed. The swapped participant is already in the current timeslot."
+msgstr "交代に失敗しました．交代する出席者は既に現在の時間帯にいます．"
+
+#. failed.swap_due_to_attendee_notExited
+#: signup/tool/src/bundle/messages.properties:288
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.swap_due_to_attendee_notExited"
+msgid "Swap failed. The participant has already removed himself/herself."
+msgstr "交代に失敗しました．出席者は既に彼ら自身/彼女ら自身を削除しました．"
+
+#. failed.swap_due_to_selected_attendee_notExited
+#: signup/tool/src/bundle/messages.properties:289
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:failed.swap_due_to_selected_attendee_notExited"
+msgid ""
+"Swap failed. The selected participant has already removed himself/herself."
+msgstr "交代に失敗しました．選択した出席者は既に彼ら自身/彼女ら自身を削除しました．"
+
+#. filter_by_category
+#: signup/tool/src/bundle/messages.properties:290
+msgctxt "signup/tool/src/bundle/messages.properties:filter_by_category"
+msgid "By category:"
+msgstr "カテゴリごと"
+
+#. filter_categories_top
+#: signup/tool/src/bundle/messages.properties:291
+msgctxt "signup/tool/src/bundle/messages.properties:filter_categories_top"
+msgid "All"
+msgstr "すべてのセクション"
+
+#. goback_button
+#: signup/tool/src/bundle/messages.properties:292
+msgctxt "signup/tool/src/bundle/messages.properties:goback_button"
+msgid "Back"
+msgstr "戻る"
+
+#. group_description_default
+#: signup/tool/src/bundle/messages.properties:293
+msgctxt "signup/tool/src/bundle/messages.properties:group_description_default"
+msgid ""
+"This group ({0}) was automatically created via the Signups tool. Users in "
+"timeslots and this group's membership can be synchronised by clicking the "
+"'Synchronise' button for the timeslot in the Signup tool."
+msgstr "このグループ ({0})はサインアップツールを経由して自動的に作成されました．時間帯およびこのグループのメンバーであるユーザはサインアップツールの時間帯に対する'同期'ボタンをクリックすることにより同期されます．"
+
+#. group_slot_in_group_titlename
+#: signup/tool/src/bundle/messages.properties:294
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:group_slot_in_group_titlename"
+msgid "slot"
+msgstr "時間帯"
+
+#. group_synchronise_button
+#: signup/tool/src/bundle/messages.properties:295
+msgctxt "signup/tool/src/bundle/messages.properties:group_synchronise_button"
+msgid "Synchronise"
+msgstr "同期"
+
+#. group_synchronise_done
+#: signup/tool/src/bundle/messages.properties:296
+msgctxt "signup/tool/src/bundle/messages.properties:group_synchronise_done"
+msgid "Timeslot synchronisation complete"
+msgstr "時間帯同期完了"
+
+#. group_synchronise_heading
+#: signup/tool/src/bundle/messages.properties:297
+msgctxt "signup/tool/src/bundle/messages.properties:group_synchronise_heading"
+msgid "Group Membership"
+msgstr "グループメンバーシップ"
+
+#. ics_file_name_for_failure_warning
+#: signup/tool/src/bundle/messages.properties:298
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:ics_file_name_for_failure_warning"
+msgid "iCal_Failed_Warning.txt"
+msgstr "iCal_Failed_Warning.txt"
+
+#. ics_message_for_failure_warning
+#: signup/tool/src/bundle/messages.properties:299
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:ics_message_for_failure_warning"
+msgid ""
+"There was an error generating the iCal file, it is possible that you do not "
+"have permission to access this event."
+msgstr "iCalファイルを生成する際にエラーがありました．このイベントにアクセスする権限をもっていない可能性があります．"
+
+#. javax.faces.component.UIInput.CONVERSION
+#: signup/tool/src/bundle/messages.properties:300
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:javax.faces.component.UIInput.CONVERSION"
+msgid "Invalid input"
+msgstr "無効な入力"
+
+#. javax.faces.component.UIInput.REQUIRED
+#: signup/tool/src/bundle/messages.properties:301
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:javax.faces.component.UIInput.REQUIRED"
+msgid "Please enter a value."
+msgstr "値を入力して下さい．"
+
+#. javax.faces.validator.LengthValidator.MAXIMUM
+#: signup/tool/src/bundle/messages.properties:302
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:javax.faces.validator.LengthValidator.MAXIMUM"
+msgid "Your input is greater than allowable maximum of {0}."
+msgstr "入力が許可される最大の{0}以上です."
+
+#. javax.faces.validator.NOT_IN_RANGE
+#: signup/tool/src/bundle/messages.properties:303
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:javax.faces.validator.NOT_IN_RANGE"
+msgid "Your input is out of the range from {0} to {1}."
+msgstr "入力が{0} から{1}の範囲外です."
+
+#. label.select.attendee
+#: signup/tool/src/bundle/messages.properties:304
+msgctxt "signup/tool/src/bundle/messages.properties:label.select.attendee"
+msgid "Select a Participant"
+msgstr "出席者を選択"
+
+#. label_announcement
+#: signup/tool/src/bundle/messages.properties:305
+msgctxt "signup/tool/src/bundle/messages.properties:label_announcement"
+msgid "Open meeting (no sign-up required)"
+msgstr "公開ミーティング(登録不要)"
+
+#. label_biweekly
+#: signup/tool/src/bundle/messages.properties:306
+msgctxt "signup/tool/src/bundle/messages.properties:label_biweekly"
+msgid "Biweekly"
+msgstr "隔週"
+
+#. label_create_timeslots
+#: signup/tool/src/bundle/messages.properties:307
+msgctxt "signup/tool/src/bundle/messages.properties:label_create_timeslots"
+msgid "Create Timeslot(s)"
+msgstr "カスタム時間帯"
+
+#. label_custom_timeslots
+#: signup/tool/src/bundle/messages.properties:308
+msgctxt "signup/tool/src/bundle/messages.properties:label_custom_timeslots"
+msgid "Advanced user-defined timeslots"
+msgstr "詳細なユーザ定義の時間帯"
+
+#. label_daily
+#: signup/tool/src/bundle/messages.properties:309
+msgctxt "signup/tool/src/bundle/messages.properties:label_daily"
+msgid "Daily"
+msgstr "毎日"
+
+#. label_days
+#: signup/tool/src/bundle/messages.properties:310
+msgctxt "signup/tool/src/bundle/messages.properties:label_days"
+msgid "Days"
+msgstr "日"
+
+#. label_download_ics_meeting
+#: signup/tool/src/bundle/messages.properties:311
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_download_ics_meeting"
+msgid "Add this meeting to my personal calendar"
+msgstr "このミーティングを個人カレンダに追加"
+
+#. label_download_ics_timeslot
+#: signup/tool/src/bundle/messages.properties:312
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_download_ics_timeslot"
+msgid "Add this timeslot to my personal calendar"
+msgstr "この時間帯を個人カレンダに追加"
+
+#. label_edit_timeslots
+#: signup/tool/src/bundle/messages.properties:313
+msgctxt "signup/tool/src/bundle/messages.properties:label_edit_timeslots"
+msgid "Edit Timeslot(s)"
+msgstr "時間帯修正"
+
+#. label_email_all_people
+#: signup/tool/src/bundle/messages.properties:314
+msgctxt "signup/tool/src/bundle/messages.properties:label_email_all_people"
+msgid "All potential participants"
+msgstr "すべての潜在的な出席者"
+
+#. label_email_organizers_only
+#: signup/tool/src/bundle/messages.properties:315
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_email_organizers_only"
+msgid "Selected meeting coordinators"
+msgstr "選択したミーティングコーディネータ"
+
+#. label_email_signed_up_ones_Organizers_only
+#: signup/tool/src/bundle/messages.properties:316
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_email_signed_up_ones_Organizers_only"
+msgid "Selected meeting coordinators and participants currently signed up"
+msgstr "現在サインアップしている選択したミーティングのコーディネータおよび出席者"
+
+#. label_email_signed_up_ones_only
+#: signup/tool/src/bundle/messages.properties:317
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:label_email_signed_up_ones_only"
+msgid "Only participants currently signed up"
+msgstr "現在登録済みの参加者"
+
+#. label_group
+#: signup/tool/src/bundle/messages.properties:318
+msgctxt "signup/tool/src/bundle/messages.properties:label_group"
+msgid "Single slot"
+msgstr "単一時間帯"
+
+#. label_hours
+#: signup/tool/src/bundle/messages.properties:319
+msgctxt "signup/tool/src/bundle/messages.properties:label_hours"
+msgid "Hours"
+msgstr "時間"
+
+#. label_ics
+#: signup/tool/src/bundle/messages.properties:320
+msgctxt "signup/tool/src/bundle/messages.properties:label_ics"
+msgid "ICS"
+msgstr "ICS"
+
+#. label_individaul
+#: signup/tool/src/bundle/messages.properties:321
+msgctxt "signup/tool/src/bundle/messages.properties:label_individaul"
+msgid "Multiple slots"
+msgstr "複数時間帯"
+
+#. label_minutes
+#: signup/tool/src/bundle/messages.properties:322
+msgctxt "signup/tool/src/bundle/messages.properties:label_minutes"
+msgid "Minutes"
+msgstr "分"
+
+#. label_monthly
+#: signup/tool/src/bundle/messages.properties:323
+msgctxt "signup/tool/src/bundle/messages.properties:label_monthly"
+msgid "Monthly"
+msgstr "毎月"
+
+#. label_once
+#: signup/tool/src/bundle/messages.properties:324
+msgctxt "signup/tool/src/bundle/messages.properties:label_once"
+msgid "Once Only"
+msgstr "一回だけ"
+
+#. label_startNow
+#: signup/tool/src/bundle/messages.properties:325
+msgctxt "signup/tool/src/bundle/messages.properties:label_startNow"
+msgid "Start Now"
+msgstr "今すぐ開始"
+
+#. label_view_edit_ts
+#: signup/tool/src/bundle/messages.properties:326
+msgctxt "signup/tool/src/bundle/messages.properties:label_view_edit_ts"
+msgid "View or Edit Timeslot(s)"
+msgstr "時間帯表示または編集"
+
+#. label_weekdays
+#: signup/tool/src/bundle/messages.properties:327
+msgctxt "signup/tool/src/bundle/messages.properties:label_weekdays"
+msgid "Weekdays (Mon-Fri)"
+msgstr "平日 (月-金)"
+
+#. label_weekly
+#: signup/tool/src/bundle/messages.properties:328
+msgctxt "signup/tool/src/bundle/messages.properties:label_weekly"
+msgid "Weekly"
+msgstr "毎週"
+
+#. max.num_attendee_changed_and_attendee_mayOver_limit_inTS
+#: signup/tool/src/bundle/messages.properties:329
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:max.num_attendee_changed_and_attendee_mayOver_limit_inTS"
+msgid ""
+"Maximum # of participants per timeslot has changed. Some timeslots may now "
+"be overbooked."
+msgstr "時間帯あたりの最大出席者数が変更されました．時間帯は今オーバーブックかもしれません．"
+
+#. meeting_confirmation_to_remove
+#: signup/tool/src/bundle/messages.properties:330
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:meeting_confirmation_to_remove"
+msgid "Are you sure you want to permanently remove the meeting(s)?"
+msgstr "このミーティングを永久に削除してもよろしいですか?"
+
+#. meeting_confirmation_to_remove_multiple
+#: signup/tool/src/bundle/messages.properties:331
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:meeting_confirmation_to_remove_multiple"
+msgid ""
+"This will permanently remove the meeting and all recurring meeting(s). Are "
+"you sure you want to do this? If not, click Cancel, expand the list and "
+"remove the meetings individually."
+msgstr "ミーティングと繰り返されるミーティングは永久に削除されます．この処理を実行してもよろしいですか？そうでなければ，キャンセルをクリックし，一覧を展開し，ミーティングを個別に削除します．"
+
+#. modify_all
+#: signup/tool/src/bundle/messages.properties:332
+msgctxt "signup/tool/src/bundle/messages.properties:modify_all"
+msgid "Modify all future recurring meetings."
+msgstr "すべての将来繰り返されるミーティングを修正"
+
+#. modify_current
+#: signup/tool/src/bundle/messages.properties:333
+msgctxt "signup/tool/src/bundle/messages.properties:modify_current"
+msgid "Modify current meeting only.  Meeting becomes single slot."
+msgstr "現在のミーティングだけ修正して下さい．ミーティングはひとつの時間帯になります．"
+
+#. modify_event
+#: signup/tool/src/bundle/messages.properties:334
+msgctxt "signup/tool/src/bundle/messages.properties:modify_event"
+msgid "Modify"
+msgstr "修正"
+
+#. next_button
+#: signup/tool/src/bundle/messages.properties:335
+msgctxt "signup/tool/src/bundle/messages.properties:next_button"
+msgid "Next"
+msgstr "次"
+
+#. no.permission_create_event
+#: signup/tool/src/bundle/messages.properties:336
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no.permission_create_event"
+msgid "You do not have permission to create a new meeting."
+msgstr "新しいミーティングを作成する権限がありません．"
+
+#. no.permissoin.do_it
+#: signup/tool/src/bundle/messages.properties:337
+msgctxt "signup/tool/src/bundle/messages.properties:no.permissoin.do_it"
+msgid "You don't have the required permission."
+msgstr "必要な権限がありません．"
+
+#. no_addWaiter_button_due_to_unlimited
+#: signup/tool/src/bundle/messages.properties:338
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_addWaiter_button_due_to_unlimited"
+msgid "&nbsp;---"
+msgstr "&nbsp;---"
+
+#. no_events_in_future_organizer
+#: signup/tool/src/bundle/messages.properties:339
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_events_in_future_organizer"
+msgid ""
+"No future meetings have been created. Click 'Add' to create a new meeting."
+msgstr "これからのミーテングの予定はありません．追加をクリックして新しいミーティングを作成してください．"
+
+#. no_events_in_this_period_attendee_orgnizer
+#: signup/tool/src/bundle/messages.properties:340
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_events_in_this_period_attendee_orgnizer"
+msgid "No meetings are available for this time frame."
+msgstr "この時間帯のミーティングはありません．"
+
+#. no_events_in_timeframe_attendee
+#: signup/tool/src/bundle/messages.properties:341
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_events_in_timeframe_attendee"
+msgid "No meetings are available."
+msgstr "ミーティングはありません．"
+
+#. no_events_in_timeframe_organizer
+#: signup/tool/src/bundle/messages.properties:342
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_events_in_timeframe_organizer"
+msgid "No meetings have been created. Click 'Add' to create a meeting."
+msgstr "ミーテングの予定はありません．追加をクリックして新しいミーティングを作成してください．"
+
+#. no_future_events_I_have_signed_up
+#: signup/tool/src/bundle/messages.properties:343
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_future_events_I_have_signed_up"
+msgid "You are not signed up for any upcoming meetings."
+msgstr "直近のどのミーティングにもサインアップしていません．"
+
+#. no_future_events_in_immediate_available
+#: signup/tool/src/bundle/messages.properties:344
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:no_future_events_in_immediate_available"
+msgid "No meetings are available for immediate sign-up."
+msgstr "すぐにサインアップできるミーティングはありません．"
+
+#. ok_button
+#: signup/tool/src/bundle/messages.properties:345
+msgctxt "signup/tool/src/bundle/messages.properties:ok_button"
+msgid "OK"
+msgstr "OK"
+
+#. org.apache.myfaces.Date.INVALID
+#: signup/tool/src/bundle/messages.properties:346
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:org.apache.myfaces.Date.INVALID"
+msgid "Your date input is invalid."
+msgstr "入力した日時は無効です．"
+
+#. org.apache.myfaces.calendar.CONVERSION
+#: signup/tool/src/bundle/messages.properties:347
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:org.apache.myfaces.calendar.CONVERSION"
+msgid "The repeat date you chose is invalid."
+msgstr "選択した繰り返し日時は無効です．"
+
+#. organizer_instruction_click
+#: signup/tool/src/bundle/messages.properties:348
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_click"
+msgid "- Click&nbsp;"
+msgstr "- クリック&nbsp;"
+
+#. organizer_instruction_delete_image
+#: signup/tool/src/bundle/messages.properties:349
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_delete_image"
+msgid "&nbsp;to delete a participant."
+msgstr "&nbsp;出席者を削除する場合"
+
+#. organizer_instruction_edit_image
+#: signup/tool/src/bundle/messages.properties:350
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_edit_image"
+msgid "&nbsp;to change or swap participants."
+msgstr "&nbsp;出席者を変更か，交代する場合"
+
+#. organizer_instruction_mailto_all_image
+#: signup/tool/src/bundle/messages.properties:351
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_mailto_all_image"
+msgid "&nbsp;to email all participants."
+msgstr "&nbsp;すべての出席者にメールする場合"
+
+#. organizer_instruction_mailto_image
+#: signup/tool/src/bundle/messages.properties:352
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_mailto_image"
+msgid "&nbsp;to email a participant."
+msgstr "&nbsp;出席者にメールする場合"
+
+#. organizer_instruction_max_capacity
+#: signup/tool/src/bundle/messages.properties:353
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_max_capacity"
+msgid ""
+"- Meeting organizers can add participants even if the time slot is full."
+msgstr "- ミーティングオーガナイザは時間帯が一杯でも出席者を追加できます．"
+
+#. organizer_instruction_timeslot_link
+#: signup/tool/src/bundle/messages.properties:354
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_instruction_timeslot_link"
+msgid "- Click on a time slot to lock or cancel it."
+msgstr "- ロックまたはキャンセルするには時間帯をクリックします．"
+
+#. organizer_mailto_all
+#: signup/tool/src/bundle/messages.properties:355
+msgctxt "signup/tool/src/bundle/messages.properties:organizer_mailto_all"
+msgid "Email all participants"
+msgstr "すべての出席者にメール"
+
+#. organizer_mailto_all_short
+#: signup/tool/src/bundle/messages.properties:356
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:organizer_mailto_all_short"
+msgid "Email all"
+msgstr "全員にメール"
+
+#. organizer_note_name
+#: signup/tool/src/bundle/messages.properties:357
+msgctxt "signup/tool/src/bundle/messages.properties:organizer_note_name"
+msgid "<font color='red'>*</font>Note:"
+msgstr "<font color='red'>*</font>注意"
+
+#. organizer_page_title
+#: signup/tool/src/bundle/messages.properties:358
+msgctxt "signup/tool/src/bundle/messages.properties:organizer_page_title"
+msgid "Meeting Details"
+msgstr "ミーティングの詳細"
+
+#. participant_cancel_button
+#: signup/tool/src/bundle/messages.properties:359
+msgctxt "signup/tool/src/bundle/messages.properties:participant_cancel_button"
+msgid "Cancel Sign-up"
+msgstr "サインアップをキャンセル"
+
+#. permission.info.for.group.scope
+#: signup/tool/src/bundle/messages.properties:360
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission.info.for.group.scope"
+msgid ""
+"Set permissions for Sign-up in the group: {1} in the site: {0}. (a) At the "
+"group realm level, only the permissions \"view\", \"attend\", "
+"\"create.group\", \"delete.group\" and \"update.group\" can be modified. "
+"Other permission settings at this level do not apply and have no effect. (b)"
+" For participants to view or attend a meeting open to this group, the "
+"\"view\" and \"attend\" permissions are required."
+msgstr "サインアップ権限を設定するグループ: {1} サイト:{0}．(a)グループレルムレベルにおいて，\"表示\"，\"参加\"，\"グループ作成\"，\"グループ削除\"，\"グループ更新\"だけが修正できます．このレエルの他の権限設定は適用されず影響がありません．(b)このグループに公開されたミーティングを表示または参加する出席者に対し，\"表示\"と\"参加\"権限は必須です．"
+
+#. permission.info.for.site.scope
+#: signup/tool/src/bundle/messages.properties:361
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission.info.for.site.scope"
+msgid "Set permissions for Sign-up in worksite: {0} ({1})"
+msgstr "サインアップの権限を設定するワークサイト: {0} ({1})"
+
+#. permission_feature_link
+#: signup/tool/src/bundle/messages.properties:362
+msgctxt "signup/tool/src/bundle/messages.properties:permission_feature_link"
+msgid "Permissions"
+msgstr "パーミッション"
+
+#. permission_group_scope
+#: signup/tool/src/bundle/messages.properties:363
+msgctxt "signup/tool/src/bundle/messages.properties:permission_group_scope"
+msgid "group"
+msgstr "グループ"
+
+#. permission_note_for_admin_advice
+#: signup/tool/src/bundle/messages.properties:364
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_note_for_admin_advice"
+msgid ""
+"<UI><LI><b>Administrator:</b> You can manually enable the Permissions option"
+" for a specific worksite by granting the <B>realm.upd</B> permission to all "
+"of the site/group realm levels for any role(s) you wish to have this "
+"ability.  The member(s) of the role(s) must also be a member of every group "
+"in the site and the site must contain at least one group.</LI></UI>"
+msgstr "<UI><LI><b>管理者:</b>この権限を持たせたい任意の役割に対して <B>realm.upd</B> 権限を全てのサイト/グループのレルムレベルに許可することで，指定したワークサイトの権限オプションを手動で有効化できます．役割をもつメンバはサイトのすべてのグループのメンバーでもあり，サイトには少なくとも一つのグループがある必要があります．</LI></UI>"
+
+#. permission_note_for_disabled_button_case
+#: signup/tool/src/bundle/messages.properties:365
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_note_for_disabled_button_case"
+msgid ""
+"<UI><LI>The <B>Edit Permission</B> button is only available to "
+"administrators or users with the <B>realm.upd</B> permission for the current"
+" site or group.  Contact your system administrator to be granted this "
+"permission.</LI></UI>"
+msgstr "<UI><LI><B>編集権限</B> ボタンは管理者，もしくは現在のサイトあるいはグループに対して<B>realm.upd</B> 権限を持つユーザだけです．この権限を許可されるにはシステム管理者に連絡してください．</LI></UI>"
+
+#. permission_note_for_group_realm_case
+#: signup/tool/src/bundle/messages.properties:366
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_note_for_group_realm_case"
+msgid ""
+"<UI><LI>In each <B>group</B> realm, only the permissions <B>view</B>, "
+"<B>attend</B>, <B>create.group</B>, <B>delete.group</B> and "
+"<B>update.group</B> can be modified. Other permission settings at this level"
+" do not apply and have no effect.</LI></UI>"
+msgstr "<UI><LI>それぞれの<B>グループ</B> レルムにおいて，<B>view</B>, <B>attend</B>, <B>create.group</B>, <B>delete.group</B> および <B>update.group</B> の権限だけが修正できます．このレベルでは，他の権限設定は適用できないため，影響はありません．</LI></UI>"
+
+#. permission_note_for_view_attend_group
+#: signup/tool/src/bundle/messages.properties:367
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_note_for_view_attend_group"
+msgid ""
+"For participants to view or attend a meeting open only to their specific "
+"group(s), you must grant the <B>view</B> and <B>attend</B> permission at the"
+" group realm level."
+msgstr "指定したグループだけに公開されるミーティングを確認あるいは参加する出席者に対し，グループレルムレベルの<B>view</B>および<B>attend</B> 権限を許可します．"
+
+#. permission_page_title
+#: signup/tool/src/bundle/messages.properties:368
+msgctxt "signup/tool/src/bundle/messages.properties:permission_page_title"
+msgid "Permissions Update"
+msgstr "権限更新"
+
+#. permission_site_scope
+#: signup/tool/src/bundle/messages.properties:369
+msgctxt "signup/tool/src/bundle/messages.properties:permission_site_scope"
+msgid "site"
+msgstr "ワークサイト"
+
+#. permission_tab_action
+#: signup/tool/src/bundle/messages.properties:370
+msgctxt "signup/tool/src/bundle/messages.properties:permission_tab_action"
+msgid "Action"
+msgstr "操作"
+
+#. permission_tab_edit_button
+#: signup/tool/src/bundle/messages.properties:371
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_tab_edit_button"
+msgid "Edit Permissions"
+msgstr "編集権限"
+
+#. permission_tab_name
+#: signup/tool/src/bundle/messages.properties:372
+msgctxt "signup/tool/src/bundle/messages.properties:permission_tab_name"
+msgid "Name"
+msgstr "名前"
+
+#. permission_tab_realm_scope
+#: signup/tool/src/bundle/messages.properties:373
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:permission_tab_realm_scope"
+msgid "Scope"
+msgstr "スコープ"
+
+#. preAssign_note_backButton_message
+#: signup/tool/src/bundle/messages.properties:374
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:preAssign_note_backButton_message"
+msgid ""
+"- If you click the <B>Back</B> button, all pre-assigned participants will be"
+" lost."
+msgstr "- <B>戻る</B>ボタンをクリックすると，あらかじめ割り当てられたすべての出席者が失われます．"
+
+#. preAssign_note_max_number_message
+#: signup/tool/src/bundle/messages.properties:375
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:preAssign_note_max_number_message"
+msgid ""
+"- Meeting organizer can assign greater than specified maximum number of "
+"participants, if desired."
+msgstr "- もし希望するならば，ミーティングオーガナイザは指定された最大出席者数以上を割り当てられます．"
+
+#. preAssign_note_publish_message
+#: signup/tool/src/bundle/messages.properties:376
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:preAssign_note_publish_message"
+msgid "- Click 'Publish' to finalize the meeting(s) creation process."
+msgstr "- ミーティング作成処理を確定する場合は'公開'をクリックします．"
+
+#. print_event
+#: signup/tool/src/bundle/messages.properties:377
+msgctxt "signup/tool/src/bundle/messages.properties:print_event"
+msgid "&nbsp;Print"
+msgstr "&nbsp;印刷"
+
+#. print_friendly
+#: signup/tool/src/bundle/messages.properties:378
+msgctxt "signup/tool/src/bundle/messages.properties:print_friendly"
+msgid "Print this page"
+msgstr "このページだけを印刷する"
+
+#. public_modify_button
+#: signup/tool/src/bundle/messages.properties:379
+msgctxt "signup/tool/src/bundle/messages.properties:public_modify_button"
+msgid "Publish Modification"
+msgstr "修正を公開"
+
+#. publish.withAttendee.exception
+#: signup/tool/src/bundle/messages.properties:380
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:publish.withAttendee.exception"
+msgid "An unknown error has occurred.  Please try again."
+msgstr "未知のエラーが発生しました．再度試して下さい．"
+
+#. publish_button
+#: signup/tool/src/bundle/messages.properties:381
+msgctxt "signup/tool/src/bundle/messages.properties:publish_button"
+msgid "Publish"
+msgstr "公開"
+
+#. publish_processing_submit_message
+#: signup/tool/src/bundle/messages.properties:382
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:publish_processing_submit_message"
+msgid "Processing..."
+msgstr "処理しています..."
+
+#. publish_new_evnt_button
+#: signup/tool/src/bundle/messages.properties:383
+msgctxt "signup/tool/src/bundle/messages.properties:publish_new_evnt_button"
+msgid "Publish New Meeting"
+msgstr "新しいミーティングの公開"
+
+#. put_In_Multiple_Calendar_Blocks_at_ScheduleTool
+#: signup/tool/src/bundle/messages.properties:384
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:put_In_Multiple_Calendar_Blocks_at_ScheduleTool"
+msgid ""
+"Yes, publish the meeting as multiple calendar events in the Schedule Tool if"
+" adjacent timeslots are more than two hours apart."
+msgstr "はい，隣り合った時間帯が2時間以上離れていればスケジュールに複数のカレンダイベントとしてミーティングを公開します．"
+
+#. recurrence
+#: signup/tool/src/bundle/messages.properties:385
+msgctxt "signup/tool/src/bundle/messages.properties:recurrence"
+msgid "Recurring meetings"
+msgstr "繰り返されるミーティング"
+
+#. remove_waitlist_button
+#: signup/tool/src/bundle/messages.properties:386
+msgctxt "signup/tool/src/bundle/messages.properties:remove_waitlist_button"
+msgid "Remove from Wait List"
+msgstr "順番待一覧から削除"
+
+#. required1
+#: signup/tool/src/bundle/messages.properties:387
+msgctxt "signup/tool/src/bundle/messages.properties:required1"
+msgid "A"
+msgstr "注意:"
+
+#. required2
+#: signup/tool/src/bundle/messages.properties:388
+msgctxt "signup/tool/src/bundle/messages.properties:required2"
+msgid "indicates required information."
+msgstr "は必須情報です．"
+
+#. save_button
+#: signup/tool/src/bundle/messages.properties:389
+msgctxt "signup/tool/src/bundle/messages.properties:save_button"
+msgid "Save"
+msgstr "保存"
+
+#. select.atleast.oneGroup
+#: signup/tool/src/bundle/messages.properties:390
+msgctxt "signup/tool/src/bundle/messages.properties:select.atleast.oneGroup"
+msgid "Please select at least a Site or Group before clicking <B>Next</B>."
+msgstr "<B>次</B>をクリックする前に少なくともサイトかグループを一つ選択して下さい．"
+
+#. select.atleast.oneGroup.for.copyMeeting
+#: signup/tool/src/bundle/messages.properties:391
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:select.atleast.oneGroup.for.copyMeeting"
+msgid ""
+"Please select at least a Site or Group before clicking <B>Publish New "
+"Meeting</B>."
+msgstr "<B>新しいミーティングの公開</B>.をクリックする前に少なくともサイトかグループを一つ選択して下さい．"
+
+#. select_category
+#: signup/tool/src/bundle/messages.properties:392
+msgctxt "signup/tool/src/bundle/messages.properties:select_category"
+msgid "-- select category --"
+msgstr "-- カテゴリを選択する --"
+
+#. select_location
+#: signup/tool/src/bundle/messages.properties:393
+msgctxt "signup/tool/src/bundle/messages.properties:select_location"
+msgid "-- select location --"
+msgstr "-- 場所の選択 --"
+
+#. sheet_name_Attendance_data
+#: signup/tool/src/bundle/messages.properties:394
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:sheet_name_Attendance_data"
+msgid "Attendance"
+msgstr "出席者"
+
+#. sheet_name_Attendee_schedules
+#: signup/tool/src/bundle/messages.properties:395
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:sheet_name_Attendee_schedules"
+msgid "Attendees' Schedules"
+msgstr "出席者スケジュール"
+
+#. signup.deadline.is.before.signup.begin
+#: signup/tool/src/bundle/messages.properties:396
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:signup.deadline.is.before.signup.begin"
+msgid "Sign-up Ends time must occur after Sign-up Begins time."
+msgstr "サインアップ終了時刻はサインアップ開始時刻より後でなければなりません．"
+
+#. signup.validator.stringWithSpaceOnly
+#: signup/tool/src/bundle/messages.properties:397
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:signup.validator.stringWithSpaceOnly"
+msgid "Only space(s) as input is not allowed."
+msgstr "スペースだけの入力は許可されていません．"
+
+#. signup_download
+#: signup/tool/src/bundle/messages.properties:398
+msgctxt "signup/tool/src/bundle/messages.properties:signup_download"
+msgid "Export Meetings"
+msgstr "ミーティングエクスポート"
+
+#. signup_start_deadline
+#: signup/tool/src/bundle/messages.properties:399
+msgctxt "signup/tool/src/bundle/messages.properties:signup_start_deadline"
+msgid "Sign-up Start & Deadline"
+msgstr "サインアップ開始および締切"
+
+#. signup_tool
+#: signup/tool/src/bundle/messages.properties:400
+msgctxt "signup/tool/src/bundle/messages.properties:signup_tool"
+msgid "Meetings"
+msgstr "ミーティング"
+
+#. site_selection
+#: signup/tool/src/bundle/messages.properties:401
+msgctxt "signup/tool/src/bundle/messages.properties:site_selection"
+msgid "Site Selection"
+msgstr "サイト選択"
+
+#. someone.already.changed.ts.cancel_status
+#: signup/tool/src/bundle/messages.properties:402
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.changed.ts.cancel_status"
+msgid ""
+"Someone has just changed the cancellation status of this time slot. Please "
+"check it again and change as necessary."
+msgstr "誰かがこの時間帯のキャンセルステータスを変更しました．再度チェックし，必要に応じて変更して下さい．"
+
+#. someone.already.changed.ts.lock_status
+#: signup/tool/src/bundle/messages.properties:403
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.changed.ts.lock_status"
+msgid "The lock status of this time slot has changed. Please check it again."
+msgstr "この時間帯のロックステータスが変更されました．再度チェックして下さい．"
+
+#. someone.already.remove_you
+#: signup/tool/src/bundle/messages.properties:404
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.remove_you"
+msgid "Someone has already removed the intended participant."
+msgstr "誰かが予定された出席者をすでに削除しました．"
+
+#. someone.already.removed_or_promoted_attendee
+#: signup/tool/src/bundle/messages.properties:405
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.removed_or_promoted_attendee"
+msgid "The participant has been deleted or promoted."
+msgstr "出席者が削除されたか移動されました．"
+
+#. someone.already.taken.theTimeslot
+#: signup/tool/src/bundle/messages.properties:406
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.taken.theTimeslot"
+msgid ""
+"The time slot has already been taken and is not available. Please join the "
+"Wait List to be notified of a cancellation."
+msgstr "時間帯はすでに取られており利用できません．キャンセル待リストに加わってください．"
+
+#. someone.already.updated.db
+#: signup/tool/src/bundle/messages.properties:407
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.already.updated.db"
+msgid ""
+"Someone else has modified the meeting. Please update the meeting and try "
+"again."
+msgstr "誰かがミーティングを更新しました．ミーティングを更新し再度試してみて下さい．"
+
+#. someone.modified.event
+#: signup/tool/src/bundle/messages.properties:408
+msgctxt "signup/tool/src/bundle/messages.properties:someone.modified.event"
+msgid "Someone else has modified the meeting. Please refresh your screen."
+msgstr "誰かがミーティングを更新しました．スクリーンを更新して下さい．"
+
+#. someone.modified.event.content
+#: signup/tool/src/bundle/messages.properties:409
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:someone.modified.event.content"
+msgid "Someone else has modified the meeting content.  Please try again."
+msgstr "誰かがミーティングを更新しました．再度試してみて下さい．"
+
+#. star_character
+#: signup/tool/src/bundle/messages.properties:410
+msgctxt "signup/tool/src/bundle/messages.properties:star_character"
+msgid "*"
+msgstr "*"
+
+#. summary
+#: signup/tool/src/bundle/messages.properties:411
+msgctxt "signup/tool/src/bundle/messages.properties:summary"
+msgid "Summary"
+msgstr "サマリ"
+
+#. tab_attendee
+#: signup/tool/src/bundle/messages.properties:412
+msgctxt "signup/tool/src/bundle/messages.properties:tab_attendee"
+msgid "Participants"
+msgstr "出席者"
+
+#. tab_attendees
+#: signup/tool/src/bundle/messages.properties:413
+msgctxt "signup/tool/src/bundle/messages.properties:tab_attendees"
+msgid "Participants"
+msgstr "出席者"
+
+#. tab_attendees_eids
+#: signup/tool/src/bundle/messages.properties:414
+msgctxt "signup/tool/src/bundle/messages.properties:tab_attendees_eids"
+msgid "Participants User IDs"
+msgstr "出席者ユーザID"
+
+#. tab_end_time
+#: signup/tool/src/bundle/messages.properties:415
+msgctxt "signup/tool/src/bundle/messages.properties:tab_end_time"
+msgid "End Time"
+msgstr "終了時刻"
+
+#. tab_event_action
+#: signup/tool/src/bundle/messages.properties:416
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_action"
+msgid "Action"
+msgstr "操作"
+
+#. tab_event_availability
+#: signup/tool/src/bundle/messages.properties:417
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_availability"
+msgid "Status"
+msgstr "状態"
+
+#. tab_event_available_slots
+#: signup/tool/src/bundle/messages.properties:418
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_available_slots"
+msgid "Available Places"
+msgstr "利用可能な場所"
+
+#. tab_event_category
+#: signup/tool/src/bundle/messages.properties:419
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_category"
+msgid "Category"
+msgstr "カテゴリ"
+
+#. tab_event_date
+#: signup/tool/src/bundle/messages.properties:420
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_date"
+msgid "Date"
+msgstr "日時"
+
+#. tab_event_location
+#: signup/tool/src/bundle/messages.properties:421
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_location"
+msgid "Location"
+msgstr "場所"
+
+#. tab_event_location_custom
+#: signup/tool/src/bundle/messages.properties:422
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_location_custom"
+msgid "enter a new location"
+msgstr "新しい場所を入力する"
+
+#. tab_event_name
+#: signup/tool/src/bundle/messages.properties:423
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_name"
+msgid "Meeting Title"
+msgstr "ミーティング議題"
+
+#. tab_event_owner
+#: signup/tool/src/bundle/messages.properties:424
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_owner"
+msgid "Organizer"
+msgstr "主催者"
+
+#. tab_event_remove
+#: signup/tool/src/bundle/messages.properties:425
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_remove"
+msgid "Remove"
+msgstr "削除"
+
+#. tab_event_signed_attendee
+#: signup/tool/src/bundle/messages.properties:426
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_signed_attendee"
+msgid "Participants"
+msgstr "出席者"
+
+#. tab_event_time
+#: signup/tool/src/bundle/messages.properties:427
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_time"
+msgid "Time"
+msgstr "時刻"
+
+#. tab_event_your_appointment_time
+#: signup/tool/src/bundle/messages.properties:428
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:tab_event_your_appointment_time"
+msgid "Time"
+msgstr "時刻"
+
+#. tab_event_your_status
+#: signup/tool/src/bundle/messages.properties:429
+msgctxt "signup/tool/src/bundle/messages.properties:tab_event_your_status"
+msgid "Your Status"
+msgstr "あなたの状態"
+
+#. tab_max_attendee
+#: signup/tool/src/bundle/messages.properties:430
+msgctxt "signup/tool/src/bundle/messages.properties:tab_max_attendee"
+msgid "Max # of Participants"
+msgstr "出席者の最大数"
+
+#. tab_max_participants
+#: signup/tool/src/bundle/messages.properties:431
+msgctxt "signup/tool/src/bundle/messages.properties:tab_max_participants"
+msgid "Max # Of<br>Participants"
+msgstr "出席者の<br>最大数"
+
+#. tab_start_time
+#: signup/tool/src/bundle/messages.properties:432
+msgctxt "signup/tool/src/bundle/messages.properties:tab_start_time"
+msgid "Start Time"
+msgstr "開始時刻"
+
+#. tab_time_slot
+#: signup/tool/src/bundle/messages.properties:433
+msgctxt "signup/tool/src/bundle/messages.properties:tab_time_slot"
+msgid "Time Slot"
+msgstr "時間帯"
+
+#. tab_waiting_list
+#: signup/tool/src/bundle/messages.properties:434
+msgctxt "signup/tool/src/bundle/messages.properties:tab_waiting_list"
+msgid "Wait List"
+msgstr "順番待一覧"
+
+#. tab_waiting_list_disabled
+#: signup/tool/src/bundle/messages.properties:435
+msgctxt "signup/tool/src/bundle/messages.properties:tab_waiting_list_disabled"
+msgid "&nbsp;[disabled]"
+msgstr "&nbsp;[無効]"
+
+#. timeperiod_divider
+#: signup/tool/src/bundle/messages.properties:436
+msgctxt "signup/tool/src/bundle/messages.properties:timeperiod_divider"
+msgid "&nbsp;&nbsp;-&nbsp;&nbsp;"
+msgstr "&nbsp;&nbsp;-&nbsp;&nbsp;"
+
+#. timeslot.just.canceled
+#: signup/tool/src/bundle/messages.properties:437
+msgctxt "signup/tool/src/bundle/messages.properties:timeslot.just.canceled"
+msgid "This time slot has been canceled and is no longer available."
+msgstr "この時間帯はキャンセルされ利用できません．"
+
+#. timeslot.just.locked
+#: signup/tool/src/bundle/messages.properties:438
+msgctxt "signup/tool/src/bundle/messages.properties:timeslot.just.locked"
+msgid "This time slot has been locked and is not available."
+msgstr "この時間帯はロックされ利用できません．"
+
+#. title_tip_click_hide_schedule
+#: signup/tool/src/bundle/messages.properties:439
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:title_tip_click_hide_schedule"
+msgid "Click to hide schedule details."
+msgstr "スケジュールの詳細を非表示にする場合はクリックします．"
+
+#. title_tip_click_show_schedule
+#: signup/tool/src/bundle/messages.properties:440
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:title_tip_click_show_schedule"
+msgid "Click to show schedule details."
+msgstr "スケジュールの詳細を表示する場合はクリックします．"
+
+#. title_tip_delete_this_ts
+#: signup/tool/src/bundle/messages.properties:441
+msgctxt "signup/tool/src/bundle/messages.properties:title_tip_delete_this_ts"
+msgid "delete the timeslot."
+msgstr "時間帯の削除"
+
+#. tool_tip_add_waitlist
+#: signup/tool/src/bundle/messages.properties:442
+msgctxt "signup/tool/src/bundle/messages.properties:tool_tip_add_waitlist"
+msgid "Add to Wait List"
+msgstr "順番待一覧に追加"
+
+#. unlimited_num_attendee
+#: signup/tool/src/bundle/messages.properties:443
+msgctxt "signup/tool/src/bundle/messages.properties:unlimited_num_attendee"
+msgid "Unlimited number of participants"
+msgstr "出席者数制限なし"
+
+#. user.has.no.permission.attend
+#: signup/tool/src/bundle/messages.properties:444
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:user.has.no.permission.attend"
+msgid "The user:{0} has no permission to attend this event. "
+msgstr "ユーザ:{0}はこのイベントに参加する権限がありません． "
+
+#. user.not.allowed.to.waitlist
+#: signup/tool/src/bundle/messages.properties:445
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:user.not.allowed.to.waitlist"
+msgid "The ability to join the Wait List has been disabled by the organizer."
+msgstr "順番待一覧に加わる機能はオーガナイザによって非表示になりました．"
+
+#. user.not.found
+#: signup/tool/src/bundle/messages.properties:446
+msgctxt "signup/tool/src/bundle/messages.properties:user.not.found"
+msgid "User is not found"
+msgstr "ユーザが見つかりません"
+
+#. view_all
+#: signup/tool/src/bundle/messages.properties:447
+msgctxt "signup/tool/src/bundle/messages.properties:view_all"
+msgid "All"
+msgstr "すべてのセクション"
+
+#. view_all_future_meetings
+#: signup/tool/src/bundle/messages.properties:448
+msgctxt "signup/tool/src/bundle/messages.properties:view_all_future_meetings"
+msgid "All Future Meetings"
+msgstr "すべての将来のミーティング"
+
+#. view_current_month
+#: signup/tool/src/bundle/messages.properties:449
+msgctxt "signup/tool/src/bundle/messages.properties:view_current_month"
+msgid "Next 30 Days"
+msgstr "次の 30 日間"
+
+#. view_current_three_months
+#: signup/tool/src/bundle/messages.properties:450
+msgctxt "signup/tool/src/bundle/messages.properties:view_current_three_months"
+msgid "Next 90 Days"
+msgstr "次の 90 日間"
+
+#. view_immediate_avail_ones
+#: signup/tool/src/bundle/messages.properties:451
+msgctxt "signup/tool/src/bundle/messages.properties:view_immediate_avail_ones"
+msgid "Meetings Available For Sign-up"
+msgstr "サインアップ可能なミーティング"
+
+#. view_my_signed_up
+#: signup/tool/src/bundle/messages.properties:452
+msgctxt "signup/tool/src/bundle/messages.properties:view_my_signed_up"
+msgid "View Meetings I Am Signed Up For"
+msgstr "サインアップしたミーティングを表示"
+
+#. view_previous_events
+#: signup/tool/src/bundle/messages.properties:453
+msgctxt "signup/tool/src/bundle/messages.properties:view_previous_events"
+msgid "All Past Meetings"
+msgstr "すべての過去のミーティング"
+
+#. view_semi_year
+#: signup/tool/src/bundle/messages.properties:454
+msgctxt "signup/tool/src/bundle/messages.properties:view_semi_year"
+msgid "Current Semester"
+msgstr "現在の学期"
+
+#. waitlist.option.just.turn.off
+#: signup/tool/src/bundle/messages.properties:455
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:waitlist.option.just.turn.off"
+msgid "The Wait List option is just removed."
+msgstr "順番待一覧オプションが削除されました．"
+
+#. warn_copy_recurred_event
+#: signup/tool/src/bundle/messages.properties:456
+msgctxt "signup/tool/src/bundle/messages.properties:warn_copy_recurred_event"
+msgid ""
+"You are copying a set of recurring meetings. Please check the recurring "
+"start/end dates and modify them accordingly."
+msgstr "一連の繰り返されるミーティングをコピーします．繰り返しの開始日時/終了日時をチェックし，適切にそれらを修正して下さい．"
+
+#. warn_reschedule_event
+#: signup/tool/src/bundle/messages.properties:457
+msgctxt "signup/tool/src/bundle/messages.properties:warn_reschedule_event"
+msgid ""
+"Some people may have already signed up in the meeting(s). You may need to "
+"contact them about the rescheduling."
+msgstr "ある人がすでにミーティンにサインアップしています．スケジュール変更について彼らに連絡する必要があります．"
+
+#. warning.event.crossed_twoDays
+#: signup/tool/src/bundle/messages.properties:458
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.event.crossed_twoDays"
+msgid "The meeting is scheduled across two different days."
+msgstr "ミーティングは異なる2日にてスケジュールされます．"
+
+#. warning.event.crossed_twoMonths
+#: signup/tool/src/bundle/messages.properties:459
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.event.crossed_twoMonths"
+msgid "The meeting is scheduled across two different months."
+msgstr "ミーティングは異なる2ヶ月にてスケジュールされます．"
+
+#. warning.event.crossed_twoYears
+#: signup/tool/src/bundle/messages.properties:460
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.event.crossed_twoYears"
+msgid "The meeting is scheduled across two different years."
+msgstr "ミーティングは異なる2年にてスケジュールされます．"
+
+#. warning.some_timeslot_may_locked_canceled
+#: signup/tool/src/bundle/messages.properties:461
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.some_timeslot_may_locked_canceled"
+msgid ""
+"One or more timeslot(s) in the copied meeting is either locked or canceled."
+msgstr "コピーされたミーティングのひとつ以上の時間帯はロックかキャンセルされています．"
+
+#. warning.your.event.singup.begin.time.passed.today.time
+#: signup/tool/src/bundle/messages.properties:462
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:warning.your.event.singup.begin.time.passed.today.time"
+msgid ""
+"Participants will be able to sign up for this meeting immediately because "
+"the Sign-up Begin time has already passed."
+msgstr "サインアップ開始時間がすでに過ぎているので，出席者はすぐにこのミーティングにサインアップできます．"
+
+#. wksheet_appointment_duration
+#: signup/tool/src/bundle/messages.properties:463
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:wksheet_appointment_duration"
+msgid "Duration (min)"
+msgstr "期間 (分)"
+
+#. wksheet_appointment_start_time
+#: signup/tool/src/bundle/messages.properties:464
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:wksheet_appointment_start_time"
+msgid "Appointment Time"
+msgstr "予約時間"
+
+#. wksheet_attendance_UserID
+#: signup/tool/src/bundle/messages.properties:465
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_attendance_UserID"
+msgid "UserID"
+msgstr "ユーザ ID"
+
+#. wksheet_category
+#: signup/tool/src/bundle/messages.properties:466
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_category"
+msgid "Category"
+msgstr "カテゴリ"
+
+#. wksheet_location
+#: signup/tool/src/bundle/messages.properties:467
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_location"
+msgid "Location"
+msgstr "場所"
+
+#. wksheet_meeting_duration
+#: signup/tool/src/bundle/messages.properties:468
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_meeting_duration"
+msgid "Event Duration (min)"
+msgstr "イベント期間 (分)"
+
+#. wksheet_meeting_name
+#: signup/tool/src/bundle/messages.properties:469
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_meeting_name"
+msgid "Event Name"
+msgstr "イベント名"
+
+#. wksheet_meeting_start_time
+#: signup/tool/src/bundle/messages.properties:470
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:wksheet_meeting_start_time"
+msgid "Event Start Time"
+msgstr "イベント開始日時"
+
+#. wksheet_num_of_attendees
+#: signup/tool/src/bundle/messages.properties:471
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_num_of_attendees"
+msgid "#Num Attendees in Slot"
+msgstr "時間帯の参加者数"
+
+#. wksheet_organizer
+#: signup/tool/src/bundle/messages.properties:472
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_organizer"
+msgid "Organizer"
+msgstr "主催者"
+
+#. wksheet_site_name
+#: signup/tool/src/bundle/messages.properties:473
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_site_name"
+msgid "Site Title"
+msgstr "サイトタイトル"
+
+#. wksheet_user_comment
+#: signup/tool/src/bundle/messages.properties:474
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_user_comment"
+msgid "Attendees' Comment"
+msgstr "参加者コメント"
+
+#. wksheet_user_email
+#: signup/tool/src/bundle/messages.properties:475
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_user_email"
+msgid "Email"
+msgstr "メール"
+
+#. wksheet_user_id
+#: signup/tool/src/bundle/messages.properties:476
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_user_id"
+msgid "Attendees' User ID"
+msgstr "参加者ユーザID"
+
+#. wksheet_user_name
+#: signup/tool/src/bundle/messages.properties:477
+msgctxt "signup/tool/src/bundle/messages.properties:wksheet_user_name"
+msgid "Attendee Name"
+msgstr "参加者名"
+
+#. you.already.in_waiting_list
+#: signup/tool/src/bundle/messages.properties:478
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:you.already.in_waiting_list"
+msgid "You are already on the Wait List."
+msgstr "あなたはすでに順番待一覧にあります．"
+
+#. you.have.multiple.tabs.in.browser
+#: signup/tool/src/bundle/messages.properties:479
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:you.have.multiple.tabs.in.browser"
+msgid ""
+"You have multiple {0} tabs open in your browser.  Please close the extra {0}"
+" tabs and try again."
+msgstr "ブラウザで複数{0} のタブを開いています．余分な{0}タブを閉じて再度試行して下さい．"
+
+#. you.need.select.one.toDownload
+#: signup/tool/src/bundle/messages.properties:480
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:you.need.select.one.toDownload"
+msgid ""
+"No meetings have been selected. Please select at least one meeting to "
+"export."
+msgstr "ミーティングが選択されていません．少なくともエキスポートするミーティングを一つ選択して下さい．"
+
+#. you.promoted.to.another.ts_meanwhile
+#: signup/tool/src/bundle/messages.properties:481
+msgctxt ""
+"signup/tool/src/bundle/messages.properties:you.promoted.to.another.ts_meanwhile"
+msgid ""
+"You have been promoted from the Wait List in another timeslot. You cannot "
+"sign up for this timeslot."
+msgstr "他の時間帯の順番待一覧から移動されました．この時間帯にはサインアップできません．"
+
+#. you_need_to_login
+#: signup/tool/src/bundle/messages.properties:482
+msgctxt "signup/tool/src/bundle/messages.properties:you_need_to_login"
+msgid "You need to log-in to view the meetings."
+msgstr "ミーティングを閲覧するには，あなたはログインする必要があります．"

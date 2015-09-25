@@ -1,0 +1,1733 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. useact.newuse
+#: user/user-tool/tool/src/bundle/admin.properties:1
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.newuse"
+msgid "New User"
+msgstr "New User"
+
+#. useact.remuse
+#: user/user-tool/tool/src/bundle/admin.properties:2
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.remuse"
+msgid "Remove User"
+msgstr "Remove User"
+
+#. useact.remuse.list.summary
+#: user/user-tool/tool/src/bundle/admin.properties:3
+msgctxt ""
+"user/user-tool/tool/src/bundle/admin.properties:useact.remuse.list.summary"
+msgid ""
+"List of users to be removed. First column: user ID. Second column: user "
+"name. Third column: user email."
+msgstr ""
+"List of users to be removed. First column: user ID. Second column: user "
+"name. Third column: user email."
+
+#. useact.theuseid1
+#: user/user-tool/tool/src/bundle/admin.properties:4
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.theuseid1"
+msgid "The user id is already in use"
+msgstr "The user id is already in use"
+
+#. useact.theuseemail1
+#: user/user-tool/tool/src/bundle/admin.properties:5
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.theuseemail1"
+msgid "The user email is already in use"
+msgstr "The user email is already in use"
+
+#. useact.theuseid2
+#: user/user-tool/tool/src/bundle/admin.properties:6
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.theuseid2"
+msgid "The user id is invalid"
+msgstr "The user id is invalid"
+
+#. useact.use_notfou
+#: user/user-tool/tool/src/bundle/admin.properties:7
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.use_notfou"
+msgid "User {0} not found"
+msgstr "User {0} not found"
+
+#. useact.youdonot1
+#: user/user-tool/tool/src/bundle/admin.properties:8
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.youdonot1"
+msgid "You do not have permission to edit User {0}"
+msgstr "You do not have permission to edit User {0}"
+
+#. useact.youdonot2
+#: user/user-tool/tool/src/bundle/admin.properties:9
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.youdonot2"
+msgid "You do not have permission to remove User {0}"
+msgstr "You do not have permission to remove User {0}"
+
+#. useact.youdonot3
+#: user/user-tool/tool/src/bundle/admin.properties:10
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.youdonot3"
+msgid "You do not have permission to edit this User"
+msgstr "You do not have permission to edit this User"
+
+#. useact.youdonot4
+#: user/user-tool/tool/src/bundle/admin.properties:11
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.youdonot4"
+msgid "Only admins can change information for admin users"
+msgstr "Only admins can change information for admin users"
+
+#. useact.tryloginagain
+#: user/user-tool/tool/src/bundle/admin.properties:12
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.tryloginagain"
+msgid ""
+"Account created, but unable to process the login.  Please try to login "
+"again."
+msgstr ""
+"Account created, but unable to process the login.  Please try to login "
+"again."
+
+#. useact.invemail
+#: user/user-tool/tool/src/bundle/admin.properties:13
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.invemail"
+msgid "The email address is invalid"
+msgstr "The email address is invalid"
+
+#. useact.capterr
+#: user/user-tool/tool/src/bundle/admin.properties:14
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.capterr"
+msgid "There was a problem with the captcha."
+msgstr "There was a problem with the captcha."
+
+#. useact.search
+#: user/user-tool/tool/src/bundle/admin.properties:15
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.search"
+msgid "Search for users"
+msgstr "Search for users"
+
+#. useconrem.alert
+#: user/user-tool/tool/src/bundle/admin.properties:16
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useconrem.alert"
+msgid "Alert:"
+msgstr "Alert:"
+
+#. useconrem.can
+#: user/user-tool/tool/src/bundle/admin.properties:17
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useconrem.can"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. usecre.firnam
+#: user/user-tool/tool/src/bundle/admin.properties:18
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.firnam"
+msgid "First Name"
+msgstr "First Name"
+
+#. usecre.lasnam
+#: user/user-tool/tool/src/bundle/admin.properties:19
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.lasnam"
+msgid "Last Name"
+msgstr "Last Name"
+
+#. useconrem.nam
+#: user/user-tool/tool/src/bundle/admin.properties:20
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useconrem.nam"
+msgid "Name"
+msgstr "Name"
+
+#. useedi.cre
+#: user/user-tool/tool/src/bundle/admin.properties:21
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.cre"
+msgid "Created"
+msgstr "Created"
+
+#. useedi.creby
+#: user/user-tool/tool/src/bundle/admin.properties:22
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.creby"
+msgid "Created By"
+msgstr "Created By"
+
+#. useconrem.useid
+#: user/user-tool/tool/src/bundle/admin.properties:23
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useconrem.useid"
+msgid "User Id"
+msgstr "User Id"
+
+#. useconrem.useuid
+#: user/user-tool/tool/src/bundle/admin.properties:24
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useconrem.useuid"
+msgid "Internal Id"
+msgstr "Internal Id"
+
+#. useact.somels
+#: user/user-tool/tool/src/bundle/admin.properties:25
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useact.somels"
+msgid "Someone else is currently editing this User: {0}"
+msgstr "Someone else is currently editing this User: {0}"
+
+#. useedi.mod
+#: user/user-tool/tool/src/bundle/admin.properties:26
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.mod"
+msgid "Modified"
+msgstr "Modified"
+
+#. useedi.modby
+#: user/user-tool/tool/src/bundle/admin.properties:27
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.modby"
+msgid "Modified By"
+msgstr "Modified By"
+
+#. usecre.typ
+#: user/user-tool/tool/src/bundle/admin.properties:28
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.typ"
+msgid "Type"
+msgstr "Type"
+
+#. usecre.vercurpass
+#: user/user-tool/tool/src/bundle/admin.properties:29
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.vercurpass"
+msgid "Enter Current Password"
+msgstr "Enter Current Password"
+
+#. usecre.crenewpass
+#: user/user-tool/tool/src/bundle/admin.properties:30
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.crenewpass"
+msgid "Create New Password"
+msgstr "Create New Password"
+
+#. usecre.vernewpass
+#: user/user-tool/tool/src/bundle/admin.properties:31
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.vernewpass"
+msgid "Verify New Password"
+msgstr "Verify New Password"
+
+#. useconrem.ema
+#: user/user-tool/tool/src/bundle/admin.properties:32
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useconrem.ema"
+msgid "Email"
+msgstr "Email"
+
+#. usecre.disableFailed
+#: user/user-tool/tool/src/bundle/admin.properties:33
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.disableFailed"
+msgid "The new user was created, but the Disabled Proerty was not set."
+msgstr "The new user was created, but the Disabled Proerty was not set."
+
+#. useconrem.areyousur
+#: user/user-tool/tool/src/bundle/admin.properties:34
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useconrem.areyousur"
+msgid "Are you sure you want to remove the following user:"
+msgstr "Are you sure you want to remove the following user:"
+
+#. useconrem.rem
+#: user/user-tool/tool/src/bundle/admin.properties:35
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useconrem.rem"
+msgid "Remove"
+msgstr "Remove"
+
+#. usecre.creaco
+#: user/user-tool/tool/src/bundle/admin.properties:36
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.creaco"
+msgid "Create Account"
+msgstr "Create Account"
+
+#. usecre.entthe
+#: user/user-tool/tool/src/bundle/admin.properties:37
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.entthe"
+msgid "Enter the following information to create a new account."
+msgstr "Enter the following information to create a new account."
+
+#. usecre.instruc
+#: user/user-tool/tool/src/bundle/admin.properties:38
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.instruc"
+msgid "Indicates a required field."
+msgstr "Indicates a required field."
+
+#. usecre.pass
+#: user/user-tool/tool/src/bundle/admin.properties:39
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.pass"
+msgid "Please enter the password the same in both fields."
+msgstr "Please enter the password the same in both fields."
+
+#. usecre.curpass
+#: user/user-tool/tool/src/bundle/admin.properties:40
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.curpass"
+msgid "Please enter your current password to make changes to your account."
+msgstr "Please enter your current password to make changes to your account."
+
+#. usecre.pasismis
+#: user/user-tool/tool/src/bundle/admin.properties:41
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.pasismis"
+msgid "Please enter a password."
+msgstr "Please enter a password."
+
+#. usecre.eidmis
+#: user/user-tool/tool/src/bundle/admin.properties:42
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usecre.eidmis"
+msgid "Please enter a user id."
+msgstr "Please enter a user id."
+
+#. useedi.can
+#: user/user-tool/tool/src/bundle/admin.properties:43
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.can"
+msgid "Cancel Changes"
+msgstr "Cancel Changes"
+
+#. useedi.pass
+#: user/user-tool/tool/src/bundle/admin.properties:44
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.pass"
+msgid "Passwords Must Match"
+msgstr "Passwords Must Match"
+
+#. useedi.revandmod
+#: user/user-tool/tool/src/bundle/admin.properties:45
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.revandmod"
+msgid "Account Details"
+msgstr "Account Details"
+
+#. useedi.revuseinf
+#: user/user-tool/tool/src/bundle/admin.properties:46
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.revuseinf"
+msgid "Review User Information"
+msgstr "Review User Information"
+
+#. useedi.sav
+#: user/user-tool/tool/src/bundle/admin.properties:47
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.sav"
+msgid "Update Details"
+msgstr "Update Details"
+
+#. useedi.sav2
+#: user/user-tool/tool/src/bundle/admin.properties:48
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.sav2"
+msgid "Save Details"
+msgstr "Save Details"
+
+#. useedi.edit
+#: user/user-tool/tool/src/bundle/admin.properties:49
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useedi.edit"
+msgid "Edit Account"
+msgstr "Edit Account"
+
+#. uselis.users
+#: user/user-tool/tool/src/bundle/admin.properties:50
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.users"
+msgid "Users"
+msgstr "Users"
+
+#. uselis.lisof
+#: user/user-tool/tool/src/bundle/admin.properties:51
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.lisof"
+msgid ""
+"List of Users. First column: user ID. Second: the name. Third: email "
+"address. Fourth: user type."
+msgstr ""
+"List of Users. First column: user ID. Second: the name. Third: email "
+"address. Fourth: user type."
+
+#. uselis.nouse
+#: user/user-tool/tool/src/bundle/admin.properties:52
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.nouse"
+msgid "No users are defined that meet the search criteria."
+msgstr "No users are defined that meet the search criteria."
+
+#. uselis.theare
+#: user/user-tool/tool/src/bundle/admin.properties:53
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.theare"
+msgid ""
+"These are the Users defined within the system that meet the search criteria."
+"  Click a User Id to edit or view detail.\t<br/>Note: users defined by an "
+"external user authority are not listed here."
+msgstr ""
+"These are the Users defined within the system that meet the search criteria."
+"  Click a User Id to edit or view detail.\t<br/>Note: users defined by an "
+"external user authority are not listed here."
+
+#. uselis.show
+#: user/user-tool/tool/src/bundle/admin.properties:54
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.show"
+msgid "show {0} items...."
+msgstr "show {0} items...."
+
+#. uselis.listnavselect
+#: user/user-tool/tool/src/bundle/admin.properties:55
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.listnavselect"
+msgid ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+msgstr ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+
+#. uselis.first
+#: user/user-tool/tool/src/bundle/admin.properties:56
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.first"
+msgid "First"
+msgstr "First"
+
+#. uselis.previous
+#: user/user-tool/tool/src/bundle/admin.properties:57
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.previous"
+msgid "Previous"
+msgstr "Previous"
+
+#. uselis.next
+#: user/user-tool/tool/src/bundle/admin.properties:58
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.next"
+msgid "Next"
+msgstr "Next"
+
+#. uselis.last
+#: user/user-tool/tool/src/bundle/admin.properties:59
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:uselis.last"
+msgid "Last"
+msgstr "Last"
+
+#. uselis.list.youare_of_results
+#: user/user-tool/tool/src/bundle/admin.properties:60
+msgctxt ""
+"user/user-"
+"tool/tool/src/bundle/admin.properties:uselis.list.youare_of_results"
+msgid "You are viewing {0} - {1} of {2} results."
+msgstr "You are viewing {0} - {1} of {2} results."
+
+#. usevie.ema
+#: user/user-tool/tool/src/bundle/admin.properties:61
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usevie.ema"
+msgid "Email"
+msgstr "Email"
+
+#. usevie.mod2
+#: user/user-tool/tool/src/bundle/admin.properties:62
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usevie.mod2"
+msgid "Modify Details"
+msgstr "Modify Details"
+
+#. usevie.revandmod
+#: user/user-tool/tool/src/bundle/admin.properties:63
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usevie.revandmod"
+msgid "My Account Details"
+msgstr "My Account Details"
+
+#. usevie.revandmod2
+#: user/user-tool/tool/src/bundle/admin.properties:64
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usevie.revandmod2"
+msgid "Review and modify this User's information."
+msgstr "Review and modify this User's information."
+
+#. usevie.use
+#: user/user-tool/tool/src/bundle/admin.properties:65
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usevie.use"
+msgid "User"
+msgstr "User"
+
+#. usevie.revuseinf
+#: user/user-tool/tool/src/bundle/admin.properties:66
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:usevie.revuseinf"
+msgid "Review User information"
+msgstr "Review User information"
+
+#. users.noaccess
+#: user/user-tool/tool/src/bundle/admin.properties:67
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:users.noaccess"
+msgid "You do not have permission to use this tool."
+msgstr "You do not have permission to use this tool."
+
+#. sitedipag.listnavselect
+#: user/user-tool/tool/src/bundle/admin.properties:68
+msgctxt ""
+"user/user-tool/tool/src/bundle/admin.properties:sitedipag.listnavselect"
+msgid ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+msgstr ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+
+#. useProperties
+#: user/user-tool/tool/src/bundle/admin.properties:69
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useProperties"
+msgid "Properties"
+msgstr "Properties"
+
+#. optional.attributes
+#: user/user-tool/tool/src/bundle/admin.properties:70
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:optional.attributes"
+msgid "Optional Attributes"
+msgstr "Optional Attributes"
+
+#. optional.attributes.add
+#: user/user-tool/tool/src/bundle/admin.properties:71
+msgctxt ""
+"user/user-tool/tool/src/bundle/admin.properties:optional.attributes.add"
+msgid "Add an attribute"
+msgstr "Add an attribute"
+
+#. optional.attributes.remove
+#: user/user-tool/tool/src/bundle/admin.properties:72
+msgctxt ""
+"user/user-tool/tool/src/bundle/admin.properties:optional.attributes.remove"
+msgid "Remove this attribute"
+msgstr "Remove this attribute"
+
+#. sitedi.pro
+#: user/user-tool/tool/src/bundle/admin.properties:73
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:sitedi.pro"
+msgid "User Properties"
+msgstr "User Properties"
+
+#. import.user.file
+#: user/user-tool/tool/src/bundle/admin.properties:74
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.user.file"
+msgid "Import from file"
+msgstr "Import from file"
+
+#. import.heading
+#: user/user-tool/tool/src/bundle/admin.properties:75
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.heading"
+msgid "Import from file"
+msgstr "Import from file"
+
+#. import.instr
+#: user/user-tool/tool/src/bundle/admin.properties:76
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.instr"
+msgid ""
+"Select a CSV file containing the details of the you users you wish to "
+"create."
+msgstr ""
+"Select a CSV file containing the details of the you users you wish to "
+"create."
+
+#. import.instr.req.header
+#: user/user-tool/tool/src/bundle/admin.properties:77
+msgctxt ""
+"user/user-tool/tool/src/bundle/admin.properties:import.instr.req.header"
+msgid "File requirements"
+msgstr "File requirements"
+
+#. import.instr.req.1
+#: user/user-tool/tool/src/bundle/admin.properties:78
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.instr.req.1"
+msgid ""
+"Include the following headings: user id, first name, last name, email, "
+"password, type. "
+msgstr ""
+"Include the following headings: user id, first name, last name, email, "
+"password, type. "
+
+#. import.instr.req.2
+#: user/user-tool/tool/src/bundle/admin.properties:79
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.instr.req.2"
+msgid ""
+"Column headings must match EXACTLY the list above. They do not need to be in"
+" the same order."
+msgstr ""
+"Column headings must match EXACTLY the list above. They do not need to be in"
+" the same order."
+
+#. import.instr.req.3
+#: user/user-tool/tool/src/bundle/admin.properties:80
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.instr.req.3"
+msgid ""
+"Fields must be comma separated, contain no spaces between fields and each "
+"field surrounded with double quotes if it is to contain a space."
+msgstr ""
+"Fields must be comma separated, contain no spaces between fields and each "
+"field surrounded with double quotes if it is to contain a space."
+
+#. import.instr.req.4
+#: user/user-tool/tool/src/bundle/admin.properties:81
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.instr.req.4"
+msgid ""
+"You can also add other columns and these will be stored as user properties, "
+"as long as the headings do not clash with the main set above. It can be any "
+"arbitrary data."
+msgstr ""
+"You can also add other columns and these will be stored as user properties, "
+"as long as the headings do not clash with the main set above. It can be any "
+"arbitrary data."
+
+#. import.file.continue
+#: user/user-tool/tool/src/bundle/admin.properties:82
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.file.continue"
+msgid "Continue"
+msgstr "Continue"
+
+#. import.failed
+#: user/user-tool/tool/src/bundle/admin.properties:83
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.failed"
+msgid "Failed to upload file"
+msgstr "Failed to upload file"
+
+#. import.file.button
+#: user/user-tool/tool/src/bundle/admin.properties:84
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.file.button"
+msgid "Import a file"
+msgstr "Import a file"
+
+#. import.error
+#: user/user-tool/tool/src/bundle/admin.properties:85
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.error"
+msgid ""
+"The file you uploaded was not readable. Please check the file is of the "
+"correct format, and try again."
+msgstr ""
+"The file you uploaded was not readable. Please check the file is of the "
+"correct format, and try again."
+
+#. import.user.list.accessibility
+#: user/user-tool/tool/src/bundle/admin.properties:86
+msgctxt ""
+"user/user-"
+"tool/tool/src/bundle/admin.properties:import.user.list.accessibility"
+msgid ""
+"List of Users to be imported. First column: user ID. Second: first name. "
+"Third: last name. Fourth: email address. Fifth: password. Sixth: user type."
+msgstr ""
+"List of Users to be imported. First column: user ID. Second: first name. "
+"Third: last name. Fourth: email address. Fifth: password. Sixth: user type."
+
+#. useconrem.pass
+#: user/user-tool/tool/src/bundle/admin.properties:87
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:useconrem.pass"
+msgid "Password"
+msgstr "Password"
+
+#. import.process.msg
+#: user/user-tool/tool/src/bundle/admin.properties:88
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.process.msg"
+msgid ""
+"The following data was found in the uploaded file. If this is correct, click"
+" 'Continue'. "
+msgstr ""
+"The following data was found in the uploaded file. If this is correct, click"
+" 'Continue'. "
+
+#. import.process.info
+#: user/user-tool/tool/src/bundle/admin.properties:89
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.process.info"
+msgid ""
+"Note that any users that already exist will be skipped and their original "
+"records left untouched."
+msgstr ""
+"Note that any users that already exist will be skipped and their original "
+"records left untouched."
+
+#. import.success
+#: user/user-tool/tool/src/bundle/admin.properties:90
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.success"
+msgid "The users were successfully imported."
+msgstr "The users were successfully imported."
+
+#. import.user.properties
+#: user/user-tool/tool/src/bundle/admin.properties:91
+msgctxt ""
+"user/user-tool/tool/src/bundle/admin.properties:import.user.properties"
+msgid "Properties"
+msgstr "Properties"
+
+#. false
+#: user/user-tool/tool/src/bundle/admin.properties:92
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:false"
+msgid "False"
+msgstr "False"
+
+#. true
+#: user/user-tool/tool/src/bundle/admin.properties:93
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:true"
+msgid "True"
+msgstr "True"
+
+#. disable.user
+#: user/user-tool/tool/src/bundle/admin.properties:94
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:disable.user"
+msgid "Disable User"
+msgstr "Disable User"
+
+#. disable
+#: user/user-tool/tool/src/bundle/admin.properties:95
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:disable"
+msgid "Disable"
+msgstr "Disable"
+
+#. disabled
+#: user/user-tool/tool/src/bundle/admin.properties:96
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:disabled"
+msgid "Disabled"
+msgstr "Disabled"
+
+#. pw.fail
+#: user/user-tool/tool/src/bundle/admin.properties:97
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:pw.fail"
+msgid "Password strength: too weak"
+msgstr "Password strength: too weak"
+
+#. pw.weak
+#: user/user-tool/tool/src/bundle/admin.properties:98
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:pw.weak"
+msgid "Password strength: weak"
+msgstr "Password strength: weak"
+
+#. pw.moderate
+#: user/user-tool/tool/src/bundle/admin.properties:99
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:pw.moderate"
+msgid "Password strength: moderate"
+msgstr "Password strength: moderate"
+
+#. pw.strong
+#: user/user-tool/tool/src/bundle/admin.properties:100
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:pw.strong"
+msgid "Password strength: strong"
+msgstr "Password strength: strong"
+
+#. pw.strengthInfo
+#: user/user-tool/tool/src/bundle/admin.properties:101
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:pw.strengthInfo"
+msgid ""
+"Strong passwords are long and/or use a mix of character types (ie. letters, "
+"numbers, symbols, etc.). They do not contain all or part of the user id."
+msgstr ""
+"Strong passwords are long and/or use a mix of character types (ie. letters, "
+"numbers, symbols, etc.). They do not contain all or part of the user id."
+
+#. pw.match
+#: user/user-tool/tool/src/bundle/admin.properties:102
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:pw.match"
+msgid "Passwords match"
+msgstr "Passwords match"
+
+#. pw.noMatch
+#: user/user-tool/tool/src/bundle/admin.properties:103
+msgctxt "user/user-tool/tool/src/bundle/admin.properties:pw.noMatch"
+msgid "Passwords do not match"
+msgstr "Passwords do not match"
+
+#. prefs_noti_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:1
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_noti_title"
+msgid "Notifications"
+msgstr "Notifications"
+
+#. prefs_tab_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:2
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_tab_title"
+msgid "Customize Tabs"
+msgstr "Customize Tabs"
+
+#. prefs_timezone_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:3
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_timezone_title"
+msgid "Time Zone"
+msgstr "Time Zone"
+
+#. prefs_lang_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:4
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_lang_title"
+msgid "Language"
+msgstr "Language"
+
+#. prefs_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:5
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:prefs_title"
+msgid "Preferences"
+msgstr "Preferences"
+
+#. prefs_privacy
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:6
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_privacy"
+msgid "Privacy Status"
+msgstr "Privacy Status"
+
+#. prefs_my_workspace
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:7
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_my_workspace"
+msgid "My Workspace"
+msgstr "My Workspace"
+
+#. prefs_fav_sites
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:8
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_fav_sites"
+msgid "Favorite Sites (in top bar)"
+msgstr "Favorite Sites (in top bar)"
+
+#. prefs_active_sites
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:9
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_active_sites"
+msgid "Active Sites (your drawer)"
+msgstr "Active Sites (your drawer)"
+
+#. prefs_archive_sites
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:10
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_archive_sites"
+msgid "Archived Sites (will display in Worksite Setup sorted alphabetically)"
+msgstr "Archived Sites (will display in Worksite Setup sorted alphabetically)"
+
+#. prefs_fav_sites_short
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:11
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_fav_sites_short"
+msgid "Favorite Sites"
+msgstr "Favorite Sites"
+
+#. prefs_active_sites_short
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:12
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_active_sites_short"
+msgid "Active Sites"
+msgstr "Active Sites"
+
+#. prefs_archive_sites_short
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:13
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_archive_sites_short"
+msgid "Archived Sites"
+msgstr "Archived Sites"
+
+#. prefs_checkbox_select_message
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:14
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_checkbox_select_message"
+msgid "Select {0} and move from {1}"
+msgstr "Select {0} and move from {1}"
+
+#. prefs_auto_refresh
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:15
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_auto_refresh"
+msgid ""
+"When you save your tab preferences, the entire page will automatically "
+"refresh to update the top navigation."
+msgstr ""
+"When you save your tab preferences, the entire page will automatically "
+"refresh to update the top navigation."
+
+#. prefs_mouse_instructions
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:16
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_mouse_instructions"
+msgid ""
+"<strong>Mouse instructions:</strong> Drag and drop items with the mouse."
+msgstr ""
+"<strong>Mouse instructions:</strong> Drag and drop items with the mouse."
+
+#. prefs_keyboard_instructions
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:17
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_keyboard_instructions"
+msgid ""
+"<strong>Keyboard instructions:</strong>Direction keys (arrow keys or "
+"i-j-k-m) move focus. CTRL + direction keys move the item up or down, or "
+"SHIFT + CTRL + direction keys to move between columns. "
+msgstr ""
+"<strong>Keyboard instructions:</strong>Direction keys (arrow keys or "
+"i-j-k-m) move focus. CTRL + direction keys move the item up or down, or "
+"SHIFT + CTRL + direction keys to move between columns. "
+
+#. prefs_multitples_instructions_scru
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:18
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_multitples_instructions_scru"
+msgid ""
+"<strong>Screen Reading Software: </strong>The standard keyboard controls "
+"described above may not work correctly with assistive technology. The "
+"suggested method for move sites is to follow the \"moving many\" "
+"instructions listed below. The movement links will be located under the "
+"\"Multiple Selection\" heading that will appear below all of these "
+"instructions once at least one checkbox is selected."
+msgstr ""
+"<strong>Screen Reading Software: </strong>The standard keyboard controls "
+"described above may not work correctly with assistive technology. The "
+"suggested method for move sites is to follow the \"moving many\" "
+"instructions listed below. The movement links will be located under the "
+"\"Multiple Selection\" heading that will appear below all of these "
+"instructions once at least one checkbox is selected."
+
+#. prefs_multitples_instructions_panel_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:19
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_multitples_instructions_panel_title"
+msgid "Multiple Section Movement Controls "
+msgstr "Multiple Section Movement Controls "
+
+#. prefs_multitples_instructions
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:20
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_multitples_instructions"
+msgid ""
+"<strong>Moving many:</strong> Use the checkboxes to make a multiple "
+"selection then use the arrows in the control panel that will appear to move."
+msgstr ""
+"<strong>Moving many:</strong> Use the checkboxes to make a multiple "
+"selection then use the arrows in the control panel that will appear to move."
+
+#. prefs_element_locked
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:21
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:prefs_element_locked"
+msgid ""
+"This element can not be placed here.  The element underneath is locked."
+msgstr ""
+"This element can not be placed here.  The element underneath is locked."
+
+#. update_pref
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:22
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:update_pref"
+msgid "Update Preferences"
+msgstr "Update Preferences"
+
+#. cancel_pref
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:23
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:cancel_pref"
+msgid "Cancel Changes"
+msgstr "Cancel Changes"
+
+#. update_success
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:24
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:update_success"
+msgid "Your preferences have been updated successfully."
+msgstr "Your preferences have been updated successfully."
+
+#. hideshowdesc_toggle_hide
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:25
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:hideshowdesc_toggle_hide"
+msgid "Hide Sites"
+msgstr "Hide Sites"
+
+#. hideshowdesc_toggle_show
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:26
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:hideshowdesc_toggle_show"
+msgid "Show Sites"
+msgstr "Show Sites"
+
+#. noti_inst_second
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:27
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:noti_inst_second"
+msgid ""
+"You will receive all high priority notifications via email. Set low priority"
+" notifications below. "
+msgstr ""
+"You will receive all high priority notifications via email. Set low priority"
+" notifications below. "
+
+#. noti_add_site
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:28
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:noti_add_site"
+msgid "Add a site"
+msgstr "Add a site"
+
+#. moresite_projects
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:29
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:moresite_projects"
+msgid "PROJECTS"
+msgstr "PROJECTS"
+
+#. moresite_portfolios
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:30
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:moresite_portfolios"
+msgid "PORTFOLIOS"
+msgstr "PORTFOLIOS"
+
+#. moresite_administration
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:31
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:moresite_administration"
+msgid "ADMINISTRATION"
+msgstr "ADMINISTRATION"
+
+#. moresite_other
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:32
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:moresite_other"
+msgid "OTHER"
+msgstr "OTHER"
+
+#. moresite_scs
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:33
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:moresite_scs"
+msgid "SCS Courses"
+msgstr "SCS Courses"
+
+#. moresite_no_term
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:34
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:moresite_no_term"
+msgid "COURSES WITH NO TERM"
+msgstr "COURSES WITH NO TERM"
+
+#. noti_prefs_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:35
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:noti_prefs_title"
+msgid "Override {0} Preferences: Add Site(s)"
+msgstr "Override {0} Preferences: Add Site(s)"
+
+#. noti_prefs_instr
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:36
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:noti_prefs_instr"
+msgid ""
+"To override the default setting for specific site(s), check the box next to "
+"the site(s) you wish to change and click 'Add Site(s)'"
+msgstr ""
+"To override the default setting for specific site(s), check the box next to "
+"the site(s) you wish to change and click 'Add Site(s)'"
+
+#. noti_prefs_add
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:37
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:noti_prefs_add"
+msgid "Add Site(s)"
+msgstr "Add Site(s)"
+
+#. noti_prefs_cancel
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:38
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:noti_prefs_cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. tab_inst_1_alt
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:39
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_inst_1_alt"
+msgid ""
+"Customize Tabs allows you to customize the navigation to your sites in {0}."
+msgstr ""
+"Customize Tabs allows you to customize the navigation to your sites in {0}."
+
+#. tab_inst_2_alt
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:40
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_inst_2_alt"
+msgid ""
+"Use the left and right arrow buttons to change the visibility of your sites."
+" Use the up and down buttons to promote your Active Sites into tabs."
+msgstr ""
+"Use the left and right arrow buttons to change the visibility of your sites."
+" Use the up and down buttons to promote your Active Sites into tabs."
+
+#. tab_inst_3_alt
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:41
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_inst_3_alt"
+msgid "My Active Sites"
+msgstr "My Active Sites"
+
+#. tab_inst_4_alt
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:42
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_inst_4_alt"
+msgid ""
+"The top {0} sites appear as tabs in your navigation, and the whole list will"
+" appear in your My Active Sites tab. The order shown here affects only the "
+"first {0} sites. "
+msgstr ""
+"The top {0} sites appear as tabs in your navigation, and the whole list will"
+" appear in your My Active Sites tab. The order shown here affects only the "
+"first {0} sites. "
+
+#. tab_inst_5_alt
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:43
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_inst_5_alt"
+msgid "My Hidden Sites"
+msgstr "My Hidden Sites"
+
+#. tab_inst_6_alt
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:44
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_inst_6_alt"
+msgid ""
+"These sites do not appear in your My Active Sites tab. However, you can "
+"still access them through Worksite Setup. "
+msgstr ""
+"These sites do not appear in your My Active Sites tab. However, you can "
+"still access them through Worksite Setup. "
+
+#. tab_inst_7_alt
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:45
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_inst_7_alt"
+msgid "Need to Publish or Unpublish a site?  "
+msgstr "Need to Publish or Unpublish a site?  "
+
+#. tab_inst_8_alt
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:46
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_inst_8_alt"
+msgid ""
+"The settings on this page only affect your personal navigation. To publish "
+"and unpublish sites for all users, go to Worksite Setup. "
+msgstr ""
+"The settings on this page only affect your personal navigation. To publish "
+"and unpublish sites for all users, go to Worksite Setup. "
+
+#. tab_inst_1
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:47
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:tab_inst_1"
+msgid ""
+"To hide a site or make a site visible in the tabs or in the \"more sites\" "
+"pull-down menu, select the site below and click the right or left single "
+"arrow to move it.  To move all the sites, click a double arrow."
+msgstr ""
+"To hide a site or make a site visible in the tabs or in the \"more sites\" "
+"pull-down menu, select the site below and click the right or left single "
+"arrow to move it.  To move all the sites, click a double arrow."
+
+#. tab_inst_2
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:48
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:tab_inst_2"
+msgid ""
+"To reorder the tabs that are visible, select a site in the \"Sites Visible "
+"in Tabs\" box and click the simple up or down arrow to change the order.  "
+"Use the outer up and down arrows to move a selection to the beginning or end"
+" of the list.  To move multiple sites, select one site, hold down the "
+"Control key (or Command on Mac), and click any other sites. Then click an "
+"arrow."
+msgstr ""
+"To reorder the tabs that are visible, select a site in the \"Sites Visible "
+"in Tabs\" box and click the simple up or down arrow to change the order.  "
+"Use the outer up and down arrows to move a selection to the beginning or end"
+" of the list.  To move multiple sites, select one site, hold down the "
+"Control key (or Command on Mac), and click any other sites. Then click an "
+"arrow."
+
+#. tab_inst_3
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:49
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:tab_inst_3"
+msgid ""
+"To change the number of your sites prominently displayed in the worksite "
+"navigation, update the Display number. Then click Update Preferences to make"
+" the changes."
+msgstr ""
+"To change the number of your sites prominently displayed in the worksite "
+"navigation, update the Display number. Then click Update Preferences to make"
+" the changes."
+
+#. tab_inst_save
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:50
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_inst_save"
+msgid ""
+"When you have finished making changes, click Update Preferences to save "
+"them."
+msgstr ""
+"When you have finished making changes, click Update Preferences to save "
+"them."
+
+#. tab_not_vis_inst
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:51
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_not_vis_inst"
+msgid "Sites not visible in Tabs"
+msgstr "Sites not visible in Tabs"
+
+#. tab_vis_inst
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:52
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:tab_vis_inst"
+msgid "Sites visible in Tabs"
+msgstr "Sites visible in Tabs"
+
+#. tab_move_inst
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:53
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_inst"
+msgid "Move selected"
+msgstr "Move selected"
+
+#. tab_move_inst_re
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:54
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_inst_re"
+msgid "Hide selected site"
+msgstr "Hide selected site"
+
+#. tab_move_all_inst
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:55
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_all_inst"
+msgid "Make all sites visible"
+msgstr "Make all sites visible"
+
+#. tab_move_all_inst_re
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:56
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_all_inst_re"
+msgid "Hide all sites"
+msgstr "Hide all sites"
+
+#. tab_move_up
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:57
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:tab_move_up"
+msgid "Move selected site up in list"
+msgstr "Move selected site up in list"
+
+#. tab_move_down
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:58
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_down"
+msgid "Move selected site down in list"
+msgstr "Move selected site down in list"
+
+#. tab_move_top
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:59
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:tab_move_top"
+msgid "Move selected site to top of list"
+msgstr "Move selected site to top of list"
+
+#. tab_move_bottom
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:60
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_bottom"
+msgid "Move selected site to bottom of list"
+msgstr "Move selected site to bottom of list"
+
+#. tabs_move_top
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:61
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tabs_move_top"
+msgid "Move selected sites to top of this list"
+msgstr "Move selected sites to top of this list"
+
+#. tabs_move_bottom
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:62
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tabs_move_bottom"
+msgid "Move selected sites to bottom of this list"
+msgstr "Move selected sites to bottom of this list"
+
+#. tabs_move_left
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:63
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tabs_move_left"
+msgid "Move selected sites to top of list on left"
+msgstr "Move selected sites to top of list on left"
+
+#. tabs_move_right
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:64
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tabs_move_right"
+msgid "Move selected sites to top of list on right"
+msgstr "Move selected sites to top of list on right"
+
+#. tabs_screen_reader_label
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:65
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tabs_screen_reader_label"
+msgid "Select "
+msgstr "Select "
+
+#. tab_move_rone
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:66
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_rone"
+msgid ">"
+msgstr ">"
+
+#. tab_move_lone
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:67
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_lone"
+msgid "<"
+msgstr "<"
+
+#. tab_move_rall
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:68
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_rall"
+msgid ">>"
+msgstr ">>"
+
+#. tab_move_lall
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:69
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tab_move_lall"
+msgid "<<"
+msgstr "<<"
+
+#. tab_count
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:70
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:tab_count"
+msgid "Tabs displayed:"
+msgstr "Tabs displayed:"
+
+#. time_inst_1
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:71
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:time_inst_1"
+msgid ""
+"Please select your local time zone for selected {0} tools, such as Schedule."
+" You are currently in the "
+msgstr ""
+"Please select your local time zone for selected {0} tools, such as Schedule."
+" You are currently in the "
+
+#. time_inst_2
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:72
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:time_inst_2"
+msgid "time zone"
+msgstr "time zone"
+
+#. locale_msg
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:73
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:locale_msg"
+msgid ""
+"Please select your language (and country) preference. Your current language "
+"preference is:"
+msgstr ""
+"Please select your language (and country) preference. Your current language "
+"preference is:"
+
+#. privacy_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:74
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_title"
+msgid "Privacy Status"
+msgstr "Privacy Status"
+
+#. privacy_default
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:75
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_default"
+msgid "Default Status"
+msgstr "Default Status"
+
+#. privacy_item_visible
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:76
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_item_visible"
+msgid "Make me visible when I am added to sites by default"
+msgstr "Make me visible when I am added to sites by default"
+
+#. privacy_item_hidden
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:77
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_item_hidden"
+msgid "Hide me when I am added to sites by default"
+msgstr "Hide me when I am added to sites by default"
+
+#. privacy_stmt1
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:78
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_stmt1"
+msgid ""
+"You may alter your settings to keep yourself and your personal information "
+"hidden from others in this site. Your status in this site is currently set "
+"to \""
+msgstr ""
+"You may alter your settings to keep yourself and your personal information "
+"hidden from others in this site. Your status in this site is currently set "
+"to \""
+
+#. privacy_specific_site
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:79
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_specific_site"
+msgid "Set status for a specific site"
+msgstr "Set status for a specific site"
+
+#. privacy_stmt_show
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:80
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_stmt_show"
+msgid ""
+".\" Others can see your name in the roster and can contact you through the "
+"site."
+msgstr ""
+".\" Others can see your name in the roster and can contact you through the "
+"site."
+
+#. privacy_stmt_hide
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:81
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_stmt_hide"
+msgid ""
+".\" Others cannot see your name in the roster and cannot contact you through"
+" the site."
+msgstr ""
+".\" Others cannot see your name in the roster and cannot contact you through"
+" the site."
+
+#. privacy_all_sites
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:82
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_all_sites"
+msgid "Change your status in all your sites"
+msgstr "Change your status in all your sites"
+
+#. privacy_change_directions
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:83
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_change_directions"
+msgid "If you would like to change your status, check the box next to"
+msgstr "If you would like to change your status, check the box next to"
+
+#. privacy_change_directions2
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:84
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_change_directions2"
+msgid "and then click the Update button below."
+msgstr "and then click the Update button below."
+
+#. privacy_note
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:85
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:privacy_note"
+msgid ""
+"Note: To view your privacy status in other sites, choose Preferences from "
+"your MyWorkspace site."
+msgstr ""
+"Note: To view your privacy status in other sites, choose Preferences from "
+"your MyWorkspace site."
+
+#. move_up_msg
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:86
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:move_up_msg"
+msgid "Please select at least one site to move up."
+msgstr "Please select at least one site to move up."
+
+#. move_down_msg
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:87
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:move_down_msg"
+msgid "Please select at least one site to move down."
+msgstr "Please select at least one site to move down."
+
+#. remove_from_sites_msg
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:88
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:remove_from_sites_msg"
+msgid "Please select a site to remove from Sites Visible in Tabs."
+msgstr "Please select a site to remove from Sites Visible in Tabs."
+
+#. add_to_sites_msg
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:89
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:add_to_sites_msg"
+msgid "Please select a site to add to Sites Visible in Tabs."
+msgstr "Please select a site to add to Sites Visible in Tabs."
+
+#. user_missing
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:90
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:user_missing"
+msgid "UserId is missing."
+msgstr "UserId is missing."
+
+#. remove_all
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:91
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:remove_all"
+msgid "Cannot remove all tabs from top navigation"
+msgstr "Cannot remove all tabs from top navigation"
+
+#. min_tabs
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:92
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:min_tabs"
+msgid "Must have at least %d tabs on top navigation bar"
+msgstr "Must have at least %d tabs on top navigation bar"
+
+#. privacy_check_hide
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:93
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_check_hide"
+msgid "Hide Me"
+msgstr "Hide Me"
+
+#. privacy_check_show
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:94
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_check_show"
+msgid "Show Me"
+msgstr "Show Me"
+
+#. privacy_update
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:95
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_update"
+msgid "Update"
+msgstr "Update"
+
+#. privacy_choose
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:96
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_choose"
+msgid "Choose a site "
+msgstr "Choose a site "
+
+#. privacy_no_choices
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:97
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_no_choices"
+msgid "No sites to choose from, you must be a member in at least one site."
+msgstr "No sites to choose from, you must be a member in at least one site."
+
+#. privacy_show_all
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:98
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_show_all"
+msgid "Show Me in All Sites"
+msgstr "Show Me in All Sites"
+
+#. privacy_hide_all
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:99
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_hide_all"
+msgid "Hide Me in All Sites"
+msgstr "Hide Me in All Sites"
+
+#. privacy_update_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:100
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_update_title"
+msgid "Update Privacy Status"
+msgstr "Update Privacy Status"
+
+#. privacy_show_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:101
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_show_title"
+msgid "Set privacy to Show for all sites"
+msgstr "Set privacy to Show for all sites"
+
+#. privacy_hide_title
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:102
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_hide_title"
+msgid "Set privacy to Hide for all sites"
+msgstr "Set privacy to Hide for all sites"
+
+#. privacy_visible
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:103
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_visible"
+msgid "visible"
+msgstr "visible"
+
+#. privacy_hidden
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:104
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_hidden"
+msgid "hidden"
+msgstr "hidden"
+
+#. privacy_show_all_set
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:105
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_show_all_set"
+msgid ""
+"Your status in all sites is now set to visible.  Others can see your name in"
+" the roster and can contact you through the site."
+msgstr ""
+"Your status in all sites is now set to visible.  Others can see your name in"
+" the roster and can contact you through the site."
+
+#. privacy_hide_all_set
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:106
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_hide_all_set"
+msgid ""
+"Your status in all sites is now set to hidden.  Others cannot see your name "
+"in the roster and cannot contact you through the site."
+msgstr ""
+"Your status in all sites is now set to hidden.  Others cannot see your name "
+"in the roster and cannot contact you through the site."
+
+#. privacy_site_not_selected
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:107
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_site_not_selected"
+msgid "Please select a site in order to change your status."
+msgstr "Please select a site in order to change your status."
+
+#. privacy_choice_heading
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:108
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_choice_heading"
+msgid "Please set your privacy status preference:"
+msgstr "Please set your privacy status preference:"
+
+#. privacy_choice_hidden
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:109
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_choice_hidden"
+msgid "Remain hidden in this site"
+msgstr "Remain hidden in this site"
+
+#. privacy_choice_visible
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:110
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_choice_visible"
+msgid "Make me visible in this site"
+msgstr "Make me visible in this site"
+
+#. privacy_choice_later
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:111
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_choice_later"
+msgid "Ask me again later"
+msgstr "Ask me again later"
+
+#. privacy_change_later_instructions
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:112
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:privacy_change_later_instructions"
+msgid ""
+"To change your privacy settings in the future, visit<br />My Workspace > "
+"Preferences > Privacy Status"
+msgstr ""
+"To change your privacy settings in the future, visit<br />My Workspace > "
+"Preferences > Privacy Status"
+
+#. tabDisplay_prompt
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:113
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tabDisplay_prompt"
+msgid "Show tabs as:"
+msgstr "Show tabs as:"
+
+#. tabDisplay_coursecode
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:114
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tabDisplay_coursecode"
+msgid "Course code (e.g. F13-ACCT-134C-01)"
+msgstr "Course code (e.g. F13-ACCT-134C-01)"
+
+#. tabDisplay_coursename
+#: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:115
+msgctxt ""
+"user/user-tool-prefs/tool/src/bundle/user-tool-"
+"prefs.properties:tabDisplay_coursename"
+msgid "Course name/description (e.g. First Year Accounting)"
+msgstr "Course name/description (e.g. First Year Accounting)"

@@ -1,0 +1,2168 @@
+# 
+# Translators:
+# Juanjo Meroño <jjmerono@um.es>, 2014
+# Universidad Complutense de Madrid <uatd@ucm.es>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2014-12-01 08:36+0000\n"
+"Last-Translator: jmariano <jmariano.lujan@gmail.com>\n"
+"Language-Team: Spanish (http://www.transifex.com/apereo/sakai10x/language/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. prefs_title
+#: announcement/announcement-impl/impl/src/bundle/annc-noti-prefs.properties:1
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/annc-noti-"
+"prefs.properties:prefs_title"
+msgid "Announcements"
+msgstr "Anuncios"
+
+#. prefs_opt3
+#: announcement/announcement-impl/impl/src/bundle/annc-noti-prefs.properties:2
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/annc-noti-"
+"prefs.properties:prefs_opt3"
+msgid "Send me each notification separately"
+msgstr "Envíeme cada notificación por separado"
+
+#. prefs_opt2
+#: announcement/announcement-impl/impl/src/bundle/annc-noti-prefs.properties:3
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/annc-noti-"
+"prefs.properties:prefs_opt2"
+msgid "Send me one email per day summarizing all low priority announcements"
+msgstr "Envíeme un correo electrónico cada día agrupando todos los anuncios de baja prioridad"
+
+#. prefs_opt1
+#: announcement/announcement-impl/impl/src/bundle/annc-noti-prefs.properties:4
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/annc-noti-"
+"prefs.properties:prefs_opt1"
+msgid "Do not send me low priority announcements"
+msgstr "No me envíe los anuncios de baja prioridad"
+
+#. announcement
+#: announcement/announcement-impl/impl/src/bundle/annc-access.properties:1
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/annc-"
+"access.properties:announcement"
+msgid "Announcement"
+msgstr "Anuncio"
+
+#. from
+#: announcement/announcement-impl/impl/src/bundle/annc-access.properties:2
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/annc-access.properties:from"
+msgid "From"
+msgstr "De"
+
+#. date
+#: announcement/announcement-impl/impl/src/bundle/annc-access.properties:3
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/annc-access.properties:date"
+msgid "Date"
+msgstr "Fecha"
+
+#. subject
+#: announcement/announcement-impl/impl/src/bundle/annc-access.properties:4
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/annc-"
+"access.properties:subject"
+msgid "Subject"
+msgstr "Asunto"
+
+#. attachments
+#: announcement/announcement-impl/impl/src/bundle/annc-access.properties:5
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/annc-"
+"access.properties:attachments"
+msgid "Attachments"
+msgstr "Adjuntos"
+
+#. Announcement
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:1
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:Announcement"
+msgid "Announcement"
+msgstr "Anuncios"
+
+#. Attachments
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:2
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:Attachments"
+msgid "Attachments:"
+msgstr "Adjuntos:"
+
+#. noti.header.add
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:3
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:noti.header.add"
+msgid ""
+"An announcement has been added in the \"{0}\" site at (<a "
+"href=\"{1}\">{1}</a>)"
+msgstr "Se ha añadido un anuncio en el sitio \"{0}\" en {1} (<a href=\"{2}\">{2}</a>)"
+
+#. noti.header.update
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:4
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:noti.header.update"
+msgid ""
+"An announcement has been updated in the \"{0}\" site at (<a "
+"href=\"{1}\">{1}</a>)"
+msgstr "Se ha actualizado un anuncio en el sitio \"{0}\" en {1} (<a href=\"{2}\">{2}</a>)"
+
+#. noti.subj
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:5
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:noti.subj"
+msgid "[ {0} -  Announcement ] {1}"
+msgstr "[ {0} - Anuncio ] {1}"
+
+#. noti.tag.html
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:6
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:noti.tag.html"
+msgid ""
+"<hr/><br/>This automatic notification message was sent by {0} (<a "
+"href=\"{1}\">{1}</a>).<br/> You can modify how you receive notifications at "
+"My Workspace > Preferences.<br/>"
+msgstr "<hr/><br/>Este mensaje de notificación automática fue enviado por {0} (<a href=\"{1}\">{1}</a>) desde el sitio {2} .<br/> Puede modificar el modo en que recibe las notificaciones desde Mi Sitio > Preferencias.<br/>"
+
+#. noti.tag
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:7
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:noti.tag"
+msgid ""
+"---------------------- \n"
+" This automatic notification message was sent by {0} ({1}).\n"
+" You can modify how you receive notifications at My Workspace > Preferences.\n"
+msgstr "----------------------  Este mensaje de notificación automática fue enviado por {0} ({1}) desde el sitio {2} . Puede modificar el modo en que recibe las notificaciones desde Mi Sitio > Preferencias.\n"
+
+#. at_date
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:8
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:at_date"
+msgid "at"
+msgstr "en"
+
+#. Subject
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:9
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:Subject"
+msgid "Subject: "
+msgstr "Asunto"
+
+#. From
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:10
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:From"
+msgid "From: "
+msgstr "De"
+
+#. Date
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:11
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:Date"
+msgid "Date: "
+msgstr "Fecha"
+
+#. Message
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:12
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:Message"
+msgid "Message: "
+msgstr "Mensaje"
+
+#. Group
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:13
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:Group"
+msgid "Group: "
+msgstr "Grupo"
+
+#. Public
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:14
+msgctxt ""
+"announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:Public"
+msgid "Public"
+msgstr "Público"
+
+#. Allgroups
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:15
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:Allgroups"
+msgid "Site"
+msgstr "Sitio"
+
+#. syllabus_new_posted_item
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:16
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:syllabus_new_posted_item"
+msgid "New posted item"
+msgstr "Nuevo ítem definitivo"
+
+#. syllabus_existed_item_changed
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:17
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:syllabus_existed_item_changed"
+msgid "Existed item changed"
+msgstr "Ítem existente modificado"
+
+#. syllabus_posted_deleted
+#: announcement/announcement-impl/impl/src/bundle/siteemaanc.properties:18
+msgctxt ""
+"announcement/announcement-"
+"impl/impl/src/bundle/siteemaanc.properties:syllabus_posted_deleted"
+msgid "Posted item deleted"
+msgstr "Se ha eliminado un ítem definitivo"
+
+#. java.NOTI_REQUIRED
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:1
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.NOTI_REQUIRED"
+msgid "High - All participants"
+msgstr "Alta - Todos los participantes"
+
+#. java.NOTI_OPTIONAL
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:2
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.NOTI_OPTIONAL"
+msgid "Low - Not received by those who have opted out"
+msgstr "Baja - Sólo los participantes que lo han solicitado"
+
+#. java.NOTI_NONE
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:3
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.NOTI_NONE"
+msgid "None - No notification"
+msgstr "Ninguna - Sin notificación"
+
+#. java.permissions
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:4
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.permissions"
+msgid "Permissions"
+msgstr "Permisos"
+
+#. java.merge
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:5
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.merge"
+msgid "Merge"
+msgstr "Combinar"
+
+#. java.reorder
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:6
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.reorder"
+msgid "Reorder"
+msgstr "Ordenar "
+
+#. java.refresh
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:7
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.refresh"
+msgid "Back to Announcements"
+msgstr "Volver a Anuncios"
+
+#. java.alert.youhave
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:8
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youhave"
+msgid "You have to select the announcement first!"
+msgstr "¡Debe seleccionar un anuncio primero!"
+
+#. java.alert.pleasechoose
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:9
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.pleasechoose"
+msgid "Please choose only one announcement at a time to edit!"
+msgstr "Por favor, escoja únicamente un anuncio cada vez"
+
+#. java.alert.youdont
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:10
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youdont"
+msgid "You don't have permission to edit this announcement!"
+msgstr "No tiene permiso para modificar este anuncio"
+
+#. java.alert.youneed
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:11
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youneed"
+msgid "You need to fill in the title!"
+msgstr "Necesita indicar el asunto"
+
+#. java.alert.youfill
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:12
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youfill"
+msgid "You need to fill in the body of the announcement!"
+msgstr "Necesita indicar el cuerpo del anuncio"
+
+#. java.alert.youpermi.subject
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:13
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youpermi.subject"
+msgid "You don't have permissions to create this announcement - {0}"
+msgstr "No tiene permisos para crear este anuncio - {0}"
+
+#. java.alert.youdel
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:14
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youdel"
+msgid "you don't have permission to delete the messages."
+msgstr "no tiene permiso para borrar los mensajes"
+
+#. java.alert.youdelann.ref
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:15
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youdelann.ref"
+msgid "you don't have permissions to delete this announcement - {0}"
+msgstr "No tiene permisos para eliminar este anuncio - {0}"
+
+#. java.alert.youdelann2
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:16
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youdelann2"
+msgid "you don't have permissions to delete this announcement!"
+msgstr "¡no tiene permiso para borrar este anuncio!"
+
+#. java.alert.thisitem
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:17
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.thisitem"
+msgid "This item is being edited by another user. Please try again later."
+msgstr "Este elemento está siendo editado por otro usuario. Por favor, inténtelo de nuevo más tarde."
+
+#. java.alert.youacc.pes
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:18
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youacc.pes"
+msgid "You don't have permissions to access the message(s) - {0}"
+msgstr "No tiene permisos para acceder a los mensajes - {0}"
+
+#. java.alert.thisis
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:19
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.thisis"
+msgid "This item is being edited by another user. Please try again later."
+msgstr "Este ítem está siendo editado por otro usuario. Por favor, inténtelo de nuevo más tarde."
+
+#. java.alert.youchoosegroup
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:20
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.youchoosegroup"
+msgid "You need to choose at least one group."
+msgstr "Debe seleccionar, al menos, un grupo."
+
+#. java.alert.cannotfindann
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:21
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.cannotfindann"
+msgid "Message doesn't exist!"
+msgstr "¡El mensaje no existe!"
+
+#. java.alert.nodates
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:22
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.nodates"
+msgid ""
+"You need to select a Beginning and/or Ending Date when specifying dates!"
+msgstr "¡Debe seleccionar una fecha de comienzo/fin al especificar las fechas!"
+
+#. java.alert.baddates
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:23
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.baddates"
+msgid "You cannot specify an ending date before its release date!"
+msgstr "¡La fecha de fin no puede ser anterior a la de comienzo!"
+
+#. java.alert.unknown
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:24
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.unknown"
+msgid "An unknown error has occurred."
+msgstr "Ha ocurrido un error desconocido."
+
+#. java.alert.dupalias
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:25
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.dupalias"
+msgid "This name has already been used"
+msgstr "Este nombre ya está siendo usado"
+
+#. java.alert.customsize
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:26
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.customsize"
+msgid "Only 20 announcements can be displayed at a time!"
+msgstr "Sólo se pueden mostrar 20 anuncios al mismo tiempo!"
+
+#. java.alert.length
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:27
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.alert.length"
+msgid "The length of alias cannot be greater than 99 characters"
+msgstr "La longitud del alias no puede ser mayor de 99 caracteres"
+
+#. java.nownull
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:28
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.nownull"
+msgid "Now null"
+msgstr "Ahora nulo"
+
+#. java.setting
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:29
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.setting"
+msgid "Setting options for Announcements in worksite "
+msgstr "Establecer las opciones para los anuncios en este sitio"
+
+#. java.yes
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:30
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.yes"
+msgid "Yes"
+msgstr "Sí"
+
+#. java.no
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:31
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.no"
+msgid "No"
+msgstr "No"
+
+#. java.youmess.pes
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:32
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.youmess.pes"
+msgid "You don't have permissions to access the message(s) - {0}"
+msgstr "No tiene permisos para acceder a los mensajes - {0}"
+
+#. java.theann
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:33
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.theann"
+msgid "the announcement"
+msgstr "el anuncio"
+
+#. java.ann
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:34
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.ann"
+msgid "announcement"
+msgstr "anuncio"
+
+#. java.set
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:35
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:java.set"
+msgid "Set permissions for Announcements in worksite "
+msgstr "Establecer los permisos de los Anuncios del sitio "
+
+#. gen.alert.message
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:36
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.alert.message"
+msgid "Alert: {0}"
+msgstr "Aviso: {0}"
+
+#. gen.new
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:37
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.new"
+msgid "Add"
+msgstr "Añadir"
+
+#. gen.delete
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:38
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.delete"
+msgid "Remove"
+msgstr "Borrar"
+
+#. gen.delete2
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:39
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.delete2"
+msgid "Remove"
+msgstr "Borrar"
+
+#. gen.revise
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:40
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.revise"
+msgid "Edit"
+msgstr "Revisar"
+
+#. gen.site
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:41
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.site"
+msgid "Site"
+msgstr "Sitio"
+
+#. gen.from
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:42
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.from"
+msgid "Saved By"
+msgstr "De"
+
+#. gen.date
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:43
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.date"
+msgid "Modified Date"
+msgstr "Fecha"
+
+#. gen.releasedate
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:44
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.releasedate"
+msgid "Beginning Date"
+msgstr "Fecha de comienzo"
+
+#. gen.mod
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:45
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.mod"
+msgid "Modified Date"
+msgstr "Fecha de modificación"
+
+#. gen.retractdate
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:46
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.retractdate"
+msgid "Ending Date"
+msgstr "Fecha de final"
+
+#. gen.subject
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:47
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.subject"
+msgid "Subject"
+msgstr "Asunto"
+
+#. gen.attach
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:48
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.attach"
+msgid "attachment"
+msgstr "adjunto"
+
+#. gen.draft.subject
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:49
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.draft.subject"
+msgid "<span class=\"highlight\">Draft - </span>  {0}"
+msgstr "<span class=\"highlight\">Borrador - </span>  {0}"
+
+#. gen.save
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:50
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.save"
+msgid "Save"
+msgstr "Guardar"
+
+#. gen.update
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:51
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.update"
+msgid "Update"
+msgstr "Actualizar"
+
+#. gen.cancel
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:52
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.cancel"
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. gen.first
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:53
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.first"
+msgid "First"
+msgstr "Primero"
+
+#. gen.previous.pagesize
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:54
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.previous.pagesize"
+msgid "Previous {0}"
+msgstr "Anterior {0}"
+
+#. gen.next.pagesize
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:55
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.next.pagesize"
+msgid "Next {0}"
+msgstr "Siguiente {0}"
+
+#. gen.last
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:56
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.last"
+msgid "Last"
+msgstr "Último"
+
+#. gen.select.label
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:57
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.select.label"
+msgid "Choose page size"
+msgstr "Elija el tamaño de la página"
+
+#. gen.listnavselect
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:58
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.listnavselect"
+msgid ""
+"To operate the combo box, first press Alt+Down Arrow to open it, and then "
+"use the up and down arrow keys to scroll through the options."
+msgstr "Pulse Alt junto con las flechas de cursor arriba y abajo para desplazarse por el menú"
+
+#. gen.assignmentlink
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:59
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.assignmentlink"
+msgid "Assignment Link"
+msgstr "Enlace a tarea"
+
+#. gen.thereare
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:60
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.thereare"
+msgid "There are currently no announcements at this location."
+msgstr "Actualmente, no hay anuncios en esta ubicación."
+
+#. gen.tablecaptionworksp
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:61
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.tablecaptionworksp"
+msgid ""
+"Table contains a list of announcements. It is five columns wide and each row"
+" contains a single announcement. Column one indicates if the announcement "
+"has an attachment, column two contains the title of the announcement, column"
+" three has the name of the author, column four shows the recipient, column "
+"five contains the date and time of publication."
+msgstr "La tabla contiene la lista de noticias. Es de cinco columnas de ancho y cada fila contiene los datos de una sola noticia. La primera columna indica si la noticia contiene adjunto, la segunda el titulo de las noticias, la tercera el nombre del autor, la cuarta el destinatario y la quinta la fecha y la hora de publicación."
+
+#. gen.tablecaptionsite
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:62
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.tablecaptionsite"
+msgid ""
+"Table contains a list of announcements. It is five or six columns wide and "
+"each row contains a single announcement. Column one indicates if the "
+"announcement has an attachment, column two contains the title of the "
+"announcement, column three has the name of the author, column four shows the"
+" recipient, column five contains the date and time of publication, column "
+"six, if present, contains a checkbox - selecting it will mean you want to "
+"remove this announcement. The following row will contain announcement text "
+"if site owner has set it to be so."
+msgstr "La tabla contiene la lista de noticias. Es de seis columnas de ancho y cada fila contiene los datos de un sola noticia. La primera columna indica si el anuncio tiene adjunto, la segunda el título de las noticias, la tercera el nombre del autor, la cuarta el destinatario, la quinta la fecha y la hora de publicación y la sexta, si aparece, contiene una casilla de comprobación cuya selección borrará la noticia. La siguiente fila contendrá el texto de la noticia si el propietario del sitio lo ha configurado así."
+
+#. gen.tablecaptionsitebody
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:63
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.tablecaptionsitebody"
+msgid ""
+"Table contains a list of announcements. Each announcement takes up two rows."
+" The first row contains the announcement title and links to edit or delete "
+"if you have those permissions. Second row contains the text of the "
+"announcement."
+msgstr "La tabla contiene la lista de noticias. Cada noticia está formada por dos filas. La primera contiene el título de la noticia y enlaces para revisar o borrar si se dispone de permisos para ello. La segunda fila contiene el texto de la noticia."
+
+#. gen.therearepublic
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:64
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.therearepublic"
+msgid "There are currently no public announcements at this location."
+msgstr "Actualmente, no existen noticias públicas en esta ubicación."
+
+#. gen.therearegroup
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:65
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.therearegroup"
+msgid "There are currently no group announcements at this location. "
+msgstr "Actualemente, no existen grupos de anuncios en esta ubicación."
+
+#. gen.sortby
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:66
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortby"
+msgid "Sort by subject"
+msgstr "Ordenar por asunto"
+
+#. gen.sortbyasc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:67
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyasc"
+msgid "Sort by subject ascending"
+msgstr "Ordenar por asunto (ascendente)"
+
+#. gen.sortbydesc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:68
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbydesc"
+msgid "Sort by subject descending"
+msgstr "Ordenar por asunto (descendente)"
+
+#. gen.sortchannel
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:69
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortchannel"
+msgid "Sort by originating site"
+msgstr "Ordenar por sitio origen"
+
+#. gen.sortchanasc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:70
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortchanasc"
+msgid "Sort by originating site ascending"
+msgstr "Ordenar por sitio origen (ascendente)"
+
+#. gen.sortchandesc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:71
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortchandesc"
+msgid "Sort by originating site descending"
+msgstr "Ordenar por sitio origen (descendente)"
+
+#. gen.sortbyauth
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:72
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyauth"
+msgid "Sort by author"
+msgstr "Ordenar por autor"
+
+#. gen.sortbyauthasc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:73
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyauthasc"
+msgid "Sort by author ascending"
+msgstr "Ordenar por autor (ascendente)"
+
+#. gen.sortbyauthdesc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:74
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyauthdesc"
+msgid "Sort by author descending"
+msgstr "Ordenar por autor (descendente)"
+
+#. gen.sortbydate
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:75
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbydate"
+msgid "Sort by modified date"
+msgstr "Ordenar por fecha"
+
+#. gen.sortbydateasc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:76
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbydateasc"
+msgid "Sort by modified date ascending"
+msgstr "Ordenar por fecha (ascendente)"
+
+#. gen.sortbydatedesc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:77
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbydatedesc"
+msgid "Sort by modified date descending"
+msgstr "Ordenar por fecha (descendente)"
+
+#. gen.sortbyreleasedate
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:78
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyreleasedate"
+msgid "Sort by release date"
+msgstr "Ordenar por fecha de publicación"
+
+#. gen.sortbyreleasedateasc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:79
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyreleasedateasc"
+msgid "Sort by release date ascending"
+msgstr "Ordenar por fecha de publicación (ascendente)"
+
+#. gen.sortbyreleasedatedesc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:80
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyreleasedatedesc"
+msgid "Sort by release date descending"
+msgstr "Ordenar por fecha de publicación (descendente)"
+
+#. gen.sortbyretractdate
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:81
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyretractdate"
+msgid "Sort by retract date"
+msgstr "Ordenar por fecha de recogida"
+
+#. gen.sortbyretractdateasc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:82
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyretractdateasc"
+msgid "Sort by retract date ascending"
+msgstr "Ordenar por fecha de recogida (ascendente)"
+
+#. gen.sortbyretractdatedesc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:83
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyretractdatedesc"
+msgid "Sort by retract date descending"
+msgstr "Ordenar por fecha de recogida (descendente)"
+
+#. gen.sortbyfor
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:84
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyfor"
+msgid "Sort by audience"
+msgstr "Ordenar por para"
+
+#. gen.sortbyforasc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:85
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyforasc"
+msgid "Sort by audience ascending"
+msgstr "Ordenar por para (ascendente)"
+
+#. gen.sortbyfordesc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:86
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.sortbyfordesc"
+msgid "Sort by audience descending"
+msgstr "Ordenar por para (descendente)"
+
+#. gen.newwindow
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:87
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.newwindow"
+msgid "Opens in a new window"
+msgstr "Abrir en una nueva ventana"
+
+#. gen.editdraft
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:88
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.editdraft"
+msgid "Edit draft announcement"
+msgstr "Editar el borrador del anuncio"
+
+#. gen.editdraft.subject
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:89
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.editdraft.subject"
+msgid "Edit draft announcement {0}"
+msgstr "Editar el borrador del anuncio {0}"
+
+#. gen.editann.subject
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:90
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.editann.subject"
+msgid "Edit announcement {0}"
+msgstr "Editar anuncio {0}"
+
+#. gen.viewann.subject
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:91
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.viewann.subject"
+msgid "View announcement {0}"
+msgstr "Ver anuncio {0}"
+
+#. gen.removeann.subject
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:92
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.removeann.subject"
+msgid "Remove announcement {0}"
+msgstr "Borrar anuncio {0}"
+
+#. gen.visible
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:93
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.visible"
+msgid "For"
+msgstr "Para"
+
+#. gen.remove_question
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:94
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.remove_question"
+msgid "Remove?"
+msgstr "¿Borrar?"
+
+#. gen.public
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:95
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.public"
+msgid "public"
+msgstr "público"
+
+#. gen.selectremove
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:96
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.selectremove"
+msgid "Select to remove"
+msgstr "Seleccionar para borrar"
+
+#. gen.announcements
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:97
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.announcements"
+msgid "Announcements"
+msgstr "Anuncios"
+
+#. gen.viewing.phrase
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:98
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.viewing.phrase"
+msgid "Viewing {0} - {1} of {2} items"
+msgstr "Mostrando {0} - {1} de {2} elementos últimos {0} días"
+
+#. gen.viewing.days.phrase
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:99
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.viewing.days.phrase"
+msgid "viewing announcements from the last {0} days"
+msgstr "mostrando anuncios de los últimos {0} días"
+
+#. gen.recopt
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:100
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.recopt"
+msgid "Recent Announcements Options"
+msgstr "Opciones de anuncios recientes"
+
+#. gen.show
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:101
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:gen.show"
+msgid "show {0} items..."
+msgstr "mostrar {0} elementos..."
+
+#. custom.display
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:102
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.display"
+msgid "Display Options"
+msgstr "Opciones de visualización"
+
+#. custom.showbody
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:103
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.showbody"
+msgid "Show announcement body"
+msgstr "Mostrar el cuerpo del anuncio"
+
+#. custom.charbody
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:104
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.charbody"
+msgid "Characters in body"
+msgstr "Caracteres en el cuerpo"
+
+#. custom.about
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:105
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.about"
+msgid "Show about "
+msgstr "Acerca de..."
+
+#. custom.dplimits
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:106
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.dplimits"
+msgid "Display Limits"
+msgstr "Límites de visualización"
+
+#. custom.number
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:107
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.number"
+msgid "Number of days in the past"
+msgstr "Días en el Pasado"
+
+#. custom.numbann
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:108
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.numbann"
+msgid "Number of announcements "
+msgstr "Anuncios"
+
+#. custom.options
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:109
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.options"
+msgid "Options"
+msgstr "Opciones"
+
+#. custom.sortab
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:110
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.sortab"
+msgid "Sortable table view"
+msgstr "Vista de tabla susceptible de búsqueda"
+
+#. custom.sortabbod
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:111
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.sortabbod"
+msgid "Sortable table view with announcement body"
+msgstr "Vista de tabla con el cuerpo de anuncio susceptible de búsqueda"
+
+#. custom.lisvie
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:112
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.lisvie"
+msgid "List view with announcement body"
+msgstr "Lista de cuerpos de anuncio"
+
+#. custom.shofir
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:113
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.shofir"
+msgid "First 50 Characters"
+msgstr "Primera línea"
+
+#. custom.shofirtwo
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:114
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.shofirtwo"
+msgid "First 100 Characters"
+msgstr "Primeras dos líneas"
+
+#. custom.shoall
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:115
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.shoall"
+msgid "All"
+msgstr "Todas"
+
+#. custom.setoptions
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:116
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.setoptions"
+msgid "You are currently setting options for announcements."
+msgstr "Opciones de configuración de los anuncios."
+
+#. custom.setoptionsrecent
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:117
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.setoptionsrecent"
+msgid "You are currently setting options for recent announcements."
+msgstr "Opciones de configuración de los anuncios recientes."
+
+#. custom.rss_option.full
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:118
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.rss_option.full"
+msgid "RSS Feed Options <i>public announcements only</i>"
+msgstr "Opciones de RSS de noticias  (<i>solo para los anuncios públicos</i>)"
+
+#. custom.rss_alias
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:119
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.rss_alias"
+msgid "RSS Alias (40 chars max)"
+msgstr "Alias RSS"
+
+#. custom.rss_url
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:120
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:custom.rss_url"
+msgid "RSS URL"
+msgstr "URL del RSS"
+
+#. del.deleting
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:121
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:del.deleting"
+msgid "Deleting announcements..."
+msgstr "Borrando anuncios..."
+
+#. del.areyou
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:122
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:del.areyou"
+msgid "Are you sure you want to delete the following announcements?"
+msgstr "¿Está seguro que desea borrar los siguientes anuncios?"
+
+#. merge.list.summary
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:123
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:merge.list.summary"
+msgid ""
+"Table contains list of sites you can merge announcements from. Column 1: "
+"site title. Column 2: checkbox to select."
+msgstr "La tabla contiene una lista de los sitios de los que puede combinar anuncios. La primera columna es el título del sitio y la segunda una casilla para seleccionarlo."
+
+#. merge.select
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:124
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:merge.select"
+msgid "Select what announcements you want to merge into this site."
+msgstr "Seleccione qué anuncios desea combinar en este sitio."
+
+#. merge.show
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:125
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:merge.show"
+msgid "Show Announcements from Another Site"
+msgstr "Mostrar los anuncios de otro sitio"
+
+#. merge.showann
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:126
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:merge.showann"
+msgid "Show Announcements"
+msgstr "Mostrar anuncios de:"
+
+#. meta.title
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:127
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:meta.title"
+msgid "Announcement"
+msgstr "Anuncios"
+
+#. meta.public
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:128
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:meta.public"
+msgid "Display to Non-Members"
+msgstr "Mostrar a los no miembros"
+
+#. meta.message
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:129
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:meta.message"
+msgid "Message"
+msgstr "Mensaje"
+
+#. meta.attach
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:130
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:meta.attach"
+msgid "Attachments"
+msgstr "Adjuntos"
+
+#. meta.prev
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:131
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:meta.prev"
+msgid "Previous"
+msgstr "Anterior"
+
+#. meta.next
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:132
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:meta.next"
+msgid "Next"
+msgstr "Siguiente"
+
+#. meta.retlis
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:133
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:meta.retlis"
+msgid "Return to List"
+msgstr "Volver a la lista"
+
+#. meta.groups
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:134
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:meta.groups"
+msgid "Groups"
+msgstr "Grupos"
+
+#. pre.preview
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:135
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:pre.preview"
+msgid "Announcement Preview"
+msgstr "Vista preliminar de anuncios"
+
+#. pre.notif
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:136
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:pre.notif"
+msgid "Email Notification"
+msgstr "Notificación por correo electrónico"
+
+#. pre.post
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:137
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:pre.post"
+msgid "Post Announcement"
+msgstr "Añadir anuncio"
+
+#. revise.add
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:138
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.add"
+msgid "Post Announcement"
+msgstr "Añadir anuncio"
+
+#. revise.revise
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:139
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.revise"
+msgid "Edit Announcement"
+msgstr "Revisar anuncio"
+
+#. revise.complete
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:140
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.complete"
+msgid "Complete the form, then choose the appropriate button at the bottom."
+msgstr "Rellene el formulario y pulse el botón adecuado."
+
+#. revise.required.star
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:141
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.required.star"
+msgid "Required items marked with a <span class=\"reqStarInline\">*</span>"
+msgstr "Los elementos requeridos están marcados con un <span class=\"reqStarInline\">*</span>"
+
+#. revise.update
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:142
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.update"
+msgid "Update the form, then choose the appropriate button at the bottom."
+msgstr "Actualice el formulario y pulse el botón adecuado."
+
+#. revise.announce
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:143
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.announce"
+msgid "Announcement"
+msgstr "Anuncio"
+
+#. revise.announcement.star
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:144
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.announcement.star"
+msgid "<span class=\"reqStar\">*</span>Body"
+msgstr "<span class=\"reqStar\">*</span>Texto"
+
+#. revise.subject
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:145
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.subject"
+msgid "Announcement title"
+msgstr "Título del anuncio"
+
+#. reorder.title
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:146
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:reorder.title"
+msgid "Reorder Announcements"
+msgstr "Reordenar anuncios"
+
+#. reorder.instruction.general
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:147
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:reorder.instruction.general"
+msgid "To reorder, drag and drop list items and then click Update."
+msgstr "Para reordenar, selecciona y desplaza los elementos en la lista y luego pulsa Guardar."
+
+#. reorder.instruction.input
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:148
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:reorder.instruction.input"
+msgid "You can also edit list order numbers."
+msgstr "También se pueden editar los números de orden de la lista."
+
+#. reorder.instruction.general.hidden
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:149
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:reorder.instruction.general.hidden"
+msgid "Tab into list and hold Control key and use arrow keys to sort."
+msgstr "Dentro de la lista, mantén pulsada la tecla Ctrl y utiliza las flechas para ordenar."
+
+#. reorder.undo.last.label
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:150
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:reorder.undo.last.label"
+msgid "Undo last"
+msgstr "Deshacer última acción"
+
+#. reorder.undo.all.label
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:151
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:reorder.undo.all.label"
+msgid "Undo all"
+msgstr "Deshacer todo"
+
+#. reorder.fail.valid.message
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:152
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:reorder.fail.valid.message"
+msgid "A number smaller than # please!"
+msgstr "¡ Un número más pequeño que # por favor!."
+
+#. revise.attachments
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:153
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.attachments"
+msgid "Attachments"
+msgstr "Adjuntos"
+
+#. revise.notify
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:154
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify"
+msgid "Email Notification"
+msgstr "Notificación por correo electrónico"
+
+#. revise.attach
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:155
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.attach"
+msgid "Attachment"
+msgstr "Adjunto"
+
+#. revise.addatt
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:156
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.addatt"
+msgid "Add Attachments"
+msgstr "Añadir adjuntos"
+
+#. revise.addrem
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:157
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.addrem"
+msgid "Add/remove attachments"
+msgstr "Añadir/Borrar adjuntos"
+
+#. revise.noattach
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:158
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.noattach"
+msgid "No Attachments Yet"
+msgstr "No se han incluido adjuntos todavía"
+
+#. revise.group.list.summary
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:159
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.group.list.summary"
+msgid ""
+"Table contains list of groups. First will  contain checkboxes, second will "
+"contain the group name, third the group description. Header links can be "
+"used to sort."
+msgstr "La tabla contiene la lista de grupos. La primera columna contendrá las casillas de selección, la segunda el nombre del grupo y la tercera una descripción del mismo. Es posible emplear enlaces en la cabecera para ordenar."
+
+#. revise.group.list.toggle
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:160
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.group.list.toggle"
+msgid "toggle select all"
+msgstr "Activar seleccionar todo"
+
+#. revise.group.list.title
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:161
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.group.list.title"
+msgid "Title"
+msgstr "Título"
+
+#. revise.group.list.desc
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:162
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.group.list.desc"
+msgid "Description"
+msgstr "Descripción"
+
+#. revise.notify_high
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:163
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify_high"
+msgid "High - All participants"
+msgstr "Alta - Todos los participantes"
+
+#. revise.notify_low
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:164
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify_low"
+msgid "Low - Not received by those who have opted out"
+msgstr "Baja - Sólo los participantes que lo han solicitado"
+
+#. revise.notify_none
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:165
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify_none"
+msgid "None - No notification"
+msgstr "Ninguna - Sin notificación"
+
+#. revise.notify.ver_link
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:166
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.ver_link"
+msgid "See revision history"
+msgstr "Ver historial de modificaciones"
+
+#. revise.notify.short_high
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:167
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.short_high"
+msgid "High priority"
+msgstr "Prioridad alta"
+
+#. revise.notify.short_low
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:168
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.short_low"
+msgid "Low priority"
+msgstr "Prioridad baja"
+
+#. revise.notify.short_none
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:169
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.short_none"
+msgid "No notification"
+msgstr "Sin notificación"
+
+#. revise.notify.draft
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:170
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.draft"
+msgid "None - saved as draft"
+msgstr "Ninguna - guardado como borrador"
+
+#. revise.notify.ver_summary
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:171
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.ver_summary"
+msgid ""
+"Table contains history of revisions. Col 1: date revised; col 2: "
+"notification setting used when was revised; col 3: when announcement is set "
+"to display if display is delayed"
+msgstr "La tabla contiene el historial de revisiones. Col 1: fecha revisada; col 2: la preferencia de notificación usada cuando fue revisada ; col 3: cuando el anuncio se muestra visible si la aparición se retrasa."
+
+#. revise.notify.ver_daterevisedtitle
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:172
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.ver_daterevisedtitle"
+msgid "Date revised"
+msgstr "Fecha de modificación"
+
+#. revise.notify.ver_typetitle
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:173
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.ver_typetitle"
+msgid "Notification setting"
+msgstr "Notificación establecida"
+
+#. revise.notify.ver_datereleasedtitle
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:174
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.ver_datereleasedtitle"
+msgid "Availability setting"
+msgstr "Disponibilidad establecida"
+
+#. revise.notify.ver.dateds_future.date
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:175
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.ver.dateds_future.date"
+msgid "Set to display and be sent on {0}"
+msgstr "Se mostrará y se enviará el {0}"
+
+#. revise.notify.ver.dated_future.date
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:176
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.notify.ver.dated_future.date"
+msgid "Set to display on {0}"
+msgstr "Se mostrará el {0}"
+
+#. revise.savedraft
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:177
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.savedraft"
+msgid "Save Draft"
+msgstr "Guardar borrador"
+
+#. revise.savechanges
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:178
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.savechanges"
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+#. revise.preview
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:179
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:revise.preview"
+msgid "Preview"
+msgstr "Vista preliminar"
+
+#. label.proces
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:180
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:label.proces"
+msgid "Processing ..."
+msgstr "Procesando..."
+
+#. displayto.access
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:181
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:displayto.access"
+msgid "Access"
+msgstr "Acceso"
+
+#. displayto.public
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:182
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:displayto.public"
+msgid "This announcement is  <strong>publicly viewable</strong>"
+msgstr "Mostrar al público"
+
+#. displayto.site
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:183
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:displayto.site"
+msgid "Only <strong>members of this site</strong> can see this announcement"
+msgstr "Mostrar al sitio"
+
+#. displayto.selected
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:184
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:displayto.selected"
+msgid "Display this announcement <strong>to selected groups</strong> only"
+msgstr "Mostrar a grupos seleccionados"
+
+#. view.label
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:185
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:view.label"
+msgid "View"
+msgstr "Mostrar"
+
+#. view.all
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:186
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:view.all"
+msgid "All"
+msgstr "Todos"
+
+#. view.public
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:187
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:view.public"
+msgid "Public"
+msgstr "Público"
+
+#. view.bygroup
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:188
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:view.bygroup"
+msgid "By group"
+msgstr "Por grupo"
+
+#. range.public
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:189
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:range.public"
+msgid "public"
+msgstr "Público"
+
+#. range.allgroups
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:190
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:range.allgroups"
+msgid "site"
+msgstr "Esta asignatura"
+
+#. group
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:191
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:group"
+msgid "Group"
+msgstr "Grupo"
+
+#. groups
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:192
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:groups"
+msgid "Groups"
+msgstr "Grupos"
+
+#. dateselectionwidget.day
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:193
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:dateselectionwidget.day"
+msgid "Select day"
+msgstr "Seleccione el día"
+
+#. dateselectionwidget.month
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:194
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:dateselectionwidget.month"
+msgid "Select month"
+msgstr "Seleccione el mes"
+
+#. dateselectionwidget.year
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:195
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:dateselectionwidget.year"
+msgid "Select year"
+msgstr "Seleccione el año"
+
+#. dateselectionwidget.hour
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:196
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:dateselectionwidget.hour"
+msgid "Select hour"
+msgstr "Seleccione la hora"
+
+#. dateselectionwidget.minute
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:197
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:dateselectionwidget.minute"
+msgid "Select minute"
+msgstr "Seleccione el minuto"
+
+#. dateselectionwidget.ampm
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:198
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:dateselectionwidget.ampm"
+msgid "Select AM or PM"
+msgstr "Seleccione AM o PM"
+
+#. jan
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:199
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:jan"
+msgid "JAN"
+msgstr "ENE"
+
+#. feb
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:200
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:feb"
+msgid "FEB"
+msgstr "FEB"
+
+#. mar
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:201
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:mar"
+msgid "MAR"
+msgstr "MAR"
+
+#. apr
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:202
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:apr"
+msgid "APR"
+msgstr "ABR"
+
+#. may
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:203
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:may"
+msgid "MAY"
+msgstr "MAY"
+
+#. jun
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:204
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:jun"
+msgid "JUN"
+msgstr "JUN"
+
+#. jul
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:205
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:jul"
+msgid "JUL"
+msgstr "JUL"
+
+#. aug
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:206
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:aug"
+msgid "AUG"
+msgstr "AGO"
+
+#. sep
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:207
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:sep"
+msgid "SEP"
+msgstr "SEP"
+
+#. oct
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:208
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:oct"
+msgid "OCT"
+msgstr "OCT"
+
+#. nov
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:209
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:nov"
+msgid "NOV"
+msgstr "NOV"
+
+#. dec
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:210
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/announcement.properties:dec"
+msgid "DEC"
+msgstr "DIC"
+
+#. calendar.title
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:211
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:calendar.title"
+msgid "Popup date selector"
+msgstr "Selector de fechas"
+
+#. avail.title
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:212
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:avail.title"
+msgid "Availability"
+msgstr "Disponibilidad"
+
+#. avail.show
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:213
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:avail.show"
+msgid "Show"
+msgstr "Mostrar"
+
+#. avail.hide
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:214
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:avail.hide"
+msgid "Hide"
+msgstr "Ocultar"
+
+#. avail.specify
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:215
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:avail.specify"
+msgid "Specify Dates"
+msgstr "Especificar fechas"
+
+#. avail.release
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:216
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:avail.release"
+msgid "Beginning"
+msgstr "Principio"
+
+#. avail.retract
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:217
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:avail.retract"
+msgid "Ending"
+msgstr "Fin"
+
+#. avail.show.tips
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:218
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:avail.show.tips"
+msgid "(<strong>Post</strong> and display this announcement immediately)"
+msgstr "(<strong>Publicar</strong> y mostrar este anuncio inmediatamente)"
+
+#. avail.hide.tips
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:219
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:avail.hide.tips"
+msgid ""
+"(<strong>Draft mode</strong> - Do not display this announcement at this "
+"time)"
+msgstr "(<strong>Borrador</strong> - No mostrar este anuncio de momento)"
+
+#. avail.specify.tips
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:220
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:avail.specify.tips"
+msgid "(<strong>Choose when</strong> this announcement will be displayed)"
+msgstr "(<strong>Elige</strong> cuando se debe mostrar este anuncio)"
+
+#. widget_date
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:221
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:widget_date"
+msgid "Date:"
+msgstr "Fecha:"
+
+#. widget_time
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:222
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:widget_time"
+msgid "Time:"
+msgstr "Hora:"
+
+#. announcement
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:223
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:announcement"
+msgid ""
+"Represents announcements for a given site (including merged announcements) "
+"or all announcements for a user. Also includes Message Of The Day and public"
+" announcements. There are two optional URL parameters available: 'n' to set "
+"the total number of announcements returned, and 'd' to set the number of "
+"days in the past to retrieve announcements for. If these parameters are not "
+"set, they are retrieved from the tool configuration, or the standard "
+"defaults of n=3 and d=10 are used. For example "
+"/announcements/site/mercury.json?n=20&d=100 will retrieve up to 20 total "
+"announcements for up to 100 days ago."
+msgstr "Representa los anuncios de una asignatura concreta (incluyendo los anuncios combinados) o todos los los anuncios de un usuario. También incluye Mensaje del Día y anuncios públicos. \nHay dos paráumetros URL disponibles: 'n' para configurar el número total de anuncios devueltos, y 'd' para configurar el número de días anteriores desde los que se recuperan anuncios. \nSi estos parámetros no se configuran, se obtienen de la configuración de la herramienta, o se utilizan los valores por defecto n=3 y d=10. \nPor ejemplo /announcements/site/mercury.json?n=20&d=100 obtendrá hasta 20 anuncios en total de los 100 días anteriores."
+
+#. announcement.action.site
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:224
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:announcement.action.site"
+msgid ""
+"Retrieve the announcements for a site. If you are not logged in, you will "
+"only receive the public announcements for this site."
+msgstr "Obtener los anuncios para una asignatura. Si no se está conectado, se obtendrá solamente los anuncios públicos de la asignatura."
+
+#. announcement.action.user
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:225
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:announcement.action.user"
+msgid ""
+"Retrieve the announcements for the current user. If you are not logged in, "
+"you will only receive the MOTD announcements."
+msgstr "Obtener los anuncios para el usuario actual. Si no se está conectado, se obtendrán solamente los anuncios MOTD."
+
+#. announcement.action.motd
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:226
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:announcement.action.motd"
+msgid "Retrieve only the MOTD announcements."
+msgstr "Obtener solamente los anuncios MOTD."
+
+#. announcement.action.msg
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:227
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:announcement.action.msg"
+msgid ""
+"Retrieve an announcement based on the path used by the announcements service"
+" internally, ie /announcement/msg/{siteId}/{channelId}/{announcementId}. "
+"Context is normally the site ID and the channelId is normally \"main\" "
+"unless there are multiple channels in a site. For example /announcement/msg"
+"/21b1984d-af58-43da-8583-f4adee769aa2/main/5641323b-761a-"
+"4a4d-8761-688f4928141b"
+msgstr "Recuperar un anuncio basándose en la ruta interna empleada por el servicio de anuncios /msg/{siteId}/{channelId}/{announcementId}"
+
+#. announcement.action.message
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:228
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:announcement.action.message"
+msgid ""
+"Retrieve an announcement based on the given siteId and messageId. eg "
+"/announcement/message/{siteId}/{msgId}"
+msgstr "Recupera un anuncio en base al siteId y messageId indicados. Ej: /announcement/message/{siteId}/{msgId}"
+
+#. motd.title
+#: announcement/announcement-tool/tool/src/bundle/announcement.properties:229
+msgctxt ""
+"announcement/announcement-"
+"tool/tool/src/bundle/announcement.properties:motd.title"
+msgid "Message Of The Day"
+msgstr "Mensaje del Día"
+
+#. desc-annc.new
+#: announcement/announcement-tool/tool/src/bundle/permissions.properties:1
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/permissions.properties:desc-"
+"annc.new"
+msgid "Create announcements"
+msgstr "Crear anuncios"
+
+#. desc-annc.read
+#: announcement/announcement-tool/tool/src/bundle/permissions.properties:2
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/permissions.properties:desc-"
+"annc.read"
+msgid "Read announcements"
+msgstr "Leer anuncios"
+
+#. desc-annc.revise.any
+#: announcement/announcement-tool/tool/src/bundle/permissions.properties:3
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/permissions.properties:desc-"
+"annc.revise.any"
+msgid "Edit all announcements"
+msgstr "Editar todos los anuncios"
+
+#. desc-annc.revise.own
+#: announcement/announcement-tool/tool/src/bundle/permissions.properties:4
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/permissions.properties:desc-"
+"annc.revise.own"
+msgid "Edit own announcements"
+msgstr "Editar los anuncios propios"
+
+#. desc-annc.delete.any
+#: announcement/announcement-tool/tool/src/bundle/permissions.properties:5
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/permissions.properties:desc-"
+"annc.delete.any"
+msgid "Delete all announcements"
+msgstr "Borrar todos los anuncios"
+
+#. desc-annc.delete.own
+#: announcement/announcement-tool/tool/src/bundle/permissions.properties:6
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/permissions.properties:desc-"
+"annc.delete.own"
+msgid "Delete own announcements"
+msgstr "Borrar los anuncios propios"
+
+#. desc-annc.read.drafts
+#: announcement/announcement-tool/tool/src/bundle/permissions.properties:7
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/permissions.properties:desc-"
+"annc.read.drafts"
+msgid "Read all draft announcements"
+msgstr "Leer todos los borradores de anuncio"
+
+#. desc-annc.all.groups
+#: announcement/announcement-tool/tool/src/bundle/permissions.properties:8
+msgctxt ""
+"announcement/announcement-tool/tool/src/bundle/permissions.properties:desc-"
+"annc.all.groups"
+msgid "Access all group announcements"
+msgstr "Acceder a todos los anuncios para grupos"

@@ -1,0 +1,52 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. section.category.1.lecture
+#: edu-services/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:1
+msgctxt ""
+"edu-services/sections-service/sections-"
+"impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:section.category.1.lecture"
+msgid "Lecture"
+msgstr "Lecture"
+
+#. section.category.2.discussion
+#: edu-services/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:2
+msgctxt ""
+"edu-services/sections-service/sections-"
+"impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:section.category.2.discussion"
+msgid "Discussion"
+msgstr "Discussion"
+
+#. section.category.3.lab
+#: edu-services/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:3
+msgctxt ""
+"edu-services/sections-service/sections-"
+"impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:section.category.3.lab"
+msgid "Lab"
+msgstr "Lab"
+
+#. section.category.4.studio
+#: edu-services/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:4
+msgctxt ""
+"edu-services/sections-service/sections-"
+"impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:section.category.4.studio"
+msgid "Studio"
+msgstr "Studio"
+
+#. section.category.5.recitation
+#: edu-services/sections-service/sections-impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:5
+msgctxt ""
+"edu-services/sections-service/sections-"
+"impl/standalone/src/java/org/sakaiproject/component/section/CourseSectionCategories.properties:section.category.5.recitation"
+msgid "Recitation"
+msgstr "Recitation"

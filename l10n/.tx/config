@@ -1,0 +1,345 @@
+[main]
+host = https://www.transifex.com
+
+[sakai10x.access]
+file_filter = <lang>/access.po
+source_file = templates/access.pot
+source_lang = en
+type = PO
+
+[sakai10x.alias]
+file_filter = <lang>/alias.po
+source_file = templates/alias.pot
+source_lang = en
+type = PO
+
+[sakai10x.announcement]
+file_filter = <lang>/announcement.po
+source_file = templates/announcement.pot
+source_lang = en
+type = PO
+
+[sakai10x.archive]
+file_filter = <lang>/archive.po
+source_file = templates/archive.pot
+source_lang = en
+type = PO
+
+[sakai10x.assignment]
+file_filter = <lang>/assignment.po
+source_file = templates/assignment.pot
+source_lang = en
+type = PO
+
+[sakai10x.authz]
+file_filter = <lang>/authz.po
+source_file = templates/authz.pot
+source_lang = en
+type = PO
+
+[sakai10x.basiclti]
+file_filter = <lang>/basiclti.po
+source_file = templates/basiclti.pot
+source_lang = en
+type = PO
+
+[sakai10x.calendar]
+file_filter = <lang>/calendar.po
+source_file = templates/calendar.pot
+source_lang = en
+type = PO
+
+[sakai10x.chat]
+file_filter = <lang>/chat.po
+source_file = templates/chat.pot
+source_lang = en
+type = PO
+
+[sakai10x.citations]
+file_filter = <lang>/citations.po
+source_file = templates/citations.pot
+source_lang = en
+type = PO
+
+[sakai10x.config]
+file_filter = <lang>/config.po
+source_file = templates/config.pot
+source_lang = en
+type = PO
+
+[sakai10x.content-1]
+file_filter = <lang>/content.po
+source_file = templates/content.pot
+source_lang = en
+type = PO
+
+[sakai10x.dav]
+file_filter = <lang>/dav.po
+source_file = templates/dav.pot
+source_lang = en
+type = PO
+
+[sakai10x.delegatedaccess]
+file_filter = <lang>/delegatedaccess.po
+source_file = templates/delegatedaccess.pot
+source_lang = en
+type = PO
+
+[sakai10x.edu-services]
+file_filter = <lang>/edu-services.po
+source_file = templates/edu-services.pot
+source_lang = en
+type = PO
+
+[sakai10x.emailtemplateservice]
+file_filter = <lang>/emailtemplateservice.po
+source_file = templates/emailtemplateservice.pot
+source_lang = en
+type = PO
+
+[sakai10x.entitybroker]
+file_filter = <lang>/entitybroker.po
+source_file = templates/entitybroker.pot
+source_lang = en
+type = PO
+
+[sakai10x.gradebook]
+file_filter = <lang>/gradebook.po
+source_file = templates/gradebook.pot
+source_lang = en
+type = PO
+
+[sakai10x.help]
+file_filter = <lang>/help.po
+source_file = templates/help.pot
+source_lang = en
+type = PO
+
+[sakai10x.jobscheduler]
+file_filter = <lang>/jobscheduler.po
+source_file = templates/jobscheduler.pot
+source_lang = en
+type = PO
+
+[sakai10x.jsf]
+file_filter = <lang>/jsf.po
+source_file = templates/jsf.pot
+source_lang = en
+type = PO
+
+[sakai10x.lessonbuilder]
+file_filter = <lang>/lessonbuilder.po
+source_file = templates/lessonbuilder.pot
+source_lang = en
+type = PO
+
+[sakai10x.login]
+file_filter = <lang>/login.po
+source_file = templates/login.pot
+source_lang = en
+type = PO
+
+[sakai10x.mailarchive]
+file_filter = <lang>/mailarchive.po
+source_file = templates/mailarchive.pot
+source_lang = en
+type = PO
+
+[sakai10x.mailsender]
+file_filter = <lang>/mailsender.po
+source_file = templates/mailsender.pot
+source_lang = en
+type = PO
+
+[sakai10x.memory]
+file_filter = <lang>/memory.po
+source_file = templates/memory.pot
+source_lang = en
+type = PO
+
+[sakai10x.message]
+file_filter = <lang>/message.po
+source_file = templates/message.pot
+source_lang = en
+type = PO
+
+[sakai10x.metaobj]
+file_filter = <lang>/metaobj.po
+source_file = templates/metaobj.pot
+source_lang = en
+type = PO
+
+[sakai10x.msgcntr]
+file_filter = <lang>/msgcntr.po
+source_file = templates/msgcntr.pot
+source_lang = en
+type = PO
+
+[sakai10x.osp]
+file_filter = <lang>/osp.po
+source_file = templates/osp.pot
+source_lang = en
+type = PO
+
+[sakai10x.podcasts]
+file_filter = <lang>/podcasts.po
+source_file = templates/podcasts.pot
+source_lang = en
+type = PO
+
+[sakai10x.polls]
+file_filter = <lang>/polls.po
+source_file = templates/polls.pot
+source_lang = en
+type = PO
+
+[sakai10x.portal]
+file_filter = <lang>/portal.po
+source_file = templates/portal.pot
+source_lang = en
+type = PO
+
+[sakai10x.postem]
+file_filter = <lang>/postem.po
+source_file = templates/postem.pot
+source_lang = en
+type = PO
+
+[sakai10x.presence]
+file_filter = <lang>/presence.po
+source_file = templates/presence.pot
+source_lang = en
+type = PO
+
+[sakai10x.profile2]
+file_filter = <lang>/profile2.po
+source_file = templates/profile2.pot
+source_lang = en
+type = PO
+
+[sakai10x.reset-pass]
+file_filter = <lang>/reset-pass.po
+source_file = templates/reset-pass.pot
+source_lang = en
+type = PO
+
+[sakai10x.roster2]
+file_filter = <lang>/roster2.po
+source_file = templates/roster2.pot
+source_lang = en
+type = PO
+
+[sakai10x.rwiki]
+file_filter = <lang>/rwiki.po
+source_file = templates/rwiki.pot
+source_lang = en
+type = PO
+
+[sakai10x.samigo]
+file_filter = <lang>/samigo.po
+source_file = templates/samigo.pot
+source_lang = en
+type = PO
+
+[sakai10x.search]
+file_filter = <lang>/search.po
+source_file = templates/search.pot
+source_lang = en
+type = PO
+
+[sakai10x.sections]
+file_filter = <lang>/sections.po
+source_file = templates/sections.pot
+source_lang = en
+type = PO
+
+[sakai10x.shortenedurl]
+file_filter = <lang>/shortenedurl.po
+source_file = templates/shortenedurl.pot
+source_lang = en
+type = PO
+
+[sakai10x.signup]
+file_filter = <lang>/signup.po
+source_file = templates/signup.pot
+source_lang = en
+type = PO
+
+[sakai10x.site]
+file_filter = <lang>/site.po
+source_file = templates/site.pot
+source_lang = en
+type = PO
+
+[sakai10x.site-manage]
+file_filter = <lang>/site-manage.po
+source_file = templates/site-manage.pot
+source_lang = en
+type = PO
+
+[sakai10x.sitestats]
+file_filter = <lang>/sitestats.po
+source_file = templates/sitestats.pot
+source_lang = en
+type = PO
+
+[sakai10x.syllabus]
+file_filter = <lang>/syllabus.po
+source_file = templates/syllabus.pot
+source_lang = en
+type = PO
+
+[sakai10x.taggable]
+file_filter = <lang>/taggable.po
+source_file = templates/taggable.pot
+source_lang = en
+type = PO
+
+[sakai10x.textarea]
+file_filter = <lang>/textarea.po
+source_file = templates/textarea.pot
+source_lang = en
+type = PO
+
+[sakai10x.tool]
+file_filter = <lang>/tool.po
+source_file = templates/tool.pot
+source_lang = en
+type = PO
+
+[sakai10x.user]
+file_filter = <lang>/user.po
+source_file = templates/user.pot
+source_lang = en
+type = PO
+
+[sakai10x.userauditservice]
+file_filter = <lang>/userauditservice.po
+source_file = templates/userauditservice.pot
+source_lang = en
+type = PO
+
+[sakai10x.usermembership]
+file_filter = <lang>/usermembership.po
+source_file = templates/usermembership.pot
+source_lang = en
+type = PO
+
+[sakai10x.velocity]
+file_filter = <lang>/velocity.po
+source_file = templates/velocity.pot
+source_lang = en
+type = PO
+
+[sakai10x.web]
+file_filter = <lang>/web.po
+source_file = templates/web.pot
+source_lang = en
+type = PO
+
+[sakai10x.webservices]
+file_filter = <lang>/webservices.po
+source_file = templates/webservices.pot
+source_lang = en
+type = PO
+

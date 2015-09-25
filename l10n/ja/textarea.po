@@ -1,0 +1,59 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-04-10 10:49+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. cal.title
+#: textarea/calendar/src/bundle/calendar.properties:1
+msgctxt "textarea/calendar/src/bundle/calendar.properties:cal.title"
+msgid "Select date, please."
+msgstr "日時を選択して下さい．"
+
+#. cal.lasm
+#: textarea/calendar/src/bundle/calendar.properties:2
+msgctxt "textarea/calendar/src/bundle/calendar.properties:cal.lasm"
+msgid "previous month"
+msgstr "前月"
+
+#. cal.lasy
+#: textarea/calendar/src/bundle/calendar.properties:3
+msgctxt "textarea/calendar/src/bundle/calendar.properties:cal.lasy"
+msgid "previous year"
+msgstr "前の年"
+
+#. cal.nexm
+#: textarea/calendar/src/bundle/calendar.properties:4
+msgctxt "textarea/calendar/src/bundle/calendar.properties:cal.nexm"
+msgid "next month"
+msgstr "来月"
+
+#. cal.nexy
+#: textarea/calendar/src/bundle/calendar.properties:5
+msgctxt "textarea/calendar/src/bundle/calendar.properties:cal.nexy"
+msgid "next year"
+msgstr "次の年"
+
+#. cal.format
+#: textarea/calendar/src/bundle/calendar.properties:6
+msgctxt "textarea/calendar/src/bundle/calendar.properties:cal.format"
+msgid "MMMM yyyy"
+msgstr "MMMM yyyy"
+
+#. melete_collectionname
+#: textarea/FCKeditor/connector/src/bundle/org/sakaiproject/connector/fck/Messages.properties:1
+msgctxt ""
+"textarea/FCKeditor/connector/src/bundle/org/sakaiproject/connector/fck/Messages.properties:melete_collectionname"
+msgid "Melete private site files"
+msgstr "Melete プライベートファイル"

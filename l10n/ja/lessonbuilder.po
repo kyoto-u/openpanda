@@ -1,0 +1,4414 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-17 08:12+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. simplepage.text
+#: lessonbuilder/tool/src/resources/messages.properties:1
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.text"
+msgid "Add Text"
+msgstr "テキストを追加"
+
+#. simplepage.text.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:2
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.text.tooltip"
+msgid "Add a box that can contain text and other web content"
+msgstr "テキストおよびその他のウェブコンテンツを含むことができるボックスを追加します"
+
+#. simplepage.instructions
+#: lessonbuilder/tool/src/resources/messages.properties:3
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.instructions"
+msgid "You have not yet created this simple page, click 'Edit page' to begin."
+msgstr "このシンプルなページはまだ作成されていません．「ページを編集」をクリックして開始してください．"
+
+#. simplepage.not_available
+#: lessonbuilder/tool/src/resources/messages.properties:4
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.not_available"
+msgid ""
+"This page has not yet been created by the course instructor or you do not "
+"have the necessary permissions to read it"
+msgstr "このページは、まだコース教員によって作成されていないか、あなたはこれを読むために必要な権限を持っていません"
+
+#. simplepage.impossible1
+#: lessonbuilder/tool/src/resources/messages.properties:5
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.impossible1"
+msgid "Unable to create page. This should be impossible. Please report it."
+msgstr "ページを作成することができません． これは不可能です． 報告してください．"
+
+#. simplepage.pagehidden
+#: lessonbuilder/tool/src/resources/messages.properties:6
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pagehidden"
+msgid ""
+"You have checked the 'Hide' box in the Settings window. This prevents "
+"standard users from seeing this page."
+msgstr "「設定」ウィンドウで「表示しない」ボックスをチェックしてあります． これにより，標準的なユーザーはこのページを見ることができません．"
+
+#. simplepage.pagehidden.text
+#: lessonbuilder/tool/src/resources/messages.properties:7
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pagehidden.text"
+msgid ""
+"<strong>Note:</strong> This page is currently hidden from standard users. "
+"You can change this in the <strong>Settings</strong> window."
+msgstr "<strong>ノート:</strong> このページは現在，標準的なユーザーには表示されません． これは，「<strong>設定</strong>」ウィンドウで変更できます．"
+
+#. simplepage.showallpages
+#: lessonbuilder/tool/src/resources/messages.properties:8
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.showallpages"
+msgid "Index of pages"
+msgstr "ページの索引"
+
+#. simplepage.adding-text
+#: lessonbuilder/tool/src/resources/messages.properties:9
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.adding-text"
+msgid "Adding text to:"
+msgstr "テキストの追加先:"
+
+#. simplepage.continue
+#: lessonbuilder/tool/src/resources/messages.properties:10
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.continue"
+msgid "Continue"
+msgstr "続行"
+
+#. simplepage.toolbar
+#: lessonbuilder/tool/src/resources/messages.properties:11
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.toolbar"
+msgid "Editing tools"
+msgstr "編集ツール"
+
+#. simplepage.maincontent
+#: lessonbuilder/tool/src/resources/messages.properties:12
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.maincontent"
+msgid "Main page content"
+msgstr "メインページコンテンツ"
+
+#. simplepage.notreleased
+#: lessonbuilder/tool/src/resources/messages.properties:13
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.notreleased"
+msgid ""
+"You have checked the 'Hide until release date' box in the Settings window, "
+"and the date has not arrived. Although the page will appear in the margin, "
+"users will not be able to use it yet."
+msgstr "「設定」ウィンドウで「公開日時まで非表示」ボックスをチェックしてあり，その日付にまだなっていません． ページはマージンには表示されますが，現在はまだユーザーが使用することはできません．"
+
+#. simplepage.notreleased.text
+#: lessonbuilder/tool/src/resources/messages.properties:14
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.notreleased.text"
+msgid ""
+"<strong>Note:</strong> This page will not be available to standard users "
+"until {}. You can change this in the <strong>Settings</strong> window."
+msgstr "<strong>ノート:</strong> このページは，標準的なユーザーは {} まで使用できません．これは「<strong>設定</strong>」ウィンドウで変更できます．"
+
+#. simplepage.page.gradebook
+#: lessonbuilder/tool/src/resources/messages.properties:15
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.gradebook"
+msgid "Create gradebook entry when page is completed."
+msgstr "ページが完成したら成績簿エントリを作成してください．"
+
+#. simplepage.points
+#: lessonbuilder/tool/src/resources/messages.properties:16
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.points"
+msgid "points"
+msgstr "点"
+
+#. simplepage.overquota
+#: lessonbuilder/tool/src/resources/messages.properties:17
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.overquota"
+msgid "Unable to add resource: it would take your site over its quota"
+msgstr "リソースを追加できません: サイトのクォータを超過します"
+
+#. simplepage.resourceerror
+#: lessonbuilder/tool/src/resources/messages.properties:18
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resourceerror"
+msgid "Unable to add resource: {}"
+msgstr "リソースを追加できません: {}"
+
+#. simplepage.resourcepossibleerror
+#: lessonbuilder/tool/src/resources/messages.properties:19
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resourcepossibleerror"
+msgid ""
+"Possible error in saving file. The operation probably worked correctly, but "
+"you should verify that your file was uploaded or updated properly."
+msgstr "ファイルの保存に関するエラーの可能性があります． 操作は正しく実行されたようですが，ファイルが適切にアップロードまたは更新されたかどうかを確認する必要があります．"
+
+#. simplepage.httphttps
+#: lessonbuilder/tool/src/resources/messages.properties:20
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.httphttps"
+msgid ""
+"You are adding a resource using http: on a page using https:. This will not "
+"display in all browsers. Please use https: if possible. Hit \"Save\" again "
+"to use this URL anyway."
+msgstr "https: を使うページでhttp:を使うリソースを追加します．すべてのブラウザで表示されません．可能であればhttps: を使って下さい．とにかくこのURLを使うには\"保存\"を再度クリックして下さい．"
+
+#. simplepage.new-page
+#: lessonbuilder/tool/src/resources/messages.properties:21
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page"
+msgid "Add More Pages"
+msgstr "さらにページを追加"
+
+#. simplepage.new-page-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:22
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"tooltip"
+msgid "Add pages that will show in left bar"
+msgstr "左のバーに表示されるページを追加"
+
+#. simplepage.new-page-title
+#: lessonbuilder/tool/src/resources/messages.properties:23
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"title"
+msgid "Page Title"
+msgstr "ページタイトル"
+
+#. simplepage.new-page-number
+#: lessonbuilder/tool/src/resources/messages.properties:24
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"number"
+msgid "Number of pages"
+msgstr "ページ数"
+
+#. simplepage.new-page-number-2
+#: lessonbuilder/tool/src/resources/messages.properties:25
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"number-2"
+msgid "blank gives one page"
+msgstr "空白も 1 ページになります"
+
+#. simplepage.new-page-copy
+#: lessonbuilder/tool/src/resources/messages.properties:26
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"copy"
+msgid ""
+"Make new pages copies of the current one (except that subpages are omitted)"
+msgstr "新しいページに現在のページをコピー (ただしサブページは除外)"
+
+#. simplepage.new-page-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:27
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"explanation"
+msgid ""
+"Create more pages in the left margin. To create pages within this one, use "
+"\"Add Subpage.\""
+msgstr "左マージンにさらにページを作成します．ここにページを作成するには，「サブページを追加」を使用します．"
+
+#. simplepage.new-page-explanation-1
+#: lessonbuilder/tool/src/resources/messages.properties:28
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"explanation-1"
+msgid ""
+"You can create a group of pages at once if you put a number in the title."
+msgstr "タイトルに数値を指定すると，すぐにページのグループを作成できます．"
+
+#. simplepage.new-page-explanation-2
+#: lessonbuilder/tool/src/resources/messages.properties:29
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-page-"
+"explanation-2"
+msgid ""
+"For example, if you specify \"Unit 4\" and request 3 pages, you'll get Unit "
+"4, Unit 5 and Unit 6."
+msgstr "たとえば，「ユニット 4」と指定して 3 ページを要求すると，ユニット 4，ユニット 5，ユニット 6 が作成されます．"
+
+#. simplepage.number_pages_not_number
+#: lessonbuilder/tool/src/resources/messages.properties:30
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.number_pages_not_number"
+msgid "Number of pages must be a number"
+msgstr "ページ数は数値でなければなりません"
+
+#. simplepage.title_no_number
+#: lessonbuilder/tool/src/resources/messages.properties:31
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title_no_number"
+msgid "Title must contain a number"
+msgstr "タイトルには数値が含まれていなければなりません"
+
+#. simplepage.remove-page
+#: lessonbuilder/tool/src/resources/messages.properties:32
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-page"
+msgid "Remove Page"
+msgstr "ページを削除"
+
+#. simplepage.remove-page-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:33
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-page-"
+"tooltip"
+msgid "Remove current page from left margin"
+msgstr "左マージンから現在のページを削除"
+
+#. simplepage.remove-page-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:34
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-page-"
+"explanation"
+msgid ""
+"Remove the current page from the left margin. This does not delete the page."
+" To delete it, use the \"Index of pages\" button."
+msgstr "左マージンから現在のページを削除します．ページは削除されません．ページを削除するには「ページの索引」ボタンを使用します．"
+
+#. simplepage.remove-student-page-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:35
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-"
+"student-page-explanation"
+msgid "Remove the current student page. This page will be deleted."
+msgstr "現在の学生ページを削除します．このページは削除されます．"
+
+#. simplepage.remove
+#: lessonbuilder/tool/src/resources/messages.properties:36
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove"
+msgid "Remove"
+msgstr "削除"
+
+#. simplepage.remove_page_done
+#: lessonbuilder/tool/src/resources/messages.properties:37
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove_page_done"
+msgid ""
+"This page has been removed from left margin. This change will be visible "
+"when you click \"Continue\". Note that the page has not been deleted from "
+"the system. You may choose it as a subpage for another page, or go to "
+"\"Index of Pages\" from any remaining page and delete it."
+msgstr "このページは，左マージンから削除されました．この変更は，「続ける」をクリックすると表示に反映されます．ページは，システムから削除されたわけではありません．別のページのサブページとして選択することも，残っているページのいずれかから「ページの索引」に移動して削除することもできます．"
+
+#. simplepage.not_yet_available_releasedate
+#: lessonbuilder/tool/src/resources/messages.properties:38
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.not_yet_available_releasedate"
+msgid "This page will not be available until {}."
+msgstr "このページは，{} まで使用できません．"
+
+#. simplepage.not_available_hidden
+#: lessonbuilder/tool/src/resources/messages.properties:39
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.not_available_hidden"
+msgid "This page is hidden."
+msgstr "このページは非表示です．"
+
+#. simplepage.hiddenpage
+#: lessonbuilder/tool/src/resources/messages.properties:40
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.hiddenpage"
+msgid "[Hidden]"
+msgstr "[非表示]"
+
+#. simplepage.pagenotreleased
+#: lessonbuilder/tool/src/resources/messages.properties:41
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pagenotreleased"
+msgid "[Not released]"
+msgstr "[非公開]"
+
+#. simplepage.create_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:42
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_assignment"
+msgid "Create new assignment using Assignments"
+msgstr "「課題」を使用して新しい課題を作成"
+
+#. simplepage.create_assignment2
+#: lessonbuilder/tool/src/resources/messages.properties:43
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_assignment2"
+msgid "Create new assignment using Assignment 2"
+msgstr "「課題 2」を使用して新しい課題を作成"
+
+#. simplepage.create_blti
+#: lessonbuilder/tool/src/resources/messages.properties:44
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_blti"
+msgid "Manage or Install External Tools"
+msgstr "外部ツールの管理またはインストール"
+
+#. simplepage.create_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:45
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_quiz"
+msgid "Create new quiz"
+msgstr "新しいクイズを作成"
+
+#. simplepage.create_samigo
+#: lessonbuilder/tool/src/resources/messages.properties:46
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_samigo"
+msgid "Create new quiz using Tests and Quizzes"
+msgstr "「テストとクイズ」を使用して新しいクイズを作成します"
+
+#. simplepage.create_mneme
+#: lessonbuilder/tool/src/resources/messages.properties:47
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_mneme"
+msgid "Create new quiz using Tasks, Tests and Surveys"
+msgstr "「タスク、テスト、調査」を使用して新しいクイズを作成します"
+
+#. simplepage.create_topic
+#: lessonbuilder/tool/src/resources/messages.properties:48
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_topic"
+msgid "Create new forum topic"
+msgstr "新しいフォーラムトピックを作成"
+
+#. simplepage.create_forums
+#: lessonbuilder/tool/src/resources/messages.properties:49
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_forums"
+msgid "Create new topic using Forums"
+msgstr "「フォーラム」を使用して新しいトピックを作成します"
+
+#. simplepage.create_jforum
+#: lessonbuilder/tool/src/resources/messages.properties:50
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_jforum"
+msgid "Create new topic using Discussions and Private Messages"
+msgstr "「ディスカッションとプライベートメッセージ」を使用して新しいトピックを作成します"
+
+#. simplepage.create_yaft_topic
+#: lessonbuilder/tool/src/resources/messages.properties:51
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create_yaft_topic"
+msgid "Create new topic using YAFT"
+msgstr "「YAFT」を使用して新しいトピックを作成します"
+
+#. simplepage.select_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:52
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_assignment"
+msgid "Existing assignments"
+msgstr "既存の課題"
+
+#. simplepage.return_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:53
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_assignment"
+msgid ""
+"Continue with Add Assignment, after you have created the new assignment"
+msgstr "新しい課題を作成してから、「課題を追加」で続けます"
+
+#. simplepage.return_blti
+#: lessonbuilder/tool/src/resources/messages.properties:54
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_blti"
+msgid "Continue with Add External Tool"
+msgstr "「外部ツールを追加」で続けます"
+
+#. simplepage.select_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:55
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_quiz"
+msgid "Existing quizzes"
+msgstr "既存のクイズ"
+
+#. simplepage.return_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:56
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_quiz"
+msgid "Continue with Add Quiz, after you have created the new quiz"
+msgstr "新しいクイズを作成してから、「クイズを追加」で続けます"
+
+#. simplepage.select_topic
+#: lessonbuilder/tool/src/resources/messages.properties:57
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_topic"
+msgid "Existing topics"
+msgstr "既存のトピック"
+
+#. simplepage.return_forum
+#: lessonbuilder/tool/src/resources/messages.properties:58
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_forum"
+msgid "Continue with Add Forum Topic, after you have created the new topic"
+msgstr "新しいトピックを作成してから、「フォーラムトピックを追加」で続けます"
+
+#. simplepage.no_assignments
+#: lessonbuilder/tool/src/resources/messages.properties:59
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_assignments"
+msgid ""
+"There are no assignments available in this site. Use the \"Create new "
+"assignment\" link to create one."
+msgstr "このサイトには使用可能な課題はありません．「新しい課題を作成」リンクを使用して作成してください．"
+
+#. simplepage.no_assignment_tools
+#: lessonbuilder/tool/src/resources/messages.properties:60
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_assignment_tools"
+msgid "There is no assignment tool available in the site."
+msgstr "サイト内で使用可能な割り当てツールはありません．"
+
+#. simplepage.assign_seeattach
+#: lessonbuilder/tool/src/resources/messages.properties:61
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assign_seeattach"
+msgid "See attached file for instructions"
+msgstr "説明のための添付ファイルを参照してください."
+
+#. simplepage.no_topics
+#: lessonbuilder/tool/src/resources/messages.properties:62
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_topics"
+msgid ""
+"There are no forum topics available in this site. Use the \"Create new "
+"topic\" link to create one"
+msgstr "このサイトには使用可能なフォーラムトピックはありません．「新しいトピックを作成」リンクを使用して作成してください．"
+
+#. simplepage.no_forum_tools
+#: lessonbuilder/tool/src/resources/messages.properties:63
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_forum_tools"
+msgid "There are no forum tools in the site."
+msgstr "サイトにはフォーラムのツールはありません．"
+
+#. simplepage.no_assessments
+#: lessonbuilder/tool/src/resources/messages.properties:64
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_assessments"
+msgid ""
+"There are no assessments available in this site. Use the \"Create new quiz\""
+" link to create one."
+msgstr "このサイトには使用可能な評価はありません．「新しいクイズを作成」リンクを使用して作成してください．"
+
+#. simplepage.no_assessment_tool
+#: lessonbuilder/tool/src/resources/messages.properties:65
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_assessment_tool"
+msgid "There is no quiz tool in this site."
+msgstr "このサイトにはクイズツールはありません．"
+
+#. simplepage.noplugin
+#: lessonbuilder/tool/src/resources/messages.properties:66
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noplugin"
+msgid ""
+"Your browser does not seem to have the necessary plugin to display this "
+"content. You may use the following link to download the contents as a file."
+msgstr "このコンテンツを表示するために必要なプラグインがブラウザに組み込まれていません．以下のリンクを使用して，コンテンツをファイルとしてダウンロードできます．"
+
+#. simplepage.forumdeleted
+#: lessonbuilder/tool/src/resources/messages.properties:67
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forumdeleted"
+msgid "This forum topic has been deleted."
+msgstr "このフォーラムトピックは削除済みです．"
+
+#. simplepage.menuItemTitle_label
+#: lessonbuilder/tool/src/resources/messages.properties:68
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.menuItemTitle_label"
+msgid "Menu item title"
+msgstr "メニューアイテムタイトル"
+
+#. simplepage.menuItemTitle_tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:69
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.menuItemTitle_tooltip"
+msgid "Displays in the site menu."
+msgstr "サイトメニューに表示します．"
+
+#. simplepage.pageTitle_label
+#: lessonbuilder/tool/src/resources/messages.properties:70
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pageTitle_label"
+msgid "Page title"
+msgstr "ページタイトル"
+
+#. simplepage.pageTitle_tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:71
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.pageTitle_tooltip"
+msgid "Displays at the top of the page."
+msgstr "ページの上部に表示します．"
+
+#. simplepage.editTitle
+#: lessonbuilder/tool/src/resources/messages.properties:72
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editTitle"
+msgid "Edit Title"
+msgstr "タイトルを編集"
+
+#. simplepage.editTitle-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:73
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editTitle-"
+"tooltip"
+msgid "Edit title, release date, and other page properties"
+msgstr "タイトル、公開日時、その他のページプロパティを編集"
+
+#. simplepage.edit-title.generic
+#: lessonbuilder/tool/src/resources/messages.properties:74
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.generic"
+msgid "Edit {}"
+msgstr "{} を編集"
+
+#. simplepage.edit-title.textbox
+#: lessonbuilder/tool/src/resources/messages.properties:75
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.textbox"
+msgid "Edit text box {}"
+msgstr "テキストボックス {} を編集"
+
+#. simplepage.edit-title.url
+#: lessonbuilder/tool/src/resources/messages.properties:76
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.url"
+msgid "Edit inline item {}"
+msgstr "{} インラインアイテムを編集"
+
+#. simplepage.edit-title.youtube
+#: lessonbuilder/tool/src/resources/messages.properties:77
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.youtube"
+msgid "Edit Youtube item"
+msgstr "Youtube アイテムを編集"
+
+#. simplepage.edit-title.comments
+#: lessonbuilder/tool/src/resources/messages.properties:78
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.comments"
+msgid "Edit Comments Item"
+msgstr "コメントアイテムを編集"
+
+#. simplepage.edit-title.student
+#: lessonbuilder/tool/src/resources/messages.properties:79
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.student"
+msgid "Edit Student Content Item"
+msgstr "学生のコンテンツアイテムを編集"
+
+#. simplepage.edit-title.question
+#: lessonbuilder/tool/src/resources/messages.properties:80
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
+"title.question"
+msgid "Edit Question Item"
+msgstr "問題アイテムを修正"
+
+#. simplepage.fromhost
+#: lessonbuilder/tool/src/resources/messages.properties:81
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.fromhost"
+msgid "content from {}"
+msgstr "{} のコンテンツ"
+
+#. simplepage.showpage
+#: lessonbuilder/tool/src/resources/messages.properties:82
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.showpage"
+msgid "Lesson Page"
+msgstr "レッスンページ"
+
+#. simplepage.showitem
+#: lessonbuilder/tool/src/resources/messages.properties:83
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.showitem"
+msgid "Lesson Item"
+msgstr "レッスンアイテム"
+
+#. simplepage.return
+#: lessonbuilder/tool/src/resources/messages.properties:84
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return"
+msgid "Return to Lesson"
+msgstr "レッスンに戻る"
+
+#. simplepage.return.warning
+#: lessonbuilder/tool/src/resources/messages.properties:85
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return.warning"
+msgid "WARNING: Make sure you save or submit your work before returning."
+msgstr "警告: 戻る前に，課題を保存または提出したことを確認してください．"
+
+#. simplepage.next
+#: lessonbuilder/tool/src/resources/messages.properties:86
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.next"
+msgid "Next"
+msgstr "次"
+
+#. simplepage.back
+#: lessonbuilder/tool/src/resources/messages.properties:87
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.back"
+msgid "Back"
+msgstr "戻る"
+
+#. simplepage.editor
+#: lessonbuilder/tool/src/resources/messages.properties:88
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editor"
+msgid "Editor"
+msgstr "編集者"
+
+#. simplepage.ckeditor
+#: lessonbuilder/tool/src/resources/messages.properties:89
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.ckeditor"
+msgid "Editor, type ALT-0 for help"
+msgstr "エディタ、Alt-0 でヘルプ"
+
+#. simplepage.preview
+#: lessonbuilder/tool/src/resources/messages.properties:90
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.preview"
+msgid "Preview of {}"
+msgstr "{} のプレビュー"
+
+#. simplepage.save_message
+#: lessonbuilder/tool/src/resources/messages.properties:91
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.save_message"
+msgid "Save"
+msgstr "保存"
+
+#. simplepage.cancel_message
+#: lessonbuilder/tool/src/resources/messages.properties:92
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cancel_message"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. simplepage.has_prerequistes
+#: lessonbuilder/tool/src/resources/messages.properties:93
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.has_prerequistes"
+msgid "Before viewing page, you must complete the following pages:"
+msgstr "このページを処理する前に，以下のページを完成させる必要があります:"
+
+#. simplepage.has_prerequistes_2
+#: lessonbuilder/tool/src/resources/messages.properties:94
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.has_prerequistes_2"
+msgid ""
+"You need to complete a previous item before doing this one. Return to this "
+"page to do it. Look for an item with an asterisk to the left of it."
+msgstr "このアイテムを処理する前に，前のアイテムを完成させる必要があります．このページに戻って実行してください．左側にアスタリスクが表示されているアイテムが対象です．"
+
+#. simplepage.resource
+#: lessonbuilder/tool/src/resources/messages.properties:95
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource"
+msgid "Add Content Link"
+msgstr "コンテンツリンクを追加"
+
+#. simplepage.resource.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:96
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource.tooltip"
+msgid ""
+"Add link: Upload file or use existing file in Resources tool and add link to"
+" it, or enter a URL for another site"
+msgstr "リンク追加：ファイルをアップロードまたはリソースツールの既存ファイルを使い，それにリンクを追加，または他のサイトへのURLを入力します．"
+
+#. simplepage.resource-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:97
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource-"
+"descrip"
+msgid ""
+"Add link: Upload file or use existing file in Resources tool and add link to"
+" it, or enter a URL for another site"
+msgstr "リンク追加：ファイルをアップロードまたはリソースツールの既存ファイルを使い，それにリンクを追加，または他のサイトへのURLを入力します．"
+
+#. simplepage.subpage
+#: lessonbuilder/tool/src/resources/messages.properties:98
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage"
+msgid "Add Subpage"
+msgstr "サブページを追加"
+
+#. simplepage.subpage-next
+#: lessonbuilder/tool/src/resources/messages.properties:99
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage-next"
+msgid ""
+"Next page, i.e. page replaces the current one rather than returning to the "
+"current one"
+msgstr "次のページへ (現在のページに戻るのではなく、現在のページを置き換える)"
+
+#. simplepage.subpage-button
+#: lessonbuilder/tool/src/resources/messages.properties:100
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage-"
+"button"
+msgid "Show as button rather than link"
+msgstr "リンクではなくボタンとして表示"
+
+#. simplepage.subpage.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:101
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage.tooltip"
+msgid "Create a new page and add a link to it here"
+msgstr "新規ページを作成し、そのページへのリンクをここに追加"
+
+#. simplepage.usenewwindow
+#: lessonbuilder/tool/src/resources/messages.properties:102
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.usenewwindow"
+msgid "Open item in a new window"
+msgstr "アイテムを新規ウィンドウで開く"
+
+#. simplepage.assignment
+#: lessonbuilder/tool/src/resources/messages.properties:103
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assignment"
+msgid "Add Assignment"
+msgstr "課題を追加"
+
+#. simplepage.assignment.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:104
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assignment.tooltip"
+msgid "Add a link to an assignment in the Assignment tool"
+msgstr "課題ツールで課題へのリンクを追加"
+
+#. simplepage.assignment.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:105
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assignment.chooser"
+msgid "Pick an Assignment"
+msgstr "課題を選択"
+
+#. simplepage.due
+#: lessonbuilder/tool/src/resources/messages.properties:106
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.due"
+msgid "Due"
+msgstr "締切"
+
+#. simplepage.chooser.name
+#: lessonbuilder/tool/src/resources/messages.properties:107
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.name"
+msgid "Page"
+msgstr "ページ"
+
+#. simplepage.chooser.due
+#: lessonbuilder/tool/src/resources/messages.properties:108
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.due"
+msgid "Due Date"
+msgstr "締切日時"
+
+#. simplepage.chooser.link
+#: lessonbuilder/tool/src/resources/messages.properties:109
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.link"
+msgid "Link"
+msgstr "リンク"
+
+#. simplepage.chooser.textitemplaceholder
+#: lessonbuilder/tool/src/resources/messages.properties:110
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.textitemplaceholder"
+msgid "This is a rich text item. To see it, click the parent page. "
+msgstr "これはリッチテキストアイテムです．それを見るためには，親ページをクリックします．"
+
+#. simplepage.select
+#: lessonbuilder/tool/src/resources/messages.properties:111
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select"
+msgid "Select"
+msgstr "選択"
+
+#. simplepage.select-for-deletion
+#: lessonbuilder/tool/src/resources/messages.properties:112
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select-for-"
+"deletion"
+msgid "Select for deletion"
+msgstr "削除するものを選択"
+
+#. simplepage.delete-message
+#: lessonbuilder/tool/src/resources/messages.properties:113
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete-"
+"message"
+msgid ""
+"Only pages that are not currently included anywhere on the site are "
+"available for permanent deletion."
+msgstr "完全に削除できるのは，現在サイトのどこにも含まれていないページだけです．"
+
+#. simplepage.delete-selected
+#: lessonbuilder/tool/src/resources/messages.properties:114
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete-"
+"selected"
+msgid "Delete selected pages"
+msgstr "選択されているページを削除"
+
+#. simplepage.chooser.select
+#: lessonbuilder/tool/src/resources/messages.properties:115
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.select"
+msgid "Use selected item"
+msgstr "選択されているアイテムを使用"
+
+#. simplepage.chooser.unused
+#: lessonbuilder/tool/src/resources/messages.properties:116
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooser.unused"
+msgid ""
+"The following pages are currently not in use. (No other page refers to "
+"them.)"
+msgstr "現在使用されていないページは以下のとおりです (他のページからの参照はありません)．"
+
+#. simplepage.change_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:117
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_assignment"
+msgid "Change Assignment"
+msgstr "課題を変更"
+
+#. simplepage.change_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:118
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_quiz"
+msgid "Change Quiz"
+msgstr "クイズを変更"
+
+#. simplepage.change_forum
+#: lessonbuilder/tool/src/resources/messages.properties:119
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_forum"
+msgid "Change Forum Topic"
+msgstr "フォーラムトピックを変更"
+
+#. simplepage.change_resource
+#: lessonbuilder/tool/src/resources/messages.properties:120
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_resource"
+msgid "Change File or URL"
+msgstr "ファイルまたは URL を変更"
+
+#. simplepage.change_caption
+#: lessonbuilder/tool/src/resources/messages.properties:121
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_caption"
+msgid "Change File or URL for caption file (must be VTT format)"
+msgstr "ファイルあるいは見出しファイル( VTTフォーマット )のURLを変更して下さい．"
+
+#. simplepage.add_caption
+#: lessonbuilder/tool/src/resources/messages.properties:122
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add_caption"
+msgid "Add caption file (must be VTT format)"
+msgstr "見出しファイル( VTTフォーマット )を追加して下さい．"
+
+#. simplepage.change_page
+#: lessonbuilder/tool/src/resources/messages.properties:123
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_page"
+msgid "Change Page"
+msgstr "ページを変更"
+
+#. simplepage.quiz
+#: lessonbuilder/tool/src/resources/messages.properties:124
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.quiz"
+msgid "Add Quiz"
+msgstr "クイズを追加"
+
+#. simplepage.quiz.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:125
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.quiz.tooltip"
+msgid "Add a link to a quiz"
+msgstr "クイズのリンクを追加"
+
+#. simplepage.quiz.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:126
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.quiz.chooser"
+msgid "Pick a Quiz"
+msgstr "クイズを選択"
+
+#. simplepage.forum
+#: lessonbuilder/tool/src/resources/messages.properties:127
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forum"
+msgid "Add Forum Topic"
+msgstr "フォーラムトピックを追加"
+
+#. simplepage.forum.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:128
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forum.tooltip"
+msgid "Add a link to a forum topic in the Forums or JForum tool"
+msgstr "フォーラムツールまたは J フォーラムツールでフォーラムトピックへのリンクを追加"
+
+#. simplepage.forum.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:129
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forum.chooser"
+msgid "Pick a Forum Topic"
+msgstr "フォーラムトピックを選択"
+
+#. simplepage.page.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:130
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.chooser"
+msgid "Pick a Page"
+msgstr "ページを選択"
+
+#. simplepage.page.index
+#: lessonbuilder/tool/src/resources/messages.properties:131
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.index"
+msgid "Pages in Current Site"
+msgstr "現在のサイト内のページ"
+
+#. simplepage.page.onlyseen
+#: lessonbuilder/tool/src/resources/messages.properties:132
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.onlyseen"
+msgid "NOTE: Only pages you have seen are shown."
+msgstr "ノート: 表示済みのページだけが示されています．"
+
+#. simplepage.create
+#: lessonbuilder/tool/src/resources/messages.properties:133
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create"
+msgid "Create"
+msgstr "作成"
+
+#. simplepage.cancel
+#: lessonbuilder/tool/src/resources/messages.properties:134
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. simplepage.notitle
+#: lessonbuilder/tool/src/resources/messages.properties:135
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.notitle"
+msgid "A title is required."
+msgstr "タイトルが必要です。"
+
+#. simplepage.subpage_header
+#: lessonbuilder/tool/src/resources/messages.properties:136
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage_header"
+msgid "Create A Subpage"
+msgstr "サブページを作成"
+
+#. simplepage.page.showitems
+#: lessonbuilder/tool/src/resources/messages.properties:137
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.showitems"
+msgid "Show items"
+msgstr "アイテムを表示"
+
+#. simplepage.page.showitemstooltip
+#: lessonbuilder/tool/src/resources/messages.properties:138
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.showitemstooltip"
+msgid "Show the items under each page"
+msgstr "各ページの下にあるアイテムを表示"
+
+#. simplepage.page.hideitems
+#: lessonbuilder/tool/src/resources/messages.properties:139
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.hideitems"
+msgid "Hide items"
+msgstr "アイテムを非表示"
+
+#. simplepage.page.hideitemstooltip
+#: lessonbuilder/tool/src/resources/messages.properties:140
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.hideitemstooltip"
+msgid "Hide the items. Just show the pages."
+msgstr "アイテムを非表示にします．ページだけを表示します．"
+
+#. simplepage.copylink
+#: lessonbuilder/tool/src/resources/messages.properties:141
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copylink"
+msgid "Copy"
+msgstr "コピー"
+
+#. simplepage.copylink2
+#: lessonbuilder/tool/src/resources/messages.properties:142
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copylink2"
+msgid "Copy: {}"
+msgstr "コピー: {}"
+
+#. simplepage.startup_help
+#: lessonbuilder/tool/src/resources/messages.properties:143
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.startup_help"
+msgid "templates/instructions/general.html"
+msgstr "templates/instructions/general.html"
+
+#. simplepage.additional-instructions
+#: lessonbuilder/tool/src/resources/messages.properties:144
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.additional-"
+"instructions"
+msgid "instructions/multimedia.html"
+msgstr "instructions/multimedia.html"
+
+#. simplepage.additional-website-instructions
+#: lessonbuilder/tool/src/resources/messages.properties:145
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.additional-"
+"website-instructions"
+msgid "instructions/website.html"
+msgstr "instructions/website.html"
+
+#. simplepage.general-instructions
+#: lessonbuilder/tool/src/resources/messages.properties:146
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.general-"
+"instructions"
+msgid "instructions/general.html"
+msgstr "instructions/general.html"
+
+#. simplepage.help
+#: lessonbuilder/tool/src/resources/messages.properties:147
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.help"
+msgid "Help"
+msgstr "ヘルプ"
+
+#. simplepage.noitems_error_admin
+#: lessonbuilder/tool/src/resources/messages.properties:148
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noitems_error_admin"
+msgid ""
+"We suggest that you start out by using <b>Add Text</b> to put something on "
+"this page. Then you can add links or other content below it. Put your mouse "
+"over one of the items above to see what it does."
+msgstr "まず，「<b>テキストを追加</b>」を使用して，このページに何かを置くことをお勧めします．その後，その下にリンクやその他のコンテンツを追加できます．上のアイテムのいずれかにマウスを合わせると，そのアイテムの説明が表示されます．"
+
+#. simplepage.noitems_error_user
+#: lessonbuilder/tool/src/resources/messages.properties:149
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noitems_error_user"
+msgid "There are no items on this page currently visible to you."
+msgstr "現在このページには表示できるアイテムはありません．"
+
+#. simplepage.additional-instructions-label
+#: lessonbuilder/tool/src/resources/messages.properties:150
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.additional-"
+"instructions-label"
+msgid "Frequently Asked Questions about multimedia content"
+msgstr "マルチメディアコンテンツに関するよくある質問"
+
+#. simplepage.additional-website-instructions-label
+#: lessonbuilder/tool/src/resources/messages.properties:151
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.additional-"
+"website-instructions-label"
+msgid "Frequently Asked Questions about uploading content from ZIP file"
+msgstr "ZIPファイルからコンテンツへのアップロードに関するよくある質問"
+
+#. simplepage.link
+#: lessonbuilder/tool/src/resources/messages.properties:152
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.link"
+msgid "Add Link"
+msgstr "リンクを追加"
+
+#. simplepage.addlink_header
+#: lessonbuilder/tool/src/resources/messages.properties:153
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addlink_header"
+msgid "Add A New Link"
+msgstr "新規リンクを追加"
+
+#. simplepage.addLink_label
+#: lessonbuilder/tool/src/resources/messages.properties:154
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addLink_label"
+msgid "URL:"
+msgstr "URL:"
+
+#. simplepage.addLink_label_add
+#: lessonbuilder/tool/src/resources/messages.properties:155
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addLink_label_add"
+msgid "Or add a URL:"
+msgstr "またはURLを追加:"
+
+#. simplepage.addLink_label_add_or
+#: lessonbuilder/tool/src/resources/messages.properties:156
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addLink_label_add_or"
+msgid "Or add a URL or \"embed code\""
+msgstr "あるいはURLまたは\"埋め込みコード\"の追加"
+
+#. simplepage.editText
+#: lessonbuilder/tool/src/resources/messages.properties:157
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editText"
+msgid "Edit This Text"
+msgstr "このテキストを編集"
+
+#. simplepage.editItem
+#: lessonbuilder/tool/src/resources/messages.properties:158
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editItem"
+msgid "Edit"
+msgstr "編集"
+
+#. simplepage.editItemBelow
+#: lessonbuilder/tool/src/resources/messages.properties:159
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editItemBelow"
+msgid "Edit Item Below"
+msgstr "以下のアイテムを編集"
+
+#. simplepage.textItemUnavailable
+#: lessonbuilder/tool/src/resources/messages.properties:160
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.textItemUnavailable"
+msgid ""
+"This text item will show when all pre-requisites, as marked by an asterisk "
+"(*), have been completed"
+msgstr "アステリスク(*)でマークされたすべての必要条件が完了したときに，このテキストアイテムが表示されます．"
+
+#. simplepage.multimediaItemUnavailable
+#: lessonbuilder/tool/src/resources/messages.properties:161
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multimediaItemUnavailable"
+msgid ""
+"This multimedia item will show when all pre-requisites, as marked by an "
+"asterisk (*), have been completed"
+msgstr "アステリスク(*)でマークされたすべての必要条件が完了したときに，このマルチメディアアイテムが表示されます．"
+
+#. simplepage.edit
+#: lessonbuilder/tool/src/resources/messages.properties:162
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.edit"
+msgid "Update Item"
+msgstr "アイテムを更新"
+
+#. simplepage.description_label
+#: lessonbuilder/tool/src/resources/messages.properties:163
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.description_label"
+msgid "Item Description"
+msgstr "アイテムの説明"
+
+#. simplepage.name_label
+#: lessonbuilder/tool/src/resources/messages.properties:164
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.name_label"
+msgid "Item Name"
+msgstr "アイテム名"
+
+#. simplepage.edititem_header
+#: lessonbuilder/tool/src/resources/messages.properties:165
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edititem_header"
+msgid "Edit Item"
+msgstr "アイテムを編集"
+
+#. simplepage.multimedia
+#: lessonbuilder/tool/src/resources/messages.properties:166
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multimedia"
+msgid "Embed content on page"
+msgstr "ページの埋め込みコンテンツ"
+
+#. simplepage.multimedia.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:167
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multimedia.tooltip"
+msgid ""
+"Add an image, video, Flash file, web page, etc. Use this to embed the item "
+"on this page. Use Add Content Link instead if you want a link to an item "
+"rather than showing it on the page."
+msgstr "画像，ビデオ，Flash ファイル, ウェブページなどを追加します．このページにアイテムを埋め込む場合はこれを使用します．ページに埋め込むのではなく，アイテムにリンクしたい場合は代わりに\"コンテンツリンク追加\"を使用します．"
+
+#. simplepage.multimedia-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:168
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multimedia-"
+"descrip"
+msgid ""
+"Add an image, video, Flash file, web page, etc. Use this to embed the item "
+"on this page. Use Add Content Link instead if you want a link to an item "
+"rather than showing it on the page."
+msgstr "画像，ビデオ，Flash ファイル, ウェブページなどを追加します．このページにアイテムを埋め込む場合はこれを使用します．ページに埋め込むのではなく，アイテムにリンクしたい場合は代わりに\"コンテンツリンク追加\"を使用します．"
+
+#. simplepage.expert_toggle
+#: lessonbuilder/tool/src/resources/messages.properties:169
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.expert_toggle"
+msgid "Show details"
+msgstr "詳細を表示"
+
+#. simplepage.expert_intro
+#: lessonbuilder/tool/src/resources/messages.properties:170
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.expert_intro"
+msgid "The following should not normally need to be changed:"
+msgstr "通常、以下を変更する必要はありません:"
+
+#. simplepage.mimetype_label
+#: lessonbuilder/tool/src/resources/messages.properties:171
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mimetype_label"
+msgid "Mime type"
+msgstr "MIME タイプ"
+
+#. simplepage.tag_is
+#: lessonbuilder/tool/src/resources/messages.properties:172
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.tag_is"
+msgid "This item is displayed with a tag of type"
+msgstr "このアイテムは、タイプのタグ付きで表示されます"
+
+#. simplepage.tag_object
+#: lessonbuilder/tool/src/resources/messages.properties:173
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.tag_object"
+msgid "\"object\""
+msgstr "\"object\""
+
+#. simplepage.tag_img
+#: lessonbuilder/tool/src/resources/messages.properties:174
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.tag_img"
+msgid "\"img\""
+msgstr "\"img\""
+
+#. simplepage.tag_iframe
+#: lessonbuilder/tool/src/resources/messages.properties:175
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.tag_iframe"
+msgid "\"iframe\""
+msgstr "\"iframe\""
+
+#. simplepage.permissions
+#: lessonbuilder/tool/src/resources/messages.properties:176
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.permissions"
+msgid "Permissions"
+msgstr "権限"
+
+#. simplepage.permissions.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:177
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.permissions.tooltip"
+msgid ""
+"Change permissions associated with this tool for different types of user"
+msgstr "このツールに関連付けられている権限を、別のタイプのユーザーのために変更"
+
+#. simplepage.iframe.auto
+#: lessonbuilder/tool/src/resources/messages.properties:178
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.iframe.auto"
+msgid ""
+"Use \"auto\" in height field to use the full height of the content. Only "
+"works for URLs within this system."
+msgstr "コンテンツの最大高を使用する場合は，高さフィールドの \"自動\" を使用します．システム内の URL に対してのみ機能します．"
+
+#. simplepage.nopermissions
+#: lessonbuilder/tool/src/resources/messages.properties:179
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nopermissions"
+msgid "You do not have permission to read this page"
+msgstr "このページを読む権限がありません"
+
+#. simplepage.nowrite
+#: lessonbuilder/tool/src/resources/messages.properties:180
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nowrite"
+msgid "You do not have permission to edit this page"
+msgstr "このページを編集する権限がありません"
+
+#. simplepage.savefailed
+#: lessonbuilder/tool/src/resources/messages.properties:181
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.savefailed"
+msgid "Unable to save or update item. Error was: "
+msgstr "アイテムを保存または更新できません．エラー: "
+
+#. simplepage.height_label
+#: lessonbuilder/tool/src/resources/messages.properties:182
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.height_label"
+msgid "Height:"
+msgstr "高さ:"
+
+#. simplepage.width_label
+#: lessonbuilder/tool/src/resources/messages.properties:183
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.width_label"
+msgid "Width:"
+msgstr "幅:"
+
+#. simplepage.editMultimedia_header
+#: lessonbuilder/tool/src/resources/messages.properties:184
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editMultimedia_header"
+msgid "Edit Multimedia Size"
+msgstr "マルチメディアサイズを編集"
+
+#. simplepage.editMultimedia
+#: lessonbuilder/tool/src/resources/messages.properties:185
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editMultimedia"
+msgid "Edit Multimedia"
+msgstr "マルチメディアを編集"
+
+#. simplepage.size-too-big
+#: lessonbuilder/tool/src/resources/messages.properties:186
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.size-too-big"
+msgid "Height or width greater than 3000 pixels"
+msgstr "高さまたは幅を超える3000ピクセル"
+
+#. simplepage.deleted-group
+#: lessonbuilder/tool/src/resources/messages.properties:187
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.deleted-"
+"group"
+msgid "<Deleted Group>"
+msgstr "<グループを削除>"
+
+#. simplepage.deleted-entity
+#: lessonbuilder/tool/src/resources/messages.properties:188
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.deleted-"
+"entity"
+msgid "*Deleted*"
+msgstr "*削除済み*"
+
+#. simplepage.not-published
+#: lessonbuilder/tool/src/resources/messages.properties:189
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.not-"
+"published"
+msgid "*Not published; not visible to students*"
+msgstr "*公開されませんでした：受講者に非表示*"
+
+#. simplepage.add_file_instructions
+#: lessonbuilder/tool/src/resources/messages.properties:190
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add_file_instructions"
+msgid ""
+"You may upload a new file, select an existing file from Resources, or supply"
+" a URL to a file on the web."
+msgstr "新しいファイルをアップロードし，リソースから既存ファイルを選択するか，Web上のファイルにURLを設定して下さい．"
+
+#. simplepage.upload_label
+#: lessonbuilder/tool/src/resources/messages.properties:191
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.upload_label"
+msgid "Upload file"
+msgstr "ファイルアップロード"
+
+#. simplepage.choose_existing
+#: lessonbuilder/tool/src/resources/messages.properties:192
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choose_existing"
+msgid "Choose Existing File"
+msgstr "既存のファイルを選択"
+
+#. simplepage.choose_existing_or
+#: lessonbuilder/tool/src/resources/messages.properties:193
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choose_existing_or"
+msgid "Or select an existing resource"
+msgstr "あるいは既存リソースを選択"
+
+#. simplepage.choose_existing_page
+#: lessonbuilder/tool/src/resources/messages.properties:194
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choose_existing_page"
+msgid "Choose Existing Page (Does not create a new copy of the page)"
+msgstr "既存ページを選択 ( ページの新しいコピーは作成しないで下さい )"
+
+#. simplepage.lm_existing_page
+#: lessonbuilder/tool/src/resources/messages.properties:195
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.lm_existing_page"
+msgid "Put existing page in the left margin. "
+msgstr "既存ページに左マージンを設定して下さい．"
+
+#. simplepage.lm-existing_explanation
+#: lessonbuilder/tool/src/resources/messages.properties:196
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.lm-"
+"existing_explanation"
+msgid ""
+"Does not create a new copy of the page. You can use this to restore a page "
+"that has been deleted to the left margin."
+msgstr "ページの新しいコピーを作成しないで下さい．左マージンに削除されたページをリストアしてこれを使えます．"
+
+#. simplepage.import_cc_button
+#: lessonbuilder/tool/src/resources/messages.properties:197
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_button"
+msgid "Import CC"
+msgstr "CC をインポート"
+
+#. simplepage.import_cc
+#: lessonbuilder/tool/src/resources/messages.properties:198
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc"
+msgid "Import IMS Common Cartridge file"
+msgstr "IMS 共通カートリッジファイルをインポート"
+
+#. simplepage.import_cc.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:199
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc.tooltip"
+msgid ""
+"Import file in IMS Common Cartridge format. These files often come from "
+"textbook vendors, but you can also use this to move courses between "
+"different Course Management Systems."
+msgstr "IMSコモンカートリッジのファイルをインポートします．これらのファイルは大抵教科書ベンダから提供されますが，異なるコース管理システム間でコースを移動することでもこれを使うことができます．"
+
+#. simplepage.import_cc_file
+#: lessonbuilder/tool/src/resources/messages.properties:200
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_file"
+msgid "IMS Common Cartridge file (ZIP file):"
+msgstr "IMS 共通カートリッジファイル (ZIP ファイル):"
+
+#. simplepage.import_cc_syllabus
+#: lessonbuilder/tool/src/resources/messages.properties:201
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_syllabus"
+msgid "Syllabus"
+msgstr "シラバス"
+
+#. simplepage.import_cc_lessonplan
+#: lessonbuilder/tool/src/resources/messages.properties:202
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_lessonplan"
+msgid "Lesson Plan"
+msgstr "レッスンプラン"
+
+#. simplepage.import_cc_pattern
+#: lessonbuilder/tool/src/resources/messages.properties:203
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_pattern"
+msgid "[Pattern match]"
+msgstr "[パターンマッチ]"
+
+#. simplepage.import_cc_usespattern
+#: lessonbuilder/tool/src/resources/messages.properties:204
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import_cc_usespattern"
+msgid ""
+"This cartridge contains Fill in the Blank assessment questions that use "
+"pattern matching. This system does not support pattern matching. These "
+"questions will be flagged using [Pattern match] at the beginning of the "
+"question. Please review them and make the necessary changes."
+msgstr "このカートリッジには，パターンマッチングを用いた穴埋めテスト問題が含まれています．このシステムはパターンマッチングをサポートしていません．これらの問題は，問題の最初のところで \"[パターンマッチ]\" というフラグが付きます．これらの問題を見直し，必要な変更を加えて下さい．"
+
+#. simplepage.import-toplevel-label
+#: lessonbuilder/tool/src/resources/messages.properties:205
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.import-"
+"toplevel-label"
+msgid "Import resources into top-level folder"
+msgstr "リソースを最上位のフォルダにインポートする．"
+
+#. simplepage.cc_apip
+#: lessonbuilder/tool/src/resources/messages.properties:206
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc_apip"
+msgid "Accessible Portable Item Protocol (APIP)"
+msgstr "アクセッシブル　ポータブル　アイテム　プロトコル (APIP)"
+
+#. simplepage.cc_iwb
+#: lessonbuilder/tool/src/resources/messages.properties:207
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc_iwb"
+msgid "Interactive Whiteboard"
+msgstr "インタラクティブホワイトボード"
+
+#. simplepage.cc_epub3
+#: lessonbuilder/tool/src/resources/messages.properties:208
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc_epub3"
+msgid "EPUB 3"
+msgstr "EPUB 3"
+
+#. simplepage.cc_ext_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:209
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc_ext_assignment"
+msgid "Assignment (extended definition)"
+msgstr "課題 ( 拡張定義 )"
+
+#. simplepage.cc-has-badtypes
+#: lessonbuilder/tool/src/resources/messages.properties:210
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-has-"
+"badtypes"
+msgid ""
+"This cartridge contains resources of types with no specific support in this "
+"system. They will be treated as ordinary files: {}"
+msgstr "このカートリッジはこのシステムでは特にサポートされない種別のリソースを含みます．通常ファイル: {} として取り扱われます．"
+
+#. simplepage.export_cc
+#: lessonbuilder/tool/src/resources/messages.properties:211
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.export_cc"
+msgid "Export CC"
+msgstr "CCをエクスポート"
+
+#. simplepage.export_cc.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:212
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.export_cc.tooltip"
+msgid ""
+"Create file in IMS Common Cartridge format. This may be used to save the "
+"contents of a course for later use. Most other Course Management Systems can"
+" read Common Cartridge files. The file will contain all content from "
+"Lessons, Assignments, Forum Topics, Quizzes, and Question Pools. However not"
+" all details will be saved."
+msgstr "IMSコモンカートリッジフォーマットでファイルを作成します．コースのコンテンツを後で用いるために保存します．大抵の他のコース管理システムはコモンカートリッジのファイルを読むことができます．ファイルはレッスン，課題，フォーラムトピックス，クイズおよび質問プールのすべてのコンテンツを含みます，しかし，すべての詳細は保存されません．"
+
+#. simplepage.export-cc-title
+#: lessonbuilder/tool/src/resources/messages.properties:213
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.export-cc-"
+"title"
+msgid "Export IMS Common Cartridge file"
+msgstr "IMS コモンカートリッジファイルをインポート"
+
+#. simplepage.exportcc-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:214
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"descrip"
+msgid "Export contents of site in IMS CC format."
+msgstr "IMS CCフォーマットでサイトの内容をエクスポートする．"
+
+#. simplepage.exportcc-fileerr
+#: lessonbuilder/tool/src/resources/messages.properties:215
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"fileerr"
+msgid "Error creating files for export: {}"
+msgstr "エクスポート用ファイル作成中にエラー:{}"
+
+#. simplepage.exportcc-noresource
+#: lessonbuilder/tool/src/resources/messages.properties:216
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"noresource"
+msgid ""
+"Error creating files for export: Please verify that the Resources tool is in"
+" your site"
+msgstr "エクスポート用ファイルを作成中のエラー：リソースツールがあなたのサイトにあることを確認してください．"
+
+#. simplepage.exportcc-use11
+#: lessonbuilder/tool/src/resources/messages.properties:217
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"use11"
+msgid ""
+"Use old version of file (version 1.1), recommended for Moodle and Blackboard"
+msgstr "古いバージョンのファイルを使う(バージョン 1.1)，MoodleとBlackboardを使う場合に推奨．"
+
+#. simplepage.exportcc-use13
+#: lessonbuilder/tool/src/resources/messages.properties:218
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"use13"
+msgid "Use newest version of file (version 1.3), recommended for Canvas"
+msgstr "最新のバージョンのファイルを使う(バージョン 1.3)，Canvasを使う場合に推奨．"
+
+#. simplepage.exportcc-includebank
+#: lessonbuilder/tool/src/resources/messages.properties:219
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"includebank"
+msgid "Include all question pools you can access as a single question bank"
+msgstr "単一の質問バンクとしてアクセス可能な質問プールをすべて含む．"
+
+#. simplepage.exportcc-sam-undefinedtype
+#: lessonbuilder/tool/src/resources/messages.properties:220
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-undefinedtype"
+msgid ""
+"Question {1} in quiz {2} has a type not supported by Common Cartridge. The "
+"question will be skipped."
+msgstr "クイズ {2}の中の質問{1}に，共有カートリッジでサポートされていないタイプがあります．質問はスキップされます．"
+
+#. simplepage.exportcc-sam-too-many-blanks
+#: lessonbuilder/tool/src/resources/messages.properties:221
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-too-many-blanks"
+msgid ""
+"Question {1} in quiz {2} is fill in the blank with {3} blanks. Common "
+"Cartridge only supports one blank. Only the first blank will be used."
+msgstr "クイズ {2}の中の質問{1}は，{3}つの空白があります．共有カートリッジがサポートするのは1つの空白だけです．1つ目の空白が使用されます．"
+
+#. simplepage.exportcc-sam-mcss
+#: lessonbuilder/tool/src/resources/messages.properties:222
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-mcss"
+msgid ""
+"Question {1} in quiz {2} is Multiple Correct, Single Selection. Versions of "
+"Common Cartridge before 1.2 did not support this format. Only the first "
+"correct answer will be shown."
+msgstr "クイズ {2}の中の質問{1}は，複数の正解がある一択問題です．バージョン1.2以前の共有カートリッジではこの形式はサポートされていませんでした．1つ目の正解のみが表示されます．"
+
+#. simplepage.exportcc-sam-fib-too-many-star
+#: lessonbuilder/tool/src/resources/messages.properties:223
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-fib-too-many-star"
+msgid ""
+"Question {1} in quiz {2} is Fill in the Blank using asterisks. The correct "
+"answer is shown as {3}. The Common Cartridge format is only able to handle a"
+" single alternative using asterisks."
+msgstr "クイズ{2}の中の質問{1}はアスタリスクを使用してブランクを埋めてあります．正解は{3}として表示されます．共通カートリッジ形式はアスタリスクを使用することで，単一の正解を扱うことができます．"
+
+#. simplepage.exportcc-sam-fib-star
+#: lessonbuilder/tool/src/resources/messages.properties:224
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-fib-star"
+msgid ""
+"Question {1} in quiz {2} is Fill in the Blank using asterisks. The correct "
+"answer is shown as {3}. In the export, the answer will be considered correct"
+" if {4} appears anywhere in the answer."
+msgstr "クイズ{2}の中の質問{1}はアスタリスクを使用してブランクを埋めてあります．正解は{3}として表示されます．エクスポートをするときには，{4}が回答のどこかにある場合に，正解とみなされます．"
+
+#. simplepage.exportcc-sam-fib-bad-star
+#: lessonbuilder/tool/src/resources/messages.properties:225
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"sam-fib-bad-star"
+msgid ""
+"Question {1} in quiz {2} is Fill in the Blank using asterisks. The correct "
+"answer is shown as {3}. Common Cartridge is unable to handle this answer."
+msgstr "クイズ{2}の中の質問{1}はアスタリスクを使用してブランクを埋めてあります．正解は{3}として表示されます．共有カートリッジはこの回答を扱うことができません．"
+
+#. simplepage.exportcc-pagealreadydone
+#: lessonbuilder/tool/src/resources/messages.properties:226
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"pagealreadydone"
+msgid ""
+"Subpage {2} appears on page {1}. However it has already been included as a "
+"subpage of another page. It will not be included a second time."
+msgstr "サブページ{2}はページ{1}に表示されます．しかし，それは既に別のページのサブページとして含まれています．それは二回目には含まれません．"
+
+#. simplepage.exportcc-bad-type
+#: lessonbuilder/tool/src/resources/messages.properties:227
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"bad-type"
+msgid ""
+"Item {2} on page {1} is of a type that can't be put in a Common Cartridge: "
+"{3}"
+msgstr "{1}ページのアイテム{2}は共有カートリッジに入れることができないタイプです: {3}"
+
+#. simplepage.exportcc-download
+#: lessonbuilder/tool/src/resources/messages.properties:228
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.exportcc-"
+"download"
+msgid "Download"
+msgstr "ダウンロード"
+
+#. simplepage.delete
+#: lessonbuilder/tool/src/resources/messages.properties:229
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete"
+msgid "Delete"
+msgstr "削除"
+
+#. simplepage.editTitle_header
+#: lessonbuilder/tool/src/resources/messages.properties:230
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editTitle_header"
+msgid "Edit Page Title"
+msgstr "ページタイトルを編集"
+
+#. simplepage.title
+#: lessonbuilder/tool/src/resources/messages.properties:231
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title"
+msgid "Settings"
+msgstr "設定"
+
+#. simplepage.alt_label
+#: lessonbuilder/tool/src/resources/messages.properties:232
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.alt_label"
+msgid "Alt Text"
+msgstr "代替のテキスト"
+
+#. simplepage.reorder
+#: lessonbuilder/tool/src/resources/messages.properties:233
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder"
+msgid "Reorder"
+msgstr "順序変更"
+
+#. simplepage.reorder-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:234
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"tooltip"
+msgid "Change order of items, delete items, or import items from another page"
+msgstr "アイテムの順番の変更，アイテムの削除，別のページからアイテムをインポート"
+
+#. simplepage.reorder_header
+#: lessonbuilder/tool/src/resources/messages.properties:235
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder_header"
+msgid "Reorder Page Items"
+msgstr "ページアイテムを順序変更"
+
+#. simplepage.reorder_instructions
+#: lessonbuilder/tool/src/resources/messages.properties:236
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder_instructions"
+msgid ""
+"Please drag and drop the items below to reorder them. To delete, drag item "
+"to delete bin."
+msgstr "順序変更するために下にアイテムをドラッグ&ドロップします．削除するには，アイテムをゴミ箱にドラッグします．"
+
+#. simplepage.reorder_instructions_sr
+#: lessonbuilder/tool/src/resources/messages.properties:237
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder_instructions_sr"
+msgid ""
+"Or select one and use the control key plus up-arrow or downarrow to reorder "
+"and control + shift to move them between bins."
+msgstr "あるいはひとつ選択し，順序変更するにはコントロールキー＋上矢印または下矢印，そしてそれらをゴミ箱間で移動するにはコントロール＋シフトを使って下さい．"
+
+#. simplepage.reorder.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:238
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder.tooltip"
+msgid "Change the order of items on this page"
+msgstr "このページのアイテムの順序を変更します．"
+
+#. simplepage.reorder-duplicates
+#: lessonbuilder/tool/src/resources/messages.properties:239
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"duplicates"
+msgid "Unable to continue. Some of the items have duplicate sequences."
+msgstr "続行できません．アイテムの一部で順番が重複しています．"
+
+#. simplepage.reorder-belowdelete
+#: lessonbuilder/tool/src/resources/messages.properties:240
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"belowdelete"
+msgid "Move items below this marker to delete them"
+msgstr "削除するアイテムをこのマーカーの下に移動してください"
+
+#. simplepage.reorder-aboveuse
+#: lessonbuilder/tool/src/resources/messages.properties:241
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"aboveuse"
+msgid "Move items above this marker to put them on the page"
+msgstr "ページに追加するアイテムをこのマーカーの上に移動してください"
+
+#. simplepage.reorder-addpage
+#: lessonbuilder/tool/src/resources/messages.properties:242
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder-"
+"addpage"
+msgid "Add items from another page"
+msgstr "他のページからアイテムを追加"
+
+#. simplepage.reorder_delebox
+#: lessonbuilder/tool/src/resources/messages.properties:243
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reorder_delebox"
+msgid ""
+"Drop items here to delete, or click the X. You may drag deleted items from "
+"here back onto the page."
+msgstr "削除するにはアイテムをここにドロップするか，Xをクリックします．削除したアイテムはここからページにドラッグで戻せます．"
+
+#. simplepage.save
+#: lessonbuilder/tool/src/resources/messages.properties:244
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.save"
+msgid "Save"
+msgstr "保存"
+
+#. simplepage.edit_youtubelink
+#: lessonbuilder/tool/src/resources/messages.properties:245
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_youtubelink"
+msgid "Edit YouTube Link"
+msgstr "Youtube リンクを編集"
+
+#. simplepage.edit_youtube
+#: lessonbuilder/tool/src/resources/messages.properties:246
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_youtube"
+msgid "Edit YouTube Link Below"
+msgstr "以下の Youtube リンクを編集"
+
+#. simplepage.edit_movie
+#: lessonbuilder/tool/src/resources/messages.properties:247
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_movie"
+msgid "Edit Item Below"
+msgstr "以下のアイテムを編集"
+
+#. simplepage.download_file
+#: lessonbuilder/tool/src/resources/messages.properties:248
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.download_file"
+msgid "Download file"
+msgstr "ファイルをダウンロードする"
+
+#. simplepage.open_new_window
+#: lessonbuilder/tool/src/resources/messages.properties:249
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.open_new_window"
+msgid "Open in new window"
+msgstr "新しいウィンドウに開く"
+
+#. simplepage.print_view
+#: lessonbuilder/tool/src/resources/messages.properties:250
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.print_view"
+msgid "Print view"
+msgstr "印刷モード"
+
+#. simplepage.edititems
+#: lessonbuilder/tool/src/resources/messages.properties:251
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edititems"
+msgid "Edit Items"
+msgstr "アイテムを編集"
+
+#. simplepage.itemstatus
+#: lessonbuilder/tool/src/resources/messages.properties:252
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.itemstatus"
+msgid "Item Status"
+msgstr "アイテムの状態"
+
+#. simplepage.items
+#: lessonbuilder/tool/src/resources/messages.properties:253
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.items"
+msgid "Items"
+msgstr "アイテム"
+
+#. simplepage.edit_quiz
+#: lessonbuilder/tool/src/resources/messages.properties:254
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_quiz"
+msgid "Edit Quiz"
+msgstr "クイズを編集"
+
+#. simplepage.edit_quiz_settings
+#: lessonbuilder/tool/src/resources/messages.properties:255
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_quiz_settings"
+msgid "Edit Quiz Settings"
+msgstr "クイズ設定を編集"
+
+#. simplepage.edit_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:256
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_assignment"
+msgid "Edit Assignment"
+msgstr "課題を編集"
+
+#. simplepage.edit_topic
+#: lessonbuilder/tool/src/resources/messages.properties:257
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_topic"
+msgid "Edit Forum Topic"
+msgstr "フォーラムトピックを編集"
+
+#. simplepage.return_from_edit
+#: lessonbuilder/tool/src/resources/messages.properties:258
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.return_from_edit"
+msgid "Return to lesson, after you have finished editing the item"
+msgstr "アイテムの編集が終了したらレッスンに戻る"
+
+#. simplepage.status.completed
+#: lessonbuilder/tool/src/resources/messages.properties:259
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.completed"
+msgid "Completed"
+msgstr "完了"
+
+#. simplepage.status.notavailable
+#: lessonbuilder/tool/src/resources/messages.properties:260
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.notavailable"
+msgid "Not Yet Available"
+msgstr "まだ使用できません"
+
+#. simplepage.status.failed
+#: lessonbuilder/tool/src/resources/messages.properties:261
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.failed"
+msgid "Failed"
+msgstr "失敗"
+
+#. simplepage.status.required
+#: lessonbuilder/tool/src/resources/messages.properties:262
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.required"
+msgid "Required"
+msgstr "必須"
+
+#. simplepage.status.notrequired
+#: lessonbuilder/tool/src/resources/messages.properties:263
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.notrequired"
+msgid "Not Required"
+msgstr "必須でない"
+
+#. simplepage.status.needsgrading
+#: lessonbuilder/tool/src/resources/messages.properties:264
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.needsgrading"
+msgid "Needs Grading"
+msgstr "要評定"
+
+#. simplepage.status.inprogress
+#: lessonbuilder/tool/src/resources/messages.properties:265
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.inprogress"
+msgid "In Progress"
+msgstr "実行中"
+
+#. simplepage.status.level
+#: lessonbuilder/tool/src/resources/messages.properties:266
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.status.level"
+msgid "Level {}"
+msgstr "レベル {}"
+
+#. simplepage.refresh_prompt
+#: lessonbuilder/tool/src/resources/messages.properties:267
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.refresh_prompt"
+msgid "After completing a required item, please"
+msgstr "要求されたアイテムが完了したら、以下を実行してください:"
+
+#. simplepage.refresh
+#: lessonbuilder/tool/src/resources/messages.properties:268
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.refresh"
+msgid "refresh"
+msgstr "更新"
+
+#. simplepage.last-visited
+#: lessonbuilder/tool/src/resources/messages.properties:269
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.last-visited"
+msgid "Return to most recent page from previous session:"
+msgstr "前のセッションから最新のページに戻る - 前のセッション:"
+
+#. simplepage.update_icons
+#: lessonbuilder/tool/src/resources/messages.properties:270
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.update_icons"
+msgid "to update status icons."
+msgstr "これにより状態アイコンが更新されます。"
+
+#. simplepage.prerequisites_label
+#: lessonbuilder/tool/src/resources/messages.properties:271
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.prerequisites_label"
+msgid "Don't Release Item Until All Prerequisites are Completed"
+msgstr "すべての前提条件が完了するまでアイテムを公開しない"
+
+#. simplepage.page_prerequisites_label
+#: lessonbuilder/tool/src/resources/messages.properties:272
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page_prerequisites_label"
+msgid "Don't Release Page Until All Prerequisite Pages are Completed"
+msgstr "すべての前提条件ページが完了するまでページを公開しない"
+
+#. simplepage.require
+#: lessonbuilder/tool/src/resources/messages.properties:273
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require"
+msgid "Require This Item"
+msgstr "このアイテムを必要とする"
+
+#. simplepage.page_require
+#: lessonbuilder/tool/src/resources/messages.properties:274
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page_require"
+msgid "Require This Page"
+msgstr "このページを必要とする"
+
+#. simplepage.youtube_url
+#: lessonbuilder/tool/src/resources/messages.properties:275
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.youtube_url"
+msgid "YouTube URL:"
+msgstr "YouTube URL:"
+
+#. simplepage.youtube_player
+#: lessonbuilder/tool/src/resources/messages.properties:276
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.youtube_player"
+msgid "YouTube player"
+msgstr "Youtube プレイヤ"
+
+#. simplepage.mm_player
+#: lessonbuilder/tool/src/resources/messages.properties:277
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm_player"
+msgid "Multimedia player for {}"
+msgstr "{} 用マルチメディアプレイヤー"
+
+#. simplepage.web_content
+#: lessonbuilder/tool/src/resources/messages.properties:278
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.web_content"
+msgid "Web {}"
+msgstr "ウェブ {}"
+
+#. simplepage.youtube.needflash
+#: lessonbuilder/tool/src/resources/messages.properties:279
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.youtube.needflash"
+msgid "You need Flash player 8+ and Javascript enabled to view this video"
+msgstr "このビデオを見るには、Flash player バージョン 8 以降と Javascript が有効になっている必要があります。"
+
+#. simplepage.hide_page_label
+#: lessonbuilder/tool/src/resources/messages.properties:280
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.hide_page_label"
+msgid "Hide This Page:"
+msgstr "このページを非表示:"
+
+#. simplepage.hide_page_from_users
+#: lessonbuilder/tool/src/resources/messages.properties:281
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.hide_page_from_users"
+msgid "Hide this page from users (page will not appear in left margin)"
+msgstr "このページをユーザーに対して非表示にする (ページは左マージンに表示されない)"
+
+#. simplepage.page.releasedate
+#: lessonbuilder/tool/src/resources/messages.properties:282
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page.releasedate"
+msgid ""
+"Hide page until the following date (the page will be listed with the release"
+" date)"
+msgstr "次の日時までページを非表示にします（ページは公開日時とともに一覧表示されます）"
+
+#. simplepage.error
+#: lessonbuilder/tool/src/resources/messages.properties:283
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.error"
+msgid "Error"
+msgstr "エラー"
+
+#. simplepage.error_colon
+#: lessonbuilder/tool/src/resources/messages.properties:284
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.error_colon"
+msgid "Error:"
+msgstr "エラー:"
+
+#. simplepage.complete_required
+#: lessonbuilder/tool/src/resources/messages.properties:285
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.complete_required"
+msgid ""
+"Please complete all of the above required items before viewing this item."
+msgstr "このアイテムを表示する前に，上記の必須アイテムをすべて完成させてください．"
+
+#. simplepage.prerequisites_tag
+#: lessonbuilder/tool/src/resources/messages.properties:286
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.prerequisites_tag"
+msgid "Has prerequisites"
+msgstr "必要条件があります．"
+
+#. simplepage.editpermissions
+#: lessonbuilder/tool/src/resources/messages.properties:287
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.editpermissions"
+msgid "Set permissions for"
+msgstr "次の権限を設定:"
+
+#. simplepage.filepicker_instructions
+#: lessonbuilder/tool/src/resources/messages.properties:288
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.filepicker_instructions"
+msgid "Please Choose a File or Web Page (URL) to Add to the Page."
+msgstr "ページに追加するファイルまたはウェブページ (URL) を選択してください．"
+
+#. simplepage.require_submit_assessment
+#: lessonbuilder/tool/src/resources/messages.properties:289
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_assessment"
+msgid "Require that the student submit this assessment."
+msgstr "学生がこの評価を提出することが必要です．"
+
+#. simplepage.require_submit_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:290
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_assignment"
+msgid "Require that the student submit this assignment."
+msgstr "学生がこの課題を提出することが必要です．"
+
+#. simplepage.require_submit_forum
+#: lessonbuilder/tool/src/resources/messages.properties:291
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_forum"
+msgid "Require that the student submit a posting to this topic."
+msgstr "学生がこのトピックに投稿することが必要です．"
+
+#. simplepage.require_receive
+#: lessonbuilder/tool/src/resources/messages.properties:292
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_receive"
+msgid "Require that the student receive "
+msgstr "学生が以下を受け取ることが必要です: "
+
+#. simplepage.require_points_assessment
+#: lessonbuilder/tool/src/resources/messages.properties:293
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_points_assessment"
+msgid "points on this assessment."
+msgstr "この評価への点数．"
+
+#. simplepage.require_points_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:294
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_points_assignment"
+msgid "points on this assignment."
+msgstr "この課題への点数．"
+
+#. simplepage.require_pass_assignment
+#: lessonbuilder/tool/src/resources/messages.properties:295
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_pass_assignment"
+msgid "Require that the student <b>Pass</b> this assignment"
+msgstr "学生がこの課題に<b>パス</b>することが必要です。"
+
+#. simplepage.require_atleast
+#: lessonbuilder/tool/src/resources/messages.properties:296
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_atleast"
+msgid "Require that the student receive at least a"
+msgstr "学生の受け取る点数がこの点数以上であることが必要です:"
+
+#. simplepage.require_checkmark
+#: lessonbuilder/tool/src/resources/messages.properties:297
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_checkmark"
+msgid "Require that the student receive a Checkmark"
+msgstr "学生がチェックマークを受け取ることが必要です:"
+
+#. simplepage.title_notblank
+#: lessonbuilder/tool/src/resources/messages.properties:298
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title_notblank"
+msgid "Title must not be blank."
+msgstr "タイトルを空白にすることはできません．"
+
+#. simplepage.must_be_youtube
+#: lessonbuilder/tool/src/resources/messages.properties:299
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.must_be_youtube"
+msgid "This must be a YouTube URL"
+msgstr "これは Youtube URL である必要があります"
+
+#. simplepage.item_notblank
+#: lessonbuilder/tool/src/resources/messages.properties:300
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.item_notblank"
+msgid "Item Name must not be blank"
+msgstr "アイテム名を空白にすることはできません"
+
+#. simplepage.page_notblank
+#: lessonbuilder/tool/src/resources/messages.properties:301
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page_notblank"
+msgid "Page Title must not be blank."
+msgstr "ページタイトルを空白にすることはできません．"
+
+#. simplepage.copied.assignment
+#: lessonbuilder/tool/src/resources/messages.properties:302
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copied.assignment"
+msgid ""
+"This item was copied from another site. It won't work until you do \"Edit\" "
+"and \"Change Assignment\" to pick an assignment that is valid in this site."
+msgstr "このアイテムは，別のサイトからコピーされました．「編集」および「課題を変更」を実行して，このサイトで有効な課題を選択するまで，有効になりません．"
+
+#. simplepage.copied.assessment
+#: lessonbuilder/tool/src/resources/messages.properties:303
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copied.assessment"
+msgid ""
+"This item was copied from another site. It won't work until you do \"Edit\" "
+"and \"Change Quiz\" to pick a quiz that is valid in this site."
+msgstr "このアイテムは，別のサイトからコピーされました．「編集」および「クイズを変更」を実行して，このサイトで有効なクイズを選択するまで，有効になりません．"
+
+#. simplepage.copied.forum
+#: lessonbuilder/tool/src/resources/messages.properties:304
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.copied.forum"
+msgid ""
+"This item was copied from another site. It won't work until you do \"Edit\" "
+"and \"Change Forum Topic\" to pick a forum topic that is valid in this site."
+msgstr "このアイテムは，別のサイトからコピーされました．「編集」および「フォーラムトピックを変更」を実行して，このサイトで有効なフォーラムトピックを選択するまで，有効になりません．"
+
+#. simplepage.nosite
+#: lessonbuilder/tool/src/resources/messages.properties:305
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nosite"
+msgid "Can't determine current site"
+msgstr "現在のサイトを決定できません"
+
+#. simplepage.create.resource.failed
+#: lessonbuilder/tool/src/resources/messages.properties:306
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create.resource.failed"
+msgid "Unable to create file while importing Common Cartridge: {}"
+msgstr "共通カートリッジのインポート中はファイルを作成できません: "
+
+#. simplepage.create.object.failed
+#: lessonbuilder/tool/src/resources/messages.properties:307
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.create.object.failed"
+msgid "Unable to import resource while importing Common Cartridge: {}"
+msgstr "コモンカートリッジをインポート中はリソースをインポートすることはできません:{}"
+
+#. simplepage.resource100
+#: lessonbuilder/tool/src/resources/messages.properties:308
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource100"
+msgid ""
+"Unable to create file while importing Common Cartridge: 100 copies already "
+"exist: {}"
+msgstr "共通カートリッジのインポート中はファイルを作成できません: すでに 100 件存在します: "
+
+#. simplepage.noquizengines
+#: lessonbuilder/tool/src/resources/messages.properties:309
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noquizengines"
+msgid ""
+"<b style=\"color:#c00\">WARNING:</b> Please add a quiz tool to this site. "
+"Without it, no quizzes can be loaded from the cartridge"
+msgstr "<b style=\"color:#c00\">警告：</b>このサイトにクイズツールを追加してください。追加しないとカートリッジからクイズを読み込めません"
+
+#. simplepage.choosequizengine
+#: lessonbuilder/tool/src/resources/messages.properties:310
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choosequizengine"
+msgid "Please choose which quiz tool to use for quizzes in this cartridge"
+msgstr "このカートリッジでクイズに使用するクイズツールを選択してください"
+
+#. simplepage.notopicengines
+#: lessonbuilder/tool/src/resources/messages.properties:311
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.notopicengines"
+msgid ""
+"<b style=\"color:#c00\">WARNING:</b> Please add a forum tool to this site. "
+"Without it, no forums can be loaded from the cartridge"
+msgstr "<b style=\"color:#c00\">警告:</b> このサイトにフォーラムツールを追加してください。 追加しないとカートリッジからフォーラムを読み込めません"
+
+#. simplepage.choosetopicengine
+#: lessonbuilder/tool/src/resources/messages.properties:312
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.choosetopicengine"
+msgid "Please choose which forum tool to use for forums in this cartridge"
+msgstr "このカートリッジでフォーラムに使用するフォーラムツールを選択してください"
+
+#. simplepage.noassignengines
+#: lessonbuilder/tool/src/resources/messages.properties:313
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.noassignengines"
+msgid ""
+"<b style=\"color:#c00\">WARNING:</b> Please add an assignment tool to this "
+"site. Without it, no assignments can be loaded from the cartridge"
+msgstr "<b style=\"color:#c00\">警告:</b> このサイトに 評価ツールを追加して下さい．それなしには，カートリッジからフォーラムを読み込むことはできません"
+
+#. simplepage.chooseassignengine
+#: lessonbuilder/tool/src/resources/messages.properties:314
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.chooseassignengine"
+msgid ""
+"Please choose which assignment tool to use for assignments in this cartridge"
+msgstr "このカートリッジの評価で使用する 評価ツールを選択して下さい"
+
+#. simplepage.loading
+#: lessonbuilder/tool/src/resources/messages.properties:315
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.loading"
+msgid "Loading, please wait ..."
+msgstr "読み込んでいます、お待ちください..."
+
+#. simplepage.checkingwithhost
+#: lessonbuilder/tool/src/resources/messages.properties:316
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.checkingwithhost"
+msgid "Please wait while we check with the web server ..."
+msgstr "Webサーバをチェックする間お待ちください ..."
+
+#. simplepage.needpermissions
+#: lessonbuilder/tool/src/resources/messages.properties:317
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.needpermissions"
+msgid ""
+"You do not have the permission needed to use this tool. Since your role "
+"indicates that you should, we suspect that the permissions are not set up "
+"properly for your site. Use the following link to open the permissions tool."
+" We suggest giving lessonbuilder.read to all roles, and lessonbuilder.upd to"
+" any role that you want to be able to edit content. Typically this is "
+"maintain, Instructor, and maybe some of the TA roles."
+msgstr "このツールを使用するために必要な権限がありません．あなたのロールでは権限があるはずなので，サイトで権限が適切に設定されていない可能性があります． 次のリンクを使用して権限ツールを実行してください．すべてのロールに lessonbuilder.read を，コンテンツを編集できるようにするすべてのロールに lessonbuilder.upd を与えることをお勧めします．通常，これは管理，教員，および場合によっては一部の TA ロールです．"
+
+#. simplepage.wrong-cc-version
+#: lessonbuilder/tool/src/resources/messages.properties:318
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.wrong-cc-"
+"version"
+msgid "Unrecognized Common Cartridge format. File must be version 1.0 or 1.1."
+msgstr "共通カートリッジのフォーマットを認識できません．ファイルのバージョンは 1.0 または 1.1 でなければなりません．"
+
+#. simplepage.cc-error
+#: lessonbuilder/tool/src/resources/messages.properties:319
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-error"
+msgid ""
+"Error when trying to import Common Cartridge file. File may be invalid."
+msgstr "共通カートリッジファイルのインポート中にエラーが発生しました．無効なファイルの可能性があります．"
+
+#. simplepage.cc-noresource
+#: lessonbuilder/tool/src/resources/messages.properties:320
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-"
+"noresource"
+msgid ""
+"Cartridge is invalid. It has an item whose associated resource is missing. "
+"The item will be skipped. Resource ID is {}."
+msgstr "カートリッジは無効です．関連づけられているリソースがないアイテムがあります．そのアイテムはスキップされます．リソースIDは{}です．"
+
+#. simplepage.cc-uses-auth
+#: lessonbuilder/tool/src/resources/messages.properties:321
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-uses-auth"
+msgid "Cannot import Common Cartridges with authorization restrictions"
+msgstr "権限の制限のために共通カートリッジをインポートできません"
+
+#. simplepage.cc-uses-role
+#: lessonbuilder/tool/src/resources/messages.properties:322
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-uses-role"
+msgid ""
+"This cartridge has at least one resource restricted to Mentor or Instructor."
+" We have created groups with those names, but not placed any users into the "
+"groups."
+msgstr "このカートリッジには，講師または教員に制限されたリソースが少なくとも 1 つ含まれています．このようなリソースはレッスンページに追加されず，リソースにロードされていても学生には非表示となります．{}"
+
+#. simplepage.cc-uses-curriculum
+#: lessonbuilder/tool/src/resources/messages.properties:323
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-uses-"
+"curriculum"
+msgid ""
+"This cartridge uses a curriculum standard. Curriculum standards are not "
+"currently implemented, and will be ignored."
+msgstr "このカートリッジはカリキュラムの標準を使用します．カリキュラムの標準は現在実装されていないため，無視されます．"
+
+#. simplepage.cc-defaultforum
+#: lessonbuilder/tool/src/resources/messages.properties:324
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-"
+"defaultforum"
+msgid "Forum"
+msgstr "フォーラム"
+
+#. simplepage.cc-defaulttopic
+#: lessonbuilder/tool/src/resources/messages.properties:325
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.cc-"
+"defaulttopic"
+msgid "Topic"
+msgstr "トピック"
+
+#. simplepage.comments-section
+#: lessonbuilder/tool/src/resources/messages.properties:326
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"section"
+msgid "Comments Section"
+msgstr "コメントセクション"
+
+#. simplepage.replace-with-comments
+#: lessonbuilder/tool/src/resources/messages.properties:327
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.replace-"
+"with-comments"
+msgid "Loading Comments ..."
+msgstr "コメントを読み込んでいます ..."
+
+#. simplepage.comments
+#: lessonbuilder/tool/src/resources/messages.properties:328
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments"
+msgid "Add Comments Tool"
+msgstr "コメントツールを追加"
+
+#. simplepage.comments.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:329
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments.tooltip"
+msgid "Add a section that allows students to make comments"
+msgstr "受講生がコメントできるセクションを追加します．"
+
+#. simplepage.add-comment
+#: lessonbuilder/tool/src/resources/messages.properties:330
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-comment"
+msgid "Add Comment"
+msgstr "コメントを追加"
+
+#. simplepage.in-reply-to
+#: lessonbuilder/tool/src/resources/messages.properties:331
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.in-reply-to"
+msgid "In reply to {1}, {2}"
+msgstr "{1} への返信として，{2}"
+
+#. simplepage.comment-reply
+#: lessonbuilder/tool/src/resources/messages.properties:332
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"reply"
+msgid "Reply to comment from {}"
+msgstr "{} からのコメントへの返信"
+
+#. simplepage.missing-prereqs
+#: lessonbuilder/tool/src/resources/messages.properties:333
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.missing-"
+"prereqs"
+msgid ""
+"There is an area for comments, but you must complete all required items "
+"above before you can see it."
+msgstr "コメント用のエリアがありますが，上記の必須アイテムをすべて完成させるまで表示されません．"
+
+#. simplepage.fake-missing-prereqs
+#: lessonbuilder/tool/src/resources/messages.properties:334
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.fake-"
+"missing-prereqs"
+msgid ""
+"If you were a student, you wouldn't be able to see comments, because you "
+"haven't completed all required items above."
+msgstr "学生の場合は，上記のすべての必須アイテムを完成させていないため，コメントを見ることはできません．"
+
+#. simplepage.edit-comment
+#: lessonbuilder/tool/src/resources/messages.properties:335
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-comment"
+msgid "Edit"
+msgstr "編集"
+
+#. simplepage.comment-edit
+#: lessonbuilder/tool/src/resources/messages.properties:336
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-edit"
+msgid "Edit Comment from {}"
+msgstr "{} からのコメントを編集"
+
+#. simplepage.see_all_comments
+#: lessonbuilder/tool/src/resources/messages.properties:337
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.see_all_comments"
+msgid "See All {} comments ..."
+msgstr "すべての {} コメントを見る..."
+
+#. simplepage.see_new_comments
+#: lessonbuilder/tool/src/resources/messages.properties:338
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.see_new_comments"
+msgid "See All {} new comments ..."
+msgstr "すべての {} 新着コメントを見る..."
+
+#. simplepage.edit_commentslink
+#: lessonbuilder/tool/src/resources/messages.properties:339
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_commentslink"
+msgid "Edit Comments Section"
+msgstr "コメントセクションを編集"
+
+#. simplepage.comments-anonymous
+#: lessonbuilder/tool/src/resources/messages.properties:340
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"anonymous"
+msgid "Keep Comments Anonymous"
+msgstr "コメントの匿名を継続"
+
+#. simplepage.comments-graded
+#: lessonbuilder/tool/src/resources/messages.properties:341
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"graded"
+msgid "Create gradebook entries for these"
+msgstr "これらについて成績簿エントリを作成"
+
+#. simplepage.comments-max
+#: lessonbuilder/tool/src/resources/messages.properties:342
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-max"
+msgid "Maximum points:"
+msgstr "最高点:"
+
+#. simplepage.integer-expected
+#: lessonbuilder/tool/src/resources/messages.properties:343
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.integer-"
+"expected"
+msgid "Points must be set to a valid number."
+msgstr "点数を有効な数値に設定する必要があります．"
+
+#. simplepage.gbname-expected
+#: lessonbuilder/tool/src/resources/messages.properties:344
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.gbname-"
+"expected"
+msgid "Gradebook item name must be supplied."
+msgstr "成績のアイテム名を提供する必要があります．"
+
+#. simplepage.comment-delete
+#: lessonbuilder/tool/src/resources/messages.properties:345
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"delete"
+msgid "Delete comment from {}"
+msgstr "{} からのコメントを削除"
+
+#. simplepage.delete_comment_confirm
+#: lessonbuilder/tool/src/resources/messages.properties:346
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete_comment_confirm"
+msgid "Are you sure you want to delete this comment written by {}?"
+msgstr "{} によるこのコメントを削除してよろしいですか?"
+
+#. simplepage.empty-comment-error
+#: lessonbuilder/tool/src/resources/messages.properties:347
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.empty-"
+"comment-error"
+msgid "Comments must not be empty."
+msgstr "コメントは空でなければなりません．"
+
+#. simplepage.comment-permissions-error
+#: lessonbuilder/tool/src/resources/messages.properties:348
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"permissions-error"
+msgid "You do not have the required permissions to delete that comment."
+msgstr "そのコメントを削除するために必要な権限がありません．"
+
+#. simplepage.permissions-general
+#: lessonbuilder/tool/src/resources/messages.properties:349
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.permissions-"
+"general"
+msgid "You do not have the required permissions to do that."
+msgstr "それを実行するために必要な権限がありません．"
+
+#. simplepage.comment-unknown-user
+#: lessonbuilder/tool/src/resources/messages.properties:350
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"unknown-user"
+msgid "Unknown User"
+msgstr "未確認のユーザー"
+
+#. simplepage.comment-you
+#: lessonbuilder/tool/src/resources/messages.properties:351
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-you"
+msgid "You"
+msgstr "あなた"
+
+#. simplepage.comment-anonymous-message
+#: lessonbuilder/tool/src/resources/messages.properties:352
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"anonymous-message"
+msgid ""
+"Normal users can only see the Anonymous names. The commenters' actual names "
+"are shown only to you and other site administrators."
+msgstr "通常のユーザーには匿名の名前しか表示されません．コメントした人の本名は，あなたと他の管理者にのみ表示されます．"
+
+#. simplepage.comment-edit-message
+#: lessonbuilder/tool/src/resources/messages.properties:353
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"edit-message"
+msgid "You may only edit or delete your comment until it is 30 minutes old."
+msgstr "自分のコメントを編集または削除できるのは，30 分以内です．"
+
+#. simplepage.comment-grading-message
+#: lessonbuilder/tool/src/resources/messages.properties:354
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"grading-message"
+msgid ""
+"Type the number of points you wish to assign a particular comment in the "
+"\"Points\" box next to the comment, and then press the Enter key to submit "
+"the grade.  Any grades that are typed in but not submitted are displayed in "
+"red."
+msgstr "特定のコメントに割り当てる点数の数値をコメントの隣の「点」ボックスに入力してから，Enter キーを押して成績を送信します．入力されただけで送信されていない成績は，赤い文字で表示されます．"
+
+#. simplepage.comment-author-owner
+#: lessonbuilder/tool/src/resources/messages.properties:355
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comment-"
+"author-owner"
+msgid "Page Owner"
+msgstr "ページ所有者"
+
+#. simplepage.nothing-over-100-percent
+#: lessonbuilder/tool/src/resources/messages.properties:356
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nothing-"
+"over-100-percent"
+msgid "You may not have a height or width larger than 100%."
+msgstr "高さまたは幅を 100% より大きくすることはできません．"
+
+#. simplepage.width-height
+#: lessonbuilder/tool/src/resources/messages.properties:357
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.width-height"
+msgid ""
+"The width and height must be positive numbers, i.e. \"500\" or \"500px,\" or"
+" a percentage below 100%"
+msgstr "幅と高さには正の数 (例: 500，500px) または 100% 以下の割合を指定する必要があります．"
+
+#. simplepage.seconds
+#: lessonbuilder/tool/src/resources/messages.properties:358
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.seconds"
+msgid "Seconds Ago"
+msgstr "数秒前"
+
+#. simplepage.one_min
+#: lessonbuilder/tool/src/resources/messages.properties:359
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_min"
+msgid "1 Minute Ago"
+msgstr "1 分前"
+
+#. simplepage.x_min
+#: lessonbuilder/tool/src/resources/messages.properties:360
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_min"
+msgid "{} Minutes Ago"
+msgstr "{} 分前"
+
+#. simplepage.one_hour
+#: lessonbuilder/tool/src/resources/messages.properties:361
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_hour"
+msgid "1 Hour Ago"
+msgstr "1 時間前"
+
+#. simplepage.x_hour
+#: lessonbuilder/tool/src/resources/messages.properties:362
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_hour"
+msgid "{} Hours Ago"
+msgstr "{} 時間前"
+
+#. simplepage.one_day
+#: lessonbuilder/tool/src/resources/messages.properties:363
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_day"
+msgid "1 Day Ago"
+msgstr "1 日前"
+
+#. simplepage.x_day
+#: lessonbuilder/tool/src/resources/messages.properties:364
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_day"
+msgid "{} Days Ago"
+msgstr "{} 日前"
+
+#. simplepage.one_month
+#: lessonbuilder/tool/src/resources/messages.properties:365
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_month"
+msgid "1 Month Ago"
+msgstr "1 か月前"
+
+#. simplepage.x_month
+#: lessonbuilder/tool/src/resources/messages.properties:366
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_month"
+msgid "{} Months Ago"
+msgstr "{} か月前"
+
+#. simplepage.one_year
+#: lessonbuilder/tool/src/resources/messages.properties:367
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.one_year"
+msgid "1 Year Ago"
+msgstr "1 年前"
+
+#. simplepage.x_year
+#: lessonbuilder/tool/src/resources/messages.properties:368
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.x_year"
+msgid "{} Years Ago"
+msgstr "{} 年前"
+
+#. simplepage.select-group
+#: lessonbuilder/tool/src/resources/messages.properties:369
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select-group"
+msgid ""
+"Select groups for which this item should be shown [if none selected, show to"
+" all]"
+msgstr "このアイテムが表示されるグループを選択 [指定しないとすべてのグループで表示]"
+
+#. simplepage.edit-group
+#: lessonbuilder/tool/src/resources/messages.properties:370
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-group"
+msgid "Edit the groups for which this item should be shown"
+msgstr "このアイテムが表示されるグループを編集"
+
+#. simplepage.select-resource-group
+#: lessonbuilder/tool/src/resources/messages.properties:371
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select-"
+"resource-group"
+msgid ""
+"NOTE: You may prefer to set group access in the Resources tool. That will "
+"let you set it for a whole folder rather than for each resource separately."
+msgstr "ノート: グループアクセスはリソースツールで設定することもできます．その場合，リソースごとに別々に設定するのでなく，フォルダ全体に対して設定を行うことができます．"
+
+#. simplepage.resource-group-inherited
+#: lessonbuilder/tool/src/resources/messages.properties:372
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.resource-"
+"group-inherited"
+msgid ""
+"Group or public access has been set for the folder in which this item is "
+"contained. So groups can't be adjusted here."
+msgstr "このアイテムが含まれるフォルダに，グループアクセスまたはパブリックアクセスが設定されています．そのため，ここでグループを調整することはできません．"
+
+#. simplepage.edit_studentlink
+#: lessonbuilder/tool/src/resources/messages.properties:373
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_studentlink"
+msgid "Edit Student Content Section"
+msgstr "学生のコンテンツセクションを編集"
+
+#. simplepage.student-content
+#: lessonbuilder/tool/src/resources/messages.properties:374
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"content"
+msgid "Student Content Section"
+msgstr "学生のコンテンツセクション"
+
+#. simplepage.add-student-content
+#: lessonbuilder/tool/src/resources/messages.properties:375
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-student-"
+"content"
+msgid "Add Student Content"
+msgstr "受講者コンテンツを追加"
+
+#. simplepage.student
+#: lessonbuilder/tool/src/resources/messages.properties:376
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student"
+msgid "Student Pages"
+msgstr "学生ページ"
+
+#. simplepage.add-page
+#: lessonbuilder/tool/src/resources/messages.properties:377
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-page"
+msgid "Add Your Own Page"
+msgstr "自分独自のページを追加"
+
+#. simplepage.page-exists
+#: lessonbuilder/tool/src/resources/messages.properties:378
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.page-exists"
+msgid "You already have a page in that tool."
+msgstr "そのツール内にはすでにページがあります．"
+
+#. simplepage.new-student-page
+#: lessonbuilder/tool/src/resources/messages.properties:379
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"page"
+msgid "New"
+msgstr "新規"
+
+#. simplepage.new-student-content-page
+#: lessonbuilder/tool/src/resources/messages.properties:380
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"content-page"
+msgid "New Page"
+msgstr "新規ページ"
+
+#. simplepage.new-student-content
+#: lessonbuilder/tool/src/resources/messages.properties:381
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"content"
+msgid "New Content"
+msgstr "新規コンテンツ"
+
+#. simplepage.new-student-comments
+#: lessonbuilder/tool/src/resources/messages.properties:382
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"comments"
+msgid "New Comments"
+msgstr "新規コメント"
+
+#. simplepage.new-student-content-page-1
+#: lessonbuilder/tool/src/resources/messages.properties:383
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"content-page-1"
+msgid "New Page by {}"
+msgstr "{} による新規ページ"
+
+#. simplepage.new-student-content-1
+#: lessonbuilder/tool/src/resources/messages.properties:384
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"content-1"
+msgid "New Content by {}"
+msgstr "{} による新規コンテンツ"
+
+#. simplepage.new-student-comments-1
+#: lessonbuilder/tool/src/resources/messages.properties:385
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.new-student-"
+"comments-1"
+msgid "New Comments on content by {}"
+msgstr "{} によるコンテンツに対する新規コメント"
+
+#. simplepage.student-content-page
+#: lessonbuilder/tool/src/resources/messages.properties:386
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"content-page"
+msgid "Student Content Page"
+msgstr "学生のコンテンツページ"
+
+#. simplepage.student-anonymous
+#: lessonbuilder/tool/src/resources/messages.properties:387
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"anonymous"
+msgid "Make these student pages anonymous"
+msgstr "これらの学生ページを匿名にする"
+
+#. simplepage.student-comments
+#: lessonbuilder/tool/src/resources/messages.properties:388
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"comments"
+msgid "Add a comments section to each page"
+msgstr "各ページにコメントセクションを追加する"
+
+#. simplepage.student-comments-anon
+#: lessonbuilder/tool/src/resources/messages.properties:389
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"comments-anon"
+msgid "Make these comments anonymous"
+msgstr "これらのコメントを匿名にする"
+
+#. simplepage.anonymous
+#: lessonbuilder/tool/src/resources/messages.properties:390
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.anonymous"
+msgid "Anonymous"
+msgstr "匿名"
+
+#. simplepage.student-missing-prereqs
+#: lessonbuilder/tool/src/resources/messages.properties:391
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"missing-prereqs"
+msgid ""
+"There is an area for student content, but you must complete all required "
+"items above before you can see it."
+msgstr "学生のコンテンツ用のエリアがありますが，上記の必須アイテムをすべて完成させるまで表示されません．"
+
+#. simplepage.student-fake-missing-prereqs
+#: lessonbuilder/tool/src/resources/messages.properties:392
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"fake-missing-prereqs"
+msgid ""
+"If you were a student, you wouldn't be able to see student content, because "
+"you haven't completed all required items above."
+msgstr "学生の場合は，上記のすべての必須アイテムを完成させていないため，学生のコンテンツを見ることはできません．"
+
+#. simplepage.website
+#: lessonbuilder/tool/src/resources/messages.properties:393
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.website"
+msgid "Upload content in ZIP file"
+msgstr "ZIPファイルでコンテンツをアップロード"
+
+#. simplepage.website.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:394
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.website.tooltip"
+msgid ""
+"There is specific support for Camtasia, Wimba Create and Articulate, but any"
+" ZIP file may be uploaded. See the help in the dialog for more information."
+msgstr "Camtasia や Wimba Create，Articulate には特別な支援もありますが，任意の ZIP ファイルをアップロードできます．詳しくはダイアログ中のヘルプをご覧下さい．"
+
+#. simplepage.addwebsite-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:395
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addwebsite-"
+"descrip"
+msgid ""
+"There is specific support for Camtasia, Wimba Create and Articulate, but any"
+" ZIP file may be uploaded. See the help in the dialog for more information."
+msgstr "Camtasia や Wimba Create，Articulate には特別な支援もありますが，任意の ZIP ファイルをアップロードできます．詳しくはダイアログ中のヘルプをご覧下さい．"
+
+#. simplepage.website.noindex
+#: lessonbuilder/tool/src/resources/messages.properties:396
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.website.noindex"
+msgid ""
+"We have uploaded your ZIP file. The files in it are now in folder {} in "
+"Resources. But are unable to find the file in it that should be displayed. "
+"You may use \"Add Resource\" with \"Choose Existing File\"  to choose the "
+"correct file yourself."
+msgstr "ZIP ファイルをアップロードしました．含まれているファイルは現在，Resources 内の {} フォルダにあります．しかし，表示されるはずのその中のファイルが見つかりません．「リソースを追加」で「既存のファイルを選択」を使用すると，自分で正しいファイルを選択できます．"
+
+#. simplepage.website.cantexpand
+#: lessonbuilder/tool/src/resources/messages.properties:397
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.website.cantexpand"
+msgid "Unable to extract the files from your ZIP file"
+msgstr "ZIP ファイルからファイルを展開できませんでした"
+
+#. simplepage.blti
+#: lessonbuilder/tool/src/resources/messages.properties:398
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.blti"
+msgid "Add External Tool"
+msgstr "外部ツールを追加"
+
+#. simplepage.blti.tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:399
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.tooltip"
+msgid ""
+"Add item from external service that supports the IMS LTI standard. Ask your "
+"campus support staff to find out what tools are supported by your campus."
+msgstr "IMS LTI標準をサポートする外部サービスからアイテムを追加します．キャンパスサポートスタッフにキャンパスにてサポートされているツールを確認してもらって下さい．"
+
+#. simplepage.change_blti
+#: lessonbuilder/tool/src/resources/messages.properties:400
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.change_blti"
+msgid "Change external tool"
+msgstr "外部ツールを変更"
+
+#. simplepage.require_submit_blti
+#: lessonbuilder/tool/src/resources/messages.properties:401
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_blti"
+msgid "Require that the student use this item"
+msgstr "学生がこのアイテムを使用することが必要です．"
+
+#. simplepage.edit_blti
+#: lessonbuilder/tool/src/resources/messages.properties:402
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_blti"
+msgid "Edit external tool"
+msgstr "外部ツールを編集"
+
+#. simplepage.blti.chooser
+#: lessonbuilder/tool/src/resources/messages.properties:403
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.chooser"
+msgid "External Tool Selector"
+msgstr "外部ツールセレクタ"
+
+#. simplepage.blti.tools.manage
+#: lessonbuilder/tool/src/resources/messages.properties:404
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.tools.manage"
+msgid "Manage tools and items"
+msgstr "ツールとアイテムを管理"
+
+#. simplepage.blti.tools.text
+#: lessonbuilder/tool/src/resources/messages.properties:405
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.tools.text"
+msgid "Click on a tool to create an item based on that tool"
+msgstr "アイテムを作成するために使用するツールをクリック"
+
+#. simplepage.blti.tools.create
+#: lessonbuilder/tool/src/resources/messages.properties:406
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti.tools.create"
+msgid ""
+"Click on the following to manage tools and items. This will let you create "
+"your own new tool, based on information from an external service, and to "
+"edit or delete existing tools or items. However most authors will use the "
+"sections above, not this one."
+msgstr "ツールとアイテムを管理するには，以下をクリックします．これにより，外部サービスからの情報に基づいて独自の新しいツールを作成したり，既存のツールやアイテムを編集，削除することができます．ただし，ほとんどの執筆者はこれではなく上記のセクションを使用します．"
+
+#. simplepage.select_blti
+#: lessonbuilder/tool/src/resources/messages.properties:407
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_blti"
+msgid "Select item"
+msgstr "アイテムを選択"
+
+#. simplepage.select_blti.text
+#: lessonbuilder/tool/src/resources/messages.properties:408
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.select_blti.text"
+msgid ""
+"Select an item and then hit \"Use Selected Item\" to add it to your page. "
+"Click on an item to see what the tool is going to look like."
+msgstr "アイテムを選択してから，「選択されているアイテムを使用」をクリックしてページに追加します．アイテムをクリックして，ツールがどのように見えるかを確認します．"
+
+#. simplepage.no_blti_items
+#: lessonbuilder/tool/src/resources/messages.properties:409
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_blti_items"
+msgid ""
+"No items have been created. Select a tool above to create an item based on "
+"it, or use \"Manage Tools and Items\" below to create a new tool based on "
+"information from an external service."
+msgstr "アイテムが作成されていません．アイテムを作成するために使用するツールを選択するか，下記の「ツールとアイテムを管理」を使用することにより外部サービスからの情報に基づいて独自の新しいツールを作成します．"
+
+#. simplepage.no_blti_native
+#: lessonbuilder/tool/src/resources/messages.properties:410
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no_blti_native"
+msgid "No items have been created. Use the link above to create one."
+msgstr "アイテムは作成されませんでした．作成するには上のリンクを使って下さい．"
+
+#. simplepage.format.heading
+#: lessonbuilder/tool/src/resources/messages.properties:411
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.heading"
+msgid "How should this item be displayed?"
+msgstr "このアイテムの表示方法:"
+
+#. simplepage.format.window
+#: lessonbuilder/tool/src/resources/messages.properties:412
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.window"
+msgid "New Window: in a new window"
+msgstr "新規ウィンドウ: 新しいウィンドウに表示"
+
+#. simplepage.format.inline
+#: lessonbuilder/tool/src/resources/messages.properties:413
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.inline"
+msgid "In line: in a box in the current page"
+msgstr "並べる: 現在のページ内のボックスに表示"
+
+#. simplepage.format.page
+#: lessonbuilder/tool/src/resources/messages.properties:414
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.page"
+msgid "New page: in a separate page with \"next\" and \"back\" buttons"
+msgstr "新規ページ: 「次」および「戻る」ボタンのある独立したページに表示"
+
+#. simplepage.format.item_removed
+#: lessonbuilder/tool/src/resources/messages.properties:415
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.format.item_removed"
+msgid ""
+"<p style='font-family:arial, helvetica; padding:4px; font-size:80%; "
+"border:2px solid black'><span style='color:#c00'>ERROR:</span> The item that"
+" should have been displayed here has been removed. Please use the \"Edit\" "
+"button next to this item and pick \"Change external tool\" to recreate the "
+"item or choose a new one.</p>"
+msgstr "<p style='font-family:arial, helvetica; padding:4px; font-size:80%; border:2px solid black'><span style='color:#c00'>エラー:</span> 表示されるはずだったアイテムが削除されました．このアイテムの隣にある「編集」ボタンを使用し，「外部ツールを変更」を選択して，アイテムを再作成するか新しいアイテムを選択します．</p>"
+
+#. simplepage.more-tools
+#: lessonbuilder/tool/src/resources/messages.properties:416
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.more-tools"
+msgid "More Tools"
+msgstr "他のツール"
+
+#. simplepage.forum-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:417
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.forum-"
+"descrip"
+msgid "Add a link to a forum topic."
+msgstr "フォーラムトピックへのリンクを追加します．"
+
+#. simplepage.blti-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:418
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.blti-descrip"
+msgid ""
+"Link to a web service that uses the IMS LTI standard to integrate with this "
+"system."
+msgstr "このシステムと統合するためにIMS LTI標準を使うWebサービスへリンクします．"
+
+#. simplepage.comments-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:419
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"descrip"
+msgid "Add a section allows students to enter comments."
+msgstr "受講生がコメントを入力できるセクションを追加します．"
+
+#. simplepage.student-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:420
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"descrip"
+msgid "Add a section where students may create their own pages."
+msgstr "学生が独自のページを作成できるセクションを追加します．"
+
+#. simplepage.title-student-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:421
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title-"
+"student-descrip"
+msgid "Edit page title"
+msgstr "ページタイトルを編集"
+
+#. simplepage.title-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:422
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title-"
+"descrip"
+msgid "Edit page title or style."
+msgstr "ページのタイトルまたはスタイルを編集します．"
+
+#. simplepage.title-top-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:423
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.title-top-"
+"descrip"
+msgid "Edit page title, release, or style."
+msgstr "ページのタイトル，公開日時，またはスタイルを編集します．"
+
+#. simplepage.remove-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:424
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-"
+"descrip"
+msgid "Remove this page."
+msgstr "このページを削除します．"
+
+#. simplepage.newpage-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:425
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.newpage-"
+"descrip"
+msgid "Add new top-level page(s)."
+msgstr "新規トップレベルページを追加します．"
+
+#. simplepage.importcc-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:426
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.importcc-"
+"descrip"
+msgid "Load file in IMS CC format."
+msgstr "IMS CC フォーマットでファイルを読み込みます．"
+
+#. simplepage.importcc-assigntitle
+#: lessonbuilder/tool/src/resources/messages.properties:427
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.importcc-"
+"assigntitle"
+msgid "Assignment {}"
+msgstr "課題 {}"
+
+#. simplepage.importcc-texttitle
+#: lessonbuilder/tool/src/resources/messages.properties:428
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.importcc-"
+"texttitle"
+msgid "Instructions"
+msgstr "指示"
+
+#. simplepage.importcc-embedtitle
+#: lessonbuilder/tool/src/resources/messages.properties:429
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.importcc-"
+"embedtitle"
+msgid "Embedded video"
+msgstr "埋め込みビデオ"
+
+#. simplepage.add-content
+#: lessonbuilder/tool/src/resources/messages.properties:430
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-content"
+msgid "Add Content"
+msgstr "コンテンツを追加"
+
+#. simplepage.addtext-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:431
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addtext-"
+"descrip"
+msgid "Add an item using rich text editor"
+msgstr "リッチテキストエディタを使ってアイテムを追加します．"
+
+#. simplepage.subpage-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:432
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.subpage-"
+"descrip"
+msgid ""
+"Create a new page on which you can create content, or link to an existing "
+"one"
+msgstr "コンテンツを作成したり，既存コンテンツにリンクできる新しいページを作成します．"
+
+#. simplepage.question-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:433
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"descrip"
+msgid ""
+"Create simple multiple-choice or short-answer question, can show results as "
+"poll"
+msgstr "択一複数選択または短文回答の質問の作成，投票結果を表示します．"
+
+#. simplepage.assignment-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:434
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.assignment-"
+"descrip"
+msgid "Link to an assignment"
+msgstr "課題にリンクします．"
+
+#. simplepage.quiz-descrip
+#: lessonbuilder/tool/src/resources/messages.properties:435
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.quiz-descrip"
+msgid "Link to a test or quiz"
+msgstr "テストまたはクイズにリンクします．"
+
+#. simplepage.broken-css
+#: lessonbuilder/tool/src/resources/messages.properties:436
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.broken-css"
+msgid "The customized CSS file could not be found."
+msgstr "カスタマイズされた CSS ファイルが見つかりませんでした．"
+
+#. simplepage.css-dropdown-label
+#: lessonbuilder/tool/src/resources/messages.properties:437
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.css-"
+"dropdown-label"
+msgid "Custom CSS File:"
+msgstr "カスタム CSS ファイル:"
+
+#. simplepage.css-upload-label
+#: lessonbuilder/tool/src/resources/messages.properties:438
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.css-upload-"
+"label"
+msgid "or upload your own:"
+msgstr "または、独自のファイルをアップロード:"
+
+#. simplepage.css-default-instructions
+#: lessonbuilder/tool/src/resources/messages.properties:439
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.css-default-"
+"instructions"
+msgid ""
+"(If this file is named default.css, it will become the site-wide default.)"
+msgstr "(このファイルの名前が default.css の場合は，サイト全体の初期設定になります．)"
+
+#. simplepage.default-css
+#: lessonbuilder/tool/src/resources/messages.properties:440
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.default-css"
+msgid "Use Default"
+msgstr "初期設定を使用"
+
+#. simplepage.site
+#: lessonbuilder/tool/src/resources/messages.properties:441
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.site"
+msgid "Site CSS"
+msgstr "サイト CSS"
+
+#. simplepage.system
+#: lessonbuilder/tool/src/resources/messages.properties:442
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.system"
+msgid "System CSS"
+msgstr "システム CSS"
+
+#. simplepage.comments-points
+#: lessonbuilder/tool/src/resources/messages.properties:443
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"points"
+msgid "Points:"
+msgstr "点数:"
+
+#. simplepage.question-points
+#: lessonbuilder/tool/src/resources/messages.properties:444
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"points"
+msgid "Points:"
+msgstr "点数:"
+
+#. simplepage.submit
+#: lessonbuilder/tool/src/resources/messages.properties:445
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.submit"
+msgid "Submit"
+msgstr "提出"
+
+#. simplepage.student-comments-graded
+#: lessonbuilder/tool/src/resources/messages.properties:446
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"comments-graded"
+msgid "Grade these comments"
+msgstr "これらのコメントを採点"
+
+#. simplepage.gradingpane
+#: lessonbuilder/tool/src/resources/messages.properties:447
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.gradingpane"
+msgid "Grading Pane"
+msgstr "採点枠"
+
+#. simplepage.show-grading-pane
+#: lessonbuilder/tool/src/resources/messages.properties:448
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-"
+"grading-pane"
+msgid "Show Grading Pane"
+msgstr "採点枠を表示"
+
+#. simplepage.show-grading-pane-comments
+#: lessonbuilder/tool/src/resources/messages.properties:449
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-"
+"grading-pane-comments"
+msgid "Show Grading Pane for Comments"
+msgstr "採点枠にコメントを表示"
+
+#. simplepage.show-grading-pane-content
+#: lessonbuilder/tool/src/resources/messages.properties:450
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-"
+"grading-pane-content"
+msgid "Show Grading Pane for Comments on Student Content"
+msgstr "採点枠に学生のコンテンツに関するコメントを表示"
+
+#. simplepage.grading-student
+#: lessonbuilder/tool/src/resources/messages.properties:451
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"student"
+msgid "Student Name"
+msgstr "学生名"
+
+#. simplepage.grading-unique
+#: lessonbuilder/tool/src/resources/messages.properties:452
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"unique"
+msgid "Pages"
+msgstr "ページ"
+
+#. simplepage.grading-total-posts
+#: lessonbuilder/tool/src/resources/messages.properties:453
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"total-posts"
+msgid "Comments"
+msgstr "コメント"
+
+#. simplepage.grading-response
+#: lessonbuilder/tool/src/resources/messages.properties:454
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"response"
+msgid "Response"
+msgstr "回答"
+
+#. simplepage.grading-grade
+#: lessonbuilder/tool/src/resources/messages.properties:455
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
+"grade"
+msgid "Grade"
+msgstr "成績"
+
+#. simplepage.click-to-expand
+#: lessonbuilder/tool/src/resources/messages.properties:456
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.click-to-"
+"expand"
+msgid "Toggle Comments"
+msgstr "コメントをトグル"
+
+#. simplepage.grade-for-student
+#: lessonbuilder/tool/src/resources/messages.properties:457
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.grade-for-"
+"student"
+msgid "Grade for {}"
+msgstr "{} の成績"
+
+#. simplepage.expand-for-student
+#: lessonbuilder/tool/src/resources/messages.properties:458
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.expand-for-"
+"student"
+msgid "Show or hide comments by {}"
+msgstr "{} によるコメントを表示または非表示"
+
+#. simplepage.context-link-title-1
+#: lessonbuilder/tool/src/resources/messages.properties:459
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.context-"
+"link-title-1"
+msgid "Show context for comment by {}"
+msgstr "{} によるコメントのコンテキストを表示"
+
+#. simplepage.context-link-title-2
+#: lessonbuilder/tool/src/resources/messages.properties:460
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.context-"
+"link-title-2"
+msgid "Show context for comment by {1} on content by {2}"
+msgstr "{2} によるコンテンツに対する {1} によるコメントのコンテキストを表示"
+
+#. simplepage.student-comments-grading
+#: lessonbuilder/tool/src/resources/messages.properties:461
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"comments-grading"
+msgid "Comments on Student Content on \"{}\""
+msgstr "「{}」に関する学生のコンテンツに対するコメント"
+
+#. simplepage.comments-grading
+#: lessonbuilder/tool/src/resources/messages.properties:462
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.comments-"
+"grading"
+msgid "Comments on \"{}\""
+msgstr "「{}」に関するコメント"
+
+#. simplepage.question-grading
+#: lessonbuilder/tool/src/resources/messages.properties:463
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"grading"
+msgid "Responses to \"{}\""
+msgstr "\"{}\" への回答"
+
+#. simplepage.nothing-here
+#: lessonbuilder/tool/src/resources/messages.properties:464
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.nothing-here"
+msgid "There is nothing to grade here."
+msgstr "採点の対象がありません。"
+
+#. simplepage.no-gradebook
+#: lessonbuilder/tool/src/resources/messages.properties:465
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no-gradebook"
+msgid ""
+"This item couldn't be marked for grading. The most likely issue is that no "
+"Gradebook tool has been added to this site yet."
+msgstr "このアイテムは採点のためにマークを付けられませんでした．考えられる原因として，成績簿ツールがこのサイトに追加されていない可能性があります．"
+
+#. simplepage.show-context
+#: lessonbuilder/tool/src/resources/messages.properties:466
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-context"
+msgid "Show Context"
+msgstr "コンテキストを表示"
+
+#. simplepage.student-peer-review-title
+#: lessonbuilder/tool/src/resources/messages.properties:467
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-title"
+msgid "Title"
+msgstr "タイトル"
+
+#. simplepage.student-peer-review-category
+#: lessonbuilder/tool/src/resources/messages.properties:468
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-category"
+msgid "Category"
+msgstr "カテゴリ"
+
+#. simplepage.student-peer-review-add
+#: lessonbuilder/tool/src/resources/messages.properties:469
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-add"
+msgid "Add a peer review rubric to each page"
+msgstr "各ページに相互評価ルーブリックを追加"
+
+#. simplepage.student-peer-review-create
+#: lessonbuilder/tool/src/resources/messages.properties:470
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-create"
+msgid "Create a new rubric"
+msgstr "新しいルーブリックを作成します"
+
+#. simplepage.student-peer-review-select-rubric
+#: lessonbuilder/tool/src/resources/messages.properties:471
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-select-rubric"
+msgid "Please select a rubric"
+msgstr "ルーブリックを選択してください．"
+
+#. simplepage.peer-eval-create-title
+#: lessonbuilder/tool/src/resources/messages.properties:472
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval-"
+"create-title"
+msgid "Create Peer Evaluation Rubric"
+msgstr "相互評価のルーブリックを作成します"
+
+#. simplepage.student-peer-review-add-row
+#: lessonbuilder/tool/src/resources/messages.properties:473
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-review-add-row"
+msgid "Add Row"
+msgstr "行を追加しますか?"
+
+#. simplepage.add-peereval
+#: lessonbuilder/tool/src/resources/messages.properties:474
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.add-peereval"
+msgid "Start Peer Evaluation"
+msgstr "相互評価を開始します"
+
+#. simplepage.view-peereval
+#: lessonbuilder/tool/src/resources/messages.properties:475
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.view-"
+"peereval"
+msgid "Display Peer Evaluation"
+msgstr "相互評価を表示します"
+
+#. simplepage.student-peer-eval.require_due_date
+#: lessonbuilder/tool/src/resources/messages.properties:476
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
+"peer-eval.require_due_date"
+msgid "Set Due Date ?"
+msgstr "締切日時を設定?"
+
+#. simplepage.peer-eval.invalid_open_date
+#: lessonbuilder/tool/src/resources/messages.properties:477
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.invalid_open_date"
+msgid "Please enter Open Date in the format MM/DD/YY."
+msgstr "公開日を \"MM/DD/YY\" 形式で入力して下さい．"
+
+#. simplepage.peer-eval.invalid_open_time
+#: lessonbuilder/tool/src/resources/messages.properties:478
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.invalid_open_time"
+msgid "Please enter Open Time in the format HH:MM AM/PM."
+msgstr "公開時刻を \"HH:MM AM/PM\" 形式で入力して下さい．"
+
+#. simplepage.peer-eval.invalid_due_date
+#: lessonbuilder/tool/src/resources/messages.properties:479
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.invalid_due_date"
+msgid "Please enter Due Date in the format MM/DD/YY."
+msgstr "締切日を \"MM/DD/YY\" 形式で入力して下さい．"
+
+#. simplepage.peer-eval.invalid_due_time
+#: lessonbuilder/tool/src/resources/messages.properties:480
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.invalid_due_time"
+msgid "Please enter Due Time in the format HH:MM AM/PM."
+msgstr "締切時刻を \"HH:MM AM/PM\" 形式で入力して下さい．"
+
+#. simplepage.peer-eval.open_date
+#: lessonbuilder/tool/src/resources/messages.properties:481
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.open_date"
+msgid "Open Date"
+msgstr "公開日時"
+
+#. simplepage.peer-eval.due_date
+#: lessonbuilder/tool/src/resources/messages.properties:482
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.due_date"
+msgid "Due Date"
+msgstr "締切日"
+
+#. simplepage.peer-eval-allow-selfgrade
+#: lessonbuilder/tool/src/resources/messages.properties:483
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval-"
+"allow-selfgrade"
+msgid "Allow self-grade"
+msgstr "自己評価を許可"
+
+#. simplepage.peer-eval-stats
+#: lessonbuilder/tool/src/resources/messages.properties:484
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval-"
+"stats"
+msgid "Peer Evaluation Statistics"
+msgstr "相互評価統計情報"
+
+#. simplepage.peer-eval.sample.title
+#: lessonbuilder/tool/src/resources/messages.properties:485
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.title"
+msgid "Sample Peer Evaluation"
+msgstr "サンプル相互評価"
+
+#. simplepage.peer-eval.sample.1
+#: lessonbuilder/tool/src/resources/messages.properties:486
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.1"
+msgid "Quality of work"
+msgstr "ワークの品質"
+
+#. simplepage.peer-eval.sample.2
+#: lessonbuilder/tool/src/resources/messages.properties:487
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.2"
+msgid "Supporting information"
+msgstr "サポート情報"
+
+#. simplepage.peer-eval.sample.3
+#: lessonbuilder/tool/src/resources/messages.properties:488
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.3"
+msgid "Organization"
+msgstr "編成"
+
+#. simplepage.peer-eval.sample.4
+#: lessonbuilder/tool/src/resources/messages.properties:489
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-"
+"eval.sample.4"
+msgid "Punctuation, spelling, grammar"
+msgstr "句読点，スペル，文法"
+
+#. simplepage.user.activity
+#: lessonbuilder/tool/src/resources/messages.properties:490
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.user.activity"
+msgid "Peers Evaluated"
+msgstr "相互評価されました"
+
+#. simplepage.peer-eval-stats.directions
+#: lessonbuilder/tool/src/resources/messages.properties:491
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval-"
+"stats.directions"
+msgid ""
+"Click on a name to show or hide a user's information. Click on \"Peers "
+"Evaluated\" to highlight the grades the user gave to the other participants."
+" Click again to remove the highlighting. Click on a cell to see a list of "
+"users who gave that grade to the selected user. "
+msgstr "ユーザ情報を表示または非表示にするには名前をクリックして下さい．ユーザが他の参加者に与えた成績をハイライトするには”相互評価済\"をクリックして下さい．ハイライトを削除するにはもう一度クリックして下さい．選択したユーザに成績を与えたユーザ一覧表を見るにはセルをクリックして下さい．"
+
+#. simplepage.peer-cell-tooltip
+#: lessonbuilder/tool/src/resources/messages.properties:492
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-cell-"
+"tooltip"
+msgid ""
+"Click on a cell to see a list of users who gave that grade to the selected "
+"user. "
+msgstr "選択したユーザに成績を与えたユーザ一覧表を見るにはセルをクリックして下さい．"
+
+#. simplepage.peer-eval.past-due-date
+#: lessonbuilder/tool/src/resources/messages.properties:493
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval"
+".past-due-date"
+msgid "The due date for grading has passed."
+msgstr "成績評価の期限が過ぎました．"
+
+#. simplepage.peer-eval.cant-eval-yourself
+#: lessonbuilder/tool/src/resources/messages.properties:494
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval"
+".cant-eval-yourself"
+msgid "You cannot evaluate your own work."
+msgstr "ワークを評価できません．"
+
+#. simplepage.peer-eval.click-on-cell
+#: lessonbuilder/tool/src/resources/messages.properties:495
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval"
+".click-on-cell"
+msgid "Click on a cell to grade."
+msgstr "評価するセルでクリックします．"
+
+#. simplepage.peer-eval.inactive-members
+#: lessonbuilder/tool/src/resources/messages.properties:496
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.peer-eval"
+".inactive-members"
+msgid "Site members who have not yet created a student page."
+msgstr "受講生ページをまだ作成していないサイトメンバ"
+
+#. simplepage.dueDatebeforopenDate
+#: lessonbuilder/tool/src/resources/messages.properties:497
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.dueDatebeforopenDate"
+msgid ""
+"This item has not been saved, the due date of peer evaluation is before the "
+"open date"
+msgstr "このアイテムは保存されませんでした，相互評価の締め切り日時は公開日前です．"
+
+#. simplepage.reset-button
+#: lessonbuilder/tool/src/resources/messages.properties:498
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.reset-button"
+msgid "Reset"
+msgstr "リセット"
+
+#. simplepage.help-button
+#: lessonbuilder/tool/src/resources/messages.properties:499
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.help-button"
+msgid "Help for Lessons"
+msgstr "レッスンのヘルプ"
+
+#. simplepage.opens-in-new
+#: lessonbuilder/tool/src/resources/messages.properties:500
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.opens-in-new"
+msgid "Opens in new window"
+msgstr "新規ウィンドウで開く"
+
+#. simplepage.direct-link
+#: lessonbuilder/tool/src/resources/messages.properties:501
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.direct-link"
+msgid "Direct link to this tool"
+msgstr "このツールへのダイレクトリンク"
+
+#. simplepage.short-url
+#: lessonbuilder/tool/src/resources/messages.properties:502
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.short-url"
+msgid "Short URL"
+msgstr "短縮 URL"
+
+#. simplepage.edit-page
+#: lessonbuilder/tool/src/resources/messages.properties:503
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-page"
+msgid "Edit Page"
+msgstr "ページを編集"
+
+#. simplepage.delete_page_confirm
+#: lessonbuilder/tool/src/resources/messages.properties:504
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete_page_confirm"
+msgid "Are you sure you want to delete this?"
+msgstr "削除してもよろしいですか？"
+
+#. simplepage.path
+#: lessonbuilder/tool/src/resources/messages.properties:505
+msgctxt "lessonbuilder/tool/src/resources/messages.properties:simplepage.path"
+msgid "Path (in Resources)"
+msgstr "パス（リソース内）"
+
+#. desc-lessonbuilder.upd
+#: lessonbuilder/tool/src/resources/messages.properties:506
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:desc-lessonbuilder.upd"
+msgid "Update pages or items"
+msgstr "ページまたはアイテムを更新します"
+
+#. desc-lessonbuilder.read
+#: lessonbuilder/tool/src/resources/messages.properties:507
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:desc-lessonbuilder.read"
+msgid "Read pages"
+msgstr "ページを読み込む"
+
+#. desc-lessonbuilder.seeall
+#: lessonbuilder/tool/src/resources/messages.properties:508
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:desc-"
+"lessonbuilder.seeall"
+msgid "See items regardless of release controls"
+msgstr "公開制限に関わらずアイテムを確認する"
+
+#. simplepage.owner-groups
+#: lessonbuilder/tool/src/resources/messages.properties:509
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.owner-groups"
+msgid "Student pages will be associated with groups rather than individuals."
+msgstr "学生のページは個人ではなくグループに関連づけられます．"
+
+#. simplepage.owner-groups-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:510
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.owner-"
+"groups-explanation"
+msgid ""
+"Select the groups that can be associated with pages. Each student should be "
+"part of only one group. If you don't select any, all groups will be used."
+msgstr "ページに関連付けるグループを選択してください．各学生はひとつのグループにのみ関連づけられます．もしグループを選択しなければ全てのグループが関連づけられます．"
+
+#. simplepage.owner-groups-nogroup
+#: lessonbuilder/tool/src/resources/messages.properties:511
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.owner-"
+"groups-nogroup"
+msgid ""
+"Student pages are associated with groups, but you're not in any allowable "
+"group. Please report this to your instructor."
+msgstr "受講者ページはグループに関連付けられますが，あなたは許可されたグループに所属していません．あなたの担当者に報告してください．"
+
+#. simplepage.update-points
+#: lessonbuilder/tool/src/resources/messages.properties:512
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.update-"
+"points"
+msgid "Update points"
+msgstr "アイテムを更新"
+
+#. simplepage.edit_questionlink
+#: lessonbuilder/tool/src/resources/messages.properties:513
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_questionlink"
+msgid "Edit Question Section"
+msgstr "問題セクションを修正"
+
+#. simplepage.answer
+#: lessonbuilder/tool/src/resources/messages.properties:514
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.answer"
+msgid "Answer:"
+msgstr "回答:"
+
+#. simplepage.question-text-input
+#: lessonbuilder/tool/src/resources/messages.properties:515
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"text-input"
+msgid "Question Text:"
+msgstr "問題文:"
+
+#. simplepage.question-answer-input
+#: lessonbuilder/tool/src/resources/messages.properties:516
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"answer-input"
+msgid "Correct Answer:"
+msgstr "正解"
+
+#. simplepage.question-possible-answer
+#: lessonbuilder/tool/src/resources/messages.properties:517
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"possible-answer"
+msgid "Possible Answer"
+msgstr "可能性のある回答"
+
+#. simplepage.short-explanation
+#: lessonbuilder/tool/src/resources/messages.properties:518
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.short-"
+"explanation"
+msgid ""
+"Leave possible answers blank to collect feedback from students, or if you "
+"want to grade manually."
+msgstr "受講生からフィードバックを集めるか，マニュアルで評価したければ，可能性のある回答を空白のままにして下さい．"
+
+#. simplepage.short-explanation2
+#: lessonbuilder/tool/src/resources/messages.properties:519
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.short-"
+"explanation2"
+msgid ""
+"To grade manually, leave possible answers blank, then select \"Grade this "
+"question.\" "
+msgstr "マニュアルで採点するには，可能性のある回答を空白にし，\"この質問を採点\"を選択して下さい．"
+
+#. simplepage.question-correct-answer
+#: lessonbuilder/tool/src/resources/messages.properties:520
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"correct-answer"
+msgid "Following answer is correct"
+msgstr "次の答えは正解です"
+
+#. simplepage.question-graded
+#: lessonbuilder/tool/src/resources/messages.properties:521
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"graded"
+msgid "Grade this question."
+msgstr "この回答を採点する．"
+
+#. simplepage.questionLinkText
+#: lessonbuilder/tool/src/resources/messages.properties:522
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.questionLinkText"
+msgid "Add Question"
+msgstr "問題を追加"
+
+#. simplepage.questionDescription
+#: lessonbuilder/tool/src/resources/messages.properties:523
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.questionDescription"
+msgid "Add a simple question for students to answer"
+msgstr "受講者が回答する簡単な質問を追加する"
+
+#. simplepage.multipleChoice
+#: lessonbuilder/tool/src/resources/messages.properties:524
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.multipleChoice"
+msgid "Multiple Choice"
+msgstr "複数選択"
+
+#. simplepage.shortanswer
+#: lessonbuilder/tool/src/resources/messages.properties:525
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.shortanswer"
+msgid "Short Answer"
+msgstr "記述問題"
+
+#. simplepage.answers
+#: lessonbuilder/tool/src/resources/messages.properties:526
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.answers"
+msgid "Possible Answers:"
+msgstr "可能性のある回答: "
+
+#. simplepage.addAnswer
+#: lessonbuilder/tool/src/resources/messages.properties:527
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.addAnswer"
+msgid "Add New Answer"
+msgstr "新しい回答を追加する"
+
+#. simplepage.answer_question
+#: lessonbuilder/tool/src/resources/messages.properties:528
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.answer_question"
+msgid "Submit Answer"
+msgstr "回答を送信する"
+
+#. simplepage.questionName
+#: lessonbuilder/tool/src/resources/messages.properties:529
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.questionName"
+msgid "Simple Question"
+msgstr "簡単な問題"
+
+#. simplepage.no-question-type
+#: lessonbuilder/tool/src/resources/messages.properties:530
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.no-question-"
+"type"
+msgid "No question type provided"
+msgstr "問題タイプがありません"
+
+#. simplepage.question-max
+#: lessonbuilder/tool/src/resources/messages.properties:531
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-max"
+msgid "Maximum points:"
+msgstr "最大点数:"
+
+#. simplepage.question-gradebook-title
+#: lessonbuilder/tool/src/resources/messages.properties:532
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"gradebook-title"
+msgid "Title in Gradebook:"
+msgstr "成績簿のタイトル"
+
+#. simplepage.permissions-question
+#: lessonbuilder/tool/src/resources/messages.properties:533
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.permissions-"
+"question"
+msgid "You have already answered that question!"
+msgstr "あなたはすでに質問に回答しています．"
+
+#. simplepage.correct-text
+#: lessonbuilder/tool/src/resources/messages.properties:534
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.correct-text"
+msgid "Text shown if answer is correct:"
+msgstr "答えが正解であれば表示されるテキスト"
+
+#. simplepage.incorrect-text
+#: lessonbuilder/tool/src/resources/messages.properties:535
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.incorrect-"
+"text"
+msgid "Text shown if answer is incorrect:"
+msgstr "答えが不正解であれば表示されるテキスト"
+
+#. simplepage.show-poll
+#: lessonbuilder/tool/src/resources/messages.properties:536
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.show-poll"
+msgid "Show Poll"
+msgstr "投票結果を表示"
+
+#. simplepage.hide-poll
+#: lessonbuilder/tool/src/resources/messages.properties:537
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.hide-poll"
+msgid "Hide Poll"
+msgstr "投票結果を非表示"
+
+#. simplepage.question-show-poll-option
+#: lessonbuilder/tool/src/resources/messages.properties:538
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"show-poll-option"
+msgid ""
+"Show students a graph of how others responded after they answer the question"
+msgstr "質問に回答後，他の受講生の回答状況のグラフを受講生に表示する．"
+
+#. simplepage.missing-question-text
+#: lessonbuilder/tool/src/resources/messages.properties:539
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.missing-"
+"question-text"
+msgid "Please supply text for the question"
+msgstr "質問にテキストを入力してください"
+
+#. simplepage.question-need-2
+#: lessonbuilder/tool/src/resources/messages.properties:540
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"need-2"
+msgid "Please supply at least 2 alternatives for this question"
+msgstr "質問に少なくとも2つの選択肢を入力してください．"
+
+#. simplepage.question-need-1
+#: lessonbuilder/tool/src/resources/messages.properties:541
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.question-"
+"need-1"
+msgid "Please supply at least 1 correct answer for this question"
+msgstr "質問に少なくとも1つの正解を入力してください．"
+
+#. simplepage.go-back
+#: lessonbuilder/tool/src/resources/messages.properties:542
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.go-back"
+msgid "Go Back"
+msgstr "戻る"
+
+#. simplepage.expand-all
+#: lessonbuilder/tool/src/resources/messages.properties:543
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.expand-all"
+msgid "Expand All"
+msgstr "すべて展開"
+
+#. simplepage.collapse-all
+#: lessonbuilder/tool/src/resources/messages.properties:544
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.collapse-all"
+msgid "Collapse All"
+msgstr "すべて折り畳む"
+
+#. simplepage.mm-test-embed
+#: lessonbuilder/tool/src/resources/messages.properties:545
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"embed"
+msgid ""
+"Because the value you pasted has a < in it, we are treating it as an \"embed"
+" code.\" If you intended to paste a URL, please try again and paste the "
+"complete URL."
+msgstr "ペーストした値が\"<\"を含むため，\"埋め込みコード\"としてそれを取り扱います．URLをペーストしようとしていたら，もう一度試みて完全なURLをペーストして下さい．"
+
+#. simplepage.mm-test-addedhttp-1
+#: lessonbuilder/tool/src/resources/messages.properties:546
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"addedhttp-1"
+msgid "NOTE: We changed this to "
+msgstr "注意：これを変更しました"
+
+#. simplepage.mm-test-addedhttp-2
+#: lessonbuilder/tool/src/resources/messages.properties:547
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"addedhttp-2"
+msgid "We hope that's what you meant."
+msgstr "あなたが意味することだと期待します．"
+
+#. simplepage.mm-test-oembed
+#: lessonbuilder/tool/src/resources/messages.properties:548
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"oembed"
+msgid ""
+"First, we will try this as the URL of a video/audio sharing site. Please see"
+" if this shows the contents of the site properly."
+msgstr "まず，サイトを共有するビデオ/オーディオのURLとしてこれを試みます．サイトのコンテンツが正しく表示されているか確認して下さい．"
+
+#. simplepage.mm-test-iframe
+#: lessonbuilder/tool/src/resources/messages.properties:549
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"iframe"
+msgid ""
+"Now we are trying to put the contents of the URL in using a different "
+"technique (an IFRAME). Please see if this shows the contents of the site "
+"properly."
+msgstr "異なるテクニック(IFRAME)を使ってURLコンテンツを挿入しています．サイトのコンテンツが正しく表示されているか確認して下さい．"
+
+#. simplepage.mm-test-tryother
+#: lessonbuilder/tool/src/resources/messages.properties:550
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"tryother"
+msgid "Try other alternative"
+msgstr "他の選択肢を試す"
+
+#. simplepage.mm-test-start-over
+#: lessonbuilder/tool/src/resources/messages.properties:551
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.mm-test-"
+"start-over"
+msgid "Start over"
+msgstr "もう一度やり直し"
+
+#. simplepage.sharedpage
+#: lessonbuilder/tool/src/resources/messages.properties:552
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.sharedpage"
+msgid "[Shared page]"
+msgstr "[共有ページ]"
+
+#. simplepage.sharedpageexplanation
+#: lessonbuilder/tool/src/resources/messages.properties:553
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.sharedpageexplanation"
+msgid ""
+"is used when the same page appears more than one place. Any changes to the "
+"page will be reflected everywhere that it appears."
+msgstr "は同じページをひとつ以上の場所に表示するときに使われます．ページへの変更はそれが表示されるすべての場所で反映されます．"
+
+#. simplepage.deletecommentsubmissionexist
+#: lessonbuilder/tool/src/resources/messages.properties:554
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.deletecommentsubmissionexist"
+msgid ""
+"If you delete this section, comments already created by students will be "
+"lost. Are you sure?"
+msgstr "このセクションを削除すると，受講生がすでに作成したコメントは失われます．よろしいですか？"
+
+#. simplepage.deletestudentsubmissionexist
+#: lessonbuilder/tool/src/resources/messages.properties:555
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.deletestudentsubmissionexist"
+msgid ""
+"If you delete this section, pages already created by students will be lost. "
+"Are you sure?"
+msgstr "このセクションを削除すると，受講生がすでに作成したページは失われます．よろしいですか？"
+
+#. simplepage.groupcheckfailed
+#: lessonbuilder/tool/src/resources/messages.properties:556
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.groupcheckfailed"
+msgid "Unable to check selected groups. System returned error: {}"
+msgstr "選択されたグループをチェックできません．システム応答エラー：{}"
+
+#. simplepage.groupcheckoverlaps
+#: lessonbuilder/tool/src/resources/messages.properties:557
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.groupcheckoverlaps"
+msgid "The following groups overlap: {}"
+msgstr "次のグループはオーバーラップしています．{}"
+
+#. simplepage.groupchecknogroups
+#: lessonbuilder/tool/src/resources/messages.properties:558
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.groupchecknogroups"
+msgid "The following users are not in any groups: {}"
+msgstr "次のユーザはどのグループにもいません: {}"
+
+#. simplepage.insist
+#: lessonbuilder/tool/src/resources/messages.properties:559
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.insist"
+msgid "To continue anyway, hit Update Item again."
+msgstr "とにかく続けるなら，更新するアイテムを再度クリックして下さい．"
+
+#. simplepage.dont-show-downloads
+#: lessonbuilder/tool/src/resources/messages.properties:560
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.dont-show-"
+"downloads"
+msgid ""
+"Don't show download links for embedded videos, etc. (This setting applies to"
+" all pages in this site.)"
+msgstr "埋め込みビデオなどのダウンロードリンクを公開しないで下さい．( この設定はこのサイトのすべてのページに適用されます． )"
+
+#. simplepage.access-group
+#: lessonbuilder/tool/src/resources/messages.properties:561
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.access-group"
+msgid "Access: {}"
+msgstr "アクセス: {}"
+
+#. simplepage.delete-orphan-pages
+#: lessonbuilder/tool/src/resources/messages.properties:562
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete-"
+"orphan-pages"
+msgid "Delete removed pages"
+msgstr "削除されたページを削除"
+
+#. simplepage.delete-orphan-pages-desc
+#: lessonbuilder/tool/src/resources/messages.properties:563
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.delete-"
+"orphan-pages-desc"
+msgid ""
+"Permanently remove all pages that no longer appear as top-level pages or "
+"subpages"
+msgstr "トップレベルのページもしくはサブページとしてもはや表示されないすべてのページを永久に削除します．"
+
+#. simplepage.filezero
+#: lessonbuilder/tool/src/resources/messages.properties:564
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.filezero"
+msgid "Uploaded file is zero size"
+msgstr "アップロードファイルサイズは０です"
+
+#. simplepage.filetoobig
+#: lessonbuilder/tool/src/resources/messages.properties:565
+msgctxt ""
+"lessonbuilder/tool/src/resources/messages.properties:simplepage.filetoobig"
+msgid "Uploaded file is larger than {} MB"
+msgstr "アップロードされたファイルは {} MB以上です"
+
+#. lessonbuilder.create
+#: lessonbuilder/tool/src/resources/Events.properties:1
+msgctxt ""
+"lessonbuilder/tool/src/resources/Events.properties:lessonbuilder.create"
+msgid "Lesson Builder: Create page or item"
+msgstr "レッスンビルダ: ページまたはアイテムを作成"
+
+#. lessonbuilder.delete
+#: lessonbuilder/tool/src/resources/Events.properties:2
+msgctxt ""
+"lessonbuilder/tool/src/resources/Events.properties:lessonbuilder.delete"
+msgid "Lesson Builder: Delete page or item"
+msgstr "レッスンビルダ: ページまたはアイテムを削除"
+
+#. lessonbuilder.update
+#: lessonbuilder/tool/src/resources/Events.properties:3
+msgctxt ""
+"lessonbuilder/tool/src/resources/Events.properties:lessonbuilder.update"
+msgid "Lesson Builder: Update page or item"
+msgstr "レッスンビルダ: ページまたはアイテムを更新"
+
+#. lessonbuilder.read
+#: lessonbuilder/tool/src/resources/Events.properties:4
+msgctxt ""
+"lessonbuilder/tool/src/resources/Events.properties:lessonbuilder.read"
+msgid "Lesson Builder: Read page"
+msgstr "レッスンビルダ: ページを読み込む"

@@ -1,0 +1,1010 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: TMX Project 0.1a\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-25 07:19+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. property1
+#: jobscheduler/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/Messages.properties:1
+msgctxt ""
+"jobscheduler/scheduler-component-"
+"shared/src/java/org/sakaiproject/component/app/scheduler/jobs/Messages.properties:property1"
+msgid "This is Property 1"
+msgstr "This is Property 1"
+
+#. desc1
+#: jobscheduler/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/Messages.properties:2
+msgctxt ""
+"jobscheduler/scheduler-component-"
+"shared/src/java/org/sakaiproject/component/app/scheduler/jobs/Messages.properties:desc1"
+msgid "This is description 1"
+msgstr "This is description 1"
+
+#. property2
+#: jobscheduler/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/Messages.properties:3
+msgctxt ""
+"jobscheduler/scheduler-component-"
+"shared/src/java/org/sakaiproject/component/app/scheduler/jobs/Messages.properties:property2"
+msgid "This is Property 2"
+msgstr "This is Property 2"
+
+#. desc2
+#: jobscheduler/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/Messages.properties:4
+msgctxt ""
+"jobscheduler/scheduler-component-"
+"shared/src/java/org/sakaiproject/component/app/scheduler/jobs/Messages.properties:desc2"
+msgid "This is description 2"
+msgstr "This is description 2"
+
+#. number.days
+#: jobscheduler/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:1
+msgctxt ""
+"jobscheduler/scheduler-component-"
+"shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:number.days"
+msgid "Numer of Days to Retain"
+msgstr "Numer of Days to Retain"
+
+#. number.days.description
+#: jobscheduler/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:2
+msgctxt ""
+"jobscheduler/scheduler-component-"
+"shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:number.days.description"
+msgid ""
+"Enter the number of days to retain in the log (calculated from the current "
+"time when the job executes)"
+msgstr ""
+"Enter the number of days to retain in the log (calculated from the current "
+"time when the job executes)"
+
+#. days.empty
+#: jobscheduler/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:3
+msgctxt ""
+"jobscheduler/scheduler-component-"
+"shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:days.empty"
+msgid "Please enter a number of days greater than 1"
+msgstr "Please enter a number of days greater than 1"
+
+#. days.numberformat
+#: jobscheduler/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:4
+msgctxt ""
+"jobscheduler/scheduler-component-"
+"shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:days.numberformat"
+msgid "The number of days entered is not a valid number format"
+msgstr "The number of days entered is not a valid number format"
+
+#. days.lessthanone
+#: jobscheduler/scheduler-component-shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:5
+msgctxt ""
+"jobscheduler/scheduler-component-"
+"shared/src/java/org/sakaiproject/component/app/scheduler/jobs/eventpurge/Messages.properties:days.lessthanone"
+msgid "Please enter a number of days greater than 1"
+msgstr "Please enter a number of days greater than 1"
+
+#. integer.property
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:1
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:integer.property"
+msgid "Test Integer Property"
+msgstr "Test Integer Property"
+
+#. integer.property.description
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:2
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:integer.property.description"
+msgid "Any valid integer value but -1 will be accepted"
+msgstr "Any valid integer value but -1 will be accepted"
+
+#. string.property
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:3
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:string.property"
+msgid "Test String Property"
+msgstr "Test String Property"
+
+#. string.property.description
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:4
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:string.property.description"
+msgid "Any string except \"bad\" will be accepted"
+msgstr "Any string except \"bad\" will be accepted"
+
+#. boolean.property
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:5
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:boolean.property"
+msgid "Test Boolean Property"
+msgstr "Test Boolean Property"
+
+#. boolean.property.description
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:6
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:boolean.property.description"
+msgid "Valid values are: \"true\", \"false\", \"yes\", or \"no\""
+msgstr "Valid values are: \"true\", \"false\", \"yes\", or \"no\""
+
+#. integer.value.negativeone
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:7
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:integer.value.negativeone"
+msgid "The value -1 is not permitted"
+msgstr "The value -1 is not permitted"
+
+#. integer.value.format
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:8
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:integer.value.format"
+msgid "The value submitted is not an integer"
+msgstr "The value submitted is not an integer"
+
+#. string.value.invalid
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:9
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:string.value.invalid"
+msgid "The value 'bad' is invalid"
+msgstr "The value 'bad' is invalid"
+
+#. boolean.value.invalid
+#: jobscheduler/scheduler-configurable-job-test-component-shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:10
+msgctxt ""
+"jobscheduler/scheduler-configurable-job-test-component-"
+"shared/src/bundle/org/sakaiproject/scheduler/configurable/test/Messages.properties:boolean.value.invalid"
+msgid "The boolean value is not one of: \"true\", \"false\", \"yes\", or \"no\""
+msgstr "The boolean value is not one of: \"true\", \"false\", \"yes\", or \"no\""
+
+#. integer.property
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:1
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:integer.property"
+msgid "Test Integer Property"
+msgstr "Test Integer Property"
+
+#. integer.property.description
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:2
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:integer.property.description"
+msgid "Any valid integer value but -1 will be accepted"
+msgstr "Any valid integer value but -1 will be accepted"
+
+#. string.property
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:3
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:string.property"
+msgid "Test String Property"
+msgstr "Test String Property"
+
+#. string.property.description
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:4
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:string.property.description"
+msgid "Any string except \"bad\" will be accepted"
+msgstr "Any string except \"bad\" will be accepted"
+
+#. boolean.property
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:5
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:boolean.property"
+msgid "Test Boolean Property"
+msgstr "Test Boolean Property"
+
+#. boolean.property.description
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:6
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:boolean.property.description"
+msgid "Valid values are: \"true\", \"false\", \"yes\", or \"no\""
+msgstr "Valid values are: \"true\", \"false\", \"yes\", or \"no\""
+
+#. integer.value.negativeone
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:7
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:integer.value.negativeone"
+msgid "The value -1 is not permitted"
+msgstr "The value -1 is not permitted"
+
+#. integer.value.format
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:8
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:integer.value.format"
+msgid "The value submitted is not an integer"
+msgstr "The value submitted is not an integer"
+
+#. string.value.invalid
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:9
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:string.value.invalid"
+msgid "The value 'bad' is invalid"
+msgstr "The value 'bad' is invalid"
+
+#. boolean.value.invalid
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:10
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:boolean.value.invalid"
+msgid "The boolean value is not one of: \"true\", \"false\", \"yes\", or \"no\""
+msgstr "The boolean value is not one of: \"true\", \"false\", \"yes\", or \"no\""
+
+#. minInterval.property
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:11
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:minInterval.property"
+msgid "Minute Interval"
+msgstr "Minute Interval"
+
+#. minInterval.property.description
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:12
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:minInterval.property.description"
+msgid "Number of minutes to increment beween events"
+msgstr "Number of minutes to increment beween events"
+
+#. numEvents.property
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:13
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:numEvents.property"
+msgid "Number of Events"
+msgstr "Number of Events"
+
+#. numEvents.property.description
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:14
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:numEvents.property.description"
+msgid "Total number of events to generate"
+msgstr "Total number of events to generate"
+
+#. startDate.property
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:15
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:startDate.property"
+msgid "Start Date"
+msgstr "Start Date"
+
+#. startDate.property.description
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:16
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:startDate.property.description"
+msgid "Date to use for the first generated event"
+msgstr "Date to use for the first generated event"
+
+#. error.minInterval.format
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:17
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:error.minInterval.format"
+msgid "minute interval must be an integer greater than 1"
+msgstr "minute interval must be an integer greater than 1"
+
+#. error.numEvents.format
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:18
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:error.numEvents.format"
+msgid "number of events must be an integer greater than 1"
+msgstr "number of events must be an integer greater than 1"
+
+#. error.startDate.format
+#: jobscheduler/scheduler-test-component-shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:19
+msgctxt ""
+"jobscheduler/scheduler-test-component-"
+"shared/src/bundle/org/sakaiproject/component/app/scheduler/jobs/test/Messages.properties:error.startDate.format"
+msgid "start date must be of the form 'yyyy-MM-dd' (eg. 2010-11-01)"
+msgstr "start date must be of the form 'yyyy-MM-dd' (eg. 2010-11-01)"
+
+#. javax.faces.component.UIInput.REQUIRED
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:1
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:javax.faces.component.UIInput.REQUIRED"
+msgid "Value Required"
+msgstr "Value Required"
+
+#. javax.faces.validator.LengthValidator.MINIMUM
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:2
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:javax.faces.validator.LengthValidator.MINIMUM"
+msgid "Value too short, must be at least {0} characters."
+msgstr "Value too short, must be at least {0} characters."
+
+#. javax.faces.validator.LengthValidator.MAXIMUM
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:3
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:javax.faces.validator.LengthValidator.MAXIMUM"
+msgid "Value too long, must be {0} characters or less."
+msgstr "Value too long, must be {0} characters or less."
+
+#. title_job
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:4
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:title_job"
+msgid "Job Detail"
+msgstr "Job Detail"
+
+#. title_trigger
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:5
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:title_trigger"
+msgid "Trigger Detail"
+msgstr "Trigger Detail"
+
+#. error
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:6
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:error"
+msgid "An error has occurred"
+msgstr "An error has occurred"
+
+#. title_list
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:7
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:title_list"
+msgid "List"
+msgstr "List"
+
+#. title_bar
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:8
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:title_bar"
+msgid "Scheduler Tool"
+msgstr "Scheduler Tool"
+
+#. edit_trigger_for_job
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:9
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:edit_trigger_for_job"
+msgid "Currently editing triggers for job:"
+msgstr "Currently editing triggers for job:"
+
+#. bar_create_job
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:10
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_create_job"
+msgid "New Job"
+msgstr "New Job"
+
+#. bar_delete_jobs
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:11
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_delete_jobs"
+msgid "Delete"
+msgstr "Delete"
+
+#. bar_create_trigger
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:12
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_create_trigger"
+msgid "New Trigger"
+msgstr "New Trigger"
+
+#. bar_delete_triggers
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:13
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_delete_triggers"
+msgid "Delete"
+msgstr "Delete"
+
+#. bar_jobs
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:14
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_jobs"
+msgid "Jobs"
+msgstr "Jobs"
+
+#. bar_post
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:15
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_post"
+msgid "Post"
+msgstr "Post"
+
+#. bar_cancel
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:16
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. bar_run_job_now
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:17
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_run_job_now"
+msgid "Run Job Now"
+msgstr "Run Job Now"
+
+#. bar_run_now
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:18
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_run_now"
+msgid "Run Now"
+msgstr "Run Now"
+
+#. run_job
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:19
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:run_job"
+msgid "Run Job Now Confirmation: "
+msgstr "Run Job Now Confirmation: "
+
+#. already_running
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:20
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:already_running"
+msgid "This job is already running."
+msgstr "This job is already running."
+
+#. confirm_running_job_now
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:21
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:confirm_running_job_now"
+msgid "Are you sure you would like to run the job now?"
+msgstr "Are you sure you would like to run the job now?"
+
+#. bar_return_jobs
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:22
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_return_jobs"
+msgid "Return to Jobs"
+msgstr "Return to Jobs"
+
+#. bar_event_log
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:23
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:bar_event_log"
+msgid "Event Log"
+msgstr "Event Log"
+
+#. select_all
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:24
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:select_all"
+msgid "View All Events"
+msgstr "View All Events"
+
+#. select_today
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:25
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:select_today"
+msgid "View Today's Events"
+msgstr "View Today's Events"
+
+#. event_log
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:26
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:event_log"
+msgid "Event Log"
+msgstr "Event Log"
+
+#. existing_job_name
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:27
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:existing_job_name"
+msgid "Existing Job Name!"
+msgstr "Existing Job Name!"
+
+#. existing_trigger_name
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:28
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:existing_trigger_name"
+msgid "Existing Trigger Name"
+msgstr "Existing Trigger Name"
+
+#. parse_exception
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:29
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:parse_exception"
+msgid "Parse Exception"
+msgstr "Parse Exception"
+
+#. delete_jobs_confirm
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:30
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:delete_jobs_confirm"
+msgid "The following jobs (and associated triggers) will be deleted."
+msgstr "The following jobs (and associated triggers) will be deleted."
+
+#. delete_triggers_confirm
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:31
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:delete_triggers_confirm"
+msgid "The following triggers will be deleted."
+msgstr "The following triggers will be deleted."
+
+#. ok
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:32
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:ok"
+msgid "OK"
+msgstr "OK"
+
+#. cancel
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:33
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#. select_jobs_first
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:34
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:select_jobs_first"
+msgid "On the Jobs Page - Click on Checkboxes to Select Jobs to Delete"
+msgstr "On the Jobs Page - Click on Checkboxes to Select Jobs to Delete"
+
+#. select_triggers_first
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:35
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:select_triggers_first"
+msgid ""
+"On the Triggers Page - Click on Checkboxes to Select Triggers to Delete"
+msgstr ""
+"On the Triggers Page - Click on Checkboxes to Select Triggers to Delete"
+
+#. create_job
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:36
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:create_job"
+msgid "Create Job"
+msgstr "Create Job"
+
+#. create_trigger
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:37
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:create_trigger"
+msgid "Create Trigger"
+msgstr "Create Trigger"
+
+#. job_name
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:38
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:job_name"
+msgid "Job Name:"
+msgstr "Job Name:"
+
+#. trigger_name
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:39
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:trigger_name"
+msgid "Trigger Name:"
+msgstr "Trigger Name:"
+
+#. trigger_expression
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:40
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:trigger_expression"
+msgid "Cron Expression:"
+msgstr "Cron Expression:"
+
+#. trigger_willrun
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:41
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:trigger_willrun"
+msgid "Next Run:"
+msgstr "Next Run:"
+
+#. job_class
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:42
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:job_class"
+msgid "Class:"
+msgstr "Class:"
+
+#. job_type
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:43
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:job_type"
+msgid "Type:"
+msgstr "Type:"
+
+#. message
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:44
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:message"
+msgid "Message:"
+msgstr "Message:"
+
+#. server
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:45
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:server"
+msgid "Server"
+msgstr "Server"
+
+#. return_jobs
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:46
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:return_jobs"
+msgid "Return to Jobs"
+msgstr "Return to Jobs"
+
+#. return_triggers
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:47
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:return_triggers"
+msgid "Return to Triggers"
+msgstr "Return to Triggers"
+
+#. help
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:48
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:help"
+msgid "Help"
+msgstr "Help"
+
+#. triggers
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:49
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:triggers"
+msgid "Triggers"
+msgstr "Triggers"
+
+#. triggers0
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:50
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:triggers0"
+msgid "Triggers({0})"
+msgstr "Triggers({0})"
+
+#. eventType
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:51
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:eventType"
+msgid "Event type"
+msgstr "Event type"
+
+#. timestamp
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:52
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:timestamp"
+msgid "Timestamps"
+msgstr "Timestamps"
+
+#. edit_properties
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:53
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:edit_properties"
+msgid "Configure Job Properties"
+msgstr "Configure Job Properties"
+
+#. properties_instructions
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:54
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:properties_instructions"
+msgid ""
+"This job is configurable. The table below contains those properties you may "
+"wish to set for this job. The values you select here will be used as "
+"defaults for the job. You may override these settings when you run or "
+"schedule a job."
+msgstr ""
+"This job is configurable. The table below contains those properties you may "
+"wish to set for this job. The values you select here will be used as "
+"defaults for the job. You may override these settings when you run or "
+"schedule a job."
+
+#. properties_name_header
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:55
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:properties_name_header"
+msgid "Name"
+msgstr "Name"
+
+#. properties_value_header
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:56
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:properties_value_header"
+msgid "Value"
+msgstr "Value"
+
+#. properties_desc_header
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:57
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:properties_desc_header"
+msgid "Description"
+msgstr "Description"
+
+#. properties_required
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:58
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:properties_required"
+msgid "A required property was not configured"
+msgstr "A required property was not configured"
+
+#. edit_trigger_properties
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:59
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:edit_trigger_properties"
+msgid "Configure Trigger Properties"
+msgstr "Configure Trigger Properties"
+
+#. trigger_properties_instructions
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:60
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:trigger_properties_instructions"
+msgid ""
+"This job is configurable. The properties below are set with the defaults for"
+" this type of job. If you would like to override them for this trigger edit "
+"the values below before clicking 'Submit'. Otherwise, click 'Submit' to "
+"accept the defaults and continue."
+msgstr ""
+"This job is configurable. The properties below are set with the defaults for"
+" this type of job. If you would like to override them for this trigger edit "
+"the values below before clicking 'Submit'. Otherwise, click 'Submit' to "
+"accept the defaults and continue."
+
+#. filterEvents
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:61
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filterEvents"
+msgid "Filter Events"
+msgstr "Filter Events"
+
+#. filter_current
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:62
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_current"
+msgid "Current filter"
+msgstr "Current filter"
+
+#. filter_title
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:63
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_title"
+msgid "Trigger Event Filters"
+msgstr "Trigger Event Filters"
+
+#. filter_instructions
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:64
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_instructions"
+msgid ""
+"To filter the events shown in the event log fill in the form below and click"
+" \"Set Filters\". All filters will be reset and the entire log will be shown"
+" if you click \"Clear Filters\"."
+msgstr ""
+"To filter the events shown in the event log fill in the form below and click"
+" \"Set Filters\". All filters will be reset and the entire log will be shown"
+" if you click \"Clear Filters\"."
+
+#. filter_date_title
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:65
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_date_title"
+msgid "Event Dates"
+msgstr "Event Dates"
+
+#. filter_date_instructions
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:66
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_date_instructions"
+msgid ""
+"Set the beginning and ending date of the events to show. Events will be "
+"filtered before or after midnight of the dates you select."
+msgstr ""
+"Set the beginning and ending date of the events to show. Events will be "
+"filtered before or after midnight of the dates you select."
+
+#. filter_before_title
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:67
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_before_title"
+msgid "Events Before Date"
+msgstr "Events Before Date"
+
+#. filter_after_title
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:68
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_after_title"
+msgid "Events After Date"
+msgstr "Events After Date"
+
+#. filter_job_instructions
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:69
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_job_instructions"
+msgid "Select the specific jobs for which you would like to see events."
+msgstr "Select the specific jobs for which you would like to see events."
+
+#. filter_job_title
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:70
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_job_title"
+msgid "Jobs"
+msgstr "Jobs"
+
+#. filter_type_instructions
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:71
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_type_instructions"
+msgid "Select the event types you would like to see."
+msgstr "Select the event types you would like to see."
+
+#. filter_type_title
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:72
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:filter_type_title"
+msgid "Event Types"
+msgstr "Event Types"
+
+#. setFilters
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:73
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:setFilters"
+msgid "Set Event Filters"
+msgstr "Set Event Filters"
+
+#. clearFilters
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:74
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:clearFilters"
+msgid "Clear Event Filters"
+msgstr "Clear Event Filters"
+
+#. powered_by
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:75
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:powered_by"
+msgid "Powered By"
+msgstr "Powered By"
+
+#. events
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:76
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:events"
+msgid "events"
+msgstr "events"
+
+#. title_error
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:77
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:title_error"
+msgid "Errors"
+msgstr "Errors"
+
+#. running_jobs
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:78
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:running_jobs"
+msgid "Running Jobs"
+msgstr "Running Jobs"
+
+#. actions
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:79
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:actions"
+msgid "Actions"
+msgstr "Actions"
+
+#. kill
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:80
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:kill"
+msgid "stop"
+msgstr "stop"
+
+#. fire_time
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:81
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:fire_time"
+msgid "Job Start Date/Time"
+msgstr "Job Start Date/Time"
+
+#. kill_message
+#: jobscheduler/scheduler-tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:82
+msgctxt ""
+"jobscheduler/scheduler-"
+"tool/src/bundle/org/sakaiproject/tool/scheduler/bundle/Messages.properties:kill_message"
+msgid ""
+"Stop signal has been sent to the job: {0}.  Depending on how that job was "
+"implemented to  listen for the signal, it could take a while for it to "
+"process before the job actually stops."
+msgstr ""
+"Stop signal has been sent to the job: {0}.  Depending on how that job was "
+"implemented to  listen for the signal, it could take a while for it to "
+"process before the job actually stops."

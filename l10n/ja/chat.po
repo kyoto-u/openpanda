@@ -1,0 +1,977 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-03 16:10+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. chat-message
+#: chat/chat-impl/impl/src/bundle/chat-message.properties:1
+msgctxt "chat/chat-impl/impl/src/bundle/chat-message.properties:chat-message"
+msgid "A chat message represents a message in a chat channel (room)."
+msgstr "チャットメッセージはチャットチャンネル (ルーム) 中のメッセージを表しています．"
+
+#. chat_header
+#: chat/chat-impl/impl/src/bundle/chat.properties:1
+msgctxt "chat/chat-impl/impl/src/bundle/chat.properties:chat_header"
+msgid "Message Headers\n"
+msgstr "メッセージヘッダ\n"
+
+#. chat_from
+#: chat/chat-impl/impl/src/bundle/chat.properties:2
+msgctxt "chat/chat-impl/impl/src/bundle/chat.properties:chat_from"
+msgid "From "
+msgstr "送信者"
+
+#. chat_body
+#: chat/chat-impl/impl/src/bundle/chat.properties:3
+msgctxt "chat/chat-impl/impl/src/bundle/chat.properties:chat_body"
+msgid "Message Body\n"
+msgstr "メッセージ本文\n"
+
+#. chat_message
+#: chat/chat-impl/impl/src/bundle/chat.properties:4
+msgctxt "chat/chat-impl/impl/src/bundle/chat.properties:chat_message"
+msgid "Message  "
+msgstr "メッセージ"
+
+#. chat-channel
+#: chat/chat-impl/impl/src/bundle/chat-channel.properties:1
+msgctxt "chat/chat-impl/impl/src/bundle/chat-channel.properties:chat-channel"
+msgid "A chat channel represents a chat room in a context (site)."
+msgstr "チャットチャンネルとは，あるコンテキスト (サイト) 中のチャットルームを表します．"
+
+#. thischat
+#: chat/chat-tool/tool/src/bundle/chat.properties:1
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:thischat"
+msgid "This chat is not available."
+msgstr "このチャットは利用可能ではありません．"
+
+#. chatmesdel
+#: chat/chat-tool/tool/src/bundle/chat.properties:2
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:chatmesdel"
+msgid "Chat message deleted by"
+msgstr "次のユーザによりチャットメッセージが削除されました："
+
+#. chatroom
+#: chat/chat-tool/tool/src/bundle/chat.properties:3
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:chatroom"
+msgid "Chat Room:"
+msgstr "チャットルーム:"
+
+#. days
+#: chat/chat-tool/tool/src/bundle/chat.properties:4
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:days"
+msgid "Days"
+msgstr "日間"
+
+#. forchat
+#: chat/chat-tool/tool/src/bundle/chat.properties:5
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:forchat"
+msgid "for Chat room name. Chat room name"
+msgstr "のチャットルーム名："
+
+#. hided
+#: chat/chat-tool/tool/src/bundle/chat.properties:6
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:hided"
+msgid "Hide Date"
+msgstr "日付を非表示"
+
+#. hidet
+#: chat/chat-tool/tool/src/bundle/chat.properties:7
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:hidet"
+msgid "Hide Time"
+msgstr "時間を非表示"
+
+#. messages
+#: chat/chat-tool/tool/src/bundle/chat.properties:8
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:messages"
+msgid "Messages"
+msgstr "メッセージ"
+
+#. on
+#: chat/chat-tool/tool/src/bundle/chat.properties:9
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:on"
+msgid "on"
+msgstr "on"
+
+#. permis
+#: chat/chat-tool/tool/src/bundle/chat.properties:10
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:permis"
+msgid "Permissions"
+msgstr "権限"
+
+#. setpermis
+#: chat/chat-tool/tool/src/bundle/chat.properties:11
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:setpermis"
+msgid "Set permissions for Chat room in worksite "
+msgstr "ワークサイトのチャットルームの権限をセット"
+
+#. perm_description
+#: chat/chat-tool/tool/src/bundle/chat.properties:12
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:perm_description"
+msgid "Set permissions for {0} in worksite ''{1}''"
+msgstr "ワークサイト「{1}」の {0} に対する権限をセット"
+
+#. showall
+#: chat/chat-tool/tool/src/bundle/chat.properties:13
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:showall"
+msgid "All Messages"
+msgstr "すべてのメッセージ"
+
+#. shownone
+#: chat/chat-tool/tool/src/bundle/chat.properties:14
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:shownone"
+msgid "Show no message history"
+msgstr "メッセージ履歴なしを表示"
+
+#. showd
+#: chat/chat-tool/tool/src/bundle/chat.properties:15
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:showd"
+msgid "Show Date"
+msgstr "日付を表示"
+
+#. showlast
+#: chat/chat-tool/tool/src/bundle/chat.properties:16
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:showlast"
+msgid "Show Last"
+msgstr "最後を表示"
+
+#. showpast
+#: chat/chat-tool/tool/src/bundle/chat.properties:17
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:showpast"
+msgid "Past"
+msgstr "過去"
+
+#. showt
+#: chat/chat-tool/tool/src/bundle/chat.properties:18
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:showt"
+msgid "Show Time"
+msgstr "時間を表示"
+
+#. showtoday
+#: chat/chat-tool/tool/src/bundle/chat.properties:19
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:showtoday"
+msgid "Show Today's Messages"
+msgstr "今日のメッセージを表示"
+
+#. thereispro
+#: chat/chat-tool/tool/src/bundle/chat.properties:20
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:thereispro"
+msgid ""
+"Permissions can not be set at this time because the site is already being "
+"edited. Close permissions in other tools before proceeding."
+msgstr "サイトがすでに編集中であるため，この時点で権限をセットすることができません．他のツールの権限設定を閉じて先に進んでください．"
+
+#. therewaspro
+#: chat/chat-tool/tool/src/bundle/chat.properties:21
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:therewaspro"
+msgid "There was a problem sending the prior message."
+msgstr "以前のメッセージを送信中に問題が発生しました．"
+
+#. turnoff
+#: chat/chat-tool/tool/src/bundle/chat.properties:22
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:turnoff"
+msgid "Turn OFF New Message Alert"
+msgstr "新しいメッセージ通知をオフ"
+
+#. turnon
+#: chat/chat-tool/tool/src/bundle/chat.properties:23
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:turnon"
+msgid "Turn ON New Message Alert"
+msgstr "新しいメッセージ通知をオン"
+
+#. youdonot1
+#: chat/chat-tool/tool/src/bundle/chat.properties:24
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:youdonot1"
+msgid "You do not have permission to view this chat."
+msgstr "このチャットを表示する権限がありません．"
+
+#. youdonot2
+#: chat/chat-tool/tool/src/bundle/chat.properties:25
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:youdonot2"
+msgid "You do not have permission to create this chat."
+msgstr "このチャットを作成する権限がありません．"
+
+#. youdonot3
+#: chat/chat-tool/tool/src/bundle/chat.properties:26
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:youdonot3"
+msgid "You do not have permission to post to this chat."
+msgstr "このチャットを投稿する権限がありません．"
+
+#. youdonot4
+#: chat/chat-tool/tool/src/bundle/chat.properties:27
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:youdonot4"
+msgid "You do not have permission to delete this chat message."
+msgstr "このチャットメッセージを削除する権限がありません．"
+
+#. youent
+#: chat/chat-tool/tool/src/bundle/chat.properties:28
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:youent"
+msgid "You entered"
+msgstr "入室しました"
+
+#. gen.alert
+#: chat/chat-tool/tool/src/bundle/chat.properties:29
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:gen.alert"
+msgid "Alert:"
+msgstr "警告:"
+
+#. gen.cancel
+#: chat/chat-tool/tool/src/bundle/chat.properties:30
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:gen.cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. gen.date
+#: chat/chat-tool/tool/src/bundle/chat.properties:31
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:gen.date"
+msgid "Date:"
+msgstr "日付:"
+
+#. gen.delete
+#: chat/chat-tool/tool/src/bundle/chat.properties:32
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:gen.delete"
+msgid "Delete"
+msgstr "削除"
+
+#. gen.edit
+#: chat/chat-tool/tool/src/bundle/chat.properties:33
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:gen.edit"
+msgid "Edit"
+msgstr "編集"
+
+#. gen.from
+#: chat/chat-tool/tool/src/bundle/chat.properties:34
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:gen.from"
+msgid "From:"
+msgstr "投稿者:"
+
+#. gen.mess
+#: chat/chat-tool/tool/src/bundle/chat.properties:35
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:gen.mess"
+msgid "Message:"
+msgstr "メッセージ:"
+
+#. gen.save
+#: chat/chat-tool/tool/src/bundle/chat.properties:36
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:gen.save"
+msgid "Update Options"
+msgstr "オプションを更新"
+
+#. control.clear
+#: chat/chat-tool/tool/src/bundle/chat.properties:37
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:control.clear"
+msgid "Clear"
+msgstr "クリア"
+
+#. control.post
+#: chat/chat-tool/tool/src/bundle/chat.properties:38
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:control.post"
+msgid "Add message"
+msgstr "メッセージを追加"
+
+#. control.lab
+#: chat/chat-tool/tool/src/bundle/chat.properties:39
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:control.lab"
+msgid "Enter chat message"
+msgstr "チャットメッセージを入力"
+
+#. combox.viewfrom
+#: chat/chat-tool/tool/src/bundle/chat.properties:40
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:combox.viewfrom"
+msgid "View messages from..."
+msgstr "メッセージを表示　入力元:"
+
+#. custom.chatroom
+#: chat/chat-tool/tool/src/bundle/chat.properties:41
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.chatroom"
+msgid "Chat Room"
+msgstr "チャットルーム"
+
+#. custom.cuschat
+#: chat/chat-tool/tool/src/bundle/chat.properties:42
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.cuschat"
+msgid "Chat Options"
+msgstr "チャットオプション"
+
+#. custom.days
+#: chat/chat-tool/tool/src/bundle/chat.properties:43
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.days"
+msgid "days"
+msgstr "日間"
+
+#. custom.howmany
+#: chat/chat-tool/tool/src/bundle/chat.properties:44
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.howmany"
+msgid "How many messages will be displayed?"
+msgstr "何件のメッセージを表示しますか?"
+
+#. custom.mess
+#: chat/chat-tool/tool/src/bundle/chat.properties:45
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.mess"
+msgid "messages"
+msgstr "メッセージ"
+
+#. custom.showall
+#: chat/chat-tool/tool/src/bundle/chat.properties:46
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.showall"
+msgid "Show all messages"
+msgstr "すべてのメッセージを表示"
+
+#. custom.showlast
+#: chat/chat-tool/tool/src/bundle/chat.properties:47
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.showlast"
+msgid "Show the last"
+msgstr "最後を表示"
+
+#. custom.showpast
+#: chat/chat-tool/tool/src/bundle/chat.properties:48
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.showpast"
+msgid "Show messages from the past"
+msgstr "過去のメッセージを表示"
+
+#. custom.use1
+#: chat/chat-tool/tool/src/bundle/chat.properties:49
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.use1"
+msgid "Use this worksite's Main Chat Room"
+msgstr "このワークサイトのメインチャットルームを使用"
+
+#. custom.use2
+#: chat/chat-tool/tool/src/bundle/chat.properties:50
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.use2"
+msgid "Use the chat room called"
+msgstr "呼び出されたチャットルームを使用"
+
+#. custom.use3
+#: chat/chat-tool/tool/src/bundle/chat.properties:51
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.use3"
+msgid "Use a new Chat Room"
+msgstr "新しいチャットルームを使用"
+
+#. custom.which
+#: chat/chat-tool/tool/src/bundle/chat.properties:52
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.which"
+msgid "Which chat room will be displayed?"
+msgstr "どのチャットルームを表示しますか?"
+
+#. custom.called
+#: chat/chat-tool/tool/src/bundle/chat.properties:53
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.called"
+msgid "called"
+msgstr "呼ばれた"
+
+#. custom.msgdisp
+#: chat/chat-tool/tool/src/bundle/chat.properties:54
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom.msgdisp"
+msgid "Message Display"
+msgstr "メッセージ表示"
+
+#. custom_date_display
+#: chat/chat-tool/tool/src/bundle/chat.properties:55
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom_date_display"
+msgid "Posting allowed from {0} through {1}"
+msgstr "{0} から {1} まで投稿が許可"
+
+#. custom_date_display_start
+#: chat/chat-tool/tool/src/bundle/chat.properties:56
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:custom_date_display_start"
+msgid "Posting allowed starting {0}"
+msgstr "{0} から始まる投稿が許可"
+
+#. custom_date_display_end
+#: chat/chat-tool/tool/src/bundle/chat.properties:57
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:custom_date_display_end"
+msgid "Posting allowed through {1}"
+msgstr "{1} まで投稿が許可"
+
+#. custom_date_heading
+#: chat/chat-tool/tool/src/bundle/chat.properties:58
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom_date_heading"
+msgid "Allowed Posting Dates"
+msgstr "許可された投稿日時"
+
+#. custom_date_instructions
+#: chat/chat-tool/tool/src/bundle/chat.properties:59
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:custom_date_instructions"
+msgid ""
+"Users are allowed to post to the chatroom between the dates specified below."
+" Leaving or setting a date blank indicates no date restriction (only the "
+"permissions would limit posting). The end date must be the same as or later "
+"than the start date."
+msgstr "下記に指定された期間中はチャットルームへの投稿が許可されます．日付を空白のままにするかセットした場合は日付の制限がありません(権限だけが投稿を制限します)．終了日は開始日以降に設定してください．"
+
+#. custom_date_start
+#: chat/chat-tool/tool/src/bundle/chat.properties:60
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom_date_start"
+msgid "Start"
+msgstr "開始"
+
+#. custom_date_end
+#: chat/chat-tool/tool/src/bundle/chat.properties:61
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:custom_date_end"
+msgid "End"
+msgstr "終了"
+
+#. custom_date_restricted
+#: chat/chat-tool/tool/src/bundle/chat.properties:62
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:custom_date_restricted"
+msgid "Posting is currently disabled by configured dates."
+msgstr "投稿は設定日により現在無効です．"
+
+#. custom_date_error_order
+#: chat/chat-tool/tool/src/bundle/chat.properties:63
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:custom_date_error_order"
+msgid "Start date ({0}) must come before end date ({1})"
+msgstr "開始日 ({0}) は終了日 ({1}) の前に設定してください．"
+
+#. custom_date_entry_format_description
+#: chat/chat-tool/tool/src/bundle/chat.properties:64
+msgctxt ""
+"chat/chat-"
+"tool/tool/src/bundle/chat.properties:custom_date_entry_format_description"
+msgid "(mm/dd/yy)"
+msgstr "(mm/dd/yy)"
+
+#. custom_date_entry_today_is
+#: chat/chat-tool/tool/src/bundle/chat.properties:65
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:custom_date_entry_today_is"
+msgid "Today is"
+msgstr "今日は"
+
+#. custom_date_entry_week_header
+#: chat/chat-tool/tool/src/bundle/chat.properties:66
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:custom_date_entry_week_header"
+msgid "Wk"
+msgstr "週"
+
+#. custom_date_entry_format
+#: chat/chat-tool/tool/src/bundle/chat.properties:67
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:custom_date_entry_format"
+msgid "MM/dd/yy"
+msgstr "MM/dd/yy"
+
+#. custom_date_entry_goto
+#: chat/chat-tool/tool/src/bundle/chat.properties:68
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:custom_date_entry_goto"
+msgid "Go To Current Month"
+msgstr "今月に移動"
+
+#. delete.delete
+#: chat/chat-tool/tool/src/bundle/chat.properties:69
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:delete.delete"
+msgid "Deleting chat message"
+msgstr "チャットメッセージを削除しています"
+
+#. delete.sure
+#: chat/chat-tool/tool/src/bundle/chat.properties:70
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:delete.sure"
+msgid "Are you sure you want to permanently delete this message?"
+msgstr "このメッセージを永久に削除してもよろしいですか?"
+
+#. delete.wrong
+#: chat/chat-tool/tool/src/bundle/chat.properties:71
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:delete.wrong"
+msgid "Message has been deleted already!"
+msgstr "メッセージは既に削除されています!"
+
+#. lay.note
+#: chat/chat-tool/tool/src/bundle/chat.properties:72
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:lay.note"
+msgid ""
+"All chat messages are archived and can be read by any site participant."
+msgstr "すべてのチャットメッセージはアーカイブされ，サイトの参加者全員が読むことができます．"
+
+#. lay.user
+#: chat/chat-tool/tool/src/bundle/chat.properties:73
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:lay.user"
+msgid "Users in Chat"
+msgstr "チャットにいるユーザ"
+
+#. list.del
+#: chat/chat-tool/tool/src/bundle/chat.properties:74
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:list.del"
+msgid "Delete this message"
+msgstr "このメッセージを削除"
+
+#. bar.onlytime
+#: chat/chat-tool/tool/src/bundle/chat.properties:75
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:bar.onlytime"
+msgid "Time Only"
+msgstr "時間だけ"
+
+#. bar.datetime
+#: chat/chat-tool/tool/src/bundle/chat.properties:76
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:bar.datetime"
+msgid "Date and Time"
+msgstr "日付と時間"
+
+#. bar.onlydate
+#: chat/chat-tool/tool/src/bundle/chat.properties:77
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:bar.onlydate"
+msgid "Date Only"
+msgstr "日付だけ"
+
+#. bar.nodatetime
+#: chat/chat-tool/tool/src/bundle/chat.properties:78
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:bar.nodatetime"
+msgid "Neither Date or Time"
+msgstr "日付も時間も表示しない"
+
+#. bar.allmes
+#: chat/chat-tool/tool/src/bundle/chat.properties:79
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:bar.allmes"
+msgid "All Messages"
+msgstr "すべてのメッセージ"
+
+#. bar.view
+#: chat/chat-tool/tool/src/bundle/chat.properties:80
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:bar.view"
+msgid "View"
+msgstr "表示"
+
+#. bar.show
+#: chat/chat-tool/tool/src/bundle/chat.properties:81
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:bar.show"
+msgid "Show"
+msgstr "表示"
+
+#. bar.listnavselect
+#: chat/chat-tool/tool/src/bundle/chat.properties:82
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:bar.listnavselect"
+msgid "List options: press alt + up and down arrows to scroll through menu"
+msgstr "一覧オプション: メニュー上でスクロールする場合は Alt + 上 または 下矢印を押します．"
+
+#. past_x_days
+#: chat/chat-tool/tool/src/bundle/chat.properties:83
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:past_x_days"
+msgid "Past {0} days"
+msgstr "過去 {0} 日間"
+
+#. past_x_messages
+#: chat/chat-tool/tool/src/bundle/chat.properties:84
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:past_x_messages"
+msgid "Last {0} messages"
+msgstr "直近 {0} 個のメッセージ"
+
+#. default_new_channel_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:85
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:default_new_channel_title"
+msgid "Main Chat Room"
+msgstr "メインチャネル"
+
+#. allMessages
+#: chat/chat-tool/tool/src/bundle/chat.properties:86
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:allMessages"
+msgid "All Messages"
+msgstr "すべてのメッセージ"
+
+#. timeOnly
+#: chat/chat-tool/tool/src/bundle/chat.properties:87
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:timeOnly"
+msgid "Time Only"
+msgstr "時刻のみ"
+
+#. timeAndDate
+#: chat/chat-tool/tool/src/bundle/chat.properties:88
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:timeAndDate"
+msgid "Date and Time"
+msgstr "日付及び時刻"
+
+#. dateOnly
+#: chat/chat-tool/tool/src/bundle/chat.properties:89
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:dateOnly"
+msgid "Date Only"
+msgstr "日付のみ"
+
+#. neitherDateOrTime
+#: chat/chat-tool/tool/src/bundle/chat.properties:90
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:neitherDateOrTime"
+msgid "Neither Date nor Time"
+msgstr "日付または時刻のどちらか"
+
+#. uniqueid
+#: chat/chat-tool/tool/src/bundle/chat.properties:91
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:uniqueid"
+msgid "ID Only"
+msgstr "ID だけ"
+
+#. manage_tool
+#: chat/chat-tool/tool/src/bundle/chat.properties:92
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:manage_tool"
+msgid "Options"
+msgstr "ツールを管理"
+
+#. lay_note
+#: chat/chat-tool/tool/src/bundle/chat.properties:93
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:lay_note"
+msgid ""
+"All chat messages are archived and can be read by any site participant."
+msgstr "すべてのメッセージはアーカイブされ，サイト参加者なら誰でも読むことができます．"
+
+#. lay_restricted_note_days
+#: chat/chat-tool/tool/src/bundle/chat.properties:94
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:lay_restricted_note_days"
+msgid ""
+"Only messages from the past {0} days are archived and can be read by any "
+"site participant."
+msgstr "過去 {0} 日間のメッセージだけがアーカイブされ，サイト参加者なら誰でも読むことができます．"
+
+#. lay_restricted_note_messages
+#: chat/chat-tool/tool/src/bundle/chat.properties:95
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:lay_restricted_note_messages"
+msgid ""
+"Only the past {0} messages are archived and can be read by any site "
+"participant."
+msgstr "過去 {0} 個のメッセージだけがアーカイブされ，サイト参加者なら誰でも読むことができます．"
+
+#. lay_restricted_note_none
+#: chat/chat-tool/tool/src/bundle/chat.properties:96
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:lay_restricted_note_none"
+msgid ""
+"Only messages from the current session can be read by site participants."
+msgstr "現在のセッションからのメッセージだけをサイト参加者は読むことができます．"
+
+#. lay_user
+#: chat/chat-tool/tool/src/bundle/chat.properties:97
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:lay_user"
+msgid "Users in Chat"
+msgstr "チャットにいるユーザ"
+
+#. view
+#: chat/chat-tool/tool/src/bundle/chat.properties:98
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:view"
+msgid "View"
+msgstr "表示"
+
+#. add_room
+#: chat/chat-tool/tool/src/bundle/chat.properties:99
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:add_room"
+msgid "Add Room"
+msgstr "ルームを追加"
+
+#. change_room
+#: chat/chat-tool/tool/src/bundle/chat.properties:100
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:change_room"
+msgid "Change Room"
+msgstr "ルームを変更"
+
+#. enter_the_chat_room
+#: chat/chat-tool/tool/src/bundle/chat.properties:101
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:enter_the_chat_room"
+msgid "Enter ''{0}'' Room"
+msgstr "「{0}」ルームに入る"
+
+#. channel_creation_date
+#: chat/chat-tool/tool/src/bundle/chat.properties:102
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:channel_creation_date"
+msgid "Creation Date"
+msgstr "作成日時"
+
+#. channel_description
+#: chat/chat-tool/tool/src/bundle/chat.properties:103
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:channel_description"
+msgid "Description"
+msgstr "説明"
+
+#. channel_description_colon
+#: chat/chat-tool/tool/src/bundle/chat.properties:104
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:channel_description_colon"
+msgid "Description:"
+msgstr "説明:"
+
+#. channel_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:105
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:channel_title"
+msgid "Title"
+msgstr "タイトル"
+
+#. channel_title_colon
+#: chat/chat-tool/tool/src/bundle/chat.properties:106
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:channel_title_colon"
+msgid "Title:"
+msgstr "タイトル:"
+
+#. edit_channel_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:107
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:edit_channel_title"
+msgid "Edit Room"
+msgstr "ルームを編集"
+
+#. add_channel_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:108
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:add_channel_title"
+msgid "Add Room"
+msgstr "ルームを追加"
+
+#. message_display
+#: chat/chat-tool/tool/src/bundle/chat.properties:109
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:message_display"
+msgid "Message Display"
+msgstr "メッセージディスプレイ"
+
+#. messages_shown_total
+#: chat/chat-tool/tool/src/bundle/chat.properties:110
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:messages_shown_total"
+msgid "Showing {0} messages out of {1}"
+msgstr "{0} / {1} 件のメッセージを表示中"
+
+#. perm_error
+#: chat/chat-tool/tool/src/bundle/chat.properties:111
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:perm_error"
+msgid "Insufficient Permissions for {0}"
+msgstr "{0} に対する権限が不十分です"
+
+#. message_owner
+#: chat/chat-tool/tool/src/bundle/chat.properties:112
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:message_owner"
+msgid "Owner"
+msgstr "所有者"
+
+#. select_room_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:113
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:select_room_title"
+msgid "Select Chat Room"
+msgstr "チャットルームを選択"
+
+#. tool_options_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:114
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:tool_options_title"
+msgid "Tool Options"
+msgstr "ツールオプション"
+
+#. synoptic_options_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:115
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:synoptic_options_title"
+msgid "Synoptic Options"
+msgstr "一覧オプション"
+
+#. room_list_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:116
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:room_list_title"
+msgid "Manage Rooms"
+msgstr "ルームを管理"
+
+#. monitor_panel
+#: chat/chat-tool/tool/src/bundle/chat.properties:117
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:monitor_panel"
+msgid "List"
+msgstr "一覧"
+
+#. presence_panel
+#: chat/chat-tool/tool/src/bundle/chat.properties:118
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:presence_panel"
+msgid "List of users present in room"
+msgstr "ルームにいるユーザ一覧"
+
+#. control_panel
+#: chat/chat-tool/tool/src/bundle/chat.properties:119
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:control_panel"
+msgid "Control"
+msgstr "コントロール"
+
+#. delete_room_confirm_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:120
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:delete_room_confirm_title"
+msgid "Deleting chat room"
+msgstr "チャットルームを削除しています"
+
+#. delete_room_confirm_alert
+#: chat/chat-tool/tool/src/bundle/chat.properties:121
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/chat.properties:delete_room_confirm_alert"
+msgid "Are you sure you want to permanently delete this chat room?"
+msgstr "このチャットルームを削除してもよろしですか?"
+
+#. delete_room_messages_confirm_title
+#: chat/chat-tool/tool/src/bundle/chat.properties:122
+msgctxt ""
+"chat/chat-"
+"tool/tool/src/bundle/chat.properties:delete_room_messages_confirm_title"
+msgid "Deleting all messages from chat room"
+msgstr "チャットルームからすべてのメッセージを削除します．"
+
+#. delete_room_messages_confirm_alert
+#: chat/chat-tool/tool/src/bundle/chat.properties:123
+msgctxt ""
+"chat/chat-"
+"tool/tool/src/bundle/chat.properties:delete_room_messages_confirm_alert"
+msgid ""
+"Are you sure you want to permanently delete all messages from this chat "
+"room?"
+msgstr "このチャットルームからすべてのメッセージを永久に削除してもよろしいですか?"
+
+#. recent_chat_heading
+#: chat/chat-tool/tool/src/bundle/chat.properties:124
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:recent_chat_heading"
+msgid "Recent Chat Display"
+msgstr "最新チャットの表示"
+
+#. number_days
+#: chat/chat-tool/tool/src/bundle/chat.properties:125
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:number_days"
+msgid "Number of days in the past"
+msgstr "経過日数"
+
+#. number_messages
+#: chat/chat-tool/tool/src/bundle/chat.properties:126
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:number_messages"
+msgid "Number of Chat messages"
+msgstr "チャットメッセージ数"
+
+#. number_chars
+#: chat/chat-tool/tool/src/bundle/chat.properties:127
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:number_chars"
+msgid "Number of characters per Chat message"
+msgstr "チャットメッセージ当たりの文字数"
+
+#. update_text
+#: chat/chat-tool/tool/src/bundle/chat.properties:128
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:update_text"
+msgid "Update"
+msgstr "更新"
+
+#. validation_error
+#: chat/chat-tool/tool/src/bundle/chat.properties:129
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:validation_error"
+msgid "There was an error submitting this form.  See specific messages below."
+msgstr "このフォームを送信中にエラーがありました．詳しいメッセージは以下をご覧ください．"
+
+#. title_required
+#: chat/chat-tool/tool/src/bundle/chat.properties:130
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:title_required"
+msgid "Title is required"
+msgstr "タイトルは必須です"
+
+#. title_too_long
+#: chat/chat-tool/tool/src/bundle/chat.properties:131
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:title_too_long"
+msgid "Title has to be less than {0} characters"
+msgstr "タイトルは {0} 文字より少なくなければなりません"
+
+#. desc_too_long
+#: chat/chat-tool/tool/src/bundle/chat.properties:132
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:desc_too_long"
+msgid "Description has to be less than {0} characters"
+msgstr "説明は {0} 文字より少なくなければなりません"
+
+#. delete_room_messages
+#: chat/chat-tool/tool/src/bundle/chat.properties:133
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:delete_room_messages"
+msgid "Clear History"
+msgstr "履歴をクリア"
+
+#. set_default
+#: chat/chat-tool/tool/src/bundle/chat.properties:134
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:set_default"
+msgid "Set as Default"
+msgstr "デフォルトとしてセット"
+
+#. set_as_default
+#: chat/chat-tool/tool/src/bundle/chat.properties:135
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:set_as_default"
+msgid "Set ''{0}'' as Default"
+msgstr "デフォルトとして「{0}」をセット"
+
+#. viewingChatRoomText
+#: chat/chat-tool/tool/src/bundle/chat.properties:136
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:viewingChatRoomText"
+msgid "Currently viewing messages for ''{0}''"
+msgstr "「{0}」のメッセージを現在表示しています"
+
+#. back_to_room
+#: chat/chat-tool/tool/src/bundle/chat.properties:137
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:back_to_room"
+msgid "Back to room"
+msgstr "ルームに戻る"
+
+#. channel_enable_override_description
+#: chat/chat-tool/tool/src/bundle/chat.properties:138
+msgctxt ""
+"chat/chat-"
+"tool/tool/src/bundle/chat.properties:channel_enable_override_description"
+msgid ""
+"Allow chat participants to change the chat display settings for their own "
+"chat window"
+msgstr "チャット参加者が自分自身のチャットウィンドウに対するチャット表示設定を変更することを許可する"
+
+#. neg_num_error
+#: chat/chat-tool/tool/src/bundle/chat.properties:139
+msgctxt "chat/chat-tool/tool/src/bundle/chat.properties:neg_num_error"
+msgid "Negative numbers are not allowed"
+msgstr "負の数は許可されていません"
+
+#. desc-chat.new
+#: chat/chat-tool/tool/src/bundle/permissions.properties:1
+msgctxt "chat/chat-tool/tool/src/bundle/permissions.properties:desc-chat.new"
+msgid "Post chat messages"
+msgstr "チャットメッセージを投稿"
+
+#. desc-chat.read
+#: chat/chat-tool/tool/src/bundle/permissions.properties:2
+msgctxt "chat/chat-tool/tool/src/bundle/permissions.properties:desc-chat.read"
+msgid "Read chat messages"
+msgstr "チャットメッセージを読む"
+
+#. desc-chat.delete.any
+#: chat/chat-tool/tool/src/bundle/permissions.properties:3
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/permissions.properties:desc-chat.delete.any"
+msgid "Delete any chat messages"
+msgstr "すべてのチャットメッセージを削除"
+
+#. desc-chat.delete.own
+#: chat/chat-tool/tool/src/bundle/permissions.properties:4
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/permissions.properties:desc-chat.delete.own"
+msgid "Delete own chat messages"
+msgstr "自分のチャットメッセージを削除"
+
+#. desc-chat.delete.channel
+#: chat/chat-tool/tool/src/bundle/permissions.properties:5
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/permissions.properties:desc-"
+"chat.delete.channel"
+msgid "Delete a chat room"
+msgstr "チャットルームを削除"
+
+#. desc-chat.new.channel
+#: chat/chat-tool/tool/src/bundle/permissions.properties:6
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/permissions.properties:desc-chat.new.channel"
+msgid "Create a new chat room"
+msgstr "新しいチャットルームを作成"
+
+#. desc-chat.revise.channel
+#: chat/chat-tool/tool/src/bundle/permissions.properties:7
+msgctxt ""
+"chat/chat-tool/tool/src/bundle/permissions.properties:desc-"
+"chat.revise.channel"
+msgid "Set chat room options"
+msgstr "チャットルームオプションを設定"

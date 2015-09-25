@@ -1,0 +1,4069 @@
+# 
+# Translators:
+# Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: sakai10x\n"
+"Report-Msgid-Bugs-To: ddeguchi@nagoya-u.jp\n"
+"POT-Creation-Date: 2015-09-24 23:06+00:00\n"
+"PO-Revision-Date: 2015-05-17 10:00+0000\n"
+"Last-Translator: Yuji Tokiwa <tokiwa@yujitokiwa.jp>\n"
+"Language-Team: Japanese (http://www.transifex.com/apereo/sakai10x/language/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. wiki
+#: rwiki/rwiki-tool/tool/src/bundle/wiki.properties:1
+msgctxt "rwiki/rwiki-tool/tool/src/bundle/wiki.properties:wiki"
+msgid "Provides a set of RESTful endpoints for retrieving wiki pages."
+msgstr "wikiページを取得する一連のRESTfulエンドポイントを提供します．"
+
+#. wiki.action.site
+#: rwiki/rwiki-tool/tool/src/bundle/wiki.properties:2
+msgctxt "rwiki/rwiki-tool/tool/src/bundle/wiki.properties:wiki.action.site"
+msgid ""
+"Using the first form of URL, retrieves a graph of pages, identified by page "
+"name ('Home' for example), for a given site id as specified in the "
+"path.<br/> Example URL: /direct/wiki/site/SITEID.json<br />The second valid "
+"URL form retrieves a particular page using a page name as returned in the "
+"site's page graph.<br /> Example URL: "
+"/direct/wiki/site/SITEID/page/PAGENAME.json <br /><br /> All returned urls "
+"are url encoded."
+msgstr "最初のURL形式を使って，パスで指定されたサイトID用のページ名で識別されるページ(例えば'Home')のグラフを取得します．<br/> URL例: /direct/wiki/site/SITEID.json<br />2番目の有効なURL形式はサイトページグラフから返されたページ名を使って特定のページを取得します．<br /> URL例: /direct/wiki/site/SITEID/page/PAGENAME.json <br /><br />返されるすべてのurlはurlエンコードされています．"
+
+#. wiki_about_course_page
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:1
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:wiki_about_course_page"
+msgid ""
+"h2 About this Course\n"
+"\n"
+"Some information about this Course\n"
+"\n"
+msgstr "h2 このコースについて\n\nこのコースに関する情報です\n\n"
+
+#. wiki_about_project_page
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:2
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:wiki_about_project_page"
+msgid ""
+"h2 About this Project\n"
+"\n"
+"Some information about this Project\n"
+"\n"
+msgstr "h2 このプロジェクトについて\n\nこのプロジェクトに関する情報です\n\n"
+
+#. wiki_default_page_template
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:3
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:wiki_default_page_template"
+msgid ""
+"h2 New page \n"
+"\n"
+"This is a new page. To add text to it:\n"
+"* Click the 'edit' button in the actions bar above.\n"
+"* You will see the text on this page appear in an editable text box.\n"
+"* Delete this 'starter' text , and type in the text that you want to appear instead. To format the text, use the formatting button icons, which will insert the appropriate wiki formatting codes.\n"
+"* Click the 'save' button.\n"
+msgstr "h2 新しいページ \n\nこれは新しいページです．テキストをページに追加する場合:\n* 上のアクションバーにある「編集」ボタンをクリックします．\n* 編集可能なテキストボックスにこのページのテキストが表示されます\n* この「初心者」用テキストを削除し，代わりに表示したいテキストを入力します．テキストを書式付けする場合は，書式付けボタンアイコンを使用し，適当な Wiki 書式付けコードを挿入します．\n* 「保存」ボタンをクリックします．\n"
+
+#. wiki_edit_right
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:4
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:wiki_edit_right"
+msgid ""
+"h1 Wiki Tips\n"
+"__To create a new page__\n"
+"\n"
+"Type the name of the new page you want to create in square brackets:\n"
+"\n"
+"* \\[my new page\\] \n"
+"__To format your text__\n"
+"\n"
+"Select the text to format and use the formatting buttons to automatically insert the wiki formatting codes.\n"
+"\n"
+"__Bullets and numbering __\n"
+"\n"
+"For bulleted lists, put a * (star) in front of each item in the list: \n"
+"\n"
+"\\* item 1\n"
+"\n"
+"\\* item 2\n"
+"\n"
+"* item 1\n"
+"\n"
+"* item 2\n"
+"\n"
+"For numbered lists, put a # (hash) in front of each item in the list.\n"
+"\n"
+"[More Hints on Wiki formatting|Help Page]"
+msgstr "h1 Wiki ティップス\n__新しいページを作成する場合__\n\n大括弧に作成したい新しいページの名前を入力します:\n\n* \\[新しいページの名前\\] \n__テキストを書式付けする場合__\n\n書式付けしたいテキストを選択し，書式付けボタンを使用します．これにより，Wiki 書式付けコードが自動的に挿入されます．\n\n__箇条書きおよび番号付き箇条書き__\n\n箇条書きの場合は，箇条書きの各アイテムの前に * (アスタリスク)を入力します: \n\n\\* アイテム 1\n\n\\* アイテム 2\n\n* アイテム 1\n\n* アイテム 2\n\n番号付き箇条書きの場合は，箇条書きの各アイテムの前に # (シャープ)を入力します\n\n[Wiki 書式付けに関する詳細ヒント|Help Page]"
+
+#. wiki_help_page
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:5
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:wiki_help_page"
+msgid ""
+"h1 How to format your Wiki pages\n"
+"Wiki pages may be formatted using codes given below. These codes provide simple text styles such as __bold__, ~~italic~~ and lists.\n"
+"\n"
+"There are also a number of 'macros' which can automatically provide certain information, as well as being used for more complex tasks, such as including tables, images and attachments.\n"
+"\n"
+"h1 Formatting short-cut icons\n"
+"You can insert common formatting commands using the links in the toolbar at the top of the wiki page editor. These links include bold, italic, headings, tables, uploading attachments and including images.\n"
+"\n"
+"h3 Simple text formatting\n"
+"\n"
+"{table}\n"
+"Type these codes| Displays as | Descriptions\n"
+"\\_\\_bold\\_\\_ | __bold__ | simple bold text\n"
+"\\~\\~italics\\~\\~ | ~~italics~~ | simple italic text\n"
+"\\-\\-strike\\-\\- | --strike-- | strike through text\n"
+"CH\\%\\%4\\%\\%|CH%%4%%| subscript (for more mathematical formatting, see below)\n"
+"Ca\\^\\^2+\\^\\^| Ca^^2+^^| superscript \n"
+"\\[my new page\\] | [my new page] | links to a new Wiki page with the name given in brackets\n"
+"\\http://www.bbc.co.uk/ | http://www.bbc.co.uk/ | creates an automatic link to an external website or an online document. \n"
+"h1 Title || a major headline (displayed as <H1> would be in the local CSS styling)\n"
+"h3 Title || a minor headline (displayed as <H3> would be in the local CSS styling)\n"
+"\\{bgcolor:yellow\\}Some text\\{bgcolor\\}|{bgcolor:yellow}Highlighted text{bgcolor}|Highlights the text between the brackets (note US spelling!)\n"
+"\\{color:red\\}Some text\\{color\\}|{color:red}Red text {color}|Changes the colour of the text between the brackets (note US spelling!)\n"
+"\\-\\-\\-\\- || display a horizontal line across the page\n"
+"- list item|| create a bulleted list \n"
+"* list item|| create a bulleted list which displays slightly differently to the one above\n"
+"a. list item|| create an automatically alphabetical list\n"
+"A. list item|| uppercase alphabetical list\n"
+"i. list item|| lowercase Roman numerical list\n"
+"I. list item|| uppercase Roman numerical list\n"
+"g., h., k., j. list item|| Greek, Hiragana, Katakana & Hebrew numerical lists\n"
+"(empty line) || divides text into paragraphs\n"
+"\\\\\\ || creates extra space between paragraphs\n"
+"\\\\\\\\X | X | display the special character \"X\" (for example, \\\\\\\\{ will display {)\n"
+"\\\\\\\\\\\\\\\\\\ | \\\\\\\\ | display a \\\\\\\\ \n"
+"{table} \n"
+"\n"
+"h3 Macros and More \n"
+"For a full list of macros and parameters, type \\{list-of-macros\\} in any page. This list gives an introduction to the most useful.\n"
+"\n"
+"__Add an email link__\n"
+"\n"
+"{mailto:} followed by an email address will create an email link in the page.\n"
+"\n"
+"e.g. \\{mailto:pbehr@cam.ac.uk\\} will display as {mailto:pbehr@cam.ac.uk}\n"
+"\n"
+"__Create an automatic index for your Wiki__\t\n"
+"\n"
+"Typing \\{index\\} will create an automatically updated index of pages for your Wiki. \n"
+"\n"
+"(No example as it takes up a lot of space!)\n"
+"\n"
+"__Create an automatic list of recently changed pages__\n"
+"\n"
+"Typing \\{recent-changes\\} will create an automatically updated list of the recently changed pages in your Wiki, together with the name of the person who last changed the page and the date and time of the change. By default, it shows all the pages changed in the last 30 days.\n"
+"\n"
+"*  \\{recent-changes:12h\\} - recently changed pages in the last 12 hours.\n"
+"*  \\{recent-changes:7d\\} - recently changed pages in the last 7 days.\n"
+"*  \\{recent-changes:2006-12-25\\} - recently changed pages since 25 Dec, 2006.\n"
+"\n"
+"(No example as it takes up a lot of space!)\n"
+"\n"
+"\n"
+"__Add an image to your page__\n"
+"\n"
+"Typing \\{image:\\} and including the URL of the image will display a image in your page. (This is just the same as clicking the image icon in the edit screen, which is easier to use.)\n"
+"\n"
+"\\{image:/images/bear.jpg|A Bear\\} would show the image whose relative URL was \"/images/bear.jpg\". The alternative text shown would be \"A Bear\".\n"
+"\n"
+"To float your image left, so that text flows round it, include the extra text \"|ext|float-left\", as below:\n"
+"\n"
+"\\{image:/images/bear.jpg|A Bear|ext|float-left\\} \n"
+"\n"
+"To float your image right, so that text flows round it, include the extra text \"|ext|float-right\", as below:\n"
+"\n"
+"\\{image:/images/bear.jpg|A Bear|ext|float-right\\} \n"
+"\n"
+"\n"
+"The image URL may be relative or absolute but cannot be external. The URL may also start with \"worksite:/\" to display images from this worksite. To display images from your other worksites, you may start a URL with \"sakai:/\" and include the site ID.\n"
+"\n"
+"__Create an anchor tag__\n"
+"\n"
+"Typing \\{anchor\\} creates an HTML anchor tag around the text it contains.\t\n"
+"\n"
+"e.g. \\{anchor:myLink\\}Jump to this point \\{anchor\\}\n"
+"\n"
+"The link to jump to that point should appear as follows:\n"
+"\n"
+"\\[Go to this exciting point|Name of current page here#myLink\\]\n"
+"\n"
+"__Using mathematical formatting__\n"
+"\n"
+"RWiki uses JS Math so that you can display maths entered in TeX form. \n"
+"\n"
+"Typing \\{math:display\\} \\{math\\} will display TeX between the two tags.\t\n"
+"\n"
+"e.g. \\{math:display\\}U_n+2\\} U_n+1\\} U_n \\{math\\} \n"
+"{math:display}U_n+2} U_n+1} U_n {math} \n"
+"\n"
+"Find out more {link:here|http://www.math.union.edu/~dpvc/jsMath/welcome.html|none|_new}\n"
+"\n"
+"__Display a quotation__\n"
+"\n"
+"To display a quotation, type \\{quote\\} on either side of the text you want to display as a quote.\n"
+"\n"
+"{quote}Like this!{quote}\n"
+"\n"
+"\n"
+"\n"
+"h3 Sakai related macros\n"
+"\n"
+"__\\{sakai-sections\\}__\tGenerate a list of links that point to subsites that are automatically generated for each section in your worksite. Note that there is no interface within the wiki to manage permissions on a section by section level.\n"
+"\n"
+"__\\{worksiteinfo\\}__ Lists the information about the current site\t\n"
+msgstr "h1 Wiki ページにおける書式付け方法\nWiki ページでは以下に示す記号を用いて書式付けすることができます．記号には，__太字__，~~イタリック~~および箇条書きのような単純なテキストスタイルがあります．\n\nまた，自動的にある種の情報を提供できるとともに，表や画像，添付ファイルの挿入のようなより複雑なタスクでも使用される「マクロ」があります．\n\n(使用する Wiki 言語は {link:Radeox|http://radeox.org} ベースです).\n\nh1 書式付けショートカットアイコン\nWiki ページエディタの一番上にあるツールバーのリンクを使って一般的な書式付けコードを挿入することができます．リンクとしては太字，イタリック，見出し，表，添付ファイルのアップロード，画像の挿入があります．\n\nh3 単純なテキスト書式付け\n\n{table}\n入力する記号 | 表示結果 | 説明\n\\_\\_太字\\_\\_ | __太字__ | 単純な太文字テキストです．\n\\~\\~イタリック\\~\\~ | ~~イタリック~~ | 単純なイタリックテキストです．\n\\-\\-取消線\\-\\- | --取消線-- | テキストに取消線を付けます．\nCH\\%\\%4\\%\\%|CH%%4%%| 下付き文字です (数学用書式付けの詳細は以下をご覧ください．\nCa\\^\\^2+\\^\\^| Ca^^2+^^| 上付け文字です． \n\\[新しいページ\\] | [新しいページ] | 括弧内で与えられた名前が付いた新しい Wiki ページへリンクします．\n\\http://www.bbc.co.uk/ | http://www.bbc.co.uk/ | 外部のウェブサイトやオンラインドキュメントへのリンクを自動的に作成します．\nh1 タイトル || 大見出し (CSS スタイルでは <H1> として表示される)\nh3 タイトル || 小見出し (CSS スタイルでは <H3> として表示される)\n\\{bgcolor:yellow\\}テキスト\\{bgcolor\\}|{bgcolor:yellow}ハイライトされたテキスト{bgcolor}|括弧間のテキストをハイライト (注意: 米国英語でのスペルです!)\n\\{color:red\\}テキスト\\{color\\}|{color:red}赤色のテキスト{color}|括弧間のテキストの色を変更 (注意: 米国英語でのスペルです!)\n\\-\\-\\-\\- || ページ幅の水平線を表示\n- 箇条書きアイテム || 箇条書きを作成\n* 箇条書きアイテム || 上のものとは少し異なる表示の箇条書きを作成\n# 箇条書きアイテム || 自動付与の数字付き箇条書きを作成\na. 箇条書きアイテム || 自動付与の英字付き箇条書きを作成\nA. 箇条書きアイテム || 大文字の英字付き箇条書き\ni. 箇条書きアイテム || 小文字のローマ数字付き箇条書き\nI. 箇条書きアイテム || 大文字のローマ数字付き箇条書き\ng., h., k., j. 箇条書きアイテム || ギリシャ語，ひらがな，カタカナ，ヘブライ語での番号付き箇条書き\n(空行) || テキストをパラグラフに分割\n\\\\\\ || パラグラフ間の空白を増やす\n\\\\\\\\X | X | 特殊文字 \"X\" を表示 (例えば, \\\\\\\\{ は { を表示)\n\\\\\\\\\\\\\\\\\\ | \\\\\\\\ | \\\\\\\\ を表示\n{table} \n\nh3 マクロおよび詳細 \nマクロとパラメータのすべての一覧は，\\{list-of-macros\\} を入力することでどのページでも表示できます．この一覧では，最も役に立つものを紹介します．\n\n__電子メールリンクを追加__\n\n{mailto:} の後に続く電子メールアドレスにより，ページ内に電子メールリンクを作成します．\n\n例: \\{mailto:pbehr@cam.ac.uk\\} は {mailto:pbehr@cam.ac.uk} として表示されます\n\n__Wiki への自動索引を作成__\t\n\n\\{index\\} と入力すると，自動的に更新された Wiki のページ索引が作成されます．\n\n(スペースの関係上，例はなし!)\n\n__最近変更されたページの一覧を自動作成__\n\n\\{recent-changes\\} と入力すると，Wiki 内の最近変更されたページの一覧を最後に変更した人の名前と変更日時ともに自動更新し作成します．デフォルトでは，過去 30 日間に変更されたページがすべて表示されます．\n\n*  \\{recent-changes:12h\\} - 過去 12 時間に変更されたページです．\n*  \\{recent-changes:7d\\} - 過去 1 週間に変更されたページです．\n*  \\{recent-changes:2006-12-25\\} - 2006年12月25日以降に変更されたページです．\n\n(スペースの関係上，例はなし!)\n\n\n__ページに画像を追加__\n\n\\{image:\\} と入力し画像の URL を含めると，ページに画像が表示されます (これは，編集画面で画像アイコンをクリックすることと同じで，より使いやすいです)\n\n\\{image:/images/bear.jpg|熊\\} は，相対 URL が \"/images/bear.jpg\" の画像を表示します．代替表示テキストは \"熊\" になります．\n\n画像を左に表示しテキストをまわりに表示する場合は，\"|ext|float-left\" のように追加のテキストを含めます:\n\n\\{image:/images/bear.jpg|熊|ext|float-left\\} \n\n画像を左に表示しテキストをまわりに表示する場合は，\"|ext|float-right|\" のように追加のテキストを含めます:\n\n\\{image:/images/bear.jpg|熊|ext|float-right\\} \n\n\n画像 URL は相対パスまたは絶対パスのどちらかですが外部アドレスにはできません．また，このワークスペースにある画像を表示する場合，URL は \"worksite:/\" で始まります．他のワークサイトにある画像を表示する場合は，\"sakai:/\" の URL で始め，サイト ID を含めます．\n\n__アンカータグを作成__\n\n\\{anchor\\} と入力すると，テキストの前後に HTML アンカータグを作成できます．\n\n例: \\{anchor:myLink\\} は \\{anchor\\} に飛びます\n\n指定されたところに飛ぶためのリンクは次のように表示されます:\n\n\\[ここはワクワクさせられます|現在のページの名前はここ#myLink\\]\n\n__数式書式付けを使用__\n\nRWiki では，JS Math を使用しますので，TeX 形式で入力された数式を表示することができます．\n\n\\{math:display\\} \\{math\\} と入力すると，二つのタグの間に TeX が表示されます．\n\ne.g. \\{math:display\\}U_n+2\\} U_n+1\\} U_n \\{math\\} \n{math:display}U_n+2} U_n+1} U_n {math} \n\n詳細は {link:here|http://www.math.union.edu/~dpvc/jsMath/welcome.html|none|_new}をご覧ください．\n\n__引用を表示する__\n\n引用を表示する場合は，引用として表示したいテキストの両端で\\{引用\\} を用います．\n\n{quote}このような感じです!{quote}\n\n\n\nh3 Sakai 関連のマクロ\n\n__\\{sakai-sections\\}__ ワークサイトの各セクションに対して自動生成されたサブサイトを指すリンクの一覧．セクションレベルによるセクションの権限を管理するためのインタフェースは Wiki 内にはないことに注意．\n\n__\\{worksiteinfo\\}__ 現在のサイトに関する情報を一覧表示\n"
+
+#. wiki_home_page
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:6
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:wiki_home_page"
+msgid ""
+"h1 Welcome to the Wiki Tool\n"
+"\n"
+"h3 What is a wiki?\n"
+"\n"
+"A wiki is a tool which allows people to create web pages individually or as a group, without needing any web skills.\n"
+"\n"
+"Using the wiki tool, you can create and edit web pages within your worksite. If you wish, you can make all or some pages publicly viewable.\n"
+"\n"
+"h3 Using wikis for teaching\n"
+"There are a wide number of ways to use wikis for teaching - a web search will find any number of suggestions and case studies. For example, students can develop a collection of resources about the topic they are studying, and make them available to the outside world. Other lecturers like to produce a wiki page as a way of publishing lecture notes and course guidance for students to read but not edit.\n"
+"\n"
+"h3 Using wikis for research groups\n"
+"A wiki allows people to work on producing a document together, such as to draft research proposals as a team, or to keep an up to date list of project contacts.\n"
+"\n"
+"h3 How do we get started?\n"
+"This is the home page for your wiki. To add text to it:\n"
+"* Click the 'edit' button in the actions bar above.\n"
+"* You will see the text on this page appear in an editable text box.\n"
+"* Delete this \"starter\" text , and type in the text that you want to appear instead. To format the text, use the button icons, which will insert the appropriate wiki formatting codes.\n"
+"* Click the 'save' button.\n"
+msgstr "h1 Wiki ツールへようこそ\n\nh3 Wiki とは?\n\nWiki は，ウェブスキルを必要とすることなく，個々のウェブページをユーザが作成できるようにするツールです．\n\nWiki ツールを用いることで，ワークサイト内でウェブページを作成したり編集したりすることができます．必要があれば，すべてあるいは一部のページを誰でも表示できるようにすることができます．\n\nh3 教育で Wiki を使う\nWiki を教育に用いる方法は非常にたくさんあります．ウェブ検索すれば，たくさんの示唆やケーススタディを見つけることができます．例えば，学生は，研究中のトピックに関するリソース集を開発することができ，外部に公開することができます．また，講義ノートやコース指針を公開する方法として，学生が読めるが編集はできない Wiki ページを作成している教員もいます．\n\nh3 研究で Wiki を使う\nWiki を用いると，チームで研究提案書の草稿を作成したりプロジェクトの連絡先一覧を更新したりするような，ドキュメントを作成する作業をいっしょに行うことができます．\n\nh3 どのようにはじめたらよいのでしょうか?\nこのページはあなた用の Wiki のホームページです．ページにテキストを追加する場合:\n* 上のアクションバーにある「編集」ボタンをクリックします．\n* 編集可能なテキストボックスにこのページのテキストが表示されます\n* この「初心者」用テキストを削除し，代わりに表示したいテキストを入力します．テキストを書式付けする場合は，書式付けボタンアイコンを使用し，適当な Wiki 書式付けコードを挿入します．\n* 「保存」ボタンをクリックします．\n"
+
+#. wiki_recent_changes
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:7
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/PrepopulatePages.properties:wiki_recent_changes"
+msgid ""
+"h1 Recent Changes\n"
+"{recent-changes}\n"
+msgstr "h1 最近の変更\n{recent-changes}\n"
+
+#. addattacheret.cancel_add_attach
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:1
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:addattacheret.cancel_add_attach"
+msgid "Cancelled add attachment"
+msgstr "添付ファイルの追加をキャンセルしました"
+
+#. auzgroup.groupnotdef1
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:2
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:auzgroup.groupnotdef1"
+msgid "Realm"
+msgstr "レルム"
+
+#. auzgroup.groupnotdef2
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:3
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:auzgroup.groupnotdef2"
+msgid "is not recognised in the system."
+msgstr "はシステムで認識されません．"
+
+#. editauthz.currently_editing1
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:4
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:editauthz.currently_editing1"
+msgid "You are currently editing: "
+msgstr "現在編集中のファイルは"
+
+#. editauthz.currently_editing2
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:5
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:editauthz.currently_editing2"
+msgid ". You must finish editing this realm first"
+msgstr "です．このレルムをまず最初に編集し終えなければなりません．"
+
+#. jsp_add_first_comment
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:6
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_add_first_comment"
+msgid "Be the first to comment"
+msgstr "最初のコメントにする"
+
+#. jsp_add_new_comment
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:7
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_add_new_comment"
+msgid "Add new comment"
+msgstr "新しいコメントを追加"
+
+#. jsp_add_realm
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:8
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_add_realm"
+msgid "Add Realm"
+msgstr "レルムを追加"
+
+#. jsp_add_role
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:9
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_add_role"
+msgid "Add Role"
+msgstr "ロールを追加"
+
+#. jsp_addcomment
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:10
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_addcomment"
+msgid "Add Comment"
+msgstr "コメントを追加"
+
+#. jsp_additional_page_permissions
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:11
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_additional_page_permissions"
+msgid "Additional Page Permissions"
+msgstr "追加のページ権限"
+
+#. jsp_ago
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:12
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_ago"
+msgid "ago"
+msgstr "前"
+
+#. jsp_auto_save_date
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:13
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_auto_save_date"
+msgid "from"
+msgstr "保存日時: "
+
+#. jsp_auto_save_version
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:14
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_auto_save_version"
+msgid "Recovered Version"
+msgstr "回復されたバージョン"
+
+#. jsp_button_back_to_edit
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:15
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_button_back_to_edit"
+msgid "Back to Edit"
+msgstr "編集に戻る"
+
+#. jsp_button_cancel
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:16
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_button_cancel"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#. jsp_button_ok
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:17
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_button_ok"
+msgid "Ok"
+msgstr "OK"
+
+#. jsp_button_overwrite
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:18
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_button_overwrite"
+msgid "overwrite"
+msgstr "上書き"
+
+#. jsp_button_preview
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:19
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_button_preview"
+msgid "preview"
+msgstr "プレビュー"
+
+#. jsp_button_restore_saved_edit
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:20
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_button_restore_saved_edit"
+msgid "restore saved edit"
+msgstr "保存された編集をリストア"
+
+#. jsp_button_save
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:21
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_button_save"
+msgid "Save"
+msgstr "保存"
+
+#. jsp_by
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:22
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_by"
+msgid "by"
+msgstr "に修正されました　更新者:"
+
+#. jsp_comment
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:23
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_comment"
+msgid "Comment"
+msgstr "コメント"
+
+#. jsp_comment_by
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:24
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_comment_by"
+msgid "Comment by"
+msgstr "コメント者: "
+
+#. jsp_comment_conflict
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:25
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_comment_conflict"
+msgid "Someone else edited the comment"
+msgstr "コメントを誰かが編集しました"
+
+#. jsp_comment_gotolink
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:26
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_comment_gotolink"
+msgid "- Go to comments"
+msgstr "- コメントへ移動"
+
+#. jsp_comment_pages
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:27
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_comment_pages"
+msgid "Comment Pages"
+msgstr "コメントページ"
+
+#. jsp_comment_pages_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:28
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_comment_pages_help"
+msgid "This is a list of pages representing each comment on this page.    \t\t"
+msgstr "これはこのページへの各コメントを表しているページの一覧です．"
+
+#. jsp_comment_saved
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:29
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_comment_saved"
+msgid "Comment Saved"
+msgstr "保存されたコメント"
+
+#. jsp_comment_title
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:30
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_comment_title"
+msgid "Comments"
+msgstr "コメント"
+
+#. jsp_create_site_permissions
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:31
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_create_site_permissions"
+msgid "Create Page Site Permission"
+msgstr "ページサイト権限を作成"
+
+#. jsp_create_site_permissions_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:32
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_create_site_permissions_help"
+msgid ""
+"This is a site member permission, independent of the page, that allows a "
+"user who has been granted it the ability to create a page. To change it you "
+"must use the role permissions editor. If you have permission, you can tick "
+"the checkbox to grant that permission. If you do not have permission, you "
+"will see the state of the permission."
+msgstr "これはサイトメンバ権限で，ページには独立です．これが許可されているユーザはページを作成することができます．変更する場合は，ロール権限エディタを使用しなければなりません．権限がある場合は，チェックボックスをチェックし権限を許諾します．権限がない場合は，権限の状態を見ることができます．"
+
+#. jsp_document_properties
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:33
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_document_properties"
+msgid "Document Properties"
+msgstr "ドキュメントプロパティ"
+
+#. jsp_edit
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:34
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit"
+msgid "Edit"
+msgstr "編集"
+
+#. jsp_edit_acl_title
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:35
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit_acl_title"
+msgid "Edit ACL's Controlling Page Permissions"
+msgstr "ACL の制御ページ権限を編集"
+
+#. jsp_edit_comment
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:36
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit_comment"
+msgid "Edit Comment"
+msgstr "コメントを編集"
+
+#. jsp_edit_content_label
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:37
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit_content_label"
+msgid "Edit page content"
+msgstr "ページコンテンツを編集"
+
+#. jsp_edit_multi_realms
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:38
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit_multi_realms"
+msgid "Edit Multi Realms"
+msgstr "マルチレルムを編集"
+
+#. jsp_edit_notification_preferences
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:39
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit_notification_preferences"
+msgid "Edit Notification Preferences for "
+msgstr "通知設定の編集　対象:"
+
+#. jsp_edit_page_permissions_msg1
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:40
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit_page_permissions_msg1"
+msgid "In addition to editing the page permissions you may "
+msgstr "ページ権限を編集することに加えて，"
+
+#. jsp_edit_section
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:41
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit_section"
+msgid "The section "
+msgstr "セクション"
+
+#. jsp_edit_site_permissions1
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:42
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit_site_permissions1"
+msgid "You may "
+msgstr "サイト権限を"
+
+#. jsp_edit_site_permissions2
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:43
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_edit_site_permissions2"
+msgid "edit site permissions"
+msgstr "編集することができます"
+
+#. jsp_enable_disable_page
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:44
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_enable_disable_page"
+msgid "Enable/Disable on this page"
+msgstr "このページを有効化/無効化"
+
+#. jsp_error_action_problem
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:45
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_error_action_problem"
+msgid "The Action encountered a problem."
+msgstr "アクション実行の際，問題が発生しました．"
+
+#. jsp_error_action_report
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:46
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_error_action_report"
+msgid "Please report this problem to "
+msgstr "この問題を次の方に報告してください: "
+
+#. jsp_error_error
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:47
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_error_error"
+msgid "Error"
+msgstr "エラー"
+
+#. jsp_error_permission_denied
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:48
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_error_permission_denied"
+msgid "Permission Denied"
+msgstr "権限がありません"
+
+#. jsp_error_permission_denied_message
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:49
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_error_permission_denied_message"
+msgid "You do not have the correct permissions."
+msgstr "正しい権限を持っていません"
+
+#. jsp_error_unknown_exception
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:50
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_error_unknown_exception"
+msgid "Unknown Exception Class"
+msgstr "未知の例外クラス"
+
+#. jsp_error_unknown_message
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:51
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_error_unknown_message"
+msgid "Unknown Message"
+msgstr "未知のメッセージ"
+
+#. jsp_error_unknown_stack_trace
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:52
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_error_unknown_stack_trace"
+msgid "Unknown Stack Trace"
+msgstr "未知のスタックトレース"
+
+#. jsp_feeds
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:53
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_feeds"
+msgid "Views and Feeds"
+msgstr "フィード"
+
+#. jsp_global_name
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:54
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_global_name"
+msgid "Global Name"
+msgstr "グローバル名"
+
+#. jsp_global_page_name
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:55
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_global_page_name"
+msgid "global page name"
+msgstr "グローバルページ名"
+
+#. jsp_hash_name
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:56
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_hash_name"
+msgid "SHA-1"
+msgstr "SHA-1"
+
+#. jsp_hidden_comment
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:57
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_hidden_comment"
+msgid "Hidden comment text"
+msgstr "コメント文を非表示"
+
+#. jsp_hidden_comment_info
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:58
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_hidden_comment_info"
+msgid "Hidden author and date"
+msgstr "著者・日時を非表示"
+
+#. jsp_hide_comments
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:59
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_hide_comments"
+msgid "Hide Comments"
+msgstr "コメントを非表示"
+
+#. jsp_hide_help_sidebar
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:60
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_hide_help_sidebar"
+msgid "hide the help sidebar"
+msgstr "ヘルプサイドバーを非表示"
+
+#. jsp_hide_hints
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:61
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_hide_hints"
+msgid "Hide hints"
+msgstr "ヒントを非表示"
+
+#. jsp_hide_who
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:62
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_hide_who"
+msgid "Hide Who"
+msgstr "誰であるかを非表示"
+
+#. jsp_history
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:63
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history"
+msgid "History"
+msgstr "履歴"
+
+#. jsp_history_changed
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:64
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_changed"
+msgid "Changed\t\t"
+msgstr "変更状況"
+
+#. jsp_history_changes
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:65
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_changes"
+msgid "Compare to"
+msgstr "変更方向"
+
+#. jsp_history_changes_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:66
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_changes_help"
+msgid ""
+"By clicking on the To Current or To Previous link, you will be shown the "
+"changes to the previous version or to the current version"
+msgstr "「現在へ」または「以前へ」リンクをクリックすることにより，以前のバージョンへの変更，または，現在のバージョンへの変更を表示することができます"
+
+#. jsp_history_content
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:67
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_content"
+msgid "Content"
+msgstr "コンテンツ"
+
+#. jsp_history_content_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:68
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_content_help"
+msgid ""
+"If the content was not changed between versions this column will indicate "
+"that the content was not changed. This will be because the permissions, "
+"owner or realm were changed in the version."
+msgstr "コンテンツはバージョン間で変更されていない場合は， このカラムはコンテンツが変更されていないことを意味します．これは，権限，所有者，レルムがバージョン内で変更されるためです．"
+
+#. jsp_history_content_same_as
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:69
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_content_same_as"
+msgid "Content same as V.{0}"
+msgstr "V と同じコンテンツです．"
+
+#. jsp_history_current
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:70
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_current"
+msgid "CURRENT"
+msgstr "現在"
+
+#. jsp_history_date
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:71
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_date"
+msgid "Date"
+msgstr "日時"
+
+#. jsp_history_date_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:72
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_date_help"
+msgid "This is the date of the modification  "
+msgstr "これは修正日時です"
+
+#. jsp_history_list_caption
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:73
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_list_caption"
+msgid ""
+"List of changes to the page. Column 1: version; column 2: changes author; "
+"column 3: date of changes; columm 4; links to compare this with previous and"
+" current versions; column 5:link to revert to this version if allowed; "
+"column 6:changed since last?; column 7: permissions for this version."
+msgstr "ページへの変更一覧です．カラム1: バージョン，カラム2: 変更者，カラム3: 変更日時，カラム4: 現在と以前のバージョンとを比較するためのリンク，カラム5: このバージョンへ戻すためのリンク（権限がある場合），カラム6: 最終変更日時，カラム7: このバージョンに対する権限．"
+
+#. jsp_history_permissions
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:74
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_permissions"
+msgid "Permissions"
+msgstr "権限"
+
+#. jsp_history_permissions_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:75
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_permissions_help"
+msgid ""
+"o--- s--- p-- = all disabled\n"
+"orwa srwa prw = all enabled\n"
+"|||| |||| ||Public Write granted\n"
+"|||| |||| |Public Read granted\n"
+"|||| |||| Public page permissions group\n"
+"|||| |||| \n"
+"|||| |||Admin Role Permissions enabled\n"
+"|||| ||Write Role Permissions enabled\n"
+"|||| |Read Role Permissions enabled\n"
+"|||| Site Roler Permissions group\n"
+"||||\n"
+"|||Owner admin granted\n"
+"||Owner Write granted\n"
+"|Owner Read granted\n"
+"Page Owner Permissions Group\n"
+"\n"
+" - means permssion denied\n"
+"\n"
+msgstr "o--- s--- p-- = すべて無効\norwa srwa prw = すべて有効\n|||| |||| ||パブリックな書き込みが許可されています\n|||| |||| |パブリックな読み込みが許可されています\n|||| |||| パブリックなページ権限グループ\n|||| |||| \n|||| |||アドミンロール権限が有効\n|||| ||書き込みロール権限が有効\n|||| |読み込みロール権限が有効\n|||| サイトロール権限グループ\n||||\n|||所有者にアドミンが許可されています\n||所有者に書き込みが許可されています\n|所有者に読み込みが許可されています\nページ所有者権限グループ\n\n - は権限がないことを意味します\n\n"
+
+#. jsp_history_revert
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:76
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_revert"
+msgid "Revert"
+msgstr "復旧"
+
+#. jsp_history_revert_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:77
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_revert_help"
+msgid ""
+"By clicking the revert link against a past version of the page, the version "
+"in question will be used to create a new version. The result is that the "
+"current page will contain the content and permissions of the version in "
+"question. "
+msgstr "ページの過去のバージョンに対する「復旧」リンクをクリックすることにより，そのバージョンが新しいバージョンを作成するために使用されます． その結果，現在のページがコンテンツおよび そのバージョンの権限を保持することになります．"
+
+#. jsp_history_revert_this_version
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:78
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_revert_this_version"
+msgid "Revert to this version"
+msgstr "このバージョンに戻す"
+
+#. jsp_history_to_current
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:79
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_to_current"
+msgid "Current"
+msgstr "現在へ"
+
+#. jsp_history_to_previous
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:80
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_to_previous"
+msgid "Previous"
+msgstr "過去へ"
+
+#. jsp_history_user
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:81
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_user"
+msgid "User"
+msgstr "ユーザ"
+
+#. jsp_history_user_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:82
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_user_help"
+msgid ""
+"When a page is changed, either the content or any of the other information "
+"associated with the page (eg permissions). The user that made the change is "
+"recorded against the version."
+msgstr "コンテンツか，そのページの関連する他の情報のいずれかが変更されたとき(例えば権限)．変更を行ったユーザはそのバージョンに対する変更者として記録されます．"
+
+#. jsp_history_version
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:83
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_version"
+msgid "Version"
+msgstr "バージョン"
+
+#. jsp_history_version_msg
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:84
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_version_msg"
+msgid ""
+"This will cause version V.{0} to become the current version.\\n Are you sure"
+" you want to do this?"
+msgstr "これはバージョン V.{0} を現在のバージョンにします．\\n これを行ってもよろしいですか?"
+
+#. jsp_history_versions
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:85
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_versions"
+msgid "Versions "
+msgstr "バージョン"
+
+#. jsp_history_versions_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:86
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_history_versions_help"
+msgid ""
+"Each change in the page generates a new version. Versions start at version "
+"0, when the page is first created and then increase by one each time the "
+"page is edited"
+msgstr "ページを変更する度に，新しいバージョンが生成されます．バージョンは，ページが初めて作成されたときは 0 で始まり，ページが編集する度に増えます"
+
+#. jsp_id
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:87
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_id"
+msgid "Id"
+msgstr "ID"
+
+#. jsp_incomming
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:88
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_incomming"
+msgid "Incoming"
+msgstr "受信"
+
+#. jsp_incomming_pages
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:89
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_incomming_pages"
+msgid "Incoming Pages"
+msgstr "受信ページ"
+
+#. jsp_incomming_pages_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:90
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_incomming_pages_help"
+msgid "This is  a list of pages that reference or link to this page.    \t\t"
+msgstr "これはこのページを参照しているかリンクしているページの一覧です．"
+
+#. jsp_info
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:91
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_info"
+msgid "Info"
+msgstr "情報"
+
+#. jsp_info_outgoing_manylinks
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:92
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_info_outgoing_manylinks"
+msgid ""
+"The number of outgoing links on this Wiki page may have reached a system-"
+"defined limit, therefore, some of this page's links may not be displayed in "
+"this list."
+msgstr "この Wiki ページにある外部リンク数がシステムで定められた限界に達している可能性があるため，このページのリンクでこの一覧に表示されないものがある場合があります．"
+
+#. jsp_is_unknown
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:93
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_is_unknown"
+msgid "is unknown."
+msgstr "は未知です"
+
+#. jsp_lang
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:94
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_lang"
+msgid "en"
+msgstr "jp"
+
+#. jsp_last_edited
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:95
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_last_edited"
+msgid "last edited"
+msgstr "最終編集日"
+
+#. jsp_last_edited_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:96
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_last_edited_help"
+msgid "The date and time when the page was last edited."
+msgstr "ページが最後に編集された日付と時刻です．"
+
+#. jsp_last_modified_by
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:97
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_last_modified_by"
+msgid "last modified by {0} on {1}"
+msgstr "最終更新者: "
+
+#. jsp_minor_change
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:98
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_minor_change"
+msgid "Minor Change - Do not send notifications to watchers of this page."
+msgstr "マイナーな変更 - このページのウォッチャに通知を送付しません"
+
+#. jsp_ms_found
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:99
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_ms_found"
+msgid "ms found"
+msgstr "ミリ秒かかりました"
+
+#. jsp_multi_autzgroups_edit
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:100
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_multi_autzgroups_edit"
+msgid "(Experimental) Multiple AuthZGroups Edit"
+msgstr "(実験) マルチ権限グループ編集"
+
+#. jsp_new_comment
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:101
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_new_comment"
+msgid "New Comment"
+msgstr "新しいコメント"
+
+#. jsp_no
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:102
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_no"
+msgid "no"
+msgstr "いいえ"
+
+#. jsp_no_restored_content
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:103
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_no_restored_content"
+msgid "no restored content"
+msgstr "リストアされたコンテンツがありません"
+
+#. jsp_no_results_found
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:104
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_no_results_found"
+msgid "No results found."
+msgstr "結果が見つかりませんでした．"
+
+#. jsp_no_results_found_for
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:105
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_no_results_found_for"
+msgid "No results found for "
+msgstr "結果が見つかりませんでした　対象:"
+
+#. jsp_none
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:106
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_none"
+msgid "none"
+msgstr "なし"
+
+#. jsp_noread_comment
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:107
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_noread_comment"
+msgid "No Read Permission for this comment"
+msgstr "このコメントを読む権限がありません"
+
+#. jsp_not_allowed_edit_page
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:108
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_not_allowed_edit_page"
+msgid "You are not allowed to edit this page"
+msgstr "このページを編集することが許されていません"
+
+#. jsp_notification_feeds_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:109
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_notification_feeds_help"
+msgid ""
+"Alternate views for this page, as well as versions of RSS feeds from it    "
+"\t\t"
+msgstr "このページに対する別のビューで，そこからの RSS フィードのバージョンと同じです．"
+
+#. jsp_notification_preferences
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:110
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_notification_preferences"
+msgid "Notification Preferences"
+msgstr "通知設定"
+
+#. jsp_notification_preferences_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:111
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_notification_preferences_help"
+msgid ""
+"When a page is changed you will receive an email notifying you of the "
+"change. If you want to change the volume or nature of the emails you are "
+"receiving, you can do this with Notification Preferences. The preferences "
+"are controlled on a Site by Site basis so you can elect to be notified of "
+"changes to some sites, whilst watching a digest in another site and ignoring"
+" all notifications in another site."
+msgstr "ページが変更されると，変更を通知するメールを受け取ります．受信するメールの回数や内容を変更する場合は，通知設定で行います．設定は，サイトごとに制御できるのであるサイトについてのみ変更を通知するように設定することができます．その場合，他のサイトのダイジェストをウォッチする一方で，他のサイトについてはすべての通知を無視することもできます．"
+
+#. jsp_notifications_for
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:112
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_notifications_for"
+msgid "Email notifications of changes to"
+msgstr "メールによる変更通知 対象:"
+
+#. jsp_notify_no_preference
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:113
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_notify_no_preference"
+msgid ""
+"(For wiki sub-sections only) Just do the same as for the main wiki "
+"notifications"
+msgstr "メインの Wiki 通知に対するものと同じようにする (Wiki サブセクションに対してのみ)"
+
+#. jsp_notify_none
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:114
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_notify_none"
+msgid ""
+"Do not send me emails when pages change in this wiki (or wiki sub-section)"
+msgstr "この Wiki (またはサブセクション)内のページが変更されてもメールは送らない"
+
+#. jsp_notify_seperate
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:115
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_notify_seperate"
+msgid ""
+"Each time a page is changed in this wiki (or wiki sub-section), send a "
+"separate email"
+msgstr "この Wiki (またはサブセクション)内のページが変更されたときにメールを一通ずつ送る"
+
+#. jsp_notify_summary
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:116
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_notify_summary"
+msgid ""
+"Send me one email per day summarizing all changes in this wiki (or wiki sub-"
+"section)"
+msgstr "この Wiki (またはサブセクション)内のページへの変更をすべてまとめて一日に一回メールを送る"
+
+#. jsp_on
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:117
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_on"
+msgid "on "
+msgstr "日付:  "
+
+#. jsp_outgoing
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:118
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_outgoing"
+msgid "Outgoing"
+msgstr "送信"
+
+#. jsp_outgoing_pages
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:119
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_outgoing_pages"
+msgid "Outgoing Pages"
+msgstr "送信ページ"
+
+#. jsp_outgoing_pages_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:120
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_outgoing_pages_help"
+msgid "This is a list of pages which this page references or links to. "
+msgstr "これはこのページを参照しているかリンクしているページの一覧です．"
+
+#. jsp_owner
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:121
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_owner"
+msgid "Owner"
+msgstr "所有者"
+
+#. jsp_page_admin_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:122
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_admin_permission"
+msgid "Admin"
+msgstr "アドミン"
+
+#. jsp_page_admin_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:123
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_admin_permission_help"
+msgid ""
+"Once granted, a user may edit the permissions of the page, and restore older"
+" versions. Granting admin permission also grants read permission.    \t\tIf "
+"you have permission, you can tick the checkbox to grant that permission. If "
+"you do not have permission, you will see the state of the permission."
+msgstr "一度許可されると，ユーザはページの権限を編集することができ， 古いバージョンをリストアすることができます．アドミン権限を許可すると読み込み権限も許可することになります．権限がある場合は，チェックボックスをチェックし権限を許諾します．権限がない場合は，権限の状態を見ることができます．"
+
+#. jsp_page_delete_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:124
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_delete_permission"
+msgid "Delete Page Permission"
+msgstr "ページ権限を削除"
+
+#. jsp_page_delete_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:125
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_delete_permission_help"
+msgid ""
+"Once granted, a user may delete this page. If you have permission, you can "
+"tick the checkbox to grant that permission. If you do not have permission, "
+"you will see the state of the permission."
+msgstr "一度許可されると，ユーザはこのページを削除することができます．権限がある場合は，チェックボックスをチェックし権限を許諾します．権限がない場合は，権限の状態を見ることができます．"
+
+#. jsp_page_diff_added
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:126
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_diff_added"
+msgid "Added"
+msgstr "追加部分"
+
+#. jsp_page_diff_changed
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:127
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_diff_changed"
+msgid "Changed"
+msgstr "変更部分"
+
+#. jsp_page_diff_deleted
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:128
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_diff_deleted"
+msgid "Deleted"
+msgstr "削除部分"
+
+#. jsp_page_diff_key
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:129
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_diff_key"
+msgid "Key"
+msgstr "キー"
+
+#. jsp_page_diff_vs
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:130
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_diff_vs"
+msgid "vs"
+msgstr "対"
+
+#. jsp_page_differences
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:131
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_differences"
+msgid "Page Differences"
+msgstr "ページ差分"
+
+#. jsp_page_edit_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:132
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_edit_permission"
+msgid "Edit Page Permission"
+msgstr "ページ権限を編集"
+
+#. jsp_page_edit_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:133
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_edit_permission_help"
+msgid ""
+"Once granted, a user may edit the content of this page. If you have "
+"permission, you can tick the checkbox to grant that permission. If you do "
+"not have permission, you will see the state of the permission."
+msgstr "一度許可されると，ユーザはこのページのコンテンツを編集することができます．権限がある場合は，チェックボックスをチェックし権限を許諾します．権限がない場合は，権限の状態を見ることができます．"
+
+#. jsp_page_id
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:134
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_id"
+msgid "Page Id"
+msgstr "ページ ID"
+
+#. jsp_page_id_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:135
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_id_help"
+msgid "Every page is given a unique ID."
+msgstr "すべてのページに同じ ID を与えます．"
+
+#. jsp_page_length_alert
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:136
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_length_alert"
+msgid ""
+"Page names in wiki cannot be over 225 characters in length!!!! Please change"
+" the name of this page."
+msgstr "Wiki のページ名は 225 文字を越えることはできません!!! このページ名を変更してください．"
+
+#. jsp_page_length_alert_title
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:137
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_length_alert_title"
+msgid "Sorry, Page Title is Too Long"
+msgstr "申し訳ありません，ページタイトルが長すぎます．"
+
+#. jsp_page_length_alert_view
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:138
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_length_alert_view"
+msgid ""
+"<ul class=\"message\"><li>The page you have started by making a link to it "
+"has a title that exceeds the system limits.</li><li>We recommend that you go"
+" back to the originating page and edit the link and make it shorter than 200"
+" characters.</li><li> Sorry for the inconvenience!</li></ul>"
+msgstr "<ul class=\"message\"><li>リンクを作成しようとしているページが，システム限界を超えたタイトルになっています．</li><li>元のページに戻って，リンクを編集し，200 文字より短くなるようにすることをお薦めします．</li><li>ご不便をお掛けして申し訳ございません!</li></ul>"
+
+#. jsp_page_modified
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:139
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_modified"
+msgid "modified"
+msgstr "編集者: "
+
+#. jsp_page_name
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:140
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_name"
+msgid "Page Name"
+msgstr "ページ名"
+
+#. jsp_page_name_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:141
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_name_help"
+msgid ""
+"Every page has a name, this name is used in the wiki links. If pages between"
+" different worksites are to be used, the full page name should be used in "
+"the link."
+msgstr "すべてのページには名前があります．この名前は Wiki リンクで使用されます．異なるワークサイト間のページが使用される場合は，完全なページ名がリンクで使用されるべきです．"
+
+#. jsp_page_owner
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:142
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_owner"
+msgid "Page Owner"
+msgstr "ページ所有者"
+
+#. jsp_page_owner_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:143
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_owner_help"
+msgid ""
+"Each page has an owner; this is normally the user who create the page.    "
+"\t\t"
+msgstr "各ページには所有者がいます．通常，ページを作成したユーザが所有者になります．"
+
+#. jsp_page_owner_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:144
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_owner_permission"
+msgid "Page Owner Permissions"
+msgstr "ページ所有者権限"
+
+#. jsp_page_owner_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:145
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_owner_permission_help"
+msgid ""
+"Each page has an owner, this defaults to the user who created the page.    "
+"\t\t"
+msgstr "各ページには所有者がいて，ページを作成した人がなります．"
+
+#. jsp_page_permissions
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:146
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_permissions"
+msgid "Page Permissions"
+msgstr "ページ権限"
+
+#. jsp_page_permissions_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:147
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_permissions_help"
+msgid ""
+"Each page has a set of page permissions that confer rights on the Page "
+"owner, members of the site and the public"
+msgstr "各ページには，ページ所有者やサイトメンバ，パブリックに権限を与える一連のページ権限があります"
+
+#. jsp_page_perms_by_role
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:148
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_perms_by_role"
+msgid "Page Permissions by role"
+msgstr "ロールによるページ権限"
+
+#. jsp_page_perms_help_title
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:149
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_perms_help_title"
+msgid "Click to view information    \t\t"
+msgstr "情報を表示する場合はクリックします"
+
+#. jsp_page_public_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:150
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_public_permission"
+msgid "Authenticated Permissions"
+msgstr "パブリック権限"
+
+#. jsp_page_public_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:151
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_public_permission_help"
+msgid ""
+"Where a user is not the page owner and not a member of the worksite they are"
+" an 'authenticated' user. Granting these permissions on the page gives a "
+"'authenticated' user the permission to read or edit the page."
+msgstr "ユーザがページ所有者でなく，ワークサイトのメンバでもないところでは，そのユーザは「パブリック」ユーザになります．ページの「パブリックを許可」権限により，「パブリック」ユーザにページを読み込んだり変更したりすることができる権限を与えます．"
+
+#. jsp_page_publicdisp_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:152
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_publicdisp_permission"
+msgid "Authenticated permissions"
+msgstr "パブリック権限"
+
+#. jsp_page_publicdisp_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:153
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_publicdisp_permission_help"
+msgid ""
+"Where a user is not the page owner and not a member of the worksite they are"
+" an 'athenticated' user. Granting these permissions on the page gives a "
+"'athenticated' user the permission to read or edit the page.    \t\t"
+msgstr "ユーザがページ所有者でなく，ワークサイトのメンバでもないところでは，そのユーザは「パブリック」ユーザになります．ページの「パブリックを許可」権限により，「パブリック」ユーザにページを読み込んだり変更したりすることができる権限を与えます．"
+
+#. jsp_page_read_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:154
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_read_permission"
+msgid "Read Page Permission"
+msgstr "ページ読み込み権限"
+
+#. jsp_page_read_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:155
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_read_permission_help"
+msgid ""
+"Once granted, a user may read this page. If you have permission, you can "
+"tick the checkbox to grant that permission. If you do not have permission, "
+"you will see the state of the permission."
+msgstr "一度許可されると，ユーザはこのページを読むことができます．権限がある場合は，チェックボックスをチェックし権限を許諾します．権限がない場合は，権限の状態を見ることができます．"
+
+#. jsp_page_realm
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:156
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_realm"
+msgid "page realm"
+msgstr "ページレルム"
+
+#. jsp_page_sadmin_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:157
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_sadmin_permission"
+msgid "Super Admin Site Permission"
+msgstr "スーパーアドミンサイト権限"
+
+#. jsp_page_sadmin_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:158
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_sadmin_permission_help"
+msgid ""
+"A use that has Super Admin permission in their worksite role is allowed to "
+"do anything to any page. If you have permission, you can tick the checkbox "
+"to grant that permission. If you do not have permission, you will see the "
+"state of the permission"
+msgstr "ワークサイトロールのスーパーアドミン権限を持つユーザは， 任意のページに対して何でも行うことが許可されます．権限がある場合は，チェックボックスをチェックし権限を許諾します．権限がない場合は，権限の状態を見ることができます．"
+
+#. jsp_page_site_en_d_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:159
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_site_en_d_permission"
+msgid "Site Enable Page permissions"
+msgstr "ページ権限が有効になっているサイト"
+
+#. jsp_page_site_en_d_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:160
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_site_en_d_permission_help"
+msgid ""
+"When a site enabled page permission is granted, the worksite roles are "
+"consulted to see if a user has permission to perform the action. Where the "
+"specific site enable page permission is not granted, the role permissions "
+"are not enabled for this page."
+msgstr "ページ権限が有効になっているサイトに許可が与えられると，\\u30efークサイトロールによりユーザがアクションを実行できる権限を持っているかどうかが決められます．ページ権限が有効になっている特定のサイトに許可が与えられない場合は，ロール権限ではこのページに許可を与えられません．"
+
+#. jsp_page_site_en_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:161
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_site_en_permission"
+msgid "Site Enable Page permissions"
+msgstr "ページ権限が有効になっているサイト"
+
+#. jsp_page_site_en_permission_help1
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:162
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_site_en_permission_help1"
+msgid ""
+"When a site enabled page permission is granted, the worksite roles are "
+"consulted to see if a user has permission to perform the action. Where the "
+"specific site enabled page permission is not granted, the role permissions "
+"are not granted for this page."
+msgstr "ページ権限が有効になっているサイトに許可が与えられると，\\u30efークサイトロールによりユーザがアクションを実行できる権限を持っているかどうかが決められます．ページ権限が有効になっている特定のサイトに許可が与えられない場合は，ロール権限ではこのページに許可を与えられません．"
+
+#. jsp_page_site_en_permission_help2
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:163
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_site_en_permission_help2"
+msgid ""
+"When a page permission is granted using the checkboxes, worksite roles are "
+"consulted to see whether that role has permission to perform the action. If "
+"that worksite role does not have permission to perform the action, it cannot"
+" be granted at a page level.  Page permissions cascade downwards, so roles "
+"with admin permissions will also have read permissions."
+msgstr "ページ権限がチェックボックスを使って許可が与えられる場合，ワークサイトロールによりアクションを実行できる権限を持っているかどうかが決められます．そのワークサイトロールがアクションを実行する権限を持っていない場合，ページレベルでは許可されません．ページ権限は 下方向に直列化できるので，アドミン権限を持つロールでは読み込み権限も持つことになります．"
+
+#. jsp_page_version
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:164
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_version"
+msgid "Version"
+msgstr "バージョン"
+
+#. jsp_page_world_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:165
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_world_permission"
+msgid "Anyone anywhere"
+msgstr "誰でも"
+
+#. jsp_page_world_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:166
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_world_permission_help"
+msgid ""
+"Anyone, authenticated or not, can  have the permission to read the page."
+msgstr "認証済みかどうかにかかわらず誰でもページを読み出す権限があります．"
+
+#. jsp_page_worlddisp_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:167
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_worlddisp_permission"
+msgid "Anyone anywhere"
+msgstr "誰でも"
+
+#. jsp_page_worlddisp_permission_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:168
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_page_worlddisp_permission_help"
+msgid ""
+"Anyone, authenticated or not, can  have the permission to read the page."
+msgstr "認証済みかどうかにかかわらず誰でもページを読み出す権限があります．"
+
+#. jsp_path
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:169
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_path"
+msgid "Path"
+msgstr "パス"
+
+#. jsp_permission_admin
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:170
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_admin"
+msgid "Admin"
+msgstr "アドミン"
+
+#. jsp_permission_create
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:171
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_create"
+msgid "Create"
+msgstr "作成"
+
+#. jsp_permission_delete
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:172
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_delete"
+msgid "Delete"
+msgstr "削除"
+
+#. jsp_permission_denied
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:173
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_denied"
+msgid "Permission Denied"
+msgstr "権限がありません"
+
+#. jsp_permission_denied_message
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:174
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_denied_message"
+msgid "You do not have the correct permissions."
+msgstr "正しい権限がありません．"
+
+#. jsp_permission_edit
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:175
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_edit"
+msgid "Edit"
+msgstr "編集"
+
+#. jsp_permission_read
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:176
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_read"
+msgid "Read"
+msgstr "読込"
+
+#. jsp_permission_roles
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:177
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_roles"
+msgid "Roles"
+msgstr "ロール"
+
+#. jsp_permission_section
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:178
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_section"
+msgid "Permission Section"
+msgstr "権限セクション"
+
+#. jsp_permission_section_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:179
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_section_help"
+msgid ""
+"This is the site permissions realm that is used to determine site "
+"permissions on this page. Normally the realm is the default realm for the "
+"site containing the page.    \t\t"
+msgstr "これはサイト権限レルムで，このページのサイト権限を決定するために使用されます．通常，レルムはページを含むサイトのデフォルトレルムです．"
+
+#. jsp_permission_super_admin
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:180
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_permission_super_admin"
+msgid "Super Admin"
+msgstr "スーパーアドミン"
+
+#. jsp_presence_chat
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:181
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_presence_chat"
+msgid "Chat"
+msgstr "チャット"
+
+#. jsp_presence_space_visits
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:182
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_presence_space_visits"
+msgid "Space visits"
+msgstr "スペース訪問数"
+
+#. jsp_presence_user_visits
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:183
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_presence_user_visits"
+msgid "Users visits"
+msgstr "ユーザ訪問数"
+
+#. jsp_preview
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:184
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_preview"
+msgid "Preview"
+msgstr "プレビュー"
+
+#. jsp_preview_changes
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:185
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_preview_changes"
+msgid "Preview Changes"
+msgstr "変更をプレビュー"
+
+#. jsp_preview_changes_to
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:186
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_preview_changes_to"
+msgid "Preview Changes To"
+msgstr "変更をプレビュー  対象:"
+
+#. jsp_printer_friendly
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:187
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_printer_friendly"
+msgid "Printer Friendly"
+msgstr "印刷用"
+
+#. jsp_public
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:188
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_public"
+msgid "Public"
+msgstr "パブリック"
+
+#. jsp_public_new
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:189
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_public_new"
+msgid "Authenticated users"
+msgstr "認証済みユーザ"
+
+#. jsp_realm
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:190
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_realm"
+msgid "Realm"
+msgstr "レルム"
+
+#. jsp_recovered_content
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:191
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_recovered_content"
+msgid "Recovered Content"
+msgstr "回復されたコンテンツ"
+
+#. jsp_review
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:192
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_review"
+msgid "Review"
+msgstr "編集"
+
+#. jsp_review_alert1
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:193
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_review_alert1"
+msgid "You are viewing version "
+msgstr "更新されたページを表示しています"
+
+#. jsp_review_alert2
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:194
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_review_alert2"
+msgid "of this page, updated "
+msgstr "更新日時:"
+
+#. jsp_review_alert3
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:195
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_review_alert3"
+msgid "The current version is "
+msgstr "現在のバージョンは"
+
+#. jsp_review_updated
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:196
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_review_updated"
+msgid "updated "
+msgstr "更新されました"
+
+#. jsp_review_version
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:197
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_review_version"
+msgid "version "
+msgstr "バージョン"
+
+#. jsp_role_permissions
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:198
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_role_permissions"
+msgid "Role permissions"
+msgstr "ロール権限"
+
+#. jsp_role_permissions_summary
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:199
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_role_permissions_summary"
+msgid ""
+"First column: roles, other columns: permissions you can apply to this role."
+msgstr "最初のカラム: ロール，他のカラム: このロールで利用することができる権限．"
+
+#. jsp_rss_feed_changes
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:200
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_rss_feed_changes"
+msgid "RSS feed of changes to this Wiki"
+msgstr "この Wiki への変更の RSS フィード"
+
+#. jsp_rwiki_tool
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:201
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_rwiki_tool"
+msgid "RWiki"
+msgstr "RWiki"
+
+#. jsp_search
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:202
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_search"
+msgid "Search"
+msgstr "検索"
+
+#. jsp_search_close_q
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:203
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_search_close_q"
+msgid "\""
+msgstr "」の検索結果"
+
+#. jsp_search_content
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:204
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_search_content"
+msgid "Content"
+msgstr "コンテンツ"
+
+#. jsp_search_open_q
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:205
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_search_open_q"
+msgid "\""
+msgstr "「"
+
+#. jsp_search_realms
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:206
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_search_realms"
+msgid "Realms"
+msgstr "レルム"
+
+#. jsp_search_result_page
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:207
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_search_result_page"
+msgid "Search Results Pages:"
+msgstr "結果ページ"
+
+#. jsp_search_score
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:208
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_search_score"
+msgid "Score"
+msgstr "スコア"
+
+#. jsp_search_title
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:209
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_search_title"
+msgid "Search results for "
+msgstr "検索結果　対象:"
+
+#. jsp_search_took
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:210
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_search_took"
+msgid "Search took"
+msgstr "検索に"
+
+#. jsp_section_being_edited
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:211
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_section_being_edited"
+msgid "Section is currently being edited by some other user."
+msgstr "セクションは他のユーザが編集しています．"
+
+#. jsp_section_being_edited_msg1
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:212
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_section_being_edited_msg1"
+msgid "Please either "
+msgstr "ページ情報へ戻るか，"
+
+#. jsp_section_being_edited_msg2
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:213
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_section_being_edited_msg2"
+msgid "go back to page info "
+msgstr "もう一度編集してください"
+
+#. jsp_section_being_edited_msg3
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:214
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_section_being_edited_msg3"
+msgid "or "
+msgstr "または"
+
+#. jsp_section_being_edited_msg4
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:215
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_section_being_edited_msg4"
+msgid "attempt to edit again"
+msgstr "編集を再度試みる"
+
+#. jsp_sha1_digest
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:216
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_sha1_digest"
+msgid "SHA1 Digest"
+msgstr "SHA1 ダイジェスト"
+
+#. jsp_sha1_digest_help
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:217
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_sha1_digest_help"
+msgid ""
+"Each page has a SHA1 digest. If the digests of 2 pages are the same, the "
+"content of both pages are identical. Any change in the page, will change the"
+" digest on the page.    \t\t"
+msgstr "各ページには SHA1 ダイジェストがあります．2 つのページのダイジェストは同じならば，両方のページのコンテンツは同一です．ページ内の変更はページのダイジェストを変更します．"
+
+#. jsp_show_comments
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:218
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_show_comments"
+msgid "Show Comments"
+msgstr "コメントを表示"
+
+#. jsp_show_help_sidebar
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:219
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_show_help_sidebar"
+msgid "show the help sidebar"
+msgstr "ヘルプサイドバーを表示"
+
+#. jsp_show_hints
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:220
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_show_hints"
+msgid "Show hints"
+msgstr "ヒントを表示"
+
+#. jsp_show_who
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:221
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_show_who"
+msgid "Show Who"
+msgstr "誰であるかを表示"
+
+#. jsp_submitted_content
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:222
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_submitted_content"
+msgid "Submitted Content"
+msgstr "コンテンツが提出されました"
+
+#. jsp_submitted_prior_content
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:223
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_submitted_prior_content"
+msgid "Submitted Content prior to Preview"
+msgstr "プレビューする前にコンテンツが提出されました"
+
+#. jsp_submitted_prior_content_attach
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:224
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_submitted_prior_content_attach"
+msgid "Submitted Content prior to Attach"
+msgstr "添付する前にコンテンツが提出されました"
+
+#. jsp_table_macro_markup
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:225
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_table_macro_markup"
+msgid ""
+"Title 1|Title 2|Title 3\\nRow 1| contents | contents\\nRow 2| contents | "
+"contents\\nRow 3| contents | contents"
+msgstr "タイトル 1|タイトル 2|タイトル 3\\n行 1| コンテンツ | コンテンツ\\n行 2| コンテンツ | コンテンツ\\n行 3| コンテンツ | コンテンツ"
+
+#. jsp_title_diff
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:226
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_title_diff"
+msgid "Diff"
+msgstr "差分"
+
+#. jsp_toolb_bold
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:227
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_bold"
+msgid "Bold"
+msgstr "太字"
+
+#. jsp_toolb_heading
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:228
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_heading"
+msgid "Heading"
+msgstr "ヘッディング"
+
+#. jsp_toolb_headings
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:229
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_headings"
+msgid "Headings..."
+msgstr "ヘッディング..."
+
+#. jsp_toolb_image
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:230
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_image"
+msgid "Image"
+msgstr "画像"
+
+#. jsp_toolb_italic
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:231
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_italic"
+msgid "Italic"
+msgstr "イタリック"
+
+#. jsp_toolb_link
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:232
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_link"
+msgid "Link"
+msgstr "リンク"
+
+#. jsp_toolb_save
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:233
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_save"
+msgid "Save"
+msgstr "保存"
+
+#. jsp_toolb_subscript
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:234
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_subscript"
+msgid "Subscript"
+msgstr "下付き"
+
+#. jsp_toolb_superscript
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:235
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_superscript"
+msgid "Superscript"
+msgstr "上付き"
+
+#. jsp_toolb_table
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:236
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_toolb_table"
+msgid "Table"
+msgstr "表"
+
+#. jsp_unknown_msg1
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:237
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_unknown_msg1"
+msgid "Please "
+msgstr "ページ情報へ戻るか，"
+
+#. jsp_unknown_msg2
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:238
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_unknown_msg2"
+msgid "go back to page info "
+msgstr "もう一度編集してください"
+
+#. jsp_unknown_msg3
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:239
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_unknown_msg3"
+msgid "or "
+msgstr "または"
+
+#. jsp_unknown_msg4
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:240
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_unknown_msg4"
+msgid "attempt to edit again\t"
+msgstr "attempt to edit again\t"
+
+#. jsp_version
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:241
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_version"
+msgid "Version"
+msgstr "バージョン"
+
+#. jsp_view
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:242
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_view"
+msgid "View"
+msgstr "表示"
+
+#. jsp_view_current
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:243
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_view_current"
+msgid "View Current"
+msgstr "現在表示"
+
+#. jsp_visited_pages_link
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:244
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_visited_pages_link"
+msgid "Recently visited"
+msgstr "最近閲覧したもの"
+
+#. jsp_watch
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:245
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_watch"
+msgid "Watch"
+msgstr "ウォッチ"
+
+#. jsp_watch_for_changes
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:246
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_watch_for_changes"
+msgid "Watch for changes"
+msgstr "変更をウォッチ"
+
+#. jsp_wiki_home
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:247
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_wiki_home"
+msgid "Home"
+msgstr "Wiki ホーム"
+
+#. jsp_wiki_home_sc
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:248
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_wiki_home_sc"
+msgid "page for Wiki"
+msgstr "Wiki 用のページ"
+
+#. jsp_wiki_home_title
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:249
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_wiki_home_title"
+msgid "Wiki Home Page"
+msgstr "Wiki ホームページ"
+
+#. jsp_world
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:250
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_world"
+msgid "Anyone at all"
+msgstr "誰でも"
+
+#. jsp_xml_lang
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:251
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_xml_lang"
+msgid "en"
+msgstr "jp"
+
+#. jsp_yes
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:252
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_yes"
+msgid "yes"
+msgstr "はい"
+
+#. recentlyvisited.search
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:253
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:recentlyvisited.search"
+msgid "Search"
+msgstr "検索"
+
+#. renderbean.permission_problem
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:254
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:renderbean.permission_problem"
+msgid "You do not have permission to view this page."
+msgstr "このページを表示する権限がありません．"
+
+#. revertcmd.content_changed
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:255
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:revertcmd.content_changed"
+msgid ""
+"Content has changed since you last viewed it. Please update the new content "
+"or overwrite it with the submitted content."
+msgstr "最後に表示した後，コンテンツが更新されています．新しいコンテンツを更新するか，提出したコンテンツで上書きしてください．"
+
+#. revertcmd.noupdate_allowed
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:256
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:revertcmd.noupdate_allowed"
+msgid "You do not have permission to update this page."
+msgstr "このページを更新する権限がありません．"
+
+#. save.as_embed
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:257
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:save.as_embed"
+msgid "as embed"
+msgstr "埋め込み"
+
+#. save.as_link
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:258
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:save.as_link"
+msgid "as link"
+msgstr "リンク"
+
+#. save.content_changed
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:259
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:save.content_changed"
+msgid ""
+"Content has changed since you last viewed it. Please update the new content "
+"or overwrite it with the submitted content."
+msgstr "最後に表示した後，コンテンツが更新されています．新しいコンテンツを更新するか，提出したコンテンツで上書きしてください．"
+
+#. save.noupdate_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:260
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:save.noupdate_permission"
+msgid "You do not have permission to update this page."
+msgstr "このページを更新する権限がありません．"
+
+#. updatepermissioncmd.content_changed
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:261
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:updatepermissioncmd.content_changed"
+msgid ""
+"Content has changed since you last viewed it. Please update the new content "
+"or overwrite it with the submitted content."
+msgstr "最後に表示した後，コンテンツが更新されています．新しいコンテンツを更新するか，提出したコンテンツで上書きしてください．"
+
+#. updatepermissioncmd.noupdate_permission
+#: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:262
+msgctxt ""
+"rwiki/rwiki-"
+"tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:updatepermissioncmd.noupdate_permission"
+msgid "You do not have permission to update this page."
+msgstr "このページを更新する権限がありません．"
+
+#. macro.link.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:1
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.link.description"
+msgid "Generate a weblink."
+msgstr "ウェブリンクを生成します．"
+
+#. macro.macrolist.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:2
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.macrolist.description"
+msgid "Displays a list of available macros."
+msgstr "利用可能なマクロの一覧を表示します．"
+
+#. macro.mailto.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:3
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.mailto.description"
+msgid "Displays an email address."
+msgstr "メールアドレスを表示します．"
+
+#. macro.rfc.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:4
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.rfc.description"
+msgid "Generates links to RFCs."
+msgstr "RFC へのリンクを生成します．"
+
+#. macro.table.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:5
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.table.description"
+msgid "Displays a table."
+msgstr "表を表示します．"
+
+#. macro.quote.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:6
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.quote.description"
+msgid "Display quotations."
+msgstr "引用文を表示します．"
+
+#. macro.code.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:7
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.code.description"
+msgid ""
+"Displays a chunk of code with syntax highlighting, for example Java, XML and"
+" SQL. The none type will do nothing and is useful for unknown code types."
+msgstr "例えば，Java, XML, SQL の文法でハイライト化されたコードを表示します．none 型の場合は何もしませんので，コードの種類が分からない場合に便利です．"
+
+#. macro.filepath.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:8
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.filepath.description"
+msgid ""
+"Displays a file system path. The file path should use slashes. Defaults to "
+"windows."
+msgstr "ファイルのシステムパスを表示します．ファイルパスには / が使われます．デフォルトは Windows です．"
+
+#. macro.xref.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:9
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.xref.description"
+msgid "Generates links to Java Xref source code."
+msgstr "Java クロス参照ソースコードへのリンクを生成します．"
+
+#. macro.isbn.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:10
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.isbn.description"
+msgid ""
+"Generates links to book dealers or comparison services. Configuration is "
+"read from ~~conf/bookservices.txt~~."
+msgstr "書籍取扱店または比較サービスへのリンクを生成します．設定が ~~conf/bookservices.txt~~ から読み込まれます．"
+
+#. macro.apidocs.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:11
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.apidocs.description"
+msgid "Displays a list of known online API documentations and mappings."
+msgstr "既知のオンライン API ドキュメントまたはマッピングの一覧を表示します．"
+
+#. macro.api.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:12
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.api.description"
+msgid "Generates links to Java or Ruby API documentation."
+msgstr "Java または Ruby API ドキュメントへのリンクを生成します．"
+
+#. macro.interwiki.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:13
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.interwiki.description"
+msgid "Displays a list of known InterWiki mappings."
+msgstr "既知の InterWiki マッピングの一覧を表示します．"
+
+#. macro.asin.description
+#: rwiki/rwiki-util/radeox/src/bundle/radeox_messages.properties:14
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/radeox_messages.properties:macro.asin.description"
+msgid ""
+"Generates links to DVD/CD dealers or comparison services. Configuration is "
+"read from ~~conf/asinservices.txt~~"
+msgstr "DVD/CD 取扱店または比較サービスへのリンクを生成します．設定は  ~~conf/asinservices.txt~~ から読み込まれます．"
+
+#. linktestfilter_addsignerror
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:1
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:linktestfilter_addsignerror"
+msgid "Page names cannot contain \"@\" currently"
+msgstr "ページ名に \"@\" を含めることは現在できません"
+
+#. MacroFilter.5
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:2
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:MacroFilter.5"
+msgid " not found."
+msgstr " が見つかりませんでした．"
+
+#. LinkTestFilter.2
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:3
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:LinkTestFilter.2"
+msgid "<div class=\"error\">Do not surround URLs with [...].</div>"
+msgstr "<div class=\"error\">URL を [...] で囲まないでください．</div>"
+
+#. LinkTestFilter.1
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:4
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:LinkTestFilter.1"
+msgid "org.radeox.Messages"
+msgstr "org.radeox.Messages"
+
+#. LinkMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:5
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:LinkMacro.0"
+msgid "1,text: Text of the link "
+msgstr "1,text: リンクのテキスト"
+
+#. LinkMacro.1
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:6
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:LinkMacro.1"
+msgid ""
+"2,url: URL of the link, if this is external and no target is specified, a "
+"new window will open "
+msgstr "2,url: リンクの URL で，これが外部リンクでターゲットが指定されていない場合は新しいウィンドウが開きます"
+
+#. LinkMacro.2
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:7
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:LinkMacro.2"
+msgid "3,img: (optional) if 'none' then no small URL image will be used"
+msgstr "3,img: (任意) 'none' の場合は小さい URL イメージは使用されません"
+
+#. LinkMacro.3
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:8
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:LinkMacro.3"
+msgid ""
+"4,target: (optional) Target window, if 'none' is specified, the url will use"
+" the current window"
+msgstr "4,target: (任意) ターゲットウィンドウで，'none' が指定された場合，URL の表示には現在のウィンドウが使用されます"
+
+#. LinkMacro.4
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:9
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:LinkMacro.4"
+msgid ""
+"Remember if using positional parameters, you must include dummies for the "
+"optional parameters"
+msgstr "位置指定パラメータを使用している場合は，任意パラメータについてダミーを指定しなければなりません"
+
+#. LinkMacro.5
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:10
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:LinkMacro.5"
+msgid "Generated a link"
+msgstr "生成されたリンク"
+
+#. LinkMacro.23
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:11
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:LinkMacro.23"
+msgid "link needs a name and a url as argument"
+msgstr "リンクには，引数として名前と URL が必要です"
+
+#. TableMacro.1
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:12
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:TableMacro.1"
+msgid "TableMacro: missing table content"
+msgstr "TableMacro: 表のコンテンツがありません"
+
+#. ApiMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:13
+msgctxt ""
+"rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:ApiMacro.0"
+msgid "1: class name, e.g. java.lang.Object or java.lang.Object@Java131"
+msgstr "1: クラス名，例: java.lang.Object や java.lang.Object@Java131"
+
+#. ApiMacro.1
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:14
+msgctxt ""
+"rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:ApiMacro.1"
+msgid "?2: mode, e.g. Java12, Ruby, defaults to Java"
+msgstr "?2: モード, 例: Java12, Ruby, デフォルトは Java"
+
+#. ApiMacro.8
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:15
+msgctxt ""
+"rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:ApiMacro.8"
+msgid "api macro needs one or two paramaters"
+msgstr "API マクロには，パラメータが1つまたは2つ必要です"
+
+#. ApiDoc.14
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:16
+msgctxt ""
+"rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:ApiDoc.14"
+msgid "Binding|BaseUrl|Converter Name\n"
+msgstr "バインド|ベース URL|変換名\n"
+
+#. CodeMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:17
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:CodeMacro.0"
+msgid "?1: syntax highlighter to use, defaults to java"
+msgstr "?1: 使用する文法ハイライト方法，デフォルトは Java"
+
+#. IsbnMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:18
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:IsbnMacro.0"
+msgid "1: isbn number"
+msgstr "1: ISBN 番号"
+
+#. IsbnMacro.3
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:19
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:IsbnMacro.3"
+msgid "needs an ISBN number as argument"
+msgstr "引数として ISBN 番号が必要です"
+
+#. HelloWorldMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:20
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:HelloWorldMacro.0"
+msgid "1: name to print"
+msgstr "1: 印刷名"
+
+#. HelloWorldMacro.2
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:21
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:HelloWorldMacro.2"
+msgid "Say hello example macro."
+msgstr "「こんにちは」マクロ例．"
+
+#. HelloWorldMacro.3
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:22
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:HelloWorldMacro.3"
+msgid "Hello <b>"
+msgstr "こんにちは <b>"
+
+#. HelloWorldMacro.6
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:23
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:HelloWorldMacro.6"
+msgid "Number of arguments does not match"
+msgstr "引数の数が一致しません"
+
+#. FilePathMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:24
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:FilePathMacro.0"
+msgid "1: file path"
+msgstr "1: ファイルパス"
+
+#. FilePathMacro.2
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:25
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:FilePathMacro.2"
+msgid ""
+"Displays a file system path. The file path should use slashes. Defaults to "
+"windows."
+msgstr "ファイルシステムパスを表示します．ファイルパスでは / が使われます．デフォルトは Windows です．"
+
+#. BaseMacro.1
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:26
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:BaseMacro.1"
+msgid "unexplained, lazy programmer, probably [funzel]"
+msgstr "説明なし，怠惰なプログラマーだね，きっと [funzel]"
+
+#. AsinMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:27
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:AsinMacro.0"
+msgid "1: asin number"
+msgstr "1: ASIN 番号"
+
+#. AsinMacro.4
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:28
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:AsinMacro.4"
+msgid "needs an ASIN number as argument"
+msgstr "引数として ASIN 番号が必要です"
+
+#. QuoteMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:29
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:QuoteMacro.0"
+msgid "?1: source"
+msgstr "?1: ソース"
+
+#. QuoteMacro.1
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:30
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:QuoteMacro.1"
+msgid "?2: displayed description, default is Source"
+msgstr "?2: 表示される説明文，デフォルトはソース"
+
+#. QuoteMacro.4
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:31
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:QuoteMacro.4"
+msgid "Source"
+msgstr "ソース"
+
+#. MacroListMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:32
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:MacroListMacro.0"
+msgid "macro.macrolist"
+msgstr "macro.macrolist"
+
+#. MacroListMacro.2
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:33
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:MacroListMacro.2"
+msgid "{table}\n"
+msgstr "{table}\n"
+
+#. MacroListMacro.11
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:34
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:MacroListMacro.11"
+msgid "{table}"
+msgstr "{table}"
+
+#. MailToMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:35
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:MailToMacro.0"
+msgid "1: mail address"
+msgstr "1: メールアドレス"
+
+#. XrefMacro.0
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:36
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:XrefMacro.0"
+msgid "1: class name, e.g. java.lang.Object or java.lang.Object@Nanning"
+msgstr "1: クラス名，例: java.lang.Object や java.lang.Object@Nanning"
+
+#. XrefMacro.1
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:37
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:XrefMacro.1"
+msgid "?2: line number"
+msgstr "?2: 行番号"
+
+#. XrefMacro.7
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:38
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:XrefMacro.7"
+msgid "xref macro needs one or two paramaters"
+msgstr "クロス参照マクロには，パラメータが1つまたは2つ必要です"
+
+#. RfcMacro.3
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:39
+msgctxt ""
+"rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:RfcMacro.3"
+msgid "needs an RFC numer as argument"
+msgstr "RFC 番号が引数として必要です"
+
+#. TextFileUrlMapper.7
+#: rwiki/rwiki-util/radeox/src/bundle/org/radeox/Messages.properties:40
+msgctxt ""
+"rwiki/rwiki-"
+"util/radeox/src/bundle/org/radeox/Messages.properties:TextFileUrlMapper.7"
+msgid "Service|Url\n"
+msgstr "サービス|URL\n"
+
+#. DigestHtml.3
+#: rwiki/rwiki-util/util/src/bundle/uk/ac/cam/caret/sakai/rwiki/utils/bundle/Messages.properties:1
+msgctxt ""
+"rwiki/rwiki-"
+"util/util/src/bundle/uk/ac/cam/caret/sakai/rwiki/utils/bundle/Messages.properties:DigestHtml.3"
+msgid ""
+"\n"
+" Failed at "
+msgstr "\n 失敗しました．場所: "
+
+#. UserDisplayHelper.0
+#: rwiki/rwiki-util/util/src/bundle/uk/ac/cam/caret/sakai/rwiki/utils/bundle/Messages.properties:2
+msgctxt ""
+"rwiki/rwiki-"
+"util/util/src/bundle/uk/ac/cam/caret/sakai/rwiki/utils/bundle/Messages.properties:UserDisplayHelper.0"
+msgid "Unknown"
+msgstr "未知"
+
+#. RWikiCurrentObjectDaoImpl.30
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:1
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiCurrentObjectDaoImpl.30"
+msgid "No page content exists for this "
+msgstr "ページ「"
+
+#. RWikiCurrentObjectDaoImpl.31
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:2
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiCurrentObjectDaoImpl.31"
+msgid "page, please create"
+msgstr "」に対応するページコンテンツがありません．作成してください．"
+
+#. SakaiLinkMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:3
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SakaiLinkMacro.0"
+msgid "1,text: Text of the link "
+msgstr "1,テキスト: リンクのテキスト"
+
+#. SakaiLinkMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:4
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SakaiLinkMacro.1"
+msgid ""
+"2,url: URL of the link, if this is external and no target is specified, a "
+"new window will open "
+msgstr "2,url: リンクの URL で，これが外部リンクでターゲットが指定されていない場合は新しいウィンドウが開きます"
+
+#. SakaiLinkMacro.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:5
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SakaiLinkMacro.2"
+msgid "3,img: (optional) if 'none' then no small URL image will be used"
+msgstr "3,img: (任意) 'none' の場合は小さい URL イメージは使用されません"
+
+#. SakaiLinkMacro.3
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:6
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SakaiLinkMacro.3"
+msgid ""
+"4,target: (optional) Target window, if 'none' is specified, the url will use"
+" the current window"
+msgstr "4,target: (任意) ターゲットウィンドウで，'none' が指定された場合，URL の表示には現在のウィンドウが使用されます"
+
+#. SakaiLinkMacro.4
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:7
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SakaiLinkMacro.4"
+msgid ""
+"Remember if using positional parameters, you must include dummies for the "
+"optional parameters"
+msgstr "位置指定パラメータを使用している場合は，任意パラメータについてダミーを指定しなければなりません"
+
+#. SakaiLinkMacro.5
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:8
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SakaiLinkMacro.5"
+msgid "Generated a link"
+msgstr "リンクが生成されました"
+
+#. SakaiLinkMacro.28
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:9
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SakaiLinkMacro.28"
+msgid "link needs a name and a url as argument"
+msgstr "リンクには，引数として名前と URL が必要です"
+
+#. ImageMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:10
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.0"
+msgid ""
+"1,img: URL to the image, image URL must be relative, or absolute but cannot "
+"be external, It may also startwith worksite:/ or sakai:/ if referencing "
+"resources in the worksite or the whole of sakai. When referencing resources "
+"in other worksites (eg sakai:/) you must include the site id "
+msgstr "1,img: 画像への URL．画像 URL は相対パスか，絶対パスの場合は外部サイトにすることはできません．また，ワークサイトまたは Sakai サイト全体を参照する場合は，worksite:/ または sakai:/ ではじめます．他のワークサイトの場合(sakai:/ を使用する場合)はサイト ID を含めなければなりません．"
+
+#. ImageMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:11
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.1"
+msgid "2,alt: (optional) Alt text "
+msgstr "2,alt: (任意) ALT テキスト"
+
+#. ImageMacro.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:12
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.2"
+msgid "3,ext: (optional) ignored at the moment"
+msgstr "3,ext: (任意) 現在は無視されます"
+
+#. ImageMacro.3
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:13
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.3"
+msgid "4,class: (optional) css class applied to the image"
+msgstr "4,class: (任意) 画像に適用される CSS クラス"
+
+#. ImageMacro.4
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:14
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.4"
+msgid "5,target: (optional) Target window"
+msgstr "5,target: (任意) ターゲットウィンドウ"
+
+#. ImageMacro.5
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:15
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.5"
+msgid ""
+"6,title: (optional) Title the image, (will default to the same value as alt)"
+msgstr "6,title: (任意) 画像のタイトル (ALT と同じ値がデフォルトになります)"
+
+#. ImageMacro.6
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:16
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.6"
+msgid ""
+"Remember if using positional parameters, you must include dummies for the "
+"optional parameters"
+msgstr "位置指定パラメータを使用している場合は，任意パラメータについてダミーを指定しなければなりません"
+
+#. ImageMacro.7
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:17
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.7"
+msgid "Places an Image in the page"
+msgstr "ページに画像を挿入します"
+
+#. ImageMacro.23
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:18
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.23"
+msgid "External URLs are not allowed, only relative or absolute"
+msgstr "外部 URL は許可されていません．相対パスか絶対パスだけです．"
+
+#. ImageMacro.34
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:19
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ImageMacro.34"
+msgid "Number of arguments does not match"
+msgstr "引数の数が一致しません"
+
+#. BlockMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:20
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:BlockMacro.0"
+msgid "1,class: The class to assign to this block,"
+msgstr "1,class: このブロックに割り当てるクラス"
+
+#. BlockMacro.01
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:21
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:BlockMacro.01"
+msgid "style: the css style to apply inline"
+msgstr "style: インラインを適用する CSS スタイル"
+
+#. BlockMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:22
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:BlockMacro.1"
+msgid "id: An id to assign to this block."
+msgstr "id: このブロックに割り当てる ID"
+
+#. BlockMacro.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:23
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:BlockMacro.2"
+msgid "anchor: An anchor to assign to this block"
+msgstr "anchor: このブロックに割り当てるアンカー"
+
+#. BlockMacro.3
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:24
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:BlockMacro.3"
+msgid "Places a div around a block of rwiki rendered content."
+msgstr "Rwiki により描画されたコンテンツのブロックのまわりに div を挿入します．"
+
+#. StyleMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:25
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:StyleMacro.0"
+msgid "1,href: (optional) Link to a stylesheet"
+msgstr "1,href: (任意) スタイルシートへのリンク"
+
+#. StyleMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:26
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:StyleMacro.1"
+msgid "2,media: (optional) media type defaults to all."
+msgstr "2,media: (任意) すべてに適用されるメディア型のデフォルト"
+
+#. StyleMacro.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:27
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:StyleMacro.2"
+msgid ""
+"Adds a style element, if no href is used, the internal content, otherwise a "
+"link to a style sheet is used."
+msgstr "スタイル要素を追加します．もし href が用いられない場合は，内部コンテンツが，それ以外の場合はスタイルシートへのリンクとして用いられます．"
+
+#. AnchorMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:28
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:AnchorMacro.0"
+msgid "1: An name to assign to this anchor."
+msgstr "1: このアンカーに割り当てる名前．"
+
+#. AnchorMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:29
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:AnchorMacro.1"
+msgid "Creates an anchor around a section of rwiki rendered content."
+msgstr "Rwiki により描画されたコンテンツのブロックの周りにアンカーを作成します．"
+
+#. BackgroundColorMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:30
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:BackgroundColorMacro.1"
+msgid "0,color: Change the background color of the contents"
+msgstr "0,color: コンテンツの背景色を変更します"
+
+#. BackgroundColorMacro.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:31
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:BackgroundColorMacro.2"
+msgid "Change the background color of some text"
+msgstr "テキストの背景色を変更します"
+
+#. BackgroundColorMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:32
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:BackgroundColorMacro.0"
+msgid "Color: "
+msgstr "色: "
+
+#. BackgroundColorMacro.10
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:33
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:BackgroundColorMacro.10"
+msgid " is not a real CSS color!"
+msgstr " は実際の CSS 色ではありません!"
+
+#. SectionsMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:34
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SectionsMacro.0"
+msgid ""
+"1,useids: (optional) if true will generate with ID's otherwise will use "
+"names, names it the default "
+msgstr "1,useids: (任意) true の場合は ID 付きで生成されます．それ以外であれば，名前が使用されます．名前の使用がデフォルトです．"
+
+#. SectionsMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:35
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SectionsMacro.1"
+msgid ""
+"Remember if using positional parameters, you must include dummies for the "
+"optional parameters"
+msgstr "位置指定パラメータを使用している場合は，任意パラメータについてダミーを指定しなければなりません"
+
+#. SectionsMacro.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:36
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SectionsMacro.2"
+msgid "Generate a list of links that point to section subsites"
+msgstr "セクションのサブサイトを指すリンク一覧を生成します"
+
+#. SectionsMacro.5
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:37
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SectionsMacro.5"
+msgid "Invalid Site Id "
+msgstr "無効なサイト ID"
+
+#. IndexMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:38
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:IndexMacro.1"
+msgid ""
+"1:space, The space which to index, defaults to the space of the current "
+"page."
+msgstr "1:space, 索引化する場合の空白．現在のページの空白がデフォルトです．"
+
+#. IndexMacro.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:39
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:IndexMacro.2"
+msgid "2:nohead, if nohead, the header line will not be produced"
+msgstr "2:nohead, nohead の場合，ヘッダ行は生成されません．"
+
+#. IndexMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:40
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:IndexMacro.0"
+msgid "  <p>Index of "
+msgstr "  <p>索引 対象:"
+
+#. WorksiteInfoMacro.3
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:41
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:WorksiteInfoMacro.3"
+msgid ""
+"1,info: The type of info to provide, worksiteinfo:title gives Title "
+"(default), "
+msgstr "1,info: 提供される情報のタイプ worksiteinfo:title はタイトルとなります (デフォルト)"
+
+#. WorksiteInfoMacro.4
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:42
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:WorksiteInfoMacro.4"
+msgid " worksiteinfo:description, "
+msgstr " worksiteinfo:description, "
+
+#. WorksiteInfoMacro.5
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:43
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:WorksiteInfoMacro.5"
+msgid " worksiteinfo:shortdescription, "
+msgstr " worksiteinfo:shortdescription, "
+
+#. WorksiteInfoMacro.6
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:44
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:WorksiteInfoMacro.6"
+msgid " worksiteinfo:wikispace "
+msgstr " worksiteinfo:wikispace "
+
+#. WorksiteInfoMacro.7
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:45
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:WorksiteInfoMacro.7"
+msgid ""
+"Remember if using positional parameters, you must include dummies for the "
+"optional parameters"
+msgstr "位置指定パラメータを使用している場合は，任意パラメータについてダミーを指定しなければなりません"
+
+#. WorksiteInfoMacro.8
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:46
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:WorksiteInfoMacro.8"
+msgid "Generates worksite information"
+msgstr "ワークサイト情報を生成します"
+
+#. WorksiteInfoMacro.11
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:47
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:WorksiteInfoMacro.11"
+msgid "No Site Found for page"
+msgstr "No 次のページのサイトが見つかりました"
+
+#. ColorMacro.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:48
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ColorMacro.2"
+msgid "0,color: Change the foreground color of the contents"
+msgstr "0,color: コンテンツの前景色を変更"
+
+#. ColorMacro.3
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:49
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ColorMacro.3"
+msgid "1,bgcolor: Change the background color of the contents"
+msgstr "1,bgcolor: コンテンツの背景色を変更"
+
+#. ColorMacro.4
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:50
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ColorMacro.4"
+msgid "Change the color of some text"
+msgstr "テキストの色を変更"
+
+#. ColorMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:51
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ColorMacro.1"
+msgid "Color: "
+msgstr "色: "
+
+#. ColorMacro.13
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:52
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:ColorMacro.13"
+msgid " is not a real CSS color!"
+msgstr " は実際の CSS 色ではありません!"
+
+#. RecentChangesMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:53
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RecentChangesMacro.0"
+msgid ""
+"1: Optional, If format is yyyy-MM-dd Changes since date. If format is 30d "
+"number of days, If format is 12h, number of hours, defaults to last 30 days,"
+" "
+msgstr "1: 任意, フォーマットが yyyy-MM-dd であれば，日付を変更します．フォーマットが日にちを表す 30d か，時刻を表す 12h であれば，直近のもの(30日以内)がデフォルトです．"
+
+#. RecentChangesMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:54
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RecentChangesMacro.1"
+msgid "Expands to a list of recently changed pages"
+msgstr "最近変更されたページの一覧に展開します"
+
+#. RecentChangesMacro.6
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:55
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RecentChangesMacro.6"
+msgid "yyyy-MM-dd"
+msgstr "yyyy-MM-dd"
+
+#. RecentChangesMacro.7
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:56
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RecentChangesMacro.7"
+msgid "<span class=\"error\"> Cannot parse: "
+msgstr "<span class=\"error\"> パースできません: "
+
+#. RecentChangesMacro.8
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:57
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RecentChangesMacro.8"
+msgid ""
+" must be of the format: yyyy-MM-dd or 30d or 12h Will assume past 30 days "
+"</span>"
+msgstr " はフォーマット yyyy-MM-dd でなければなりません．または，30日前を仮定した 30d，12h でなければなりません．"
+
+#. RecentChangesMacro.9
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:58
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RecentChangesMacro.9"
+msgid "<span class=\"error\"> Changes since "
+msgstr "<span class=\"error\"> "
+
+#. RecentChangesMacro.13
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:59
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RecentChangesMacro.13"
+msgid " was last modified "
+msgstr " が "
+
+#. RecentChangesMacro.14
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:60
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RecentChangesMacro.14"
+msgid " by "
+msgstr " に修正されました　更新者: "
+
+#. RecentChangesMacro.16
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:61
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RecentChangesMacro.16"
+msgid "You do not have permission to search."
+msgstr "検索するための権限がありません"
+
+#. SpanMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:62
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SpanMacro.0"
+msgid "1,class: The class to assign to this block."
+msgstr "1,class: このブロックに割り当てるクラス．"
+
+#. SpanMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:63
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SpanMacro.1"
+msgid "id: An id to assign to this block."
+msgstr "id: このブロックに割り当てる ID．"
+
+#. SpanMacro.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:64
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SpanMacro.2"
+msgid "anchor: An anchor to assign to this block"
+msgstr "anchor: このブロックに割り当てるアンカー．"
+
+#. SpanMacro.3
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:65
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SpanMacro.3"
+msgid "Places a span around a section of rwiki rendered content."
+msgstr "Rwiki により描画されたコンテンツのブロックの周りに span を挿入します．"
+
+#. MathMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:66
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:MathMacro.0"
+msgid ""
+"This is a basic macro that places span/div tags with an appropriate class around the math text. \n"
+"The contents of this macro are pre-escaped, however you cannot put {math} in the contents of this macro, place {{}math} instead."
+msgstr "これは，数式テキストの周りに適切なクラスが割り当てられている span/div タグを挿入するための基本的なマクロです．\nこのマクロの内容は，あらかじめエスケープされていますが，このマクロの内容に {math} を入れることはできません．代わりに，{{}math} を挿入します．"
+
+#. MathMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:67
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:MathMacro.1"
+msgid "1: put \"display\" here for the maths to be placed in a div"
+msgstr "1: div 中に置かれる数式に対してここに \"display\" をおきます．"
+
+#. SpecializedRenderContext.7
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:68
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SpecializedRenderContext.7"
+msgid "Link Cant be resolved"
+msgstr "リンクを解決できません"
+
+#. SpecializedRenderContext.20
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:69
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SpecializedRenderContext.20"
+msgid "Link Cant be resolved"
+msgstr "リンクを解決できません"
+
+#. RWikiObjectServiceImpl.32
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:70
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.32"
+msgid "archiving Wiki Pages for "
+msgstr "次の Wiki ページをアーカイブしています: "
+
+#. RWikiObjectServiceImpl.31
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:71
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.31"
+msgid "Error archiving pages from site: "
+msgstr "次のサイトからページをアーカイブ中のエラー:"
+
+#. RWikiObjectServiceImpl.30
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:72
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.30"
+msgid "archiving: Completed "
+msgstr "アーカイブ中: 完了"
+
+#. RWikiObjectServiceImpl.43
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:73
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.43"
+msgid " pages and "
+msgstr " ページと"
+
+#. RWikiObjectServiceImpl.44
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:74
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.44"
+msgid " versions\n"
+msgstr " バージョン\n"
+
+#. RWikiObjectServiceImpl.29
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:75
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.29"
+msgid "Page "
+msgstr "ページ"
+
+#. RWikiObjectServiceImpl.28
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:76
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.28"
+msgid " already exists with revision "
+msgstr " はすでにリビジョン"
+
+#. RWikiObjectServiceImpl.54
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:77
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.54"
+msgid " which is earlier than the revision from the archive "
+msgstr " として存在していて，それはアーカイブからのリビジョンよりも前のものです．"
+
+#. RWikiObjectServiceImpl.55
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:78
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.55"
+msgid " therefore I have rejected the merge from the archive,"
+msgstr " よって，アーカイブからのマージを中止しました．"
+
+#. RWikiObjectServiceImpl.56
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:79
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.56"
+msgid " please report this a bug to JIRA if you feel that"
+msgstr " この機能が必要であると思われる場合は"
+
+#. RWikiObjectServiceImpl.57
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:80
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.57"
+msgid " this functionality is required \n"
+msgstr " JIRA にバグとして報告してください \n"
+
+#. RWikiObjectServiceImpl.58
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:81
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.58"
+msgid "Page "
+msgstr "ページ"
+
+#. RWikiObjectServiceImpl.59
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:82
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.59"
+msgid " already exists with revision "
+msgstr " はすでにリビジョン"
+
+#. RWikiObjectServiceImpl.60
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:83
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.60"
+msgid " therefore I have rejected the merge of"
+msgstr " で存在しています．よって，アーカイブからの該当するリビジョン"
+
+#. RWikiObjectServiceImpl.61
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:84
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.61"
+msgid " corresponding revision from the archive,"
+msgstr " のマージを中止しました．"
+
+#. RWikiObjectServiceImpl.62
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:85
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.62"
+msgid " please report this a bug to JIRA if you feel that"
+msgstr " この機能が必要であると思われる場合は"
+
+#. RWikiObjectServiceImpl.63
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:86
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.63"
+msgid " this functionality is required \n"
+msgstr " JIRA にバグとして報告してください \n"
+
+#. RWikiObjectServiceImpl.64
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:87
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.64"
+msgid "Created "
+msgstr "作成日"
+
+#. RWikiObjectServiceImpl.65
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:88
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.65"
+msgid " revision "
+msgstr " リビジョン"
+
+#. RWikiObjectServiceImpl.66
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:89
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.66"
+msgid " with version "
+msgstr " バージョン:"
+
+#. RWikiObjectServiceImpl.67
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:90
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.67"
+msgid " date "
+msgstr " 日付"
+
+#. RWikiObjectServiceImpl.69
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:91
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.69"
+msgid " WARNING: Check Sums do not match Archive Verions:"
+msgstr " 警告: チェックサムがアーカイブバージョンと一致しません:"
+
+#. RWikiObjectServiceImpl.70
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:92
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.70"
+msgid " Merged Version:"
+msgstr " マージされたバージョン:"
+
+#. RWikiObjectServiceImpl.71
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:93
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.71"
+msgid ""
+"\n"
+"Archive Content:\n"
+msgstr "\nアーカイブコンテンツ:\n"
+
+#. RWikiObjectServiceImpl.72
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:94
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.72"
+msgid ""
+"\n"
+"Saved Content:\n"
+msgstr "\n保存されたコンテンツ:\n"
+
+#. RWikiObjectServiceImpl.75
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:95
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.75"
+msgid "Failed to add "
+msgstr "追懐に失敗しました"
+
+#. RWikiObjectServiceImpl.76
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:96
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.76"
+msgid "page-name"
+msgstr "page-name"
+
+#. RWikiObjectServiceImpl.77
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:97
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.77"
+msgid " revision "
+msgstr " リビジョン"
+
+#. RWikiObjectServiceImpl.78
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:98
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.78"
+msgid "revision"
+msgstr "リビジョン"
+
+#. RWikiObjectServiceImpl.79
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:99
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.79"
+msgid " because  "
+msgstr " 理由:"
+
+#. RWikiObjectServiceImpl.81
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:100
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.81"
+msgid " Problem locating Reference on site "
+msgstr " サイトのリファレンスを設置する際の問題"
+
+#. RWikiObjectServiceImpl.84
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:101
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.84"
+msgid " Wiki Merge Complete "
+msgstr " Wiki マージが完了"
+
+#. RWikiObjectServiceImpl.85
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:102
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.85"
+msgid " Added "
+msgstr " ページ"
+
+#. RWikiObjectServiceImpl.86
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:103
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.86"
+msgid " pages with "
+msgstr " を追加しました．その際，"
+
+#. RWikiObjectServiceImpl.87
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:104
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.87"
+msgid ""
+" revisions \n"
+"Found "
+msgstr " 個の修正を \n見つけました"
+
+#. RWikiObjectServiceImpl.88
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:105
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.88"
+msgid " rejects, "
+msgstr " 個の拒否, "
+
+#. RWikiObjectServiceImpl.89
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:106
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.89"
+msgid " failures, "
+msgstr " 個の失敗, "
+
+#. RWikiObjectServiceImpl.90
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:107
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiObjectServiceImpl.90"
+msgid ""
+" errors\n"
+" "
+msgstr " 個のエラー\n "
+
+#. RWikiSecurityServiceImpl.2
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:108
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:RWikiSecurityServiceImpl.2"
+msgid "You must access the RWiki through a proper site"
+msgstr "適切なサイトから RWiki にアクセスしなければなりません"
+
+#. XSLTEntityHandler.68
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:109
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XSLTEntityHandler.68"
+msgid "Failed to serialise "
+msgstr "シリアライズに失敗しました"
+
+#. XSLTEntityHandler.32
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:110
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XSLTEntityHandler.32"
+msgid "Exception occured during rendering "
+msgstr "描画中に例外が発生しました"
+
+#. XSLTEntityHandler.33
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:111
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XSLTEntityHandler.33"
+msgid ""
+"\n"
+" Exception: "
+msgstr "\n 例外: "
+
+#. XSLTEntityHandler.34
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:112
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XSLTEntityHandler.34"
+msgid " Message:\n"
+msgstr " メッセージ:\n"
+
+#. XSLTEntityHandler.35
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:113
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XSLTEntityHandler.35"
+msgid "no content on page"
+msgstr "ページにコンテンツがありません"
+
+#. XSLTEntityHandler.36
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:114
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XSLTEntityHandler.36"
+msgid "no content on page"
+msgstr "ページにコンテンツがありません"
+
+#. XSLTEntityHandler.46
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:115
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XSLTEntityHandler.46"
+msgid "The Rendered Content did not parse correctly "
+msgstr "描画されたコンテンツが正しくパースしませんでした"
+
+#. SiteEmailNotificationRWiki.5
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:116
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.5"
+msgid "A Wiki Page has been changed in the \""
+msgstr "Wiki ページが \""
+
+#. SiteEmailNotificationRWiki.6
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:117
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.6"
+msgid "\" site at "
+msgstr "\" サイトで変更されました．"
+
+#. SiteEmailNotificationRWiki.13
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:118
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.13"
+msgid "\tLocation: site \""
+msgstr "\t場所: サイト \""
+
+#. SiteEmailNotificationRWiki.16
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:119
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.16"
+msgid " Modified at: "
+msgstr " 修正時刻:"
+
+#. SiteEmailNotificationRWiki.18
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:120
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.18"
+msgid " Modified by User: "
+msgstr " 修正者:"
+
+#. SiteEmailNotificationRWiki.19
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:121
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.19"
+msgid " Page: "
+msgstr "ページ："
+
+#. SiteEmailNotificationRWiki.4
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:122
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.4"
+msgid " Content: \n"
+msgstr " 内容: \n"
+
+#. SiteEmailNotificationRWiki.27
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:123
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.27"
+msgid "The wiki page "
+msgstr "題目: Wiki ページ"
+
+#. SiteEmailNotificationRWiki.28
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:124
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.28"
+msgid " has been modified"
+msgstr " が修正されました．"
+
+#. SiteEmailNotificationRWiki.30
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:125
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.30"
+msgid "This automatic notification message was sent by "
+msgstr "この自動通知メッセージは"
+
+#. SiteEmailNotificationRWiki.3
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:126
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.3"
+msgid ") from the "
+msgstr ") の"
+
+#. SiteEmailNotificationRWiki.35
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:127
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.35"
+msgid " site.\n"
+msgstr " サイトから送信されました．\n"
+
+#. SiteEmailNotificationRWiki.36
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:128
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:SiteEmailNotificationRWiki.36"
+msgid ""
+"You can modify how you receive notifications at My Workspace > Preferences."
+msgstr "どのように通知を受け取るかは，マイワークスペース→設定で変更することができます．"
+
+#. XLSTChangesHandler.19
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:129
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XLSTChangesHandler.19"
+msgid "Change History for "
+msgstr "履歴の変更 対象:"
+
+#. XLSTChangesHandler.21
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:130
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XLSTChangesHandler.21"
+msgid "Recent Changes in "
+msgstr "最近の変更 対象:"
+
+#. XLSTChangesHandler.23
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:131
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:XLSTChangesHandler.23"
+msgid "Recent Changes in "
+msgstr "最近の変更 対象:"
+
+#. PreMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:132
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:PreMacro.1"
+msgid "Renders the contents as-is "
+msgstr "コンテンツをそのまま表示"
+
+#. CommentMacro.0
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:133
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:CommentMacro.0"
+msgid "This is a macro that creates inline comment with callout "
+msgstr "これは呼び出し時にインラインコメントを作成するマクロです."
+
+#. CommentMacro.1
+#: rwiki/rwiki-impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:134
+msgctxt ""
+"rwiki/rwiki-"
+"impl/impl/src/bundle/uk/ac/cam/caret/sakai/rwiki/component/bundle/Messages.properties:CommentMacro.1"
+msgid "none"
+msgstr "none"
