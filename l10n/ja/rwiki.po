@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -312,7 +312,7 @@ msgctxt ""
 "rwiki/rwiki-"
 "tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:jsp_add_first_comment"
 msgid "Be the first to comment"
-msgstr "最初のコメントにする"
+msgstr "最初にコメントする"
 
 #. jsp_add_new_comment
 #: rwiki/rwiki-tool/tool/src/bundle/uk/ac/cam/caret/sakai/rwiki/tool/bundle/Messages.properties:7
