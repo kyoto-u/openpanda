@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -958,4 +958,4 @@ msgctxt ""
 "mailarchive/mailarchive-tool/tool/src/bundle/permissions.properties:desc-"
 "mail.delete.any"
 msgid "Delete any email in the archive"
-msgstr "アーカイブ中のメールを削除します"
+msgstr "アーカイブ中のメールを削除"
