@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -2740,7 +2740,7 @@ msgctxt ""
 "calendar/calendar-bundles/resources/permissions.properties:desc-"
 "calendar.import"
 msgid "Import events"
-msgstr "イベントをインポート"
+msgstr "イベントをインポートします"
 
 #. desc-calendar.read
 #: calendar/calendar-bundles/resources/permissions.properties:8
@@ -2748,7 +2748,7 @@ msgctxt ""
 "calendar/calendar-bundles/resources/permissions.properties:desc-"
 "calendar.read"
 msgid "View events"
-msgstr "イベントを表示します."
+msgstr "イベントを表示します"
 
 #. desc-calendar.all.groups
 #: calendar/calendar-bundles/resources/permissions.properties:9
@@ -2756,7 +2756,7 @@ msgctxt ""
 "calendar/calendar-bundles/resources/permissions.properties:desc-"
 "calendar.all.groups"
 msgid "Access/create group events"
-msgstr "グループイベントにアクセスまたは作成"
+msgstr "グループイベントにアクセスまたは作成します"
 
 #. desc-calendar.options
 #: calendar/calendar-bundles/resources/permissions.properties:10
