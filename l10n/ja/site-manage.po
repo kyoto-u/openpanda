@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -383,7 +383,7 @@ msgctxt ""
 msgid ""
 "The following will be added to your site when you click the Finish button "
 "below."
-msgstr "下の「続ける」ボタンをクリックすると，次のものがサイトに追加されます．"
+msgstr "下の「完了」ボタンをクリックすると，次のものがサイトに追加されます．"
 
 #. addconf.theywill
 #: site-manage/site-manage-participant-helper/src/bundle/org/sakaiproject/site/tool/participant/bundle/sitesetupgeneric.properties:44
