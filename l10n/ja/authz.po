@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -163,7 +163,7 @@ msgstr "このロールに対するすべての権限をトグル"
 msgctxt ""
 "authz/authz-tool/tool/src/bundle/authz-tool.properties:per.lis.perm.title"
 msgid "Toggle all roles for this permission"
-msgstr "この権限に対するすべてのロールをトグル"
+msgstr "この権限に対するすべてのロールを切り替え"
 
 #. per.lis.title
 #: authz/authz-tool/tool/src/bundle/authz-tool.properties:25
