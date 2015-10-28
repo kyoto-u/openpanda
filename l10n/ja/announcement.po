@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -1404,7 +1404,7 @@ msgctxt ""
 "announcement/announcement-"
 "tool/tool/src/bundle/announcement.properties:revise.announcement.star"
 msgid "<span class=\"reqStar\">*</span>Body"
-msgstr "<span class=\"reqStar\">*</span> ボディ"
+msgstr "<span class=\"reqStar\">*</span>本文"
 
 #. revise.subject
 #: announcement/announcement-tool/tool/src/bundle/announcement.properties:145
