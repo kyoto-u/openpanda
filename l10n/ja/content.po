@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -5049,7 +5049,7 @@ msgstr "このページは，デスクトップマシン上にフォルダを作
 #: content/content-bundles/resources/content.properties:96
 msgctxt "content/content-bundles/resources/content.properties:dav.graf2"
 msgid "This involves using a protocol called "
-msgstr "呼び出すプロトコルを使用します"
+msgstr "これには次の名前のプロトコルの使用が関係しています："
 
 #. dav.graf3
 #: content/content-bundles/resources/content.properties:97
