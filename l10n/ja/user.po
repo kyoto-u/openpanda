@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -762,7 +762,7 @@ msgctxt ""
 "user/user-tool-prefs/tool/src/bundle/user-tool-"
 "prefs.properties:prefs_fav_sites_short"
 msgid "Favorite Sites"
-msgstr "好きなサイト"
+msgstr "お気に入りサイト"
 
 #. prefs_active_sites_short
 #: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:12
@@ -848,7 +848,7 @@ msgctxt ""
 msgid ""
 "<strong>Moving many:</strong> Use the checkboxes to make a multiple "
 "selection then use the arrows in the control panel that will appear to move."
-msgstr "複数の選択を行うためにチェックボックスを利用します, 次にコントロールパネルの矢印を利用します."
+msgstr "複数のアイテムを選択するにはチェックボックスを使い, その後に表示されるコントロールパネルの矢印でアイテムを移動します."
 
 #. prefs_element_locked
 #: user/user-tool-prefs/tool/src/bundle/user-tool-prefs.properties:21
