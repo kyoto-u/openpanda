@@ -459,7 +459,7 @@ msgctxt ""
 msgid ""
 "These are the Roles granted to individual users in this Realm.  Click on an "
 "Id to edit."
-msgstr "このレルムのユーザに許可されているロールがあります．編集したいロール ID をクリックしてください．"
+msgstr "これらはこのレルムのユーザに許可されているロールです．編集したいロール ID をクリックしてください．"
 
 #. realm.edit.these1
 #: authz/authz-tool/tool/src/bundle/authz-tool.properties:67
@@ -467,7 +467,7 @@ msgctxt ""
 "authz/authz-tool/tool/src/bundle/authz-tool.properties:realm.edit.these1"
 msgid ""
 "These are the Roles defined within this Realm.  Click on an Id to edit."
-msgstr "このレルム内で定義されているロールがあります．編集したい ID をクリックしてください．"
+msgstr "これらはこのレルム内で定義されているロールです．編集したい ID をクリックしてください．"
 
 #. realm.edit.used
 #: authz/authz-tool/tool/src/bundle/authz-tool.properties:68
