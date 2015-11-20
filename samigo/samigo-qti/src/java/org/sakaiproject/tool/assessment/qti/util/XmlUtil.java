@@ -51,7 +51,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import java.io.FileReader;
+import java.io.InputStreamReader; // TEPSAK-04,06/TEPSAK-64
+import java.io.Reader; // TEPSAK-04,06/TEPSAK-64
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.util.api.FormattedText;
@@ -165,8 +171,11 @@ public final class XmlUtil
     try
     {
       setDocumentBuilderFactoryFeatures(builderFactory);	
+
+      Reader reader = new InputStreamReader(inputStream,"UTF-8");
+      InputSource source = new InputSource(reader);
       DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
-      document = documentBuilder.parse(inputStream);
+      document = documentBuilder.parse(source);
     }
     catch(ParserConfigurationException e)
     {
@@ -210,8 +219,10 @@ public final class XmlUtil
       InputStream inputStream = resource.getInputStream();
 
       setDocumentBuilderFactoryFeatures(builderFactory);
+      Reader reader = new InputStreamReader(inputStream,"UTF-8");
+      InputSource source = new InputSource(reader);
       DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
-      document = documentBuilder.parse(inputStream);
+      document = documentBuilder.parse(source);
     }
     catch(ParserConfigurationException e)
     {
@@ -286,6 +297,8 @@ public final class XmlUtil
     return readDocument(path, false);
   }
 */
+  private static final String XML_CHAR_CODE = "utf-8";
+  
   /**
    * This more forgiving version skips blank lines if trim = true
    * Otherwise it does a direct parse of the file.
@@ -310,7 +323,7 @@ public final class XmlUtil
     {
       if (trim)
       {
-        in = new BufferedReader(new FileReader(path));
+        in = new BufferedReader(new InputStreamReader(new FileInputStream(path),XML_CHAR_CODE));
 
         StringBuilder buffer = new StringBuilder();
         String s = "";
@@ -323,7 +336,7 @@ public final class XmlUtil
           }
         }
         in.close();
-        byte[] bytes = buffer.toString().getBytes();
+        byte[] bytes = buffer.toString().getBytes(XML_CHAR_CODE);
 
         inputStream = new ByteArrayInputStream(bytes);
       }
@@ -331,12 +344,13 @@ public final class XmlUtil
       {
         inputStream = new FileInputStream(path);
       }
-
+      Reader reader = new InputStreamReader(inputStream,XML_CHAR_CODE);
+      InputSource source = new InputSource(reader);
       DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
       builderFactory.setNamespaceAware(true);
       setDocumentBuilderFactoryFeatures(builderFactory);
       DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
-      document = documentBuilder.parse(inputStream);
+      document = documentBuilder.parse(source);
     }
     catch(ParserConfigurationException e)
     {
