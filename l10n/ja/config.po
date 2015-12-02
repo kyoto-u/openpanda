@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -3980,7 +3980,7 @@ msgctxt ""
 msgid ""
 "Select or unselect resources types to indicate whether resources of that "
 "type can be created in this site. "
-msgstr "リソースタイプをチェックまたはチェックをはずし，このサイトで作成可能なタイプであるかどうかを示します．"
+msgstr "リソースタイプにチェックを入れるか外すことで，このサイトで作成可能なタイプのリソースかどうかを明示します．"
 
 #. instr.props
 #: config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/type/types.properties:128

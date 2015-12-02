@@ -2005,7 +2005,7 @@ msgctxt "content/content-bundles/resources/types.properties:instr.options"
 msgid ""
 "Select or unselect resources types to indicate whether resources of that "
 "type can be created in this site. "
-msgstr "リソースタイプをチェックまたはチェックをはずし，このサイトで作成可能なタイプであるかどうかを示します．"
+msgstr "リソースタイプにチェックを入れるか外すことで，このサイトで作成可能なタイプのリソースかどうかを明示します．"
 
 #. instr.props
 #: content/content-bundles/resources/types.properties:143
