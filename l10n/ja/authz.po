@@ -149,14 +149,14 @@ msgstr "権限"
 msgctxt ""
 "authz/authz-tool/tool/src/bundle/authz-tool.properties:per.lis.head.title"
 msgid "Toggle all permissions for all roles"
-msgstr "すべてのロールに対するすべての権限をトグル"
+msgstr "すべてのロールに対するすべての権限を切り替え"
 
 #. per.lis.role.title
 #: authz/authz-tool/tool/src/bundle/authz-tool.properties:23
 msgctxt ""
 "authz/authz-tool/tool/src/bundle/authz-tool.properties:per.lis.role.title"
 msgid "Toggle all permissions for this role"
-msgstr "このロールに対するすべての権限をトグル"
+msgstr "このロールに対するすべての権限を切り替え"
 
 #. per.lis.perm.title
 #: authz/authz-tool/tool/src/bundle/authz-tool.properties:24
