@@ -3987,7 +3987,7 @@ msgstr "リソースタイプにチェックを入れるか外すことで，こ
 msgctxt ""
 "config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/type/types.properties:instr.props"
 msgid "Change the resource's details and then choose 'Update' at the bottom. "
-msgstr "アイテムのプロパティを修正し，一番下の「校sん」を選択します．"
+msgstr "アイテムのプロパティを修正し，一番下の「更新」を選択します．"
 
 #. instr.replace
 #: config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/type/types.properties:129
