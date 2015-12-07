@@ -6437,7 +6437,7 @@ msgstr "現在の利用状況: "
 msgctxt ""
 "content/content-bundles/resources/content.properties:quota.using.param"
 msgid "This site is currently using {0} ({1}) of its {2} quota. "
-msgstr "このサイトは現在 {2} のクォータを持つ{0} ({1}) を使っています．"
+msgstr "このサイトは現在 {2} のクォータのうち{0} ({1}) を使っています．"
 
 #. quota.unlimited
 #: content/content-bundles/resources/content.properties:314
