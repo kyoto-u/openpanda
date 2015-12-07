@@ -1066,7 +1066,7 @@ msgstr "グループリソースにアクセスまたは作成"
 msgctxt ""
 "content/content-bundles/resources/permissions.properties:desc-content.hidden"
 msgid "Read hidden resources"
-msgstr "非表示リソースを読む"
+msgstr "非表示のリソースを読む"
 
 #. access.groups.choice
 #: content/content-bundles/resources/types.properties:1
