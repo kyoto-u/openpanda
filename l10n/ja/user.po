@@ -505,7 +505,7 @@ msgctxt "user/user-tool/tool/src/bundle/admin.properties:import.instr.req.1"
 msgid ""
 "Include the following headings: user id, first name, last name, email, "
 "password, type. "
-msgstr "次の見出しを含める: ユーザID，名，姓，メール，パスワード，タイプ．"
+msgstr "次の見出しを含めてください: ユーザID，名，姓，メール，パスワード，タイプ．"
 
 #. import.instr.req.2
 #: user/user-tool/tool/src/bundle/admin.properties:79
