@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -271,7 +271,7 @@ msgstr "修正者:"
 #: site/site-tool/tool/src/bundle/admin.properties:43
 msgctxt "site/site-tool/tool/src/bundle/admin.properties:sitedi.no"
 msgid "no"
-msgstr "no"
+msgstr "いいえ"
 
 #. sitedi.pag
 #: site/site-tool/tool/src/bundle/admin.properties:44
