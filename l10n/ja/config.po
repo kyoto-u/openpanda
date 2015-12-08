@@ -1660,7 +1660,7 @@ msgstr "新規ウィンドウ"
 msgctxt ""
 "config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/content/content.properties:gen.no"
 msgid "No"
-msgstr "No"
+msgstr "いいえ"
 
 #. gen.note
 #: config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/content/content.properties:188

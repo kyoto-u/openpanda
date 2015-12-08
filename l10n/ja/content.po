@@ -5730,7 +5730,7 @@ msgstr "新規ウィンドウ"
 #: content/content-bundles/resources/content.properties:200
 msgctxt "content/content-bundles/resources/content.properties:gen.no"
 msgid "No"
-msgstr "No"
+msgstr "いいえ"
 
 #. gen.note
 #: content/content-bundles/resources/content.properties:201
