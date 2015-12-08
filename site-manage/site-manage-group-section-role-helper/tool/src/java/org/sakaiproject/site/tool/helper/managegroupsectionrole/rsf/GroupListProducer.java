@@ -42,6 +42,8 @@ import uk.org.ponder.rsf.components.decorators.UIStyleDecorator;
 import uk.org.ponder.rsf.components.decorators.UITooltipDecorator;
 import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
+import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
+import uk.org.ponder.rsf.state.scope.BeanDestroyer;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
@@ -80,7 +82,8 @@ public class GroupListProducer
     public MessageLocator messageLocator;
     public SessionManager sessionManager;
     public FrameAdjustingProducer frameAdjustingProducer;
-    
+    private BeanDestroyer destroyer;
+	
     public String getViewID() {
         return VIEW_ID;
     }
@@ -276,7 +279,14 @@ public class GroupListProducer
             result.resultingView = new SimpleViewParameters(GroupDelProducer.VIEW_ID);
         } else if ("done".equals(actionReturn)) {
             Tool tool = handler.getCurrentTool();
+            destroyer.destroy();
             result.resultingView = new RawViewParameters(SakaiURLUtil.getHelperDoneURL(tool, sessionManager));
+        } else if ("cancel".equals(actionReturn)){
+            destroyer.destroy();
         }
+    }
+    
+    public void setResultScopeDestroyer(BeanDestroyer destroyer) {
+        this.destroyer = destroyer;
     }
 }

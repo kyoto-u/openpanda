@@ -43,6 +43,7 @@ import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
+import uk.org.ponder.rsf.state.scope.BeanDestroyer;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.RawViewParameters;
@@ -61,7 +62,8 @@ public class GroupImportStep2Producer implements ViewComponentProducer, Navigati
     public MessageLocator messageLocator;
     public FrameAdjustingProducer frameAdjustingProducer;
     public SessionManager sessionManager;
-
+    private BeanDestroyer destroyer;
+    
     public String getViewID() {
         return VIEW_ID;
     }
@@ -174,7 +176,10 @@ public class GroupImportStep2Producer implements ViewComponentProducer, Navigati
         if ("done".equals(actionReturn)) {
         	handler.resetParams();
             Tool tool = handler.getCurrentTool();
+            destroyer.destroy();
             result.resultingView = new RawViewParameters(SakaiURLUtil.getHelperDoneURL(tool, sessionManager));
+        }else if ("success".equals(actionReturn)){
+        	destroyer.destroy();
         }
     }
     
@@ -182,4 +187,7 @@ public class GroupImportStep2Producer implements ViewComponentProducer, Navigati
         return new GroupImportViewParameters();
     }
 
+	public void setResultScopeDestroyer(BeanDestroyer destroyer) {
+		this.destroyer = destroyer;
+	}
 }

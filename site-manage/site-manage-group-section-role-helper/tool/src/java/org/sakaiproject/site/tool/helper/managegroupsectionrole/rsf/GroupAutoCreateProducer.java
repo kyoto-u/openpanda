@@ -38,6 +38,8 @@ import uk.org.ponder.rsf.components.decorators.UILabelTargetDecorator;
 import uk.org.ponder.rsf.components.decorators.UITooltipDecorator;
 import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
+import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
+import uk.org.ponder.rsf.state.scope.BeanDestroyer;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
@@ -66,6 +68,7 @@ public class GroupAutoCreateProducer implements ViewComponentProducer, ActionRes
     public MessageLocator messageLocator;
     public FrameAdjustingProducer frameAdjustingProducer;
     public SiteService siteService = null;
+    private BeanDestroyer destroyer;
 
     public String getViewID() {
         return VIEW_ID;
@@ -295,7 +298,12 @@ public class GroupAutoCreateProducer implements ViewComponentProducer, ActionRes
     // new hotness
     public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
         if ("done".equals(actionReturn) || "cancel".equals(actionReturn)) {
+        	destroyer.destroy();
             result.resultingView = new SimpleViewParameters(GroupListProducer.VIEW_ID);
         }
     }
+    
+	public void setResultScopeDestroyer(BeanDestroyer destroyer) {
+		this.destroyer = destroyer;
+	}
 }

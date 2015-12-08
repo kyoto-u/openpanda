@@ -24,6 +24,7 @@ import org.sakaiproject.site.tool.helper.managegroupsectionrole.impl.SiteManageG
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.Tool;
 
+import org.apache.commons.lang3.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
@@ -40,6 +41,7 @@ import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
+import uk.org.ponder.rsf.state.scope.BeanDestroyer;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.RawViewParameters;
@@ -58,8 +60,9 @@ public class GroupImportStep1Producer implements ViewComponentProducer, Navigati
 	public MessageLocator messageLocator;
 	public FrameAdjustingProducer frameAdjustingProducer;
 	public SessionManager sessionManager;
-
 	private TargettedMessageList tml;
+	private BeanDestroyer destroyer;
+
 	public void setTargettedMessageList(TargettedMessageList tml) {
 		this.tml = tml;
 	}
@@ -82,6 +85,12 @@ public class GroupImportStep1Producer implements ViewComponentProducer, Navigati
 		UICommand cancel = UICommand.make(uploadForm, "cancel", messageLocator.getMessage("cancel"), "#{SiteManageGroupSectionRoleHandler.processCancelGroups}");
 		cancel.parameters.add(new UIDeletionBinding("#{destroyScope.resultScope}"));
 	    
+		if(StringUtils.equals(params.status, "error")){
+			UIMessage.make(content, "import1.error", "import1.error");
+			handler.resetParams();
+			destroyer.destroy();
+		}
+		
 		frameAdjustingProducer.fillComponents(tofill, "resize", "resetFrame");
 
 		//process any messages
@@ -117,11 +126,16 @@ public class GroupImportStep1Producer implements ViewComponentProducer, Navigati
 		if ("done".equals(actionReturn)) {
 			handler.resetParams();
 			Tool tool = handler.getCurrentTool();
+			destroyer.destroy();
 			result.resultingView = new RawViewParameters(SakaiURLUtil.getHelperDoneURL(tool, sessionManager));
 		}
 	}
 	
 	public ViewParameters getViewParameters() {
 		return new GroupImportViewParameters();
+	}
+	
+	public void setResultScopeDestroyer(BeanDestroyer destroyer) {
+		this.destroyer = destroyer;
 	}
 }
